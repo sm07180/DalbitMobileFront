@@ -28,30 +28,6 @@
   }
   .rankingContent {
     box-sizing: border-box;
-    .swiper-container {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding: 0 16px;
-      box-sizing: border-box;
-      .swiper-pagination {
-        position: relative;
-        bottom:0;
-        @include flex(center,center);
-        width:auto;
-        padding:12px 0;
-        border-bottom:1px solid #F2F2F2;
-        .swiper-pagination-bullet {
-          width: 8px; height: 5px;
-          border-radius: 100px;
-          background-color:#D2D2D2;
-          &.swiper-pagination-bullet-active {
-            width: 15px; height: 5px;
-            background-color: #202020;
-          }
-        }
-      }
-    }
     .rankingTop3 {
       @include flex(center, center, column);
       width: 100%;
@@ -67,72 +43,95 @@
         line-height: 40px;
         margin-top: 4px;
       }
-      .topContent{
-        @include flex(flex-start, space-between);
-        width: 100%;
-      }
-      .ranker {
+      .swiper-container {
         display: flex;
-        justify-content: center;
-        flex:1;
-        &:nth-child(1) {
-          .listColumn {
-            width:100px;
-            .photo{
-              width: 100px;
-              height: 100px;
-              background-color: #acacac;
-              border-radius: 16px;
+        flex-direction: column;
+        width: 100%;
+        box-sizing: border-box;
+        .swiper-slide {
+          @include flex(flex-start, space-between);
+          padding: 0 16px;
+          .ranker {
+            display: flex;
+            justify-content: center;
+            flex:1;
+            &:nth-child(1) {
+              .listColumn {
+                width:100px;
+                .photo{
+                  width: 100px;
+                  height: 100px;
+                  background-color: #acacac;
+                  border-radius: 16px;
+                }
+              }
+            }
+            &:nth-child(2) {order:-1;}
+            .listColumn {
+              @include flex(center, center, column);
+              width:84px;
+              height:148px;
+              .photo {
+                position: relative;
+                @include flex(flex-end, center);
+                width:84px;
+                height: 84px;
+                background-color: #acacac;
+                border-radius: 16px;
+                margin-top:auto;
+                img {
+                  width:100%;
+                  border-radius: 50%;
+                }
+                .rankerRank {
+                  @include position-top-left(-6px, -10px);
+                  @include flex(center, center);
+                  width: 32px; height: 32px;
+                  line-height: 32px;
+                  border-radius: 50%;
+                  background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
+                  @include font(20px, 700, #fff);
+                }
+                .play{
+                  display: block;
+                  @include position-top-right(0px, 0px);
+                  width: 28px;
+                  height: 28px;
+                  @include BGIMG('clip/dalla/ico_playAll.png');
+                  background-size:auto 14px;
+                }
+              }
+              .rankerName {
+                width: 100%;
+                text-align: center;
+                @include font(13px, 600, #202020);
+                margin-top: 8px;
+                @include fontCut
+              }
+              .rankerNick {
+                width: 100%;
+                text-align: center;
+                @include font(12px, 400, #666);
+                @include fontCut;
+              }
             }
           }
         }
-        &:nth-child(2) {order:-1;}
-        .listColumn {
-          @include flex(center, center, column);
-          width:84px;
-          height:148px;
-          .photo {
-            position: relative;
-            @include flex(flex-end, center);
-            width:84px;
-            height: 84px;
-            background-color: #acacac;
-            border-radius: 16px;
-            margin-top:auto;
-            img {
-              width:100%;
-              border-radius: 50%;
+        .swiper-pagination {
+          position: relative;
+          bottom:0;
+          @include flex(center,center);
+          width:auto;
+          padding:12px 0;
+          border-bottom:1px solid #F2F2F2;
+          .swiper-pagination-bullet {
+            width: 8px; height: 5px;
+            border-radius: 100px;
+            background-color:#D2D2D2;
+            &.swiper-pagination-bullet-active {
+              width: 15px; height: 5px;
+              background-color: #202020;
             }
-            .rankerRank {
-              @include position-top-left(-6px, -10px);
-              @include flex(center, center);
-              width: 32px; height: 32px;
-              line-height: 32px;
-              border-radius: 50%;
-              background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
-              @include font(20px, 700, #fff);
-            }
-            .play{
-              display: block;
-              @include position-top-right(0px, 0px);
-              width: 28px;
-              height: 28px;
-              @include BGIMG('clip/dalla/ico_playAll.png');
-              background-size:auto 14px;
-            }
-          }
-          .rankerName {
-            width: 100%;
-            text-align: center;
-            @include font(13px, 600, #202020);
-            margin-top: 8px;
-            @include fontCut
-          }
-          .rankerNick {
-            width: 100%;
-            text-align: center;
-            @include font(12px, 400, #666);
-            @include fontCut;
           }
         }
       }
@@ -184,6 +183,7 @@
           @include font(16px,600,#333);
         }
         .photo {
+          position: relative;
           flex: none;
           width:72px;
           height: 72px;
@@ -192,6 +192,14 @@
           background-color: #acacac;
           img {
             width:100%;
+          }
+          .play{
+            display: block;
+            @include position-top-right(0px, 0px);
+            width: 28px;
+            height: 28px;
+            @include BGIMG('clip/dalla/ico_playAll.png');
+            background-size:auto 14px;
           }
         }
         .listContent {

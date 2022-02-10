@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 //global components
 import Header from 'components/ui/header/Header'
@@ -6,25 +6,30 @@ import Header from 'components/ui/header/Header'
 import './clipRankingGuide.scss'
 
 const ClipRankingGuide = () =>{
+
   return(
     <div id="clipRankingGuide">
      <Header title={'혜택'} type={'back'}/>
-      <div className="content">
+      <div className="contentBox" >
         <section className="benefitWrap">
           <div className="title">주간 클립 랭킹 달성 혜택</div>
           <table>
-            <tr>
-              <th>순위</th>
-              <th>1위</th>
-              <th>2위</th>
-              <th>3위</th>
-            </tr>
-            <tr>
-              <td>배지</td>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-            </tr>
+            <thead>
+              <tr>
+                <th>순위</th>
+                <th>1위</th>
+                <th>2위</th>
+                <th>3위</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>배지</td>
+                <td>1</td>
+                <td>2</td>
+                <td>3</td>
+              </tr>
+            </tbody>
           </table>
         </section>
         <section className="scoreWrap">
