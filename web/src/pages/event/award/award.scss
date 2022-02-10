@@ -28,7 +28,7 @@
       width: 33.33333333333333%;
       height: 50px;
       background-color: #acacac;
-      color: $white;
+      color: white;
       font-size: 18px;
       border-radius: 15px 15px 0 0;
       box-sizing: border-box;
@@ -306,7 +306,7 @@
         height: 54px;
         width: 100%;
         background-color: $primary;
-        color: $white;
+        color: white;
         font-size: 16px;
         border-radius: 12px;
         font-weight: $bold;
@@ -347,7 +347,7 @@
             white-space: nowrap;
             word-wrap: normal;
             background-color: rgba(0, 0, 0, 0.5);
-            color: $white;
+            color: white;
             text-align: center;
             font-size: 12px;
           }
@@ -368,7 +368,7 @@
           border: 2px solid #e84d70;
           background-color: #e84d70;
           border-radius: 14px;
-          color: $white;
+          color: white;
 
           img {
             width: 20px;
@@ -426,7 +426,7 @@
       height: 44px;
       font-size: 16px;
       border-radius: 12px;
-      color: $white;
+      color: white;
       font-weight: $bold;
       text-align: center;
       background-color: $primary;
@@ -452,7 +452,7 @@
         align-items: center;
         padding: 10px;
         border: 4px solid #ffd71b;
-        background-color: $white;
+        background-color: white;
         border-radius: 20px;
         box-sizing: border-box;
 
@@ -488,7 +488,7 @@
             white-space: nowrap;
             word-wrap: normal;
             background-color: rgba(0, 0, 0, 0.5);
-            color: $white;
+            color: white;
             text-align: center;
             font-size: 14px;
           }
@@ -693,7 +693,7 @@
               white-space: nowrap;
               font-weight: $bold;
               letter-spacing: normal;
-              color: $white;
+              color: white;
             }
           }
         }
@@ -739,7 +739,7 @@
               .userNickName {
                 display: block;
                 font-weight: $bold;
-                color: $white;
+                color: white;
                 font-size: 16px;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -769,7 +769,7 @@
               padding: 20px 2px 8px 12px;
               line-height: 1.4;
               border-radius: 24px;
-              background: $white;
+              background: white;
               color: $black;
               font-size: 13px;
               height: 100%;
@@ -845,7 +845,7 @@
           }
           span {
             display: inline-block;
-            color: $white;
+            color: white;
             max-width: 150px;
             overflow: hidden;
             white-space: nowrap;
@@ -864,7 +864,7 @@
             width: 27%;
             text-align: center;
             font-weight: $bold;
-            color: $white;
+            color: white;
             font-size: 13px;
             span {
               margin: 10% auto 91% auto;
@@ -917,7 +917,7 @@
 
           p {
             display: inline-block;
-            color: $white;
+            color: white;
             max-width: 150px;
             overflow: hidden;
             white-space: nowrap;
@@ -980,7 +980,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            background: $white;
+            background: white;
             color: $black;
             border-radius: 0 0 28px 28px;
             font-size: 16px;
@@ -991,7 +991,7 @@
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          color: $white;
+          color: white;
           padding-left: 4%;
           box-sizing: border-box;
 
