@@ -16,12 +16,12 @@ import './dalCharge.scss'
 import {useHistory, useLocation} from "react-router-dom";
 import {OS_TYPE} from "context/config";
 
-
-const paymentList = [
+let paymentList;
+paymentList = [
   { type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple' },
   { type: '무통장(계좌이체)', code: 'coocon' },
   { type: '신용/체크카드', fetch: 'pay_card' },
-  { type: '휴대폰', fetch: 'pay_phone' },
+  { type: '핸드폰', fetch: 'pay_phone' },
   { type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney' },
   { type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay' },
   { type: '페이코', fetch: 'pay_letter', code: 'payco' },
@@ -37,7 +37,7 @@ const DalCharge = () => {
   const history = useHistory();
   const context = useContext(Context);
   const location = useLocation();
-  const [select, setSelect] = useState(-1);
+  const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const customHeader = JSON.parse(Api.customHeader)
   const formTag = useRef(null);
@@ -50,9 +50,38 @@ const DalCharge = () => {
     itemAmount : 1,
   });
 
-  const onSelectMethod = (index, payment) => {
-    setSelect(index);
+  const updateDispatch = (event) => {
+    const {result, message} = event.detail;
+    if (result === "success") {
+      history.push({
+        pathname: "/pay/receipt",
+        state : {
+          info : event.detail,
+          payType : paymentList[selectPayment].type,
+        }
+      });
+    } else {
+      context.action.alert({
+        msg: message,
+        callback:()=>{
+          history.push("/store");
+        }
+      })
+    }
+  };
 
+  useEffect(() => {
+    if (!itemNm) return history.goBack();
+    if(selectPayment!==-1){
+      document.addEventListener("store-pay", updateDispatch);
+    }
+    return () => {
+      document.removeEventListener("store-pay", updateDispatch);
+    };
+  }, [selectPayment]);
+
+  const onSelectMethod = (index, payment) => {
+    setSelectPayment(index);
     if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
       return context.action.confirm({
         msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
@@ -67,7 +96,7 @@ const DalCharge = () => {
     }else if(payment.code === "coocon"){
         cooconPay();
     }else{
-        etcPay(payment)
+        callPGForm(payment);
     }
   }
 
@@ -104,9 +133,8 @@ const DalCharge = () => {
     })
   }
 
-  //기타 결제
-  const etcPay = async (payment, ciData) =>{
-    const { result, data, message } = await Api[payment.fetch]({
+  const callPGForm = async (payment, ciData) => {
+    const {result, data, message} = await Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,
         Prdtprice: price * buyItemInfo.itemAmount,
@@ -114,41 +142,54 @@ const DalCharge = () => {
         pageCode: webview === 'new' ? '2' : '1',
         pgCode: payment.code,
         itemAmt: buyItemInfo.itemAmount,
-        ci:ciData
+        ci: ciData,
+        isWWW: "y" //fixme
       }
     })
 
     if (result === 'success') {
-      sessionStorage.setItem('buy_item_data', price * buyItemInfo.itemAmount);
-
-      if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
-        return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
-      } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
-        return (window.location.href = data.next_redirect_mobile_url)
+      if(payment.fetch === "pay_letter" || payment.fetch === "pay_km"){ //카카카오페이, 페이코, 티머니/캐시비
+          //pc
+          if (data.hasOwnProperty("pcUrl") || data.hasOwnProperty("url")) {
+            return window.open(
+              data.pcUrl ? data.pcUrl : data.url,
+              "popup",
+              "width = 400, height = 560, top = 100, left = 200, location = no"
+            );
+          } else if (data.hasOwnProperty("next_redirect_pc_url")) {
+            return window.open(
+              data.next_redirect_pc_url,
+              "popup",
+              "width = 500, height = 560, top = 100, left = 200, location = no"
+            );
+          }
+          //mobile
+          // sessionStorage.setItem('buy_item_data', price * buyItemInfo.itemAmount); fixme delete
+          if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
+            return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
+          } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
+            return (window.location.href = data.next_redirect_mobile_url)
+          }
+      }else{  // 신용/체크카드, 휴대폰, 문화상품권, 해피머니상품권
+        let payForm = formTag.current
+        const makeHiddenInput = (key, value) => {
+          const input = document.createElement('input')
+          input.setAttribute('type', 'hidden')
+          input.setAttribute('name', key)
+          input.setAttribute('id', key)
+          input.setAttribute('value', value)
+          return input
+        }
+        Object.keys(data).forEach((key) => {
+          payForm.append(makeHiddenInput(key, data[key]))
+        })
+        MCASH_PAYMENT(payForm)
+        payForm.innerHTML = ''
       }
-
-      let payForm = formTag.current
-      const makeHiddenInput = (key, value) => {
-        const input = document.createElement('input')
-        input.setAttribute('type', 'hidden')
-        input.setAttribute('name', key)
-        input.setAttribute('id', key)
-        input.setAttribute('value', value)
-        return input
-      }
-      Object.keys(data).forEach((key) => {
-        payForm.append(makeHiddenInput(key, data[key]))
-      })
-      MCASH_PAYMENT(payForm)
-      payForm.innerHTML = ''
     } else {
-      context.action.alert({
-        msg: message
-      })
+      context.action.alert({msg: message})
     }
-
   }
-
 
   //상품수량 +,-
   const calcBuyItem = (type) => {
@@ -173,6 +214,19 @@ const DalCharge = () => {
     return Number(price) * buyItemInfo.itemAmount >= 1100000;
   }, [price, buyItemInfo.itemAmount, (Number(price) * buyItemInfo.itemAmount)])
 
+
+  const paymentLimit = (type) => {
+    switch (type) {
+      case "페이코":
+        if (price * buyItemInfo.itemAmount > 100000) return true;
+      case "티머니/캐시비":
+        if (price * buyItemInfo.itemAmount > 500000) return true;
+      case "핸드폰":
+        if (price * buyItemInfo.itemAmount > 1000000) return true;
+      default:
+        return false;
+    }
+  };
 
   return (
     <div id="dalCharge">
@@ -215,8 +269,8 @@ const DalCharge = () => {
         <div className="selectWrap">
           {paymentList.map((data,index) => {
             return (
-              <div className={`selectItem ${Number(select) === index && 'active'}`}
-                   onClick={()=>onSelectMethod(index, data)} data-target-index={index} key={index}>{data.type}</div>
+              <div key={index} className={`selectItem ${Number(selectPayment) === index ? 'active' : ''} ${paymentLimit(data.type) ? 'disabled' : ''}`}
+                   onClick={()=>{onSelectMethod(index, data)}}>{data.type}</div>
             )
           })}
         </div>
