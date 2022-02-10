@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useContext} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -6,9 +6,13 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
+import {useHistory} from "react-router-dom";
+import {Context} from "context";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop} = props
+  const history = useHistory();
+  const context = useContext(Context);
 
   // 스와이퍼
   const swiperFeeds = {
@@ -19,13 +23,20 @@ const SocialList = (props) => {
       type: 'fraction'
     }
   }
+  
+  // 피드, 팬보드 상세로 이동하기
+  const goContentsDetail = (idx) => {
+    history.push(`/profileDetail/${context.profile.memNo}/${type}/${idx}`);
+  };
 
   return (
     <div className="socialList">
       {socialList.map((item, index) => {
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop} />
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
+                              onClick={() => goContentsDetail(item.noticeIdx ? item.noticeIdx : item.replyIdx)}
+            />
             <div className="socialContent">
               <div className="text">
                 {item.contents}

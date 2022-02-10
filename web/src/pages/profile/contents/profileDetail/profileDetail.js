@@ -294,7 +294,6 @@ const ProfileDetail = () => {
   // 페이지 시작
   return (
     <div id="profileDetail">
-      <span>{`${JSON.stringify(inputMode)}`}</span>
       <Header type="back" title={item?.nickName}>
         <div className="buttonGroup">
           <div className='moreBtn'>
