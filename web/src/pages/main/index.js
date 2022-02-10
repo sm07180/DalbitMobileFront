@@ -32,6 +32,7 @@ const customHeader = JSON.parse(Api.customHeader)
 const MainPage = () => {
   const headerRef = useRef()
   const overRef = useRef()
+  const overTabRef = useRef()
   const iconWrapRef = useRef()
   const MainRef = useRef()
   const arrowRefreshRef = useRef()
@@ -39,6 +40,7 @@ const MainPage = () => {
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
+  const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
@@ -92,6 +94,7 @@ const MainPage = () => {
   // scroll
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
+    const overTabNode = overTabRef.current
     const overNode = overRef.current
     const headerNode = headerRef.current
 
@@ -101,6 +104,15 @@ const MainPage = () => {
         setHeaderFixed(true)
       } else {
         setHeaderFixed(false)
+      }
+    }
+
+    if (overTabNode) {
+      const overTabTop = overTabNode.getBoundingClientRect().top
+      if (0 > overTabTop) {
+        setTabFixed(true)
+      } else {
+        setTabFixed(false)
       }
     }
 
@@ -232,7 +244,7 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP10'} more={'rank'}>
+        <CntTitle title={'일간 TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
         </CntTitle>
         <SwiperList
@@ -250,9 +262,11 @@ const MainPage = () => {
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView'>
+      <section className='liveView'  ref={overTabRef}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
-        <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
+        <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
+          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
+        </div>
         <LiveView data={liveList.list}/>
       </section>
     </div>

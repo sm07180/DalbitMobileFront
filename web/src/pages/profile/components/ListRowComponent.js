@@ -5,7 +5,7 @@ import {Context} from "context";
 import Utility from "components/lib/utility";
 
 const ListRowComponent = (props) => {
-  const { item, isMyProfile, index, type } = props;
+  const { item, isMyProfile, index, type, openBlockReportPop } = props;
   const context = useContext(Context);
   const moreRef = useRef([]);
 
@@ -66,7 +66,7 @@ const ListRowComponent = (props) => {
         <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
           {(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}
           {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button>삭제하기</button>}
-          {context.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}
+          {context.profile.memNo !== item.mem_no && <button onClick={openBlockReportPop}>차단/신고하기</button>}
         </div>
       </div>
     </ListRow>

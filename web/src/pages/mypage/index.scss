@@ -4,10 +4,6 @@
 #clip_reply {
   position: relative;
   min-height: 100vh;
-  // .close-btn {
-  //   position: absolute;
-  //   left: 6px;
-  // }
   .profile-info {
     position: relative;
     padding-top: 87px;
@@ -72,7 +68,7 @@
       padding: 0;
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
-      background-color: $white;
+      background-color: white;
       z-index: 4;
       padding: 0 24px 20px;
       .profile-content {
@@ -193,7 +189,7 @@
           font-weight: bold;
           letter-spacing: -0.35px;
           border-radius: 16px;
-          color: $white;
+          color: white;
           background-color: #f54640;
           z-index: 4;
           white-space: nowrap;
@@ -215,7 +211,7 @@
             align-items: center;
             .expTitle {
               font-size: 10px;
-              color: $white;
+              color: white;
               &--start {
                 position: absolute;
                 left: 4px;
@@ -357,7 +353,7 @@
           text-align: center;
           line-height: 16px;
           background: $blue;
-          color: $white;
+          color: white;
           border-radius: 12px;
         }
         .checkBadge {
@@ -700,7 +696,7 @@
           .btnFan {
             &--isOff {
               min-width: 34%;
-              color: $white;
+              color: white;
               background: $primary;
               &::after {
                 display: inline-block;
@@ -724,7 +720,7 @@
             }
 
             &--isOff {
-              background: $white;
+              background: white;
               border: 1px solid $primary;
             }
           }
@@ -830,7 +826,7 @@
     justify-content: space-between;
     height: 40px;
     margin-top: 12px;
-    background: $white;
+    background: white;
     border-bottom: 1px solid $lightGray;
     &.fixedOn {
       position: fixed;
@@ -890,7 +886,7 @@
       align-items: center;
       width: 100%;
       height: 48px;
-      background-color: $white;
+      background-color: white;
       box-sizing: border-box;
       padding: 0 16px 0 16px;
       margin: 1px 0 1px 0;
@@ -938,7 +934,7 @@
   .btn {
     &__logout {
       display: block;
-      background-color: $white;
+      background-color: white;
       width: 100%;
       color: $darkGray;
       font-size: 14px;
@@ -1134,7 +1130,7 @@
           font-size: 18px;
           font-weight: 600;
           text-align: center;
-          color: $white;
+          color: white;
         }
       }
     }

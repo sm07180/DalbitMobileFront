@@ -48,8 +48,9 @@ iframe,
 main {
   margin: 0;
   padding: 0;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: "SUIT";
   font-weight: inherit;
+  box-sizing: border-box;
 }
 
 * {
@@ -81,6 +82,7 @@ html,
 body {
   -webkit-text-size-adjust: none;
   -ms-text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img,
@@ -146,7 +148,7 @@ input::-ms-clear {
 /* 크롬 인풋 자동완성 배경 컬러 설정 */
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 50px white inset;
+  -webkit-box-shadow: 0 0 0 50px transperent inset;
 }
 
 address,

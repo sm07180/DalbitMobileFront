@@ -8,7 +8,7 @@ const Navigation = (props) => {
   return (
     <>
     <div id="navigation">
-      <nav>
+      <nav className="bottomGnb">
         <div className="navi" onClick={() => history.push('/')} />
         <div className="navi" onClick={() => history.push('/clip')} />
         <div className="navi"></div>

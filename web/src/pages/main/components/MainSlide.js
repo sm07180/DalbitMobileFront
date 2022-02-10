@@ -19,10 +19,6 @@ const MainSlide = (props) => {
       delay: 10000,
       disableOnInteraction: false
     },
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction'
-    },
     on:{
       click: (swiper, event) => {
         if(event.type === 'touchend' || event.type === 'pointerup') {
@@ -47,7 +43,7 @@ const MainSlide = (props) => {
 
   return (
     <>
-      {data && data.length > 0 &&
+      {data.length > 0 ?
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
@@ -57,7 +53,7 @@ const MainSlide = (props) => {
                   :
                   <ListColumn photo={list.profImg.thumb500x500} index={index}>
                     <div className='info'>
-                      <div className="badgGroup">
+                      <div className="badgeGroup">
                         <BadgeItems data={list.liveBadgeList} />
                       </div>
                       <span className="title">{list.title}</span>
@@ -69,6 +65,8 @@ const MainSlide = (props) => {
             )
           })}
         </Swiper>
+        : data.length === 0 &&
+        <div className="empty"></div>
       }
     </>
   )

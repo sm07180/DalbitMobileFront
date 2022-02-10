@@ -25,6 +25,12 @@ const LiveView = (props) => {
               }}>
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />
+                  {true &&
+                    <img src={list.bjProfImg.thumb100x100} className="guest" alt="" />
+                  }
+                  {true &&
+                    <div className="video" />
+                  }
                 </div>
                 <div className='listContent'>
                   <div className="listItem">

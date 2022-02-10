@@ -13,20 +13,6 @@
   // height: 100%;
 }
 
-.blind {
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 1%;
-  line-height: 1%;
-  text-indent: -99999px;
-}
-
-.hidden {
-  display: none !important;
-}
-
 // 모바일 페이지 새로고침
 .refresh-wrap {
   display: block;

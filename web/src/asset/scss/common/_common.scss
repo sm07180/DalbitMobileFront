@@ -12,35 +12,74 @@ legend {
   margin: -1px;
 }
 
-html {
-  font-size: 16px;
-  color: $black;
+.hidden {
+  display: none !important;
 }
 // 메인및 서브 페이지 센터영역 공통 wrap
+#root {
+  width:100%;
+  overflow-x:hidden;
+}
+
+.refresh-wrap {
+  @include position-horizon;
+  top:0;
+  height: 48px;
+  margin-top:-48px;
+  z-index: 10;
+  // background-color: rgba(127, 127, 127, 0.3);
+  // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  &.rank {
+    position: absolute;top: 0;
+    transform: translateX(-50%);
+    background-color: transparent;
+    // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  }
+  .icon-wrap {
+    @include position-bottom-left(6px 50%);
+    .arrow-refresh-icon {
+      position: relative;
+      left: -50%;
+      display: block;
+      width: 32px;height: 32px;
+    }
+  }
+}
+
 .container {
   min-height: 100vh;
   background-color: #fbfbfb;
-
   .totalWrap {
-    //width: 800px;
-    width: 460px;
+    max-width:800px;
     margin: 0 auto;
-    border-left: 1px solid $lightGray;
-    border-right: 1px solid $lightGray;
-
     .content {
-      float: left;
+      position:relative;
       background: $white;
       min-height: 100vh;
       width: 480px;
+      border-top:1px solid $lightGray;
+      &::before {
+        content:"";
+        @include position-top-left;
+        z-index: 2;
+        width:1px;
+        height:100%;
+        background-color:$lightGray;
+      }
+      &::after {
+        content:"";
+        @include position-top-right;
+        z-index: 2;
+        width:1px;
+        height:100%;
+        background-color:$lightGray;
+      }
       &.player {
         padding-bottom: 80px;
       }
-
       .subContent {
         min-height: calc(100vh - 50px);
         box-sizing: border-box;
-
         &.gray {
           background: $lighterGray;
         }
@@ -61,103 +100,102 @@ html {
     }
   }
 }
-.mobile-app {
-  #gnb {
-    display: none;
-  }
-  .totalWrap {
-    width: 100%;
-  }
-  #mainPage {
-    .fixedButton {
-      right: 20px;
-      margin-right: auto;
-    }
-    .mainSlideWrap {
-      .mainSlideItem {
-        height: 220px;
-      }
-    }
-  }
-  #attendEventPage {
-    width: 100%;
-  }
-
-  #footerWrap {
-    display: none;
-  }
-  .rouletteTab {
-    .rouletteBox {
-      min-height: auto;
-    }
-  }
-}
-#gnb {
-  position:relative;
+#GNB {
+  position:sticky;
+  top:0;
+  z-index: 99999;
+  width:100%;min-width:480px;
   height: 68px;
   background-color: white;
-  box-shadow: 0 -3px 6px 0 rgba(0, 0, 0, 0.05);
-  z-index: 5;
-  .gnbBox {
+  border-bottom:1px solid #E0E0E0;
+  .gnbContainer {
+    position: relative;
     @include flex(center);
-    h1 {
-      width:71px;height:25px;
-      // @include BGIMG("common/header/LOGO.png");
-      img {
-        width:100%;
+    max-width:800px;
+    height:100%;
+    margin: 0 auto;
+    .gnbHeader {
+      @include flex(center);
+      width:100%;
+      max-width:480px;
+      h1 {
+        height:25px;
+        max-width:480px;
+        img {
+          width:71px;
+          height:100%;
+        }
+      }
+      button {
+        width:114px;
+        line-height:34px;
+        margin-left:auto;
+        @include border(#D9D9D8,2px);
       }
     }
-  }
-  .navWrap {
-    .navItem {
-      display: block;
-      padding: 14px 0;
-      height: 52px;
-
-      &:nth-child(1) {
-        background: url("#{$IMG_SERVER}/main/common/gnb_live.svg") center no-repeat;
-      }
-
-      &:nth-child(2) {
-        background: url("#{$IMG_SERVER}/main/common/gnb_clip.svg") center no-repeat;
-      }
-
-      &:nth-child(3) {
-        background: url("#{$IMG_SERVER}/main/common/gnb_ranking.svg") center no-repeat;
-      }
-
-      &:nth-child(4) {
-        background: url("#{$IMG_SERVER}/main/common/gnb_user.svg") center no-repeat;
-      }
-
-      &__active {
-        &:nth-child(1) {
-          background: url("#{$IMG_SERVER}/main/common/gnb_live_active.svg") center no-repeat;
+    .gnbNavigation {
+      margin-left:auto;
+      ul {
+        @include flex(center);
+        li {
+          position:relative;
+          width:44px;height:44px;
+          border-radius:50%;
+          &:hover {
+            background-color:#F2F2F2 !important;
+          }
+          &:hover::before {
+            content:"";
+            @include position-horizon;
+            top:100%;
+            width:13px;height:12px;
+            @include BGIMG("common/gnb/gnb-dot.png");
+          }
+          &:hover::after {
+            @include position-horizon;
+            top:calc(100% + 8px);
+            padding:0 7px 0 7px;
+            height:24px;
+            line-height:22px;
+            border-radius:4px;
+            background-color:#424242;
+            white-space: nowrap;
+            @include font(14px,normal,white);
+          }
+          &:nth-child(1) {
+            @include BGIMG("common/gnb/gnbLive-off.png");
+            &:hover::after {content:"라이브";}
+          }
+          &:nth-child(2) {
+            @include BGIMG("common/gnb/gnbClip-off.png");
+            &:hover::after {content:"클립";}
+          }
+          &:nth-child(3) {
+            @include BGIMG("common/gnb/gnbSearch-off.png");
+            &:hover::after {content:"검색";}
+          }
+          &:nth-child(4) {
+            @include BGIMG("common/gnb/gnbRank-off.png");
+            &:hover::after {content:"랭킹";}
+          }
+          &:nth-child(5) {
+            @include BGIMG("common/gnb/gnbMy-off.png");
+            &:hover::after {content:"마이";}
+          }
+          &:nth-child(6) {
+            @include BGIMG("common/gnb/gnbAllim-off.png");
+            &:hover::after {content:"알람";}
+          }
+          &.active {
+            &:nth-child(1) {@include BGIMG("common/gnb/gnbLive-on.png");}
+            &:nth-child(2) {@include BGIMG("common/gnb/gnbClip-on.png");}
+            &:nth-child(3) {@include BGIMG("common/gnb/gnbSearch-on.png");}
+            &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
+            &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
+            &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
+          }
         }
-
-        &:nth-child(2) {
-          background: url("#{$IMG_SERVER}/main/common/gnb_clip_active.svg") center no-repeat;
-        }
-
-        &:nth-child(3) {
-          background: url("#{$IMG_SERVER}/main/common/gnb_ranking_active.svg") center no-repeat;
-        }
-
-        &:nth-child(4) {
-          background: url("#{$IMG_SERVER}/main/common/gnb_user_active.svg") center no-repeat;
-        }
       }
-    }
-  }
-
-  .etcWrap {
-    @include flex(center);
-    margin-left:auto;
-    &__icon {
-      display: block;
-      width: 40px;
-      margin: 0 auto;
-      padding: 8px 0;
     }
   }
 }
@@ -168,11 +206,9 @@ html {
   width: 80px;
   height: 100vh;
   z-index: 5;
-
   .guideItem {
     margin-top: 26px;
     text-align: center;
-
     &__icon {
       margin: 0 auto;
       width: 48px;
@@ -195,144 +231,85 @@ html {
     }
   }
 }
-// header common
-.header-wrap {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 50px;
-  padding: 12px 16px;
-  color: $black;
-  background-color: $white;
-  border-bottom: 1px solid #d2d2d2;
-  box-sizing: border-box;
-
-  .header-title {
-    font-size: 18px;
-    text-align: center;
-    line-height: 24px;
-    letter-spacing: -0.45px;
-    color: $black;
-    &.isLong {
-      padding-left: 28px;
-      font-size: 14px;
-      line-height: 24px;
-      letter-spacing: -1.2px;
-    }
-    &.isCursor {
+#footerWrap {
+  padding: 30px 0 50px;
+  background-color: #F7F7F7;
+  text-align: center;
+  .infoList {
+    > li {
+      display: inline-block;
+      position: relative;
+      padding: 5px 6px;
+      @include font(14px,normal,#202020);
       cursor: pointer;
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 1px;
+        height: 10px;
+        background-color:#202020;
+      }
+      &:first-child {
+        &::before {
+          display: none;
+        }
+      }
     }
   }
-
-  .btnClose {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 6px;
-    margin-top: -20px;
-    width: 36px;
-    height: 36px;
-    text-indent: -9999px;
-    background: url("#{$IMG_SERVER}/svg/icon_back_gray.svg") no-repeat 0 0;
-  }
-
-  .btnCloseWhite {
-    background: url("#{$IMG_SERVER}/svg/icon_back_white.svg") no-repeat 0 0;
-  }
-
-  .allCheck {
+  .infoBox {
     display: flex;
-    position: absolute;
-    top: 9px;
-    right: 20px;
-    align-items: center;
-  }
-
-  .deleteIcon {
-    width: 32px;
-    height: 32px;
-    margin-right: 10px;
-    background: url("#{$IMG_SERVER}/svg/ico_alarm_delete.svg") no-repeat center;
-    background-size: contain;
-    &.isActive {
-      background: url("#{$IMG_SERVER}/svg/ico_alarm_delete_active.svg") no-repeat center;
-    }
-  }
-}
-.searchIcon {
-  position: absolute;
-  left: 8px;
-  display: block;
-  width: 40px;
-  background: url("../../pages/clip/static/clip_search.svg");
-  height: 40px;
-
-  cursor: pointer;
-}
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  left: 0;
-  width: 100%;
-  height: 84px;
-  background-color: $primary;
-  transition: top 0.3s ease-in 0s;
-  z-index: 5;
-
-  // &__close {
-  //   position: absolute;
-  //   right: 24px;
-  //   width: 36px;
-  //   height: 36px;
-  //   cursor: pointer;
-  //   background: url(./images/ic_close.svg) center no-repeat;
-  // }
-
-  // &__button {
-  //   width: 32px;
-  //   height: 32px;
-  //   position: absolute;
-  //   right: 16px;
-  //   top: 9px;
-  //   cursor: pointer;
-  //   background: url(./images/ic_search_wh.svg) center no-repeat;
-  // }
-
-  &__box {
-    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    position: relative;
-    border-radius: 30px;
-  }
-
-  &__input {
-    width: 802px;
-    height: 52px;
-    border: solid 2px $white;
-    border-radius: 30px;
-    background: $primary;
-    box-sizing: border-box;
-    padding: 24px 16px;
-    color: $white;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-
-    &::placeholder {
-      color: $white;
-      letter-spacing: -0.4px;
-      opacity: 0.5;
+    flex-direction: column;
+    width: 290px;
+    margin: 20px auto 0;
+    font-size: 12px;
+    > li {
+      display: inline-block;
+      &.isBlock {
+        display: block;
+      }
+      span {
+        display: inline-block;
+        padding: 2px 2px;
+        color: #202020;
+        letter-spacing: -0.4px;
+        &.sbj {
+          color: #999;
+        }
+        &.emp {
+          color: #202020;
+          a {
+            color: inherit;
+          }
+        }
+      }
     }
   }
-
-  &.open {
-    top: 56px;
+  .copyright {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
   }
-  &.close {
-    top: -28px;
+}
+// mobile
+.mobile-app {
+  #GNB {
+    display: none;
+  }
+  .totalWrap {
+    width: 100%;
+  }
+  #mainPage {
+    .fixedButton {
+      right: 20px;
+      margin-right: auto;
+    }
+  }
+  #footerWrap {
+    display: none;
   }
 }
 
@@ -414,7 +391,6 @@ html {
     }
   }
 }
-
 .btnWrap {
   display: flex;
   width: 100%;
@@ -500,14 +476,15 @@ html {
   }
 }
 
-.flexBox {
-  @include flex("", flex-start, "");
+@media (max-width: 800px) {
+  .gnbContainer {
+    width:480px;
+  }
+  .totalWrap {
+    width:480px;
+  }
 }
-.ellipsis {
-  @include multi-ellipsis(1);
-}
-
-@media (max-width: 460px) {
+@media (max-width: 480px) {
   #gnb,
   #guide {
     display: none;
