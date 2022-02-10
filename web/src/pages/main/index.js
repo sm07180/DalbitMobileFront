@@ -106,16 +106,15 @@ const MainPage = () => {
         setHeaderFixed(false)
       }
     }
-    console.log(overTabNode,overTabNode.clientHeight);
 
-    // if (overTabNode) {
-    //   const overTabTop = overTabNode.offsetTop
-    //   if (window.scrollY < overTabTop) {
-    //     setTabFixed(true)
-    //   } else {
-    //     setTabFixed(false)
-    //   }
-    // }
+    if (overTabNode) {
+      const overTabTop = overTabNode.getBoundingClientRect().top
+      if (0 > overTabTop) {
+        setTabFixed(true)
+      } else {
+        setTabFixed(false)
+      }
+    }
 
     // 스크롤시 추가 리스트
     if (totalPage > currentPage && Utility.isHitBottom()) {
