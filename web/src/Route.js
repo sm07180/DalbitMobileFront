@@ -35,8 +35,11 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
-const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
+const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+// 프로필 - 피드, 팬보드 (작성, 수정)
+const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 - 피드, 팬보드 (상세)
+const ProfileContentsDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -172,13 +175,39 @@ const Router = () => {
                  }
                }}
         />
+        {/*피드 등록, 수정*/}
+        <Route exact path={"/profileWrite/:type/:action/:index"} main={ProfileContentsWrite}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const targetMemNo = match.params.memNo
+                 if(!context.token?.isLogin){
+                   return <Redirect to={{ pathname: '/login' }} />
+                 } else if(myMemNo !== targetMemNo){
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 } else {
+                   return <Route component={ProfileContentsWrite} />
+                 }
+               }}
+        />
+        {/*피드 조회*/}
+        <Route exact path={"/profileDetail/:memNo/:type/:index"} main={ProfileContentsDetail}
+               render={({ match}) => {
+                 const {memNo, type, index} = match.params;
 
-        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
+                 if(!context.token?.isLogin){
+
+                   return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
+                 } else {
+                   return <Route component={ProfileContentsDetail} />
+                 }
+               }}
+        />
+
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
         
-        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+        <Route exact path="/profile/:memNo/edit" component={ProfileEdit} />
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />

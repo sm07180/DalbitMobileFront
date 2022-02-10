@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 
 import Api from 'context/api'
@@ -13,9 +13,18 @@ import './profileWrite.scss'
 
 const ProfileWrite = () => {
   const history = useHistory()
+  // type : feed, fanBoard / action : create, update / index 글번호
+  const {memNo, type, action, index} = useParams();
+
   //context
   const context = useContext(Context)
   const {token, profile} = context
+
+  //작성, 수정 : memNo x
+  //수정 : index 필수
+  if(!memNo && (action === 'write' || (action ==='modify' && !index))) {
+    <Redirect to={{pathname:'/mypage'}}/>
+  }
 
   // 페이지 시작
   return (
@@ -35,7 +44,7 @@ const ProfileWrite = () => {
               <input type="file" className='blind' />
               <button className='insertBtn'>+</button>
             </label>
-            : 
+            :
             <label>
               <div className="insertPicture">
                 <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
