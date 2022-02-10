@@ -2,7 +2,7 @@
 
 #remypage {
   @include flex($fd:column);
-  height:100vh;
+  height:calc(100vh - #{$NAVIGATION-HEIGHT});
   .myInfo {
     @include flex;
     padding:16px 16px 14px;
