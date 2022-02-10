@@ -1,4 +1,5 @@
 import React, {useState, useContext} from 'react'
+import Utility, {addComma} from 'components/lib/utility'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
@@ -57,8 +58,10 @@ const ProfileDetail = () => {
           *1/2 수정되엉ㅆ따 
           </div>
           <div className="info">
+            <i className='like'></i>
+            <span>{Utility.addComma(123)}</span>
             <i className='comment'></i>
-            <span>321</span>
+            <span>{Utility.addComma(3211)}</span>
           </div>
         </div>
         <div className='listWrap'>
@@ -69,12 +72,15 @@ const ProfileDetail = () => {
                 <div className="time">3시간전</div>
               </div>
               <div className="listItems">
-                <div className="text">오빠 방송 너무 잘보고 있어요~~ 오늘도 화이팅 하세요!
-                NEXT LEVEL 신청곡 들려주세요 ! </div>
+                <pre className="text">오빠 방송 너무 잘보고 있어요~~
+                
+                오늘도 화이팅 하세요!
+                
+                NEXT LEVEL 신청곡 들려주세요 ! </pre>
               </div>
               <div className="listItems">
                 <i className='like'></i>
-                <span>123</span>
+                <span>{Utility.addComma(3211)}</span>
               </div>
             </div>
           </ListRow>
@@ -85,12 +91,44 @@ const ProfileDetail = () => {
                 <div className="time">3시간전</div>
               </div>
               <div className="listItems">
-                <div className="text">오빠 방송 너무 잘보고 있어요~~ 오늘도 화이팅 하세요!
-                NEXT LEVEL 신청곡 들려주세요 ! </div>
+                <pre className="text">오빠 방송 너무 잘보고 있어요~~ 오늘도 화이팅 하세요!
+                NEXT LEVEL 신청곡 들려주세요 ! </pre>
               </div>
               <div className="listItems">
                 <i className='like'></i>
-                <span>123</span>
+                <span>{Utility.addComma(3211)}</span>
+              </div>
+            </div>
+          </ListRow>
+          <ListRow photo={profile.profImg.thumb50x50}>
+            <div className="listContent">
+              <div className="listItems">
+                <div className="nick">{profile.nickNm}</div>
+                <div className="time">3시간전</div>
+              </div>
+              <div className="listItems">
+                <pre className="text">오빠 방송 너무 잘보고 있어요~~ 오늘도 화이팅 하세요!
+                NEXT LEVEL 신청곡 들려주세요 ! </pre>
+              </div>
+              <div className="listItems">
+                <i className='like'></i>
+                <span>{Utility.addComma(3211)}</span>
+              </div>
+            </div>
+          </ListRow>
+          <ListRow photo={profile.profImg.thumb50x50}>
+            <div className="listContent">
+              <div className="listItems">
+                <div className="nick">{profile.nickNm}</div>
+                <div className="time">3시간전</div>
+              </div>
+              <div className="listItems">
+                <pre className="text">오빠 방송 너무 잘보고 있어요~~ 오늘도 화이팅 하세요!
+                NEXT LEVEL 신청곡 들려주세요 ! </pre>
+              </div>
+              <div className="listItems">
+                <i className='like'></i>
+                <span>{Utility.addComma(3211)}</span>
               </div>
             </div>
           </ListRow>

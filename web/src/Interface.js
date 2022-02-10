@@ -775,13 +775,13 @@ export default () => {
       case 'native-footer': // native footer 이동
         const type = event.detail.type;
         let pushUrl = '';
-        if(type === 'live') {
+        if(type === 'main') {
           pushUrl = '/'
         }else if(type === 'clip') {
           pushUrl = '/clip'
         }else if(type === 'search') {
           pushUrl = '/search'
-        }else if(type === 'my') {
+        }else if(type === 'mypage') {
           pushUrl = '/mypage'
         }
         history.push(pushUrl);

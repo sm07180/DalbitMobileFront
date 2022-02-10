@@ -25,6 +25,8 @@ const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
 const ClipDetail = React.lazy(() => import('pages/clip/pages/ClipDetailPage'));
 const ClipLikeList = React.lazy(() => import('pages/clip/pages/ClipLikeListPage'));
 const ClipListenList = React.lazy(() => import('pages/clip/pages/ClipListenListPage'));
+const ClipRank = React.lazy(() => import('pages/reclip/contents/clipRanking'))
+const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/clipRankingGuide'))
 
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
@@ -43,8 +45,8 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
-const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
+const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -85,8 +87,8 @@ const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
-const ClipRank = React.lazy(() => import('pages/clip_rank'))
-const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
+// const ClipRank = React.lazy(() => import('pages/clip_rank'))
+// const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
 

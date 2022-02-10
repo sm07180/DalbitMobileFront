@@ -8,9 +8,10 @@ import FrameItems from 'components/ui/frameItems/FrameItems'
 import './profileCard.scss'
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
+import {isIos} from "context/hybrid";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle, setPopPresent} = props
   const dispatch = useDispatch();
 
   /* fan toggle 데이터 변경 */
@@ -19,15 +20,13 @@ const ProfileCard = (props) => {
   return (
     <div className="cardWrap">
       <div className="userInfo">
-        {data.profImg &&
-          <div className="photo"
-               onClick={() => {
-                 if(!data.profImg.isDefaultImg) openShowSlide(data.profImgList)
-               }}>
-            <img src={data.profImg.thumb500x500} alt="" />
-            <FrameItems content={data} />
-          </div>
-        }
+        <div className="photo"
+             onClick={() => {
+               if(!data.profImg?.isDefaultImg) openShowSlide(data.profImgList)
+             }}>
+          <img src={data.profImg?.thumb500x500} alt="" />
+          <FrameItems content={data} />
+        </div>
         <div className="info">
           <div className="item">
             <LevelItems data={data.level} />
@@ -55,7 +54,7 @@ const ProfileCard = (props) => {
       </div>
       {!isMyProfile &&
         <div className="buttonWrap">
-          <button>선물하기</button>
+          {!isIos() && <button onClick={() => setPopPresent(true)}>선물하기</button>}
           <button className={`${data.isFan ? 'isFan' : ''}`}
                   onClick={() => {
                     fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)

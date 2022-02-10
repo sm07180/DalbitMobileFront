@@ -7,7 +7,7 @@ import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type} = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop} = props
 
   // 스와이퍼
   const swiperFeeds = {
@@ -24,7 +24,7 @@ const SocialList = (props) => {
       {socialList.map((item, index) => {
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" />
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop} />
             <div className="socialContent">
               <div className="text">
                 {item.contents}
@@ -36,7 +36,7 @@ const SocialList = (props) => {
                       return (
                         <div>
                           <div className="photo">
-                            <img src={photo.profImg.thumb500x500} alt="" />
+                            <img src={photo.profImg?.thumb500x500} alt="" />
                           </div>
                         </div>
                       )
@@ -46,7 +46,7 @@ const SocialList = (props) => {
                 : item.photoInfoList.length === 1 ?
                   <div className="swiperPhoto" onClick={() => openShowSlide(item.profImg, "n")}>
                     <div className="photo">
-                      <img src={item.photoInfoList[0].profImg.thumb190x190} alt="" />
+                      <img src={item.photoInfoList[0].profImg?.thumb190x190} alt="" />
                     </div>
                   </div>
                     : <></>

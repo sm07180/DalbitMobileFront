@@ -6,10 +6,9 @@ import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
-import GenderItems from 'components/ui/genderItems/GenderItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 // components
 import TopSwiper from '../../components/TopSwiper'
-import InputItems from '../../components/InputItems'
 // contents
 
 import './profileEdit.scss'
