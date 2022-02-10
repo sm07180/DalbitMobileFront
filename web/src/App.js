@@ -31,6 +31,8 @@ import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api"
 import {removeAllCookieData} from "common/utility/cookie";
 import {isDesktop} from "lib/agent";
 import Navigation from "components/ui/navigation/Navigation";
+import './styles/navigation.scss'
+import {createAgoraClient} from "redux/actions/broadcast";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -58,7 +60,7 @@ function setNativePlayInfo(isJsonString, globalCtx) {
 }
 
 
-const baseSetting = async (globalCtx, broadcastAction) => {
+const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
   const globalAction = globalCtx.globalAction;
   const globalState = globalCtx.globalState;
 
@@ -92,10 +94,10 @@ const baseSetting = async (globalCtx, broadcastAction) => {
     const data = JSON.parse(broadcastData);
     broadcastAction.dispatchRoomInfo({type: "reset", data: data});
   }
+
+  dispatch(createAgoraClient());
 }
 
-
-import './styles/navigation.scss'
 
 let alarmCheckIntervalId = 0;
 const App = () => {
@@ -323,7 +325,7 @@ const App = () => {
         globalCtx.action.updateAdminChecker(false)
       }
       if(isDesktop()){
-        baseSetting(globalCtx, broadcastAction);
+        baseSetting(globalCtx, broadcastAction, dispatch);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
       //모든 처리 완료
@@ -514,6 +516,9 @@ const App = () => {
 
   useEffect(()=>{
     if(!memberRdx.memNo || !chatInfo){
+      return;
+    }
+    if(!isDesktop()){
       return;
     }
     const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");

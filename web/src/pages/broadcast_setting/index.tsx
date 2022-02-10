@@ -33,6 +33,7 @@ import LayerWelcome from "./content/welcome";
 import Layout from "common/layout";
 import { MediaType } from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
+import {BroadcastCreateRoomParamType} from "../../redux/types/broadcastType";
 
 declare global {
   interface Window {
@@ -50,7 +51,7 @@ type State = {
   titleChange: string;
   welcomeMsgChange: string;
   imageType: number;
-  mediaType: string;
+  mediaType: 'a'|'v';
   platFormType:string;
   camFormType:string;
 };
@@ -74,7 +75,7 @@ type Action =
   | { type: "SET_TITLECHANGE"; titleChange: string }
   | { type: "SET_WELCOMEMSG"; welcomeMsgChange: string }
   | { type: "SET_IMAGETYPE"; imageType: number }
-  | { type: "SET_MEDIATYPE"; mediaType: string }
+  | { type: "SET_MEDIATYPE"; mediaType: 'a'|'v' }
   | { type: "SET_VIDEOSTATE"; videoState: boolean }
   | { type: "SET_PLATFORM"; platFormType: string }
   | { type: "SET_CAMFORM"; camFormType: string };
@@ -158,7 +159,7 @@ export default function BroadcastSetting() {
   const { chatInfo, rtcInfo } = globalState;
   const { modalState } = useContext(ModalContext);
   const { broadcastAction } = useContext(BroadcastContext);
-  const [state, dispatch] = useReducer(reducer, {
+  const [state, dispatchWithoutAction] = useReducer(reducer, {
     micState: false,
     videoState: false,
     entryType: 0,
@@ -190,44 +191,44 @@ export default function BroadcastSetting() {
 
   // dispatch function
   const setMicState = (status: boolean) =>
-    dispatch({ type: "SET_MICSTATE", micState: status });
+    dispatchWithoutAction({ type: "SET_MICSTATE", micState: status });
   const setVideoState = (status: boolean) =>
-    dispatch({ type: "SET_VIDEOSTATE", videoState: status });
+    dispatchWithoutAction({ type: "SET_VIDEOSTATE", videoState: status });
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
-    dispatch({ type: "SET_ENTRY", entryType: access_type });
+    dispatchWithoutAction({ type: "SET_ENTRY", entryType: access_type });
   }, []);
 
   const setPlatForm = useCallback((platform_type: string) => {
-    dispatch({ type: "SET_PLATFORM", platFormType: platform_type });
+    dispatchWithoutAction({ type: "SET_PLATFORM", platFormType: platform_type });
   }, []);
 
   const setCamForm = useCallback((camFormType: string) => {
-    dispatch({ type: "SET_CAMFORM", camFormType: camFormType });
+    dispatchWithoutAction({ type: "SET_CAMFORM", camFormType: camFormType });
   }, []);
 
   const setRoomType = useCallback(
     (value) =>
-      dispatch({
+      dispatchWithoutAction({
         type: "SET_ROOMTYPE",
         roomType: value,
       }),
     []
   );
   const setBgChange = (value) =>
-    dispatch({
+    dispatchWithoutAction({
       type: "SET_BGCHANGE",
       bgChange: value,
     });
   const setTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (value.length > 20) return;
-    dispatch({ type: "SET_TITLECHANGE", titleChange: value });
+    dispatchWithoutAction({ type: "SET_TITLECHANGE", titleChange: value });
   };
   const setWelcomeMsg = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (value.length > 100) return;
-    dispatch({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
+    dispatchWithoutAction({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
   };
 
   //배경 사진 업로드 관련
@@ -340,7 +341,7 @@ export default function BroadcastSetting() {
 
   async function createBroadcastRoom() {
     const makeRoom = async () => {
-      const createInfo = {
+      const createInfo:BroadcastCreateRoomParamType = {
         roomType: state.roomType,
         title: state.titleChange,
         bgImg: state.bgChange,
@@ -348,8 +349,6 @@ export default function BroadcastSetting() {
         entryType: state.entryType,
         notice: "",
         imageType: state.imageType,
-        djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
-        djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
         mediaType: state.mediaType
       };
 
@@ -714,7 +713,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.title !== "" &&
       modalState.broadcastOption.title
     ) {
-      dispatch({
+      dispatchWithoutAction({
         type: "SET_TITLECHANGE",
         titleChange: modalState.broadcastOption.title,
       });
@@ -723,7 +722,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.welcome !== "" &&
       modalState.broadcastOption.welcome
     ) {
-      dispatch({
+      dispatchWithoutAction({
         type: "SET_WELCOMEMSG",
         welcomeMsgChange: modalState.broadcastOption.welcome,
       });
@@ -747,7 +746,7 @@ export default function BroadcastSetting() {
   }, [popupState]);
 
   const setMediaType = (mediaType:BROAD_TYPE)=>{
-    dispatch({type: "SET_MEDIATYPE", mediaType: mediaType});
+    dispatchWithoutAction({type: "SET_MEDIATYPE", mediaType: mediaType});
     //broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data:{platform:mediaType === BROAD_TYPE.AUDIO ? 'wowza' : 'agora'}})
   }
 
@@ -972,7 +971,7 @@ export default function BroadcastSetting() {
                       <li
                         key={item.id}
                         onClick={() => {
-                          dispatch({
+                          dispatchWithoutAction({
                             type: "SET_IMAGETYPE",
                             imageType: item.id,
                           });

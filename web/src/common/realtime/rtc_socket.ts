@@ -1220,23 +1220,6 @@ export class ListenerRtc extends RtcSocketHandler {
 }
 
 export class AgoraHostRtc extends RtcSocketHandler{
-  private audioStream: MediaStream | null = null;
-  private videoStream: MediaStream | null = null;
-  private canvasStream: MediaStream | null = null;
-  private deepArObj: any = null;
-
-  private micSettingInfo: any = null;
-  private camSettingInfo: any = null;
-
-  private audioCtx = (() => {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-    return audioCtx;
-  })();
-
-  private detectDevice: () => Promise<void>;
-  private isPublish = false;
-
   constructor(
     type: UserType,
     socketUrl: string,
@@ -1247,59 +1230,6 @@ export class AgoraHostRtc extends RtcSocketHandler{
     videoConstraints: any = null
   ) {
     super(type, socketUrl, appName, streamName, roomNo, isMono, videoConstraints);
-    //this.socketConnect();
-    this.detectDevice = async () => {
-      let videoDeviceExist;
-      let micDeivceExist: boolean = false;
-      await navigator.mediaDevices.enumerateDevices().then(function (devices) {
-        devices.forEach((d) => {
-          if (d.kind === "audioinput") {
-            micDeivceExist = true;
-          }
-        });
-        videoDeviceExist = devices.some((d) => {
-          return d.kind === "videoinput";
-        });
-      });
-      if (
-        micDeivceExist === false ||
-        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === false)
-      ) {
-        postErrorSave({
-          os: "pc",
-          appVer: "pc",
-          dataType: NODE_ENV,
-          commandType: window.location.pathname,
-          desc: "micDeviceNotExist " + this.appName + " |" + this.streamName + " |" + this.roomNo,
-        });
-        if (this.audioStream !== null) {
-          this.stop();
-        } else if (this.videoStream !== null) {
-          this.stop();
-        }
-      } else if (
-        micDeivceExist === true ||
-        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === true)
-      ) {
-        if (this.audioStream === null) {
-          if (this.getWsConnectionCheck()) {
-            // console.log('@@@ not yet join 1')
-            this.publish();
-          } else {
-            // this.socketConnect();
-            initInterval(() => {
-              if (this.getWsConnectionCheck()) {
-                // console.log('@@@ not yet join 2')
-                this.publish();
-                return true;
-              }
-              return false;
-            });
-          }
-        }
-      }
-    };
-
   }
   async join(roomInfo) {
       try {
@@ -1309,7 +1239,7 @@ export class AgoraHostRtc extends RtcSocketHandler{
               user.videoTrack?.play(`local-player`,{mirror:false})
             }
           })
-          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
+          //await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
           localTracks.videoTrack.play("local-player",{mirror:false});
           // await client.publish(Object.values(localTracks));
         }else if(client.connectionState === 'DISCONNECTED'){
@@ -1363,8 +1293,6 @@ export class AgoraHostRtc extends RtcSocketHandler{
       }
     })
     client.leave();
-
-    // await client.leave();
   }
   async videoMute(value) {
     if ( localTracks.videoTrack !== undefined ) {
