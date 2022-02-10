@@ -22,6 +22,8 @@ const Main = React.lazy(() => import('pages/main'))
 // 클립
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
+const ClipRank = React.lazy(() => import('pages/reclip/contents/clipRanking'))
+const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/clipRankingGuide'))
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
@@ -81,8 +83,8 @@ const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
-const ClipRank = React.lazy(() => import('pages/clip_rank'))
-const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
+// const ClipRank = React.lazy(() => import('pages/clip_rank'))
+// const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
 
