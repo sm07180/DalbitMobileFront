@@ -8,8 +8,7 @@ import Utility from 'components/lib/utility'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-// components
-import PopSlide from '../../components/PopSlide'
+import PopSlide from 'components/ui/popSlide/PopSlide'
 // contents
 // css
 import './dalCharge.scss'
@@ -39,7 +38,6 @@ const DalCharge = () => {
   const location = useLocation();
   const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
-  const customHeader = JSON.parse(Api.customHeader)
   const formTag = useRef(null);
   const { itemNm, dal, price, itemNo, webview} =location.state
 
@@ -82,59 +80,34 @@ const DalCharge = () => {
 
   const onSelectMethod = (index, payment) => {
     setSelectPayment(index);
-    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
-      return context.action.confirm({
-        msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
-        callback: () => {
-          window.location.href = 'market://details?id=kr.co.inforexseoul.radioproject'
+
+    if (payment.code === "simple") {  //계좌 간편결제
+      Api.self_auth_check().then((response)=>{
+        console.log(response);
+        if(response.result === 'success'){
+          callPGForm(payment)
+        }else{
+          setPopSlide(!popSlide)
+        }
+      });
+    }else if(payment.code === "coocon"){  // 무통장(계좌이체)
+      history.push({
+        pathname: '/pay/bank',
+        state: {
+          webview: webview,
+          prdtNm: itemNm,
+          prdtPrice: price * buyItemInfo.itemAmount,
+          itemNo: buyItemInfo.itemNo,
+          itemAmt: buyItemInfo.itemAmount
         }
       })
-    }
-
-    if (payment.code === "simple") {
-        simplePay();
-    }else if(payment.code === "coocon"){
-        cooconPay();
     }else{
         callPGForm(payment);
     }
   }
 
-  //계좌 간편결제
-  const simplePay = () =>{
-    Api.self_auth_check().then((response)=>{
-      if(response.result === 'success'){
-        const ciValue = response.data.ci;
-        if (ciValue === null || ciValue === false || ciValue === "testuser" || ciValue === "admin" || ciValue.length < 10) {
-          setPopSlide(!popSlide)
-        }else{
-          if (Utility.getCookie("simpleCheck") === "y" || response.data.isSimplePay) {
-
-          }else{
-          }
-        }
-      }else{
-        setPopSlide(!popSlide)
-      }
-    });
-  }
-
-  //무통장 계좌이체
-  const cooconPay = () =>{
-    history.push({
-      pathname: '/pay/bank',
-      state: {
-        webview: webview,
-        prdtNm: itemNm,
-        prdtPrice: price * buyItemInfo.itemAmount,
-        itemNo: buyItemInfo.itemNo,
-        itemAmt: buyItemInfo.itemAmount
-      }
-    })
-  }
-
-  const callPGForm = async (payment, ciData) => {
-    const {result, data, message} = await Api[payment.fetch]({
+  const callPGForm = (payment, ciData) => {
+    Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,
         Prdtprice: price * buyItemInfo.itemAmount,
@@ -143,52 +116,50 @@ const DalCharge = () => {
         pgCode: payment.code,
         itemAmt: buyItemInfo.itemAmount,
         ci: ciData,
-        isWWW: "y" //fixme
       }
-    })
-
-    if (result === 'success') {
-      if(payment.fetch === "pay_letter" || payment.fetch === "pay_km"){ //카카카오페이, 페이코, 티머니/캐시비
+    }).then((response) => {
+      if (response.result === 'success') {
+        if (payment.fetch === "pay_simple" || payment.fetch === "pay_letter" || payment.fetch === "pay_km") { //계좌 간편결제, 카카카오페이, 페이코, 티머니/캐시비
           //pc
-          if (data.hasOwnProperty("pcUrl") || data.hasOwnProperty("url")) {
+          if (response.data.hasOwnProperty("pcUrl") || response.data.hasOwnProperty("url")) {
             return window.open(
-              data.pcUrl ? data.pcUrl : data.url,
+              response.data.pcUrl ? response.data.pcUrl : response.data.url,
               "popup",
               "width = 400, height = 560, top = 100, left = 200, location = no"
             );
-          } else if (data.hasOwnProperty("next_redirect_pc_url")) {
+          } else if (response.data.hasOwnProperty("next_redirect_pc_url")) {
             return window.open(
-              data.next_redirect_pc_url,
+              response.data.next_redirect_pc_url,
               "popup",
               "width = 500, height = 560, top = 100, left = 200, location = no"
             );
           }
           //mobile
-          // sessionStorage.setItem('buy_item_data', price * buyItemInfo.itemAmount); fixme delete
-          if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
-            return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
-          } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
-            return (window.location.href = data.next_redirect_mobile_url)
+          if (response.data.hasOwnProperty('mobileUrl') || response.data.hasOwnProperty('url')) {
+            return (window.location.href = response.data.mobileUrl ? response.data.mobileUrl : response.data.url);
+          } else if (response.data.hasOwnProperty('next_redirect_mobile_url')) {
+            return (window.location.href = response.data.next_redirect_mobile_url)
           }
-      }else{  // 신용/체크카드, 휴대폰, 문화상품권, 해피머니상품권
-        let payForm = formTag.current
-        const makeHiddenInput = (key, value) => {
-          const input = document.createElement('input')
-          input.setAttribute('type', 'hidden')
-          input.setAttribute('name', key)
-          input.setAttribute('id', key)
-          input.setAttribute('value', value)
-          return input
+        } else {  // 신용/체크카드, 휴대폰, 문화상품권, 해피머니상품권
+          let payForm = formTag.current
+          const makeHiddenInput = (key, value) => {
+            const input = document.createElement('input')
+            input.setAttribute('type', 'hidden')
+            input.setAttribute('name', key)
+            input.setAttribute('id', key)
+            input.setAttribute('value', value)
+            return input
+          }
+          Object.keys(response.data).forEach((key) => {
+            payForm.append(makeHiddenInput(key, response.data[key]))
+          })
+          MCASH_PAYMENT(payForm)
+          payForm.innerHTML = ''
         }
-        Object.keys(data).forEach((key) => {
-          payForm.append(makeHiddenInput(key, data[key]))
-        })
-        MCASH_PAYMENT(payForm)
-        payForm.innerHTML = ''
+      } else {
+        context.action.alert({msg: response.message})
       }
-    } else {
-      context.action.alert({msg: message})
-    }
+    });
   }
 
   //상품수량 +,-
@@ -299,7 +270,7 @@ const DalCharge = () => {
           추가 인증 시에는 반드시 위의 회원정보와 일치해야 합니다.<br/>
           추가 인증은 딱 1회만 진행됩니다.
           </p>
-          <SubmitBtn text="다음" onClick={()=>{history.push(`/selfauth?event=/pay/store`)}}/>
+          <SubmitBtn text="다음" onClick={()=>{history.push(`/selfauth?event=/store`)}}/>
         </PopSlide>
       }
     </div>
