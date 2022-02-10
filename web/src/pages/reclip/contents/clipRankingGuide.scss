@@ -1,0 +1,50 @@
+@import "../../../components/ui/mixin";
+
+#clipRankingGuide{
+  section{
+    position:relative;
+    padding: 16px;
+  }
+  .content{
+    min-height: calc(100% - 48px);
+  }
+  .title{
+    @include font(16px, 600, #202020);
+    margin-bottom: 14px;
+  }
+  table{
+    width: 100%;
+    th{
+      &:first-child{width: 36px;}
+      width: 100%;
+      line-height: 32px;
+      border-top: 1px solid #ff3c7b;
+      border-bottom: 1px solid #ff3c7b;
+      @include font(12px, 500, #FF3C7B);
+    }
+    td{
+      &:first-child{width: 36px;}
+      width: 100%;
+      line-height: 48px;
+      border-bottom: 1px solid #ff3c7b;
+      @include font(12px, 500, #666);
+      text-align: center;
+    }
+  }
+  .noticeWrap{
+    background: #f6f6f6;
+    padding: 23px 16px;
+    margin: 27px 0;
+    ul{
+      li{
+        line-height: 21px;
+        @include font(12px, 400, #757575);
+      }
+    }
+  }
+  .bottomWrap{
+    padding: 0;
+    width: 100%;
+    img{width: 100%;}
+  }
+}
