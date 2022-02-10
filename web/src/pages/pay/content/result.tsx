@@ -62,7 +62,7 @@ export default function Payment() {
   };
 
   return (
-    <Layout>
+    <>
       <Header title="결제완료" type="noBack" />
       <div id="pay" className="subContent gray">
         <div className="content">
@@ -102,6 +102,6 @@ export default function Payment() {
           </button>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

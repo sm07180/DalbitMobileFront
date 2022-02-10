@@ -1,15 +1,14 @@
 import React from 'react'
-import {IMG_SERVER} from 'context/config'
 
-import Swiper from 'react-id-swiper'
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import './socialList.scss'
+import ListRowComponent from "./ListRowComponent";
 
 const SocialList = (props) => {
-  const {profileData, list} = props
+  const {socialList, openShowSlide, isMyProfile, type} = props
+
   // 스와이퍼
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -22,29 +21,16 @@ const SocialList = (props) => {
 
   return (
     <div className="socialList">
-      {list.map((item) => {
+      {socialList.map((item, index) => {
         return (
-          <React.Fragment key={item.noticeIdx}>
-            <ListRow photo={profileData.profImg ? profileData.profImg.thumb50x50 : ""}>
-              <div className="listContent">
-                <div className="nick">{item.nickName}</div>
-                <div className="time">{item.writeDate}</div>
-              </div>
-              <button className='more'>
-                <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-                <div className="isMore">
-                  <button>수정하기</button>
-                  <button>삭제하기</button>
-                  <button>차단/신고하기</button>
-                </div>
-              </button>
-            </ListRow>
+          <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" />
             <div className="socialContent">
               <div className="text">
                 {item.contents}
               </div>
-              {item.photoInfoList.length > 1 ?
-                <div className="swiperPhoto">
+              {type === 'feed' && (item.photoInfoList.length > 1 ?
+                <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList)}>
                   <Swiper {...swiperFeeds}>
                     {item.photoInfoList.map((photo) => {
                       return (
@@ -57,20 +43,16 @@ const SocialList = (props) => {
                     })}
                   </Swiper>
                 </div>
-                : !item.profImg.isDefaultImg ?
-                  <div className="swiperPhoto">
+                : item.photoInfoList.length === 1 ?
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item.profImg, "n")}>
                     <div className="photo">
-                      <img src={item.profImg.thumb190x190} alt="" />
+                      <img src={item.photoInfoList[0].profImg.thumb190x190} alt="" />
                     </div>
                   </div>
-                  : <></>
-              }
-
+                    : <></>
+              )}
               <div className="info">
-                {/*<DataCnt type={`${list.likeYn === "y" ? "rcvLikeCnt active" : "rcvLikeCnt"}`}
-                         value={list.rcv_like_cnt ? list.rcv_like_cnt : 0}/>*/}
-                <DataCnt type={"readCnt"} value={item.readCnt ? item.readCnt : 0} />
-                <DataCnt type={"replyCnt"} value={item.replyCnt ? item.replyCnt : 0} />
+                <DataCnt type={"replyCnt"} value={item.replyCnt} />
               </div>
             </div>
           </React.Fragment>

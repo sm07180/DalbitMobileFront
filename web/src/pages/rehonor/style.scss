@@ -85,6 +85,7 @@
         margin-right: 2px;
       }
     }
+
     .myHonor {
       position: relative;
       @include flex;
@@ -175,6 +176,65 @@
         }
       }
     }
+
+    .listWrap {
+      position: relative;
+      @include flex(flex-start, flex-start, column);
+      width: 100%;
+      .listRow {
+        @include flex(center);
+        width: 100%;
+        padding: 16px;
+        margin-bottom: 12px;
+        border: 1px solid #E3E3E3;
+        border-radius: 16px;
+        box-sizing: border-box;
+        .photo {
+          flex: none;
+          width: 75px; height: 75px;
+          border-radius: 50%;
+          img {
+            width: 100%;
+            border-radius: 50%;
+          }
+        }
+        .listContent {
+          flex: 1;
+          @include flex(flex-start, flex-start, column);
+          margin: 0px 60px 0px 16px;
+          overflow: hidden;
+          .listItem {
+            @include flex(center);
+            width: 100%;
+            margin-bottom: 6px;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+            .round {
+              @include font(12px, 400, #666666);
+              &.jointAward {
+                @include font(12px, 400, #FF3C7B);
+              }
+            }
+            .memNick {
+              @include font(15px, 500, #202020);
+              @include fontCut;
+            }
+          }
+        }
+        .listBack {
+          .rightArrow {
+            flex: none;
+            display: inline-block;
+            width: 20px; height: 20px;
+            background-image: url("https://image.dalbitlive.com/common/arrow/rightArrow-757575.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+        }
+      }
+    }
   }
   #layerPop {
     .popTitle {
@@ -196,9 +256,40 @@
       margin-top: 10px;
       .logTop {
         @include flex(center, space-between);
+        margin-bottom: 8px;
         span {
           @include font(12px, 400, #FF3C7B);
         }
+      }
+      .logWrap {
+        .logHead{
+          @include flex(center);
+          border-top: 1px solid #FF3C7B;
+          border-bottom: 1px solid #FF3C7B;
+          padding: 4px 0;
+          span {
+            flex: 1;
+            @include flex(center, center);
+            @include font(12px, 400, #FF3C7B);
+          }
+        }
+        .logContent{
+          max-height: 200px;
+          overflow: auto;
+          .logList {
+            @include flex(center);
+            padding: 4px 0;
+            border-bottom: 1px solid #F2F2F2;
+            &:last-child {
+              border-bottom: none;
+            }
+            span {
+              flex: 1;
+              @include flex(center, center);
+              @include font(13px, 400, #202020);
+            }
+          }
+        }        
       }
     }
   }

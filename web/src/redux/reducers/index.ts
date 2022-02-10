@@ -6,6 +6,8 @@ import live from './main/live';
 import profile from './profile/index';
 import feed from './profile/feed';
 import broadcast from './broadcast';
+import fanBoard from './profile/fanBoard';
+import profileClip from './profile/clip';
 
 const rootReducer = combineReducers({
     common
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   , profile
   , feed
   , broadcast
+  , fanBoard
+  , profileClip
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

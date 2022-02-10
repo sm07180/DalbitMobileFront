@@ -4,6 +4,45 @@ import { Gender, IImageVo, ILiveBadgeList, IPaging } from "./commonType";
 
 export type ProfileActions = ActionType<typeof actions>;
 
+const pagingDefault = {
+  next: 0,
+  page: 0,
+  prev: 0,
+  records: 0,
+  total: 0,
+  totalPage: 0
+}
+
+/* 피드 default */
+export const profileFeedDefaultState = {
+  feedList: [],
+  fixedFeedList: [],
+  fixCnt: 0,
+  paging: pagingDefault,
+  scrollPaging: {
+    pageNo: 1,
+    pagePerCnt: 20,
+    currentCnt: 0,
+  }
+}
+
+/* 팬보드 default */
+export const profileFanBoardDefaultState = {
+  list: [],
+  paging: pagingDefault,
+  scrollPaging: {
+    pageNo: 1,
+    pagePerCnt: 20,
+    currentCnt: 0,
+  }
+}
+
+/* 클립 default */
+export const profileClipDefaultState = {
+  list: [],
+  paging: pagingDefault,
+}
+
 interface IFanRank {
   age: number;
   gender: Gender;
@@ -63,6 +102,48 @@ interface IFeedData {
   title: string;
   writeDt: string;
   writeTs: number;
+}
+
+interface IFanBoardData {
+  clipMemNo: string;
+  contents: string;
+  gender: string;
+  memId: string;
+  nickName: string;
+  parentGroupIdx: number;
+  profImg: IImageVo;
+  replyCnt: number;
+  replyIdx: number;
+  status: number;
+  viewOn: number;
+  writeDt: string;
+  writeTs: number;
+  writerMemNo: string;
+  mem_no: string;
+}
+
+interface IClipData {
+  badgeSpecial: number;
+  bgImg: IImageVo;
+  byeolCnt: number;
+  clipNo: string;
+  filePlayTime: string;
+  gender: string;
+  goodCnt: number;
+  isNew: boolean;
+  isSpecial: boolean;
+  memNo: string;
+  nickName: string;
+  playCnt: number;
+  replyCnt: number;
+  subjectType: string;
+  title: string;
+}
+
+interface scrollPaging {
+  pageNo: number;
+  pagePerCnt: number;
+  currentCnt: number;
 }
 
 /* 프로필 상단 데이터 */
@@ -126,9 +207,18 @@ export interface IProfileFeedState {
   fixedFeedList: Array<IFeedData>,
   fixCnt: number;
   paging: IPaging,
-  scrollPaging: {
-    pageNo: number;
-    pagePerCnt: number;
-    currentCnt: number;
-  }
+  scrollPaging: scrollPaging,
+}
+
+/* 팬보드 */
+export interface IProfileFanBoardState {
+  list: Array<IFanBoardData>,
+  paging: IPaging,
+  scrollPaging: scrollPaging,
+}
+
+/* 클립 */
+export interface IProfileClipState {
+  list: Array<IClipData>,
+  paging: IPaging,
 }

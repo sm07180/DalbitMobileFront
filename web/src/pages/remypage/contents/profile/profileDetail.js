@@ -1,5 +1,5 @@
-import React, {useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useEffect, useState, useContext, useMemo} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
@@ -11,12 +11,81 @@ import ListRow from 'components/ui/listRow/ListRow'
 // contents
 // css
 import './profileDetail.scss'
+import {useDispatch, useSelector} from "react-redux";
+import DataCnt from "components/ui/dataCnt/DataCnt";
 
 const ProfileDetail = () => {
   const history = useHistory()
+  const dispatch = useDispatch();
+  const profileData = useSelector(state => state.profile);
   //context
   const context = useContext(Context)
   const {token, profile} = context
+  const {memNo, type, index} = useParams();
+  const [item, setItem] = useState(null);
+
+
+  useEffect(() => {
+    console.log(memNo, type, index);
+
+    Api.mypage_notice_detail_sel({feedNo: index, memNo})
+      .then((res) => {
+        const {result, data, message} = res;
+
+        if(result ==='success'){
+          setItem(data);
+        } else {
+          console.log("error")
+        }
+      });
+
+
+  }, []);
+
+  //몇초 전, 몇분 전, 몇시간 전 표기용
+  // const timeDiffCalc = useMemo(() => {
+  //   if (data?.writeDate) {
+  //     return Utility.writeTimeDffCalc(data?.writeDate);
+  //   } else {
+  //     return '';
+  //   }
+  // }, [data]);
+
+  useEffect(()=> {
+    // Api.mypage_notice_edit({
+    //   reqBody : true,
+    //   data: {
+    //     title: 'hello',
+    //     contents: 'hhh',
+    //     noticeIdx: 84368,
+    //     topFix: 0,
+    //     chrgrName: "name",
+    //     photoInfoList: [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
+    //   }
+    // }).then((res)=>{console.log("hello", res)});
+
+
+// let i=0;
+//     Api.mypage_notice_upload({
+//       reqBody: true,
+//       data: {
+//         title: `자동 등록 ${i}`,
+//         contents: '내용',
+//         topFix: 0,
+//         photoInfoList: [{img_name: '/room_0/21374121600/20220207163549744349.png'}, {img_name: '/room_0/21374121600/20220207163549744349.png'}, {img_name: '/room_0/21374121600/20220207163549744349.png'}, {img_name: '/room_0/21374121600/20220207163549744349.png'}]
+//
+//       }
+//     }).then((res) => {
+//     });
+
+//
+//     Api.mypage_notice_delete({data:{noticeIdx: 84365, delChrgrName: '나'}}).then(res => {
+//       console.log(res);
+//     })
+
+    // Api.mypage_notice_detail_sel({data:})
+  },[]);
+
 
   // 페이지 시작
   return (
@@ -28,25 +97,17 @@ const ProfileDetail = () => {
       </Header>
       <section className='detailWrap'>
         <div className="detail">
-          <ListRow photo={profile.profImg.thumb50x50}>
+          <ListRow photo={item?.profImg?.thumb50x50 ?? ""}>
             <div className="listContent">
-              <div className="nick">{profile.nickNm}</div>
+              <div className="nick">{item?.nickName}</div>
               <div className="time">3시간전</div>
             </div>
           </ListRow>
           <div className="text">
-          일주년 일부 방송 끝!
-          신년이기도 하고 1일이라 바쁘신 분들도 많으실텐데
-          와주신 모든 분들 너무 감사합니다!  
-          내일 오후에는 정규 시간, 룰렛으로  만나요 : )
-
-          *1/2 수정되엉ㅆ따 
+            {item?.contents ?? ''}
           </div>
           <div className="info">
-            <i className='like'></i>
-            <span>123</span>
-            <i className='comment'></i>
-            <span>321</span>
+            <DataCnt type={"replyCnt"} value={item?.replyCnt ?? 0} />
           </div>
         </div>
       </section>

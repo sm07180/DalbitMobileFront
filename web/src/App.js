@@ -29,9 +29,7 @@ import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api";
 import {removeAllCookieData} from "common/utility/cookie";
-import {isDesktop} from "lib/agent";
 import Navigation from "components/ui/navigation/Navigation";
-import './styles/navigation.scss'
 import {createAgoraClient} from "redux/actions/broadcast";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
@@ -98,6 +96,11 @@ const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
   dispatch(createAgoraClient());
 }
 
+import './styles/navigation.scss'
+import Layout from "common/layout";
+import Common from "common";
+import Alert from "common/alert";
+import MoveToAlert from "common/alert/MoveToAlert";
 
 let alarmCheckIntervalId = 0;
 const App = () => {
@@ -110,6 +113,7 @@ const App = () => {
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
   const [isFooterPage, setIsFooterPage] = useState(false);
@@ -324,7 +328,7 @@ const App = () => {
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
       }
-      if(isDesktop()){
+      if(isDesktop){
         baseSetting(globalCtx, broadcastAction, dispatch);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
@@ -387,7 +391,7 @@ const App = () => {
       }
     }
 
-    if(isDesktop()) {
+    if(isDesktop) {
       if (memberRdx.isLogin === true) {
         alarmCheck();
       } else {
@@ -518,7 +522,7 @@ const App = () => {
     if(!memberRdx.memNo || !chatInfo){
       return;
     }
-    if(!isDesktop()){
+    if(!isDesktop){
       return;
     }
     const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
@@ -657,7 +661,19 @@ const App = () => {
         ready ? (
           <>
             <Interface />
-            <Route />
+            { isDesktop &&
+                <>
+                  <Common />
+                  <Layout>
+                    <Route />
+                  </Layout>
+                  <Alert />
+                  <MoveToAlert />
+                </>
+            }
+            { !isDesktop &&
+                <Route />
+            }
             {isFooterPage && <Navigation />}
           </>
         ) : (

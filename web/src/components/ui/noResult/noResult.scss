@@ -1,0 +1,27 @@
+@import "components/ui/_mixin.scss";
+
+article#noResult {
+  @include flex(center,center,column);
+  width: 100%;
+  margin-top: 120px;
+  margin-bottom: 120px;
+  img {
+    margin-bottom:12px;
+  }
+  span {
+    @include flex(center,center);
+    width: 282px;
+    height: 26px;
+    letter-spacing: -.5px;
+    @include font(14px,500,#757575);
+    &:nth-child(1) {
+      margin-top: 10px;
+    }
+    &.line {
+      margin-top: -4px;
+    }
+  }
+  &.no-top {
+    margin-top: 20px;
+  }
+}

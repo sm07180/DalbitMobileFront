@@ -121,7 +121,82 @@ const SpecialDj = (props) => {
               <span>스페셜 DJ 약력</span>
               <span>총 <strong>{popupData.specialCnt}</strong>회</span>
             </div>
-            
+            <div className='logWrap'>
+              <div className='logHead'>
+                <span>선정 일자</span>
+                <span>선정 기수</span>
+              </div>
+              <div className='logContent'>
+                <div className='logList'>
+                  <span>2022.02</span>
+                  <span>57기</span>
+                </div>
+                <div className='logList'>
+                  <span>2022.01</span>
+                  <span>56기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+                <div className='logList'>
+                  <span>2021.12</span>
+                  <span>55기</span>
+                </div>
+              </div>              
+            </div>
           </div>
         </LayerPopup>
       }
