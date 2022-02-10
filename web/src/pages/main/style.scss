@@ -293,12 +293,12 @@
     .tabmenuWrap {
       position:relative;
       height:48px;
-      // &.isFixed {
-      //   position:fixed;
-      //   top:$HEADER-HEIGHT;
-      //   width:100%;
-      //   z-index: 10;
-      // }
+      &.isFixed {
+        position:fixed;
+        top:$HEADER-HEIGHT;
+        width:100%;
+        z-index: 10;
+      }
       .tabmenu {
         @include flex(center);
         padding:0 16px;
