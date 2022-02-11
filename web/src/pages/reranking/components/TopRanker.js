@@ -86,8 +86,8 @@ const TopRanker = (props) => {
                   rankType === 0 ? "회차" : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
                 :
                   "dd"
-                } TOP{list.length}
-                  <span className='questionMark'></span>
+                } TOP3
+                  <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
@@ -131,7 +131,7 @@ const TopRanker = (props) => {
       { popup &&
         <LayerPopup setPopup={setPopup}>
           {
-            rankType === "dj" &&
+            rankSlct === "DJ" &&
             <>
               <div className='popTitle'>DJ 랭킹 선정 기준</div>
               <div className='popSubTitle'>
@@ -141,7 +141,7 @@ const TopRanker = (props) => {
 
           }
           {
-            rankType === "fan" &&
+            rankSlct === "FAN" &&
             <>
               <div className='popTitle'>FAN 랭킹 선정 기준</div>
               <div className='popSubTitle'>
@@ -151,7 +151,7 @@ const TopRanker = (props) => {
 
           }
           {
-            rankType === "lover" &&
+            rankSlct === "LOVER" &&
             <>
               <div className='popTitle'>LOVER 랭킹이란?</div>
               <div className='popSubTitle'>

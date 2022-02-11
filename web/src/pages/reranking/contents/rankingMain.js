@@ -7,13 +7,14 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import BottomSlide from 'components/ui/bottomSlide/BottomSlide'
+import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from '../components/Tabmenu'
 import ChartSwiper from '../components/ChartSwiper'
 import MyRanking from '../components/MyRanking'
 import RankingList from '../components/RankingList'
 import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
 import '../style.scss'
 
@@ -31,7 +32,10 @@ const RankPage = () => {
   const dayTabmenu = ['FAN','LOVER']
 
   //DJ List 기간 선택 pop flag
-  const [slidePop, setSlidePop] = useState(false)
+  const [popSlide, setPopSlide] = useState(false)
+
+  //선정기준 pop
+  const [popup, setPopup] = useState(false)
 
   //선저기준? 팝업
   const [popupOpen, setPopupOpen] = useState(false)
@@ -204,7 +208,7 @@ const RankPage = () => {
 
   //DJ 랭킹 List 기간 pop
   const selectChart = () => {
-    setSlidePop(true);
+    setPopSlide(true);
   }
 
   //DJ 랭킹 List 기간 선택
@@ -221,7 +225,7 @@ const RankPage = () => {
     } else if(text === "올해") {
       setSelect("thisyear")
     }
-    setSlidePop(false);
+    setPopSlide(false);
   }
 
   //DJ 랭킹 시간별 List호출
@@ -235,7 +239,7 @@ const RankPage = () => {
   }, [select]);
 
   const criteriaPop = () => {
-    setPopupOpen(true);
+    setPopup(true);
   }
 
   // 페이지 시작
@@ -295,20 +299,47 @@ const RankPage = () => {
           </p>
           <button onClick={() => history.push('/rankDetail/DJ')}>랭킹순위 전체보기</button>
       </section>
-      {slidePop &&
-        <BottomSlide setSlidePop={setSlidePop}> 
-          <div className='selectWrap'>
+      {popSlide &&
+        <PopSlide setPopSlide={setPopSlide}>
+         <div className='selectWrap'>
             <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
             <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
             <div className={`selectOption ${select === "thisweek" ? "active" : ""}`} onClick={chartSelect}>이번주</div>
             <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>이번달</div>
             <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
           </div>
-        </BottomSlide>      
+        </PopSlide>
       }
-      {popupOpen &&
-        <>
-        </>
+      {popup &&
+      <LayerPopup setPopup={setPopup}>
+        <div className='popTitle'>선정 기준</div>
+        <div className='standardWrap'>
+          <div className='standardList'>
+            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popText'>
+              받은 별, 청취자 수, 받은 좋아요<br/>
+              (부스터 포함)의 종합 순위입니다.
+            </div>
+          </div>
+          <div className='standardList'>
+            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popText'>
+              받은 별, 청취자 수, 받은 좋아요<br/>
+              (부스터 포함)의 종합 순위입니다.
+            </div>
+          </div>
+          <div className='standardList'>
+            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popText'>
+              받은 별, 청취자 수, 받은 좋아요<br/>
+              (부스터 포함)의 종합 순위입니다.
+            </div>
+          </div>
+        </div>
+        <div className='popInfo'>
+          <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
+        </div>
+      </LayerPopup>
       }
     </div>      
   )
