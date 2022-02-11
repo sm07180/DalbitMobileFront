@@ -1,11 +1,5 @@
 import React from 'react'
 
-// global components
-import ListRow from 'components/ui/listRow/ListRow'
-import GenderItems from 'components/ui/genderItems/GenderItems'
-// components
-// css
-
 const data = [
   {
     rank : 4,
@@ -39,20 +33,24 @@ export default () => {
     <>
       {data.map((list, index) => {
         return (
-          <ListRow key={index}>
-            <div className="rank">{list.rank}</div>
-            <div className="listContent">
-              <div className="listItem">
-                <span className="type">{list.type}</span>
-              </div>
-              <div className="listItem">
-                <span className="title">{list.title}</span>
-              </div>
-              <div className="listItem">
-                <span className="nick">{list.nickNm}</span>
-              </div>
+          <div key={index} className="listRow">
+            <div className="photo">
+              <img src="" alt="" />
+              <span className="play"></span>
             </div>
-          </ListRow>
+            <div className="rank">{list.rank}</div>
+              <div className="listContent">
+                <div className="listItem">
+                  <span className="type">{list.type}</span>
+                </div>
+                <div className="listItem">
+                  <span className="title">{list.title}</span>
+                </div>
+                <div className="listItem">
+                  <span className="nick">{list.nickNm}</span>
+                </div>
+              </div>
+          </div>
         )
       })}
     </>

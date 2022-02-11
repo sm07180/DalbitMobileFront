@@ -6,13 +6,6 @@ const TopRanker = () => {
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
-    centeredSlides: true,
-    loop: false,
-    pagination: {
-      el: ".swiper-pagination",
-      type: "bullets",
-      clickable: true
-    }
   }
 
   return (
@@ -20,7 +13,7 @@ const TopRanker = () => {
       <div className='rankingTop3'>
         <div className='topHeader'>오늘의 TOP3</div>
         <Swiper {...swiperParams}>
-          <div className='topContent'>
+          <div>
             <div className="ranker">
               <div className="listColumn">
                 <div className="photo">
@@ -37,6 +30,7 @@ const TopRanker = () => {
                 <div className="photo">
                   <img src="" alt="" />
                   <div className='rankerRank'>2</div>
+                  <span className="play"></span>
                 </div>
                 <div className='rankerName'>이름------------------</div>
                 <div className='rankerNick'>222222222222222222</div>
@@ -47,6 +41,7 @@ const TopRanker = () => {
                 <div className="photo">
                   <img src="" alt="" />
                   <div className='rankerRank'>3</div>
+                  <span className="play"></span>
                 </div>
                 <div className='rankerName'>이름------------------</div>
                 <div className='rankerNick'>333333333333333333333</div>

@@ -1,11 +1,14 @@
 @import "../../../components/ui/mixin";
 
 #clipRankingGuide{
+  height: 100vh;
   section{
     position:relative;
     padding: 16px;
   }
-  .content{
+  .contentBox{
+    display: flex;
+    flex-direction: column;
     min-height: calc(100% - 48px);
   }
   .title{
@@ -45,6 +48,7 @@
   .bottomWrap{
     padding: 0;
     width: 100%;
+    margin-top: auto;
     img{width: 100%;}
   }
 }
