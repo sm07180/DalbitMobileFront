@@ -14,7 +14,6 @@ import Common from "common";
 import Modal from "common/modal";
 import Alert from "common/alert";
 import {Context} from "context";
-import {route} from "express/lib/router";
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
@@ -22,8 +21,9 @@ const Main = React.lazy(() => import('pages/main'))
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
 
-const Ranking = React.lazy(() => import('pages/reranking'))
+const Ranking = React.lazy(() => import('pages/reranking/contents/rankingMain'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
 const MyPage = React.lazy(() => import('pages/remypage'))
 
@@ -116,9 +116,10 @@ const Router = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
-        
+
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank/:type" component={RankingDetail} />
+        <Route exact path="/rankDetail/:type" component={RankingDetail} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
