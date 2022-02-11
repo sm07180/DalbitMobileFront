@@ -346,7 +346,6 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      {/* <div onClick={goMailAction}>askldjlkasdjf</div> */}
       <section className='topSwiper'>
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
@@ -402,7 +401,7 @@ const ProfilePage = () => {
       {popFanStar &&
         <PopSlide setPopSlide={setPopFanStar}>
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
-                       goProfile={goProfile} setPopFanStar={setPopFanStar}
+                       goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
           />
         </PopSlide>
       }
@@ -411,7 +410,7 @@ const ProfilePage = () => {
       {popLike &&
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     setPopLike={setPopLike}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo}
           />
         </PopSlide>
       }

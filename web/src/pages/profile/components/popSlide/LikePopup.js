@@ -33,13 +33,13 @@ const notMyProfileTabInfos = {
 }
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo} = props
   const dispatch = useDispatch();
   const [showList, setShowList] = useState([]); // 리스트
 
   // 팝업 제목 (탭 or 텍스트)
   const [titleTabInfoList, setTitleTabInfoList] = useState([]);
-  const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState(myProfileTabInfos.titleTab[1]);
+  const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0]);
 
   // 서브 탭
   const [currentSubTabInfo, setCurrentSubTabInfo] = useState({}); // 현재 선택된 서브탭
@@ -142,7 +142,7 @@ const LikePopup = (props) => {
 
   useEffect(() => {
     if(currentSubTabInfo.key) {
-      if(currentSubTabInfo.key === 'totalRankLike' || currentTitleTabInfo.key === 'like') {
+      if(currentSubTabInfo.key === 'totalRankLike' || currentSubTabInfo.key === 'like') {
         totalRankLikeApi();
       }else {
         fanRankApi(currentSubTabInfo.rankType, currentSubTabInfo.rankSlct);
@@ -167,7 +167,7 @@ const LikePopup = (props) => {
             )
           })}
         </ul>
-        : <h2>{titleTabInfoList[0].value}</h2>
+        : <h2>{titleTabInfoList.length > 0 && titleTabInfoList[0].value}</h2>
       }
       <div className="listContainer">
         {isMyProfile ?
@@ -199,25 +199,40 @@ const LikePopup = (props) => {
         <div className="listWrap">
           {showList.map((list,index) => {
             return (
-              <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => {
-                /*goProfileAction(list.memNo)*/
-              }}>
-                {index < 3 &&
-                  <div className="rank">{index + 1}</div>
+              <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => goProfileAction(list.memNo)}>
+                {isMyProfile ?
+                  <>
+                    { index < 3 && <div className="rank">{index + 1}</div> }
+                    <div className="listContent">
+                      <div className="nick">{list.nickNm}</div>
+                      {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
+                      <div className="listItem">
+                        <div className="like">{list.listenTime}</div>
+                      </div>
+                    </div>
+                    <div className="back">
+                      <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
+                        const isFan = list.isFan;
+                        fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
+                      }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                    </div>
+                  </>
+                  :
+                  <>
+                    { index < 3 && <div className="rank">{index + 1}</div> }
+                    <div className="listContent">
+                      <div className="nick">{list.nickNm}</div>
+                    </div>
+                    {list.memNo !== myMemNo &&
+                      <div className="back">
+                        <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
+                          const isFan = list.isFan;
+                          fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
+                        }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                      </div>
+                    }
+                  </>
                 }
-                <div className="listContent">
-                  <div className="nick">{list.nickNm}</div>
-                  {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
-                  <div className="listItem">
-                    <div className="like">{list.listenTime}</div>
-                  </div>
-                </div>
-                <div className="back">
-                  <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                    const isFan = list.isFan;
-                    fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                  }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
-                </div>
               </ListRow>
             )
           })}
