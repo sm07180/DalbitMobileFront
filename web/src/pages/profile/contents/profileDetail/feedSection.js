@@ -4,7 +4,7 @@ import Swiper from 'react-id-swiper'
 // global components
 import NoResult from 'components/ui/noResult/NoResult'
 // components
-import SocialList from '../../components/socialList'
+import SocialList from '../../components/SocialList'
 
 const FeedSection = (props) => {
   const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop } = props;
