@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import {IMG_SERVER} from 'context/config'
+// global components
+import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 
 import './totalInfo.scss'
 
@@ -17,14 +19,8 @@ const TotalInfo = (props) => {
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">뱃지</div>
         <div className="badgeGroup">
-          <span className='badge'>{data.grade}</span>
-          <span className='badge'>뱃지1</span>
-          <span className='badge'>뱃지2</span>
-          <span className='badge'>뱃지3</span>
-          <span className='badge'>뱃지4</span>
-          <span className='badge'>뱃지5</span>
-          <span className='badge'>뱃지6</span>
-          <span className='badge'>뱃지7</span>
+          <BadgeItems data={data} />
+          {/* <BadgeItems data={data} /> */}
         </div>
         <button onClick={onOpenBdage}>열기/닫기</button>
       </div>

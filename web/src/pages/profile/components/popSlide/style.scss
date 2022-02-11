@@ -24,6 +24,7 @@
     .listContainer {
       flex:1;
       height:100%;
+      overflow-y:auto;
       > .tabmenu {
         @include subTabmenuStyle-1;
         margin-bottom:12px;
@@ -46,9 +47,7 @@
         }
       }
       .listWrap {
-        height:100%;
         padding:0 16px;
-        overflow-y:auto;
         .listRow {
           position:relative;
           margin-bottom:12px;
