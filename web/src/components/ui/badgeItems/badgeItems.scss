@@ -1,24 +1,31 @@
 @import "components/ui/_mixin.scss";
 
 .badgeItem {
-  flex:none;
+  flex-shrink:0;
   @include flex(center);
-  height:16px;
+  line-height:18px;
   margin-left:2px;
-  @include font(11px,400,white);
-  &.img {
-    @include flex(center,center);
-    width:auto;
-    height:auto;
-    padding:0 5px 0 3px;
-    border-radius:100px;
-    box-sizing: border-box;
-    img {
-      width:16px;
-      height:16px;
-    }
+  padding:0 4px 0 3px;
+  border-radius:100px;
+  letter-spacing: -.5px;
+  @include font(10px,$Medium,white);
+  img {
+    width:16px;
+    height:16px;
   }
   &:first-child {
     margin-left:0;
+  }
+  @mixin bcsBadge {
+    text-indent:-99999px;
+  }
+  &.bestDj {
+    
+  }
+  &.contentsDj {
+
+  }
+  &.specialDj {
+    
   }
 }

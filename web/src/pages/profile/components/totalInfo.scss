@@ -7,7 +7,6 @@
     @include flex(flex-start);
     height:20px;
     margin-bottom:16px;
-    padding:1px 0;
     @include font(11px);
     overflow:hidden;
     &.isOpen {
@@ -24,6 +23,11 @@
       flex:1;
       @include flex(center);
       flex-wrap:wrap;
+      .badgeItem {
+        line-height: 18px;
+        margin-top:1px;
+        margin-bottom:1px;
+      }
       .badge {
         display: inline-block;
         margin:1px 4px;
