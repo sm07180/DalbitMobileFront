@@ -12,7 +12,7 @@ import './style.scss'
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 
-const notMyProfileTitle = '랭킹'
+const notMyProfileTitle = ['랭킹']
 const likeTabmenu = ['팬 랭킹','전체 랭킹']
 const likeSubTabmenu = {
   myProfileFanTab: ['최근','누적'],
@@ -23,10 +23,11 @@ const likeSubTabmenu = {
 const LikePopup = (props) => {
   const {isMyProfile, fanToggle, profileData, goProfile, setPopLike} = props
   const dispatch = useDispatch();
-  const [showList, setShowList] = useState([]);
-  const [likeState, setLikeState] = useState({title: '', tab: [], subTab: []});
-  const [likeType, setLikeType] = useState(likeTabmenu[1]);
-  const [likeSubType, setLikeSubType] = useState(isMyProfile ? likeSubTabmenu.myProfileRankTab[1] : likeSubTabmenu.notMyProfile[2]);
+  const [showList, setShowList] = useState([]); // 리스트
+  const [likeState, setLikeState] = useState({title: [], subTab: []}); // 타이틀 + 타이틀별 탭 리스트
+  const [likeType, setLikeType] = useState(likeTabmenu[1]); // 전체랭킹 타이틀 선택된 탭
+  const [likeSubType, setLikeSubType] = useState(isMyProfile ? likeSubTabmenu.myProfileRankTab[1] : likeSubTabmenu.notMyProfile[2]); // 서브 탭
+  const [fanRankParams, setFanRankParams] = useState({rankSlct: '', rankType: ''})
 
   // 팬 조회
   const fetchInfoDataType = () => {
@@ -50,28 +51,36 @@ const LikePopup = (props) => {
     })
   }
 
-  /* 내프로필 -> 1.전체랭킹-선물, 2.팬랭킹-최근, 3.팬랭킹-누적 */
+  /* 전체랭킹-선물, 2.팬랭킹-최근, 3.팬랭킹-누적 */
+  // 프로시져에서 rankType, rankSlct가 null || 1 이면 xx 조회 else xx 조회 (기존에 2를 주거나 안줘서 똑같이 따라하긴 함)
+  // 1. 전체랭킹 - 선물 : rankType: 1, rankSlct: 2
+  // 2. 팬랭킹 - 최근   : rankType: 1, rankSlct: ''
+  // 3. 팬랭킹 - 누적   : rankType: 2, rankSlct: ''
   const totalRankPresentApi = () => {
     const apiParams = {
       memNo: profileData.memNo,
       page: 1,
       records: 100,
-      rankSlct: 2, // 2면 전체 랭킹 - 선물, 없으면 팬 랭킹 - 최근,누적
-      rankType: 1, // 2면 팬랭킹 - 누적, 없으면 팬랭킹 - 최근, 선물
+      rankSlct: '2',
+      rankType: '1',
     }
     Api.mypage_fan_ranking({params: apiParams}).then(res => {
       setShowList(res.data.list);
     })
   }
 
-
-
+  /* 타이틀, 서브탭 default set */
   const fetchFanStarLikeInfo = () => {
-    setLikeState({
-      title: isMyProfile ? '' : notMyProfileTitle[0],
-      tab: isMyProfile ? likeTabmenu : [],
-      subTab: isMyProfile ? likeSubTabmenu.myProfileRankTab : likeSubTabmenu.notMyProfile
-    })
+    let title;
+    let subTab;
+    if(isMyProfile) {
+      title = likeTabmenu;
+      subTab = notMyProfileTitle[0];
+    }else {
+      title = likeSubTabmenu.myProfileRankTab;
+      subTab = likeSubTabmenu.notMyProfile;
+    }
+    setLikeState({title, subTab});
   }
 
   /* 팬 등록/해제시 값 변경 */
@@ -90,6 +99,15 @@ const LikePopup = (props) => {
     setShowList(assignList);
   }
 
+  const goProfileAction = (targetMemNo) => {
+    goProfile(targetMemNo)
+    setPopLike(false);
+  }
+
+  useEffect(() => {
+
+  }, [likeState]);
+
   useEffect(() => {
     fetchInfoDataType()
     fetchFanStarLikeInfo()
@@ -98,7 +116,7 @@ const LikePopup = (props) => {
   return (
     <section className="FanStarLike">
       {isMyProfile ?
-        <Tabmenu data={likeState.tab} tab={likeType} setTab={setLikeType} />
+        <Tabmenu data={likeState.title} tab={likeType} setTab={setLikeType} />
         : <h2>{likeState.title}</h2>
       }
       <div className="listContainer">
@@ -137,10 +155,7 @@ const LikePopup = (props) => {
         <div className="listWrap">
           {showList.map((list,index) => {
             return (
-              <ListRow photo={list.profImg.thumb62x62} key={index} onClick={() => {
-                goProfile(list.memNo)
-                setPopLike(false);
-              }}>
+              <ListRow photo={list.profImg.thumb62x62} key={index} onClick={() => goProfileAction(list.memNo)}>
                 {index < 3 &&
                   <div className="rank">{index + 1}</div>
                 }
