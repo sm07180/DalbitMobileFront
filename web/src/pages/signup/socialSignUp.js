@@ -10,10 +10,12 @@ import Header from "components/ui/header/Header";
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import {PHOTO_SERVER} from "context/config";
 import useDidMountEffect from "common/hook/useDidMountEffect";
+import {useHistory} from "react-router-dom";
 
-const SocialSignUp = (props) => {
+const SocialSignUp = () => {
   const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search);
+  const history = useHistory();
   let snsInfo = qs.parse(location.search);
   if (_.hasIn(snsInfo, 'nickNm')) {
     snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
@@ -21,7 +23,6 @@ const SocialSignUp = (props) => {
   if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
     snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
   }
-  console.log(snsInfo);
 
   const [signForm, setSignForm] = useState({
     phoneNum:"",
@@ -34,8 +35,6 @@ const SocialSignUp = (props) => {
     profImgUrl :"",
     ...snsInfo
   })
-
-  console.log(signForm);
 
   const nicknameCheckRef = useRef(null);
   const [checkNickNameValue, setCheckNickNameValue] = useState({
@@ -63,7 +62,6 @@ const SocialSignUp = (props) => {
   },[signForm.nickName]);
   const checkNickName = () =>{
     Api.nickName_check({params: {nickNm: signForm.nickName}}).then(res=>{
-      console.log(res);
       if (res.result === 'success' && res.code === '1') {
         document.getElementById('nickNameInputItem').classList.add("success");
         document.getElementById('nickNameInputItem').classList.remove("error");
@@ -215,7 +213,6 @@ const SocialSignUp = (props) => {
         profImg: signForm.profImgUrl, profImgRacy: 3, nativeTid: nativeTid, os: context.customHeader.os
       }
     })
-    console.log(result, data, message);
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
       addAdsData();
@@ -238,15 +235,14 @@ const SocialSignUp = (props) => {
   }
   //3. 로그인
   async function loginFetch() {
+    const nowRoomNo = sessionStorage.getItem("room_no");
     const loginInfo = await Api.member_login({
       data: {
         memType: signForm.memType,
-        memId: signForm.phoneNum,
-        memPwd: signForm.password
+        memId: signForm.memId,
+        room_no: nowRoomNo === null || nowRoomNo === undefined ? "" : nowRoomNo,
       }
     })
-    //fixme 소셜로그인 가입후 로그인 문제 commit
-    console.log("loginInfo", loginInfo);
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
@@ -270,6 +266,7 @@ const SocialSignUp = (props) => {
     } else if (loginInfo.result === 'fail') {
       context.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})
     }
+
   }
   //2. 애드브릭스
   const addAdsData = async () => {
