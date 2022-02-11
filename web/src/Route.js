@@ -174,25 +174,37 @@ const Router = () => {
                render={({ match}) => {
                  const myMemNo = context.profile.memNo;
                  const targetMemNo = match.params.memNo
-                 if(myMemNo === targetMemNo) {
+                 if(myMemNo !== targetMemNo) {
                    return <Redirect to={{ pathname: '/myProfile' }} />
                  }else {
                    return <Route component={Profile} />
                  }
                }}
         />
-        {/*피드 등록, 수정*/}
+        {/*피드, 팬보드 등록*/}
+        <Route exact path={"/profileWrite/:memNo/:type/:action"} main={ProfileContentsWrite}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const {memNo, type, action} = match.params;
+                 if(!context.token?.isLogin){
+                   return <Redirect to={{ pathname: '/login' }} />
+                 } else if((type ==='feed' && myMemNo !== memNo) || action === 'modify'){
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 }
+                  return <Route component={ProfileContentsWrite} />
+               }}
+        />
+        {/*피드, 팬보드 수정*/}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
                  const myMemNo = context.profile.memNo;
-                 const targetMemNo = match.params.memNo
+                 const {memNo, type, action} = match.params;
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
-                 } else if(myMemNo !== targetMemNo){
+                 } else if(myMemNo !== memNo || action === 'write'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
-                 } else {
-                   return <Route component={ProfileContentsWrite} />
                  }
+                   return <Route component={ProfileContentsWrite} />
                }}
         />
         {/*피드 조회*/}

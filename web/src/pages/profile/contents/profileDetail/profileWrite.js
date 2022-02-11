@@ -1,8 +1,9 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
-
+import Swiper from 'react-id-swiper'
 import Api from 'context/api'
+
 // global components
 import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
@@ -12,6 +13,7 @@ import CheckList from '../../components/CheckList'
 // css
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
+import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const ProfileWrite = () => {
   const history = useHistory();
@@ -26,6 +28,10 @@ const ProfileWrite = () => {
   if(action ==='modify' && !index) {
     <Redirect to={{pathname:'/mypage'}}/>
   }
+  const isMyProfile = memNo === profile.memNo;
+  const swiperParams = {
+    slidesPerView: 'auto',
+  }
 
   const inputRef = useRef(null);
   const imageUploading = useRef(false);
@@ -35,6 +41,10 @@ const ProfileWrite = () => {
   const [image, setImage] = useState(null);
   const [cropOpen, setCropOpen] = useState(false);
   const [activeState, setActiveState] = useState(false);//등록 버튼 활성화
+
+  //이미지 팝업 슬라이더
+  const [showSlide, setShowSlide] = useState({show: false, viewIndex: 0 });
+  const [imgList, setImgList] = useState([]);
 
   const [formState, setFormState] = useState({
     title: '',
@@ -153,6 +163,7 @@ const ProfileWrite = () => {
   useEffect(()=>{
     console.log(formState);
   },[formState])
+
   //상세조회 (수정만)
   const getDetailData = () => {
     if(type==='feed'){
@@ -181,51 +192,60 @@ const ProfileWrite = () => {
 
   const deleteThumbnailImageList = (list, _index) => {
     const result = list.filter((data, index) => index !== _index)
-
     setFormState({...formState, photoInfoList: result})
   };
   useEffect(() => {
     action === 'modify' && getDetailData();
   },[]);
 
+  useEffect(()=>{
+    console.log(
+      'showSlide', showSlide)
+
+  },[showSlide])
   return (
     <div id="profileWrite">
-      <Header title={action==='write'?'글쓰기':'수정하기'} type={'back'}>
-        <div className="buttonGroup">
-          <button className='insertFix active'>상단고정</button>
-        </div>
-      </Header>
+      <Header title={`${type==='feed'?'피드':'팬보드'} ${action==='write'?'쓰기':'수정'}`} type={'back'}/>
+      <span>{`${isMyProfile}`}</span>
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'></textarea>
         <div className="bottomGroup">
-          {true ? <CheckList text="상단고정"/> : <CheckList text="비밀글"/>}
+          {type === 'feed' ? <CheckList text="상단고정"/> : (!isMyProfile && <CheckList text="비밀글"/>)}
           <div className="textCount">
             <span>0</span> / 1000
           </div>
         </div>
+
+        {/*파일 등록*/}
+        <input ref={inputRef} type="file" className='blind'
+               onChange={(e) => {
+                 e.persist();
+                 setEventObj(e);
+                 setCropOpen(true);
+               }}/>
         <div className="insertGroup">
-          <div className="title">사진 첨부<span>(최대 1장)</span></div>
-          {!formState?.photoInfoList?.length ?
-            <label onClick={() => inputRef?.current?.click()}>
-              <input ref={inputRef} type="file" className='blind'
-                     onChange={(e) => {
-                       e.persist();
-                       setEventObj(e);
-                       setCropOpen(true);
-                     }}/>
-              <button className='insertBtn'>+</button>
-            </label>
-            :
-            formState?.photoInfoList.map((data, index) =>
-              (<label key={index}>
-                <div className="insertPicture">
-                  <img src={data.thumb60x60} alt="" />
-                </div>
-                <button className="cancelBtn" onClick={()=>deleteThumbnailImageList(formState?.photoInfoList, index)}/>
-              </label>
-              )
-            )
-          }
+          <div className="title">사진 첨부<span>(최대 10장)</span></div>
+          <Swiper {...swiperParams}>
+            { formState?.photoInfoList.map((data, index) =>
+                  <label key={index} onClick={(e) => e.preventDefault()}>
+                    <div className="insertPicture"
+                         onClick={() => setShowSlide({show: true, viewIndex: index })}>
+                      <img src={data.thumb60x60} alt=""/>
+                    </div>
+                    <button className="cancelBtn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteThumbnailImageList(formState?.photoInfoList, index)
+                            }}/>
+                  </label>)
+            }
+            {
+              Array(10 - formState?.photoInfoList.length).fill({}).map((v, i)=>
+                  <label key={i} onClick={() => inputRef?.current?.click()}>
+                    <button className='insertBtn'>+</button>
+                  </label>)
+            }
+          </Swiper>
         </div>
         <div className="insertButton">
           <SubmitBtn text="등록" />
@@ -243,6 +263,15 @@ const ProfileWrite = () => {
           onCrop={(value) => setImage(value)}
         />
       )}
+
+      {/* 프로필 사진 확대 */}
+      {showSlide?.show &&
+        <ShowSwiper imageList={formState?.photoInfoList}
+                    popClose={() => setShowSlide({show: false, viewIndex: 0 })}
+                    imageKeyName={'url'}
+                    imageParam={'?500x500'}
+        />}
+
     </div>
   )
 }
