@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
+import Swiper from 'react-id-swiper'
 
 import Api from 'context/api'
 // global components
@@ -43,7 +44,10 @@ const ProfileWrite = () => {
     photoInfoList:[]
   });
 
-
+  // 스와이퍼
+  const swiperParams = {
+    slidesPerView: 'auto',
+  }
 
   //등록
   const contentsAdd = async () => {
@@ -190,11 +194,7 @@ const ProfileWrite = () => {
 
   return (
     <div id="profileWrite">
-      <Header title={action==='write'?'글쓰기':'수정하기'} type={'back'}>
-        <div className="buttonGroup">
-          <button className='insertFix active'>상단고정</button>
-        </div>
-      </Header>
+      <Header title={action==='write'?'글쓰기':'수정하기'} type="back" />
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'></textarea>
         <div className="bottomGroup">
@@ -206,15 +206,26 @@ const ProfileWrite = () => {
         <div className="insertGroup">
           <div className="title">사진 첨부<span>(최대 1장)</span></div>
           {!formState?.photoInfoList?.length ?
-            <label onClick={() => inputRef?.current?.click()}>
-              <input ref={inputRef} type="file" className='blind'
-                     onChange={(e) => {
-                       e.persist();
-                       setEventObj(e);
-                       setCropOpen(true);
-                     }}/>
-              <button className='insertBtn'>+</button>
-            </label>
+            <Swiper {...swiperParams}>
+              <label onClick={() => inputRef?.current?.click()}>
+                <input ref={inputRef} type="file" className='blind'
+                      onChange={(e) => {
+                        e.persist();
+                        setEventObj(e);
+                        setCropOpen(true);
+                      }}/>
+                <button className='insertBtn'>+</button>
+              </label>
+              <label onClick={() => inputRef?.current?.click()}>
+                <input ref={inputRef} type="file" className='blind'
+                      onChange={(e) => {
+                        e.persist();
+                        setEventObj(e);
+                        setCropOpen(true);
+                      }}/>
+                <button className='insertBtn'>+</button>
+              </label>
+            </Swiper>
             :
             formState?.photoInfoList.map((data, index) =>
               (<label key={index}>
