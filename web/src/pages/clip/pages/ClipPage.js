@@ -32,6 +32,8 @@ const ClipPage = () => {
 
   const history = useHistory();
   const subjectType = useSelector((state)=> state.clip.subjectType); //
+  // 떠오른 클립 배경 색상, 나중에 CORS 오류 고치면 없앨거라서 redux 안씀
+  const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1'];
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
   const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
   const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
@@ -107,10 +109,13 @@ const ClipPage = () => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
+        let randomColor = bgColor.sort(() => Math.random() - 0.5)
+
         for (let i = 0; i < res.data.paging.records; i++) {
 
+
           if (res.data.paging.records > i) {
-            temp.push(res.data.list[i]);
+            temp.push({ ...res.data.list[i], randomBg: randomColor[i]});
           } else {
             temp.push({});
           }
@@ -161,7 +166,7 @@ const ClipPage = () => {
   return (
     <>
       {detail === false &&
-      <div id="clipPage" style={{width: '780px', margin: 'auto'}}>
+      <div id="clipPage" >
         <Header title={'클립'} />
         {/*{hotClipInfo && hotClipInfo.length > 0 &&
         <section className='hotClipWrap'>

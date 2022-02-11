@@ -1,13 +1,13 @@
 import React from 'react'
 
-import './listColumn.scss'
-import {PHOTO_SERVER} from "context/config";
+import './listColumn.scss';
+import errorImg from "pages/broadcast/static/img_originalbox.svg";
 
 const ListColumn = (props) => {
-  const {photo, children, index, errorImg} = props
+  const {photo, children, index} = props
 
   const handleImgError = (e) => {
-    e.currentTarget.src = `${PHOTO_SERVER}${errorImg}`;
+    e.currentTarget.src = errorImg;
   };
 
   return (
@@ -17,11 +17,7 @@ const ListColumn = (props) => {
       </div>
       {children}
     </div>
-  )
-}
-
-ListColumn.defaultProps = {
-  errorImg: "/clip_3/clipbg_200910_1.jpg?100x100"
+  );
 };
 
 export default ListColumn;
