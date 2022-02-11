@@ -118,6 +118,7 @@ const DalCharge = () => {
         ci: ciData,
       }
     }).then((response) => {
+      console.log(response);
       if (response.result === 'success') {
         if (payment.fetch === "pay_simple" || payment.fetch === "pay_letter" || payment.fetch === "pay_km") { //계좌 간편결제, 카카카오페이, 페이코, 티머니/캐시비
           //pc

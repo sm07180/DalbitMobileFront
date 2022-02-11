@@ -42,6 +42,7 @@ const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalChar
 const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
 const PayEnd = React.lazy(() => import('pages/store/contents/paySuccess/payEnd'))
+const PayEndApp = React.lazy(() => import('pages/store/contents/paySuccess/payEndApp'))
 const Receipt = React.lazy(() => import('pages/store/contents/paySuccess/receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
@@ -146,6 +147,7 @@ const Router = () => {
         <Route exact path="/pay/bank" component={Coocon}/>
         <Route exact path="/pay/bankInfo" component={CooconResult}/>
         <Route exact path="/pay/payEnd" component={PayEnd}/>
+        <Route exact path="/pay/payEnd/app" component={PayEndApp}/>
         <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
