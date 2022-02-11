@@ -38,8 +38,9 @@ header {
       top:0;
       left:0;
       width:100%;
+      letter-spacing: -.3;
       pointer-events: none;
-      @include font(18px,500,#202020);
+      @include font(18px,$SemiBold,#202020);
     }
   }
   .buttonGroup {

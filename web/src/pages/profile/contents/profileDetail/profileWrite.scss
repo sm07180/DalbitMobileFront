@@ -1,6 +1,8 @@
 @import "components/ui/_mixin.scss";
 
 #profileWrite {
+  @include flex($fd:column);
+  height:100%;
   header {
     .buttonGroup {
       button {
@@ -16,8 +18,9 @@
     position: relative;
   }
   .writeWrap {
+    flex:1;
     @include flex($fd:column);
-    height:calc(100vh - 48px);
+    height:100%;
     padding-top: 20px;
     textarea {
       flex:1;
@@ -26,21 +29,25 @@
       min-height:180px;
       padding:0 16px;
     }
-    .textCount {
-      flex-shrink: 0;
-      line-height:40px;
-      margin-top:auto;
+    .bottomGroup {
+      @include flex(center);
+      width:100%;
       padding:0 16px;
-      letter-spacing: -1px;
-      text-align:right;
-      @include font(15px,400,#B1B1B1);
-      span {
-        color:black;
+      .textCount {
+        flex-shrink: 0;
+        line-height:40px;
+        margin-left:auto;
+        letter-spacing: -1px;
+        text-align:right;
+        @include font(15px,400,#B1B1B1);
+        span {
+          color:black;
+        }
       }
     }
     .insertGroup {
       @include flex(flex-start,$fd:column);
-      padding:14px 16px 20px;
+      padding:14px 16px 0;
       border-top:1px solid #DEDEDE;
       .title {
         margin-bottom: 6px;
@@ -52,7 +59,6 @@
       }
       label {
         position:relative;
-        margin-bottom:20px;
         .insertBtn {
           width:76px;
           height:76px;
@@ -82,6 +88,12 @@
           @include BGIMG("profile/insertDel.png");
         }
       }
+      .submitBtn {
+        width:100%;
+      }
+    }
+    .insertButton {
+      padding: 20px 16px;
       .submitBtn {
         width:100%;
       }

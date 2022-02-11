@@ -13,7 +13,7 @@ import ListRow from 'components/ui/listRow/ListRow'
 // css
 import './profileDetail.scss'
 
-const ProfileDetail = () => {
+const ProfileDetail = (props) => {
   const history = useHistory()
   //context
   const context = useContext(Context)
@@ -29,7 +29,7 @@ const ProfileDetail = () => {
   // 페이지 시작
   return (
     <div id="profileDetail">
-      <Header type="back">
+      <Header>
         <div className="buttonGroup">
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -49,14 +49,14 @@ const ProfileDetail = () => {
               <div className="time">3시간전</div>
             </div>
           </ListRow>
-          <div className="text">
-          일주년 일부 방송 끝!
-          신년이기도 하고 1일이라 바쁘신 분들도 많으실텐데
-          와주신 모든 분들 너무 감사합니다!  
-          내일 오후에는 정규 시간, 룰렛으로  만나요 : )<br/>
-          <br/>
-          *1/2 수정되엉ㅆ따 
-          </div>
+          <pre className="text">
+            일주년 일부 방송 끝!
+            신년이기도 하고 1일이라 바쁘신 분들도 많으실텐데
+            와주신 모든 분들 너무 감사합니다!  
+            내일 오후에는 정규 시간, 룰렛으로  만나요 : )<br/>
+            <br/>
+            *1/2 수정되엉ㅆ따 
+          </pre>
           <div className="info">
             <i className='like'></i>
             <span>{Utility.addComma(123)}</span>
@@ -83,6 +83,9 @@ const ProfileDetail = () => {
                 <span>{Utility.addComma(3211)}</span>
               </div>
             </div>
+            <button className='more'>
+              <img src="" alt="" />
+            </button>
           </ListRow>
           <ListRow photo={profile.profImg.thumb50x50}>
             <div className="listContent">
@@ -99,6 +102,9 @@ const ProfileDetail = () => {
                 <span>{Utility.addComma(3211)}</span>
               </div>
             </div>
+            <button className='more'>
+              <img src="" alt="" />
+            </button>
           </ListRow>
           <ListRow photo={profile.profImg.thumb50x50}>
             <div className="listContent">
@@ -115,6 +121,9 @@ const ProfileDetail = () => {
                 <span>{Utility.addComma(3211)}</span>
               </div>
             </div>
+            <button className='more'>
+              <img src="" alt="" />
+            </button>
           </ListRow>
           <ListRow photo={profile.profImg.thumb50x50}>
             <div className="listContent">
@@ -131,6 +140,9 @@ const ProfileDetail = () => {
                 <span>{Utility.addComma(3211)}</span>
               </div>
             </div>
+            <button className='more'>
+              <img src="" alt="" />
+            </button>
           </ListRow>
         </div>
         <div className='bottomWrite'>

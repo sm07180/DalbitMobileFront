@@ -132,7 +132,9 @@ select {
 }
 
 textarea {
+  border: 0;
   outline: none;
+  resize: none;
 }
 
 input,
@@ -186,10 +188,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 pre {
   font-family: inherit;
-}
-
-textarea {
-  resize: none;
 }
 
 b,

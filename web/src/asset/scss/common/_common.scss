@@ -21,6 +21,10 @@ legend {
   overflow-x:hidden;
 }
 
+.content-article {
+  height:100vh !important;
+}
+
 .refresh-wrap {
   @include position-horizon;
   top:0;

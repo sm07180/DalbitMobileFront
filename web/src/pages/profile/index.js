@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context, GlobalContext} from 'context'
-import './index.scss'
+import './style.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
@@ -336,7 +336,7 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      <div onClick={goMailAction}>askldjlkasdjf</div>
+      {/* <div onClick={goMailAction}>askldjlkasdjf</div> */}
       <section className='topSwiper'>
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
