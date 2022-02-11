@@ -1,7 +1,7 @@
 import React from "react";
 
-import {DalbitScroll} from "common/ui/dalbit_scroll";
-import NoResult from "common/ui/no_result";
+import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
+import NoResult from "../../../../../common/ui/no_result";
 
 export default function RouletteTabWin({ renderingData, totalCnt, winListScrollPaging }) {
 

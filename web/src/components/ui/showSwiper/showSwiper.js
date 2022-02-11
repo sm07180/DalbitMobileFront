@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 
 import './showSwiper.scss'
 
 const ShowSwiper = (props) => {
-  const {data, popClose} = props
+  const {imageList, popClose} = props
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -13,35 +13,48 @@ const ShowSwiper = (props) => {
     pagination: {
       el: '.showSwiper-pagination',
       type: 'fraction'
-    }
+    },
   }
 
   const clickPopClose = (e) => {
     const target = e.target
     if (target.className === 'popClose') {
-      popClose({open: false})
+      popClose(false)
     }
   }
 
+  useEffect(() => {
+    if (imageList.length > 1) {
+      const swiper = document.querySelector('#popShowSwiper .swiper-container').swiper;
+      swiper.update();
+      swiper.slideTo(0);
+    }
+  }, [imageList]);
+
   return (
     <div id="popShowSwiper">
-      <div className="buttonGroup">
-        <button>대표 사진</button>
-        <button>삭제</button>
-      </div>
-      <Swiper {...swiperParams}>
-        <div>
-          <div className="photo">
-            <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
+      {imageList.length > 1 ?
+        <Swiper {...swiperParams}>
+          {imageList.map((item, index) => {
+            return (
+              <div key={index}>
+                <div className="photo">
+                  <img src={item.thumb500x500} alt="" />
+                </div>
+              </div>
+            )
+          })}
+        </Swiper>
+        : imageList.length === 1 &&
+        (
+          <div>
+            <div className="photo">
+              <img src={imageList[0].thumb500x500} alt="" />
+            </div>
           </div>
-        </div>
-        <div>
-          <div className="photo">
-            <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
-          </div>
-        </div>
-      </Swiper>
-      <button className='popClose' onClick={clickPopClose}></button>
+        )
+      }
+      <button className='popClose' onClick={clickPopClose} />
     </div>
   )
 }

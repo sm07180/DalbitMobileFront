@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useState } from "react";
 
 // constant
 import { tabType } from "pages/broadcast/constant";
+import {userBroadcastSettingType} from "../common/realtime/chat_socket";
 
 type StateType = {
   roomInfo: roomInfoType | null;
@@ -51,49 +52,49 @@ type StateType = {
   ttsActorInfo: Array<any>;
   ttsActionInfo: ttsActionInfoType;
   isTTSPlaying: boolean;
+  settingObj: userBroadcastSettingType | null;
+  soundVolume: number;
 };
 type ActionType = {
-  dispatchRoomInfo?(action: { type: string; data: any }): void;
-  setRightTabType?(data: tabType): void;
-  dispatchChatAnimation?(action: { type: string; data?: any }): void;
-  dispatchComboAnimation?(action: { type: string; data?: any }): void;
-  setUserMemNo?(data: string): void;
-  setUserNickNm?(data: string): void;
-  setUserCount?(data: any): void;
-  dispatchRealTimeValue?(action: { type: string; data: any }): void;
-  setListenerList?(data: any): void;
-  setMsgShortCut?(data: any): void;
-  setUseBoost?(data: boolean): void;
-  setExtendTime?(data: boolean): void;
-  setExtendTimeOnce?(data: boolean): void;
-  setStoryState?(data: number): void;
-  setNoticeState?(data: number): void;
-  setLikeState?(data: number): void;
-  setBoost?(data: { boost: boolean }): void;
-  setChatFreeze?(data: boolean): void;
-  setLikeClicked?(data: boolean): void;
-  setCommonBadgeList?(data: any): void;
-  setIsFan?(data: boolean): void;
-
-  setChatCount?(data: number): void;
-
-  setFlipIsLeft?(data: boolean): void;
-  setIsWide?(data: boolean): void;
-
-  setVideoEffect?(data: { makeUp: string; filter: string }): void;
-  setMiniGameInfo?(data: { [key: string]: any }): void;
-  setMiniGameResult?(data: { [key: string]: any }): void;
-
-  setRouletteHistory?(data: {
+  dispatchRoomInfo(action: { type: string; data: any }): void;
+  setRightTabType(data: tabType): void;
+  dispatchChatAnimation(action: { type: string; data?: any }): void;
+  dispatchComboAnimation(action: { type: string; data?: any }): void;
+  setUserMemNo(data: string): void;
+  setUserNickNm(data: string): void;
+  setUserCount(data: any): void;
+  dispatchRealTimeValue(action: { type: string; data: any }): void;
+  setListenerList(data: any): void;
+  setMsgShortCut(data: any): void;
+  setUseBoost(data: boolean): void;
+  setExtendTime(data: boolean): void;
+  setExtendTimeOnce(data: boolean): void;
+  setStoryState(data: number): void;
+  setNoticeState(data: number): void;
+  setLikeState(data: number): void;
+  setBoost(data: { boost: boolean }): void;
+  setChatFreeze(data: boolean): void;
+  setLikeClicked(data: boolean): void;
+  setCommonBadgeList(data: any): void;
+  setIsFan(data: boolean): void;
+  setChatCount(data: number): void;
+  setFlipIsLeft(data: boolean): void;
+  setIsWide(data: boolean): void;
+  setVideoEffect(data: { makeUp: string; filter: string }): void;
+  setMiniGameInfo(data: { [key: string]: any }): void;
+  setMiniGameResult(data: { [key: string]: any }): void;
+  setRouletteHistory(data: {
     currentPage: number,
     allData: Array<rouletteHistoryDataType>,
     renderingData: Array<rouletteHistoryDataType>;
     pagingSize: number,
     totalCnt: number,
   }): void;
-  setTtsActorInfo?(data: any): void;
-  setTtsActionInfo?(data: ttsActionInfoType): void;
-  setIsTTSPlaying?(data: boolean): void;
+  setTtsActorInfo(data: any): void;
+  setTtsActionInfo(data: ttsActionInfoType): void;
+  setIsTTSPlaying(data: boolean): void;
+  setSettingObj?(data: userBroadcastSettingType): void;
+  setSoundVolume?(data: number): void;
 };
 
 type BundleType = {
@@ -106,6 +107,7 @@ const roomInfoReducer = (state: roomInfoType, action: { type: string; data?: any
 
   switch (type) {
     case "broadcastSettingUpdate": {
+      console.log('@@ broadcastSettingUpdate', data)
       return {
         ...state,
         ...action.data,
@@ -299,9 +301,43 @@ const initialData = {
       isPlaying: false,
     },
     isTTSPlaying: false,
+    settingObj: null,
+    soundVolume: 1  //tts, sound Item 볼륨조절 0 ~ 1
   },
 
-  broadcastAction: {},
+  broadcastAction: {
+    dispatchRoomInfo:()=>{},
+    setRightTabType:()=>{},
+    dispatchChatAnimation:()=>{},
+    dispatchComboAnimation:()=>{},
+    setUserMemNo:()=>{},
+    setUserNickNm:()=>{},
+    setUserCount:()=>{},
+    dispatchRealTimeValue:()=>{},
+    setListenerList:()=>{},
+    setMsgShortCut:()=>{},
+    setUseBoost:()=>{},
+    setExtendTime:()=>{},
+    setExtendTimeOnce:()=>{},
+    setStoryState:()=>{},
+    setNoticeState:()=>{},
+    setLikeState:()=>{},
+    setBoost:()=>{},
+    setChatFreeze:()=>{},
+    setLikeClicked:()=>{},
+    setCommonBadgeList:()=>{},
+    setIsFan:()=>{},
+    setChatCount:()=>{},
+    setFlipIsLeft:()=>{},
+    setIsWide:()=>{},
+    setVideoEffect:()=>{},
+    setMiniGameInfo:()=>{},
+    setMiniGameResult:()=>{},
+    setRouletteHistory:()=>{},
+    setTtsActorInfo:()=>{},
+    setTtsActionInfo:()=>{},
+    setIsTTSPlaying:()=>{},
+  },
 };
 
 const BroadcastContext = createContext<BundleType>(initialData);
@@ -355,6 +391,9 @@ function BroadcastProvider(props: { children: JSX.Element }) {
   const [ttsActionInfo, setTtsActionInfo] = useState<ttsActionInfoType>(initialData.broadcastState.ttsActionInfo);
   const [isTTSPlaying, setIsTTSPlaying] = useState<boolean>(false);
 
+  //방송 설정
+  const [settingObj, setSettingObj] = useState<userBroadcastSettingType | null>(null);
+  const [soundVolume, setSoundVolume] = useState<number>(initialData.broadcastState.soundVolume);
   const broadcastState: StateType = {
     roomInfo,
     rightTabType,
@@ -391,6 +430,8 @@ function BroadcastProvider(props: { children: JSX.Element }) {
     ttsActorInfo,
     ttsActionInfo,
     isTTSPlaying,
+    settingObj,
+    soundVolume
   };
 
   const broadcastAction: ActionType = {
@@ -429,6 +470,8 @@ function BroadcastProvider(props: { children: JSX.Element }) {
     setTtsActorInfo,
     setTtsActionInfo,
     setIsTTSPlaying,
+    setSettingObj,
+    setSoundVolume
   };
 
   const bundle: BundleType = {

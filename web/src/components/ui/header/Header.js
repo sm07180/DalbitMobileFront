@@ -6,7 +6,7 @@ import TitleButton from './TitleButton';
 // css
 import './header.scss'
 
-export default (props) => {
+const Header = (props) => {
   const {title, type, children, position} = props
   const history = useHistory()
 
@@ -21,3 +21,9 @@ export default (props) => {
     </header>
   )
 }
+
+Header.defaultProps = {
+  position:'sticky'
+}
+
+export default Header

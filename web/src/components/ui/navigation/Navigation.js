@@ -7,13 +7,15 @@ const Navigation = (props) => {
   const history = useHistory();
   return (
     <>
-      <nav>
-        <div className="navi"></div>
+    <div id="navigation">
+      <nav className="bottomGnb">
+        <div className="navi" onClick={() => history.push('/')} />
         <div className="navi" onClick={() => history.push('/clip')} />
         <div className="navi"></div>
         <div className="navi" onClick={() => history.push('/search')} />
         <div className="navi" onClick={() => history.push(`/mypage`)} />
       </nav>
+    </div>
     </>
   )
 }

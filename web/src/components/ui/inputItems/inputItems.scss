@@ -1,9 +1,10 @@
-@import "components/ui/_mixin.scss";
+@import "../_mixin.scss";
+
 .inputItems {
   position:relative;
   @include flex(center);
   flex-wrap:wrap;
-  margin-bottom:16px;
+  width: 100%;
   &.success {
     .inputBox {
       &:after {
@@ -16,6 +17,10 @@
         // background-repeat: no-repeat;
         background-size: 30px 30px;
       }
+    }
+    .textLog {
+      display:block;
+      color:#4569F8;
     }
   }
   &.error {
@@ -48,6 +53,7 @@
     }
     input {
       flex:1;
+      width:100%;
       margin:0 16px;
       @include font(15px,400,#202020);
       &::placeholder {
@@ -73,9 +79,12 @@
     height:42px;
     margin-left:8px;
     border-radius:16px;
-    background-color:#202020;
+    background-color:#FF3C7B;
     letter-spacing: -1px;
     @include font(14px,500,white);
+    &.disable {
+      background-color:#E3E3E3;
+    }
   }
   .textareaBox {
     width:100%;
@@ -83,8 +92,13 @@
     @include border(#E2E2E2,16px);
     background-color:white;
     overflow: hidden;
+    &.focus {
+      border-color:#FF3C7B;
+      background-color:white;
+    }
     textarea {
       width:100%;
+      background-color:transparent;
       @include font(15px,400,#202020);
       &::placeholder {
         color:#999;

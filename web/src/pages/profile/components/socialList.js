@@ -1,16 +1,19 @@
-import React from 'react'
-import {IMG_SERVER} from 'context/config'
+import React,{useContext} from 'react'
 
-import Swiper from 'react-id-swiper'
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import './socialList.scss'
+import ListRowComponent from "./ListRowComponent";
+import Swiper from "react-id-swiper";
+import {useHistory} from "react-router-dom";
+import {Context} from "context";
 
 const SocialList = (props) => {
-  const {data,picture} = props
-  
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop} = props
+  const history = useHistory();
+  const context = useContext(Context);
+
   // 스와이퍼
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -20,46 +23,53 @@ const SocialList = (props) => {
       type: 'fraction'
     }
   }
+  
+  // 피드, 팬보드 상세로 이동하기
+  const goContentsDetail = (idx) => {
+    history.push(`/profileDetail/${context.profile.memNo}/${type}/${idx}`);
+  };
 
   return (
     <div className="socialList">
-      <ListRow photo={data.profImg.thumb50x50}>
-        <div className="listContent">
-          <div className="nick">{data.nickNm}</div>
-          <div className="time">3시간전</div>
-        </div>
-        <button>
-          <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-        </button>
-      </ListRow>
-      <div className="socialContent">
-        <div className="text">
-          일주년 일부 방송 끝!<br/>
-          신년이기도 하고 1일이라 바쁘신 분들도 많으실텐데<br/>
-          와주신 모든 분들 너무 감사합니다!<br/>
-          내일 오후에는 정규 시간, 룰렛으로  만나요 : )
-        </div>
-        {picture &&
-          <div className="swiperPhoto">
-            <Swiper {...swiperFeeds}>
-              <div>
-                <div className="photo">
-                  <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
-                </div>
+      {socialList.map((item, index) => {
+        return (
+          <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
+                              onClick={() => goContentsDetail(item.noticeIdx ? item.noticeIdx : item.replyIdx)}
+            />
+            <div className="socialContent">
+              <div className="text">
+                {item.contents}
               </div>
-              <div>
-                <div className="photo">
-                  <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
+              {type === 'feed' && (item.photoInfoList.length > 1 ?
+                <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
+                  <Swiper {...swiperFeeds}>
+                    {item.photoInfoList.map((photo) => {
+                      return (
+                        <div>
+                          <div className="photo">
+                            <img src={photo?.imgObj?.thumb500x500} alt="" />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </Swiper>
                 </div>
+                : item.photoInfoList.length === 1 ?
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                    <div className="photo">
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
+                    </div>
+                  </div>
+                    : <></>
+              )}
+              <div className="info">
+                <DataCnt type={"replyCnt"} value={item.replyCnt} />
               </div>
-            </Swiper>
-          </div>
-        }
-        <div className="info">
-          <DataCnt type={`${data.likeYn === " y" ? "rcvLikeCnt active" : "rcvLikeCnt"}`} value={data.rcvLikeCnt ? data.rcvLikeCnt : "123"}/>
-          <DataCnt type={"tailCnt"} value={data.tailCnt ? data.tailCnt : "123"}/>
-        </div>
-      </div>
+            </div>
+          </React.Fragment>
+        )
+      })}
     </div>
   )
 }

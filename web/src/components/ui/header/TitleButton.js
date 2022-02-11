@@ -40,6 +40,12 @@ const TitleButton = (props) => {
           <AlarmButton history={history} />
         </div>
       )
+    case '클립 랭킹':
+      return (
+        <div className='buttonGroup'>
+          <button className='benefits'>혜택</button>
+        </div>
+      )
     case '좋아요한 클립':
       return (
         <div className="buttonGroup">

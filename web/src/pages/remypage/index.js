@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 
 import Api from 'context/api'
@@ -9,18 +9,23 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MydalDetail from "pages/remypage/components/MydalDetail";
 import MyMenu from "pages/remypage/components/MyMenu";
+import Report from "./contents/report/report"
+import Clip from "./contents/clip/clip"
+
 import {Hybrid, isHybrid} from "context/hybrid";
 
 const myMenuItem = [
-  {menuNm: '리포트'},
-  {menuNm: '클립'},
+  {menuNm: '리포트', path:'report'},
+  {menuNm: '클립', path:'clip'},
   {menuNm: '설정'},
   {menuNm: '공지사항'},
   {menuNm: '고객센터'},
 ]
 
-const Remypage = (props) => {
+const Remypage = () => {
   const history = useHistory()
+  const params = useParams()
+  const settingCategory = params.category;
   //context
   const context = useContext(Context)
   const {splash, token, profile} = context;
@@ -28,7 +33,6 @@ const Remypage = (props) => {
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
     if (result === 'success') {
-      console.log(data);
       context.action.updateProfile(data);
     } else {
       if (code === '-5') {
@@ -79,27 +83,36 @@ const Remypage = (props) => {
   }, [])
 
   // 페이지 시작
-  return (
-    <div id="remypage">
-      <Header title={'MY'} />
-      <section className="myInfo" onClick={goProfile}>
-        <MyInfo data={profile} />
-      </section>
-      <section className='mydalDetail'>
-        <MydalDetail data={profile?.dalCnt} />
-      </section>
-      <section className="myMenu">
-        <MyMenu data={myMenuItem} />
-        {isHybrid() &&
-        <div className="versionInfo">
-          <span className="title">버전정보</span>
-          <span className="version">현재 버전 {splash?.version}</span>
-        </div>
-        }
-      </section>
-      <button className='logout' onClick={logout}>로그아웃</button>
-    </div>
-  )
+  switch (settingCategory) {
+    case 'report' :
+      return(<Report />)
+    case 'clip' :
+      return(<Clip />)
+    default :
+      return(
+        <>
+          <div id="remypage">
+            <Header title={'MY'} />
+            <section className="myInfo" onClick={goProfile}>
+              <MyInfo data={profile} />
+            </section>
+            <section className='mydalDetail'>
+              <MydalDetail data={profile?.dalCnt} />
+            </section>
+            <section className="myMenu">
+              <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
+              {isHybrid() &&
+              <div className="versionInfo">
+                <span className="title">버전정보</span>
+                <span className="version">현재 버전 {splash?.version}</span>
+              </div>
+              }
+            </section>
+            <button className='logout' onClick={logout}>로그아웃</button>
+          </div>
+        </>
+      )
+  }
 }
 
 export default Remypage

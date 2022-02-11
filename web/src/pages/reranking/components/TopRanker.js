@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState} from 'react'
 
 import Swiper from 'react-id-swiper'
 import {useHistory, withRouter} from "react-router-dom";
@@ -6,6 +6,7 @@ import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {Context, GlobalContext} from "context";
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
 
 const TopRanker = (props) => {
@@ -17,11 +18,12 @@ const TopRanker = (props) => {
 
   const gtx = useContext(GlobalContext);
 
+  const [popup, setPopup] = useState(false);
+
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
     centeredSlides: true,
-    spaceBetween: 15,
     loop: false,
     pagination: {
       el: '.swiper-pagination',
@@ -66,6 +68,10 @@ const TopRanker = (props) => {
         }
       }
     }
+  }
+
+  const popOpen = () => {
+    setPopup(true);
   }
 
   return (
@@ -121,6 +127,45 @@ const TopRanker = (props) => {
           })}
         </Swiper>
       }
+      <>
+      { popup &&
+        <LayerPopup setPopup={setPopup}>
+          {
+            rankType === "dj" &&
+            <>
+              <div className='popTitle'>DJ 랭킹 선정 기준</div>
+              <div className='popSubTitle'>
+                받은 별, 청취자 수, 받은 좋아요 <br/>(부스터 포함)의 종합 순위입니다.
+              </div>
+            </>
+
+          }
+          {
+            rankType === "fan" &&
+            <>
+              <div className='popTitle'>FAN 랭킹 선정 기준</div>
+              <div className='popSubTitle'>
+              보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.
+              </div>
+            </>
+
+          }
+          {
+            rankType === "lover" &&
+            <>
+              <div className='popTitle'>LOVER 랭킹이란?</div>
+              <div className='popSubTitle'>
+              보낸 좋아요 개수 (부스터 포함)<br/>1~200위의 순위입니다.
+              </div>
+              <div className='popText'>
+                <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
+              </div>
+            </>
+
+          }
+        </LayerPopup>
+      }
+      </>
     </React.Fragment>
   )
 }

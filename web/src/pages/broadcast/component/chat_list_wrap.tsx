@@ -86,6 +86,20 @@ const MsgListWrap = (props: {
         scrollBottomCallback={() => setScrollUpStatus(false)}
         lenCheck={chatCount}
         onHoverBarVisible={true}
+        // intervalCallback={() => {
+        //   const msgListWrapElem = msgListWrapRef.current;
+        //   const lottieDisplayElem = lottieDisplayRef.current;
+        //   if (msgListWrapElem && lottieDisplayElem) {
+        //     const chatInnerWrap = msgListWrapElem.parentNode;
+        //     if (chatInnerWrap !== null) {
+        //       const scrollInnerWrap = chatInnerWrap.parentNode as HTMLElement;
+        //       if (scrollInnerWrap !== null) {
+        //         const lottieDisplayBottom = -scrollInnerWrap.scrollTop;
+        //         lottieDisplayElem.style.bottom = `${lottieDisplayBottom}px`;
+        //       }
+        //     }
+        //   }
+        // }}
       >
         <div
           className="chat-inner-wrap"

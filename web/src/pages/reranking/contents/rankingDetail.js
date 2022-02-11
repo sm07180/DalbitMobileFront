@@ -15,14 +15,12 @@ import './rankingDetail.scss'
 import {convertDateTimeForamt, convertMonday, convertMonth} from "pages/common/rank/rank_fn";
 import moment from "moment";
 
-export default (props) => {
+const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
-  //랭킹 타입(dj, fan, lover)
-  const rankingListType = params.type;
-  //Ranking 종류(DJ, FAN, LOVER)
-  const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
-  //Ranking 기간(타임, 일간 등등)
+  const rankingListType = params.type
+
+  const [rankSlct, setRankSlct] = useState(1);
   const [rankType, setRankType] = useState(1);
   //Ranking 종류 선택 팝업
   const [slidePop, setSlidePop] = useState(false);
@@ -218,3 +216,5 @@ export default (props) => {
     </div>
   )
 }
+
+export default RankDetailPage

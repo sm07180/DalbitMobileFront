@@ -233,6 +233,16 @@ const initialData = {
     alertStatus: {
       status: false,
     },
+    moveToAlert: {
+      state: 'ready',
+      dest: '',
+      alertStatus: {
+        status: false
+      }
+    },
+    layerPopStatus: {
+      status: false,
+    },
     toastStatus: {
       status: false,
     },
@@ -471,6 +481,12 @@ const GlobalProvider = (props) => {
   const [alertStatus, setAlertStatus] = useState(
       initialData.globalState.alertStatus
   );
+  const [layerPopStatus, setLayerPopStatus] = useState(
+    initialData.globalState.layerPopStatus
+  );
+  const [moveToAlert, setMoveToAlert] = useState(
+      initialData.globalState.moveToAlert
+  );
   const [toastStatus, callSetToastStatus] = useState(
       initialData.globalState.toastStatus
   );
@@ -689,6 +705,9 @@ const GlobalProvider = (props) => {
       setMessage({type: 'alert', visible: true, ...obj})
     },
 
+    layerPop: (obj) => {
+      setMessage({type: 'layerPop', visible: true, ...obj})
+    },
     /**
      * 시스템팝업(레이어구성)
      * @param {msg} 메시지영역
@@ -1077,6 +1096,8 @@ const GlobalProvider = (props) => {
   const globalState = {
     baseData,
     alertStatus,
+    layerPopStatus,
+    moveToAlert,
     tooltipStatus,
     toastStatus,
     layerStatus,
@@ -1121,6 +1142,8 @@ const GlobalProvider = (props) => {
   const globalAction = {
     setBaseData,
     setAlertStatus,
+    setLayerPopStatus,
+    setMoveToAlert,
     setTooltipStatus,
     callSetToastStatus,
     setUserProfile,
@@ -1152,6 +1175,7 @@ const GlobalProvider = (props) => {
     setMailBlockUser,
     setMultiViewer : action.updateMultiViewer,
     setIsMailboxOn,
+    setAgeData,
     setbestDjData : setBestDjData,
     setAuthFormRef,
     setNoServiceInfo,

@@ -346,4 +346,73 @@ $errorMsg : #FF1919;
       letter-spacing: -1px;
     }
   }
+  
+  #popSlide {
+    .selectWrap {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      .selectOption {
+        width: 100%;
+        text-align: center;
+        @include font(16px, 400, #202020);
+        line-height: 55px;
+        &.active {
+          @include font(16px, 700, #FF3C7B);
+        }
+      }
+    }
+  }
+
+  #layerPop {
+    .popTitle {
+      line-height: 48px;
+      text-align: center;
+      @include font(16px, 700, #202020);
+    }
+    .standardWrap {
+      @include flex(center, center, column);
+      width: 100%;
+      margin-top: 15px;
+      .standardList {
+        margin-bottom: 18px;
+        &:last-child {
+          margin-bottom: 0px;
+        }        
+        .popSubTitle {
+          @include font(16px, 500, #FF3C7B);
+          text-align: center;
+          letter-spacing: -1px;
+        }
+        .popText {
+          @include font(12px, 400, #666666);
+          text-align: center;
+          letter-spacing: -1px;
+          overflow: hidden;
+          span {
+            @include font(13px, 400, #FF6B4B);
+            padding-left: 16px;
+            background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+            background-position: left center;
+            background-repeat: no-repeat;
+            background-size: 16px 16px;
+          }
+        }
+      }
+    }
+    .popInfo {
+      @include font(12px, 400, #ACACAC);
+      margin-top: 6px;
+      text-align: center;
+      letter-spacing: -1px;
+      span {
+        @include font(12px, 400, #FF6B4B);
+        padding-left: 16px;
+        background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+        background-position: left center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+      }
+    }  
+  }
 }

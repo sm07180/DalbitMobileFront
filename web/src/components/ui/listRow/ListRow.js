@@ -1,19 +1,23 @@
 import React from 'react'
-import {withRouter} from 'react-router-dom'
 
 import './listRow.scss'
 
 const ListRow = (props) => {
-  const {photo, children, memNo} = props
+  const {photo, children, onClick, photoClick} = props
 
   return (
-    <div className="listRow">
-      <div className="photo" onClick={() => props.history.push(`/profile/${memNo}`)}>
-        <img src={photo} />
+    <div className="listRow" onClick={onClick}>
+      <div className="photo" onClick={photoClick}>
+        <img src={photo} alt="" />
       </div>
       {children}
     </div>
   )
 }
 
-export default withRouter(ListRow);
+export default ListRow
+
+ListRow.defaultProps = {
+  onClick: () => {},
+  photoClick: () => {}
+};
