@@ -87,14 +87,14 @@ const BlockReport = (props) => {
   /* 신고 valid 체크 */
   const reportValidationCheck = () => {
     if (selectedInfo.value === '') {
-      context.action.alert({
+      return context.action.alert({
         callback: () => {},
         msg: '신고 사유를 선택해주세요.'
       })
     }
 
     if (selectedInfo.value !== '' && reportReason.length < REPORT_MIN_LENGTH) {
-      context.action.alert({
+      return context.action.alert({
         callback: () => {},
         msg: `신고 사유를 ${REPORT_MIN_LENGTH}자 이상 입력해주세요.`
       })
