@@ -422,7 +422,7 @@ export default class Utility {
     } else if(dateDuration.asSeconds() > 1){ // n초 전
       return `${Math.floor( dateDuration.asSeconds() )}초 전`;
     } else {
-      return 'error : ' + writeDate;
+      return `1초 전`;
     }
   };
 }

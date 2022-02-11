@@ -6,8 +6,8 @@ const ListRow = (props) => {
   const {photo, children, onClick} = props
 
   return (
-    <div className="listRow" onClick={onClick}>
-      <div className="photo">
+    <div className="listRow">
+      <div className="photo" onClick={onClick}>
         <img src={photo} alt="" />
       </div>
       {children}

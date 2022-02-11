@@ -41,7 +41,10 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+// 프로필 - 피드, 팬보드 (작성, 수정)
+const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 - 피드, 팬보드 (상세)
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
@@ -178,8 +181,34 @@ const Router = () => {
                  }
                }}
         />
+        {/*피드 등록, 수정*/}
+        <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const targetMemNo = match.params.memNo
+                 if(!context.token?.isLogin){
+                   return <Redirect to={{ pathname: '/login' }} />
+                 } else if(myMemNo !== targetMemNo){
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 } else {
+                   return <Route component={ProfileContentsWrite} />
+                 }
+               }}
+        />
+        {/*피드 조회*/}
+        <Route exact path={"/profileDetail/:memNo/:type/:index"} main={ProfileDetail}
+               render={({ match}) => {
+                 const {memNo, type, index} = match.params;
 
-        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
+                 if(!context.token?.isLogin){
+
+                   return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
+                 } else {
+                   return <Route component={ProfileDetail} />
+                 }
+               }}
+        />
+
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
