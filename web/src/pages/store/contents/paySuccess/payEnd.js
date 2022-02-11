@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
 import qs from "query-string";
+import React, { useEffect } from "react";
 
 export default function PayEnd() {
+  alert("123123")
   const { result, message, date, amount, prdtNm, orderId, itemCnt } = qs.parse(location.search);
 
   if (result === "success") {
