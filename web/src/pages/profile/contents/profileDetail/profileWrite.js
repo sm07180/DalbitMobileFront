@@ -178,6 +178,11 @@ const ProfileWrite = () => {
     }
   };
 
+  const deleteThumbnailImageList = (list, _index) => {
+    const result = list.filter((data, index) => index !== _index)
+
+    setFormState({...formState, photoInfoList: result})
+  };
   useEffect(() => {
     action === 'modify' && getDetailData();
   },[]);
@@ -197,20 +202,23 @@ const ProfileWrite = () => {
           {!formState?.photoInfoList?.length ?
             <label onClick={() => inputRef?.current?.click()}>
               <input ref={inputRef} type="file" className='blind'
-                onChange={(e)=>{
-                  e.persist();
-                  setEventObj(e);
-                  setCropOpen(true);
-                }}/>
+                     onChange={(e) => {
+                       e.persist();
+                       setEventObj(e);
+                       setCropOpen(true);
+                     }}/>
               <button className='insertBtn'>+</button>
             </label>
             :
-            <label>
-              <div className="insertPicture">
-                <img src={formState?.photoInfoList[0]?.thumb60x60} alt="" />
-              </div>
-              <button className="cancelBtn"></button>
-            </label>
+            formState?.photoInfoList.map((data, index) =>
+              (<label key={index}>
+                <div className="insertPicture">
+                  <img src={data.thumb60x60} alt="" />
+                </div>
+                <button className="cancelBtn" onClick={()=>deleteThumbnailImageList(formState?.photoInfoList, index)}/>
+              </label>
+              )
+            )
           }
           <SubmitBtn text="등록" />
         </div>
