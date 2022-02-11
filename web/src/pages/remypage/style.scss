@@ -1,8 +1,8 @@
 @import "../../components/ui/mixin";
 
 #remypage {
+  flex:1;
   @include flex($fd:column);
-  height:calc(100vh - #{$NAVIGATION-HEIGHT});
   .myInfo {
     @include flex;
     padding:16px 16px 14px;
