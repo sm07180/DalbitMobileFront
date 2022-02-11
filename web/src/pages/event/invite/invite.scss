@@ -1,0 +1,114 @@
+@import "components/ui/_mixin.scss";
+
+#invite {
+    .fullImage {
+        width: 100%;
+        -webkit-user-drag: none;
+        vertical-align: middle;
+        image-rendering: -webkit-optimize-contrast;
+    }
+    .imageBox {
+        position: relative;
+    }
+    .content {
+        position: relative;
+        @include flex(flex-start, flex-start, column);
+        width: 100%;
+        .tabImgText {
+            position: relative;
+            @include flex(center);
+            width: 100%;
+            .tabMenu {
+                position: relative;
+                flex: 1;
+                @include flex(center, center);
+                height: 50px;
+                background-color: #543100;
+                cursor: pointer;             
+                img {
+                    display: inline-block;
+                    height: 18px;
+                }
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 4px; right: 0;
+                    display: inline-block;
+                    width: 1px; height: 42px;
+                    background-color: #fff;
+                }
+                &:last-child::after {
+                    content: none;
+                }
+                &.active {
+                    background-color: #FF3C7B;
+                }
+            }
+        }
+
+        .inviteEvent {
+            width: 100%;
+            .inviteBtn {
+                position: absolute;
+                left: 8%; bottom: 2%; right: 8%;
+                @include flex(center, center, column);
+                height: 8%;
+                border-radius: 16px;
+                box-sizing: border-box;
+                &.create {
+                    background-color: #202020;
+                }
+                &.share {
+                    background-color: #FF3C7B;
+                }
+                .codeText {
+                    @include font(14px, 400, #FFD4E1);
+                }
+                .btnName {
+                    @include font(16px, 700, #FFFFFF);
+                }
+            }            
+            .codeInput {
+                position: absolute;
+                left: 12%; bottom: 25%; right: 12%;
+                @include flex(center);
+                height:20%;
+                .inputBox {
+                    position:relative;
+                    flex:1;
+                    @include flex(center);
+                    height: 100%;
+                    border-radius:16px;
+                    border:1px solid #F6F6F6;
+                    background-color:#F6F6F6;
+                    &.focus {
+                      border-color:#FF3C7B;
+                      background-color:white;
+                    }
+                    input {
+                      flex:1;
+                      width:100%;
+                      margin:0 16px;
+                      @include font(15px,400,#202020);
+                      &::placeholder {
+                        color:#999;
+                      }
+                    }
+                }
+                .inputBtn {
+                  width:25%;
+                  height: 90%;
+                  margin-left:4px;
+                  border-radius:14px;
+                  background-color:#FF3C7B;
+                  letter-spacing: -1px;
+                  @include font(15px,500,#fff);
+                  &.disable {
+                    background-color:#C1C4DB;
+                    pointer-events: none;
+                  }
+                }
+            }
+        }
+    }
+}
