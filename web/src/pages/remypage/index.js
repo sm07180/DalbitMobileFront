@@ -31,7 +31,6 @@ const Remypage = () => {
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
     if (result === 'success') {
-      console.log(data);
       context.action.updateProfile(data);
     } else {
       if (code === '-5') {
@@ -97,7 +96,7 @@ const Remypage = () => {
               <MydalDetail data={profile?.dalCnt} />
             </section>
             <section className="myMenu">
-              <MyMenu data={myMenuItem} memNo={profile.memNo}/>
+              <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
               {isHybrid() &&
               <div className="versionInfo">
                 <span className="title">버전정보</span>

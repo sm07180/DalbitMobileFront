@@ -11,11 +11,22 @@ import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle, setPopPresent} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStar, openPopLike, fanToggle, setPopPresent} = props
   const dispatch = useDispatch();
 
   /* fan toggle 데이터 변경 */
-  const fanToggleCallback = () => dispatch(setProfileData({...data, isFan: !data.isFan}))
+  const fanToggleCallback = () => {
+    if(!isMyProfile) {
+      /* api에서 조회하지 않고 스크립트로만 스타수 +- 시킴 (팬,스타 리스트 api 조회시에는 각각 갱신함) */
+      if(data.isFan) { // isFan -> !isFan (팬해제)
+        dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt -1}))
+      }else { // !isFan -> isFan (팬등록)
+        dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt +1}))
+      }
+    }else {
+      dispatch(setProfileData({...data, isFan: !data.isFan}))
+    }
+  }
 
   return (
     <div className="cardWrap">
@@ -39,15 +50,15 @@ const ProfileCard = (props) => {
         </div>
       </div>
       <div className="count">
-        <div data-target-type="fan" onClick={openPopFanStarLike} className="item">
+        <div data-target-type="fan" onClick={openPopFanStar} className="item">
           <span>{data.fanCnt}</span>
           <i>팬</i>
         </div>
-        <div data-target-type="star" onClick={openPopFanStarLike} className="item">
+        <div data-target-type="star" onClick={openPopFanStar} className="item">
           <span>{data.starCnt}</span>
           <i>스타</i>
         </div>
-        <div data-target-type="like" onClick={openPopFanStarLike} className="item">
+        <div data-target-type="like" onClick={openPopLike} className="item">
           <span>{data.likeTotCnt}</span>
           <i>좋아요</i>
         </div>
