@@ -28,8 +28,8 @@ import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew} from "common/api";
 import Navigation from "components/ui/navigation/Navigation";
-import LayoutMobile from 'pages/common/layout'
 import './styles/navigation.scss'
+import LayoutMobile from 'pages/common/layout'
 import Layout from "common/layout";
 import Common from "common";
 import Alert from "common/alert";

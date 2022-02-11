@@ -10,11 +10,13 @@ import MyInfo from "pages/remypage/components/MyInfo";
 import MydalDetail from "pages/remypage/components/MydalDetail";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Report from "./contents/report/report"
+import Clip from "./contents/clip/clip"
+
 import {Hybrid, isHybrid} from "context/hybrid";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
-  {menuNm: '클립'},
+  {menuNm: '클립', path:'clip'},
   {menuNm: '설정'},
   {menuNm: '공지사항'},
   {menuNm: '고객센터'},
@@ -84,6 +86,8 @@ const Remypage = () => {
   switch (settingCategory) {
     case 'report' :
       return(<Report />)
+    case 'clip' :
+      return(<Clip />)
     default :
       return(
         <>

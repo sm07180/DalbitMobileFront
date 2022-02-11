@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context, GlobalContext} from 'context'
-import './index.scss'
+import './style.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
@@ -257,8 +257,8 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y") => {
-    const getImgList = data => data.map(item => item.profImg)
+  const openShowSlide = (data, isList = "y", keyName='profImg') => {
+    const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
 
@@ -346,7 +346,7 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      <div onClick={goMailAction}>askldjlkasdjf</div>
+      {/* <div onClick={goMailAction}>askldjlkasdjf</div> */}
       <section className='topSwiper'>
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>

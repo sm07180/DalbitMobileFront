@@ -28,15 +28,15 @@
       border-radius: 50%;
     }
     &--active {
-      border-color: $primary;
-      background-color: $primary;
+      border-color: primary;
+      background-color: primary;
       color: $white;
       .subTabList__link {
         color: $white;
       }
       span {
         background: $white;
-        color: $primary;
+        color: primary;
       }
     }
   }

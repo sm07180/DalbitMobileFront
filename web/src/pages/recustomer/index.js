@@ -11,7 +11,7 @@ import {Context} from 'context'
 import Header from 'components/ui/header/Header'
 //Content
 import Faq from './contents/faq/Faq'
-import Inquire from './contents/inquire/Inquire'
+import Inquire from './contents/inquire'
 
 import './style.scss'
 
@@ -42,10 +42,6 @@ const Customer = () => {
   const golink = (path) => {
     history.push("/customer/" + path);
   }
-
-  useEffect(() => {
-    console.log(category);
-  }, [])
 
   return (
     <div id='customer'>
