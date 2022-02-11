@@ -18,11 +18,11 @@ legend {
 // 메인및 서브 페이지 센터영역 공통 wrap
 #root {
   width:100%;
-  overflow-x:hidden;
 }
 
 .content-article {
-  height:100vh !important;
+  @include flex($fd: column);
+  min-height:100vh !important;
 }
 
 .refresh-wrap {

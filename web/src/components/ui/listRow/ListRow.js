@@ -3,11 +3,11 @@ import React from 'react'
 import './listRow.scss'
 
 const ListRow = (props) => {
-  const {photo, children, onClick} = props
+  const {photo, children, onClick, photoClick} = props
 
   return (
-    <div className="listRow">
-      <div className="photo" onClick={onClick}>
+    <div className="listRow" onClick={onClick}>
+      <div className="photo" onClick={photoClick}>
         <img src={photo} alt="" />
       </div>
       {children}

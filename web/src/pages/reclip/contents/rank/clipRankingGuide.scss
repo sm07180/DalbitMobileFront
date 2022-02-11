@@ -1,20 +1,20 @@
-@import "../../../components/ui/mixin";
+@import "../../../../components/ui/mixin";
 
 #clipRankingGuide{
-  section{
+  flex:1;
+  @include flex($fd:column);
+  .table {
     position:relative;
     padding: 16px;
   }
-  .content{
-    min-height: calc(100% - 48px);
-  }
-  .title{
-    @include font(16px, 600, #202020);
+  .title {
+    @include font(16px,$SemiBold,#202020);
     margin-bottom: 14px;
   }
-  table{
+  table {
     width: 100%;
-    th{
+    border-collapse: collapse;
+    th {
       &:first-child{width: 36px;}
       width: 100%;
       line-height: 32px;
@@ -34,7 +34,7 @@
   .noticeWrap{
     background: #f6f6f6;
     padding: 23px 16px;
-    margin: 27px 0;
+    margin-top: auto;
     ul{
       li{
         line-height: 21px;
@@ -43,8 +43,9 @@
     }
   }
   .bottomWrap{
-    padding: 0;
     width: 100%;
+    margin-top: 20px;
+    padding: 0;
     img{width: 100%;}
   }
 }

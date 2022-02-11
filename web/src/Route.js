@@ -22,8 +22,8 @@ const Main = React.lazy(() => import('pages/main'))
 // 클립
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
-const ClipRank = React.lazy(() => import('pages/reclip/contents/clipRanking'))
-const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/clipRankingGuide'))
+const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking'))
+const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
@@ -41,7 +41,7 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (작성, 수정)
 const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (상세)

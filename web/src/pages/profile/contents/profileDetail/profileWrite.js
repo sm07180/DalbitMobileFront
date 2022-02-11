@@ -54,7 +54,6 @@ const ProfileWrite = () => {
   });
 
 
-
   //등록
   const contentsAdd = async () => {
     const {title, contents, topFix, photoInfoList} = formState;
@@ -163,7 +162,6 @@ const ProfileWrite = () => {
   useEffect(()=>{
     console.log(formState);
   },[formState])
-
   //상세조회 (수정만)
   const getDetailData = () => {
     if(type==='feed'){
@@ -192,17 +190,13 @@ const ProfileWrite = () => {
 
   const deleteThumbnailImageList = (list, _index) => {
     const result = list.filter((data, index) => index !== _index)
+
     setFormState({...formState, photoInfoList: result})
   };
   useEffect(() => {
     action === 'modify' && getDetailData();
   },[]);
 
-  useEffect(()=>{
-    console.log(
-      'showSlide', showSlide)
-
-  },[showSlide])
   return (
     <div id="profileWrite">
       <Header title={`${type==='feed'?'피드':'팬보드'} ${action==='write'?'쓰기':'수정'}`} type={'back'}/>

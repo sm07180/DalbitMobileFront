@@ -3,6 +3,8 @@ import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // Server Api
 import { broadcastExit } from "common/api";
 import {isDesktop} from "../../lib/agent";
+import {isMobileWeb} from "../../context/hybrid";
+import {RoomJoin} from 'context/room'
 
 
 export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean) {
@@ -56,8 +58,8 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
 }
 
 export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
+  const { globalState, globalAction } = gtx;
   if(isDesktop()) {
-    const { globalState, globalAction } = gtx;
     const { clipInfo, clipPlayer, rtcInfo } = globalState;
     if (clipInfo !== null) {
       globalAction.setAlertStatus!({
@@ -119,7 +121,13 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
         }
       }
     }
+  }else if(isMobileWeb()) {
+    if (!globalState.baseData.isLogin) {
+      history.push("/login");
+    }else {
+      gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+    }
   }else {
-    gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+    RoomJoin({roomNo: roomNo})
   }
 }
