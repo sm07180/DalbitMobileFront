@@ -9,6 +9,8 @@ import './profileDetail.scss'
 import ListRowComponent from "pages/profile/components/ListRowComponent";
 import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponent";
 import Utility from "components/lib/utility";
+import Swiper from "react-id-swiper";
+import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -16,9 +18,25 @@ const ProfileDetail = (props) => {
   const context = useContext(Context)
   const {token, profile} = context
   const {memNo, type, index} = useParams();
+  console.log(profile)
+  const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
+
+  const swiperFeeds = {
+    slidesPerView: 'auto',
+    spaceBetween: 8,
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'fraction'
+    }
+  }
+
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
+
+  //팝업 사진 스와이퍼
+  const [showSlide, setShowSlide] = useState(false);
+  const [imgList, setImgList] = useState([]);
 
   // 댓글 수정시 사용 action :['add' 등록, 'edit': 수정, replyIdx: 수정할 글번호]
   const [inputMode, setInputMode] = useState({action:'add', replyIdx: null });
@@ -34,7 +52,17 @@ const ProfileDetail = (props) => {
   const [replyList, setReplyList] = useState([]);
   const [isMore, setIsMore] = useState(false);
   const [text, setText] = useState('');
-  const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
+
+
+  /* 프로필 사진 확대 */
+  const openShowSlide = (data, isList = "y", keyName='profImg') => {
+    const getImgList = data => data.map(item => item[keyName])
+    let list = [];
+    isList === 'y' ? list = getImgList(data) : list.push(data);
+
+    setImgList(list);
+    setShowSlide(true);
+  }
 
   //상세조회
   const getDetailData = () => {
@@ -174,13 +202,29 @@ const ProfileDetail = (props) => {
     history.push(`/profileWrite/${memNo}/${type}/modify/${index}`);
   };
 
-  //댓글 삭제
-  const deleteContents = async (type, index) => {
+  //글 삭제
+  const deleteContents = async () => {
     if(type === 'feed') {
-      const {res, data, message} = await Api.deleteMypageNoticeReply({
-        memNo: profile?.memNo,
-        replyIdx: index
-      });
+      const {result, data, message} = await Api.mypage_notice_delete({
+        data: {
+          delChrgrName:profile?.nickName || 'asdasd',
+          noticeIdx: index,
+        }
+      })
+
+      if (result === 'success') {
+        history.goBack();
+      } else {
+        //실패
+      }
+
+    } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
+      const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx:index}});
+      if (result === 'success') {
+        history.goBack();
+      } else {
+        //실패
+      }
     }
   };
 
@@ -268,7 +312,7 @@ const ProfileDetail = (props) => {
       }else{
 
       }
-      
+
     }
   };
 
@@ -297,7 +341,7 @@ const ProfileDetail = (props) => {
   // 페이지 시작
   return (
     <div id="profileDetail">
-      <Header title={item?.nickName}>
+      <Header title={item?.nickName} type={'back'}>
         <div className="buttonGroup">
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -317,6 +361,29 @@ const ProfileDetail = (props) => {
           <div className="text">
             <pre>{item?.contents}</pre>
           </div>
+
+          {type === 'feed' && (item?.photoInfoList?.length > 1 ?
+              <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
+                <Swiper {...swiperFeeds}>
+                  {item.photoInfoList.map((photo) => {
+                    return (
+                      <div>
+                        <div className="photo">
+                          <img src={photo?.imgObj?.thumb500x500} alt="" />
+                        </div>
+                      </div>
+                    )
+                  })}
+                </Swiper>
+              </div>
+              : item?.photoInfoList?.length === 1 ?
+                <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                  <div className="photo">
+                    <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
+                  </div>
+                </div>
+                : <></>
+          )}
           <div className="info">
             {/*<i className='like'></i>
             <span>{Utility.addComma(123)}</span>*/}
@@ -324,7 +391,7 @@ const ProfileDetail = (props) => {
             <span>{Utility.addComma(replyList.length)}</span>
           </div>
         </div>
-        
+
         {/*댓글 리스트*/}
         <div className='listWrap'>
           {
@@ -347,6 +414,9 @@ const ProfileDetail = (props) => {
           </button>
         </div>
       </section>
+
+      {/* 프로필 사진 확대 */}
+      {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
     </div>
   )
 }

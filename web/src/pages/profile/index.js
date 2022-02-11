@@ -361,7 +361,11 @@ const ProfilePage = () => {
       <section className="socialWrap">
         <div className="tabmenuWrap">
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
-          {isMyProfile && <button>등록</button>}
+          {isMyProfile && <button onClick={() => {
+            socialType === socialTabmenu[0]?
+            history.push(`/profileWrite/${profileData?.memNo}/feed/write`):
+              socialType === socialTabmenu[1] &&
+              history.push(`/profileDetail/${profileData?.memNo}/fanBoard/write`)}}>>등록</button>}
         </div>
 
         {/* 피드 */}
