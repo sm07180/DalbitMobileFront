@@ -18,8 +18,6 @@
 }
 
 #mainPage {
-  font-family: "SUIT", sans-serif !important;
-  letter-spacing: 0 !important;
   .headerWrap {
     position:fixed;
     z-index:$HEADER-ZINDEX;
@@ -46,11 +44,12 @@
   }
   section {
     position:relative;
-    margin-bottom:35px;
+    margin-bottom:44px;
   }
   .topSwiper {
     width:100%;
     height:360px;
+    margin-bottom:28px;
     .photo {
       position:relative;
       width:100%;
@@ -74,12 +73,6 @@
         object-fit: cover;
       }
     }
-    .swiper-pagination {
-      @include swiperPagination;
-      bottom:30px;
-      z-index:1;
-      display:inline-block;
-    }
     .info {
       position:absolute;
       bottom:0;
@@ -91,24 +84,35 @@
         @include flex(center);
         height:16px;
       }
+      .badgeGroup {
+        @include flex(center);
+      }
       .title {
         width:72%;
         line-height:30px;
         margin-bottom:6px;
-        @include font(22px,500,#202020);
+        @include font(22px,$SemiBold,#202020);
+        @include fontLineCut;
       }
       .nick {
         width:72%;
         line-height:24px;
         opacity:.7;
-        @include font(15px,400,#202020);
+        @include font(15px,$Regular,#202020);
         @include fontCut;
       }
     }
+    .empty {
+      width:100%;
+      height:100%;
+      background-color:#f5f5f5;
+    }
   }
   .favorites {
+    margin-bottom:0;
     .swiper-wrapper {
       padding-left:16px;
+      margin-bottom:35px;
       .swiper-slide {
         width:auto;
         margin-right:10px;
@@ -129,11 +133,14 @@
             }
           }
           p {
-            @include font(12px,400,#303030);
+            @include font(12px,$Regular,#303030);
             @include fontCut;
           }
         }
       }
+    }
+    .empty {
+      display:none;
     }
   }
   .top10 {
@@ -146,10 +153,10 @@
         li {
           position:relative;
           padding: 0 8px;
-          @include font(14px,400,#666);
+          @include font(14px,$Medium,#666);
           &.active {
             font-weight:500;
-            color:#B620FF;
+            color:$MAINCOLOR;
           }
           &:after {
             position:absolute;
@@ -172,7 +179,7 @@
         padding-left:16px;
         .swiper-slide {
           width:auto;
-          margin-right:10px;
+          margin-right:12px;
           &:last-child {
             margin-right:28px;
           }
@@ -182,23 +189,33 @@
               position:relative;
               height:136px;
               margin-bottom:6px;
-              border-radius:8px;
+              border-radius:16px;
               overflow:hidden;
+              &::after {
+                content:"";
+                @include position-bottom-left;
+                width:100%;
+                height:55px;
+                background-image:linear-gradient(to top,rgba(0,0,0,1),rgba(0,0,0,0));
+                opacity: .5;
+              }
               img {
                 height:100%;
                 object-fit: cover;
               }
               @mixin RANKIMG($value) {
-                @include position-bottom-right(8px,8px);
-                width:30px;
-                height:40px;
+                @include position-bottom-right;
+                z-index: 1;
+                width:100%;
+                height:55px;
+                padding: 0 8px 8px;
                 @include BGIMG("#{$value}");
-                background-size:auto 100%;
-                background-position: right bottom;
+                background-size:49px 47px;
+                background-position:calc(100% - 8px) top;
               }
               @for $i from 1 through 10 {
                 .rank-#{$i} {
-                  @include RANKIMG('clip/dalla/number-#{$i}.png');
+                  @include RANKIMG('main/dalla/number_W-#{$i}.png');
                 }
               }
             }
@@ -210,6 +227,12 @@
         }
       }
     }
+    .empty {
+      width:100%;
+      height:60px;
+      text-indent:20px;
+      @include font(15px,400,#999);
+    }
   }
   .daldungs {
     .cntTitle {
@@ -219,19 +242,26 @@
       padding-left:16px;
       .swiper-slide {
         width:auto;
-        margin-right:8px;
+        margin-right:12px;
         &:last-child {
           margin-right:28px;
         }
         .listColumn {
           width:102px;
-          border-radius:8px;
+          border-radius:16px;
           overflow:hidden;
           .photo {
             height:150px;
             img {
               height:100%;
               object-fit: cover;
+            }
+            .video {
+              @include position-top-right;
+              width:20px;
+              height:20px;
+              margin:6px;
+              @include BGIMG("common/icon/ico_video.png");
             }
           }
           p {
@@ -240,33 +270,59 @@
             padding:24px 8px 8px;
             background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
             text-align:left;
-            @include font(13px,500,#fff);
+            @include font(13px,$Medium,white);
             @include fontCut;
           }
         }
       }
     }
+    .empty {
+      width:100%;
+      height:60px;
+      text-indent:20px;
+      @include font(15px,400,#999);
+    }
   }
   .bannerWrap {
-    padding:0 16px;
+    margin-bottom:35px;
   }
   .liveView {
     .cntTitle {
       margin-bottom:8px;
     }
-    .tabmenu {
-      @include flex(center);
-      padding:0 16px;
-      li {
-        flex:1;
-        height:40px;
-        line-height:40px;
-        border-bottom:2px solid #F2F2F2;
-        text-align:center;
-        @include font(16px,500,#ACACAC);
-        &.active {
-          color:#202020;
-          border-bottom-color:#202020;
+    .tabmenuWrap {
+      position:relative;
+      height:48px;
+      &.isFixed {
+        position:fixed;
+        top:$HEADER-HEIGHT;
+        width:100%;
+        z-index: 10;
+      }
+      .tabmenu {
+        @include flex(center);
+        padding:0 16px;
+        background-color:white;
+        li {
+          position:relative;
+          flex:1;
+          line-height:48px;
+          text-align:center;
+          @include font(16px,$SemiBold,#ACACAC);
+          &.active {
+            font-weight:$Bold;
+            color:#202020;
+            border-bottom-color:#202020;
+            &::after {
+              content:"";
+              @include position-horizon;
+              bottom:0;
+              width:15px;
+              height:5px;
+              border-radius:100px;
+              background-color:$MAINCOLOR;
+            }
+          }
         }
       }
     }
@@ -277,12 +333,26 @@
         height:110px;
         margin-bottom:12px;
         .photo {
+          position:relative;
           width:110px;
           height:110px;
           border-radius:8px;
           overflow:hidden;
           img {
             width:100%;
+          }
+          .guest {
+            @include position-bottom-right;
+            width:48px;
+            height:48px;
+            @include border(white,8px,2px);
+          }
+          .video {
+            @include position-top-right;
+            width:20px;
+            height:20px;
+            margin:6px;
+            @include BGIMG("common/icon/ico_video.png");
           }
         }
       }

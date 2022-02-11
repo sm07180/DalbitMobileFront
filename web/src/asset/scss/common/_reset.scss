@@ -16,6 +16,7 @@ h6,
 i,
 a,
 p,
+pre,
 span,
 label,
 dl,
@@ -48,7 +49,7 @@ iframe,
 main {
   margin: 0;
   padding: 0;
-  font-family: "SUIT", sans-serif;
+  font-family: "SUIT";
   font-weight: inherit;
   box-sizing: border-box;
 }
@@ -82,6 +83,7 @@ html,
 body {
   -webkit-text-size-adjust: none;
   -ms-text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img,
@@ -130,7 +132,9 @@ select {
 }
 
 textarea {
+  border: 0;
   outline: none;
+  resize: none;
 }
 
 input,
@@ -184,10 +188,6 @@ input[type="number"]::-webkit-inner-spin-button {
 
 pre {
   font-family: inherit;
-}
-
-textarea {
-  resize: none;
 }
 
 b,

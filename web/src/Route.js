@@ -22,6 +22,8 @@ const Main = React.lazy(() => import('pages/main'))
 // 클립
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
+const ClipRank = React.lazy(() => import('pages/reclip/contents/clipRanking'))
+const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/clipRankingGuide'))
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
@@ -40,7 +42,10 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
 const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
-const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
+// 프로필 - 피드, 팬보드 (작성, 수정)
+const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 - 피드, 팬보드 (상세)
+const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -81,8 +86,8 @@ const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
-const ClipRank = React.lazy(() => import('pages/clip_rank'))
-const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
+// const ClipRank = React.lazy(() => import('pages/clip_rank'))
+// const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
 
@@ -176,8 +181,34 @@ const Router = () => {
                  }
                }}
         />
+        {/*피드 등록, 수정*/}
+        <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const targetMemNo = match.params.memNo
+                 if(!context.token?.isLogin){
+                   return <Redirect to={{ pathname: '/login' }} />
+                 } else if(myMemNo !== targetMemNo){
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 } else {
+                   return <Route component={ProfileContentsWrite} />
+                 }
+               }}
+        />
+        {/*피드 조회*/}
+        <Route exact path={"/profileDetail/:memNo/:type/:index"} main={ProfileDetail}
+               render={({ match}) => {
+                 const {memNo, type, index} = match.params;
 
-        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
+                 if(!context.token?.isLogin){
+
+                   return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
+                 } else {
+                   return <Route component={ProfileDetail} />
+                 }
+               }}
+        />
+
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}

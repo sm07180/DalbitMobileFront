@@ -29,12 +29,12 @@ const FeedSection = (props) => {
             return (
               <div key={item.noticeIdx}>
                 <div className="feedBox">
-                  <div className={`text ${item.profImg.isDefaultImg ? 'add' : ''}`}>{item.title}</div>
+                  <div className={`text ${item?.photoInfoList?.length > 0 ? 'add' : ''}`}>{item.title}</div>
                   <div className="info">
                     <span className="time">{item.writeDate}</span>
-                    {!item.profImg.isDefaultImg &&
+                    {item?.photoInfoList?.length > 0 &&
                       <div className="thumb">
-                        <img src={item.profImg.thumb50x50} alt="" />
+                        <img src={item?.photoInfoList[0]?.imgObj?.thumb50x50} alt="" />
                         {item.photoInfoList.length > 1 &&
                           <span className="count">{`+${item.photoInfoList.length -1}`}</span>
                         }

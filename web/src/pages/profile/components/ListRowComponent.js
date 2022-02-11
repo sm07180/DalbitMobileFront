@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useContext, useEffect, useMemo, useRef} from 'react';
 import {IMG_SERVER} from "context/config";
 import ListRow from "components/ui/listRow/ListRow";
 import {Context} from "context";
 import Utility from "components/lib/utility";
 
 const ListRowComponent = (props) => {
-  const { item, isMyProfile, index, type, openBlockReportPop } = props;
+  const { item, isMyProfile, index, onClick, openBlockReportPop, disableMoreButton } = props;
   const context = useContext(Context);
   const moreRef = useRef([]);
 
@@ -56,21 +56,25 @@ const ListRowComponent = (props) => {
   }, []);
 
   return (
-    <ListRow photo={item.profImg?.thumb50x50}>
+    <ListRow photo={item.profImg?.thumb50x50} onClick={onClick}>
       <div className="listContent">
         <div className="nick">{item.nickName}</div>
         <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
-      <div className='moreBtn' onClick={() => moreBoxClick(index)}>
+      {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
         <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
         <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
           {(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}
           {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button>삭제하기</button>}
           {context.profile.memNo !== item.mem_no && <button onClick={openBlockReportPop}>차단/신고하기</button>}
         </div>
-      </div>
+      </div>}
     </ListRow>
   )
 };
 
 export default ListRowComponent;
+
+ListRowComponent.defaultProps = {
+  disableMoreButton : true  //.moreBtn 태그 노출여부
+};

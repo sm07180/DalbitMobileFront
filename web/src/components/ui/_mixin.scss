@@ -6,13 +6,22 @@ $IMGSERVER: unquote("https://image.dalbitlive.com");
 
 // height 값 관리
 $HEADER-HEIGHT: 48px;
+$NAVIGATION-HEIGHT: 50px;
 
 // z-inde 관리
 $ALERT-ZINDEX: 60;
 $POPUP-ZINDEX: 60;
+$MORE-ZINDEX: 50;
+$POPSLIDE-ZINDEX: 50;
 $NAVIGATION-ZINDEX: 30;
 $HEADER-ZINDEX: 30;
-$MORE-ZINDEX: 50;
+
+// SUIT FONT-WEIGHT;
+$Regular: 400;
+$Medium: 500;
+$SemiBold: 600;
+$Bold: 700;
+$ExtraBold: 800;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
@@ -60,6 +69,7 @@ $MORE-ZINDEX: 50;
 }
 
 @mixin fontCut {
+  word-break:break-all;
   white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
@@ -69,6 +79,8 @@ $MORE-ZINDEX: 50;
   display: -webkit-box;
   -webkit-line-clamp: $value;
   -webkit-box-orient: vertical;
+  word-break:break-all;
+  overflow:hidden;
 }
 
 @mixin backgroundPSR {
