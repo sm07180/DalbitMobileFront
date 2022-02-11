@@ -3,6 +3,7 @@ import {IMG_SERVER} from 'context/config'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 
 import Api from 'context/api'
+import moment from 'moment'
 
 import NoResult from "components/ui/noResult";
 import EventRankList from '../../components/rankList/RankList'
