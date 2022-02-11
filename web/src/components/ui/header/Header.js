@@ -23,7 +23,6 @@ const Header = (props) => {
 }
 
 Header.defaultProps = {
-  type: 'back',
   position:'sticky'
 }
 
