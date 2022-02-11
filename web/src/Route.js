@@ -24,9 +24,12 @@ const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
 const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking'))
 const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
-// 랭킹
-const Ranking = React.lazy(() => import('pages/reranking'))
+
+//랭킹
+const Ranking = React.lazy(() => import('pages/reranking/contents/rankingMain'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
+
 // 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
 // 검색
@@ -134,7 +137,8 @@ const Router = () => {
         <Route exact path="/search" component={ReSearch} />
 
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank/:type" component={RankingDetail} />
+        <Route exact path="/rankDetail/:type" component={RankingDetail} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />

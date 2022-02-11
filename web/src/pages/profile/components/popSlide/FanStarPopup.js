@@ -32,7 +32,7 @@ const starSubTabMenu = [
 ]
 
 const FanStarPopup = (props) => {
-  const {type, isMyProfile, fanToggle, profileData, goProfile, setPopFanStar} = props
+  const {type, isMyProfile, fanToggle, profileData, goProfile, setPopFanStar, myMemNo} = props
   const dispatch = useDispatch();
   const [showList, setShowList] = useState([]);
   const [fanStarLikeState, setFanStarLikeState] = useState({type: '', title: '', subTab: []});
@@ -41,29 +41,32 @@ const FanStarPopup = (props) => {
   // 팬 조회
   const fetchInfoDataType = (type, fanStarSortType) => {
     if (type === 'fan') {
-      console.log('fanStarSortType', fanStarSortType)
       Api.getNewFanList({
         memNo: profileData.memNo,
-        sortType: fanStarSortType,
+        sortType: isMyProfile ? fanStarSortType : 0,
         page: 1,
         records: 9999
       }).then((res) => {
         if (res.result === 'success') {
           const data = res.data
-          dispatch(setProfileData({...profileData, fanCnt: data.paging.total}));
+          if(data.length > 0) {
+            dispatch(setProfileData({...profileData, fanCnt: data.paging.total}));
+          }
           setShowList(data.list)
         }
       })
     }else if (type === 'star') {
       Api.getNewStarList({
         memNo: profileData.memNo,
-        sortType: fanStarSortType,
+        sortType: isMyProfile ? fanStarSortType : 0,
         page: 1,
         records: 9999
       }).then((res) => {
         if (res.result === 'success') {
           const data = res.data;
-          dispatch(setProfileData({...profileData, starCnt: data.paging.total}));
+          if(data.length > 0) {
+            dispatch(setProfileData({...profileData, starCnt: data.paging.total}));
+          }
           setShowList(data.list)
         }
       })
@@ -142,26 +145,42 @@ const FanStarPopup = (props) => {
                 goProfile(list.memNo)
                 setPopFanStar(false);
               }}>
-                {index < 3 &&
-                  <div className="rank">{index + 1}</div>
-                }
-                <div className="listContent">
-                  <div className="nick">{list.nickNm}</div>
-                  {/*{list.listenTime}분*/}
-                  <div className="date">등록일 {Utility.dateFormatterKor(list.regDt, "")}</div>
-                  {/*{Utility.printNumber(list.giftedByeol)}*/}
-                  <div className="listItem">
-                    <div className="like">
-                      {list.lastListenTs === 0 ? '-' : Utility.settingAlarmTime(list.lastListenTs)}
+                {isMyProfile ?
+                  <>
+                    {index < 3 && <div className="rank">{index + 1}</div>}
+                    <div className="listContent">
+                      <div className="nick">{list.nickNm}</div>
+                      {/*{list.listenTime}분*/}
+                      <div className="date">등록일 {Utility.dateFormatterKor(list.regDt, "")}</div>
+                      {/*{Utility.printNumber(list.giftedByeol)}*/}
+                      <div className="listItem">
+                        <div className="like">
+                          {list.lastListenTs === 0 ? '-' : Utility.settingAlarmTime(list.lastListenTs)}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="back">
-                  <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                    const isFan = list.isFan;
-                    fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                  }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
-                </div>
+                    <div className="back">
+                      <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
+                        const isFan = list.isFan;
+                        fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
+                      }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                    </div>
+                  </>
+                  :
+                  <>
+                    <div className="listContent">
+                      <div className="nick">{list.nickNm}</div>
+                    </div>
+                    {list.memNo !== myMemNo &&
+                      <div className="back">
+                        <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
+                          const isFan = list.isFan;
+                          fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
+                        }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                      </div>
+                    }
+                  </>
+                }
               </ListRow>
             )
           })}

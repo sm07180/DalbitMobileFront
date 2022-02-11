@@ -7,7 +7,10 @@ const ListRow = (props) => {
 
   return (
     <div className="listRow" onClick={onClick}>
-      <div className="photo" onClick={photoClick}>
+      <div className="photo" onClick={(e) => {
+        e.stopPropagation();
+        photoClick();
+      }}>
         <img src={photo} alt="" />
       </div>
       {children}
@@ -18,5 +21,6 @@ const ListRow = (props) => {
 export default ListRow
 
 ListRow.defaultProps = {
-  onClick: () => {}
+  onClick: () => {},
+  photoClick: () => {}
 };
