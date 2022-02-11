@@ -102,7 +102,7 @@ const DalCharge = () => {
         }
       })
     }else{
-        callPGForm(payment);
+      callPGForm(payment);
     }
   }
 
@@ -259,20 +259,20 @@ const DalCharge = () => {
       </section>
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"/>
       {popSlide === true &&
-        <PopSlide setPopSlide={setPopSlide}>
-          <div className='title'>인증 정보를 확인해주세요!</div>
-          <div className="infoBox">
-            <p className='name'>홍길동</p>
-            <p className='phoneNum'>010-111-2222</p>
-          </div>
-          <p className='text'>
+      <PopSlide setPopSlide={setPopSlide}>
+        <div className='title'>인증 정보를 확인해주세요!</div>
+        <div className="infoBox">
+          <p className='name'>홍길동</p>
+          <p className='phoneNum'>010-111-2222</p>
+        </div>
+        <p className='text'>
           안전한 계좌 정보 등록을 위해 한번 더<br/>
           본인인증을 해주셔야 합니다.<br/>
           추가 인증 시에는 반드시 위의 회원정보와 일치해야 합니다.<br/>
           추가 인증은 딱 1회만 진행됩니다.
-          </p>
-          <SubmitBtn text="다음" onClick={()=>{history.push(`/selfauth?event=/store`)}}/>
-        </PopSlide>
+        </p>
+        <SubmitBtn text="다음" onClick={()=>{history.push(`/selfauth?event=/store`)}}/>
+      </PopSlide>
       }
     </div>
   )
