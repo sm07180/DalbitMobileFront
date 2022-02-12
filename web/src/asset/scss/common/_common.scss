@@ -51,20 +51,26 @@ legend {
 }
 
 .container {
-  min-height: 100vh;
+  @include flex(center,center,column);
+  min-height: calc(100vh - #{$GNB-HEIGHT});
+  padding-top:20px;
   background-color: #fbfbfb;
   .totalWrap {
+    flex:1;
+    @include flex($fd:column);
     max-width:800px;
-    margin: 0 auto;
+    height:100%;
     .content {
+      flex:1;
       position:relative;
-      background: $white;
-      min-height: 100vh;
+      @include flex($fd:column);
       width: 480px;
+      height:100%;
       border-top:1px solid $lightGray;
+      background: $white;
       &::before {
         content:"";
-        @include position-top-left;
+        @include position-top-left(0,-1px);
         z-index: 2;
         width:1px;
         height:100%;
@@ -72,7 +78,7 @@ legend {
       }
       &::after {
         content:"";
-        @include position-top-right;
+        @include position-top-right(0,-1px);
         z-index: 2;
         width:1px;
         height:100%;
@@ -109,7 +115,7 @@ legend {
   top:0;
   z-index: 99999;
   width:100%;min-width:480px;
-  height: 68px;
+  height: $GNB-HEIGHT;
   background-color: white;
   border-bottom:1px solid #E0E0E0;
   .gnbContainer {
@@ -125,6 +131,7 @@ legend {
       h1 {
         height:25px;
         max-width:480px;
+        cursor: pointer;
         img {
           width:71px;
           height:100%;
@@ -209,6 +216,7 @@ legend {
   top: 0;
   width: 80px;
   height: 100vh;
+  padding-top: $GNB-HEIGHT;
   z-index: 5;
   .guideItem {
     margin-top: 26px;
@@ -236,6 +244,7 @@ legend {
   }
 }
 #footerWrap {
+  margin-top:auto;
   padding: 30px 0 50px;
   background-color: #F7F7F7;
   text-align: center;

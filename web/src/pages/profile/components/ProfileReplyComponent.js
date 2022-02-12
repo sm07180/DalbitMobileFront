@@ -30,16 +30,29 @@ const ProfileReplyComponent = (props) => {
             {item?.contents}
           </pre>
         </div>
-        {(isMyProfile || context.adminChecker) && <div><button onClick={() => replyDelete(item?.replyIdx)}>삭제</button></div>}
-        {isMyProfile && <div><button onClick={() => {
-          blurBlock();
-          replyEditFormActive(item?.replyIdx, item?.contents)}}>수정</button></div>}
-        {/*<div className="listItems">
-        <i className='like'></i>
-        <span>123</span>
+        {/*좋아요
+        <div className="listItems">
+          <i className='like'/>
+          <span>{Utility.addComma(3211)}</span>
         </div>*/}
+
+        {(isMyProfile || context.adminChecker) && <div>
+          <button onClick={() => replyDelete(item?.replyIdx)}>삭제</button>
+        </div>}
+        {isMyProfile && <div>
+          <button onClick={() => {
+            blurBlock();
+            replyEditFormActive(item?.replyIdx, item?.contents)
+          }}>수정
+          </button>
+        </div>}
+
       </div>
+      <button className='more'>
+        <img src="" alt="" />
+      </button>
     </ListRow>
+
 
   );
 }

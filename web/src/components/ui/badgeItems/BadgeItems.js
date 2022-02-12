@@ -4,22 +4,25 @@ import './badgeItems.scss'
 
 const BadgeItems = (props) => {
   const {data, type} = props
+  
   const commonBadgeList = data.commonBadgeList
   const liveBadgeList =  data.liveBadgeList
   const fanBadge = [data.fanBadge]
-  const isBadges = {
+  const isBadge = {
     special: true, //data.isSpecial,
     recommend: data.isRecomm,
     new: data.isNew,
     contents: data.isConDj,
     badgeSpecial: data.badgeSpecial
   }
-
-  console.log(data,isBadges,fanBadge.icon);
+  const isNew = {
+    new: data.isNew,
+    newListener: data.isNewListener,
+  }
 
   return (
     <>
-      {commonBadgeList.map((list, index) => {
+      {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
           <React.Fragment key={index}>
@@ -35,7 +38,7 @@ const BadgeItems = (props) => {
           </React.Fragment>
         )
       })}
-      {/* {liveBadgeList.map((list, index) => {
+      {type === 'liveBadgeList' && liveBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
           <React.Fragment key={index}>
@@ -50,8 +53,8 @@ const BadgeItems = (props) => {
             </em>
           </React.Fragment>
         )
-      })} */}
-      {fanBadge.icon !== undefined ?
+      })}
+      {type === 'fanBadge' && fanBadge.icon !== undefined &&
         <em
           className={`badgeItem`}
           style={{
@@ -60,20 +63,26 @@ const BadgeItems = (props) => {
           {fanBadge.icon !== '' && <img src={fanBadge.icon} alt="뱃지아이콘" />}
           <span>{fanBadge.text}</span>
         </em>
-        :
-        <></>
       }
-      {isBadges && isBadges.badgeSpecial === 2 ? (
-        <em className="icon_wrap icon_bestdj">베스트DJ</em>
-      ) : isBadges.special === true ? (
-        <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>
-      ) : isBadges.badgeSpecial === 1 ? (
-        <em className="badgeItem icon_specialdj">스페셜DJ</em>
-      ) : (
-        <></>
+      {type === 'isBadge' && isBadge.badgeSpecial == 2 ? (
+        <em className="badgeItem bestDj">베스트DJ</em>
+      ) : isBadge.badgeSpecial === 1 ? (
+        <em className="badgeItem contentsDj">콘텐츠DJ</em>
+      ) : isBadge.special === true && (
+        <em className="badgeItem specialDj">스페셜DJ</em>
       )}
+      {type === 'isNew' && isNew.new ? 
+        <em className='badgeItem newDj'>NEW DJ</em>
+        : type === 'isNew' && isNew.newListener &&
+        <em className='badgeItem new'>NEW</em>
+      }
     </>
   )
+}
+
+BadgeItems.defaultProps = {
+  data: [],
+  type: ''
 }
 
 export default React.memo(BadgeItems)

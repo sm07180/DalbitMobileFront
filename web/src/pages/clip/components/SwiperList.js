@@ -29,6 +29,6 @@ const SwiperList = (props) => {
       }
     </>
   )
-}
+};
 
-export default SwiperList
+export default SwiperList;

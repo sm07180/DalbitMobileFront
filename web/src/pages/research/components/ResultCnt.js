@@ -6,7 +6,7 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 // css
-import './resultCnt.scss'
+import '../scss/resultCnt.scss'
 
 const ResultCnt = (props) => {
   const {data, type} = props

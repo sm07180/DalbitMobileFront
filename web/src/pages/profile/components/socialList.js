@@ -35,7 +35,7 @@ const SocialList = (props) => {
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
-                              onClick={() => goContentsDetail(item.noticeIdx ? item.noticeIdx : item.replyIdx)}
+                              photoClick={() => goContentsDetail(item.noticeIdx ? item.noticeIdx : item.replyIdx)}
             />
             <div className="socialContent">
               <div className="text">
