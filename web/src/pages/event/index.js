@@ -51,6 +51,7 @@ import DallaStore from './dallaStore'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
+import Invite from './invite'
 
 export default () => {
   const params = useParams()
@@ -150,6 +151,9 @@ export default () => {
       //   return <Participant />
       // case 'marblePocket':
       //   return <MarblePocket />
+      
+      case 'invite':
+        return <Invite />
       default:
         return <></>
         break
