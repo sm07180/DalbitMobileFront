@@ -5,7 +5,7 @@ import {Context} from "context";
 import Utility from "components/lib/utility";
 
 const ListRowComponent = (props) => {
-  const { item, isMyProfile, index, onClick, openBlockReportPop, disableMoreButton } = props;
+  const { item, isMyProfile, index, photoClick, openBlockReportPop, disableMoreButton } = props;
   const context = useContext(Context);
   const moreRef = useRef([]);
 
@@ -56,7 +56,7 @@ const ListRowComponent = (props) => {
   }, []);
 
   return (
-    <ListRow photo={item.profImg?.thumb50x50} onClick={onClick}>
+    <ListRow photo={item.profImg?.thumb50x50} photoClick={photoClick}>
       <div className="listContent">
         <div className="nick">{item.nickName}</div>
         <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>

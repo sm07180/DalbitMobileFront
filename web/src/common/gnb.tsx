@@ -382,7 +382,7 @@ export default function GNB() {
       <aside id="GNB">
         <div className="gnbContainer">
           <div className="gnbHeader">
-            <h1><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
+            <h1 onClick={() => history.push('/')}><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
             <button>방송하기</button>
           </div>
           <nav className="gnbNavigation">
@@ -391,7 +391,7 @@ export default function GNB() {
               <li onClick={() => history.push('/clip')}/>
               <li onClick={() => history.push('/search')}/>
               <li onClick={() => history.push('/rank')}/>
-              <li onClick={() => history.push('/my')}/>
+              <li onClick={() => history.push('/mypage')}/>
               <li onClick={() => history.push('/')}/>
             </ul>
           </nav>

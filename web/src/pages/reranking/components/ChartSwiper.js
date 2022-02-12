@@ -6,11 +6,12 @@ import ListRow from 'components/ui/listRow/ListRow'
 
 const CardList = (props) => {
   const {data} = props
-  
+
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
-    loop: false
+    loop: false,
+    rebuildOnUpdate: true
   }
 
   return (
@@ -20,7 +21,7 @@ const CardList = (props) => {
             {data.map((list, index) => {
               return (
                 <div key={index}>
-                  <ListRow photo={list.profImg.thumb292x292}>
+                  <ListRow photo={list.profImg.thumb292x292} memNo={list.memNo}>
                     <div className='rankWrap'>
                       <div className='rank'>{list.rank}</div>
                     </div>
@@ -38,4 +39,4 @@ const CardList = (props) => {
   )
 }
 
-export default CardList
+export default React.memo(CardList);

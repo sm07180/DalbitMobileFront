@@ -8,6 +8,9 @@
     }
     .title {
       pointer-events: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
       .optionSelect {
         display: inline-block;
         width: 20px; height: 20px;
@@ -28,8 +31,8 @@
       border-bottom: 2px solid #ccc;
       @include font(16px,500,#ccc);
       &.active {
-        @include font(16px,700,#333);   
-        border-bottom: 2px solid #333;       
+        @include font(16px,700,#333);
+        border-bottom: 2px solid #333;
       }
     }
   }
@@ -215,7 +218,7 @@
           flex: 1;
           padding: 0 16px;
           @include flex(center, center, column);
-          overflow: hidden;        
+          overflow: hidden;
           .listItem {
             @include flex(center);
             width: 100%;
@@ -269,7 +272,62 @@
           }
         }
       }
-    } 
+    }
+  }
+  #popSlide {
+    .selectWrap {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      .selectOption {
+        width: 100%;
+        text-align: center;
+        @include font(16px, 400, #202020);
+        line-height: 55px;
+        &.active {
+          @include font(16px, 700, #FF3C7B);
+        }
+      }
+    }
+  }
+}
+
+#layerPop {
+  .popTitle {
+    line-height: 48px;
+    text-align: center;
+    @include font(16px, 700, #202020);
+  }
+  .popSubTitle {
+    @include font(16px, 400, #202020);
+    @include fontLineCut();
+    text-align: center;
+    letter-spacing: -1px;
+    margin: 11px 0;
+    line-height: 26px;
+    white-space: pre;
+    overflow: hidden;
+    &.point {
+      color: #FF3C7B;
+    }
+  }
+  .popText {
+    @include font(13px, 400, #666666);
+    @include fontLineCut();
+    text-align: center;
+    letter-spacing: -1px;
+    margin: 11px 0;
+    line-height: 20px;
+    white-space: pre;
+    overflow: hidden;
+    span {
+      @include font(13px, 400, #FF6B4B);
+      padding-left: 16px;
+      background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+      background-position: left center;
+      background-repeat: no-repeat;
+      background-size: 16px 16px;
+    }
   }
   #popSlide {
     .selectWrap {
