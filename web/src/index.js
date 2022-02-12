@@ -6,7 +6,6 @@
 import App from 'App'
 //context
 import {GlobalProvider} from 'context'
-import {RankProvider} from 'context/rank_ctx'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
