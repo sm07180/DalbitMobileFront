@@ -178,7 +178,7 @@ const Router = () => {
                render={({ match}) => {
                  const myMemNo = context.profile.memNo;
                  const targetMemNo = match.params.memNo
-                 if(myMemNo !== targetMemNo) {
+                 if(myMemNo === targetMemNo) {
                    return <Redirect to={{ pathname: '/myProfile' }} />
                  }else {
                    return <Route component={Profile} />

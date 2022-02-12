@@ -291,6 +291,17 @@ const ProfilePage = () => {
     setPopSlide(false);
   }
 
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback((ref, callback) => {
+    const scrollTarget = ref.current;
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight === targetHeight + scrollTop) {
+      callback()
+    }
+  }, []);
+
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
     // dispatch(setProfileData(profileDefaultState)); // 프로필 상단
@@ -406,6 +417,7 @@ const ProfilePage = () => {
         <PopSlide setPopSlide={setPopFanStar}>
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
                        goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
+                       scrollEvent={scrollEvent}
           />
         </PopSlide>
       }
@@ -414,7 +426,7 @@ const ProfilePage = () => {
       {popLike &&
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     setPopLike={setPopLike} myMemNo={context.profile.memNo}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
           />
         </PopSlide>
       }
