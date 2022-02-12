@@ -5,7 +5,6 @@ import Swiper from 'react-id-swiper'
 // global components
 // components
 // css
-import './swiperList.scss'
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";

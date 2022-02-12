@@ -1,8 +1,8 @@
 @import "../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #broadcast-page {
   background-color: $lighterGray;
-
   .temp {
     padding: 0 90px;
 
@@ -60,7 +60,7 @@
     display: flex;
     justify-content: space-between;
     width: 1398px;
-    height: 100vh;
+    height: calc(100vh - #{$GNB-HEIGHT});
     padding: 20px 90px;
     margin: 0 auto;
     box-sizing: border-box;

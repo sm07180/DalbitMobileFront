@@ -1,0 +1,46 @@
+@import "components/ui/_mixin.scss";
+
+#inquireLog {
+  width: 100%;
+  padding: 12px 0;
+  .inquireLogWrap {
+    @include flex(flex-start, flex-start, column);
+    width: 100%;
+    .inquireLogList {
+      @include flex(center);
+      width: 100%; height: 50px;
+      padding: 14px 16px;
+      border-bottom: 1px solid #F2F2F2;
+      box-sizing: border-box;
+      cursor: pointer;
+      .inquireLogState {
+        flex: none;
+        margin-right: 8px;
+        .complete {
+          @include flex(center, center);
+          width: 60px; height: 22px;
+          border: 1px solid #FF3C7B;
+          border-radius: 100px;
+          @include font(12px, 700, #FF3C7B);
+        }
+        .ing {
+          @include flex(center, center);
+          width: 60px; height: 22px;
+          border: 1px solid #E3E3E3;
+          border-radius: 100px;
+          @include font(12px, 500, #303030);
+        }
+      }
+      .inquireLogTitle {
+        flex: 1;
+        @include font(15px, 600, #303030);
+        @include fontCut;
+        margin-right: 40px;
+      }
+      .inquireLogDate {
+        flex: none;
+        @include font(12px, 400, #707070);
+      }
+    }
+  }
+}

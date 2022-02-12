@@ -1,9 +1,10 @@
 import React from 'react'
 
 // global components
-import CntTitle from 'components/ui/cntTitle/CntTitle';
+import CntTitle from 'components/ui/cntTItle/CntTitle';
 
-export default () => {
+const SearchHistory = (props) => {
+
   const historyData = ["사랑", "쏭디제이", "꽃 피면 달 생각하고", "그 해 우리는", "이지금"];
 
   return (
@@ -21,3 +22,4 @@ export default () => {
     </div>
   )
 }
+export default SearchHistory;

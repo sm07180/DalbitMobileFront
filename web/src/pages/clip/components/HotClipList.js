@@ -23,7 +23,7 @@ const HotClipList = (props) => {
                     <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />
                   </div>
                   <div className="listItem">
-                    <span className="subject">{list.subjectName}</span>
+                    <span className="subject">111{list.subjectName}</span>
                     <span className='title'>{list.title}</span>
                   </div>
                   <div className="listItem">

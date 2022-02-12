@@ -67,12 +67,12 @@
         width: 100%;
         .msg {
           @include font(16px, 400, #202020);
-          @include fontLineCut();
+          @include fontLineCut;
           text-align: center;
           margin: 11px 0;
           line-height: 26px;
-          white-space: pre;
-          overflow: hidden;
+          white-space: pre-line;
+          word-break: keep-all;
         }
         .remsg {
           @include font(13px, 400, #666666);

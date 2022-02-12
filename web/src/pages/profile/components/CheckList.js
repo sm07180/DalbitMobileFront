@@ -10,7 +10,6 @@ const CheckList = (props) => {
   const {text, name, children, checkStatus, onClick} = props
 
   return (
-    <div className="infoCheckList">
       <label className="inputLabel">
         <input type="checkbox" className="blind" checked={checkStatus}
                onChange={onClick}/>
@@ -18,7 +17,6 @@ const CheckList = (props) => {
         <p className="checkinfo">{text}</p>
         {children}
       </label>
-    </div>
   )
 }
 
