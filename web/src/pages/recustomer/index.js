@@ -98,7 +98,7 @@ const Customer = () => {
         category === "faq" ?
           <Faq/>
         :
-        category === "inquire" ?
+        (category === "inquire" && !qnaIdx) ?
           <Inquire/>
         :
           <InquireDetail/>

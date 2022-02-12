@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
+import ListNone from 'components/ui/listNone/ListNone'
 
 // components
 import './inquireLog.scss'
@@ -41,7 +42,7 @@ const InquireLog = () => {
   return (
     <div id='inquireLog'>
       {
-        inquireLogList ? 
+        inquireLogList.length > 0 ? 
           <div className='inquireLogWrap'>
             {
               inquireLogList.map((list, index) => {
@@ -62,7 +63,7 @@ const InquireLog = () => {
             }
           </div>
         :
-         <></>
+          <ListNone text="문의 내역이 없어요." height="375px"/>
       }      
     </div>
   )
