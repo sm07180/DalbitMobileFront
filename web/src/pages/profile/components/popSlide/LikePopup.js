@@ -4,6 +4,7 @@ import Api from 'context/api'
 import moment from 'moment'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
+import Popup from 'components/ui/popup'
 // components
 
 import './style.scss'
@@ -174,7 +175,7 @@ const LikePopup = (props) => {
           <ul className="tabmenu">
             {myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
-                <div className="swiper-slide" key={index}>
+                <div className="likeTab" key={index}>
                   <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
@@ -186,7 +187,7 @@ const LikePopup = (props) => {
           <ul className="tabmenu">
             {notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
-                <div className="swiper-slide" key={index}>
+                <div className="likeTab" key={index}>
                   <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>

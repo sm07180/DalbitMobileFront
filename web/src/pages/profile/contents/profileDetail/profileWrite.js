@@ -13,7 +13,7 @@ import CheckList from '../../components/CheckList'
 // css
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 
 const ProfileWrite = () => {
   const history = useHistory();
@@ -167,10 +167,6 @@ const ProfileWrite = () => {
       }
     }
   }, [image]);
-
-  useEffect(() => {
-    console.log(formState);
-  }, [formState])
 
   //상세조회 (수정만)
   const getDetailData = () => {

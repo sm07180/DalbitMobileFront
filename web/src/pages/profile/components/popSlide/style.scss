@@ -28,13 +28,21 @@
       > .tabmenu {
         @include subTabmenuStyle-1;
         margin-bottom:12px;
-        .swiper-slide {
-          width:auto;
+        .swiper-container {
+          width:100%;
+          .swiper-slide {
+            width:auto;
+            &:first-child {
+              margin-left:16px;
+            }
+            &:last-child {
+              margin-right:12px;
+            }
+          }
+        }
+        .likeTab {
           &:first-child {
             margin-left:16px;
-          }
-          &:last-child {
-            margin-right:12px;
           }
         }
         button {
@@ -80,9 +88,6 @@
             }
             .date {
               @include font(11px,400,#999);
-            }
-            .like {
-              @include font(12px,400,#999);
             }
           }
           .back {
