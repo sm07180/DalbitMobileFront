@@ -101,6 +101,7 @@ const Customer = () => {
         (category === "inquire" && !qnaIdx) ?
           <Inquire/>
         :
+        (category === "inquire" && qnaIdx) &&
           <InquireDetail/>
       }
     </div>
