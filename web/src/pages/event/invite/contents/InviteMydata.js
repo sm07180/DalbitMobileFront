@@ -77,7 +77,7 @@ const InviteMydata = () => {
               </div>
             </>
             :
-            <ListNone text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
+            <ListNone imgType="event01" text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
           }
         </div>    
       </div>

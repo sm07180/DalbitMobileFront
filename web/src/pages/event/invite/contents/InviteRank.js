@@ -361,7 +361,7 @@ const InviteRank = () => {
               </div>
             </>
             :
-            <ListNone text="랭킹 내역이 없어요." height="300px"/>
+            <ListNone imgType="event01" text="랭킹 내역이 없어요." height="300px"/>
           }        
         </div>
       </div>

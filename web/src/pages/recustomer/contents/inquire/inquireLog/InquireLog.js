@@ -63,7 +63,7 @@ const InquireLog = () => {
             }
           </div>
         :
-          <ListNone text="문의 내역이 없어요." height="375px"/>
+          <ListNone imgType="ui02" text="문의 내역이 없어요." height="375px"/>
       }      
     </div>
   )
