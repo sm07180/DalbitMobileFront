@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
@@ -34,9 +34,14 @@ const starSubTabMenu = [
 const FanStarPopup = (props) => {
   const {type, isMyProfile, fanToggle, profileData, goProfile, setPopFanStar, myMemNo} = props
   const dispatch = useDispatch();
+  const fanStarRef = useRef();
   const [showList, setShowList] = useState([]);
   const [fanStarLikeState, setFanStarLikeState] = useState({type: '', title: '', subTab: []});
   const [subTypeInfo, setSubTypeInfo] = useState(type === 'fan' ? fanSubTabMenu[0] : starSubTabMenu[0]);
+  const [pageInfo, setPageInfo] = useState({
+    pageNo: 1,
+    pagePerCnt: 50,
+  })
 
   // 팬 조회
   const fetchInfoDataType = (type, fanStarSortType) => {
@@ -44,8 +49,8 @@ const FanStarPopup = (props) => {
       Api.getNewFanList({
         memNo: profileData.memNo,
         sortType: isMyProfile ? fanStarSortType : 0,
-        page: 1,
-        records: 9999
+        page: pageInfo.page,
+        records: pageInfo.pagePerCnt,
       }).then((res) => {
         if (res.result === 'success') {
           const data = res.data
@@ -59,8 +64,8 @@ const FanStarPopup = (props) => {
       Api.getNewStarList({
         memNo: profileData.memNo,
         sortType: isMyProfile ? fanStarSortType : 0,
-        page: 1,
-        records: 9999
+        page: pageInfo.pageNo,
+        records: pageInfo.pagePerCnt
       }).then((res) => {
         if (res.result === 'success') {
           const data = res.data;
@@ -113,15 +118,30 @@ const FanStarPopup = (props) => {
     }
   }
 
+  /* 스크롤 페이징 이벤트 */
+  const popScrollEvent = (e) => {
+    console.log(e);
+    const scrollTarget = fanStarRef.current;
+    const popHeight = scrollTarget.scrollHeight
+    console.log(popHeight);
+  }
+
   useEffect(() => {
     fetchInfoDataType(type, subTypeInfo.value);
     fetchFanStarLikeInfo(type)
+    fanStarRef.current.addEventListener('scroll', popScrollEvent);
+    return () => {
+      const scrollTarget = fanStarRef.current;
+      if(scrollTarget) {
+        scrollTarget.removeEventListener('scroll', popScrollEvent);
+      }
+    }
   },[])
 
   return (
     <section className="FanStarLike">
       <h2>{fanStarLikeState.title}</h2>
-      <div className="listContainer">
+      <div className="listContainer" ref={fanStarRef}>
         {isMyProfile &&
           <ul className="tabmenu">
             <Swiper {...swiperProps}>
