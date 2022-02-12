@@ -22,11 +22,14 @@ const Main = React.lazy(() => import('pages/main'))
 // 클립
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
-const ClipRank = React.lazy(() => import('pages/reclip/contents/clipRanking'))
-const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/clipRankingGuide'))
-// 랭킹
-const Ranking = React.lazy(() => import('pages/reranking'))
+const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking'))
+const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
+
+//랭킹
+const Ranking = React.lazy(() => import('pages/reranking/contents/rankingMain'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
+
 // 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
 // 검색
@@ -41,7 +44,10 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 - 피드, 팬보드 (작성, 수정)
+const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 - 피드, 팬보드 (상세)
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
@@ -131,7 +137,8 @@ const Router = () => {
         <Route exact path="/search" component={ReSearch} />
 
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank/:type" component={RankingDetail} />
+        <Route exact path="/rankDetail/:type" component={RankingDetail} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
@@ -178,8 +185,46 @@ const Router = () => {
                  }
                }}
         />
+        {/*피드, 팬보드 등록*/}
+        <Route exact path={"/profileWrite/:memNo/:type/:action"} main={ProfileContentsWrite}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const {memNo, type, action} = match.params;
+                 if(!context.token?.isLogin){
+                   return <Redirect to={{ pathname: '/login' }} />
+                 } else if((type ==='feed' && myMemNo !== memNo) || action === 'modify'){
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 }
+                  return <Route component={ProfileContentsWrite} />
+               }}
+        />
+        {/*피드, 팬보드 수정*/}
+        <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const {memNo, type, action} = match.params;
+                 if(!context.token?.isLogin){
+                   return <Redirect to={{ pathname: '/login' }} />
+                 } else if(myMemNo !== memNo || action === 'write'){
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 }
+                   return <Route component={ProfileContentsWrite} />
+               }}
+        />
+        {/*피드 조회*/}
+        <Route exact path={"/profileDetail/:memNo/:type/:index"} main={ProfileDetail}
+               render={({ match}) => {
+                 const {memNo, type, index} = match.params;
 
-        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
+                 if(!context.token?.isLogin){
+
+                   return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
+                 } else {
+                   return <Route component={ProfileDetail} />
+                 }
+               }}
+        />
+
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}

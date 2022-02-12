@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context, GlobalContext} from 'context'
-import './index.scss'
+import './style.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
@@ -11,14 +11,14 @@ import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
 import TotalInfo from './components/TotalInfo'
 import Tabmenu from './components/Tabmenu'
-import FanStarLike from './components/popSlide/FanStarLike'
+import FanStarLike from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 // contents
-import FeedSection from './contents/profileDetail/feedSection'
-import FanboardSection from './contents/profileDetail/fanboardSection'
-import ClipSection from './contents/profileDetail/clipSection'
+import FeedSection from './contents/profileDetail/FeedSection'
+import FanboardSection from './contents/profileDetail/FanboardSection'
+import ClipSection from './contents/profileDetail/ClipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
@@ -30,6 +30,7 @@ import {
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
+import LikePopup from "pages/profile/components/popSlide/LikePopup";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
@@ -45,8 +46,9 @@ const ProfilePage = () => {
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
-  const [popFanStarLike, setPopFanStarLike] = useState(false);
-  const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
+  const [popFanStar, setPopFanStar] = useState(false);
+  const [popLike, setPopLike] = useState(false);
+  const [openFanStarType, setOpenFanStarType] = useState('');
   const [popBlockReport, setPopBlockReport] = useState(false);
   const [popPresent, setPopPresent] = useState(false);
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
@@ -135,8 +137,8 @@ const ProfilePage = () => {
   }
 
   /* 팬 등록 해제 */
-  const fanToggle = (memNo, memNick, isFanYn, callback) => {
-    isFanYn ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  const fanToggle = (memNo, memNick, isFan, callback) => {
+    isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
   }
 
   /* 팬 등록 */
@@ -197,6 +199,7 @@ const ProfilePage = () => {
   /* 방송시작 알림 설정 */
   const editAlarm = useCallback(() => {
     const isReceive = profileData.isReceive;
+    setPopSlide(false);
     if(isReceive) {
       context.action.confirm({
         msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
@@ -254,8 +257,8 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y") => {
-    const getImgList = data => data.map(item => item.profImg)
+  const openShowSlide = (data, isList = "y", keyName='profImg') => {
+    const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
 
@@ -263,11 +266,17 @@ const ProfilePage = () => {
     setShowSlide(true);
   }
 
-  /* 팬,스타,좋아요 슬라이드 팝업 열기/닫기 */
-  const openPopFanStarLike = (e) => {
+  /* 팬,스타 슬라이드 팝업 열기/닫기 */
+  const openPopFanStar = (e) => {
     const {targetType} = e.currentTarget.dataset
-    setOpenFanStarLikeType(targetType)
-    setPopFanStarLike(true)
+    setOpenFanStarType(targetType)
+    setPopFanStar(true)
+  }
+
+  /* 좋아요 슬라이드 팝업 열기/닫기 */
+  const openPopLike = (e) => {
+    const {targetType} = e.currentTarget.dataset
+    setPopLike(true)
   }
 
   /* 우체통 이동 */
@@ -279,14 +288,26 @@ const ProfilePage = () => {
       history
     }
     goMail(goMailParams);
+    setPopSlide(false);
   }
+
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback((ref, callback) => {
+    const scrollTarget = ref.current;
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight === targetHeight + scrollTop) {
+      callback()
+    }
+  }, []);
 
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
-    dispatch(setProfileData(profileDefaultState));
-    dispatch(setProfileFeedData(profileFeedDefaultState));
-    dispatch(setProfileFanBoardData(profileFanBoardDefaultState));
-    dispatch(setProfileClipData(profileClipDefaultState));
+    // dispatch(setProfileData(profileDefaultState)); // 프로필 상단
+    dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
+    dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
+    dispatch(setProfileClipData(profileClipDefaultState)); // 클립
   }
 
   /* 프로필 상단 데이터 */
@@ -336,13 +357,12 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      <div onClick={goMailAction}>askldjlkasdjf</div>
       <section className='topSwiper'>
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
-                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle} setPopPresent={setPopPresent}
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
+                     openPopFanStar={openPopFanStar} openPopLike={openPopLike} setPopPresent={setPopPresent}
         />
       </section>
       <section className='totalInfo'>
@@ -351,7 +371,11 @@ const ProfilePage = () => {
       <section className="socialWrap">
         <div className="tabmenuWrap">
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
-          {isMyProfile && <button>등록</button>}
+          {isMyProfile && <button onClick={() => {
+            socialType === socialTabmenu[0]?
+            history.push(`/profileWrite/${profileData?.memNo}/feed/write`):
+              socialType === socialTabmenu[1] &&
+              history.push(`/profileDetail/${profileData?.memNo}/fanBoard/write`)}}>>등록</button>}
         </div>
 
         {/* 피드 */}
@@ -373,6 +397,8 @@ const ProfilePage = () => {
         {/* 프로필 사진 확대 */}
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
       </section>
+
+      {/* 더보기 */}
       {popSlide &&
         <PopSlide setPopSlide={setPopSlide}>
           <section className='profileMore'>
@@ -385,16 +411,34 @@ const ProfilePage = () => {
           </section>
         </PopSlide>
       }
-      {popFanStarLike &&
-        <PopSlide setPopSlide={setPopFanStarLike}>
-          <FanStarLike type={openFanStarLikeType} isMyProfile={isMyProfile} />
+
+      {/* 팬 / 스타 */}
+      {popFanStar &&
+        <PopSlide setPopSlide={setPopFanStar}>
+          <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
+                       goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
+                       scrollEvent={scrollEvent}
+          />
         </PopSlide>
       }
+
+      {/* 좋아요 */}
+      {popLike &&
+        <PopSlide setPopSlide={setPopLike}>
+          <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
+          />
+        </PopSlide>
+      }
+
+      {/* 차단 */}
       {popBlockReport &&
         <PopSlide setPopSlide={setPopBlockReport}>
           <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
         </PopSlide>
       }
+
+      {/* 선물하기 */}
       {popPresent &&
         <PopSlide setPopSlide={setPopPresent}>
           <Present profileData={profileData} setPopPresent={setPopPresent} />

@@ -94,6 +94,11 @@
       height: 150px;
       border-radius: 16px;
       overflow: hidden;
+      .photo {
+        img {
+          width:auto;
+        }
+      }
       .nick {
         @include position-bottom-left;
         width:100%;

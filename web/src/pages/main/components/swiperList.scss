@@ -1,80 +1,22 @@
 @import "components/ui/_mixin.scss";
 
 #main {
-  // .top10 {
-  //   .swiper-wrapper {
-  //     padding-left:16px;
-  //     .swiper-slide {
-  //       width:auto;
-  //       margin-right:10px;
-  //       &:last-child {
-  //         margin-right:28px;
-  //       }
-  //       .listColumn {
-  //         width:102px;
-  //         .photo {
-  //           position:relative;
-  //           height:136px;
-  //           margin-bottom:6px;
-  //           border-radius:8px;
-  //           overflow:hidden;
-  //           img {
-  //             height:100%;
-  //             object-fit: cover;
-  //           }
-  //           @mixin RANKIMG($value) {
-  //             @include position-bottom-right(8px,8px);
-  //             width:30px;
-  //             height:40px;
-  //             @include BGIMG("#{$value}");
-  //             background-size:auto 100%;
-  //             background-position: right bottom;
-  //           }
-  //           @for $i from 1 through 10 {
-  //             .rank-#{$i} {
-  //               @include RANKIMG('clip/dalla/number-#{$i}.png');
-  //             }
-  //           }
-  //         }
-  //         p {
-  //           @include font(15px,400,#303030);
-  //           @include fontCut;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-  // .daldungs {
-  //   .swiper-wrapper {
-  //     padding-left:16px;
-  //     .swiper-slide {
-  //       width:auto;
-  //       margin-right:8px;
-  //       &:last-child {
-  //         margin-right:28px;
-  //       }
-  //       .listColumn {
-  //         width:102px;
-  //         border-radius:8px;
-  //         overflow:hidden;
-  //         .photo {
-  //           height:150px;
-  //           img {
-  //             height:100%;
-  //             object-fit: cover;
-  //           }
-  //         }
-  //         p {
-  //           position:absolute;
-  //           bottom:0;
-  //           padding:24px 8px 8px;
-  //           background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
-  //           text-align:left;
-  //           @include font(13px,500,#fff);
-  //           @include fontCut;
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+  .swiper-container {
+    .swiper-wrapper {
+      .swiper-slide {
+        cursor:pointer;
+        &:active {
+          cursor:grab;
+        }
+        .lsitColumn {
+          .photo {
+            img {
+
+            }
+          }
+          .userNick {}
+        }
+      }
+    }
+  }
 }

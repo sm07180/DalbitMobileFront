@@ -3,11 +3,14 @@ import React from 'react'
 import './listRow.scss'
 
 const ListRow = (props) => {
-  const {photo, children, onClick} = props
+  const {photo, children, onClick, photoClick} = props
 
   return (
     <div className="listRow" onClick={onClick}>
-      <div className="photo">
+      <div className="photo" onClick={(e) => {
+        e.stopPropagation();
+        photoClick();
+      }}>
         <img src={photo} alt="" />
       </div>
       {children}
@@ -18,5 +21,6 @@ const ListRow = (props) => {
 export default ListRow
 
 ListRow.defaultProps = {
-  onClick: () => {}
+  onClick: () => {},
+  photoClick: () => {}
 };

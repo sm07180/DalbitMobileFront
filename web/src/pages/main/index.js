@@ -235,7 +235,7 @@ const MainPage = () => {
       onTouchEnd={mainTouchEnd}
       style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title={'메인'}/>
+        <Header title="메인" position="relative"/>
       </div>
       <section className='topSwiper'>
         <MainSlide data={mainState.topBanner}/>

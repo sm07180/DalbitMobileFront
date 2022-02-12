@@ -1,7 +1,7 @@
 @import "components/ui/_mixin.scss";
 
 #profileDetail {
-  height:100%;
+  height:100vh;
   header {
     .buttonGroup {
       div.moreBtn {
@@ -64,6 +64,8 @@
       }
       .text {
         margin-bottom:20px;
+        word-wrap: break-word; 
+        white-space: pre-line;
         @include font(14px,400,black);
       }
       .info {
@@ -89,6 +91,9 @@
       .listRow {
         padding:12px 0;
         border-bottom:1px solid #F2F2F2;
+        &:last-child {
+          border-bottom:none;
+        }
         .photo {
           width:40px;height:40px;
           margin-right:8px;
@@ -99,6 +104,7 @@
           }
         }
         .listContent {
+          @include flex($fd: column);
           .listItems {
             @include flex(center);
             &:first-child {
@@ -114,6 +120,8 @@
             }
             .text {
               margin-bottom:8px;
+              word-wrap: break-word; 
+              white-space: pre-line;
               @include font(14px,400,black);
             }
             i {
@@ -127,13 +135,23 @@
             }
           }
         }
+        button.more {
+          flex-shrink: 0;
+          width:30px;
+          height:30px;
+          margin-bottom:auto;
+          background-color:#ddd;
+        }
       }
     }
     .bottomWrite {
+      position:sticky;
+      bottom:0;
       @include flex(center);
       margin-top:auto;
       padding: 10px 15px 10px 20px;
       border-top:1px solid #F2F2F2;
+      background-color:white;
       .trickTextarea {
         position:relative;
         flex:1;
