@@ -64,6 +64,8 @@
       }
       .text {
         margin-bottom:20px;
+        word-wrap: break-word; 
+        white-space: pre-line;
         @include font(14px,400,black);
       }
       .info {
@@ -118,6 +120,7 @@
             }
             .text {
               margin-bottom:8px;
+              word-wrap: break-word; 
               white-space: pre-line;
               @include font(14px,400,black);
             }
@@ -131,6 +134,13 @@
               @include font(13px,400,#6B6B6B);
             }
           }
+        }
+        button.more {
+          flex-shrink: 0;
+          width:30px;
+          height:30px;
+          margin-bottom:auto;
+          background-color:#ddd;
         }
       }
     }

@@ -8,7 +8,8 @@ import ImageUpload from 'components/ui/imageUpload/ImageUpload'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 import InquireInput from '../../components/InquireInput'
-import Write from './write/Write'
+import InquireWrite from './inquireWrite/InquireWrite'
+import InquireLog from './inquireLog/InquireLog'
 // components
 import './inquire.scss'
 
@@ -43,11 +44,9 @@ OS (ex-Window 버전10) :
         </ul>
         {
           inquire === '문의하기' ?
-            <Write/>
+            <InquireWrite/>
           :
-           <>
-            나의문의내역
-           </>
+            <InquireLog/>
         }        
       </div>
     </div>

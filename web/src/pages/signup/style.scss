@@ -24,7 +24,10 @@ $errorMsg : #FF1919;
       }
     }
     .inputWrap {
-      margin-bottom: 32px;      
+      margin-bottom: 12px;
+      &:last-of-type {
+        margin-bottom: 32px;
+      }
       .inputItems {
         .inputBox {
           position:relative;
