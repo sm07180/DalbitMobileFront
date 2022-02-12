@@ -5,7 +5,7 @@ import {IMG_SERVER} from "context/config";
 import {Context} from "context";
 
 const ProfileReplyComponent = (props) => {
-  const {item, isMyProfile, dateKey, replyDelete, replyEditFormActive, type, blurBlock} = props;
+  const {item, isMyProfile, dateKey, replyDelete, replyEditFormActive, type, blurBlock, goProfile } = props;
   const context = useContext(Context)
 
   //몇초 전, 몇분 전, 몇시간 전 표기용
@@ -18,7 +18,7 @@ const ProfileReplyComponent = (props) => {
   }, [item]);
 
   return (
-    <ListRow photo={type ==='feed'?item?.profileImg?.thumb50x50 : item?.profImg?.thumb50x50}>
+    <ListRow photo={type ==='feed'?item?.profileImg?.thumb50x50 : item?.profImg?.thumb50x50} photoClick={goProfile}>
       <div className="listContent">
         <div className="listItems">
           <div className="nick">{item?.nickName}</div>
@@ -30,8 +30,8 @@ const ProfileReplyComponent = (props) => {
             {item?.contents}
           </pre>
         </div>
-        {/*좋아요
-        <div className="listItems">
+        {/*좋아요*}
+        {/*<div className="listItems">
           <i className='like'/>
           <span>{Utility.addComma(3211)}</span>
         </div>*/}
@@ -49,7 +49,10 @@ const ProfileReplyComponent = (props) => {
 
       </div>
       <button className='more'>
-        <img src="" alt="" />
+        <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
+        {/*{(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}*/}
+        {/*{(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button >삭제하기</button>}*/}
+        {/*{context.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}*/}
       </button>
     </ListRow>
 

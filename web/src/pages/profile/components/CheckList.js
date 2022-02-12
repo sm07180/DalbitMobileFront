@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 // global components
 // components
@@ -10,18 +10,15 @@ const CheckList = (props) => {
   const {text, name, children, checkStatus, onClick} = props
 
   return (
-    <>
-      {/*<div className="infoCheckList">*/}
-      {/*  <label className="inputLabel">*/}
-      {/*    <input type="checkbox" className="blind" />*/}
-      {/*    <span className="checkIcon"></span>*/}
-      {/*    <p className="checkinfo">{text}</p>*/}
-      {/*    {children}*/}
-      {/*  </label>*/}
-      {/*</div>*/}
-      <span onClick={onClick}>{text}</span>
-      <span>{`${checkStatus}`}</span>
-    </>
+    <div className="infoCheckList">
+      <label className="inputLabel">
+        <input type="checkbox" className="blind" checked={checkStatus}
+               onChange={onClick}/>
+        <span className="checkIcon"/>
+        <p className="checkinfo">{text}</p>
+        {children}
+      </label>
+    </div>
   )
 }
 

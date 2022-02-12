@@ -5,7 +5,7 @@ import Swiper from 'react-id-swiper'
 import './showSwiper.scss'
 
 const ShowSwiper = (props) => {
-  const {imageList, popClose, imageKeyName, imageParam} = props
+  const {imageList, popClose, imageKeyName, imageParam, initialSlide} = props
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -27,7 +27,7 @@ const ShowSwiper = (props) => {
     if (imageList.length > 1) {
       const swiper = document.querySelector('#popShowSwiper .swiper-container').swiper;
       swiper.update();
-      swiper.slideTo(0);
+      swiper.slideTo(initialSlide);
     }
   }, [imageList]);
 
@@ -64,4 +64,5 @@ export default ShowSwiper
 ShowSwiper.defaultProps = {
   imageKeyName: 'thumb500x500', //imageList 500x500이 없으면 이 값으로 사용 ex) 'url', 'thumb700x500'
   imageParam: '', //이미지 주소 비율 파라미터 ex) ?500x500
+  initialSlide : 0
 }
