@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 
 import Api from 'context/api'
 import moment from 'moment'
@@ -32,33 +32,42 @@ const notMyProfileTabInfos = {
   }
 }
 
+const pagePerCnt = 20;
+
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, scrollEvent} = props
   const dispatch = useDispatch();
+  const likeContainerRef = useRef();
+
   const [showList, setShowList] = useState([]); // 리스트
 
   // 팝업 제목 (탭 or 텍스트)
-  const [titleTabInfoList, setTitleTabInfoList] = useState([]);
+  const [titleTabInfoList, setTitleTabInfoList] = useState(
+    isMyProfile ? myProfileTabInfos.titleTab : notMyProfileTabInfos.titleTab
+  );
   const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0]);
 
   // 서브 탭
-  const [currentSubTabInfo, setCurrentSubTabInfo] = useState({}); // 현재 선택된 서브탭
+  const [currentSubTabInfo, setCurrentSubTabInfo] = useState(
+    isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]
+  ); // 현재 선택된 서브탭
   const [fanRankSubTabInfo, setFanRankSubTabInfo] = useState(myProfileTabInfos.subTab.fanRank[0]); // 팬랭킹 탭에서의 서브탭
   const [totalRankSubTabInfo, setTotalRankSubTabInfo] = useState(myProfileTabInfos.subTab.totalRank[1]); // 전체랭킹 탭에서의 서브탭
   // const [rankSubTabInfo, setRankSubTabInfo] = useState({}); // 타회원 프로필 서브탭
+
+  // 스크롤 페이징
+  const [pageNo, setPageNo] = useState(1);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   /* 내프로필 -> 전체랭킹 - 좋아요 */
   const totalRankLikeApi = () => {
     const apiParams = {
       memNo: profileData.memNo,
-      page: 1,
-      records: 9999
+      page: pageNo,
+      records: pagePerCnt
     }
     Api.mypage_good_ranking({params: apiParams}).then((res) => {
-      if (res.result === 'success') {
-        const data = res.data;
-        setShowList(data.list)
-      }
+      apiSuccessAction(res);
     })
   }
 
@@ -70,30 +79,29 @@ const LikePopup = (props) => {
   const fanRankApi = (rankType, rankSlct) => {
     const apiParams = {
       memNo: profileData.memNo,
-      page: 1,
-      records: 100,
+      page: pageNo,
+      records: pagePerCnt,
       rankType,
       rankSlct,
     }
     Api.mypage_fan_ranking({params: apiParams}).then(res => {
-      setShowList(res.data.list);
+      apiSuccessAction(res);
     })
   }
 
-  /* 타이틀, 서브탭 default set */
-  const fetchFanStarLikeInfo = () => {
-    let titleInfoList;
-    let currentSubTab;
-    if(isMyProfile) {
-      currentSubTab = myProfileTabInfos.subTab.totalRank[1];
-      titleInfoList = myProfileTabInfos.titleTab;
-    }else {
-      currentSubTab = notMyProfileTabInfos.subTab.rank[2];
-      titleInfoList = notMyProfileTabInfos.titleTab;
-    }
+  const apiSuccessAction = (res) => {
+    if (res.result === 'success') {
+      const data = res.data;
+      const isLastPage = data.list.length > 0 ? data.paging.totalPage === pageNo : true;
 
-    setTitleTabInfoList(titleInfoList); // setTitleTab
-    setCurrentSubTabInfo(currentSubTab); // setsubTab
+      if(pageNo > 1) {
+        const concatData = [...showList].concat(data.list);
+        setShowList(concatData);
+      }else {
+        setShowList(data.list)
+      }
+      setIsLastPage(isLastPage);
+    }
   }
 
   /* 팬 등록/해제시 값 변경 */
@@ -118,6 +126,13 @@ const LikePopup = (props) => {
     setPopLike(false);
   }
 
+  const pagingReset = () => {
+    if(!isLastPage) removeScrollEvent();
+    setPageNo(1);
+    setIsLastPage(false);
+    addScrollEvent();
+  }
+
   /* 제목 탭 클릭 (작업 기준 마이프로필에서 팬랭킹, 전체랭킹만 있음) */
   const titleTabClick = (data) => {
     setCurrentTitleTabInfo(data);
@@ -126,6 +141,8 @@ const LikePopup = (props) => {
     }else if(data.key === 'totalRank') {
       setCurrentSubTabInfo(totalRankSubTabInfo);
     }
+
+    pagingReset();
   }
 
   const subTabClick = (data) => {
@@ -138,20 +155,47 @@ const LikePopup = (props) => {
       setRankSubTabInfo(data);
     }*/
     setCurrentSubTabInfo(data);
+
+    pagingReset();
   }
 
+  /* 스크롤 페이징 이벤트 */
+  const popScrollEvent = () => {
+    scrollEvent(likeContainerRef, () => {
+      setPageNo(pageNo => pageNo +1);
+    });
+  }
+
+  const addScrollEvent = () => {
+    likeContainerRef.current.addEventListener('scroll', popScrollEvent);
+  }
+
+  const removeScrollEvent = () => {
+    const scrollTarget = likeContainerRef.current;
+    if(scrollTarget) {
+      scrollTarget.removeEventListener('scroll', popScrollEvent);
+    }
+  };
+
   useEffect(() => {
-    if(currentSubTabInfo.key) {
+    if(!isLastPage && currentSubTabInfo.key) {
       if(currentSubTabInfo.key === 'totalRankLike' || currentSubTabInfo.key === 'like') {
         totalRankLikeApi();
       }else {
         fanRankApi(currentSubTabInfo.rankType, currentSubTabInfo.rankSlct);
       }
     }
-  }, [currentSubTabInfo]);
+  }, [pageNo, currentSubTabInfo]);
 
   useEffect(() => {
-    fetchFanStarLikeInfo()
+    if(isLastPage){
+      removeScrollEvent();
+    }
+  }, [isLastPage])
+
+  useEffect(() => {
+    addScrollEvent()
+    return () => removeScrollEvent();
   },[])
 
   return (
@@ -169,7 +213,7 @@ const LikePopup = (props) => {
         </ul>
         : <h2>{titleTabInfoList.length > 0 && titleTabInfoList[0].value}</h2>
       }
-      <div className="listContainer">
+      <div className="listContainer" ref={likeContainerRef}>
         {isMyProfile ?
           <ul className="tabmenu">
             {myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
