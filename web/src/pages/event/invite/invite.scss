@@ -18,6 +18,13 @@
             position: relative;
             @include flex(center);
             width: 100%;
+            &.fixed {
+                position: sticky;
+                top: 48px; left: 0; right: 0;
+                width: 100%;
+                max-width: 480px;
+                z-index: 5;
+            }
             .tabMenu {
                 position: relative;
                 flex: 1;

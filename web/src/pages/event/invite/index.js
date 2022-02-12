@@ -13,6 +13,7 @@ import './invite.scss'
 
 const Invite = () => {
   const params = useParams();
+  const tabMenuRef = useRef()
   const [tabData, setTabData] = useState([
     {
       dufaultSrc : "https://image.dalbitlive.com/event/invite/tab01.png",
@@ -33,6 +34,7 @@ const Invite = () => {
       active : false
     },
   ]);
+  const [tabFixed, setTabFixed] = useState(false)
 
   const tabActive = (index) => {
     const tempData = tabData.concat([]);
@@ -42,6 +44,27 @@ const Invite = () => {
     tempData[index].active = true;
     setTabData(tempData);
   }
+
+  const tabScrollEvent = () => {
+    const tabMenuNode = tabMenuRef.current
+    const tabMenuTop = tabMenuNode.getBoundingClientRect().top;
+    if (window.scrollY >= tabMenuTop) {
+      setTabFixed(true)
+    } else {
+      setTabFixed(false)      
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', tabScrollEvent)
+    return () => window.removeEventListener('scroll', tabScrollEvent)
+  }, [])
+
+  useEffect(() => {
+    if (tabFixed) {
+      window.scrollTo({top:0});
+    }
+  }, [tabData])
 
   return (
     <>    
@@ -53,7 +76,7 @@ const Invite = () => {
               <img src="https://image.dalbitlive.com/event/invite/eventPage_mainImg.png" alt="친구 초대하고 초대왕 도전!" className='fullImage'/>
               {
                 tabData.length > 0 &&
-                  <div className={`tabImgText`}>
+                  <div className={`tabImgText ${tabFixed ? "fixed" : ""}`} ref={tabMenuRef}>
                     {
                       tabData.map((tabList, index) => {
                         return (
