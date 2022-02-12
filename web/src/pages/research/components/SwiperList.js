@@ -5,7 +5,7 @@ import Swiper from 'react-id-swiper'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
-import './swiperList.scss'
+import '../scss/swiperList.scss'
 
 const SwiperList = (props) => {
   const {data, type} = props

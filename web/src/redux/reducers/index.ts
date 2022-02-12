@@ -7,16 +7,18 @@ import profile from './profile/index';
 import feed from './profile/feed';
 import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
+import clip from './clip/clip';
 
 const rootReducer = combineReducers({
-    common
-    ,member
+  common
+  ,member
   , main
   , live
   , profile
   , feed
   , fanBoard
   , profileClip
+   ,clip
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

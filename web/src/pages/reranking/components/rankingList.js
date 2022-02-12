@@ -62,7 +62,7 @@ export default withRouter((props) => {
     <>
       {data.map((list, index) => {
         return (
-          <ListRow photo={list.profImg.thumb88x88} key={index} memNo={list.memNo}>
+          <ListRow photo={list.profImg.thumb88x88} key={index} photoClick={() => history.push(`/profile/${list.memNo}`)}>
             <div className="rank">{list.rank}</div>
             <div className="listContent">
               <div className="listItem">

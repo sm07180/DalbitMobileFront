@@ -1,7 +1,9 @@
-import React from 'react'
+import React  from 'react'
+import { useHistory } from "react-router-dom";
 
 const ClipSubTitle = (props) => {
   const {title,more,children} = props
+  const history = useHistory();
 
   const onMoreClick = () => {
     history.push(`/${more}`)

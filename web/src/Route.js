@@ -19,21 +19,24 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
+
 // 클립
-const Clip = React.lazy(() => import('pages/reclip'))
-const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
+const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
+const ClipDetail = React.lazy(() => import('pages/clip/pages/ClipDetailPage'));
+const ClipLikeList = React.lazy(() => import('pages/clip/pages/ClipLikeListPage'));
+const ClipListenList = React.lazy(() => import('pages/clip/pages/ClipListenListPage'));
 const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking'))
 const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
 
-//랭킹
-const Ranking = React.lazy(() => import('pages/reranking/contents/rankingMain'))
+// 랭킹
+const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
 // 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
 // 검색
-const ReSearch = React.lazy(() => import('pages/research'))
+const ReSearch = React.lazy(() => import('pages/research/pages/'))
 // 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
@@ -255,7 +258,9 @@ const Router = () => {
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/clip_open" component={ClipOpen} />
         <Route exact path="/clip" component={Clip} />
-        <Route exact path="/clip/detail" component={ClipDetail} />
+        <Route exact path="/clip/like/list" component={ClipLikeList}/>
+        <Route exact path="/clip/listen/list" component={ClipListenList}/>
+        <Route exact path="/clip/detail/:type" component={ClipDetail} />
         <Route exact path="/clip_rank" component={ClipRank} />
         <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
         <Route exact path="/clip_recommend" component={ClipRecommend} />
