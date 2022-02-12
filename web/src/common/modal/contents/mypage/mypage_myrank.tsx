@@ -1,6 +1,5 @@
 // tab navigation
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // api
@@ -20,7 +19,6 @@ import hintIcon from "./static/hint.svg";
 
 export default (props) => {
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
   const history = useHistory();
   const [detailPopup, setDetailPopup] = useState(false);
   const [rankingType, setRankingType] = useState("fan"); // fan, all

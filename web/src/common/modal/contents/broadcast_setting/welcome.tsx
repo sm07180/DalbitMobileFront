@@ -2,16 +2,18 @@ import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
+import {setBroadcastOption} from "../../../../redux/actions/modal";
+import {useDispatch, useSelector} from "react-redux";
 function BroadcastSettingWelcome() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const { globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
 
   const [title, setTitle] = useState("");
   const [list, setList] = useState<Array<any>>([]);
@@ -75,10 +77,10 @@ function BroadcastSettingWelcome() {
     });
 
     if (findItem) {
-      modalAction.setBroadcastOption!({
+      dispatch(setBroadcastOption({
         ...modalState,
         welcome: findItem.contents,
-      });
+      }));
 
       history.goBack();
     } else {

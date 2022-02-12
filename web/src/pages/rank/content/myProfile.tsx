@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
 
 import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
 
 import { useHistory } from "react-router-dom";
 import { printNumber } from "lib/common_fn";
@@ -20,10 +19,14 @@ import ResetPointPop from "./reset_point_pop";
 import BadgeList from "../../../common/badge_list";
 import { Stats } from "fs";
 
+import {setRankData} from "redux/actions/rank";
+import {useDispatch, useSelector} from "react-redux";
 export default function MyProfile() {
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rank}) => rank);
   const { formState, myInfo, rankTimeData, rankData } = rankState;
   const [myProfile, setMyProfile] = useState<any>(false);
   const [rewardProfile, setRewardProfile] = useState({
@@ -165,11 +168,10 @@ export default function MyProfile() {
                         rankSettingBtn(true);
                         setRankSetting(true);
 
-                        rankAction.setRankData &&
-                          rankAction.setRankData({
-                            ...rankState.rankData,
-                            isRankData: true,
-                          });
+                        dispatch(setRankData({
+                          ...rankState.rankData,
+                          isRankData: true,
+                        }));
                       },
                     });
                 },
@@ -284,7 +286,7 @@ export default function MyProfile() {
                         </div>
 
                         {/* <div className="countBox">
-                      
+
                     </div> */}
                         <div className="bestFanBox">
                           <span className="bestFanBox__label">심쿵유발자</span>

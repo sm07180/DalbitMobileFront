@@ -2,14 +2,14 @@
 // api
 import { getProfile, postGiftDal, splash, postSendGift } from "common/api";
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./mypage_modal.scss";
+import {useSelector} from "react-redux";
 
 export default (props) => {
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const { globalState, globalAction } = useContext(GlobalContext);
   const history = useHistory();
   const { splashData } = globalState;

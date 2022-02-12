@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import { NODE_ENV } from "constant/define";
@@ -28,10 +27,13 @@ import Layout from "common/layout";
 import BankTimePopup from "./bank_time_pop";
 import LayerPopupWrap from "../../main_www/content/layer_popup_wrap";
 import { date } from "@storybook/addon-knobs";
+import {useDispatch, useSelector} from "react-redux";
+import {setPayInfo} from "../../../redux/actions/modal";
 
 export default function Payment() {
   const history = useHistory();
-  const { modalState, modalAction } = useContext(ModalContext);
+  const dispatch = useDispatch();
+  const modalState = useSelector(({modal}) => modal);
   const { globalState, globalAction } = useContext(GlobalContext);
   const { payInfo } = modalState;
   const { baseData } = globalState;
@@ -227,13 +229,13 @@ export default function Payment() {
   };
 
   const goBank = () => {
-    modalAction.setPayInfo!({
+    dispatch(setPayInfo({
       itemName: itemName,
       //itemPrice: String(Number(itemPrice) * totalQuantity),
       itemPrice: itemPrice,
       itemNo: itemNo,
       itemCnt: totalQuantity,
-    });
+    }));
     history.push("/payment/bank");
   };
 
@@ -277,7 +279,7 @@ export default function Payment() {
     // console.log("itemCnt", itemCnt);
     // console.log("totalQuantity", totalQuantity);
     if (result == "success") {
-      modalAction.setPayInfo!({
+      dispatch(setPayInfo({
         itemName: itemName,
         itemPrice: String(Number(itemPrice) * totalQuantity),
         itemNo: itemNo,
@@ -287,7 +289,8 @@ export default function Payment() {
         cardName: cardName,
         itemCnt: totalQuantity,
         returntype: returntype,
-      });
+      }));
+
       history.push("/payment/result");
     } else {
       globalAction.setAlertStatus!({
@@ -509,7 +512,7 @@ export default function Payment() {
             </p>
             <p>
               깐부 게임에 참여중인 회원은 1만원 이상 달 구매 시 받은 구슬을 사용했을 경우 달 환불이 불가합니다.
-            </p>     
+            </p>
           </div>
         </div>
         {bankPop && <BankTimePopup setBankPop={setBankPop} goBank={goBank} />}

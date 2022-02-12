@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
@@ -11,10 +10,13 @@ import "./pay.scss";
 // components
 import Header from "common/ui/header";
 import Layout from "common/layout";
+import {useDispatch, useSelector} from "react-redux";
+import {setPayInfo} from "../../../redux/actions/modal";
 
 export default function Payment() {
   const history = useHistory();
-  const { modalState, modalAction } = useContext(ModalContext);
+  const dispatch = useDispatch();
+  const modalState = useSelector(({modal}) => modal);
   const { globalState, globalAction } = useContext(GlobalContext);
   const { payInfo } = modalState;
   const { itemName, itemPrice, itemNo, itemCnt } = payInfo;
@@ -150,7 +152,7 @@ export default function Payment() {
     });
 
     if (result === "success") {
-      modalAction.setPayInfo!({
+      dispatch(setPayInfo({
         itemName: data.Prdtnm,
         itemPrice: data.Prdtprice,
         itemNo: data.itemNo,
@@ -158,7 +160,7 @@ export default function Payment() {
         bankNo: data.accountNo,
         phone: data.phoneNo,
         itemCnt: itemCnt,
-      });
+      }))
       history.push("/payment/bank_wait");
     } else {
       globalAction.setAlertStatus!({

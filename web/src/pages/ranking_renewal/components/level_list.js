@@ -3,17 +3,17 @@ import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 // context
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 
 import NoResult from 'components/ui/new_noResult'
 //static
 import guideIcon from '../static/guide_s.png'
 import fanIcon from '../static/ic_circle_fan_s_dkgr.svg'
 import people from '../static/people_g_s.svg'
+import {useSelector} from "react-redux";
 function LevelList({empty}) {
   const history = useHistory()
   const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rank}) => rank);
 
   const {levelList} = rankState
 

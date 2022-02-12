@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 
 import { getProfile, postGiftDal, splash, postSendGift } from "common/api";
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 import { useHistory } from "react-router-dom";
+import {useSelector} from "react-redux";
 
 export default function GiftDal(props) {
   const { setPopupState, clipProfile } = props;
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const { globalState, globalAction } = useContext(GlobalContext);
   const history = useHistory();
   const { splashData } = globalState;

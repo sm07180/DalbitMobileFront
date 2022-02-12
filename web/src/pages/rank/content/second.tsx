@@ -1,15 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { addComma } from "../../../lib/common_fn";
-import { RankContext } from "context/rank_ctx";
 import styled, { css } from "styled-components";
 import NoResult from "common/ui/no_result";
 import ProfileImage from "common/ui/profileImage";
 import "../index.scss";
+import {useSelector} from "react-redux";
 
 function Second({ empty }) {
   const history = useHistory();
-  const { rankState } = useContext(RankContext);
+  const rankState = useSelector(({rank}) => rank);
   const { secondList } = rankState;
 
   return (

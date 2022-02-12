@@ -1,18 +1,18 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {ClipRankContext} from 'context/clip_rank_ctx'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
 import {DATE_TYPE} from '../../constant'
 import '../../index.scss'
 import DalbitTextArea from 'pages/mypage/content/textarea'
+import {useSelector} from "react-redux";
 
 const Receive = () => {
   const history = useHistory()
   const context = useContext(Context)
   const [winMsg, setWinMsg] = useState('')
-  const {clipRankState} = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRank}) => clipRank);
   const {formState} = clipRankState
   const [rankingList, setRankingList] = useState([])
   const [myProfile, setMyProfile] = useState([])

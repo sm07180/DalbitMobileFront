@@ -3,7 +3,6 @@ import styled, {css} from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import Utility, {addComma} from 'components/lib/utility'
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import {RoomJoin} from 'context/room'
 
 import NoResult from 'components/ui/noResult'
@@ -13,11 +12,12 @@ import like from '../static/like_g_s.svg'
 import people from '../static/people_g_s.svg'
 import time from '../static/time_g_s.svg'
 import live from '../static/live_m.svg'
+import {useSelector} from "react-redux";
 
 function SpecialList({empty}) {
   const history = useHistory()
   const context = useContext(Context)
-  const {rankState} = useContext(RankContext)
+  const rankState = useSelector(({rank}) => rank);
 
   const {specialList} = rankState
 

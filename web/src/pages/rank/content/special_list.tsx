@@ -3,18 +3,18 @@ import styled, { css } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { addComma } from "../../../lib/common_fn";
 import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
 import { RoomValidateFromClip } from "common/audio/clip_func";
 
 import NoResult from "common/ui/no_result";
 import SpecialHandleHistory from "./special_history_handle";
 import ProfileImage from "common/ui/profileImage";
 import live from "../static/live_m.svg";
+import {useSelector} from "react-redux";
 
 function SpecialList({ empty }) {
   const history = useHistory();
   const { globalState } = useContext(GlobalContext);
-  const { rankState } = useContext(RankContext);
+  const rankState = useSelector(({rank}) => rank);
 
   const gtx = useContext(GlobalContext);
 

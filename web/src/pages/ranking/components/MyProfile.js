@@ -5,7 +5,6 @@ import Api from 'context/api'
 import Util from 'components/lib/utility.js'
 
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 
 import {RANK_TYPE, DATE_TYPE} from '../constant'
 
@@ -16,13 +15,13 @@ import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_w_s.svg'
 import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
+import {useSelector} from "react-redux";
 
 export default function MyProfile(props) {
   const {rankType, dateType, setMyInfo} = props
+  const rankState = useSelector(({rank}) => rank);
   const history = useHistory()
   const global_ctx = useContext(Context)
-
-  const {rankState, rankAction} = useContext(RankContext)
 
   const {formState, myInfo} = rankState
 
@@ -138,7 +137,7 @@ export default function MyProfile(props) {
                 }}>
                 <div className="myRanking__left myRanking__left--profile">
                   <p
-                    className="myRanking__left--title colorWhite 
+                    className="myRanking__left--title colorWhite
                   ">
                     내 랭킹
                   </p>

@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "context";
 import { ClipContext } from "context/clip_ctx";
-import { ModalContext } from "context/modal_ctx";
 import { printNumber, addComma } from "lib/common_fn";
 
 import { getProfile, postAddFan, deleteFan, MypageBlackListAdd } from "common/api";
@@ -19,7 +18,6 @@ let Profile = () => {
   const history = useHistory();
   const { broadcastAction } = useContext(BroadcastContext);
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
   const { clipState, clipAction } = useContext(ClipContext);
   const { setUserMemNo } = clipAction;
   const { baseData, clipInfo, clipPlayer } = globalState;

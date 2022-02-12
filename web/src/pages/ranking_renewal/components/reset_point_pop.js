@@ -1,13 +1,16 @@
 import React, {useEffect, useContext} from 'react'
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
+import {useDispatch, useSelector} from "react-redux";
+
+import {setRankData} from "redux/actions/rank";
 
 export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
   const history = useHistory()
+  const rankState = useSelector(({rank}) => rank);
+  const dispatch = useDispatch()
   const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
 
   const closePopup = () => {
     setResetPointPop(false)
@@ -56,11 +59,10 @@ export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
                     closePopup()
                     rankSettingBtn(false)
                     setRankSetting(false)
-                    rankAction.setRankData &&
-                      rankAction.setRankData({
-                        ...rankState.rankData,
-                        isRankData: false
-                      })
+                    dispatch(setRankData({
+                      ...rankState.rankData,
+                      isRankData: false
+                    }));
                   }
                 })
               }}>

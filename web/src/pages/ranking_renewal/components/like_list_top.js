@@ -3,7 +3,6 @@ import {useHistory} from 'react-router-dom'
 
 // context
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 
 //constant
 import {RANK_TYPE, DATE_TYPE} from '../constant'
@@ -14,11 +13,12 @@ import bronzeDecoDj from '../static/djrf3_deco@3x.png'
 import goldDecoFan from '../static/fanrf1_deco@3x.png'
 import sliverDecoFan from '../static/fanrf2_deco@3x.png'
 import bronzeDecoFan from '../static/fanrf3_deco@3x.png'
+import {useSelector} from "react-redux";
 
 function LikeListTop() {
   const history = useHistory()
+  const rankState = useSelector(({rank}) => rank);
   const context = useContext(Context)
-  const {rankState} = useContext(RankContext)
   const {formState, likeList, rankList} = rankState
 
   const TopBoxRef = useRef(null)

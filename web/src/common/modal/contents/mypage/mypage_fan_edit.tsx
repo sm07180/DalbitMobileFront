@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { GlobalContext } from "context";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
@@ -9,6 +8,7 @@ import { IMG_SERVER } from "constant/define";
 import { getFanRankList, postAddFan, deleteFan, getLikeRank } from "common/api";
 // scss
 import "./mypage_modal.scss";
+import {useSelector} from "react-redux";
 
 let tabFlag;
 
@@ -17,7 +17,7 @@ export default (props) => {
   let checkSearch = location.search.split("?")[1];
   // ctx && commons
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const history = useHistory();
   // state
   const [controlTab, setConTrolTab] = useState({

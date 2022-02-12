@@ -8,7 +8,6 @@ import {Link} from 'react-router-dom'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
 import moment from 'moment'
@@ -47,6 +46,14 @@ const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
 const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
 
 import 'styles/main.scss'
+import {useDispatch} from "react-redux";
+import {
+  setRankMyInfo,
+  setRankList,
+  setRankLevelList,
+  setRankLikeList,
+  setRankFormReset, setRankFormRankType
+} from "redux/actions/rank";
 
 let concatenating = false
 
@@ -104,8 +111,9 @@ export default (props) => {
 
   //context
   const globalCtx = useContext(Context)
-  const {rankAction} = useContext(RankContext)
   const history = useHistory()
+  const dispatch = useDispatch()
+
   // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
@@ -198,30 +206,22 @@ export default (props) => {
   const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
 
   useEffect(() => {
-    rankAction.formDispatch &&
-      rankAction.formDispatch({
-        type: 'RESET'
-      })
-
-    rankAction.setLevelList && rankAction.setLevelList([])
-
-    rankAction.setLikeList && rankAction.setLikeList([])
-
-    rankAction.setRankList && rankAction.setRankList([])
-
-    rankAction.setMyInfo &&
-      rankAction.setMyInfo({
-        isReward: false,
-        myGiftPoint: 0,
-        myListenerPoint: 0,
-        myRank: 0,
-        myUpDown: '',
-        myBroadPoint: 0,
-        myLikePoint: 0,
-        myPoint: 0,
-        myListenPoint: 0,
-        time: ''
-      })
+    dispatch(setRankFormReset());
+    dispatch(setRankLevelList([]));
+    dispatch(setRankLikeList([]));
+    dispatch(setRankList([]));
+    dispatch(setRankMyInfo({
+      isReward: false,
+      myGiftPoint: 0,
+      myListenerPoint: 0,
+      myRank: 0,
+      myUpDown: '',
+      myBroadPoint: 0,
+      myLikePoint: 0,
+      myPoint: 0,
+      myListenPoint: 0,
+      time: ''
+    }));
 
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info', 'ranking_tab']
@@ -235,36 +235,20 @@ export default (props) => {
     if (sessionStorage.getItem('ranking_tab') !== null) {
       if (sessionStorage.getItem('ranking_tab') === 'dj') {
         setRankType('fan')
-        rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 2
-          })
+        dispatch(setRankFormRankType(2));
         sessionStorage.setItem('ranking_tab', 'fan')
       } else {
         setRankType('dj')
-        rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 1
-          })
+        dispatch(setRankFormRankType(1));
         sessionStorage.setItem('ranking_tab', 'dj')
       }
     } else {
       const randomData = Math.random() >= 0.5 ? 'dj' : 'fan'
       setRankType(randomData)
       if (randomData === 'dj') {
-        rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 1
-          })
+        dispatch(setRankFormRankType(1));
       } else {
-        rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 2
-          })
+        dispatch(setRankFormRankType(2));
       }
       sessionStorage.setItem('ranking_tab', randomData)
     }
@@ -711,19 +695,11 @@ export default (props) => {
           setLiveGender('')
           if (sessionStorage.getItem('ranking_tab') === 'dj') {
             setRankType('fan')
-            rankAction.formDispatch &&
-              rankAction.formDispatch({
-                type: 'RANK_TYPE',
-                val: 2
-              })
+            dispatch(setRankFormRankType(2));
             sessionStorage.setItem('ranking_tab', 'fan')
           } else {
             setRankType('dj')
-            rankAction.formDispatch &&
-              rankAction.formDispatch({
-                type: 'RANK_TYPE',
-                val: 1
-              })
+            dispatch(setRankFormRankType(1));
             sessionStorage.setItem('ranking_tab', 'dj')
           }
 
@@ -938,11 +914,7 @@ export default (props) => {
                   className={`text ${rankType === 'dj' ? 'active' : ''}`}
                   onClick={() => {
                     setRankType('dj')
-                    rankAction.formDispatch &&
-                      rankAction.formDispatch({
-                        type: 'RANK_TYPE',
-                        val: 1
-                      })
+                    dispatch(setRankFormRankType(1));
                   }}>
                   DJ
                 </button>
@@ -952,11 +924,7 @@ export default (props) => {
                   className={`text ${rankType === 'fan' ? 'active' : ''}`}
                   onClick={() => {
                     setRankType('fan')
-                    rankAction.formDispatch &&
-                      rankAction.formDispatch({
-                        type: 'RANK_TYPE',
-                        val: 2
-                      })
+                    dispatch(setRankFormRankType(2));
                   }}>
                   팬
                 </button>
@@ -1072,7 +1040,7 @@ export default (props) => {
             </div>
           </div>
         </div>
-        
+
         {popup && (
           <LayerPopup
             alignSet={alignSet}

@@ -7,7 +7,6 @@ import { printNumber } from "lib/common_fn";
 // context
 // import {Context} from 'context'
 import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
 import { RoomValidateFromClip } from "common/audio/clip_func";
 import { convertDateToText } from "lib/rank_fn";
 import { RANK_TYPE, DATE_TYPE } from "pages/rank/constant";
@@ -18,11 +17,12 @@ import live from "../../static/live_m.svg";
 import goldMedalIcon from "../../static/medal_gold_b.svg";
 import silverMedalIcon from "../../static/medal_silver_b.svg";
 import bronzeMedalIcon from "../../static/medal_bronze_m.svg";
+import {useSelector} from "react-redux";
 
 function RankList() {
   //context
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rank}) => rank);
 
   const { formState, rankList } = rankState;
 

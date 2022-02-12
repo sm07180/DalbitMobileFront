@@ -32,7 +32,9 @@ import filterIcon from './static/choose_circle_w.svg'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 //scss
 import './clip.scss'
-import {ClipRankContext} from 'context/clip_rank_ctx'
+import {useDispatch, useSelector} from "react-redux";
+
+import {setFormDateType} from "redux/actions/clipRank";
 
 let tempScrollEvent = null
 let touchStartY = null
@@ -44,13 +46,11 @@ export default (props) => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const globalCtx = useContext(Context)
-  const {clipRankState, clipRankAction} = useContext(ClipRankContext)
-
+  const clipRankState = useSelector(({clipRank}) => clipRank);
   const {formState, clipRankList} = clipRankState
-  const formDispatch = clipRankAction.formDispatch
-  const setClipRankList = clipRankAction.setClipRankList
 
   let history = useHistory()
+  const dispatch = useDispatch();
   //swiper
   const swiperParamsRecent = {
     slidesPerView: 'auto',
@@ -983,7 +983,7 @@ export default (props) => {
                 className="rankClip__title"
                 onClick={() => {
                   history.push('/clip_rank')
-                  formDispatch({type: 'DATE_TYPE', val: formState.dateType})
+                  dispatch(setFormDateType(formState.dateType));
                 }}>
                 클립 랭킹
               </h3>
@@ -991,20 +991,14 @@ export default (props) => {
                 <button
                   className={`${formState.dateType === DATE_TYPE.DAY ? 'isActive' : ''}`}
                   onClick={() => {
-                    formDispatch({
-                      type: 'DATE_TYPE',
-                      val: DATE_TYPE.DAY
-                    })
+                    dispatch(setFormDateType(DATE_TYPE.DAY));
                   }}>
                   일간
                 </button>
                 <button
                   className={`${formState.dateType === DATE_TYPE.WEEK ? 'isActive' : ''}`}
                   onClick={() => {
-                    formDispatch({
-                      type: 'DATE_TYPE',
-                      val: DATE_TYPE.WEEK
-                    })
+                    dispatch(setFormDateType(DATE_TYPE.WEEK));
                   }}>
                   주간
                 </button>

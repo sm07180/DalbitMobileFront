@@ -6,7 +6,6 @@ import Room, {RoomJoin} from 'context/room'
 import NoResult from 'components/ui/new_noResult'
 // context
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import {IMG_SERVER} from 'context/config'
 
 import MyProfile from './MyProfile'
@@ -22,10 +21,11 @@ const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 import likeRedIcon from '../static/like_red_m.svg'
 
 import {RANK_TYPE} from '../constant'
+import {useSelector} from "react-redux";
 
 function LikeList({empty}) {
   const context = useContext(Context)
-  const {rankState} = useContext(RankContext)
+  const rankState = useSelector(({rank}) => rank);
   const history = useHistory()
   const {formState, likeList, rankList} = rankState
 

@@ -2,16 +2,18 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastOption} from "../../../../redux/actions/modal";
 function BroadcastSettingTitle() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
 
   const [list, setList] = useState<Array<any>>([]);
   const [title, setTitle] = useState<string>("");
@@ -74,11 +76,10 @@ function BroadcastSettingTitle() {
     });
 
     if (findItem) {
-      modalAction.setBroadcastOption!({
+      dispatch(setBroadcastOption({
         ...modalState,
         title: findItem.contents,
-      });
-
+      }));
       history.goBack();
     } else {
       globalAction.callSetToastStatus!({

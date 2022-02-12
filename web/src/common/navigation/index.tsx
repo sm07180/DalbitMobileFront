@@ -13,7 +13,6 @@ import Lottie from "react-lottie";
 // context
 import { GlobalContext } from "context";
 import { MailboxContext } from "context/mailbox_ctx";
-import { RankContext } from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import { checkIsMailboxNew } from "common/api";
@@ -31,6 +30,7 @@ import {authReq} from 'pages/self_auth'
 import './navigation.scss'
 import styled from "styled-components";
 import {isDesktopViewRouter} from "../../lib/agent";
+import {useSelector} from "react-redux";
 
 const Navigation = () => {
   const context = useContext(GlobalContext);
@@ -39,7 +39,7 @@ const Navigation = () => {
   const { mailboxAction, mailboxState } = useContext(MailboxContext);
   const { isMailboxNew } = mailboxState;
 
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rank}) => rank);
   const { formState } = rankState;
   const history = useHistory();
 

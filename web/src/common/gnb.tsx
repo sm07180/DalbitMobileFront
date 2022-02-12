@@ -13,7 +13,6 @@ import {
 // context
 import {GlobalContext} from "context";
 import {MailboxContext} from "context/mailbox_ctx";
-import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // static
@@ -27,16 +26,33 @@ import {MediaType} from "pages/broadcast/constant";
 import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {openMailboxBanAlert} from "./mailbox/mail_func";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+
+import {
+  setRankMyInfo,
+  setRankList,
+  setRankData,
+  setRankLevelList,
+  setRankLikeList,
+  setRankTotalPage,
+  setRankSpecialList,
+  setRankWeeklyList,
+  setRankSecondList,
+  setRankTimeData,
+  setRankFormPage,
+  setRankFormPageType, setRankScrollY
+} from "redux/actions/rank";
+
 
 export default function GNB() {
   const context = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rank}) => rank);
   const { globalState, globalAction } = context;
   const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
   const { mailboxAction, mailboxState } = useContext(MailboxContext);
   const { isMailboxNew } = mailboxState;
 
-  const { rankState, rankAction } = useContext(RankContext);
   const { formState } = rankState;
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -67,7 +83,7 @@ export default function GNB() {
               authReq('9', context.authRef, context);
             },
           });
-          
+
         }else {
           globalAction.setAlertStatus &&
           globalAction.setAlertStatus({
@@ -450,10 +466,7 @@ export default function GNB() {
                 activeClassName={"navItem__active"}
                 title="랭킹페이지 이동"
                 onClick={() => {
-                  rankAction.formDispatch!({
-                    type: "PAGE_TYPE",
-                    val: "ranking",
-                  });
+                  dispatch(setRankFormPageType("ranking"));
                   sessionStorage.setItem("isBeforeMailbox", "N");
                 }}
             ></NavLink>

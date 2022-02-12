@@ -2,11 +2,12 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
+import {setBroadcastOption} from "../../../redux/actions/modal";
+import {useDispatch, useSelector} from "react-redux";
 function BroadcastSettingTitle(props: any) {
   const { setPopupState } = props;
 
@@ -22,9 +23,10 @@ function BroadcastSettingTitle(props: any) {
   };
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
 
   const [list, setList] = useState<Array<any>>([]);
   const [title, setTitle] = useState<string>("");
@@ -97,10 +99,10 @@ function BroadcastSettingTitle(props: any) {
     });
 
     if (findItem) {
-      modalAction.setBroadcastOption!({
+      dispatch(setBroadcastOption({
         ...modalState,
         title: findItem.contents,
-      });
+      }))
 
       closePopup();
     } else {

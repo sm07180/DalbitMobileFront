@@ -2,11 +2,12 @@ import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastOption} from "../../../redux/actions/modal";
 function BroadcastSettingWelcome(props: any) {
   const { setPopupState } = props;
 
@@ -21,9 +22,10 @@ function BroadcastSettingWelcome(props: any) {
     }
   };
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const { globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
 
   const [title, setTitle] = useState("");
   const [list, setList] = useState<Array<any>>([]);
@@ -93,10 +95,10 @@ function BroadcastSettingWelcome(props: any) {
     });
 
     if (findItem) {
-      modalAction.setBroadcastOption!({
+      dispatch(setBroadcastOption({
         ...modalState,
         welcome: findItem.contents,
-      });
+      }));
 
       closePopup();
     } else {

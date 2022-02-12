@@ -1,6 +1,5 @@
 // tab navigation
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // api
@@ -15,10 +14,11 @@ import goldMedal from "./static/medal_gold_m@2x.png";
 import silverMedal from "./static/medal_silver_m@2x.png";
 import bronzeMedal from "./static/medal_bronze_m@2x.png";
 import hintIcon from "./static/hint.svg";
+import {useSelector} from "react-redux";
 
 export default (props) => {
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const history = useHistory();
   const [detailPopup, setDetailPopup] = useState(false);
   const [tabType, setTabType] = useState("recent"); //recent, accrue, good

@@ -2,15 +2,15 @@ import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {DATE_TYPE} from '../constant'
 import {Context} from 'context'
-import {ClipRankContext} from 'context/clip_rank_ctx'
 import {ClipPlay} from 'pages/clip_rank/components/clip_play_fn'
+import {useSelector} from "react-redux";
 
 const liveDateCheckIdx = 3
 
 export default function ClipRankingListTop3() {
   const context = useContext(Context)
   const history = useHistory()
-  const {clipRankState, clipRankAction} = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRank}) => clipRank);
   const {formState, clipRankList} = clipRankState
 
   // function validation(data) {

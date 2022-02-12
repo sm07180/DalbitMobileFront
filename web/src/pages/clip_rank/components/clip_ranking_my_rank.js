@@ -2,15 +2,15 @@ import React, {useEffect, useContext, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
-import {ClipRankContext} from 'context/clip_rank_ctx'
 import {DATE_TYPE} from '../constant'
 import {Context} from 'context'
 import {ClipPlay} from 'pages/clip_rank/components/clip_play_fn'
+import {useSelector} from "react-redux";
 
 export default function ClipRankingMyRank() {
   const context = useContext(Context)
   const history = useHistory()
-  const {clipRankState} = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRank}) => clipRank);
   const {formState, myInfo} = clipRankState
   const [myProfile, setMyProfile] = useState(false)
 

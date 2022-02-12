@@ -21,7 +21,6 @@ import {
 import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
 import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import "./broadcast_setting.scss";
 // lib
@@ -34,6 +33,7 @@ import Layout from "common/layout";
 import { MediaType } from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import {BroadcastCreateRoomParamType} from "../../redux/types/broadcastType";
+import {useSelector} from "react-redux";
 
 declare global {
   interface Window {
@@ -157,7 +157,7 @@ export default function BroadcastSetting() {
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { chatInfo, rtcInfo } = globalState;
-  const { modalState } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const { broadcastAction } = useContext(BroadcastContext);
   const [state, dispatchWithoutAction] = useReducer(reducer, {
     micState: false,

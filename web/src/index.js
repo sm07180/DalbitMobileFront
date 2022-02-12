@@ -16,33 +16,22 @@ import 'styles/reset.scss'
 import 'styles/common.scss'
 import 'styles/swiper.scss'
 
-import { BroadcastProvider as BroadcastProviderWWW } from "context/broadcast_ctx";
-import { MailboxProvider as MailboxProviderWWW } from "context/mailbox_ctx";
-import { ModalProvider as ModalProviderWWW } from "context/modal_ctx";
-import { RankProvider  as RankProviderWWW} from "context/rank_ctx";
-import { ClipRankProvider  as ClipRankProviderWWW} from "context/clip_rank_ctx";
-import { Provider } from 'react-redux';
+import {BroadcastProvider as BroadcastProviderWWW} from "context/broadcast_ctx";
+import {MailboxProvider as MailboxProviderWWW} from "context/mailbox_ctx";
+import {Provider} from 'react-redux';
 import store from "redux/store";
 
 ReactDOM.render(
-    <Provider store={store}>
-      <BrowserRouter>
-          <GlobalProvider>
-              <RankProvider>
-                  <MailboxProviderWWW>
-                      <BroadcastProviderWWW>
-                          <RankProviderWWW>
-                              <ClipRankProviderWWW>
-                                <ModalProviderWWW>
-                                    <App />
-                                </ModalProviderWWW>
-                            </ClipRankProviderWWW>
-                        </RankProviderWWW>
-                    </BroadcastProviderWWW>
-                </MailboxProviderWWW>
-              </RankProvider>
-          </GlobalProvider>
-      </BrowserRouter>
-    </Provider>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <GlobalProvider>
+        <MailboxProviderWWW>
+          <BroadcastProviderWWW>
+            <App/>
+          </BroadcastProviderWWW>
+        </MailboxProviderWWW>
+      </GlobalProvider>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 )

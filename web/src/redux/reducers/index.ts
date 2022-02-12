@@ -8,6 +8,9 @@ import feed from './profile/feed';
 import broadcast from './broadcast';
 import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
+import modal from './modal';
+import clipRank from "./clipRank";
+import rank from "./rank";
 
 const rootReducer = combineReducers({
     common
@@ -19,6 +22,9 @@ const rootReducer = combineReducers({
   , broadcast
   , fanBoard
   , profileClip
+  , modal
+  , clipRank
+  , rank
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

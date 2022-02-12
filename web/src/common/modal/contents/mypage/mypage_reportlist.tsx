@@ -1,6 +1,5 @@
 // tab navigation
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // api
@@ -9,9 +8,10 @@ import { PROFILE_REPORT_TAB } from "./constant";
 import Caution from "../../static/caution.png";
 import "./mypage_modal.scss";
 import { profile } from "console";
+import {useSelector} from "react-redux";
 
 export default (props) => {
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const { globalState, globalAction } = useContext(GlobalContext);
   //state
   const [select, setSelect] = useState<number>(0);
