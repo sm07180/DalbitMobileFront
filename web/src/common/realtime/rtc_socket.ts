@@ -19,7 +19,7 @@ enum StatusType {
   DENIED_STREAM = 519,
 }
 
-interface CanvasElement extends HTMLCanvasElement {
+export interface CanvasElement extends HTMLCanvasElement {
   captureStream(frameRate?: number): MediaStream;
 }
 
@@ -46,6 +46,8 @@ let agoraAudio;
 let retryCnt = 0;
 let reTryTimer;
 const intervalTime = 3000;
+const audioBitrate = 128; // KBps
+const videoBitrate = 1500;
 
 let constraints: {
   video: any;
@@ -379,41 +381,6 @@ export class RtcSocketHandler {
   public videoMute(value:boolean) { }
   public audioMute(value:boolean) { }
   public audioVolume(value:number) { }
-}
-
-const audioBitrate = 128; // KBps
-const videoBitrate = 1500;
-
-export const rtcSessionClear = ()=>{
-  sessionStorage.removeItem("room_no");
-  sessionStorage.removeItem("wowza_rtc");
-  sessionStorage.removeItem("agora_rtc");
-  sessionStorage.removeItem("broadcast_data");
-}
-export const getArgoraRtc = (rtcInfo:AgoraHostRtc|AgoraListenerRtc)=>{
-  const roomInfo = rtcInfo.roomInfo as roomInfoType;
-  const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
-  const returnRTC = rtcInfo.userType === UserType.HOST ?
-      new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints)
-      : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
-  returnRTC.setRoomInfo(roomInfo);
-  return returnRTC;
-}
-export const getWowzaRtc = (rtcInfo:HostRtc|ListenerRtc)=>{
-  const roomInfo = rtcInfo.roomInfo as roomInfoType;
-  const hostVideoConstraints = {
-    isVideo: roomInfo.mediaType === MediaType.VIDEO,
-    videoFrameRate: roomInfo.videoFrameRate,
-    videoResolution: roomInfo.videoResolution,
-  };
-  const listenerVideoConstraints = {
-    isVideo: roomInfo.mediaType === MediaType.VIDEO,
-  }
-  const returnRTC = rtcInfo.userType === UserType.HOST ?
-      new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints)
-      : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
-  returnRTC.setRoomInfo(roomInfo);
-  return returnRTC;
 }
 
 export class HostRtc extends RtcSocketHandler {
@@ -1493,4 +1460,38 @@ export class AgoraListenerRtc extends RtcSocketHandler{
     }
   }
 
+}
+
+
+export const rtcSessionClear = ()=>{
+  sessionStorage.removeItem("room_no");
+  sessionStorage.removeItem("wowza_rtc");
+  sessionStorage.removeItem("agora_rtc");
+  sessionStorage.removeItem("broadcast_data");
+  sessionStorage.removeItem("roomInfo");
+}
+export const getArgoraRtc = (rtcInfo:AgoraHostRtc|AgoraListenerRtc)=>{
+  const roomInfo = rtcInfo.roomInfo as roomInfoType;
+  const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
+  const returnRTC = rtcInfo.userType === UserType.HOST ?
+    new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints)
+    : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
+  returnRTC.setRoomInfo(roomInfo);
+  return returnRTC;
+}
+export const getWowzaRtc = (rtcInfo:HostRtc|ListenerRtc)=>{
+  const roomInfo = rtcInfo.roomInfo as roomInfoType;
+  const hostVideoConstraints = {
+    isVideo: roomInfo.mediaType === MediaType.VIDEO,
+    videoFrameRate: roomInfo.videoFrameRate,
+    videoResolution: roomInfo.videoResolution,
+  };
+  const listenerVideoConstraints = {
+    isVideo: roomInfo.mediaType === MediaType.VIDEO,
+  }
+  const returnRTC = rtcInfo.userType === UserType.HOST ?
+    new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints)
+    : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
+  returnRTC.setRoomInfo(roomInfo);
+  return returnRTC;
 }

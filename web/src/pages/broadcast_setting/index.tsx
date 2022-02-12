@@ -11,11 +11,11 @@ import { useHistory } from "react-router-dom";
 // static
 import {
   broadcastCheck,
-  broadcastCreate,
+  //broadcastCreate,
   broadcastExit,
   getRoomType,
   postImage,
-  getBroadcastSetting, broadcastInfoNew,
+  getBroadcastSetting, broadcastInfoNew, broadcastCreate,
 } from "common/api";
 // others
 import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
@@ -34,6 +34,8 @@ import Layout from "common/layout";
 import { MediaType } from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import {BroadcastCreateRoomParamType} from "../../redux/types/broadcastType";
+import {useDispatch} from "react-redux";
+// import {broadcastCreate} from "../../redux/actions/broadcast";
 
 declare global {
   interface Window {
@@ -154,7 +156,7 @@ let constraint = {
 export default function BroadcastSetting() {
   const history = useHistory();
   const titleInputRef = useRef<any>();
-
+  const dispatch = useDispatch();
   const { globalState, globalAction } = useContext(GlobalContext);
   const { chatInfo, rtcInfo } = globalState;
   const { modalState } = useContext(ModalContext);
@@ -352,6 +354,8 @@ export default function BroadcastSetting() {
         mediaType: state.mediaType
       };
 
+      // dispatch(broadcastCreate(createInfo));
+      // return;
       const { result, data, message, code } = await broadcastCreate(createInfo);
       if (result === "success") {
         if(data.platform === "wowza"){

@@ -108,7 +108,8 @@ const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
 const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
 const ClipPlayer = React.lazy(() => import("pages/clip_player"));
 
-const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+// const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+const Broadcast =  React.lazy(() => import("pages/broadcast/index_rdx"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
