@@ -108,7 +108,9 @@ const Remypage = () => {
               </div>
               }
             </section>
-            <button className='logout' onClick={logout}>로그아웃</button>
+            <section className="buttonWrap">
+              <button className='logout' onClick={logout}>로그아웃</button>
+            </section>
           </div>
         </>
       )

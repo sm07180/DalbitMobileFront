@@ -125,11 +125,14 @@
       }
     }
   }
-  button.logout {
-    width:calc(100% - 32px);
-    line-height:46px;
+  .buttonWrap {
     margin: auto 16px;
-    @include border(#D5D5D5,16px);
-    @include font(16px,$Medium,#666);
+    button.logout {
+      width:calc(100% - 32px);
+      margin:16px 0;
+      line-height:46px;
+      @include border(#D5D5D5,16px);
+      @include font(16px,$Medium,#666);
+    }
   }
 }
