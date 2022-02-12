@@ -11,6 +11,7 @@ import profileClip from './profile/clip';
 import modal from './modal';
 import clipRank from "./clipRank";
 import rank from "./rank";
+import mailBox from "./mailBox";
 
 const rootReducer = combineReducers({
     common
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   , modal
   , clipRank
   , rank
+  , mailBox
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
