@@ -1,4 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import Api from 'context/api'
 
 import Header from 'components/ui/header/Header'
@@ -6,10 +7,12 @@ import Header from 'components/ui/header/Header'
 import InviteEvent from './contents/InviteEvent'
 import InviteRank from './contents/InviteRank'
 import InviteMydata from './contents/InviteMydata'
+import SnsPromotion from './contents/SnsPromotion'
 
 import './invite.scss'
 
-const Invite = () => { 
+const Invite = () => {
+  const params = useParams();
   const [tabData, setTabData] = useState([
     {
       dufaultSrc : "https://image.dalbitlive.com/event/invite/tab01.png",
@@ -41,42 +44,49 @@ const Invite = () => {
   }
 
   return (
-    <div id="invite">
-      <Header position={'sticky'} title={'이벤트'} type={'back'}/>
-      <div className='content'>
-        <img src="https://image.dalbitlive.com/event/invite/eventPage_mainImg.png" alt="친구 초대하고 초대왕 도전!" className='fullImage'/>
-        {
-          tabData.length > 0 &&
-            <div className='tabImgText'>
+    <>    
+      {
+        !params.type ?
+          <div id="invite">
+            <Header position={'sticky'} title={'이벤트'} type={'back'}/>
+            <div className='content'>
+              <img src="https://image.dalbitlive.com/event/invite/eventPage_mainImg.png" alt="친구 초대하고 초대왕 도전!" className='fullImage'/>
               {
-                tabData.map((tabList, index) => {
-                  return (
-                    <div
-                      className={`tabMenu ${tabList.active ? "active" : ""}`}
-                      key={index}
-                      onClick={() => tabActive(index)}
-                    >
-                      <img src={tabList.active ? tabList.activeSrc : tabList.dufaultSrc} alt={tabList.alt} className='tabName'/>
-                    </div>
-                  )
-                })
-              }          
+                tabData.length > 0 &&
+                  <div className={`tabImgText`}>
+                    {
+                      tabData.map((tabList, index) => {
+                        return (
+                          <div
+                            className={`tabMenu ${tabList.active ? "active" : ""}`}
+                            key={index}
+                            onClick={() => tabActive(index)}
+                          >
+                            <img src={tabList.active ? tabList.activeSrc : tabList.dufaultSrc} alt={tabList.alt} className='tabName'/>
+                          </div>
+                        )
+                      })
+                    }          
+                  </div>
+              }
+              {
+                tabData[0].active &&
+                <InviteEvent/>
+              }
+              {
+                tabData[1].active &&
+                <InviteRank/>
+              }
+              {
+                tabData[2].active &&
+                <InviteMydata/>
+              }
             </div>
-        }
-        {
-          tabData[0].active &&
-          <InviteEvent/>
-        }
-        {
-          tabData[1].active &&
-          <InviteRank/>
-        }
-        {
-          tabData[2].active &&
-          <InviteMydata/>
-        }
-      </div>
-    </div>
+          </div>
+        :
+          <SnsPromotion/>
+      }
+    </>
   )
 }
 

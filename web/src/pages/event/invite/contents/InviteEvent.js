@@ -1,8 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
+
+import {Context} from 'context'
+
+import GenderItems from 'components/ui/genderItems/GenderItems'
 
 import '../invite.scss'
 
 const InviteEvent = () => {  
+  const globalCtx = useContext(Context)
+  const {token, profile} = globalCtx
+
+
   const [createdCode, setCreatedCode] = useState(false)
   const [code, setCode] = useState("")
   const [codeMatch, setCodeMatch] = useState(false)
@@ -85,13 +93,24 @@ const InviteEvent = () => {
         :
           <div className='imageBox'>
             <img src="https://image.dalbitlive.com/event/invite/eventPage_event-friend.png" alt="나를 초대한 친구" className='fullImage'/>
-            <div className='codeInput'>
+            <div className='friendWrap'>
+              <div className="photo">
+                <img src={`${profile.profImg.thumb150x150 ? profile.profImg.thumb150x150 : "https://image.dalbitlive.com/images/listNone-userProfile.png"}`} alt="프로필이미지" />
+              </div>
+              <div className='listContent'>
+                <div className='listItem'>
+                  <GenderItems data={profile.gender}/>
+                  <span className='nickNm'>{profile.nickNm}</span>
+                </div>
+                <div className='listItem'>
+                  <span className='memId'>{profile.memId}</span>
+                </div>
+              </div>
             </div>
           </div>
       }      
       <div className='imageBox'>
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-notice.png" alt="유의사항" className='fullImage'/>
-
       </div>
     </div>
   )
