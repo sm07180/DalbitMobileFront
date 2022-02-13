@@ -1,16 +1,22 @@
-import React, {useContext, useMemo} from 'react';
+import React, {useState, useEffect, useMemo, useCallback, useRef} from 'react';
 import ListRow from "components/ui/listRow/ListRow";
 import Utility from "components/lib/utility";
 import {IMG_SERVER} from "context/config";
 import {Context} from "context";
 
 const ProfileReplyComponent = (props) => {
-  const {item, profile, isMyProfile, adminChecker, dateKey, replyDelete, replyEditFormActive, type, blurBlock, goProfile } = props;
+  const {item, profile, isMyProfile, adminChecker, dateKey, replyDelete,
+    replyEditFormActive, type, blurBlock, goProfile, openBlockReportPop
+  } = props;
 
+  const memNo = type==='feed'? item?.writerMemNo : item?.writerMemNo;
   //isMyProfile : 프로필 주인 여부
   //내가 작성한 댓글 여부
-  const isMyContents = (typeof profile?.memNo !=='undefined' && typeof item?.writerMemNo !== 'undefined')
-    && profile?.memNo === item?.writerMemNo;
+  const isMyContents = (typeof profile?.memNo !=='undefined' && typeof memNo !== 'undefined')
+    && profile?.memNo === memNo;
+
+  const [isMore, setIsMore] = useState(false);
+  const isMoreRef = useRef(null);
 
   //몇초 전, 몇분 전, 몇시간 전 표기용
   const timeDiffCalc = useMemo(() => {
@@ -20,6 +26,22 @@ const ProfileReplyComponent = (props) => {
       return '';
     }
   }, [item]);
+
+  const replyIsMoreClickCheckerEvent = useCallback((e) => {
+    //blur로 판단
+    if (isMoreRef.current !== e.target) {
+      if(isMore) setIsMore(false);
+    }
+  },[isMore]);
+
+  useEffect(() => {
+    if(isMore) {
+      document.body.addEventListener('click', replyIsMoreClickCheckerEvent);
+    }
+    return () => {
+      document.body.removeEventListener('click', replyIsMoreClickCheckerEvent);
+    }
+  },[isMore]);
 
   return (
     <ListRow photo={type ==='feed'?item?.profileImg?.thumb50x50 : item?.profImg?.thumb50x50} photoClick={goProfile}>
@@ -40,23 +62,24 @@ const ProfileReplyComponent = (props) => {
           <i className='like'/>
           <span>{Utility.addComma(3211)}</span>
         </div>*/}
-
-        {(isMyProfile || isMyContents || adminChecker) && <div>
-          <button onClick={() => replyDelete(item?.replyIdx)}>삭제</button>
-        </div>}
-        {isMyContents && <div>
-          <button onClick={() => {blurBlock();replyEditFormActive(item?.replyIdx, item?.contents);}}>수정
-          </button>
-        </div>}
-        {!isMyContents && <div><button>차단/신고하기</button></div>}
-
       </div>
-      <button className='more'>
-        <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-        {/*{(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}*/}
-        {/*{(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button >삭제하기</button>}*/}
-        {/*{context.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}*/}
-      </button>
+      <div className='moreBtn' ref={isMoreRef} onClick={() => setIsMore(!isMore)}>
+        <img className="moreBoxImg" src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt=""/>
+        {isMore && <div className="isMore">
+            {(isMyProfile || isMyContents || adminChecker) &&
+              <div><button onClick={() => replyDelete(item?.replyIdx)}>삭제</button></div>
+            }
+            {isMyContents &&
+              <div><button onClick={() => {
+                blurBlock();
+                replyEditFormActive(item?.replyIdx, item?.contents);
+              }}>수정</button></div>
+            }
+            {!isMyContents &&
+              <div><button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button></div>
+            }
+        </div>}
+      </div>
     </ListRow>
 
 

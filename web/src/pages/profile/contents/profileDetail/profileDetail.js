@@ -11,6 +11,8 @@ import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponen
 import Utility from "components/lib/utility";
 import Swiper from "react-id-swiper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import PopSlide from "components/ui/popSlide/PopSlide";
+import BlockReport from "pages/profile/components/popSlide/BlockReport";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -22,6 +24,7 @@ const ProfileDetail = (props) => {
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
+  const replyIsMoreRef = useRef(null);
 
   //팝업 사진 스와이퍼
   const [showSlide, setShowSlide] = useState(false);
@@ -41,6 +44,10 @@ const ProfileDetail = (props) => {
   const [replyList, setReplyList] = useState([]);
   const [isMore, setIsMore] = useState(false);
   const [text, setText] = useState('');
+
+  //차단 / 신고하기
+  const [popBlockReport, setPopBlockReport] = useState(false);
+  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
 
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -167,42 +174,6 @@ const ProfileDetail = (props) => {
       document.body.removeEventListener('click', inputFormFocusEvent);
     }
   },[inputMode, text, isMore]);
-
-
-  useEffect(()=> {
-    // Api.mypage_notice_edit({
-    //   reqBody : true,
-    //   data: {
-    //     title: 'hello',
-    //     contents: 'hhh',
-    //     noticeIdx: 84368,
-    //     topFix: 0,
-    //     chrgrName: "name",
-    //     photoInfoList: [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
-    //   }
-    // }).then((res)=>{console.log("hello", res)});
-
-
-// let i=0;
-//     Api.mypage_notice_upload({
-//       reqBody: true,
-//       data: {
-//         title: `이미지 업로드 테스트`,
-//         contents: '내용',
-//         topFix: 0,
-//         photoInfoList: [{img_name: '/room_1/21374121600/20220207163549744349.png'}]
-//
-//       }
-//     }).then((res) => {
-//     });
-
-//
-//     Api.mypage_notice_delete({data:{noticeIdx: 84365, delChrgrName: '나'}}).then(res => {
-//       console.log(res);
-//     })
-
-    // Api.mypage_notice_detail_sel({data:})
-  },[]);
 
   //글 삭제
   const deleteContents = () => {
@@ -373,11 +344,22 @@ const ProfileDetail = (props) => {
     });
   };
 
-  // 페이지 시작
+  /* 차단/신고 팝업 열기 */
+  const openBlockReportPop = (blockReportInfo) => {
+    console.log('report info',blockReportInfo);
+    setPopBlockReport(true);
+    setBlockReportInfo(blockReportInfo);
+  }
+
+  /* 차단/신고 팝업 닫기 */
+  const closeBlockReportPop = () => {
+    setPopBlockReport(false);
+    setBlockReportInfo({memNo: '', memNick: ''});
+  }
+
   return (
     <div id="profileDetail">
       <Header title={item?.nickName} type={'back'}>
-        {`${isMyProfile}`}
         <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -388,7 +370,9 @@ const ProfileDetail = (props) => {
                     수정하기</button>}
                 {(isMyProfile && isMyContents || adminChecker) &&
                   <button onClick={deleteContents}>삭제하기</button>}
-                {!isMyContents && <button>차단/신고하기</button>}
+                {!isMyContents &&
+                  <button onClick={() => openBlockReportPop({memNo:item?.mem_no || item?.writer_mem_no, memNick: item?.nickName})}>
+                    차단/신고하기</button>}
               </div>
             }
           </div>
@@ -435,9 +419,10 @@ const ProfileDetail = (props) => {
           {replyList.map((item, index) => {
               const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
               return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
-                                     replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
-                                     blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
-                      />
+                                            replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
+                                            blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
+                                            openBlockReportPop={openBlockReportPop}
+              />
             })}
         </div>
         <div className='bottomWrite'>
@@ -456,6 +441,13 @@ const ProfileDetail = (props) => {
 
       {/* 프로필 사진 확대 */}
       {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+
+      {/* 차단 / 신고하기 */}
+      {popBlockReport &&
+      <PopSlide setPopSlide={setPopBlockReport}>
+        <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
+      </PopSlide>
+      }
     </div>
   )
 }

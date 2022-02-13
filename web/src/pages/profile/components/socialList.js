@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -35,7 +35,7 @@ const SocialList = (props) => {
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
             />
             <div className="socialContent">
-              <div className="text">
+              <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>
                 {item.contents}
               </div>
               {type === 'feed' && (item.photoInfoList.length > 1 ?
