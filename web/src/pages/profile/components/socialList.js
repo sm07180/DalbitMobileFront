@@ -10,7 +10,7 @@ import {useHistory} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents} = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
   const history = useHistory();
 
   // 스와이퍼
@@ -26,13 +26,13 @@ const SocialList = (props) => {
   return (
     <div className="socialList">
       {socialList.map((item, index) => {
-        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: item?.mem_no? item?.mem_no:item?.writerMemNo };
-        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: item?.mem_no?item?.mem_no:item?.writerMemNo };
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
                               modifyEvent={() => goProfileDetailPage(modifyParam)}
-                              deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, item?.mem_no )}
+                              deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
             />
             <div className="socialContent">
               <div className="text">

@@ -372,6 +372,7 @@ const ProfileDetail = (props) => {
   return (
     <div id="profileDetail">
       <Header title={item?.nickName} type={'back'}>
+        {`${isMyProfile}`}
         <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -382,18 +383,17 @@ const ProfileDetail = (props) => {
                     수정하기</button>}
                 {(isMyProfile && context?.profile?.memNo === item?.mem_no || context?.adminChecker) &&
                   <button onClick={deleteContents}>삭제하기</button>}
-                  <button>차단/신고하기</button>
+                {!isMyProfile && context?.profile?.memNo !== item?.mem_no && <button>차단/신고하기</button>}
               </div>
             }
           </div>
         </div>
       </Header>
       <section className='detailWrap'>
+        {/* 피드, 팬보드 게시글 영역 */}
         <div className="detail">
           {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
-          <div className="text">
-            <pre>{item?.contents}</pre>
-          </div>
+          <pre className="text">{item?.contents}</pre>
 
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
               <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
@@ -425,7 +425,7 @@ const ProfileDetail = (props) => {
           </div>
         </div>
 
-        {/*댓글 리스트*/}
+        {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
           {replyList.map((item, index) => {
               const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };

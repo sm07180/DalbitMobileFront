@@ -45,7 +45,6 @@ const ProfileWrite = () => {
 
   //이미지 팝업 슬라이더
   const [showSlide, setShowSlide] = useState({show: false, viewIndex: 0});
-  const [imgList, setImgList] = useState([]);
 
   const [formState, setFormState] = useState({
     title: '',
@@ -53,6 +52,7 @@ const ProfileWrite = () => {
     others: 0,  //topFix 고정여부 [0, 1] / viewOn 비밀글 여부( 등록만 가능, 수정불가 ) [0, 1]
     photoInfoList: []
   });
+  const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
 
   const validChecker = () => {
     let confirm = true;
@@ -161,18 +161,22 @@ const ProfileWrite = () => {
         inputRef.current.value = ''
       }
 
-      //사진 리스트에 추가
-      setFormState({...formState, photoInfoList: formState.photoInfoList.concat({img_name: data?.path, ...data})});
+      //사진 리스트에 추가 (globalPhotoInfoListRef.current = formState.photoInfoList)
+      setFormState({...formState, photoInfoList: globalPhotoInfoListRef.current.concat({img_name: data?.path, ...data})});
       setImage(null);
 
       if (photoListSwiperRef.current?.swiper) {
         photoListSwiperRef.current?.swiper?.update();
-        photoListSwiperRef.current?.swiper?.slideTo(formState.photoInfoList?.length || 0);
+        photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
       }
     } else {
       context.action.toast({msg: message});
     }
   };
+
+  useEffect(() => {
+    globalPhotoInfoListRef.current = formState?.photoInfoList;
+  },[formState?.photoInfoList]);
 
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
   useEffect(() => {
@@ -312,7 +316,7 @@ const ProfileWrite = () => {
                   popClose={() => setShowSlide({show: false, viewIndex: 0})}
                   imageKeyName={'url'}
                   imageParam={'?500x500'}
-                  initialSlide={{initialSlide : showSlide?.viewIndex}}
+                  initialSlide={showSlide?.viewIndex || 0}
       />}
 
     </div>

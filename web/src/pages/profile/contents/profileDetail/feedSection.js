@@ -53,7 +53,7 @@ const FeedSection = (props) => {
       }
       {feedList.length > 0 ?
         <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
-                    openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}
+                    openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData}
         />
         :
         <NoResult />
