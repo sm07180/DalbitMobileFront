@@ -16,7 +16,6 @@ import 'styles/common.scss'
 import 'styles/swiper.scss'
 
 import {BroadcastProvider as BroadcastProviderWWW} from "context/broadcast_ctx";
-import {MailboxProvider as MailboxProviderWWW} from "context/mailbox_ctx";
 import {Provider} from 'react-redux';
 import store from "redux/store";
 
@@ -24,11 +23,9 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <GlobalProvider>
-        <MailboxProviderWWW>
-          <BroadcastProviderWWW>
-            <App/>
-          </BroadcastProviderWWW>
-        </MailboxProviderWWW>
+        <BroadcastProviderWWW>
+          <App/>
+        </BroadcastProviderWWW>
       </GlobalProvider>
     </BrowserRouter>
   </Provider>,

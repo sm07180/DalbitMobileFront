@@ -4,15 +4,15 @@ import { useHistory } from "react-router-dom";
 import { postChatImage, getProfile } from "common/api";
 // context
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 import DalbitCropper from "common/ui/dalbit_cropper";
+import {useSelector} from "react-redux";
 
 export default function chatInput(props) {
   const { setChatText, sendMessage, chatText, setGiftPop, targetIsMailboxOn } = props;
   const history = useHistory();
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { chatInfo, isMailboxOn } = globalState;
   const textareaRef = useRef<any>(null);
   //크롭퍼 state

@@ -5,7 +5,6 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 //context
-import { MailboxContext } from "context/mailbox_ctx";
 import { GlobalContext } from "context";
 //api
 import { getMailboxChatTargetList } from "common/api";
@@ -16,13 +15,16 @@ import Layout from "common/layout";
 import ChatList from "./content/chat_list";
 import ChatNew from "./content/chat_new";
 import Chatting from "./content/chatting";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxChatTargetData} from "../../redux/actions/mailBox";
 
 export default function mailBoxContent() {
   const params = useParams();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   // gtx
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
   // param
   const category = params instanceof Object ? params["category"] : "";
   const mailNo = params instanceof Object ? params["mailNo"] : "";
@@ -49,7 +51,7 @@ export default function mailBoxContent() {
       records: 100,
     });
     if (result === "success") {
-      mailboxAction.setChatTargetData!(data);
+      dispatch(setMailBoxChatTargetData(data));
     } else {
       //실패
       globalAction.setAlertStatus &&

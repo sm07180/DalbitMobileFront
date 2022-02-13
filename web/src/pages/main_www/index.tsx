@@ -9,7 +9,6 @@ import React, {
 import { Link, useHistory } from "react-router-dom";
 import {getMain, getBanner, broadcastList, getInnerServerList} from "common/api";
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 import { getCookie } from "common/utility/cookie";
 import { PAGE_TYPE } from "pages/rank/constant";
 import moment from "moment";
@@ -33,7 +32,7 @@ import "./main.scss";
 import { openMailboxBanAlert } from "common/mailbox/mail_func";
 import { contactRemoveUnique } from "lib/common_fn";
 import {resolveAny} from "dns";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import {
   setRankFormRankType, setRankFormPageType
@@ -83,7 +82,7 @@ export default function Main() {
   const history = useHistory();
   const dispatch = useDispatch()
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const {
     baseData,
     userProfile,

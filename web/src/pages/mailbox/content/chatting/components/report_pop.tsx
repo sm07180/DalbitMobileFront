@@ -4,10 +4,10 @@
  */
 import React, { useContext, useState, useEffect } from "react";
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 import { useHistory, useParams } from "react-router-dom";
 // api
 import { postReportUser, MypageBlackListAdd } from "common/api";
+import {useSelector} from "react-redux";
 //tab
 let PROFILE_REPORT_TAB = {
   BLACK: 0,
@@ -17,7 +17,7 @@ export default (props) => {
   const history = useHistory();
   const { setReportPop, setPageType, pageType } = props;
   const { globalAction } = useContext(GlobalContext);
-  const { mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { mailNo } = useParams<{ mailNo: string }>();
   //state
   const [select, setSelect] = useState<number>(0);

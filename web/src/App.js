@@ -20,7 +20,6 @@ import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {CHAT_CONFIG} from "constant/define";
 import {ChatSocketHandler} from "common/realtime/chat_socket";
-import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
 import {getMemberProfile} from "redux/actions/member";
@@ -104,7 +103,6 @@ import MoveToAlert from "common/alert/MoveToAlert";
 
 let alarmCheckIntervalId = 0;
 const App = () => {
-  const { mailboxAction } = useContext(MailboxContext);
   const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
   App.context = () => context
@@ -221,7 +219,7 @@ const App = () => {
         globalCtx.globalAction.dispatchChatInfo &&
         globalCtx.globalAction.dispatchMailChatInfo
     ) {
-      const chatInfo = new ChatSocketHandler(socketUser);
+      const chatInfo = new ChatSocketHandler(socketUser,null,dispatch);
       // chatInfo.setSplashData(globalState.splashData);
       //deep copy chatInfo
       let cloneMailInfo = Object.assign(
@@ -641,11 +639,9 @@ const App = () => {
   useEffect(() => {
     if (chatInfo !== null) {
       chatInfo.setGlobalAction(globalCtx.globalAction);
-      chatInfo.setMailboxAction(mailboxAction);
     }
     if (mailChatInfo !== null) {
       mailChatInfo.setGlobalAction(globalCtx.globalAction);
-      mailChatInfo.setMailboxAction(mailboxAction);
     }
   }, [chatInfo, mailChatInfo]);
 

@@ -5,7 +5,6 @@ import Toggle from "common/toggle";
 
 //Context
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 
 //api
@@ -16,13 +15,16 @@ import { getWindowBottom, debounceFn } from "lib/common_fn";
 
 //component
 import Header from "common/ui/header";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxChatListInit} from "../../../../redux/actions/mailBox";
 
 let totalPage = 1;
 
 export default function chatListPage() {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { globalAction, globalState } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
   const { chatList } = mailboxState;
   const { isMailboxOn } = globalState;
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -54,7 +56,7 @@ export default function chatListPage() {
         <li
           className="chatListItem"
           onClick={() => {
-            mailBoxJoin(memNo, mailboxAction, globalAction, history);
+            mailBoxJoin(memNo, dispatch, globalAction, history);
           }}
           key={idx}
         >
@@ -81,11 +83,11 @@ export default function chatListPage() {
     if (result === "success") {
       const { list, paging, isMailboxOn } = data;
       globalAction.setIsMailboxOn!(isMailboxOn);
-      mailboxAction.dispathChatList!({ type: "init", data: data.list });
+      dispatch(setMailBoxChatListInit(data.list));
       if (currentPage > 1) {
-        mailboxAction.dispathChatList!({ type: "init", data: mailboxState.chatList.concat(list) });
+        dispatch(setMailBoxChatListInit(mailboxState.chatList.concat(list)));
       } else {
-        mailboxAction.dispathChatList!({ type: "init", data: data.list });
+        dispatch(setMailBoxChatListInit(data.list));
       }
 
       if (paging) {

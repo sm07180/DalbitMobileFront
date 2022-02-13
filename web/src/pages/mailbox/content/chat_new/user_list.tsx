@@ -2,17 +2,18 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 //Context
-import { MailboxContext } from "context/mailbox_ctx";
 import { GlobalContext } from "context";
 
 //Common
 import { printNumber, settingAlarmTime } from "lib/common_fn";
 import { mailBoxJoin } from "common/mailbox/mail_func";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function userList() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { chatTargetData } = mailboxState;
 
   return (
@@ -25,7 +26,7 @@ export default function userList() {
             key={index}
             onClick={() => {
               if (isMailboxOn) {
-                mailBoxJoin(memNo, mailboxAction, globalAction, history);
+                mailBoxJoin(memNo, dispatch, globalAction, history);
               } else {
                 globalAction.callSetToastStatus!({
                   status: true,

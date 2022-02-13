@@ -12,7 +12,6 @@ import {
 
 // context
 import {GlobalContext} from "context";
-import {MailboxContext} from "context/mailbox_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // static
@@ -42,6 +41,7 @@ import {
   setRankFormPage,
   setRankFormPageType, setRankScrollY
 } from "redux/actions/rank";
+import {setMailBoxIsMailBoxNew} from "../redux/actions/mailBox";
 
 
 export default function GNB() {
@@ -50,7 +50,7 @@ export default function GNB() {
   const rankState = useSelector(({rank}) => rank);
   const { globalState, globalAction } = context;
   const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { isMailboxNew } = mailboxState;
 
   const { formState } = rankState;
@@ -368,7 +368,7 @@ export default function GNB() {
     const mailboxNewCheck = async () => {
       const { result, data, message } = await checkIsMailboxNew({});
       if (result === "success") {
-        mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(data.isNew);
+        dispatch(setMailBoxIsMailBoxNew(data.isNew));
       } else {
         globalAction.setAlertStatus &&
         globalAction.setAlertStatus({
@@ -381,7 +381,7 @@ export default function GNB() {
     if (globalState.baseData.isLogin) {
       mailboxNewCheck();
     } else {
-      mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(false);
+      dispatch(setMailBoxIsMailBoxNew(false));
     }
   }, [globalState.baseData.isLogin]);
 

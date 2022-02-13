@@ -1,16 +1,23 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 //api
 import { getChatImageList, postChatImageDelete, postReportImg } from "common/api";
 
 //component
 import Slider from "./img_slider";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setMailBoxImgSliderAddDeleteImg,
+  setMailBoxImgSliderInit,
+  setMailBoxImgSliderPopupClose
+} from "../../../../../redux/actions/mailBox";
 
 export default (props) => {
   const { startMemNo } = props;
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBox}) => mailBox);
+
   const [sliderState, setSliderState] = useState(false);
   const [imgList, setImgList] = useState([]);
   const [slider, setSlider] = useState<any>({});
@@ -32,7 +39,7 @@ export default (props) => {
         type: "alert",
         content: message,
         callback: () => {
-          mailboxAction.dispathImgSliderInfo && mailboxAction.dispathImgSliderInfo({ type: "popupClose" });
+          dispatch(setMailBoxImgSliderPopupClose());
         },
       });
     }
@@ -60,16 +67,12 @@ export default (props) => {
   };
 
   const actionImgDelete = (list, currentSlide) => {
-    mailboxAction.dispathImgSliderInfo && mailboxAction.dispathImgSliderInfo({ type: "popupClose" });
+    dispatch(setMailBoxImgSliderPopupClose());
     if (list.length > 1) {
-      mailboxAction.dispathImgSliderInfo &&
-        mailboxAction.dispathImgSliderInfo({
-          type: "init",
-          data: {
-            memNo: currentSlide.memNo,
-            idx: currentSlide.msgIdx,
-          },
-        });
+      dispatch(setMailBoxImgSliderInit({
+        memNo: currentSlide.memNo,
+        idx: currentSlide.msgIdx,
+      }));
     }
   };
 
@@ -79,8 +82,7 @@ export default (props) => {
       msgIdx: mailboxState.imgSliderInfo.currentImgIdx,
     });
     if (result === "success") {
-      mailboxAction.dispathImgSliderInfo &&
-        mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: mailboxState.imgSliderInfo.currentImgIdx });
+      dispatch(setMailBoxImgSliderAddDeleteImg(mailboxState.imgSliderInfo.currentImgIdx));
       settingDeletedImgList(imgList);
       actionImgDelete(imgList, settingCurrentSlideIdx(imgList));
     } else {
@@ -169,7 +171,7 @@ export default (props) => {
           <button
             className="close"
             onClick={() => {
-              mailboxAction.dispathImgSliderInfo && mailboxAction.dispathImgSliderInfo({ type: "popupClose" });
+              dispatch(setMailBoxImgSliderPopupClose());
             }}
           >
             닫기

@@ -6,15 +6,16 @@ import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 // context
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 // component
 import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxGiftItemInfo} from "../../../../../redux/actions/mailBox";
 // global var
 let selectObj = {};
 export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction } = useContext(MailboxContext);
+  const dispatch = useDispatch();
   const { splashData } = globalState;
   const history = useHistory();
   // profileInfo
@@ -47,7 +48,7 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   };
   // 아이템 선택하기
   const selectItem = (idx: number, itemNo: string, selectItem) => {
-    mailboxAction.setGiftItemInfo!(null);
+    dispatch(setMailBoxGiftItemInfo(null));
     selectObj = selectItem;
     if (item != idx) {
       setItem(idx);

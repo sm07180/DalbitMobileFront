@@ -20,7 +20,6 @@ import { CHAT_CONFIG, IMG_SERVER } from "constant/define";
 // ctx
 import { BroadcastContext } from "context/broadcast_ctx";
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 import { printNumber, addComma } from "lib/common_fn";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 // constant
@@ -29,15 +28,16 @@ import { AuthType } from "constant";
 import { MANAGER_TYPE } from "./constant";
 import BadgeList from "../../../../common/badge_list";
 import 'asset/scss/module/mypage/index.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 export default function Profile(props: { roomInfo: roomInfoType; profile: any; roomNo: string; roomOwner: boolean }) {
   const { roomInfo, profile, roomNo, roomOwner } = props;
   const history = useHistory();
-
+  const dispatch = useDispatch();
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { setRightTabType, setUserNickNm, setUserMemNo } = broadcastAction;
 
   const { baseData } = globalState;
@@ -443,7 +443,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
     globalState.mailChatInfo?.setUserInfo(socketUser);
     globalState.mailChatInfo?.privateChannelDisconnect();
-    mailBoxJoin(memNo, mailboxAction, globalAction, history);
+    mailBoxJoin(memNo, dispatch, globalAction, history);
   };
   return (
     <>

@@ -33,6 +33,13 @@ import { MediaType } from "pages/broadcast/constant";
 import { getCookie } from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
 
+import {
+  setMailBoxChatListUpdate, setMailBoxImgSliderAddDeleteImg,
+  setMailBoxIsMailBoxNew,
+  setMailBoxPushChatInfo,
+  setMailBoxUserCount
+} from "../../redux/actions/mailBox";
+
 export class ChatSocketHandler {
   public socket: any;
   public chatUserInfo: chatUserInfoType;
@@ -40,6 +47,7 @@ export class ChatSocketHandler {
   public globalAction: any | null;
   public broadcastAction: any | null;
   public mailboxAction: any | null;
+  public dispatch: any | null;
   public guestAction: any | null;
   public broadcastLayerAction: any | null;
 
@@ -73,7 +81,8 @@ export class ChatSocketHandler {
   // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
   public userSettingObj: userBroadcastSettingType | null = null;
 
-  constructor(userInfo: chatUserInfoType, reConnectHandler?: any) {
+  constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?:any) {
+    this.dispatch = dispatch;
     this.postErrorState =  (window as any)?.postErrorState;
     this.socket = null;
     this.chatUserInfo = userInfo;
@@ -85,7 +94,7 @@ export class ChatSocketHandler {
     this.broadcastAction = null;
 
     this.reConnect =
-      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo) : reConnectHandler;
+      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo, dispatch) : reConnectHandler;
 
     this.publicChannelNo = "";
     this.publicChannelHandle = null;
@@ -418,10 +427,8 @@ export class ChatSocketHandler {
             }
             case "mailBoxPubChat": {
               const { mailBoxPubChat } = data;
-              if (this.mailboxAction !== null) {
-                this.mailboxAction.setIsMailboxNew(true);
-                this.mailboxAction.dispathChatList({ type: "update", data: mailBoxPubChat });
-              }
+              this.dispatch(setMailBoxIsMailBoxNew(true));
+              this.dispatch(setMailBoxChatListUpdate(mailBoxPubChat));
               if (this.globalAction) {
                 this.globalAction.setRealtimeBroadStatus!({
                   status: true,
@@ -483,26 +490,27 @@ export class ChatSocketHandler {
               const { cmd, mailBoxChat, reqMailBoxImageChatDelete } = data;
               switch (cmd) {
                 case "mailBoxConnect": {
+                  // const dispatch = useDispatch();
+                  this.dispatch(setMailBoxUserCount(true));
+
                   const { count } = data;
                   const { userCount, maxUserCount } = count;
-                  if (this.mailboxAction !== null) {
-                    if (userCount > 1) {
-                      this.mailboxAction.setUserCount(true);
-                    }
+                  if (userCount > 1) {
+
+                  }
+                  if (userCount > 1) {
+                    this.dispatch(setMailBoxUserCount(true));
                   }
                   return null;
                 }
                 case "mailBoxChat": {
-                  if (this.mailboxAction !== null) {
-                    this.mailboxAction.setPushChatInfo({
-                      ...mailBoxChat,
-                    });
-                  }
+                  this.dispatch(setMailBoxPushChatInfo({
+                    ...mailBoxChat,
+                  }))
                   return null;
                 }
                 case "reqMailBoxImageChatDelete": {
-                  this.mailboxAction.dispathImgSliderInfo &&
-                    this.mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: reqMailBoxImageChatDelete.msgIdx });
+                  this.dispatch(setMailBoxImgSliderAddDeleteImg(reqMailBoxImageChatDelete.msgIdx));
                   return null;
                 }
               }
@@ -1729,7 +1737,7 @@ export class ChatSocketHandler {
                     const closeImg = document.createElement("img");
                     const player = document.getElementById("local-player");
                     let msgYn = false; // 메시지 표출 여부 값;
-                    
+
                     if (!noticeDisplay) return null;
                     noticeDisplay.innerHTML = ''; // 기존 알림 삭제
 
@@ -1752,7 +1760,7 @@ export class ChatSocketHandler {
 
                     // 영상 OFF일때 메시지 삭제
                     if (reqRoomState.mediaOn) return null;
-                    
+
                     // 새로운 알림 DOM 생성 및 이벤트 부여
                     elem.id = "isMediaNotice";
                     elem.textContent = data.recvMsg.msg;
@@ -2475,8 +2483,11 @@ export class ReConnectChat {
   private mailMsgListWrapRef: any;
   public roomOwner: boolean;
   public broadcastAction: any | null;
+  public dispatch: any | null;
 
-  constructor(userInfo: chatUserInfoType) {
+
+  constructor(userInfo: chatUserInfoType, dispatch:any) {
+    this.dispatch = dispatch;
     this.chatUserInfo = userInfo;
     this.reTryCnt = 0;
     this.isRetry = false;
@@ -2542,7 +2553,7 @@ export class ReConnectChat {
       this.lastRetryTime = now;
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
-        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this);
+        const chatInfo = new ChatSocketHandler(this.chatUserInfo, this, this.dispatch);
         this.globalAction &&
           this.globalAction.dispatchChatInfo &&
           this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });

@@ -12,7 +12,6 @@ import Lottie from "react-lottie";
 
 // context
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import { checkIsMailboxNew } from "common/api";
@@ -30,13 +29,15 @@ import {authReq} from 'pages/self_auth'
 import './navigation.scss'
 import styled from "styled-components";
 import {isDesktopViewRouter} from "../../lib/agent";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxIsMailBoxNew} from "../../redux/actions/mailBox";
 
 const Navigation = () => {
   const context = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { globalState, globalAction } = context;
   const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
   const { isMailboxNew } = mailboxState;
 
   const rankState = useSelector(({rank}) => rank);
@@ -354,7 +355,7 @@ const Navigation = () => {
     const mailboxNewCheck = async () => {
       const { result, data, message } = await checkIsMailboxNew({});
       if (result === "success") {
-        mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(data.isNew);
+        dispatch(setMailBoxIsMailBoxNew(data.isNew));
       } else {
         globalAction.setAlertStatus &&
         globalAction.setAlertStatus({
@@ -367,7 +368,7 @@ const Navigation = () => {
     if (globalState.baseData.isLogin) {
       mailboxNewCheck();
     } else {
-      mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(false);
+      dispatch(setMailBoxIsMailBoxNew(false));
     }
   }, [globalState.baseData.isLogin]);
 

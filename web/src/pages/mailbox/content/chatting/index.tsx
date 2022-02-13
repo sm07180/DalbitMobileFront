@@ -10,7 +10,6 @@ import { mailBoxJoin } from "common/mailbox/mail_func";
 import { usePrevious } from "lib/hooks";
 // context
 import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 //component
 import Header from "common/ui/header";
 import ChatInput from "./components/chat_input";
@@ -19,6 +18,13 @@ import ReportPop from "./components/report_pop";
 import ChatListComponent from "./components/chat_list_render";
 import AnimationViewer from "./components/animation_viewer";
 import ImgSlidePopup from "./components/img_pop";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setMailBoxGiftItemInfo,
+  setMailBoxIsMailBoxNew,
+  setMailBoxPushChatInfo,
+  setMailBoxUserCount
+} from "../../../../redux/actions/mailBox";
 
 // global var
 let lastPrevIdx: string | number = "0";
@@ -43,7 +49,8 @@ export default function chatting() {
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, mailChatInfo, mailBlockUser } = globalState;
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   // ref
   const mailMsgListWrapRef = useRef<HTMLDivElement>(null);
   const msgWrapRef = useRef<any>(null);
@@ -91,7 +98,7 @@ export default function chatting() {
       records: 100,
     });
     if (result === "success") {
-      mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(data.isNew);
+      dispatch(setMailBoxIsMailBoxNew(data.isNew));
       setTargetIsMailboxOn(data.targetIsMailboxOn);
       if (data.list.length > 0) {
         if (next === "next") {
@@ -258,9 +265,9 @@ export default function chatting() {
         return false;
       }
       if (isRead === false) {
-        mailboxAction.setUserCount!(null);
+        dispatch(setMailBoxUserCount(null));
       } else if (isRead === true) {
-        mailboxAction.setUserCount!(true);
+        dispatch(setMailBoxUserCount(true));
       }
       const key = sendDt.substring(0, 8);
       const keyByTime = sendDt.substring(8, 12);
@@ -340,9 +347,9 @@ export default function chatting() {
       if (mailChatInfo !== null) {
         if (mailChatInfo.chatUserInfo["roomNo"] !== null) {
           mailChatInfo.destroy({ isdestroySocket: false, destroyChannelName: mailChatInfo.chatUserInfo["roomNo"] });
-          mailboxAction.setPushChatInfo!(null);
-          mailboxAction.setUserCount!(null);
-          mailboxAction.setGiftItemInfo!(null);
+          dispatch(setMailBoxPushChatInfo(null));
+          dispatch(setMailBoxUserCount(null));
+          dispatch(setMailBoxGiftItemInfo(null));
         }
       }
     };
@@ -359,7 +366,6 @@ export default function chatting() {
       mailChatInfo.setRoomNo(mailNo);
       mailChatInfo.setMailMsgListWrapRef(mailMsgListWrapRef);
       mailChatInfo.setGlobalAction(globalAction);
-      mailChatInfo.setBroadcastAction(mailboxAction);
       mailChatInfo.setDefaultData({ history });
       if (mailChatInfo.privateChannelHandle === null) {
         initInterval(() => {
@@ -451,7 +457,7 @@ export default function chatting() {
     const info = JSON.parse(sessionStorage.getItem("chattingInfo")!);
     const { memNo } = info;
     if (history.action === "POP" && history.location.pathname.includes("/chatting/")) {
-      mailBoxJoin(memNo, mailboxAction, globalAction, history, mailboxState.mailboxInfo?.memNo);
+      mailBoxJoin(memNo, dispatch, globalAction, history, mailboxState.mailboxInfo?.memNo);
     }
   }, [history.action]);
   // ---------------------------------------------------------------------------------------------

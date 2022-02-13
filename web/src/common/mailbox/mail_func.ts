@@ -1,6 +1,8 @@
 import { mailChatEnter, checkIsMailboxNew, getMailboxChatList } from "common/api";
+import {useDispatch} from "react-redux";
+import {setMailBoxInfo, setMailBoxUserCount} from "../../redux/actions/mailBox";
 
-export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any, history: any, prevMemNo?: any) {
+export function mailBoxJoin(memNo: string, dispatch: any, globalAction: any, history: any, prevMemNo?: any) {
   const mailBoxEnter = async () => {
     const { result, data, message, code } = await mailChatEnter({
       memNo: memNo,
@@ -9,7 +11,7 @@ export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any
       if (prevMemNo === memNo) {
         return false;
       } else {
-        mailboxAction.setMailboxInfo({ memNo: memNo, ...data });
+        dispatch(setMailBoxInfo({ memNo: memNo, ...data }))
       }
       sessionStorage.setItem("chattingInfo", JSON.stringify({ memNo: memNo, chatNo: data.chatNo }));
       if (window.location.pathname.indexOf("chatting") !== 9) {
