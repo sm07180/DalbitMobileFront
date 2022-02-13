@@ -5,9 +5,12 @@ import Swiper from 'react-id-swiper'
 import NoResult from 'components/ui/noResult/NoResult'
 // components
 import SocialList from '../../components/socialList'
+import {useHistory, useParams} from "react-router-dom";
 
 const FeedSection = (props) => {
-  const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop } = props;
+  const history = useHistory();
+  const {memNo} = useParams();
+  const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents } = props;
   //context
   const { feedList, fixedFeedList, fixCnt, scrollPaging } = feedData;
 
@@ -27,7 +30,7 @@ const FeedSection = (props) => {
         <Swiper {...swiperParams}>
           {fixedFeedList.map((item) => {
             return (
-              <div key={item.noticeIdx}>
+              <div key={item.noticeIdx} onClick={() => history.push(`/profileDetail/${memNo || profileData?.memNo}/feed/${item.noticeIdx}`)}>
                 <div className="feedBox">
                   <div className={`text ${item?.photoInfoList?.length > 0 ? 'add' : ''}`}>{item.title}</div>
                   <div className="info">
@@ -50,7 +53,7 @@ const FeedSection = (props) => {
       }
       {feedList.length > 0 ?
         <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
-                    openBlockReportPop={openBlockReportPop}
+                    openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData}
         />
         :
         <NoResult />

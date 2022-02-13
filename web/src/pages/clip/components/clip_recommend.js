@@ -15,7 +15,7 @@ import Layout from 'pages/common/layout/new_layout'
 import NoResult from 'components/ui/new_noResult'
 import {ClipPlayFn} from 'pages/clip/components/clip_play_fn'
 
-import '../clip.scss'
+import '../scss/clip.scss'
 
 export default function ClipRecommend() {
   const context = useContext(Context)

@@ -14,11 +14,11 @@ import Tabmenu from './components/Tabmenu'
 import FanStarLike from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 // contents
-import FeedSection from './contents/profileDetail/feedSection'
-import FanboardSection from './contents/profileDetail/fanboardSection'
-import ClipSection from './contents/profileDetail/clipSection'
+import FeedSection from './contents/profileDetail/FeedSection'
+import FanboardSection from './contents/profileDetail/FanboardSection'
+import ClipSection from './contents/profileDetail/ClipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
@@ -31,6 +31,7 @@ import {
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
@@ -291,12 +292,57 @@ const ProfilePage = () => {
     setPopSlide(false);
   }
 
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback((ref, callback) => {
+    const scrollTarget = ref.current;
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight === targetHeight + scrollTop) {
+      callback()
+    }
+  }, []);
+
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
     // dispatch(setProfileData(profileDefaultState)); // 프로필 상단
     dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
+  }
+
+  /* 피드글, 팬보드 삭제후 데이터 비우기 */
+  const deleteContents = (type, index, memNo) => {
+    const callback = async () => {
+      if (type === 'feed') {
+        const {result, data, message} = await Api.mypage_notice_delete({
+          data: {
+            delChrgrName: profileData?.nickNm,
+            noticeIdx: index,
+          }
+        })
+        if (result === 'success') {
+          const feedList = feedData.feedList.concat([]).filter((feed, _index) => feed.noticeIdx !== index);
+          dispatch(setProfileFeedData({...feedData, feedList}));
+        } else {
+          context.action.toast({msg: message});
+        }
+      } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
+        const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
+
+        console.log('fanBoardData', fanBoardData, list);
+        const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
+        if (result === 'success') {
+          dispatch(setProfileFanBoardData({...fanBoardData, list}));
+        } else {
+          context.action.toast({msg: message});
+        }
+      }
+    }
+    context.action.confirm({
+      msg: '정말 삭제 하시겠습니까?',
+      callback
+    });
   }
 
   /* 프로필 상단 데이터 */
@@ -346,7 +392,6 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      {/* <div onClick={goMailAction}>askldjlkasdjf</div> */}
       <section className='topSwiper'>
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
@@ -361,18 +406,21 @@ const ProfilePage = () => {
       <section className="socialWrap">
         <div className="tabmenuWrap">
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
-          {isMyProfile && <button>등록</button>}
+          {isMyProfile && <button onClick={() => {
+            socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
+              socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
+          }}>>등록</button>}
         </div>
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
           <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
-                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} />
+                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {socialType === socialTabmenu[1] &&
-          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} />
+          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} deleteContents={deleteContents}/>
         }
 
         {/* 클립 */}
@@ -402,7 +450,8 @@ const ProfilePage = () => {
       {popFanStar &&
         <PopSlide setPopSlide={setPopFanStar}>
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
-                       goProfile={goProfile} setPopFanStar={setPopFanStar}
+                       goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
+                       scrollEvent={scrollEvent}
           />
         </PopSlide>
       }
@@ -411,7 +460,7 @@ const ProfilePage = () => {
       {popLike &&
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     setPopLike={setPopLike}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
           />
         </PopSlide>
       }

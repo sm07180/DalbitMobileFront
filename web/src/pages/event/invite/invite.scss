@@ -1,0 +1,490 @@
+@import "components/ui/_mixin.scss";
+
+#invite {
+    .fullImage {
+        width: 100%;
+        -webkit-user-drag: none;
+        vertical-align: middle;
+        image-rendering: -webkit-optimize-contrast;
+    }
+    .imageBox {
+        position: relative;
+    }
+    .content {
+        position: relative;
+        @include flex(flex-start, flex-start, column);
+        width: 100%;
+        .tabImgText {
+            position: relative;
+            @include flex(center);
+            width: 100%;
+            &.fixed {
+                position: sticky;
+                top: 48px; left: 0; right: 0;
+                width: 100%;
+                max-width: 480px;
+                z-index: 5;
+            }
+            .tabMenu {
+                position: relative;
+                flex: 1;
+                @include flex(center, center);
+                height: 50px;
+                background-color: #543100;
+                cursor: pointer;             
+                img {
+                    display: inline-block;
+                    height: 18px;
+                }
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 4px; right: 0;
+                    display: inline-block;
+                    width: 1px; height: 42px;
+                    background-color: #fff;
+                }
+                &:last-child::after {
+                    content: none;
+                }
+                &.active {
+                    background-color: #FF3C7B;
+                }
+            }
+        }
+
+        .inviteEvent {
+            width: 100%;
+            .inviteBtn {
+                position: absolute;
+                left: 8%; bottom: 2%; right: 8%;
+                @include flex(center, center, column);
+                height: 8%;
+                border-radius: 16px;
+                box-sizing: border-box;
+                &.create {
+                    background-color: #202020;
+                }
+                &.share {
+                    background-color: #FF3C7B;
+                }
+                .codeText {
+                    @include font(14px, 400, #FFD4E1);
+                }
+                .btnName {
+                    @include font(16px, 700, #FFFFFF);
+                }
+            }            
+            .codeInput {
+                position: absolute;
+                left: 12%; bottom: 25%; right: 12%;
+                @include flex(center);
+                height:20%;
+                .inputBox {
+                    position:relative;
+                    flex:1;
+                    @include flex(center);
+                    height: 100%;
+                    border-radius:16px;
+                    border:1px solid #F6F6F6;
+                    background-color:#F6F6F6;
+                    &.focus {
+                      border-color:#FF3C7B;
+                      background-color:white;
+                    }
+                    input {
+                      flex:1;
+                      width:100%;
+                      margin:0 16px;
+                      @include font(15px,400,#202020);
+                      &::placeholder {
+                        color:#999;
+                      }
+                    }
+                }
+                .inputBtn {
+                  width:25%;
+                  height: 90%;
+                  margin-left:4px;
+                  border-radius:14px;
+                  background-color:#FF3C7B;
+                  letter-spacing: -1px;
+                  @include font(15px,500,#fff);
+                  &.disable {
+                    background-color:#C1C4DB;
+                    pointer-events: none;
+                  }
+                }
+            }
+            .friendWrap {
+                position: absolute;
+                left: 15%; top: 40%; right: 15%;
+                @include flex(center);
+                height:30%;
+                .photo {
+                    flex: none;
+                    @include flex(center, center);
+                    width: 30%;
+                    border-radius: 50%;
+                    overflow: hidden;
+                    img {
+                        width: 100%;
+                    }
+                }
+                .listContent {
+                    flex: 1;
+                    @include flex(flex-start, flex-start, column);
+                    width: 65%;
+                    margin-left: 5%;
+                    .listItem {
+                        @include flex(center);
+                        width: 100%;
+                        margin-bottom: 3px;
+                        &:last-child {
+                            margin-bottom: 0px;
+                        }
+                        .nickNm {
+                            display: block;
+                            margin-left: 3px;
+                            @include font(15px, 500, #202020);
+                            @include fontCut;
+                        }
+                        .memId {
+                            @include font(12px, 400, #A4A4A4);
+                        }
+                    }
+                }
+            }
+        }
+
+        .inviteRank {
+            width: 100%;
+            background-color: #FF4E91;
+            .noticePopBtn {
+                position: absolute;
+                top: 15px; right: 8px;
+                @include flex(center, center);
+                width: 76px; height: 28px;
+                border-radius: 100px;
+                background-color: #202020;
+                @include font(14px, 500, #fff);
+            }
+            .rankSection {
+                width: 100%;
+                padding: 5px 8px 14px;
+            }
+            .listNone {
+                border-radius: 15px;
+                background: #fff;
+            }
+            .inviteMyRank {
+                @include flex(center);
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 8px;
+                border-radius: 15px;
+                background-color: #fff;
+                box-sizing: border-box;
+            }
+            .inviteRankWrap {
+                @include flex(flex-start, flex-start, column);
+                width: 100%;
+                border-radius: 15px;
+                background-color: #fff;
+                box-sizing: border-box;
+                .inviteRankList {
+                    @include flex(center);
+                    width: 100%;
+                    padding: 10px;
+                    border-bottom: 1px solid #EFEFEF;
+                    box-sizing: border-box;
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                    &:nth-child(1) .rankingBadge {
+                        display: inline-block;
+                        width: 35px; height: 40px;
+                        background-image: url("https://image.dalbitlive.com/event/invite/inviteList-1.png");
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        text-indent: -9999px;
+                    }
+                    &:nth-child(2) .rankingBadge {
+                        display: inline-block;
+                        width: 25px; height: 30px;
+                        background-image: url("https://image.dalbitlive.com/event/invite/inviteList-2.png");
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        text-indent: -9999px;
+                    }
+                    &:nth-child(3) .rankingBadge {
+                        display: inline-block;
+                        width: 25px; height: 30px;
+                        background-image: url("https://image.dalbitlive.com/event/invite/inviteList-3.png");
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        text-indent: -9999px;
+                    }
+                    &:nth-child(n+4):nth-child(-n+30) .rankingBadge {
+                        @include flex(center, center);
+                        width: 35px; height: 20px;
+                        border-radius: 100px;
+                        background-color: #FF3C7B;
+                        line-height: 20px;
+                        @include font(13px, 500, #FFFFFF);
+                    }
+                }
+            }
+            .listFront {
+                flex: none;
+                @include flex(center, center, column);
+                width: 35px;
+                margin-right: 12px;
+                .myrankText {
+                    @include font(12px, 500, #757575);
+                    letter-spacing: -1px;
+                    margin-bottom: 4px;
+                }
+                .rankingBadge {
+                    @include flex(center, center);
+                    width: 35px; height: 20px;
+                    border-radius: 100px;
+                    background-color: #EEEEEE;
+                    line-height: 20px;
+                    @include font(13px, 500, #000000);
+                }
+            }            
+            .photo {
+                flex: none;
+                @include flex(center, center);
+                width: 55px;
+                margin-right: 8px;
+                border-radius: 50%;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                }
+            }
+            .listContent {
+                flex: 1;                
+                @include flex(flex-start, flex-start, column);
+                width: 100%;
+                margin-right: 35px;
+                overflow: hidden;
+                .listItem {
+                    @include flex(center);
+                    width: 100%;
+                    .nickNm {
+                        display: block;
+                        margin-left: 4px;
+                        @include font(16px, 500, #202020);
+                        @include fontCut;
+                    }
+                }
+            }
+            .listBack {
+                flex: none;
+                .inviteCnt {
+                    @include font(16px, 600, #FF3C7B);
+                }
+            }
+        }
+
+        .inviteMydata {
+            width: 100%;
+            .inviteData {
+                @include flex(center, center, column);
+                width: 100%;
+                padding: 10%;
+                .titleWrap {
+                    @include flex(center, center);
+                    width: 100%;
+                    .dataTitle {
+                        display: inline-block;
+                        width: 55%;
+                        margin-right: 8px;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                    .questionMark {
+                        display: inline-block;
+                        width: 22px; height: 22px;
+                        background-image: url("https://image.dalbitlive.com/common/icon/questionMark.png");
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        cursor: pointer;
+                    }
+                }
+                .countWrap {
+                    @include flex(center);
+                    width: 100%; height: 80px;
+                    padding: 0 20px;
+                    margin-top: 12px;
+                    border-radius: 15px;
+                    background-color: #FFEBF3;
+                    box-sizing: border-box;
+                    .countTitle {
+                        @include font(16px, 700, #202020);
+                        line-height: 34px;
+                    }
+                    .countData {
+                        margin-left: auto;
+                        @include font(24px, 700, #FF3C7B);
+                        line-height: 34px;
+                        &::after {
+                            content: "명";
+                            margin-left: 6px;
+                            @include font(16px, 700, #202020);
+                            line-height: 34px;
+                        }
+                    }
+                }
+            }
+            .inviteUser {
+                width: 100%;
+                padding: 16px;
+                background-color: #F5F5F5;
+                box-sizing: border-box;
+                .inviteUserWrap {
+                    @include flex(flex-start, flex-start, column);
+                    width: 100%;
+                    border-radius: 15px;
+                    background-color: #fff;
+                    box-sizing: border-box;
+                    .inviteUserList {
+                        @include flex(center);
+                        width: 100%;
+                        padding: 10px 16px;
+                        border-bottom: 1px solid #EFEFEF;
+                        box-sizing: border-box;
+                        &:last-child {
+                            border-bottom: none;
+                        }
+                        .photo {
+                            flex: none;
+                            @include flex(center, center);
+                            width: 55px;
+                            margin-right: 8px;
+                            border-radius: 50%;
+                            overflow: hidden;
+                            img {
+                                width: 100%;
+                            }
+                        }
+                        .listContent {
+                            flex: 1;                
+                            @include flex(flex-start, flex-start, column);
+                            width: 100%;
+                            margin-right: 35px;
+                            overflow: hidden;
+                            .listItem {
+                                @include flex(center);
+                                width: 100%;
+                                margin-bottom: 4px;
+                                &:last-child {
+                                    margin-bottom: 0px;
+                                }
+                                .nickNm {
+                                    margin-left: 4px;
+                                    @include font(16px, 500, #202020);
+                                    @include fontCut;
+                                }
+                                .since {
+                                    @include font(11px, 400, #999999);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #layerPop {
+        .popTitle {
+            @include font(16px, 700, #202020);
+            line-height: 48px;
+        }
+        .popContent {
+            @include flex(center, center, column);
+            width: 100%;
+            margin: 16px auto 8px;
+            span {
+                margin-bottom: 16px;
+                text-align: center;
+                @include font(12px, 400, #666666);
+                letter-spacing: -1px;
+                &:last-child {
+                    margin-bottom: 0px;
+                }
+            }
+        }
+    }
+}
+
+#snsPromotion {
+    position: relative;
+    @include flex(center, center, column);
+    width: 100%; height: 100vh;
+    .snsContent {
+        flex: 1;
+        @include flex(center, center, column);
+        width: 100%;
+        .logo {
+            display: inline-block;
+            width:110px;
+            margin-bottom: 30px;
+            img {
+                width: 100%;
+                image-rendering: -webkit-optimize-contrast;
+            }
+        }
+        .text {
+            text-align: center;
+            @include font(17px, 400, #000000);
+            letter-spacing: -1px;
+            margin-bottom: 25px;
+            strong {
+                @include font(17px, 700, #000000);
+            }
+        }
+        .method {
+            @include flex(center, center, column);
+            padding: 18px 40px;
+            background-color: #F5F5F5;
+            margin-bottom: 28px;
+            span {
+                @include font(14px, 400, #000000);
+                line-height: 20px;
+                letter-spacing: -1px;
+            }
+        }
+        .copyBtn {
+            @include flex(center, center, column);
+            width: 80%; height: 48px;
+            border-radius: 16px;
+            background-color: #FF3C7B;
+            .codeText {
+                @include font(14px, 400, #FFD4E1);
+            }
+            .btnName {
+                @include font(16px, 700, #FFFFFF);
+
+            }
+        }
+    }
+    .appDownload {
+        @include flex(center, center);
+        width: 100%; height: 75px;
+        background-color: #202020;
+        cursor: pointer;
+        img {
+            display: inline-block;
+            width: 114px; height: 23px;
+        }
+    }
+}

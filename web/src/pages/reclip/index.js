@@ -10,15 +10,16 @@ import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTItle/CntTitle'
 // components
-import ClipSubTitle from './components/ClipSubTitle'
-import HotClipList from './components/HotClipList'
-import SwiperList from './components/SwiperList'
-import NowClipList from './components/NowClipList'
+import ClipSubTitle from '../clip/components/ClipSubTitle'
+import HotClipList from '../clip/components/HotClipList'
+import SwiperList from '../clip/components/SwiperList'
+import NowClipList from '../clip/components/NowClipList'
 // contents
-import ClipDetail from './contents/clipDetail'
+import ClipDetail from '../clip/components/ClipDetail'
 
 
 import './style.scss'
+import HotClip from "pages/clip/components/HotClip";
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -121,13 +122,16 @@ const ClipPage = () => {
           <HotClipList data={hotClipInfo} />
         </section>
       }
+      <div>
+        <HotClip/>
+      </div>
       <section className='bannerWrap'>
         <Swiper {...swiperParams}>
           <div className="bannerBox">
-            <div className="bannerItem"></div>
+            <div className="bannerItem"/>
           </div>
           <div className="bannerBox">
-            <div className="bannerItem"></div>
+            <div className="bannerItem"/>
           </div>
         </Swiper>
       </section>
@@ -169,7 +173,7 @@ const ClipPage = () => {
     <ClipDetail data={popularClipInfo} />
     }
     </>
-  )
+  );
 }
 
-export default ClipPage
+export default ClipPage;
