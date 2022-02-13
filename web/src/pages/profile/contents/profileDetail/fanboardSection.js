@@ -3,7 +3,7 @@ import React from 'react'
 // global components
 import NoResult from 'components/ui/noResult/NoResult'
 // components
-import SocialList from "../../components/SocialList";
+import SocialList from "../../components/socialList";
 import Utility from "components/lib/utility";
 
 const FanboardSection = (props) => {

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 // css
-import './popSlide.scss'
+import './popslide.scss'
 
 const PopSlide = (props) => {
   const {setPopSlide, children} = props

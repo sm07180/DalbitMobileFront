@@ -6,10 +6,10 @@ import Utility from 'components/lib/utility'
 
 // global components
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
-import Tabmenu from '../../components/Tabmenu'
+import Tabmenu from '../../components/tabmenu'
 // contents
 import BankResult from './bankResult'
 // css

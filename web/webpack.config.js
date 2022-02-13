@@ -194,7 +194,7 @@ module.exports = (_, options) => {
                   drop_console: true
                 }
               }
-            })
+            }),
           ]
     }
   }

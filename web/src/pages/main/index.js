@@ -4,10 +4,10 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
-import Tabmenu from './components/Tabmenu'
+import Tabmenu from './components/tabmenu'
 import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'

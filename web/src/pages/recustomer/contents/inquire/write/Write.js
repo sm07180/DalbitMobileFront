@@ -4,7 +4,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import ImageUpload from 'components/ui/imageUpload/ImageUpload'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
-import InquireInput from '../../../components/InquireInput'
+import InquireInput from '../../../components/inquireInput'
 // components
 import '../inquire.scss'
 

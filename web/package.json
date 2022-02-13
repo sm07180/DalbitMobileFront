@@ -29,6 +29,7 @@
     "camelcase": "^5.3.1",
     "clean-webpack-plugin": "^3.0.0",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
     "copy-webpack-plugin": "^5.1.1",
     "cross-env": "^6.0.3",
     "css-loader": "^3.4.0",
@@ -105,7 +106,13 @@
     "realstart": "webpack-dev-server --env=real --mode=development",
     "dev": "webpack --env=dev && node jspGenerator.js",
     "stage": "webpack --env=stage && node jspGenerator.js",
-    "real": "webpack --env=real && node jspGenerator.js"
+    "real": "webpack --env=real && node jspGenerator.js",
+    "pm2": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop ecosystem.config.js",
+    "pm2:restart": "pm2 restart ecosystem.config.js",
+    "pm2:monit": "pm2 monit",
+    "pm2:log": "pm2 logs",
+    "pm2:kill": "pm2 kill"
   },
   "eslintConfig": {
     "extends": [

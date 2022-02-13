@@ -1,7 +1,7 @@
 // React
 import React, {useEffect, useState} from 'react'
 
-import FrameItems from 'components/ui/frameItems/FrameItems'
+import FrameItems from 'components/ui/frameItems/frameItems'
 
 import './photoFrame.scss'
 

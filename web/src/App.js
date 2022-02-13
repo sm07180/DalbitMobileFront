@@ -235,7 +235,17 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-    const tokenInfo = await Api.getToken()
+   /* let tokenInfo = {};
+    let elementById = document.getElementById('authData');
+    if(elementById && elementById.value && elementById.value !== ''){
+      let parse = JSON.parse(elementById.value);
+      tokenInfo = {
+        result : 'success'
+        , data : parse
+      }
+    }else{
+      tokenInfo = await Api.getToken()
+    }*/
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)

@@ -56,7 +56,7 @@ const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
 const LoginStart = React.lazy(() => import('pages/login/contents/start'))
-const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
+const DidLogin = React.lazy(() => import('pages/login/contents/didLogin'))
 // 회원가입
 const SignUp = React.lazy(() => import('pages/signup'))
 const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))

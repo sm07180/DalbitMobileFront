@@ -3,10 +3,10 @@ import React, {useState, useCallback, useEffect} from 'react'
 import API from 'context/api'
 // global component
 import Header from 'components/ui/header/Header.js'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import InputItems from 'components/ui/inputItems/InputItems'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
+import InputItems from 'components/ui/inputItems/inputItems'
 // component
-import SwiperList from './components/swiperList'
+import SwiperList from './components/SwiperList'
 // contents
 import SearchHistory from './contents/searchHistory'
 import SearchResult from './contents/searchResult'

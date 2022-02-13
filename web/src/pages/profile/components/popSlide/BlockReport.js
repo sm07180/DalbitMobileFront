@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 // components
 import Tabmenu from '../Tabmenu'
 

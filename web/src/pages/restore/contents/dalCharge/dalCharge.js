@@ -6,7 +6,7 @@ import Utility from 'components/lib/utility'
 
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import PopSlide from '../../components/PopSlide'

@@ -3,7 +3,7 @@ import React from 'react'
 // global components
 import LevelItems from 'components/ui/levelItems/LevelItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
-import FrameItems from 'components/ui/frameItems/FrameItems'
+import FrameItems from 'components/ui/frameItems/frameItems'
 
 import './profileCard.scss'
 import {useDispatch} from "react-redux";

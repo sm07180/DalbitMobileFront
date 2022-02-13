@@ -7,7 +7,7 @@ import TabBtn from 'components/ui/tabBtn/TabBtn'
 import ImageUpload from 'components/ui/imageUpload/ImageUpload'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
-import InquireInput from '../../components/InquireInput'
+import InquireInput from '../../components/inquireInput'
 import Write from './write/Write'
 // components
 import './inquire.scss'
