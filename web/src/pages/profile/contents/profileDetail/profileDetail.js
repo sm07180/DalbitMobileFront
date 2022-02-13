@@ -18,16 +18,6 @@ const ProfileDetail = (props) => {
   const context = useContext(Context)
   const {token, profile} = context
   const {memNo, type, index} = useParams();
-  const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
-
-  const swiperFeeds = {
-    slidesPerView: 'auto',
-    spaceBetween: 8,
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction'
-    }
-  }
 
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
@@ -52,6 +42,21 @@ const ProfileDetail = (props) => {
   const [isMore, setIsMore] = useState(false);
   const [text, setText] = useState('');
 
+  const swiperFeeds = {
+    slidesPerView: 'auto',
+    spaceBetween: 8,
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'fraction'
+    }
+  };
+
+  //내 프로필 여부 (나의 프로필에서 작성한 피드, 팬보드 여부 체크)
+  const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
+
+  //내가 작성한 글 여부
+  const isMyContents = (token?.isLogin) && item && profile?.memNo === (type === 'feed' ? item?.mem_no : item?.writer_mem_no);
+  const adminChecker = context?.adminChecker;
 
   /* 프로필 사진 확대 */
   const openShowSlide = (data, isList = "y", keyName='profImg') => {
@@ -95,7 +100,7 @@ const ProfileDetail = (props) => {
   const getReplyList = (_page, records= 10) => {
     if (type === 'feed') {
       Api.getMypageNoticeReply({
-        memNo: profile?.memNo,
+        memNo,
         noticeIdx: index,
         page: _page,
         records
@@ -109,7 +114,7 @@ const ProfileDetail = (props) => {
     } else if (type === 'fanBoard') {
       Api.member_fanboard_reply({
         params: {
-          memNo: memNo,
+          memNo,
           replyIdx: index
         }
       }).then((res) => {
@@ -205,7 +210,7 @@ const ProfileDetail = (props) => {
       if (type === 'feed') {
         const {result, data, message} = await Api.mypage_notice_delete({
           data: {
-            delChrgrName: profile?.nickName || 'asdasd',
+            delChrgrName: profile?.nickName,
             noticeIdx: index,
           }
         })
@@ -256,7 +261,7 @@ const ProfileDetail = (props) => {
 
     if (type === 'feed') {
       const {data, result, message} = await Api.insertMypageNoticeReply({
-        memNo: profile?.memNo,
+        memNo,
         noticeIdx: index,
         contents: text
       });
@@ -378,12 +383,12 @@ const ProfileDetail = (props) => {
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
             {isMore &&
               <div className="isMore">
-                {(isMyProfile && context?.profile?.memNo === item?.mem_no || context?.adminChecker) &&
+                {isMyProfile && isMyContents &&
                   <button onClick={() => goProfileDetailPage({history, memNo, action:'modify',type, index })}>
                     수정하기</button>}
-                {(isMyProfile && context?.profile?.memNo === item?.mem_no || context?.adminChecker) &&
+                {(isMyProfile && isMyContents || adminChecker) &&
                   <button onClick={deleteContents}>삭제하기</button>}
-                {!isMyProfile && context?.profile?.memNo !== item?.mem_no && <button>차단/신고하기</button>}
+                {!isMyContents && <button>차단/신고하기</button>}
               </div>
             }
           </div>
@@ -429,9 +434,9 @@ const ProfileDetail = (props) => {
         <div className='listWrap'>
           {replyList.map((item, index) => {
               const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
-              return <ProfileReplyComponent key={item?.replyIdx} item={item} type={type} isMyProfile={isMyProfile} dateKey={'writeDt'}
+              return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
                                      replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
-                                     blurBlock={blurBlock} goProfile={goProfile}
+                                     blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
                       />
             })}
         </div>

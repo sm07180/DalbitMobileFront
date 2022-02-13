@@ -5,8 +5,12 @@ import {IMG_SERVER} from "context/config";
 import {Context} from "context";
 
 const ProfileReplyComponent = (props) => {
-  const {item, isMyProfile, dateKey, replyDelete, replyEditFormActive, type, blurBlock, goProfile } = props;
-  const context = useContext(Context)
+  const {item, profile, isMyProfile, adminChecker, dateKey, replyDelete, replyEditFormActive, type, blurBlock, goProfile } = props;
+
+  //isMyProfile : 프로필 주인 여부
+  //내가 작성한 댓글 여부
+  const isMyContents = (typeof profile?.memNo !=='undefined' && typeof item?.writerMemNo !== 'undefined')
+    && profile?.memNo === item?.writerMemNo;
 
   //몇초 전, 몇분 전, 몇시간 전 표기용
   const timeDiffCalc = useMemo(() => {
@@ -19,6 +23,7 @@ const ProfileReplyComponent = (props) => {
 
   return (
     <ListRow photo={type ==='feed'?item?.profileImg?.thumb50x50 : item?.profImg?.thumb50x50} photoClick={goProfile}>
+      {`${isMyContents}`}
       <div className="listContent">
         <div className="listItems">
           <div className="nick">{item?.nickName}</div>
@@ -36,16 +41,14 @@ const ProfileReplyComponent = (props) => {
           <span>{Utility.addComma(3211)}</span>
         </div>*/}
 
-        {(isMyProfile || context.adminChecker) && <div>
+        {(isMyProfile || isMyContents || adminChecker) && <div>
           <button onClick={() => replyDelete(item?.replyIdx)}>삭제</button>
         </div>}
-        {isMyProfile && <div>
-          <button onClick={() => {
-            blurBlock();
-            replyEditFormActive(item?.replyIdx, item?.contents)
-          }}>수정
+        {isMyContents && <div>
+          <button onClick={() => {blurBlock();replyEditFormActive(item?.replyIdx, item?.contents);}}>수정
           </button>
         </div>}
+        {!isMyContents && <div><button>차단/신고하기</button></div>}
 
       </div>
       <button className='more'>
