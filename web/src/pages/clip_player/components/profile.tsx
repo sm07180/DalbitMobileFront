@@ -441,7 +441,7 @@ let Profile = () => {
 
                     {/* 큐피트 영역 */}
                     {profileData.cupidNickNm === "" ? (
-                        <div className="profile__rankingList cupid">
+                        <div className="profile__rankingList profileCupid">
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
@@ -465,7 +465,7 @@ let Profile = () => {
                           <span className="rankingList__warnTxt">(좋아요 보낸 회원없음)</span>
                         </div>
                     ) : (
-                        <div className="profile__rankingList cupid">
+                        <div className="profile__rankingList profileCupid">
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
