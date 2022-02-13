@@ -1,35 +1,30 @@
 import React, {useEffect, useState, useContext, useMemo, useRef} from 'react'
+import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
-// global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
-// contents
-// css
 import './dalCharge.scss'
-import {useHistory, useLocation} from "react-router-dom";
-import {OS_TYPE} from "context/config";
 
-let paymentList;
-paymentList = [
-  { type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple' },
-  { type: '무통장(계좌이체)', code: 'coocon' },
-  { type: '신용/체크카드', fetch: 'pay_card' },
-  { type: '핸드폰', fetch: 'pay_phone' },
-  { type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney' },
-  { type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay' },
-  { type: '페이코', fetch: 'pay_letter', code: 'payco' },
-  { type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney' },
-  { type: '문화상품권', fetch: 'pay_gm' },
-  { type: '해피머니상품권', fetch: 'pay_hm' }
+let paymentList = [
+  {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
+  {type: '무통장(계좌이체)', code: 'coocon'},
+  {type: '신용/체크카드', fetch: 'pay_card'},
+  {type: '핸드폰', fetch: 'pay_phone'},
+  {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
+  {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
+  {type: '페이코', fetch: 'pay_letter', code: 'payco'},
+  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
+  {type: '문화상품권', fetch: 'pay_gm'},
+  {type: '해피머니상품권', fetch: 'pay_hm'}
   // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
-  // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
-  // { type: "도서문화상품권", fetch: 'pay_gc' },
+  // {type: "스마트문상(게임문화상품권)", fetch: 'pay_gg'},
+  // {type: "도서문화상품권", fetch: 'pay_gc'},
 ]
 
 const DalCharge = () => {
@@ -83,7 +78,6 @@ const DalCharge = () => {
 
     if (payment.code === "simple") {  //계좌 간편결제
       Api.self_auth_check().then((response)=>{
-        console.log(response);
         if(response.result === 'success'){
           callPGForm(payment)
         }else{
@@ -118,7 +112,6 @@ const DalCharge = () => {
         ci: ciData,
       }
     }).then((response) => {
-      console.log(response);
       if (response.result === 'success') {
         if (payment.fetch === "pay_simple" || payment.fetch === "pay_letter" || payment.fetch === "pay_km") { //계좌 간편결제, 카카카오페이, 페이코, 티머니/캐시비
           //pc

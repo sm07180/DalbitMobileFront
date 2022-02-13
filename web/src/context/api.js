@@ -2220,6 +2220,16 @@ export default class API {
       data: data
     })
   }
+  //결제완료 영수증 확인
+  static pay_receipt = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/receipt`,
+      method: method || 'POST',
+      data: data
+    })
+  }
 
   //인증샷 이벤트
   static event_proofshot_list = async (obj) => {
