@@ -4,10 +4,10 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
-import Tabmenu from './components/Tabmenu'
+import Tabmenu from './components/tabmenu'
 import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
@@ -235,7 +235,7 @@ const MainPage = () => {
       onTouchEnd={mainTouchEnd}
       style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title="메인" position="relative"/>
+        <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>
         <MainSlide data={mainState.topBanner}/>

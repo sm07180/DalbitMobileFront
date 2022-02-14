@@ -44,11 +44,13 @@ i.dataCnt {
 .cupid {
   flex: none;
   display: inline-block;
+  max-width: 120px;
   height: 16px;
   margin-right: 8px;
   padding: 0px 7px 0px 19px;
   font-style: normal;
   @include font(12px, 500, #666666);
+  @include fontCut;
   line-height: 14px;
   border-radius: 100px;
   background: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-cupid.png") #F6F6F6;

@@ -6,11 +6,17 @@
     padding: 20px 28px;
     box-sizing: border-box;
     .mainText {
-      @include flex(flex-start, flex-start, column);
+      @include flex($fd:column);
       @include font(28px, 700, #202328);
       line-height: 38px;
-      strong {
-        @include font(28px, 700, #FF3C7B);
+      span {
+        @include flex(center);
+        strong {
+          display: inline-block;
+          max-width:88%;
+          @include font(28px, 700, #FF3C7B);
+          @include fontCut;
+        }
       }
     }
     .subText {
@@ -21,10 +27,10 @@
       }
     }
     .categoryWrap {
-      @include flex(center, space-between);
+      @include flex(center,space-between);
       margin-top: 30px;
       .categoryList {
-        @include flex(center, center, column);
+        @include flex(center,center,column);
         cursor: pointer;
         .categoryImg {
           flex: none;
@@ -35,8 +41,7 @@
         }
         .categoryName {
           margin-top: 8px;
-          @include font(16px, 500, #303030);
-
+          @include font(16px,$SemiBold,#303030);
         }
       }
     }

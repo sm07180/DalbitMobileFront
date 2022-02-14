@@ -4,7 +4,7 @@ import {Context} from 'context'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
-import FrameItems from 'components/ui/frameItems/FrameItems'
+import FrameItems from 'components/ui/frameItems/frameItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 import DetailView from '../components/DetailView'

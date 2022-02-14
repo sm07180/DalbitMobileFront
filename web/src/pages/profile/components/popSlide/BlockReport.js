@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 // components
 import Tabmenu from '../Tabmenu'
 
@@ -147,7 +147,7 @@ const BlockReport = (props) => {
             <strong>{blockReportInfo?.memNick}</strong>님을<br/>
             신고하시겠습니까?
           </div>
-          <InputItems title={`신고 유형`}>
+          <InputItems title="신고 유형">
             <button onClick={openPopSelect}>{selectedInfo.key}</button>
             {openSelect &&
             <div className="selectWrap">

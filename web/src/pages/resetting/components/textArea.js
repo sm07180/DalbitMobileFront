@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 // css
 import './textArea.scss'
 

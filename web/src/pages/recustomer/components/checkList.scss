@@ -1,0 +1,25 @@
+@import "components/ui/_mixin.scss";
+
+.inputLabel {
+  position: relative;
+  flex: 1;
+  @include flex(center);
+  cursor: pointer;
+  .checkIcon {
+    flex: none;
+    display: inline-block;
+    width: 23px; height: 23px;
+    margin-right: 10px;
+    border-radius: 50%;
+    background-image: url("https://image.dalbitlive.com/common/input/checkbox-default.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;              
+  }
+  .blind:checked + .checkIcon{
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E ");
+  }
+  .checkInfo {
+    @include font(16px,$SemiBold,#666);
+  }
+}
