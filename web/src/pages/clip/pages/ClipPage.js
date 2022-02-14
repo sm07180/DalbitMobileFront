@@ -189,11 +189,15 @@ const ClipPage = () => {
         </section>
         <section className='bannerWrap'>
           <Swiper {...swiperParams}>
-            <div className="bannerBox">
-              <div className="bannerItem"/>
+            <div>
+              <div className="bannerBox">
+                <div className="bannerItem"/>
+              </div>
             </div>
-            <div className="bannerBox">
-              <div className="bannerItem"/>
+            <div>
+              <div className="bannerBox">
+                <div className="bannerItem"/>
+              </div>
             </div>
           </Swiper>
         </section>
@@ -223,15 +227,19 @@ const ClipPage = () => {
             <Swiper {...swiperParams}>
               {popularClipInfo.map((row, index) => {
                 console.log(row);
-                return (<div key={index}>
-                  {row.map((coreRow, coreIndex) => {
-                    if (Object.keys(coreRow).length > 0) {
-                      return (<NowClip key={coreIndex} info={coreRow}/>)
-                    } else {
-                      return <></>;
-                    }
-                  })}
-                </div>);
+                return (
+                  <div key={index}>
+                    <div>
+                      {row.map((coreRow, coreIndex) => {
+                        if (Object.keys(coreRow).length > 0) {
+                          return (<NowClip key={coreIndex} info={coreRow}/>)
+                        } else {
+                          return <></>;
+                        }
+                      })}
+                    </div>
+                </div>
+                );
               })}
             </Swiper>
           </>
