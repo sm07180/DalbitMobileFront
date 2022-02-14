@@ -3,7 +3,7 @@ import React, {useState, useEffect, useContext} from 'react'
 // global components
 import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 
 import '../../style.scss'
 import './forbid.scss'
