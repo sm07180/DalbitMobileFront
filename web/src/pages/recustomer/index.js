@@ -6,6 +6,10 @@ import Header from 'components/ui/header/Header'
 //Content
 import Faq from './contents/faq/Faq'
 import Inquire from './contents/inquire/Inquire'
+import Policy from './contents/policy/Policy'
+import Privacy from './contents/privacy/Privacy'
+import Minor from './contents/minor/Minor'
+import Terms from './contents/terms/Terms'
 import InquireDetail from './contents/inquireDetail/InquireDetail'
 
 import './style.scss'
@@ -87,12 +91,27 @@ const Customer = () => {
             </div>
           </div>
         </>
-      : category === "faq" ?
-        <Faq/>
-      : (category === "inquire" && !qnaIdx) ?
-        <Inquire/>
-      :
-        <InquireDetail/>
+        :
+        category === "faq" ?
+          <Faq/>
+        :
+        category === "policy" ?
+          <Policy/>
+        :
+        category === "privacy" ?
+          <Privacy/>
+        :
+        category === "minor" ?
+          <Minor/>
+        :
+        category === "terms" ?
+          <Terms/>
+        :
+        (category === "inquire" && !qnaIdx) ?
+          <Inquire/>
+        :
+        (category === "inquire" && qnaIdx) &&
+          <InquireDetail/>
       }
     </div>
   )

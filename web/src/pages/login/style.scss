@@ -220,4 +220,21 @@ $btnDisable : #FFD8E4;
       margin: auto;
     }
   }
+
+  #layerPop {
+    .popContainer {
+      padding: 20px 0;
+      box-sizing: border-box;
+      .popTitle {
+        @include flex(center, center);
+        width: 100%;
+        line-height: 48px;
+        @include font(16px, 700, #202020);
+      }
+      .popContent {
+        width: 100%; max-height: 400px;
+        overflow: auto;        
+      }
+    }   
+  }
 }
