@@ -4,7 +4,7 @@ import Utility ,{addComma} from 'components/lib/utility'
 // global components
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
-import Tabmenu from '../../components/Tabmenu'
+import Tabmenu from '../../components/tabmenu'
 // contents
 import DepositInfo from './DepositInfo'
 import NewlyAccount from './NewlyAccount'

@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react'
 import Utility ,{addComma} from 'components/lib/utility'
 
 // global components
-import Header from 'components/ui/header/Header.js'
+import Header from 'components/ui/header/Header'
 // components
-import Tabmenu from './components/Tabmenu.js'
+import Tabmenu from './components/tabmenu'
 // contents
-import HistoryList from './contents/HistoryList.js'
+import HistoryList from './contents/HistoryList'
 import Exchange from './contents/exchange/Exchange'
 // css
 

@@ -49,7 +49,12 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          {mainState.newAlarmCnt === 0 ?
+            // <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+            <button className='alarm new' onClick={() => history.push('/menu/alarm')} />
+          : mainState.newAlarmCnt > 0 &&
+            <></>
+          }
         </div>
       )
     case '클립':

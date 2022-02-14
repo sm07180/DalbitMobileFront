@@ -9,7 +9,7 @@ import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from '../components/Tabmenu'
 import TopRanker from '../components/TopRanker'
-import RankingList from '../components/RankingList'
+import RankingList from '../components/rankingList'
 //static
 import './rankingDetail.scss'
 import {convertDateTimeForamt, convertMonday, convertMonth} from "pages/common/rank/rank_fn";

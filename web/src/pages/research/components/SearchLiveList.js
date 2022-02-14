@@ -7,7 +7,7 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 // css
 import '../scss/resultCnt.scss'
-import CntTitle from "components/ui/cntTitle/CntTitle";
+import CntTitle from "components/ui/cntTItle/CntTitle";
 
 const SearchLiveList = (props) => {
   const {data, pagingInfo} = props
