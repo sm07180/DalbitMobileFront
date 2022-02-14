@@ -54,8 +54,13 @@ const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/pro
 // 프로필 - 피드, 팬보드 (상세)
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
-const Store = React.lazy(() => import('pages/restore'))
-const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+const Store = React.lazy(() => import('pages/store'))
+const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
+const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
+const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
+const PayEndApp = React.lazy(() => import('pages/store/contents/end/EndApp'))
+const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
@@ -155,6 +160,11 @@ const Router = () => {
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
+        <Route exact path="/pay/bank" component={Coocon}/>
+        <Route exact path="/pay/bankInfo" component={CooconResult}/>
+        <Route exact path="/pay/end" component={PayEnd}/>
+        <Route exact path="/pay/end/app" component={PayEndApp}/>
+        <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />

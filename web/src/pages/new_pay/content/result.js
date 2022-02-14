@@ -105,8 +105,6 @@ export default () => {
     }
 
     if (result === 'success') {
-      marbleIns()
-
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
