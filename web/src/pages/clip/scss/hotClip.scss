@@ -24,7 +24,10 @@
   }
 
   .info {
-    display: inline-block;
+    display: flex;
+    width: calc(100% - 128px);
+    flex-direction: column;
+    align-items: flex-start;
     img {
       height: 36px;
       margin: 17px 0;
@@ -33,6 +36,8 @@
 
     .textArea {
       div {
+        display: flex;
+        align-items: flex-start;
         height: 20px;
       }
       .type {

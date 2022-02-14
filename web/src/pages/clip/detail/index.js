@@ -9,9 +9,9 @@ import {useParams} from "react-router-dom";
 
 import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
-import errorImg from '../../../../src/pages/broadcast/static/img_originalbox.svg';
+import errorImg from '../../broadcast/static/img_originalbox.svg';
 
-const ClipDetailPage = (props) => {
+const Index = (props) => {
   const { type } = useParams();
   const isDesktop = useSelector((state)=> state.common.isDesktop); //
   const categoryType = useSelector((state)=> state.clip.categoryType); //
@@ -95,4 +95,4 @@ const ClipDetailPage = (props) => {
   );
 };
 
-export default ClipDetailPage;
+export default Index;
