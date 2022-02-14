@@ -4,7 +4,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const LoadablePlugin = require('@loadable/webpack-plugin');
 const webpack = require('webpack')
 const fs = require('fs')
 const Dotenv = require("dotenv-webpack")
