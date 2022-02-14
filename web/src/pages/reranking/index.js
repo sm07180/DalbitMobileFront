@@ -25,9 +25,6 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
-  //DJ 기간 선택 array
-  const rankTabmenu = ['오늘','이번주','이번달', '올해']
-
   //하단 FAN/LOVER탭 array
   const dayTabmenu = ['FAN','LOVER']
 
@@ -57,9 +54,6 @@ const RankPage = () => {
 
   //내 순위 정보
   const [myRank, setMyRank] = useState([]);
-
-  //내 순위 정보 탭
-  const [rankTabType, setRankTabType] = useState(rankTabmenu[0]);
 
   //하단 FAN/LOVER탭
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
@@ -271,10 +265,9 @@ const RankPage = () => {
       </section>
       {token.isLogin &&
         <section className='myRanking'>
-          <CntTitle title={'님의 순위는?'}>
+          <CntTitle title={'님의 오늘 순위는?'}>
             <div className="point">{profile.nickNm}</div>
           </CntTitle>
-          <Tabmenu data={rankTabmenu} tab={rankTabType} setTab={setRankTabType}/>
           <MyRanking data={myRank}/>
         </section>
       }
