@@ -81,6 +81,13 @@ const Receipt = (props) => {
     }
   }
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   return (
     <section className="bankResult">
       <div className="resultText">
@@ -88,7 +95,7 @@ const Receipt = (props) => {
           결제가 완료 되었습니다.
         </div>
         <div className="subTitle">
-          결제 내역은 마이페이지 > 내지갑에서<br/>확인하실 수 있습니다.
+          결제 내역은 마이페이지 &gt; 내지갑에서<br/>확인하실 수 있습니다.
         </div>
       </div>
       <div className="receiptBoard">

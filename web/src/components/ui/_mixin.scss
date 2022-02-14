@@ -215,9 +215,6 @@ $ExtraBold: 800;
 @mixin bankResult {
   .bankResult{
     @include flex($fd:column);
-    position: fixed;
-    width: 100%;
-    max-width: 480px;
     min-height:calc(100vh - #{$HEADER-HEIGHT});
     .resultText {
       padding:52px 0 48px;
