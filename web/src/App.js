@@ -235,8 +235,8 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-   /* let tokenInfo = {};
-    let elementById = document.getElementById('authData');
+    let tokenInfo = {};
+    let elementById = document.getElementById('serverToken');
     if(elementById && elementById.value && elementById.value !== ''){
       let parse = JSON.parse(elementById.value);
       tokenInfo = {
@@ -245,7 +245,7 @@ const App = () => {
       }
     }else{
       tokenInfo = await Api.getToken()
-    }*/
+    }
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
