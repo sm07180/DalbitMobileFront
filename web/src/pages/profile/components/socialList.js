@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -7,12 +7,11 @@ import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 import {useHistory} from "react-router-dom";
-import {Context} from "context";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop} = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
   const history = useHistory();
-  const context = useContext(Context);
 
   // 스와이퍼
   const swiperFeeds = {
@@ -23,22 +22,20 @@ const SocialList = (props) => {
       type: 'fraction'
     }
   }
-  
-  // 피드, 팬보드 상세로 이동하기
-  const goContentsDetail = (idx) => {
-    history.push(`/profileDetail/${context.profile.memNo}/${type}/${idx}`);
-  };
 
   return (
     <div className="socialList">
       {socialList.map((item, index) => {
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
-                              photoClick={() => goContentsDetail(item.noticeIdx ? item.noticeIdx : item.replyIdx)}
+                              modifyEvent={() => goProfileDetailPage(modifyParam)}
+                              deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
             />
             <div className="socialContent">
-              <div className="text">
+              <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>
                 {item.contents}
               </div>
               {type === 'feed' && (item.photoInfoList.length > 1 ?
@@ -64,7 +61,7 @@ const SocialList = (props) => {
                     : <></>
               )}
               <div className="info">
-                <DataCnt type={"replyCnt"} value={item.replyCnt} />
+                <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
               </div>
             </div>
           </React.Fragment>

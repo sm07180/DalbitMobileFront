@@ -9,14 +9,14 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
-import Tabmenu from '../components/Tabmenu'
-import ChartSwiper from '../components/ChartSwiper'
-import MyRanking from '../components/MyRanking'
-import RankingList from '../components/RankingList'
+import Tabmenu from './components/Tabmenu'
+import ChartSwiper from './components/ChartSwiper'
+import MyRanking from './components/MyRanking'
+import RankingList from './components/RankingList'
 import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
-import '../style.scss'
+import './style.scss'
 
 const RankPage = () => {
   const history = useHistory();
@@ -191,7 +191,7 @@ const RankPage = () => {
         rankType: rankType,
         rankingDate: rankingDate,
         page: 1,
-        records: 10,
+        records: rankSlct === 1 ? 10 : 5,
       }
     });
     if (result === "success") {
