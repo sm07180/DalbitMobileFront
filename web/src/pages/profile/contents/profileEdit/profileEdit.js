@@ -38,7 +38,7 @@ const ProfileEdit = () => {
   };
 
   useEffect(()=>{
-
+    getMyInfo();
   },[]);
 
   // 페이지 시작
@@ -99,8 +99,8 @@ const ProfileEdit = () => {
           <input type="text" placeholder={profile.memId} disabled />
         </InputItems>
         <InputItems title={'비밀번호'}>
-          <input type="password" maxLength="20" placeholder='' />
-          <button className='inputChange'>변경</button>
+          <input type="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} placeholder='' disabled/>
+          <button className='inputChange' onClick={() => history.push('/password')}>변경</button>
         </InputItems>
         <div className="inputItems">
           <div className="title">성별</div>

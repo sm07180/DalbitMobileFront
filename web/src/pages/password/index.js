@@ -41,6 +41,55 @@ const PasswordChange = () => {
       setBtnActive(true)
     }
   }, [phoneNumVal, pinNumVal, passwordVal, checkingVal])
+
+  const [changes, dispatch] = useReducer(reducer, {
+    memId: '',
+    loginPwd: '',
+    loginPwdCheck: '',
+    auth: '',
+    CMID: ''
+  })
+
+  function validateReducer(state, validate) {
+    if (validate.name === 'loginPwdCheck') {
+      if (validate.check && state.loginPwd.check) passwordFetch()
+    }
+    return {
+      ...state,
+      [validate.name]: {
+        check: validate.check,
+        text: validate.text === undefined ? '' : validate.text
+      }
+    }
+  }
+
+
+  //휴대폰 인증확인
+  const fetchSmsCheck = async () => {
+    const {result, message} = await Api.sms_check({
+      data: {
+        CMID: CMID,
+        code: Number(auth)
+      }
+    })
+    if (result === 'success') {
+      dispatch({name: 'CMID', value: true})
+      setValidate({name: 'auth', check: true, text: message})
+      setValidate({name: 'memId', check: true})
+      clearInterval(intervalId)
+      setTimeText('')
+      authRef.current.disabled = true
+      setBtnState({memId: false, auth: false})
+    } else {
+      setValidate({
+        name: 'auth',
+        check: false,
+        text: '인증번호(가) 일치하지 않습니다.'
+      })
+    }
+  }
+
+
   
   return (
     <div id='passwordSetting'>
