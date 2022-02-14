@@ -6,7 +6,6 @@ import {getProfile, miniGameStart} from "common/api";
 
 // Context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Static
@@ -23,6 +22,8 @@ import Arrow from "../../static/ic_arrow.svg";
 
 import "./index.scss";
 import {MiniGameType} from "pages/broadcast/constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxMiniGameResult} from "../../../../redux/actions/broadcastCtx";
 
 const rouletteImgs = {
   2: Roulette2,
@@ -37,8 +38,10 @@ const rouletteImgs = {
 let rouletteStart = false;
 
 export default (props: { roomOwner?: boolean }) => {
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+
   const { globalAction, globalState } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
 
   const { miniGameInfo, miniGameResult } = broadcastState;
 
@@ -130,15 +133,14 @@ export default (props: { roomOwner?: boolean }) => {
         setWinnerVisible(true);
         setTimeout(() => {
           rouletteStart = false;
-          broadcastAction.setMiniGameResult &&
-            broadcastAction.setMiniGameResult({
-              ...miniGameResult,
-              status: false,
-              winOpt: "",
-              winNo: 0,
-              nickName: "",
-              winListSelect: true, // 당첨내역 api 조회 여부
-            });
+          dispatch(setBroadcastCtxMiniGameResult({
+            ...miniGameResult,
+            status: false,
+            winOpt: "",
+            winNo: 0,
+            nickName: "",
+            winListSelect: true, // 당첨내역 api 조회 여부
+          }))
           dispatchDimLayer({
             type: "INIT",
           });

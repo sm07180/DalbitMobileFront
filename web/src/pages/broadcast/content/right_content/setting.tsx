@@ -1,13 +1,17 @@
-import React, { useEffect, useState, useContext, useCallback, useMemo } from "react";
-import { broadcastEdit, postImage, getBroadcastSetting } from "common/api";
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { DalbitScroll } from "common/ui/dalbit_scroll";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {broadcastEdit, getBroadcastSetting, postImage} from "common/api";
+import {GlobalContext} from "context";
+import {DalbitScroll} from "common/ui/dalbit_scroll";
 // constant
-import { tabType } from "pages/broadcast/constant";
+import {tabType} from "pages/broadcast/constant";
 
 import LayerCopyright from "../../../../common/layerpopup/contents/copyright";
 import styled from "styled-components";
+import {useDispatch} from "react-redux";
+import {
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxRoomInfoSettingUpdate
+} from "../../../../redux/actions/broadcastCtx";
 
 type State = {
   entryType: number;
@@ -26,7 +30,7 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
   const { roomInfo, roomNo } = props;
 
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
   const [broadBg, setBroadBg] = useState<string | ArrayBuffer>(roomInfo.bgImg.url);
   const [bgPath, setBgPath] = useState<string>("");
   const [title, setTitle] = useState<string>(roomInfo.title);
@@ -119,13 +123,8 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
     });
 
     if (result === "success") {
-      broadcastAction.dispatchRoomInfo &&
-        broadcastAction.dispatchRoomInfo({
-          type: "broadcastSettingUpdate",
-          data: data,
-        });
-
-      broadcastAction.setRightTabType && broadcastAction.setRightTabType(tabType.LIVE);
+      dispatch(setBroadcastCtxRoomInfoSettingUpdate(data));
+      dispatch(setBroadcastCtxRightTabType(tabType.LIVE));
 
       return (
         globalAction.callSetToastStatus &&

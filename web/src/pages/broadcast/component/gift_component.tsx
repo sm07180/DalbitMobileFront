@@ -5,7 +5,6 @@ import Lottie from "react-lottie";
 
 // Context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Component

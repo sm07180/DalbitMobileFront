@@ -3,7 +3,6 @@ import React, { useRef, useState, useContext, useEffect } from "react";
 
 // Context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import { MediaType } from "../constant";
 
@@ -14,6 +13,7 @@ import { DalbitScroll, ScrollObject } from "common/ui/dalbit_scroll";
 
 // static
 import scrollDownArrowIcon from "../static/scroll_down.svg";
+import {useSelector} from "react-redux";
 
 const MsgListWrap = (props: {
   forceChatScrollDown: boolean;
@@ -25,7 +25,7 @@ const MsgListWrap = (props: {
   const { globalState } = useContext(GlobalContext);
   const { chatInfo, rtcInfo } = globalState;
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { chatCount } = broadcastState;
 
   const [scrollUpStatus, setScrollUpStatus] = useState<boolean>(false);

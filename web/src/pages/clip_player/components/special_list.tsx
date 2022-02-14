@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 // api
 import { getSpecialList, getProfile } from "common/api";

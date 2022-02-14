@@ -13,7 +13,6 @@ import { useLastLocation } from "react-router-last-location";
 
 // context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -41,6 +40,12 @@ import StampIcon from "../static/stamp.json";
 import LottieFreeze from "../static/lottie_freeze.json";
 
 import {ttsAlarmDuration} from "../../../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxChatAnimationEnd, setBroadcastCtxChatAnimationStart, setBroadcastCtxComboAnimationEnd,
+  setBroadcastCtxIsTtsPlaying,
+  setBroadcastCtxTtsActionInfo
+} from "../../../redux/actions/broadcastCtx";
 
 type ComboType = {
   status: boolean;
@@ -103,7 +108,7 @@ function audioTimeout(
   lottieAnimation,
   lottieDisplayElem,
   animationWrapElem,
-  broadcastAction
+  dispatch
 ) {
   setTimeout(() => {
     const audioInterval = setInterval(() => {
@@ -115,7 +120,7 @@ function audioTimeout(
         audio.currentTime = 0;
         soundAnimationQueue.shift();
         intervalCnt = 0;
-        broadcastAction.setIsTTSPlaying!(false);
+        dispatch(setBroadcastCtxIsTtsPlaying(false));
 
         if (lottieAnimation) {
           lottieAnimation.destroy();
@@ -124,8 +129,7 @@ function audioTimeout(
         lottieDisplayElem.removeChild(animationWrapElem);
 
         if (lottieDisplayElem.children.length === 0) {
-          broadcastAction.dispatchChatAnimation &&
-            broadcastAction.dispatchChatAnimation({ type: "end" });
+          dispatch(setBroadcastCtxChatAnimationEnd());
         }
       } else {
         audio.volume = volume / 10;
@@ -153,7 +157,8 @@ export default function LeftSide(props: {
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { chatAnimation, comboAnimation, chatFreeze, soundVolume } = broadcastState;
   const { guestState, guestAction } = useContext(GuestContext);
   const { guestConnectStatus } = guestState;
@@ -257,7 +262,7 @@ export default function LeftSide(props: {
       ttsAudio = null;
     }
 
-    broadcastAction.setIsTTSPlaying!(false);
+    dispatch(setBroadcastCtxIsTtsPlaying(false));
     setAudioPlayState(false);
   };
 
@@ -309,8 +314,7 @@ export default function LeftSide(props: {
       }
 
       if (lottieDisplayElem && lottieDisplayElem.children.length === 0) {
-        broadcastAction.dispatchChatAnimation &&
-          broadcastAction.dispatchChatAnimation({ type: "end" });
+        dispatch(setBroadcastCtxChatAnimationEnd());
       }
 
       setAnimPlayState(false);
@@ -320,7 +324,7 @@ export default function LeftSide(props: {
   const resetAnimation = () => {
     soundAnimationQueue = [];
     setTTSAnimationQueue([]);
-    broadcastAction.dispatchChatAnimation!({ type: "end" });
+    dispatch(setBroadcastCtxChatAnimationEnd());
     ttsAudio = null;
   };
 
@@ -335,7 +339,7 @@ export default function LeftSide(props: {
       const animQueue = Object.assign([], ttsAnimationQueue);
       animQueue.shift();
       setTTSAnimationQueue(animQueue);
-      broadcastAction.dispatchChatAnimation!({ type: "end" });
+      dispatch(setBroadcastCtxChatAnimationEnd());
     }
   };
 
@@ -343,14 +347,10 @@ export default function LeftSide(props: {
     if (roomNo && roomInfo !== null && chatInfo !== null) {
       // chat init logic
       chatInfo.setRoomNo(roomNo);
-
       chatInfo.setGlobalAction(globalAction);
-      chatInfo.setBroadcastAction(broadcastAction);
       chatInfo.setGuestAction(guestAction);
-
       chatInfo.setRoomOwner(roomOwner);
       chatInfo.setDefaultData({ history });
-
       chatInfo.setRoomInfo(roomInfo);
 
       if (baseData.isLogin === true) {
@@ -454,11 +454,7 @@ export default function LeftSide(props: {
         if (comboTimerGroup[`comboInterval_${i}`])
           clearInterval(comboTimerGroup[`comboTimer_${i}`]);
       }
-
-      broadcastAction.dispatchComboAnimation!({
-        type: "end",
-      });
-
+      dispatch(setBroadcastCtxChatAnimationEnd());
       resetAnimation();
     };
   }, []);
@@ -620,8 +616,8 @@ export default function LeftSide(props: {
       }
 
       const getTTSActionController = () => {
-        broadcastAction.setTtsActionInfo!(ttsItemInfo);
-        broadcastAction.setIsTTSPlaying!(true);
+        dispatch(setBroadcastCtxTtsActionInfo(ttsItemInfo));
+        dispatch(setBroadcastCtxIsTtsPlaying(true));
         setAnimPlayState(true);
         setAudioPlayState(true);
       };
@@ -714,7 +710,7 @@ export default function LeftSide(props: {
               audio.src = soundFileUrl;
               audio.play();
               audio.loop = true;
-              broadcastAction.setIsTTSPlaying!(true);
+              dispatch(setBroadcastCtxIsTtsPlaying(true));
 
               if (webpUrl) {
                 const webpImg = document.createElement("img");
@@ -740,7 +736,7 @@ export default function LeftSide(props: {
                 lottieAnimation,
                 lottieDisplayElem,
                 animationWrapElem,
-                broadcastAction
+                dispatch
               );
             } else {
               const AudioInterval = setInterval(() => {
@@ -775,7 +771,7 @@ export default function LeftSide(props: {
                     lottieAnimation,
                     lottieDisplayElem,
                     animationWrapElem,
-                    broadcastAction
+                    dispatch
                   );
                   }catch(e){console.log(e)}
                 }
@@ -847,19 +843,13 @@ export default function LeftSide(props: {
               lottieDisplayElem.removeChild(animationWrapElem);
 
               if (lottieDisplayElem.children.length === 0) {
-                broadcastAction.dispatchChatAnimation &&
-                  broadcastAction.dispatchChatAnimation({ type: "end" });
+                dispatch(setBroadcastCtxChatAnimationEnd());
               }
 
               animationCount -= 1;
               if (animationQueue.length > 0) {
                 const targetData = animationQueue.shift();
-                if (broadcastAction.dispatchChatAnimation) {
-                  broadcastAction.dispatchChatAnimation({
-                    type: "start",
-                    data: targetData,
-                  });
-                }
+                dispatch(setBroadcastCtxChatAnimationStart(targetData));
               }
             }, duration);
           }
@@ -868,7 +858,7 @@ export default function LeftSide(props: {
     }
   }, [chatAnimation]);
 
-  //tts, sound Item에 사운드 볼륨을 적용시키는 Effect 
+  //tts, sound Item에 사운드 볼륨을 적용시키는 Effect
   //볼륨 조절은 icon_wrap.tsx 컴포넌트에서 함
   useEffect(() => {
     if (typeof soundVolume === 'number') {
@@ -956,10 +946,11 @@ export default function LeftSide(props: {
   useEffect(() => {
     if (broadcastState.ttsActionInfo.showAlarm) {
       const closeTTSMsg = setTimeout(() => {
-        broadcastAction.setTtsActionInfo!({
+        dispatch(setBroadcastCtxTtsActionInfo({
           ...broadcastState.ttsActionInfo,
           showAlarm: false,
-        });
+        }));
+
       }, ttsAlarmDuration);
 
       return () => {
@@ -1046,9 +1037,7 @@ export default function LeftSide(props: {
                           return !v.status;
                         })
                       ) {
-                        broadcastAction.dispatchComboAnimation!({
-                          type: "end",
-                        });
+                        dispatch(setBroadcastCtxComboAnimationEnd());
                       }
                     }
                   }, this.duration);
@@ -1142,9 +1131,7 @@ export default function LeftSide(props: {
                               return !v.status;
                             })
                           ) {
-                            broadcastAction.dispatchComboAnimation!({
-                              type: "end",
-                            });
+                            dispatch(setBroadcastCtxComboAnimationEnd())
                           }
                         }
                       },

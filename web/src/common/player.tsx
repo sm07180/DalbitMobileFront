@@ -21,7 +21,6 @@ import {
 
 // static
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import {
   broadcastExit,
@@ -37,6 +36,12 @@ import CloseBtn from "./images/ic_player_close_btn.svg";
 import PauseIcon from "./static/ic_pause.svg";
 import PlayIcon from "./static/ic_play.svg";
 import { MediaType } from "pages/broadcast/constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxChatFreeze,
+  setBroadcastCtxExtendTimeOnce, setBroadcastCtxLikeClicked,
+  setBroadcastCtxRoomInfoReset
+} from "../redux/actions/broadcastCtx";
 
 const initInterval = (callback: () => boolean) => {
   const intervalTime = 100;
@@ -53,7 +58,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   const history = useHistory();
   const historyState = history.location.state;
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
   const { clipInfo, clipPlayer, mode } = props;
 
   const {
@@ -191,15 +196,12 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         const { auth, isFreeze, isExtend, isLike } = roomInfo;
         setRoomOwner(auth === 3 ? true : false);
         setRoomInfo(roomInfo);
-        broadcastAction.dispatchRoomInfo &&
-          broadcastAction.dispatchRoomInfo({
-            type: "reset",
-            data: roomInfo,
-          });
-        broadcastAction.setChatFreeze!(isFreeze);
+        dispatch(setBroadcastCtxRoomInfoReset(roomInfo));
+        dispatch(setBroadcastCtxChatFreeze(isFreeze));
+        dispatch(setBroadcastCtxExtendTimeOnce(isExtend));
+        dispatch(setBroadcastCtxLikeClicked(isLike));
         chatInfo && chatInfo.setChatFreeze(isFreeze);
-        broadcastAction.setExtendTimeOnce!(isExtend);
-        broadcastAction.setLikeClicked!(isLike);
+
         sessionStorage.setItem("room_no", roomNo);
       } else if (result === "fail") {
         globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
@@ -264,15 +266,12 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         setNickName(newRoomInfo.bjNickNm);
         setTitle(newRoomInfo.title);
 
-        broadcastAction.dispatchRoomInfo &&
-          broadcastAction.dispatchRoomInfo({
-            type: "reset",
-            data: newRoomInfo,
-          });
-        broadcastAction.setChatFreeze!(isFreeze);
+        dispatch(setBroadcastCtxRoomInfoReset(newRoomInfo));
+        dispatch(setBroadcastCtxChatFreeze(isFreeze));
+        dispatch(setBroadcastCtxExtendTimeOnce(isExtend));
+        dispatch(setBroadcastCtxLikeClicked(isLike));
         chatInfo && chatInfo.setChatFreeze(isFreeze);
-        broadcastAction.setExtendTimeOnce!(isExtend);
-        broadcastAction.setLikeClicked!(isLike);
+
         globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(true);
       } else {
         if (code + "" === "-3") {
@@ -319,7 +318,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
       chatInfo.setRoomNo(roomNo);
       chatInfo.setMsgListWrapRef(null);
       chatInfo.setGlobalAction(globalAction);
-      chatInfo.setBroadcastAction(broadcastAction);
       chatInfo.setRoomOwner(roomOwner);
       chatInfo.setDefaultData({ history });
       chatInfo.setRoomInfo(roomInfo);

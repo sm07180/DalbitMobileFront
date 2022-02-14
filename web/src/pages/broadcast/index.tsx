@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useLayoutEffect, useState, useRef } from "react";
 
 // Context
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestProvider } from "context/guest_ctx";
 import { BroadcastLayerProvider } from "context/broadcast_layer_ctx";
 
@@ -17,10 +16,13 @@ import { MediaType } from "./constant";
 import "./index.scss";
 import {broadcastInfoNew} from "../../common/api";
 import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRoomInfoReset} from "../../redux/actions/broadcastCtx";
 
 export default function Broadcast() {
   const { globalState } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { roomInfo, flipIsLeft } = broadcastState;
   const { roomNo } = useParams<{ roomNo: string }>();
   const { baseData } = globalState;
@@ -33,10 +35,7 @@ export default function Broadcast() {
           currentMemNo: baseData.isLogin ? baseData.memNo : "",
           broadState: res.data.state !== 2,
         };
-        broadcastAction.dispatchRoomInfo({
-          type: "reset",
-          data: roomInfo,
-        });
+        dispatch(setBroadcastCtxRoomInfoReset(roomInfo));
         sessionStorage.setItem("broadcast_data", JSON.stringify(roomInfo));
       }
     });

@@ -6,13 +6,13 @@ import { modifyBroadcastSetting } from "common/api";
 
 // Context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import { MediaType } from "../constant";
 
 // Static
 import ArrowBlackImg from "../static/img_arrow_b.svg";
 import {userBroadcastSettingType} from "../../../common/realtime/chat_socket";
+import {useSelector} from "react-redux";
 
 /** 목소리 아이템, 사운드 아이템 설정 추가
  *
@@ -30,7 +30,7 @@ const SettingRenderComponent = (props: {
 
   const { globalAction } = useContext(GlobalContext);
 
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   const { roomInfo } = broadcastState;
 
@@ -123,7 +123,7 @@ const SettingRenderComponent = (props: {
             />
           </div>
         }
-        
+
         {roomOwner === true ? (
           <>
             <div>

@@ -7,15 +7,16 @@ import { getMiniGameList } from "common/api";
 
 // Context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import "./index.scss";
 import { tabType, MiniGameType } from "pages/broadcast/constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType} from "../../../../../redux/actions/broadcastCtx";
 
 export default ({ roomNo }) => {
   const { globalAction } = useContext(GlobalContext);
 
-  const { broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
 
   const [miniGameList, setMiniGameList] = useState<Array<{
     gameNo: number;
@@ -25,12 +26,10 @@ export default ({ roomNo }) => {
   }> | null>(null);
 
   const miniGameHandler = useCallback((type: number) => {
-    if (broadcastAction.setRightTabType) {
-      switch (type) {
-        case MiniGameType.ROLUTTE:
-          broadcastAction.setRightTabType(tabType.ROULETTE);
-          break;
-      }
+    switch (type) {
+      case MiniGameType.ROLUTTE:
+        dispatch(setBroadcastCtxRightTabType(tabType.ROULETTE));
+        break;
     }
   }, []);
 

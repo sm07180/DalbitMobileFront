@@ -2,7 +2,6 @@ import React, {useState, useMemo, useContext} from 'react';
 
 // Context
 // import {GlobalContext} from "context";
-// import {BroadcastContext} from "context/broadcast_ctx";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 import "./index.scss";
 import {addComma} from "../../../../lib/common_fn";
@@ -75,7 +74,7 @@ const MoonLandPop = (props: any) => {
                 </div>
               )
             })
-          }          
+          }
         </div>
         <div className='itemInfo'>
           <p>모든 아이템을 선물하면 <strong>보너스 코인</strong> 등장!</p>

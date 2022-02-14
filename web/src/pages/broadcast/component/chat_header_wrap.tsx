@@ -1,27 +1,18 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 
 // Api
-import {
-  postBroadcastRoomExtend,
-  getBroadcastBoost,
-  miniGameEnd, getMoonLandInfoData, getMoonLandMyRank, getMoonLandRankList, getMoonLandMissionSel
-} from "common/api";
+import {getBroadcastBoost, getMoonLandMissionSel, miniGameEnd, postBroadcastRoomExtend} from "common/api";
 
 // ctx
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import {GlobalContext} from "context";
+import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // lib
-import {
-  stringTimeFormatConvertor,
-  secToDateConvertor,
-  secToDateConvertorMinute,
-} from "lib/common_fn";
+import {secToDateConvertor, secToDateConvertorMinute, stringTimeFormatConvertor,} from "lib/common_fn";
 // constant
-import { tabType, MediaType, MiniGameType } from "../constant";
+import {MediaType, MiniGameType, tabType} from "../constant";
 
 // static
 import fanIcon from "../static/ic_fan.png";
@@ -35,6 +26,15 @@ import CloseIcon from "../static/ic_close_m.svg";
 // component
 import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxCommonBadgeList,
+  setBroadcastCtxExtendTime,
+  setBroadcastCtxExtendTimeOnce, setBroadcastCtxMiniGameInfo,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxStoryState,
+  setBroadcastCtxUserMemNo
+} from "../../../redux/actions/broadcastCtx";
 
 let boostInterval;
 
@@ -44,9 +44,9 @@ export default function ChatHeaderWrap(prop: any) {
   const { globalState, globalAction } = useContext(GlobalContext);
 
   const { baseData, chatInfo } = globalState;
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { realTimeValue, useBoost, commonBadgeList } = broadcastState;
-  const { setRightTabType, setUserMemNo, setCommonBadgeList } = broadcastAction;
 
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
 
@@ -77,21 +77,21 @@ export default function ChatHeaderWrap(prop: any) {
     };
   }, [startDt]);
   const StoryToggle = () => {
-    setRightTabType && setRightTabType(tabType.STORY);
+    dispatch(setBroadcastCtxRightTabType(tabType.STORY));
     if (broadcastState.storyState === 1) {
-      broadcastAction.setStoryState!(-1);
+      dispatch(setBroadcastCtxStoryState(-1));
     }
   };
   const NoticeToggle = () => {
-    setRightTabType && setRightTabType(tabType.NOTICE);
+    dispatch(setBroadcastCtxRightTabType(tabType.NOTICE));
     if (broadcastState.noticeState === 1) {
-      broadcastAction.setNoticeState!(-1);
+      dispatch(setBroadcastCtxStoryState(-1));
     }
   };
   const LikeToggle = () => {
-    setRightTabType && setRightTabType(tabType.LIKELIST);
+    dispatch(setBroadcastCtxRightTabType(tabType.LIKELIST));
     if (broadcastState.likeState === 1) {
-      broadcastAction.setLikeState!(-1);
+      dispatch(setBroadcastCtxStoryState(-1));
     }
   };
   const tooltipToggle = () => {
@@ -133,7 +133,7 @@ export default function ChatHeaderWrap(prop: any) {
   };
 
   useEffect(() => {
-    setCommonBadgeList && setCommonBadgeList(roomInfo.commonBadgeList);
+    dispatch(setBroadcastCtxCommonBadgeList(roomInfo.commonBadgeList));
 
     //달나라 팝업 버튼 노출 여부
     if(roomInfo && roomInfo.hasOwnProperty('moonLandEvent') && roomInfo.moonLandEvent){
@@ -177,8 +177,8 @@ export default function ChatHeaderWrap(prop: any) {
           <div
             className="profile-image"
             onClick={() => {
-              setRightTabType && setRightTabType(tabType.PROFILE);
-              setUserMemNo && setUserMemNo(roomInfo.bjMemNo);
+              dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+              dispatch(setBroadcastCtxUserMemNo(roomInfo.bjMemNo));
             }}
           >
             <div
@@ -242,8 +242,8 @@ export default function ChatHeaderWrap(prop: any) {
                     onClick={() => {
                       const { memNo } = fan;
 
-                      setRightTabType && setRightTabType(tabType.PROFILE);
-                      setUserMemNo && setUserMemNo(memNo);
+                      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+                      dispatch(setBroadcastCtxUserMemNo(memNo));
                     }}
                   >
                     {fan.badgeFrame && (
@@ -269,7 +269,7 @@ export default function ChatHeaderWrap(prop: any) {
           <div
             className="current-user"
             onClick={() => {
-              setRightTabType && setRightTabType(tabType.LISTENER);
+              dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
             }}
           >
             <div className="icon"></div>
@@ -323,28 +323,23 @@ export default function ChatHeaderWrap(prop: any) {
               broadcastState.extendTime === true && (
                 <ExtendingIconStyled
                   onClick={async () => {
-                    if (
-                      broadcastAction.setExtendTime &&
-                      broadcastAction.setExtendTimeOnce
-                    ) {
-                      const { result, message, data } =
-                        await postBroadcastRoomExtend({ roomNo });
-                      if (result === "success") {
-                        broadcastAction.setExtendTime(false);
-                        broadcastAction.setExtendTimeOnce(true);
-                        if (globalAction.setAlertStatus) {
-                          globalAction.setAlertStatus({
-                            status: true,
-                            content: "연장에 성공하였습니다.",
-                          });
-                        }
-                      } else if (result === "fail") {
-                        if (globalAction.setAlertStatus) {
-                          globalAction.setAlertStatus({
-                            status: true,
-                            content: message,
-                          });
-                        }
+                    const { result, message, data } =
+                      await postBroadcastRoomExtend({ roomNo });
+                    if (result === "success") {
+                      dispatch(setBroadcastCtxExtendTime(false));
+                      dispatch(setBroadcastCtxExtendTimeOnce(true));
+                      if (globalAction.setAlertStatus) {
+                        globalAction.setAlertStatus({
+                          status: true,
+                          content: "연장에 성공하였습니다.",
+                        });
+                      }
+                    } else if (result === "fail") {
+                      if (globalAction.setAlertStatus) {
+                        globalAction.setAlertStatus({
+                          status: true,
+                          content: message,
+                        });
                       }
                     }
                   }}
@@ -392,7 +387,7 @@ export default function ChatHeaderWrap(prop: any) {
         <RankIconStyled
           onClick={() => {
             baseData.isLogin
-              ? setRightTabType && setRightTabType(tabType.BOOST)
+              ? dispatch(setBroadcastCtxRightTabType(tabType.BOOST))
               : history.push("/login");
           }}
           className={
@@ -538,8 +533,7 @@ export default function ChatHeaderWrap(prop: any) {
               <div className={`mini_game_slide`}>
                 <button
                   onClick={() => {
-                    broadcastAction.setRightTabType &&
-                      broadcastAction.setRightTabType(tabType.ROULETTE);
+                    dispatch(setBroadcastCtxRightTabType(tabType.ROULETTE));
                   }}
                 >
                   <img src={SettingIcon} alt="미니게임 세팅" />
@@ -562,10 +556,7 @@ export default function ChatHeaderWrap(prop: any) {
                           });
 
                           if (result === "success") {
-                            broadcastAction.setMiniGameInfo &&
-                              broadcastAction.setMiniGameInfo({
-                                status: false,
-                              });
+                            dispatch(setBroadcastCtxMiniGameInfo({status:false}));
                           }
                         },
                       });

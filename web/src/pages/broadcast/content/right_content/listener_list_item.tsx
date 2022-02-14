@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GlobalContext } from "context";
 import { settingAlarmTime } from "lib/common_fn";
 // api
@@ -10,6 +9,12 @@ import { broadManagerSet, broadManagerDelete, broadKickOut, MypageBlackListAdd }
 import { tabType } from "pages/broadcast/constant";
 import { AuthType } from "constant";
 import { MANAGER_TYPE } from "./constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxUserMemNo,
+  setBroadcastCtxUserNickName
+} from "../../../../redux/actions/broadcastCtx";
 
 export default function ListenerListItem(props: {
   roomNo: string;
@@ -21,12 +26,12 @@ export default function ListenerListItem(props: {
   const { roomNo, roomOwner, profile, data, classNm } = props;
   const history = useHistory();
 
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
 
   const { isLogin } = globalState.baseData;
-  const { setRightTabType, setUserMemNo, setUserNickNm } = broadcastAction;
 
   // state
   const [focusIdx, setFocusIdx] = useState(-1);
@@ -43,8 +48,8 @@ export default function ListenerListItem(props: {
   // 프로필 보기
   const viewProfile = (memNo: string) => {
     if (isLogin === true) {
-      setRightTabType && setRightTabType(tabType.PROFILE);
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     } else {
       return history.push("/login");
     }
@@ -52,9 +57,9 @@ export default function ListenerListItem(props: {
 
   // 신고 하기
   const pushReport = (data: any) => {
-    setRightTabType && setRightTabType(tabType.REPORT);
-    setUserNickNm && setUserNickNm(data.nickNm);
-    setUserMemNo && setUserMemNo(data.memNo);
+    dispatch(setBroadcastCtxRightTabType(tabType.REPORT));
+    dispatch(setBroadcastCtxUserNickName(data.nickNm));
+    dispatch(setBroadcastCtxUserMemNo(data.memNo));
     setFocusIdx(-1);
   };
 

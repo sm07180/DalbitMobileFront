@@ -7,11 +7,16 @@ import { postAddFan, broadcastLike } from "common/api";
 
 // Context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Constant
 import { RandomMsgType, tabType } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxIsFan,
+  setBroadcastCtxLikeClicked,
+  setBroadcastCtxRightTabType
+} from "../../../redux/actions/broadcastCtx";
 
 let liked = false;
 
@@ -27,7 +32,8 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
 
   const { globalAction } = useContext(GlobalContext);
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   const { dispatchLayer } = useContext(BroadcastLayerContext);
 
@@ -62,7 +68,7 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
             break;
           case RandomMsgType.STORY:
             callback = () => {
-              broadcastAction.setRightTabType!(tabType.STORY);
+              dispatch(setBroadcastCtxRightTabType(tabType.STORY));
             };
             break;
           case RandomMsgType.FAN:
@@ -75,7 +81,7 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
                     message: `${roomInfo.bjNickNm}님의 팬이 되었습니다`,
                   });
                 }
-                broadcastAction.setIsFan && broadcastAction.setIsFan(true);
+                dispatch(setBroadcastCtxIsFan(true));
                 faned = true;
               }
             };
@@ -90,7 +96,7 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
                   content: message,
                 });
               } else if (result === "success") {
-                broadcastAction.setLikeClicked!(false);
+                dispatch(setBroadcastCtxLikeClicked(false));
                 liked = true;
               }
             };

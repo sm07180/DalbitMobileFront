@@ -4,17 +4,17 @@ import { guestManagement, guest, getBroadcastListeners } from "common/api";
 
 import { GuestContext } from "context/guest_ctx";
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import NoResult from "common/ui/no_result";
 import GuestItem from "./guest_item";
 
 import "./index.scss";
+import {useSelector} from "react-redux";
 
 export default function GuestList(props: any) {
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { guestState, guestAction } = useContext(GuestContext);
 
   const { guestInfo } = globalState;

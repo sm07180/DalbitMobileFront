@@ -12,6 +12,7 @@ import modal from './modal';
 import clipRank from "./clipRank";
 import rank from "./rank";
 import mailBox from "./mailBox";
+import broadcastCtx from "./broadcastCtx";
 
 const rootReducer = combineReducers({
     common
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   , clipRank
   , rank
   , mailBox
+  , broadcastCtx
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

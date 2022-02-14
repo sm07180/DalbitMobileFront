@@ -5,7 +5,6 @@ import { GlobalContext } from "context";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
 import React, { useContext, useEffect, useState } from "react";
 // constant
 import { tabType } from "../../constant";
@@ -19,14 +18,16 @@ import bronzeMedal from "../../../../common/modal/contents/mypage/static/medal_b
 import dalIcon from "../../../../common/modal/contents/mypage/static/ic_moon_s@2x.png";
 import goodIcon from "../../../../common/modal/contents/mypage/static/like_red_m@2x.png";
 import hintIcon from "../../../../common/modal/contents/mypage/static/hint.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
 
 export default function FanList(props: { profile: any }) {
   const { profile } = props;
   // ctx
   const history = useHistory();
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { setRightTabType, setUserMemNo } = broadcastAction;
   const { userMemNo } = broadcastState;
   const [popupState, setPopupState] = useState(false);
   const [fanTabType, setFanTabType] = useState("recent"); //recent, accrue, good
@@ -118,9 +119,9 @@ export default function FanList(props: { profile: any }) {
   }
 
   const viewProfile = (memNo?: any) => {
-    setRightTabType && setRightTabType(tabType.PROFILE);
+    dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
     if (memNo) {
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     }
   };
   //----------------------------------------------------

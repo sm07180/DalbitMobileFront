@@ -2,17 +2,17 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 // Api
 import { getNoticeList, postNoticeWrite, deleteNoticeWrite } from "common/api";
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 // component
 import NoResult from "common/ui/no_result";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 import {BROAD_NOTICE_LENGTH} from "../../constant";
+import {useSelector} from "react-redux";
 
 export default function NoticeList(props: any) {
   //ctx
   const { globalAction } = useContext(GlobalContext);
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { roomOwner, roomNo } = props;
   //state
   const [loadNoticeMsg, setLoadNoticeMsg] = useState<string>("");

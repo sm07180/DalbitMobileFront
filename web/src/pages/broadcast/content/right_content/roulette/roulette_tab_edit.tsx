@@ -17,9 +17,10 @@ import {MiniGameType, tabType, rouletteOptions} from "../../../constant";
 
 // Static
 import CloseIcon from "../../../static/ic_close_round_fill.svg";
+import {setBroadcastCtxRightTabType} from "../../../../../redux/actions/broadcastCtx";
 
 export default function RouletteTabEdit (props) {
-  const { roomNo, globalAction, broadcastAction, broadcastState, isFree, setIsFree, price, setPrice,
+  const { roomNo, globalAction, dispatch, broadcastState, isFree, setIsFree, price, setPrice,
     options, setOptions, toggleCaption, setToggleCaption, createAuto, setCreateAuto, setMiniGameInfo
   } = props;
 
@@ -162,7 +163,7 @@ export default function RouletteTabEdit (props) {
   }, []);
 
   const changeRightTabListener = useCallback(() => {
-    broadcastAction.setRightTabType && broadcastAction.setRightTabType(tabType.LISTENER);
+    dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
   }, []);
 
   useEffect(() => {

@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 //context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestContext } from "context/guest_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
@@ -28,6 +27,8 @@ import MicOnIcon from "../static/ic_mic.svg";
 import MicOffIcon from "../static/ic_mic_off.svg";
 // import GuestOffIcon from "../static/ic_more_out.svg";
 import GuestOffIcon from "../static/ico_runout_w_s.svg";
+import {useDispatch} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../redux/actions/broadcastCtx";
 
 const initInterval = (callback) => {
   const intervalTime = 100;
@@ -68,9 +69,7 @@ function GuestComponent(props) {
   const { guestInfo, rtcInfo, chatInfo } = globalState;
   const dispatchGuestInfo = globalAction.dispatchGuestInfo!;
 
-  const { broadcastAction } = useContext(BroadcastContext);
-  const setRightTabType = broadcastAction.setRightTabType!;
-  const setUserMemNo = broadcastAction.setUserMemNo!;
+  const dispatch = useDispatch();
 
   const { guestAction, guestState } = useContext(GuestContext);
   const { guestConnectStatus, guestObj } = guestState;
@@ -717,7 +716,6 @@ function GuestComponent(props) {
                               guestClicked: true,
                             },
                           });
-                          // broadcastAction.setRightTabType!(tabType.GUEST_GIFT);
                         }}
                       >
                         <img src={GiftIcon} />
@@ -730,13 +728,9 @@ function GuestComponent(props) {
                           exitGuest(v);
                         } else if (v === globalState.baseData.memNo) {
                           setControllerToggle(!controllerToggle);
-                          setUserMemNo(v);
-                          setRightTabType(tabType.PROFILE);
+                          dispatch(setBroadcastCtxUserMemNo(v));
+                          dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
                         }
-                        // else {
-                        //   setUserMemNo(v);
-                        //   setRightTabType(tabType.PROFILE);
-                        // }
                       }}
                     >
                       <img src={EqualizerIcon} className="equalizer" />
@@ -756,7 +750,7 @@ function GuestComponent(props) {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setRightTabType!(tabType.GUEST);
+                            dispatch(setBroadcastCtxRightTabType(tabType.GUEST));
                           }}
                         >
                           <img src="https://image.dalbitlive.com/broadcast/ico_live_guest_g.png" className="guestIcon" alt="G" />
@@ -850,7 +844,7 @@ function GuestComponent(props) {
                 {roomOwner === true ? (
                   <button
                     onClick={() => {
-                      setRightTabType(tabType.GUEST);
+                      dispatch(setBroadcastCtxRightTabType(tabType.GUEST));
                     }}
                   >
                     <img src="https://image.dalbitlive.com/broadcast/ico_live_guest_g.png" className="guestIcon" alt="G" />

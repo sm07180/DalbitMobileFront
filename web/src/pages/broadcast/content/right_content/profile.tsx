@@ -18,7 +18,6 @@ import {
 import Swiper from "react-id-swiper";
 import { CHAT_CONFIG, IMG_SERVER } from "constant/define";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GlobalContext } from "context";
 import { printNumber, addComma } from "lib/common_fn";
 import { mailBoxJoin } from "common/mailbox/mail_func";
@@ -29,16 +28,21 @@ import { MANAGER_TYPE } from "./constant";
 import BadgeList from "../../../../common/badge_list";
 import 'asset/scss/module/mypage/index.scss'
 import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxIsFan,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxUserMemNo,
+  setBroadcastCtxUserNickName
+} from "../../../../redux/actions/broadcastCtx";
 
 export default function Profile(props: { roomInfo: roomInfoType; profile: any; roomNo: string; roomOwner: boolean }) {
   const { roomInfo, profile, roomNo, roomOwner } = props;
   const history = useHistory();
   const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const mailboxState = useSelector(({mailBox}) => mailBox);
-  const { setRightTabType, setUserNickNm, setUserMemNo } = broadcastAction;
 
   const { baseData } = globalState;
   const { isLogin } = baseData;
@@ -64,7 +68,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       // 아무것도 선택되지 않았을때
       return baseData.memNo;
     })();
-    setUserMemNo && setUserMemNo(memNo);
+    dispatch(setBroadcastCtxUserMemNo(memNo));
 
     const { result, data, message } = await getBroadcastMemberInfo({ memNo, roomNo });
     if (result === "success") {
@@ -105,21 +109,21 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         profImgList: data.profImgList,
         isMailboxOn: data.isMailboxOn,
       });
-      broadcastAction.setIsFan && broadcastAction.setIsFan(data.isFan);
+      dispatch(setBroadcastCtxIsFan(data.isFan));
     } else {
       globalAction.setAlertStatus!({
         status: true,
         content: message,
       });
 
-      setRightTabType!(tabType.LISTENER);
+      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
     }
   }
 
   const viewProfile = useCallback(
     (memNo: string) => {
       if (isLogin === true) {
-        setRightTabType && setRightTabType(tabType.PROFILE);
+        dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
         fetchProfileData(memNo);
       } else {
         return history.push("/login");
@@ -131,8 +135,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const viewSpecialList = useCallback(
     (memNo: string) => {
       if (isLogin === true) {
-        setUserMemNo!(memNo);
-        setRightTabType && setRightTabType(tabType.SPECIALDJLIST);
+        dispatch(setBroadcastCtxUserMemNo(memNo));
+        dispatch(setBroadcastCtxRightTabType(tabType.SPECIALDJLIST));
       } else {
         return history.push("/login");
       }
@@ -385,7 +389,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
            차단하시겠습니까?`,
           callback: () => fetchDataBlock(),
           cancelCallback: () => {
-            setRightTabType && setRightTabType(tabType.LISTENER);
+            dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
           },
         });
     }
@@ -408,7 +412,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
             content: message,
           });
       }
-      setRightTabType && setRightTabType(tabType.LISTENER);
+      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
     }
   }, [profileData]);
 
@@ -425,11 +429,6 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
     }
   }, [profileData]);
 
-  // useEffect(() => {
-  //   return () => {
-  //     setUserMemNo && setUserMemNo(baseData.memNo);
-  //   };
-  // }, []);
 
   //경험치바 퍼센트 정리
   const exBar = profileData && profileData.expRate - 100;
@@ -458,8 +457,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     <button
                       className="btn__report"
                       onClick={() => {
-                        setRightTabType && setRightTabType(tabType.REPORT);
-                        setUserNickNm && setUserNickNm(profileData.nickNm);
+                        dispatch(setBroadcastCtxRightTabType(tabType.REPORT));
+                        dispatch(setBroadcastCtxUserNickName(profileData.nickNm));
                       }}
                     >
                       <span className="blind">신고하기</span>
@@ -566,9 +565,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -602,9 +601,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -635,9 +634,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -658,9 +657,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -723,8 +722,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <button
                     className="btn btn_gift"
                     onClick={() => {
-                      setRightTabType && setRightTabType(tabType.GIFT_DAL);
-                      setUserNickNm && setUserNickNm(profileData.nickNm);
+                      dispatch(setBroadcastCtxRightTabType(tabType.GIFT_DAL));
+                      dispatch(setBroadcastCtxUserNickName(profileData.nickNm));
                     }}
                   >
                     선물하기

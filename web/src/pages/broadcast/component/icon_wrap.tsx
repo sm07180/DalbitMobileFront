@@ -1,29 +1,22 @@
 // React
-import React, {
-  useState,
-  useContext,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 
 // Api
 import {
-  modifyBroadcastState,
-  broadcastLike,
-  getBroadcastShortCut,
   broadcastExit,
-  getBroadcastSetting,
-  postFreezeRoom,
+  broadcastLike,
   broadcastShare,
+  getBroadcastSetting,
+  getBroadcastShortCut,
+  modifyBroadcastState,
+  postFreezeRoom,
 } from "common/api";
 
 // Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GuestContext } from "context/guest_ctx";
-import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import {GlobalContext} from "context";
+import {GuestContext} from "context/guest_ctx";
+import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // Module
 import _ from "lodash";
@@ -34,8 +27,7 @@ import SettingWrap from "./setting_wrap";
 
 // Type
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-import { tabType, MediaType } from "pages/broadcast/constant";
-import { userBroadcastSettingType } from "common/realtime/chat_socket";
+import {MediaType, tabType} from "pages/broadcast/constant";
 
 // Static
 import MsgIcon from "../static/ic_message.svg";
@@ -58,6 +50,17 @@ import VideoSettingOffIcon from "../static/ic_videosetting_m.svg";
 import VideoFlipIcon from "../static/ic_mirrormode_m.svg";
 import VideoEffectIcon from "../static/ic_videoeffect_m.svg";
 import MiniGameIcon from "../static/ic_roulette_g.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxChatFreeze,
+  setBroadcastCtxLikeClicked,
+  setBroadcastCtxMsgShortCut,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxRoomInfoMicState,
+  setBroadcastCtxRoomInfoVideoState,
+  setBroadcastCtxSettingObject,
+  setBroadcastCtxSoundVolume
+} from "../../../redux/actions/broadcastCtx";
 
 export const IconWrap = (props: {
   roomOwner: boolean | null;
@@ -73,7 +76,8 @@ export const IconWrap = (props: {
   const { globalState, globalAction } = useContext(GlobalContext);
   const { rtcInfo, baseData, guestInfo, chatInfo } = globalState;
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { rightTabType, likeClicked, msgShortCut, chatFreeze, settingObj } = broadcastState;
 
   const { guestState } = useContext(GuestContext);
@@ -110,7 +114,7 @@ export const IconWrap = (props: {
             globalAction.setAlertStatus({ status: true, content: message });
           }
         } else if (result === "success") {
-          broadcastAction.setLikeClicked!(false);
+          dispatch(setBroadcastCtxLikeClicked(false));
         }
       } else if (heartActive === false) {
         if (globalAction.setAlertStatus) {
@@ -126,13 +130,11 @@ export const IconWrap = (props: {
   };
 
   const boostIconClickHandler = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.BOOST);
+    dispatch(setBroadcastCtxRightTabType(tabType.BOOST))
   }, []);
 
   const msgSettingHandler = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.SHORT);
+    dispatch(setBroadcastCtxRightTabType(tabType.SHORT))
   }, []);
 
   const volumeBarOnChange = useCallback(
@@ -141,7 +143,7 @@ export const IconWrap = (props: {
         if (rtcInfo.audioTag) {
           rtcInfo.audioTag.volume = value;
           //tts, sound 아이템에 사운드 볼륨적용하기
-          broadcastAction?.setSoundVolume && broadcastAction.setSoundVolume(value);
+          dispatch(setBroadcastCtxSoundVolume(value));
         }
       }
 
@@ -156,7 +158,7 @@ export const IconWrap = (props: {
         });
       }
     },
-    [rtcInfo, guestInfo, broadcastAction]
+    [rtcInfo, guestInfo]
   );
 
   const sendShortCut = (idx: number) => {
@@ -164,8 +166,7 @@ export const IconWrap = (props: {
   };
 
   const emoticonIconClickHandler = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.EMOTICON);
+    dispatch(setBroadcastCtxRightTabType(tabType.EMOTICON));
   }, []);
 
   const togglController = useCallback(
@@ -198,7 +199,7 @@ export const IconWrap = (props: {
       isFreeze: !chatFreeze,
     });
     if (result === "success") {
-      broadcastAction.setChatFreeze!(data.isFeeze);
+      dispatch(setBroadcastCtxChatFreeze(data.isFeeze));
     } else {
       globalAction.callSetToastStatus!({
         status: true,
@@ -208,8 +209,7 @@ export const IconWrap = (props: {
   }, [chatFreeze]);
 
   const broadcastEdit = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.SETTING);
+    dispatch(setBroadcastCtxRightTabType(tabType.SETTING));
   }, []);
 
   const broadcastShareClick = useCallback(async () => {
@@ -451,11 +451,11 @@ export const IconWrap = (props: {
   useEffect(() => {
     async function getShortcut() {
       const res = await getBroadcastShortCut();
-      if (res.result === "success" && broadcastAction.setMsgShortCut) {
+      if (res.result === "success") {
         if (res.data instanceof Array) {
-          broadcastAction.setMsgShortCut(res.data);
+          dispatch(setBroadcastCtxMsgShortCut(res.data));
         } else {
-          broadcastAction.setMsgShortCut(res.data.list);
+          dispatch(setBroadcastCtxMsgShortCut(res.data.list));
         }
       } else {
         globalAction.callSetToastStatus!({
@@ -471,11 +471,7 @@ export const IconWrap = (props: {
 
   useEffect(() => {
     if (rtcInfo !== null) {
-      broadcastAction.dispatchRoomInfo &&
-        broadcastAction.dispatchRoomInfo({
-          type: "videoState",
-          data: videoActive,
-        });
+      dispatch(setBroadcastCtxRoomInfoVideoState(videoActive));
       if (videoActive === true) {
         rtcInfo.addTrackToPeerStream("video");
       } else {
@@ -486,11 +482,7 @@ export const IconWrap = (props: {
 
   useEffect(() => {
     if (rtcInfo !== null) {
-      broadcastAction.dispatchRoomInfo &&
-        broadcastAction.dispatchRoomInfo({
-          type: "micState",
-          data: micActive,
-        });
+      dispatch(setBroadcastCtxRoomInfoMicState(micActive));
       if (micActive === true) {
         rtcInfo.addTrackToPeerStream();
       } else {
@@ -536,11 +528,7 @@ export const IconWrap = (props: {
   //설정값이 바뀔 때 broadcastState에 저장하는 함수
   const setSettingObj = (param) => {
     //설정 값 global State에 저장
-    if(broadcastAction?.setSettingObj) {
-      broadcastAction.setSettingObj(param);
-    } else {
-      console.error('icon_wrap.tsx => broadcastAction.setSettingObj null')
-    }
+    dispatch(setBroadcastCtxSettingObject(param));
   };
 
   useEffect(() => {
@@ -738,7 +726,7 @@ export const IconWrap = (props: {
             <img
               src={VideoEffectIcon}
               onClick={(e) => {
-                broadcastAction.setRightTabType!(tabType.MAKE_UP);
+                dispatch(setBroadcastCtxRightTabType(tabType.MAKE_UP));
               }}
               alt="화면 필터"
             />
@@ -799,8 +787,7 @@ export const IconWrap = (props: {
                         "이미 진행중인 게임이 있습니다.\n종료 후 다시 시도해주세요.",
                     });
                 } else {
-                  broadcastAction.setRightTabType &&
-                    broadcastAction.setRightTabType(tabType.ROULETTE);
+                  dispatch(setBroadcastCtxRightTabType(tabType.ROULETTE));
                 }
               }}
             >

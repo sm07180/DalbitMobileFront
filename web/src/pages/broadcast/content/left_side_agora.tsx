@@ -13,7 +13,6 @@ import { useLastLocation } from "react-router-last-location";
 
 // context
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -50,6 +49,12 @@ import LottieFreeze from "../static/lottie_freeze.json";
 import {ttsAlarmDuration} from "../../../constant";
 import {BroadcastLayerContext} from "../../../context/broadcast_layer_ctx";
 import {TransitionPromptHook} from "history";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxChatAnimationEnd, setBroadcastCtxChatAnimationStart,
+  setBroadcastCtxComboAnimationEnd,
+  setBroadcastCtxIsTtsPlaying, setBroadcastCtxTtsActionInfo
+} from "../../../redux/actions/broadcastCtx";
 
 type ComboType = {
   status: boolean;
@@ -112,7 +117,7 @@ function audioTimeout(
   lottieAnimation,
   lottieDisplayElem,
   animationWrapElem,
-  broadcastAction
+  dispatch
 ) {
   setTimeout(() => {
     const audioInterval = setInterval(() => {
@@ -124,7 +129,7 @@ function audioTimeout(
         audio.currentTime = 0;
         soundAnimationQueue.shift();
         intervalCnt = 0;
-        broadcastAction.setIsTTSPlaying!(false);
+        dispatch(setBroadcastCtxIsTtsPlaying(false));
 
         if (lottieAnimation) {
           lottieAnimation.destroy();
@@ -133,8 +138,7 @@ function audioTimeout(
         lottieDisplayElem.removeChild(animationWrapElem);
 
         if (lottieDisplayElem.children.length === 0) {
-          broadcastAction.dispatchChatAnimation &&
-          broadcastAction.dispatchChatAnimation({ type: "end" });
+          dispatch(setBroadcastCtxChatAnimationEnd());
         }
       } else {
         audio.volume = volume / 10;
@@ -162,7 +166,8 @@ export default function LeftSideAgora(props: {
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { chatAnimation, comboAnimation, chatFreeze } = broadcastState;
   const { guestState, guestAction } = useContext(GuestContext);
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
@@ -271,7 +276,7 @@ export default function LeftSideAgora(props: {
       ttsAudio = null;
     }
 
-    broadcastAction.setIsTTSPlaying!(false);
+    dispatch(setBroadcastCtxIsTtsPlaying(false));
     setAudioPlayState(false);
   };
 
@@ -322,8 +327,7 @@ export default function LeftSideAgora(props: {
       }
 
       if (lottieDisplayElem && lottieDisplayElem.children.length === 0) {
-        broadcastAction.dispatchChatAnimation &&
-        broadcastAction.dispatchChatAnimation({ type: "end" });
+        dispatch(setBroadcastCtxChatAnimationEnd());
       }
 
       setAnimPlayState(false);
@@ -333,7 +337,7 @@ export default function LeftSideAgora(props: {
   const resetAnimation = () => {
     soundAnimationQueue = [];
     setTTSAnimationQueue([]);
-    broadcastAction.dispatchChatAnimation!({ type: "end" });
+    dispatch(setBroadcastCtxChatAnimationEnd());
     ttsAudio = null;
   };
 
@@ -393,7 +397,7 @@ export default function LeftSideAgora(props: {
       const animQueue = Object.assign([], ttsAnimationQueue);
       animQueue.shift();
       setTTSAnimationQueue(animQueue);
-      broadcastAction.dispatchChatAnimation!({ type: "end" });
+      dispatch(setBroadcastCtxChatAnimationEnd());
     }
   };
 
@@ -403,7 +407,6 @@ export default function LeftSideAgora(props: {
       chatInfo.setRoomNo(roomNo);
 
       chatInfo.setGlobalAction(globalAction);
-      chatInfo.setBroadcastAction(broadcastAction);
       chatInfo.setGuestAction(guestAction);
 
       chatInfo.setRoomOwner(roomOwner);
@@ -519,9 +522,7 @@ export default function LeftSideAgora(props: {
           clearInterval(comboTimerGroup[`comboTimer_${i}`]);
       }
 
-      broadcastAction.dispatchComboAnimation!({
-        type: "end",
-      });
+      dispatch(setBroadcastCtxComboAnimationEnd());
 
       resetAnimation();
     };
@@ -705,8 +706,8 @@ export default function LeftSideAgora(props: {
       }
 
       const getTTSActionController = () => {
-        broadcastAction.setTtsActionInfo!(ttsItemInfo);
-        broadcastAction.setIsTTSPlaying!(true);
+        dispatch(setBroadcastCtxTtsActionInfo(ttsItemInfo));
+        dispatch(setBroadcastCtxIsTtsPlaying(true));
         setAnimPlayState(true);
         setAudioPlayState(true);
       };
@@ -797,7 +798,7 @@ export default function LeftSideAgora(props: {
               audio.src = soundFileUrl;
               audio.play();
               audio.loop = true;
-              broadcastAction.setIsTTSPlaying!(true);
+              dispatch(setBroadcastCtxIsTtsPlaying(true));
 
               if (webpUrl) {
                 const webpImg = document.createElement("img");
@@ -823,7 +824,7 @@ export default function LeftSideAgora(props: {
                 lottieAnimation,
                 lottieDisplayElem,
                 animationWrapElem,
-                broadcastAction
+                dispatch
               );
             } else {
               const AudioInterval = setInterval(() => {
@@ -858,7 +859,7 @@ export default function LeftSideAgora(props: {
                     lottieAnimation,
                     lottieDisplayElem,
                     animationWrapElem,
-                    broadcastAction
+                    dispatch
                   );
                 }
               }, 100);
@@ -905,19 +906,13 @@ export default function LeftSideAgora(props: {
               lottieDisplayElem.removeChild(animationWrapElem);
 
               if (lottieDisplayElem.children.length === 0) {
-                broadcastAction.dispatchChatAnimation &&
-                broadcastAction.dispatchChatAnimation({ type: "end" });
+                dispatch(setBroadcastCtxChatAnimationEnd());
               }
 
               animationCount -= 1;
               if (animationQueue.length > 0) {
                 const targetData = animationQueue.shift();
-                if (broadcastAction.dispatchChatAnimation) {
-                  broadcastAction.dispatchChatAnimation({
-                    type: "start",
-                    data: targetData,
-                  });
-                }
+                dispatch(setBroadcastCtxChatAnimationStart(targetData));
               }
             }, duration);
           }
@@ -1001,10 +996,7 @@ export default function LeftSideAgora(props: {
   useEffect(() => {
     if (broadcastState.ttsActionInfo.showAlarm) {
       const closeTTSMsg = setTimeout(() => {
-        broadcastAction.setTtsActionInfo!({
-          ...broadcastState.ttsActionInfo,
-          showAlarm: false,
-        });
+        dispatch(setBroadcastCtxTtsActionInfo({...broadcastState.ttsActionInfo, showAlarm:false}));
       }, ttsAlarmDuration);
 
       return () => {
@@ -1091,9 +1083,7 @@ export default function LeftSideAgora(props: {
                           return !v.status;
                         })
                       ) {
-                        broadcastAction.dispatchComboAnimation!({
-                          type: "end",
-                        });
+                        dispatch(setBroadcastCtxComboAnimationEnd());
                       }
                     }
                   }, this.duration);
@@ -1187,9 +1177,7 @@ export default function LeftSideAgora(props: {
                               return !v.status;
                             })
                           ) {
-                            broadcastAction.dispatchComboAnimation!({
-                              type: "end",
-                            });
+                            dispatch(setBroadcastCtxComboAnimationEnd());
                           }
                         }
                       },

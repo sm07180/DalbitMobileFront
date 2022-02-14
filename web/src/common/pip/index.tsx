@@ -6,7 +6,6 @@ import {rtcSessionClear, UserType} from "../realtime/rtc_socket";
 import {broadcastExit, broadcastInfoNew, broadcastJoin} from "../api";
 import {authCheck} from "../../pages/broadcast/side_wrapper";
 import {useHistory} from "react-router-dom";
-import {BroadcastContext} from "../../context/broadcast_ctx";
 
 /**
  * index - 클립, 방송 라우팅

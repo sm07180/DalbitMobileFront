@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import { getEmoticon } from "common/api";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {useSelector} from "react-redux";
 
 type ActionType = {
   type: string;
@@ -14,7 +14,7 @@ type ActionType = {
 
 export default function Emoticon(props) {
   const { globalAction, globalState } = useContext(GlobalContext);
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { chatFreeze } = broadcastState;
   const [emoticon, setEmoticon] = useState<Array<any>>([]);
   const [category, setCategory] = useState<Array<any>>([]);

@@ -14,7 +14,6 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 import { GuestContext } from "context/guest_ctx";
 
@@ -22,6 +21,8 @@ import SoundIcon from "../../static/ic_sound_badge.svg";
 import {ttsActorCookieNaming, ttsContentMaxLength} from "constant";
 import UseInput from '../../../../common/useInput/useInput';
 import {getCookie, setCookie} from "../../../../common/utility/cookie";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxTtsActorInfo} from "../../../../redux/actions/broadcastCtx";
 
 let preventClick = false;
 
@@ -37,10 +38,12 @@ export default function SendGift(props: {
 }) {
   const { roomInfo, roomNo, roomOwner } = props;
 
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+
   const { globalAction, globalState } = useContext(GlobalContext);
   const { splashData } = globalState;
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
 
   // settingObj : 유저방송 설정 ( ttsSound, normalSound : 아이템 사용여부 send_gift.tsx 에서는 2개만 사용중)
   const {settingObj} = broadcastState;
@@ -146,7 +149,7 @@ export default function SendGift(props: {
     if(broadcastState.ttsActorInfo.length === 0) {
       const res = await getTTSActorList();
       if(res.code === '00000') {
-        broadcastAction.setTtsActorInfo!(res.data);
+        dispatch(setBroadcastCtxTtsActorInfo(res.data));
       }
     }
   };

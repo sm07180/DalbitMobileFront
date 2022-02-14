@@ -1,18 +1,48 @@
-import { CHAT_CONFIG, NODE_ENV } from "constant/define";
+import {CHAT_CONFIG, NODE_ENV} from "constant/define";
 
 // constant
-import { MiniGameType, tabType } from "pages/broadcast/constant";
-import { AuthType } from "constant";
+import {MediaType, MiniGameType, tabType} from "pages/broadcast/constant";
+import {AuthType} from "constant";
 
-import { postErrorSave, splash, getItems } from "common/api";
-
-// lib
-const socketClusterClient = require("socketcluster-client");
-
-import { NormalMsgFormat, GiftActionFormat, SystemStartMsg, ReqGood } from "pages/broadcast/lib/chat_msg_format";
+import {getItems, postErrorSave, splash} from "common/api";
+import {GiftActionFormat, NormalMsgFormat, ReqGood, SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
 
 // static
 import MicAlarmClose from "common/static/image/mic_alarm_close.png";
+import {getCookie} from "common/utility/cookie";
+import {rtcSessionClear} from "./rtc_socket";
+
+import {
+  setMailBoxChatListUpdate,
+  setMailBoxImgSliderAddDeleteImg,
+  setMailBoxIsMailBoxNew,
+  setMailBoxPushChatInfo,
+  setMailBoxUserCount
+} from "../../redux/actions/mailBox";
+import {
+  setBroadcastCtxChatAnimationStart,
+  setBroadcastCtxChatCount,
+  setBroadcastCtxChatFreeze,
+  setBroadcastCtxComboAnimationStart,
+  setBroadcastCtxCommonBadgeList,
+  setBroadcastCtxExtendTime,
+  setBroadcastCtxMiniGameInfo,
+  setBroadcastCtxNoticeState,
+  setBroadcastCtxRealTimeValueSetLikeFanRank,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxRoomInfoBoosterOff,
+  setBroadcastCtxRoomInfoBoosterOn,
+  setBroadcastCtxRoomInfoGrantRefresh,
+  setBroadcastCtxRoomInfoMoonCheck,
+  setBroadcastCtxRoomInfoNewFanCnt,
+  setBroadcastCtxRoomInfoRefresh,
+  setBroadcastCtxRoomInfoSettingUpdate,
+  setBroadcastCtxStoryState,
+  setBroadcastCtxUserCount2, setBroadcastCtxUserMemNo
+} from "../../redux/actions/broadcastCtx";
+
+// lib
+const socketClusterClient = require("socketcluster-client");
 
 type chatUserInfoType = { authToken: string; memNo: string; locale: string; roomNo: string | null };
 
@@ -28,17 +58,6 @@ export type userBroadcastSettingType = {
   ttsSound?: boolean;
   normalSound?: boolean;
 };
-
-import { MediaType } from "pages/broadcast/constant";
-import { getCookie } from "common/utility/cookie";
-import {rtcSessionClear} from "./rtc_socket";
-
-import {
-  setMailBoxChatListUpdate, setMailBoxImgSliderAddDeleteImg,
-  setMailBoxIsMailBoxNew,
-  setMailBoxPushChatInfo,
-  setMailBoxUserCount
-} from "../../redux/actions/mailBox";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -231,9 +250,7 @@ export class ChatSocketHandler {
 
         msgListWrapElem.appendChild(msgElem);
 
-        if (this.broadcastAction !== null && this.broadcastAction.setChatCount) {
-          this.broadcastAction.setChatCount(this.chatCnt);
-        }
+        this.dispatch(setBroadcastCtxChatCount(this.chatCnt));
       }
     }
     }catch(e){
@@ -659,10 +676,9 @@ export class ChatSocketHandler {
                       }, 4000);
                     }
 
-                    if (this.roomOwner === true && this.broadcastAction !== null && this.broadcastAction.setExtendTime) {
-                      this.broadcastAction.setExtendTime(true);
+                    if (this.roomOwner === true){
+                      this.dispatch(setBroadcastCtxExtendTime(true));
                     }
-
                     return null;
                   }
                   case "chat": {
@@ -817,46 +833,35 @@ export class ChatSocketHandler {
                       const isCombo = type === "sticker";
 
                       if (isCombo) {
-                        if (this.broadcastAction !== null && this.broadcastAction.dispatchComboAnimation) {
-                          this.broadcastAction.dispatchComboAnimation({
-                            type: "start",
-                            data: {
-                              url: webpUrl || lottieUrl,
-                              repeatCnt,
-                              duration: duration * 1000,
-                              itemNo,
-                              memNo,
-                              userImage,
-                              userNickname,
-                            },
-                          });
-                        }
+                        this.dispatch(setBroadcastCtxComboAnimationStart({
+                          url: webpUrl || lottieUrl,
+                          repeatCnt,
+                          duration: duration * 1000,
+                          itemNo,
+                          memNo,
+                          userImage,
+                          userNickname,
+                        }));
                       } else {
-                        if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-
-                          this.broadcastAction.dispatchChatAnimation({
-                            type: "start",
-                            data: {
-                              url: lottieUrl,
-                              width,
-                              height,
-                              duration: duration * 1000 * repeatCnt,
-                              location,
-                              soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
-                              count,
-                              isCombo,
-                              userNickname,
-                              userImage,
-                              webpUrl,
-                              soundFileUrl : isSoundItem? soundFileUrl : '',
-                              itemNo,
-                              memNo,
-                              ttsItemInfo,
-                              isTTSItem,
-                              // repeatCnt,
-                            },
-                          });
-                        }
+                        this.dispatch(setBroadcastCtxComboAnimationStart({
+                          url: lottieUrl,
+                          width,
+                          height,
+                          duration: duration * 1000 * repeatCnt,
+                          location,
+                          soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
+                          count,
+                          isCombo,
+                          userNickname,
+                          userImage,
+                          webpUrl,
+                          soundFileUrl : isSoundItem? soundFileUrl : '',
+                          itemNo,
+                          memNo,
+                          ttsItemInfo,
+                          isTTSItem,
+                          // repeatCnt,
+                        }));
                       }
                     }
 
@@ -952,23 +957,6 @@ export class ChatSocketHandler {
                                               }
                                             }
                                           }
-
-                                          // if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                                          //   if (this.roomOwner === false) {
-                                          //     if (itemType === "items") {
-                                          //       this.broadcastLayerAction
-
-                                          //       this.broadcastAction.setGiftState &&
-                                          //         this.broadcastAction.setGiftState({
-                                          //           display: true,
-                                          //           itemNo: data.reqGiftImg.itemNo,
-                                          //           cnt: data.reqGiftImg.itemCnt,
-                                          //         });
-                                          //     } else if (itemType === "boost") {
-                                          //       this.broadcastAction.setRightTabType(tabType.BOOST);
-                                          //     }
-                                          //   }
-                                          // }
                                         },
                                       },
                                     ],
@@ -1014,29 +1002,23 @@ export class ChatSocketHandler {
                     const enterInfo = commonBadgeList[0];
                     const { startColor, endColor } = enterInfo;
                     const { enterAni, enterBgImg } = enterAniInfo;
-                    if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-                      this.broadcastAction.dispatchChatAnimation({
-                        type: "start",
-                        data: {
-                          url: "",
-                          width: 300,
-                          height: 200,
-                          duration: 6 * 1000,
-                          location: "topRight",
-                          count: 1,
-                          isCombo: false,
-                          userNickname: nk,
-                          userImage: image,
-                          webpUrl: enterAni,
-                          backgroundImg: enterBgImg,
-                          backgroundColor: [startColor, endColor],
-                          soundFileUrl: "",
-                          ttsItemInfo: {},
-                          isTTSItem: false,
-                        },
-                      });
-                    }
-
+                    this.dispatch(setBroadcastCtxChatAnimationStart({
+                      url: "",
+                      width: 300,
+                      height: 200,
+                      duration: 6 * 1000,
+                      location: "topRight",
+                      count: 1,
+                      isCombo: false,
+                      userNickname: nk,
+                      userImage: image,
+                      webpUrl: enterAni,
+                      backgroundImg: enterBgImg,
+                      backgroundColor: [startColor, endColor],
+                      soundFileUrl: "",
+                      ttsItemInfo: {},
+                      isTTSItem: false,
+                    }))
                     return null;
                   }
 
@@ -1047,22 +1029,11 @@ export class ChatSocketHandler {
                     return null;
                   }
                   case "reqBooster": {
-                    if (this.broadcastAction) {
-                      this.broadcastAction.dispatchRoomInfo({ type: "boosterOn" });
-                      this.broadcastAction.setBoost({
-                        boost: true,
-                      });
-                    }
-
+                    this.dispatch(setBroadcastCtxRoomInfoBoosterOn());
                     return null;
                   }
                   case "reqBoosterEnd": {
-                    if (this.broadcastAction) {
-                      this.broadcastAction.dispatchRoomInfo({ type: "boosterOff" });
-                      this.broadcastAction.setBoost({
-                        boost: false,
-                      });
-                    }
+                    this.dispatch(setBroadcastCtxRoomInfoBoosterOff());
                     return null;
                   }
                   case "reqBcStart": {
@@ -1076,27 +1047,15 @@ export class ChatSocketHandler {
                   }
                   case "reqChangeCount": {
                     const { reqChangeCount } = data;
-                    if (this.broadcastAction !== null && this.broadcastAction.dispatchRealTimeValue) {
-                      const { fanRank, likes, rank, newFanCnt } = reqChangeCount;
-                      this.broadcastAction.dispatchRealTimeValue({
-                        type: "setLikeFanRank",
-                        data: { fanRank, likes, rank, newFanCnt },
-                      });
-
-                      if (this.broadcastAction.dispatchRoomInfo) {
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "newFanCnt",
-                          data: newFanCnt,
-                        });
-                      }
-                    }
+                    const { fanRank, likes, rank, newFanCnt } = reqChangeCount;
+                    this.dispatch(setBroadcastCtxRealTimeValueSetLikeFanRank({ fanRank, likes, rank, newFanCnt }));
+                    this.dispatch(setBroadcastCtxRoomInfoNewFanCnt(newFanCnt));
                     return null;
                   }
                   //kjo 방송방 수정하기 수정
                   case "reqRoomChangeInfo": {
                     const { reqRoomChangeInfo } = data;
-
-                    this.broadcastAction.dispatchRoomInfo({ type: "broadcastSettingUpdate", data: reqRoomChangeInfo });
+                    this.dispatch(setBroadcastCtxRoomInfoSettingUpdate(reqRoomChangeInfo));
                     return null;
                   }
                   case "reqGoodFirst": {
@@ -1113,28 +1072,22 @@ export class ChatSocketHandler {
 
                     const { webpUrl, duration, width, height, location, type } = lottieData;
 
-                    if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-                      this.broadcastAction.dispatchChatAnimation({
-                        type: "start",
-                        data: {
-                          webpUrl: webpUrl,
-                          url: "",
-                          width,
-                          height,
-                          duration: duration * 1000,
-                          location,
-                          soundFileUrl: "",
-                          count: 1,
-                          isCombo: false,
-                          userNickname: "'",
-                          userImage: "",
-                          backgroundImg: "",
-                          ttsItemInfo: {},
-                          isTTSItem: false,
-                        },
-                      });
-                    }
-
+                    this.dispatch(setBroadcastCtxChatAnimationStart({
+                      webpUrl: webpUrl,
+                      url: "",
+                      width,
+                      height,
+                      duration: duration * 1000,
+                      location,
+                      soundFileUrl: "",
+                      count: 1,
+                      isCombo: false,
+                      userNickname: "'",
+                      userImage: "",
+                      backgroundImg: "",
+                      ttsItemInfo: {},
+                      isTTSItem: false,
+                    }))
                     return ReqGood({
                       type: "div",
                       text: msg,
@@ -1143,19 +1096,14 @@ export class ChatSocketHandler {
                   }
 
                   case "reqStory": {
-                    this.broadcastAction.setStoryState(1);
+                    this.dispatch(setBroadcastCtxStoryState(1));
                   }
                   case "reqGrant": {
                     const { recvMsg } = data;
-                    this.broadcastAction.dispatchRoomInfo &&
-                      this.broadcastAction.dispatchRoomInfo({
-                        type: "grantRefresh",
-                        data: {
-                          auth: parseInt(recvMsg.msg),
-                          memNo: data.chat.memNo,
-                        },
-                      });
-
+                    this.dispatch(setBroadcastCtxRoomInfoGrantRefresh({
+                      auth: parseInt(recvMsg.msg),
+                      memNo: data.chat.memNo,
+                    }));
                     return null;
                   }
                   case "reqKickOut": {
@@ -1210,10 +1158,7 @@ export class ChatSocketHandler {
                     return null;
                   }
                   case "reqNotice": {
-                    if (this.broadcastAction !== null && this.broadcastAction.setNoticeState) {
-                      this.broadcastAction.setNoticeState(1);
-                    }
-
+                    this.dispatch(setBroadcastCtxNoticeState(1))
                     return null;
                   }
                   case "reqLevelUpSelf": {
@@ -1239,14 +1184,9 @@ export class ChatSocketHandler {
                   case "connect": {
                     const { count, user, recvMsg } = data;
 
-                    if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
-                      if (count) {
-                        const { userCount, historyCount } = count;
-
-                        this.broadcastAction.setUserCount((prev) => {
-                          return { ...prev, current: userCount, history: historyCount };
-                        });
-                      }
+                    if (count) {
+                      const { userCount, historyCount } = count;
+                      this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
                     }
                     if (recvMsg.msg !== "") {
                       // if (user.auth === AuthType.MANAGER || this.roomOwner === true) {
@@ -1275,14 +1215,10 @@ export class ChatSocketHandler {
                   //kjo 방송방 bjReConnect 추가
                   case "bjReconnect": {
                     const { count, user, recvMsg } = data;
-                    if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
-                      if (count) {
-                        const { userCount, historyCount } = count;
-                        if (userCount >= 0 && historyCount >= 0) {
-                          this.broadcastAction.setUserCount((prev) => {
-                            return { ...prev, current: userCount, history: historyCount };
-                          });
-                        }
+                    if (count) {
+                      const { userCount, historyCount } = count;
+                      if (userCount >= 0 && historyCount >= 0) {
+                        this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
                       }
                     }
 
@@ -1291,14 +1227,10 @@ export class ChatSocketHandler {
 
                   case "disconnect": {
                     const { count, user, recvMsg } = data;
-                    if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
-                      if (count) {
-                        const { userCount, historyCount } = count;
-                        if (userCount >= 0 && historyCount >= 0) {
-                          this.broadcastAction.setUserCount((prev) => {
-                            return { ...prev, current: userCount, history: historyCount };
-                          });
-                        }
+                    if (count) {
+                      const { userCount, historyCount } = count;
+                      if (userCount >= 0 && historyCount >= 0) {
+                        this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
                       }
                     }
 
@@ -1539,11 +1471,7 @@ export class ChatSocketHandler {
                           });
                         }
 
-                        this.broadcastAction.dispatchRoomInfo &&
-                          this.broadcastAction.dispatchRoomInfo({
-                            type: "refresh",
-                          });
-
+                        this.dispatch(setBroadcastCtxRoomInfoRefresh());
                         return NormalMsgFormat({
                           type: "div",
                           className: "connect-wrap",
@@ -1640,31 +1568,22 @@ export class ChatSocketHandler {
                   case "reqRankingDj": {
                     const { user } = data;
                     const { commonBadgeList } = user;
-                    if (this.broadcastAction !== null && this.broadcastAction.setCommonBadgeList) {
-                      this.broadcastAction.setCommonBadgeList(commonBadgeList);
-                    }
+                    this.dispatch(setBroadcastCtxCommonBadgeList(commonBadgeList));
                     return null;
                   }
 
                   case "reqRoomLock": {
                     const { recvMsg } = data;
                     const jsonObj = JSON.parse(recvMsg.msg);
-                    if (this.broadcastAction !== null && this.broadcastAction.setChatFreeze) {
-                      this.broadcastAction.setChatFreeze(jsonObj.isFreeze);
-                      this.setChatFreeze(jsonObj.isFreeze);
-                    }
+                    this.dispatch(setBroadcastCtxChatFreeze(jsonObj.isFreeze));
+                    this.setChatFreeze(jsonObj.isFreeze);
+
                     if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
                       this.globalAction.callSetToastStatus({
                         status: true,
                         message: jsonObj.msg,
                       });
                     }
-                    // if (this.broadcastAction !== null && this.broadcastAction.dispatchRoomInfo) {
-                    //   this.broadcastAction.dispatchRoomInfo({
-                    //     type: "freeze",
-                    //     data: jsonObj.isFreeze,
-                    //   });
-                    // }
 
                     return null;
                   }
@@ -1673,58 +1592,43 @@ export class ChatSocketHandler {
                     const { moonCheck } = data;
                     const { dlgTitle, dlgText } = moonCheck;
                     if (moonCheck.moonStep === 4) {
-                      if (this.broadcastAction !== null && this.broadcastAction.dispatchRoomInfo) {
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "moonCheck",
-                          data: { ...moonCheck, moonStepAniFileNm: "", step: moonCheck.moonStep },
-                        });
-                      }
+                      this.dispatch(setBroadcastCtxRoomInfoMoonCheck({ ...moonCheck, moonStepAniFileNm: "", step: moonCheck.moonStep }))
 
-                      if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-                        setTimeout(() => {
-                          this.broadcastAction.dispatchChatAnimation({
-                            type: "start",
-                            data: {
-                              url: "",
-                              width: "",
-                              height: "",
-                              duration: moonCheck.aniDuration ? moonCheck.aniDuration * 1000 : 6000,
-                              location: "topLeft",
-                              count: 1,
-                              isCombo: false,
-                              userNickname: "'",
-                              userImage: "",
-                              webpUrl: moonCheck.moonStepAniFileNm,
-                              soundFileUrl: "",
-                              ttsItemInfo: {},
-                              isTTSItem: false,
+                      setTimeout(() => {
+                        this.dispatch(setBroadcastCtxChatAnimationStart({
+                          url: "",
+                          width: "",
+                          height: "",
+                          duration: moonCheck.aniDuration ? moonCheck.aniDuration * 1000 : 6000,
+                          location: "topLeft",
+                          count: 1,
+                          isCombo: false,
+                          userNickname: "'",
+                          userImage: "",
+                          webpUrl: moonCheck.moonStepAniFileNm,
+                          soundFileUrl: "",
+                          ttsItemInfo: {},
+                          isTTSItem: false,
+                        }));
+                      }, 1000);
+
+                      setTimeout(() => {
+                        if (
+                          this.broadcastLayerAction &&
+                          this.broadcastLayerAction !== null &&
+                          this.broadcastLayerAction.dispatchDimLayer
+                        ) {
+                          this.broadcastLayerAction.dispatchDimLayer({
+                            type: "FULL_MOON",
+                            others: {
+                              dlgTitle,
+                              dlgText,
                             },
                           });
-                        }, 1000);
-
-                        setTimeout(() => {
-                          if (
-                            this.broadcastLayerAction &&
-                            this.broadcastLayerAction !== null &&
-                            this.broadcastLayerAction.dispatchDimLayer
-                          ) {
-                            this.broadcastLayerAction.dispatchDimLayer({
-                              type: "FULL_MOON",
-                              others: {
-                                dlgTitle,
-                                dlgText,
-                              },
-                            });
-                          }
-                        }, 1200 + moonCheck.aniDuration * 1000);
-                      }
+                        }
+                      }, 1200 + moonCheck.aniDuration * 1000);
                     } else {
-                      if (this.broadcastAction !== null && this.broadcastAction.dispatchRoomInfo) {
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "moonCheck",
-                          data: { ...moonCheck },
-                        });
-                      }
+                      this.dispatch(setBroadcastCtxRoomInfoMoonCheck(moonCheck));
                     }
 
                     return null;
@@ -1780,28 +1684,22 @@ export class ChatSocketHandler {
 
                   case "reqMiniGameAdd": {
                     const { reqMiniGameAdd } = data;
-
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: true,
-                        gameNo: MiniGameType.ROLUTTE,
-                        ...reqMiniGameAdd,
-                      });
-
+                    this.dispatch(setBroadcastCtxMiniGameInfo({
+                      status: true,
+                      gameNo: MiniGameType.ROLUTTE,
+                      ...reqMiniGameAdd,
+                    }));
                     return null;
                   }
 
                   case "reqMiniGameEdit": {
                     const { reqMiniGameEdit } = data;
 
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: true,
-                        gameNo: MiniGameType.ROLUTTE,
-                        ...reqMiniGameEdit,
-                      });
+                    this.dispatch(setBroadcastCtxMiniGameInfo({
+                      status: true,
+                      gameNo: MiniGameType.ROLUTTE,
+                      ...reqMiniGameEdit,
+                    }));
 
                     this.globalAction !== null &&
                       this.globalAction.callSetToastStatus &&
@@ -1822,13 +1720,11 @@ export class ChatSocketHandler {
                         type: "ROULETTE",
                       });
 
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameResult &&
-                      this.broadcastAction.setMiniGameResult({
-                        status: true,
-                        gameNo: MiniGameType.ROLUTTE,
-                        ...reqMiniGameStart,
-                      });
+                    this.dispatch(setBroadcastCtxMiniGameInfo({
+                      status: true,
+                      gameNo: MiniGameType.ROLUTTE,
+                      ...reqMiniGameStart,
+                    }));
 
                     setTimeout(() => {
                       this.addMsgElement(
@@ -1905,13 +1801,7 @@ export class ChatSocketHandler {
 
                   case "reqMiniGameEnd": {
                     const { reqMiniGameEnd } = data;
-
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: false,
-                      });
-
+                    this.dispatch(setBroadcastCtxMiniGameInfo({status:false}));
                     return null;
                   }
 
@@ -1938,27 +1828,24 @@ export class ChatSocketHandler {
                     const {reqPlayAni} = data;
                     // 아이템미션 성공 시 띄우는 달나라 뿅 애니메이션 출력여부
                     if (reqPlayAni && reqPlayAni.hasOwnProperty('aniCode')) {
-                      this.broadcastAction.dispatchChatAnimation({
-                        type: "start",
-                        data: {
-                          url: '',
-                          width: 360,
-                          height: 540,
-                          duration: 12000,
-                          location: 'midTop',
-                          count: 1,
-                          isCombo: false,
-                          userNickname: '',
-                          userImage: '',
-                          webpUrl: `${reqPlayAni.aniCode}?${Date.now()}`,
-                          soundFileUrl: '',
-                          itemNo: '',
-                          memNo: '',
-                          ttsItemInfo: null,
-                          isTTSItem: false,
-                          // repeatCnt,
-                        },
-                      });
+                      this.dispatch(setBroadcastCtxChatAnimationStart({
+                        url: '',
+                        width: 360,
+                        height: 540,
+                        duration: 12000,
+                        location: 'midTop',
+                        count: 1,
+                        isCombo: false,
+                        userNickname: '',
+                        userImage: '',
+                        webpUrl: `${reqPlayAni.aniCode}?${Date.now()}`,
+                        soundFileUrl: '',
+                        itemNo: '',
+                        memNo: '',
+                        ttsItemInfo: null,
+                        isTTSItem: false,
+                        // repeatCnt,
+                      }))
                     }
                     return null;
                   }
@@ -1968,18 +1855,13 @@ export class ChatSocketHandler {
                     if (dj_normal_sound !== 'undefined' && dj_tts_sound !== 'undefined') {
                       //방장 설정 정보 세팅
                       const djSetting = {djNormalSound: dj_normal_sound, djTtsSound: dj_tts_sound};
-                      if(this.broadcastAction?.dispatchRoomInfo){
-                        this.setRoomInfo({...this.roomInfo, ...djSetting});
-                        this.broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data: djSetting});
-
-                        this.globalAction && text && !this.roomOwner &&
-                        this.globalAction.callSetToastStatus({
-                          status: true,
-                          message: text,
-                        });
-                      } else {
-                        console.error('reqDjSetting => this.broadcastAction.dispatchRoomInfo : null');
-                      }
+                      this.setRoomInfo({...this.roomInfo, ...djSetting});
+                      this.dispatch(setBroadcastCtxRoomInfoSettingUpdate(djSetting));
+                      this.globalAction && text && !this.roomOwner &&
+                      this.globalAction.callSetToastStatus({
+                        status: true,
+                        message: text,
+                      });
                     }
                     return null;
                   }
@@ -1989,22 +1871,6 @@ export class ChatSocketHandler {
               };
               const msgElem = chatMsgElement(data);
               this.addMsgElement(msgElem);
-              // this.chatCnt = this.chatCnt + 1;
-              // if (msgListWrapElem && msgElem !== null) {
-              //   if (msgListWrapElem.children.length === 2000) {
-              //     msgListWrapElem.removeChild(msgListWrapElem.children[0]);
-              //   }
-
-              //   if (this.chatCnt === 2000) {
-              //     this.chatCnt = 0;
-              //   }
-
-              //   msgListWrapElem.appendChild(msgElem);
-
-              //   if (this.broadcastAction !== null && this.broadcastAction.setChatCount) {
-              //     this.broadcastAction.setChatCount(this.chatCnt);
-              //   }
-              // }
             } else {
               const { cmd } = data;
               if (cmd === "chatEnd" || cmd === "chatEndRed") {
@@ -2254,10 +2120,8 @@ export class ChatSocketHandler {
           {
             type: "click",
             callback: () => {
-              if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                this.broadcastAction.setUserMemNo(memNo);
-                this.broadcastAction.setRightTabType(tabType.PROFILE);
-              }
+              this.dispatch(setBroadcastCtxUserMemNo(memNo));
+              this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE))
             },
           },
         ],
@@ -2282,10 +2146,8 @@ export class ChatSocketHandler {
             {
               type: "click",
               callback: () => {
-                if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                  this.broadcastAction.setUserMemNo(memNo);
-                  this.broadcastAction.setRightTabType(tabType.PROFILE);
-                }
+                this.dispatch(setBroadcastCtxUserMemNo(memNo));
+                this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE))
               },
             },
           ],
@@ -2308,10 +2170,8 @@ export class ChatSocketHandler {
             {
               type: "click",
               callback: () => {
-                if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                  this.broadcastAction.setUserMemNo(memNo);
-                  this.broadcastAction.setRightTabType(tabType.PROFILE);
-                }
+                this.dispatch(setBroadcastCtxUserMemNo(memNo));
+                this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE))
               },
             },
           ],
@@ -2457,10 +2317,8 @@ export class ChatSocketHandler {
           {
             type: "click",
             callback: () => {
-              if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                this.broadcastAction.setUserMemNo(memNo);
-                this.broadcastAction.setRightTabType(tabType.PROFILE);
-              }
+              this.dispatch(setBroadcastCtxUserMemNo(memNo));
+              this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE))
             },
           },
         ],

@@ -1,18 +1,19 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 // api
 import { getSpecialList, getProfile } from "common/api";
 // scss
 // constant
 import { tabType } from "pages/broadcast/constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
 
 export default (props) => {
   // ctx && commons
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { setRightTabType, setUserMemNo, setListenerList } = broadcastAction;
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { globalState, globalAction } = useContext(GlobalContext);
   const { userMemNo } = broadcastState;
   const history = useHistory();
@@ -25,8 +26,8 @@ export default (props) => {
   // 프로필 보기
   const viewProfile = useCallback((memNo: string) => {
     if (globalState.baseData.isLogin === true) {
-      setRightTabType!(tabType.PROFILE);
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     } else {
       return history.push("/login");
     }

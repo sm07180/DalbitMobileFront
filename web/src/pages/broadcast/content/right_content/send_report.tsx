@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // constant
@@ -9,12 +8,14 @@ import { tabType } from "../../constant";
 import { postReportUser, MypageBlackListAdd } from "common/api";
 import Caution from "../../static/caution.png";
 import { DECLARATION_TAB } from "./constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType} from "../../../../redux/actions/broadcastCtx";
 export default function Report(props: { roomNo: string; profile: any }) {
   const { roomNo, profile } = props;
   // ctx
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { setRightTabType } = broadcastAction;
   const { userMemNo, userNickNm } = broadcastState;
   // state
   const [pageType, setPageType] = useState(1);
@@ -55,7 +56,7 @@ export default function Report(props: { roomNo: string; profile: any }) {
         status: true,
         type: "alert",
         content: message,
-        callback: () => setRightTabType && setRightTabType(tabType.LISTENER),
+        callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
       });
     } else if (code === "-3") {
       globalAction.setAlertStatus &&
@@ -123,14 +124,14 @@ export default function Report(props: { roomNo: string; profile: any }) {
           status: true,
           type: "alert",
           content: `${userNickNm} 님을 신고하였습니다.`,
-          callback: () => setRightTabType && setRightTabType(tabType.LISTENER),
+          callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
         });
     } else {
       globalAction.setAlertStatus!({
         status: true,
         type: "alert",
         content: message,
-        callback: () => setRightTabType && setRightTabType(tabType.LISTENER),
+        callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
       });
     }
   }
@@ -231,7 +232,7 @@ export default function Report(props: { roomNo: string; profile: any }) {
                 </p>
 
                 <div className="btnWrap">
-                  <button className="btn btn_cancel" onClick={() => setRightTabType && setRightTabType(tabType.LISTENER)}>
+                  <button className="btn btn_cancel" onClick={() => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER))}>
                     취소
                   </button>
                   <button className="btn btn_ok" onClick={fetchDataBlock}>

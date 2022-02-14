@@ -10,13 +10,14 @@ import { tabType } from "../constant";
 // lib
 import Swiper from "react-id-swiper";
 import GiftDalPop from "./gift_dal_pop";
-import { BroadcastContext } from "context/broadcast_ctx";
 import BadgeList from "../../../common/badge_list";
 import "../../../asset/scss/module/mypage/index.scss";
+import {useDispatch} from "react-redux";
+import {setBroadcastCtxUserMemNo} from "../../../redux/actions/broadcastCtx";
 
 let Profile = () => {
   const history = useHistory();
-  const { broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
   const { globalState, globalAction } = useContext(GlobalContext);
   const { clipState, clipAction } = useContext(ClipContext);
   const { setUserMemNo } = clipAction;
@@ -81,7 +82,7 @@ let Profile = () => {
       (memNo: string) => {
         if (isLogin === true) {
           setUserMemNo!(memNo);
-          broadcastAction.setUserMemNo!(memNo);
+          dispatch(setBroadcastCtxUserMemNo(memNo));
           clipAction.setRightTabType && clipAction.setRightTabType(tabType.SPECIALDJLIST);
         } else {
           return history.push("/login");

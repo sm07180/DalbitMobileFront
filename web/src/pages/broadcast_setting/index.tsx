@@ -25,7 +25,6 @@ import { GlobalContext } from "context";
 import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
-import { BroadcastContext } from "../../context/broadcast_ctx";
 import LayerCopyright from "../../common/layerpopup/contents/copyright";
 import LayerTitle from "./content/title";
 import LayerWelcome from "./content/welcome";
@@ -33,7 +32,8 @@ import Layout from "common/layout";
 import { MediaType } from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import {BroadcastCreateRoomParamType} from "../../redux/types/broadcastType";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxExtendTime} from "../../redux/actions/broadcastCtx";
 
 declare global {
   interface Window {
@@ -158,7 +158,7 @@ export default function BroadcastSetting() {
   const { globalState, globalAction } = useContext(GlobalContext);
   const { chatInfo, rtcInfo } = globalState;
   const modalState = useSelector(({modal}) => modal);
-  const { broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
   const [state, dispatchWithoutAction] = useReducer(reducer, {
     micState: false,
     videoState: false,
@@ -375,7 +375,8 @@ export default function BroadcastSetting() {
           globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
           sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:newRtcInfo.roomInfo, userType:newRtcInfo.userType}));
           sessionStorage.setItem("room_no", data.roomNo);
-          broadcastAction.setExtendTime!(false);
+          dispatch(setBroadcastCtxExtendTime(false));
+
           try {
             if (window.fbq) window.fbq("track", "RoomMake");
             if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
@@ -747,7 +748,6 @@ export default function BroadcastSetting() {
 
   const setMediaType = (mediaType:BROAD_TYPE)=>{
     dispatchWithoutAction({type: "SET_MEDIATYPE", mediaType: mediaType});
-    //broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data:{platform:mediaType === BROAD_TYPE.AUDIO ? 'wowza' : 'agora'}})
   }
 
   return (

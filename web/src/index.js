@@ -15,7 +15,6 @@ import 'styles/reset.scss'
 import 'styles/common.scss'
 import 'styles/swiper.scss'
 
-import {BroadcastProvider as BroadcastProviderWWW} from "context/broadcast_ctx";
 import {Provider} from 'react-redux';
 import store from "redux/store";
 
@@ -23,9 +22,7 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <GlobalProvider>
-        <BroadcastProviderWWW>
-          <App/>
-        </BroadcastProviderWWW>
+        <App/>
       </GlobalProvider>
     </BrowserRouter>
   </Provider>,

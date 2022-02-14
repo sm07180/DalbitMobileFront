@@ -24,7 +24,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
 import {getMemberProfile} from "redux/actions/member";
 import {getArgoraRtc, getWowzaRtc, rtcSessionClear} from "common/realtime/rtc_socket";
-import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api";
 import {removeAllCookieData} from "common/utility/cookie";
@@ -57,7 +56,7 @@ function setNativePlayInfo(isJsonString, globalCtx) {
 }
 
 
-const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
+const baseSetting = async (globalCtx, dispatch) => {
   const globalAction = globalCtx.globalAction;
   const globalState = globalCtx.globalState;
 
@@ -89,7 +88,7 @@ const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
   const broadcastData = sessionStorage.getItem("broadcast_data");
   if (broadcastData !== null) {
     const data = JSON.parse(broadcastData);
-    broadcastAction.dispatchRoomInfo({type: "reset", data: data});
+    dispatch(setBroadcastCtxRoomInfoReset(data));
   }
 
   dispatch(createAgoraClient());
@@ -100,10 +99,10 @@ import Layout from "common/layout";
 import Common from "common";
 import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
+import {setBroadcastCtxRoomInfoReset} from "redux/actions/broadcastCtx";
 
 let alarmCheckIntervalId = 0;
 const App = () => {
-  const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
@@ -327,7 +326,7 @@ const App = () => {
         globalCtx.action.updateAdminChecker(false)
       }
       if(isDesktop){
-        baseSetting(globalCtx, broadcastAction, dispatch);
+        baseSetting(globalCtx, dispatch);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
       //모든 처리 완료

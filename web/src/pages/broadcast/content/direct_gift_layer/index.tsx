@@ -1,7 +1,6 @@
 import React, { useState, useContext, useCallback } from "react";
 
 import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 import DirectGiftImg from "./static/img_directgift.svg";
@@ -16,7 +15,6 @@ let preventClick = false;
 
 function DirectGiftLayer() {
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastAction } = useContext(BroadcastContext);
   const { userProfile } = globalState;
 
   const { dimLayer, dispatchDimLayer, dispatchLayer } = useContext(BroadcastLayerContext);
