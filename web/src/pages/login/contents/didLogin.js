@@ -4,6 +4,12 @@ import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
+
+import PopupPrivacy from '../components/PopupPrivacy'
+import PopupTerms from '../components/PopupTerms'
+
+
 import {Context} from 'context'
 import '../style.scss'
 import Utility from "components/lib/utility";
@@ -17,6 +23,9 @@ const DidLogin = (props) => {
   const [fetching, setFetching] = useState(false)
   const [btnActive, setBtnActive] = useState(false)
   const [slidePop, setSlidePop] = useState(false)
+  const [popup, setPopup] = useState(false)
+  const [popupVal, setPopupVal] = useState("")
+
   const [loginInfo, setLoginInfo] = useState({ phoneNum : '', password : '', })
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -195,6 +204,11 @@ const DidLogin = (props) => {
     });
   };
 
+  const popupOpen = (val) => {
+    setPopup(true);
+    setPopupVal(val)
+  }
+
   return (
     <div id='loginPage'>
       <Header title="로그인" type="back"/>
@@ -235,7 +249,7 @@ const DidLogin = (props) => {
                 <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                 <span className="checkIcon"/>
                 <p className="checkinfo">(필수) 이용약관</p>
-                <button className='policyBtn'>보기</button>
+                <button className='policyBtn' onClick={() => popupOpen("terms")}>보기</button>
               </label>
             </div>
             <div className="agreeList">
@@ -243,13 +257,26 @@ const DidLogin = (props) => {
                 <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                 <span className="checkIcon"/>
                 <p className="checkinfo">(필수) 개인정보 취급 방침</p>
-                <button className='policyBtn'>보기</button>
+                <button className='policyBtn' onClick={() => popupOpen("privacy")}>보기</button>
               </label>
             </div>
           </div>
         </div>
         <SubmitBtn text="다음" state={!btnActive && 'disabled'} onClick={signUp}/>
       </PopSlide>
+      }
+      {
+        popup &&
+        <LayerPopup setPopup={setPopup}>
+          <div className='popTitle'>{popupVal === "terms" ? "이용약관" : "개인정보 취급 방침"}</div>
+          <div className='popContent'>
+            {popupVal=== "terms" ?
+              <PopupTerms/>
+              :
+              <PopupPrivacy/>
+            }
+          </div>
+        </LayerPopup>
       }
     </div>
   )

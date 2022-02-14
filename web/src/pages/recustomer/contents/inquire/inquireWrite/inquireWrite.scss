@@ -138,3 +138,46 @@
     margin-top: 36px;
   }
 }
+
+#layerPop {
+  .popContainer {
+    padding: 20px 0;
+    box-sizing: border-box;
+    .popTitle {
+      @include flex(center, center);
+      width: 100%;
+      line-height: 48px;
+      @include font(16px, 700, #202020);
+    }
+    .popContent {
+      width: 100%;
+      padding: 12px 20px;
+      box-sizing: border-box;
+      .dashList {
+        position: relative;
+        @include flex(flex-start, flex-start, column);
+        li {
+            position: relative;
+            width: 100%;
+            padding-left: 10px;
+            line-height: 20px;
+            letter-spacing: -1px;
+            word-break: keep-all;
+            @include font(12px, 400, #666666);
+            box-sizing: border-box;
+            &:last-child {
+                margin-bottom: 0spx;
+            }
+            &::before {
+              content: "";
+              position: absolute;
+              left: 0; top: 8px;
+              @include flex(center, center);
+              width: 6px; height: 1px;
+              background-color: #666666;
+          }
+        }       
+      }
+    }
+  }   
+}
