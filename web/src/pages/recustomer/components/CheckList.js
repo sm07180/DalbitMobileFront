@@ -10,13 +10,13 @@ const CheckList = (props) => {
   const {text, children, onClick} = props
 
   return (
-      <label className="inputLabel">
-        <input type="checkbox" className="blind"
-               onChange={onClick}/>
-        <span className="checkIcon"/>
-        <p className="checkInfo">{text}</p>
-        {children}
-      </label>
+    <label className="inputLabel">
+      <input type="checkbox" className="blind"
+              onChange={onClick}/>
+      <span className="checkIcon"/>
+      <p className="checkInfo">{text}</p>
+      {children}
+    </label>
   )
 }
 

@@ -29,7 +29,7 @@ const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking
 const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
 
 // 랭킹
-const Ranking = React.lazy(() => import('pages/reranking/contents/rankingMain'))
+const Ranking = React.lazy(() => import('pages/reranking/'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 

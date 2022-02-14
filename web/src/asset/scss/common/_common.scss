@@ -40,7 +40,7 @@ legend {
     // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   }
   .icon-wrap {
-    @include position-bottom-left(6px 50%);
+    @include position-bottom-left(6px,50%);
     .arrow-refresh-icon {
       position: relative;
       left: -50%;
