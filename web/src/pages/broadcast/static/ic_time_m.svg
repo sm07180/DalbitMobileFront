@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_live_time_m_wh" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-2{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.4px}
+        </style>
+    </defs>
+    <g id="그룹_139" opacity="0.5" transform="translate(-152 -67.778)">
+        <g id="그룹_138" transform="translate(157 72.778)">
+            <circle id="타원_38" cx="7" cy="7" r="7" class="cls-2"/>
+            <g id="그룹_137" transform="translate(7 2.918)">
+                <path id="선_14" d="M0 0L0 4.17" class="cls-2"/>
+                <path id="선_15" d="M2.703 2.703L0 0" class="cls-2" transform="translate(0 4.17)"/>
+            </g>
+        </g>
+    </g>
+    <path id="사각형_263" fill="none" d="M0 0H24V24H0z"/>
+</svg>

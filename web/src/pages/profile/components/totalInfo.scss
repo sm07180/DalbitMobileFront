@@ -1,0 +1,115 @@
+@import "components/ui/_mixin.scss";
+
+.totalInfo {
+  padding: 16px 16px 20px;
+  border-bottom:8px solid #F2F2F2;
+  .badgeInfo {
+    @include flex(flex-start);
+    height:20px;
+    margin-bottom:16px;
+    @include font(11px);
+    overflow:hidden;
+    &.isOpen {
+      height:auto;
+    }
+    .title {
+      flex-shrink: 0;
+      width:20px;
+      height:20px;
+      text-indent:-99999px;
+      @include BGIMG("/profile/badge_icon.png");
+    }
+    .badgeGroup {
+      flex:1;
+      @include flex(center);
+      flex-wrap:wrap;
+      .badgeItem {
+        line-height: 18px;
+        margin-top:1px;
+        margin-bottom:1px;
+      }
+      .badge {
+        display: inline-block;
+        margin:1px 4px;
+        padding:0 12px;
+        background-color:gold;
+      }
+    }
+    button {
+      flex-shrink: 0;
+      width:20px;height:20px;
+      text-indent:-99999px;
+      @include BGIMG("profile/drop_down_icon.png");
+    }
+  }
+  .rankInfo {
+    @include flex;
+    margin-bottom:20px;
+    .box {
+      flex:1;
+      @include flex(center);
+      height:58px;
+      margin-right:5px;
+      padding: 12px 10px 12px 8px;
+      border-radius:16px;
+      background-color: #F8F8F8;
+      &:last-child {
+        flex-grow: 0;
+        flex-basis: 38.8%;
+        margin-right:0;
+      }
+      .title {
+        flex:none;
+        height:33px;
+        margin-right:12px;
+        @include font(16px);
+        img {
+          height:100%;
+        }
+      }
+      .photoGroup {
+        @include flex;
+      }
+      .photo {
+        position:relative;
+        width:36px;
+        height:36px;
+        margin-right:10px;
+        border-radius:50%;
+        background-color:#fff;
+        img {
+          width:100%;
+          height:100%;
+          border-radius:50%;
+          object-fit: cover;
+        }
+        &:last-child {
+          margin-right:0;
+        }
+        .badge {
+          @include position-top-left(-3px,-3px);
+          width:18px;
+          height:18px;
+          line-height:14px;
+          @include border(white,50%,2px);
+          background-color:#FE3C7B;
+          text-align:center;
+          @include font(10px,500,white);
+        }
+      }
+    }
+  }
+  .comment {
+    .title {
+      height:16px;
+      margin-bottom:4px;
+      img {
+        height:100%;
+      }
+    }
+    .text {
+      letter-spacing: -1px;
+      @include font(13px,400,black);
+    }
+  }
+}

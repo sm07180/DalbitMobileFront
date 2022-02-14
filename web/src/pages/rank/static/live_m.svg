@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="live_m" width="28" height="28" viewBox="0 0 28 28">
+    <defs>
+        <style>
+            .cls-3{fill:none;stroke:#ec455f;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.4px}
+        </style>
+    </defs>
+    <g id="그룹_15313" transform="translate(3.129 2.475)">
+        <g id="그룹_15266" transform="rotate(180 10.852 7.234)">
+            <path id="패스_20863" fill="#ec455f" d="M2.1 0A2.1 2.1 0 1 1 0 2.1 2.1 2.1 0 0 1 2.1 0z" transform="translate(8.733 5.01)"/>
+            <path id="패스_4144" d="M0 0a4.081 4.081 0 0 1 0 5.468" class="cls-3" transform="translate(14.373 4.547)"/>
+            <path id="패스_20859" d="M0 0a4.081 4.081 0 0 1 0 5.468" class="cls-3" transform="rotate(180 3.666 5.008)"/>
+            <path id="패스_4145" d="M0 0a8.151 8.151 0 0 1 0 10.822" class="cls-3" transform="translate(16.439 1.42)"/>
+            <path id="패스_20860" d="M0 0a8.151 8.151 0 0 1 0 10.822" class="cls-3" transform="rotate(180 2.632 6.12)"/>
+            <path id="패스_4146" d="M0 0a10.683 10.683 0 0 1 0 14.587" class="cls-3" transform="translate(18.704 -.445)"/>
+            <path id="패스_20861" d="M0 0a10.683 10.683 0 0 1 0 14.587" class="cls-3" transform="rotate(180 1.439 7.071)"/>
+        </g>
+    </g>
+    <path id="패스_20862" fill="#ec455f" stroke="#ec455f" stroke-linejoin="round" stroke-width="0.4px" d="M-8.69-5.56V-.7h2.608v.854H-9.7V-5.56zm4.377 0H-3.3V.154h-1.013zm2.847 0H-.38l1.5 4.47 1.551-4.47H3.7L1.546.154H.634zm10.666 0v.84H6.532v1.538h2.5v.824h-2.5v1.672h2.727v.84H5.526V-5.56z" transform="translate(14.371 26.414)"/>
+</svg>

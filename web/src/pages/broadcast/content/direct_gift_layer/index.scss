@@ -1,0 +1,78 @@
+@import "../../../../asset/scss/common/variables";
+
+#direct-gift-layer {
+  position: relative;
+  height: auto;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 20px;
+  .layerWrap {
+    &__header {
+      border-bottom: 1px solid $lightGray;
+      text-align: center;
+
+      h4 {
+        margin-bottom: 16px;
+      }
+    }
+
+    &__imgWrap {
+      position: relative;
+      margin-top: 10px;
+      div {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        font-size: 14px;
+        font-weight: $bold;
+        img {
+          width: 20px;
+          height: 20px;
+          margin-right: 3px;
+        }
+      }
+      img {
+        width: 296px;
+      }
+    }
+
+    &__input {
+      width: calc(100% - 32px);
+      padding: 16px 14px;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: $bold;
+
+      &::placeholder {
+        font-size: 14px;
+        color: $greishGray;
+      }
+
+      &:focus {
+        border: 1px solid black;
+      }
+    }
+
+    &__caption {
+      margin-top: 8px;
+      font-size: 12px;
+      color: $greishGray;
+    }
+
+    .confirm {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px 0;
+      background-color: $greishGray;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: $bold;
+
+      &.on {
+        background-color: $primary;
+      }
+    }
+  }
+}

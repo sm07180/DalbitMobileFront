@@ -1,0 +1,27 @@
+@import "components/ui/_mixin.scss";
+
+.badgeItem {
+  flex-shrink:0;
+  @include flex(center);
+  line-height:18px;
+  margin-right:2px;
+  padding:0 4px 0 3px;
+  border-radius:100px;
+  letter-spacing: -.5px;
+  @include font(10px,$Medium,white);
+  box-sizing:border-box;
+  img {
+    width:16px;
+    height:16px;
+  }
+  @mixin bcsBadge($width,$image) {
+    width:$width;
+    text-indent:-99999px;
+    @include BGIMG("badge/dalla/#{$image}.png");
+  }
+  &.bestDj {@include bcsBadge(47px,'bdg_best-2');}
+  &.contentsDj {@include bcsBadge(71px,'bdg_contents-2');}
+  &.specialDj {@include bcsBadge(63.5px,'bdg_special-2');}
+  &.new {@include bcsBadge(40px,'bdg_new-2');}
+  &.newDj {height:16px;@include bcsBadge(55px,'bdg_new-1');}
+}

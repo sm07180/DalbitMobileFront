@@ -1,0 +1,186 @@
+@import '../../../styles/variables';
+
+#dallaClipAll{
+  position:relative;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  section{position: relative;}
+  .header-wrap{
+    border-bottom: none;
+    h2{
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .iconWrap{
+      position:absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      img{
+        width: 40px;
+        height: 40px;
+      }
+    }
+  }
+  .tabmenuWrap{
+    .tabmenu{
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      margin-top: 10px;
+      box-sizing: border-box;
+      .tabBtn{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: none;
+        min-width: 50px;
+        width: auto;
+        height: 36px;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 400;
+        color: #acacac;
+        background: #f6f6f6;
+        border-radius: 18px;
+        &.active{
+          font-weight: 500;
+          color: #fff;
+          background: #202020;
+        }
+        &:last-child{margin-right: 12px;}
+      }
+    }
+  }
+  .filterWrap{
+    .filter{
+      display: flex;
+      justify-content: flex-end;
+      position: relative;
+      margin: 12px 0;
+      padding: 0 16px;
+      box-sizing: border-box;
+      &Btn{
+        display: flex;
+        font-size: 13px;
+        font-weight: 400;
+        margin-right: 12px;
+        .arrowDown{
+          width: 20px;
+          height: 20px;
+          background: url('https://image.dalbitlive.com/clip/dalla/ico_arrowDown.png') no-repeat center / contain;
+        }
+        .arrowUp{
+          width: 20px;
+          height: 20px;
+          background: url('https://image.dalbitlive.com/clip/dalla/ico_arrowUp.png') no-repeat center / contain;
+        }
+        &:last-child{margin-right: 0;}
+        .option{
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          top: 24px;
+          right: 16px;
+          width: 124px;
+          border-radius: 8px;
+          box-shadow: 1px 1px 20px rgba(0,0,0,0.16);
+          background: #fff;
+          z-index: 5;
+          span{
+            position: relative;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #f6f6f6;
+            padding-left: 28px;
+            letter-spacing: -0.5px;
+            &:last-child{border-bottom: 0;}
+          }
+          .checked{
+            &::after{
+              content:"";
+              position:absolute;
+              left:8px;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 16px;
+              height: 16px;
+              background: url('https://image.dalbitlive.com/clip/dalla/ico_check.png') no-repeat center / contain;
+            }
+          }
+        }
+      }
+    }
+  }
+  .listWrap{
+    .listRow{
+      padding: 0 16px;
+      .photo{
+        width: 72px;
+        height: 72px;
+        background: #999;
+        border-radius: 8px;
+        margin-right: 12px;
+      }
+      .listInfo{
+        width: calc(100% - 152px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+      .listItem{
+        display: flex;
+        align-items: center;
+        .title{
+          width: 100%;
+          font-size: 14px;
+          font-weight: 500;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .gender{
+          flex: none;
+          width: 14px;
+          height: 14px;
+          margin-right: 4px;
+          &.male{
+            background: url('https://image.dalbitlive.com/clip/dalla/ico_male.png') no-repeat center / contain;
+          }
+          &.female{
+            background: url('https://image.dalbitlive.com/clip/dalla/heartOff.png') no-repeat center / contain;
+          }
+        }
+        .nickNm{
+          font-size: 13px;
+          font-weight: 400;
+          color: #666;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .cnt{
+          font-size: 11px;
+          font-weight: 400;
+          color: #999;
+          margin-right: 15px;
+          &:last-child{margin-right: 0;}
+        }
+      }
+      .heart{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 28px;
+        height: 28px;
+        background: #F6F6F6;
+        border-radius: 100%;
+        margin-left: auto;
+        img{
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+}

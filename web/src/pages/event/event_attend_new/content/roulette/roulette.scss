@@ -1,4 +1,5 @@
 @import '../../../../../styles/global';
+@import 'components/ui/_mixin.scss';
 
 .rouletteTab {
   background: #097b70;
@@ -9,7 +10,7 @@
     }
 
     .couponBox {
-      @include flexbox;
+      @include flex;
       padding: 0px 16px;
 
       .couponCount {

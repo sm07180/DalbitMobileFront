@@ -1,0 +1,236 @@
+@import '../../../styles/variables';
+
+#clipPage{
+  position:relative;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  section{
+    position: relative;
+    margin-bottom: 35px;
+    &:last-child{margin-bottom: 0;}
+    h2{
+      display: flex;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 500;
+      .userName{
+        font-weight: bold;
+      }
+    }
+    .subTitle{
+      display:flex;
+      align-items: center;
+      width: 100%;
+      font-size: 18px;
+      font-weight: 500;
+      color: #202020;
+      padding:0 16px;
+      margin-bottom: 8px;
+    }
+    .content{
+      position: relative;
+      padding-left: 16px;
+    }
+  }
+  .hotClipWrap{
+    .listWrap{
+      border:1px solid;
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      margin-bottom: 12px;
+      &:last-child{margin-bottom: 0;}
+      .listRow {
+        .photo {
+          width: 112px;
+          height: 112px;
+          border-radius:  8px;
+          background-color: #999;
+          flex: none;
+        }
+      }
+      &Box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: calc(100% - 32px);
+        padding-left: 16px;
+        box-sizing: border-box;
+        &:last-child{
+          width: calc(100% - 16px);
+          margin-right: 16px;
+        }
+      }
+      &Data{
+        width: calc(100% - 130px);
+        margin-left: 18px;
+      }
+      &Rank{
+        height: 36px;
+        margin-bottom: 19px;
+      }
+      &Title{
+        width: calc(100% - 15px);
+        font-size: 15px;
+        font-weight: bold;
+        color: #202020;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      &Subject{
+        font-size:14px;
+        color: #B620FE;
+        font-weight: 400;
+        margin-right: 5px;
+      }
+      &SubTit{
+        width: calc(100% - 15px);
+        font-size: 13px;
+        color: #999;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+  
+  .bannerWrap {
+    .bannerBox {
+      width:calc(100% - 32px);
+      padding-left:16px;
+      box-sizing: border-box;
+      &:last-child {
+        width:calc(100% - 16px);
+        margin-right:16px;  
+      }
+      .bannerItem {
+        width: 100%;
+        height: 100px;
+        background-color:#999;
+        border-radius: 4px;
+      }
+    }
+  }
+  .clipListWrap{
+    h2 {
+      font-size:20px;
+      font-weight:500;
+      color:black;
+    }
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        margin-right: 12px;
+        width:auto;
+      }
+    }
+    .clipList{
+      display: flex;
+      flex-direction: column;
+      width: 100px;
+      &Photo{
+        width: 100px;
+        height: 100px;
+        border-radius: 8px;
+        background: #999;
+      }
+      &Title{
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-top: 3px;
+      }
+      &User{
+        font-size: 12px;
+        color: #666;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+  
+  .likeSubWrap{
+    .swiper-wrapper {
+        padding-left:16px;
+        .swiper-slide {
+          width:auto;
+      }
+    }
+    .likeSub{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: none;
+      min-width: 80px;
+      height: 80px;
+      border: 1px solid #d9d9d9;
+      border-radius: 20px;
+      padding: 0 23px;
+      margin-right: 4px;
+      &Wrap{
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .bannerClipWrap{
+    .bannerClip{
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 61px;
+      border-radius: 5px;
+      background-color: rgba(60,174,123,0.16);
+      padding-left: 8px;
+      box-sizing: border-box;
+      margin-top: 8px;
+      &:first-child{margin-top: 0;}
+      &Box{
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 32px);
+        padding-left: 16px;
+        box-sizing: border-box;
+        &:last-child{
+          width: calc(100% - 16px);
+          margin-right: 16px;
+        }
+      }
+      &Img{
+        width: 50px;
+        height: 50px;
+        background: #999;
+        border-radius: 8px;
+        margin-right: 12px;
+        flex: none;
+      }
+      &Content{
+        display: flex;
+        flex-direction: column;
+        padding-right: 27px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      &Title{
+        font-size: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      &Name{
+        font-size: 12px;
+        color: #666;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

@@ -11,6 +11,7 @@ import {OS_TYPE} from 'context/config.js'
 import Util from 'components/lib/utility.js'
 
 import BadgeList from 'common/badge_list'
+import {RoomValidateFromClip} from "common/audio/clip_func";
 
 const makeContents = (props) => {
   let history = useHistory()
@@ -68,7 +69,14 @@ const makeContents = (props) => {
                 }
               })
             } else {
-              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+              RoomValidateFromClip(
+                  roomNo,
+                  globalCtx,
+                  history,
+                  bjNickNm
+              )
+              //alertCheck(roomNo)
+              //globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
             }
           } else {
             alertCheck(roomNo)

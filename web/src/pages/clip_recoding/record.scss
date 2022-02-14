@@ -1,0 +1,209 @@
+/*
+    record.scss
+    녹음
+*/
+@import "../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
+
+#recordWrap {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 30px;
+
+  .headerTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $MAINCOLOR;
+    letter-spacing: -0.85px;
+    font-size: 34px;
+    font-weight: $bold;
+    padding-top: 40px;
+    padding-bottom: 50px;
+  }
+
+  .volumeAniBox1 {
+    position: absolute;
+    top: 150px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: $MAINCOLOR;
+    opacity: 0;
+    z-index: 0;
+    animation: volumeAni2-1 1s ease-out alternate infinite;
+  }
+
+  .volumeAniBox2 {
+    position: absolute;
+    top: 120px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background-color: $MAINCOLOR;
+    opacity: 0;
+    z-index: 0;
+    animation: volumeAni2-2 1s ease-out alternate infinite;
+  }
+
+  .volumeAniBox3 {
+    position: absolute;
+    top: 90px;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background-color: $MAINCOLOR;
+    opacity: 0;
+    z-index: 0;
+    animation: volumeAni2-3 1s ease-out alternate infinite;
+  }
+
+  @keyframes volumeAni2-1 {
+    0% {
+      background-color: #fcfbff;
+      opacity: 0.8;
+    }
+
+    50% {
+      background-color: #ebe3ff;
+      opacity: 0.8;
+    }
+
+    100% {
+      background-color: #fcfbff;
+      opacity: 0.8;
+    }
+  }
+  @keyframes volumeAni2-2 {
+    0% {
+      background-color: #fcfbff;
+      opacity: 0.5;
+    }
+
+    50% {
+      background-color: #ebe3ff;
+      opacity: 0.5;
+    }
+
+    100% {
+      background-color: #fcfbff;
+      opacity: 0.5;
+    }
+  }
+  @keyframes volumeAni2-3 {
+    0% {
+      background-color: #fcfbff;
+      opacity: 0.2;
+    }
+
+    50% {
+      background-color: #ebe3ff;
+      opacity: 0.2;
+    }
+
+    100% {
+      background-color: #fcfbff;
+      opacity: 0.2;
+    }
+  }
+  .recordBtn {
+    width: 120px;
+    height: 120px;
+    margin-top: 60px;
+    margin-bottom: 120px;
+    background: url("https://image.dalbitlive.com/broadcast/setting/recordStart.png");
+    background-size: 100%;
+    z-index: 1;
+  }
+  .stopBtn {
+    width: 120px;
+    height: 120px;
+    margin-top: 60px;
+    margin-bottom: 120px;
+    background: url("./static/record_stop.svg");
+    background-size: 100%;
+    z-index: 1;
+  }
+  .streamBtn {
+    width: 120px;
+    height: 120px;
+    margin-top: 60px;
+    margin-bottom: 120px;
+    background: url("./static/record_stream.svg");
+    background-size: 100%;
+    z-index: 1;
+  }
+  .playBtn {
+    width: 100px;
+    height: 100px;
+    background: url("./static/record_play.svg");
+
+    &--stop {
+      background: url("./static/record_play_stop.svg");
+    }
+  }
+  .reRecordWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    &__reRecordBtn {
+      width: 48px;
+      height: 48px;
+      background: url("./static/record_re_record.svg");
+    }
+    &__submitBtn {
+      width: 48px;
+      height: 48px;
+      background: url("./static/record_submit.svg");
+    }
+    &__reRecordTitle {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: $bold;
+      letter-spacing: -0.35px;
+      text-align: center;
+      color: #424242;
+    }
+  }
+
+  .recordCount {
+    font-size: 30px;
+    font-weight: $bold;
+    line-height: 1.17;
+    letter-spacing: -0.75px;
+    text-align: center;
+    color: #bdbdbd;
+    &__recording {
+      width: 12px;
+      height: 12px;
+      background: url("./static/record_red_circle.svg");
+      margin-right: 8px;
+    }
+    &--active {
+      display: flex;
+      align-items: center;
+      color: #000;
+    }
+  }
+  .recordControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 260px;
+    margin-top: 76px;
+  }
+  .timeAlert {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.08;
+    letter-spacing: -0.3px;
+    text-align: center;
+    color: #bdbdbd;
+  }
+}

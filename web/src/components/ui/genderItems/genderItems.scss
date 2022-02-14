@@ -1,0 +1,11 @@
+@import "../_mixin.scss";
+
+em.gender {
+  flex-shrink:0;
+  &.male {
+    @include BGIMG('common/icon/icoMale.png');
+  }
+  &.female {
+    @include BGIMG('common/icon/icoFemale.png');
+  }
+}

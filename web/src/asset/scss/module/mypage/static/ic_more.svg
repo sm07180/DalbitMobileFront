@@ -1,0 +1,16 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_more" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-1{fill:#bdbdbd}
+        </style>
+    </defs>
+    <g id="prefix__그룹_144" data-name="그룹 144" transform="rotate(-90 14.5 5.5)">
+        <path id="prefix__패스_437" d="M2 4a2 2 0 1 1 2-2 2 2 0 0 1-2 2zM.176 2.941z" class="prefix__cls-1" data-name="패스 437"/>
+        <path id="prefix__패스_438" d="M2 4a2 2 0 1 1 2-2 2 2 0 0 1-2 2zM.176 2.941z" class="prefix__cls-1" data-name="패스 438" transform="translate(0 7)"/>
+        <path id="prefix__패스_439" d="M2 4a2 2 0 1 1 2-2 2 2 0 0 1-2 2zM.176 2.941z" class="prefix__cls-1" data-name="패스 439" transform="translate(0 14)"/>
+    </g>
+    <g id="prefix__그룹_143" data-name="그룹 143" transform="rotate(-90 18 18)">
+        <path id="prefix__사각형_223" d="M0 0H36V36H0z" data-name="사각형 223" style="fill:none"/>
+    </g>
+</svg>

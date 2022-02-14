@@ -1,0 +1,42 @@
+@import "components/ui/_mixin.scss";
+
+#passwordSetting {
+  .content {
+    position: relative;
+    @include flex(flex-start,flex-start,column);
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    form {
+      width: 100%;
+    }
+    .sectionWrap {
+      margin-bottom: 25px;
+      .section {
+        @include flex(flex-start,flex-start,column);
+        width: 100%;
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .title {
+          @include font(13px, 400, #666666);
+          margin-bottom: 6px;
+        }
+        .inputItems {
+          margin-bottom: 0px;
+          .inputBtn {
+            width: 84px;
+            background-color: #E3E3E3;
+            &.active {              
+              background-color: #FF3C7B;
+            }
+          }
+        }
+      }
+    }    
+    .submitBtn {
+      width: 100%;
+    }
+  }
+}

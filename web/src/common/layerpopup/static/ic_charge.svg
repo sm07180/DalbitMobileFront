@@ -1,0 +1,10 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_charge" width="40" height="18" viewBox="0 0 40 18">
+    <g id="prefix__그룹_13136" data-name="그룹 13136" transform="translate(-305 -322)">
+        <rect id="prefix__사각형_2" width="40" height="18" data-name="사각형 2" rx="9" transform="translate(305 322)" style="fill:#ec455f"/>
+        <text id="prefix__충전" transform="translate(313 334)" style="fill:#fff;font-size:10px;font-family:NanumSquareR,NanumSquare;letter-spacing:-.025em">
+            <tspan x="0" y="0">충전</tspan>
+        </text>
+        <path id="prefix__패스_6524" d="M7729.75 3701l3 3-3 3" data-name="패스 6524" transform="translate(-7395.75 -3373)" style="fill:none;stroke:#fff;stroke-width:.8px"/>
+    </g>
+</svg>

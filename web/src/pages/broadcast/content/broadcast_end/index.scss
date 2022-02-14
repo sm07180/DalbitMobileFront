@@ -1,0 +1,455 @@
+@import "../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
+
+#boradcast-end-modal {
+  position: relative;
+  width: 328px;
+  height: auto;
+  background-color: #fff;
+  border-radius: 20px;
+
+  .cancel {
+    position: absolute;
+    right: -10px;
+    top: -40px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("./static/close.svg") center no-repeat;
+  }
+
+  .dj {
+    padding: 14px;
+    h2 {
+      font-size: 20px;
+    }
+
+    .banner {
+      & > img {
+        width: 300px;
+        height: 65px;
+        border-radius: 12px;
+      }
+    }
+
+    &__top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding-top: 20px;
+      &--img {
+        height: 110px;
+        margin-top: 28px;
+        position: relative;
+        .profile {
+          width: 88px;
+          height: 88px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .holder {
+          position: absolute;
+          width: 120px;
+          height: 120px;
+          left: -16px;
+          top: -18px;
+        }
+      }
+
+      &--nickNm {
+        font-size: 14px;
+      }
+
+      &--time {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        &::before {
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          margin-right: 4px;
+          background: url("static/ic_time.svg") no-repeat center;
+          background-size: contain;
+          content: "";
+        }
+      }
+    }
+
+    &__info {
+      font-size: 14px;
+      margin-top: 5px;
+      & > div {
+        margin-top: 10px;
+      }
+      b {
+        font-size: 16px;
+        float: right;
+      }
+      &--max {
+        span {
+          display: inline-flex;
+          &::before {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+            background: url("static/ic_people.svg") no-repeat center;
+            background-size: contain;
+            content: "";
+          }
+        }
+      }
+
+      &--total {
+        span {
+          display: inline-flex;
+          &::before {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+            background: url("static/ic_people_2.svg") no-repeat center;
+            background-size: contain;
+            content: "";
+          }
+        }
+      }
+
+      &--fan {
+        span {
+          display: inline-flex;
+          &::before {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            margin-right: 5px;
+            background: url("static/ic_fan.svg") no-repeat center;
+            background-size: contain;
+            content: "";
+          }
+        }
+      }
+    }
+
+    &__infoBox {
+      display: flex;
+      margin-top: 10px;
+
+      &--item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        margin-left: 6px;
+        padding: 6px 0;
+        background-color: $whiteGray;
+        border-radius: 10px;
+        font-size: 14px;
+        text-align: center;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        img {
+          width: 36px;
+          height: 36px;
+          align-self: center;
+        }
+        b {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .toggle {
+      position: relative;
+      width: 100%;
+      margin-top: 8px;
+      padding: 16px 0;
+      background-color: $whiteGray;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: $bold;
+      &::after {
+        display: inline-block;
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        bottom: 12px;
+        background: url("./static/ic_arrow_down.svg") no-repeat center;
+        transform: rotate(180deg);
+        content: "";
+      }
+
+      &.on {
+        border-radius: 10px 10px 0 0;
+        &::after {
+          display: inline-block;
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          bottom: 12px;
+          background: url("./static/ic_arrow_down.svg") no-repeat center;
+          transform: rotate(0deg);
+          content: "";
+        }
+      }
+    }
+
+    &__list {
+      background-color: $whiteGray;
+      border-radius: 0 0 10px 10px;
+
+      li {
+        display: flex;
+        padding: 7px 14px;
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+        margin-right: 8px;
+        border-radius: 50%;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: $bold;
+      }
+
+      &--gift {
+        display: flex;
+        align-items: center;
+        margin-top: 1px;
+        font-size: 12px;
+        font-weight: $regular;
+        color: $greishGray;
+        &::before {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin-right: 2px;
+          background: url("./static/ic_moon_s.svg") no-repeat center;
+          background-size: contain;
+          content: "";
+        }
+      }
+    }
+
+    .confirm_btn {
+      width: 100%;
+      margin-top: 12px;
+      padding: 13px 0;
+      background-color: $MAINCOLOR;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 16px;
+      color: #fff;
+      font-weight: $bold;
+    }
+
+    .no-result {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 190px;
+      background-color: $whiteGray;
+      border-radius: 0 0 10px 10px;
+
+      img {
+        text-align: center;
+        width: 82px;
+        height: 68px;
+        object-fit: contain;
+      }
+
+      p {
+        margin-top: 16px;
+        font-size: 14px;
+        color: $gray;
+      }
+    }
+  }
+
+  .listener {
+    padding: 14px;
+
+    h2 {
+      font-size: 20px;
+    }
+
+    .banner {
+      & > img {
+        width: 300px;
+        height: 65px;
+        border-radius: 12px;
+      }
+    }
+
+    &__top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding-top: 20px;
+      &--img {
+        height: 110px;
+        margin-top: 28px;
+        position: relative;
+        .profile {
+          width: 88px;
+          height: 88px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .holder {
+          position: absolute;
+          width: 120px;
+          height: 120px;
+          left: -16px;
+          top: -18px;
+        }
+      }
+
+      &--nickNm {
+        font-size: 14px;
+      }
+
+      &--time {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        &::before {
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          margin-right: 4px;
+          background: url("static/ic_time.svg") no-repeat center;
+          background-size: contain;
+          content: "";
+        }
+      }
+    }
+
+    &__buttonWrap {
+      display: flex;
+      margin-top: 20px;
+      font-size: 14px;
+      font-weight: $bold;
+      color: $greishBrown;
+
+      button {
+        flex: 1;
+        margin-left: 8px;
+        padding: 12px 0;
+        border: 1px solid $greishGray;
+        border-radius: 10px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
+        &.on {
+          border: 1px solid $MAINCOLOR;
+          background-color: $MAINCOLOR;
+          color: #fff;
+        }
+
+        &.isFan {
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
+        }
+      }
+    }
+
+    &__tabWrap {
+      display: flex;
+      margin-top: 16px;
+      button {
+        flex: 1;
+        padding: 12px 0;
+        border-bottom: 1px solid $mediumGray;
+        font-size: 14px;
+        font-weight: $regular;
+        color: $mediumGray;
+
+        &.on {
+          font-weight: $bold;
+          color: black;
+          border-bottom: 2px solid black;
+        }
+      }
+    }
+
+    &__listWrap {
+      margin: 10px 0;
+    }
+
+    &__listItem {
+      display: inline-flex;
+      width: 48%;
+      padding: 6px 0;
+      cursor: pointer;
+
+      &:nth-child(2n) {
+        margin-left: 8px;
+      }
+
+      img {
+        width: 40px;
+        height: 40px;
+        margin-right: 4px;
+        border-radius: 10px;
+      }
+
+      span {
+        width: 95px;
+      }
+      p {
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &.pc {
+          // display: flex;
+          align-items: center;
+          &::before {
+            display: inline-block;
+            width: 26px;
+            height: 16px;
+            margin-right: 4px;
+            vertical-align: middle;
+            background: url(./static/ic_pc.svg) no-repeat center;
+            background-size: contain;
+            content: "";
+          }
+        }
+
+        &.sub {
+          color: $greishGray;
+        }
+      }
+    }
+
+    &__noResult {
+      font-size: 14px;
+      color: $greishBrown;
+      text-align: center;
+      margin-bottom: 10px;
+      button {
+        width: 168px;
+        margin-top: 12px;
+        padding: 12px 0;
+        border-radius: 20px;
+        background-color: $MAINCOLOR;
+        color: #fff;
+      }
+    }
+  }
+}

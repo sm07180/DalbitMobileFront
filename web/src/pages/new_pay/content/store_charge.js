@@ -38,6 +38,7 @@ export default (props) => {
   const [mydal, setMydal] = useState('0')
   const [popupData, setPopupData] = useState([])
   const [topbannerData, setTopbannerData] = useState([])
+  const [counter, setCounter] = useState(1);
 
   //---------------------------------------------------------------------
   const fetchAdmin = async () => {
@@ -93,7 +94,7 @@ export default (props) => {
       return list.map((item, index) => {
         return (
           <div
-            className={[`item ${selected.num == index ? 'on' : 'off'}`]}
+            className={[`item ${selected.num == index ? 'on' : ''}`]}
             key={item.itemNo}
             iosprice={item.iosPrice}
             onClick={() => {
@@ -109,11 +110,10 @@ export default (props) => {
                 })
               }
             }}>
-            <div className="img-wrap">
-              <p>{item.itemNm}</p>
-              <img src={item.img}></img>
-            </div>
-            <p className="price">{Utility.addComma(item.salePrice)}원</p>
+            <img className="dalImg" src={item.img}></img>
+            <p className="quantity">{item.itemNm}</p>
+            {item.salePrice === 1100000 && <span className="bonus">+500</span> }
+            <p className="price">&#8361; {Utility.addComma(item.salePrice)}</p>
           </div>
         )
       })
@@ -141,32 +141,6 @@ export default (props) => {
     }
   }
 
-  const creatResult = () => {
-    if (listState == -1) {
-      return null
-    } else if (listState == 0) {
-      return <NoResult />
-    } else if (listState == 1) {
-      return (
-        <>
-          <div className="item-list">{creatList()}</div>
-          <div className="btn-wrap">
-            <button
-              className="cancel"
-              onClick={() => {
-                window.history.back()
-              }}>
-              취소
-            </button>
-            <button onClick={chargeClick} className="charge">
-              결제하기
-            </button>
-          </div>
-        </>
-      )
-    }
-  }
-
   //useEffect
   useEffect(() => {
     fetchAdmin()
@@ -177,159 +151,207 @@ export default (props) => {
 
   return (
     <>
-      <Header title="달 충전" />
+      <Header title="스토어" />
       <Content>
-        <div className="bannerBox">
-          {topbannerData &&
-            topbannerData.map((v, idx) => {
-              return (
-                <span key={`topbn-${idx}`}>
-                  <img src={v.bannerUrl} alt="" />
-                </span>
-              )
-            })}
-        </div>
-        <div className="dalWrap">
-          <label>보유 달</label>
-          <span>{mydal.toLocaleString()}</span>
-        </div>
-        {creatResult()}
-        <div className="desc_wrap">
-          <strong className="title">환급 안내</strong>
-          <p className="list">
-            DJ에게 달을 선물하면 <span className="emp">최대 80%</span>가 환급됩니다.
-          </p>
-        </div>
+        <section className="store">
+          <div className="dalWrap">
+            <label>내가 보유한 달</label>
+            <span>{mydal.toLocaleString()}</span>
+          </div>
+          <div className="bannerBox">
+            {topbannerData &&
+              topbannerData.map((v, idx) => {
+                return (
+                  <span key={`topbn-${idx}`}>
+                    <img src={v.bannerUrl} alt="" />
+                  </span>
+                )
+              })}
+          </div>
+          <div className="item-list">{creatList()}</div>
+          <div className="btn-wrap">
+            <button onClick={chargeClick} className="charge">
+              결제하기
+            </button>
+          </div>
+        </section>
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       </Content>
     </>
   )
 }
 
-const Content = styled.section`
+const Content = styled.div`
   min-height: calc(100vh - 40px);
-  padding: 0 16px;
   background: #eeeeee;
-  padding-bottom: 16px;
-
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  section{
+    position:relative;
+    width:100%;
+    background:#fff;
+    padding: 0 16px 35px;
+    margin-bottom:9px;
+    box-sizing:border-box;
+    &:last-child{margin-bottom:0;}
+  }
   .bannerBox {
     padding: 16px 0;
-    img {
+    img { 
       width: 100%;
     }
   }
-
   .dalWrap {
-    margin-bottom: 16px;
-    padding: 12px 16px;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 12px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 26px;
+    margin: 13px 0;
     label {
-      font-size: 14px;
-      font-weight: bold;
-      line-height: 1.14;
+      font-size: 15px;
+      color: #666;
     }
-
     span {
-      height: 20px;
-      float: right;
-      font-size: 18px;
+      font-size: 20px;
       font-weight: bold;
-      line-height: 1.17;
-      color: ${COLOR_MAIN};
+      color: #202020;
       &::before {
         content: '';
         display: inline-block;
         vertical-align: middle;
         margin-right: 4px;
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         background: url('https://image.dalbitlive.com/svg/moon_yellow_s.svg') no-repeat 0 0;
       }
     }
   }
-
   .btn-wrap {
     display: flex;
-    margin-top: 10px;
+    margin-top: 20px;
     button {
-      width: 50%;
-      height: 44px;
-      background: #757575;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: bold;
+      width: 100%;
+      height: 50px;
+      border-radius: 16px;
+      font-size: 15px;
       color: #fff;
       line-height: 44px;
       &.charge {
-        margin-left: 4px;
-        background: ${COLOR_MAIN};
+        background: #FF3C7B;
       }
     }
   }
   .item-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: column;
     .item {
-      width: calc(33.333% - 3px);
-      padding: 1px;
-      margin-bottom: 13px;
-      border-radius: 12px;
-      text-align: center;
-      transform: skew(-0.03deg);
+      position:relative;
+      display:flex;
+      align-items: center;
+      width: 100%;
+      padding: 0 10px 0 5px;
+      margin-bottom: 10px;
+      border: 1px solid #e3e3e3;
+      border-radius: 16px;
       &.on {
-        background: ${COLOR_MAIN};
+        border-color: #FF3C7B;
         .price {
-          color: #fff;
+          background:#FF3C7B;
+        }
+        &::after{
+          content:"";
+          position:absolute;
+          top:-2px    ;
+          left:-2px;
+          width:15px;
+          height:15px;
+          border-radius:100%;
+          background:url("https://image.dalbitlive.com/store/dalla/ico_check.png") no-repeat center / contain;
         }
       }
-      .img-wrap {
-        padding: 9px 0 4px 0;
-        border-radius: 12px;
-        background: #fff;
-        p {
-          padding-bottom: 2px;
-          font-size: 12px;
-          font-weight: bold;
-        }
-        img {
-          width: 80px;
-          height: 80px;
-        }
+      .dalImg {
+        width: 50px;
+        height: 50px;
+        margin-right: 5px;
       }
-      .img-wrap .price {
-        font-size: 16px;
+      .quantity{
+        font-size: 18px;
+      }
+      .price {
+        width: 100px;
+        height: 28px;
+        line-height: 28px;
+        margin-left:auto;
+        text-align:center;
+        font-size: 14px;
         font-weight: bold;
-        line-height: 32px;
+        color:#fff;
+        background-color:#202020;
+        border-radius:20px;
+      }
+      .bonus{
+        width:41px;
+        height:17px;
+        line-height:17px;
+        text-align:center;
+        font-size:12px;
+        color:#fff;
+        background:#fd5b2a;
+        border-radius:10px;
+        margin-left:5px;
       }
     }
   }
-  .desc_wrap {
-    padding-top: 25px;
-    font-size: 12px;
-    .title {
-      display: block;
-      padding-left: 16px;
-      margin-bottom: 8px;
-      color: #424242;
-    }
-    .list {
-      position: relative;
-      color: #757575;
-      padding-left: 16px;
-      line-height: 1.6;
-      &::before {
-        content: '∙';
-        position: absolute;
-        left: 1px;
-        top: 0;
-      }
-      .emp {
-        font-weight: bold;
-        color: #632beb;
+  .title{
+    font-size:20px;
+    padding:20px 0 8px 0;
+  }
+  .summary{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    background:#fbfbfb;
+    border-radius:8px;
+    over-flow:hidden
+    font-size:15px;
+    &>div{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      height: 50px;
+      padding:0 15px;
+      &:last-child{
+        border-top:1px solid #ececec;
       }
     }
+    .quantityControl{
+      display:flex;
+      align-items:center;
+      .controler{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        width:23px;
+        height:23px;
+        background:#FF3C7B;
+        border-radius:100%;
+      }
+      .counter{
+        width:45px;
+        text-align:center;
+      }
+    }
+  }
+  .total{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    height:55px;
+    background:#FFF1F8;
+    border-radius:8px;
+    margin-top:10px;
+    padding:0 15px;
   }
 `

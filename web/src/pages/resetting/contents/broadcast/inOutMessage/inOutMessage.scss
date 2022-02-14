@@ -1,0 +1,25 @@
+@import "components/ui/_mixin.scss";
+
+#setting #inOutMessage { 
+  .subContent {
+    position: relative;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    .section {
+      margin-bottom: 34px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      .sectionTitle {
+        @include font(20px, 500, #202020);
+        margin-bottom: 10px;
+      }
+      .info {
+        @include font(12px, 400, #666666);
+        margin-top: 7px;
+        letter-spacing: -1px;
+      }
+    }
+  }
+}

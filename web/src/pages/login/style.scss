@@ -1,0 +1,240 @@
+@import "components/ui/_mixin.scss";
+
+$btnActive : #FF3C7B;
+$btnDisable : #FFD8E4;
+
+#loginPage {
+  .loginMain {
+    position: relative;
+    width: 100%;height: 100vh;
+    padding: 30% 7%;
+    background-image: url("https://image.dalbitlive.com/dalla/login/login_bg.png");
+    background-position: top center;
+    background-repeat: repeat-y;
+    background-size: 100% auto;
+    .logo {
+      display: inline-block;
+      width: 40%;
+      margin-bottom: 30px;
+      cursor: pointer;
+      img {
+        width: 100%;
+      }
+    }
+    .textWrap {
+      @include flex(flex-start, center, column);
+      margin-bottom: 36px;
+      p {
+        margin-bottom: 7px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      .mainText {@include font(24px, 400, #202328);}
+      .subText {@include font(14px, 400, #999999);}
+    }
+    .loginBtn {
+      @include flex(center, center);
+      width: 50%; height: 48px;
+      border-radius: 16px;
+      @include font(15px, 500, #FFFFFF);
+      background: $btnActive;
+      &:active {
+        background: darken($btnActive, 2%);
+      }
+      &:hover {
+        background: lighten($btnActive, 2%);
+      }
+    }
+  }
+  .loginSns {
+    padding-top:36px;
+    .title {
+      margin-bottom: 36px;
+      text-align:center;
+      @include font(24px, 700, #202328);
+    }
+    .socialLogin {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      padding: 0 7%;
+      text-align: center;
+      button {
+        @include flex(center, center);
+        width: 100%;
+        height: 48px;
+        margin-bottom: 8px;
+        padding: 6px 16px;
+        border-radius: 16px;
+        border: 1px solid #CBD0D5;
+        @include font(15px, 400, #202020);
+        box-sizing: border-box;
+        img {
+          display: inline-block;
+          width: 30px; height: 30px;
+        }
+        span {
+          flex: 1;
+          line-height: 36px;
+        }
+      }
+      .appleBtn {
+        background-color: black;
+        color: #FFF;
+        border: none;
+      }
+      .kakaoBtn {
+        background-color: #f9e000;
+        color: #381e1f;
+        border: none;
+      }
+    }
+  }
+  .loginForm {
+    position: relative;
+    width:100%;
+    padding: 40px 24px;
+    .inputItems {
+      margin-bottom: 12px;
+    }
+    .submitBtn {
+      width:100%;
+    }
+    .linkWrap {
+      margin-top: 35px;
+      @include flex(center, center);
+      .linkText {
+        position: relative;
+        display: inline-block;
+        padding: 4px 16px;
+        @include font(14px, 400, #666666);
+        &::after {
+          content: "";
+          @include position-top-right(9px,0);
+          display: inline-block;
+          width: 1px; height: 12px;
+          background-color: #666666;
+        }
+        &:last-child::after {
+          content: none;
+        }
+      }
+    }
+  }
+  #popSlide {
+    .slideLayer {
+      padding: 30px 28px 42px;
+      .title {
+        margin-bottom: 30px;
+        @include font(18px, 700, #202328);
+      }
+      .agreeWrap {
+        position: relative;
+        @include flex(center, center, column);
+        width: 100%;
+        .agreeListAll {
+          position: relative;
+          @include flex(center);
+          width: 100%;
+          .checkinfo {
+            @include font(16px, 500, #212429);
+          }
+        }
+        .agreeListWrap {
+          position: relative;
+          @include flex(center, center, column);
+          width: 100%;
+          padding: 16px 0;
+          margin-top: 16px;
+          border-top: 1px solid #F2F2F2;
+          .agreeList {
+            position: relative;
+            @include flex(center);
+            width: 100%;
+            margin-bottom: 20px;                    
+            .checkinfo {
+              @include font(14px, 400, #43464A);
+            }         
+          }
+          &:last-child {
+            margin-bottom: 0px;   
+          }
+        }
+        .inputLabel {
+          flex: 1;
+          @include flex(center);
+          cursor: pointer;
+          .blind {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+          }
+          .checkIcon {
+            flex: none;
+            display: inline-block;
+            width: 23px; height: 23px;
+            margin-right: 10px;
+            border-radius: 50%;
+            background-image: url("https://image.dalbitlive.com/common/input/checkbox-default.png");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;              
+          }  
+          .blind:checked + .checkIcon{
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E ");
+          }
+          .policyBtn {
+            margin-left: auto;
+            @include font(13px, 400, #999999);
+            text-decoration: underline;
+          }
+        }
+      }
+      .submitBtn {
+        width:100%;
+      }
+    }
+  }
+  #login {
+    width: 100%;
+    height: 100%;
+    background: url('https://image.dalbitlive.com/images/login/login_bg.png') center no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+
+    section {
+      position: relative;
+      width: 260px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 260px;
+      box-sizing: border-box;
+      margin: 0px 50px;
+      margin: auto;
+    }
+  }
+
+  #layerPop {
+    .popContainer {
+      padding: 20px 0;
+      box-sizing: border-box;
+      .popTitle {
+        @include flex(center, center);
+        width: 100%;
+        line-height: 48px;
+        @include font(16px, 700, #202020);
+      }
+      .popContent {
+        width: 100%; max-height: 400px;
+        overflow: auto;        
+      }
+    }   
+  }
+}

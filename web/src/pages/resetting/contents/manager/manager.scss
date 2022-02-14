@@ -1,0 +1,98 @@
+@import "components/ui/_mixin.scss";
+
+#setting #manager{
+  .subContent{
+    position: relative;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;  
+    section{position: relative;}
+    .counterWrap{
+      margin-bottom: 10px;
+      div{
+        @include font(20px, 500);
+        span{
+          color: #FF3C7B;
+          margin-left: 8px;
+        }
+      }
+    }
+    .listWrap{
+      display: flex;
+      flex-direction: column;
+      .listRow{
+        margin-bottom: 16px;
+        .photo{
+          width: 63px;
+          height: 63px;
+          border-radius: 100%;
+          margin-right: 16px;
+          overflow: hidden;
+        }
+        .listInfo{
+          width: calc(100% - 163px);
+          margin-right: 8px;
+          .listItem{
+            @include fontCut;
+            .nickNm{@include font(12px, 400);}
+            .memId{@include font(12px, 400, #a4a4a4);}
+          }
+        }
+        button{
+          flex: none;
+          width: 76px;
+          line-height: 36px;
+          border-radius: 18px;
+          &.delete{
+            @include font(14px,500,#666);
+            border: 1px solid #d8d8d8;
+          }
+          &.add{
+            @include font(14px,500,white);
+            background: black;
+          }
+        }
+      }
+    }
+    .inputWrap{
+      margin-bottom: 19px;
+      .inputBox{
+        @include flex(center);
+        position: relative;
+        width: 100%;
+        height: 50px;
+        background: #f6f6f6;
+        border-radius: 16px;
+        padding: 0 16px;
+        input[type="text"]{
+          @include font(15px,400);
+        }
+        .icon{
+          @include BGIMG('setting/ico_search.png');
+          width: 28px;
+          height: 28px;
+          margin-left: auto;
+        }
+      }
+    }
+    .tabmenu {
+      @include flex(center);
+      margin-bottom: 16px;
+      li {
+        flex:1;
+        line-height:40px;
+        text-align: center;
+        background-color: #ffffff;
+        border-bottom:2px solid #f2f2f2;
+        @include font(16px,500,#acacac);
+        &.active {
+          @include font(16px,bold,#202020);
+          border-bottom: solid 2px #202020;
+        }
+      }
+    }
+    .noResult{
+      @include font(14px,400,#999);
+    }
+  }
+}

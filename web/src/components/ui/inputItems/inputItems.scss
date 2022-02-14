@@ -1,0 +1,116 @@
+@import "../_mixin.scss";
+
+.inputItems {
+  position:relative;
+  @include flex(center);
+  flex-wrap:wrap;
+  width: 100%;
+  &.success {
+    .inputBox {
+      &:after {
+        content:"";
+        @include position-vertical;
+        right:4px;
+        width:30px;height:30px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg transform='translate(-402 -449)'%3E%3Cg transform='translate(402 449)' fill='%23fff' stroke='%23707070' stroke-width='1' opacity='0'%3E%3Crect width='60' height='60' stroke='none'/%3E%3Crect x='0.5' y='0.5' width='59' height='59' fill='none'/%3E%3C/g%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(47.047 -16747.137) rotate(45)'/%3E%3C/g%3E%3C/svg%3E%0A");
+        background-size: 30px 30px;
+      }
+    }
+    .textLog {
+      display:block;
+      color:#4569F8;
+    }
+  }
+  &.error {
+    .inputBox {
+      border-color:#FFF1F1;
+      background-color:#FFF1F1;
+    }
+    .textLog {
+      display:block;
+      color:#FF1919;
+    }
+  }
+  .title {
+    flex:none;
+    width:100%;
+    margin-bottom:6px;
+    @include font(13px,$Regular,#666);
+  }
+  .inputBox {
+    position:relative;
+    flex:1;
+    @include flex(center);
+    height:50px;
+    @include border(#F6F6F6,16px);
+    background-color:#F6F6F6;
+    input {
+      flex:1;
+      width:100%;
+      margin:0 16px;
+      @include font(15px,$Medium,#202020);
+      &::placeholder {
+        font-weight:$Regular;
+        color:#999;
+      }
+    }
+    button {
+      flex-shrink: 0;
+      margin-right:16px;
+      &.inputDel {
+        width:20px;
+        height:20px;
+        @include BGIMG('common/inputDel.png');
+      }
+      &.inputChange {
+        letter-spacing: -1px;
+        @include font(14px,400,#666);
+      }
+    }
+  }
+  .inputBtn {
+    width:64px;
+    height:42px;
+    margin-left:8px;
+    border-radius:16px;
+    background-color:$MAINCOLOR;
+    letter-spacing: -1px;
+    @include font(14px,500,white);
+    &.disable {
+      background-color:#E3E3E3;
+    }
+  }
+  .textareaBox {
+    position:relative;
+    width:100%;
+    padding:12px 16px;
+    @include border(#F6F6F6,16px);
+    background-color:#F6F6F6;
+    overflow: hidden;
+    textarea {
+      width:100%;
+      background-color:transparent;
+      @include font(15px,400,#202020);
+      &::placeholder {
+        color:#999;
+      }
+    }
+    .textCount {
+      line-height:20px;
+      text-align:right;
+      @include font(14px,400,#666);
+    }
+  }
+  .focus {
+    border-color:$MAINCOLOR;
+    background-color:white;
+  }
+  .textLog {
+    display:none;
+    width: 100%;
+    margin-top:6px;
+    white-space: nowrap;
+    text-indent:8px;
+    font-size:12px;
+  }
+}

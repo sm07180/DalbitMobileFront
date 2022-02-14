@@ -45,9 +45,13 @@ import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
+import DallaClip from './dallaClip'
+import DallaClipAll from './dallaClipAll'
+import DallaStore from './dallaStore'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
+import Invite from './invite'
 
 export default () => {
   const params = useParams()
@@ -135,12 +139,21 @@ export default () => {
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
+      case 'dallaClip':
+        return <DallaClip />
+      case 'dallaClipAll':
+        return <DallaClipAll />
+      case 'dallaStore':
+        return <DallaStore />
       // case 'gganbu':
       //   return <Gganbu />
       // case 'participant':
       //   return <Participant />
       // case 'marblePocket':
       //   return <MarblePocket />
+      
+      case 'invite':
+        return <Invite />
       default:
         return <></>
         break

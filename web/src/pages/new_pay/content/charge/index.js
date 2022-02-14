@@ -71,14 +71,14 @@ export default (props) => {
   // if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
   payMethod = [
     { type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple' },
-    { type: '무통장 입금(계좌이체)', code: 'coocon' },
-    { type: '카드 결제', fetch: 'pay_card' },
-    { type: '휴대폰 결제', fetch: 'pay_phone' },
+    { type: '무통장(계좌이체)', code: 'coocon' },
+    { type: '신용/체크카드', fetch: 'pay_card' },
+    { type: '휴대폰', fetch: 'pay_phone' },
     { type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney' },
     { type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay' },
     { type: '페이코', fetch: 'pay_letter', code: 'payco' },
-    { type: '문화상품권', fetch: 'pay_gm' },
     { type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney' },
+    { type: '문화상품권', fetch: 'pay_gm' },
     { type: '해피머니상품권', fetch: 'pay_hm' }
     // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
     // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
@@ -96,14 +96,7 @@ export default (props) => {
     //   })
     // }
 
-    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
-      return context.action.confirm({
-        msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
-        callback: () => {
-          window.location.href = 'market://details?id=kr.co.inforexseoul.radioproject'
-        }
-      })
-    }
+
 
     if (code === 'coocon') {
       let hour = new Date().getHours()
@@ -401,74 +394,78 @@ export default (props) => {
 
   return (
     <>
-      {webview !== 'new' && <Header title="달 충전" />}
+      {webview !== 'new' && <Header title="달 충전하기" />}
       <Content className={webview}>
-        <h2>구매 내역</h2>
-        <div className="field">
-          <label>결제상품</label>
-          <p>
-            <img src="https://image.dalbitlive.com/svg/moon_yellow_s.svg" alt="달 아이콘" className="dalIcon" />
-            {dalVal}
-          </p>
-        </div>
+        <section className="history">
+          <h2>구매 내역</h2>
+          <div className="fieldWrap">
+            <div className="field">
+              <label>구매상품</label>
+              <p>
+                {dalVal} 개
+              </p>
+            </div>
 
-        {isBonusDalYn && (
-          <div className="field">
-            <label>추가지급</label>
-            <p>
-              <img src="https://image.dalbitlive.com/svg/moon_yellow_s.svg" alt="달 아이콘" className="dalIcon" />{bonusDal}
-            </p>
+            {isBonusDalYn && (
+              <div className="field">
+                <label>추가지급</label>
+                <p>
+                  {bonusDal} 개
+                </p>
+              </div>
+            )}
+
+            <div className="field">
+              <label>상품수량</label>
+              <p className="quantity">
+                <button className="minus" onClick={() => quantityCalc('minus')}>
+                  -
+                </button>
+                <span>{totalQuantity}</span>
+                <button className="plus" onClick={() => quantityCalc('plus')}>
+                  +
+                </button>
+              </p>
+            </div>
+            <span className="divider"></span>
+            <div className="field">
+              <label>총</label>
+              <p>
+                <strong>
+                  {dalVal * totalQuantity}  
+                </strong>
+                 개
+              </p>
+            </div>
           </div>
-        )}
+          <div className="fieldWrap" style={{marginTop:'10px'}}>
+            <div className="field">
+              <label>결제금액</label>
+              <p>
+                {(Number(totalPrice) * totalQuantity).toLocaleString()} 원
+              </p>
+            </div>
+          </div>
+        </section>
+        <section className="method">
+          <h2>
+            결제 수단
+          </h2>
+          <div className="select-item">{createMethodBtn()}</div>
 
-        <div className="field">
-          <label>상품수량</label>
-          <p className="quantity">
-            <button className="minus" onClick={() => quantityCalc('minus')}>
-              -
-            </button>
-            <span>{totalQuantity}</span>
-            <button className="plus" onClick={() => quantityCalc('plus')}>
-              +
-            </button>
-          </p>
-        </div>
-
-        <div className="field">
-          <label>결제금액</label>
-          <p>
-            <strong>{(Number(totalPrice) * totalQuantity).toLocaleString()} 원</strong>
-          </p>
-        </div>
-
-        <h2 className="more-tab">
-          결제 수단
-          {/* <button
-            onClick={() => {
-              setMoreState(!moreState)
-            }}>
-            {moreState ? '결제수단 간략 보기' : '결제수단 전체 보기'}
-          </button> */}
-        </h2>
-        <div className="select-item">{createMethodBtn()}</div>
-        {/* <div className="more-wrap">
-          <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div>
-          <div className={`select-item more true`}>{createMethodBtn('more')}</div>
-        </div> */}
-
-        <div className="info-wrap">
-          <h5>
-            달 충전 안내
-            <span>
-              <strong>결제 문의</strong>{phoneCallWrap()}
-            </span>
-          </h5>
-          <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-          <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-          <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-          <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
-        </div>
-
+          <div className="info-wrap">
+            <h5>
+              유의사항
+            </h5>
+            <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+            <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+            <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+            <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          </div>
+        </section>
+        <section className="inquiry">
+          결제문의{phoneCallWrap()}
+        </section>
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
         {bankPop && <BankTimePopup setBankPop={setBankPop} bankFormData={bankFormData} />}
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
@@ -479,19 +476,20 @@ export default (props) => {
 
 const Content = styled.div`
   min-height: calc(100vh - 40px);
-  padding: 0 16px;
   background: #eeeeee;
-  padding-bottom: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  color:#000;
   &.new {
     min-height: 100%;
   }
-
+  section{
+    padding: 0 16px 15px;
+    background:#fff;
+  }
   h2 {
-    padding: 15px 0 4px 0;
-    font-size: 16px;
-    font-weight: 600;
-    color: #000;
-
+    padding: 19px 0 8px 0;
+    font-size: 20px;
     &.more-tab {
       display: flex;
       margin: 2px 0 4px 0;
@@ -515,59 +513,78 @@ const Content = styled.div`
       }
     }
   }
-
-  .field {
-    display: flex;
-    align-items: center;
-    height: 44px;
-    margin-top: 4px;
-    padding: 0 16px;
-    border-radius: 12px;
-    border: solid 1px #e0e0e0;
-    background-color: #ffffff;
-
-    label {
-      font-size: 14px;
-      font-weight: bold;
-      color: #000;
+  .method{
+    margin-top:9px;
+  }
+  .inquiry{
+    margin-top:1px;
+    padding-top: 15px;
+    text-align: center;
+    font-size:14px;
+    color:#666;
+    span{
+      font-size:16px;
+      font-weight:600;
+      color:#000;
+      margin-left: 4px
     }
-    p {
+  }
+  .fieldWrap{
+    display: flex;
+    flex-direction: column;
+    background: #f6f6f6;
+    border-radius: 16px;
+    overflow: hidden;
+    .divider{
+      width: 100%;
+      height: 1px;
+      background: #fff;
+    }
+    .field {
       display: flex;
-      color: #632beb;
-      margin-left: auto;
-      font-size: 18px;
-      font-weight: bold;
-      strong {
-        font-size: 18px;
+      align-items: center;
+      height: 50px;
+      padding: 0 15px;
+      
+      label {
+        font-size: 15px;
       }
-      img {
-        margin-top: 2px;
-        margin-right: 4px;
-      }
-      &.quantity {
-        span {
-          color: #000;
-          display: inline-block;
-          width: 50px;
-          font-size: 18px;
-          font-weight: bold;
-          text-align: center;
+      p {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        font-size: 15px;
+        strong {
+          font-size: 24px;
         }
-      }
-      button {
-        width: 24px;
-        height: 24px;
-        text-indent: -9999px;
-        border-radius: 3px;
-        &.plus {
-          background: #632beb url(${icoPlus}) no-repeat center;
+        img {
+          margin-top: 2px;
+          margin-right: 4px;
         }
-        &.minus {
-          background: #632beb url(${icoMinus}) no-repeat center;
+        &.quantity {
+          span {
+            display: inline-block;
+            width: 45px;
+            font-size: 15px;
+            text-align: center;
+          }
+        }
+        button {
+          width: 23px;
+          height: 23px;
+          text-indent: -9999px;
+          border-radius: 100%;
+          &.plus {
+            background: #FF3C7B url(${icoPlus}) no-repeat center;
+          }
+          &.minus {
+            background: #FF3C7B url(${icoMinus}) no-repeat center;
+          }
         }
       }
     }
   }
+  
 
   .select-item {
     display: flex;
@@ -577,40 +594,39 @@ const Content = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      width: calc(50% - 2px);
-      height: 44px;
-      margin-bottom: 4px;
-      background: #ffffff;
-      border-radius: 12px;
+      width: calc(50% - 4px);
+      height: 42px;
+      margin-bottom: 9px;
+      border-radius: 24px;
       border: 1px solid #e0e0e0;
-      font-size: 14px;
-      font-weight: bold;
+      font-size: 15px;
 
       &.on {
-        border-color: ${COLOR_MAIN};
-        color: ${COLOR_MAIN};
+        border-color: #FF3C7B;
+        color: #FF3C7B;
       }
+      &:last-child{margin-bottom:0;}
       &:disabled {
         color: #9e9e9e;
         background: #f5f5f5;
       }
     }
     
-    button:nth-child(1) {
-      width: 100%;
-    }
-    button:nth-child(-n + 2) {
-      width: 100%;
-    }
-    button:nth-child(1) {
-      &::after {
-        content: '';
-        margin-left: 6px;
-        width: 15px;
-        height: 15px;
-        background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
-      }
-    }
+    // button:nth-child(1) {
+    //   width: 100%;
+    // }
+    // button:nth-child(-n + 2) {
+    //   width: 100%;
+    // }
+    // button:nth-child(1) {
+    //   &::after {
+    //     content: '';
+    //     margin-left: 6px;
+    //     width: 15px;
+    //     height: 15px;
+    //     background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
+    //   }
+    // }
     
     &.more {
       overflow: hidden;
@@ -632,22 +648,20 @@ const Content = styled.div`
     margin-top: 22px;
     h5 {
       display: flex;
+      position:relative;
       margin-bottom: 8px;
-      padding-left: 16px;
-      background: url(${icoNotice}) no-repeat left center;
-      color: #424242;
+      padding-left: 20px;
+      color: #FF3C7B;
       font-size: 12px;
-      font-weight: bold;
-      span {
-        display: inline-block;
-
-        margin-left: auto;
-        color: ${COLOR_MAIN};
-        font-weight: 800;
-        strong {
-          padding-right: 4px;
-          color: #000;
-        }
+      &::after{
+        content:"";
+        position:absolute;
+        top:50%;
+        left:2px;
+        transform:translateY(-50%);
+        width:16px;
+        height:16px;
+        background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
       }
     }
     p {
@@ -656,6 +670,7 @@ const Content = styled.div`
       color: #757575;
       font-size: 12px;
       line-height: 20px;
+      letter-spacing: -0.8px
       &::before {
         position: absolute;
         left: 6px;

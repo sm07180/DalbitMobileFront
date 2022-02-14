@@ -2,7 +2,7 @@
  * @file App.js
  * @brief React 최초실행시토큰검증및 필수작업
  */
-import React, {useMemo, useState, useEffect, useContext, useRef} from 'react'
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
 import {ErrorBoundary} from 'react-error-boundary'
 import 'styles/errorstyle.scss'
 
@@ -18,15 +18,109 @@ import NoService from './pages/no_service/index'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
+import {CHAT_CONFIG} from "constant/define";
+import {ChatSocketHandler} from "common/realtime/chat_socket";
+import {MailboxContext} from "context/mailbox_ctx";
+import {useDispatch, useSelector} from "react-redux";
+import {getMemberProfile} from "redux/actions/member";
+import {getArgoraRtc, getWowzaRtc, rtcSessionClear} from "common/realtime/rtc_socket";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {ClipPlayerHandler} from "common/audio/clip_player";
+import {getMypageNew} from "common/api";
+import Navigation from "components/ui/navigation/Navigation";
+import './styles/navigation.scss'
+import LayoutMobile from 'pages/common/layout'
+import Layout from "common/layout";
+import Common from "common";
+import Alert from "common/alert";
+import MoveToAlert from "common/alert/MoveToAlert";
+import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
 
+function setNativeClipInfo(isJsonString, globalCtx) {
+  const nativeClipInfo = Utility.getCookie('clip-player-info')
+  if (nativeClipInfo) {
+    if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+      const parsed = JSON.parse(nativeClipInfo)
+      globalCtx.action.updateClipState(true)
+      globalCtx.action.updateClipPlayerState(parsed.playerState)
+      globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
+      globalCtx.action.updatePlayer(true)
+    }
+  }
+}
+
+function setNativePlayInfo(isJsonString, globalCtx) {
+  const nativeInfo = Utility.getCookie('native-player-info')
+  if (nativeInfo) {
+    if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
+      const parsed = JSON.parse(nativeInfo)
+      globalCtx.action.updatePlayer(true)
+      globalCtx.action.updateMediaPlayerStatus(true)
+      globalCtx.action.updateNativePlayer(parsed)
+    }
+  }
+}
+
+
+const baseSetting = async (globalCtx, broadcastAction) => {
+  const globalAction = globalCtx.globalAction;
+  const globalState = globalCtx.globalState;
+
+  const item = sessionStorage.getItem("clip");
+  if (item !== null) {
+    const data = JSON.parse(item);
+    let newClipPlayer = globalState.clipPlayer;
+    if (newClipPlayer === null) {
+      newClipPlayer = new ClipPlayerHandler(data)
+    };
+    newClipPlayer.setGlobalAction?.(globalAction);
+    const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
+    const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
+    if ( fileUrlBoolean && clipNoBoolean ) {
+      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.restart();
+    } else {
+      newClipPlayer?.init(data.file.url);
+    }
+    newClipPlayer?.clipNoUpdate(data.clipNo);
+
+    globalAction.dispatchClipPlayer?.({ type: "init", data: newClipPlayer });
+    globalAction.dispatchClipInfo?.({
+      type: "add",
+      data: { ...data, ...{ isPaused: true } },
+    });
+  }
+
+  const broadcastData = sessionStorage.getItem("broadcast_data");
+  if (broadcastData !== null) {
+    const data = JSON.parse(broadcastData);
+    broadcastAction.dispatchRoomInfo({type: "reset", data: data});
+  }
+}
+
+
+let alarmCheckIntervalId = 0;
 const App = () => {
+  const { mailboxAction } = useContext(MailboxContext);
+  const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
   const authRef = useRef()
 
+  const dispatch = useDispatch();
+  const memberRdx = useSelector((state)=> state.member);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
+  const [isFooterPage, setIsFooterPage] = useState(false);
+
+  const {
+    chatInfo,
+    rtcInfo,
+    mailChatInfo,
+    alarmStatus,
+  } = globalCtx.globalState;
 
   const isJsonString = (str) => {
     try {
@@ -113,31 +207,59 @@ const App = () => {
     return Utility.getCookie('authToken')
   }, [])
 
+  function initChantInfo(authToken, memNo) {
+    const socketUser = {
+      authToken,
+      memNo,
+      locale: CHAT_CONFIG.locale.ko_KR,
+      roomNo: null,
+    };
+    if (
+        globalCtx.globalAction.dispatchChatInfo &&
+        globalCtx.globalAction.dispatchMailChatInfo
+    ) {
+      const chatInfo = new ChatSocketHandler(socketUser);
+      // chatInfo.setSplashData(globalState.splashData);
+      //deep copy chatInfo
+      let cloneMailInfo = Object.assign(
+          Object.create(Object.getPrototypeOf(chatInfo)),
+          chatInfo
+      );
+
+      globalCtx.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+      globalCtx.globalAction.dispatchMailChatInfo({
+        type: "init",
+        data: cloneMailInfo,
+      });
+    }
+  }
   async function fetchData() {
     // Renew token
-    const tokenInfo = await Api.getToken()
+    let tokenInfo = {};
+    let elementById = document.getElementById('serverToken');
+    if(elementById && elementById.value && elementById.value !== ''){
+      let parse = JSON.parse(elementById.value);
+      tokenInfo = {
+        result : 'success'
+        , data : parse
+      }
+    }else{
+      tokenInfo = await Api.getToken()
+    }
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-
+      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       if (isHybrid()) {
-        //
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
 
-          if (
-            sessionStorage.getItem('room_no') === undefined ||
-            sessionStorage.getItem('room_no') === null ||
-            sessionStorage.getItem('room_no') === ''
-          ) {
+          const roomNo = sessionStorage.getItem('room_no');
+          const clipInfo = sessionStorage.getItem('clip_info');
+          if ( roomNo === undefined || roomNo === null || roomNo=== '') {
             Utility.setCookie('native-player-info', '', -1)
           }
-
-          if (
-            sessionStorage.getItem('clip_info') === undefined ||
-            sessionStorage.getItem('clip_info') === null ||
-            sessionStorage.getItem('clip_info') === ''
-          ) {
+          if ( clipInfo === undefined || clipInfo === null || clipInfo === '' ) {
             Utility.setCookie('clip-player-info', '', -1)
           }
 
@@ -160,26 +282,8 @@ const App = () => {
 
           // ?webview=new 형태로 이루어진 player종료
         }
-        const nativeInfo = Utility.getCookie('native-player-info')
-        if (nativeInfo) {
-          if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
-            const parsed = JSON.parse(nativeInfo)
-            globalCtx.action.updatePlayer(true)
-            globalCtx.action.updateMediaPlayerStatus(true)
-            globalCtx.action.updateNativePlayer(parsed)
-          }
-        }
-
-        const nativeClipInfo = Utility.getCookie('clip-player-info')
-        if (nativeClipInfo) {
-          if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
-            const parsed = JSON.parse(nativeClipInfo)
-            globalCtx.action.updateClipState(true)
-            globalCtx.action.updateClipPlayerState(parsed.playerState)
-            globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
-            globalCtx.action.updatePlayer(true)
-          }
-        }
+        setNativePlayInfo(isJsonString, globalCtx);
+        setNativeClipInfo(isJsonString, globalCtx);
 
         const appIsFirst = Utility.getCookie('appIsFirst')
 
@@ -219,7 +323,11 @@ const App = () => {
             globalCtx.action.updateAdminChecker(false)
           }
         }
-        fetchProfile()
+        dispatch(getMemberProfile({
+          memNo:tokenInfo.data.memNo,
+          authToken:tokenInfo.data.authToken,
+          isLogin:tokenInfo.data.isLogin
+        }))
         myInfoRes()
         fetchAdmin()
       } else {
@@ -227,7 +335,10 @@ const App = () => {
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
       }
-
+      if(isDesktop){
+        baseSetting(globalCtx, broadcastAction);
+        globalCtx.globalAction?.setAlarmStatus?.(false);
+      }
       //모든 처리 완료
     } else {
       const yesterDay = (() => {
@@ -263,6 +374,49 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    async function alarmCheck() {
+      let memNoParams = memberRdx.memNo ? memberRdx.memNo : "";
+      const { result, data, message } = await getMypageNew({
+        data: memNoParams,
+      });
+      if (result === "success") {
+        if (data.newCnt > 0) {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          globalCtx.globalAction.setAlarmStatus?.(true);
+          globalCtx.globalAction.setAlarmMoveUrl?.(data.moveUrl);
+        } else {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          alarmCheckIntervalId = setInterval(alarmCheck, 60000);
+          globalCtx.globalAction.setAlarmStatus?.(false);
+          globalCtx.globalAction.setAlarmMoveUrl?.("");
+        }
+      }
+    }
+
+    if(isDesktop) {
+      if (memberRdx.isLogin === true) {
+        alarmCheck();
+      } else {
+        globalCtx.globalAction.setAlarmStatus?.(false);
+        globalCtx.globalAction.setAlarmMoveUrl?.("");
+      }
+    }
+    return () => {};
+  }, [memberRdx.isLogin, alarmStatus]);
+
+  useEffect(()=>{
+    if(memberRdx.isLogin && memberRdx.data !== null){
+      const data = memberRdx.data
+      globalCtx.action.updateProfile(data)
+      globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
+    }
+  },[memberRdx])
+
   //SPLASH Room
   async function fetchSplash() {
     const res = await Api.splash({})
@@ -274,6 +428,7 @@ const App = () => {
       }
       globalCtx.action.updateSplash(data)
       globalCtx.action.updateUseMailbox(useMailBox)
+      globalCtx.globalAction.setSplashData(data);
     } else {
       Api.error_log({
         data: {
@@ -320,24 +475,35 @@ const App = () => {
     }
   }
 
-  const updateAppInfo = async () => {
-    const headerInfo = JSON.parse(Utility.getCookie('custom-header'))
-    const os = headerInfo.os
-    const version = headerInfo.appVer
-    let showBirthForm = true
+  /* 모바일웹용 푸터 */
+  const isFooter = () => {
+    if(!isDesktop && !isHybrid()) {
+      const pages = ['/', '/clip', '/search', '/mypage', '/login'];
+      const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
 
-    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-    if (os === 2) {
-      const appReviewYn = 'y'
-      if (appReviewYn === 'y') {
-        const tempIosVersion = '1.6.5' // 이 버전 이상은 birthForm 을 감출려고 한다
-        const successCallback = () => (showBirthForm = false)
-
-        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {})
-      }
+      setIsFooterPage(isFooterPage);
     }
+  }
 
-    globalCtx.action.updateAppInfo({os, version, showBirthForm})
+  /* 네이티브용 푸터 관리 */
+  const nativeFooterManager = () => {
+    if(isHybrid()) {
+      const currentPages = location.pathname;
+      const footerViewPages = {
+        '/': 'main',
+        '/clip': 'clip',
+        '/search': 'search',
+        '/mypage': 'mypage',
+        '/login': 'mypage',
+      };
+      const visible = !!footerViewPages[currentPages];
+      const stateFooterParam = {
+        tabName: visible ? footerViewPages[currentPages] : '',
+        visible: visible
+      };
+
+      Hybrid('stateFooter', stateFooterParam)
+    }
   }
 
   useEffect(() => {
@@ -360,16 +526,62 @@ const App = () => {
     fetchData()
   }, [])
 
+
+  useEffect(()=>{
+    if(!memberRdx.memNo || !chatInfo){
+      return;
+    }
+    const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
+    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+
+    const sessionRtc = sessionWowzaRtc
+        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
+            ? JSON.parse(sessionAgoraRtc) : undefined;
+
+    if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
+      if(!rtcInfo){
+        if(sessionWowzaRtc){
+          const data = JSON.parse(sessionWowzaRtc);
+          const dispatchRtcInfo = getWowzaRtc(data);
+          // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          globalCtx.globalAction.dispatchRtcInfo({ type: "init", data: dispatchRtcInfo });
+          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+        }
+        if(sessionAgoraRtc){
+          const data = JSON.parse(sessionAgoraRtc);
+          const dispatchRtcInfo = getArgoraRtc(data);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
+            globalCtx.globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          })
+        }
+      }
+    }else{
+      rtcSessionClear();
+    }
+  }, [memberRdx.memNo, chatInfo])
+
+
   useEffect(() => {
     if (globalCtx.token) {
       if (globalCtx.token.isLogin) {
-        if (globalCtx.noServiceInfo.passed) return
-        ageCheck()
+        if (globalCtx.noServiceInfo.passed){
+          return;
+        } else if(globalCtx.profile){
+          ageCheck()
+        }
       } else if (!globalCtx.token.isLogin) {
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false})
       }
     }
-  }, [globalCtx.profile, location.pathname])
+  }, [globalCtx.profile, globalCtx.token, location.pathname])
+
+  useEffect(() => {
+    isFooter();
+    nativeFooterManager();
+  }, [location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -385,7 +597,6 @@ const App = () => {
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
-    updateAppInfo(); // ios 심사 (회원가입 생년월일 입력란 숨김)
   }, [])
 
   function ErrorFallback({error, resetErrorBoundary}) {
@@ -433,13 +644,46 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    if (chatInfo !== null) {
+      chatInfo.setGlobalAction(globalCtx.globalAction);
+      chatInfo.setMailboxAction(mailboxAction);
+    }
+    if (mailChatInfo !== null) {
+      mailChatInfo.setGlobalAction(globalCtx.globalAction);
+      mailChatInfo.setMailboxAction(mailboxAction);
+    }
+  }, [chatInfo, mailChatInfo]);
+
+  useEffect(() => {
+    if (chatInfo !== null && globalCtx.globalState.splashData !== null) {
+      chatInfo.setSplashData(globalCtx.globalState.splashData);
+    }
+  }, [chatInfo, globalCtx.globalState.splashData]);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
         ready ? (
           <>
             <Interface />
-            <Route />
+            <Common />
+            { isDesktop &&
+              <>
+                <Layout>
+                  <Route />
+                </Layout>
+                {globalCtx.globalState.broadcastAdminLayer.status && globalCtx.globalState.baseData.isLogin && <AdminLayerPopup />}
+              </>
+            }
+            { !isDesktop &&
+              <LayoutMobile status="no_gnb">
+                  <Route />
+              </LayoutMobile>
+            }
+            <Alert />
+            <MoveToAlert />
+            {isFooterPage && <Navigation />}
           </>
         ) : (
           <>

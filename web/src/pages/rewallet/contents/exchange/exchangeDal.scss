@@ -1,0 +1,10 @@
+@import "components/ui/_mixin.scss";
+
+#exchangeDal {
+  @include purchaseList;
+  @include noticeInfo;
+  .submitBtn {
+    width:100%;
+    margin-top:32px;
+  }
+}

@@ -1,0 +1,74 @@
+@import "../_mixin.scss";
+
+@mixin headerBtn($icoImg) {
+  width:40px;
+  height:40px;
+  @include BGIMG('common/header/#{$icoImg}.png');
+}
+
+header {
+  position:relative;
+  z-index:$HEADER-ZINDEX;
+  @include flex(center);
+  width:100%;
+  height:$HEADER-HEIGHT;
+  padding-left: 16px;
+  padding-right: 6px;
+  .title {
+    @include flex(center,center);
+    height:100%;
+    @include font(24px,700,#202020);
+  }
+  &.fixed {
+    position:fixed;
+    top:0;
+    left:0;
+    background-color:white;
+  }
+  &.sticky {
+    position: -webkit-sticky;
+    position:sticky;
+    top:0;
+    left:0;
+    background-color:white;
+  }
+  &.back {
+    padding:4px;
+    .title {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      letter-spacing: -.3;
+      pointer-events: none;
+      @include font(18px,$SemiBold,#202020);
+    }
+  }
+  .buttonGroup {
+    @include flex(center);
+    margin-left:auto;
+  }
+  button {
+    position:relative;
+    &.ranking {@include headerBtn(icoRank-b);}
+    &.message {@include headerBtn(icoMessage-b);}
+    &.alarm {
+      @include headerBtn(icoAlarm-b);
+      &.new {
+        &::after {
+          @include position-top-right(3px,3px);
+          content:"";
+          width:10px;
+          height:10px;
+          border-radius:50%;
+          background-color:$MAINCOLOR;
+        }
+      }
+    }
+    &.store {@include headerBtn(icoStore-b);}
+    &.search {@include headerBtn(icoSearch-b);}
+    &.back {@include headerBtn(icoBack-b);}
+    &.play {@include headerBtn(icoPlay-b);}
+    &.shuffle {@include headerBtn(icoShuffle-b);}
+  }
+}

@@ -1,44 +1,44 @@
-// context
-import {Context} from 'context'
+import React, {useEffect, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
+import {Context} from "context";
 
-//components
-import Layout from 'pages/common/layout/new_layout'
-import LoginForm from './login_form'
-import LoginSns from './login_sns'
-import './login.scss'
+// global components
+// components
+// contents
+// css
+import './style.scss'
 
-import qs from 'query-string'
-import React, {useContext} from 'react'
-import {useParams} from 'react-router-dom'
-import {Redirect, Switch} from 'react-router-dom'
+const LoginPage = () => {
+  const history = useHistory()
+  const context = useContext(Context)
+  const {token} = context
 
-export default function login(props) {
-  const params = useParams()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const loginStart = () => {
+    if (!token.isLogin) {
+      history.push('/login/start');
+    }
+  };
 
-  // const createContent = () => {
-  //   const category = params instanceof Object ? params['type'] : ''
-  //   // url dividing
-  //   if (category === 'phone') {
-  //     return <LoginForm props={props} />
-  //   } else {
-  //     return <LoginSns />
-  //   }
-  // }
+  useEffect(() => {
+    if (token.isLogin) {
+      history.push('/')
+    }
+  },[]);
 
   return (
-    <Switch>
-      {token && token.isLogin ? (
-        <Redirect to={'/'} />
-      ) : (
-        <Layout status="no_gnb">
-          <div id="loginPage">
-            <LoginSns props={props} />
-            {/* {createContent()} */}
-          </div>
-        </Layout>
-      )}
-    </Switch>
+    <div id="loginPage">
+      <section className='loginMain'>
+        <div className='logo'>
+          <img src='https://image.dalbitlive.com/common/header/LOGO.png' alt='dalla'/>
+        </div>
+        <div className='textWrap'>
+          <p className='mainText'>달라에서 매일<br/>재미있는 라이브를 즐겨보아요!</p>
+          <p className='subText'>로그인 후 이용할 수 있습니다.</p>
+        </div>
+        <button className='loginBtn' onClick={loginStart}>로그인</button>
+      </section>
+    </div>
   )
 }
+
+export default LoginPage

@@ -1,0 +1,92 @@
+@import "components/ui/_mixin.scss";
+
+.socialList {
+  border-bottom:1px solid #F2F2F2;
+  .listRow {
+    @include flex(center);
+    height:60px;
+    padding:0 16px;
+    .photo {
+      width:36px;
+      height:36px;
+      border-radius:50%;
+      overflow:hidden;
+    }
+    .listContent {
+      letter-spacing: -.5px;
+      margin-left:4px;
+      .nick {
+        @include font(13px,400,#202020);
+        @include fontCut;
+      }
+      .time {
+        @include font(12px,400,#999);
+      }
+    }
+    div.moreBtn {
+      position:relative;
+      width:30px;
+      height:30px;
+      margin-left:auto;
+      cursor: pointer;
+      img {
+        width:100%;
+      }
+      .isMore {
+        @include position-top-right(100%,0);
+        z-index: $MORE-ZINDEX;
+        @include flex($fd:column);
+        width:124px;
+        border-radius:8px;
+        background-color:white;
+        box-shadow: 0 1px 8px rgba(black,.16);
+        button {
+          line-height:40px;
+          text-indent:12px;
+          text-align:left;
+          @include font(13px,400,#303030);
+          + button {
+            border-top:1px solid #F2F2F2;;
+          }
+        }
+      }
+    }
+  }
+  .socialContent {
+    padding: 2px 16px 16px;
+    .text {
+      margin-bottom:16px;
+      @include font(13px,400,#202020);
+    }
+    .swiperPhoto {
+      margin-bottom:16px;
+    }
+    .swiper-slide {
+      width:100%;
+      height:225px;
+      background-color:#ddd;
+      .photo {
+        height:100%;
+        img {
+          width:100%;
+          height:100%;
+          border-radius:5px;
+          object-fit: cover;
+        }
+      }
+    }
+    .swiper-pagination {
+      @include swiperPagination;
+    }
+    .info {
+      @include flex(center);
+      .dataCnt {
+        height: 20px;
+        padding-left: 24px;
+        line-height: 20px;
+        @include font(13px, 400, #6B6B6B);
+        background-size: 20px 20px;
+      }
+    }
+  }
+}

@@ -1,0 +1,900 @@
+@import "../../../../asset/scss/common/variables";
+
+.fanListWrapper {
+  position: relative;
+  border-radius: 10px;
+  background: $white;
+}
+.fanlist-modal {
+  position: relative;
+}
+.exchange-modal {
+  position: relative;
+  .scroll-wrap {
+    border-radius: 8px;
+  }
+}
+
+.closeBtn {
+  text-indent: -9999px;
+  position: absolute;
+  right: 0;
+  top: -36px;
+  width: 36px;
+  height: 36px;
+  background: url("../../static/ic_close.svg");
+}
+.myModalWrap {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 20px;
+  min-height: 320px;
+  overflow: hidden;
+  background-color: #eee;
+  &.black {
+    width: 328px;
+  }
+  // 팬링킹
+  .innerTabWrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    line-height: 40px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+    &__guide {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+    }
+    &__tab {
+      padding: 0 5px;
+      font-size: 16px;
+
+      &.active {
+        color: #632beb;
+        font-weight: bold;
+        border-bottom: 1px solid #632beb;
+      }
+    }
+  }
+  .titleTabWrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &__tab {
+      width: 50%;
+      height: 62px;
+      font-weight: 800;
+      font-size: 18px;
+      border-bottom: 1px solid transparent;
+      &.active {
+        color: #632beb;
+        border-bottom: 1px solid #632beb;
+      }
+    }
+  }
+  .historyWrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid #bdbdbd;
+      width: 94%;
+      height: 97px;
+      margin: 16px 0 18px 0;
+      border-radius: 16px;
+      &.isSpecial {
+        border-color: #ec455f;
+      }
+    }
+    &__badge {
+      top: 0;
+      left: 16px;
+      position: absolute;
+    }
+    &__info {
+      width: 212px;
+      text-align: center;
+      color: #000;
+      font-size: 16px;
+      font-weight: 800;
+
+      &__nick {
+        display: inline-block;
+        max-width: 118px;
+        color: #632beb;
+        vertical-align: bottom;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    &__tableTitle {
+      font-size: 18px;
+      color: #000;
+      font-weight: 800;
+    }
+    &__tableWrap {
+      padding: 15px 3%;
+      table {
+        th {
+          padding: 5px 0;
+          border-top: 1px solid #632beb;
+          border-bottom: 1px solid #632beb;
+          font-size: 12px;
+          text-align: center;
+          color: #632beb;
+        }
+        tr {
+          width: 50%;
+        }
+        td {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 13px;
+          border-bottom: 1px solid #e0e0e0;
+          letter-spacing: -0.5px;
+          &.date {
+            color: #757575;
+          }
+          p {
+            width: calc(100% - 33px);
+            text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+          }
+        }
+      }
+    }
+  }
+  .rankitem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    .rankitemWrap {
+      display: flex;
+      align-items: center;
+      width: calc(100% - 66px);
+    }
+    .thumbBox {
+      position: relative;
+      margin-right: 12px;
+      &__thumb {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+      &__rank {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: 16px;
+        height: 16px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 9px;
+        text-align: center;
+        border-radius: 50%;
+      }
+      &__medalIcon {
+        width: 20px;
+        position: absolute;
+        top: -6px;
+        left: -6px;
+      }
+    }
+    .textBox {
+      width: calc(100% - 82px);
+      &__nick {
+        max-width: 220px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        word-wrap: normal;
+        margin-bottom: 3px;
+        font-weight: 800;
+        font-size: 14px;
+      }
+      &__itemTxt {
+        font-size: 14px;
+        color: #424242;
+      }
+    }
+    button {
+      width: 56px;
+      height: 26px;
+      border: 1px solid #632beb;
+      font-size: 12px;
+      letter-spacing: -0.3px;
+      border-radius: 13px;
+      color: #632beb;
+    }
+    .plusFan {
+      background-color: #632beb;
+      color: #fff;
+    }
+  }
+  &--wihte {
+    background: #fff;
+  }
+  &__listWrap {
+    padding: 0 16px;
+  }
+  &__myListWrap {
+    padding: 0;
+  }
+  &__title {
+    height: 52px;
+    line-height: 52px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    text-align: center;
+    color: #3c3c3c;
+    border-bottom: 1px solid $lightGray;
+    background-color: #fff;
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: $white;
+    height: 54px;
+  }
+  &__profImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  &__name {
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    color: $greishBrown;
+    padding-right: 20px;
+  }
+  &__fanBtn {
+    cursor: pointer;
+    margin-left: auto;
+    &--fan {
+      display: block;
+      width: 56px;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      border-radius: 13px;
+      border: solid 1px $primary;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: $primary;
+      cursor: pointer;
+    }
+    &--plus {
+      border-radius: 13px;
+      background-color: $primary;
+      color: $white;
+      cursor: pointer;
+    }
+  }
+
+  .tabWrap {
+    display: flex;
+
+    &__tab {
+      width: 50%;
+      height: 52px;
+      text-align: center;
+      line-height: 52px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+
+      &--active {
+        color: #632beb;
+        border-bottom: 1px solid #632beb;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .innerTabWrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    line-height: 40px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+
+    &__guide {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+    }
+
+    &__tab {
+      padding: 0 5px;
+      font-size: 16px;
+      cursor: pointer;
+
+      &--active {
+        color: #632beb;
+        font-weight: bold;
+        border-bottom: 1px solid #632beb;
+      }
+    }
+  }
+
+  .rankitem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+
+    .rankitemWrap {
+      display: flex;
+      align-items: center;
+      width: calc(100% - 66px);
+    }
+
+    .thumbBox {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+
+      &__thumb {
+        width: 100%;
+        border-radius: 50%;
+      }
+
+      &__rank {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: 16px;
+        height: 16px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 9px;
+        text-align: center;
+        border-radius: 50%;
+      }
+
+      &__medalIcon {
+        width: 20px;
+        position: absolute;
+        top: -6px;
+        left: -6px;
+      }
+    }
+
+    .textBox {
+      width: calc(100% - 52px);
+
+      &__nick {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        word-wrap: normal;
+        margin-bottom: 3px;
+        font-weight: 800;
+        font-size: 14px;
+      }
+
+      &__dal {
+        font-size: 14px;
+        color: #424242;
+      }
+    }
+  }
+}
+
+//마이페이지 선물하기
+// .giftBox {
+//   width: 328px;
+
+//   &__subTitle {
+//     padding-top: 18px;
+//     padding-bottom: 19px;
+//     border-bottom: 1px solid $lightGray;
+//   }
+
+//   &__bg {
+//     background: #eee;
+
+//     padding: 0px 16px 16px 16px;
+//   }
+
+//   &__userMsg {
+//     font-size: 16px;
+//     letter-spacing: -0.35px;
+//     text-align: center;
+//     color: $black;
+//     b {
+//       color: $primary;
+//       display: inline-block;
+//       margin-right: 4px;
+//     }
+//   }
+
+//   .dalList {
+//     display: flex;
+//     flex-flow: wrap;
+//     .btn__price {
+//       border: 1px solid $lightGray;
+//       height: 32px;
+//       font-size: 14px;
+//       border-radius: 12px;
+//       margin-bottom: 4px;
+//       margin-right: 4px;
+//       width: calc((100% - 12px) / 4);
+//       background: $white;
+
+//       &:nth-child(4n) {
+//         margin-right: 0;
+//       }
+
+//       &:nth-child(n + 4) {
+//         margin-bottom: 0px;
+//       }
+
+//       &--active {
+//         border: 1px solid $primary;
+//         color: $primary;
+//         font-weight: 700;
+//       }
+//     }
+//   }
+
+//   &__warnnigMsg {
+//     margin-top: 4px;
+//     font-size: 12px;
+//     letter-spacing: -0.3px;
+//     text-align: left;
+//     color: $darkGray;
+//   }
+//   .input__text {
+//     width: 100%;
+//     height: 44px;
+//     border: 1px solid $lightGray;
+//     background: #fff;
+//     border-radius: 12px;
+//     padding-left: 10px;
+//     padding-right: 10px;
+//     margin-top: 10px;
+
+//     font-size: 16px;
+//     font-weight: 700;
+//     color: $black;
+//     line-height: 1.14;
+//     box-sizing: border-box;
+
+//     &::placeholder {
+//       color: $greishGray;
+//       font-size: 14px;
+//       font-weight: 500;
+//     }
+
+//     &:focus {
+//       border-color: $black;
+//     }
+//   }
+// }
+// .mydalBox {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   margin-top: 18px;
+//   margin-bottom: 12px;
+
+//   &__ptext {
+//     font-size: 14px;
+//     letter-spacing: -0.35px;
+//     text-align: left;
+//     color: $black;
+//   }
+//   &__dalWrap {
+//     display: flex;
+//     align-items: center;
+//   }
+//   &__dalCnt {
+//     margin-right: 6px;
+//     font-size: 16px;
+//     font-weight: 800;
+//     letter-spacing: -0.4px;
+//     color: $greishBrown;
+//   }
+//   &__chargeIcon {
+//     width: 44px;
+//     height: 20px;
+//     background: url("https://image.dalbitlive.com/svg/ic_charge_m.svg");
+//   }
+// }
+// .dalSubmit {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-top: 27px;
+//   &__btn {
+//     width: 100%;
+//     height: 44px;
+//     line-height: 44px;
+//     border-radius: 10px;
+//     background-color: $greishGray;
+//     font-size: 18px;
+//     letter-spacing: -0.35px;
+//     text-align: center;
+//     color: $white;
+//     box-sizing: border-box;
+//     width: calc((100% - 4px) / 2);
+
+//     &--none {
+//       background-color: $mediumGray;
+//       color: $white;
+//     }
+//     &--active {
+//       background-color: $primary;
+//       color: $white;
+//     }
+//   }
+// }
+//
+// .reportList {
+//   border: solid 1px $lightGray;
+//   box-sizing: border-box;
+//   border-radius: 12px;
+//   height: 44px;
+//   margin-bottom: 4px;
+//   background: $white;
+//   font-size: 14px;
+//   font-weight: 700;
+//   width: calc(50% - 2px);
+//   margin-right: 4px;
+
+//   &:nth-child(2n) {
+//     margin-right: 0px;
+//   }
+
+//   &:nth-child(5n) {
+//     width: 100%;
+//     margin-bottom: 0px;
+//     margin-right: 0px;
+//   }
+
+//   &--on {
+//     border: 1px solid $primary;
+//     color: $primary;
+//     font-weight: 600;
+//   }
+// }
+// .reportMsg {
+//   margin: 12px 0 16px 0;
+//   color: $darkGray;
+//   font-size: 14px;
+//   letter-spacing: -0.35px;
+//   text-align: left;
+//   transform: skew(-0.03deg);
+// }
+// .btnWrap {
+//   display: flex;
+//   width: 100%;
+//   justify-content: space-between;
+// }
+// .SubmitReport {
+//   display: block;
+//   width: calc(50% - 2px);
+//   margin-top: 12px;
+//   padding: 10px 0;
+//   border-radius: 10px;
+//   background-color: $mediumGray;
+//   font-size: 18px;
+//   color: $white;
+//   letter-spacing: -0.4px;
+//   &__cancel {
+//     background-color: $greishGray;
+//     color: $white;
+//   }
+//   &--on {
+//     background-color: $primary;
+//   }
+// }
+// // 방송방 신고하기
+// .reportWrap {
+//   width: 328px;
+//   padding: 0 24px 16px;
+
+//   &.noPadding {
+//     width: 100%;
+//     padding: 0px;
+//   }
+//   &__textareaWrap {
+//     position: relative;
+//     margin-top: 12px;
+//   }
+//   &__textarea {
+//     margin-top: 16px;
+//     width: 100%;
+//     font-size: 14px;
+//     color: $black;
+//     min-height: 120px;
+//     padding: 12px;
+//     box-sizing: border-box;
+//     border-radius: 12px;
+//     background-color: $white;
+//     outline: none;
+//     border: none;
+//     resize: none;
+//     font-weight: 700;
+//     &::placeholder {
+//       font-family: inherit;
+//       color: #626262;
+//       font-weight: 300;
+//       font-size: 14px;
+//       font-weight: normal;
+//     }
+//   }
+//   &__textareaCount {
+//     display: block;
+//     padding-bottom: 14px;
+//     width: 100%;
+//     font-size: 12px;
+//     color: $darkGray;
+//     text-align: right;
+//     b {
+//       color: #000;
+//     }
+//   }
+
+//   .declarationWrap {
+//     padding: 16px;
+//     background: $lighterGray;
+//   }
+//   .blackWrap {
+//     padding: 16px;
+//     background: $white;
+//   }
+
+//   &__title {
+//     height: 20px;
+//   }
+//   .blockButton {
+//     display: flex;
+//     border-bottom: solid 1px $lightGray;
+//     align-items: center;
+
+//     button {
+//       width: 50%;
+//       height: 52px;
+//       font-size: 18px;
+//       color: $black;
+//       text-align: center;
+//       position: relative;
+//       line-height: 52px;
+//       font-weight: bold;
+//       text-align: center;
+
+//       i {
+//         position: absolute;
+//         width: 100%;
+//         height: 1px;
+//         background: $primary;
+//         left: 0px;
+//         bottom: 0px;
+//         margin: 0px;
+//         padding: 0px;
+//         display: none;
+//       }
+
+//       &.on {
+//         color: $primary;
+//         i {
+//           display: block;
+//         }
+//       }
+//     }
+//   }
+
+//   .buttonWrap {
+//     width: 100%;
+//     position: absolute;
+
+//     bottom: 0px;
+//     display: flex;
+//     padding-top: 16px;
+
+//     text-align: center;
+//     button {
+//       flex: 1;
+//       padding: 5px 0;
+//       color: #fff;
+//       height: 44px;
+//       border-radius: 12px;
+//       background-color: $primary;
+//       font-size: 18px;
+//       &:nth-child(odd) {
+//         margin-right: 4px;
+//         background: #757575;
+//       }
+//     }
+//   }
+
+//   .alertText {
+//     position: relative;
+//     margin-top: 24px;
+//     height: 365px;
+//     text-align: center;
+//     h3 {
+//       font-size: 24px;
+//       margin-top: 34px;
+//       margin-bottom: 4px;
+//       color: $black;
+//       display: block;
+//     }
+//     b {
+//       font-size: 18px;
+//       margin-bottom: 28px;
+//       color: $black;
+//       display: block;
+//     }
+
+//     img {
+//       display: block;
+//       margin: auto;
+//       padding-bottom: 30px;
+//     }
+
+//     span {
+//       display: block;
+//       font-size: 14px;
+//       color: #424242;
+//       line-height: 22px;
+//       padding-bottom: 12px;
+//     }
+
+//     p {
+//       display: block;
+//       font-size: 12px;
+//       color: #9e9e9e;
+//       line-height: 20px;
+//       margin-bottom: 14px;
+//     }
+//   }
+// }
+
+// //마이페이지 신고하기
+// .black {
+//   .declarationWrap {
+//     padding: 16px;
+//     background: $lighterGray;
+//   }
+//   .blackWrap {
+//     padding: 16px;
+//     background: $white;
+
+//     &.noPadding {
+//       width: 100%;
+//       padding: 0px;
+//     }
+//   }
+
+//   &__title {
+//     height: 20px;
+//   }
+
+//   .blockButton {
+//     display: flex;
+//     border-bottom: solid 1px $lightGray;
+//     align-items: center;
+
+//     button {
+//       width: 50%;
+//       height: 52px;
+//       font-size: 18px;
+//       color: $black;
+//       text-align: center;
+//       position: relative;
+//       line-height: 52px;
+//       font-weight: bold;
+//       text-align: center;
+
+//       i {
+//         position: absolute;
+//         width: 100%;
+//         height: 1px;
+//         background: $primary;
+//         left: 0px;
+//         bottom: 0px;
+//         margin: 0px;
+//         padding: 0px;
+//         display: none;
+//       }
+
+//       &.on {
+//         color: $primary;
+//         i {
+//           display: block;
+//         }
+//       }
+//     }
+//   }
+
+//   .buttonWrap {
+//     width: 100%;
+//     position: absolute;
+
+//     bottom: 0px;
+//     display: flex;
+//     padding-top: 16px;
+
+//     text-align: center;
+//     button {
+//       flex: 1;
+//       padding: 5px 0;
+//       color: #fff;
+//       height: 44px;
+//       border-radius: 12px;
+//       background-color: $primary;
+//       font-size: 18px;
+//       &:nth-child(odd) {
+//         margin-right: 4px;
+//         background: #757575;
+//       }
+//     }
+//   }
+
+//   .alertText {
+//     position: relative;
+//     margin-top: 24px;
+//     height: 366px;
+//     text-align: center;
+//     h3 {
+//       font-size: 24px;
+//       margin-top: 34px;
+//       margin-bottom: 4px;
+//       color: $black;
+//       display: block;
+//     }
+//     b {
+//       font-size: 18px;
+//       margin-bottom: 28px;
+//       color: $black;
+//       display: block;
+//     }
+
+//     img {
+//       display: block;
+//       margin: auto;
+//       padding-bottom: 30px;
+//     }
+
+//     span {
+//       display: block;
+//       font-size: 14px;
+//       color: #424242;
+//       line-height: 22px;
+//       padding-bottom: 12px;
+//     }
+
+//     p {
+//       display: block;
+//       font-size: 12px;
+//       color: #9e9e9e;
+//       line-height: 20px;
+//       margin-bottom: 14px;
+//     }
+//   }
+// }

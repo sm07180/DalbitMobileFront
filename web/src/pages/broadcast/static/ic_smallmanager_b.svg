@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="smallmanager_b" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10}
+        </style>
+    </defs>
+    <g id="그룹_19841" transform="translate(15697 -5839.9)">
+        <circle id="타원_1113" cx="4.5" cy="4.5" r="4.5" class="cls-1" transform="translate(-15689.5 5843.7)"/>
+        <path id="사각형_6262" d="M4.219 0h5.987a4.219 4.219 0 0 1 4.219 4.219v2.212H0V4.219A4.219 4.219 0 0 1 4.219 0z" class="cls-1" transform="translate(-15692.213 5853.022)"/>
+    </g>
+    <path id="사각형_6263" fill="none" d="M0 0H24V24H0z"/>
+</svg>

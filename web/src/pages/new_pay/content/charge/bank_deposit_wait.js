@@ -48,111 +48,108 @@ export default () => {
     <>
       {webview !== 'new' && <Header title="무통장 입금(계좌이체)" />}
       <Content className={webview ? 'new' : ''}>
-        <h5 className="sub-title">결제 대기 중...</h5>
-        <div className="top-info">
-          <p>
-            <span>{phoneWithHypen}</span>(으)로
-            <br />
-            입금하실 가상계좌 정보를 발송했습니다.
-          </p>
-          <p>
-            24시간 내 해당계좌로 입금하시면 <br /> 달 충전이 완료됩니다.
-          </p>
-        </div>
-
-        <div className="text-wrap">
-          <span>입금예정 금액</span>
-          <p>{Number(itemPrice).toLocaleString()}원(부가세포함)</p>
-        </div>
-
-        <div className="text-wrap">
-          <span>예금주</span>
-          <p>(주)여보야</p>
-        </div>
-
-        <div className="text-wrap">
-          <span>입금은행</span>
-          <p>KB국민은행</p>
-        </div>
-
-        <div className="text-wrap">
-          <span>계좌번호</span>
-          <p>{bankNo}</p>
-        </div>
-
-        <div className="text-wrap">
-          <span>입금자</span>
-          <p>{name}</p>
-        </div>
-
-        <div className="btn-wrap">
-          <button onClick={handleClick}>확인</button>
-        </div>
+        <section className="depositWait">
+          <div className="top-info">
+            <p className="title">
+              <span>{phoneWithHypen}</span>(으)로
+              <br />
+              가상계좌 정보를 발송했습니다!
+            </p>
+            <p>
+              24시간 내 해당계좌로 입금하시면 <br /> 달 충전이 완료됩니다.
+            </p>
+          </div>
+          <div className="receiptBoard">
+            <div className="text-wrap">
+              <span>입금예정 금액</span>
+              <p>{Number(itemPrice).toLocaleString()}원(부가세포함)</p>
+            </div>
+            <div className="text-wrap">
+              <span>예금주</span>
+              <p>(주)여보야</p>
+            </div>
+            <div className="text-wrap">
+              <span>입금은행</span>
+              <p className="highlight">KB국민은행</p>
+            </div>
+            <div className="text-wrap">
+              <span>계좌번호</span>
+              <p className="highlight">{bankNo}</p>
+            </div>
+            <div className="text-wrap">
+              <span>입금자</span>
+              <p>{name}</p>
+            </div>
+          </div>
+          <div className="btn-wrap">
+            <button onClick={handleClick}>확인</button>
+          </div>
+        </section>
       </Content>
     </>
   )
 }
 const Content = styled.div`
   min-height: calc(100vh - 40px);
-  padding: 6px 16px;
-  background: #eeeeee;
-  padding-bottom: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  color:#000;
   &.new {
     min-height: 100%;
   }
-
+  section{
+    padding: 0 16px 15px;
+    background:#fff;
+  }
   .top-info {
-    margin-bottom: 8px;
-    margin-top: 8px;
-    padding: 16px;
-    border: 1px solid #ec455f;
-    border-radius: 12px;
-    background: #fff;
+    margin:50px 0 47px 0;
     text-align: center;
-    p {
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: bold;
-    }
-    p:first-child {
+    .title{
+      font-size:22px;
+      line-height:30px;
+      color:#000;
       span {
-        color: #ec455f;
+        color: #FF3C7B;
       }
-      color: #000;
+    }
+    p {
+      font-size: 13px;
+      line-height: 20px;
+      font-weight:400;
+      color:#666
     }
     p + p {
       margin-top: 6px;
       color: #757575;
     }
   }
-
-  .text-wrap {
-    display: flex;
-    margin-top: 4px;
-    padding: 0 16px;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
-    background: #fff;
-    line-height: 42px;
-    font-size: 14px;
-    font-weight: bold;
-    span {
-      display: inline-block;
-      color: #632beb;
-    }
-    p {
-      margin-left: auto;
-      color: #000;
+  .receiptBoard{
+    width:100%;
+    padding:0 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.24);
+    background: url('https://image.dalbitlive.com/store/dalla/receiptBoard.png') no-repeat center / contain;
+    .text-wrap {
+      display: flex;
+      align-items:center;
+      height:36px;
+      margin-top: 4px;
+      span {
+        font-size:13px;
+        font-weight:400;
+        color:#999999;
+      }
+      p {
+        font-size:15px;
+        font-weight:500;
+        margin-left: auto;
+        color: #000;
+      }
+      .highlight{
+        color:#FF3C7B;
+      }
     }
   }
-
-  .sub-title {
-    padding-top: 15px;
-    font-size: 16px;
-    font-weight: 900;
-    color: #000;
-  }
-
+  
   .btn-wrap {
     padding-top: 32px;
     button {
@@ -162,10 +159,7 @@ const Content = styled.div`
       color: #fff;
       font-size: 18px;
       font-weight: bold;
-      background: #632beb;
-    }
-    button:disabled {
-      background: #757575;
+      background: #ff3c7b;
     }
   }
 `

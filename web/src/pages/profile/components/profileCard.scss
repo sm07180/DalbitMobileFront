@@ -1,0 +1,96 @@
+@import "components/ui/_mixin.scss";
+
+.profileCard {
+  position:relative;
+  z-index: 1; 
+  padding:0 16px;
+  background-color:#F7F7F7;
+  .cardWrap {
+    @include flex($fd:column);
+    transform:translateY(-18px);
+    border-radius:10px;
+    background-color:white;
+    .userInfo {
+      @include flex(flex-end);
+      margin-top:-10px;
+      padding:0 20px;
+      .photo {
+        position:relative;
+        width:75px;
+        height:75px;
+        margin-right:15px;
+        margin-bottom:auto;
+        img {
+          width:100%;
+          height:100%;
+          border-radius:50%;
+          object-fit: cover;
+        }
+        .frameBg {
+          display:none;
+        }
+      }
+      .info {
+        min-width:0;
+        margin-top:22px;
+        .item {
+          @include flex(center);
+          &:nth-child(1) {margin-bottom:4px;}
+          &:nth-child(2) {margin-bottom:2px;}
+          .nick {
+            margin-left:4px;
+            @include font(17px,$Medium,black);
+            @include fontCut;
+          }
+          .userid {
+            @include font(12px,$Regular,#A4A4A4);
+          }
+        }
+      }
+    }
+    .count {
+      @include flex;
+      height:72px;
+      padding:0 32px;
+      .item {
+        flex:1;
+        @include flex(center,center,column);
+        padding-top:7px;
+        letter-spacing: -1px;
+        span {
+          @include font(16px,$SemiBold,black);
+        }
+        i {
+          height:20px;
+          line-height:20px;
+          font-style:normal;
+          @include font(13px,$Regular,#878787);
+        }
+      }
+    }
+    .buttonWrap {
+      @include flex;
+      margin-top:auto;
+      border-top:1px solid #F2F2F2;
+      button {
+        flex:1;
+        height:45px;
+        border-left:1px solid #F2F2F2;
+        @include font(13px,400,black);
+        &:first-child {
+          border-left:none;
+        }
+        &.isFan {
+          &:before {
+            display:inline-block;
+            content:"";
+            width:17px;
+            height:17px;
+            @include BGIMG("mypage/dalla/check_ico.png");
+            vertical-align: bottom;
+          }
+        }
+      }
+    }
+  }
+}

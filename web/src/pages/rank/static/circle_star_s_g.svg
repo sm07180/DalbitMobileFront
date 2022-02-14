@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="circle_star_s_g" width="16" height="16" viewBox="0 0 16 16">
+    <path id="다각형_7" fill="#757575" d="M5.843.821a2 2 0 0 1 2.314 0l4.635 3.288a2 2 0 0 1 .741 2.263l-1.751 5.26A2 2 0 0 1 9.884 13H4.116a2 2 0 0 1-1.9-1.368L.468 6.371a2 2 0 0 1 .741-2.263z" data-name="다각형 7" transform="translate(1 1)"/>
+    <path id="사각형_5708" fill="none" d="M0 0H16V16H0z" data-name="사각형 5708"/>
+    <text id="S" fill="#fff" font-family="OpenSans-Regular, Open Sans" font-size="10px" transform="translate(5.5 11.5)">
+        <tspan x="0" y="0">S</tspan>
+    </text>
+</svg>

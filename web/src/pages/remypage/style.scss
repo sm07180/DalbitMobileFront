@@ -1,0 +1,203 @@
+@import "../../components/ui/mixin";
+
+#remypage {
+  flex:1;
+  @include flex($fd:column);
+  .myInfo {
+    @include flex;
+    padding:16px 16px 14px;
+    .textWrap {
+      @include flex($fd:column);
+      min-width:0;
+      @include font(19px,400,black);
+      .text {
+        @include flex($fd: column);
+        margin-bottom:8px;
+        letter-spacing: -.3px;
+        strong {
+          display:inline-block;
+          max-width:200px;
+          font-weight: $Bold;
+          @include fontCut;
+        }
+      }
+      .info {
+        @include flex(center);
+        margin-bottom:12px;
+        .level {
+          @include flex(center);
+          padding: 0 6px 0 4px;
+          cursor:pointer;
+          &::before {
+            content:"";
+            display: inline-block;
+            width:14px;height:14px;
+            margin-right:4px;
+            @include BGIMG("mypage/dalla/levelInfo.png");
+          }
+        }
+        .userId {
+          margin-left:8px;
+          line-height:20px;
+          @include font(13px,$Regular,black);
+        }
+      }
+      .count {
+        i {
+          margin-right:4px;
+          line-height:20px;
+          font-style:normal;
+          @include font(15px,$Medium,#5A5A5A);
+        }
+        span {
+          line-height:20px;
+          margin-right:18px;
+          @include font(15px,$Bold,black);
+        }
+      }
+    }
+    .photo {
+      width:75px;
+      height:75px;
+      margin-left:auto;
+      img {
+        width:100%;
+        border-radius:50%;
+        object-fit: cover;
+      }
+    }
+  }
+  .mydalDetail {
+    @include flex(center);
+    height:80px;
+    margin:0 16px 16px;
+    padding: 0 16px 0 19px;
+    border-radius:16px;
+    background-color: #FFECF2;
+    .dalCount {
+      @include flex(center);
+      height:30px;
+      line-height:30px;
+      @include font(20px,500,black);
+      &:before {
+        display:inline-block;
+        content:"";
+        width:20px;
+        height:20px;
+        margin-right:4px;
+        @include BGIMG('mypage/dalla/icon_dal.png');
+      }
+    }
+    .buttonGroup {
+      @include flex(center);
+      height:30px;
+      line-height:30px;
+      margin-left:auto;
+      button {
+        position:relative;
+        height:100%;
+        padding:0 8px;
+        letter-spacing: -1px;
+        @include font(14px,400,black);
+        &.charge {
+          font-weight:700;
+          &:before {
+            position:absolute;
+            bottom:6px;
+            left:0;
+            content:'';
+            width:1px;
+            height:15px;
+            background-color:#777;
+          }
+        }
+      }
+    }
+  }
+  .myMenu {
+    .btnList {
+      @include flex($fd:column);
+      border-bottom:8px solid #F2F2F2;
+      button {
+        flex:1;
+        @include flex(center,space-between);
+        height:55px;
+        line-height:55px;
+        padding:0 16px;
+        text-align:left;
+        letter-spacing: -1px;
+        @include font(15px,$Medium,#202020);
+        &:after {
+          display:inline-block;
+          content:'';
+          width:20px;height:20px;
+          @include BGIMG('common/icoArrow-r.png');
+        }
+      }
+    }
+    .versionInfo {
+      @include flex(center,space-between);
+      height:55px;
+      padding:0 16px;
+      .title {
+        @include font(15px,$Medium,#999);
+      }
+      .version {
+        @include font(13px,$Medium,#333);
+      }
+    }
+  }
+  .buttonWrap {
+    margin: auto 16px 60px;
+    button.logout {
+      width:100%;
+      line-height:46px;
+      @include border(#D5D5D5,16px);
+      @include font(16px,$Medium,#666);
+    }
+  }
+  #popSlide {
+    .myLevelInfo {
+      width:100%;
+      .infoItem {
+        @include flex(center);
+        line-height:25px;
+        margin-bottom:8px;
+        .level {
+          line-height:25px;
+          @include font(16px,$Medium,white);
+        }
+        span {
+          @include font(17px,$SemiBold,#303030);
+        }
+        p {
+          margin-left:auto;
+          @include font(15px,$SemiBold,$MAINCOLOR);
+        }
+      }
+      .levelGauge {
+        position: relative;
+        height:13px;
+        margin-bottom:8px;
+        border-radius:100px;
+        background-color:#E8E8E8;
+        .gaugeBar {
+          @include position-top-left;
+          display:inline-block;
+          width:0;
+          height:100%;
+          border-radius:100px;
+          background-image: linear-gradient(to right,#FF8565,$MAINCOLOR);
+          transition:width 1s ease;
+        }
+      }
+      .exp {
+        @include font(13px,$Medium,#303030);
+      }
+      .submitBtn {
+        width:100%;
+        margin-top:20px;
+      }
+    }
+  }
+}

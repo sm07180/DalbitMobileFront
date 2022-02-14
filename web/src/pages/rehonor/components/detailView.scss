@@ -1,0 +1,34 @@
+@import "components/ui/_mixin.scss";
+
+.detailView {
+    position: relative;
+    @include flex(center, space-between);
+    width: 100%; height: 40px;
+    margin-top: 4px;
+    padding: 0 16px;
+    .prevButton {
+        @include flex(center);
+        padding-left: 20px;
+        @include font(13px, 500, #666666);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CclipPath id='clip-path'%3E%3Crect width='40' height='40' fill='none'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg id='v_icon_4' data-name='v icon 4' transform='translate(0 40) rotate(-90)'%3E%3Cg  clip-path='url(%23clip-path)'%3E%3Cpath d='M0,9.5,9.5,0,19,9.5' transform='translate(10.5 15)' fill='none' stroke='%23666' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+        background-position: left center;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+    }
+    .nextButton {
+        @include flex(center);
+        padding-right: 20px;
+        @include font(13px, 500, #666666);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3CclipPath id='clip-path'%3E%3Crect  width='40' height='40' transform='translate(-8.872 -18)' fill='none'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg transform='translate(18 31.128) rotate(-90)' clip-path='url(%23clip-path)'%3E%3Cpath d='M347.733,1356.285l9.5,9.5,9.5-9.5' transform='translate(-346.105 -1358.785)' fill='none' stroke='%23666666' stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5'/%3E%3C/g%3E%3C/svg%3E%0A");
+        background-position: right center;
+        background-repeat: no-repeat;
+        background-size: 20px 20px;
+    }
+    .titleWrap {
+        flex: 1;
+        @include flex(center, center);
+        .title {
+            @include font(16px, $SemiBold, #202020);
+        }
+    }
+}

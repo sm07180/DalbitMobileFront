@@ -1,0 +1,13 @@
+@import "components/ui/_mixin.scss";
+
+button.submitBtn {
+  line-height: 48px;
+  border-radius: 16px;
+  background: $MAINCOLOR;
+  @include font(16px,bold,white);
+  &.disabled {
+    opacity: .2;
+    cursor:not-allowed;
+    pointer-events: none;
+  }
+}

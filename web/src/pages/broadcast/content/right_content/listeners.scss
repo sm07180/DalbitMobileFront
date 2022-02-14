@@ -1,0 +1,381 @@
+@import "../../../asset/scss/common/global";
+@import "components/ui/_mixin.scss";
+
+// 청취자
+#broadcast-page {
+  .userListWrap {
+    padding: 0 8px;
+    height: 100%;
+
+    &--like {
+      border-top: 1px solid $lightGray;
+      padding-top: 11px;
+      .userBox {
+        height: 100%;
+        &.likeList {
+          height: calc(100% - 68px);
+          overflow-y: scroll;
+          &::-webkit-scrollbar {
+            width: 10px;
+            height: 64px;
+          }
+          &::-webkit-scrollbar-track {
+            background-color: transparent;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background-color: #e0e0e0;
+          }
+          &::-webkit-scrollbar-button {
+            width: 0;
+            height: 0;
+          }
+        }
+      }
+    }
+    .scroll-wrap {
+      height: 100%;
+    }
+    .scroll-box {
+      width: 345px;
+    }
+
+    // 게스트
+    .time {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 12px;
+      color: #9e9e9e;
+      em {
+        display: inline-block;
+        margin-left: 8px;
+        color: $darkGray;
+      }
+    }
+    // 청취자 리스트
+    .user {
+      position: relative;
+      padding: 5px 5px;
+      margin-top: 4px;
+      font-size: 14px;
+      border-radius: 24px;
+      box-sizing: border-box;
+      &:first-child {
+        margin-top: 0;
+      }
+      &.isActive {
+        opacity: 0.4;
+      }
+
+      &--dj {
+        background: $MAINCOLOR;
+        .user__id {
+          font-weight: $bold;
+          color: $white;
+        }
+        // .user__dj__badge {
+        //   margin-left: 10px;
+        //   color: #632beb;
+        //   font-size: 12px;
+        //   border-radius: 10px;
+        //   padding: 1px 4px;
+        //   background-color: #fff;
+        //   width: 24px;
+        //   text-align: center;
+
+        //   &.new {
+        //     color: #4593ec;
+        //     width: 46px;
+        //   }
+        // }
+        .user__nickNm {
+          color: $white;
+        }
+        .user__btn {
+          &--close {
+            background: url(../static/ic_close_round_ing.svg) no-repeat 0 0;
+          }
+        }
+      }
+      &--manager {
+        border: 1px solid $MAINCOLOR;
+      }
+      &--listeners {
+        border: 1px solid $lightGray;
+      }
+      &--fan {
+        margin-top: 20px;
+        .user {
+          display: flex;
+          align-items: center;
+          .btn__fan {
+            min-width: 64px;
+            height: 26px;
+            border-radius: 26px;
+            margin-left: auto;
+          }
+        }
+      }
+      &__box {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        cursor: pointer;
+      }
+      &__infoBox {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 90px);
+        margin-left: 10px;
+        &--sub {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          span {
+            margin-left: 4px;
+            &:first-child {
+              margin-left: 0;
+            }
+            & + .user__nickNm {
+              margin-left: 8px;
+            }
+          }
+        }
+        &--cnt {
+          display: block;
+          span {
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 12px;
+            color: $mediumGray;
+            &:first-child {
+              margin-left: 0;
+            }
+            &::before {
+              position: relative;
+              top: -1px;
+              display: inline-block;
+              content: "";
+              width: 16px;
+              height: 16px;
+              vertical-align: middle;
+              margin-right: 2px;
+            }
+            &.like {
+              &::before {
+                background: url("https://image.dalbitlive.com/svg/ic_like_g_s.svg") no-repeat 0 0;
+              }
+            }
+            &.times {
+              &::before {
+                background: url("https://image.dalbitlive.com/svg/ic_time_g_s.svg") no-repeat 0 0;
+              }
+            }
+            &.stars {
+              &::before {
+                background: url("https://image.dalbitlive.com/svg/ic_star_g_s.svg") no-repeat 0 0;
+              }
+            }
+          }
+        }
+      }
+      &__thumb {
+        position: relative;
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 40px;
+        &--fan {
+          &::after {
+            display: inline-block;
+            content: "F";
+            position: absolute;
+            right: -1px;
+
+            bottom: 0px;
+            width: 14px;
+            height: 14px;
+            font-size: 8px;
+            line-height: 14px;
+            text-align: center;
+            color: $white;
+            background: $primary;
+            border-radius: 50%;
+          }
+        }
+      }
+      &__id {
+        display: inline-block;
+        @include multi-ellipsis(1);
+        flex: 1;
+        margin-left: 10px;
+        font-weight: $bold;
+        color: $primary;
+      }
+      &__badge {
+        height: 20px;
+        padding: 0px 5px;
+        font-size: 12px;
+        line-height: 20px;
+        text-align: center;
+        font-weight: $bold;
+        vertical-align: middle;
+        color: #fff;
+        border-radius: 10px;
+        box-sizing: border-box;
+        &.manager {
+          background-color: $yellow;
+        }
+        &.new {
+          background-color: $blue;
+        }
+        &.dj {
+          min-width: 26px;
+          margin-left: 10px;
+          color: $primary;
+          background-color: $white;
+          border-radius: 10px;
+          &.new {
+            color: $blue;
+          }
+        }
+        &.guest {
+          background-color: #00c3cb;
+        }
+        &.guest {
+          background-color: #00c3cb;
+        }
+      }
+      &__nickNm {
+        display: inline-block;
+        margin-left: 8px;
+        vertical-align: middle;
+        color: $darkGray;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        @include multi-ellipsis(1);
+        white-space: normal;
+        flex: 1;
+      }
+      &__ico {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: 9px;
+        width: 24px;
+        height: 14px;
+        line-height: 14px;
+        font-size: 10px;
+        background: #fdad2b;
+        color: $white;
+        border-radius: 7px;
+      }
+      &__btn {
+        width: 36px;
+        height: 36px;
+        background: url(https://image.dalbitlive.com/images/api/ic_more.png) no-repeat 0 0;
+        &--close {
+          width: 18px;
+          height: 18px;
+          right: 16px;
+          margin-top: -9px;
+          background: url(../static/ic_close_round.svg) no-repeat 0 0;
+        }
+      }
+      &__likeCnt {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 5px;
+        &::after {
+          position: relative;
+          display: inline-block;
+          content: "";
+          width: 24px;
+          height: 24px;
+          vertical-align: middle;
+          top: 1px;
+          background: url(../static/ic_live_like_g.svg) no-repeat 0 0;
+        }
+        &.isActive {
+          &::after {
+            background: url(../static/ic_live_like_r.svg) no-repeat 0 0;
+          }
+        }
+      }
+      .modal {
+        display: none;
+        width: 135px;
+        position: absolute;
+        right: 14px;
+        top: 35px;
+        padding: 13px 0px;
+        background: #fff;
+        border: 1px solid $lightGray;
+        text-align: center;
+        line-height: 30px;
+        z-index: 1;
+        &--active {
+          display: block;
+        }
+        &__item {
+          display: flex;
+          width: 100%;
+          height: 30px;
+          line-height: 30px;
+          font-size: 14px;
+          color: #757575;
+          text-indent: 16px;
+          &:hover {
+            background: #f8f8f8;
+          }
+        }
+      }
+      .fan-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 20px;
+        margin-left: 2px;
+        padding: 0 8px 0 4px;
+        font-size: 12px;
+        font-weight: $bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1;
+        letter-spacing: -0.35px;
+        text-align: left;
+        border-radius: 20px;
+        color: #ffffff;
+        &:first-child {
+          margin-left: 0;
+        }
+        &.manager {
+          background: $yellow;
+        }
+        & + .user__nickNm {
+          margin-left: 8px;
+        }
+      }
+      .fan-badge:last-child {
+        margin-right: 0;
+      }
+      .fan-badge img {
+        height: 20px;
+      }
+      .fan-badge span {
+        display: inline-block;
+        margin-left: 2px;
+        font-weight: $bold;
+        font-size: 12px;
+        vertical-align: middle;
+        color: $white;
+      }
+    }
+  }
+}

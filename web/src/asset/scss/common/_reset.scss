@@ -1,0 +1,197 @@
+html,
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+i,
+a,
+p,
+pre,
+span,
+label,
+dl,
+dt,
+dd,
+table,
+th,
+td,
+embed,
+canvas,
+audio,
+video,
+form,
+fieldset,
+legend,
+textarea,
+input,
+select,
+button,
+article,
+aside,
+dialog,
+footer,
+header,
+section,
+footer,
+nav,
+figure,
+iframe,
+main {
+  margin: 0;
+  padding: 0;
+  font-family: "SUIT";
+  font-weight: inherit;
+  box-sizing: border-box;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+article,
+aside,
+dialog,
+footer,
+header,
+section,
+footer,
+nav,
+figure,
+main {
+  display: block;
+}
+
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+}
+
+html,
+body {
+  -webkit-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+form,
+fieldset,
+svg,
+iframe,
+li {
+  border: 0;
+  vertical-align: top;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  overflow: visible;
+  border: 0;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+button::-moz-focus-inner {
+  padding: 0;
+  margin: -1px;
+}
+
+input,
+button,
+select {
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+
+textarea {
+  border: 0;
+  outline: none;
+  border: none;
+  resize: none;
+}
+
+input,
+select {
+  border: 0;
+  border-radius: 0;
+  vertical-align: middle;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+/* 크롬 인풋 자동완성 배경 컬러 설정 */
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 50px transperent inset;
+}
+
+address,
+caption,
+em {
+  font-style: normal;
+}
+
+div:focus {
+  outline: none;
+}
+
+span:focus {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  text-decoration: none;
+  outline: none;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+  border-spacing: 0;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+pre {
+  font-family: inherit;
+}
+
+b,
+strong {
+  font-weight: 500;
+}

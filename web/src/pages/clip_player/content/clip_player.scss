@@ -1,0 +1,702 @@
+@import "../../../asset/scss/common/variables";
+
+$borderLine: 1px solid $lighterGray;
+
+#clipPlayer {
+  display: flex;
+  justify-content: space-between;
+  width: 1368px;
+  height: 100vh;
+  padding: 20px 90px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  .leftSide {
+    // position: relative;
+    display: flex;
+    align-items: center;
+    width: 800px;
+    padding: 45px 0 30px;
+    background-color: #f5f5f5;
+    border-radius: 40px;
+  }
+
+  .playerBox {
+    // position: relative;
+    display: flex;
+    flex-direction: column;
+    // justify-content: space-between;
+    width: 512px;
+    // height: 100%;
+    margin: 0 auto;
+
+    &__moreBtn {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .optionBox {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      z-index: 1;
+      &__editBtn {
+        display: block;
+        width: 36px;
+        height: 36px;
+        background: url("../static/ic_edit_g.svg");
+      }
+      &__reportBtn {
+        display: block;
+        width: 36px;
+        height: 36px;
+        background: url("../static/block_w_l.svg");
+      }
+      &__list {
+        display: block;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        text-align: center;
+        color: #757575;
+        background-color: #fff;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f8f8f8;
+        }
+      }
+    }
+
+    .playerTop {
+      position: relative;
+      &__subsect {
+        margin-bottom: 8px;
+        font-size: 18px;
+        font-weight: $bold;
+      }
+
+      &__nick {
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: $greishBrown;
+        cursor: pointer;
+      }
+
+      &__detail {
+        font-size: 14px;
+        color: $greishBrown;
+
+        i {
+          width: 16px;
+          height: 16px;
+          background-size: 16px;
+          vertical-align: middle;
+          background-position: center;
+          background-repeat: no-repeat;
+          text-indent: -9999px;
+          display: inline-block;
+          opacity: 0.8;
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ic_gift.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--message {
+          background-image: url(https://image.dalbitlive.com/svg/message_g_s.svg);
+        }
+
+        &--headset {
+          background-image: url(https://image.dalbitlive.com/svg/visit_g_s.svg);
+        }
+
+        img {
+          margin-top: 2px;
+        }
+
+        span {
+          margin: 0 8px;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+
+    .playerCenter {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 0;
+      height: 100%;
+      // margin-top: 40px;
+      .cover {
+        position: relative;
+        margin: 0 auto;
+        // width: 100%;
+        height: auto;
+        // min-width: 342px;
+        // min-height: 342px;
+        // height: 35vh;
+        text-align: center;
+        cursor: pointer;
+        > img {
+          width: 100%;
+        }
+      }
+      .cover.on .coverBoxInner {
+        transform: rotateY(180deg);
+        .coverBoxBack {
+          z-index: 3;
+        }
+        .coverBox {
+          z-index: -1;
+        }
+      }
+      .coverBoxInner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+      }
+      .coverBoxBack {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform: rotateY(180deg);
+        z-index: -1;
+        backface-visibility: hidden;
+        & > img:first-child {
+          width: auto;
+          height: 35vh;
+          border-radius: 12px;
+        }
+        .backWrap {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
+          border-radius: 12px;
+          .type {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #000;
+            color: #fff;
+            font-size: 12px;
+            padding: 8px 16px;
+            border-top-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+          }
+          .rate {
+            // position: absolute;
+            // right: 15px;
+            // top: 8px;
+            margin-left: 5px;
+            font-size: 12px;
+            font-weight: $bold;
+            color: #fff;
+            vertical-align: top;
+          }
+          .profImg {
+            position: relative;
+            margin-top: 10px;
+            text-align: center;
+            img:first-child {
+              width: 100px;
+              border-radius: 50%;
+            }
+            img:last-child {
+              position: absolute;
+              left: calc(50% - 72px);
+              top: -22px;
+              width: 145px;
+            }
+          }
+          .tagWrap {
+            margin-top: 28px;
+            height: 16px;
+            span {
+              padding: 0 6px;
+              vertical-align: top;
+              line-height: 16px;
+              font-size: 12px;
+              color: #fff;
+              background: rgb(245, 70, 64);
+              border-radius: 10px;
+            }
+            span + img {
+              margin: 0 4px;
+            }
+          }
+          .nickName {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: $bold;
+            line-height: 20px;
+            color: #fff;
+          }
+          .goBtn {
+            background: #000;
+            color: #fff;
+            border: 1px solid rgb(66, 66, 66);
+            font-size: 14px;
+            line-height: 34px;
+            padding: 0 40px;
+            margin-top: 15px;
+            border-radius: 20px;
+          }
+        }
+      }
+
+      .coverBox {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        z-index: 3;
+
+        & > .dim {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.15);
+          border-radius: 12px;
+
+          .type {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #000;
+            color: #fff;
+            font-size: 12px;
+            padding: 8px 16px;
+            border-top-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+          }
+
+          .rate {
+            position: absolute;
+            right: 15px;
+            top: 8px;
+            font-size: 12px;
+            font-weight: $bold;
+            color: #fff;
+            vertical-align: top;
+          }
+        }
+
+        & > img {
+          width: 100%;
+          height: 100%;
+          border-radius: 12px;
+        }
+
+        .fanListWrap {
+          position: absolute;
+          bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          padding: 0 10px;
+          box-sizing: border-box;
+
+          &__btnfanAdd {
+            width: 72px;
+            height: 32px;
+            border-radius: 18px;
+            border: solid 1px #424242;
+            background-color: #ffffff;
+            color: $greishBrown;
+            font-size: 14px;
+
+            &--active {
+              border-color: $primary;
+              color: $primary;
+            }
+          }
+
+          .rankItem {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            &__text {
+              font-size: 14px;
+              letter-spacing: -0.35px;
+              color: #9e9e9e;
+              margin-right: 22px;
+            }
+            &__imgBox {
+              display: flex;
+            }
+            &__list {
+              width: 36px;
+              height: 36px;
+              position: relative;
+              margin-right: 4px;
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center;
+              border-radius: 36px;
+              cursor: pointer;
+              &::after {
+                content: "";
+                position: absolute;
+                right: 0px;
+                bottom: 0px;
+                width: 12px;
+                height: 12px;
+                background: url(https://image.dalbitlive.com/images/api/ic_gold.png);
+              }
+              &:nth-child(2) {
+                &::after {
+                  content: "";
+                  background: url(https://image.dalbitlive.com/images/api/ic_silver.png);
+                }
+              }
+              &:nth-child(3) {
+                &::after {
+                  content: "";
+                  background: url(https://image.dalbitlive.com/images/api/ic_bronze.png);
+                }
+              }
+            }
+            &__more {
+              width: 36px;
+              height: 36px;
+              background: url(https://image.dalbitlive.com/svg/ic_circlemore.svg);
+            }
+          }
+        }
+      }
+
+      .iconBox {
+        height: 10%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 6px;
+
+        &__item {
+          width: 25%;
+          text-align: center;
+          &--block {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+
+      .giftEventButton {
+        width: 283px;
+        display: block;
+        margin-left: 40px;
+      }
+    }
+
+    .playBannerWrap {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 8px 8px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      background-color: #f7f9fa;
+
+      .swiper-container {
+        overflow: hidden;
+        .swiper-wrapper {
+          display: flex;
+          .swiper-slide {
+            flex-shrink: 0;
+            // cursor: pointer;
+          }
+        }
+      }
+
+      .bannerTextItem {
+        flex-direction: row;
+        padding: 4px 0;
+        color: $greishBrown;
+        font-size: 14px;
+        font-weight: $bold;
+        line-height: 1.43;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        &.isLink {
+          cursor: pointer;
+        }
+      }
+
+      .bannerBtnWrap {
+        display: flex;
+        align-items: center;
+        .btn {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          &.prev {
+            margin-right: 1px;
+            background: url("https://image.dalbitlive.com/svg/back_wg_s.svg")
+              no-repeat;
+            &:disabled {
+              opacity: 0.3;
+            }
+          }
+          &.next {
+            margin-left: 1px;
+            background: url("https://image.dalbitlive.com/svg/next_wg_s.svg")
+              no-repeat;
+            &:disabled {
+              opacity: 0.3;
+            }
+          }
+        }
+      }
+    }
+
+    .playerBottom {
+      .playerBarWrap {
+        display: flex;
+        width: 100%;
+        margin-top: 36px;
+        justify-content: space-between;
+        align-items: center;
+        color: $greishBrown;
+        font-size: 12px;
+
+        .startTime {
+          width: 10%;
+        }
+
+        .endTime {
+          width: 10%;
+          text-align: right;
+        }
+
+        .playerBar {
+          position: relative;
+          width: 80%;
+          padding: 10px 0;
+          cursor: pointer;
+
+          &__track {
+            width: 100%;
+            height: 6px;
+            background-color: $lightGray;
+            border-radius: 5px;
+          }
+
+          &__progress {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+
+            height: 6px;
+            background-color: $primary;
+            border-radius: 5px;
+          }
+
+          &__btn {
+            position: absolute;
+            right: -1px;
+            top: -3px;
+            width: 12px;
+            height: 12px;
+            border-radius: 10px;
+            background: #632beb;
+          }
+        }
+      }
+      .playerBtnWrap {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+
+        .playerBtn {
+          display: flex;
+          align-items: center;
+          width: 250px;
+
+          &__play {
+            margin: 0 auto;
+          }
+        }
+
+        // .playerBtn {
+        //   display: flex;
+        //   align-items: center;
+
+        //   &__play {
+        //     margin: 0 24px;
+        //   }
+        // }
+      }
+    }
+  }
+
+  .rightSide {
+    position: relative;
+    width: 362px;
+    z-index: 4;
+
+    .notLoginWrap {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      background-color: #f5f5f5;
+      border-radius: 40px;
+      text-align: center;
+
+      .notLogin {
+        width: 100%;
+
+        &__title {
+          margin-bottom: 14px;
+          font-size: 18px;
+          color: #707070;
+        }
+
+        &__subTitle {
+          margin-bottom: 45px;
+          font-size: 26px;
+          line-height: 34px;
+          font-weight: $bold;
+
+          span {
+            color: $primary;
+          }
+        }
+
+        .loginBtn {
+          margin-top: 45px;
+          width: 186px;
+          height: 56px;
+          border-radius: 28px;
+          background-color: $primary;
+          font-size: 20px;
+          font-weight: $bold;
+          color: #fff;
+        }
+      }
+    }
+
+    .tabBox {
+      display: flex;
+      background-color: #f5f5f5;
+      border-bottom: 1px solid $primary;
+
+      &__btnTab {
+        width: 25%;
+        text-align: center;
+        height: 50px;
+        margin-right: -1px;
+        line-height: 50px;
+        font-size: 16px;
+        text-align: center;
+        color: $gray;
+        background-color: $white;
+        border: $borderLine;
+        border-bottom: 0;
+        cursor: pointer;
+        &:last-child {
+          margin-right: 0;
+        }
+        &:hover,
+        &--active {
+          color: $white;
+          background-color: $primary;
+        }
+      }
+    }
+    .tabContent {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 55px);
+    }
+  }
+
+  .tabContent {
+    position: relative;
+
+    &__title {
+      position: relative;
+      height: 56px;
+      line-height: 56px;
+      font-size: 18px;
+      text-align: center;
+      border-bottom: solid 1px #eee;
+      background-color: #fff;
+
+      &--backBtn {
+        position: absolute;
+        top: 17px;
+        left: 0;
+        width: 24px;
+        height: 24px;
+
+        span {
+          position: relative;
+          display: inline-block;
+
+          width: 24px;
+          height: 24px;
+
+          &::after {
+            display: inline-block;
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 51%;
+            margin-top: -6px;
+            width: 6px;
+            height: 6px;
+            cursor: pointer;
+            border: solid $gray;
+            border-width: 0 1px 1px 0;
+            padding: 1px;
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+          }
+        }
+      }
+    }
+
+    &__btnWrite {
+      position: absolute;
+      top: 12px;
+      right: 8px;
+      width: 72px;
+      height: 32px;
+      border-radius: 16px;
+      background-color: #632beb;
+      color: #fff;
+
+      &--active {
+        background-color: #ccc;
+      }
+    }
+  }
+}
