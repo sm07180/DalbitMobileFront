@@ -76,14 +76,14 @@ const ImageUpload = (props) => {
         {imageFile.length > 0 && 
           <div className='uploadListWrap'>
             <Swiper {...swiperParams} key={Math.random()}>
-                {imageFile.map((list, index) => {
-                  return (
-                    <div className='uploadList' key={index}>
-                      <img src={list} alt="업로드이미지"/>
-                      <button type="button" className='removeFile' onClick={() => removeImage(index)}></button>
-                    </div>
-                  )
-                })}    
+              {imageFile.map((list, index) => {
+                return (
+                  <div className='uploadList' key={index}>
+                    <img src={list} alt="업로드이미지"/>
+                    <button type="button" className='removeFile' onClick={() => removeImage(index)}></button>
+                  </div>
+                )
+              })}    
             </Swiper>
           </div>
         }        
