@@ -6,13 +6,14 @@ import './receipt.scss'
 
 import {useHistory, useLocation} from "react-router-dom";
 
-const Receipt = () => {
+const Receipt = (props) => {
   const history = useHistory();
-  const location = useLocation();
-  const {info} = location.state || ""
+  // const {payReceipt} = props;
+  // console.log(props);
+  // console.log(payReceipt);
 
   const [receipt, setReceipt] = useState({
-    orderId: info.orderId,
+    orderId: "05760001_1612500994",
     payWay: "",
     payAmt: "",
     itemAmt: "",
@@ -41,7 +42,7 @@ const Receipt = () => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        orderId: info.orderId
+        orderId: "05760001_1612500994"
       }
     }).then((response) => {
       setReceipt({

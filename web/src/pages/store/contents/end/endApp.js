@@ -99,8 +99,8 @@ export default function EndApp() {
           })
         } else {  // returnType === 'store'
           getReciptInfo().then((response) => {
-            sessionStorage.setItem('pay_info', JSON.stringify(receipt));
-            return history.push({pathname: "/store"});
+            sessionStorage.setItem('pay_receipt', JSON.stringify(receipt));
+            return history.push({pathname: "/"});
           });
         }
       } else {  // result !== 'success'

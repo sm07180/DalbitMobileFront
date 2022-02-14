@@ -16,6 +16,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
+import Receipt from "pages/main/popup/receipt";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -43,6 +44,23 @@ const MainPage = () => {
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
+
+  const [payReceipt, setPayReceipt] = useState("")
+  const [receiptPop, setReceiptPop] = useState(false)
+  const setPayPopup = () => {
+    setReceiptPop(false)
+    sessionStorage.removeItem('pay_receipt')
+  }
+  useEffect(() => {
+    if (sessionStorage.getItem('pay_receipt') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
+      setReceiptPop(true);
+      setPayReceipt(payInfo)
+    }
+    return () => {
+      sessionStorage.removeItem('pay_receipt')
+    }
+  }, [])
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -270,6 +288,7 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
+    {true && <Receipt payReceipt={payReceipt} setPopup={setPayPopup} />}
   </>;
   return MainLayout;
 }
