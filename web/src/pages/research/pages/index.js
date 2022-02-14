@@ -4,7 +4,7 @@ import API from 'context/api'
 // global component
 import Header from 'components/ui/header/Header.js'
 import CntTitle from 'components/ui/cntTItle/CntTitle'
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 // component
 import SwiperList from '../components/SwiperList'
 // contents

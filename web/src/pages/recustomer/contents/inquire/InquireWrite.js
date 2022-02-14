@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
