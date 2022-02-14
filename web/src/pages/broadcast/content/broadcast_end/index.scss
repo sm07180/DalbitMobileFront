@@ -1,4 +1,5 @@
 @import "../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #boradcast-end-modal {
   position: relative;
@@ -243,7 +244,7 @@
       width: 100%;
       margin-top: 12px;
       padding: 13px 0;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       border-radius: 10px;
       text-align: center;
       font-size: 16px;
@@ -355,14 +356,14 @@
         }
 
         &.on {
-          border: 1px solid $primary;
-          background-color: $primary;
+          border: 1px solid $MAINCOLOR;
+          background-color: $MAINCOLOR;
           color: #fff;
         }
 
         &.isFan {
-          border: 1px solid $primary;
-          color: $primary;
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
         }
       }
     }
@@ -446,7 +447,7 @@
         margin-top: 12px;
         padding: 12px 0;
         border-radius: 20px;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         color: #fff;
       }
     }

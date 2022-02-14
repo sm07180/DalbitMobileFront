@@ -1,4 +1,6 @@
 @import "../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
+
 .castAudioUpload {
   max-width: 360px;
   margin: auto;
@@ -16,7 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #632beb;
+    color: $MAINCOLOR;
     letter-spacing: -0.85px;
     font-size: 34px;
     font-weight: $bold;
@@ -129,8 +131,8 @@
       border-bottom-right-radius: 12px;
     }
     button.on {
-      border: 1px solid #632beb;
-      color: #632beb;
+      border: 1px solid $MAINCOLOR;
+      color: $MAINCOLOR;
       background: #fff;
       z-index: 2;
     }
@@ -151,8 +153,8 @@
       letter-spacing: -0.5px;
     }
     button.on {
-      background: #632beb;
-      border-color: #632beb;
+      background: $MAINCOLOR;
+      border-color: $MAINCOLOR;
       color: #fff;
     }
   }
@@ -272,7 +274,7 @@
     letter-spacing: -0.4px;
     color: #fff;
     border-radius: 10px;
-    background: #632beb;
+    background: $MAINCOLOR;
     font-weight: $bold;
     &:disabled {
       background: #bdbdbd;
