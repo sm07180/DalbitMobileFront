@@ -1,29 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-// global components
-import TabBtn from 'components/ui/tabBtn/TabBtn.js'
 // components
 // css
-import './swiperList.scss'
+import '../scss/swiperList.scss';
+import '../../../components/ui/tabBtn/tabBtn.scss';
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,setPage} = props
+  const {tabList, targetIndex, changeAction} = props
+
+  const handleTabClick = (e) => {
+    const { tabTarget } = e.currentTarget.dataset;
+
+    if (tabTarget !== undefined && tabList[tabTarget] !== undefined) {
+      changeAction(tabTarget);
+    }
+  };
 
   return (
     <ul className="tabmenu">
-      {data.map((list,index) => {
-        const param = {
-          item: list,
-          tab: tab,
-          setTab: setTab,
-          setPage: setPage,
-        }
+      {tabList.map((list,index) => {
         return (
-          <TabBtn param={param} key={index} />
+          <li className={list === tabList[targetIndex] ? 'active' : ''} key={index} data-tab-target={index} onClick={handleTabClick}>{list}</li>
         )
       })}
     </ul>
   )
 }
 
-export default Tabmenu
+Tabmenu.defaultProps = {
+  tabList: [],
+  targetIndex: 0,
+  changeAction: () => {}
+};
+
+export default Tabmenu;

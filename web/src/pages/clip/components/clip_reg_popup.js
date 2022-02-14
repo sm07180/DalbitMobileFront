@@ -7,7 +7,7 @@ import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid} from 'context/hybrid'
 
-import '../clip.scss'
+import '../scss/clip.scss'
 
 export default function ClipRegPop(props) {
   const {setRegPopupState} = props

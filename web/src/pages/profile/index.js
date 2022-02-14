@@ -31,6 +31,7 @@ import {
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -372,6 +373,40 @@ const ProfilePage = (props) => {
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
   }
 
+  /* 피드글, 팬보드 삭제후 데이터 비우기 */
+  const deleteContents = (type, index, memNo) => {
+    const callback = async () => {
+      if (type === 'feed') {
+        const {result, data, message} = await Api.mypage_notice_delete({
+          data: {
+            delChrgrName: profileData?.nickNm,
+            noticeIdx: index,
+          }
+        })
+        if (result === 'success') {
+          const feedList = feedData.feedList.concat([]).filter((feed, _index) => feed.noticeIdx !== index);
+          dispatch(setProfileFeedData({...feedData, feedList}));
+        } else {
+          context.action.toast({msg: message});
+        }
+      } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
+        const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
+
+        console.log('fanBoardData', fanBoardData, list);
+        const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
+        if (result === 'success') {
+          dispatch(setProfileFanBoardData({...fanBoardData, list}));
+        } else {
+          context.action.toast({msg: message});
+        }
+      }
+    }
+    context.action.confirm({
+      msg: '정말 삭제 하시겠습니까?',
+      callback
+    });
+  }
+
   useEffect(() => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
       getFeedData();
@@ -429,7 +464,7 @@ const ProfilePage = (props) => {
       <Header title={`${profileData.nickNm}`} type={'back'}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className='editBtn'>수정</button>
+            <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
           </div>
           :
           <div className="buttonGroup">
@@ -452,23 +487,21 @@ const ProfilePage = (props) => {
         <div className="tabmenuWrap">
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} tabChangeAction={socialTabChangeAction} />
           {isMyProfile && <button onClick={() => {
-            socialType === socialTabmenu[0]?
-            history.push(`/profileWrite/${profileData?.memNo}/feed/write`):
-              socialType === socialTabmenu[1] &&
-              history.push(`/profileDetail/${profileData?.memNo}/fanBoard/write`)}}>>등록</button>}
+            socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
+              socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
+          }}>>등록</button>}
         </div>
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
           <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
-                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} />
+                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {socialType === socialTabmenu[1] &&
           <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile}
-                           openBlockReportPop={openBlockReportPop}
-          />
+                           deleteContents={deleteContents} openBlockReportPop={openBlockReportPop} />
         }
 
         {/* 클립 */}

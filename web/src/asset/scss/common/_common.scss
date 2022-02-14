@@ -113,7 +113,7 @@ legend {
 #GNB {
   position:sticky;
   top:0;
-  z-index: 99999;
+  z-index: 50;
   width:100%;min-width:480px;
   height: $GNB-HEIGHT;
   background-color: white;
@@ -138,10 +138,26 @@ legend {
         }
       }
       button {
+        position: relative;
+        @include flex(center,center);
         width:114px;
         line-height:34px;
         margin-left:auto;
         @include border(#D9D9D8,2px);
+        &::before {
+          content:"+";
+          display:inline-block;
+          width:10px;
+          height:10px;
+          line-height:10px;
+          margin-right:4px;
+          font-size:20px;
+        }
+        &:hover {
+          border-color:$MAINCOLOR;
+          background-color:$MAINCOLOR;
+          color:white;
+        }
       }
     }
     .gnbNavigation {
@@ -204,6 +220,15 @@ legend {
             &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
             &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
             &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
+          }
+          &.new {
+            .newDot {
+              @include position-top-right(4px,4px);
+              display:inline-block;
+              width:8px;height:8px;
+              border-radius:50%;
+              background-color:$MAINCOLOR;
+            }
           }
         }
       }

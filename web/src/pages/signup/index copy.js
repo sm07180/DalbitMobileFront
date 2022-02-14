@@ -644,29 +644,6 @@ export default (props) => {
     }
   }
 
-  const addAdsData = async () => {
-    const targetVersion = isAndroid() ? '1.6.9' : '1.6.3'; // 이 버전 이상으로 강업되면 예전버전 지우기
-    const successCallback = () => {
-      const firebaseDataArray = [
-        { type : "firebase", key : "CompleteRegistration", value : {} },
-        { type : "adbrix", key : "CompleteRegistration", value : {} },
-      ];
-      kakaoPixel('114527450721661229').completeRegistration()
-      Hybrid('eventTracking', {service :  firebaseDataArray})
-    };
-    const failCallback = () => {
-      fbq('track', 'CompleteRegistration')
-      firebase.analytics().logEvent('CompleteRegistration')
-      kakaoPixel('114527450721661229').completeRegistration()
-    }
-
-    if(isHybrid()) {
-      await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
-    }else {
-      failCallback();
-    }
-  }
-
   //회원가입 Data fetch
   async function sighUpFetch() {
     const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
@@ -690,18 +667,43 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      //Facebook,Firebase 이벤트 호출
-      addAdsData();
+      const cmd = 'CompleteRegistration';
+      const successCallback = () => { // appVer 이상
+        Utility.addAdsData(cmd);
+      };
+      const failCallback = async () => { // appVer 미만
+        const successCallback2 = () => {
+          Utility.oldAddAdsData(cmd);
+        }
+
+        const failCallback2 = () => {
+          try {
+            firebase.analytics().logEvent(cmd)
+            Hybrid('adbrixEvent', data.adbrixData);
+            fbq('track', cmd)
+          } catch (e) {}
+        }
+
+        const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
+        await Utility.compareAppVersion(targetVersion, successCallback2, failCallback2);
+      }
+
+      if(isHybrid()) {
+        const targetVersion = isAndroid() ? '1.8.2' : '1.6.6';
+        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+      }else {
+        failCallback();
+      }
 
       context.action.alert({
         callback: () => {
-          //애드브릭스 이벤트 전달
-          if (data.adbrixData != '' && data.adbrixData != 'init') {
-            Hybrid('adbrixEvent', data.adbrixData)
+          //애드브릭스 이벤트 전달 => native에서 처리
+          // if (data.adbrixData != '' && data.adbrixData != 'init') {
+          //   Hybrid('adbrixEvent', data.adbrixData)
             // if (__NODE_ENV === 'dev') {
               // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
             // }
-          }
+          // }
           loginFetch()
         },
         msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'

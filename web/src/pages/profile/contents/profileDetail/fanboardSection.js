@@ -7,7 +7,7 @@ import SocialList from "../../components/SocialList";
 import Utility from "components/lib/utility";
 
 const FanboardSection = (props) => {
-  const { fanBoardData, isMyProfile, openBlockReportPop } = props;
+  const { fanBoardData, isMyProfile, deleteContents, profileData, openBlockReportPop } = props;
 
   return (
     <div className="fanboardSection">
@@ -15,7 +15,8 @@ const FanboardSection = (props) => {
         <div className="title">전체 {Utility.addComma(fanBoardData.paging.total)}</div>
       </div>
       {fanBoardData.list.length > 0 ?
-        <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard" openBlockReportPop={openBlockReportPop} />
+        <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard"
+                    deleteContents={deleteContents} profileData={profileData} openBlockReportPop={openBlockReportPop} />
         :
         <NoResult />
       }

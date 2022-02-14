@@ -4,6 +4,8 @@ import Api from 'context/api'
 import moment from 'moment'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
+import NoResult from 'components/ui/noResult/NoResult'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 
 import './style.scss'
@@ -58,6 +60,9 @@ const LikePopup = (props) => {
   // 스크롤 페이징
   const [pageNo, setPageNo] = useState(1);
   const [isLastPage, setIsLastPage] = useState(false);
+
+  // 좋아요 랭킹기준 안내팝업
+  const [noticePop, setNoticePop] = useState(false);
 
   /* 내프로필 -> 전체랭킹 - 좋아요 */
   const totalRankLikeApi = () => {
@@ -216,7 +221,7 @@ const LikePopup = (props) => {
           <ul className="tabmenu">
             {myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
-                <div className="swiper-slide" key={index}>
+                <div className="likeTab" key={index}>
                   <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
@@ -228,16 +233,17 @@ const LikePopup = (props) => {
           <ul className="tabmenu">
             {notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
-                <div className="swiper-slide" key={index}>
+                <div className="likeTab" key={index}>
                   <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
                 </div>
               )
             })}
-            <button>?</button>
+            <button onClick={() => setNoticePop(true)}>?</button>
           </ul>
         }
+        {showList.length > 0 ?
         <div className="listWrap">
           {showList.map((list,index) => {
             return (
@@ -279,7 +285,26 @@ const LikePopup = (props) => {
             )
           })}
         </div>
+        :
+        <NoResult />
+        }
       </div>
+      {noticePop &&
+        <LayerPopup title="랭킹 기준" setPopup={setNoticePop}>
+          <section className="profileRankNotice">
+            <div className="title">최근 팬 랭킹</div>
+            <div className="text">최근 3개월 간 내 방송에서 선물을 많이<br/>
+            보낸 팬 순위입니다.</div>
+            <div className="title">누적 팬 랭킹</div>
+            <div className="text">전체 기간 동안 해당 회원의 방송에서<br/>
+            선물을 많이 보낸 팬 순위입니다.</div>
+            <div className="title">좋아요 전체 랭킹</div>
+            <div className="text">팬 여부와 관계없이 해당 회원의<br/>
+            방송에서 좋아요(부스터 포함)를 보낸<br/>
+            전체 회원 순위입니다.</div>
+          </section>
+        </LayerPopup>
+      }
     </section>
   )
 }

@@ -1,0 +1,2183 @@
+@import 'src/styles/global';
+
+#clipPage {
+  width: 100%;
+  min-height: 100vh;
+
+  .header-wrap {
+    z-index: 2;
+  }
+  .refresh-wrap {
+    // display: none;
+    min-height: 48px;
+    max-height: 110px;
+    z-index: 1;
+  }
+  .titleBox {
+    position: relative;
+    padding: 0 16px;
+  }
+  .clipTitle {
+    position: relative;
+    font-size: 18px;
+    font-weight: $bold;
+    line-height: 1.17;
+    color: $black;
+    &.isArrow {
+      &::after {
+        position: absolute;
+        top: -2px;
+        display: inline-block;
+        content: '';
+        width: 24px;
+        height: 24px;
+        margin-left: 2px;
+        background: url('../static/arrow_right.svg');
+      }
+    }
+  }
+
+  .clipListCategory {
+    max-width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 16px 0 16px 0;
+    padding: 4px 7px;
+    box-sizing: border-box;
+    background: $black;
+    font-size: 11px;
+    letter-spacing: -0.28px;
+    color: $white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .swiper-container {
+    position: relative;
+    overflow: hidden;
+    .swiper-wrapper {
+      display: flex;
+    }
+  }
+
+  .clipRegWrap {
+    display: flex;
+    padding: 16px 16px 0;
+
+    button + button {
+      margin-left: 4px;
+    }
+
+    .clipReg__button {
+      width: 100%;
+      height: 36px;
+      border-radius: 10px;
+      background-color: $primary;
+      color: $white;
+      font-weight: $bold;
+      font-size: 14px;
+      line-height: 1.86;
+      letter-spacing: -0.35px;
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 26px;
+        height: 26px;
+        margin-right: 2px;
+        vertical-align: -7px;
+      }
+      &:nth-child(1) {
+        &::before {
+          background: url('https://image.dalbitlive.com/svg/record_purple.svg') no-repeat 0 0;
+        }
+      }
+      &:nth-child(2) {
+        &::before {
+          background: url('https://image.dalbitlive.com/svg/upload_purple.svg') no-repeat 0 0;
+        }
+      }
+    }
+  }
+
+  .myClip {
+    padding: 11px 8px;
+    margin: 15px 16px 0;
+    background-color: $whiteGray;
+    border-radius: 9px;
+    .clipTitle {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-bottom: 23px;
+      em {
+        display: flex;
+        align-items: center;
+
+        &::after {
+          display: block;
+          content: '';
+          margin-left: 4px;
+          width: 24px;
+          height: 24px;
+          background: url('../static/infomyclip.png') no-repeat center center;
+          background-size: 24px 24px;
+          cursor: pointer;
+        }
+      }
+    }
+    &__arrow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      right: 6px;
+      min-width: 64px;
+      height: 24px;
+      padding: 6px 4px 5px 11px;
+      box-sizing: border-box;
+      border-radius: 16px;
+      border: solid 1px #e0e0e0;
+      font-size: 12px;
+      color: #424242;
+      cursor: pointer;
+    }
+    .myClipWrap {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: center;
+      li {
+        position: relative;
+        width: 25%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        // border-right: 1px solid rgba(230, 230, 230, 0.8);
+
+        &:last-child {
+          border: none;
+        }
+        em {
+          display: block;
+          width: 33px;
+          height: 33px;
+          font-size: 14px;
+          letter-spacing: -0.35px;
+          font-weight: $regular;
+          font-style: normal;
+          color: #424242;
+          border-radius: 50%;
+        }
+        &.upload {
+          em {
+            background: #1f9de6 url('../static/upload.svg') no-repeat center center / 24px;
+          }
+        }
+        &.listen {
+          em {
+            background: #ffa929 url('../static/listen.svg') no-repeat center center / 24px;
+          }
+        }
+        &.like {
+          em {
+            background: #ec455f url('../static/like.svg') no-repeat center center / 24px;
+          }
+        }
+        &.gift {
+          em {
+            background: #994bff url('../static/gift.svg') no-repeat center center / 24px;
+          }
+        }
+        span {
+          margin-top: 6px;
+          font-size: 14px;
+          font-weight: $bold;
+          letter-spacing: -0.35px;
+          text-align: center;
+          color: #424242;
+        }
+      }
+    }
+  }
+
+  .recomClip {
+    padding: 24px 16px 0;
+    .btn__refresh {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      margin-left: 8px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      &--active {
+        margin-left: 8px;
+        animation: anim 0.36s;
+      }
+    }
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 32px;
+      margin-bottom: 11px;
+
+      &__rightSide {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+      &__date {
+        //margin-right: 8px;
+        font-size: 12px;
+        line-height: 1.08;
+        letter-spacing: -0.3px;
+        text-align: left;
+        font-weight: $regular;
+        color: $greishGray;
+      }
+    }
+    .recomClipBox {
+      display: flex;
+      flex-wrap: wrap;
+      margin: -10px 0 0 -10px;
+      .recomClipItem {
+        overflow: hidden;
+        position: relative;
+        width: 31.3%;
+        padding-bottom: 31.3%;
+        margin: 10px 0 0 2%;
+        border-radius: 16px;
+        background-size: cover;
+        &__subject {
+          position: absolute;
+          left: 0;
+          top: 0;
+          border-bottom-right-radius: 16px;
+          width: auto;
+          padding: 4px 6px;
+          box-sizing: border-box;
+          background-color: #000000;
+          font-size: 11px;
+          font-weight: 400;
+          font-stretch: normal;
+          font-style: normal;
+          letter-spacing: -0.28px;
+          text-align: center;
+          color: #ffffff;
+        }
+        &__nickName {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+          padding: 7px 12px;
+          text-align: center;
+          color: #fff;
+          background: rgba(0, 0, 0, 0.5);
+          font-size: 14px;
+          font-weight: $bold;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+
+  .rankClip {
+    position: relative;
+    margin: 34px 0 0;
+
+    &__titleBox {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      font-size: 16px;
+      font-weight: $bold;
+      line-height: 24px;
+    }
+
+    &__title {
+      position: relative;
+      font-size: 18px;
+      line-height: 24px;
+      padding: 0px 16px;
+      font-weight: $bold;
+      color: $black;
+      cursor: pointer;
+
+      &::after {
+        position: absolute;
+        top: 0px;
+        content: '';
+        width: 24px;
+        height: 24px;
+        background: url('../static/arrow_right.svg');
+      }
+    }
+
+    &__moreButton {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0px;
+      right: 16px;
+      button {
+        padding: 0px 6px;
+        color: $black;
+        font-weight: $bold;
+        font-size: 16px;
+        &.isActive {
+          color: $primary;
+        }
+        &:hover {
+          color: $primary;
+        }
+      }
+
+      &::before {
+        position: absolute;
+        top: 7px;
+        left: 50%;
+        width: 1px;
+        height: 12px;
+        background: #b6b6b6;
+        content: '';
+      }
+    }
+
+    .rankClipList {
+      padding: 11px 16px 0 16px;
+      display: flex;
+
+      li + li {
+        margin-left: 3%;
+      }
+
+      .rankClipListItem {
+        overflow: hidden;
+        width: 31.3%;
+        text-align: center;
+        cursor: pointer;
+
+        &.week {
+          .rankClipListItem__thumb {
+            &::after {
+              background: none;
+            }
+          }
+        }
+
+        &__thumb {
+          position: relative;
+          img {
+            width: 100%;
+            border-radius: 20px;
+          }
+
+          &::after {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+
+            background: url(https://image.dalbitlive.com/svg/play_w_Button.svg) no-repeat center center;
+            content: '';
+          }
+        }
+
+        &:nth-child(1) {
+          .rankClipListItem__thumb {
+            &::before {
+              position: absolute;
+              left: -2px;
+              width: 40px;
+              height: 45px;
+              background: url(https://image.dalbitlive.com/images/clip_rank/medal_gold_b@2x.png) no-repeat;
+              content: '';
+              background-size: 100%;
+            }
+          }
+        }
+        &:nth-child(2) {
+          .rankClipListItem__thumb {
+            &::before {
+              position: absolute;
+              left: -2px;
+              width: 32px;
+              height: 36px;
+              background: url(https://image.dalbitlive.com/images/clip_rank/medal_silver_b@2x.png) no-repeat;
+              content: '';
+              background-size: 100%;
+            }
+          }
+        }
+        &:nth-child(3) {
+          .rankClipListItem__thumb {
+            &::before {
+              position: absolute;
+              left: -2px;
+              width: 32px;
+              height: 36px;
+              background: url(https://image.dalbitlive.com/images/clip_rank/medal_bronze_m@2x.png) no-repeat;
+              content: '';
+              background-size: 100%;
+            }
+          }
+        }
+
+        &__nickName {
+          display: block;
+          margin-top: 4px;
+          font-size: 12px;
+          color: $darkGray;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+
+        &__title {
+          display: block;
+          margin-top: 10px;
+          font-size: 16px;
+          font-weight: $bold;
+          color: $greishBrown;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    .warn {
+      display: flex;
+      align-items: center;
+      padding-top: 8px;
+      font-size: 12px;
+      font-weight: $bold;
+      letter-spacing: -0.3px;
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 4px;
+        background: url(../static/hint_b.svg);
+      }
+    }
+    &__btn {
+      font-size: 14px;
+    }
+    .swiper-container {
+      padding: 15px 0 0 16px;
+      box-sizing: border-box;
+    }
+    .slideWrap {
+      position: relative;
+      width: calc(30% - 2.5%);
+
+      flex-shrink: 0;
+
+      &__thumb {
+        img {
+          width: 100%;
+          border-radius: 20px;
+        }
+      }
+
+      &__iconNew {
+        position: absolute;
+        bottom: 58px;
+        right: 0;
+        display: block;
+        width: 20%;
+        border-radius: 50%;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      &__subject {
+        margin: 12px auto 0 auto;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 16px;
+        font-weight: $bold;
+        text-align: center;
+        line-height: 1.2;
+        text-overflow: ellipsis;
+        color: $greishBrown;
+      }
+
+      &__nickName {
+        display: block;
+
+        margin: 4px auto 0 auto;
+        font-size: 12px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: $bold;
+        letter-spacing: normal;
+        color: $darkGray;
+      }
+    }
+  }
+
+  .clipBanner {
+    padding: 30px 16px 0;
+
+    .bannerWrap {
+      .slideWrap {
+        position: relative;
+        .swiper-slide {
+          width: 100%;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        &.active {
+          display: none;
+        }
+        .banner {
+          img {
+            width: 100%;
+            // height: 65px;
+            border-radius: 16px;
+          }
+        }
+
+        .swiper-container {
+          height: auto;
+          .banner {
+            img {
+              width: 100%;
+              // height: 65px;
+              border-radius: 16px;
+            }
+          }
+          .swiper-pagination-fraction {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 7px;
+            right: 46px;
+            left: auto;
+            width: 45px;
+            height: 24px;
+            font-size: 12px;
+            letter-spacing: 3px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-radius: 24px;
+            .swiper-pagination-total {
+              font-weight: $regular;
+            }
+          }
+        }
+      }
+
+      .bannerNumber {
+        border: solid 1px;
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        width: 45px;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1;
+        p {
+          opacity: 0.5;
+        }
+      }
+
+      .moreButton {
+        position: absolute;
+        right: 11px;
+        bottom: 7px;
+        z-index: 2;
+        width: 33px;
+        height: 24px;
+        border-radius: 24px;
+        background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
+
+        &.active {
+          background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+        }
+      }
+
+      .bannerView {
+        display: none;
+        &.active {
+          display: block;
+        }
+        .basicBanner {
+          position: relative;
+          margin-top: 10px;
+
+          &:first-child {
+            margin-top: 0;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .weekClip {
+    padding-top: 34px;
+
+    &__titleBox {
+      position: relative;
+    }
+    &__title {
+      display: flex;
+      align-items: center;
+      padding: 0px 16px;
+      font-size: 18px;
+      font-weight: $bold;
+      color: $black;
+      cursor: pointer;
+      &::after {
+        width: 24px;
+        height: 27px;
+        background: url(https://image.dalbitlive.com/svg/arrow_right_b.svg) center no-repeat;
+        content: '';
+      }
+    }
+    &__moreButton {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 1px;
+      right: 10px;
+      font-size: 12px;
+
+      &::before {
+        position: absolute;
+        left: 50%;
+        width: 1px;
+        height: 12px;
+        background: #b6b6b6;
+        content: '';
+      }
+      button {
+        color: $black;
+        padding: 0 6px;
+
+        &.isActive {
+          opacity: 1;
+        }
+        &:hover {
+          opacity: 1;
+        }
+      }
+      .btnPrev {
+        display: flex;
+        align-items: center;
+        margin-right: 2px;
+        &::before {
+          width: 24px;
+          height: 24px;
+          background: url(https://image.dalbitlive.com/svg/arrow_left_b.svg) left center no-repeat;
+          content: '';
+        }
+        &:disabled {
+          opacity: 0.4;
+          &::before {
+            opacity: 0.4;
+          }
+        }
+      }
+      .btnNext {
+        display: flex;
+        align-items: center;
+        &::after {
+          width: 24px;
+          height: 24px;
+          background: url(https://image.dalbitlive.com/svg/arrow_right_b.svg) right center no-repeat;
+          content: '';
+        }
+        &:disabled {
+          opacity: 0.4;
+          &::after {
+            opacity: 0.4;
+          }
+        }
+      }
+    }
+
+    &__list {
+      padding-top: 17px;
+      margin: auto;
+      .swiper-slide {
+        width: 328px;
+        //height: 88px;
+      }
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      //height: 102px;
+      padding: 4px;
+      border-radius: 52px;
+      background: $whiteGray;
+      cursor: pointer;
+      .textBox {
+        flex: 1;
+        overflow: hidden;
+        padding: 0 25px 0 10px;
+        box-sizing: border-box;
+
+        &__title {
+          font-size: 17px;
+          font-weight: $bold;
+          color: $black;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        &__nickName {
+          display: block;
+          margin-top: 4px;
+          font-size: 15px;
+          color: $primary;
+          font-weight: $bold;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        &__subject {
+          display: block;
+          font-size: 13px;
+          color: $greishGray;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+
+      .playButton {
+        flex-shrink: 0;
+        margin-right: 14px;
+        text-indent: -9999px;
+        width: 32px;
+        height: 32px;
+        background: url(https://image.dalbitlive.com/svg/play_Button_purple_w.svg) center no-repeat;
+        background-size: 32px;
+      }
+    }
+
+    &__thumb {
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid $white;
+      box-sizing: border-box;
+      flex-shrink: 0;
+      box-shadow: 4px 0 6px 0 rgba(0, 0, 0, 0.16);
+
+      img {
+        width: 76px;
+        height: 76px;
+      }
+    }
+  }
+
+  .categoryBest {
+    margin: 22px 0 0;
+    background-color: $primary;
+
+    .swiper-wrapper {
+      align-items: center;
+    }
+    .swiper-pagination-bullets {
+      bottom: 20px;
+    }
+    .swiper-pagination-bullet {
+      margin: 0 1.4px;
+      width: 6px;
+      height: 6px;
+    }
+    .swiper-pagination-bullet-active {
+      background: $primary;
+      width: 14px;
+      height: 6px;
+      border-radius: 10px;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .slideWrap {
+      padding: 24px 25px;
+      width: 88%;
+      min-width: 360px;
+      border-radius: 20px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+      background-color: #fff;
+      box-sizing: border-box;
+      transform: scaleY(0.9);
+      transition: transform ease 0.5s;
+
+      &.swiper-slide-active {
+        margin: 16px 0;
+        transform: scaleY(1);
+      }
+
+      &__title {
+        font-size: 18px;
+        padding-bottom: 5px;
+        font-weight: $bold;
+      }
+      &__btn {
+        position: absolute;
+        right: 25px;
+        font-size: 14px;
+        padding-right: 28px;
+        background: url('../static/arrow_down_g.svg') no-repeat right;
+      }
+
+      &__subTitle {
+        margin-bottom: 26px;
+        font-size: 14px;
+      }
+    }
+
+    .categoryBestItem {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+
+      &__num {
+        width: 20px;
+        font-weight: $bold;
+      }
+
+      &__thumb {
+        width: 54px;
+        height: 54px;
+        margin-right: 8px;
+
+        img {
+          width: 100%;
+          border-radius: 12px;
+        }
+      }
+
+      &__text {
+        width: calc(100% - 84px);
+
+        &--subject,
+        &--nickName {
+          width: 100%;
+          font-size: 14px;
+          font-weight: $bold;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
+
+        &--nickName {
+          padding-top: 4px;
+          font-size: 12px;
+          color: $greishGray;
+          font-weight: $bold;
+        }
+      }
+    }
+  }
+
+  .liveChart {
+    .fixedArea {
+      padding: 16px 0 16px 16px;
+      background-color: #fff;
+      box-sizing: border-box;
+      &.on {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 7;
+        width: 100%;
+      }
+    }
+    .titleBox {
+      display: flex;
+      align-items: center;
+      padding: 0 16px 8px 0;
+      box-sizing: border-box;
+      background-color: #fff;
+
+      .sortCate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 32px;
+        padding-left: 6px;
+        margin-left: 8px;
+        border-radius: 12px;
+        border: solid 1px #bdbdbd;
+
+        span {
+          font-size: 12px;
+          font-weight: $bold;
+          letter-spacing: -0.24px;
+        }
+      }
+      .sequenceBox {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+        .sequenceItem {
+          display: flex;
+          align-items: center;
+          button {
+            margin-left: 4px;
+            &:first-child {
+              margin-left: 0;
+            }
+            &.btnRefresh {
+              margin-left: 16px;
+              position: relative;
+              .refresh-icon {
+                position: relative;
+                width: 32px;
+                height: 32px;
+                &--active {
+                  animation: anim 0.36s;
+                }
+              }
+              &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                left: -8px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1px;
+                height: 12px;
+                background-color: #e0e0e0;
+              }
+            }
+          }
+        }
+      }
+    }
+    .swiper-container {
+      // border-bottom: 1px solid #eee;
+      background-color: #fff;
+      margin-top: -1px;
+      .slideWrap {
+        width: auto;
+        margin-right: 4px;
+        font-weight: $bold;
+        padding: 0 11px;
+        border-radius: 12px;
+        border: solid 1px #e0e0e0;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        height: 32px;
+        line-height: 32px;
+        font-size: 14px;
+        color: #424242;
+
+        &.active {
+          color: #fff;
+          border: solid 1px $primary;
+          background-color: $primary;
+        }
+      }
+    }
+    .chartListDetail {
+      padding: 0px 16px 60px 16px;
+      .chartListDetailItem {
+        display: flex;
+        align-items: center;
+        margin-top: 16px;
+        &:first-child {
+          margin-top: 0;
+        }
+
+        &__thumb {
+          position: relative;
+          margin-right: 12px;
+          width: 72px;
+          .newSpecialIcon {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 51px;
+            height: 16px;
+            text-indent: -99999px;
+            background-image: url('https://image.dalbitlive.com/main/200714/ico_speciladj_thumbnail@2x.png');
+            background-size: 100%;
+          }
+
+          img {
+            width: 100%;
+            border-radius: 12px;
+          }
+          &__playTime {
+            display: inline-block;
+            position: absolute;
+            right: 3px;
+            bottom: 3px;
+            padding: 0 4px;
+            height: 14px;
+            line-height: 14px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-radius: 12px;
+            height: 14px;
+            font-size: 10px;
+          }
+        }
+
+        .textBox {
+          width: calc(100% - 90px);
+          &__iconBox {
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            border: solid 1px;
+
+            &--type {
+              font-size: 14px;
+              color: $primary;
+              font-weight: $regular;
+              letter-spacing: -0.5px;
+            }
+          }
+
+          &__subject {
+            display: flex;
+            align-items: center;
+            height: 20px;
+            letter-spacing: -0.5px;
+            .title {
+              color: $greishBrown;
+              flex: 1;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              letter-spacing: -0.5px;
+              line-height: 1.3;
+            }
+            .subject {
+              font-size: 14px;
+              color: $primary;
+              font-weight: $regular;
+              letter-spacing: -0.5px;
+            }
+          }
+          &__nickName {
+            display: flex;
+            width: 100%;
+            margin: 7px 0px;
+            color: #616161;
+
+            .nickname {
+              margin-left: 4px;
+              @include multi-ellipsis(1);
+            }
+          }
+
+          &__subject {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            font-weight: $bold;
+          }
+
+          i.line {
+            flex-basis: 1px;
+            height: 10px;
+            background: #bdbdbd;
+            margin: 0px 6px;
+          }
+
+          &__nickName {
+            font-size: 12px;
+          }
+
+          &__detail {
+            margin-top: 3px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            &--item {
+              color: #424242;
+              font-size: 12px;
+              letter-spacing: -0.5px;
+              margin-right: 8px;
+              font-weight: $regular;
+
+              i.icon {
+                width: 16px;
+                height: 16px;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: inline-block;
+                margin-right: 2px;
+                opacity: 0.8;
+                text-indent: -9999px;
+                display: inline-block;
+                vertical-align: middle;
+
+                &--lineMessage {
+                  background-image: url(https://image.dalbitlive.com/svg/line_message_g.svg);
+                }
+
+                &--like {
+                  background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+                }
+                &--message {
+                  background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .chartListSimple {
+      padding: 0 16px 12px;
+
+      .chartListSimpleBox {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-top: -10px;
+
+        .chartListSimpleItem {
+          position: relative;
+          width: 49%;
+          max-height: 220px;
+          background-color: rgb(238, 238, 238);
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          overflow: hidden;
+          border-radius: 16px;
+          margin-top: 10px;
+          &::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+          }
+
+          .itemBox {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            position: absolute;
+            top: 10px;
+            padding: 0px 10px;
+            box-sizing: border-box;
+            &__status {
+              display: flex;
+              align-items: center;
+              .specialIcon {
+                margin-top: 2px;
+              }
+            }
+
+            &__score {
+              display: flex;
+              color: $white;
+              font-size: 13px;
+
+              span + span {
+                margin-left: 5px;
+              }
+              span {
+                padding-left: 20px;
+                &.heart {
+                  background: url('https://image.dalbitlive.com/svg/line_heart_w.svg') no-repeat left 1px / 18px;
+                }
+                &.message {
+                  background: url('https://image.dalbitlive.com/svg/line_message_w.svg') no-repeat left 1px / 18px;
+                }
+              }
+            }
+          }
+
+          .textBox {
+            width: 100%;
+            position: absolute;
+            bottom: 10px;
+            padding: 0px 10px;
+            box-sizing: border-box;
+            color: #fff;
+            font-size: 12px;
+            font-weight: $bold;
+            overflow: hidden;
+
+            &__typeIcon {
+              width: 26px;
+              background-color: rgba(254, 189, 86, 0.5);
+              height: 16px;
+              margin-right: 4px;
+              border-radius: 8px;
+            }
+
+            &__title {
+              margin-top: 3px;
+              font-size: 14px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            &__nickNameBox {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-top: 4px;
+              color: $white;
+              font-size: 12px;
+
+              .nickName {
+                width: calc(100% - 28px);
+                @include multi-ellipsis(1);
+              }
+            }
+          }
+        }
+      }
+    }
+    .allIcon,
+    .twentyIcon,
+    .fanIcon {
+      display: inline-block;
+      width: 24px;
+      height: 16px;
+      margin-right: 2px;
+      font-size: 8px;
+      line-height: 15px;
+      box-sizing: border-box;
+      background: url('../static/allrestrict.svg');
+      text-align: center;
+      color: #fff;
+      border-radius: 8px;
+    }
+    .fanIcon {
+      background: url('../static/fanrestrict.svg');
+    }
+    .twentyIcon {
+      background: url('../static/twentyrestrict.svg');
+    }
+    .male,
+    .female {
+      width: 24px;
+      height: 16px;
+      margin-right: 4px;
+      background: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+    }
+    .female {
+      background: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+    }
+    .specialIcon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      line-height: 16px;
+      font-size: 7px;
+      text-align: center;
+      color: #fff;
+      background-color: rgb(236, 69, 95);
+      border-radius: 50%;
+    }
+    .categoryIcon {
+      min-width: 30px;
+      background-color: #9e9e9e;
+      color: #fff;
+      font-size: 11px;
+      padding-left: 6px;
+      padding-right: 6px;
+      height: 16px;
+      line-height: 16px;
+      text-align: center;
+      border-radius: 8px;
+    }
+    @keyframes anim {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}
+
+#clipRecommend {
+  background: #eee;
+
+  .subContent {
+    padding: 0px 16px;
+  }
+  .topBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 52px;
+
+    .day {
+      font-size: 16px;
+      color: $primary;
+      font-weight: $bold;
+    }
+    .prev {
+      background: url('https://image.dalbitlive.com/svg/arrow_left_g.svg') left center no-repeat;
+      padding-left: 24px;
+      line-height: 52px;
+      color: #7f7f7f;
+      font-weight: $bold;
+      cursor: pointer;
+
+      &:not(.noHover):hover {
+        background: url('https://image.dalbitlive.com/svg/arrow_left_b.svg') left center no-repeat;
+        color: $black;
+      }
+      &.on {
+        background: url('https://image.dalbitlive.com/svg/arrow_left_b.svg') left center no-repeat;
+        color: $black;
+      }
+    }
+    .next {
+      background: url('https://image.dalbitlive.com/svg/arrow_right_g.svg') right center no-repeat;
+      padding-right: 24px;
+      line-height: 52px;
+      color: #7f7f7f;
+      font-weight: $bold;
+      cursor: pointer;
+
+      &:not(.noHover):hover {
+        background: url('https://image.dalbitlive.com/svg/arrow_right_b.svg') right center no-repeat;
+        color: $black;
+      }
+      &.on {
+        background: url('https://image.dalbitlive.com/svg/arrow_right_b.svg') right center no-repeat;
+        color: $black;
+      }
+    }
+  }
+
+  .play {
+    background: $white;
+    border-radius: 16px;
+    padding: 8px 16px;
+    box-sizing: border-box;
+
+    .titleMsgBox {
+      width: 100%;
+      padding: 8px 0 16px;
+      font-size: 18px;
+      font-weight: $bold;
+      line-height: 1.17;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .video {
+      position: relative;
+      overflow: hidden;
+      height: 208px;
+      margin-bottom: 7px;
+      border-radius: 12px;
+      img {
+        width: 100%;
+        //height: 100%;
+      }
+
+      img {
+        width: 100%;
+      }
+
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: url('https://image.dalbitlive.com/svg/play_purple_s_p.svg') center center no-repeat $white;
+        content: '';
+      }
+    }
+
+    .videoItem {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      .scoreBox {
+        display: flex;
+        li + li {
+          margin-left: 6px;
+        }
+        .scoreList {
+          .scoreButton {
+            img {
+              width: 28px;
+              vertical-align: middle;
+            }
+          }
+          .scoreNumber {
+            display: block;
+            color: $greishGray;
+            text-align: center;
+            font-size: 12px;
+            font-weight: $bold;
+          }
+        }
+      }
+
+      .snsBox {
+        display: flex;
+        margin-bottom: auto;
+
+        .snsTitle {
+          margin-right: 6px;
+          height: 28px;
+          color: $greishGray;
+          font-size: 12px;
+          line-height: 28px;
+        }
+
+        .snsList {
+          display: flex;
+          height: 28px;
+          li + li {
+            margin-left: 6px;
+          }
+          li {
+            button {
+              vertical-align: top;
+            }
+          }
+        }
+      }
+
+      .fanButton {
+        display: inline-block;
+        height: 32px;
+        min-width: 75px;
+        margin-right: 2px;
+        padding: 0px 8px;
+        color: $greishBrown;
+        font-size: 14px;
+        font-weight: $bold;
+        text-align: center;
+        border-radius: 18px;
+        border: 1px solid $greishBrown;
+        box-sizing: border-box;
+        transition: 0.3s ease-in;
+        box-sizing: border-box;
+        &.file {
+          min-width: 30px;
+          padding: 0 10px 0 26px;
+          background: url('https://image.dalbitlive.com/svg/icon_file_cilp.svg') left 6px center no-repeat;
+        }
+
+        &:hover {
+          border: 1px solid $primary;
+          color: $primary;
+        }
+        &.isActive {
+          border: 1px solid $primary;
+          color: $primary;
+        }
+      }
+
+      .userProfile {
+        display: flex;
+        margin-left: auto;
+
+        &__list {
+          display: inline-block;
+          position: relative;
+          margin-left: 4px;
+          width: 32px;
+          height: 32px;
+          cursor: pointer;
+
+          &::after {
+            content: '';
+            position: absolute;
+            right: 1px;
+            bottom: 1px;
+            width: 12px;
+            height: 12px;
+          }
+
+          &:nth-child(1) {
+            &::after {
+              background: url('https://image.dalbitlive.com/svg/ic_gold.svg');
+            }
+          }
+          &:nth-child(2) {
+            &::after {
+              background: url('https://image.dalbitlive.com/svg/ic_silver.svg');
+            }
+          }
+          &:nth-child(3) {
+            &::after {
+              background: url('https://image.dalbitlive.com/svg/ic_bronze.svg');
+            }
+          }
+
+          & img {
+            border-radius: 50%;
+            display: block;
+            width: 100%;
+          }
+        }
+      }
+      .fanMore {
+        position: relative;
+        margin-left: 4px;
+        width: 32px;
+        height: 32px;
+        display: inline;
+
+        background: url('https://image.dalbitlive.com/svg/more_circle_m.svg');
+        text-indent: -9999px;
+      }
+    }
+
+    .titleBox {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      margin-bottom: 16px;
+      font-size: 16px;
+      font-weight: $bold;
+      line-height: 24px;
+
+      .playName {
+        font-size: 16px;
+        font-weight: $bold;
+        color: $greishBrown;
+      }
+
+      .userItem {
+        display: flex;
+        .nickName {
+          font-size: 16px;
+          font-weight: $bold;
+          color: $primary;
+        }
+        .fileNumber {
+          margin-left: 8px;
+          padding-left: 18px;
+          line-height: 16px;
+          color: $greishGray;
+          font-weight: $bold;
+          font-size: 14px;
+          background: url('https://image.dalbitlive.com/svg/icon_file_cilp.svg') left 4px no-repeat;
+        }
+      }
+    }
+
+    .playInfo {
+      position: relative;
+      overflow: hidden;
+      padding: 12px 0 0;
+      font-size: 14px;
+      line-height: 22px;
+      color: $greishGray;
+      border-top: 1px solid $lighterGray;
+      .playText {
+        margin-bottom: 4px;
+        overflow: hidden;
+        height: 58px;
+        transition: max-height ease-in-out 0.4s;
+        word-break: break-word;
+        white-space: pre-wrap;
+      }
+      .more {
+        display: block;
+        width: 100%;
+        height: 24px;
+        text-indent: -9999px;
+
+        span {
+          display: block;
+          margin: auto;
+          width: 24px;
+          height: 24px;
+          background: url('https://image.dalbitlive.com/svg/arrow_down_g.svg') center no-repeat;
+          transition: all 0.2s linear;
+        }
+        &.on {
+          span {
+            transform: rotate(-180deg);
+          }
+        }
+      }
+    }
+  }
+  .playBox {
+    padding-top: 14px;
+    &__list {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 8px;
+      margin-bottom: 4px;
+      box-sizing: border-box;
+      background: $white;
+      border-radius: 16px;
+
+      .thumbnail {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        cursor: pointer;
+
+        &__img {
+          border-radius: 12px;
+          width: 100%;
+          height: 100%;
+        }
+        &__specialDj {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 51px;
+          height: 16px;
+          background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg) no-repeat;
+          text-indent: -9999px;
+        }
+        &__playTime {
+          position: absolute;
+          bottom: 3px;
+          right: 3px;
+          padding: 0 3px;
+          font-size: 10px;
+          border-radius: 12px;
+          background: rgba(0, 0, 0, 0.6);
+          color: $white;
+          line-height: 14px;
+        }
+      }
+
+      .textItem {
+        overflow: hidden;
+        flex: 1;
+        margin-left: 12px;
+        line-height: 16px;
+
+        &__titleBox {
+          display: flex;
+          cursor: pointer;
+        }
+        &__category {
+          color: $primary;
+          font-size: 14px;
+          flex-shrink: 0;
+
+          &::after {
+            display: inline-block;
+            margin: 0px 6px;
+            width: 1px;
+            height: 10px;
+            background: $mediumGray;
+            content: '';
+          }
+        }
+        &__title {
+          color: #242424;
+          font-weight: $bold;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        &__nickName {
+          margin-top: 6px;
+          font-size: 12px;
+          line-height: 16px;
+          color: $darkGray;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          cursor: pointer;
+          em + em {
+            margin-left: 4px;
+          }
+          .nickName {
+            vertical-align: top;
+          }
+        }
+
+        &__scoreBox {
+          display: flex;
+          margin-top: 6px;
+          cursor: pointer;
+
+          li + li {
+            margin-left: 10px;
+          }
+        }
+
+        &__scoreList {
+          font-size: 12px;
+          color: $greishBrown;
+
+          span {
+            padding-left: 18px;
+          }
+
+          &--message {
+            background: url(https://image.dalbitlive.com/svg/message_g_s.svg) left center no-repeat;
+          }
+          &--like {
+            background: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg) left center no-repeat;
+          }
+        }
+
+        &__buttonBox {
+          display: flex;
+          position: absolute;
+          right: 8px;
+          bottom: 6px;
+
+          button + button {
+            margin-left: 8px;
+          }
+        }
+        &__moreButton {
+          span {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            text-indent: -9999px;
+          }
+
+          &--play {
+            background: url(https://image.dalbitlive.com/svg/play_Button.svg) no-repeat;
+          }
+
+          &--people {
+            background: url(https://image.dalbitlive.com/svg/ic_user_purple.svg) no-repeat;
+          }
+        }
+      }
+    }
+  }
+
+  .listTitleBox {
+    position: relative;
+    margin-top: 38px;
+
+    .listTitle {
+      margin-top: 6px;
+      font-weight: $bold;
+      font-size: 18px;
+      letter-spacing: -0.35px;
+
+      .subText {
+        display: block;
+        font-size: 12px;
+        color: $greishGray;
+        font-weight: $regular;
+      }
+    }
+
+    .allPlay {
+      position: absolute;
+      right: 0px;
+      top: -5px;
+      display: flex;
+      align-items: center;
+      color: $greishBrown;
+      font-weight: $bold;
+      font-size: 12px;
+      &::after {
+        content: '';
+        display: inline-block;
+        margin-left: 8px;
+        width: 32px;
+        height: 32px;
+        background: url('https://image.dalbitlive.com/svg/play_purple_s_w.svg') center no-repeat $primary;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .itemBox {
+    padding: 6px 0 20px;
+    .item {
+      padding: 8px;
+      background: $white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      margin-top: 4px;
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &__thumb {
+        position: relative;
+        margin-right: 12px;
+        width: 72px;
+        .newSpecialIcon {
+          position: absolute;
+          text-indent: -99999px;
+          left: 0px;
+          top: 0px;
+          width: 51px;
+          height: 16px;
+          text-indent: -99999px;
+          background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+        }
+
+        img {
+          width: 100%;
+          border-radius: 12px;
+        }
+        &__playTime {
+          display: inline-block;
+          position: absolute;
+          right: 3px;
+          bottom: 3px;
+          padding: 0 4px;
+          height: 14px;
+          line-height: 14px;
+          background: rgba(0, 0, 0, 0.6);
+          color: #fff;
+          border-radius: 12px;
+          height: 14px;
+          font-size: 10px;
+        }
+      }
+
+      .textBox {
+        width: calc(100% - 90px);
+        &__iconBox {
+          display: inline-block;
+          width: 60px;
+          height: 30px;
+          border: solid 1px;
+
+          &--type {
+            font-size: 14px;
+            color: $primary;
+            font-weight: $regular;
+            letter-spacing: -0.5px;
+          }
+        }
+
+        &__subject {
+          display: flex;
+          align-items: center;
+          height: 20px;
+          letter-spacing: -0.5px;
+          .title {
+            color: $greishBrown;
+            flex: 1;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+          }
+          .subject {
+            font-size: 14px;
+            color: $primary;
+            font-weight: $regular;
+            letter-spacing: -0.5px;
+          }
+        }
+        &__nickName {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+          color: #616161;
+          height: 20px;
+          line-height: 20px;
+        }
+
+        &__subject {
+          display: flex;
+          align-items: center;
+          margin-top: 4px;
+          font-size: 14px;
+          font-weight: $bold;
+          height: 20px;
+          line-height: 20px;
+        }
+
+        i.line {
+          flex-basis: 1px;
+          height: 10px;
+          background: #bdbdbd;
+          margin: 0px 6px;
+        }
+
+        &__nickName {
+          font-size: 12px;
+        }
+
+        &__detail {
+          font-size: 12px;
+          margin-bottom: 3px;
+          display: flex;
+          align-items: center;
+          height: 20px;
+          line-height: 20px;
+          &--item {
+            color: #424242;
+            font-size: 12px;
+            letter-spacing: -0.5px;
+            margin-right: 8px;
+            font-weight: $regular;
+
+            i.icon {
+              width: 16px;
+              height: 16px;
+              background-position: center;
+              background-repeat: no-repeat;
+              display: inline-block;
+              margin-right: 2px;
+              opacity: 0.8;
+              text-indent: -9999px;
+              display: inline-block;
+              vertical-align: middle;
+
+              &--lineMessage {
+                background-image: url(https://image.dalbitlive.com/svg/line_message_g.svg);
+              }
+
+              &--like {
+                background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+              }
+              &--message {
+                background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// 달대리 추천 클립 선물 순위 리스트 팝업
+#rankPopup {
+  .giftRankBox {
+    .giftRankItem {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding: 0 10px;
+      &:first-child {
+        margin-top: 0;
+      }
+
+      .giftRankBox {
+        display: flex;
+        align-items: center;
+
+        .thumbBox {
+          position: relative;
+          margin-right: 12px;
+
+          &__thumb {
+            border-radius: 50%;
+          }
+
+          &__fan {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+          }
+        }
+
+        .textBox {
+          &__nick {
+            margin-bottom: 4px;
+            font-size: 14px;
+            font-weight: $bold;
+          }
+
+          &__dal {
+            font-size: 12px;
+            color: #757575;
+
+            img {
+              margin-right: 2px;
+              margin-top: -2px;
+            }
+          }
+        }
+      }
+      .fanBox {
+        &__fan {
+          display: block;
+          width: 56px;
+          height: 26px;
+          line-height: 26px;
+          text-align: center;
+          border-radius: 13px;
+          border: solid 1px $primary;
+          font-size: 12px;
+          font-weight: $bold;
+          letter-spacing: -0.3px;
+          color: $primary;
+        }
+        &__plus {
+          border-radius: 13px;
+          background-color: $primary;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+// 클립 등록 유도 팝업
+#clipRegPopup {
+  position: relative;
+  padding: 0 16px;
+  max-width: 360px;
+
+  .btn-close {
+    position: absolute;
+    top: -40px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+    background: url(https://image.dalbitlive.com/images/api/close_w_l.svg) no-repeat 0 0;
+    font-size: 0;
+  }
+  .layerContent {
+    background: none;
+
+    .content_wrap {
+      padding: 24px 16px 16px 16px;
+      border-radius: 20px;
+      background-color: $white;
+      img {
+        width: 100%;
+      }
+
+      .desc_wrap {
+        padding: 12px 19px 12px 12px;
+        margin-top: 12px;
+        border-radius: 12px;
+        background-color: $lighterGray;
+
+        li {
+          margin-top: 9px;
+          padding-left: 10px;
+          font-size: 13px;
+          text-indent: -4px;
+          letter-spacing: -1px;
+
+          &:first-child {
+            margin-top: 0px;
+          }
+
+          &::before {
+            content: '∙';
+            display: inline-block;
+            margin-right: 4px;
+          }
+        }
+      }
+
+      .btn_wrap {
+        display: flex;
+        margin-top: 16px;
+
+        .btn {
+          width: 50%;
+          //height: 44px;
+          padding: 12px 4px;
+          border-radius: 12px;
+          font-size: 18px;
+          font-weight: $bold;
+          line-height: 1.17;
+
+          &.rec {
+            margin-right: 2px;
+            background-color: $greishGray;
+            color: $white;
+          }
+
+          &.reg {
+            margin-left: 2px;
+            background-color: $primary;
+            color: $white;
+          }
+        }
+      }
+    }
+
+    .checkbox_wrap {
+      width: 100%;
+      margin-top: 8px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      background: #000;
+      color: #fff;
+      border-radius: 20px;
+
+      .checkbox_label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        span {
+          display: inline-block;
+          margin-left: 10px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

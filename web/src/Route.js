@@ -19,13 +19,16 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
+
 // 클립
-const Clip = React.lazy(() => import('pages/reclip'))
-const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
+const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
+const ClipDetail = React.lazy(() => import('pages/clip/pages/ClipDetailPage'));
+const ClipLikeList = React.lazy(() => import('pages/clip/pages/ClipLikeListPage'));
+const ClipListenList = React.lazy(() => import('pages/clip/pages/ClipListenListPage'));
 const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking'))
 const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
 
-//랭킹
+// 랭킹
 const Ranking = React.lazy(() => import('pages/reranking/contents/rankingMain'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
@@ -33,7 +36,7 @@ const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/g
 // 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
 // 검색
-const ReSearch = React.lazy(() => import('pages/research'))
+const ReSearch = React.lazy(() => import('pages/research/pages/'))
 // 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
@@ -44,14 +47,20 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 수정
+const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
 // 프로필 - 피드, 팬보드 (작성, 수정)
 const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (상세)
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
-const Store = React.lazy(() => import('pages/restore'))
-const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+const Store = React.lazy(() => import('pages/store'))
+const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
+const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
+const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
+const PayEndApp = React.lazy(() => import('pages/store/contents/end/EndApp'))
+const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
@@ -151,6 +160,11 @@ const Router = () => {
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
+        <Route exact path="/pay/bank" component={Coocon}/>
+        <Route exact path="/pay/bankInfo" component={CooconResult}/>
+        <Route exact path="/pay/end" component={PayEnd}/>
+        <Route exact path="/pay/end/app" component={PayEndApp}/>
+        <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
@@ -226,11 +240,13 @@ const Router = () => {
                }}
         />
 
-        <Route exact path="/mypage/:memNo/:category" component={MyPage} />
-        <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
+        {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
+        {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
 
-        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+
+        {/*<Route exact path="/profile/:memNo/write" component={ProfileWrite} />*/}
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
@@ -256,7 +272,9 @@ const Router = () => {
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/clip_open" component={ClipOpen} />
         <Route exact path="/clip" component={Clip} />
-        <Route exact path="/clip/detail" component={ClipDetail} />
+        <Route exact path="/clip/like/list" component={ClipLikeList}/>
+        <Route exact path="/clip/listen/list" component={ClipListenList}/>
+        <Route exact path="/clip/detail/:type" component={ClipDetail} />
         <Route exact path="/clip_rank" component={ClipRank} />
         <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
         <Route exact path="/clip_recommend" component={ClipRecommend} />

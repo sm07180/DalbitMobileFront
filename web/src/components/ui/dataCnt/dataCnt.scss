@@ -1,38 +1,40 @@
 @import "components/ui/_mixin.scss";
 
 i.dataCnt {
-  flex: none;
+  flex-shrink: 0;
   display: inline-block;
-  height: 16px;
+  line-height: 16px;
   margin-right: 8px;
   padding-left: 16px;
   font-style: normal;
-  @include font(12px, 400, #8B8B8B);
+  @include font(12px,$Regular,#8B8B8B);
   line-height: 16px;  
   background-position: left center;
   background-repeat: no-repeat;
   background-size: 16px;
-  letter-spacing: -1px;
   &.boostCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-booster.png");@include font(12px, 400, #FF7400);}
-  &.starCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-star.png");}
   &.listenPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
   &.broadMin {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
+  &.listenTime {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
+  &.broadcastPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
   &.listenerPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
   &.listenerCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
-  &.goodPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-
-  &.broadcastPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
-  &.djGoodPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.fanCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
   &.totalCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
+  &.inviteCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-inviteCnt.png");}
+  &.fanCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
   &.newFanCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
-  &.likeCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.replyCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-reply.png");}
-  &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
   &.entryCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
+  &.replyCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-reply.png");}
+  &.lastListenTs {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-listenerCnt.png");}
   &.listenerCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-listenerCnt.png");}
   &.presentCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-present.png");}
+  &.starCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-star.png");}
+  &.giftedByeol {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-star.png");}
+  &.goodPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
+  &.djGoodPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
+  &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
+  &.likeCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
+  &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
   &.rcvLikeCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-likeCnt.png"); 
                 &.active {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-likeCntOn.png");}
               }

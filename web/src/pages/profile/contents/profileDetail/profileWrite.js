@@ -13,7 +13,7 @@ import CheckList from '../../components/CheckList'
 // css
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 
 const ProfileWrite = () => {
   const history = useHistory();
@@ -45,7 +45,6 @@ const ProfileWrite = () => {
 
   //이미지 팝업 슬라이더
   const [showSlide, setShowSlide] = useState({show: false, viewIndex: 0});
-  const [imgList, setImgList] = useState([]);
 
   const [formState, setFormState] = useState({
     title: '',
@@ -53,19 +52,41 @@ const ProfileWrite = () => {
     others: 0,  //topFix 고정여부 [0, 1] / viewOn 비밀글 여부( 등록만 가능, 수정불가 ) [0, 1]
     photoInfoList: []
   });
+  const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
 
+  const validChecker = () => {
+    let confirm = true;
+    let message = '';
 
-  //등록
+    if(formState?.contents?.length === 0){
+      message = '내용을 입력해주세요.';
+      confirm = false;
+    }
+    //피드 1000자 이하, 팬보드 100자 이하
+    if ((type==='feed' && formState?.contents?.length > 1000) ||
+        (type==='fanBoard' && formState?.contents?.length > 1000)) {
+      message = '내용을 1,000자 이하로 입력해주세요.';
+      confirm = false;
+    }
+
+    if(!confirm)
+      context.action.toast({msg: message});
+
+    return confirm;
+  };
+
+  //등록 (상단 고정 : 방송방에서 사용중, 추후 작업 ! topFix:0 )
   const contentsAdd = async () => {
+    if(!validChecker()) return;
     const {title, contents, others, photoInfoList} = formState;
+
     if (type === 'feed') {
-      console.log("feed Add", title, contents)
       const {data, message, result } = await Api.mypage_notice_upload({
         reqBody: true,
         data: {
           title,
           contents,
-          topFix: others,
+          topFix: 0,//others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
       });
@@ -91,6 +112,7 @@ const ProfileWrite = () => {
 
   //수정
   const contentsEdit = async () => {
+    if(!validChecker()) return;
     const {title, contents, others, photoInfoList} = formState;
 
     if (type === 'feed') {
@@ -99,7 +121,7 @@ const ProfileWrite = () => {
         data: {
           title,
           contents,
-          topFix: others,
+          topFix: 0,//others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
           noticeIdx: index,
           chrgrName: profile?.nickName,
@@ -111,6 +133,7 @@ const ProfileWrite = () => {
       }
 
     } else if (type === 'fanBoard') {
+      //팬보드 수정에서는 비밀글 여부를 수정할 수 없음!
       const {data, result, message} = await Api.mypage_board_edit({
         data: {
           memNo,
@@ -138,18 +161,22 @@ const ProfileWrite = () => {
         inputRef.current.value = ''
       }
 
-      //사진 리스트에 추가
-      setFormState({...formState, photoInfoList: formState.photoInfoList.concat({img_name: data?.path, ...data})});
+      //사진 리스트에 추가 (globalPhotoInfoListRef.current = formState.photoInfoList)
+      setFormState({...formState, photoInfoList: globalPhotoInfoListRef.current.concat({img_name: data?.path, ...data})});
       setImage(null);
 
       if (photoListSwiperRef.current?.swiper) {
         photoListSwiperRef.current?.swiper?.update();
-        photoListSwiperRef.current?.swiper?.slideTo(formState.photoInfoList?.length || 0);
+        photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
       }
     } else {
       context.action.toast({msg: message});
     }
   };
+
+  useEffect(() => {
+    globalPhotoInfoListRef.current = formState?.photoInfoList;
+  },[formState?.photoInfoList]);
 
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
   useEffect(() => {
@@ -167,10 +194,6 @@ const ProfileWrite = () => {
       }
     }
   }, [image]);
-
-  useEffect(() => {
-    console.log(formState);
-  }, [formState])
 
   //상세조회 (수정만)
   const getDetailData = () => {
@@ -210,6 +233,7 @@ const ProfileWrite = () => {
 
     setFormState({...formState, photoInfoList: result})
   };
+
   useEffect(() => {
     action === 'modify' && getDetailData();
   }, []);
@@ -217,7 +241,6 @@ const ProfileWrite = () => {
   return (
     <div id="profileWrite">
       <Header title={`${type === 'feed' ? '피드' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
-      <span>{`${isMyProfile}`}</span>
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'
                   defaultValue={formState?.contents || ''}
@@ -226,10 +249,12 @@ const ProfileWrite = () => {
                   }}
         />
         <div className="bottomGroup">
-          {type === 'feed' ?
-            <CheckList text="상단고정" checkStatus={formState.others===1}
-                       onClick={()=>{setFormState({...formState, others:formState.others === 1? 0: 1})}}/>
-            : (!isMyProfile && <CheckList text="비밀글"/>)}
+          {/*비밀글 viewOn : [0 : 비밀글, 1 : 기본]*/}
+          {!isMyProfile && type==='fanBoard' &&
+          <CheckList text="비밀글" checkStatus={formState.others === 0}
+                     readOnly={ action==='modify'}
+                     onClick={() => action==='write'&& setFormState({...formState, others: formState.others === 1 ? 0 : 1})}
+          />}
           <div className="textCount">
             <span>{formState?.contents?.length || 0}</span> / 1000
           </div>
@@ -237,6 +262,7 @@ const ProfileWrite = () => {
 
         {/*파일 등록*/}
         <input ref={inputRef} type="file" className='blind'
+               accept="image/jpg, image/jpeg, image/png, image/gif"
                onChange={(e) => {
                  e.persist();
                  setEventObj(e);
@@ -291,6 +317,7 @@ const ProfileWrite = () => {
                   popClose={() => setShowSlide({show: false, viewIndex: 0})}
                   imageKeyName={'url'}
                   imageParam={'?500x500'}
+                  initialSlide={showSlide?.viewIndex || 0}
       />}
 
     </div>

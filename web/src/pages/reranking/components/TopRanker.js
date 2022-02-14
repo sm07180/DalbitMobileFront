@@ -83,43 +83,70 @@ const TopRanker = (props) => {
               <div className='rankingTop3' key={index}>
                 <div className='topHeader'>{
                 index === 0 ?
-                  rankType === 0 ? "회차" : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
-                :
-                  "dd"
+                  rankType === 0 ? `${data.length}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                  :
+                index === 1 ?
+                  rankType === 0 ? `${data.length - index}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                  :
+                  `${data.length - index}회차`
                 } TOP3
                   <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
-                    return (
-                      <div className="ranker" key={index}>
-                        <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
-                          <div className="photo">
-                            <img src={data.profImg.thumb190x190} alt="" />
-                            <div className='rankerRank'>{data.rank}</div>
-                          </div>
-                          <div className='rankerNick'>{data.nickNm}</div>
-                        </div>
-                        {rankSlct === "LOVER" ?
-                          <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
-                            <div className='cupidHeader'>CUPID</div>
-                            <div className='cupidContent'>
-                              <div className='cupidThumb'>
-                                <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
-                              </div>
-                              <div className='cupidNick'>{data.djNickNm}</div>
+                    if (data.isEmpty){
+                      return (
+                        <div className="ranker" key={index}>
+                          <div className="listColumn">
+                            <div className="photo">
+                              <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} alt="" />
                             </div>
+                            <div className='rankerNick'>-</div>
                           </div>
-                          :
-                          <>
-                            {data.roomNo && <div className='badgeLive' onClick={(e) => {
-                              e.stopPropagation();
-                              goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                            }}>LIVE</div>}
-                          </>
-                        }
-                      </div>
-                    )
+                          {rankSlct === "LOVER" &&
+                            <div className='cupidWrap'>
+                              <div className='cupidHeader'>CUPID</div>
+                              <div className='cupidContent'>
+                                <div className='cupidThumb'>
+                                  <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} />
+                                </div>
+                                <div className='cupidNick'>-</div>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      )
+                    } else {
+                      return (
+                        <div className="ranker" key={index}>
+                          <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
+                            <div className="photo">
+                              <img src={data.profImg.thumb190x190} alt="" />
+                              <div className='rankerRank'>{data.rank}</div>
+                            </div>
+                            <div className='rankerNick'>{data.nickNm}</div>
+                          </div>
+                          {rankSlct === "LOVER" ?
+                            <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
+                              <div className='cupidHeader'>CUPID</div>
+                              <div className='cupidContent'>
+                                <div className='cupidThumb'>
+                                  <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
+                                </div>
+                                <div className='cupidNick'>{data.djNickNm}</div>
+                              </div>
+                            </div>
+                            :
+                            <>
+                              {data.roomNo && <div className='badgeLive' onClick={(e) => {
+                                e.stopPropagation();
+                                goLive(data.roomNo, data.nickNm, data.listenRoomNo);
+                              }}>LIVE</div>}
+                            </>
+                          }
+                        </div>
+                      )
+                    }
                   })}
                 </div>
               </div>

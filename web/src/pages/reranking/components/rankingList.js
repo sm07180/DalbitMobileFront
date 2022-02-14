@@ -62,7 +62,7 @@ export default withRouter((props) => {
     <>
       {data.map((list, index) => {
         return (
-          <ListRow photo={list.profImg.thumb88x88} key={index} memNo={list.memNo}>
+          <ListRow photo={list.profImg.thumb88x88} key={index} photoClick={() => history.push(`/profile/${list.memNo}`)}>
             <div className="rank">{list.rank}</div>
             <div className="listContent">
               <div className="listItem">
@@ -75,12 +75,14 @@ export default withRouter((props) => {
                 <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
               </div>
             </div>
-            <div className="listBack">
-              {list.roomNo && <div className="badgeLive" onClick={(e) => {
-                e.stopPropagation();
-                goLive(list.roomNo, list.nickNm, list.listenRoomNo);
-              }}></div>}
-            </div>
+            {list.roomNo &&
+              <div className="listBack">
+                <div className="badgeLive" onClick={(e) => {
+                  e.stopPropagation();
+                  goLive(list.roomNo, list.nickNm, list.listenRoomNo);
+                }}></div>
+              </div>
+            }
           </ListRow>
         )
       })}
