@@ -1,7 +1,7 @@
 import React, {useContext, useRef, useState} from 'react'
 
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'

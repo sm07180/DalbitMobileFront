@@ -6,13 +6,13 @@ import moment from 'moment'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
-import RankingList from './components/RankingList'
+import RankingList from './components/rankingList'
 import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
