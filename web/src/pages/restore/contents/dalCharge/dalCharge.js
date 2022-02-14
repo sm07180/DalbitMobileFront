@@ -11,6 +11,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import PopSlide from '../../components/PopSlide'
 // contents
+import ChargeResult from './chargeResult';
 // css
 import './dalCharge.scss'
 
@@ -109,6 +110,7 @@ const DalCharge = () => {
           <SubmitBtn text="다음" />
         </PopSlide>
       }
+      <ChargeResult />
     </div>
   )
 }
