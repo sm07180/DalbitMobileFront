@@ -21,6 +21,8 @@ import {route} from "express/lib/router";
 const Main = React.lazy(() => import('pages/main'))
 // 모바일 웹
 const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
+// 이벤트 모음 Zip
+const EventZip = React.lazy(() => import('pages/eventzip'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
@@ -148,6 +150,8 @@ const Router = () => {
         <Route exact path="/search" component={ReSearch} />
 
         <Route exact path="/mobileWeb" component={MobileWeb} />
+
+        <Route exact path="/eventzip" component={EventZip} />
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
