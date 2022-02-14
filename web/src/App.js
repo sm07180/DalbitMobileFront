@@ -22,15 +22,19 @@ import {CHAT_CONFIG} from "constant/define";
 import {ChatSocketHandler} from "common/realtime/chat_socket";
 import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
-import {setIsLoading} from "redux/actions/common";
 import {getMemberProfile} from "redux/actions/member";
 import {getArgoraRtc, getWowzaRtc, rtcSessionClear} from "common/realtime/rtc_socket";
 import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
-import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api";
-import {removeAllCookieData} from "common/utility/cookie";
+import {getMypageNew} from "common/api";
 import Navigation from "components/ui/navigation/Navigation";
-import {createAgoraClient} from "redux/actions/broadcast";
+import './styles/navigation.scss'
+import LayoutMobile from 'pages/common/layout'
+import Layout from "common/layout";
+import Common from "common";
+import Alert from "common/alert";
+import MoveToAlert from "common/alert/MoveToAlert";
+import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -92,15 +96,8 @@ const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
     const data = JSON.parse(broadcastData);
     broadcastAction.dispatchRoomInfo({type: "reset", data: data});
   }
-
-  dispatch(createAgoraClient());
 }
 
-import './styles/navigation.scss'
-import Layout from "common/layout";
-import Common from "common";
-import Alert from "common/alert";
-import MoveToAlert from "common/alert/MoveToAlert";
 
 let alarmCheckIntervalId = 0;
 const App = () => {
@@ -238,7 +235,13 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-    const tokenInfo = await Api.getToken()
+    let tokenInfo = {};
+    let elementById = document.getElementById('serverToken');
+    if(elementById && elementById.value && elementById.value !== '' && elementById.value !== 'null'){
+      tokenInfo = JSON.parse(elementById.value);
+    }else{
+      tokenInfo = await Api.getToken()
+    }
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
@@ -468,32 +471,34 @@ const App = () => {
     }
   }
 
-  const updateAppInfo = async () => {
-    const headerInfo = JSON.parse(Utility.getCookie('custom-header'))
-    const os = headerInfo.os
-    const version = headerInfo.appVer
-    let showBirthForm = true
-
-    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-    if (os === 2) {
-      const appReviewYn = 'y'
-      if (appReviewYn === 'y') {
-        const tempIosVersion = '1.6.5' // 이 버전 이상은 birthForm 을 감출려고 한다
-        const successCallback = () => (showBirthForm = false)
-
-        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {})
-      }
-    }
-
-    globalCtx.action.updateAppInfo({os, version, showBirthForm})
-  }
-
+  /* 모바일웹용 푸터 */
   const isFooter = () => {
-    if(!isHybrid()) {
-      const pages = ['/', '/clip', '/search', '/mypage'];
+    if(!isDesktop && !isHybrid()) {
+      const pages = ['/', '/clip', '/search', '/mypage', '/login'];
       const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
 
       setIsFooterPage(isFooterPage);
+    }
+  }
+
+  /* 네이티브용 푸터 관리 */
+  const nativeFooterManager = () => {
+    if(isHybrid()) {
+      const currentPages = location.pathname;
+      const footerViewPages = {
+        '/': 'main',
+        '/clip': 'clip',
+        '/search': 'search',
+        '/mypage': 'mypage',
+        '/login': 'mypage',
+      };
+      const visible = !!footerViewPages[currentPages];
+      const stateFooterParam = {
+        tabName: visible ? footerViewPages[currentPages] : '',
+        visible: visible
+      };
+
+      Hybrid('stateFooter', stateFooterParam)
     }
   }
 
@@ -574,6 +579,7 @@ const App = () => {
 
   useEffect(() => {
     isFooter();
+    nativeFooterManager();
   }, [location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
@@ -590,7 +596,6 @@ const App = () => {
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
-    updateAppInfo(); // ios 심사 (회원가입 생년월일 입력란 숨김)
   }, [])
 
   function ErrorFallback({error, resetErrorBoundary}) {
@@ -661,19 +666,22 @@ const App = () => {
         ready ? (
           <>
             <Interface />
+            <Common />
             { isDesktop &&
-                <>
-                  <Common />
-                  <Layout>
-                    <Route />
-                  </Layout>
-                  <Alert />
-                  <MoveToAlert />
-                </>
+              <>
+                <Layout>
+                  <Route />
+                </Layout>
+                {globalCtx.globalState.broadcastAdminLayer.status && globalCtx.globalState.baseData.isLogin && <AdminLayerPopup />}
+              </>
             }
             { !isDesktop &&
-                <Route />
+              <LayoutMobile status="no_gnb">
+                  <Route />
+              </LayoutMobile>
             }
+            <Alert />
+            <MoveToAlert />
             {isFooterPage && <Navigation />}
           </>
         ) : (

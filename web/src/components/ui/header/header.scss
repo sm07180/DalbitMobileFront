@@ -26,6 +26,7 @@ header {
     background-color:white;
   }
   &.sticky {
+    position: -webkit-sticky;
     position:sticky;
     top:0;
     left:0;
@@ -38,8 +39,9 @@ header {
       top:0;
       left:0;
       width:100%;
+      letter-spacing: -.3;
       pointer-events: none;
-      @include font(18px,500,#202020);
+      @include font(18px,$SemiBold,#202020);
     }
   }
   .buttonGroup {
@@ -47,9 +49,22 @@ header {
     margin-left:auto;
   }
   button {
+    position:relative;
     &.ranking {@include headerBtn(icoRank-b);}
     &.message {@include headerBtn(icoMessage-b);}
-    &.alarm {@include headerBtn(icoAlarm-b);}
+    &.alarm {
+      @include headerBtn(icoAlarm-b);
+      &.new {
+        &::after {
+          @include position-top-right(3px,3px);
+          content:"";
+          width:10px;
+          height:10px;
+          border-radius:50%;
+          background-color:$MAINCOLOR;
+        }
+      }
+    }
     &.store {@include headerBtn(icoStore-b);}
     &.search {@include headerBtn(icoSearch-b);}
     &.back {@include headerBtn(icoBack-b);}

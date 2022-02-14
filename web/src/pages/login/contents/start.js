@@ -1,5 +1,4 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
 
 import Header from 'components/ui/header/Header'
 import '../style.scss'
@@ -56,7 +55,6 @@ const Start = (props) => {
         }
       })
 
-      console.log(res);
       if (res.status === 200) {
         const redirectUrl = await res.text()
         return (window.location.href = `${redirectUrl}`)

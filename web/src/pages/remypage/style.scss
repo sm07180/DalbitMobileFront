@@ -1,36 +1,58 @@
 @import "../../components/ui/mixin";
 
 #remypage {
+  flex:1;
   @include flex($fd:column);
-  height:100%;
   .myInfo {
     @include flex;
     padding:16px 16px 14px;
     .textWrap {
       @include flex($fd:column);
+      min-width:0;
       @include font(19px,400,black);
       .text {
-        margin-bottom:6px;
-        letter-spacing: -1px;
+        @include flex($fd: column);
+        margin-bottom:8px;
+        letter-spacing: -.3px;
+        strong {
+          display:inline-block;
+          max-width:200px;
+          font-weight: $Bold;
+          @include fontCut;
+        }
       }
       .info {
+        @include flex(center);
         margin-bottom:12px;
+        .level {
+          @include flex(center);
+          padding: 0 6px 0 4px;
+          cursor:pointer;
+          &::before {
+            content:"";
+            display: inline-block;
+            width:14px;height:14px;
+            margin-right:4px;
+            @include BGIMG("mypage/dalla/levelInfo.png");
+          }
+        }
         .userId {
-          @include font(12px,400,black);
+          margin-left:8px;
+          line-height:20px;
+          @include font(13px,$Regular,black);
         }
       }
       .count {
-        height:20px;
-        line-height:20px;
-        @include font(14px,400,#878787);
         i {
           margin-right:4px;
+          line-height:20px;
           font-style:normal;
-          letter-spacing: -1px;
+          @include font(15px,$Medium,#5A5A5A);
         }
         span {
-          margin-right:16px;
-          @include font(14px,500,black);
+          line-height:20px;
+          margin-right:18px;
+          @include font(15px,$Bold,black);
         }
       }
     }
@@ -50,7 +72,7 @@
     height:80px;
     margin:0 16px 16px;
     padding: 0 16px 0 19px;
-    border-radius:8px;
+    border-radius:16px;
     background-color: #FFECF2;
     .dalCount {
       @include flex(center);
@@ -66,7 +88,7 @@
         @include BGIMG('mypage/dalla/icon_dal.png');
       }
     }
-    .buttonWrap {
+    .buttonGroup {
       @include flex(center);
       height:30px;
       line-height:30px;
@@ -104,7 +126,7 @@
         padding:0 16px;
         text-align:left;
         letter-spacing: -1px;
-        @include font(14px,400,#202020);
+        @include font(15px,$Medium,#202020);
         &:after {
           display:inline-block;
           content:'';
@@ -118,20 +140,64 @@
       height:55px;
       padding:0 16px;
       .title {
-        @include font(15px,400,#999);
+        @include font(15px,$Medium,#999);
       }
       .version {
-        @include font(13px,400,#333);
+        @include font(13px,$Medium,#333);
       }
     }
   }
-  button.logout {
-    width:256px;
-    height:45px;
-    line-height:45px;
-    margin: auto auto 30px;
-    background-color:#F6F6F6;
-    @include font(14px,500,black);
-    border-radius:100px;
+  .buttonWrap {
+    margin: auto 16px 60px;
+    button.logout {
+      width:100%;
+      line-height:46px;
+      @include border(#D5D5D5,16px);
+      @include font(16px,$Medium,#666);
+    }
+  }
+  #popSlide {
+    .myLevelInfo {
+      width:100%;
+      .infoItem {
+        @include flex(center);
+        line-height:25px;
+        margin-bottom:8px;
+        .level {
+          line-height:25px;
+          @include font(16px,$Medium,white);
+        }
+        span {
+          @include font(17px,$SemiBold,#303030);
+        }
+        p {
+          margin-left:auto;
+          @include font(15px,$SemiBold,$MAINCOLOR);
+        }
+      }
+      .levelGauge {
+        position: relative;
+        height:13px;
+        margin-bottom:8px;
+        border-radius:100px;
+        background-color:#E8E8E8;
+        .gaugeBar {
+          @include position-top-left;
+          display:inline-block;
+          width:0;
+          height:100%;
+          border-radius:100px;
+          background-image: linear-gradient(to right,#FF8565,$MAINCOLOR);
+          transition:width 1s ease;
+        }
+      }
+      .exp {
+        @include font(13px,$Medium,#303030);
+      }
+      .submitBtn {
+        width:100%;
+        margin-top:20px;
+      }
+    }
   }
 }

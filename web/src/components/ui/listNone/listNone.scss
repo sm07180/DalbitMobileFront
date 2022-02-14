@@ -1,0 +1,16 @@
+@import "components/ui/_mixin.scss";
+
+.listNone {
+  @include flex(center, center, column);
+  width: 100%;
+  .listNoneImg {
+    display: inline-block;
+    width: 105px; height: 105px;
+  }
+  .listNoneText {
+    margin-top: 16px;
+    @include font(15px, 500, #5E5E5E);
+    letter-spacing: -1px;
+    text-align: center;
+  }
+}

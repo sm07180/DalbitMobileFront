@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 // global components
@@ -6,25 +6,35 @@ import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import NoResult from 'components/ui/new_noResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
+import {RoomValidateFromClip} from "common/audio/clip_func";
+import {Context} from "context";
 
 const LiveView = (props) => {
   const {data} = props
   let locationStateHistory = useHistory();
+  const context = useContext(Context);
+
   return (
     <div className="liveListWrap">
       {data && data.length > 0 ?
         <>
           {data.map((list,index) => {
             return (
-              <div className="listRow" key={index} onClick={()=>{
-                locationStateHistory.push(`/broadcast/${list.roomNo}`)
+              <div className="listRow" key={index} onClick={() => {
+                RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
               }}>
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />
+                  {true &&
+                    <img src={list.bjProfImg.thumb100x100} className="guest" alt="" />
+                  }
+                  {true &&
+                    <div className="video" />
+                  }
                 </div>
                 <div className='listContent'>
                   <div className="listItem">
-                    <BadgeItems data={list.liveBadgeList} />
+                    <BadgeItems data={list} type={'liveBadgeList'} />
                   </div>
                   <div className="listItem">
                     <span className='title'>{list.title}</span>

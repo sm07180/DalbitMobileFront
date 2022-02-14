@@ -1,56 +1,59 @@
-import React, {useState, useEffect, useRef} from 'react'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
-
-import Api from 'context/api'
+import React, {useContext, useState} from 'react'
+import Utility from 'components/lib/utility'
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 // components
-import Tabmenu from '../Tabmenu'
 
 import './style.scss'
+import {useHistory} from "react-router-dom";
+import {Context} from "context";
 
 const blockReportTabmenu = ['차단하기','신고하기']
 
+const dalList = [50, 100, 500, 1000, 2000, 3000, 5000, 10000];
+
 const Present = (props) => {
-  const {type} = props
-  const [openSelect, setOpenSelect] = useState(false)
-  const [tabType, setTabType] = useState(blockReportTabmenu[1])
-  
-  // 셀렉트 오픈
-  const openPopSelect = () => {
-    setOpenSelect(!openSelect)
+  const { profileData, setPopPresent } = props
+  const context = useContext(Context);
+  const history = useHistory();
+  const [selected, setSelected] = useState(0);
+
+  const goCharge = () => {
+    history.push('/pay/store')
   }
 
   return (
     <section className="present">
       <h2>선물하기</h2>
       <div className="message">
-        <strong>DBS1🌜달빛시대🌜</strong>님을<br/>
-        신고하시겠습니까?
+        <strong>{profileData.nickNm}</strong>님에게<br/>
+        달을 선물하시겠습니까?
       </div>
       <div className="payBox">
         <div className="possess">
           <span>내가 보유한 달</span>
-          <div className="count">{Utility.addComma(2310)}</div>
+          <div className="count">{Utility.addComma(context.profile.dalCnt)}</div>
         </div>
-        <button>충전하기</button>
+        <button onClick={goCharge}>충전하기</button>
       </div>
       <div className="payCount">
-        <button className='active'>{Utility.addComma(50)}</button>
-        <button>{Utility.addComma(100)}</button>
-        <button>{Utility.addComma(500)}</button>
-        <button>{Utility.addComma(1000)}</button>
-        <button>{Utility.addComma(2000)}</button>
-        <button>{Utility.addComma(3000)}</button>
-        <button>{Utility.addComma(5000)}</button>
-        <button>{Utility.addComma(10000)}</button>
+        {dalList.map((item,index) => {
+          return (
+            <button key={index}
+                    className={`${selected === index ? 'active' : ''}`}
+                    onClick={() => setSelected(index)}>
+              {Utility.addComma(item)}
+            </button>
+          )
+        })}
+
       </div>
       <InputItems>
         <input type="number" placeholder='직접입력' />
       </InputItems>
       <span className='log'>달은 10개 이상부터 선물이 가능합니다.</span>
       <div className="buttonGroup">
-        <button className='cancel'>취소</button>
+        <button className='cancel' onClick={() => setPopPresent(false)}>취소</button>
         <button className={false ? 'active' : 'disabled'}>선물하기</button>
       </div>
     </section>

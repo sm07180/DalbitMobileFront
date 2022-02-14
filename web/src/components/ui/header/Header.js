@@ -6,8 +6,8 @@ import TitleButton from './TitleButton';
 // css
 import './header.scss'
 
-export default (props) => {
-  const {title, type, children, position} = props
+const Header = (props) => {
+  const {title, type, children, position, newAlarmCnt} = props
   const history = useHistory()
 
   const goBack = () => history.goBack();
@@ -16,8 +16,14 @@ export default (props) => {
     <header className={`${type ? type : ''} ${position ? position : ''}`}>
       {type === 'back' && <button className="back" onClick={goBack} />}
       {title && <h1 className="title">{title}</h1>}
-      <TitleButton title={title} />
+      <TitleButton title={title} newAlarmCnt={newAlarmCnt} />
       {children}
     </header>
   )
 }
+
+Header.defaultProps = {
+  position:'sticky'
+}
+
+export default Header

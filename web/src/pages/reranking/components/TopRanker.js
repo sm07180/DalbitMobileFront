@@ -1,144 +1,185 @@
 import React, {useContext, useState} from 'react'
-import {Context} from 'context'
 
 import Swiper from 'react-id-swiper'
+import {useHistory, withRouter} from "react-router-dom";
+import {getDeviceOSTypeChk} from "common/DeviceCommon";
+import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomJoin} from "context/room";
+import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
 
 const TopRanker = (props) => {
+  const {data, rankSlct, rankType} = props
+
+  const context = useContext(Context);
+
+  const history = useHistory();
+
+  const gtx = useContext(GlobalContext);
+
   const [popup, setPopup] = useState(false);
-  const {data, rankingListType} = props
-  const context = useContext(Context)
 
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
     centeredSlides: true,
+    spaceBetween: 16,
     loop: false,
     pagination: {
       el: '.swiper-pagination',
       clickable: true
+    },
+    rtl: "rtl",
+    rebuildOnUpdate: true
+  }
+
+  const goLive = (roomNo, nickNm, listenRoomNo) => {
+    if (context.token.isLogin === false) {
+      context.action.alert({
+        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+        callback: () => {
+          history.push('/login')
+        }
+      })
+    } else {
+      if (getDeviceOSTypeChk() === 3){
+        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+      } else {
+        if (roomNo !== '') {
+          RoomJoin({roomNo: roomNo, nickNm: nickNm})
+        } else {
+          let alertMsg
+          if (isNaN(listenRoomNo)) {
+            alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
+            context.action.alert({
+              type: 'alert',
+              msg: alertMsg
+            })
+          } else {
+            alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+            context.action.confirm({
+              type: 'confirm',
+              msg: alertMsg,
+              callback: () => {
+                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+              }
+            })
+          }
+        }
+      }
     }
   }
-  
-  const popOpen = () => {  
+
+  const popOpen = () => {
     setPopup(true);
   }
 
   return (
     <React.Fragment>
       {data && data.length > 0 &&    
-        <div className='rankingTop3'>
-          <div className='topHeader'>오늘 TOP3
-            <span className='questionMark' onClick={popOpen}></span>
-          </div>
+        <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
-              <Swiper {...swiperParams} key={index}>
-                <div className='topContent'>
-                  <div className="ranker">
-                    <div className="listColumn">
-                      <div className="photo">
-                        <img src={list[0] ? list[0].profImg.thumb190x190 : "https://image.dalbitlive.com/images/listNone-userProfile.png"} alt="" />
-                        {list[0].rank && <div className='rankerRank'>{list[0].rank}</div>}
-                      </div>
-                      <div className='rankerNick'>{list[0] ? list[0].nickNm : "-"}</div>
-                    </div>
-                    {rankingListType === "lover" ?
-                      <div className='cupidWrap'>
-                        <div className='cupidHeader'>CUPID</div>
-                        <div className='cupidContent'>
-                          <div className='cupidThumb'>
-                            <img src={list[0] ? list[0].djProfImg.thumb190x190 : "https://image.dalbitlive.com/images/listNone-userProfile.png"} alt={list[0] ? list[0].nickNm : "해당유저가 없습니다."} />
-                          </div>
-                          <div className='cupidNick'>{list[0] ? list[0].djNickNm : "-"}</div>
-                        </div>
-                      </div>
-                      :
-                      <>
-                        {list[0].roomNo && <div className='badgeLive'>LIVE</div>}
-                      </>
-                    }
-                  </div>
-                  <div className="ranker">
-                    <div className="listColumn">
-                      <div className="photo">
-                        <img src={list[1] ? list[1].profImg.thumb190x190 : "https://image.dalbitlive.com/images/listNone-userProfile.png"} alt="" />
-                        {list[1].rank && <div className='rankerRank'>{list[1].rank}</div>}
-                      </div>
-                      <div className='rankerNick'>{list[1] ? list[1].nickNm : "-"}</div>
-                    </div>
-                    {rankingListType === "lover" ?
-                      <div className='cupidWrap'>
-                        <div className='cupidHeader'>CUPID</div>
-                        <div className='cupidContent'>
-                          <div className='cupidThumb'>
-                            <img src={list[1] ? list[1].djProfImg.thumb190x190 : "https://image.dalbitlive.com/images/listNone-userProfile.png"} alt={list[1] ? list[1].nickNm : "해당유저가 없습니다."} />
-                          </div>
-                          <div className='cupidNick'>{list[1] ? list[1].djNickNm : "-"}</div>
-                        </div>
-                      </div>
-                      :
-                      <>
-                        {list[1].roomNo && <div className='badgeLive'>LIVE</div>}
-                      </>
-                    }
-                  </div>
-                  <div className="ranker">
-                    <div className="listColumn">
-                      <div className="photo">
-                        <img src={list[2] ? list[2].profImg.thumb190x190 : "https://image.dalbitlive.com/images/listNone-userProfile.png"} alt="" />
-                        {list[2] && <div className='rankerRank'>{list[2].rank}</div>}
-                      </div>
-                      <div className='rankerNick'>{list[2] ? list[2].nickNm : "-"}</div>
-                    </div>
-                    {rankingListType === "lover" ?
-                      <div className='cupidWrap'>
-                        <div className='cupidHeader'>CUPID</div>
-                        <div className='cupidContent'>
-                          <div className='cupidThumb'>
-                            <img src={list[2] ? list[2].djProfImg.thumb190x190 : "https://image.dalbitlive.com/images/listNone-userProfile.png"} alt={list[2] ? list[2].nickNm : "해당유저가 없습니다."} />
-                          </div>
-                          <div className='cupidNick'>{list[2] ? list[2].djNickNm : "-"}</div>
-                        </div>
-                      </div>
-                      :
-                      <>
-                        {list[2].roomNo && <div className='badgeLive'>LIVE</div>}
-                      </>
-                    }
-                  </div>
+              <div className='rankingTop3' key={index}>
+                <div className='topHeader'>{
+                index === 0 ?
+                  rankType === 0 ? `${data.length}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                  :
+                index === 1 ?
+                  rankType === 0 ? `${data.length - index}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                  :
+                  `${data.length - index}회차`
+                } TOP3
+                  <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>
-              </Swiper>
+                <div className='topContent'>
+                  {list.map((data,index) => {
+                    if (data.isEmpty){
+                      return (
+                        <div className="ranker" key={index}>
+                          <div className="listColumn">
+                            <div className="photo">
+                              <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} alt="" />
+                            </div>
+                            <div className='rankerNick'>-</div>
+                          </div>
+                          {rankSlct === "LOVER" &&
+                            <div className='cupidWrap'>
+                              <div className='cupidHeader'>CUPID</div>
+                              <div className='cupidContent'>
+                                <div className='cupidThumb'>
+                                  <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} />
+                                </div>
+                                <div className='cupidNick'>-</div>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      )
+                    } else {
+                      return (
+                        <div className="ranker" key={index}>
+                          <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
+                            <div className="photo">
+                              <img src={data.profImg.thumb190x190} alt="" />
+                              <div className='rankerRank'>{data.rank}</div>
+                            </div>
+                            <div className='rankerNick'>{data.nickNm}</div>
+                          </div>
+                          {rankSlct === "LOVER" ?
+                            <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
+                              <div className='cupidHeader'>CUPID</div>
+                              <div className='cupidContent'>
+                                <div className='cupidThumb'>
+                                  <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
+                                </div>
+                                <div className='cupidNick'>{data.djNickNm}</div>
+                              </div>
+                            </div>
+                            :
+                            <>
+                              {data.roomNo && <div className='badgeLive' onClick={(e) => {
+                                e.stopPropagation();
+                                goLive(data.roomNo, data.nickNm, data.listenRoomNo);
+                              }}>LIVE</div>}
+                            </>
+                          }
+                        </div>
+                      )
+                    }
+                  })}
+                </div>
+              </div>
             )
-          })}      
-        </div>
+          })}
+        </Swiper>
       }
       <>
       { popup &&
         <LayerPopup setPopup={setPopup}>
           {
-            rankingListType === "dj" &&
+            rankSlct === "DJ" &&
             <>
               <div className='popTitle'>DJ 랭킹 선정 기준</div>
               <div className='popSubTitle'>
                 받은 별, 청취자 수, 받은 좋아요 <br/>(부스터 포함)의 종합 순위입니다.
               </div>
             </>
-            
+
           }
           {
-            rankingListType === "fan" &&
+            rankSlct === "FAN" &&
             <>
               <div className='popTitle'>FAN 랭킹 선정 기준</div>
               <div className='popSubTitle'>
               보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.
               </div>
             </>
-            
+
           }
           {
-            rankingListType === "lover" &&
+            rankSlct === "LOVER" &&
             <>
               <div className='popTitle'>LOVER 랭킹이란?</div>
               <div className='popSubTitle'>
@@ -148,7 +189,7 @@ const TopRanker = (props) => {
                 <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
               </div>
             </>
-            
+
           }
         </LayerPopup>
       }
@@ -157,4 +198,4 @@ const TopRanker = (props) => {
   )
 }
 
-export default TopRanker
+export default withRouter(TopRanker);

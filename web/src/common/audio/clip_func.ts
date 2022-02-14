@@ -2,6 +2,10 @@
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // Server Api
 import { broadcastExit } from "common/api";
+import {isDesktop} from "../../lib/agent";
+import {isMobileWeb} from "../../context/hybrid";
+import {RoomJoin} from 'context/room'
+
 
 export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean) {
   const { globalState, globalAction } = gtx;
@@ -55,65 +59,75 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
 
 export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
   const { globalState, globalAction } = gtx;
-  const { clipInfo, clipPlayer, rtcInfo } = globalState;
-  if (clipInfo !== null) {
-    globalAction.setAlertStatus!({
-      status: true,
-      type: "confirm",
-      content: `현재 재생 중인 클립이 있습니다. \n 방송에 입장하시겠습니까?`,
-      callback: () => {
-        clipPlayer.clipExit();
-        if (globalState.checkAdmin === true && globalState.baseData.isLogin) {
-          globalAction.setBroadcastAdminLayer!((prevState) => ({
-            ...prevState,
-            status: `broadcast`,
-            roomNo: roomNo,
-            nickNm: nickNm,
-          }));
-        } else {
-          history.push(`/broadcast/${roomNo}`);
-        }
-      },
-    });
-  } else {
-    if (!globalState.baseData.isLogin) {
-      history.push("/login");
-      // globalAction.setUrlInfo!((prevState) => ({
-      //   ...prevState,
-      //   type: `broadcast`,
-      //   sub: roomNo,
-      // }));
-    } else {
-      if (globalState.checkAdmin !== true && globalState.baseData.isLogin) {
-        if (listener === "listener") {
-          history.push(`/broadcast/${roomNo}`);
-        } else {
-          const listenRoomNo = rtcInfo && rtcInfo.roomInfo.roomNo;
-          if(rtcInfo !== null && listenRoomNo !== roomNo) { // 방송 청취중이며 다른방 입장 시도
-            globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              type: "confirm",
-              content: '현재 청취 중인 방송이 있습니다. \n 방송에 입장하시겠습니까?',
-              callback: () => {
-                history.push(`/broadcast/${roomNo}`);
-              },
-            });
-          }else {
+  if(isDesktop()) {
+    const { clipInfo, clipPlayer, rtcInfo } = globalState;
+    if (clipInfo !== null) {
+      globalAction.setAlertStatus!({
+        status: true,
+        type: "confirm",
+        content: `현재 재생 중인 클립이 있습니다. \n 방송에 입장하시겠습니까?`,
+        callback: () => {
+          clipPlayer.clipExit();
+          if (gtx.adminChecker === true && globalState.baseData.isLogin) {
+            globalAction.setBroadcastAdminLayer!((prevState) => ({
+              ...prevState,
+              status: `broadcast`,
+              roomNo: roomNo,
+              nickNm: nickNm,
+            }));
+          } else {
             history.push(`/broadcast/${roomNo}`);
           }
-        }
+        },
+      });
+    } else {
+      if (!globalState.baseData.isLogin) {
+        history.push("/login");
+        // globalAction.setUrlInfo!((prevState) => ({
+        //   ...prevState,
+        //   type: `broadcast`,
+        //   sub: roomNo,
+        // }));
       } else {
-        if (globalState.checkAdmin === true && globalState.baseData.isLogin) {
-          globalAction.setBroadcastAdminLayer!((prevState) => ({
-            ...prevState,
-            status: `broadcast`,
-            roomNo: roomNo,
-            nickNm: nickNm === "noName" ? "" : nickNm,
-          }));
-          //history.push(`/broadcast/${roomNo}`);
+        if (gtx.adminChecker !== true && globalState.baseData.isLogin) {
+          if (listener === "listener") {
+            history.push(`/broadcast/${roomNo}`);
+          } else {
+            const listenRoomNo = rtcInfo && rtcInfo.roomInfo.roomNo;
+            if(rtcInfo !== null && listenRoomNo !== roomNo) { // 방송 청취중이며 다른방 입장 시도
+              globalAction.setAlertStatus &&
+              globalAction.setAlertStatus({
+                status: true,
+                type: "confirm",
+                content: '현재 청취 중인 방송이 있습니다. \n 방송에 입장하시겠습니까?',
+                callback: () => {
+                  history.push(`/broadcast/${roomNo}`);
+                },
+              });
+            }else {
+              history.push(`/broadcast/${roomNo}`);
+            }
+          }
+        } else {
+          if (gtx.adminChecker === true && globalState.baseData.isLogin) {
+            globalAction.setBroadcastAdminLayer!((prevState) => ({
+              ...prevState,
+              status: `broadcast`,
+              roomNo: roomNo,
+              nickNm: nickNm === "noName" ? "" : nickNm,
+            }));
+            //history.push(`/broadcast/${roomNo}`);
+          }
         }
       }
     }
+  }else if(isMobileWeb()) {
+    if (!globalState.baseData.isLogin) {
+      history.push("/login");
+    }else {
+      gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+    }
+  }else {
+    RoomJoin({roomNo: roomNo})
   }
 }

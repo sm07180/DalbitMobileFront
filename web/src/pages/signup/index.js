@@ -57,7 +57,6 @@ const SignUpPage = () => {
         profImg: '', profImgRacy: 3, nativeTid: nativeTid, os: context.customHeader.os
       }
     })
-    console.log(result, data, message);
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
       addAdsData();

@@ -1,6 +1,3 @@
-/**
- *
- */
 import React, {useContext} from 'react'
 //context
 import {Context} from 'context'
@@ -20,9 +17,6 @@ const Popup = (props) => {
   //context
   const context = useContext(Context)
   const {type, visible} = context.message
-  /**
-   * @brief 로그인,이벤트처리핸들러
-   */
 
   const closePopupDim = (e) => {
     const target = e.target;

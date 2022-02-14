@@ -5,7 +5,6 @@
   padding-top: 48px;
   height: 100%;
   background-color: $white;
-
   .main-loadingWrap {
     position: relative;
     height: 300px;
@@ -105,46 +104,46 @@
   }
   
 
-  .headerWrap {
-    position: fixed;
-    top: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 6px;
-    width: 460px;
-    height: 48px;
-    background-color: $primary;
-    box-sizing: border-box;
-    z-index: 3;
+  // .headerWrap {
+  //   position: fixed;
+  //   top: 0;
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: center;
+  //   padding: 0 6px;
+  //   width: 460px;
+  //   height: 48px;
+  //   background-color: $primary;
+  //   box-sizing: border-box;
+  //   z-index: 3;
 
-    h1 {
-      display: flex;
-      position: absolute;
-      margin-left: -47px;
-      left: 50%;
-      width: 103px;
-      cursor: pointer;
+  //   h1 {
+  //     display: flex;
+  //     position: absolute;
+  //     margin-left: -47px;
+  //     left: 50%;
+  //     width: 103px;
+  //     cursor: pointer;
 
-      img {
-        width: 100%;
-      }
-    }
-    .icon-wrap {
-      display: flex;
-      height: 40px;
+  //     img {
+  //       width: 100%;
+  //     }
+  //   }
+  //   .icon-wrap {
+  //     display: flex;
+  //     height: 40px;
 
-      .iconSearch,
-      .iconStore {
-        display: flex;
-        width: 40px;
-        height: 40px;
-      }
-      .mailbox {
-        cursor: pointer;
-      }
-    }
-  }
+  //     .iconSearch,
+  //     .iconStore {
+  //       display: flex;
+  //       width: 40px;
+  //       height: 40px;
+  //     }
+  //     .mailbox {
+  //       cursor: pointer;
+  //     }
+  //   }
+  // }
   #gnbWrap {
     justify-content: space-around;
     display: none;

@@ -564,7 +564,7 @@ export default function Main() {
               </button>
             )}
           </div>
-        </div>
+        {/* </div>
         <div id="gnbWrap">
           <Link to={`/`} className="gnbButton gnbButton--active" title="라이브">
             라이브
@@ -604,7 +604,7 @@ export default function Main() {
           >
             마이
           </button>
-        </div>
+        </div> */}
 
         <div className="mainSlideWrap" ref={RecommendRef}>
           <MainSlide slideList={initData.recommend} />

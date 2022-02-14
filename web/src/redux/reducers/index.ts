@@ -8,10 +8,11 @@ import feed from './profile/feed';
 import broadcast from './broadcast';
 import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
+import clip from './clip/clip';
 
 const rootReducer = combineReducers({
-    common
-    ,member
+  common
+  ,member
   , main
   , live
   , profile
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   , broadcast
   , fanBoard
   , profileClip
+   ,clip
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

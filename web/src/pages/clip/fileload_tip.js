@@ -7,7 +7,7 @@ import qs from 'query-string'
 
 import iconBack from './static/ic_back.svg'
 
-import './clip.scss'
+import './scss/clip.scss'
 
 export default function fileloadTip(props) {
   const [tabState, setTabState] = useState(1)

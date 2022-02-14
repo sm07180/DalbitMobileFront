@@ -31,7 +31,7 @@ import filterIcon from './static/choose_circle_w.svg'
 
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 //scss
-import './clip.scss'
+import './scss/clip.scss'
 import {ClipRankContext} from 'context/clip_rank_ctx'
 
 let tempScrollEvent = null
@@ -869,17 +869,8 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <div id="clipPage" onTouchStart={clipTouchStart} onTouchMove={clipTouchMove} onTouchEnd={clipTouchEnd}>
         <Header type="noBack">
-          <span
-            className="searchIcon"
-            onClick={() =>
-              history.push({
-                pathname: '/menu/search',
-                state: {
-                  state: 'clip_search'
-                }
-              })
-            }></span>
-          <h2 className="header-title">클립</h2>
+          <span className="searchIcon" onClick={() => history.push({ pathname: '/menu/search', state: { state: 'clip_search' } }) }/>
+          <h2 className="header-title">정혁이</h2>
         </Header>
 
         <div className="refresh-wrap rank" ref={iconWrapRef}>

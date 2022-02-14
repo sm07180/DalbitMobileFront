@@ -1,4 +1,5 @@
 @import "../../../asset/scss/common/global";
+@import "components/ui/_mixin.scss";
 
 // 청취자
 #broadcast-page {
@@ -68,7 +69,7 @@
       }
 
       &--dj {
-        background: $primary;
+        background: $MAINCOLOR;
         .user__id {
           font-weight: $bold;
           color: $white;
@@ -98,7 +99,7 @@
         }
       }
       &--manager {
-        border: 1px solid $primary;
+        border: 1px solid $MAINCOLOR;
       }
       &--listeners {
         border: 1px solid $lightGray;

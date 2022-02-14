@@ -722,6 +722,18 @@ export default class API {
       params: params
     })
   }
+  
+  /**
+   * @brief 마이페이지 팬보드 상세조회
+   * @method "GET""
+   * @todo
+   * @param              /
+   * @create 박용훈 2022.02.10
+   */
+  static mypage_fanboard_detail = async (params) => {
+    return await ajax({url: `/profile/board/detail`, method: 'GET', params});
+  }
+
   /**
    * @brief 마이페이지 팬보드 댓글 등록
    * @method "POST""
@@ -2230,6 +2242,16 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/rest/pay/simple`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+  //결제완료 영수증 확인
+  static pay_receipt = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/receipt`,
       method: method || 'POST',
       data: data
     })
