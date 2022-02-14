@@ -58,13 +58,13 @@
         padding-top:7px;
         letter-spacing: -1px;
         span {
-          @include font(16px,500,black);
+          @include font(16px,$SemiBold,black);
         }
         i {
           height:20px;
           line-height:20px;
           font-style:normal;
-          @include font(13px,400,#878787);
+          @include font(13px,$Regular,#878787);
         }
       }
     }

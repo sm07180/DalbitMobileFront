@@ -315,4 +315,18 @@
       }
     }
   }
+  #layerPop {
+    .profileRankNotice {
+      height:280px;
+      text-align:center;
+      .title {
+        margin-bottom:6px;
+        @include font(16px,$SemiBold,$MAINCOLOR);
+      }
+      .text {
+        margin-bottom:22px;
+        @include font(12px,$Regular,#666);
+      }
+    }
+  }
 }
