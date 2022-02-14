@@ -12,12 +12,13 @@ import Report from "./contents/report/report"
 import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
+import Allim from "pages/remypage/contents/notice/allim";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
   {menuNm: '클립', path:'clip'},
   {menuNm: '설정'},
-  {menuNm: '공지사항'},
+  {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터'},
 ]
 
@@ -87,6 +88,8 @@ const Remypage = () => {
       return(<Report />)
     case 'clip' :
       return(<Clip />)
+    case 'notice' :
+      return(<Allim />)
     default :
       return(
         <>

@@ -2,11 +2,9 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
-import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
-import ListRow from 'components/ui/listRow/ListRow'
 // components
 
 // contents
@@ -15,17 +13,20 @@ import Post from './post'
 
 import './notice.scss'
 
-const noticeTabmenu = ['알림','공지사항']
 
 const NoticePage = () => {
+  const noticeTabmenu = ['알림','공지사항']
   const history = useHistory()
-  //context
   const context = useContext(Context)
-  const {token, profile} = context
-  
   const [noticeType, setNoticeType] = useState(noticeTabmenu[0])
 
-  // 페이지 시작
+  // 로그인 토큰값 확인
+  useEffect(() => {
+    if(!(context.token.isLogin)) {
+      history.push("/login")
+    }
+  }, []);
+
   return (
     <div id="notice">
       <Header type={'back'} />
@@ -36,16 +37,15 @@ const NoticePage = () => {
               item: data,
               tab: noticeType,
               setTab: setNoticeType,
-              // setPage: setPage
             }
             return (
               <TabBtn param={param} key={index} />
             )
           })}
-          <div className="underline"></div>
+          <div className="underline"/>
         </ul>
-        {noticeType === noticeTabmenu[0] && <Allim data={profile} />}
-        {noticeType === noticeTabmenu[1] && <Post data={profile} />}
+        {noticeType === noticeTabmenu[0] && <Allim data={context.profile} />}
+        {noticeType === noticeTabmenu[1] && <Post data={context.profile} />}
       </section>
     </div>
   )

@@ -2014,6 +2014,15 @@ export default class API {
       params: params
     })
   }
+
+  static noticeList = async (obj) => {
+    return await ajax({
+      url: `/center/notice`,
+      method: "GET",
+      params: obj
+    })
+  };
+
   /**
    * @brief 고객센터 공지사항 상세 목록 조회
    * @method "GET"
