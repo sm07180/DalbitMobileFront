@@ -7,10 +7,10 @@ import TitleButton from './TitleButton';
 import './header.scss'
 
 const Header = (props) => {
-  const {title, type, children, position} = props
+  const {title, type, children, position, backClickEvent} = props
   const history = useHistory()
 
-  const goBack = () => history.goBack();
+  const goBack = () => backClickEvent? backClickEvent() : history.goBack();
 
   return (
     <header className={`${type ? type : ''} ${position ? position : ''}`}>
@@ -23,7 +23,8 @@ const Header = (props) => {
 }
 
 Header.defaultProps = {
-  position:'sticky'
+  position:'sticky',
+  backClickEvent: null
 }
 
 export default Header
