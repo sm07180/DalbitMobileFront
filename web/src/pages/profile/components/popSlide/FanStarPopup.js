@@ -5,6 +5,7 @@ import Swiper from 'react-id-swiper'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
+import NoResult from 'components/ui/noResult/NoResult'
 // components
 
 import './style.scss'
@@ -175,7 +176,7 @@ const FanStarPopup = (props) => {
     <section className="FanStarLike">
       <h2>{fanStarLikeState.title}</h2>
       <div className="listContainer" ref={fanStarContainerRef}>
-        {isMyProfile &&
+        {isMyProfile && fanStarLikeState.subTab.length > 0 &&
           <ul className="tabmenu">
             <Swiper {...swiperProps}>
               {fanStarLikeState.subTab.map((data,index) => {
@@ -191,6 +192,7 @@ const FanStarPopup = (props) => {
             </Swiper>
           </ul>
         }
+        {showList.length > 0 ?
         <div className="listWrap">
           {showList.map((list,index) => {
             return (
@@ -238,6 +240,9 @@ const FanStarPopup = (props) => {
             )
           })}
         </div>
+        :
+        <NoResult />
+        }
       </div>
     </section>
   )

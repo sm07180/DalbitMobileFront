@@ -11,28 +11,41 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // contents
 // css
 import './bankResult.scss'
+import {useHistory, useLocation} from "react-router-dom";
+import {Hybrid} from "context/hybrid";
 
-const BankTransfer = () => {
-  const context = useContext(Context);
+const BankResult = () => {
+  const location = useLocation()
+  const history = useHistory()
+  const {itemPrice, name, bankNo, phone, webview, event} = location.state
+  const pageCode = webview === 'new' ? '2' : '1'
 
-  // 조회 Api
-
-  // 결재단위 셀렉트
-  const onSelectMethod = (e) => {
-    const {targetIndex} = e.currentTarget.dataset
-    
-    setSelect(targetIndex)
+  const successClick = () => {
+    if (pageCode === '2') {
+      Hybrid('CloseLayerPopup')
+      Hybrid('ClosePayPopup')
+    } else {
+      if (event === '3') {
+        history.push('/event/purchase')
+      } else {
+        history.push('/')
+      }
+    }
   }
 
-  useEffect(() => {
-  },[])
+  const phoneAddHypen = (string) => {
+    if (typeof string === 'string' && string !== '')
+      return string
+        .replace(/[^0-9]/g, '')
+        .replace(/(^02|^0505|^1[0-9]{3}|^0[0-9]{2})([0-9]+)?([0-9]{4})/, '$1-$2-$3')
+        .replace('--', '-')
+  }
 
-  return (
-    <>
+    return (
     <section className="bankResult">
       <div className="resultText">
         <div className="title">
-          <span>01030965957</span>(으)로<br />
+          <span>{phoneAddHypen(phone)}</span>(으)로<br />
           가상계좌 정보를 발송했습니다!
         </div>
         <div className="subTitle">
@@ -42,7 +55,7 @@ const BankTransfer = () => {
       <div className="receiptBoard">
         <div className="receiptList">
           <span>입금예정 금액</span>
-          <p>{Utility.addComma(33000)} 원(부가세포함)</p>
+          <p>{Utility.addComma(itemPrice)} 원(부가세포함)</p>
         </div>
         <div className="receiptList">
           <span>예금주</span>
@@ -54,17 +67,16 @@ const BankTransfer = () => {
         </div>
         <div className="receiptList">
           <span>계좌번호</span>
-          <p className="point">455-555-456789</p>
+          <p className="point">{bankNo}</p>
         </div>
         <div className="receiptList">
           <span>입금자</span>
-          <p>홍길동</p>
+          <p>{name}</p>
         </div>
       </div>
-      <SubmitBtn text="확인" />
+      <SubmitBtn text="확인" onClick={successClick}/>
     </section>
-    </>
   )
 }
 
-export default BankTransfer
+export default BankResult;

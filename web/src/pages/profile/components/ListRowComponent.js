@@ -5,7 +5,7 @@ import {Context} from "context";
 import Utility from "components/lib/utility";
 
 const ListRowComponent = (props) => {
-  const { item, isMyProfile, index, photoClick, openBlockReportPop, disableMoreButton } = props;
+  const { item, isMyProfile, index, photoClick, openBlockReportPop, disableMoreButton, modifyEvent, deleteEvent } = props;
   const context = useContext(Context);
   const moreRef = useRef([]);
 
@@ -64,8 +64,8 @@ const ListRowComponent = (props) => {
       {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
         <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
         <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-          {(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}
-          {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button>삭제하기</button>}
+          {(context.profile.memNo === item.mem_no || context.adminChecker) && <button onClick={modifyEvent}>수정하기</button>}
+          {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button onClick={deleteEvent}>삭제하기</button>}
           {context.profile.memNo !== item.mem_no && <button onClick={openBlockReportPop}>차단/신고하기</button>}
         </div>
       </div>}
@@ -76,5 +76,7 @@ const ListRowComponent = (props) => {
 export default ListRowComponent;
 
 ListRowComponent.defaultProps = {
-  disableMoreButton : true  //.moreBtn 태그 노출여부
+  disableMoreButton : true,  // .moreBtn 태그 노출여부
+  modifyEvent: ()=>{},  // 수정 이벤트
+  deleteEvent: ()=>{},  // 삭제 이벤트
 };
