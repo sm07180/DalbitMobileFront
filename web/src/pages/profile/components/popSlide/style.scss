@@ -147,7 +147,6 @@
       }
       .inputItems {
         .title {
-          position:relative;
           @include flex(flex-start);
           &:after {
             content:"";
@@ -155,7 +154,7 @@
             width:4px;height:4px;
             margin-top:4px;
             border-radius:50%;
-            background-color:#FF3C7B;
+            background-color:$MAINCOLOR;
           }
         }
         .inputBox {
