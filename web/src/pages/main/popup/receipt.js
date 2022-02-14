@@ -8,12 +8,12 @@ import {useHistory, useLocation} from "react-router-dom";
 
 const Receipt = (props) => {
   const history = useHistory();
-  // const {payReceipt} = props;
-  // console.log(props);
-  // console.log(payReceipt);
+  const {payOrderId, clearReceipt} = props;
+  console.log(props);
+  console.log(payOrderId);
 
   const [receipt, setReceipt] = useState({
-    orderId: "05760001_1612500994",
+    orderId: payOrderId,
     payWay: "",
     payAmt: "",
     itemAmt: "",
@@ -42,7 +42,7 @@ const Receipt = (props) => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        orderId: "05760001_1612500994"
+        orderId: payOrderId
       }
     }).then((response) => {
       setReceipt({
@@ -116,7 +116,10 @@ const Receipt = (props) => {
           <p>{receipt.orderId}</p>
         </div>
       </div>
-      <SubmitBtn text="확인" onClick={() => history.push("/")}/>
+      <SubmitBtn text="확인" onClick={() => {
+        history.push("/")
+        clearReceipt()
+      }}/>
     </section>
   );
 };
