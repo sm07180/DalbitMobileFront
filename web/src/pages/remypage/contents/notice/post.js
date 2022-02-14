@@ -69,9 +69,9 @@ const Post = () => {
   };
 
   //태그, nbsp제거
-  const deleteTag = (e) => {
-    const {data} = e.currentTarget.dataset;
-    return data.replace(/(<([^>]+)>)/ig, "").replace(/&nbsp;/g, "").replace(/&lt;/g, "").replace(/&gt;/g, "");
+  const deleteTag = (data) => {
+    const regTag = data.replace(/(<([^>]+)>)/ig, "").replace(/&nbsp;/g, "").replace(/&lt;/g, "").replace(/&gt;/g, "");
+    return regTag;
   };
 
   useEffect(() => {

@@ -6,11 +6,26 @@ import {DatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers'
 
 // css
 import './datePicker.scss'
- 
+
 const DatePickerPage = (props) => {
-  const [selectedDate, setSelectedDate] = useState(new Date())
+  const {value, change, changeActive} = props //ReportPopup.js에서 넘겨줌
+  const [selectedDate, setSelectedDate] = useState() //datapicker - value값
+
+  const handleDateChange = () => { //datepicker -> 요일 클릭시 dt값 변경, value값 변경
+    change(moment(value).format("YYYYMMDD"));
+    setSelectedDate(value);
+  }
+
+  const onAccept = (e) => { //datepicker -> OK버튼 클릭시 dateType변경, dt값 변경
+    change(moment(e).format("YYYYMMDD"));
+    changeActive(4);
+  }
 
   moment.locale('ko')
+
+  useEffect(() => {
+    handleDateChange(value);
+  }, [value]);
 
   return (
     <div className="datePicker">
@@ -22,11 +37,12 @@ const DatePickerPage = (props) => {
           id="date-picker-inline"
           name="picker"
           value={selectedDate}
+          onChange={handleDateChange}
+          onAccept={onAccept}
         />
       </MuiPickersUtilsProvider>
     </div>
   )
 }
 
-export default DatePickerPage
- 
+export default DatePickerPage;

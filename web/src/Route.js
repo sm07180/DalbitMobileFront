@@ -130,6 +130,8 @@ const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
 const Notice = React.lazy(() => import("pages/remypage/contents/notice/notice"));
+const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/postDetail"));
+const Report = React.lazy(() => import("pages/remypage/contents/report/report"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -304,6 +306,8 @@ const Router = () => {
         <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
 
         <Route exact path="/notice" component={Notice} />
+        <Route exact path="/notice/:num" component={PostDetail} />
+        <Route exact path="/report" component={Report} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
