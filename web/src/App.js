@@ -238,11 +238,7 @@ const App = () => {
     let tokenInfo = {};
     let elementById = document.getElementById('serverToken');
     if(elementById && elementById.value && elementById.value !== ''){
-      let parse = JSON.parse(elementById.value);
-      tokenInfo = {
-        result : 'success'
-        , data : parse
-      }
+      tokenInfo = JSON.parse(elementById.value);
     }else{
       tokenInfo = await Api.getToken()
     }
