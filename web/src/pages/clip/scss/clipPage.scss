@@ -34,12 +34,9 @@
     padding-top:18px;
     .swiper-slide{
       @include flex($fd:column);
-      padding: 0 16px;
       transition:all .1s ease-out;
       &.swiper-slide-active {
         width:calc(100% - 28px);
-        padding-right:16px;
-        padding-left:auto;
       }
       &:last-child{
         width:100%;
@@ -94,18 +91,12 @@
   }
   .bannerWrap {
     .bannerBox {
-      width:calc(100% - 32px);
-      padding-left:16px;
+      width:100%;
       box-sizing: border-box;
-      &:last-child {
-        width:calc(100% - 16px);
-        margin-right:16px;
-      }
       .bannerItem {
         width: 100%;
         height: 100px;
         background-color:#999;
-        border-radius: 16px;
       }
     }
   }
@@ -170,14 +161,18 @@
   .nowClipWrap{
     .swiper-slide {
       @include flex($fd:column);
-      padding: 0 0 0 16px;
       transition:all .1s ease-out;
+      >div{
+        padding-left:16px;
+      }
       &.swiper-slide-active {
         width:calc(100% - 28px);
       }
       &:last-child{
         width:100%;
-        padding-right:16px;
+        >div{
+          padding-right:16px;
+        }
       }
     }
     .listWrap {
