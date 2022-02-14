@@ -45,7 +45,6 @@ const ProfileReplyComponent = (props) => {
 
   return (
     <ListRow photo={type ==='feed'?item?.profileImg?.thumb50x50 : item?.profImg?.thumb50x50} photoClick={goProfile}>
-      {`${isMyContents}`}
       <div className="listContent">
         <div className="listItems">
           <div className="nick">{item?.nickName}</div>
