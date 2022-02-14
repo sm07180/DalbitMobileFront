@@ -28,7 +28,6 @@ import MicOnIcon from "../static/ic_mic.svg";
 import MicOffIcon from "../static/ic_mic_off.svg";
 // import GuestOffIcon from "../static/ic_more_out.svg";
 import GuestOffIcon from "../static/ico_runout_w_s.svg";
-import {POST_GUEST, postGuest} from "../../../redux/actions/broadcast";
 import {useDispatch} from "react-redux";
 
 const initInterval = (callback) => {
