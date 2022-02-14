@@ -10,7 +10,7 @@ export default function EndApp() {
   const context = useContext(Context)
   const history = useHistory();
   const location = useLocation()
-  const {result, message, orderId, cancelType, returnType} = qs.parse(location.search)
+  const {result, message, orderId, cancelType, returnType} = location.state;
 
   const [receipt, setReceipt] = useState({
     orderId: orderId,
