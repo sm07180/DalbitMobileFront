@@ -262,6 +262,7 @@ const ProfileWrite = () => {
 
         {/*파일 등록*/}
         <input ref={inputRef} type="file" className='blind'
+               accept="image/jpg, image/jpeg, image/png, image/gif"
                onChange={(e) => {
                  e.persist();
                  setEventObj(e);

@@ -83,6 +83,17 @@
   }
   .bodyContainer {
     position: relative;
+    .fanBtn {
+      position:absolute;
+      top:26.3%;
+      left:50%;
+      transform:translateX(-50%);
+      img {
+        width:100%;
+        max-width:106px;
+        height:19px;
+      }
+    }
     .notice {
       position: absolute;
       bottom: 0;
