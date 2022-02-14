@@ -18,7 +18,7 @@ export default function Payment() {
   const { itemPrice, name, bankNo, phone } = payInfo;
 
   return (
-    <Layout>
+    <>
       <Header title="무통장 입금(계좌이체)" />
       <div id="pay" className="subContent gray">
         <div className="content">
@@ -68,6 +68,6 @@ export default function Payment() {
           </button>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

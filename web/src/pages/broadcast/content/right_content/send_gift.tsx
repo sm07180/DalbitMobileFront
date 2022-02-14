@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useState,
   useMemo,
+  useCallback
 } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -41,9 +42,10 @@ export default function SendGift(props: {
 
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
 
-  const { layer, dispatchLayer, dispatchDimLayer } = useContext(
-    BroadcastLayerContext
-  );
+  // settingObj : 유저방송 설정 ( ttsSound, normalSound : 아이템 사용여부 send_gift.tsx 에서는 2개만 사용중)
+  const {settingObj} = broadcastState;
+
+  const { layer, dispatchLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
 
   const { guestState } = useContext(GuestContext);
   const { guestConnectStatus, guestObj } = guestState;
@@ -121,7 +123,7 @@ export default function SendGift(props: {
       setCount(0);
       const categoryText = arg;
 
-      const filterData = common.items?.filter(
+      const filterData = common.items.filter(
         (v) => v.category === categoryText && v.visibility
       );
       setGiftList(filterData);
@@ -148,6 +150,24 @@ export default function SendGift(props: {
       }
     }
   };
+
+  //방장의 방송설정 : tts, sound 아이템 사용여부에 따라 사용가능
+  //이 값은 청취자인 경우만 해당됨
+  const soundItemSettingMemo = useMemo(() => {
+    if(roomOwner === false) {
+      if (typeof roomInfo?.djTtsSound === 'boolean' && typeof roomInfo?.djNormalSound === 'boolean'
+        && typeof settingObj?.ttsSound === 'boolean' && typeof settingObj?.normalSound === 'boolean') {
+
+        const {djTtsSound, djNormalSound} = roomInfo;
+        const {ttsSound, normalSound} = settingObj;
+
+        console.log('soundItemSettingMemo in declare', {djTtsSound, djNormalSound}, {ttsSound, normalSound});
+        return {ttsItemBool: djTtsSound && ttsSound, soundItemBool: djNormalSound && normalSound };
+      }
+    } else {
+      return null;
+    }
+  },[roomInfo, settingObj, roomOwner]);
 
   useEffect(() => {
     if (layer.others.itemNo) {
@@ -185,7 +205,7 @@ export default function SendGift(props: {
       } else {
       }
     } else {
-      const filterData = common.items?.filter(
+      const filterData = common.items.filter(
         (v) => v.category === "normal" && v.visibility
       );
 
@@ -275,6 +295,11 @@ export default function SendGift(props: {
     getActorList();
   }, []);
 
+  //TTS 아이템, 사운드 아이템 체크용
+  const ttsOrSoundItemChk = useCallback((itemNo = "") => {
+    return giftList.filter((v) => v.itemNo === itemNo);
+  },[giftList]);
+
   // 선물하기
   async function sendGift(count: number, itemNo: string, isHidden: boolean) {
     if (preventClick === true) {
@@ -293,6 +318,7 @@ export default function SendGift(props: {
       return;
     }
 
+    /** tts, sound 아이템 사용안함 경우 : 빈값으로 세팅*/
     const params = {
       roomNo: roomNo,
       memNo:
@@ -300,8 +326,8 @@ export default function SendGift(props: {
       itemNo: itemNo,
       itemCnt: count,
       isSecret: isHidden,
-      ttsText,
-      actorId: ttsActor,
+      ttsText: roomInfo?.djTtsSound ? ttsText : "",
+      actorId: roomInfo?.djTtsSound ? ttsActor : "",
     };
 
     const alertMsg: string = (() => {
@@ -333,13 +359,14 @@ export default function SendGift(props: {
       return false;
     }
     preventClick = true;
+
     const sendGiftRes = await postSendGift(params);
     if (sendGiftRes.result === "success") {
       globalAction.callSetToastStatus &&
-        globalAction.callSetToastStatus({
-          status: true,
-          message: sendGiftRes.data ? sendGiftRes.data.message : alertMsg,
-        });
+      globalAction.callSetToastStatus({
+        status: true,
+        message: sendGiftRes.data ? sendGiftRes.data.message : alertMsg
+      });
 
       setItem(-1);
       setCount(0);
@@ -452,7 +479,7 @@ export default function SendGift(props: {
                     <p>{profile.dalCnt.toLocaleString()}</p>
                     <button
                       className="charge"
-                      onClick={() => history.push("/pay/store")}
+                      onClick={() => history.push("/store")}
                     >
                       충전
                     </button>
@@ -518,9 +545,9 @@ export default function SendGift(props: {
                         }`}
                       >
                         <img src={v.thumbs} alt={v.itemNm} className="item" />
-                        {v.soundFileUrl !== "" && (
+                        {v.soundFileUrl !== "" && roomInfo?.djNormalSound &&
                           <img className="sound-item" src={SoundIcon} />
-                        )}
+                        }
                         {v.isNew && (
                           <span className="ico__new">
                             <img
@@ -529,7 +556,7 @@ export default function SendGift(props: {
                             />
                           </span>
                         )}
-                        {v.ttsUseYn === 'y' && (
+                        {v.ttsUseYn === 'y' && roomInfo?.djTtsSound && (
                           <span className="ico__speaker">
                             <img
                               src="https://image.dalbitlive.com/broadcast/giftIconSpeaker.png"
@@ -547,6 +574,7 @@ export default function SendGift(props: {
               </ul>
             </DalbitScroll>
 
+            {/* soundItemSettingMemo?.ttsItemBool : (ttsItem 사용가능여부 true, false) */}
             {showTTSInputField &&
               <>
                 <div className="giftTtsCategory">
@@ -554,7 +582,7 @@ export default function SendGift(props: {
                   {broadcastState.ttsActorInfo.map((data, index) => {
                     return(
                       <button key={index}
-                              className={`ttsList ${ttsActor === data.actorId ? "active" : ""}`}
+                              className={`ttsList ${ttsActor === data.actorId && (roomInfo?.djTtsSound) ? "active" : ""}`}
                               onClick={() => setTTSActor(data.actorId)}
                       >{data.actorName}
                       </button>
@@ -562,11 +590,25 @@ export default function SendGift(props: {
                   })}
                 </div>
                 <div className="giftTTSinput">
-                  <img src="https://image.dalbitlive.com/broadcast/ico_speaker.png" />
-                  <UseInput placeholder={`하고 싶은 말과 함께 선물하세요.(${ttsContentMaxLength}자 이내)`}
-                            forwardedRef={ttsInputRef}
-                            validator={ttsInputValidator}
-                  />
+                  {roomInfo?.djTtsSound?
+                  <>
+                    <img src="https://image.dalbitlive.com/broadcast/ico_speaker.png" />
+                    <UseInput placeholder={`하고 싶은 말과 함께 선물하세요.(${ttsContentMaxLength}자 이내)`}
+                              forwardedRef={ttsInputRef}
+                              validator={ttsInputValidator}
+                              disabled={false}
+                    />
+                  </>
+                  :
+                  <>
+                    <img src="https://image.dalbitlive.com/broadcast/ico_speaker-mute.png"/>
+                    <UseInput placeholder={'DJ의 설정으로 목소리 옵션을 사용할 수 없습니다'}
+                              forwardedRef={ttsInputRef}
+                              validator={ttsInputValidator}
+                              disabled={true}
+                    />
+                  </>
+                  }
                 </div>
               </>
             }

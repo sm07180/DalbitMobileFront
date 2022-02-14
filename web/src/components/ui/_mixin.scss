@@ -1,18 +1,28 @@
 /* 
   @color
 */
-$MAINCOLOR: #8581FF;
+$MAINCOLOR: #FF3C7B;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
 // height 값 관리
 $HEADER-HEIGHT: 48px;
+$NAVIGATION-HEIGHT: 50px;
+$GNB-HEIGHT: 68px;
 
 // z-inde 관리
-$ALERT-ZINDEX: 90000;
-$POPUP-ZINDEX: 30000;
-$NAVIGATION-ZINDEX: 10000;
-$HEADER-ZINDEX: 10000;
-$MORE-ZINDEX: 5000;
+$ALERT-ZINDEX: 100;
+$POPUP-ZINDEX: 90;
+$POPSLIDE-ZINDEX: 80;
+$MORE-ZINDEX: 20;
+$NAVIGATION-ZINDEX: 50;
+$HEADER-ZINDEX: 30;
+
+// SUIT FONT-WEIGHT;
+$Regular: 400;
+$Medium: 500;
+$SemiBold: 600;
+$Bold: 700;
+$ExtraBold: 800;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
@@ -60,6 +70,7 @@ $MORE-ZINDEX: 5000;
 }
 
 @mixin fontCut {
+  word-break:break-all;
   white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
@@ -69,6 +80,8 @@ $MORE-ZINDEX: 5000;
   display: -webkit-box;
   -webkit-line-clamp: $value;
   -webkit-box-orient: vertical;
+  word-break:break-all;
+  overflow:hidden;
 }
 
 @mixin backgroundPSR {
@@ -95,6 +108,13 @@ $MORE-ZINDEX: 5000;
   background-color:rgba(0,0,0,.4);
 }
 
+@mixin btnMainStyle($height,$radius,$font) {
+  line-height: $height;
+  background-color:$MAINCOLOR;
+  @include border($MAINCOLOR,$radius);
+  @include font($font,500,white);
+}
+
 // 스토어 구매, 달교환
 @mixin purchaseList {
   .myhaveDal {
@@ -116,7 +136,10 @@ $MORE-ZINDEX: 5000;
         background-size:18px;
       }
       &.dal {
-        @include BGIMG('mypage/dalla/icon_dal.png');
+        &::before {
+          @include BGIMG('mypage/dalla/icon_dal.png');
+          background-size:16px;
+        }
       }
       &.byeol {
         &::before {
@@ -283,6 +306,67 @@ $MORE-ZINDEX: 5000;
         content: '';
         width: 2px;height: 2px;
         background: #757575;
+      }
+    }
+  }
+}
+
+// 탭 메뉴
+@mixin tabmenuStyle-1 {
+  @include flex(center);
+  li {
+    flex:1;
+    line-height:40px;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom:2px solid #f2f2f2;
+    @include font(16px,500,#acacac);
+    &.active {
+      @include font(16px,bold,#202020);
+      border-bottom: solid 2px #202020;
+    }
+  }
+}
+
+@mixin subTabmenuStyle-1 {
+  @include flex(center);
+  li {
+    line-height:34px;
+    margin-right:4px;
+    padding:0 16px;
+    border-radius:100px;
+    background-color: #F2F2F2;
+    @include font(13px,400,#ACACAC);
+    &.active {
+      background-color: #202020;
+      color:white;
+    }
+  }
+}
+
+@mixin navigationStyle {
+  #navigation {
+    height:50px;
+    pointer-events: none;
+    nav.bottomGnb {
+      position:fixed;
+      bottom:0;
+      z-index: 50;
+      display:flex;
+      align-items:center;
+      width:100%;
+      max-width:460px;
+      height:50px;
+      background-color:white;
+      pointer-events: initial;
+      .navi {
+        flex:1;
+        height:100%;
+        &:nth-child(1) {@include BGIMG('common/icon/navi_live.png');background-size:40px;}
+        &:nth-child(2) {@include BGIMG('common/icon/navi_clip.png');background-size:40px;}
+        &:nth-child(3) {@include BGIMG('common/icon/navi_plus.png');background-size:40px;}
+        &:nth-child(4) {@include BGIMG('common/icon/navi_search.png');background-size:40px;}
+        &:nth-child(5) {@include BGIMG('common/icon/navi_profile.png');background-size:40px;}
       }
     }
   }

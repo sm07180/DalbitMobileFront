@@ -6,13 +6,12 @@
   h2 {
     height:28px;
     line-height:28px;
-    letter-spacing: -1.5px;
-    @include font(20px,500,black);
+    letter-spacing: -.9px;
+    @include font(20px,$SemiBold,#202020);
   }
   button {
     margin-left: auto;
-    letter-spacing: -1px;
-    @include font(13px,400,#999);
+    @include font(13px,$Regular,#999);
   }
 }
 .badge {

@@ -772,6 +772,20 @@ export default () => {
         context.action.updateIsMailboxOn(event.detail.isMailboxOn)
         break
 
+      case 'native-footer': // native footer 이동
+        const type = event.detail.type;
+        let pushUrl = '';
+        if(type === 'main') {
+          pushUrl = '/'
+        }else if(type === 'clip') {
+          pushUrl = '/clip'
+        }else if(type === 'search') {
+          pushUrl = '/search'
+        }else if(type === 'mypage') {
+          pushUrl = '/mypage'
+        }
+        history.push(pushUrl);
+        break;
       default:
         break
     }
@@ -1072,6 +1086,9 @@ export default () => {
     document.addEventListener('mailbox-state', update)
     document.addEventListener('mailbox-use-state', update)
 
+    /* native footer */
+    document.addEventListener('native-footer', update)
+
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -1109,6 +1126,9 @@ export default () => {
       /*----mailbox----*/
       document.removeEventListener('mailbox-state', update)
       document.removeEventListener('mailbox-use-state', update)
+
+      /* native footer */
+      document.removeEventListener('native-footer', update)
     }
   }, [])
 

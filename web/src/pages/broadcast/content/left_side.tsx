@@ -28,13 +28,13 @@ import MoonLandAnimationComponent from "../component/moon_land_animation_compone
 
 // others
 import LottiePlayer from "lottie-web";
-import { UserType, ListenerRtc, HostRtc } from "common/realtime/rtc_socket";
+import {UserType, ListenerRtc, HostRtc, rtcSessionClear} from "common/realtime/rtc_socket";
 import { createElement } from "lib/create_element";
 import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import { broadcastExit } from "common/api";
+import { broadcastExit, welcomeEventDayCheckerUpdate } from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -154,7 +154,7 @@ export default function LeftSide(props: {
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { chatAnimation, comboAnimation, chatFreeze } = broadcastState;
+  const { chatAnimation, comboAnimation, chatFreeze, soundVolume } = broadcastState;
   const { guestState, guestAction } = useContext(GuestContext);
   const { guestConnectStatus } = guestState;
 
@@ -261,6 +261,7 @@ export default function LeftSide(props: {
     setAudioPlayState(false);
   };
 
+  // todo tts, SoundItem volume 적용하기
   const playAnimation = (playData) => {
     const {
       ttsItemInfo,
@@ -271,7 +272,7 @@ export default function LeftSide(props: {
       soundFileUrl,
     } = playData;
     ttsAudio = new Audio();
-    ttsAudio.volume = 1;
+    ttsAudio.volume = soundVolume;
     ttsAudio.src = isTTSItem ? ttsItemInfo.fileUrl : soundFileUrl;
     ttsAudio.play();
     ttsAudio.loop = false;
@@ -378,7 +379,7 @@ export default function LeftSide(props: {
               rtcInfo.stop();
               disconnectGuest();
               globalAction.dispatchRtcInfo({ type: "empty" });
-              sessionStorage.removeItem("room_no");
+              rtcSessionClear();
             }
           }
         };
@@ -635,6 +636,7 @@ export default function LeftSide(props: {
     }
   }, [ttsAnimationQueue]);
 
+  //ttsItem, soundItem, webp, lottie Item 출력시키는 Effect
   useEffect(() => {
     let comboIdx = 0;
 
@@ -663,6 +665,7 @@ export default function LeftSide(props: {
             memNo,
             ttsItemInfo,
             isTTSItem,
+            soundOffLocationFlag
           } = chatAnimation;
 
           const animationWrapElem = document.createElement("div");
@@ -707,7 +710,7 @@ export default function LeftSide(props: {
           } else if (soundFileUrl && soundFileUrl !== "") {
             soundAnimationQueue.push(chatAnimation);
             if (soundAnimationQueue.length === 1) {
-              audio.volume = 1;
+              audio.volume = soundVolume;
               audio.src = soundFileUrl;
               audio.play();
               audio.loop = true;
@@ -718,7 +721,7 @@ export default function LeftSide(props: {
                 webpImg.setAttribute("src", webpUrl);
                 webpImg.setAttribute(
                   "style",
-                  "position: absolute; object-fit: contain; width: inherit; height: inherit; z"
+                  "position: absolute; object-fit: contain; width: inherit; height: inherit;"
                 );
 
                 animationWrapElem.appendChild(webpImg);
@@ -743,7 +746,7 @@ export default function LeftSide(props: {
               const AudioInterval = setInterval(() => {
                 if (audio.paused) {
                   clearInterval(AudioInterval);
-                  audio.volume = 1;
+                  audio.volume = soundVolume;
                   audio.src = soundFileUrl;
                   audio.play();
                   audio.loop = true;
@@ -812,6 +815,11 @@ export default function LeftSide(props: {
                     `position: absolute; object-fit: contain; width: 360px; height: 540px; top: 20px; left:50%`
                   );
                 }
+              } else if(soundOffLocationFlag === 'soundOffLocation') {  //sound Item 정책 꼬여서 분기 조건 추가 soundOffLocationFlag
+                webpImg.setAttribute(
+                  "style",
+                  "position: absolute; object-fit: contain; width: inherit; height: inherit;"
+                );
               } else {
                 webpImg.setAttribute(
                   "style",
@@ -859,6 +867,19 @@ export default function LeftSide(props: {
       }
     }
   }, [chatAnimation]);
+
+  //tts, sound Item에 사운드 볼륨을 적용시키는 Effect 
+  //볼륨 조절은 icon_wrap.tsx 컴포넌트에서 함
+  useEffect(() => {
+    if (typeof soundVolume === 'number') {
+      if(audio && typeof audio?.volume === 'number') {
+        audio.volume = soundVolume;
+      }
+      if(ttsAudio && typeof ttsAudio?.volume === 'number') {
+        ttsAudio.volume = soundVolume;
+      }
+    }
+  },[soundVolume]);
 
   const createComboElem = ({ url, userImage, userNickname, _idx }) => {
     const animationWrapElem = document.createElement("div");
@@ -1201,7 +1222,7 @@ export default function LeftSide(props: {
             : {}
         }
       >
-        
+
         {broadcastState.ttsActionInfo.showAlarm &&
           <div className="ttsLayer">
             <div className="user">
@@ -1269,10 +1290,12 @@ export default function LeftSide(props: {
         {/* 방송 툴팁 Component */}
         {tooltipStatus.status === true && <TooltipUI />}
 
+        {/* 출석체크 버튼 */}
         {rtcInfo !== null &&
           rtcInfo.attendClicked === false &&
           !roomOwner &&
-          rtcInfo.roomInfo?.isAttendCheck === false && (
+          rtcInfo.roomInfo?.isAttendCheck === false &&
+          (!roomInfo?.eventInfoMap?.visible) &&
             <StampIconWrapStyled
               className="stamp_icon_wrap"
               onClick={() => {
@@ -1292,7 +1315,21 @@ export default function LeftSide(props: {
                 height={42}
               />
             </StampIconWrapStyled>
-          )}
+          }
+
+        {/* 웰컴이벤트 버튼 */}
+        {roomInfo?.eventInfoMap?.visible &&
+          <FloatingIconWrapStyled
+            className="floating_icon_wrap"
+            onClick={async () => {
+              const {data, code, message} = await welcomeEventDayCheckerUpdate();
+              console.log('welcomeEventDayCheckerUpdate=>', data, code, message);
+              history.push("/event/welcome");
+            }}
+          >
+            <img src="https://image.dalbitlive.com/event/welcome/floatingBtn.png" alt="신입 WELCOME 이벤트" />
+          </FloatingIconWrapStyled>
+        }
         <RandomMsgWrap
           roomInfo={roomInfo}
           roomOwner={roomOwner}
@@ -1352,6 +1389,21 @@ const StampIconWrapStyled = styled.div`
   bottom: 16px;
   cursor: pointer;
   z-index: 3;
+`;
+
+const FloatingIconWrapStyled = styled.div`
+  position: absolute;
+  right: 13px;
+  bottom: 16px;
+  cursor: pointer;
+  z-index: 3;
+  width : 70px;
+  height : 70px;
+  
+  img{
+    width:100%;
+    height:100%;
+  }
 `;
 
 const ConnectedStatusStyled = styled.div`

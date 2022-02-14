@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react'
 import './popSlide.scss'
 
 const PopSlide = (props) => {
-  const {setPopSlide, children} = props
+  const {setPopSlide, title, children} = props
   const [popOpen, setPopOpen] = useState(true);
 
   const closePopup = () => {
@@ -30,6 +30,7 @@ const PopSlide = (props) => {
   return (
     <div id="popSlide" onClick={closePopupDim}>
       <div className={`slideLayer ${popOpen ? "slideUp" : "slideDown"}`}>
+        {title && <h3>{title}</h3>}
         {children}
       </div>
     </div>

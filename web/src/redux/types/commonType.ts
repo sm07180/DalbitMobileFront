@@ -5,6 +5,7 @@ export type CommonActions = ActionType<typeof actions>;
 
 export interface CommonState {
   isLoading: boolean;
+  isDesktop: boolean;
 }
 
 export type Gender = "" | "m" | "f";
@@ -25,6 +26,7 @@ export interface IImageVo {
   thumb500x500: string;
   thumb700x700: string;
   url: string;
+  isDefaultImg: boolean;
 }
 
 export interface ILiveBadgeList {
@@ -51,4 +53,13 @@ export interface ILiveBadgeList {
   text: string;
   textColor: string;
   tipMsg: string;
+}
+
+export interface IPaging {
+  next: number;
+  page: number;
+  prev: number;
+  records: number;
+  total: number;
+  totalPage: number;
 }

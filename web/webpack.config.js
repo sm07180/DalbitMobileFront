@@ -7,6 +7,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const webpack = require('webpack')
 const fs = require('fs')
+const Dotenv = require("dotenv-webpack")
 
 const ENV_URL = {
   dev: {
@@ -43,6 +44,27 @@ const ENV_URL = {
 
 module.exports = (_, options) => {
   const {env, mode} = options
+
+  let paths = ".env.prod";
+  if (env === "dev") {
+    paths = ".env.dev.local";
+  } else if (env === "stage") {
+    paths = ".env.dev";
+  }
+  const dotTarget = path.join(__dirname, paths);
+
+  //없을경우 dev env 환경변수 사용 하여 처리
+  const exists = fs.existsSync(dotTarget);
+  if (!exists && env === "dev") {
+    fs.copyFileSync(path.join(__dirname, ".env.dev"), dotTarget);
+  }
+
+  const dotenv = new Dotenv({
+    path: dotTarget,
+    systemvars: false,
+  });
+  const ENV_URL = dotenv.getEnvs().env;
+
   const config = {
     entry: {
       app: './src/index.js',
@@ -81,7 +103,7 @@ module.exports = (_, options) => {
         },
         {
           test: /\.(css|scss|sass)$/,
-          use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          use: ['style-loader', /*MiniCssExtractPlugin.loader, */'css-loader', 'sass-loader'],
           exclude: /node_modules/
         },
         {
@@ -109,7 +131,7 @@ module.exports = (_, options) => {
     },
 
     plugins: [
-      new LoadablePlugin(), new MiniCssExtractPlugin(),
+      //new LoadablePlugin(), new MiniCssExtractPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
@@ -125,13 +147,13 @@ module.exports = (_, options) => {
 
       new webpack.DefinePlugin({
         __NODE_ENV: JSON.stringify(env),
-        __WEBRTC_SOCKET_URL: ENV_URL[env]['WEBRTC_SOCKET_URL'],
-        __API_SERVER_URL: ENV_URL[env]['API_SERVER_URL'],
-        __STATIC_PHOTO_SERVER_URL: ENV_URL[env]['STATIC_PHOTO_SERVER_URL'],
-        __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL'],
-        __PAY_SERVER_URL: ENV_URL[env]['PAY_SERVER_URL'],
-        __SOCIAL_URL: ENV_URL[env]['SOCIAL_URL'],
-        __CHAT_SOCKET_URL: ENV_URL[env]["CHAT_SOCKET_URL"],
+        __WEBRTC_SOCKET_URL: JSON.stringify(ENV_URL['WEBRTC_SOCKET_URL']),
+        __API_SERVER_URL: JSON.stringify(ENV_URL['API_SERVER_URL']),
+        __STATIC_PHOTO_SERVER_URL: JSON.stringify(ENV_URL['STATIC_PHOTO_SERVER_URL']),
+        __USER_PHOTO_SERVER_URL: JSON.stringify(ENV_URL['USER_PHOTO_SERVER_URL']),
+        __PAY_SERVER_URL: JSON.stringify(ENV_URL['PAY_SERVER_URL']),
+        __SOCIAL_URL: JSON.stringify(ENV_URL['SOCIAL_URL']),
+        __CHAT_SOCKET_URL: JSON.stringify(ENV_URL["CHAT_SOCKET_URL"]),
       })
     ]
   }

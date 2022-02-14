@@ -722,6 +722,18 @@ export default class API {
       params: params
     })
   }
+  
+  /**
+   * @brief 마이페이지 팬보드 상세조회
+   * @method "GET""
+   * @todo
+   * @param              /
+   * @create 박용훈 2022.02.10
+   */
+  static mypage_fanboard_detail = async (params) => {
+    return await ajax({url: `/profile/board/detail`, method: 'GET', params});
+  }
+
   /**
    * @brief 마이페이지 팬보드 댓글 등록
    * @method "POST""
@@ -1264,6 +1276,20 @@ export default class API {
     return await ajax({url: `/mypage/notice`, method: 'GET', params})
   }
 
+  static mypage_notice_sel = async (params) => {
+    return await ajax({url: `/mypage/notice/sel`, method: 'GET', params});
+  }
+
+  /**
+   * 피드 상세 조회
+   * @param
+   * feedNo number (피드글 번호)
+   * memNo  string (피드글 주인)
+   * */
+  static mypage_notice_detail_sel = async (params) => {
+    return await ajax({url: `/mypage/notice/detail`, method: 'GET', params});
+  }
+  
   /**
    * @breif 마이페이지 지갑 내역 조회
    * @method "GET"
@@ -3750,10 +3776,10 @@ API.authToken = null
 
 //ajax
 export const ajax = async (obj) => {
-  const {url, method, data, params} = obj
+  const {url, method, data, params, reqBody} = obj
   try {
     const pathType = url === '/upload' ? PHOTO_SERVER : url.includes('/rest/pay/') ? PAY_SERVER : API_SERVER
-    const contentType = url === '/upload' ? '' : 'application/x-www-form-urlencoded; charset=utf-8'
+    const contentType = url === '/upload' ? '' : reqBody? 'application/json; charset=utf-8' : 'application/x-www-form-urlencoded; charset=utf-8'
     let formData = new FormData()
     if (url === '/upload' && data) {
       formData.append('file', '')
@@ -3761,7 +3787,7 @@ export const ajax = async (obj) => {
       formData.append('imageURL', '')
       formData.append('uploadType', data.uploadType)
     }
-    const dataType = url === '/upload' ? formData : qs.stringify(data)
+    const dataType = url === '/upload' ? formData : reqBody? data : qs.stringify(data)
     let res = await axios({
       method: method,
       headers: {

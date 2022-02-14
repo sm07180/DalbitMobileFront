@@ -3,14 +3,18 @@ import React from 'react'
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
+import {useHistory} from "react-router-dom";
 
 const CardList = (props) => {
   const {data} = props
-  
+
+  const history = useHistory();
+
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
-    loop: false
+    loop: false,
+    rebuildOnUpdate: true
   }
 
   return (
@@ -20,7 +24,7 @@ const CardList = (props) => {
             {data.map((list, index) => {
               return (
                 <div key={index}>
-                  <ListRow photo={list.profImg.thumb292x292}>
+                  <ListRow photo={list.profImg.thumb292x292} onClick={() => history.push(`/profile/${list.memNo}`)}>
                     <div className='rankWrap'>
                       <div className='rank'>{list.rank}</div>
                     </div>
@@ -38,4 +42,4 @@ const CardList = (props) => {
   )
 }
 
-export default CardList
+export default React.memo(CardList);

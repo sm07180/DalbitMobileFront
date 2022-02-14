@@ -1,8 +1,8 @@
 @import "../../components/ui/mixin";
 
 #remypage {
+  flex:1;
   @include flex($fd:column);
-  height:100%;
   .myInfo {
     @include flex;
     padding:16px 16px 14px;
@@ -125,13 +125,14 @@
       }
     }
   }
-  button.logout {
-    width:256px;
-    height:45px;
-    line-height:45px;
-    margin: auto auto 30px;
-    background-color:#F6F6F6;
-    @include font(14px,500,black);
-    border-radius:100px;
+  .buttonWrap {
+    margin: auto 16px;
+    button.logout {
+      width:calc(100% - 32px);
+      margin:16px 0;
+      line-height:46px;
+      @include border(#D5D5D5,16px);
+      @include font(16px,$Medium,#666);
+    }
   }
 }

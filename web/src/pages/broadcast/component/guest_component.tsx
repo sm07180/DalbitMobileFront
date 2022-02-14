@@ -357,10 +357,11 @@ function GuestComponent(props) {
       });
     } else if (guestInfo !== null && guestInfo[globalState.baseData.memNo]) {
       const key = Object.keys(guestInfo)[0];
+      if(guestInfo[key] && guestInfo[key] !== "EMPTY" ) {
+        guestInfo[key].setDisplayWrapRef(displayWrapRef);
 
-      guestInfo[key].setDisplayWrapRef(displayWrapRef);
-
-      guestInfo[key].initVideoTag();
+        guestInfo[key].initVideoTag();
+      }
     }
   };
 
@@ -469,7 +470,7 @@ function GuestComponent(props) {
       const stream = await setStream();
       setAudioStream(stream);
     }
-    let audioCheckerId: number | null  | any = null;
+    let audioCheckerId: number | null = null;
 
     if (audioStream === null && micCheck === true && micState === false) {
       initDeviceAudioStream();
@@ -631,7 +632,7 @@ function GuestComponent(props) {
   }, [micState, audioStream]);
 
   useEffect(() => {
-    if (guestInfo !== null && Object.keys(guestInfo).length > 0) {
+    if (guestInfo && guestInfo !== null && Object.keys(guestInfo).length > 0) {
       if (guestInfo[globalState.baseData.memNo]) {
         initInterval(() => {
           if (guestInfo[globalState.baseData.memNo].getPeerConnectionCheck()) {
@@ -642,16 +643,17 @@ function GuestComponent(props) {
         });
       } else {
         const a = Object.keys(guestInfo)[0];
+        if(guestInfo[a] && guestInfo[a] !== "EMPTY" ){
+          guestInfo[a].setDisplayWrapRef(displayWrapRef);
 
-        guestInfo[a].setDisplayWrapRef?.(displayWrapRef);
-
-        initInterval(() => {
-          if (guestInfo[a].getPeerConnectionCheck?.()) {
-            setGuestConnectStatus(true);
-            return true;
-          }
-          return false;
-        });
+          initInterval(() => {
+            if (guestInfo[a].getPeerConnectionCheck()) {
+              setGuestConnectStatus(true);
+              return true;
+            }
+            return false;
+          });
+        }
       }
     }
   }, [guestInfo]);

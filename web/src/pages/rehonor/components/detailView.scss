@@ -5,6 +5,7 @@
     @include flex(center, space-between);
     width: 100%; height: 40px;
     margin-top: 4px;
+    padding: 0 16px;
     .prevButton {
         @include flex(center);
         padding-left: 20px;
@@ -27,7 +28,7 @@
         flex: 1;
         @include flex(center, center);
         .title {
-            @include font(16px, 500, #202020);
+            @include font(16px, $SemiBold, #202020);
         }
     }
 }

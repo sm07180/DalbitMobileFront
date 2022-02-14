@@ -1,7 +1,7 @@
 import React from 'react'
 
 // global components
-import TabBtn from 'components/ui/tabBtn/TabBtn'
+import TabBtn from './TabBtn'
 
 const Tabmenu = (props) => {
   const {data, tab, setTab} = props

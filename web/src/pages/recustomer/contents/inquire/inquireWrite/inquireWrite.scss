@@ -1,0 +1,140 @@
+@import "components/ui/_mixin.scss";
+
+#inquireWrite {
+  position: relative;
+  width: 100%;
+  padding: 21px 16px;
+  .inquireSection {
+    @include flex(flex-start, flex-start, column);
+    width: 100%;
+    margin-bottom: 15px;
+    .inquireTitle {
+      position: relative;
+      @include font(13px,400,#666666);
+      line-height: 20px;
+      margin-bottom: 6px;
+      &.required {
+        &::after {
+          content: "";
+          position: absolute;
+          top: 4px; right: -6px;
+          display: inline-block;
+          width: 4px; height: 4px;
+          border-radius: 50%;
+          background-color: #FF3C7B;
+        }
+      }    
+    }
+    .inquireInput {
+      position: relative;
+      @include flex;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 16px;
+      border: 1px solid #F6F6F6;
+      background-color: #F6F6F6;
+      &.focus {
+        border: 1px solid #FF3C7B;
+        background-color: #fff;
+
+      }
+      input {
+        width: 100%;
+        line-height: 20px;
+        &::placeholder {
+          @include font(15px,400,#999999);
+        }
+      }
+      .inquireSelect {
+        width: 100%;
+        .label{
+          @include flex(center, flex-start);
+          width: 100%;   
+          line-height: 20px;
+          @include font(15px,400,#999999);
+          background-image: url("https://image.dalbitlive.com/common/arrow/grayArrow-down.png");
+          background-position: right center;
+          background-repeat: no-repeat;
+          background-size: 20px 20px;
+          &.active {
+            @include font(15px,400,#202020);
+          }
+        }            
+        .optionList {
+          position: absolute;
+          top: 50px; left: 0;
+          width: 100%; height: 230px;
+          background-color: #fff;
+          border-radius: 16px;
+          box-shadow: 0px 2px 3px rgba($color: #000000, $alpha: 0.2);
+          overflow: auto;
+          z-index: 2;
+          .optionItem {
+            @include flex(center, flex-start);
+            width: 100%;
+            padding: 0 20px;
+            line-height: 50px;
+            @include font(15px,500,#202020);
+          }
+        }
+      }
+      textarea {
+        width: 100%;
+        height: 210px;
+        white-space: pre-wrap;
+        overflow: auto;
+        background-color: transparent;
+        line-height: 20px;
+        @include font(15px,500,#202020);
+        &::placeholder {
+          line-height: 20px;
+          @include font(15px,400,#999999);
+        }
+      }
+    }
+  }
+  .inputLabel {
+    flex: 1;
+    @include flex(center);
+    margin-top: 23px;
+    cursor: pointer;
+    .blind {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+    .checkIcon {
+      flex: none;
+      display: inline-block;
+      width: 23px; height: 23px;
+      margin-right: 10px;
+      border-radius: 50%;
+      background-image: url("https://image.dalbitlive.com/common/input/checkbox-default.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;              
+    }  
+    .blind:checked + .checkIcon{
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E ");
+    }
+    .checkinfo {
+      @include flex(center);
+      @include font(16px,500,#303030);
+      span {
+        margin-left: 4px;
+        @include font(12px,700,#FF3C7B);
+      }
+    }
+    .policyBtn {
+      margin-left: auto;
+      @include font(13px, 400, #999999);
+    }
+  }
+  .submitBtn {
+    width: 100%;
+    margin-top: 36px;
+  }
+}

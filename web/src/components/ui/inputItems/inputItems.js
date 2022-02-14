@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 import './inputItems.scss'
 
@@ -16,7 +16,7 @@ const InputItems = (props) => {
 
   return (
     <>
-      <div className={`inputItems`}>
+      <div className="inputItems">
         {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>

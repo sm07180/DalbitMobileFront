@@ -405,6 +405,28 @@ export default class Utility {
     return `${hour}시간 ${min}분`
   }
 
+  /** 몇시간 몇일 몇분 몇초 전 계산하기
+   *
+   *  writeDate : '2022-01-01 11:11:11'
+   * */
+  static writeTimeDffCalc = (writeDate = '') => {
+    const todayTime = new moment();
+    const writeDateTime = new moment(writeDate, 'YYYY-MM-DD HH:mm:ss');
+
+    const dateDuration = moment.duration(todayTime.diff(writeDateTime));
+    if(dateDuration.asDays() > 1){ // n일 전
+      return moment(writeDate, 'YYYY-MM-DD HH:mm:ss').format('YYYY-MM-DD');
+    } else if(dateDuration.asHours() > 1) { // n시간 전
+      return `${Math.floor( dateDuration.asHours() )}시간 전`;
+    } else if(dateDuration.asMinutes() > 1) { // n분 전
+      return `${Math.floor( dateDuration.asMinutes() )}분 전`;
+    } else if(dateDuration.asSeconds() > 1){ // n초 전
+      return `${Math.floor( dateDuration.asSeconds() )}초 전`;
+    } else {
+      return `1초 전`;
+    }
+  };
+
   // firebase, adbrix, facebook 이벤트 요청
   static addAdsData = (cmd) => {
     const firebaseDataArray = [

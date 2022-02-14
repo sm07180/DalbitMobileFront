@@ -29,7 +29,6 @@ const MoonLandPop = (props: any) => {
   const [aniSwitch, setAniSwitch] = useState<boolean>(aniSwitchInitValue);
 
   const itemActive = (itemNo = "") => {
-    console.log("itemActive", itemNo);
     dispatchLayer({
       type: "GIFT",
       others: {

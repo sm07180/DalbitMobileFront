@@ -15,11 +15,10 @@ import {
   broadcastExit,
   getRoomType,
   postImage,
-  getBroadcastSetting,
-  modifyBroadcastSetting,
+  getBroadcastSetting, broadcastInfoNew,
 } from "common/api";
 // others
-import { HostRtc, UserType } from "common/realtime/rtc_socket";
+import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
 import { GlobalContext } from "context";
 import { ModalContext } from "context/modal_ctx";
@@ -28,11 +27,12 @@ import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
 import { BroadcastContext } from "../../context/broadcast_ctx";
-import LayerCopyright from "common/layerpopup/contents/copyright";
+import LayerCopyright from "../../common/layerpopup/contents/copyright";
 import LayerTitle from "./content/title";
 import LayerWelcome from "./content/welcome";
 import Layout from "common/layout";
 import { MediaType } from "pages/broadcast/constant";
+import AgoraRTC from 'agora-rtc-sdk-ng';
 
 declare global {
   interface Window {
@@ -51,7 +51,19 @@ type State = {
   welcomeMsgChange: string;
   imageType: number;
   mediaType: string;
+  platFormType:string;
+  camFormType:string;
 };
+
+type localTracksType = {
+  videoTrack?: any,
+  audioTrack?: any
+};
+let localTracks: localTracksType = {}
+let mics:any = []; // all microphones devices you can use
+let cams:any = []; // all cameras devices you can use
+let currentMic; // the microphone you are using
+let currentCam; // the camera you are using
 
 //action type
 type Action =
@@ -63,7 +75,10 @@ type Action =
   | { type: "SET_WELCOMEMSG"; welcomeMsgChange: string }
   | { type: "SET_IMAGETYPE"; imageType: number }
   | { type: "SET_MEDIATYPE"; mediaType: string }
-  | { type: "SET_VIDEOSTATE"; videoState: boolean };
+  | { type: "SET_VIDEOSTATE"; videoState: boolean }
+  | { type: "SET_PLATFORM"; platFormType: string }
+  | { type: "SET_CAMFORM"; camFormType: string };
+
 
 //broad Reducer
 function reducer(state: State, action: Action) {
@@ -82,6 +97,16 @@ function reducer(state: State, action: Action) {
       return {
         ...state,
         entryType: action.entryType,
+      };
+    case "SET_PLATFORM":
+      return {
+        ...state,
+        platFormType: action.platFormType,
+      };
+    case "SET_CAMFORM":
+      return {
+        ...state,
+        camFormType: action.camFormType,
       };
     case "SET_ROOMTYPE":
       return {
@@ -143,6 +168,8 @@ export default function BroadcastSetting() {
     welcomeMsgChange: "",
     imageType: IMAGE_TYPE.PROFILE,
     mediaType: BROAD_TYPE.AUDIO,
+    platFormType:"",
+    camFormType:""
   });
 
   // audio stream state
@@ -169,6 +196,14 @@ export default function BroadcastSetting() {
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
     dispatch({ type: "SET_ENTRY", entryType: access_type });
+  }, []);
+
+  const setPlatForm = useCallback((platform_type: string) => {
+    dispatch({ type: "SET_PLATFORM", platFormType: platform_type });
+  }, []);
+
+  const setCamForm = useCallback((camFormType: string) => {
+    dispatch({ type: "SET_CAMFORM", camFormType: camFormType });
   }, []);
 
   const setRoomType = useCallback(
@@ -233,18 +268,18 @@ export default function BroadcastSetting() {
             setBgChange(data.path);
           } else {
             globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                content: "이미지 업로드에 실패하였습니다.\n다시 시도해주세요",
-              });
+            globalAction.setAlertStatus({
+              status: true,
+              content: "이미지 업로드에 실패하였습니다.\n다시 시도해주세요",
+            });
             return;
           }
         } else {
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              content: message,
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            content: message,
+          });
         }
       }
     };
@@ -279,6 +314,26 @@ export default function BroadcastSetting() {
     }
 
     if (state.micState === true && state.titleChange.length > 2) {
+      if (audioStream !== null) {
+        audioStream.getAudioTracks().forEach(track => {
+          track.stop()
+          audioStream.removeTrack(track);
+        });
+      }
+      if (videoStream !== null) {
+        videoStream.getVideoTracks().forEach(track => {
+          track.stop()
+          videoStream.removeTrack(track);
+        });
+      }
+      Object.keys(localTracks).forEach(trackName => {
+        let track = localTracks[trackName];
+        if (track) {
+          track.stop();
+          track.close();
+          localTracks[trackName] = undefined;
+        }
+      })
       createBroadcastRoom();
     }
   };
@@ -295,64 +350,60 @@ export default function BroadcastSetting() {
         imageType: state.imageType,
         djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
         djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
-        mediaType: state.mediaType,
+        mediaType: state.mediaType
       };
 
       const { result, data, message, code } = await broadcastCreate(createInfo);
       if (result === "success") {
-        // 방 정보 설정
-        const roomInfo = {
-          ...data,
-          micState: true,
-        };
-
-        const {
-          webRtcUrl,
-          webRtcAppName,
-          webRtcStreamName,
-          roomNo,
-          mediaType,
-          videoFrameRate,
-          videoResolution,
-        } = roomInfo;
-
-        const videoConstraints = {
-          isVideo: mediaType === MediaType.VIDEO ? true : false,
-          videoFrameRate,
-          videoResolution,
-        };
-
-        const newRtcInfo = new HostRtc(
-          UserType.HOST,
-          webRtcUrl,
-          webRtcAppName,
-          webRtcStreamName,
-          roomNo,
-          false,
-          videoConstraints
-        );
-        newRtcInfo.setRoomInfo(roomInfo);
-        globalAction.dispatchRtcInfo &&
+        if(data.platform === "wowza"){
+          // 방 정보 설정
+          const videoConstraints = {
+            isVideo: data.mediaType === MediaType.VIDEO,
+            videoFrameRate: data.videoFrameRate,
+            videoResolution: data.videoResolution,
+          };
+          const newRtcInfo = new HostRtc(
+              UserType.HOST,
+              data.webRtcUrl,
+              data.webRtcAppName,
+              data.webRtcStreamName,
+              data.roomNo,
+              false,
+              videoConstraints
+          );
+          newRtcInfo.setRoomInfo({...data, micState: true,});
+          newRtcInfo.publish();
           globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
-        sessionStorage.setItem("room_no", roomNo);
-        broadcastAction.setExtendTime!(false);
+          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:newRtcInfo.roomInfo, userType:newRtcInfo.userType}));
+          sessionStorage.setItem("room_no", data.roomNo);
+          broadcastAction.setExtendTime!(false);
+          try {
+            if (window.fbq) window.fbq("track", "RoomMake");
+            if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
+          } catch (e) {}
 
-        // 방이 생성되었을때
-        try {
-          if (window.fbq) {
-            window.fbq("track", "RoomMake");
+          history.replace(`/broadcast/${data.roomNo}`);
+        }else if (data.platform === "agora"){
+          if(!data.agoraToken){
+            console.log(`broadcast_setting not found agoraToken`)
+            return;
           }
-          if (window.firebase) {
-            window.firebase.analytics().logEvent("RoomMake");
-          }
-        } catch (e) {}
+          const videoConstraints = { isVideo: data.mediaType === MediaType.VIDEO };
+          const dispatchRtcInfo = new AgoraHostRtc(UserType.HOST, data.webRtcUrl, data.webRtcAppName, data.webRtcStreamName, data.roomNo, false, videoConstraints);
+          dispatchRtcInfo.setRoomInfo(data);
+          dispatchRtcInfo.join(data).then(()=>{
+            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          });
+          try {
+            if (window.fbq) window.fbq("track", "RoomMake");
+            if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
+          } catch (e) {}
 
-        const res = await modifyBroadcastSetting({
-          djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
-          djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
-        });
-
-        history.push(`/broadcast/${roomNo}`);
+          history.replace(`/broadcast/${data.roomNo}`);
+        }else{
+          console.log(`broadcast_setting platform error ...`, data.platform)
+        }
       } else if (result === "fail") {
         if (code === "-6") {
           return (
@@ -367,7 +418,7 @@ export default function BroadcastSetting() {
           );
         }
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({ status: true, content: message });
+        globalAction.setAlertStatus({ status: true, content: message });
       }
     };
 
@@ -378,7 +429,7 @@ export default function BroadcastSetting() {
         const exit = await broadcastExit({ roomNo });
 
         if (exit.result === "success") {
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
           if (chatInfo && chatInfo !== null) {
             chatInfo.privateChannelDisconnect();
           }
@@ -468,6 +519,42 @@ export default function BroadcastSetting() {
     setVideoState(false);
   }, [videoStream]);
 
+  const mediaDevice = useCallback(async () => {
+    [ localTracks.audioTrack, localTracks.videoTrack ] = await Promise.all([
+      // create local tracks, using microphone and camera
+      AgoraRTC.createMicrophoneAudioTrack({
+        encoderConfig: {
+          sampleRate: 48000,
+          stereo: true,
+          bitrate: 192,
+        }}),
+      AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+          width: 1280,
+          // Specify a value range and an ideal value
+          height: { ideal: 720, min: 720, max: 1280 },
+          frameRate: 24,
+          bitrateMin: 1130, bitrateMax: 2000,
+        }})
+    ]);
+
+    // play local track on device detect dialog
+    localTracks.videoTrack.play("pre-local-player",{mirror:true});
+    // localTracks.audioTrack.play();
+
+    // get mics
+    mics = await AgoraRTC.getMicrophones();
+    currentMic = mics[0];
+    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
+    //$(".mic-input").val(currentMic.label);
+
+    // get cameras
+    cams = await AgoraRTC.getCameras();
+    currentCam = cams[0];
+    sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+    //$(".cam-input").val(currentCam.label);
+    setVideoState(true)
+  }, []);
+
   useEffect(() => {
     async function initDeviceAudioStream() {
       const stream = await setStream();
@@ -478,7 +565,7 @@ export default function BroadcastSetting() {
       initDeviceAudioStream();
     }
 
-    let audioCheckerId: number | null | any  = null;
+    let audioCheckerId: number | null = null;
 
     const audioCtx = (() => {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -515,6 +602,7 @@ export default function BroadcastSetting() {
   }, [audioStream]);
 
   useEffect(() => {
+
     if (state.mediaType === BROAD_TYPE.AUDIO) {
       constraint = {
         ...constraint,
@@ -525,7 +613,9 @@ export default function BroadcastSetting() {
         ...constraint,
         video: true,
       };
-      const initDeivce = async () => {
+      mediaDevice();
+
+      /*const initDeivce = async () => {
         if (videoStream === null) {
           const stream = await setStream();
 
@@ -552,27 +642,24 @@ export default function BroadcastSetting() {
         }
       };
 
-      initDeivce();
+      initDeivce();*/
     }
-
     if (
-      videoStream !== null &&
-      videoStream.getVideoTracks()[0] &&
       state.mediaType === BROAD_TYPE.VIDEO
     ) {
-      if (
-        document.getElementById("localVideoSection") &&
-        document.getElementById("localVideoSection")!.children.length === 0
-      ) {
-        const videoTag = document.createElement("video");
-        videoTag.setAttribute("playsinline", "");
-        videoTag.setAttribute("autoplay", "");
-        videoTag.muted = true;
-        videoTag.srcObject = videoStream;
-        document.getElementById("localVideoSection")?.appendChild(videoTag);
-      }
+      /* if (
+         document.getElementById("localVideoSection") &&
+         document.getElementById("localVideoSection")!.children.length === 0
+       ) {
+         const videoTag = document.createElement("video");
+         videoTag.setAttribute("playsinline", "");
+         videoTag.setAttribute("autoplay", "");
+         videoTag.muted = true;
+         videoTag.srcObject = videoStream;
+         document.getElementById("localVideoSection")?.appendChild(videoTag);
+       }
 
-      setVideoState(true);
+       setVideoState(true);*/
     } else {
       if (
         document.getElementById("localVideoSection") &&
@@ -590,27 +677,27 @@ export default function BroadcastSetting() {
   useEffect(() => {
     if (rtcInfo !== null) {
       globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          title: "알림",
-          content: `현재 ${
-            rtcInfo.userType === UserType.HOST ? "하고" : "듣고"
-          } 있던 방송을 종료하시겠습니까?`,
-          callback: () => {
-            if (chatInfo !== null && rtcInfo !== null) {
-              chatInfo.privateChannelDisconnect();
-              rtcInfo.socketDisconnect();
-              rtcInfo.stop();
-              globalAction.dispatchRtcInfo &&
-                globalAction.dispatchRtcInfo({ type: "empty" });
-              sessionStorage.removeItem("room_no");
-            }
-          },
-          cancelCallback: () => {
-            history.goBack();
-          },
-        });
+      globalAction.setAlertStatus({
+        status: true,
+        type: "confirm",
+        title: "알림",
+        content: `현재 ${
+          rtcInfo.userType === UserType.HOST ? "하고" : "듣고"
+        } 있던 방송을 종료하시겠습니까?`,
+        callback: () => {
+          if (chatInfo !== null && rtcInfo !== null) {
+            chatInfo.privateChannelDisconnect();
+            rtcInfo.socketDisconnect();
+            rtcInfo.stop();
+            globalAction.dispatchRtcInfo &&
+            globalAction.dispatchRtcInfo({ type: "empty" });
+            rtcSessionClear();
+          }
+        },
+        cancelCallback: () => {
+          history.goBack();
+        },
+      });
     }
   }, []);
 
@@ -659,9 +746,13 @@ export default function BroadcastSetting() {
     }
   }, [popupState]);
 
+  const setMediaType = (mediaType:BROAD_TYPE)=>{
+    dispatch({type: "SET_MEDIATYPE", mediaType: mediaType});
+    //broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data:{platform:mediaType === BROAD_TYPE.AUDIO ? 'wowza' : 'agora'}})
+  }
+
   return (
     <>
-      <Layout>
         <div className="broadcastSetting">
           <div className="headerTitle">방송설정</div>
           <div className="title">마이크 연결 상태</div>
@@ -681,17 +772,33 @@ export default function BroadcastSetting() {
                 <div className="mikeLine__button"></div>
               </div>
             </div>
-          </div>
 
+          </div>
+          {/*<ul id={"micList"} className="access">
+            {mics.map((item, index) => {
+              return(
+                <li
+                  key={index}
+                  onClick={() => {
+                    setPlatForm(item.label);
+                    sessionStorage.setItem("mic", JSON.stringify(item.deviceId));
+
+                  }}
+                  className={
+                    state.platFormType == item.label
+                      ? "access__list active"
+                      : "access__list"
+                  }
+                >{item.label}</li>
+              )
+            })}
+          </ul>*/}
           {/* 방송 타입 */}
           <div className="title">음성/영상 설정</div>
           <ul className="access">
             <li
               onClick={() => {
-                dispatch({
-                  type: "SET_MEDIATYPE",
-                  mediaType: BROAD_TYPE.AUDIO,
-                });
+                setMediaType(BROAD_TYPE.AUDIO);
               }}
               className={
                 state.mediaType == BROAD_TYPE.AUDIO
@@ -703,10 +810,7 @@ export default function BroadcastSetting() {
             </li>
             <li
               onClick={() => {
-                dispatch({
-                  type: "SET_MEDIATYPE",
-                  mediaType: BROAD_TYPE.VIDEO,
-                });
+                setMediaType(BROAD_TYPE.VIDEO);
               }}
               className={
                 state.mediaType == BROAD_TYPE.VIDEO
@@ -721,9 +825,53 @@ export default function BroadcastSetting() {
           {state.mediaType === BROAD_TYPE.VIDEO && (
             <>
               <div className="title">음성/영상 상태</div>
-              <div id="localVideoSection"></div>
+              {/*<div id="localVideoSection"/>*/}
+              <div id="pre-local-player"/>
+              {/*<ul id={"camList"} className="access">
+                {cams.map((item, index) => {
+                  return(
+                    <li
+                      key={index}
+                      onClick={() => {
+                        setCamForm(item.label);
+                        sessionStorage.setItem("cam", JSON.stringify(item.deviceId));
+
+                      }}
+                      className={
+                        state.camFormType == item.label
+                          ? "access__list active"
+                          : "access__list"
+                      }
+                    >{item.label}</li>
+                  )
+                })}
+              </ul>*/}
             </>
           )}
+          {/*아고라 와우자 분기값 셋팅 테스트용*/}
+          {/*        <div className="title">참여서버</div>
+          <ul className="access">
+            {PlatForm.map(
+              (item: { name: string; id: string }, idx: number) => {
+                return (
+                  <li
+                    key={idx}
+                    onClick={() => {
+                      setPlatForm(item.id);
+                    }}
+                    className={
+                      state.platFormType == item.id
+                        ? "access__list active"
+                        : "access__list"
+                    }
+                  >
+                    {item.name}
+                  </li>
+                );
+              }
+            )}
+          </ul>*/}
+
 
           {/* 입장제한 라디오박스영역 */}
           <div className="title">입장제한</div>
@@ -829,7 +977,7 @@ export default function BroadcastSetting() {
                           });
                         }}
                         className={`access__list ${state.imageType ===
-                          item.id && "active"}`}
+                        item.id && "active"}`}
                       >
                         {item.name}
                       </li>
@@ -910,7 +1058,6 @@ export default function BroadcastSetting() {
           {popupTitle && <LayerTitle setPopupState={setPopupState} />}
           {popupWelcome && <LayerWelcome setPopupState={setPopupState} />}
         </div>
-      </Layout>
     </>
   );
 }
@@ -920,6 +1067,21 @@ enum ACCESS_TYPE {
   FAN = 1,
   ADULT = 2,
 }
+enum PLATFORM_TYPE {
+  AGORA = "agora",
+  WOWZA = "wowza",
+}
+const PlatForm=[
+  {
+    id: PLATFORM_TYPE.AGORA,
+    name: "아고라",
+  },
+  {
+    id: PLATFORM_TYPE.WOWZA,
+    name: "와우자",
+  },
+
+]
 
 const AccessList = [
   {
@@ -952,7 +1114,7 @@ const ImageList = [
   },
 ];
 
-const BROAD_TYPE = {
-  AUDIO: "a",
-  VIDEO: "v",
+enum BROAD_TYPE {
+  AUDIO= "a",
+  VIDEO= "v",
 };
