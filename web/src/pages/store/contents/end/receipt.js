@@ -41,7 +41,6 @@ const Receipt = () => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        memNo: "31644481010543",
         orderId: info.orderId
       }
     }).then((response) => {
@@ -55,7 +54,6 @@ const Receipt = () => {
       })
     });
   };
-
 
   const payTypeKor = (payWay) => {
     switch (payWay) {

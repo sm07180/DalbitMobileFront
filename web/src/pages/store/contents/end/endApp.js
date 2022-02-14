@@ -44,7 +44,6 @@ export default function EndApp() {
   const getReciptInfo = async () => {
     await Api.pay_receipt({
       data: {
-        memNo: "31644481010543",
         orderId: orderId
       }
     }).then((response) => {
@@ -101,7 +100,7 @@ export default function EndApp() {
         } else {  // returnType === 'store'
           getReciptInfo().then((response) => {
             sessionStorage.setItem('pay_info', JSON.stringify(receipt));
-            return history.push({pathname: "/"});
+            return history.push({pathname: "/store"});
           });
         }
       } else {  // result !== 'success'

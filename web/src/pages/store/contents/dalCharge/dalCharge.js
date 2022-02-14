@@ -10,6 +10,7 @@ import CntTitle from 'components/ui/cntTitle/CntTitle'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'
+import {useSelector} from "react-redux";
 
 let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
@@ -31,6 +32,7 @@ const DalCharge = () => {
   const history = useHistory();
   const context = useContext(Context);
   const location = useLocation();
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
@@ -101,6 +103,7 @@ const DalCharge = () => {
   }
 
   const callPGForm = (payment, ciData) => {
+    console.log(isDesktop);
     Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,
@@ -109,30 +112,32 @@ const DalCharge = () => {
         pageCode: webview === 'new' ? '2' : '1',
         pgCode: payment.code,
         itemAmt: buyItemInfo.itemAmount,
+        isDesktop: isDesktop,
         ci: ciData,
       }
     }).then((response) => {
       if (response.result === 'success') {
         if (payment.fetch === "pay_simple" || payment.fetch === "pay_letter" || payment.fetch === "pay_km") { //계좌 간편결제, 카카카오페이, 페이코, 티머니/캐시비
-          //pc
-          if (response.data.hasOwnProperty("pcUrl") || response.data.hasOwnProperty("url")) {
-            return window.open(
-              response.data.pcUrl ? response.data.pcUrl : response.data.url,
-              "popup",
-              "width = 400, height = 560, top = 100, left = 200, location = no"
-            );
-          } else if (response.data.hasOwnProperty("next_redirect_pc_url")) {
-            return window.open(
-              response.data.next_redirect_pc_url,
-              "popup",
-              "width = 500, height = 560, top = 100, left = 200, location = no"
-            );
-          }
-          //mobile
-          if (response.data.hasOwnProperty('mobileUrl') || response.data.hasOwnProperty('url')) {
-            return (window.location.href = response.data.mobileUrl ? response.data.mobileUrl : response.data.url);
-          } else if (response.data.hasOwnProperty('next_redirect_mobile_url')) {
-            return (window.location.href = response.data.next_redirect_mobile_url)
+          if(isDesktop){
+            if (response.data.hasOwnProperty("pcUrl") || response.data.hasOwnProperty("url")) {
+              return window.open(
+                response.data.pcUrl ? response.data.pcUrl : response.data.url,
+                "popup",
+                "width = 400, height = 560, top = 100, left = 200, location = no"
+              );
+            } else if (response.data.hasOwnProperty("next_redirect_pc_url")) {  //카카오페이(머니) 전용
+              return window.open(
+                response.data.next_redirect_pc_url,
+                "popup",
+                "width = 500, height = 560, top = 100, left = 200, location = no"
+              );
+            }
+          }else{ //isDesktop === false (모바일)
+            if (response.data.hasOwnProperty('mobileUrl') || response.data.hasOwnProperty('url')) {
+              return (window.location.href = response.data.mobileUrl ? response.data.mobileUrl : response.data.url);
+            } else if (response.data.hasOwnProperty('next_redirect_mobile_url')) {  //카카오페이(머니) 전용
+              return (window.location.href = response.data.next_redirect_mobile_url)
+            }
           }
         } else {  // 신용/체크카드, 휴대폰, 문화상품권, 해피머니상품권
           let payForm = formTag.current
@@ -184,10 +189,13 @@ const DalCharge = () => {
     switch (type) {
       case "페이코":
         if (price * buyItemInfo.itemAmount > 100000) return true;
+        break;
       case "티머니/캐시비":
         if (price * buyItemInfo.itemAmount > 500000) return true;
+        break;
       case "핸드폰":
         if (price * buyItemInfo.itemAmount > 1000000) return true;
+        break;
       default:
         return false;
     }
