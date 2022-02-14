@@ -173,13 +173,14 @@ const Router = () => {
         <Route exact path="/mypage/:memNo" main={MyPage}
                render={() => <Redirect to={{ pathname: '/mypage' }} />}
         />
-        <Route exact path="/myProfile" component={Profile} />
-        <Route exact path="/profile/:memNo" main={Profile}
-               render={({ match}) => {
+        <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
+        <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
+               render={({location, match}) => {
                  const myMemNo = context.profile.memNo;
                  const targetMemNo = match.params.memNo
+                 const searchData = location.search
                  if(myMemNo === targetMemNo) {
-                   return <Redirect to={{ pathname: '/myProfile' }} />
+                   return <Redirect to={{ pathname: `/myProfile${searchData ? `/${searchData}` : ''}` }} />
                  }else {
                    return <Route component={Profile} />
                  }

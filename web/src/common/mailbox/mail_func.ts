@@ -4,7 +4,7 @@ import {isDesktop} from "../../lib/agent";
 import {Hybrid, isHybrid} from "../../context/hybrid";
 
 /* 우체통 */
-export const goMail = ({context, mailboxAction, targetMemNo, history}) => {
+export const goMail = ({context, mailboxAction, targetMemNo, history, isChatListPage=false}) => {
   const { globalState, globalAction } = context;
 
   if(isDesktop()) {
@@ -19,7 +19,11 @@ export const goMail = ({context, mailboxAction, targetMemNo, history}) => {
     globalState.mailChatInfo?.privateChannelDisconnect();
     mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
   }else if (isHybrid()) {
-    Hybrid('JoinMailBox', targetMemNo)
+    if(isChatListPage) {
+      Hybrid('OpenMailBoxList', ''); // 메일 리스트 페이지
+    }else {
+      Hybrid('JoinMailBox', targetMemNo); // 채팅 페이지
+    }
   } else {
     context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
   }

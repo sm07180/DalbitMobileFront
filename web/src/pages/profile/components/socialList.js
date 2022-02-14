@@ -34,7 +34,7 @@ const SocialList = (props) => {
       {socialList.map((item, index) => {
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} openBlockReportPop={openBlockReportPop}
                               photoClick={() => goContentsDetail(item.noticeIdx ? item.noticeIdx : item.replyIdx)}
             />
             <div className="socialContent">
