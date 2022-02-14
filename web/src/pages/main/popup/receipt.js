@@ -6,13 +6,14 @@ import './receipt.scss'
 
 import {useHistory, useLocation} from "react-router-dom";
 
-const Receipt = () => {
+const Receipt = (props) => {
   const history = useHistory();
-  const location = useLocation();
-  const {info} = location.state || ""
+  const {payOrderId, clearReceipt} = props;
+  console.log(props);
+  console.log(payOrderId);
 
   const [receipt, setReceipt] = useState({
-    orderId: info.orderId,
+    orderId: payOrderId,
     payWay: "",
     payAmt: "",
     itemAmt: "",
@@ -41,7 +42,7 @@ const Receipt = () => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        orderId: info.orderId
+        orderId: payOrderId
       }
     }).then((response) => {
       setReceipt({
@@ -80,6 +81,13 @@ const Receipt = () => {
     }
   }
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   return (
     <section className="bankResult">
       <div className="resultText">
@@ -87,7 +95,7 @@ const Receipt = () => {
           결제가 완료 되었습니다.
         </div>
         <div className="subTitle">
-          결제 내역은 마이페이지 > 내지갑에서<br/>확인하실 수 있습니다.
+          결제 내역은 마이페이지 &gt; 내지갑에서<br/>확인하실 수 있습니다.
         </div>
       </div>
       <div className="receiptBoard">
@@ -108,7 +116,10 @@ const Receipt = () => {
           <p>{receipt.orderId}</p>
         </div>
       </div>
-      <SubmitBtn text="확인" onClick={() => history.push("/")}/>
+      <SubmitBtn text="확인" onClick={() => {
+        history.push("/")
+        clearReceipt()
+      }}/>
     </section>
   );
 };

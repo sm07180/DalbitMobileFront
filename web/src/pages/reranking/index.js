@@ -51,9 +51,9 @@ const RankPage = () => {
 
   //lover List
   const [loverRank, setLoverRank] = useState([]);
-
+  
   //내 순위 정보
-  const [myRank, setMyRank] = useState([]);
+  const [myRank, setMyRank] = useState({dj: 0, fan: 0, Lover: 0});
 
   //하단 FAN/LOVER탭
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
@@ -61,6 +61,7 @@ const RankPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     timer();
+    getMyRank();
     fetchRankData(1, 1);
     fetchRankData(2, 1);
   }, []);
@@ -198,6 +199,27 @@ const RankPage = () => {
         setLoverRank(data.list)
       }
     }
+  }
+
+  const getMyRank = async () => {
+    await Api.getMyRank().then((res) => {
+      if (res.result === "success"){
+        let djRank = 1;
+        let fanRank = 1;
+        let loverRank = 1;
+
+        res.data.map((res) => {
+          if (res.s_rankSlct === "DJ"){
+            djRank = res.s_rank;
+          } else if (res.s_rankSlct === "FAN") {
+            fanRank = res.s_rank;
+          } else {
+            loverRank = res.s_rank;
+          }
+        });
+        setMyRank({dj: djRank, fan: fanRank, Lover: loverRank});
+      }
+    });
   }
 
   //DJ 랭킹 List 기간 pop
