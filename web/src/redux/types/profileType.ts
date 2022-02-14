@@ -4,11 +4,11 @@ import { Gender, IImageVo, ILiveBadgeList, IPaging } from "./commonType";
 
 export type ProfileActions = ActionType<typeof actions>;
 
-const pagingDefault = {
-  next: 0,
+export const profilePagingDefault = {
+  next: 1,
   page: 0,
   prev: 0,
-  records: 0,
+  records: 5,
   total: 0,
   totalPage: 0
 }
@@ -70,31 +70,23 @@ export const profileDefaultState = {
 /* 피드 default */
 export const profileFeedDefaultState = {
   feedList: [],
-  fixedFeedList: [],
-  fixCnt: 0,
-  paging: pagingDefault,
-  scrollPaging: {
-    pageNo: 1,
-    pagePerCnt: 20,
-    currentCnt: 0,
-  }
+  // fixedFeedList: [],
+  // fixCnt: 0,
+  paging: profilePagingDefault,
+  isLastPage: false,
 }
 
 /* 팬보드 default */
 export const profileFanBoardDefaultState = {
   list: [],
-  paging: pagingDefault,
-  scrollPaging: {
-    pageNo: 1,
-    pagePerCnt: 20,
-    currentCnt: 0,
-  }
+  paging: profilePagingDefault,
+  isLastPage: false,
 }
 
 /* 클립 default */
 export const profileClipDefaultState = {
   list: [],
-  paging: pagingDefault,
+  paging: profilePagingDefault,
 }
 
 interface IFanRank {
@@ -194,12 +186,6 @@ interface IClipData {
   title: string;
 }
 
-interface scrollPaging {
-  pageNo: number;
-  pagePerCnt: number;
-  currentCnt: number;
-}
-
 /* 프로필 상단 데이터 */
 export interface IProfileState {
   age: number;
@@ -258,17 +244,17 @@ export interface IProfileState {
 /* 피드 */
 export interface IProfileFeedState {
   feedList: Array<IFeedData>,
-  fixedFeedList: Array<IFeedData>,
-  fixCnt: number;
+  // fixedFeedList: Array<IFeedData>,
+  // fixCnt: number;
   paging: IPaging,
-  scrollPaging: scrollPaging,
+  isLastPage: boolean;
 }
 
 /* 팬보드 */
 export interface IProfileFanBoardState {
   list: Array<IFanBoardData>,
   paging: IPaging,
-  scrollPaging: scrollPaging,
+  isLastPage: boolean;
 }
 
 /* 클립 */

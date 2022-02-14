@@ -12,7 +12,7 @@ const FeedSection = (props) => {
   const {memNo} = useParams();
   const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents } = props;
   //context
-  const { feedList, fixedFeedList, fixCnt, scrollPaging } = feedData;
+  const { feedList, } = feedData;
 
   // 스와이퍼
   const swiperParams = {
@@ -21,7 +21,7 @@ const FeedSection = (props) => {
 
   return (
     <div className="feedSection">
-      {fixCnt > 0 &&
+      {/*{fixCnt > 0 &&
       <div className="fixFeed">
         <div className="title">
           <div className="text">{profileData.nickNm}님이 고정함</div>
@@ -50,7 +50,7 @@ const FeedSection = (props) => {
           })}
         </Swiper>
       </div>
-      }
+      }*/}
       {feedList.length > 0 ?
         <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
                     openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData}

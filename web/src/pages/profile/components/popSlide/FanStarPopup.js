@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
@@ -140,19 +140,19 @@ const FanStarPopup = (props) => {
 
   /* 스크롤 페이징 이벤트 */
   const popScrollEvent = () => {
-    scrollEvent(fanStarContainerRef, () => setPageNo(pageNo => pageNo+1));
+    scrollEvent(fanStarContainerRef.current, () => setPageNo(pageNo => pageNo+1));
   }
 
   const addScrollEvent = () => {
     fanStarContainerRef.current.addEventListener('scroll', popScrollEvent);
   }
 
-  const removeScrollEvent = () => {
+  const removeScrollEvent = useCallback(() => {
     const scrollTarget = fanStarContainerRef.current;
     if(scrollTarget) {
       scrollTarget.removeEventListener('scroll', popScrollEvent);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if(!isLastPage) {

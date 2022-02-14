@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react'
 
 import Api from 'context/api'
 import moment from 'moment'
@@ -166,21 +166,19 @@ const LikePopup = (props) => {
 
   /* 스크롤 페이징 이벤트 */
   const popScrollEvent = () => {
-    scrollEvent(likeContainerRef, () => {
-      setPageNo(pageNo => pageNo +1);
-    });
+    scrollEvent(likeContainerRef.current, () => setPageNo(pageNo => pageNo +1));
   }
 
   const addScrollEvent = () => {
     likeContainerRef.current.addEventListener('scroll', popScrollEvent);
   }
 
-  const removeScrollEvent = () => {
+  const removeScrollEvent = useCallback(() => {
     const scrollTarget = likeContainerRef.current;
     if(scrollTarget) {
       scrollTarget.removeEventListener('scroll', popScrollEvent);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if(!isLastPage && currentSubTabInfo.key) {
