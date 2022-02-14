@@ -45,6 +45,7 @@
           padding: 0 24px 0 0;
           justify-content: flex-end;
           border: 0;
+          color:$MAINCOLOR;
           &::after {
             width: 18px;
             height: 18px;
@@ -52,7 +53,7 @@
             right: 0;
             border: 0;
             transform: none;
-            background: url(https://image.dalbitlive.com/images/api/ic_arrow_down_color.png) no-repeat center right;
+            background: url(https://image.dalbitlive.com/images/api/ic_arrow_down_color-dalla.png) no-repeat center right;
           }
         }
         .open {

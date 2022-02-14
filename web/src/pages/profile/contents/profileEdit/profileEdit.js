@@ -8,7 +8,7 @@ import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
 // components
-import TopSwiper from '../../components/TopSwiper'
+import TopSwiper from '../../components/topSwiper'
 // contents
 
 import './profileEdit.scss'
@@ -23,6 +23,23 @@ const ProfileEdit = () => {
     slidesPerView: 'auto',
     spaceBetween: 8,
   }
+
+  const getMyInfo = async() => {
+    const {result, data, message} = await Api.profile({
+      params: {memNo: context.token.memNo}
+    })
+
+    if(result ==='success') {
+      console.log('profile', profile);
+      console.log(data);
+    //  context.action.updateProfile(data);
+    }
+
+  };
+
+  useEffect(()=>{
+
+  },[]);
 
   // 페이지 시작
   return (

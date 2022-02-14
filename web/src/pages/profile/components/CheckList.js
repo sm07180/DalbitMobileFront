@@ -14,7 +14,7 @@ const CheckList = (props) => {
         <input type="checkbox" className="blind" checked={checkStatus}
                onChange={onClick}/>
         <span className="checkIcon"/>
-        <p className="checkinfo">{text}</p>
+        <p className="checkInfo">{text}</p>
         {children}
       </label>
   )

@@ -20,7 +20,7 @@ const CheckList = (props) => {
         <label className="inputLabel">
           <input type="checkbox" className="blind" />
           <span className="checkIcon"></span>
-          <p className="checkinfo">{text}</p>
+          <p className="checkInfo">{text}</p>
           {children}
         </label>
       </div>

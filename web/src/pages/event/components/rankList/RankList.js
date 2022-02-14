@@ -27,7 +27,7 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`rankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
+		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
 				{type === 'my' ? <span className="num">{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}</span> : <span className="num">{listNum + 1}</span>}

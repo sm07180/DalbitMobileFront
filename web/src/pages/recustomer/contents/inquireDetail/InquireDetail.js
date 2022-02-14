@@ -73,7 +73,7 @@ const InquireDetail = () => {
   
   return (
     <div id="inquireDetail">
-      <Header position={'sticky'} title={'나의 문의 내역'} type={'back'}/>
+      <Header title="나의 문의 내역" type="back"/>
       <div className='subContent'>
         <div className='detailTop'>
           <div className='qnaTitleWrap'>
@@ -88,26 +88,24 @@ const InquireDetail = () => {
           <div className='qnaQuestion'>
              {qnaDetail.contents}
           </div>
-          {
-            addFile.length > 0 &&
-              <div className='addFile'>
-                <div className='addFileTitle'>첨부파일</div>
-                <div className='addFileWrap'>
-                  <Swiper {...swiperParams} key={Math.random()}>
-                      {addFile.map((list, index) => {
-                        return (
-                          <div className='addFileList' key={index}>
-                            <img src={list} alt="업로드이미지"/>
-                            <button type="button" className='removeFile' onClick={() => removeImage(index)}></button>
-                          </div>
-                        )
-                      })}    
-                  </Swiper>
-                </div>
+          {addFile.length > 0 &&
+            <div className='addFile'>
+              <div className='addFileTitle'>첨부파일</div>
+              <div className='addFileWrap'>
+                <Swiper {...swiperParams} key={Math.random()}>
+                    {addFile.map((list, index) => {
+                      return (
+                        <div className='addFileList' key={index}>
+                          <img src={list} alt="업로드이미지"/>
+                          <button type="button" className='removeFile' onClick={() => removeImage(index)}></button>
+                        </div>
+                      )
+                    })}
+                </Swiper>
               </div>
+            </div>
           }
-          {
-            qnaDetail.answer &&
+          {qnaDetail.answer &&
             <div className='qnaAnswer'>
               <p dangerouslySetInnerHTML={{__html: qnaDetail.answer.replace(/class/gi, 'className')}}></p>
             </div>
