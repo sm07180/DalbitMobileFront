@@ -384,7 +384,7 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className='editBtn'>수정</button>
+            <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
           </div>
           :
           <div className="buttonGroup">

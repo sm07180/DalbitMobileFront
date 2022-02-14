@@ -47,7 +47,8 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 수정
+const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
 // 프로필 - 피드, 팬보드 (작성, 수정)
 const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (상세)
@@ -228,11 +229,13 @@ const Router = () => {
                }}
         />
 
-        <Route exact path="/mypage/:memNo/:category" component={MyPage} />
-        <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
+        {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
+        {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
 
-        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+
+        {/*<Route exact path="/profile/:memNo/write" component={ProfileWrite} />*/}
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
