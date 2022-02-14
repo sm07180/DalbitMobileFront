@@ -27,7 +27,7 @@ import {useHistory} from "react-router-dom";
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
 import {ClipPlayerJoin} from "common/audio/clip_func";
 
-const Index = () => {
+const ClipPage = () => {
   const context = useContext(Context);
 
   const history = useHistory();
@@ -140,7 +140,7 @@ const Index = () => {
   };
 
   const playClip = (e) => {
-    const { clipNo } = e.currentTarget.dataset;
+    const { clipNo } = e.currentTarget.datset;
 
     if (clipNo !== undefined) {
       /*ClipPlayerJoin(e);
@@ -152,11 +152,6 @@ const Index = () => {
   // 스와이퍼 params
   const swiperParams = {
     slidesPerView: 'auto',
-  };
-
-  const swiperParams2 = {
-    slidesPerView: 'auto',
-    spaceBetween: 16
   };
 
   useEffect(() => {
@@ -182,43 +177,47 @@ const Index = () => {
         <section className='hotClipWrap'>
           <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.length > 0 &&
-            <Swiper {...swiperParams2}>
-              {hotClipInfo.map((row, index) => {
-                return (<div key={index}>
-                  {row.map((coreRow, coreIndex) => {
-                      return (<HotClip key={coreIndex} info={coreRow}/>)
-                    })}
-                </div>);
-              })}
-            </Swiper>}
+          <Swiper {...swiperParams}>
+            {hotClipInfo.map((row, index) => {
+              return (<div key={index}>
+                {row.map((coreRow, coreIndex) => {
+                  return (<HotClip key={coreIndex} info={coreRow}/>)
+                })}
+              </div>);
+            })}
+          </Swiper>}
         </section>
         <section className='bannerWrap'>
           <Swiper {...swiperParams}>
-            <div className="bannerBox">
-              <div className="bannerItem"/>
+            <div>
+              <div className="bannerBox">
+                <div className="bannerItem"/>
+              </div>
             </div>
-            <div className="bannerBox">
-              <div className="bannerItem"/>
+            <div>
+              <div className="bannerBox">
+                <div className="bannerItem"/>
+              </div>
             </div>
           </Swiper>
         </section>
         <section className="clipDrawer">
           {(listenClipInfo.list > 0 || likeClipInfo.list >0 ) &&
-            <div className="cntTitle">
-              <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
-            </div>
+          <div className="cntTitle">
+            <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
+          </div>
           }
           {listenClipInfo.list &&
-            <>
-              <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
-              <SwiperList data={listenClipInfo.list} />
-            </>
+          <>
+            <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
+            <SwiperList data={listenClipInfo.list} />
+          </>
           }
           {likeClipInfo.list &&
-            <>
-              <ClipSubTitle title={'좋아요 한 클립'} more={'clip/like/list'}/>
-              <SwiperList data={likeClipInfo.list} />
-            </>
+          <>
+            <ClipSubTitle title={'좋아요 한 클립'} more={'clip/like/list'}/>
+            <SwiperList data={likeClipInfo.list} />
+          </>
           }
         </section>
         <section className="nowClipWrap">
@@ -228,15 +227,19 @@ const Index = () => {
             <Swiper {...swiperParams}>
               {popularClipInfo.map((row, index) => {
                 console.log(row);
-                return (<div key={index}>
-                  {row.map((coreRow, coreIndex) => {
-                    if (Object.keys(coreRow).length > 0) {
-                      return (<NowClip key={coreIndex} info={coreRow}/>)
-                    } else {
-                      return <></>;
-                    }
-                  })}
-                </div>);
+                return (
+                  <div key={index}>
+                    <div>
+                      {row.map((coreRow, coreIndex) => {
+                        if (Object.keys(coreRow).length > 0) {
+                          return (<NowClip key={coreIndex} info={coreRow}/>)
+                        } else {
+                          return <></>;
+                        }
+                      })}
+                    </div>
+                  </div>
+                );
               })}
             </Swiper>
           </>
@@ -272,4 +275,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default ClipPage;
