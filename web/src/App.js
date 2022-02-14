@@ -478,7 +478,7 @@ const App = () => {
   /* 모바일웹용 푸터 */
   const isFooter = () => {
     if(!isDesktop && !isHybrid()) {
-      const pages = ['/', '/clip', '/search', '/mypage'];
+      const pages = ['/', '/clip', '/search', '/mypage', '/login'];
       const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
 
       setIsFooterPage(isFooterPage);
@@ -493,7 +493,8 @@ const App = () => {
         '/': 'main',
         '/clip': 'clip',
         '/search': 'search',
-        '/mypage': 'mypage'
+        '/mypage': 'mypage',
+        '/login': 'mypage',
       };
       const visible = !!footerViewPages[currentPages];
       const stateFooterParam = {

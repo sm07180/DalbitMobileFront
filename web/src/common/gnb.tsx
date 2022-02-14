@@ -392,7 +392,9 @@ export default function GNB() {
               <li onClick={() => history.push('/search')}/>
               <li onClick={() => history.push('/rank')}/>
               <li onClick={() => history.push('/mypage')}/>
-              <li onClick={() => history.push('/')}/>
+              <li className="new" onClick={() => history.push('/')}>
+                <span className="newDot"></span>
+              </li>
             </ul>
           </nav>
         </div>

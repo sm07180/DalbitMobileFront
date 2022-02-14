@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -7,7 +7,6 @@ import Api from 'context/api'
 import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
-import MydalDetail from "pages/remypage/components/MydalDetail";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Report from "./contents/report/report"
 import Clip from "./contents/clip/clip"
@@ -91,28 +90,32 @@ const Remypage = () => {
     default :
       return(
         <>
-          <div id="remypage">
-            <Header title={'MY'} />
-            <section className="myInfo" onClick={goProfile}>
-              <MyInfo data={profile} />
-            </section>
-            <section className='mydalDetail'>
-              <MydalDetail data={profile?.dalCnt} />
-            </section>
-            <section className="myMenu">
-              <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
-              {isHybrid() &&
-              <div className="versionInfo">
-                <span className="title">버전정보</span>
-                <span className="version">현재 버전 {splash?.version}</span>
-              </div>
-              }
-            </section>
-            <section className="buttonWrap">
-              <button className='logout' onClick={logout}>로그아웃</button>
-            </section>
-          </div>
-        </>
+        <div id="remypage">
+          <Header title={'MY'} />
+          <section className="myInfo" onClick={goProfile}>
+            <MyInfo data={profile} />
+          </section>
+          <section className='mydalDetail'>
+            <div className="dalCount">{profile?.dalCnt}달</div>
+            <div className="buttonGroup">
+              <button>내 지갑</button>
+              <button className='charge'>충전하기</button>
+            </div>
+          </section>
+          <section className="myMenu">
+            <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
+            {isHybrid() &&
+            <div className="versionInfo">
+              <span className="title">버전정보</span>
+              <span className="version">현재 버전 {splash?.version}</span>
+            </div>
+            }
+          </section>
+          <section className="buttonWrap">
+            <button className='logout' onClick={logout}>로그아웃</button>
+          </section>
+        </div>
+      </>
       )
   }
 }

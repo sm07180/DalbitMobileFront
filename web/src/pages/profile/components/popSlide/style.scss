@@ -147,7 +147,6 @@
       }
       .inputItems {
         .title {
-          position:relative;
           @include flex(flex-start);
           &:after {
             content:"";
@@ -155,7 +154,7 @@
             width:4px;height:4px;
             margin-top:4px;
             border-radius:50%;
-            background-color:#FF3C7B;
+            background-color:$MAINCOLOR;
           }
         }
         .inputBox {
@@ -312,6 +311,20 @@
         &.active {
           opacity: 1;
         }
+      }
+    }
+  }
+  #layerPop {
+    .profileRankNotice {
+      height:280px;
+      text-align:center;
+      .title {
+        margin-bottom:6px;
+        @include font(16px,$SemiBold,$MAINCOLOR);
+      }
+      .text {
+        margin-bottom:22px;
+        @include font(12px,$Regular,#666);
       }
     }
   }
