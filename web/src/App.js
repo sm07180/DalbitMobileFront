@@ -237,7 +237,7 @@ const App = () => {
     // Renew token
     let tokenInfo = {};
     let elementById = document.getElementById('serverToken');
-    if(elementById && elementById.value && elementById.value !== ''){
+    if(elementById && elementById.value && elementById.value !== '' && elementById.value !== 'null'){
       tokenInfo = JSON.parse(elementById.value);
     }else{
       tokenInfo = await Api.getToken()
