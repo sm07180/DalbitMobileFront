@@ -25,6 +25,9 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
+  //DJ 기간 선택 array
+  const rankTabmenu = ['오늘','이번주','이번달', '올해']
+
   //하단 FAN/LOVER탭 array
   const dayTabmenu = ['FAN','LOVER']
 
@@ -51,9 +54,12 @@ const RankPage = () => {
 
   //lover List
   const [loverRank, setLoverRank] = useState([]);
-  
+
   //내 순위 정보
-  const [myRank, setMyRank] = useState({dj: 0, fan: 0, Lover: 0});
+  const [myRank, setMyRank] = useState([]);
+
+  //내 순위 정보 탭
+  const [rankTabType, setRankTabType] = useState(rankTabmenu[0]);
 
   //하단 FAN/LOVER탭
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
@@ -61,7 +67,6 @@ const RankPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     timer();
-    getMyRank();
     fetchRankData(1, 1);
     fetchRankData(2, 1);
   }, []);
@@ -201,27 +206,6 @@ const RankPage = () => {
     }
   }
 
-  const getMyRank = async () => {
-    await Api.getMyRank().then((res) => {
-      if (res.result === "success"){
-        let djRank = 1;
-        let fanRank = 1;
-        let loverRank = 1;
-
-        res.data.map((res) => {
-          if (res.s_rankSlct === "DJ"){
-            djRank = res.s_rank;
-          } else if (res.s_rankSlct === "FAN") {
-            fanRank = res.s_rank;
-          } else {
-            loverRank = res.s_rank;
-          }
-        });
-        setMyRank({dj: djRank, fan: fanRank, Lover: loverRank});
-      }
-    });
-  }
-
   //DJ 랭킹 List 기간 pop
   const selectChart = () => {
     setPopSlide(true);
@@ -287,9 +271,10 @@ const RankPage = () => {
       </section>
       {token.isLogin &&
         <section className='myRanking'>
-          <CntTitle title={'님의 오늘 순위는?'}>
+          <CntTitle title={'님의 순위는?'}>
             <div className="point">{profile.nickNm}</div>
           </CntTitle>
+          <Tabmenu data={rankTabmenu} tab={rankTabType} setTab={setRankTabType}/>
           <MyRanking data={myRank}/>
         </section>
       }

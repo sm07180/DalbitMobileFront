@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-import styled from 'styled-components'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from '../../components/ui/cntTitle/CntTitle'
@@ -20,6 +19,7 @@ import {OS_TYPE} from "context/config";
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
+import {setIsRefresh} from "redux/actions/common";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -48,26 +48,27 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [payOrderId, setPayOrderId] = useState("")
+  const [payReceipt, setPayReceipt] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
-  const clearReceipt = () => {
+  const setPayPopup = () => {
     setReceiptPop(false)
-    sessionStorage.removeItem('orderId')
+    sessionStorage.removeItem('pay_receipt')
   }
   useEffect(() => {
-    if (sessionStorage.getItem('orderId') !== null) {
-      const orderId = sessionStorage.getItem('orderId')
+    if (sessionStorage.getItem('pay_receipt') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
       setReceiptPop(true);
-      setPayOrderId(orderId);
+      setPayReceipt(payInfo)
     }
     return () => {
-      sessionStorage.removeItem('orderId')
+      sessionStorage.removeItem('pay_receipt')
     }
   }, [])
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
   const liveList = useSelector(state => state.live);
+  const common = useSelector(state => state.common);
 
   // 조회 API
   const fetchMainInfo = () => dispatch(setMainData());
@@ -102,6 +103,7 @@ const MainPage = () => {
     })
   }, [currentPage, liveListType]);
 
+  /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo();
@@ -109,7 +111,6 @@ const MainPage = () => {
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
     setCurrentPage(0);
-
   }
 
   // scroll
@@ -230,6 +231,14 @@ const MainPage = () => {
     if (currentPage === 0) setCurrentPage(1)
   }, [currentPage])
 
+  useEffect(() => {
+    if(common.isRefresh) {
+      mainDataReset();
+      window.scrollTo(0, 0);
+      dispatch(setIsRefresh(false));
+    }
+  }, [common.isRefresh]);
+
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
@@ -291,11 +300,11 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
-    <UpdatePop />
+    {true && <ReceiptPop payReceipt={payReceipt} setPopup={setPayPopup} />}
+    {true && <UpdatePop />}
   </>;
   return MainLayout;
 }
-
+ 
 export default MainPage
  

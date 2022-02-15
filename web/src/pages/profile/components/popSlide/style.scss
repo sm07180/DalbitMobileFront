@@ -1,6 +1,9 @@
 @import "components/ui/_mixin.scss";
 
 #popSlide {
+  .slideLayer {
+    padding: 0;
+  }
   // 팬 스타 좋아요 보기
   .FanStarLike {
     @include flex($fd:column);

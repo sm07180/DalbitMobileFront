@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect, useState}from 'react'
 import {Context} from 'context'
 
 // global components
@@ -6,16 +6,23 @@ import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import FrameItems from 'components/ui/frameItems/frameItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import DetailView from '../components/DetailView'
 
 const DetailPage = (props) => {
+  const {data,type} = props
+  const context = useContext(Context)
 
-  const {data,type} = props;
-  const context = useContext(Context);
+  const [ popup, setPopup ] = useState(true);
+  const [ popupData, setPopupData ] = useState({});
+  
+  const {token, profile} = context
 
-  const {token, profile} = context;
-
+  const specialDjPop = (data) => {
+    setPopup(true)
+    setPopupData(data);
+  }
 
   return (
     <>
@@ -23,6 +30,30 @@ const DetailPage = (props) => {
         <>
         <DetailView />
         <p className='infomation'>달라의 celebrity! 스페셜 DJ를 소개합니다.</p>
+        {profile &&
+        <section className="myHonorSection">
+          <div className='myHonorBox'>
+            <div className="photo">
+              <img src={profile.profImg.thumb120x120} alt="" />
+              <FrameItems content={profile} />
+            </div>
+            <div className='listContent'>
+              <div className='nickNm'>{profile.nickNm}</div>
+              <div className='level'>{profile.level}</div>
+              <div className='listItem'>
+                <DataCnt type={"goodCnt"} value={0}/>
+                <DataCnt type={"listenerCnt"} value={0} />
+                <DataCnt type={"broadMin"} value={0}/>
+              </div>
+            </div>
+            <div className='specialCnt' onClick={() => specialDjPop(profile)}>
+              <span>{profile.level}회</span>
+              <span className='icoRight'></span>
+            </div>
+            <div className='me'>나</div>
+          </div>
+        </section>
+        }
         </>
       :
         <p className='infomation'>이번 주 달둥이들의 마음을 취향저격한 DJ를 소개합니다.</p>
@@ -92,6 +123,90 @@ const DetailPage = (props) => {
         <></>
       }
       </section>
+      {popup &&
+        <LayerPopup setPopup={setPopup}>
+          <section className="honorPopup">
+            <div className='title'>
+              <span><strong>{profile.nickNm}</strong>님은</span>
+              <span>현재 스페셜DJ입니다.</span>
+            </div>
+            <div className='table'>
+              <div className='summary'>
+                <span>스페셜 DJ 약력</span>
+                <span>총 {popupData.specialCnt}회</span>
+              </div>
+              <div className='tableInfo'>
+                <div className='thead'>
+                  <span>선정 일자</span>
+                  <span>선정 기수</span>
+                </div>
+                <div className='tbody'>
+                  <div className='tbodyList'>
+                    <span>2022.02</span>
+                    <span>57기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2022.01</span>
+                    <span>56기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                  <div className='tbodyList'>
+                    <span>2021.12</span>
+                    <span>55기</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </LayerPopup>
+      }
     </>
   )
 }

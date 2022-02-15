@@ -28,7 +28,6 @@ import MicOnIcon from "../static/ic_mic.svg";
 import MicOffIcon from "../static/ic_mic_off.svg";
 // import GuestOffIcon from "../static/ic_more_out.svg";
 import GuestOffIcon from "../static/ico_runout_w_s.svg";
-import {useDispatch} from "react-redux";
 
 const initInterval = (callback) => {
   const intervalTime = 100;
@@ -64,7 +63,6 @@ function GuestComponent(props) {
   const { roomOwner, roomNo, roomInfo, displayWrapRef } = props;
 
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const { globalAction, globalState } = useContext(GlobalContext);
   const { guestInfo, rtcInfo, chatInfo } = globalState;
@@ -113,7 +111,6 @@ function GuestComponent(props) {
       });
     } else {
       //게스트 신청
-      // dispatch(postGuest({roomNo, memNo:globalState.baseData.memNo, mode:"5"}));
       const res = await guest({
         roomNo: roomNo,
         memNo: globalState.baseData.memNo,
@@ -733,7 +730,7 @@ function GuestComponent(props) {
                           exitGuest(v);
                         } else if (v === globalState.baseData.memNo) {
                           setControllerToggle(!controllerToggle);
-                          setUserMemNo(Number(v));
+                          setUserMemNo(v);
                           setRightTabType(tabType.PROFILE);
                         }
                         // else {

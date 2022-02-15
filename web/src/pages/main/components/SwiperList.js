@@ -16,7 +16,6 @@ const SwiperList = (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    grabCursor: true,
   }
 
   const goProfile = memNo => history.push(`/profile/${memNo}`);

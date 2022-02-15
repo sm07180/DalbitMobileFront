@@ -39,7 +39,6 @@ const PhoneAuth = (props) => {
       phoneCheckRef.current.innerHTML = "휴대폰 번호 형식에 맞게 입력해 주세요.";
     } else {
       sendSms(signForm.phoneNum).then(res=>{
-        console.log(res);
         if(res.result === "success"){
           document.getElementById('phoneInputItem').classList.remove("error");
           document.getElementById('phoneInputItem').classList.add("success");
@@ -58,12 +57,10 @@ const PhoneAuth = (props) => {
     const {result, message, data} = await Api.sms_request({
       data: {phoneNo: phoneNum, authType: 0}
     })
-    if(result === "success") {
-      setSignForm({
-        ...signForm,
-        CMID: data.CMID
-      })
-    }
+    setSignForm({
+      ...signForm,
+      CMID:data.CMID
+    })
     return {result:result, message:message};
   }
 

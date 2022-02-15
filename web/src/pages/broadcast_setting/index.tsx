@@ -11,11 +11,11 @@ import { useHistory } from "react-router-dom";
 // static
 import {
   broadcastCheck,
-  //broadcastCreate,
+  broadcastCreate,
   broadcastExit,
   getRoomType,
   postImage,
-  getBroadcastSetting, broadcastInfoNew, broadcastCreate,
+  getBroadcastSetting, broadcastInfoNew,
 } from "common/api";
 // others
 import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
@@ -33,9 +33,6 @@ import LayerWelcome from "./content/welcome";
 import Layout from "common/layout";
 import { MediaType } from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
-import {BroadcastCreateRoomParamType} from "../../redux/types/broadcastType";
-import {useDispatch} from "react-redux";
-// import {broadcastCreate} from "../../redux/actions/broadcast";
 
 declare global {
   interface Window {
@@ -53,7 +50,7 @@ type State = {
   titleChange: string;
   welcomeMsgChange: string;
   imageType: number;
-  mediaType: 'a'|'v';
+  mediaType: string;
   platFormType:string;
   camFormType:string;
 };
@@ -77,7 +74,7 @@ type Action =
   | { type: "SET_TITLECHANGE"; titleChange: string }
   | { type: "SET_WELCOMEMSG"; welcomeMsgChange: string }
   | { type: "SET_IMAGETYPE"; imageType: number }
-  | { type: "SET_MEDIATYPE"; mediaType: 'a'|'v' }
+  | { type: "SET_MEDIATYPE"; mediaType: string }
   | { type: "SET_VIDEOSTATE"; videoState: boolean }
   | { type: "SET_PLATFORM"; platFormType: string }
   | { type: "SET_CAMFORM"; camFormType: string };
@@ -156,12 +153,12 @@ let constraint = {
 export default function BroadcastSetting() {
   const history = useHistory();
   const titleInputRef = useRef<any>();
-  const dispatch = useDispatch();
+
   const { globalState, globalAction } = useContext(GlobalContext);
   const { chatInfo, rtcInfo } = globalState;
   const { modalState } = useContext(ModalContext);
   const { broadcastAction } = useContext(BroadcastContext);
-  const [state, dispatchWithoutAction] = useReducer(reducer, {
+  const [state, dispatch] = useReducer(reducer, {
     micState: false,
     videoState: false,
     entryType: 0,
@@ -193,44 +190,44 @@ export default function BroadcastSetting() {
 
   // dispatch function
   const setMicState = (status: boolean) =>
-    dispatchWithoutAction({ type: "SET_MICSTATE", micState: status });
+    dispatch({ type: "SET_MICSTATE", micState: status });
   const setVideoState = (status: boolean) =>
-    dispatchWithoutAction({ type: "SET_VIDEOSTATE", videoState: status });
+    dispatch({ type: "SET_VIDEOSTATE", videoState: status });
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
-    dispatchWithoutAction({ type: "SET_ENTRY", entryType: access_type });
+    dispatch({ type: "SET_ENTRY", entryType: access_type });
   }, []);
 
   const setPlatForm = useCallback((platform_type: string) => {
-    dispatchWithoutAction({ type: "SET_PLATFORM", platFormType: platform_type });
+    dispatch({ type: "SET_PLATFORM", platFormType: platform_type });
   }, []);
 
   const setCamForm = useCallback((camFormType: string) => {
-    dispatchWithoutAction({ type: "SET_CAMFORM", camFormType: camFormType });
+    dispatch({ type: "SET_CAMFORM", camFormType: camFormType });
   }, []);
 
   const setRoomType = useCallback(
     (value) =>
-      dispatchWithoutAction({
+      dispatch({
         type: "SET_ROOMTYPE",
         roomType: value,
       }),
     []
   );
   const setBgChange = (value) =>
-    dispatchWithoutAction({
+    dispatch({
       type: "SET_BGCHANGE",
       bgChange: value,
     });
   const setTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (value.length > 20) return;
-    dispatchWithoutAction({ type: "SET_TITLECHANGE", titleChange: value });
+    dispatch({ type: "SET_TITLECHANGE", titleChange: value });
   };
   const setWelcomeMsg = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (value.length > 100) return;
-    dispatchWithoutAction({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
+    dispatch({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
   };
 
   //배경 사진 업로드 관련
@@ -343,7 +340,7 @@ export default function BroadcastSetting() {
 
   async function createBroadcastRoom() {
     const makeRoom = async () => {
-      const createInfo:BroadcastCreateRoomParamType = {
+      const createInfo = {
         roomType: state.roomType,
         title: state.titleChange,
         bgImg: state.bgChange,
@@ -351,11 +348,11 @@ export default function BroadcastSetting() {
         entryType: state.entryType,
         notice: "",
         imageType: state.imageType,
+        djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
+        djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
         mediaType: state.mediaType
       };
 
-      // dispatch(broadcastCreate(createInfo));
-      // return;
       const { result, data, message, code } = await broadcastCreate(createInfo);
       if (result === "success") {
         if(data.platform === "wowza"){
@@ -717,7 +714,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.title !== "" &&
       modalState.broadcastOption.title
     ) {
-      dispatchWithoutAction({
+      dispatch({
         type: "SET_TITLECHANGE",
         titleChange: modalState.broadcastOption.title,
       });
@@ -726,7 +723,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.welcome !== "" &&
       modalState.broadcastOption.welcome
     ) {
-      dispatchWithoutAction({
+      dispatch({
         type: "SET_WELCOMEMSG",
         welcomeMsgChange: modalState.broadcastOption.welcome,
       });
@@ -750,7 +747,7 @@ export default function BroadcastSetting() {
   }, [popupState]);
 
   const setMediaType = (mediaType:BROAD_TYPE)=>{
-    dispatchWithoutAction({type: "SET_MEDIATYPE", mediaType: mediaType});
+    dispatch({type: "SET_MEDIATYPE", mediaType: mediaType});
     //broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data:{platform:mediaType === BROAD_TYPE.AUDIO ? 'wowza' : 'agora'}})
   }
 
@@ -974,7 +971,7 @@ export default function BroadcastSetting() {
                       <li
                         key={item.id}
                         onClick={() => {
-                          dispatchWithoutAction({
+                          dispatch({
                             type: "SET_IMAGETYPE",
                             imageType: item.id,
                           });
