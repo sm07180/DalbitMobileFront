@@ -34,11 +34,9 @@
     padding-top:18px;
     .swiper-slide{
       @include flex($fd:column);
-      transition:all .1s ease-out;
-      &.swiper-slide-active {
-        width:calc(100% - 28px);
-      }
-      &:last-child{
+      width: calc(100% - 28px);
+      &:active {cursor: grabbing;}
+      &:last-child {
         width:100%;
       }
     }

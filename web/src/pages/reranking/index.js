@@ -272,10 +272,9 @@ const RankPage = () => {
       </section>
       {token.isLogin &&
         <section className='myRanking'>
-          <CntTitle title={'님의 순위는?'}>
+          <CntTitle title={'님의 오늘 순위는?'}>
             <div className="point">{profile.nickNm}</div>
           </CntTitle>
-          <Tabmenu data={rankTabmenu} tab={rankTabType} setTab={setRankTabType}/>
           <MyRanking data={myRank}/>
         </section>
       }

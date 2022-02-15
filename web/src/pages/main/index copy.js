@@ -781,7 +781,7 @@ export default (props) => {
       <div
         className="refresh-wrap"
         ref={iconWrapRef}
-        style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
+        style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? '' : 'absolute'}}>
         <div className="icon-wrap">
           <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
         </div>
