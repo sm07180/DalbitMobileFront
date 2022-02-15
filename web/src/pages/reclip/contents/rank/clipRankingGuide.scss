@@ -30,6 +30,14 @@
       @include font(12px, 500, #666);
       text-align: center;
     }
+    tr.badge {
+      td {
+        & > div {
+          width: 77px;
+          margin: auto;
+        }
+      }
+    }
   }
   .noticeWrap{
     background: #f6f6f6;
