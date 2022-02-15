@@ -65,6 +65,7 @@ $errorMsg : #FF1919;
       line-height: 40px;
       letter-spacing: -1.5px;
       @include font(28px,500,#202020);
+      cursor: pointer;
       & > div {
         @include flex(center);
       }
@@ -86,10 +87,11 @@ $errorMsg : #FF1919;
       @include font(16px,600,#fff);
     }
     .criteria {
-      @include position-top-right(50%,10px);
-      transform: translateY(-60%);
-      width: 170px; height: 150px;
+      @include position-top-right(50%,-25px);
+      transform: translateY(-55%);
+      width: 210px; height: 174px;
       @include BGIMG('dalla/character/character_ranking.png');
+      image-rendering: -webkit-optimize-contrast;
       .relative {
         position: relative;
         .clickArea {
@@ -122,6 +124,7 @@ $errorMsg : #FF1919;
             height:200px;
             border-radius:8px;
             overflow: hidden;
+            cursor: pointer;
             &::after {
               content: "";
               position: absolute;
@@ -284,6 +287,7 @@ $errorMsg : #FF1919;
           flex: none;
           width:60px;
           border-radius: 50%;
+          cursor: pointer;
           img {
             width:100%;
             border-radius: 50%;
@@ -321,6 +325,7 @@ $errorMsg : #FF1919;
           .badgeLive {
             width:60px;height:28px;
             @include BGIMG('ranking/dalla/badgeLive.png');
+            cursor: pointer;
           }
         }
       }
@@ -332,17 +337,16 @@ $errorMsg : #FF1919;
     width: 100%;
     padding: 23px 16px;
     box-sizing: border-box;
-    background-color: #1A1A1A;
     background: url("https://image.dalbitlive.com/dalla/character/character_rankingBottom.png") #1a1a1a no-repeat;
-    background-position: 95% 5%;
-    background-size: auto 120%;
+    background-position: right bottom;
+    background-size: contain;
     p {
-      @include font(18px, 500, #FFFFFF);
+      @include font(18px, 600, #FFFFFF);
       letter-spacing: -1px;
     }
     button {
-      margin-top: 8px;
-      @include font(13px, 500, #FF8E3E);
+      margin-top: 10px;
+      @include font(13px, 600, #FF8E3E);
       letter-spacing: -1px;
     }
   }
@@ -352,11 +356,13 @@ $errorMsg : #FF1919;
       position: relative;
       @include flex(center, center, column);
       width: 100%;
+      padding: 20px 0 30px;
       .selectOption {
         width: 100%;
         text-align: center;
         @include font(16px, 400, #202020);
         line-height: 55px;
+        cursor: pointer;
         &.active {
           @include font(16px, 700, #FF3C7B);
         }
@@ -365,53 +371,56 @@ $errorMsg : #FF1919;
   }
 
   #layerPop {
-    .popTitle {
-      line-height: 48px;
-      text-align: center;
-      @include font(16px, 700, #202020);
-    }
-    .standardWrap {
-      @include flex(center, center, column);
-      width: 100%;
-      margin-top: 15px;
-      .standardList {
-        margin-bottom: 18px;
-        &:last-child {
-          margin-bottom: 0px;
-        }        
-        .popSubTitle {
-          @include font(16px, 500, #FF3C7B);
-          text-align: center;
-          letter-spacing: -1px;
-        }
-        .popText {
-          @include font(12px, 400, #666666);
-          text-align: center;
-          letter-spacing: -1px;
-          overflow: hidden;
-          span {
-            @include font(13px, 400, #FF6B4B);
-            padding-left: 16px;
-            background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
-            background-position: left center;
-            background-repeat: no-repeat;
-            background-size: 16px 16px;
+    .popContainer {
+      padding: 20px 0 40px;      
+      .popTitle {
+        line-height: 48px;
+        text-align: center;
+        @include font(16px, 700, #202020);
+      }
+      .standardWrap {
+        @include flex(center, center, column);
+        width: 100%;
+        margin-top: 15px;
+        .standardList {
+          margin-bottom: 18px;
+          &:last-child {
+            margin-bottom: 0px;
+          }        
+          .popSubTitle {
+            @include font(16px, 500, #FF3C7B);
+            text-align: center;
+            letter-spacing: -1px;
+          }
+          .popText {
+            @include font(12px, 400, #666666);
+            text-align: center;
+            letter-spacing: -1px;
+            overflow: hidden;
+            span {
+              @include font(13px, 400, #FF6B4B);
+              padding-left: 16px;
+              background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+              background-position: left center;
+              background-repeat: no-repeat;
+              background-size: 16px 16px;
+            }
           }
         }
       }
-    }
-    .popInfo {
-      @include font(12px, 400, #ACACAC);
-      margin-top: 6px;
-      text-align: center;
-      letter-spacing: -1px;
-      span {
-        @include font(12px, 400, #FF6B4B);
-        padding-left: 16px;
-        background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
-        background-position: left center;
-        background-repeat: no-repeat;
-        background-size: 16px 16px;
+      .popInfo {
+        @include font(12px, 400, #ACACAC);
+        margin-top: 6px;
+        text-align: center;
+        letter-spacing: -1px;
+        span {
+          @include font(12px, 400, #FF6B4B);
+          padding-left: 16px;
+          background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+          background-position: left center;
+          background-repeat: no-repeat;
+          background-size: 16px 16px;
+        }
       }
     }  
   }
