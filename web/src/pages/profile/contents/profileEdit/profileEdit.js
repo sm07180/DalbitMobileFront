@@ -8,7 +8,7 @@ import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
 // components
-import TopSwiper from '../../components/topSwiper'
+import TopSwiper from '../../components/TopSwiper'
 // contents
 
 import './profileEdit.scss'

@@ -48,11 +48,11 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
 // 프로필 수정
-const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/ProfileEdit'))
 // 프로필 - 피드, 팬보드 (작성, 수정)
-const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/ProfileWrite'))
 // 프로필 - 피드, 팬보드 (상세)
-const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
+const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/ProfileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/store'))
 const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
