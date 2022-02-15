@@ -9,16 +9,13 @@ import Utility from "components/lib/utility";
 export default function EndApp() {
   const context = useContext(Context)
   const history = useHistory();
-  const location = useLocation()
-  const {result, message, orderId, cancelType, returnType} = location.state;
+  const location = useLocation();
+  console.log(location);
+  const {cancelType} = qs.parse(location.search)
+  const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
 
-  const [receipt, setReceipt] = useState({
-    orderId: orderId,
-    payWay: "",
-    payAmt: "",
-    itemAmt: "",
-    payCode: "",
-  });
+  console.log(location);
+  console.log(result, message, orderId, returnType);
 
   //창 닫기
   const closeWindow = () =>{
@@ -40,49 +37,6 @@ export default function EndApp() {
     }
   }
 
-  //결제 정보 가져오기
-  const getReciptInfo = async () => {
-    await Api.pay_receipt({
-      data: {
-        orderId: orderId
-      }
-    }).then((response) => {
-      setReceipt({
-        ...receipt,
-        orderId: response.data.order_id,
-        payWay: payTypeKor(response.data.pay_way),
-        payAmt: Utility.addComma(response.data.pay_amt).split('.')[0] + "원 (부가세포함)",
-        itemAmt: response.data.item_amt,
-        payCode: response.data.pay_code
-      })
-    });
-  }
-
-  const payTypeKor = (payWay) => {
-    switch (payWay) {
-      case 'simple':
-        return "계좌 간편결제"
-      case 'card':
-        return "카드 결제"
-      case 'phone':
-        return "핸드폰 결제"
-      case 'kakaoMoney':
-        return "카카오페이 (머니)"
-      case 'kakaopay':
-        return  '카카오페이(카드)'
-      case 'payco':
-        return  '페이코'
-      case 'tmoney':
-        return  '티머니'
-      case 'cashbee':
-        return  '캐시비'
-      case 'GM':
-        return '문화상품권'
-      case 'HM':
-        return  '해피머니상품권'
-    }
-  }
-
   useEffect(() => {
     if (cancelType !== undefined) {
       closeWindow();
@@ -98,10 +52,8 @@ export default function EndApp() {
             }
           })
         } else {  // returnType === 'store'
-          getReciptInfo().then((response) => {
-            sessionStorage.setItem('pay_receipt', JSON.stringify(receipt));
-            return history.push({pathname: "/"});
-          });
+          sessionStorage.setItem('orderId', orderId);
+          return history.push({pathname: "/"});
         }
       } else {  // result !== 'success'
         if (returnType === 'room') {
