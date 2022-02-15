@@ -26,6 +26,7 @@ import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
 import {ClipPlayerJoin} from "common/audio/clip_func";
+import {IMG_SERVER} from "context/config";
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -39,7 +40,9 @@ const ClipPage = () => {
   const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
   const [likeClipInfo, setLikeClipInfo] = useState({}); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({}); // 최근 들은 클립
-
+  const [subClipInfo, setSubClipInfo] = useState({}); // 아래 카테고리별 리스트
+  const [subSearchInfo, setSubSearchInfo] = useState({ subjectType: subjectType[0] }); // 아래 카테고리별 검색 조건
+  
   const [detail, setDetail] = useState(false)
 
   // 조회 Api
@@ -248,10 +251,11 @@ const ClipPage = () => {
           <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
           <Swiper {...swiperParams}>
             {subjectType.map((list, index)=>{
+              console.log(list.value);
               return (
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
-                    <p>{list.icon}</p>
+                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
                     <p>{list.cdNm}</p>
                   </div>
                 </div>
