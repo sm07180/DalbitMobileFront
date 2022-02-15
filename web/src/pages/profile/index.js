@@ -471,7 +471,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if(!context.token.isLogin) {
-      return history.push('/login');
+      return history.replace('/login');
     }
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     parameterManager(); // 주소 뒤에 파라미터 체크
