@@ -139,12 +139,12 @@ const listenWrap = () =>{
       <section className="summaryWrap">
         <div className="cntTitle">방송요약</div>
         <div className="summaryList">
-          <img className="icon" src={`https://image.dalbitlive.com/mypage/dalla/report/${imgTag.listenIcon}.png`}/>
+          <i className="icon timeListen"/>
           <div>청취시간</div>
           <div className="amount">{decodeSec(listenTotalInfo.listeningTime)}</div>
         </div>
         <div className="summaryList">
-          <img className="icon" src={`https://image.dalbitlive.com/mypage/dalla/report/${imgTag.dalIcon}.png`}/>
+          <i className="icon dal"/>
           <div>달 선물</div>
           <div className="amount">{listenTotalInfo.giftDalTotCnt.toLocaleString("ko-KR")}</div>
         </div>

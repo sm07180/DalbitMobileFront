@@ -8,8 +8,8 @@ import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
 
 // contents
-import Allim from './allim'
-import Post from './post'
+import Allim from './Allim'
+import Post from './Post'
 
 import './notice.scss'
 

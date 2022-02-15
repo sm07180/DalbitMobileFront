@@ -10,20 +10,19 @@ import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
-import Faq from './contents/faq/FaqTest'
-import Inquire from './contents/inquire/InquireTest'
 
 import './style.scss'
-import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
+import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetailTest";
 import Policy from "pages/recustomer/contents/policy/Policy";
 import Privacy from "pages/recustomer/contents/privacy/Privacy";
 import Minor from "pages/recustomer/contents/minor/Minor";
 import Terms from "pages/recustomer/contents/terms/Terms";
+import Faq from "pages/recustomer/contents/faq/FaqTest";
+import Inquire from "pages/recustomer/contents/inquire/InquireTest";
 
 const Customer = () => {
   const history = useHistory()
   const params = useParams();
-  const category = params.title;
   const context = useContext(Context);
   const [categoryList, setCategory] = useState([
     {name : "FAQ", file : "customerMainList-faq", path : "faq"},
@@ -38,7 +37,7 @@ const Customer = () => {
 
   return (
     <div id='customer'>
-      {!category ?
+      {!params.title ?
         <>
           <Header position={'sticky'} type={'back'}/>
           <div className='content'>
@@ -83,26 +82,26 @@ const Customer = () => {
           </div>
         </>
         :
-        category === "faq" ?
-          <Faq/>
-          :
-          category === "policy" ?
-            <Policy/>
-            :
-            category === "privacy" ?
-              <Privacy/>
-              :
-              category === "minor" ?
-                <Minor/>
-                :
-                category === "terms" ?
-                  <Terms/>
-                  :
-                  (category === "inquire" && !params.num) ?
-                    <Inquire/>
-                    :
-                    (category === "inquire" && params.num) &&
-                    <InquireDetail/>
+        params.title === "faq" ?
+        <Faq/>
+        :
+        params.title === "policy" ?
+        <Policy/>
+        :
+        params.title === "privacy" ?
+        <Privacy/>
+        :
+        params.title === "minor" ?
+        <Minor/>
+        :
+        params.title === "terms" ?
+        <Terms/>
+        :
+        (params.title === "inquire" && !params.num) ?
+        <Inquire/>
+        :
+        (params.title === "inquire" && params.num) &&
+        <InquireDetail/>
       }
     </div>
   )

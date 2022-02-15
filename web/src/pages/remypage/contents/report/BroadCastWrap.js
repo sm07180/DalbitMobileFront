@@ -10,9 +10,9 @@ import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
 import PopSlide from "components/ui/popSlide/PopSlide";
-import ReportTabMenu from "../../components/ReportTabMenu";
-import DatePicker from "./DatePicker";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
+import ReportTabMenu from "pages/remypage/components/ReportTabMenu";
+import DatePickerPage from "pages/remypage/contents/report/DatePicker";
 
 const broadCastWrap = () => {
   const context = useContext(Context);
@@ -201,11 +201,11 @@ const broadCastWrap = () => {
       <PopSlide title="기간 설절" setPopSlide={setBottomSlide}>
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
-          <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>
+          <DatePickerPage name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>
           <span className="iconCalendar"/>
         </InputItems>
         <InputItems>
-          <DatePicker name="pickdata" value={dt.pickdataNext} change={pickerNext} changeActive={changeActive}/>
+          <DatePickerPage name="pickdata" value={dt.pickdataNext} change={pickerNext} changeActive={changeActive}/>
           <span className="iconCalendar"/>
         </InputItems>
         <SubmitBtn text={'기간적용'} onClick={clickConfirm}/>

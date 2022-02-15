@@ -4,13 +4,13 @@ import React, {useContext, useEffect, useState} from 'react'
 import Header from 'components/ui/header/Header'
 
 //components
-import Tabmenu from '../../components/tabmenu'
-import BroadcastWrap from './broadCastWrap'
-import ListenWrap from './listenWrap'
+import BroadcastWrap from 'pages/remypage/contents/report/BroadCastWrap'
+import ListenWrap from 'pages/remypage/contents/report/ListenWrap'
 
 import './report.scss'
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import Tabmenu from "pages/remypage/components/tabmenu";
 
 const Report = () => {
   const submenu = ['방송', '청취']

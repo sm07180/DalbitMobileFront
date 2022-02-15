@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
+import ReportTabBtn from "pages/remypage/components/ReportTabBtn";
 
 // components
-import ReportTabBtn from './ReportTabBtn'
 
 const ReportTabMenu = (props) => {
   const {data, tab, setTab, setPage, pickerPrev, allDate, changeActive} = props //ReportPopup.js에서 넘겨줌

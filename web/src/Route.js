@@ -129,9 +129,9 @@ const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
-const Notice = React.lazy(() => import("pages/remypage/contents/notice/notice"));
-const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/postDetail"));
-const Report = React.lazy(() => import("pages/remypage/contents/report/report"));
+const Notice = React.lazy(() => import("pages/remypage/contents/notice/Notice"));
+const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/PostDetail"));
+const Report = React.lazy(() => import("pages/remypage/contents/report/Report"));
 
 const Router = () => {
   const context = useContext(Context);
