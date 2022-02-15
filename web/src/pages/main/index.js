@@ -281,8 +281,7 @@ const MainPage = () => {
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
-      ref={iconWrapRef}
-      style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
+      ref={iconWrapRef}>
       <div className="icon-wrap">
         <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
       </div>

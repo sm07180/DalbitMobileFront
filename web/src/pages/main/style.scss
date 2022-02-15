@@ -54,56 +54,59 @@
       &:active {
         cursor:grab;
       }
-      .photo {
-        position:relative;
+      .listColumn {
         width:100%;
-        height:360px;
-        @mixin whiteScreen {
+        .photo {
+          position:relative;
+          width:100%;
+          height:360px;
+          @mixin whiteScreen {
+            position:absolute;
+            left:0;
+            display:block;
+            content:'';
+            width:100%;
+            height:150px;
+          }
+          &:after {
+            @include whiteScreen;
+            bottom:0;
+            background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 20%, transparent);
+          }
+          img {
+            width:100%;
+            height:100%;
+            object-fit: cover;
+          }
+        }
+        .info {
           position:absolute;
-          left:0;
-          display:block;
-          content:'';
-          width:100%;
-          height:150px;
-        }
-        &:after {
-          @include whiteScreen;
           bottom:0;
-          background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 20%, transparent);
-        }
-        img {
+          left:0;
+          @include flex(flex-start,center,column);
           width:100%;
-          height:100%;
-          object-fit: cover;
-        }
-      }
-      .info {
-        position:absolute;
-        bottom:0;
-        left:0;
-        @include flex(flex-start,center,column);
-        width:100%;
-        padding: 25px 16px 12px;
-        .badgeGroup {
-          @include flex(center);
-          height:16px;
-        }
-        .badgeGroup {
-          @include flex(center);
-        }
-        .title {
-          width:72%;
-          line-height:30px;
-          margin-bottom:6px;
-          @include font(22px,$SemiBold,#202020);
-          @include fontLineCut;
-        }
-        .nick {
-          width:72%;
-          line-height:24px;
-          opacity:.7;
-          @include font(15px,$Regular,#202020);
-          @include fontCut;
+          padding: 25px 16px 12px;
+          .badgeGroup {
+            @include flex(center);
+            height:16px;
+          }
+          .badgeGroup {
+            @include flex(center);
+          }
+          .title {
+            width:72%;
+            line-height:30px;
+            margin-bottom:6px;
+            @include font(22px,$SemiBold,#202020);
+            @include fontLineCut;
+          }
+          .nick {
+            width:72%;
+            line-height:24px;
+            opacity:.7;
+            @include font(15px,$Regular,#202020);
+            @include fontCut;
+          }
         }
       }
     }
@@ -339,12 +342,12 @@
         margin-bottom:12px;
         .photo {
           position:relative;
+          flex-shrink: 0;
           width:110px;
           height:110px;
-          border-radius:8px;
-          overflow:hidden;
           img {
             width:100%;
+            border-radius:16px;
           }
           .guest {
             @include position-bottom-right;
