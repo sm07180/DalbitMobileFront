@@ -101,8 +101,8 @@ const Remypage = () => {
           <section className='mydalDetail'>
             <div className="dalCount">{profile?.dalCnt}달</div>
             <div className="buttonGroup">
-              <button>내 지갑</button>
-              <button className='charge'>충전하기</button>
+              <button onClick={() => history.push('/wallet')}>내 지갑</button>
+              <button className='charge' onClick={() => history.push('/store')}>충전하기</button>
             </div>
           </section>
           <section className="myMenu">
