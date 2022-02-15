@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Utility from "components/lib/utility";
 import Api from 'context/api'
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
-import './receipt.scss'
+import './receiptPop.scss'
 
 import {useHistory} from "react-router-dom";
 
