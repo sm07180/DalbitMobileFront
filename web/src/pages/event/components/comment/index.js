@@ -169,7 +169,7 @@ const EventComment = (props) => {
         <div className="totalBox">
           {contTitle}<span>{`${Utility.addComma(totalCommentCnt)}`}개</span>
           <button className="refreshBtn" onClick={refreshList}>
-            <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
+            <img src={`${IMG_SERVER}/main/ico_event_refresh.png`} alt="새로고침" />
           </button>
         </div>
 
