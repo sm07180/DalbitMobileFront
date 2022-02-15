@@ -31,6 +31,8 @@ const Write = () => {
   const history = useHistory();
 
   const [imageFile, setImageFile] = useState([]);
+  const [imgFile, setImgFile] = useState([]);
+  const [imageFileName, setImageFileName] = useState([]);
   const swiperParams = {
     slidesPerView: "auto",
     spaceBetween: 8
@@ -48,14 +50,17 @@ const Write = () => {
       qnaType: inputData.faqType,
       title: inputData.title,
       contents: inputData.contents,
-      questionFile1: imageFile[0] !== false ? imageFile[0].path : "",
-      questionFile2: imageFile[1] !== false ? imageFile[1].path : "",
-      questionFileName1: imageFile[0] !== false ? imageFile[0].fileName : "",
-      questionFileName2: imageFile[1] !== false ? imageFile[1].fileName : "",
+      questionFile1: imageFile[0],
+      questionFile2: imageFile[1],
+      questionFile3: imageFile[2],
+      questionFileName1: imageFileName[0],
+      questionFileName2: imageFileName[1],
+      questionFileName3: imageFileName[2],
       phone: "",
       email: "",
       nickName: context.profile.nickName
     }
+
     API.center_qna_add({params}).then((res) => {
       if(res.result === "success") {
         context.action.alert({msg: "1:1문의가 등록되었습니다."})
@@ -84,10 +89,6 @@ const Write = () => {
     setSelectedInfo(name)
   }
 
-  useEffect(() => {
-    console.log(option);
-  })
-
   const onTextFocus = () => {
     setTextValue(inputData.contents);
   }
@@ -109,6 +110,7 @@ const Write = () => {
 
     const fileName = file.name;
 
+    console.log(target.files);
     const fileSplited = fileName.split(".");
     const fileExtension = fileSplited.pop().toLowerCase();
     //
@@ -122,22 +124,29 @@ const Write = () => {
     reader.readAsDataURL(target.files[0]);
     reader.onload = async () => {
       if (reader.result && imageFile.length < 3) {
-        const res = await postImage({
-          dataURL: reader.result,
-          uploadType: "exchange",
-        });
+        const res = await API.image_upload({
+          data: {
+            dataURL: reader.result,
+            uploadType: "qna"
+          }})
         if (res.result === "success") {
-          setImageFile(imageFile.concat(reader.result));
+          console.log(res.data.path);
+          console.log(reader.result);
+          setImageFile(imageFile.concat(res.data.path));
+          setImgFile(imgFile.concat(res.data.url));
+          setImageFileName(imageFileName.concat(fileName));
+        } else {
+          context.action.alert({msg: res.message});
         }
       }
-    };
+    }
   };
 
   const removeImage = (e) => {
     const idx = parseInt(e.currentTarget.dataset.idx)
-    const tempImage = imageFile.concat([]);
+    const tempImage = imgFile.concat([]);
     tempImage.splice(idx, 1);
-    setImageFile(tempImage)
+    setImgFile(tempImage)
   }
 
   const validator = () => {
@@ -147,6 +156,10 @@ const Write = () => {
       context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
     }
   }
+
+  useEffect(() => {
+    console.log(imageFile);
+  })
 
   return (
     <div id='inquireWrite'>
@@ -177,10 +190,10 @@ const Write = () => {
           <label className="uploadlabel">
             <input className="blind" type="file" onChange={uploadSingleFile} />
           </label>
-          {imageFile.length > 0 &&
+          {imgFile.length > 0 &&
           <div className="uploadListWrap">
             <Swiper {...swiperParams}>
-              {imageFile.map((v, idx) => {
+              {imgFile.map((v, idx) => {
                 return(
                   <div className="uploadList" key={idx}>
                     <img src={v} alt="업로드이미지" />
