@@ -9,9 +9,9 @@ import {useParams} from "react-router-dom";
 
 import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
-import errorImg from '../../../../src/pages/broadcast/static/img_originalbox.svg';
+import errorImg from '../../broadcast/static/img_originalbox.svg';
 
-const ClipDetailPage = (props) => {
+const Index = (props) => {
   const { type } = useParams();
   const isDesktop = useSelector((state)=> state.common.isDesktop); //
   const categoryType = useSelector((state)=> state.clip.categoryType); //
@@ -28,10 +28,9 @@ const ClipDetailPage = (props) => {
   const getClipLastList = () => {
     API.getClipList({ gender: '', djType: 0, slctType: searchInfo.slctType.index, dateType: searchInfo.dateType.index, page: searchInfo.page, records: searchInfo.records, subjectType: (searchInfo.subjectType.value || '') }).then(res => {
       if (res.code === 'C001') {
-        console.log('in');
         setClipLastInfo({ list: res.data.list, paging: {...res.data.paging}});
       }
-    })
+    });
   };
 
   const handleTermSelect = (value) => {
@@ -95,4 +94,4 @@ const ClipDetailPage = (props) => {
   );
 };
 
-export default ClipDetailPage;
+export default Index;

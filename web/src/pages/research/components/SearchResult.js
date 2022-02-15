@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import Api from 'context/api'
 // global components
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from '../../../components/ui/cntTitle/CntTitle';
 // components
 import Tabmenu from './Tabmenu'
 import SearchDjList from "pages/research/components/SearchDjList";
@@ -88,7 +88,7 @@ const SearchResult = (props) => {
   // 탭 변경 이벤트
   const handleTabmenu = (value) => {
     if (value !== undefined) {
-      setSearchData({...searchData, tabType: parseInt(value), records: (value == 0 ? 5 : 5), page: 1});
+      setSearchData({...searchData, tabType: parseInt(value), records: (value == 0 ? 5 : 7), page: 1});
     }
   };
 

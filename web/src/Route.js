@@ -25,12 +25,12 @@ const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 const EventZip = React.lazy(() => import('pages/eventzip'))
 
 // 클립
-const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
-const ClipDetail = React.lazy(() => import('pages/clip/pages/ClipDetailPage'));
-const ClipLikeList = React.lazy(() => import('pages/clip/pages/ClipLikeListPage'));
-const ClipListenList = React.lazy(() => import('pages/clip/pages/ClipListenListPage'));
-const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/clipRanking'))
-const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRankingGuide'))
+const Clip = React.lazy(() => import('pages/clip'));
+const ClipDetail = React.lazy(() => import('pages/clip/detail'));
+const ClipLikeList = React.lazy(() => import('pages/clip/like'));
+const ClipListenList = React.lazy(() => import('pages/clip/listen'));
+const ClipRank = React.lazy(() => import('pages/reclip/contents/rank/ClipRanking'))
+const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/ClipRankingGuide'))
 
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
@@ -41,7 +41,7 @@ const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/g
 // 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
 // 검색
-const ReSearch = React.lazy(() => import('pages/research/pages/'))
+const ReSearch = React.lazy(() => import('pages/research'))
 // 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
@@ -103,8 +103,6 @@ const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
-// const ClipRank = React.lazy(() => import('pages/clip_rank'))
-// const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
 
@@ -291,7 +289,7 @@ const Router = () => {
         <Route exact path="/clip/listen/list" component={ClipListenList}/>
         <Route exact path="/clip/detail/:type" component={ClipDetail} />
         <Route exact path="/clip_rank" component={ClipRank} />
-        <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
+        <Route exact path="/clip_rank/reward" component={ClipRankGuide} />
         <Route exact path="/clip_recommend" component={ClipRecommend} />
         <Route exact path="/redirect" component={TempLogin} />
         <Route exact path="/clip/tip" component={ClipTip} />
@@ -324,6 +322,7 @@ const Router = () => {
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>
-  )
+  );
 };
-export default Router
+
+export default Router;

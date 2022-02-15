@@ -37,7 +37,7 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileD
 const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
 
-const ProfilePage = (props) => {
+const ProfilePage = () => {
   const history = useHistory()
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
@@ -145,7 +145,6 @@ const ProfilePage = (props) => {
         const data= res.data;
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
-        console.log('isLastPage : ', isLastPage);
         dispatch(setProfileClipData({
           list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
           paging: data.paging,
@@ -314,7 +313,6 @@ const ProfilePage = (props) => {
 
   /* 스크롤 이벤트 */
   const scrollEvent = useCallback((scrollTarget, callback) => {
-    console.log('z');
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
