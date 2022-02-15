@@ -21,13 +21,10 @@ const Start = (props) => {
 
   //소셜로그인
   const socialLogin = async (vendor) => {
-    const successCallback = () => newSocialLogin(vendor); // 소셜로그인 native 처리 이후 버전
-    const failCallback = () => oldLogin(vendor); // 소셜로그인 옛날 버전 & 사과로그인(사과만 웹에서)
     if(vendor !== 'apple' && (isHybrid())) {
-      const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
-      await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+      newSocialLogin(vendor)
     }else {
-      await failCallback();
+      oldLogin(vendor);
     }
   }
   const newSocialLogin = (vendor) => {
@@ -38,15 +35,7 @@ const Start = (props) => {
       Hybrid('openGoogleSignIn')
     } else if (vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) {
       // 안드로이드 페이스북 로그인
-      const successCallback = () => Hybrid('openFacebookLogin')
-      const failCallback = () => {
-        context.action.confirm({
-          buttonText: {right: '업데이트'},
-          msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
-          callback: async () => Hybrid('goToPlayStore')
-        })
-      }
-      await Utility.compareAppVersion('1.6.0', successCallback, failCallback)
+      Hybrid('openFacebookLogin')
     } else {
       const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
         method: 'get',

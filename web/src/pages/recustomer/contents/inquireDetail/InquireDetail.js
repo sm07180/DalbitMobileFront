@@ -70,7 +70,11 @@ const InquireDetail = () => {
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 8,
-  }  
+  }
+
+  useEffect(() => {
+    console.log(addFile);
+  })
   
   return (
     <div id="inquireDetail">

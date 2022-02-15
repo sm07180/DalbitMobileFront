@@ -1,11 +1,11 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
-const MyInfo = (props) => {
-  const {data, memNo} = props
+const MyMenu = (props) => {
+  const {data} = props
   const history = useHistory()
   const golink = (path) => {
-    history.push("/mypage/" + memNo + '/' + path);
+    history.push(path);
   }
 
   return (
@@ -21,4 +21,4 @@ const MyInfo = (props) => {
   )
 }
 
-export default MyInfo
+export default MyMenu
