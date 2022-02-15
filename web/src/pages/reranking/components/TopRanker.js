@@ -30,7 +30,7 @@ const TopRanker = (props) => {
       el: '.swiper-pagination',
       clickable: true
     },
-    rtl: "rtl",
+    initialSlide: 2,
     rebuildOnUpdate: true
   }
 
@@ -84,12 +84,12 @@ const TopRanker = (props) => {
               <div className='rankingTop3' key={index}>
                 <div className='topHeader'>{
                 index === 0 ?
-                  rankType === 0 ? `${data.length}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
                   :
                 index === 1 ?
-                  rankType === 0 ? `${data.length - index}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
                   :
-                  `${data.length - index}회차`
+                  `${index + 1}회차`
                 } TOP3
                   <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>

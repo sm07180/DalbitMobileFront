@@ -1,100 +1,78 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react'
-
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
-
-import {liveBoxchangeDate} from 'pages/common/rank/rank_fn'
+import React, {useState} from 'react'
 
 import './detailView.scss'
 
-const DetailView = ({fetching}) => {
-  const {rankState, rankAction} = useContext(RankContext)
-  const {formState} = rankState
-  const formDispatch = rankAction.formDispatch
-  const [dateTitle, setDateTitle] = useState('이번달')
+const DetailView = (props) => {
 
-  const handleDate = (type) => {
-    const handle = liveBoxchangeDate(type, 3, formState[formState.pageType].currentDate)
+  const {dateVal, setDateVal} = props;
 
-    formDispatch({
-      type: 'DATE',
-      val: handle
-    })
+  const [lastYn, setLastYn] = useState({next: true, prev: false});
+
+  let lastPrevDate = '2020-06-01';
+
+  const prevDate = () => {
+    let prevDate = changeDate(dateVal, "prev");
+
+    if (`${prevDate.year}-${prevDate.month}-01` >= lastPrevDate){
+      setDateVal({...prevDate, title: `${prevDate.year}년 ${prevDate.month}월`});
+      if (`${prevDate.year}-${prevDate.month}-01` === lastPrevDate) {
+        setLastYn({next: false, prev: true});
+      } else {
+        setLastYn({next: false, prev: false});
+      }
+    }
+
+
   }
 
-  const formatDate = useCallback(() => {
-    const yy = formState[formState.pageType].currentDate.getFullYear()
-    const mm = formState[formState.pageType].currentDate.getMonth() + 1
-    const dd = formState[formState.pageType].currentDate.getDate()
-
-    const cdt = new Date()
+  const nextDate= () => {
+    const cdt = new Date();
     const cyy = cdt.getFullYear()
     const cmm = cdt.getMonth() + 1
 
-    if (yy === cyy && mm === cmm) {
-      setDateTitle('이번달')
-    } else {
-      setDateTitle(`${yy}년 ${mm}월`)
-    }
-  }, [formState])
+    let nextDate = changeDate(dateVal, "next");
+    if (`${nextDate.year}-${nextDate.month}-01` <= `${cyy}-${cmm < 10 ? `0${cmm}` : cmm}-01`) {
 
-  const prevLast = () => {
-    const yy = formState[formState.pageType].currentDate.getFullYear()
-    const mm = formState[formState.pageType].currentDate.getMonth() + 1
-    const dd = formState[formState.pageType].currentDate.getDate()
-
-    const cdt = new Date('2020-06-01')
-    const cyy = cdt.getFullYear()
-    const cmm = cdt.getMonth() + 1
-
-    if (yy === cyy && cmm === mm) {
-      return false
-    } else {
-      return true
+      if (`${nextDate.year}-${nextDate.month}-01` === `${cyy}-${cmm < 10 ? `0${cmm}` : cmm}-01`){
+        setDateVal({...nextDate, title: "이번달"})
+        setLastYn({next: true, prev: false});
+      } else {
+        setDateVal({...nextDate, title: `${nextDate.year}년 ${nextDate.month}월`});
+        setLastYn({next: false, prev: false});
+      }
     }
   }
 
-  const nextLast = () => {
-    const yy = formState[formState.pageType].currentDate.getFullYear()
-    const mm = formState[formState.pageType].currentDate.getMonth() + 1
-    const dd = formState[formState.pageType].currentDate.getDate()
-
-    const cdt = new Date()
-    const cyy = cdt.getFullYear()
-    const cmm = cdt.getMonth() + 1
-
-    if (yy === cyy && cmm === mm) {
-      return false
+  const changeDate = (dates , slct) => {
+    const selectDate = new Date(`${dates.year}-${dates.month}-01`);
+    if (slct === "next"){
+      selectDate.setMonth(selectDate.getMonth() + 1);
     } else {
-      return true
+      selectDate.setMonth(selectDate.getMonth() - 1);
     }
+    return {year: selectDate.getFullYear(), month: selectDate.getMonth() + 1 < 10 ? `0${selectDate.getMonth() + 1}` : selectDate.getMonth() + 1};
   }
 
-  useEffect(() => {
-    formatDate()
-  }, [formState])
+
+
   return (
     <div className="detailView">
       <button
-        className={`prevButton ${prevLast() && fetching === false && 'active'}`}
+        className={`prevButton ${lastYn.prev ? "" : 'active'}`}
         onClick={() => {
-          if (prevLast() && fetching === false) {
-            handleDate('back')
-          }
+          prevDate();
         }}>
         이전
       </button>
 
       <div className="titleWrap">
-        <div className="title">{dateTitle}</div>
+        <div className="title">{dateVal.title}</div>
       </div>
 
       <button
-        className={`nextButton ${nextLast() && fetching === false && 'active'}`}
+        className={`nextButton ${lastYn.next ? "" : 'active'}`}
         onClick={() => {
-          if (nextLast() && fetching === false) {
-            handleDate('front')
-          }
+          nextDate()
         }}>
         다음
       </button>
