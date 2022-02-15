@@ -6,7 +6,6 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
-import ShowSwiper from "../../components/ui/showSwiper/ShowSwiper"
 // components
 import TopSwiper from './components/topSwiper'
 import ProfileCard from './components/profileCard'

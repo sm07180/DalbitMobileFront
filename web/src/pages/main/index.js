@@ -49,27 +49,13 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [payReceipt, setPayReceipt] = useState("")
+  const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
 
   const [updatePopInfo, setUpdatePopInfo] = useState({
     showPop: false,
     storeUrl: '',
   });
-  const setPayPopup = () => {
-    setReceiptPop(false)
-    sessionStorage.removeItem('pay_receipt')
-  }
-  useEffect(() => {
-    if (sessionStorage.getItem('pay_receipt') !== null) {
-      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
-      setReceiptPop(true);
-      setPayReceipt(payInfo)
-    }
-    return () => {
-      sessionStorage.removeItem('pay_receipt')
-    }
-  }, [])
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -247,6 +233,7 @@ const MainPage = () => {
 
   /* 업데이트 확인 */
   const updatePopFetch = async () => {
+
     if (isHybrid()) {
       if (sessionStorage.getItem('checkUpdateApp') === null) {
         sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
@@ -341,8 +328,6 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {true && <ReceiptPop payReceipt={payReceipt} setPopup={setPayPopup} />}
-    {true && <UpdatePop />}
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
   </>;
