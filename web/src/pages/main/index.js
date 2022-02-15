@@ -20,6 +20,7 @@ import {OS_TYPE} from "context/config";
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
+import {isHybrid} from "context/hybrid";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -48,22 +49,13 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [payReceipt, setPayReceipt] = useState("")
+  const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
-  const setPayPopup = () => {
-    setReceiptPop(false)
-    sessionStorage.removeItem('pay_receipt')
-  }
-  useEffect(() => {
-    if (sessionStorage.getItem('pay_receipt') !== null) {
-      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
-      setReceiptPop(true);
-      setPayReceipt(payInfo)
-    }
-    return () => {
-      sessionStorage.removeItem('pay_receipt')
-    }
-  }, [])
+
+  const [updatePopInfo, setUpdatePopInfo] = useState({
+    showPop: false,
+    storeUrl: '',
+  });
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -226,6 +218,36 @@ const MainPage = () => {
     touchEndY = null
   }, [reloadInit])
 
+  const clearReceipt = () => {
+    setReceiptPop(false)
+    sessionStorage.removeItem('orderId')
+  }
+
+  const getReceipt = () => {
+    if (sessionStorage.getItem('orderId') !== null) {
+      const orderId = sessionStorage.getItem('orderId')
+      setReceiptPop(true);
+      setPayOrderId(orderId);
+    }
+  }
+
+  /* 업데이트 확인 */
+  const updatePopFetch = async () => {
+
+    if (isHybrid()) {
+      if (sessionStorage.getItem('checkUpdateApp') === null) {
+        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
+      }
+
+      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
+        Api.verisionCheck().then(res => {
+          const isUpdate = res.data.isUpdate
+          const storeUrl = res.data.storeUrl
+          setUpdatePopInfo({showPop: isUpdate, storeUrl})
+        })
+      }
+    }
+  }
 
   useEffect(() => {
     if (currentPage === 0) setCurrentPage(1)
@@ -242,6 +264,12 @@ const MainPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
+    getReceipt();
+    updatePopFetch(); // 업데이트 팝업
+    return () => {
+      sessionStorage.removeItem('orderId')
+      sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+    }
   }, [])
 
   useEffect(() => {
@@ -300,11 +328,11 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {true && <ReceiptPop payReceipt={payReceipt} setPopup={setPayPopup} />}
-    {true && <UpdatePop />}
+    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
   </>;
   return MainLayout;
 }
- 
+
 export default MainPage
  
