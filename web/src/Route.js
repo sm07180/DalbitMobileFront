@@ -158,8 +158,8 @@ const Router = () => {
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
-        <Route exact path="/rank/benefit" component={RankingBenefit} />
-        {/* <Route exact path="/rank/:type" component={RankingGuide} /> */}
+        <Route exact path="/rankBenefit" component={RankingBenefit} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
