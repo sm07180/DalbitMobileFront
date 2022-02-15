@@ -17,9 +17,9 @@ import {Hybrid, isHybrid} from "context/hybrid";
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
   {menuNm: '클립', path:'clip'},
-  {menuNm: '설정'},
+  {menuNm: '설정', path:'setting'},
   {menuNm: '공지사항', path:'notice'},
-  {menuNm: '고객센터'},
+  {menuNm: '고객센터', path:'customer'},
 ]
 
 const Remypage = () => {
@@ -106,7 +106,7 @@ const Remypage = () => {
             </div>
           </section>
           <section className="myMenu">
-            <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
+            <MyMenu data={myMenuItem}/>
             {isHybrid() &&
             <div className="versionInfo">
               <span className="title">버전정보</span>
