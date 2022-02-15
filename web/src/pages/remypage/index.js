@@ -13,10 +13,10 @@ import {Hybrid, isHybrid} from "context/hybrid";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:''},
-  {menuNm: '설정', path:''},
+  {menuNm: '클립', path:'clip'},
+  {menuNm: '설정', path:'setting'},
   {menuNm: '공지사항', path:'notice'},
-  {menuNm: '고객센터', path: 'customer'},
+  {menuNm: '고객센터', path:'customer'},
 ]
 
 const Remypage = () => {
