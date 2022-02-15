@@ -4,16 +4,16 @@ import Api from 'context/api'
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import './receiptPop.scss'
 
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
-const Receipt = (props) => {
+const ReceiptPop = (props) => {
   const history = useHistory();
-  // const {payReceipt} = props;
-  // console.log(props);
-  // console.log(payReceipt);
+  const {payOrderId, clearReceipt} = props;
+  console.log(props);
+  console.log(payOrderId);
 
   const [receipt, setReceipt] = useState({
-    orderId: "05760001_1612500994",
+    orderId: payOrderId,
     payWay: "",
     payAmt: "",
     itemAmt: "",
@@ -42,7 +42,7 @@ const Receipt = (props) => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        orderId: "05760001_1612500994"
+        orderId: payOrderId
       }
     }).then((response) => {
       setReceipt({
@@ -60,12 +60,16 @@ const Receipt = (props) => {
     switch (payWay) {
       case 'simple':
         return "계좌 간편결제"
-      case 'card':
-        return "카드 결제"
-      case 'phone':
-        return "핸드폰 결제"
       case 'kakaoMoney':
         return "카카오페이 (머니)"
+      case 'CN':
+        return "카드 결제"
+      case 'MC':
+        return "핸드폰 결제"
+      case 'GM':
+        return '문화상품권'
+      case 'HM':
+        return  '해피머니상품권'
       case 'kakaopay':
         return  '카카오페이(카드)'
       case 'payco':
@@ -74,12 +78,15 @@ const Receipt = (props) => {
         return  '티머니'
       case 'cashbee':
         return  '캐시비'
-      case 'GM':
-        return '문화상품권'
-      case 'HM':
-        return  '해피머니상품권'
     }
   }
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   return (
     <section className="bankResult">
@@ -88,7 +95,7 @@ const Receipt = (props) => {
           결제가 완료 되었습니다.
         </div>
         <div className="subTitle">
-          결제 내역은 마이페이지 > 내지갑에서<br/>확인하실 수 있습니다.
+          결제 내역은 마이페이지 &gt; 내지갑에서<br/>확인하실 수 있습니다.
         </div>
       </div>
       <div className="receiptBoard">
@@ -109,9 +116,12 @@ const Receipt = (props) => {
           <p>{receipt.orderId}</p>
         </div>
       </div>
-      <SubmitBtn text="확인" onClick={() => history.push("/")}/>
+      <SubmitBtn text="확인" onClick={() => {
+        history.push("/")
+        clearReceipt()
+      }}/>
     </section>
   );
 };
 
-export default Receipt;
+export default ReceiptPop;
