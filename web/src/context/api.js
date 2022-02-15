@@ -1823,6 +1823,14 @@ export default class API {
     })
   }
 
+  static getMyRank = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
+      params: data
+    })
+  }
+
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',

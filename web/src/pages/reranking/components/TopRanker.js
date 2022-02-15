@@ -24,6 +24,7 @@ const TopRanker = (props) => {
   const swiperParams = {
     slidesPerView: 'auto',
     centeredSlides: true,
+    spaceBetween: 16,
     loop: false,
     pagination: {
       el: '.swiper-pagination',

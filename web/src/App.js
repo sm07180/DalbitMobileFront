@@ -62,7 +62,7 @@ function setNativePlayInfo(isJsonString, globalCtx) {
 }
 
 
-const baseSetting = async (globalCtx, broadcastAction) => {
+const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
   const globalAction = globalCtx.globalAction;
   const globalState = globalCtx.globalState;
 
@@ -235,7 +235,13 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-    const tokenInfo = await Api.getToken()
+    let tokenInfo = {};
+    let elementById = document.getElementById('serverToken');
+    if(elementById && elementById.value && elementById.value !== '' && elementById.value !== 'null'){
+      tokenInfo = JSON.parse(elementById.value);
+    }else{
+      tokenInfo = await Api.getToken()
+    }
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
@@ -326,7 +332,7 @@ const App = () => {
         globalCtx.action.updateAdminChecker(false)
       }
       if(isDesktop){
-        baseSetting(globalCtx, broadcastAction);
+        baseSetting(globalCtx, broadcastAction, dispatch);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
       //모든 처리 완료
@@ -468,7 +474,7 @@ const App = () => {
   /* 모바일웹용 푸터 */
   const isFooter = () => {
     if(!isDesktop && !isHybrid()) {
-      const pages = ['/', '/clip', '/search', '/mypage'];
+      const pages = ['/', '/clip', '/search', '/mypage', '/login'];
       const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
 
       setIsFooterPage(isFooterPage);
@@ -483,7 +489,8 @@ const App = () => {
         '/': 'main',
         '/clip': 'clip',
         '/search': 'search',
-        '/mypage': 'mypage'
+        '/mypage': 'mypage',
+        '/login': 'mypage',
       };
       const visible = !!footerViewPages[currentPages];
       const stateFooterParam = {
@@ -518,6 +525,9 @@ const App = () => {
 
   useEffect(()=>{
     if(!memberRdx.memNo || !chatInfo){
+      return;
+    }
+    if(!isDesktop){
       return;
     }
     const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");

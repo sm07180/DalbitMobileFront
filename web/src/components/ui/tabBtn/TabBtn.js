@@ -3,7 +3,7 @@ import React from 'react'
 import './tabBtn.scss'
 
 const TabBtn = (props) => {
-  const {param} = props
+  const {param, tabChangeAction} = props
 
   const tabClick = (e) => {
     const {tabTarget} = e.currentTarget.dataset
@@ -13,6 +13,7 @@ const TabBtn = (props) => {
         param.setPage(0)
       }
     }
+    if(typeof tabChangeAction === 'function') tabChangeAction(param.item);
   }
 
   return (

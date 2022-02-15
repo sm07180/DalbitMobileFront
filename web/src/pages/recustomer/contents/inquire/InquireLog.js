@@ -41,29 +41,26 @@ const InquireLog = () => {
 
   return (
     <div id='inquireLog'>
-      {
-        inquireLogList.length > 0 ? 
-          <div className='inquireLogWrap'>
-            {
-              inquireLogList.map((list, index) => {
-                return (
-                  <div className='inquireLogList' key={index} onClick={() => golink(list.qnaIdx)}>
-                    <div className='inquireLogState'>
-                      {list.state === 1 ? <span className='complete'>답변완료</span> : <span className='ing'>답변중</span>}
-                    </div>
-                    <div className='inquireLogTitle'>
-                      {list.title}
-                    </div>
-                    <div className='inquireLogDate'>
-                      {timeFormat(list.writeDt)}
-                    </div>
-                  </div>
-                )
-              })
-            }
-          </div>
+      {inquireLogList.length > 0 ? 
+        <div className='inquireLogWrap'>
+          {inquireLogList.map((list, index) => {
+            return (
+              <div className='inquireLogList' key={index} onClick={() => golink(list.qnaIdx)}>
+                <div className='inquireLogState'>
+                  {list.state === 1 ? <span className='complete'>답변완료</span> : <span className='ing'>답변중</span>}
+                </div>
+                <div className='inquireLogTitle'>
+                  {list.title}
+                </div>
+                <div className='inquireLogDate'>
+                  {timeFormat(list.writeDt)}
+                </div>
+              </div>
+            )
+          })}
+        </div>
         :
-          <ListNone imgType="ui02" text="문의 내역이 없어요." height="375px"/>
+        <ListNone imgType="ui02" text="문의 내역이 없어요." height="375px"/>
       }      
     </div>
   )
