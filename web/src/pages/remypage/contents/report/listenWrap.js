@@ -2,8 +2,6 @@ import React, {useContext, useEffect, useState} from 'react'
 
 //global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
-import PopSlide from 'components/ui/popSlide/PopSlide'
-import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 
 import './report.scss'
