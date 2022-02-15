@@ -4,9 +4,9 @@ import Api from 'context/api'
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import './receipt.scss'
 
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
-const Receipt = (props) => {
+const ReceiptPop = (props) => {
   const history = useHistory();
   const {payOrderId, clearReceipt} = props;
   console.log(props);
@@ -124,4 +124,4 @@ const Receipt = (props) => {
   );
 };
 
-export default Receipt;
+export default ReceiptPop;
