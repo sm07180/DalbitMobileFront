@@ -93,9 +93,9 @@ const RankDetailPage = () => {
             if (prevTwo.result === "success" && prevOne.result === "success"){
               if (data.list.length > 3){
                 setRankList(data.list.slice(3));
-                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)]);
+                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)].reverse());
               } else {
-                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)]);
+                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)].reverse());
                 setRankList([]);
               }
             }
@@ -105,9 +105,9 @@ const RankDetailPage = () => {
             if (res.result === "success"){
               if (data.list.length > 3){
                 setRankList(data.list.slice(3));
-                setTopRankList([data.list.slice(0, 3), addEmptyRanker(res.data.list)]);
+                setTopRankList([data.list.slice(0, 3), addEmptyRanker(res.data.list)].reverse());
               } else {
-                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(res.data.list)]);
+                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(res.data.list)].reverse());
                 setRankList([]);
               }
             }
@@ -115,9 +115,9 @@ const RankDetailPage = () => {
         } else{
           if (data.list.length > 3){
             setRankList(data.list.slice(3));
-            setTopRankList([data.list.slice(0, 3)]);
+            setTopRankList([data.list.slice(0, 3)].reverse());
           } else {
-            setTopRankList([addEmptyRanker(data.list)]);
+            setTopRankList([addEmptyRanker(data.list)].reverse());
             setRankList([]);
           }
         }
@@ -152,11 +152,11 @@ const RankDetailPage = () => {
             if (prevData.result === "success"){
               if (data.list.length > 3){
                 setRankList(data.list.slice(3));
-                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevData.data.list)]);
+                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevData.data.list)].reverse());
               } else {
                 let todayList = addEmptyRanker(data.list);
                 let prevList = addEmptyRanker(prevData.data.list);
-                setTopRankList([todayList, prevList]);
+                setTopRankList([todayList, prevList].reverse());
                 setRankList([]);
               }
             }
