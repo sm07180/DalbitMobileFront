@@ -405,24 +405,27 @@
         }
     }
     #layerPop {
-        .popTitle {
-            @include font(16px, 700, #202020);
-            line-height: 48px;
-        }
-        .popContent {
-            @include flex(center, center, column);
-            width: 100%;
-            margin: 16px auto 8px;
-            span {
-                margin-bottom: 16px;
-                text-align: center;
-                @include font(12px, 400, #666666);
-                letter-spacing: -1px;
-                &:last-child {
-                    margin-bottom: 0px;
+        .popContainer {
+            padding: 20px 0 40px;
+            .popTitle {
+                @include font(16px, 700, #202020);
+                line-height: 48px;
+            }
+            .popContent {
+                @include flex(center, center, column);
+                width: 100%;
+                margin: 16px auto 8px;
+                span {
+                    margin-bottom: 16px;
+                    text-align: center;
+                    @include font(12px, 400, #666666);
+                    letter-spacing: -1px;
+                    &:last-child {
+                        margin-bottom: 0px;
+                    }
                 }
             }
-        }
+        }        
     }
 }
 

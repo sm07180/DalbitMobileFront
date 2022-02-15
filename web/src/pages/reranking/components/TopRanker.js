@@ -30,7 +30,7 @@ const TopRanker = (props) => {
       el: '.swiper-pagination',
       clickable: true
     },
-    rtl: "rtl",
+    initialSlide: 2,
     rebuildOnUpdate: true
   }
 

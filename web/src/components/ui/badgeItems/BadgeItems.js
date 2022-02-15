@@ -64,13 +64,13 @@ const BadgeItems = (props) => {
           <span>{fanBadge.text}</span>
         </em>
       }
-      {type === 'isBadge' && isBadge.badgeSpecial == 2 ? (
+      {type === 'isBadge' && (isBadge.badgeSpecial == 2 ? (
         <em className="badgeItem bestDj">베스트DJ</em>
       ) : isBadge.badgeSpecial === 1 ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>
       ) : isBadge.special === true && (
         <em className="badgeItem specialDj">스페셜DJ</em>
-      )}
+      ))}
       {type === 'isNew' && isNew.new ? 
         <em className='badgeItem newDj'>NEW DJ</em>
         : type === 'isNew' && isNew.newListener &&

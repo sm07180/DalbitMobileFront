@@ -7,7 +7,20 @@ import PopSlide from "../../../components/ui/popSlide/PopSlide";
 
 const MyInfo = (props) => {
   const {data} = props
-  const [popSlide, setPopSlide] = useState(true);
+  const [popSlide, setPopSlide] = useState(false);
+
+  /* 레벨 클릭 */
+  const openLevelPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPopSlide(true)
+  }
+
+  const closeLevelPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPopSlide(false);
+  }
   
   return (
     <>
@@ -17,7 +30,7 @@ const MyInfo = (props) => {
           <span>오늘 즐거운 방송해볼까요?</span>
         </div>
         <div className="info">
-          <em className="level" onClick={() => setPopSlide(true)}>Lv{data?.level}</em>
+          <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
           <span className='userId'>{data?.memId}</span>
         </div>
         <div className="count">
@@ -44,7 +57,7 @@ const MyInfo = (props) => {
               <span className="gaugeBar" style={{width:`${data?.expRate}%`}}></span>
             </div>
             <div className="exp">다음 레벨까지 {data?.expNext} EXP 남음</div>
-            <SubmitBtn text="확인" />
+            <SubmitBtn text="확인" onClick={closeLevelPop} />
           </section>
         </PopSlide>
       }

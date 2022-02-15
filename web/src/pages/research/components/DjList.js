@@ -8,7 +8,7 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../scss/swiperList.scss'
 
 const DjList = (props) => {
-  const {data} = props
+  const {data, addAction, delAction} = props
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -30,7 +30,7 @@ const DjList = (props) => {
                   <GenderItems data={list.gender} />
                   <p className='nick'>{list.nickNm}</p>
                 </div>
-                {!list.isFan ? <button>+ 팬등록</button> : <button className='active'>팬</button>}
+                {!list.isFan ? <button data-mem-no={list.memNo} onClick={addAction}>+ 팬등록</button> : <button className='active' data-mem-no={list.memNo} onClick={delAction}>팬</button>}
               </div>
             </div>
           )

@@ -1,0 +1,46 @@
+@import "components/ui/_mixin.scss";
+
+.updatePop {
+  position: fixed;
+  top: 0;left: 0;
+  width: 100%;
+  background-color: #eee;
+  padding: 12px 16px 10px 16px;
+  z-index: 10;
+  .Wrapper {width: 100%;}
+  .updateBtn {
+    width: 100%;
+    height: 32px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #632beb;
+  }
+  .topBox {
+    position: relative;
+    @include flex(center);
+    .closeBtn {
+      @include position-top-right(-8px,0);
+      width: 28px;
+      height: 28px;
+      background: url('https://image.dalbitlive.com/svg/ico_close_g_m.svg');
+    }
+    &__img {
+      width: 64px;
+      height: 64px;
+    }
+    &__info {
+      width: calc(100% - 72px - 28px);
+      margin-left: 8px;
+      h2 {
+        margin-bottom: 4px;
+        letter-spacing: -0.4px;
+        @include font(16px,400,$MAINCOLOR);
+      }
+      p {
+        width: 90%;
+        letter-spacing: -0.33px;
+        @include font(13px,400,#616161);
+      }
+    }
+  }
+}

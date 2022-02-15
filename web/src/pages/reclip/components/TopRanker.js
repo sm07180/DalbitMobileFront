@@ -1,58 +1,71 @@
-import React, {useState} from 'react'
-import Swiper from 'react-id-swiper'
+import React, {useState, useEffect} from 'react'
+import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 // global components
 
 const TopRanker = (props) => {
   const {data} = props
 
-  const pagination = () => {
-    const {targetSlideIndex} = e.currentTarget.dataset;
-
-  }
+  console.log(data);
+  const [targetPage, setTargetPage] = useState(1);
 
   // 스와이퍼
-  const swiperParams = {
-    slidesPerView: 'auto',
+  const handleSwiper = (swiper) => {
+    setTargetPage(swiper.realIndex);
   }
+
+  // 왜 안되냐 ******
+  /* <Swiper slidesPerView="auto" initialSlide={targetPage}
+          pagination={pagination}
+          onSwiper={(swiper) => console.log(swiper)}
+          modules={[Pagination]}
+          onSlideChange={handleSwiper}> initialSlide={targetPage}
+  **/
+  const pagination = {
+    clickable: true,
+    renderBullet: function (index, className) {
+      console.log('들어오니?')
+      return '<span class="active">' + (index + 1) + "</span>";
+    },
+  };
 
   return (
     <React.Fragment>
       <section className="topRanker">
-        <h2>오늘의 TOP3</h2>
         {data.length > 0 &&
           <>
-            <Swiper {...swiperParams}>
+            <Swiper modules={[Pagination]}
+                    pagination={pagination}
+                    onSwiper={(swiper) => console.log(swiper)}
+                    onSlideChange={handleSwiper}>
               {data.map((list,index) => {
                 return (
-                <div key={index}>
+                <SwiperSlide key={index}>
+                  <h2>{list.title}의 TOP3</h2>
                   <div className="rankerWrap">
-                    {data.map((data,index) => {
+                    {list.list.map((row,index2) => {
                       return (
-                        <>
-                          {index < 3 &&
-                          <div className="ranker" key={`list-${index}`}>
-                            <div className="listColumn">
-                              <div className="photo">
-                                <img src={data.profImg.thumb100x100} alt="" />
-                                <div className='rank'>{data.rank}</div>
-                                <span className="play"></span>
-                              </div>
-                              <div className='title'>{data.nickNm}</div>
-                              <div className='nick'>{data.nickNm}</div>
+                        <div className="ranker" key={`list-${index2}`}>
+                          <div className="listColumn">
+                            <div className="photo">
+                              <img src={row.profImg.thumb100x100} alt="" />
+                              <div className='rank'>{row.rank}</div>
+                              <span className="play"/>
                             </div>
+                            <div className='title'>{row.fileName}</div>
+                            <div className='nick'>{row.nickName}</div>
                           </div>
-                          }
-                        </>
+                        </div>
                       )
                     })}
                   </div>
-                </div>
+                </SwiperSlide>
                 )
               })}
-            </Swiper>    
+            </Swiper>
             <div className="swiper-pagination">
-              <span className="active"></span>
-              <span></span>
+              <span className={`${targetPage === 0 ? 'active' : ''}`}/>
+              <span className={`${targetPage === 1 ? 'active' : ''}`}/>
             </div>
           </>
         }

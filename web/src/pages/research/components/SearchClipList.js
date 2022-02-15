@@ -6,7 +6,6 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 // css
 import '../scss/resultCnt.scss'
-import CntTitle from "components/ui/cntTitle/CntTitle";
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
 
 const SearchClipList = (props) => {

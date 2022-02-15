@@ -16,6 +16,8 @@ const PopSlide = (props) => {
   const closePopupDim = (e) => {
     const target = e.target
     if (target.id === 'popSlide') {
+      e.preventDefault();
+      e.stopPropagation();
       closePopup()
     }
   }
