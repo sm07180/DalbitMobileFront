@@ -132,9 +132,7 @@ const listenWrap = () =>{
       <section className="periodWrap">
         <div className="cntTitle">조회기간</div>
         <InputItems button={'조회'} btnClass={'periodBtn'} onClick={openPopup}>
-          <div onClick={openPopup}>
-            <span>{changeDay(dt.pickdataPrev)}</span> ~ <span>{changeDay(dt.pickdataNext)}</span>
-          </div>
+          <input type="button" value={changeDay(dt.pickdataPrev) + " ~ " + changeDay(dt.pickdataNext)} onClick={openPopup} />
         </InputItems>
       </section>
 
@@ -163,7 +161,7 @@ const listenWrap = () =>{
                 <span className="light"><span>{changeMin(v.startDt)}</span> ~ <span>{changeMin(v.endDt)}</span>({decodeMin(v.listenTime)}분)</span>
               </div>
               <div className="contentBOx">
-                <div className="amount">{v.giftDalCnt}</div>
+                <div className="amount">{v.giftDalCnt.toLocaleString("ko-KR")}</div>
                 <div className="light">선물 준 달</div>
               </div>
             </div>
@@ -172,16 +170,17 @@ const listenWrap = () =>{
       </section>
 
       {bottomSlide &&
-      <PopSlide setPopSlide={setBottomSlide}>
-        <div className='slideHeader'>기간 설정</div>
+      <PopSlide title="기간 설절" setPopSlide={setBottomSlide}>
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
-          <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive} />
+          <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>
+          <span className="iconCalendar"/>
         </InputItems>
         <InputItems>
-          <DatePicker name="pickdata" value={dt.pickdataNext} change={pickerNext} changeActive={changeActive} />
+          <DatePicker name="pickdata" value={dt.pickdataNext} change={pickerNext} changeActive={changeActive}/>
+          <span className="iconCalendar"/>
         </InputItems>
-        <SubmitBtn text={'기간적용'} onClick={clickConfirm} />
+        <SubmitBtn text={'기간적용'} onClick={clickConfirm}/>
       </PopSlide>
       }
     </>

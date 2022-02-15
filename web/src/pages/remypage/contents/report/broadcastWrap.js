@@ -36,8 +36,6 @@ const broadCastWrap = () => {
   const [broadTotalInfo, setBroadTotalInfo] = useState({broadcastTime: 0, byeolTotCnt: 0, goodTotCnt: 0, listenerTotCnt: 0});
   //Popup Open/Close용
   const [bottomSlide, setBottomSlide] = useState(false);
-  //방송요약 아이콘
-  const imgTag = {broadIcon: 'ico_timeBroadcast', starIcon: 'ico_star', likeIcon: 'ico_like', listenIcon: 'ico_listener'}
 
   // 방송내역 조회
   const fetchData = () => {
@@ -143,31 +141,29 @@ const broadCastWrap = () => {
       <section className="periodWrap">
         <div className="cntTitle">조회기간</div>
         <InputItems button={'조회'} btnClass={'periodBtn'} onClick={openPopup}>
-          <div onClick={openPopup}>
-            <span>{changeDay(dt.pickdataPrev)}</span> ~ <span>{changeDay(dt.pickdataNext)}</span>
-          </div>
+          <input type="button" value={changeDay(dt.pickdataPrev) + " ~ " + changeDay(dt.pickdataNext)} onClick={openPopup} />
         </InputItems>
       </section>
 
       <section className="summaryWrap">
         <div className="cntTitle">방송요약</div>
         <div className="summaryList">
-          <img className="icon" src={`https://image.dalbitlive.com/mypage/dalla/report/${imgTag.broadIcon}.png`} />
+          <i className="icon timeBroadcast"/>
           <div>방송시간</div>
           <div className="amount">{decodeSec(broadTotalInfo.broadcastTime)}</div>
         </div>
         <div className="summaryList">
-          <img className="icon" src={`https://image.dalbitlive.com/mypage/dalla/report/${imgTag.starIcon}.png`} />
+          <i className="icon byeol"/>
           <div>받은 별</div>
           <div className="amount">{broadTotalInfo.byeolTotCnt.toLocaleString("ko-KR")}</div>
         </div>
         <div className="summaryList">
-          <img className="icon" src={`https://image.dalbitlive.com/mypage/dalla/report/${imgTag.likeIcon}.png`} />
+          <i className="icon like"/>
           <div>좋아요</div>
           <div className="amount">{broadTotalInfo.goodTotCnt.toLocaleString("ko-KR")}</div>
         </div>
         <div className="summaryList">
-          <img className="icon" src={`https://image.dalbitlive.com/mypage/dalla/report/${imgTag.listenIcon}.png`} />
+          <i className="icon listen"/>
           <div>시청자</div>
           <div className="amount">{broadTotalInfo.listenerTotCnt.toLocaleString("ko-KR")}</div>
         </div>
@@ -184,15 +180,15 @@ const broadCastWrap = () => {
               </div>
               <div className="contentBox">
                 <div className="content">
-                  <div>{v.byeolCnt}</div>
+                  <div>{v.byeolCnt.toLocaleString("ko-KR")}</div>
                   <div className="light">받은 별</div>
                 </div>
                 <div className="content">
-                  <div>{v.likes}</div>
+                  <div>{v.likes.toLocaleString("ko-KR")}</div>
                   <div className="light">좋아요</div>
                 </div>
                 <div className="content">
-                  <div>{v.listenerCnt}</div>
+                  <div>{v.listenerCnt.toLocaleString("ko-KR")}</div>
                   <div className="light">최다시청자</div>
                 </div>
               </div>
@@ -202,14 +198,15 @@ const broadCastWrap = () => {
       </section>
 
       {bottomSlide &&
-      <PopSlide setPopSlide={setBottomSlide}>
-        <div className='slideHeader'>기간 설정</div>
+      <PopSlide title="기간 설절" setPopSlide={setBottomSlide}>
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
           <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>
+          <span className="iconCalendar"/>
         </InputItems>
         <InputItems>
           <DatePicker name="pickdata" value={dt.pickdataNext} change={pickerNext} changeActive={changeActive}/>
+          <span className="iconCalendar"/>
         </InputItems>
         <SubmitBtn text={'기간적용'} onClick={clickConfirm}/>
       </PopSlide>
