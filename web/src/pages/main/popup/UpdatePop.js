@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './updatePop.scss'
+
 const UpdatePopup = (props) => {
   return (
     <section className="updatePop">
