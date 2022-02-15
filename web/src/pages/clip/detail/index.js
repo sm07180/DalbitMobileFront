@@ -28,10 +28,9 @@ const Index = (props) => {
   const getClipLastList = () => {
     API.getClipList({ gender: '', djType: 0, slctType: searchInfo.slctType.index, dateType: searchInfo.dateType.index, page: searchInfo.page, records: searchInfo.records, subjectType: (searchInfo.subjectType.value || '') }).then(res => {
       if (res.code === 'C001') {
-        console.log('in');
         setClipLastInfo({ list: res.data.list, paging: {...res.data.paging}});
       }
-    })
+    });
   };
 
   const handleTermSelect = (value) => {

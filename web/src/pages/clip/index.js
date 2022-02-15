@@ -11,12 +11,8 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 // components
 import ClipSubTitle from './components/ClipSubTitle'
-import HotClipList from './components/HotClipList'
 import SwiperList from './components/SwiperList'
-import NowClipList from './components/NowClipList'
 // contents
-import ClipDetail from './components/ClipDetail'
-
 
 import './scss/clipPage.scss'
 import HotClip from "pages/clip/components/HotClip";
@@ -40,8 +36,8 @@ const ClipPage = () => {
   const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
   const [likeClipInfo, setLikeClipInfo] = useState({}); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({}); // 최근 들은 클립
-  const [subClipInfo, setSubClipInfo] = useState({}); // 아래 카테고리별 리스트
-  const [subSearchInfo, setSubSearchInfo] = useState({ subjectType: subjectType[0] }); // 아래 카테고리별 검색 조건
+  const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
+  const [subSearchInfo, setSubSearchInfo] = useState({ ...subjectType[1] }); // 아래 카테고리별 검색 조건
   
   const [detail, setDetail] = useState(false)
 
@@ -134,13 +130,33 @@ const ClipPage = () => {
     })
   };
 
+  const getClipList = () => {
+    API.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 20, subjectType: subSearchInfo.value }).then(res => {
+      if (res.code === 'C001') {
+        setSubClipInfo({ list: res.data.list, paging: {...res.data.paging}});
+      }
+    });
+  }
   const handleSubjectClick = (e) => {
     const { value } = e.currentTarget.dataset;
 
-    if (value !== undefined) {
+    if (value !== undefined && value !== '') {
       history.push(`/clip/detail/${value}`);
+    } else {
+      history.push(`/clip/detail/00`);
     }
   };
+
+  const changeList = () => {
+    const target = subjectType.findIndex(value => value.value === subSearchInfo.value);
+
+    if (target === (subjectType.length - 1)) {
+      setSubSearchInfo(subjectType[1]);
+    } else {
+      setSubSearchInfo(subjectType[target + 1]);
+    }
+
+  }
 
   const playClip = (e) => {
     const { clipNo } = e.currentTarget.datset;
@@ -164,6 +180,10 @@ const ClipPage = () => {
     getClipLikeList();
     getClipListenList();
   },[])
+
+  useEffect(() => {
+    getClipList();
+  }, [subSearchInfo]);
 
   return (
     <>
@@ -228,7 +248,6 @@ const ClipPage = () => {
             <CntTitle title={'방금 떠오른 클립'} more={'/'} />
             <Swiper {...swiperParams}>
               {popularClipInfo.map((row, index) => {
-                console.log(row);
                 return (
                   <div key={index}>
                     <div>
@@ -251,7 +270,6 @@ const ClipPage = () => {
           <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
           <Swiper {...swiperParams}>
             {subjectType.map((list, index)=>{
-              console.log(list.value);
               return (
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
@@ -264,10 +282,10 @@ const ClipPage = () => {
           </Swiper>
         </section>
         <section className="clipList">
-          <CntTitle title={'고민 / 사연 은 어떠세요?'}>
-            <button>새로고침</button>
+          <CntTitle title={`${subSearchInfo.cdNm}는(은) 어떠세요?`}>
+            <button onClick={changeList}>새로고침</button>
           </CntTitle>
-          <SwiperList data={newClipInfo} />
+          <SwiperList data={subClipInfo.list} />
         </section>
       </div>
       }
