@@ -35,6 +35,7 @@ const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/clipRa
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankingBenefit = React.lazy(() => import('pages/reranking/contents/rankingBenefit'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
 // 마이페이지
@@ -155,7 +156,8 @@ const Router = () => {
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
-        <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/rank/benefit" component={RankingBenefit} />
+        {/* <Route exact path="/rank/:type" component={RankingGuide} /> */}
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
