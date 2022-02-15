@@ -94,6 +94,7 @@ const ProfilePage = () => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
+          ...feedData,
           feedList: data.paging.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
           // fixedFeedList: data.fixList, // 고정 피드
           // fixCnt: data.fixList.length, // 고정 피드 개수
@@ -121,7 +122,9 @@ const ProfilePage = () => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
+          ...fanBoardData,
           list: data.paging.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
+          listCnt: data.paging.total,
           paging: data.paging,
           isLastPage,
         }));
@@ -146,6 +149,7 @@ const ProfilePage = () => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileClipData({
+          ...clipData,
           list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
           paging: data.paging,
           isLastPage,
