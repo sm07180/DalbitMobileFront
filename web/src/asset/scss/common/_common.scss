@@ -26,11 +26,11 @@ legend {
 }
 
 .refresh-wrap {
-  @include position-horizon;
+  position:relative;
   top:0;
-  height: 48px;
   margin-top:-48px;
   z-index: 10;
+  background-color: $MAINCOLOR;
   // background-color: rgba(127, 127, 127, 0.3);
   // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   &.rank {
@@ -113,11 +113,11 @@ legend {
 #GNB {
   position:sticky;
   top:0;
-  z-index: 50;
   width:100%;min-width:480px;
   height: $GNB-HEIGHT;
   background-color: white;
   border-bottom:1px solid #E0E0E0;
+  z-index: $GNB-ZINDEX;
   .gnbContainer {
     position: relative;
     @include flex(center);
@@ -144,6 +144,7 @@ legend {
         line-height:34px;
         margin-left:auto;
         @include border(#D9D9D8,2px);
+        @include font(14px,SemiBold,#161616);
         &::before {
           content:"+";
           display:inline-block;
@@ -151,7 +152,7 @@ legend {
           height:10px;
           line-height:10px;
           margin-right:4px;
-          font-size:20px;
+          font-size:18px;
         }
         &:hover {
           border-color:$MAINCOLOR;

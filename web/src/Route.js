@@ -19,6 +19,10 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
+// 모바일 웹
+const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
+// 이벤트 모음 Zip
+const EventZip = React.lazy(() => import('pages/eventzip'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip'));
@@ -31,6 +35,7 @@ const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/ClipRa
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankingBenefit = React.lazy(() => import('pages/reranking/contents/RankingBenefit'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
 // 마이페이지
@@ -60,7 +65,7 @@ const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTr
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
 const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
 const PayEndApp = React.lazy(() => import('pages/store/contents/end/EndApp'))
-const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
+const Receipt = React.lazy(() => import('pages/store/contents/end/Receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
@@ -147,9 +152,14 @@ const Router = () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
 
+        <Route exact path="/mobileWeb" component={MobileWeb} />
+
+        <Route exact path="/eventzip" component={EventZip} />
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
-        <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/rank/benefit" component={RankingBenefit} />
+        {/* <Route exact path="/rank/:type" component={RankingGuide} /> */}
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
@@ -176,7 +186,7 @@ const Router = () => {
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/login" component={Login}/>
         <Route exact path="/login/start" component={LoginStart} />
         <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
