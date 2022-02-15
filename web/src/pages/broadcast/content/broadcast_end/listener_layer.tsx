@@ -151,7 +151,7 @@ function BroadcastEndByListener() {
                           key={idx}
                           className="listener__listItem"
                           onClick={() => {
-                            location.href = `/broadcast/${v.roomNo}`;
+                            // location.href = `/broadcast/${v.roomNo}`;
                             // history.replace(`/broadcast/${v.roomNo}`);
                           }}
                         >

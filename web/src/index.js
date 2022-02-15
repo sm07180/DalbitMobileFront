@@ -10,7 +10,7 @@ import {RankProvider} from 'context/rank_ctx'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter} from 'react-router-dom'
+import {BrowserRouter, Router} from 'react-router-dom'
 //style
 import 'styles/reset.scss'
 import 'styles/common.scss'
@@ -23,10 +23,11 @@ import { RankProvider  as RankProviderWWW} from "context/rank_ctx";
 import { ClipRankProvider  as ClipRankProviderWWW} from "context/clip_rank_ctx";
 import { Provider } from 'react-redux';
 import store from "redux/store";
+import history from "./util/customHistory"
 
 ReactDOM.render(
     <Provider store={store}>
-      <BrowserRouter>
+      <Router history={history}>
           <GlobalProvider>
               <RankProvider>
                   <MailboxProviderWWW>
@@ -42,7 +43,7 @@ ReactDOM.render(
                 </MailboxProviderWWW>
               </RankProvider>
           </GlobalProvider>
-      </BrowserRouter>
+      </Router>
     </Provider>,
   document.getElementById('root')
 )

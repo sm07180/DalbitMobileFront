@@ -7,10 +7,16 @@ import Api from "context/api";
 import Utility from "components/lib/utility";
 
 export default function EndApp() {
+  alert("test")
   const context = useContext(Context)
   const history = useHistory();
-  const location = useLocation()
-  const {result, message, orderId, cancelType, returnType} = location.state;
+  const location = useLocation();
+  console.log(location);
+  const {cancelType} = qs.parse(location.search)
+  const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
+
+  console.log(location);
+  console.log(result, message, orderId, returnType);
 
   //창 닫기
   const closeWindow = () =>{
@@ -31,7 +37,6 @@ export default function EndApp() {
       console.log(e);
     }
   }
-
 
   useEffect(() => {
     if (cancelType !== undefined) {

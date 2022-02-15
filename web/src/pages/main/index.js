@@ -2,9 +2,10 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import styled from 'styled-components'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from 'components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
@@ -16,7 +17,9 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
-import Receipt from "pages/main/popup/receipt";
+// popup
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import UpdatePop from "pages/main/popup/UpdatePop";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -288,10 +291,11 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {receiptPop && <Receipt payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    <UpdatePop />
   </>;
   return MainLayout;
 }
- 
+
 export default MainPage
  

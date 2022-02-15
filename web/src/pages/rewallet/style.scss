@@ -320,20 +320,8 @@
       @include font(20px,500,#202020);
     }
     .tabmenu {
-      @include flex(center);
+      @include subTabmenuStyle-1;
       margin-bottom:20px;
-      li {
-        line-height:36px;
-        margin-right:4px;
-        padding: 0 15px;
-        border-radius: 100px;
-        background: #f6f6f6;
-        @include font(13px,400,#acacac);
-        &.active{
-          @include font(13px,500,white);
-          background: #202020;
-        }
-      }
     }
     .formBox {
       display: flex;
@@ -596,29 +584,28 @@
   }
   .addAcount {
     width:100%;
-    padding-top:20px;
+    padding: 0 16px 32px;
     h3 {
       line-height: 48px;
       text-align: center;
       @include font(18px,bold);
     }
     .formBox {
-      padding:12px 32px;
+      margin-bottom:32px;
     }
     .buttonGroup {
       @include flex(center);
-      height:112px;
-      padding:0 12px;
       button {
         flex:1;
         line-height:46px;
-        margin:0 4px;
+        margin-right:8px;
         border-radius:16px;
         &.cancel {
           @include border(#D5D5D5);
           @include font(16px,500,#666);
         }
         &.apply {
+          margin-right:0;
           background-color:#FF3C7B;
           @include border(#FF3C7B);
           @include font(16px,500,white);

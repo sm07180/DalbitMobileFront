@@ -2,7 +2,7 @@ import React, {useState, useEffect,useContext} from 'react'
 import {Context} from 'context'
 
 // global components
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import CheckList from '../../components/CheckList'
@@ -20,17 +20,20 @@ const DepositInfo = (props) => {
     <>
       <form className="formBox">
         <div className="listRow">
-          <InputItems title="예금주">
+          <div className="title">예금주</div>
+          <InputItems>
             <input type="text" placeholder=""/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="은행">
+          <div className="title">은행</div>
+          <InputItems>
             <div className="select">은행선택</div>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="계좌번호">
+          <div className="title">계좌번호</div>
+          <InputItems>
             <input type="num" placeholder=""/>
           </InputItems>
         </div>
@@ -47,33 +50,39 @@ const DepositInfo = (props) => {
           </div>
         </div>
         <div className="listRow">
-          <InputItems title="휴대폰 번호">
+          <div className="title">휴대폰 번호</div>
+          <InputItems>
             <input type="num" placeholder=""/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="우편번호" button='주소검색'>
+          <div className="title">우편번호</div>
+          <InputItems button='주소검색'>
             <input type="num" placeholder=""/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="주소">
+          <div className="title">주소</div>
+          <InputItems>
             <input type="text" value="4층 여보야" placeholder=""/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="상세주소">
+          <div className="title">상세주소</div>
+          <InputItems>
             <input type="text" placeholder='상세주소를 입력'/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="신분증사본" button="찾아보기" onClick={onClickFileBtn}>
+          <div className="title">신분증사본</div>
+          <InputItems button="찾아보기" onClick={onClickFileBtn}>
             <div className="value"></div>
             <input type="file" className='blind' />
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="통장사본" button="찾아보기" onClick={onClickFileBtn}>
+          <div className="title">통장사본</div>
+          <InputItems button="찾아보기" onClick={onClickFileBtn}>
             <div className="value">220121.jpg</div>
             <input type="file" className='blind' />
           </InputItems>

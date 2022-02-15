@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Utility from "components/lib/utility";
 import Api from 'context/api'
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
-import './receipt.scss'
+import './receiptPop.scss'
 
 import {useHistory, useLocation} from "react-router-dom";
 
@@ -60,12 +60,16 @@ const Receipt = (props) => {
     switch (payWay) {
       case 'simple':
         return "계좌 간편결제"
-      case 'card':
-        return "카드 결제"
-      case 'phone':
-        return "핸드폰 결제"
       case 'kakaoMoney':
         return "카카오페이 (머니)"
+      case 'CN':
+        return "카드 결제"
+      case 'MC':
+        return "핸드폰 결제"
+      case 'GM':
+        return '문화상품권'
+      case 'HM':
+        return  '해피머니상품권'
       case 'kakaopay':
         return  '카카오페이(카드)'
       case 'payco':
@@ -74,10 +78,6 @@ const Receipt = (props) => {
         return  '티머니'
       case 'cashbee':
         return  '캐시비'
-      case 'GM':
-        return '문화상품권'
-      case 'HM':
-        return  '해피머니상품권'
     }
   }
 

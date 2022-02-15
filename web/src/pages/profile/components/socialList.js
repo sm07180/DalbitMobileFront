@@ -7,7 +7,7 @@ import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 import {useHistory} from "react-router-dom";
-import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/ProfileDetail";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
@@ -24,12 +24,12 @@ const SocialList = (props) => {
   }
 
   return (
-    <div className="socialList">
+    <>
       {socialList.map((item, index) => {
         const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
         const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
         return (
-          <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
+          <div className="socialList" key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
                               modifyEvent={() => goProfileDetailPage(modifyParam)}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
@@ -64,10 +64,10 @@ const SocialList = (props) => {
                 <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
               </div>
             </div>
-          </React.Fragment>
+          </div>
         )
       })}
-    </div>
+    </>
   )
 }
 
