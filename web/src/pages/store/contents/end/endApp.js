@@ -11,7 +11,10 @@ export default function EndApp() {
   const history = useHistory();
   const location = useLocation();
   const {cancelType} = qs.parse(location.search)
-  const {result, message, orderId, returnType} = location.state || {};
+  const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
+
+  console.log(location);
+  console.log(result, message, orderId, returnType);
 
   //창 닫기
   const closeWindow = () =>{
