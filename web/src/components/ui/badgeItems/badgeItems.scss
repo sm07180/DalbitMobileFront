@@ -3,16 +3,17 @@
 .badgeItem {
   flex-shrink:0;
   @include flex(center);
-  line-height:18px;
+  height:18px;
   margin-right:2px;
-  padding:0 4px 0 3px;
+  padding:0 6px 0 3px;
   border-radius:100px;
   letter-spacing: -.5px;
   @include font(10px,$Medium,white);
-  box-sizing:border-box;
+  box-sizing: content-box;
   img {
-    width:16px;
-    height:16px;
+    width:13px;
+    height:13px;
+    margin-right:2px;
   }
   @mixin bcsBadge($width,$image) {
     width:$width;
