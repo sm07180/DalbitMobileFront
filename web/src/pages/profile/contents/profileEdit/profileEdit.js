@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useCallback, useRef} from 'react'
+import React, {useEffect, useState, useMemo, useContext, useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -33,6 +33,7 @@ const ProfileEdit = () => {
   const [cropOpen, setCropOpen] = useState(false);
 
   //프로필 정보
+  const initProfileInfo = useRef(null);
   const [profileInfo, setProfileInfo] = useState({
     birth: null, nickNm: null, gender: null, profImg: null, profMsg: null, memId: null, profImgList: []
   })
@@ -48,15 +49,18 @@ const ProfileEdit = () => {
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      // initProfileInfo = {nickNm, profImg: profImg.path, profMsg, gender}
+      initProfileInfo.current = {nickNm, profImg: profImg.path, profMsg, gender};
       const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
-      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList: sortImgList})
-      setCurrentAvatar(profImg.path)
+      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList: sortImgList});
+      setCurrentAvatar(profImg.path);
 
-      setHasGender(gender !== 'n')
+      setHasGender(gender !== 'n');
     }
   }, [profile])
 
+  useEffect(()=>{
+  console.log('profileInfo', profileInfo);
+  },[profileInfo]);
 
   const getMyInfo = async () => {
     const {result, data, message} = await Api.profile({
@@ -69,27 +73,26 @@ const ProfileEdit = () => {
   };
 
   //프로필 수정
-  const profileEditConfirm = async (_profileInfo) => {
-    const {gender, nickNm, profMsg, birth} = _profileInfo? _profileInfo: profileInfo;
+  const profileEditConfirm = async (_profileInfo, finished = false) => {
+    const {gender, nickNm, profMsg, birth, profImg} = _profileInfo? _profileInfo: profileInfo;
     const param = {
-      gender,
-      nickNm,
-      profMsg,
-      birth,
-      profImg: currentAvatar
+      gender :gender || initProfileInfo.current.gender,
+      nickNm : nickNm || initProfileInfo.current.nickNm,
+      profMsg: profMsg || initProfileInfo.current.profMsg,
+      birth: birth || initProfileInfo.current.birth,
+      profImg: (_profileInfo? profImg : currentAvatar) || initProfileInfo.current.profImg
     }
-
     const {result, data, message} = await Api.profile_edit({data: param});
 
     if (result === 'success') {
-      globalCtx.action.updateProfile({...profile, ...data});
-      globalCtx.action.alert({
+      context.action.updateProfile({...profile, ...data});
+      context.action.alert({
         msg: `저장되었습니다.`,
         title: '',
-        callback: () => history.goBack()
+        callback: finished ? ()=>history.goBack() : ()=>{}
       });
     } else {
-      globalCtx.action.alert({title: 'Error', msg: message});
+      context.action.alert({title: 'Error', msg: message});
     }
   }
 
@@ -101,7 +104,8 @@ const ProfileEdit = () => {
     dispatchProfileInfo();
   }, [profile]);
 
-  const addProfileImg = useCallback((profImg) => {
+  //이미지 Add Api
+  const addProfileImage = (profImg) => {
     Api.postAddProfileImg({profImg}).then((res) => {
       const {result, message} = res
       if (result === 'success') {
@@ -111,7 +115,23 @@ const ProfileEdit = () => {
         context.action.toast({msg: message});
       }
     })
-  }, [])
+  };
+
+  //이미지 삭제 Api
+  const deleteProfileImage = (imgIdx) => {
+    console.log('imgIdx', imgIdx)
+    if (imgIdx !== null) {
+      Api.postDeleteProfileImg({idx: imgIdx}).then((res) => {
+        const {result, message} = res;
+        context.action.toast({msg: message});
+
+        if (result === 'success') {
+          getMyInfo(); //프로필 정보 갱신
+        } else {
+        }
+      })
+    }
+  };
 
   //프로필 사진 업로드
   const photoUpload = async () => {
@@ -127,18 +147,15 @@ const ProfileEdit = () => {
         inputRef.current.value = ''
       }
 
-      if(profileInfo?.profImgList.length === 0) { // 프로필 편집 처리함
+      //등록한 사진 리스트가 한장도 없을경우 사진 업로드후, 프로필 정보 수정처리! ( 기존정책 )
+      if(profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
+        profileEditConfirm({...profileInfo, profImg: data.path});
         setImage(null);
         setCurrentAvatar(data.path);
-        profileEditConfirm({...profileInfo, profImg: data.path});
-      } else {
-        //사진 리스트에 추가
-        setImage(null);
-        // setProfileInfo((prevState) => {
-        //   return {...profileInfo, profImgList: prevState.concat({img_name: data?.path, ...data})};
-        // });
+      } else {  //기존 이미지가 1장 이상 있으면, 이미지 add Api만 호출, 프로필정보 갱신 API call
         //이미지 추가등록 API - profImgList에 추가
-        addProfileImg(data.path);
+        addProfileImage(data.path);
+        setImage(null);
       }
 
     } else {
@@ -162,12 +179,16 @@ const ProfileEdit = () => {
       }
     }
   }, [image]);
+
+  const emptySwiperItems = useMemo(() => Array(10 - (profileInfo?.profImgList?.length || 0)).fill(''), [profileInfo]);
   return (
       <>{
           !passwordPageView ?
           <div id="profileEdit">
             <Header title={'프로필 수정'} type={'back'}>
-              <button className='saveBtn'>저장</button>
+              <button className='saveBtn'
+                      onClick={() => profileEditConfirm(null, true)}>저장
+              </button>
             </Header>
             <section className='topSwiper'>
               <div className="nonePhoto">
@@ -185,24 +206,33 @@ const ProfileEdit = () => {
               <div className="coverPhoto">
                 <div className="title">커버사진 <small>(최대 10장)</small></div>
                 <Swiper {...swiperParams}>
-                  {profileInfo?.profImgList?.length && profileInfo?.profImgList.map((data, index) =>
-                    <div key={data?.profImg.idx}>
+                  {profileInfo?.profImgList?.map((data, index) =>{
+                    return <div key={data?.idx}>
                       <label>
                         <img src={data?.profImg?.thumb100x100} alt=""/>
-                        <button className="cancelBtn"></button>
+                        <button className="cancelBtn"
+                                onClick={() => {
+                                  context.action.confirm({
+                                    title: '프로필 이미지 삭제',
+                                    msg: '선택하신 이미지를 삭제하시겠습니까?',
+                                    callback: ()=> deleteProfileImage(data?.idx)
+                                  })
+                                }}/>
                       </label>
-                    </div>)
+                    </div>})
                   }
-                  {Array(10 - profileInfo?.profImgList.length ).fill({}).map((v, i) =>
-                    <div key={i} onClick={() => inputRef.current.click()}>
+                  {emptySwiperItems.map((v, i) =>{
+                    return (<div key={i} onClick={() => inputRef.current.click()}>
                       <div className='empty'>+</div>
-                    </div>)}
+                    </div>);
+                  })}
                 </Swiper>
               </div>
             </section>
             <section className="editInfo">
               <InputItems title={'닉네임'}>
-                <input type="text" maxLength="15" placeholder={profile.nickNm}/>
+                <input type="text" maxLength="15" placeholder={profile.nickNm}
+                       onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
                 <button className='inputDel'></button>
               </InputItems>
               <InputItems title={'UID'}>
@@ -220,15 +250,18 @@ const ProfileEdit = () => {
                     <li className='active fixGender'>{profileInfo?.gender === 'm' ? '남성' : '여성'}</li>
                     :
                     <>
-                      <li className={`${profileInfo?.gender === 'm' ? 'active' : ''}`}>남성</li>
-                      <li className={`${profileInfo?.gender === 'f' ? 'active' : ''}`}>여성</li>
+                      <li className={`${profileInfo?.gender === 'm' ? 'active' : ''}`}
+                          onClick={() => setProfileInfo({...profileInfo, gender: 'm'})}>남성</li>
+                      <li className={`${profileInfo?.gender === 'f' ? 'active' : ''}`}
+                          onClick={() => setProfileInfo({...profileInfo, gender: 'f'})}>여성</li>
                     </>
                   }
                 </ul>
               </div>
               <InputItems title={'프로필 메시지'} type={'textarea'}>
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
-                          onChange={(e) => setProfileInfo({...profileInfo, profMsg: e.target.value})}/>
+                          defaultValue={profileInfo?.profMsg || ''}
+                          onChange={(e) => setProfileInfo({...profileInfo, profMsg: e.target.value}) }/>
                 <div className="textCount">0/100</div>
               </InputItems>
             </section>

@@ -16,8 +16,6 @@ const PasswordChange = (props) => {
   const context = useContext(Context)
   const {token, profile} = context;
 
-  const [btnActive, setBtnActive] = useState("")
-
   //폰번호
   const [phoneNumVal, setPhoneNumVal] = useState("")
   //인증번호
@@ -44,20 +42,24 @@ const PasswordChange = (props) => {
 
   //휴대폰번호 변경시
   const phoneNumChange = (e) => {
+
     setPhoneNumVal(e.target.value);
     setValidInfo({...validInfo, authDone: false});
   }
 
   //인증번호 변경
   const pinNumChange = (e) => {
+    console.log('pinNum')
     setPinNumVal(e.target.value);
   }
 
   const passwordChange = (e) => {
+    console.log('pass')
     setPasswordVal(e.target.value);
   }
 
   const checkingChange = (e) => {
+    console.log('chk')
     setCheckingVal(e.target.value);
   }
 
@@ -77,13 +79,17 @@ const PasswordChange = (props) => {
     if (result === 'success') {
       setCMID(data?.CMID);
       setValidInfo({...validInfo, phoneAuthReqBlock: true, phoneAuthConfirmBlock:false});  //5분동안 요청 불가!
-      authReqBlockTimerRef.current.time = 300; //5분
-      setRemainTime(`${Math.floor(authReqBlockTimerRef.current.time/60)}:${Math.floor(authReqBlockTimerRef.current.time%60)}`);
+      authReqBlockTimerRef.current.time = 10; //5분
+      const minute = Math.floor(authReqBlockTimerRef.current.time/60);
+      const second = Math.floor(authReqBlockTimerRef.current.time%60);
+      setRemainTime(`${minute<10? '0' + minute: minute}:${ second< 10? '0' + second : second}`);
 
       //5분 동안 세기 (재요청 가능)
       authReqBlockTimerRef.current.intervalId = setInterval(() => {
         authReqBlockTimerRef.current.time --;
-        setRemainTime(`${Math.floor(authReqBlockTimerRef.current.time/60)}:${Math.floor(authReqBlockTimerRef.current.time%60)}`);
+        const minute = Math.floor(authReqBlockTimerRef.current.time/60);
+        const second = Math.floor(authReqBlockTimerRef.current.time%60);
+        setRemainTime(`${minute<10? '0' + minute: minute}:${ second< 10? '0' + second : second}`);
         if (authReqBlockTimerRef.current.time <= 0) { //인증요청, 확인 가능
           setValidInfo((prevState) => {
             return {...prevState, phoneAuthReqBlock: false, phoneAuthConfirmBlock: true };
@@ -110,6 +116,9 @@ const PasswordChange = (props) => {
       //비밀번호 입력 가능
       setValidInfo({... validInfo, authDone: true, phoneAuthReqBlock: false, phoneAuthConfirmBlock: true});
     } else {
+      context.action.toast({
+        msg: message
+      });
     }
   }
 
@@ -197,7 +206,8 @@ const PasswordChange = (props) => {
                   name="memId"
                   placeholder="번호를 입력해주세요."
                   maxLength={11}
-                  autoComplete="off"
+                  autoComplete="new-password"
+                  defaultValue={""}
                   onChange={phoneNumChange}
                   disabled={validInfo.phoneAuthReqBlock || validInfo?.authDone}
                 />
@@ -208,12 +218,13 @@ const PasswordChange = (props) => {
                           btnClass={!validInfo.phoneAuthConfirmBlock ? 'active':''}
                           onClick={() => !validInfo.phoneAuthConfirmBlock && fetchSmsCheck()}>
                 <input
-                  type="tel"
+                  type="number"
                   id="pinNum"
                   name="pinNum"
                   placeholder="인증번호를 입력해주세요."
                   maxLength={6}
-                  autoComplete="off"
+                  autoComplete="new-password"
+                  defaultValue={""}
                   disabled={validInfo?.authDone}
                   onChange={pinNumChange}
                 />
@@ -223,12 +234,13 @@ const PasswordChange = (props) => {
             <div className='section'>
               <InputItems title={"비밀번호"}>
                 <input
-                  type="tel"
+                  type="password"
                   id="password"
                   name="password"
                   placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
                   maxLength={20}
-                  autoComplete="off"
+                  autoComplete="new-password"
+                  defaultValue={""}
                   onChange={passwordChange}
                 />
               </InputItems>
@@ -236,12 +248,13 @@ const PasswordChange = (props) => {
             <div className='section'>
               <InputItems title={"비밀번호 확인"}>
                 <input
-                  type="tel"
+                  type="password"
                   id="passwordCheck"
                   name="passwordCheck"
                   placeholder="비밀번호를 한번 더 입력해주세요."
                   maxLength={20}
-                  autoComplete="off"
+                  autoComplete="new-password"
+                  defaultValue={""}
                   onChange={checkingChange}
                 />
               </InputItems>
