@@ -14,7 +14,7 @@ import Tabmenu from './components/Tabmenu'
 import FanStarPopup from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
 import FanboardSection from './contents/profileDetail/fanboardSection'
