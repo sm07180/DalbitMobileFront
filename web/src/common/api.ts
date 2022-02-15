@@ -277,9 +277,9 @@ export async function getStoreList(): Promise<responseType> {
 export async function getMyStar(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/profile/star/list/new", data);
 }
-/* 
+/*
 방송방 리스트 & sorting
-searchType //-1,0 or null:전체,1:추천,2:인기,3:신입 
+searchType //-1,0 or null:전체,1:추천,2:인기,3:신입
 */
 
 export async function broadcastList(data: {
@@ -491,15 +491,15 @@ export async function postSendGift(data: {
 }): Promise<responseType> {
   return await ajax(Method.POST, "/broad/gift", data);
 }
-
+// 게스트 관리 -> 게스트 리스트
 export async function guestManagement(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/broad/guest/management", data);
 }
-
+// 청취자 리스트 -> 게스트 리스트
 export async function guestList(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/broad/guest/list", data);
 }
-
+// 게스트 신청, 취소 등 post 처리
 export async function guest(data: dataType): Promise<responseType> {
   return await ajax(Method.POST, "/broad/guest", data);
 }

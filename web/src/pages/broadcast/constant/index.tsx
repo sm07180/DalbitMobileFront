@@ -36,9 +36,9 @@ export const RandomMsgType = {
   EVENT: 5,
 };
 
-export const MediaType = {
-  AUDIO: "a",
-  VIDEO: "v",
+export enum MediaType {
+  AUDIO= "a",
+  VIDEO= "v",
 };
 
 export const MiniGameType = {

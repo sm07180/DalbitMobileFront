@@ -113,7 +113,7 @@ type roomInfoType = {
     [key: string]: string;
   };
   bjHolder: string;
-  bjMemNo: string;
+  bjMemNo: number;
   bjNickNm: string;
   bjProfImg: {
     [key: string]: string;

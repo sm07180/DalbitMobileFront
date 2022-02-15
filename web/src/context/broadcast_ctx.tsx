@@ -9,7 +9,7 @@ type StateType = {
   rightTabType: tabType;
   chatAnimation: chatAnimationType | null;
   comboAnimation: ComboAnimationType | null;
-  userMemNo: string;
+  userMemNo: number;
   userNickNm: string;
   userCount: any;
   realTimeValue: realTimeType | null;
@@ -60,7 +60,7 @@ type ActionType = {
   setRightTabType(data: tabType): void;
   dispatchChatAnimation(action: { type: string; data?: any }): void;
   dispatchComboAnimation(action: { type: string; data?: any }): void;
-  setUserMemNo(data: string): void;
+  setUserMemNo(data: number): void;
   setUserNickNm(data: string): void;
   setUserCount(data: any): void;
   dispatchRealTimeValue(action: { type: string; data: any }): void;
@@ -243,7 +243,7 @@ const initialData = {
     rightTabType: tabType.LISTENER,
     chatAnimation: null,
     comboAnimation: null,
-    userMemNo: "",
+    userMemNo: 0,
     userNickNm: "",
     userCount: {
       current: 0,
