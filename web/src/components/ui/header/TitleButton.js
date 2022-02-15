@@ -25,8 +25,8 @@ export const MessageButton = ({history, context, mailboxAction}) => {
   return <button className='message' onClick={goMailAction} />
 }
 
-export const AlarmButton = ({history, alarmCnt=0}) => {
-  return <button className='alarm' onClick={() => history.push('/menu/alarm')} />
+export const AlarmButton = ({history, newAlarmCnt=0}) => {
+  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/menu/alarm')} />
 }
 
 export const StoreButton = ({history}) => {
@@ -49,12 +49,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          {mainState.newAlarmCnt === 0 ?
-            // <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-            <button className='alarm new' onClick={() => history.push('/menu/alarm')} />
-          : mainState.newAlarmCnt > 0 &&
-            <></>
-          }
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
     case '클립':

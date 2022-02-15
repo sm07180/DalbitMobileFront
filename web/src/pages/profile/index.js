@@ -37,7 +37,7 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/ProfileD
 const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
 
-const ProfilePage = (props) => {
+const ProfilePage = () => {
   const history = useHistory()
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
