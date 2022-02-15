@@ -94,7 +94,7 @@ const NowClip = (props) => {
       <div className='listWrap' ref={bgRef} style={{backgroundColor: `${info.randomBg}`}}>
         <div className="listRow">
           <div className="photo">
-            <img crossOrigin={`https${window.location.host}`} src={info.bgImg.url} alt="" onLoad={extractColor} onError={handleImgError}/>
+            <img crossOrigin="use-credentials" src={info.bgImg.url} alt="" onLoad={extractColor} onError={handleImgError}/>
           </div>
           <div className='listContent'>
             <span className='title'>{info.title}</span>
