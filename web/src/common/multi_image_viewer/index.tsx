@@ -1,6 +1,7 @@
 import React, { useState, useContext, useMemo, useCallback, useEffect } from "react";
 import { GlobalContext } from "context";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+
 
 const IMAGE_THUMB_L = "thumb700x700";
 

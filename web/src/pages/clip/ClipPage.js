@@ -10,15 +10,15 @@ import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTItle/CntTitle'
 // components
-import ClipSubTitle from '../components/ClipSubTitle'
-import HotClipList from '../components/HotClipList'
-import SwiperList from '../components/SwiperList'
-import NowClipList from '../components/NowClipList'
+import ClipSubTitle from './components/ClipSubTitle'
+import HotClipList from './components/HotClipList'
+import SwiperList from './components/SwiperList'
+import NowClipList from './components/NowClipList'
 // contents
-import ClipDetail from '../components/ClipDetail'
+import ClipDetail from './components/ClipDetail'
 
 
-import '../scss/clipPage.scss'
+import './scss/clipPage.scss'
 import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 import API from "context/api";

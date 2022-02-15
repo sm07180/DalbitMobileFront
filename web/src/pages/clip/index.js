@@ -44,7 +44,7 @@ const ClipPage = () => {
 
   // 조회 Api
   /* 핫 클립 */
-  const fetchHotClipInfo = () => {
+  const getHotClipInfo = () => {
     Api.getClipRankingList({ rankType: 1, rankingDate: '2022-01-24', page: 1, records: 9 }).then(res => {
       if (res.result === 'success') {
         let tempHotClipList = [];
@@ -70,7 +70,7 @@ const ClipPage = () => {
   }
 
   // 최신 클립
-  const fetchNewClipInfo = () => {
+  const getLastestClipInfo = () => {
     Api.getLatestList({listCnt: 10}).then((res) => {
       if (res.result === 'success') {
         setNewClipInfo(res.data.list)
@@ -155,9 +155,8 @@ const ClipPage = () => {
   };
 
   useEffect(() => {
-    fetchHotClipInfo();
-    fetchNewClipInfo();
-
+    getHotClipInfo();
+    getLastestClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
