@@ -129,7 +129,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   );
 
   const viewSpecialList = useCallback(
-    (memNo: string) => {
+    (memNo: number) => {
       if (isLogin === true) {
         setUserMemNo!(memNo);
         setRightTabType && setRightTabType(tabType.SPECIALDJLIST);
@@ -630,7 +630,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
               {/* 큐피트 영역 */}
               {profileData.cupidNickNm === "" ? (
-                <div className="profile__rankingList cupid">
+                <div className="profile__rankingList profileCupid">
                   <button
                     className="rankingList__linkBtn"
                     onClick={() => {
@@ -653,7 +653,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <span className="rankingList__warnTxt">(좋아요 보낸 회원없음)</span>
                 </div>
               ) : (
-                <div className="profile__rankingList cupid">
+                <div className="profile__rankingList profileCupid">
                   <button
                     className="rankingList__linkBtn"
                     onClick={() => {

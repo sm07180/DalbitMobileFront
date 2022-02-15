@@ -17,10 +17,6 @@ import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // static
-import broadText from "./static/bc_t.png";
-import searchIcon from "./static/ico_search_g.svg";
-import storeIcon from "./static/ic_store_g.svg";
-import alarmIcon from "./static/alarm_g.svg";
 import LayerPopupCommon from "../common/layerpopup/index";
 import {MediaType} from "pages/broadcast/constant";
 // import {authReq} from "../pages/self_auth/content/self_auth";
@@ -67,7 +63,7 @@ export default function GNB() {
               authReq('9', context.authRef, context);
             },
           });
-          
+
         }else {
           globalAction.setAlertStatus &&
           globalAction.setAlertStatus({
@@ -383,7 +379,14 @@ export default function GNB() {
         <div className="gnbContainer">
           <div className="gnbHeader">
             <h1 onClick={() => history.push('/')}><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
-            <button>방송하기</button>
+            <button onClick={()=>{
+              if (baseData.isLogin === true) {
+                scrollToTop();
+                return globalAction.setBroadClipDim!(true);
+              } else {
+                return history.push("/login");
+              }
+            }}>방송하기</button>
           </div>
           <nav className="gnbNavigation">
             <ul>

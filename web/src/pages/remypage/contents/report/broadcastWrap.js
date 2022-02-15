@@ -55,16 +55,16 @@ const broadcastWrap = (props) =>{
             <div>2022-01-02</div>
             <div className="light">17:30 ~ 19:00 (90분)</div>
           </div>
-          <div className="contentBox">
-            <div className='content'>
+          <div className="detailInfo">
+            <div className='detailItem'>
               <div>{Utility.addComma(123123)}</div>
               <div className='light'>받은 별</div>
             </div>
-            <div className='content'>
+            <div className='detailItem'>
               <div>{Utility.addComma(123123)}</div>
               <div className='light'>좋아요</div>
             </div>
-            <div className='content'>
+            <div className='detailItem'>
               <div>{Utility.addComma(123123)}</div>
               <div className='light'>최다시청자</div>
             </div>
@@ -75,16 +75,16 @@ const broadcastWrap = (props) =>{
             <div>2022-01-02</div>
             <div className="light">17:30 ~ 19:00 (90분)</div>
           </div>
-          <div className="contentBox">
-            <div className='content'>
+          <div className="detailInfo">
+            <div className='detailItem'>
               <div>{Utility.addComma(123123)}</div>
               <div className='light'>받은 별</div>
             </div>
-            <div className='content'>
+            <div className='detailItem'>
               <div>{Utility.addComma(123123)}</div>
               <div className='light'>좋아요</div>
             </div>
-            <div className='content'>
+            <div className='detailItem'>
               <div>{Utility.addComma(123123)}</div>
               <div className='light'>최다시청자</div>
             </div>
@@ -93,16 +93,18 @@ const broadcastWrap = (props) =>{
       </section>
       {bottomSlide &&
         <PopSlide title="기간 설정" setPopSlide={setBottomSlide}>
-          <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
-          <InputItems>
-            <DatePicker />
-            <span className="iconCalendar"></span>
-          </InputItems>
-          <InputItems>
-            <DatePicker />
-            <span className="iconCalendar"></span>
-          </InputItems>
-          <SubmitBtn text="기간적용" />
+          <section className="dataSetting">
+            <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
+            <InputItems>
+              <DatePicker />
+              <span className="iconCalendar"></span>
+            </InputItems>
+            <InputItems>
+              <DatePicker />
+              <span className="iconCalendar"></span>
+            </InputItems>
+            <SubmitBtn text="기간적용" />
+          </section>
         </PopSlide>
       }
     </>

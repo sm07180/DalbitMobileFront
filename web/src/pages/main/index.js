@@ -2,12 +2,13 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import styled from 'styled-components'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
-import Tabmenu from './components/Tabmenu'
+import Tabmenu from './components/tabmenu'
 import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
@@ -16,6 +17,9 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
+// popup
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
@@ -44,6 +48,23 @@ const MainPage = () => {
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
+
+  const [payOrderId, setPayOrderId] = useState("")
+  const [receiptPop, setReceiptPop] = useState(false)
+  const clearReceipt = () => {
+    setReceiptPop(false)
+    sessionStorage.removeItem('orderId')
+  }
+  useEffect(() => {
+    if (sessionStorage.getItem('orderId') !== null) {
+      const orderId = sessionStorage.getItem('orderId')
+      setReceiptPop(true);
+      setPayOrderId(orderId);
+    }
+    return () => {
+      sessionStorage.removeItem('orderId')
+    }
+  }, [])
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -280,9 +301,11 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
+    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    <UpdatePop />
   </>;
   return MainLayout;
 }
- 
+
 export default MainPage
  

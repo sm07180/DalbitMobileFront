@@ -13,7 +13,7 @@ import CheckList from '../../components/CheckList'
 // css
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const ProfileWrite = () => {
   const history = useHistory();

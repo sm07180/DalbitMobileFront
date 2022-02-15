@@ -69,16 +69,18 @@ const ListenWrap = (props) =>{
       </section>
       {bottomSlide &&
         <PopSlide title="기간 설정" setPopSlide={setBottomSlide}>
-          <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
-          <InputItems>
-            <DatePicker />
-            <span className="iconCalendar"></span>
-          </InputItems>
-          <InputItems>
-            <DatePicker />
-            <span className="iconCalendar"></span>
-          </InputItems>
-          <SubmitBtn text={'기간적용'} />
+          <section className="dataSetting">
+            <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
+            <InputItems>
+              <DatePicker />
+              <span className="iconCalendar"></span>
+            </InputItems>
+            <InputItems>
+              <DatePicker />
+              <span className="iconCalendar"></span>
+            </InputItems>
+            <SubmitBtn text="기간적용" />
+          </section>
         </PopSlide>
       }
     </>

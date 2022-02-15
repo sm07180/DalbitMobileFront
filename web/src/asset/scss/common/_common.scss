@@ -18,6 +18,17 @@ legend {
 // 메인및 서브 페이지 센터영역 공통 wrap
 #root {
   width:100%;
+  ::-webkit-scrollbar {
+    width:6px;
+    border-radius:100px;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius:10px;
+    background-color: #C5C5C5;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius:10px;
+  }
 }
 
 .content-article {
@@ -40,7 +51,7 @@ legend {
     // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   }
   .icon-wrap {
-    @include position-bottom-left(6px 50%);
+    @include position-bottom-left(6px,50%);
     .arrow-refresh-icon {
       position: relative;
       left: -50%;
@@ -55,12 +66,12 @@ legend {
   min-height: calc(100vh - #{$GNB-HEIGHT});
   padding-top:20px;
   background-color: #fbfbfb;
-  .totalWrap {
+  > .totalWrap {
     flex:1;
     @include flex($fd:column);
     max-width:800px;
     height:100%;
-    .content {
+    > .content {
       flex:1;
       position:relative;
       @include flex($fd:column);
@@ -247,15 +258,14 @@ legend {
     margin-top: 26px;
     text-align: center;
     &__icon {
+      @include flex(center, center);
       margin: 0 auto;
       width: 48px;
       height: 48px;
       background-color: $lightGray;
       border-radius: 50%;
-
       img {
         display: inline-block;
-        margin-top: 7px;
       }
     }
 
@@ -396,7 +406,7 @@ legend {
       margin-bottom: 84px;
       box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
       background: url("../../common/static/ic_mic.svg") no-repeat center center / 36px;
-      background-color: #632beb;
+      background-color: $MAINCOLOR;
       z-index: 99;
       border-radius: 50%;
       &:after {
@@ -415,14 +425,14 @@ legend {
     }
     .recoding {
       background: url("../../common/static/ic_record.svg") no-repeat center center / 36px;
-      background-color: #632beb;
+      background-color: $MAINCOLOR;
       &:after {
         content: "클립 녹음";
       }
     }
     .upload {
       background: url("../../common/static/ic_upload.svg") no-repeat center center / 36px;
-      background-color: #632beb;
+      background-color: $MAINCOLOR;
       &:after {
         content: "클립 업로드";
       }
@@ -443,7 +453,7 @@ legend {
     color: $white;
     font-weight: $bold;
     text-align: center;
-    background-color: $primary;
+    background-color: $MAINCOLOR;
     &.isDisable {
       background: $mediumGray;
     }

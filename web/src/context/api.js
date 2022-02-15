@@ -1823,6 +1823,14 @@ export default class API {
     })
   }
 
+  static getMyRank = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
+      params: data
+    })
+  }
+
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -3778,7 +3786,8 @@ API.authToken = null
 export const ajax = async (obj) => {
   const {url, method, data, params, reqBody} = obj
   try {
-    const pathType = url === '/upload' ? PHOTO_SERVER : url.includes('/rest/pay/') ? PAY_SERVER : API_SERVER
+    const pathType = url === '/upload' ? PHOTO_SERVER : url.includes('/rest/pay/') ? PAY_SERVER : (url==='/sms' || url === '/sms/auth') ?
+      'https://devapi.dalbitlive.com': API_SERVER
     const contentType = url === '/upload' ? '' : reqBody? 'application/json; charset=utf-8' : 'application/x-www-form-urlencoded; charset=utf-8'
     let formData = new FormData()
     if (url === '/upload' && data) {

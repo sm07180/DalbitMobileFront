@@ -8,5 +8,6 @@ button.submitBtn {
   &.disabled {
     opacity: .2;
     cursor:not-allowed;
+    pointer-events: none;
   }
 }

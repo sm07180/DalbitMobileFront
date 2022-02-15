@@ -64,8 +64,7 @@ const ProfileReplyComponent = (props) => {
       </div>
 
       <button className='more' ref={isMoreRef} onClick={() => setIsMore(!isMore)}>
-        <img src="" alt="" />
-
+        <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
       </button>
 
       {isMore &&
