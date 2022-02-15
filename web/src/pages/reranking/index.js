@@ -8,6 +8,7 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import CntTitle from '../../components/ui/cntTitle/CntTitle'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import ListNone from 'components/ui/listNone/ListNone'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
@@ -287,7 +288,7 @@ const RankPage = () => {
             </RankingList>
             :
             <>
-              <p>순위가 없습니다.</p>
+              <ListNone text="순위가 없습니다." imgType="ui01" height="300px"/>
             </>
           }
         </div>        

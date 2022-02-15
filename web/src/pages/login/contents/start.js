@@ -7,14 +7,16 @@ import Utility from "components/lib/utility";
 import {OS_TYPE} from "context/config";
 import Api from "context/api";
 import qs from "query-string";
+import {useHistory} from "react-router-dom";
 
 const Start = (props) => {
+  const history = useHistory();
   const customHeader = JSON.parse(Api.customHeader);
   const {webview} = qs.parse(location.search);
 
   //휴대폰으로 계속하기
   const didLogin = () => {
-    props.history.push('/login/didLogin');
+    history.push('/login/didLogin');
   };
 
   //소셜로그인
