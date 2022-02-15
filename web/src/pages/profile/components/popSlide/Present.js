@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react'
 import Utility from 'components/lib/utility'
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
 
 import './style.scss'

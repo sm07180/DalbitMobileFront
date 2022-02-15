@@ -1,7 +1,7 @@
 import React from 'react'
 
 // global components
-import CntTitle from 'components/ui/cntTitle/CntTitle';
+import CntTitle from '../../../components/ui/cntTitle/CntTitle'
 
 const SearchHistory = (props) => {
 

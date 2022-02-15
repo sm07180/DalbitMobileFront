@@ -3,7 +3,7 @@ import {Context} from "context";
 
 import Swiper from 'react-id-swiper'
 import Header from 'components/ui/new_header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from '../../../components/ui/cntTitle/CntTitle'
 import HotClipList from './components/hotClipList'
 import ClipList from './components/clipList'
 

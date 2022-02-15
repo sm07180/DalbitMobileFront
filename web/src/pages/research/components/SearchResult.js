@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 import Api from 'context/api'
 // global components
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from "../../../components/ui/cntTitle/CntTitle"
 // components
 import Tabmenu from './Tabmenu'
 import SearchDjList from "pages/research/components/SearchDjList";

@@ -5,7 +5,7 @@ import Utility from 'components/lib/utility'
 import styled from 'styled-components'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from '../../components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
