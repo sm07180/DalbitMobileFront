@@ -19,6 +19,8 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
+// 모바일 웹
+const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
@@ -145,6 +147,8 @@ const Router = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
+
+        <Route exact path="/mobileWeb" component={MobileWeb} />
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
