@@ -6,7 +6,7 @@ import moment from 'moment'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from 'components/ui/cntTitle/CntTitle'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'

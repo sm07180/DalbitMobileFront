@@ -17,10 +17,6 @@ import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // static
-import broadText from "./static/bc_t.png";
-import searchIcon from "./static/ico_search_g.svg";
-import storeIcon from "./static/ic_store_g.svg";
-import alarmIcon from "./static/alarm_g.svg";
 import LayerPopupCommon from "../common/layerpopup/index";
 import {MediaType} from "pages/broadcast/constant";
 // import {authReq} from "../pages/self_auth/content/self_auth";

@@ -15,6 +15,7 @@ const MainSlide = (props) => {
 
   const swiperParams = {
     loop: true,
+    grabCursor: true,
     autoplay: {
       delay: 10000,
       disableOnInteraction: false
