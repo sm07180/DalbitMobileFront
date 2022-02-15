@@ -213,12 +213,7 @@ const ClipPage = () => {
           <Swiper {...swiperParams}>
             <div>
               <div className="bannerBox">
-                <div className="bannerItem"/>
-              </div>
-            </div>
-            <div>
-              <div className="bannerBox">
-                <div className="bannerItem"/>
+                <img className='bannerItem' src="" alt="" />
               </div>
             </div>
           </Swiper>

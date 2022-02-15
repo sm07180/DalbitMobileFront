@@ -81,11 +81,13 @@
                 }
               }
               .title {
+                width: 100%;
                 margin-bottom:2px;
                 @include font(13px,$Bold,#202020);
                 @include fontCut;
               }
               .nick {
+                width: 100%;
                 @include font(12px,$Regular,#666);
                 @include fontCut;
               }
