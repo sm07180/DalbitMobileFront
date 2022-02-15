@@ -1823,6 +1823,14 @@ export default class API {
     })
   }
 
+  static getMyRank = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
+      params: data
+    })
+  }
+
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -2242,6 +2250,16 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/rest/pay/simple`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+  //결제완료 영수증 확인
+  static pay_receipt = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/receipt`,
       method: method || 'POST',
       data: data
     })

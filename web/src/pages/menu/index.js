@@ -13,7 +13,7 @@ import {IMG_SERVER} from 'context/config'
 // component //
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
-import LoginStay from '../login/components/loginState'
+// import LoginStay from '../login/components/loginState'
 export default (props) => {
   let history = useHistory()
   let params = useParams()

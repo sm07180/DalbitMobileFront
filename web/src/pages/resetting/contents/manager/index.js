@@ -7,7 +7,7 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 
 // components
-import Tabmenu from '../../components/Tabmenu'
+import Tabmenu from '../../components/tabmenu'
 import FilterBtn from '../../components/FilterBtn'
 import SettingList from '../../components/SettingList'
 

@@ -6,7 +6,7 @@ import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 import Toast from 'components/ui/toast/Toast'
 // components
-import Tabmenu from '../../components/Tabmenu'
+import Tabmenu from '../../components/tabmenu'
 
 import SwitchList from '../../components/switchList'
 

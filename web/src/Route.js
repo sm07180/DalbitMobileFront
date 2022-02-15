@@ -19,6 +19,8 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
+// 모바일 웹
+const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip'));
@@ -47,14 +49,20 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
+// 프로필 수정
+const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
 // 프로필 - 피드, 팬보드 (작성, 수정)
 const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (상세)
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
-const Store = React.lazy(() => import('pages/restore'))
-const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+const Store = React.lazy(() => import('pages/store'))
+const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
+const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
+const PayEnd = React.lazy(() => import('pages/store/contents/end/end'))
+const PayEndApp = React.lazy(() => import('pages/store/contents/end/endApp'))
+const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
@@ -62,7 +70,7 @@ const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
 const LoginStart = React.lazy(() => import('pages/login/contents/start'))
-const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
+const DidLogin = React.lazy(() => import('pages/login/contents/didLogin'))
 // 회원가입
 const SignUp = React.lazy(() => import('pages/signup'))
 const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
@@ -137,6 +145,8 @@ const Router = () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
 
+        <Route exact path="/mobileWeb" component={MobileWeb} />
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
         <Route exact path="/rank/:type" component={RankingGuide} />
@@ -152,6 +162,11 @@ const Router = () => {
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
+        <Route exact path="/pay/bank" component={Coocon}/>
+        <Route exact path="/pay/bankInfo" component={CooconResult}/>
+        <Route exact path="/pay/end" component={PayEnd}/>
+        <Route exact path="/pay/end/app" component={PayEndApp}/>
+        <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
@@ -174,13 +189,14 @@ const Router = () => {
         <Route exact path="/mypage/:memNo" main={MyPage}
                render={() => <Redirect to={{ pathname: '/mypage' }} />}
         />
-        <Route exact path="/myProfile" component={Profile} />
-        <Route exact path="/profile/:memNo" main={Profile}
-               render={({ match}) => {
+        <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
+        <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
+               render={({location, match}) => {
                  const myMemNo = context.profile.memNo;
                  const targetMemNo = match.params.memNo
+                 const searchData = location.search
                  if(myMemNo === targetMemNo) {
-                   return <Redirect to={{ pathname: '/myProfile' }} />
+                   return <Redirect to={{ pathname: `/myProfile${searchData ? `/${searchData}` : ''}` }} />
                  }else {
                    return <Route component={Profile} />
                  }
@@ -226,11 +242,13 @@ const Router = () => {
                }}
         />
 
-        <Route exact path="/mypage/:memNo/:category" component={MyPage} />
-        <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
+        {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
+        {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
 
-        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+
+        {/*<Route exact path="/profile/:memNo/write" component={ProfileWrite} />*/}
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />

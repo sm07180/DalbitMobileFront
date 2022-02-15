@@ -13,7 +13,7 @@ import CheckList from '../../components/CheckList'
 // css
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const ProfileWrite = () => {
   const history = useHistory();
@@ -262,6 +262,7 @@ const ProfileWrite = () => {
 
         {/*파일 등록*/}
         <input ref={inputRef} type="file" className='blind'
+               accept="image/jpg, image/jpeg, image/png, image/gif"
                onChange={(e) => {
                  e.persist();
                  setEventObj(e);

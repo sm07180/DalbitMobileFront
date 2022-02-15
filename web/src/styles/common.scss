@@ -14,37 +14,37 @@
 }
 
 // 모바일 페이지 새로고침
-.refresh-wrap {
-  display: block;
-  position: absolute;
-  height: 48px;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top:-48px;
-  // background-color: rgba(127, 127, 127, 0.3);
-  // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
-  z-index: 10;
-  &.rank {
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    background-color: transparent;
-    // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
-  }
-  .icon-wrap {
-    position: absolute;
-    left: 50%;
-    bottom: 6px;
-    .arrow-refresh-icon {
-      display: block;
-      position: relative;
-      left: -50%;
-      width: 32px;
-      height: 32px;
-    }
-  }
-}
+// .refresh-wrap {
+//   display: block;
+//   position: absolute;
+//   height: 48px;
+//   top: 0;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   margin-top:-48px;
+//   // background-color: rgba(127, 127, 127, 0.3);
+//   // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+//   z-index: 10;
+//   &.rank {
+//     position: absolute;
+//     top: 0;
+//     transform: translateX(-50%);
+//     background-color: transparent;
+//     // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+//   }
+//   .icon-wrap {
+//     position: absolute;
+//     left: 50%;
+//     bottom: 6px;
+//     .arrow-refresh-icon {
+//       display: block;
+//       position: relative;
+//       left: -50%;
+//       width: 32px;
+//       height: 32px;
+//     }
+//   }
+// }
 
 //버튼눌렀을때 효과
 .ripple {
