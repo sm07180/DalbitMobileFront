@@ -59,7 +59,7 @@ const Allim = () => {
     }).catch((e) => {console.log(e)});
   };
 
-  //알림 클릭시 해당 페이지로 이동
+  //알림 클릭시 해당 페이지로 이동 -> 리브랜딩 주소로 다시 바꿔야함....
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
     const { type, memNo, roomNo, link } = e.currentTarget.dataset;
