@@ -14,6 +14,7 @@ import TopSwiper from '../../components/topSwiper'
 import './profileEdit.scss'
 import PasswordChange from "pages/password";
 import DalbitCropper from "components/ui/dalbit_cropper";
+import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -32,6 +33,9 @@ const ProfileEdit = () => {
   const [image, setImage] = useState(null);
   const [cropOpen, setCropOpen] = useState(false);
 
+  //이미지 팝업
+  const [showSlide, setShowSlide] = useState({visible: false, imgList:[]});
+
   //프로필 정보
   const initProfileInfo = useRef(null);
   const [profileInfo, setProfileInfo] = useState({
@@ -39,6 +43,7 @@ const ProfileEdit = () => {
   })
   //대표 이미지
   const [currentAvatar, setCurrentAvatar] = useState('')
+
   //성별 선택 여부 (true: 선택함, false: 성별선택안함)
   const [hasGender, setHasGender] = useState(false)
 
@@ -49,12 +54,12 @@ const ProfileEdit = () => {
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      initProfileInfo.current = {nickNm, profImg: profImg.path, profMsg, gender};
       const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
+      initProfileInfo.current = {nickNm, profImg, profMsg, gender};
       setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList: sortImgList});
-      setCurrentAvatar(profImg.path);
-
+      setCurrentAvatar(profImg);
       setHasGender(gender !== 'n');
+
     }
   }, [profile])
 
@@ -62,11 +67,25 @@ const ProfileEdit = () => {
     const {result, data, message} = await Api.profile({
       params: {memNo: context.token.memNo}
     })
-
+    setShowSlide({visible: false, imgList: []});
     if (result === 'success') {
       context.action.updateProfile(data);
     }
   };
+
+  //대표 이미지 지정
+  const readerImageEdit = async (idx) => {
+    const {result, data, message} = await Api.postSetLeaderProfileImg({idx});
+
+    if (result === 'success') {
+      setShowSlide({visible: false, imgList: []});
+      getMyInfo();
+      context.action.toast({msg: '선택 이미지로 대표 이미지가 변경되었습니다.'});
+    } else {
+      context.action.toast({msg: message});
+    }
+  }
+
 
   //프로필 수정
   const profileEditConfirm = async (_profileInfo, finished = false) => {
@@ -76,15 +95,15 @@ const ProfileEdit = () => {
       nickNm : nickNm || initProfileInfo.current.nickNm,
       profMsg: profMsg || initProfileInfo.current.profMsg,
       birth: birth || initProfileInfo.current.birth,
-      profImg: (_profileInfo? profImg : currentAvatar) || initProfileInfo.current.profImg
+      profImg: (_profileInfo? profImg.path : currentAvatar.path) || initProfileInfo.current.profImg.path,
     }
+
     const {result, data, message} = await Api.profile_edit({data: param});
 
     if (result === 'success') {
       context.action.updateProfile({...profile, ...data});
       context.action.alert({
         msg: `저장되었습니다.`,
-        title: '',
         callback: finished ? ()=>history.goBack() : ()=>{}
       });
     } else {
@@ -115,12 +134,12 @@ const ProfileEdit = () => {
 
   //이미지 삭제 Api
   const deleteProfileImage = (imgIdx) => {
-    console.log('imgIdx', imgIdx)
     if (imgIdx !== null) {
       Api.postDeleteProfileImg({idx: imgIdx}).then((res) => {
         const {result, message} = res;
         context.action.toast({msg: message});
 
+        setShowSlide({visible: false, imgList: []});
         if (result === 'success') {
           getMyInfo(); //프로필 정보 갱신
         } else {
@@ -144,10 +163,10 @@ const ProfileEdit = () => {
       }
 
       //등록한 사진 리스트가 한장도 없을경우 사진 업로드후, 프로필 정보 수정처리! ( 기존정책 )
-      if(profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
-        profileEditConfirm({...profileInfo, profImg: data.path});
+      if (profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
+        profileEditConfirm({...profileInfo, profImg: data});
         setImage(null);
-        setCurrentAvatar(data.path);
+        setCurrentAvatar(data);
       } else {  //기존 이미지가 1장 이상 있으면, 이미지 add Api만 호출, 프로필정보 갱신 API call
         //이미지 추가등록 API - profImgList에 추가
         addProfileImage(data.path);
@@ -157,6 +176,24 @@ const ProfileEdit = () => {
     } else {
       context.action.toast({msg: message});
     }
+  };
+
+  //이미지 팝업 띄우기
+  const showImagePopUp = (data = null, type='')=> {
+    if(!data) return;
+
+    let resultMap = [];
+    if (type === 'profileList') { // 프로필 이미지 리스트, 대표 이미지 눌렀을 때
+      data.map((v, idx) => {
+        if (v?.profImg) {
+          resultMap.push({idx: v.idx, ...v.profImg});
+        }
+      });
+    } else { //배경 이미지 눌렀을때
+      resultMap.push({idx: data.idx, ...data.profImg});
+    }
+
+    setShowSlide({visible:true, imgList: resultMap });
   };
 
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
@@ -171,7 +208,7 @@ const ProfileEdit = () => {
           }
         })
       } else {
-        photoUpload();
+        photoUpload();// 사진 업로드
       }
     }
   }, [image]);
@@ -186,14 +223,26 @@ const ProfileEdit = () => {
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='topSwiper'>
-              <div className="nonePhoto">
-                <i><img src="https://image.dalbitlive.com/mypage/dalla/coverNone.png" alt=""/></i>
-              </div>
+            <section className='topSwiper' onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}>
+              {profileInfo?.profImgList?.length > 0 ?
+                <TopSwiper data={profile} disableSlideTo={true}/>
+                :
+                <div className="nonePhoto"
+                     onClick={() => {
+                       inputRef.current.click();
+                     }}>
+                  <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
+                </div>
+              }
             </section>
             <section className="insertPhoto">
               <div className="insertBtn">
-                <div className="photo">
+                <div className="photo"
+                     onClick={()=> {
+                       profileInfo?.profImgList.length >0 ?
+                         showImagePopUp(profileInfo?.profImgList, 'profileList') :
+                         inputRef.current.click();
+                     }}>
                   <img src={profile && profile.profImg && profile.profImg.thumb100x100} alt=""/>
                   <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
                 </div>
@@ -204,13 +253,13 @@ const ProfileEdit = () => {
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
-                      <label>
-                        <img src={data?.profImg?.thumb100x100} alt=""/>
+                      <label onClick={(e)=>e.preventDefault()}>
+                        <img src={data?.profImg?.thumb100x100} alt=""
+                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}/>
                         <button className="cancelBtn"
                                 onClick={() => {
                                   context.action.confirm({
-                                    title: '프로필 이미지 삭제',
-                                    msg: '선택하신 이미지를 삭제하시겠습니까?',
+                                    msg: '정말로 삭제하시겠습니까?',
                                     callback: ()=> deleteProfileImage(data?.idx)
                                   })
                                 }}/>
@@ -218,7 +267,10 @@ const ProfileEdit = () => {
                     </div>})
                   }
                   {emptySwiperItems.map((v, i) =>{
-                    return (<div key={i} onClick={() => inputRef.current.click()}>
+                    return (<div key={i}
+                                 onClick={() => {
+                                   inputRef.current.click();
+                                 }}>
                       <div className='empty'>+</div>
                     </div>);
                   })}
@@ -281,10 +333,19 @@ const ProfileEdit = () => {
                 onCrop={(value) => setImage(value)}
               />
             )}
+
+            {showSlide?.visible &&
+            <ShowSwiper imageList={showSlide?.imgList || []} popClose={setShowSlide} showTopOptionSection={true}
+                        readerButtonAction={readerImageEdit}
+                        deleteButtonAction={(idx) =>
+                          context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
+            />
+            }
           </div>
             :
         <PasswordChange backEvent={() => setPasswordPageView(false)}/>
-      }</>
+      }
+      </>
   )
 }
 

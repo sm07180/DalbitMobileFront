@@ -6,7 +6,7 @@ import Swiper from 'react-id-swiper'
 import './topSwiper.scss'
 
 const TopSwiper = (props) => {
-  const {data, openShowSlide} = props
+  const {data, openShowSlide, disableSlideTo} = props
   
   const swiperPicture = {
     slidesPerView: 'auto',
@@ -25,7 +25,7 @@ const TopSwiper = (props) => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.topSwiper>.swiper-container').swiper;
       swiper.update();
-      swiper.slideTo(0);
+      !disableSlideTo && swiper.slideTo(0);
     }
   }, [data]);
 
@@ -78,4 +78,8 @@ const TopSwiper = (props) => {
   )
 }
 
+TopSwiper.defaultProps = {
+  openShowSlide: () => {},
+  disableSlideTo: false,  // 슬라이드 옵션 끄기
+}
 export default TopSwiper
