@@ -1,11 +1,3 @@
 @import "components/ui/_mixin.scss";
 
 @include bankResult;
-
-.bankResult{
-  position: fixed;
-  width: 100%;
-  max-width: 480px;
-  background-color: #fff;
-  z-index: 100;
-}

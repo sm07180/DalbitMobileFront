@@ -3,7 +3,7 @@ import React, {useState, useCallback, useEffect, useRef} from 'react'
 import API from 'context/api'
 // global component
 import Header from 'components/ui/header/Header.js'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import InputItems from 'components/ui/inputItems/InputItems'
 // component
 import SwiperList from '../components/SwiperList'

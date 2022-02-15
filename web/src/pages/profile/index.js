@@ -7,18 +7,18 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
-import TopSwiper from './components/TopSwiper'
-import ProfileCard from './components/ProfileCard'
-import TotalInfo from './components/TotalInfo'
+import TopSwiper from './components/topSwiper'
+import ProfileCard from './components/profileCard'
+import TotalInfo from './components/totalInfo'
 import Tabmenu from './components/Tabmenu'
-import FanStarPopup from './components/popSlide/FanStarPopup'
+import FanStarLike from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 // contents
-import FeedSection from './contents/profileDetail/feedSection'
-import FanboardSection from './contents/profileDetail/fanboardSection'
-import ClipSection from './contents/profileDetail/clipSection'
+import FeedSection from './contents/profileDetail/FeedSection'
+import FanboardSection from './contents/profileDetail/FanboardSection'
+import ClipSection from './contents/profileDetail/ClipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
@@ -32,7 +32,7 @@ import {
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
-import {goProfileDetailPage} from "pages/profile/contents/profileDetail/ProfileDetail";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -552,7 +552,7 @@ const ProfilePage = () => {
       {/* 팬 / 스타 */}
       {popFanStar &&
         <PopSlide setPopSlide={setPopFanStar}>
-          <FanStarPopup type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
+          <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
                        goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
                        scrollEvent={scrollEvent}
           />

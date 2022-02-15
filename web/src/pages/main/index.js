@@ -2,10 +2,9 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-import styled from 'styled-components'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
@@ -50,13 +49,27 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [payOrderId, setPayOrderId] = useState("")
+  const [payReceipt, setPayReceipt] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
 
   const [updatePopInfo, setUpdatePopInfo] = useState({
     showPop: false,
     storeUrl: '',
   });
+  const setPayPopup = () => {
+    setReceiptPop(false)
+    sessionStorage.removeItem('pay_receipt')
+  }
+  useEffect(() => {
+    if (sessionStorage.getItem('pay_receipt') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
+      setReceiptPop(true);
+      setPayReceipt(payInfo)
+    }
+    return () => {
+      sessionStorage.removeItem('pay_receipt')
+    }
+  }, [])
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -328,6 +341,8 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
+    {true && <ReceiptPop payReceipt={payReceipt} setPopup={setPayPopup} />}
+    {true && <UpdatePop />}
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
   </>;

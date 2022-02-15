@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import CntTitle from "components/ui/cntTitle/CntTitle";
+import CntTitle from "components/ui/cntTItle/CntTitle";
 
 const SearchPage = (props) => {
   const searchValue = useRef(null);
