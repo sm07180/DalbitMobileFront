@@ -1,24 +1,25 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react'
+import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
 //context
 import API from 'context/api'
 // global component
 import Header from 'components/ui/header/Header.js'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import InputItems from 'components/ui/inputItems/InputItems'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
+import InputItems from 'components/ui/inputItems/inputItems'
 // component
-import SwiperList from '../components/SwiperList'
+import SwiperList from './components/SwiperList'
 // contents
-import SearchHistory from '../components/SearchHistory'
-import SearchResult from '../components/SearchResult'
+import SearchHistory from './components/SearchHistory'
+import SearchResult from './components/SearchResult'
 // scss
-import '../style.scss'
+import './style.scss'
 import DjList from "pages/research/components/DjList";
 import HotLiveList from "pages/research/components/HotLiveList";
-import {broadcastList, getClipList} from "common/api";
+import {broadcastList, deleteFan, getClipList, postAddFan} from "common/api";
+import {Context} from "context";
 
 const SearchPage = (props) => {
   const inputRef = useRef(); // 검색 input 관리용 ref
-
+  const context = useContext(Context); //context
   const [searchVal, setSearchVal] = useState(''); // 검색 value 값
   const [searchParam, setSearchParam] = useState(''); // child로 넘길 검색 값
 
@@ -37,7 +38,7 @@ const SearchPage = (props) => {
     if (result === 'success') {
       setDjListInfo({...data});
     }
-  })
+  });
 
   // 지금 핫한 라이브 정보 리스트 가져오기
   const getLiveListInfo = useCallback(async() => {
@@ -55,47 +56,81 @@ const SearchPage = (props) => {
     }
   });
 
-  // 검색한 데이터 가져오기
-  const getSeachData =  useCallback(async () => {
-    // DJ 정보 가져오기
-    const searchDjInfo = await API.member_search({params: {search: searchVal, page: 1, records: 20} });
-    if (searchDjInfo.result === 'success') {
-      setSearchDjInfo(searchDjInfo.data);
-    }
-    // 방송 정보 가져오기
-    const searchLiveLinfo = await broadcastList({search: searchVal, page: 1, records: 20});
-    if (searchLiveLinfo.result === 'success') {
-      setSearchLiveInfo(searchLiveLinfo.data);
-    }
-    // 클립 정보 가져오기
-    const searchClipInfo = await API.getClipList({search: searchVal, slctType: 0, dateType: 0, page: 1, records: 20});
-    if (searchClipInfo.result === 'success') {
-      setSearchClipInfo(searchClipInfo.data);
-    }
-  });
-  
   // 검색창 state 관리
   const onChange = (e) => {
     setSearchVal(e.target.value);
   }
-
-  // 검색창 out 처리
-  /*const focusOut = () => {
-    setSearchVal("");
-  }*/
 
   // 검색창 초기화 처리
   const removeValue = () => {
     setSearchVal("");
   }
 
+  // 히스토리 클릭 이벤트
+  const handleSearch = (value) => {
+    // 최초 검색시에만 state 변경
+    if (!searching) setSearching(true);
+
+    if (value !== searchVal) setSearchVal(value);
+
+    // 검색 파라미터 SET
+    setSearchParam(value);
+  }
+
+  // 검색창 enter 눌렀을 때,
   const handleSubmit = (e) => {
     if (e.keyCode === 13) {
-      console.log('들어오냐 슈슈슈수ㅠ슈슈ㅜ수숫 ')
-      if (!searching) setSearching(true);
-      setSearchParam(searchVal);
+      // 로컬 스토리지 데이터 가져오기
+      let temp = localStorage.getItem('searchList') ? localStorage.getItem('searchList').split('|') : [];
+
+      // 최근 5개만 가져오도록 데이터 가공
+      if (temp.length > 4) {
+        temp = temp.slice(1);
+      }
+      temp.push(searchVal);
+
+      // 로컬 스토리지 데이터 SET
+      localStorage.setItem('searchList', temp.join('|'));
+
+      handleSearch(searchVal);
     }
   }
+
+  // 팬 등록
+  const registFan = async (e) => {
+    const { memNo } = e.currentTarget.dataset;
+
+    if (memNo === undefined) return;
+
+    const { result , code } = await postAddFan({ memNo: memNo });
+
+    if ( result === "success" ) {
+      let temp = djListInfo.list;
+      const targetInd = temp.findIndex(value => value.memNo === memNo);
+      temp[targetInd].isFan = true;
+
+      setDjListInfo({...djListInfo, list: temp});
+      context.action.alert({ msg: '팬 등록되었습니다.'});
+    }
+  };
+
+  // 팬 해제
+  const cancelFan = async (e) => {
+    const { memNo } = e.currentTarget.dataset;
+
+    if (memNo === undefined) return;
+
+    const { result , code } = await deleteFan({ memNo: memNo });
+
+    if ( result === "success" ) {
+      let temp = djListInfo.list;
+      const targetInd = temp.findIndex(value => value.memNo === memNo);
+      temp[targetInd].isFan = false;
+
+      setDjListInfo({...djListInfo, list: temp});
+      context.action.alert({ msg: '팬 해제되었습니다.'});
+    }
+  };
 
   useEffect(() => {
     getDjListInfo().then(r => {});
@@ -118,7 +153,7 @@ const SearchPage = (props) => {
         <>
           <section className='djSection'>
             <CntTitle title="믿고 보는 DJ" />
-            <DjList data={djListInfo.list} />
+            <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
           </section>
           <section className='liveSection'>
             <CntTitle title="🔥 지금 핫한 라이브" />
@@ -130,7 +165,7 @@ const SearchPage = (props) => {
           </section>
         </>            
         :
-        <SearchHistory/>)
+        <SearchHistory onInputClick={handleSearch}/>)
       }
 
 

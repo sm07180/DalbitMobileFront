@@ -38,7 +38,7 @@ const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/g
 // 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
 // 검색
-const ReSearch = React.lazy(() => import('pages/research/pages/'))
+const ReSearch = React.lazy(() => import('pages/research'))
 // 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당

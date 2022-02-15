@@ -13,7 +13,6 @@ export const RankingRewardButton = ({history}) => {
   return <button className='benefits' onClick={() => history.push('/clip_rank/reward')} >혜택</button>
 }
 
-export const MessageButton = ({history}) => {
 export const MessageButton = ({history, context, mailboxAction}) => {
   /* 우체통 이동 */
   const goMailAction = () => {

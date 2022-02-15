@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Navigation, Pagination } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { Swiper, SwiperSlide } from 'swiper/react';
 // global components
 
-// Import Swiper styles
 const TopRanker = (props) => {
   const {data} = props
 
