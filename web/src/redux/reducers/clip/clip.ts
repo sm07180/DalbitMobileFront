@@ -9,63 +9,63 @@ const initialState:ClipState = {
         value: "",
         sortNo: 0,
         isUse: 1,
-        icon: '🎵'
+        icon: 'ico_clipAll.png'
     }, {
         cd: "clip_type",
         cdNm: "커버",
         value: "01",
         sortNo: 1,
         isUse: 1,
-        icon: '🎤'
+        icon: 'ico_clipSong.png'
     }, {
         cd: "clip_type",
         cdNm: "작사/작곡",
         value: "02",
         sortNo: 2,
         isUse: 1,
-        icon: '🎼'
+        icon: 'ico_clipCompose.png'
     }, {
         cd: "clip_type",
         cdNm: "더빙",
         value: "03",
         sortNo: 3,
         isUse: 1,
-        icon: '📺'
+        icon: 'ico_clipDubbing.png'
     }, {
         cd: "clip_type",
         cdNm: "수다/대화",
         value: "04",
         sortNo: 4,
         isUse: 1,
-        icon: '😄'
+        icon: 'ico_clipChat.png'
     }, {
         cd: "clip_type",
         cdNm: "고민/사연",
         value: "05",
         sortNo: 5,
         isUse: 1,
-        icon: '🤧'
+        icon: 'ico_clipTrouble.png'
     }, {
         cd: "clip_type",
         cdNm: "힐링",
         value: "06",
         sortNo: 6,
         isUse: 1,
-        icon: '🌱'
+        icon: 'ico_clipHealing.png'
     }, {
         cd: "clip_type",
         cdNm: "성우",
         value: "07",
         sortNo: 7,
         isUse: 1,
-        icon: '💃'
+        icon: 'ico_clipVoiceAct.png'
     }, {
         cd: "clip_type",
         cdNm: "ASMR",
         value: "08",
         sortNo: 8,
         isUse: 1,
-        icon: '🎧'
+        icon: 'ico_clipASMR.png'
     }],
 
     // 검색조건 1, 타입(주제)

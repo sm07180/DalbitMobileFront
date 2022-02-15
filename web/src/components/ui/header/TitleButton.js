@@ -9,6 +9,10 @@ export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
 }
 
+export const RankingRewardButton = ({history}) => {
+  return <button className='benefits' onClick={() => history.push('/clip_rank/reward')} >혜택</button>
+}
+
 export const MessageButton = ({history, context, mailboxAction}) => {
   /* 우체통 이동 */
   const goMailAction = () => {
@@ -62,7 +66,7 @@ const TitleButton = (props) => {
     case '클립 랭킹':
       return (
         <div className='buttonGroup'>
-          <button className='benefits'>혜택</button>
+          <RankingRewardButton history={history} />
         </div>
       )
     case '좋아요한 클립':
