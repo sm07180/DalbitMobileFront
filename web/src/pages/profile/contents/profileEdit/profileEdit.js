@@ -58,10 +58,6 @@ const ProfileEdit = () => {
     }
   }, [profile])
 
-  useEffect(()=>{
-  console.log('profileInfo', profileInfo);
-  },[profileInfo]);
-
   const getMyInfo = async () => {
     const {result, data, message} = await Api.profile({
       params: {memNo: context.token.memNo}
