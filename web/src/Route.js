@@ -65,7 +65,7 @@ const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTr
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
 const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
 const PayEndApp = React.lazy(() => import('pages/store/contents/end/EndApp'))
-const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
+const Receipt = React.lazy(() => import('pages/store/contents/end/Receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
@@ -186,7 +186,7 @@ const Router = () => {
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/login" component={Login}/>
         <Route exact path="/login/start" component={LoginStart} />
         <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
