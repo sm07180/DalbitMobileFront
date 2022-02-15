@@ -8,7 +8,7 @@ import moment from 'moment';
 // global components
 import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from 'components/ui/cntTitle/CntTitle'
 // components
 import ClipSubTitle from '../clip/components/ClipSubTitle'
 import HotClipList from '../clip/components/HotClipList'

@@ -14,9 +14,7 @@ const CntTitle = (props) => {
     <div className="cntTitle">
       <h2>{title}</h2>
       {children}
-      {more &&
-        <button onClick={onMoreClick}>더보기</button>
-      }
+      {more && <button onClick={onMoreClick}>더보기</button>}
     </div>
   )
 }

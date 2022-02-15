@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 
 //components
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 import './style.scss'
