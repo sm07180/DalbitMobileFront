@@ -10,7 +10,7 @@ import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
 import PopSlide from "components/ui/popSlide/PopSlide";
-import ReportTabMenu from "pages/remypage/components/RepotTabMenu";
+import ReportTabMenu from "../../components/ReportTabMenu";
 import DatePicker from "./DatePicker";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 

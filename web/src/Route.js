@@ -42,7 +42,7 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 고객센터
-const ReCustomer = React.lazy(() => import('pages/recustomer'))
+const ReCustomer = React.lazy(() => import('pages/recustomer/Customer'))
 
 
 // 프로필

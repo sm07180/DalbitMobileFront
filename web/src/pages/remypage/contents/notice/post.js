@@ -96,7 +96,7 @@ const Post = () => {
                 : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""}>
               <div className="listContent" data-num={list.noticeIdx} onClick={onClick}>
                 <div className="title">{list.title}</div>
-                <div className="text">{list.contents}</div>
+                <div className="text">{deleteTag(list.contents)}</div>
                 <div className="date">{changeDay(list.writeDt)}</div>
               </div>
               <button className='listViewBtn'/>

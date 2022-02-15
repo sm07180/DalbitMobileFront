@@ -23,6 +23,7 @@ const InquireDetail = () => {
       }
     })
     if (res.result === 'success') {
+      console.log(res);
       for (let i = 0; i < res.data.list.length; i++) {
         if(res.data.list[i].qnaIdx === qnaIdx) {
           setQnaDetail(res.data.list[i]);

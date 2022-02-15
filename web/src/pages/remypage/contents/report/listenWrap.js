@@ -9,7 +9,7 @@ import API from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
-import ReportTabMenu from "pages/remypage/components/RepotTabMenu";
+import ReportTabMenu from "../../components/ReportTabMenu";
 import DatePicker from "./DatePicker";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import PopSlide from "components/ui/popSlide/PopSlide";
