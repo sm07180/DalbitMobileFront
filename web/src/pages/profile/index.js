@@ -379,7 +379,7 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
-    // dispatch(setProfileData(profileDefaultState)); // 프로필 상단
+    dispatch(setProfileData(profileDefaultState)); // 프로필 상단
     dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립

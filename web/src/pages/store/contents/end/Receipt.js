@@ -28,9 +28,11 @@ const Receipt = () => {
   const payTracking = () =>{
     if (window.fbq) {
       window.fbq("track", "Purchase");
+      window.fbq("track", "Buy_moon");
     }
     if (window.firebase) {
       window.firebase.analytics().logEvent("Purchase");
+      window.firebase.analytics().logEvent("Buy_moon");
     }
     if (window.kakaoPixel) {
       window.kakaoPixel("114527450721661229").purchase();
