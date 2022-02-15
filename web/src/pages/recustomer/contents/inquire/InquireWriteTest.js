@@ -9,7 +9,7 @@ import Swiper from "react-id-swiper";
 import {postImage} from "common/api";
 import { GlobalContext } from "context";
 import './inquireWrite.scss'
-import InputItems from "components/ui/inputItems/inputItems";
+import InputItems from "components/ui/inputItems/InputItems";
 import ImageUpload from "pages/recustomer/components/ImageUpload";
 import CheckList from "pages/recustomer/components/CheckList";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";

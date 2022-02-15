@@ -8,11 +8,11 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
-import Report from "./contents/report/report"
+import Allim from "pages/remypage/contents/notice/Allim";
+import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
-import Allim from "pages/remypage/contents/notice/allim";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
