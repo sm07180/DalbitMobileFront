@@ -25,9 +25,8 @@ export default function EndApp() {
   //결제 트래킹
   const payTracking = () =>{
     try {
-      fbq('track', 'Purchase');
-      firebase.analytics().logEvent('Purchase');
-      kakaoPixel('114527450721661229').purchase();
+      Utility.addAdsData('Buy_moon');
+      Utility.addAdsData('Purchase');
     } catch (e) {
       console.log(e);
     }

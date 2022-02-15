@@ -12,20 +12,8 @@
     }
   }
   .tabmenu {
-    @include flex(center);
+    @include tabmenuStyle-1;
     padding:0 16px;
-    li {
-      flex:1;
-      line-height:40px;
-      text-align: center;
-      background-color: #ffffff;
-      border-bottom:2px solid #f2f2f2;
-      @include font(16px,$Medium,#acacac);
-      &.active {
-        @include font(16px,$Bold,#202020);
-        border-bottom: solid 2px #202020;
-      }
-    }
   }
   .topRanker {
     @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
@@ -81,11 +69,15 @@
                 }
               }
               .title {
+                width:100%;
                 margin-bottom:2px;
+                text-align:center;
                 @include font(13px,$Bold,#202020);
                 @include fontCut;
               }
               .nick {
+                width:100%;
+                text-align:center;
                 @include font(12px,$Regular,#666);
                 @include fontCut;
               }

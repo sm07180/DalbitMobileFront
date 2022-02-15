@@ -379,7 +379,7 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
-    // dispatch(setProfileData(profileDefaultState)); // 프로필 상단
+    dispatch(setProfileData(profileDefaultState)); // 프로필 상단
     dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
@@ -471,7 +471,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if(!context.token.isLogin) {
-      return history.push('/login');
+      return history.replace('/login');
     }
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     parameterManager(); // 주소 뒤에 파라미터 체크
@@ -513,7 +513,7 @@ const ProfilePage = () => {
           {isMyProfile && <button onClick={() => {
             socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
               socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
-          }}>>등록</button>}
+          }}>등록</button>}
         </div>
 
         {/* 피드 */}
