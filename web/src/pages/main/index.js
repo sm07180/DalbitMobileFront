@@ -2,10 +2,9 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-import styled from 'styled-components'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from 'components/ui/cntTItle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
@@ -17,9 +16,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
-// popup
-import ReceiptPop from "pages/main/popup/ReceiptPop";
-import UpdatePop from "pages/main/popup/UpdatePop";
+import Receipt from "pages/main/popup/receipt";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -48,20 +45,20 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [payOrderId, setPayOrderId] = useState("")
+  const [payReceipt, setPayReceipt] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
-  const clearReceipt = () => {
+  const setPayPopup = () => {
     setReceiptPop(false)
-    sessionStorage.removeItem('orderId')
+    sessionStorage.removeItem('pay_receipt')
   }
   useEffect(() => {
-    if (sessionStorage.getItem('orderId') !== null) {
-      const orderId = sessionStorage.getItem('orderId')
+    if (sessionStorage.getItem('pay_receipt') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
       setReceiptPop(true);
-      setPayOrderId(orderId);
+      setPayReceipt(payInfo)
     }
     return () => {
-      sessionStorage.removeItem('orderId')
+      sessionStorage.removeItem('pay_receipt')
     }
   }, [])
 
@@ -291,11 +288,10 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
-    <UpdatePop />
+    {true && <Receipt payReceipt={payReceipt} setPopup={setPayPopup} />}
   </>;
   return MainLayout;
 }
-
+ 
 export default MainPage
  

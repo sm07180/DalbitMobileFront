@@ -18,17 +18,6 @@ legend {
 // 메인및 서브 페이지 센터영역 공통 wrap
 #root {
   width:100%;
-  ::-webkit-scrollbar {
-    width:6px;
-    border-radius:100px;
-  }
-  ::-webkit-scrollbar-thumb {
-    border-radius:10px;
-    background-color: #C5C5C5;
-  }
-  ::-webkit-scrollbar-track {
-    border-radius:10px;
-  }
 }
 
 .content-article {
@@ -66,12 +55,12 @@ legend {
   min-height: calc(100vh - #{$GNB-HEIGHT});
   padding-top:20px;
   background-color: #fbfbfb;
-  > .totalWrap {
+  .totalWrap {
     flex:1;
     @include flex($fd:column);
     max-width:800px;
     height:100%;
-    > .content {
+    .content {
       flex:1;
       position:relative;
       @include flex($fd:column);

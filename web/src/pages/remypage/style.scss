@@ -159,7 +159,6 @@
   #popSlide {
     .myLevelInfo {
       width:100%;
-      padding: 0 16px 32px;
       .infoItem {
         @include flex(center);
         line-height:25px;
@@ -192,7 +191,9 @@
           transition:width 1s ease;
         }
       }
-      .exp {@include font(13px,$Medium,#303030);}
+      .exp {
+        @include font(13px,$Medium,#303030);
+      }
       .submitBtn {
         width:100%;
         margin-top:20px;

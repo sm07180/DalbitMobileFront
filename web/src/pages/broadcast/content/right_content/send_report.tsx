@@ -48,7 +48,7 @@ export default function Report(props: { roomNo: string; profile: any }) {
 
   async function fetchDataBlock() {
     const { message, result, code } = await MypageBlackListAdd({
-      memNo: String(userMemNo) ,
+      memNo: userMemNo,
     });
     if (result === "success") {
       globalAction.setAlertStatus!({

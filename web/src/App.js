@@ -62,7 +62,7 @@ function setNativePlayInfo(isJsonString, globalCtx) {
 }
 
 
-const baseSetting = async (globalCtx, broadcastAction, dispatch) => {
+const baseSetting = async (globalCtx, broadcastAction) => {
   const globalAction = globalCtx.globalAction;
   const globalState = globalCtx.globalState;
 
@@ -237,7 +237,7 @@ const App = () => {
     // Renew token
     let tokenInfo = {};
     let elementById = document.getElementById('serverToken');
-    if(elementById && elementById.value && elementById.value !== '' && elementById.value !== 'null'){
+    if(elementById && elementById.value && elementById.value !== ''){
       tokenInfo = JSON.parse(elementById.value);
     }else{
       tokenInfo = await Api.getToken()
@@ -332,7 +332,7 @@ const App = () => {
         globalCtx.action.updateAdminChecker(false)
       }
       if(isDesktop){
-        baseSetting(globalCtx, broadcastAction, dispatch);
+        baseSetting(globalCtx, broadcastAction);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
       //모든 처리 완료
@@ -525,9 +525,6 @@ const App = () => {
 
   useEffect(()=>{
     if(!memberRdx.memNo || !chatInfo){
-      return;
-    }
-    if(!isDesktop){
       return;
     }
     const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
