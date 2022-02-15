@@ -106,7 +106,7 @@ const Remypage = () => {
             </div>
           </section>
           <section className="myMenu">
-            <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
+            <MyMenu data={myMenuItem}/>
             {isHybrid() &&
             <div className="versionInfo">
               <span className="title">버전정보</span>

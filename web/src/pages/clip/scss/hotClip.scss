@@ -14,8 +14,9 @@
 
 .hotClip {
   display: flex;
-  padding-bottom: 16px;
-
+  margin-bottom: 16px;
+  cursor: pointer;
+  &:active {cursor: grabbing;}
   .photo {
     flex: none;
     display: inline-block;
@@ -47,9 +48,7 @@
       .type {
         flex-shrink: 0;
         margin-right: 5px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #666666;
+        @include font(12px,$Regular,#666);
       }
       .title {
         line-height: 24px;

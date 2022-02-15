@@ -20,7 +20,7 @@ const DjList = (props) => {
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div key={index}>
+            <div className='listWrap' key={index}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.profImg.thumb150x150} />
@@ -30,8 +30,8 @@ const DjList = (props) => {
                   <GenderItems data={list.gender} />
                   <p className='nick'>{list.nickNm}</p>
                 </div>
-                {!list.isFan ? <button data-mem-no={list.memNo} onClick={addAction}>+ 팬등록</button> : <button className='active' data-mem-no={list.memNo} onClick={delAction}>팬</button>}
-              </div>
+              </div>              
+              {!list.isFan ? <button data-mem-no={list.memNo} onClick={addAction}>+ 팬등록</button> : <button className='active' data-mem-no={list.memNo} onClick={delAction}>팬</button>}
             </div>
           )
         })}
