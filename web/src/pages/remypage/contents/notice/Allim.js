@@ -98,13 +98,7 @@ const Allim = () => {
       case "42": history.push(`/rank?rankType=1&dateType=2`); break;                //DJ 랭킹 주간 알림
       case "43": history.push(`/rank?rankType=2&dateType=1`); break;                //FAN 랭킹 일간 알림
       case "44": history.push(`/rank?rankType=2&dateType=2`); break;                //FAN 랭킹 주간 알림
-      case "45":                                                                            //마이 스타 클립 알림, 내 클립 선물 알림
-        // if(context.customHeader.os === 3) { // 3 = pc //pc일때 클립을 틀 수 있는 새로운 방법이 필요함
-        //   history.push(`clip/${roomNo}`)
-        // } else {
-        fetchDataPlay(roomNo);
-        // }
-        break;
+      case "45": fetchDataPlay(roomNo);break;                                               //마이 스타 클립 알림, 내 클립 선물 알림, 3 = pc 클립을 틀 수 있는 새로운 방법이 필요함
       case "46": fetchDataPlay(roomNo); break;                                              //내 클립 댓글 알림
       case "47": fetchDataPlay(roomNo); break;                                              //클립 알림
       case "48":                                                                            //마이페이지 클립 업로드/청취내역 알림
