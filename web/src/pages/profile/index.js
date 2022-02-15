@@ -23,6 +23,7 @@ import ClipSection from './contents/profileDetail/ClipSection'
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
 import {
+  profileClipDefault,
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
@@ -55,7 +56,7 @@ const ProfilePage = (props) => {
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
   const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
 
-  const [webView, setWebView] = useState('');
+  const [webview, setWebview] = useState('');
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -120,7 +121,6 @@ const ProfilePage = (props) => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
-          ...fanBoardData,
           list: data.paging.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
           paging: data.paging,
           isLastPage,
@@ -137,14 +137,22 @@ const ProfilePage = (props) => {
   const getClipData = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      page: 1,
-      records: 10
+      page: clipData.paging.next,
+      records: clipData.paging.records
     }
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
-        dispatch(setProfileClipData(res.data));
+        const data= res.data;
+        const callPageNo = data.paging.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        console.log('isLastPage : ', isLastPage);
+        dispatch(setProfileClipData({
+          list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
+          paging: data.paging,
+          isLastPage,
+        }));
       } else {
-        context.action.alert({msg: message})
+        context.action.alert({ msg: res.message })
       }
     })
   }
@@ -315,7 +323,7 @@ const ProfilePage = (props) => {
     }
   }, []);
 
-  /* 피드, 팬보드 페이징 */
+  /* 피드, 팬보드, 클립 페이징 */
   const profileScrollEvent = useCallback(() => {
     const callback = () => {
       setScrollPagingCnt(scrollPagingCnt => scrollPagingCnt + 1);
@@ -323,6 +331,7 @@ const ProfilePage = (props) => {
     scrollEvent(document.documentElement, callback);
   }, []);
 
+  /* 스크롤 이벤트 remove */
   const removeScrollEvent = useCallback(() => {
     document.removeEventListener('scroll', profileScrollEvent);
   }, []);
@@ -338,8 +347,9 @@ const ProfilePage = (props) => {
       removeScrollEvent();
       document.addEventListener('scroll', profileScrollEvent);
     }else if(item === socialTabmenu[2]) {
+      dispatch(setProfileClipData({...clipData, paging: profileClipDefault, isLastPage: false}));
       removeScrollEvent();
-      // getClipData();
+      document.addEventListener('scroll', profileScrollEvent);
     }
   }
 
@@ -351,7 +361,7 @@ const ProfilePage = (props) => {
         const itemSplit = item.split('=');
         const paramType = itemSplit[0].toLowerCase();
         if(paramType === 'webview') {
-          setWebView(itemSplit[1]);
+          setWebview(itemSplit[1]);
         }else if(paramType === 'tab') {
           if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) {
             setSocialType(socialTabmenu[itemSplit[1]]);
@@ -407,32 +417,44 @@ const ProfilePage = (props) => {
     });
   }
 
+  /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
       getFeedData();
     }else if(socialType === socialTabmenu[1] && scrollPagingCnt > 1 && !fanBoardData.isLastPage) {
       getFanBoardData();
+    }else if(socialType === socialTabmenu[2] && scrollPagingCnt > 1 && !clipData.isLastPage) {
+      getClipData();
     }
   }, [scrollPagingCnt]);
 
+  /* 피드 마지막 페이지 호출 이펙트 */
   useEffect(() => {
     if(feedData.isLastPage){
       removeScrollEvent();
     }
   }, [feedData.isLastPage])
 
+  /* 팬보드 마지막 페이지 호출 이펙트 */
   useEffect(() => {
     if(fanBoardData.isLastPage){
       removeScrollEvent();
     }
   }, [fanBoardData.isLastPage])
 
+  /* 클립 마지막 페이지 호출 이펙트 */
+  useEffect(() => {
+    if(clipData.isLastPage){
+      removeScrollEvent();
+    }
+  }, [clipData.isLastPage])
+
   /* 프로필 상단 데이터 */
   useEffect(() => {
     if(context.token.isLogin) {
       getProfileData();
     }
-  }, [history.location.pathname]);
+  }, [location.pathname]);
 
   /* 피드 / 팬보드 / 클립 */
   useEffect(() => {
@@ -473,7 +495,7 @@ const ProfilePage = (props) => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} />
+        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}

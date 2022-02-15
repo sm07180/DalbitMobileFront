@@ -13,7 +13,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 //components
 import Utility from 'components/lib/utility'
 import Route from './Route'
-import Interface from './Interface'
+import Interface, {FOOTER_VIEW_PAGES} from './Interface'
 import NoService from './pages/no_service/index'
 
 import Api from 'context/api'
@@ -478,21 +478,14 @@ const App = () => {
   /* 네이티브용 푸터 관리 */
   const nativeFooterManager = () => {
     if(isHybrid()) {
-      const currentPages = location.pathname;
-      const footerViewPages = {
-        '/': 'main',
-        '/clip': 'clip',
-        '/search': 'search',
-        '/mypage': 'mypage',
-        '/login': 'mypage',
-      };
-      const visible = !!footerViewPages[currentPages];
+      const currentPath = location.pathname;
+      const visible = !!FOOTER_VIEW_PAGES[currentPath];
       const stateFooterParam = {
-        tabName: visible ? footerViewPages[currentPages] : '',
+        tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
         visible: visible
       };
 
-      Hybrid('stateFooter', stateFooterParam)
+      Hybrid('stateFooter', stateFooterParam);
     }
   }
 

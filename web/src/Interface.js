@@ -20,12 +20,24 @@ import Utility from 'components/lib/utility'
 
 import qs from 'query-string'
 import {authReq} from "pages/self_auth";
+import {useDispatch} from "react-redux";
+import {setIsRefresh} from "redux/actions/common";
+
+export const FOOTER_VIEW_PAGES = {
+  '/': 'main',
+  '/clip': 'clip',
+  '/search': 'search',
+  '/mypage': 'mypage',
+  '/login': 'mypage',
+};
 
 export default () => {
   //context
   const context = useContext(Context)
   //history
   let history = useHistory()
+  const dispatch = useDispatch();
+
   const doAuthCheck = () => {
     Api.certificationCheck().then(res => {
       if(res.message === "SUCCESS") {
@@ -774,17 +786,17 @@ export default () => {
 
       case 'native-footer': // native footer 이동
         const type = event.detail.type;
-        let pushUrl = '';
-        if(type === 'main') {
-          pushUrl = '/'
-        }else if(type === 'clip') {
-          pushUrl = '/clip'
-        }else if(type === 'search') {
-          pushUrl = '/search'
-        }else if(type === 'mypage') {
-          pushUrl = '/mypage'
+        const prevPath = location.pathname;
+        const prevType = FOOTER_VIEW_PAGES[prevPath];
+
+        if(type === prevType) {
+          if(prevPath !== '/login') {
+            dispatch(setIsRefresh(true))
+          }
+        }else {
+          const pushUrl = Object.keys(FOOTER_VIEW_PAGES).find(key => FOOTER_VIEW_PAGES[key] === type);
+          history.push(pushUrl);
         }
-        history.push(pushUrl);
         break;
       default:
         break

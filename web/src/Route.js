@@ -187,8 +187,8 @@ const Router = () => {
         <Route exact path="/mypage/:memNo" main={MyPage}
                render={() => <Redirect to={{ pathname: '/mypage' }} />}
         />
-        <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
-        <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
+        <Route exact path="/myProfile/:webview?/:tab?" component={Profile} />
+        <Route exact path="/profile/:memNo/:webview?/:tab?" main={Profile}
                render={({location, match}) => {
                  const myMemNo = context.profile.memNo;
                  const targetMemNo = match.params.memNo
