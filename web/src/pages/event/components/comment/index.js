@@ -148,24 +148,26 @@ const EventComment = (props) => {
     <div className="commentEventWrap">
       {globalCtx.token.isLogin && (
         <div className="addInputBox">
-          <div className="userBox">
+          {/* <div className="userBox">
             <div className="photo">
               <img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm} />
             </div>
             <div className="userNick">{globalCtx.profile.nickNm}</div>
-          </div>
-          <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100} />
-          <div className="textCount">
-            <strong ref={lengthRef}>0</strong>/100
+          </div> */}
+          <div className="textareaWrap">
+            <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={maxLength} />
+            <div className="textCount">
+              <strong ref={lengthRef}>0</strong>/{maxLength}
+            </div>
           </div>
           <button className={`writeBtn ${writeState ? 'on' : ''}`} onClick={contAddEvent}>
-            등록하기
+            등록
           </button>
         </div>
       )}
       <div className="commentBox">
         <div className="totalBox">
-          {contTitle}<span>{`${Utility.addComma(totalCommentCnt)}`}</span>개
+          {contTitle}<span>{`${Utility.addComma(totalCommentCnt)}`}개</span>
           <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
           </button>

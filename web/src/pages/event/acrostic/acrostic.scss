@@ -1,0 +1,22 @@
+@import "components/ui/_mixin.scss";
+
+#acrosticEvent{
+  position: relative;
+  .content{
+    background: #B04DD9;
+    img{width: 100%;}
+    .noticeBtn{
+      @include flex(center,center);
+      width: 81px;
+      height: 32px;
+      background: #393939;
+      border-radius: 25px;
+      @include font(15px, 500, #fff);
+      margin: 25px 16px 12px auto;
+    }
+    .commentEventWrap{
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+  }
+}
