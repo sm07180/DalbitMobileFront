@@ -1,5 +1,5 @@
 /**
- * @file notice.js
+ * @file Notice.js
  * @brief 고객센터 공지사항 컨텐츠
  *
  */

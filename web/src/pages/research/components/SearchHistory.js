@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 // global components
-import CntTitle from 'components/ui/cntTitle/CntTitle';
+import CntTitle from 'components/ui/cntTItle/CntTitle';
 
 const SearchHistory = (props) => {
   const { onInputClick } = props;

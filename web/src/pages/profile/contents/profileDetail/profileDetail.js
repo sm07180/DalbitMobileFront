@@ -10,7 +10,7 @@ import ListRowComponent from "pages/profile/components/ListRowComponent";
 import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponent";
 import Utility from "components/lib/utility";
 import Swiper from "react-id-swiper";
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import PopSlide from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 

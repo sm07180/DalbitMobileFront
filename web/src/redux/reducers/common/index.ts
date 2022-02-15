@@ -3,7 +3,8 @@ import { CommonActions, CommonState } from "../../types/commonType";
 
 const initialState:CommonState = {
   isLoading:false,
-  isDesktop:false
+  isDesktop:false,
+  isRefresh: false,
 }
 
 const common = createReducer<CommonState,CommonActions>(initialState,{
@@ -16,6 +17,9 @@ const common = createReducer<CommonState,CommonActions>(initialState,{
   },
   "common/SET_IS_DESKTOP":(state, {payload}) => {
     return {...state,isDesktop:payload}
+  },
+  "common/SET_IS_REFRESH": (state, {payload}) => {
+    return {...state, isRefresh: payload}
   }
 });
 

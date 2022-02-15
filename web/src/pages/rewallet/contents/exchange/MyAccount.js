@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
 // global components
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components

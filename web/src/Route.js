@@ -19,8 +19,6 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
-// 모바일 웹
-const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip'));
@@ -44,7 +42,7 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 고객센터
-const ReCustomer = React.lazy(() => import('pages/recustomer'))
+const ReCustomer = React.lazy(() => import('pages/recustomer/Customer'))
 
 
 // 프로필
@@ -60,8 +58,8 @@ const Store = React.lazy(() => import('pages/store'))
 const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
 const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
-const PayEnd = React.lazy(() => import('pages/store/contents/end/end'))
-const PayEndApp = React.lazy(() => import('pages/store/contents/end/endApp'))
+const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
+const PayEndApp = React.lazy(() => import('pages/store/contents/end/EndApp'))
 const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
@@ -129,6 +127,10 @@ const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
+const Notice = React.lazy(() => import("pages/remypage/contents/notice/Notice"));
+const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/PostDetail"));
+const Report = React.lazy(() => import("pages/remypage/contents/report/Report"));
+
 const Router = () => {
   const context = useContext(Context);
   return (
@@ -144,8 +146,6 @@ const Router = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
-
-        <Route exact path="/mobileWeb" component={MobileWeb} />
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
@@ -189,6 +189,7 @@ const Router = () => {
         <Route exact path="/mypage/:memNo" main={MyPage}
                render={() => <Redirect to={{ pathname: '/mypage' }} />}
         />
+        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
         <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
         <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
                render={({location, match}) => {
@@ -302,6 +303,10 @@ const Router = () => {
         <Route exact path="/mailbox" component={Mailbox} />
         <Route exact path="/mailbox/:category" component={Mailbox} />
         <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
+
+        <Route exact path="/notice" component={Notice} />
+        <Route exact path="/notice/:num" component={PostDetail} />
+        <Route exact path="/report" component={Report} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

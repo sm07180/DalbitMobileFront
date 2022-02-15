@@ -2,18 +2,18 @@ import React, {useEffect, useState} from 'react';
 import Utility from "components/lib/utility";
 import Api from 'context/api'
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
-import './receipt.scss'
+import './receiptPop.scss'
 
 import {useHistory, useLocation} from "react-router-dom";
 
 const Receipt = (props) => {
   const history = useHistory();
-  const {payOrderId, clearReceipt} = props;
-  console.log(props);
-  console.log(payOrderId);
+  // const {payReceipt} = props;
+  // console.log(props);
+  // console.log(payReceipt);
 
   const [receipt, setReceipt] = useState({
-    orderId: payOrderId,
+    orderId: "05760001_1612500994",
     payWay: "",
     payAmt: "",
     itemAmt: "",
@@ -42,7 +42,7 @@ const Receipt = (props) => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        orderId: payOrderId
+        orderId: "05760001_1612500994"
       }
     }).then((response) => {
       setReceipt({
@@ -81,13 +81,6 @@ const Receipt = (props) => {
     }
   }
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
-
   return (
     <section className="bankResult">
       <div className="resultText">
@@ -95,7 +88,7 @@ const Receipt = (props) => {
           결제가 완료 되었습니다.
         </div>
         <div className="subTitle">
-          결제 내역은 마이페이지 &gt; 내지갑에서<br/>확인하실 수 있습니다.
+          결제 내역은 마이페이지 > 내지갑에서<br/>확인하실 수 있습니다.
         </div>
       </div>
       <div className="receiptBoard">
@@ -116,10 +109,7 @@ const Receipt = (props) => {
           <p>{receipt.orderId}</p>
         </div>
       </div>
-      <SubmitBtn text="확인" onClick={() => {
-        history.push("/")
-        clearReceipt()
-      }}/>
+      <SubmitBtn text="확인" onClick={() => history.push("/")}/>
     </section>
   );
 };
