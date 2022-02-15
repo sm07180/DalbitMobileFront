@@ -49,7 +49,7 @@ $errorMsg : #FF1919;
     @include flex(flex-start, flex-start, column);
     width: 100%;
     height: 410px;
-    padding: 15px;
+    padding: 16px;
     border-bottom: 60px solid;
     border-image: linear-gradient(to right, nth($gradient,1), nth($gradient,2), nth($gradient,3), nth($gradient,4));
     border-image-slice: 1;
@@ -182,7 +182,7 @@ $errorMsg : #FF1919;
     position: relative;
     @include flex(center, center, column);
     width: 100%;
-    padding: 20px 15px;
+    padding: 43px 16px 20px;
     box-sizing: border-box;
     .cntTitle {
       margin-bottom:15px;
@@ -211,7 +211,6 @@ $errorMsg : #FF1919;
     .rankBox {
       @include flex(center, space-between);
       width: 100%;
-      margin-top: 20px;
       padding: 20px;
       border-radius: 16px;
       background-color: #F6F6F6;
@@ -242,7 +241,7 @@ $errorMsg : #FF1919;
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    padding: 20px 15px;
+    padding: 20px 16px;
     .tabmenu {
       position: relative;
       @include flex(center, space-around);
@@ -366,54 +365,57 @@ $errorMsg : #FF1919;
   }
 
   #layerPop {
-    .popTitle {
-      line-height: 48px;
-      text-align: center;
-      @include font(16px, 700, #202020);
-    }
-    .standardWrap {
-      @include flex(center, center, column);
-      width: 100%;
-      margin-top: 15px;
-      .standardList {
-        margin-bottom: 18px;
-        &:last-child {
-          margin-bottom: 0px;
-        }        
-        .popSubTitle {
-          @include font(16px, 500, #FF3C7B);
-          text-align: center;
-          letter-spacing: -1px;
-        }
-        .popText {
-          @include font(12px, 400, #666666);
-          text-align: center;
-          letter-spacing: -1px;
-          overflow: hidden;
-          span {
-            @include font(13px, 400, #FF6B4B);
-            padding-left: 16px;
-            background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
-            background-position: left center;
-            background-repeat: no-repeat;
-            background-size: 16px 16px;
+    .popContainer {
+      padding: 20px 0 40px 0;
+      .popTitle {
+        line-height: 48px;
+        text-align: center;
+        @include font(16px, 700, #202020);
+      }
+      .standardWrap {
+        @include flex(center, center, column);
+        width: 100%;
+        margin-top: 15px;
+        .standardList {
+          margin-bottom: 18px;
+          &:last-child {
+            margin-bottom: 0px;
+          }        
+          .popSubTitle {
+            @include font(16px, 500, #FF3C7B);
+            text-align: center;
+            letter-spacing: -1px;
+          }
+          .popText {
+            @include font(12px, 400, #666666);
+            text-align: center;
+            letter-spacing: -1px;
+            overflow: hidden;
+            span {
+              @include font(13px, 400, #FF6B4B);
+              padding-left: 16px;
+              background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+              background-position: left center;
+              background-repeat: no-repeat;
+              background-size: 16px 16px;
+            }
           }
         }
       }
-    }
-    .popInfo {
-      @include font(12px, 400, #ACACAC);
-      margin-top: 6px;
-      text-align: center;
-      letter-spacing: -1px;
-      span {
-        @include font(12px, 400, #FF6B4B);
-        padding-left: 16px;
-        background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
-        background-position: left center;
-        background-repeat: no-repeat;
-        background-size: 16px 16px;
-      }
-    }  
+      .popInfo {
+        @include font(12px, 400, #ACACAC);
+        margin-top: 6px;
+        text-align: center;
+        letter-spacing: -1px;
+        span {
+          @include font(12px, 400, #FF6B4B);
+          padding-left: 16px;
+          background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+          background-position: left center;
+          background-repeat: no-repeat;
+          background-size: 16px 16px;
+        }
+      } 
+    } 
   }
 }

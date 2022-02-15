@@ -19,6 +19,8 @@ import {route} from "express/lib/router";
 // import Main from 'pages/main'
 //----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
+// 모바일 웹
+const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'));
@@ -58,8 +60,8 @@ const Store = React.lazy(() => import('pages/store'))
 const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
 const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
-const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
-const PayEndApp = React.lazy(() => import('pages/store/contents/end/EndApp'))
+const PayEnd = React.lazy(() => import('pages/store/contents/end/end'))
+const PayEndApp = React.lazy(() => import('pages/store/contents/end/endApp'))
 const Receipt = React.lazy(() => import('pages/store/contents/end/receipt'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
@@ -125,7 +127,8 @@ const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
 const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
 const ClipPlayer = React.lazy(() => import("pages/clip_player"));
 
-const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+// const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+const Broadcast =  React.lazy(() => import("pages/broadcast/index_rdx"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
@@ -144,6 +147,8 @@ const Router = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
+
+        <Route exact path="/mobileWeb" component={MobileWeb} />
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />

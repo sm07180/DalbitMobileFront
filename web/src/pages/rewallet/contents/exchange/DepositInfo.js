@@ -2,7 +2,7 @@ import React, {useState, useEffect,useContext} from 'react'
 import {Context} from 'context'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from 'components/ui/inputItems/inputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import CheckList from '../../components/CheckList'

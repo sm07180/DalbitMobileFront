@@ -45,20 +45,20 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(0)
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [payReceipt, setPayReceipt] = useState("")
+  const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
-  const setPayPopup = () => {
+  const clearReceipt = () => {
     setReceiptPop(false)
-    sessionStorage.removeItem('pay_receipt')
+    sessionStorage.removeItem('orderId')
   }
   useEffect(() => {
-    if (sessionStorage.getItem('pay_receipt') !== null) {
-      const payInfo = JSON.parse(sessionStorage.getItem('pay_receipt'))
+    if (sessionStorage.getItem('orderId') !== null) {
+      const orderId = sessionStorage.getItem('orderId')
       setReceiptPop(true);
-      setPayReceipt(payInfo)
+      setPayOrderId(orderId);
     }
     return () => {
-      sessionStorage.removeItem('pay_receipt')
+      sessionStorage.removeItem('orderId')
     }
   }, [])
 
@@ -288,7 +288,7 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {true && <Receipt payReceipt={payReceipt} setPopup={setPayPopup} />}
+    {receiptPop && <Receipt payOrderId={payOrderId} clearReceipt={clearReceipt} />}
   </>;
   return MainLayout;
 }
