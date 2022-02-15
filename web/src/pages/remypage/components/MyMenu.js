@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 
 const MyInfo = (props) => {
   const {data, memNo} = props
   const history = useHistory()
   const golink = (path) => {
-    history.push("/mypage/" + memNo + '/' + path);
+    history.push(path);
   }
 
   return (
