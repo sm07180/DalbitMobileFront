@@ -6,7 +6,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from '../../../../components/ui/cntTitle/CntTitle';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'
@@ -20,10 +20,10 @@ let paymentList = [
   {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
   {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
   {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
+  {type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
+  {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
   {type: '문화상품권', fetch: 'pay_gm'},
   {type: '해피머니상품권', fetch: 'pay_hm'}
-  // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
   // {type: "스마트문상(게임문화상품권)", fetch: 'pay_gg'},
   // {type: "도서문화상품권", fetch: 'pay_gc'},
 ]

@@ -9,6 +9,10 @@ export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
 }
 
+export const RankingRewardButton = ({history}) => {
+  return <button className='benefits' onClick={() => history.push('/clip_rank/reward')} >혜택</button>
+}
+
 export const MessageButton = ({history, context, mailboxAction}) => {
   /* 우체통 이동 */
   const goMailAction = () => {
@@ -25,8 +29,8 @@ export const MessageButton = ({history, context, mailboxAction}) => {
   return <button className='message' onClick={goMailAction} />
 }
 
-export const AlarmButton = ({history, alarmCnt=0}) => {
-  return <button className='alarm' onClick={() => history.push('/menu/alarm')} />
+export const AlarmButton = ({history, newAlarmCnt=0}) => {
+  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/menu/alarm')} />
 }
 
 export const StoreButton = ({history}) => {
@@ -49,12 +53,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          {mainState.newAlarmCnt === 0 ?
-            // <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-            <button className='alarm new' onClick={() => history.push('/menu/alarm')} />
-          : mainState.newAlarmCnt > 0 &&
-            <></>
-          }
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
     case '클립':
@@ -67,7 +66,7 @@ const TitleButton = (props) => {
     case '클립 랭킹':
       return (
         <div className='buttonGroup'>
-          <button className='benefits'>혜택</button>
+          <RankingRewardButton history={history} />
         </div>
       )
     case '좋아요한 클립':

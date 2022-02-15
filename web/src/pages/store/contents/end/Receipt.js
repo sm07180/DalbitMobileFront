@@ -6,14 +6,13 @@ import './receipt.scss'
 
 import {useHistory, useLocation} from "react-router-dom";
 
-const Receipt = (props) => {
+const Receipt = () => {
   const history = useHistory();
-  const {payOrderId, clearReceipt} = props;
-  console.log(props);
-  console.log(payOrderId);
+  const location = useLocation();
+  const {info} = location.state || ""
 
   const [receipt, setReceipt] = useState({
-    orderId: payOrderId,
+    orderId: info.orderId,
     payWay: "",
     payAmt: "",
     itemAmt: "",
@@ -42,7 +41,7 @@ const Receipt = (props) => {
   const getReciptInfo = () => {
     Api.pay_receipt({
       data: {
-        orderId: payOrderId
+        orderId: info.orderId
       }
     }).then((response) => {
       setReceipt({
@@ -60,12 +59,16 @@ const Receipt = (props) => {
     switch (payWay) {
       case 'simple':
         return "계좌 간편결제"
-      case 'card':
-        return "카드 결제"
-      case 'phone':
-        return "핸드폰 결제"
       case 'kakaoMoney':
         return "카카오페이 (머니)"
+      case 'CN':
+        return "카드 결제"
+      case 'MC':
+        return "핸드폰 결제"
+      case 'GM':
+        return '문화상품권'
+      case 'HM':
+        return  '해피머니상품권'
       case 'kakaopay':
         return  '카카오페이(카드)'
       case 'payco':
@@ -74,19 +77,8 @@ const Receipt = (props) => {
         return  '티머니'
       case 'cashbee':
         return  '캐시비'
-      case 'GM':
-        return '문화상품권'
-      case 'HM':
-        return  '해피머니상품권'
     }
   }
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
 
   return (
     <section className="bankResult">
@@ -95,7 +87,7 @@ const Receipt = (props) => {
           결제가 완료 되었습니다.
         </div>
         <div className="subTitle">
-          결제 내역은 마이페이지 &gt; 내지갑에서<br/>확인하실 수 있습니다.
+          결제 내역은 마이페이지 > 내지갑에서<br/>확인하실 수 있습니다.
         </div>
       </div>
       <div className="receiptBoard">
@@ -116,10 +108,7 @@ const Receipt = (props) => {
           <p>{receipt.orderId}</p>
         </div>
       </div>
-      <SubmitBtn text="확인" onClick={() => {
-        history.push("/")
-        clearReceipt()
-      }}/>
+      <SubmitBtn text="확인" onClick={() => history.push("/")}/>
     </section>
   );
 };

@@ -1823,14 +1823,6 @@ export default class API {
     })
   }
 
-  static getMyRank = async (data) => {
-    return await ajax({
-      method: 'GET',
-      url: '/rank/myRank',
-      params: data
-    })
-  }
-
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -2022,6 +2014,15 @@ export default class API {
       params: params
     })
   }
+
+  static noticeList = async (obj) => {
+    return await ajax({
+      url: `/center/notice`,
+      method: "GET",
+      params: obj
+    })
+  };
+
   /**
    * @brief 고객센터 공지사항 상세 목록 조회
    * @method "GET"
