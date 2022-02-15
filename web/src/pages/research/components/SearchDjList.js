@@ -7,7 +7,6 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 // css
 import '../scss/resultCnt.scss'
-import CntTitle from "components/ui/cntTitle/CntTitle";
 
 const SearchDjList = (props) => {
   const {data, type, pagingInfo} = props

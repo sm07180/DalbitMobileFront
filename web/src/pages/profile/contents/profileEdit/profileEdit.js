@@ -6,7 +6,7 @@ import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 // components
 import TopSwiper from '../../components/topSwiper'
 // contents

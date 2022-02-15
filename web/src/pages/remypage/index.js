@@ -8,7 +8,8 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
-import Report from "./contents/report/report"
+import Allim from "pages/remypage/contents/notice/Allim";
+import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
@@ -17,7 +18,7 @@ const myMenuItem = [
   {menuNm: '리포트', path:'report'},
   {menuNm: '클립', path:'clip'},
   {menuNm: '설정'},
-  {menuNm: '공지사항'},
+  {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터'},
 ]
 
@@ -87,6 +88,8 @@ const Remypage = () => {
       return(<Report />)
     case 'clip' :
       return(<Clip />)
+    case 'notice' :
+      return(<Allim />)
     default :
       return(
         <>

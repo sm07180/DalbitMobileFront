@@ -1,6 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react';
 import SignField from "pages/signup/components/signField";
-import InputItems from "components/ui/inputItems/inputItems";
 import useDidMountEffect from "common/hook/useDidMountEffect";
 
 const PasswordSetting = (props) => {

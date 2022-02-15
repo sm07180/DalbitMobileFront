@@ -1,7 +1,7 @@
 import React, {useContext, useRef, useState} from 'react'
 
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from '../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
@@ -78,7 +78,7 @@ const DidLogin = (props) => {
     if (fetching) return;
 
     if (loginInfo.phoneNum === '' && loginInfo.password === '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)와 비밀번호를 입력하고\n 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(핸드폰 번호)와 비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
     } else if (loginInfo.phoneNum === '' && loginInfo.password !== '') {
       globalCtx.action.alert({msg: `아이디(핸드폰 번호)를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else if (loginInfo.password === '' && loginInfo.phoneNum !== '') {

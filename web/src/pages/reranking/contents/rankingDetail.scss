@@ -93,14 +93,17 @@
       .ranker {
         flex:1;
         &:nth-child(1) {
+          order:2;
           .listColumn {width:100px;}
         }
-        &:nth-child(2) {order:-1;}
+        &:nth-child(2) {order:1;}
+        &:nth-child(3) {order:3;}
         .listColumn {
           @include flex(center, center, column);
           width:84px;
           height:128px;
           margin:0 auto;
+          cursor: pointer;
           .photo {
             position: relative;
             @include flex(flex-end, center);
@@ -135,6 +138,7 @@
           @include font(12px,700,#FF3C7B);
           border-radius: 100px;
           background: #FFE0D8;
+          cursor: pointer;
         }
       }
       .cupidWrap {
@@ -194,7 +198,8 @@
         @include flex(center);
         width: 100%;
         margin-bottom:15px;
-        min-width: 0;
+        min-width: 0;        
+        cursor: pointer;
         &:last-child {
           margin-bottom:0px;
         }

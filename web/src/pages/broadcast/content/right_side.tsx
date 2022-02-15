@@ -5,8 +5,7 @@ import { GlobalContext } from "context";
 import { getProfile } from "common/api";
 // content
 import ListenerList from "./right_content/listener_list";
-// import GuestList from "./right_content/guest/guest_list";
-import GuestListRdx from "./right_content/guest/guest_list_rdx";
+import GuestList from "./right_content/guest/guest_list";
 import LiveList from "./right_content/live_list";
 import NoticeList from "./right_content/notice_list";
 import FanList from "./right_content/fan_rank_list";
@@ -369,8 +368,7 @@ export default function RightSide(props: {
         else return <></>;
       }
       case tabType.GUEST: {
-        // return <GuestList roomNo={roomNo} />;
-        return <GuestListRdx/>
+        return <GuestList roomNo={roomNo} />;
       }
       case tabType.NOTICE: {
         return <NoticeList roomOwner={roomOwner} roomNo={roomNo} />;

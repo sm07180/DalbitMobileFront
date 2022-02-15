@@ -1,21 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 // global components
-import CntTitle from 'components/ui/cntTitle/CntTitle';
+import CntTitle from '../../../components/ui/cntTitle/CntTitle';
 
 const SearchHistory = (props) => {
+  const { onInputClick } = props;
+  const [historyData, setHistoryData] = useState(localStorage.getItem('searchList') ? localStorage.getItem('searchList').split('|') : []);
 
-  const historyData = ["사랑", "쏭디제이", "꽃 피면 달 생각하고", "그 해 우리는", "이지금"];
+  const delHistory = (e) => {
+    localStorage.setItem('searchList', '');
+    setHistoryData([]);
+  }
+
+  const handleClick = (e) => {
+    const { value } = e.currentTarget.dataset;
+
+    onInputClick(value);
+  }
 
   return (
     <div className='searchHistory'>
       <CntTitle title="최근 검색어">
-        <button className='removeAll'>모두삭제</button>
+        <button className='removeAll' onClick={delHistory}>모두삭제</button>
       </CntTitle>
       <div className='historyWrap'>
         {historyData.map((list,index) => {
           return (
-            <div className='historylist' key={index}>{list}</div>
+            <div className='historylist' key={index} data-value={list} onClick={handleClick}>{list}</div>
           )
         })}
       </div>

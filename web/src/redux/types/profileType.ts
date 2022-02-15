@@ -8,7 +8,16 @@ export const profilePagingDefault = {
   next: 1,
   page: 0,
   prev: 0,
-  records: 5,
+  records: 20,
+  total: 0,
+  totalPage: 0
+}
+
+export const profileClipDefault = {
+  next: 1,
+  page: 0,
+  prev: 0,
+  records: 10,
   total: 0,
   totalPage: 0
 }
@@ -86,7 +95,8 @@ export const profileFanBoardDefaultState = {
 /* 클립 default */
 export const profileClipDefaultState = {
   list: [],
-  paging: profilePagingDefault,
+  paging: profileClipDefault,
+  isLastPage: false,
 }
 
 interface IFanRank {
@@ -261,4 +271,5 @@ export interface IProfileFanBoardState {
 export interface IProfileClipState {
   list: Array<IClipData>,
   paging: IPaging,
+  isLastPage: boolean,
 }
