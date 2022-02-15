@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Utility from 'components/lib/utility'
 
 //global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components

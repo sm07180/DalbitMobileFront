@@ -6,6 +6,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import ShowSwiper from "../../components/ui/showSwiper/ShowSwiper"
 // components
 import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
@@ -14,7 +15,6 @@ import Tabmenu from './components/Tabmenu'
 import FanStarPopup from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
 import FanboardSection from './contents/profileDetail/fanboardSection'
