@@ -186,7 +186,7 @@ const Router = () => {
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/login" component={Login}/>
         <Route exact path="/login/start" component={LoginStart} />
         <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
