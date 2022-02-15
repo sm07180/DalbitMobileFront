@@ -46,7 +46,6 @@ const Present = (props) => {
             </button>
           )
         })}
-
       </div>
       <InputItems>
         <input type="number" placeholder='직접입력' />
