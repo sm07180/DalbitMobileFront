@@ -14,7 +14,7 @@ import TopSwiper from '../../components/topSwiper'
 import './profileEdit.scss'
 import PasswordChange from "pages/password";
 import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 
 const ProfileEdit = () => {
   const history = useHistory()

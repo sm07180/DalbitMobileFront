@@ -9,6 +9,7 @@ import moment from 'moment';
 import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import ClipSubTitle from './components/ClipSubTitle'
 import SwiperList from './components/SwiperList'
@@ -210,18 +211,7 @@ const ClipPage = () => {
           </Swiper>}
         </section>
         <section className='bannerWrap'>
-          <Swiper {...swiperParams}>
-            <div>
-              <div className="bannerBox">
-                <div className="bannerItem"/>
-              </div>
-            </div>
-            <div>
-              <div className="bannerBox">
-                <div className="bannerItem"/>
-              </div>
-            </div>
-          </Swiper>
+          <BannerSlide />
         </section>
         <section className="clipDrawer">
           {(listenClipInfo.list > 0 || likeClipInfo.list >0 ) &&

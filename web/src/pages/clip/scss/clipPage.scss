@@ -1,12 +1,9 @@
 @import "components/ui/_mixin.scss";
 
 #clipPage{
-  position:relative;
-  padding-bottom:80px;
-  font-family: 'Noto Sans KR', sans-serif;
   section {
     position: relative;
-    margin-bottom: 35px;
+    margin-bottom: 44px;
   }
   .cntTitle {
     margin-bottom: 15px;
@@ -104,6 +101,8 @@
       .swiper-slide {
         width:100px;
         margin-right: 12px;
+        cursor:pointer;
+        &:active {cursor:grabbing;}
         &:last-child {
           margin-right: 32px;
         }
@@ -134,6 +133,8 @@
       .swiper-slide {
         width:auto;
         margin-right: 4px;
+        cursor:pointer;
+        &:active {cursor:grabbing;}
         &:last-child {
           margin-right: 32px;
         }
@@ -162,18 +163,13 @@
   .nowClipWrap{
     .swiper-slide {
       @include flex($fd:column);
-      transition:all .1s ease-out;
-      >div{
-        padding-left:16px;
-      }
-      &.swiper-slide-active {
-        width:calc(100% - 28px);
-      }
-      &:last-child{
+      width: calc(100% - 28px);
+      &:active {cursor: grabbing;}
+      &:last-child {
         width:100%;
-        >div{
-          padding-right:16px;
-        }
+      }
+      >div {
+        padding: 0 16px;
       }
     }
     .listWrap {
@@ -184,6 +180,7 @@
       margin-bottom:8px;
       padding:8px;
       border-radius:8px;
+      cursor:pointer;
       &:last-child{
         margin-bottom: 0;
       }
