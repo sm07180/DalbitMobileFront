@@ -162,7 +162,7 @@ const BlockReport = (props) => {
           <InputItems title={`신고 내용`} type="textarea">
             <textarea maxLength={REPORT_MAX_LENGTH}
                       rows="4"
-                      placeholder={"placeHolder"}
+                      placeholder="상세한 신고 내용을 기재해주세요. 허위 신고는 제재 대상이 될 수 있습니다. (최하 10글자 이상)"
                       onChange={reportReasonHandler}
             />
             <div className='count'>{reportReason.length}/{REPORT_MAX_LENGTH}</div>

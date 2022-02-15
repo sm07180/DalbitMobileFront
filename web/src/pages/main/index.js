@@ -16,7 +16,10 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
-import Receipt from "pages/main/popup/receipt";
+// popup
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import UpdatePop from "pages/main/popup/UpdatePop";
+import {setIsRefresh} from "redux/actions/common";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -65,6 +68,7 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
   const liveList = useSelector(state => state.live);
+  const common = useSelector(state => state.common);
 
   // 조회 API
   const fetchMainInfo = () => dispatch(setMainData());
@@ -99,6 +103,7 @@ const MainPage = () => {
     })
   }, [currentPage, liveListType]);
 
+  /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo();
@@ -106,7 +111,6 @@ const MainPage = () => {
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
     setCurrentPage(0);
-
   }
 
   // scroll
@@ -227,6 +231,14 @@ const MainPage = () => {
     if (currentPage === 0) setCurrentPage(1)
   }, [currentPage])
 
+  useEffect(() => {
+    if(common.isRefresh) {
+      mainDataReset();
+      window.scrollTo(0, 0);
+      dispatch(setIsRefresh(false));
+    }
+  }, [common.isRefresh]);
+
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
@@ -288,7 +300,8 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {true && <Receipt payReceipt={payReceipt} setPopup={setPayPopup} />}
+    {true && <ReceiptPop payReceipt={payReceipt} setPopup={setPayPopup} />}
+    {true && <UpdatePop />}
   </>;
   return MainLayout;
 }

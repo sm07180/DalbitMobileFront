@@ -191,6 +191,7 @@ const Router = () => {
         <Route exact path="/mypage/:memNo" main={MyPage}
                render={() => <Redirect to={{ pathname: '/mypage' }} />}
         />
+        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
         <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
         <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
                render={({location, match}) => {
