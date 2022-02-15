@@ -5,7 +5,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import './bankTransfer.scss'
 import {useHistory, useLocation} from "react-router-dom";

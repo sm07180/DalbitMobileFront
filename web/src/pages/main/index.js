@@ -4,7 +4,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from '../../components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
@@ -315,7 +315,7 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP 10'} more={'rank'}>
+        <CntTitle title={'일간 TOP 111'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
         </CntTitle>
         <SwiperList

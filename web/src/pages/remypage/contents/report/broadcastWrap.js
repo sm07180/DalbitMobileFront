@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 
 //global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems'
 // components
 
 import './report.scss'
