@@ -9,17 +9,17 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
-import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
 import Report from "pages/remypage/contents/report/Report";
+import Clip from "pages/remypage/contents/clip/clip";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:'clip'},
-  {menuNm: '설정', path:'setting'},
+  {menuNm: '클립', path:'myclip'},
+  {menuNm: '설정', path:'oldsetting'},
   {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터', path:'customer'},
 ]
@@ -88,10 +88,10 @@ const Remypage = () => {
   switch (settingCategory) {
     case 'report' :
       return(<Report />)
-    case 'clip' :
+    case 'myclip' :
       return(<Clip />)
-    case 'setting' :
-      return(history.push(`/mypage/${context.myInfo.memNo}/bcsetting`))
+    case 'oldsetting' :
+      return(<Setting />)
     case 'notice' :
       return(<Allim />)
     case 'customer' :
