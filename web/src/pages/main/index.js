@@ -34,9 +34,6 @@ let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
 
-const eventPopupStartTime = new Date('2020-09-25T09:00:00')
-const eventPopupEndTime = new Date('2020-10-04T23:59:59')
-
 const customHeader = JSON.parse(Api.customHeader)
 
 const MainPage = () => {
@@ -57,9 +54,7 @@ const MainPage = () => {
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
 
-  const [eventPop, setEventPop] = useState(false)
   const [popupData, setPopupData] = useState([]);
-  const nowTime = new Date()
 
   const [updatePopInfo, setUpdatePopInfo] = useState({
     showPop: false,
@@ -264,6 +259,7 @@ const MainPage = () => {
       }
     })
 
+    console.log('res : ', res);
     if (res.result === 'success') {
       if (res.hasOwnProperty('data')) {
         setPopupData(
@@ -276,21 +272,6 @@ const MainPage = () => {
           })
         )
       }
-    }
-  }
-
-  async function fetchThxgivingCheck() {
-    const res = await Api.getChooseokCheck()
-
-    if (res.result === 'success') {
-      setEventPop(true)
-      const {memNo} = globalCtx.token
-      const item = localStorage.getItem(`popup_event${memNo}`)
-      if (item !== null && item === memNo) {
-        setEventPop(false)
-      }
-    } else {
-      setEventPop(false)
     }
   }
 
@@ -312,7 +293,6 @@ const MainPage = () => {
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
-    fetchThxgivingCheck();
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
@@ -378,9 +358,6 @@ const MainPage = () => {
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
-    {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
-      <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
-    )}
   </>;
   return MainLayout;
 }

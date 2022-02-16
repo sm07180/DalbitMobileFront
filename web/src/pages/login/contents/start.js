@@ -45,7 +45,9 @@ const Start = (props) => {
 
   return (
     <div id="loginPage">
-      <Header type="back"/>
+      <Header>
+        <button className="back" onClick={() => history.push('/')} />
+      </Header>
       <section className='loginSns'>
         <h2 className='title'>시작하기</h2>
         <div className="socialLogin">
