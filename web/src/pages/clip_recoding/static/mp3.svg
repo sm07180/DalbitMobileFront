@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="mp4" width="48" height="48" viewBox="0 0 48 48">
     <defs>
         <style>
-            .cls-4{fill:#9487f9}
+            .cls-4{fill:#FF3C7B}
         </style>
     </defs>
     <path id="사각형_1745" fill="none" d="M0 0H48V48H0z" data-name="사각형 1745"/>
@@ -9,7 +9,7 @@
         <g id="그룹_13165" data-name="그룹 13165" transform="translate(9 4)">
             <g id="그룹_13164" data-name="그룹 13164">
                 <path id="패스_6526" fill="#eee" d="M96.258 59.174H75.639A3.639 3.639 0 0 1 72 55.535v-27.9A3.639 3.639 0 0 1 75.639 24h16.98l7.281 7.277v24.258a3.639 3.639 0 0 1-3.639 3.639z" data-name="패스 6526" transform="translate(-72 -24)"/>
-                <path id="패스_6527" fill="#8555f6" d="M72 360h27.9v5.317a3.437 3.437 0 0 1-3.639 3.19H75.639a3.437 3.437 0 0 1-3.639-3.19V360z" data-name="패스 6527" transform="translate(-72 -333.333)"/>
+                <path id="패스_6527" fill="#FF3C7B" d="M72 360h27.9v5.317a3.437 3.437 0 0 1-3.639 3.19H75.639a3.437 3.437 0 0 1-3.639-3.19V360z" data-name="패스 6527" transform="translate(-72 -333.333)"/>
                 <path id="패스_6528" d="M351.277 31.277h-3.639A3.639 3.639 0 0 1 344 27.639V24z" class="cls-4" data-name="패스 6528" transform="translate(-323.381 -24)"/>
                 <g id="그룹_19119" data-name="그룹 19119" transform="translate(0 2)">
                     <circle id="타원_90" cx="7.253" cy="7.253" r="7.253" class="cls-4" data-name="타원 90" transform="translate(6.618 6.649)"/>
