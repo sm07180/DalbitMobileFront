@@ -1,4 +1,5 @@
 @import "../../../asset/scss/common/global";
+@import "components/ui/_mixin.scss";
 
 $borderLine: 1px solid $lighterGray;
 $transition: all 0.2s ease-in;
@@ -141,7 +142,7 @@ $bar-color: white;
         &__number {
           margin-left: 16px;
           font-size: 20px;
-          color: #632beb;
+          color: $MAINCOLOR;
           letter-spacing: -0.5px;
           font-weight: $bold;
         }
@@ -217,7 +218,7 @@ $bar-color: white;
         border-radius: 10px;
       }
       .btn__gift {
-        background: $primary;
+        background: $MAINCOLOR;
         color: $white;
       }
 
@@ -232,11 +233,11 @@ $bar-color: white;
           border: 1px solid $gray;
         }
         &--active {
-          color: $primary;
-          border: 1px solid $primary;
+          color: $MAINCOLOR;
+          border: 1px solid $MAINCOLOR;
           &:hover {
-            color: $primary;
-            border: 1px solid $primary;
+            color: $MAINCOLOR;
+            border: 1px solid $MAINCOLOR;
           }
         }
       }
@@ -254,12 +255,13 @@ $bar-color: white;
       background: $white;
       border-radius: 14px;
       .fill {
+        @include flex(center, flex-end);
         position: absolute;
         left: 0;
         top: 0;
         height: 100%;
         padding-right: 10px;
-        background: $primary;
+        background: $MAINCOLOR;
         text-align: right;
         line-height: 1.2;
         color: $white;
@@ -309,7 +311,7 @@ $bar-color: white;
             background: $gray;
           }
           .ico__new {
-            display: inline-block;
+            @include flex(center,center);
             content: "";
             position: absolute;
             top: -6px;
@@ -350,7 +352,7 @@ $bar-color: white;
         &:hover,
         &--active {
           opacity: 1;
-          border: 1px solid $primary;
+          border: 1px solid $MAINCOLOR;
         }
         img {
           display: inline-block;
@@ -373,7 +375,7 @@ $bar-color: white;
           color: $white;
           border-radius: 14px;
           &--dj {
-            background: $primary;
+            background: $MAINCOLOR;
           }
           &--guest {
             background: $red;
@@ -395,7 +397,7 @@ $bar-color: white;
           display: inline-block;
           width: 100px;
           font-size: 18px;
-          color: $primary;
+          color: $MAINCOLOR;
         }
       }
       .myDal {
@@ -473,14 +475,14 @@ $bar-color: white;
           width: 15px;
           height: 15px;
           margin-top: 2px;
-          border: 1px solid $primary;
+          border: 1px solid $MAINCOLOR;
           border-radius: 15px;
           position: relative;
           &::before {
             content: "+";
             font-size: 18px;
             line-height: 1;
-            color: $primary;
+            color: $MAINCOLOR;
             position: absolute;
             bottom: 0px;
           }
@@ -522,7 +524,7 @@ $bar-color: white;
           height: 70px;
         }
         .ico__new {
-          display: inline-block;
+          @include flex(center, center);
           content: "";
           position: absolute;
           top: -6px;
@@ -591,7 +593,7 @@ $bar-color: white;
         }
         .btn__send {
           width: 100%;
-          background: $primary;
+          background: $MAINCOLOR;
           color: $white;
         }
       }
@@ -662,7 +664,7 @@ $bar-color: white;
           color: $lightGray;
           &.nickNm {
             font-weight: $bold;
-            color: $primary;
+            color: $MAINCOLOR;
           }
           &.reportMsg {
             display: block;
@@ -680,8 +682,8 @@ $bar-color: white;
           border-radius: 10px;
           width: 18.9%;
           &--active {
-            border: 1px solid $primary;
-            color: $primary;
+            border: 1px solid $MAINCOLOR;
+            color: $MAINCOLOR;
           }
         }
       }
@@ -710,7 +712,7 @@ $bar-color: white;
       line-height: 38px;
       font-weight: $bold;
       span {
-        color: #632beb;
+        color: $MAINCOLOR;
       }
     }
 
@@ -886,16 +888,16 @@ $bar-color: white;
         .textBox {
           &__subject,
           &__nickName {
-            color: #632beb;
+            color: $MAINCOLOR;
           }
         }
       }
       &.playing {
         .textBox__subject {
-          color: $primary;
+          color: $MAINCOLOR;
         }
         .textBox__nickName {
-          color: $primary;
+          color: $MAINCOLOR;
         }
         .playingbarWrap {
           position: absolute;
@@ -969,7 +971,7 @@ $bar-color: white;
         font-weight: $bold;
 
         &--num {
-          color: #632beb;
+          color: $MAINCOLOR;
         }
       }
 
@@ -979,6 +981,7 @@ $bar-color: white;
         font-size: 14px;
       }
       .replyListItemWrap {
+        width: calc(100% - 8px);
         padding: 0 10px;
       }
 
@@ -1099,7 +1102,7 @@ $bar-color: white;
       font-weight: $bold;
 
       &--active {
-        background-color: #632beb;
+        background-color: $MAINCOLOR;
       }
     }
   }
@@ -1176,8 +1179,8 @@ $bar-color: white;
         }
 
         &--on {
-          border: 1px solid $primary;
-          color: $primary;
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
           font-weight: $bold;
         }
       }
@@ -1218,7 +1221,7 @@ $bar-color: white;
           position: absolute;
           width: 100%;
           height: 1px;
-          background: $primary;
+          background: $MAINCOLOR;
           left: 0px;
           bottom: 0px;
           margin: 0px;
@@ -1227,7 +1230,7 @@ $bar-color: white;
         }
 
         &.on {
-          color: $primary;
+          color: $MAINCOLOR;
           i {
             display: block;
           }
@@ -1250,7 +1253,7 @@ $bar-color: white;
         color: #fff;
         height: 44px;
         border-radius: 12px;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         font-size: 18px;
         &:nth-child(odd) {
           margin-right: 4px;
@@ -1358,15 +1361,15 @@ $bar-color: white;
           line-height: 26px;
           text-align: center;
           border-radius: 13px;
-          border: solid 1px $primary;
+          border: solid 1px $MAINCOLOR;
           font-size: 12px;
           font-weight: $bold;
           letter-spacing: -0.3px;
-          color: $primary;
+          color: $MAINCOLOR;
         }
         &__plus {
           border-radius: 13px;
-          background-color: $primary;
+          background-color: $MAINCOLOR;
           color: $white;
         }
       }
@@ -1399,7 +1402,7 @@ $bar-color: white;
 
         span {
           font-size: 20px;
-          color: $primary;
+          color: $MAINCOLOR;
           font-weight: $bold;
           line-height: 22px;
         }
@@ -1504,8 +1507,8 @@ $bar-color: white;
       color: #757575;
       &--edit {
         border-radius: 16px;
-        border: solid 1px #632beb;
-        background-color: #632beb;
+        border: solid 1px $MAINCOLOR;
+        background-color: $MAINCOLOR;
         color: #fff;
       }
     }
@@ -1516,7 +1519,7 @@ $bar-color: white;
     justify-content: space-between;
     width: 362px;
     height: 52px;
-    background-color: #632beb;
+    background-color: $MAINCOLOR;
   }
 
   .fanRankBox {
@@ -1548,8 +1551,8 @@ $bar-color: white;
       cursor: pointer;
 
       &--active {
-        color: #632beb;
-        border-bottom: 1px solid #632beb;
+        color: $MAINCOLOR;
+        border-bottom: 1px solid $MAINCOLOR;
         font-weight: $bold;
       }
     }
@@ -1576,9 +1579,9 @@ $bar-color: white;
       cursor: pointer;
 
       &--active {
-        color: #632beb;
+        color: $MAINCOLOR;
         font-weight: $bold;
-        border-bottom: 1px solid #632beb;
+        border-bottom: 1px solid $MAINCOLOR;
       }
     }
   }
@@ -1670,11 +1673,11 @@ $bar-color: white;
         border: 1px solid $gray;
       }
       &--active {
-        color: $primary;
-        border: 1px solid $primary;
+        color: $MAINCOLOR;
+        border: 1px solid $MAINCOLOR;
         &:hover {
-          color: $primary;
-          border: 1px solid $primary;
+          color: $MAINCOLOR;
+          border: 1px solid $MAINCOLOR;
         }
       }
     }
@@ -1688,7 +1691,7 @@ $bar-color: white;
       border-bottom: 1px solid #e0e0e0;
 
       strong {
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
 
@@ -1734,8 +1737,8 @@ $bar-color: white;
           font-weight: $bold;
 
           &.active {
-            border-color: $primary;
-            color: $primary;
+            border-color: $MAINCOLOR;
+            color: $MAINCOLOR;
           }
         }
 
@@ -1779,7 +1782,7 @@ $bar-color: white;
       &__nick {
         display: inline-block;
         max-width: 200px;
-        color: $primary;
+        color: $MAINCOLOR;
         vertical-align: bottom;
         overflow: hidden;
         white-space: nowrap;
@@ -1798,11 +1801,11 @@ $bar-color: white;
       table {
         th {
           padding: 5px 0;
-          border-top: 1px solid $primary;
-          border-bottom: 1px solid $primary;
+          border-top: 1px solid $MAINCOLOR;
+          border-bottom: 1px solid $MAINCOLOR;
           font-size: 12px;
           text-align: center;
-          color: $primary;
+          color: $MAINCOLOR;
         }
         tr {
           width: 50%;

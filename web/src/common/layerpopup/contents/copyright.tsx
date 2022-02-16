@@ -65,7 +65,7 @@ const Content = styled.div`
       font-weight: 500;
       line-height: 1.2;
       letter-spacing: -0.5px;
-      color: #8556f6;
+      color: #ff3c7b;
     }
     &__content {
       width: 286px;

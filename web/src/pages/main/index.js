@@ -313,10 +313,10 @@ const MainPage = () => {
          ref={iconWrapRef}>
       <div className="icon-wrap">
         {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
-        <div id="pocketAni" ref={arrowRefreshRef}>
+        <div ref={arrowRefreshRef}>
           <Lottie
             options={{
-              loop: true,
+              loop: false,
               autoPlay: true,
               path: `${IMG_SERVER}/common/scroll_refresh.json`
             }}
