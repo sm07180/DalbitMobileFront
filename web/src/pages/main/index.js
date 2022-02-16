@@ -316,8 +316,7 @@ const MainPage = () => {
     <div id="mainPage" ref={MainRef} 
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
-      onTouchEnd={mainTouchEnd}
-      style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
+      onTouchEnd={mainTouchEnd}>
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>

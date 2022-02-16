@@ -53,7 +53,7 @@ import DallaStore from './dallaStore'
 // import MarblePocket from './gganbu/content/marblePocket'
 import Invite from './invite'
 
-export default () => {
+export default (props) => {
   const params = useParams()
 
   const createContent = () => {
@@ -86,7 +86,7 @@ export default () => {
       case 'customer_clear':
         return <RestClear />
       case 'customer_notice':
-        return <RestNotice />
+        return <RestNotice memNo={props.location.state.memNo} />
       case 'happy_time':
         return <HappyTime />
       case 'specialdj':
