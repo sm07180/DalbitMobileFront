@@ -12,7 +12,7 @@ import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
 import './inquire.scss'
 
 
-const Inquire = (props) => {
+const Inquire = () => {
   const inquireTabmenu = ['문의하기','나의 문의내역']
   const [inquire, setInquire] = useState(inquireTabmenu[0])
 
