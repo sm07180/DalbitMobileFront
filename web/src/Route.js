@@ -179,7 +179,7 @@ const Router = () => {
         <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
-        <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
+        <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
 
         <Route exact path="/pay" component={Pay} />

@@ -9,11 +9,13 @@ import Tabmenu from '../../components/tabmenu'
 import DepositInfo from './DepositInfo'
 import NewlyAccount from './NewlyAccount'
 import MyAccount from './MyAccount'
+import {useHistory} from "react-router-dom";
 
 const depositTabmenu =['신규 정보','최근 계좌','내 계좌']
 
 const Exchange = (props) => {
-  const [depositType,setDepositType] = useState(depositTabmenu[2])
+  const [depositType,setDepositType] = useState(depositTabmenu[2]);
+  const history = useHistory();
 
   return (
     <>
@@ -51,7 +53,7 @@ const Exchange = (props) => {
         <button>
           환전 계산하기
         </button>
-        <button className='exchange'>
+        <button className='exchange' onClick={()=>history.push('/wallet/exchange')}>
           달 교환
         </button>
       </div>
