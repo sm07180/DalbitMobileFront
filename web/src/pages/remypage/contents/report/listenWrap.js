@@ -170,7 +170,7 @@ const listenWrap = () =>{
       </section>
 
       {bottomSlide &&
-      <PopSlide title="기간 설절" setPopSlide={setBottomSlide}>
+      <PopSlide title="기간 설정" setPopSlide={setBottomSlide}>
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
           <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>
