@@ -795,7 +795,6 @@ export default function BroadcastSetting() {
                 <div className="mikeLine__button"></div>
               </div>
             </div>
-
           </div>
           <ul id={"micList"} className="access">
             {mics.map((item, index) => {
@@ -815,6 +814,28 @@ export default function BroadcastSetting() {
               )
             })}
           </ul>
+          <div className="title">마이크 설정</div>
+          <div className="access">
+            <div
+              onClick={() => {
+                console.log('test');
+                
+              }}
+              className={
+                state.mediaType == BROAD_TYPE.AUDIO
+                  ? "access__list active"
+                  : "access__list"
+              }
+            >
+              마이크 종류
+            </div>
+            <div className="access__select">
+              <div className="access__option">1</div>
+              <div className="access__option">1</div>
+              <div className="access__option">1</div>
+            </div>
+          </div>
+          
           {/* 방송 타입 */}
           <div className="title">음성/영상 설정</div>
           <ul className="access">
