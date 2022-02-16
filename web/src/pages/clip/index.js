@@ -48,22 +48,19 @@ const ClipPage = () => {
       if (res.result === 'success') {
         let tempHotClipList = [];
         let temp = [];
-        let tempCnt = 0;
-        for (let i = 0; i < 9; i++) {
-
+        for (let i = 0; i < res.data.paging.total; i++) {
           if (res.data.list.length > i) {
-            tempCnt++;
             temp.push(res.data.list[i]);
           } else {
             temp.push([]);
           }
 
-          if (i % 3 === 2) {
+          if (i % 3 === 2 || (i + 1) == res.data.paging.total) {
             tempHotClipList.push(temp);
             temp = [];
           }
         }
-        setHotClipInfo({ list: tempHotClipList, cnt: tempCnt});
+        setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
 
       }
@@ -199,7 +196,7 @@ const ClipPage = () => {
             {hotClipInfo.list.map((row, index) => {
               return (<div key={index}>
                 {row.map((coreRow, coreIndex) => {
-                  if (hotClipInfo.cnt > index) {
+                  if (Object.keys(coreRow).length > 0) {
                     return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
                   }
                 })}
