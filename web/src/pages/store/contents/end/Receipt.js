@@ -66,7 +66,7 @@ const Receipt = () => {
       case 'CN':
         return "카드 결제"
       case 'MC':
-        return "핸드폰 결제"
+        return "휴대폰 결제"
       case 'GM':
         return '문화상품권'
       case 'HM':
