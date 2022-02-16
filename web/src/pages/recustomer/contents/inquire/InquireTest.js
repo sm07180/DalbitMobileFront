@@ -7,7 +7,7 @@ import TabBtn from 'components/ui/tabBtn/TabBtn'
 import Write from 'pages/recustomer/contents/inquire/InquireWriteTest'
 // components
 import './inquire.scss'
-import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
+import InquireLog from "pages/recustomer/contents/inquire/InquireLogTest";
 
 const Inquire = () => {
   const inquireTabmenu = ['문의하기','나의 문의내역'];
@@ -33,7 +33,7 @@ const Inquire = () => {
         </ul>
         {
           inquire === '문의하기' ?
-            <Write/>
+            <Write setInquire={setInquire}/>
             :
             <InquireLog/>
         }
