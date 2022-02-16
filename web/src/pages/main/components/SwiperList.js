@@ -50,7 +50,7 @@ const SwiperList = (props) => {
                 <div className="photo">
                   <img src={item[profImgName].thumb150x150} />
                   {item.rank && <div className={`rank-${item.rank}`}></div>}
-                  {true && <div className="video"></div>}
+                  {item.type_media === 'v' && <div className="video" />}
                 </div>
                 <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
               </div>

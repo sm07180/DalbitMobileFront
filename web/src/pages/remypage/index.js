@@ -9,12 +9,12 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
-import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
-import Setting from "pages/resetting/Setting";
-import Customer from "pages/recustomer/Customer";
+import Setting from "pages/resetting";
+import Customer from "pages/recustomer";
+import Report from "pages/remypage/contents/report/Report";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -91,7 +91,7 @@ const Remypage = () => {
     case 'clip' :
       return(<Clip />)
     case 'setting' :
-      return(<Setting />)
+      return(history.push(`/mypage/${context.myInfo.memNo}/bcsetting`))
     case 'notice' :
       return(<Allim />)
     case 'customer' :

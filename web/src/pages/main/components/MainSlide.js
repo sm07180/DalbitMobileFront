@@ -20,8 +20,10 @@ const MainSlide = (props) => {
       disableOnInteraction: false
     },
     on:{
-      click: (swiper, event) => {
+      click: (event) => {
         if(event.type === 'touchend' || event.type === 'pointerup') {
+          event.preventDefault();
+          event.stopPropagation();
           const paths = event.path || event.composedPath();
           let swiperIndex = "";
           paths.forEach(dom => {

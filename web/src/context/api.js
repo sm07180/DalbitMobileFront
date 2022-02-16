@@ -690,6 +690,7 @@ export default class API {
       params: params
     })
   }
+
   /**
    * @brief 마이페이지 리포트 청취내역 조회
    * @method "GET""

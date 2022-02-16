@@ -8,10 +8,10 @@ import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
 
 // contents
-import Allim from './Allim'
-import Post from './Post'
 
 import './notice.scss'
+import Allim from "pages/remypage/contents/notice/Allim";
+import Post from "pages/remypage/contents/notice/Post";
 
 
 const NoticePage = () => {
