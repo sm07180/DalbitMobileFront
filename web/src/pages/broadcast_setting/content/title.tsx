@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-import { GlobalContext } from "context";
-
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
 import {setBroadcastOption} from "../../../redux/actions/modal";
 import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 function BroadcastSettingTitle(props: any) {
   const { setPopupState } = props;
 
@@ -25,7 +24,6 @@ function BroadcastSettingTitle(props: any) {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { globalState, globalAction } = useContext(GlobalContext);
   const modalState = useSelector(({modal}) => modal);
 
   const [list, setList] = useState<Array<any>>([]);
@@ -47,11 +45,11 @@ function BroadcastSettingTitle(props: any) {
 
   const modifyTitle = useCallback(async () => {
     if (title === "" || title.length < 2) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "제목을 2자 이상 입력하세요.",
-      });
+      }));
       // globalAction.callSetToastStatus!({
       //   status: true,
       //   message: "제목을 2자 이상 입력하세요.",
@@ -72,11 +70,11 @@ function BroadcastSettingTitle(props: any) {
 
   const insertTitle = useCallback(async () => {
     if (title === "" || title.length < 2) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "제목을 2자 이상 입력하세요.",
-      });
+      }));
       // globalAction.callSetToastStatus!({
       //   status: true,
       //   message: "제목을 2자 이상 입력하세요.",
@@ -106,11 +104,11 @@ function BroadcastSettingTitle(props: any) {
 
       closePopup();
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "적용할 제목을 선택하세요.",
-      });
+      }));
     }
   }, [deleteIdx, list]);
 

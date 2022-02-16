@@ -13,6 +13,7 @@ import clipRank from "./clipRank";
 import rank from "./rank";
 import mailBox from "./mailBox";
 import broadcastCtx from "./broadcastCtx";
+import globalCtx from "./globalCtx";
 
 const rootReducer = combineReducers({
     common
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   , rank
   , mailBox
   , broadcastCtx
+  , globalCtx
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

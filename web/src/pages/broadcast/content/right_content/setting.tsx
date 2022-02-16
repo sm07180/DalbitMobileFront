@@ -1,17 +1,17 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 import {broadcastEdit, getBroadcastSetting, postImage} from "common/api";
-import {GlobalContext} from "context";
 import {DalbitScroll} from "common/ui/dalbit_scroll";
 // constant
 import {tabType} from "pages/broadcast/constant";
 
 import LayerCopyright from "../../../../common/layerpopup/contents/copyright";
 import styled from "styled-components";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
   setBroadcastCtxRightTabType,
   setBroadcastCtxRoomInfoSettingUpdate
 } from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 type State = {
   entryType: number;
@@ -28,8 +28,7 @@ type Action = {
 
 export default function Setting(props: { roomInfo: roomInfoType; roomNo: string }) {
   const { roomInfo, roomNo } = props;
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
   const [broadBg, setBroadBg] = useState<string | ArrayBuffer>(roomInfo.bgImg.url);
   const [bgPath, setBgPath] = useState<string>("");
@@ -60,10 +59,10 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
       return alert("jpg, png, gif 이미지만 사용 가능합니다.");
     }
     if (fileExtension === "gif" && fileSize > 5000000) {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "GIF 파일 크기는 최대 5MB를 넘을 수 없습니다.",
-      });
+      }));
       return;
     }
     reader.onload = async () => {
@@ -78,19 +77,17 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
             setBroadBg(data["thumb336x336"]);
             setBgPath(data.path);
           } else {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                content: "이미지 업로드에 실패하였습니다.\n다시 시도해주세요",
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              content: "이미지 업로드에 실패하였습니다.\n다시 시도해주세요",
+            }));
             return;
           }
         } else {
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              content: result,
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            content: result,
+          }));
           return;
         }
       }
@@ -103,11 +100,10 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
 
   const onSubmit = async () => {
     if (title.length < 3) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "방송 제목을 3자 이상 입력해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "방송 제목을 3자 이상 입력해주세요",
+      }));
       return;
     }
     const { result, data, message } = await broadcastEdit({
@@ -127,18 +123,16 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
       dispatch(setBroadcastCtxRightTabType(tabType.LIVE));
 
       return (
-        globalAction.callSetToastStatus &&
-        globalAction.callSetToastStatus({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "방송방이 수정되었습니다.",
         })
-      );
+      ));
     } else if (result === "fail") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   };
 

@@ -1,14 +1,13 @@
 import React, { useEffect, useContext } from "react";
-import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setRankData} from "../../../redux/actions/rank";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 export default function RankGuide({ setResetPointPop, rankSettingBtn, setRankSetting }) {
   const dispatch = useDispatch();
   const rankState = useSelector(({rank}) => rank);
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
 
   const closePopup = () => {
     setResetPointPop(false);
@@ -50,20 +49,19 @@ export default function RankGuide({ setResetPointPop, rankSettingBtn, setRankSet
             <button
               className="btn btn_ok"
               onClick={() => {
-                globalAction.setAlertStatus &&
-                  globalAction.setAlertStatus({
-                    status: true,
-                    content: `지금부터 팬 랭킹 점수가<br />반영되지 않습니다.`,
-                    callback: () => {
-                      closePopup();
-                      rankSettingBtn(false);
-                      setRankSetting(false);
-                      dispatch(setRankData({
-                        ...rankState.rankData,
-                        isRankData: false,
-                      }))
-                    },
-                  });
+                dispatch(setGlobalCtxAlertStatus({
+                  status: true,
+                  content: `지금부터 팬 랭킹 점수가<br />반영되지 않습니다.`,
+                  callback: () => {
+                    closePopup();
+                    rankSettingBtn(false);
+                    setRankSetting(false);
+                    dispatch(setRankData({
+                      ...rankState.rankData,
+                      isRankData: false,
+                    }))
+                  },
+                }));
               }}
             >
               확인

@@ -34,6 +34,11 @@ import {
   setBroadcastCtxUserMemNo,
   setBroadcastCtxUserNickName
 } from "../../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxMultiViewer,
+  setGlobalCtxSetToastStatus
+} from "../../../../redux/actions/globalCtx";
 
 export default function Profile(props: { roomInfo: roomInfoType; profile: any; roomNo: string; roomOwner: boolean }) {
   const { roomInfo, profile, roomNo, roomOwner } = props;
@@ -41,7 +46,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { globalAction } = useContext(GlobalContext);
   const mailboxState = useSelector(({mailBox}) => mailBox);
 
   const { baseData } = globalState;
@@ -111,10 +117,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       });
       dispatch(setBroadcastCtxIsFan(data.isFan));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
 
       dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
     }
@@ -151,12 +157,11 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
       if (result === "success") {
         fetchProfileData(memNo);
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({
-            status: true,
-            message: `${nickNm}님의 팬이 되었습니다`,
-          });
-        }
+
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: `${nickNm}님의 팬이 되었습니다`,
+        }));
       }
     }
 
@@ -164,28 +169,26 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   }, []);
 
   const cancelFan = useCallback((memNo: string, nickNm: string) => {
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
-        callback: () => {
-          async function DeleteFanFunc() {
-            const { result, message } = await postBroadFanRemove({ memNo, roomNo });
-            if (result === "success") {
-              fetchProfileData(memNo);
-              if (globalAction.callSetToastStatus) {
-                globalAction.callSetToastStatus({
-                  status: true,
-                  message: message,
-                });
-              }
-            }
-          }
 
-          DeleteFanFunc();
-        },
-      });
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function DeleteFanFunc() {
+          const { result, message } = await postBroadFanRemove({ memNo, roomNo });
+          if (result === "success") {
+            fetchProfileData(memNo);
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: message,
+            }));
+          }
+        }
+
+        DeleteFanFunc();
+      },
+    }));
   }, []);
 
   const defalutRank = [
@@ -305,42 +308,39 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         }
       })();
 
-      if (globalAction.setAlertStatus) {
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          title: "알림",
-          content: nickNm + msg,
-          callback: async () => {
-            if (type === MANAGER_TYPE.TEMPORARY && managerType === MANAGER_TYPE.FIXING) {
-              globalAction.callSetToastStatus!({
-                status: true,
-                message: "이미 고정 매니저로 지정되어 있습니다.",
-              });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "confirm",
+        title: "알림",
+        content: nickNm + msg,
+        callback: async () => {
+          if (type === MANAGER_TYPE.TEMPORARY && managerType === MANAGER_TYPE.FIXING) {
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: "이미 고정 매니저로 지정되어 있습니다.",
+            }));
 
-              return;
+            return;
+          } else {
+            const res = await managerApi({ roomNo: roomNo, memNo: memNo, managerType: type });
+            if (res.result === "success") {
+              dispatch(setGlobalCtxSetToastStatus({
+                status: true,
+                message: res.message,
+              }));
             } else {
-              const res = await managerApi({ roomNo: roomNo, memNo: memNo, managerType: type });
-              if (res.result === "success") {
-                globalAction.callSetToastStatus!({
-                  status: true,
-                  message: res.message,
-                });
-              } else {
-                globalAction.setAlertStatus &&
-                  globalAction.setAlertStatus({
-                    status: true,
-                    type: "alert",
-                    content: res.message,
-                    callback: () => {
-                      return;
-                    },
-                  });
-              }
+              dispatch(setGlobalCtxAlertStatus({
+                status: true,
+                type: "alert",
+                content: res.message,
+                callback: () => {
+                  return;
+                },
+              }));
             }
-          },
-        });
-      }
+          }
+        },
+      }));
     },
     [profileData]
   );
@@ -348,50 +348,46 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const outUser = useCallback(() => {
     if (profileData) {
       const { nickNm, memNo } = profileData;
-      if (globalAction.setAlertStatus) {
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          title: "강제 퇴장",
-          content: nickNm + " 님을 강제퇴장 하시겠습니까?",
-          subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
-          subcontStyle: {
-            color: "gray",
-            lineHeight: "16px",
-            margin: "10px 0 0 0",
-          },
-          callback: async () => {
-            const res = await broadKickOut({ roomNo: roomNo, blockNo: memNo });
-            if (res.result === "success") {
-              KickAfterBan();
-            } else {
-              globalAction.setAlertStatus &&
-                globalAction.setAlertStatus({
-                  status: true,
-                  type: "alert",
-                  content: res.message,
-                });
-            }
-          },
-        });
-      }
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "confirm",
+        title: "강제 퇴장",
+        content: nickNm + " 님을 강제퇴장 하시겠습니까?",
+        subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
+        subcontStyle: {
+          color: "gray",
+          lineHeight: "16px",
+          margin: "10px 0 0 0",
+        },
+        callback: async () => {
+          const res = await broadKickOut({ roomNo: roomNo, blockNo: memNo });
+          if (res.result === "success") {
+            KickAfterBan();
+          } else {
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: res.message,
+            }));
+          }
+        },
+      }));
     }
   }, [profileData]);
 
   const KickAfterBan = useCallback(() => {
     if (profileData) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          content: `강제퇴장이 완료되었습니다. 
-           ${profileData.nickNm}님을 
-           차단하시겠습니까?`,
-          callback: () => fetchDataBlock(),
-          cancelCallback: () => {
-            dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
-          },
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "confirm",
+        content: `강제퇴장이 완료되었습니다. 
+         ${profileData.nickNm}님을 
+         차단하시겠습니까?`,
+        callback: () => fetchDataBlock(),
+        cancelCallback: () => {
+          dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
+        },
+      }));
     }
   }, [profileData]);
   const fetchDataBlock = useCallback(async () => {
@@ -400,17 +396,16 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         memNo: profileData.memNo,
       });
       if (result === "success") {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: message,
-        });
+        }));
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: message,
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          type: "alert",
+          content: message,
+        }));
       }
       dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
     }
@@ -487,10 +482,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   src={profileData.holder}
                   className="holder"
                   onClick={() => {
-                    globalAction.setMultiViewer?.({
+                    dispatch(setGlobalCtxMultiViewer({
                       show: true,
                       list: profileData.profImgList.length ? profileData.profImgList : [{ profImg: profileData.profImg }],
-                    });
+                    }));
                   }}
                 />
               </div>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 // ctx
-import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // constant
 import { tabType } from "../../constant";
@@ -10,12 +9,12 @@ import Caution from "../../static/caution.png";
 import { DECLARATION_TAB } from "./constant";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 export default function Report(props: { roomNo: string; profile: any }) {
   const { roomNo, profile } = props;
   // ctx
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { userMemNo, userNickNm } = broadcastState;
   // state
   const [pageType, setPageType] = useState(1);
@@ -52,25 +51,23 @@ export default function Report(props: { roomNo: string; profile: any }) {
       memNo: userMemNo,
     });
     if (result === "success") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
-      });
+      }));
     } else if (code === "-3") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+      }));
     } else if (code === "C006") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "이미 차단회원으로 등록된\n회원입니다.",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "이미 차단회원으로 등록된\n회원입니다.",
+      }));
     }
   }
 
@@ -118,21 +115,19 @@ export default function Report(props: { roomNo: string; profile: any }) {
       cont: reportReason,
     });
     if (result === "success") {
-      globalAction.setAlertStatus;
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: `${userNickNm} 님을 신고하였습니다.`,
-          callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: `${userNickNm} 님을 신고하였습니다.`,
+        callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => dispatch(setBroadcastCtxRightTabType(tabType.LISTENER)),
-      });
+      }));
     }
   }
   useEffect(() => {
@@ -148,18 +143,18 @@ export default function Report(props: { roomNo: string; profile: any }) {
   };
   const validateReport = () => {
     if (select === 0) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 선택해주세요.`,
-      });
+      }));
     }
     if (select !== 0 && reportReason.length < 10) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 10자 이상 입력해주세요.`,
-      });
+      }));
     }
   };
 
@@ -194,12 +189,12 @@ export default function Report(props: { roomNo: string; profile: any }) {
                 <button
                   className="btn"
                   onClick={() =>
-                    globalAction.setAlertStatus!({
+                    dispatch(setGlobalCtxAlertStatus({
                       status: true,
                       type: "confirm",
                       content: `정말 신고하시겠습니까?`,
                       callback: () => reportUser(),
-                    })
+                    }))
                   }
                 >
                   확인

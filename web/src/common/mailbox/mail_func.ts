@@ -1,6 +1,7 @@
 import { mailChatEnter, checkIsMailboxNew, getMailboxChatList } from "common/api";
 import {useDispatch} from "react-redux";
 import {setMailBoxInfo, setMailBoxUserCount} from "../../redux/actions/mailBox";
+import {setGlobalCtxAlertStatus} from "../../redux/actions/globalCtx";
 
 export function mailBoxJoin(memNo: string, dispatch: any, globalAction: any, history: any, prevMemNo?: any) {
   const mailBoxEnter = async () => {
@@ -19,26 +20,26 @@ export function mailBoxJoin(memNo: string, dispatch: any, globalAction: any, his
       }
     } else {
       if (code === "-5") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "<p style='letter-spacing:-0.8px;'>우체통은 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
-        });
+        }));
       } else if (code === "-6") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "<p style='letter-spacing:-0.8px;'>0레벨 회원에게는 우체통 메시지를<br /> 보낼 수 없습니다.</p>",
-        });
+        }));
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
           callback: () => {
             history.goBack();
           },
-        });
+        }));
       }
     }
   };

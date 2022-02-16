@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 // ctx
-import { GlobalContext } from "context";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 import { useHistory, useParams } from "react-router-dom";
 // constant
@@ -10,10 +9,14 @@ import { postClipReport, MypageBlackListAdd } from "common/api";
 import { DECLARATION_TAB } from "../constant";
 
 import Caution from "../static/caution.png";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 export default function Report() {
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
+
   const { clipState, clipAction } = useContext(ClipContext);
   const { setRightTabType } = clipAction;
   const { clipInfo } = globalState;
@@ -53,25 +56,23 @@ export default function Report() {
       memNo: globalState.clipInfo!.clipMemNo,
     });
     if (result === "success") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => setRightTabType && setRightTabType(tabType.PROFILE),
-      });
+      }));
     } else if (code === "-3") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+      }));
     } else if (code === "C006") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "이미 차단회원으로 등록된\n회원입니다.",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "이미 차단회원으로 등록된\n회원입니다.",
+      }));
     }
   }
 
@@ -120,22 +121,18 @@ export default function Report() {
       cont: reportReason,
     });
     if (result === "success") {
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: message,
-        });
-        setTimeout(() => {
-          setRightTabType && setRightTabType(tabType.PROFILE);
-        }, 500);
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: message,
+      }));
+      setTimeout(() => {
+        setRightTabType && setRightTabType(tabType.PROFILE);
+      }, 500);
     } else {
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: message,
-        });
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: message,
+      }));
       setTimeout(() => {
         setRightTabType && setRightTabType(tabType.PROFILE);
       }, 500);
@@ -154,18 +151,18 @@ export default function Report() {
   };
   const validateReport = () => {
     if (select === 0) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 선택해주세요.`,
-      });
+      }));
     }
     if (select !== 0 && reportReason.length < 10) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 10자 이상 입력해주세요.`,
-      });
+      }));
     }
   };
 
@@ -202,12 +199,12 @@ export default function Report() {
                   <button
                     className="btn"
                     onClick={() =>
-                      globalAction.setAlertStatus!({
+                      dispatch(setGlobalCtxAlertStatus({
                         status: true,
                         type: "confirm",
                         content: `정말 신고하시겠습니까?`,
                         callback: () => reportUser(),
-                      })
+                      }))
                     }
                   >
                     확인

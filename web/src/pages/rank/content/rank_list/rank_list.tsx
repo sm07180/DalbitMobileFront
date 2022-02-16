@@ -17,11 +17,13 @@ import live from "../../static/live_m.svg";
 import goldMedalIcon from "../../static/medal_gold_b.svg";
 import silverMedalIcon from "../../static/medal_silver_b.svg";
 import bronzeMedalIcon from "../../static/medal_bronze_m.svg";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 function RankList() {
   //context
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const rankState = useSelector(({rank}) => rank);
 
   const { formState, rankList } = rankState;
@@ -242,14 +244,14 @@ function RankList() {
                         let alertMsg;
                         if (isNaN(listenRoomNo)) {
                           alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`;
-                          globalAction.setAlertStatus!({
+                          dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             type: "alert",
                             content: alertMsg,
-                          });
+                          }));
                         } else {
                           alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`;
-                          globalAction.setAlertStatus!({
+                          dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             type: "confirm",
                             content: alertMsg,
@@ -262,7 +264,7 @@ function RankList() {
                                 "listener"
                               );
                             },
-                          });
+                          }));
                         }
                       }
                     }}

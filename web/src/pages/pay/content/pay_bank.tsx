@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import { payCoocon } from "common/api";
@@ -12,12 +11,12 @@ import Header from "common/ui/header";
 import Layout from "common/layout";
 import {useDispatch, useSelector} from "react-redux";
 import {setPayInfo} from "../../../redux/actions/modal";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 export default function Payment() {
   const history = useHistory();
   const dispatch = useDispatch();
   const modalState = useSelector(({modal}) => modal);
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { payInfo } = modalState;
   const { itemName, itemPrice, itemNo, itemCnt } = payInfo;
 
@@ -163,10 +162,10 @@ export default function Payment() {
       }))
       history.push("/payment/bank_wait");
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   };
 
@@ -174,44 +173,44 @@ export default function Payment() {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g;
 
     if (name.length < 2) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `이름은 필수입력 값입니다.`,
-      });
+      }));
     }
 
     if (!phone) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `핸드폰 번호는 필수입력 값입니다.`,
-      });
+      }));
     }
 
     if (!rgEx.test(phone)) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `올바른 핸드폰 번호가 아닙니다.`,
-      });
+      }));
     }
 
     if (receiptType === 1) {
       if (receiptOptionType === "0" && receiptOption.length < 13) {
-        return globalAction.setAlertStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: `현금영수증 발급을 위하여 \n 주민번호를 입력해주세요.`,
-        });
+        }));
       } else if (receiptOptionType === "1" && !receiptOption) {
-        return globalAction.setAlertStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: `현금영수증 발급을 위하여 \n 휴대폰번호를 입력해주세요.`,
-        });
+        }));
       }
     } else if (receiptType === 2) {
       if (receiptOption.length < 10) {
-        return globalAction.setAlertStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: `현금영수증 발급을 위하여 \n 사업자번호를 입력해주세요.`,
-        });
+        }));
       }
     }
     getDepositInfo();

@@ -1,18 +1,15 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
-//Context
-import { GlobalContext } from "context";
-
 //Common
 import { printNumber, settingAlarmTime } from "lib/common_fn";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 export default function userList() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { globalState, globalAction } = useContext(GlobalContext);
   const mailboxState = useSelector(({mailBox}) => mailBox);
   const { chatTargetData } = mailboxState;
 
@@ -26,12 +23,12 @@ export default function userList() {
             key={index}
             onClick={() => {
               if (isMailboxOn) {
-                mailBoxJoin(memNo, dispatch, globalAction, history);
+                mailBoxJoin(memNo, dispatch, null, history);
               } else {
-                globalAction.callSetToastStatus!({
+                dispatch(setGlobalCtxSetToastStatus({
                   status: true,
                   message: "상대방이 우체통 기능을 사용하지 않는 상태이므로 대화가 불가능합니다.",
-                });
+                }));
               }
             }}
           >

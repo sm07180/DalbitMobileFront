@@ -42,6 +42,16 @@ import {
   setBroadcastCtxExtendTimeOnce, setBroadcastCtxLikeClicked,
   setBroadcastCtxRoomInfoReset
 } from "../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxClipInfoAdd,
+  setGlobalCtxClipPlayerInit,
+  setGlobalCtxExitMarbleInfo,
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxIsShowPlayer,
+  setGlobalCtxRtcInfoEmpty,
+  setGlobalCtxRtcInfoInit
+} from "../redux/actions/globalCtx";
 
 const initInterval = (callback: () => boolean) => {
   const intervalTime = 100;
@@ -57,7 +67,8 @@ const initInterval = (callback: () => boolean) => {
 export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?: string; }) {
   const history = useHistory();
   const historyState = history.location.state;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { globalAction } = useContext(GlobalContext);
   const dispatch = useDispatch();
   const { clipInfo, clipPlayer, mode } = props;
 
@@ -118,8 +129,8 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
 
       rtcInfo.initVideoTag();
 
-      globalAction.dispatchRtcInfo &&
-        globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
+      dispatch(setGlobalCtxRtcInfoInit(rtcInfo));
+      rtcInfo.setRoomInfo(roomInfo);
       setPlayBtnStatus(false);
     }
   }, [rtcInfo, roomInfo]);
@@ -148,8 +159,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         videoConstraints
       );
       rtcInfo.setRoomInfo(roomInfo);
-      globalAction.dispatchRtcInfo &&
-        globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
       setPlayBtnStatus(false);
     }
   }, [rtcInfo, roomInfo]);
@@ -157,22 +166,20 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   async function fetchSelfAuth() {
     const { result } = await selfAuthCheck();
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "20세 이상만 입장할 수 있는 방송입니다.",
-          callback: () => history.push("/"),
-          cancelCallback: () => history.push("/"),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "20세 이상만 입장할 수 있는 방송입니다.",
+        callback: () => history.push("/"),
+        cancelCallback: () => history.push("/"),
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content:
-            "20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.",
-          callback: () => history.push("/mysetting"),
-          cancelCallback: () => history.push("/"),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content:
+          "20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.",
+        callback: () => history.push("/mysetting"),
+        cancelCallback: () => history.push("/"),
+      }));
     }
   }
 
@@ -204,37 +211,35 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
 
         sessionStorage.setItem("room_no", roomNo);
       } else if (result === "fail") {
-        globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
+        dispatch(setGlobalCtxIsShowPlayer(false));
         if (code === "-6") {
           // 20세 이상
           fetchSelfAuth();
         } else if (code === "-8") {
           // Host Join case
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content:
-                "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
-              callback: () => history.push("/"),
-              cancelCallback: () => history.push("/"),
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            title: "알림",
+            content:
+              "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          }));
         } else {
           if (chatInfo && chatInfo !== null) {
             chatInfo.privateChannelDisconnect();
             if (rtcInfo !== null) rtcInfo!.stop();
             disconnectGuest();
-            globalAction.dispatchRtcInfo!({ type: "empty" });
+            dispatch(setGlobalCtxRtcInfoEmpty());
           }
           rtcSessionClear();
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: `${message}`,
-              callback: () => history.push("/"),
-              cancelCallback: () => history.push("/"),
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            title: "알림",
+            content: `${message}`,
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          }));
         }
       }
     }
@@ -272,7 +277,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         dispatch(setBroadcastCtxLikeClicked(isLike));
         chatInfo && chatInfo.setChatFreeze(isFreeze);
 
-        globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(true);
+        dispatch(setGlobalCtxIsShowPlayer(true));
       } else {
         if (code + "" === "-3") {
           //해당방 회원 아님 룸조인 처리
@@ -282,16 +287,10 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
             chatInfo.privateChannelDisconnect();
             if (rtcInfo !== null) rtcInfo!.stop();
             disconnectGuest();
-            globalAction.dispatchRtcInfo!({ type: "empty" });
+            dispatch(setGlobalCtxRtcInfoEmpty());
           }
           rtcSessionClear();
-          globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
-          // globalAction.setAlertStatus &&
-          //   globalAction.setAlertStatus({
-          //     status: true,
-          //     title: "알림",
-          //     content: `${newRoomInfo.message}`,
-          //   });
+          dispatch(setGlobalCtxIsShowPlayer(false));
         }
       }
     }
@@ -304,9 +303,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          globalAction.dispatchGuestInfo!({
-            type: "EMPTY",
-          });
+          dispatch(setGlobalCtxGuestInfoEmpty());
         });
       }
     }
@@ -337,8 +334,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
               setBgImage(roomInfo!.bjProfImg["thumb120x120"]);
               setNickName(roomInfo!.bjNickNm);
               setTitle(roomInfo!.title);
-              globalAction.setIsShowPlayer &&
-                globalAction.setIsShowPlayer(true);
+              dispatch(setGlobalCtxIsShowPlayer(true));
               return true;
             }
             return false;
@@ -349,15 +345,15 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
           const { result } = await broadcastExit({ roomNo });
           if (result === "success") {
             rtcSessionClear();
-            globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
-            if (rtcInfo !== null && globalAction.dispatchRtcInfo) {
+            dispatch(setGlobalCtxIsShowPlayer(false));
+            if (rtcInfo !== null) {
               chatInfo.privateChannelDisconnect();
               if (rtcInfo !== null) {
                 rtcInfo.socketDisconnect();
                 rtcInfo.stop();
               }
               disconnectGuest();
-              globalAction.dispatchRtcInfo({ type: "empty" });
+              dispatch(setGlobalCtxRtcInfoEmpty());
             }
           }
         };
@@ -373,7 +369,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         setBgImage(rtcInfo.roomInfo!.bjProfImg["thumb120x120"]);
         setNickName(rtcInfo.roomInfo!.bjNickNm);
         setTitle(rtcInfo.roomInfo!.title);
-        globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(true);
+        dispatch(setGlobalCtxIsShowPlayer(true));
         setPlayBtnStatus(false);
         setRoomInfo(rtcInfo.roomInfo);
         setRoomOwner(chatInfo.roomOwner);
@@ -382,7 +378,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
           console.log("broadcast====>",3)
           broadcastInit();
         } else {
-          globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
+          dispatch(setGlobalCtxIsShowPlayer(false));
         }
       }
     } else if (clipInfo !== undefined && clipInfo !== null) {
@@ -391,7 +387,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
       setTitle(clipInfo.title);
       setIsClip(true);
     } else {
-      globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
+      dispatch(setGlobalCtxIsShowPlayer(false));
     }
   }, [rtcInfo]);
 
@@ -490,12 +486,8 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
       }
       newClipPlayer?.clipNoUpdate(data.clipNo);
       newClipPlayer?.findPlayingClip(data.clipNo);
-
-      globalAction.dispatchClipPlayer!({ type: "init", data: newClipPlayer });
-      globalAction.dispatchClipInfo!({
-        type: "add",
-        data: { ...data, ...{ isPaused: true } },
-      });
+      dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
+      dispatch(setGlobalCtxClipInfoAdd({ ...data, ...{ isPaused: true } }));
       newClipPlayer?.start();
       sessionStorage.setItem("clip", JSON.stringify(data));
     } else {
@@ -527,28 +519,24 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         if (roomNo1) {
           const { data, result } = await broadcastExit({ roomNo: roomNo1 });
           if (result === "success") {
-            {
-              globalAction.setExitMarbleInfo &&
-                globalAction.setExitMarbleInfo({
-                  ...exitMarbleInfo,
-                  rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
-                  yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
-                  bMarbleCnt: data.getMarbleInfo.bMarbleCnt,
-                  vMarbleCnt: data.getMarbleInfo.vMarbleCnt,
-                  isBjYn: data.getMarbleInfo.isBjYn,
-                  marbleCnt: data.getMarbleInfo.marbleCnt,
-                  pocketCnt: data.getMarbleInfo.pocketCnt,
-                });
-            }
+            dispatch(setGlobalCtxExitMarbleInfo({
+              ...exitMarbleInfo,
+              rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
+              yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
+              bMarbleCnt: data.getMarbleInfo.bMarbleCnt,
+              vMarbleCnt: data.getMarbleInfo.vMarbleCnt,
+              isBjYn: data.getMarbleInfo.isBjYn,
+              marbleCnt: data.getMarbleInfo.marbleCnt,
+              pocketCnt: data.getMarbleInfo.pocketCnt,
+            }));
             if (
               globalState.exitMarbleInfo.marbleCnt > 0 ||
               globalState.exitMarbleInfo.pocketCnt > 0
             ) {
-              globalAction.setExitMarbleInfo &&
-                globalAction.setExitMarbleInfo({
-                  ...exitMarbleInfo,
-                  showState: true,
-                });
+              dispatch(setGlobalCtxExitMarbleInfo({
+                ...exitMarbleInfo,
+                showState: true,
+              }));
             }
 
             rtcSessionClear();
@@ -567,15 +555,11 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
                 globalState.guestInfo[
                   Object.keys(globalState.guestInfo)[0]
                 ].stop?.();
-                globalAction.dispatchGuestInfo!({
-                  type: "EMPTY",
-                });
+                dispatch(setGlobalCtxGuestInfoEmpty());
               }
-              globalAction.dispatchRtcInfo &&
-                globalAction.dispatchRtcInfo({ type: "empty" });
+              dispatch(setGlobalCtxRtcInfoEmpty());
 
-              globalAction.setIsShowPlayer &&
-                globalAction.setIsShowPlayer(false);
+              dispatch(setGlobalCtxIsShowPlayer(false));
             }
           }
         }
@@ -585,7 +569,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   useEffect(() => {
     if (rtcInfo !== null) {
       // for dj host, audio publishing - refresh case
-      // globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
+      // globalAction.setIsShowPlayer && dispatch(setGlobalCtxIsShowPlayer(false);
       rtcInfo.setDisplayWrapRef(displayWrapRef);
       rtcInfo.initVideoTag();
       if (roomOwner === true) {

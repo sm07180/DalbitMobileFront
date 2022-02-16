@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext, useMemo } from "react";
 // context
-import { GlobalContext } from "context";
 import { getProfile } from "common/api";
 // content
 import ListenerList from "./right_content/listener_list";
@@ -34,6 +33,7 @@ import "./right_side.scss";
 import VideoFilter from "./right_content/video_filter";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType} from "../../../redux/actions/broadcastCtx";
+import {setGlobalCtxUserProfile} from "../../../redux/actions/globalCtx";
 
 export default function RightSide(props: {
   splashData: any;
@@ -45,7 +45,7 @@ export default function RightSide(props: {
 }) {
   const { splashData, roomInfo, roomOwner, roomNo, forceChatScrollDown, setForceChatScrollDown } = props;
 
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
@@ -432,9 +432,7 @@ export default function RightSide(props: {
       getProfile({ memNo }).then((res) => {
         const { result, data } = res;
         if (result === "success") {
-          if (globalAction.setUserProfile) {
-            globalAction.setUserProfile(data);
-          }
+          dispatch(setGlobalCtxUserProfile(data));
         }
       });
     }

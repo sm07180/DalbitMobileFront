@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useParams, useLocation } from "react-router-dom";
-import { GlobalContext } from "context";
 // api
 import { getSpecialList, getProfile } from "common/api";
 // scss
@@ -13,8 +12,8 @@ export default (props) => {
   // ctx && commons
 
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { userMemNo } = broadcastState;
   const history = useHistory();
   // state
