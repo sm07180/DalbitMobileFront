@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
-import NoResult from 'components/ui/new_noResult'
+import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";

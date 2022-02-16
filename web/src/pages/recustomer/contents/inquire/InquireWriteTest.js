@@ -6,26 +6,22 @@ import API from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import Swiper from "react-id-swiper";
-import {postImage} from "common/api";
-import { GlobalContext } from "context";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
+import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import ImageUpload from "pages/recustomer/components/ImageUpload";
 import CheckList from "pages/recustomer/components/CheckList";
-import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
-const Write = () => {
+const Write = (props) => {
+  const {setInquire} = props
   const context = useContext(Context);
-  const { globalAction } = useContext(GlobalContext);
   const [inputData, setInputData] = useState({
     title: "",
     faqType: 0,
     contents: "아래 내용을 함께 보내주시면 더욱 빠른 처리가 가능합니다. \n\nOS (ex-Window 버전10) : \n브라우저 : \n문제발생 일시 : \n문의내용 : "
   })
-  const [focus, setFocus] = useState(false);
   const [option, setOption] = useState(false);
-  const [optionValue, setOptionValue] = useState("");
   const [textValue, setTextValue] = useState("");
   const [agree, setAgree] = useState(false);
   const history = useHistory();
@@ -64,7 +60,7 @@ const Write = () => {
     API.center_qna_add({params}).then((res) => {
       if(res.result === "success") {
         context.action.alert({msg: "1:1문의가 등록되었습니다."})
-        // history.push(`/customer/inquire`)
+        setInquire("나의 문의내역");
       } else {
         context.action.alert({msg: res.message});
       }
@@ -144,9 +140,12 @@ const Write = () => {
 
   const removeImage = (e) => {
     const idx = parseInt(e.currentTarget.dataset.idx)
-    const tempImage = imgFile.concat([]);
+    const tempImage = imageFile.concat([]);
+    const tempImg = imgFile.concat([]);
     tempImage.splice(idx, 1);
-    setImgFile(tempImage)
+    tempImg.splice(idx, 1);
+    setImageFile(tempImage);
+    setImgFile(tempImg);
   }
 
   const validator = () => {
@@ -156,10 +155,6 @@ const Write = () => {
       context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
     }
   }
-
-  useEffect(() => {
-    console.log(imageFile);
-  })
 
   return (
     <div id='inquireWrite'>
