@@ -19,7 +19,7 @@ const Present = (props) => {
   const [selected, setSelected] = useState(0);
 
   const goCharge = () => {
-    history.push('/pay/store')
+    history.push('/store')
   }
 
   return (

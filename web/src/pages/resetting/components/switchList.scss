@@ -30,6 +30,7 @@
     }
   }
   .inputLabel {
+    flex: none;
     @include flex(center);
     cursor: pointer;
     .blind {

@@ -484,7 +484,7 @@ export default function Main() {
             <button
               onClick={() => {
                 if (baseData.isLogin === true) {
-                  return history.push("/pay/store");
+                  return history.push("/store");
                 } else {
                   return history.push("/login");
                 }

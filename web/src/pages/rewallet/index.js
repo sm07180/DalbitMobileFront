@@ -132,14 +132,14 @@ const WalletPage = (props) => {
       <Header type='back' title='내 지갑'>
         {walletType === walletTabMenu[1] ? (
           <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/pay/store')}}>
+            <button className="payCount" onClick={() => {history.push('/store')}}>
               <i className='iconStar'></i>
               <span>{Utility.addComma(33000)}</span>
             </button>
           </div>
         ) : (
           <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/pay/store')}}>
+            <button className="payCount" onClick={() => {history.push('/store')}}>
               <i className='iconDal'></i>
               <span>{Utility.addComma(33000)}</span>
             </button>

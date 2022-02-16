@@ -62,7 +62,7 @@ export default () => {
               충전
             </button>
           ) : (
-            <button onClick={() => history.push(`/pay/store`)} className="payLink">
+            <button onClick={() => history.push(`/store`)} className="payLink">
               충전하러 가기
             </button>
           )}
