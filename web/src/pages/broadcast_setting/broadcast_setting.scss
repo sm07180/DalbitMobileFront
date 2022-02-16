@@ -148,6 +148,7 @@
   }
 
   .access {
+    position:relative;
     display: flex;
     width: 100%;
 
@@ -179,6 +180,18 @@
       &:first-child {
         margin-left: 1px;
       }
+    }
+    &__select {
+      @include position-top-left(100%);
+      z-index: 1;
+      width:100%;
+      background-color:white;
+      box-shadow:0 2px 3px rgba(black, .16);
+    }
+    &__option {
+      line-height:50px;
+      margin:0 20px;
+      cursor:pointer;
     }
   }
 
