@@ -102,7 +102,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    fetchLiveInfo();
+    // fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
