@@ -32,7 +32,7 @@ const SearchPage = (props) => {
   const [searchParam, setSearchParam] = useState(''); // child로 넘길 검색 값
 
   const [searching, setSearching] = useState(false);
-  
+
   const [djListInfo, setDjListInfo] = useState({list: []}); // 믿고 보는 DJ 정보
   const [liveListInfo, setLiveListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 지금 핫한 라이브 정보
   const [hotClipListInfo, setHotClipListInfo] = useState({ checkDate: '', list: [], totalCnt: 0, type: 0}); // 오늘 인기 있는 클립 정보
@@ -184,18 +184,24 @@ const SearchPage = (props) => {
       </Header>
       {!searching && ( searchVal.length === 0 ?
         <>
+          {djListInfo.list.length > 0 &&
           <section className='djSection'>
             <CntTitle title="믿고 보는 DJ" />
             <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
           </section>
+          }
+          {liveListInfo.list.length > 0 &&
           <section className='liveSection'>
-            <CntTitle title="🔥 지금 핫한 라이브" />
-            <HotLiveList data={liveListInfo.list} />
+            <CntTitle title="🔥 지금 핫한 라이브"/>
+            <HotLiveList data={liveListInfo.list}/>
           </section>
+          }
+          {hotClipListInfo.list.length > 0 &&
           <section className='clipSection'>
-            <CntTitle title="오늘 인기 있는 클립" />
+            <CntTitle title="오늘 인기 있는 클립"/>
             <ClipList data={hotClipListInfo.list}/>
           </section>
+          }
         </>
         :
         <SearchHistory onInputClick={handleSearch}/>)

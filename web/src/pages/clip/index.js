@@ -208,18 +208,21 @@ const ClipPage = () => {
         <Header title={'클립'} />
         <section className='hotClipWrap'>
           <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
-          {hotClipInfo.list.length > 0 &&
-          <Swiper {...swiperParams}>
-            {hotClipInfo.list.map((row, index) => {
-              return (<div key={index}>
-                {row.map((coreRow, coreIndex) => {
-                  if (Object.keys(coreRow).length > 0) {
-                    return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
-                  }
-                })}
-              </div>);
-            })}
-          </Swiper>}
+          {hotClipInfo.list.length > 0 ?
+            <Swiper {...swiperParams}>
+              {hotClipInfo.list.map((row, index) => {
+                return (<div key={index}>
+                  {row.map((coreRow, coreIndex) => {
+                    if (Object.keys(coreRow).length > 0) {
+                      return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
+                    }
+                  })}
+                </div>);
+              })}
+            </Swiper>
+            :
+            <div className="empty">데이터가 없습니다.</div>
+          }
         </section>
         <section className='bannerWrap'>
           <BannerSlide />
@@ -244,9 +247,8 @@ const ClipPage = () => {
           }
         </section>
         <section className="nowClipWrap">
-          {popularClipInfo.length > 0 &&
-          <>
-            <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
+          <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
+          {popularClipInfo.length > 0 ?
             <Swiper {...swiperParams}>
               {popularClipInfo.map((row, index) => {
                 return (
@@ -264,7 +266,8 @@ const ClipPage = () => {
                 );
               })}
             </Swiper>
-          </>
+            :
+            <div className="empty">데이터가 없습니다.</div>
           }
         </section>
         <section className='likeSubWrap'>
