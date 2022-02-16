@@ -309,7 +309,8 @@ const ProfilePage = () => {
       context,
       mailboxAction,
       targetMemNo: profileData.memNo,
-      history
+      history,
+      targetMemLevel: profileData.level
     }
     goMail(goMailParams);
     setPopSlide(false);

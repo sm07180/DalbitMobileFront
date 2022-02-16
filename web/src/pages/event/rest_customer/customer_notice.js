@@ -27,7 +27,7 @@ export default () => {
         context.action.alert({
           msg: message,
           callback: () => {
-            history.push('/login')
+            // history.push('/login')
           }
         })
       }
