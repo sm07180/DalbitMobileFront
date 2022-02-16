@@ -62,14 +62,14 @@ const TitleButton = (props) => {
           <RankingRewardButton history={history} />
         </div>
       )
-    case '좋아요한 클립':
+    case '좋아요한 클립-':
       return (
         <div className="buttonGroup">
           <button className='play' />
           <button className='shuffle' />
         </div>
       )
-    case '최근 들은 클립':
+    case '최근 들은 클립-':
       return (
         <div className="buttonGroup">
           <button className='play' />
