@@ -9,7 +9,7 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 import Tabmenu from '../../components/Tabmenu'
 import TopRanker from '../../components/TopRanker'
-import RankingList from '../../components/rankingList'
+import RankingList from '../../components/RankingList'
 
 import './clipRanking.scss'
 import moment from "moment";
