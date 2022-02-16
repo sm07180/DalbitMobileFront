@@ -44,9 +44,10 @@ const BroadCastWrap = () => {
       startDt: dt.pickdataPrev,
       endDt: dt.pickdataNext,
       page: 1,
-      records: 100
+      records: 999
     }
     API.report_broad({params}).then((res) => {
+      console.log(res);
       if(res.result === "success") {
         if(!(res.data.list.length > 0)) { //리스트 없을 시 api에서 값 자체를 안넘겨줌 -> 고정값 0
           setBroadListInfo([]);
@@ -136,6 +137,7 @@ const BroadCastWrap = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return(
     <>
       <section className="periodWrap">

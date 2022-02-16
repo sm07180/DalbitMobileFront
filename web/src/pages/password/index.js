@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef, useContext} from 'react'
 
 //components
 import Header from 'components/ui/header/Header'
@@ -8,77 +8,44 @@ import './style.scss'
 import Api from "context/api";
 import useDidMountEffect from "common/hook/useDidMountEffect";
 import {useHistory} from "react-router-dom";
+import {Context} from "context";
 
 
 const PasswordChange = () => {
   const history = useHistory();
-  const [btnActive, setBtnActive] = useState("")
+  const context = useContext(Context)
+  const [phoneAuthRequest, setPhoneAuthRequest] = useState(false);
+  const [authCheck, setAuthCheck] = useState(false);
   const [passwordInfo, setPasswordInfo] = useState({
     phoneNum:"",
     authNum:"",
     password:"",
-    passwordChange:"",
+    passwordCheck:"",
     CMID:""
   })
-
+  const [authBtnValue,setAuthBtnValue] = useState("인증요청")
   const phoneNumRef = useRef(null);
   const requestNumRef = useRef(null);
   const phoneCheckRef = useRef(null);
   const authCheckRef = useRef(null);
   const passwordRef = useRef(null);
   const passwordCheckRef = useRef(null);
-
   const [checkPasswordValue, setCheckPasswordValue] = useState({
     check:false,
     message:"비밀번호를 다시 확인해주세요"
   });
+  const [checkAuthValue, setCheckAuthValue] = useState({
+    check:false,
+    message:"휴대폰 인증을 해주세요"
+  });
 
-  useDidMountEffect(() => {
-    validatePassword();
-  }, [passwordInfo.password]);
-
-  useDidMountEffect(()=>{
-    validatePasswordCheck();
-  }, [passwordInfo.passwordCheck])
-
-
-  const phoneNumChange = (e) => {
+  const onChange = (e) => {
+    const { value, name } = e.target;
     setPasswordInfo({
       ...passwordInfo,
-      phoneNum: e.target.value
-    })
-    var text = e.target.value;
-    var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
-    if (regPhone.test(text) === true) {
-      setBtnActive("active")
-    }
-  }
-
-  const authNumChange = (e) => {
-    setPasswordInfo({
-      ...passwordInfo,
-      authNum: e.target.value
-    })
-  }
-
-  const passwordChange = (e) => {
-    setPasswordInfo({
-      ...passwordInfo,
-      password: e.target.value
-    })
-  }
-
-  const passwordCheckChange = (e) => {
-    setPasswordInfo({
-      ...passwordInfo,
-      passwordChange: e.target.value
-    })
-  }
-
-  useEffect(() => {
-      setBtnActive(true);
-  }, [passwordInfo])
-
+      [name]: value
+    });
+  };
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode;
@@ -89,6 +56,15 @@ const PasswordChange = () => {
     targetClassName.classList.remove('focus');
   }
 
+  //1.휴대폰 번호
+  useEffect(()=>{
+    const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
+    if(rgEx.test(passwordInfo.phoneNum)){
+      setPhoneAuthRequest(true);
+    }else{
+      setPhoneAuthRequest(false);
+    }
+  },[passwordInfo.phoneNum]);
   const smsRequest = (e) => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if (!rgEx.test(passwordInfo.phoneNum)) {
@@ -102,16 +78,16 @@ const PasswordChange = () => {
           phoneCheckRef.current.innerHTML = "";
           phoneNumRef.current.disabled = true;
           requestNumRef.current.disabled = false;
+          setAuthBtnValue("재발송");
         }else{
           context.action.alert({msg: res.message});
         }
       });
     }
   }
-
   const sendSms = async (phoneNum) => {
     const {result, message, data} = await Api.sms_request({
-      data: {phoneNo: phoneNum, authType: 0}
+      data: {phoneNo: phoneNum, authType: 1}
     })
     if(result === "success") {
       setPasswordInfo({
@@ -122,6 +98,37 @@ const PasswordChange = () => {
     return {result:result, message:message};
   }
 
+  //2.인증 번호
+  useEffect(()=>{
+    if(passwordInfo.authNum.length === 6){
+      setAuthCheck(true);
+    }else{
+      setAuthCheck(false);
+    }
+  },[passwordInfo.authNum]);
+
+  const authRequest = (e) =>{
+    if(passwordInfo.authNum.length !== 6){
+      document.getElementById('authNumInputItem').classList.add("error");
+      authCheckRef.current.innerHTML = "인증번호를 형식에 맞게 입력해 주세요.";
+    }else{
+      fetchSmsCheck().then((res)=>{
+        if(res.result === "success"){
+          document.getElementById('authNumInputItem').classList.remove("error");
+          document.getElementById('authNumInputItem').classList.add("success");
+          authCheckRef.current.innerHTML = "";
+          phoneNumRef.current.disabled = true;
+          requestNumRef.current.disabled = true;
+          setCheckAuthValue({check: true, message: "인증성공"})
+          setAuthCheck(true);
+        }else{
+          setCheckAuthValue({check: false, message: "인증실패"})
+          authCheckRef.current.innerHTML = "";
+          context.action.alert({msg: res.message});
+        }
+      });
+    }
+  }
 
   const fetchSmsCheck = async () => {
     const {result, message} = await Api.sms_check({
@@ -130,10 +137,18 @@ const PasswordChange = () => {
         code: Number(passwordInfo.authNum)
       }
     })
-    return {result:result, message:message}
+    return {result:result, message:message};
   }
 
-  //비밀번호
+  //3. 비밀번호
+  useDidMountEffect(() => {
+    validatePassword();
+  }, [passwordInfo.password]);
+
+  useDidMountEffect(()=>{
+    validatePasswordCheck();
+  }, [passwordInfo.passwordCheck])
+
   const validatePassword = () => {
     const num = passwordInfo.password.search(/[0-9]/g)
     const eng = passwordInfo.password.search(/[a-zA-Z]/gi)
@@ -188,8 +203,14 @@ const PasswordChange = () => {
   }
 
   const changePassword = () =>{
-    if (checkPasswordValue.check) {
-      history.push("/login/didLogin")
+    if (checkPasswordValue.check && checkAuthValue.check) {
+      passwordFetch().then((res)=>{
+        if (res.result === 'success') {
+          context.action.alert({callback: () => {history.push('/login/didLogin')}, msg: '비밀번호가 변경되었습니다.'})
+        } else {
+          context.action.alert({msg: res.message})
+        }
+      })
     } else if(passwordInfo.password !== passwordInfo.passwordCheck) {
       document.getElementById('passwordCheckInputItem').classList.add("error");
       document.getElementById('passwordCheckInputItem').classList.remove("success");
@@ -203,8 +224,20 @@ const PasswordChange = () => {
         document.getElementById('passwordCheckInputItem').classList.add("error");
         document.getElementById('passwordCheckInputItem').classList.remove("success");
         passwordCheckRef.current.innerHTML = "비밀번호를 다시 확인해주세요.";
+      } else if (!checkAuthValue.check){
+        context.action.alert({msg: "휴대폰 인증을 해주세요"});
       }
     }
+  }
+
+  async function passwordFetch() {
+    const {result, message} = await Api.password_modify({
+      data: {
+        memId: passwordInfo.phoneNum,
+        memPwd: passwordInfo.password
+      }
+    })
+    return {result:result, message:message};
   }
 
   return (
@@ -217,19 +250,19 @@ const PasswordChange = () => {
               <div className="title">휴대폰 번호</div>
               <div className={`inputItems`} id={'phoneInputItem'}>
                 <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
-                  <input type="tel" name={"phoneNum"} value={passwordInfo.phoneNum} onChange={phoneNumChange} placeholder="휴대폰 번호" maxLength={11} autoComplete="off" ref={phoneNumRef} />
+                  <input type="tel" name={"phoneNum"} value={passwordInfo.phoneNum} onChange={onChange} placeholder="휴대폰 번호" maxLength={11} autoComplete="off" ref={phoneNumRef} />
                 </div>
-                <button type="button" className={`inputBtn disable`} onClick={smsRequest}>인증요청</button>
+                <button type="button" className={`inputBtn ${!phoneAuthRequest && 'disable'}`} onClick={smsRequest}>{authBtnValue}</button>
                 <p className='textLog' ref={phoneCheckRef}/>
               </div>
             </div>
             <div className='inputWrap'>
               <div className="title">인증번호</div>
-              <div className={`inputItems`} id={'authNum'}>
+              <div className={`inputItems`} id={'authNumInputItem'}>
                 <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
-                  <input type="tel" name={"authNum"} value={passwordInfo.authNum} onChange={authNumChange} placeholder="인증 번호" maxLength={6} autoComplete="off" ref={requestNumRef} disabled={true}/>
+                  <input type="tel" name={"authNum"} value={passwordInfo.authNum} onChange={onChange} placeholder="인증 번호" maxLength={6} autoComplete="off" ref={requestNumRef} disabled={true}/>
                 </div>
-                <button type="button" className={`inputBtn disable`} onClick={fetchSmsCheck}>확인</button>
+                <button type="button" className={`inputBtn ${!authCheck && 'disable'}`} onClick={authRequest}>확인</button>
                 <p className='textLog' ref={authCheckRef}/>
               </div>
             </div>
@@ -237,7 +270,7 @@ const PasswordChange = () => {
               <div className="title">비밀번호</div>
               <div className={`inputItems`} id={'passwordInputItem'}>
                 <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
-                  <input type="password" name="password" value={passwordInfo.password} onChange={passwordChange} placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상" autoComplete="off" maxLength={20}/>
+                  <input type="password" name="password" value={passwordInfo.password} onChange={onChange} placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상" autoComplete="off" maxLength={20}/>
                 </div>
                 <p className='textLog' ref={passwordRef}/>
               </div>
@@ -246,13 +279,13 @@ const PasswordChange = () => {
               <div className="title">비밀번호 확인</div>
               <div className={`inputItems`} id={'passwordCheckInputItem'}>
                 <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
-                  <input type="password" name="passwordCheck" value={passwordInfo.passwordChange} onChange={passwordCheckChange} placeholder="비밀번호 다시 입력" autoComplete="off" maxLength={20}/>
+                  <input type="password" name="passwordCheck" value={passwordInfo.passwordCheck} onChange={onChange} placeholder="비밀번호 다시 입력" autoComplete="off" maxLength={20}/>
                 </div>
                 <p className='textLog' ref={passwordCheckRef}/>
               </div>
             </div>
           </div>
-          <SubmitBtn state={!btnActive && 'disabled'} onClick={changePassword} text="변경하기"/>
+          <SubmitBtn state={(checkPasswordValue.check && checkAuthValue.check) ? '' : 'disabled'} onClick={changePassword} text="변경하기"/>
         </form>
       </div>
     </div>
