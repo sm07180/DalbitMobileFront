@@ -9,17 +9,18 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
-import Clip from "./contents/clip/clip"
-
-import {Hybrid, isHybrid} from "context/hybrid";
+import Report from "./contents/report/Report"
+import Clip from "./contents/clip/Clip"
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
-import Report from "pages/remypage/contents/report/Report";
+
+import {Hybrid, isHybrid} from "context/hybrid";
+import Utility from "components/lib/utility";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:'clip'},
-  {menuNm: '설정', path:'setting'},
+  {menuNm: '클립', path:'myclip'},
+  {menuNm: '설정', path:'oldsetting'},
   {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터', path:'customer'},
 ]
@@ -88,10 +89,10 @@ const Remypage = () => {
   switch (settingCategory) {
     case 'report' :
       return(<Report />)
-    case 'clip' :
+    case 'myclip' :
       return(<Clip />)
-    case 'setting' :
-      return(history.push(`/mypage/${context.myInfo.memNo}/bcsetting`))
+    case 'oldsetting' :
+      return(<Setting />)
     case 'notice' :
       return(<Allim />)
     case 'customer' :
@@ -105,10 +106,10 @@ const Remypage = () => {
             <MyInfo data={profile} />
           </section>
           <section className='mydalDetail'>
-            <div className="dalCount">{profile?.dalCnt}달</div>
+            <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
             <div className="buttonGroup">
-              <button>내 지갑</button>
-              <button className='charge'>충전하기</button>
+              <button onClick={() => history.push('/wallet')}>내 지갑</button>
+              <button className='charge' onClick={() => history.push('/store')}>충전하기</button>
             </div>
           </section>
           <section className="myMenu">

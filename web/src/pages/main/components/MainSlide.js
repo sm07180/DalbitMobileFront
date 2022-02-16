@@ -20,11 +20,12 @@ const MainSlide = (props) => {
       disableOnInteraction: false
     },
     on:{
-      click: (event) => {
-        if(event.type === 'touchend' || event.type === 'pointerup') {
-          event.preventDefault();
-          event.stopPropagation();
-          const paths = event.path || event.composedPath();
+      click: (s, e) => {
+        let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
+        if(evt.type === 'touchend' || evt.type === 'pointerup') {
+          evt.preventDefault();
+          evt.stopPropagation();
+          const paths = evt.path || evt.composedPath();
           let swiperIndex = "";
           paths.forEach(dom => {
             if(dom.dataset && dom.dataset.swiperIndex) {

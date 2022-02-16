@@ -38,8 +38,9 @@ const BannerSlide = (props) => {
       clickable: true
     },
     on: {
-      click: (e) => {
-        const {targetUrl} = e.target.dataset
+      click: (s,e) => {
+        let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
+        const {targetUrl} = evt.target.dataset
         openBannerUrl(targetUrl)
       }
     }
