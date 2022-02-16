@@ -61,14 +61,19 @@ const ListRowComponent = (props) => {
         <div className="nick">{item.nickName}</div>
         <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
-      {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
-        <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-        <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-          {(context.profile.memNo === item.mem_no || context.adminChecker) && <button onClick={modifyEvent}>수정하기</button>}
-          {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button onClick={deleteEvent}>삭제하기</button>}
-          {context.profile.memNo !== item.mem_no && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
+      <div className="listBack">
+        <div className="fixIcon">
+          <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="방송공지 고정" />
         </div>
-      </div>}
+        {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
+          <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
+          <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
+            {(context.profile.memNo === item.mem_no || context.adminChecker) && <button onClick={modifyEvent}>수정하기</button>}
+            {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button onClick={deleteEvent}>삭제하기</button>}
+            {context.profile.memNo !== item.mem_no && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
+          </div>
+        </div>}
+      </div>
     </ListRow>
   )
 };
