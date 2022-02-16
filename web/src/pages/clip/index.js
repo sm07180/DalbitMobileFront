@@ -34,18 +34,16 @@ const ClipPage = () => {
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
   const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
   const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
-  const [likeClipInfo, setLikeClipInfo] = useState({}); // 좋아요한 클립
-  const [listenClipInfo, setListenClipInfo] = useState({}); // 최근 들은 클립
+  const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
+  const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
   const [subSearchInfo, setSubSearchInfo] = useState({ ...subjectType[1] }); // 아래 카테고리별 검색 조건
-  
-  const [detail, setDetail] = useState(false)
 
   // 조회 Api
   /* 핫 클립 */
   const getHotClipInfo = () => {
     Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
-      if (res.result === 'success') {
+      if (res.result === 'success' && res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
         for (let i = 0; i < res.data.paging.total; i++) {
@@ -62,7 +60,7 @@ const ClipPage = () => {
         }
         setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
-
+        setHotClipInfo({ list: [], cnt: 0});
       }
     });
   }
@@ -186,7 +184,6 @@ const ClipPage = () => {
 
   return (
     <>
-      {detail === false &&
       <div id="clipPage" >
         <Header title={'클립'} />
         <section className='hotClipWrap'>
@@ -208,7 +205,7 @@ const ClipPage = () => {
           <BannerSlide />
         </section>
         <section className="clipDrawer">
-          {(listenClipInfo.list > 0 || likeClipInfo.list >0 ) &&
+          {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
           <div className="cntTitle">
             <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
           </div>
@@ -272,10 +269,6 @@ const ClipPage = () => {
           <SwiperList data={subClipInfo.list} playAction={playClip}/>
         </section>
       </div>
-      }
-      {/*{detail === true &&
-      <ClipDetail data={popularClipInfo} />
-      }*/}
     </>
   );
 };
