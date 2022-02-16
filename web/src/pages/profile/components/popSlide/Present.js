@@ -3,12 +3,9 @@ import Utility from 'components/lib/utility'
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
-
 import './style.scss'
 import {useHistory} from "react-router-dom";
 import {Context} from "context";
-
-const blockReportTabmenu = ['차단하기','신고하기']
 
 const dalList = [50, 100, 500, 1000, 2000, 3000, 5000, 10000];
 
