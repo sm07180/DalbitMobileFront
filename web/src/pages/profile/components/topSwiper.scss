@@ -1,8 +1,10 @@
 @import "components/ui/_mixin.scss";
 
 #myprofile {
-  .swiper-slide {
-    height:268px;
+  .topSwiper {
+    .swiper-slide {
+      height:268px;
+    }
   }
 }
 
