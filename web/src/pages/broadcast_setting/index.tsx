@@ -520,39 +520,43 @@ export default function BroadcastSetting() {
   }, [videoStream]);
 
   const videoDevice = useCallback(async () =>{
+
+    cams = await AgoraRTC.getCameras();
+    currentCam = cams[0];
+    setCamForm(currentCam.label)
+    sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+
     localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
         width: 1280,
         // Specify a value range and an ideal value
         height: { ideal: 720, min: 720, max: 1280 },
         frameRate: 24,
         bitrateMin: 1130, bitrateMax: 2000,
-      }})
+      },cameraId:currentCam.deviceId})
 
     // play local track on device detect dialog
     localTracks.videoTrack.play("pre-local-player",{mirror:true});
     // localTracks.audioTrack.play();
     // get cameras
-    cams = await AgoraRTC.getCameras();
-    currentCam = cams[0];
-    setCamForm(currentCam.label)
-    sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+
     if(currentCam !==null){
       setVideoState(true)
     }
   },[])
 
   const audioDevice = useCallback(async () => {
+    mics = await AgoraRTC.getMicrophones();
+    currentMic = mics[0];
+    setMicForm(currentMic.label)
+    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
     localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
       encoderConfig: {
         sampleRate: 48000,
         stereo: true,
         bitrate: 192,
-      }})
+      },microphoneId:currentMic.deviceId})
     // get mics
-    mics = await AgoraRTC.getMicrophones();
-    currentMic = mics[0];
-    setMicForm(currentMic.label)
-    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
+
     //$(".mic-input").val(currentMic.label);
     //$(".cam-input").val(currentCam.label);
 
