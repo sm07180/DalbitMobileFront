@@ -21,7 +21,7 @@ export const MessageButton = ({history, context, mailboxAction}) => {
       mailboxAction,
       targetMemNo: context.profile.memNo,
       history,
-      isChatListPage: true
+      isChatListPage: true,
     }
     goMail(goMailParams);
   }
@@ -59,7 +59,7 @@ const TitleButton = (props) => {
     case '클립':
       return (
         <div className="buttonGroup">
-          <MessageButton history={history} mailboxAction={mailboxAction} />
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )

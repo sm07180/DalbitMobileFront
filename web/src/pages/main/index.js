@@ -259,7 +259,6 @@ const MainPage = () => {
       }
     })
 
-    console.log('res : ', res);
     if (res.result === 'success') {
       if (res.hasOwnProperty('data')) {
         setPopupData(
@@ -308,7 +307,8 @@ const MainPage = () => {
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
-      ref={iconWrapRef}>
+         style={{height: '48px'}}
+         ref={iconWrapRef}>
       <div className="icon-wrap">
         <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
       </div>

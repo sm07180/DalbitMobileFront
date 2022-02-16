@@ -15,9 +15,13 @@ export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, his
       roomNo: null,
     };
 
-    globalState.mailChatInfo?.setUserInfo(socketUser);
-    globalState.mailChatInfo?.privateChannelDisconnect();
-    mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
+    if(isChatListPage) {
+      openMailboxBanAlert({ userProfile: globalState.userProfile, globalAction, history });
+    }else {
+      globalState.mailChatInfo?.setUserInfo(socketUser);
+      globalState.mailChatInfo?.privateChannelDisconnect();
+      mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
+    }
   }else if (isHybrid()) {
     if(context.token.isLogin) {
       const myLevel = context.profile.level;
