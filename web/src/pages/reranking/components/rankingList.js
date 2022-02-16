@@ -71,7 +71,9 @@ export default withRouter((props) => {
               </div>
               <div className='listItem'>
                 {tab === "DJ" && <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>}
-                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={() => props.history.push(`/profile/${list.djMemNo}`)}/>
+                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={() => {
+                  tab === "LOVER" && props.history.push(`/profile/${list.djMemNo}`);
+                }}/>
                 <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
               </div>
             </div>
