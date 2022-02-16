@@ -6,13 +6,24 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
+import {useHistory} from "react-router-dom";
 
 const DjList = (props) => {
   const {data, addAction, delAction} = props
 
+  const history = useHistory();
+
   const swiperParams = {
     slidesPerView: 'auto',
   }
+
+  const goProfile = (e) => {
+    const { memNo } = e.currentTarget.dataset;
+
+    if ( memNo !== undefined ) {
+      history.push(`/profile/${memNo}`);
+    }
+  };
 
   return (
     <>
@@ -20,11 +31,10 @@ const DjList = (props) => {
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div className='listWrap' key={index}>
+            <div className='listWrap' key={index} data-mem-no={list.memNo} onClick={goProfile}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.profImg.thumb150x150} />
-                  {list.roomType === '03' && <div className="badgeVideo"></div>}
                 </div>
                 <div className="listItem">
                   <GenderItems data={list.gender} />

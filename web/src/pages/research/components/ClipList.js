@@ -6,12 +6,12 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 
-const HotLiveList = (props) => {
-  const {data, type} = props
+const ClipList = (props) => {
+  const { data } = props;
   const context = useContext(Context); //context
   const history = useHistory();
 
@@ -19,36 +19,38 @@ const HotLiveList = (props) => {
     slidesPerView: 'auto',
   }
 
-  const RoomEnter = (e) => {
-    e.preventDefault();
-    const { roomNo, bjNickNm } = e.currentTarget.dataset;
+  // 클립 듣기
+  const playClip = (e) => {
+    const { clipNo } = e.currentTarget.dataset;
 
-    if (roomNo !== undefined && bjNickNm !== undefined) {
-      RoomValidateFromClip(roomNo, context, history, bjNickNm)
+    if (clipNo !== undefined) {
+      const clipParam = { clipNo: clipNo, gtx: context, history };
+
+      NewClipPlayerJoin(clipParam);
     }
   };
 
   return (
     <>
-      {data.length > 0 &&
+    {data.length > 0 &&
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div key={index} data-room-no={list.roomNo}  data-bj-nick-nm={list.nickNm} onClick={RoomEnter}>
+            <div key={index} data-clip-no={list.clipNo} onClick={playClip}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.bgImg.thumb150x150} />
-                  {list.roomType === '03' && <div className="badgeVideo"></div>}
                 </div>
-                <p className='nick'>{list.nickNm}</p>
+                  <p className='nick'>{list.nickName}</p>
+                  <p className='title'>{list.title}</p>
               </div>
             </div>
           )
         })}
       </Swiper>
-      }
+    }
     </>
   )
 }
 
-export default HotLiveList;
+export default ClipList

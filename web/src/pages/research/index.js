@@ -1,21 +1,28 @@
 import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
-//context
-import API from 'context/api'
-// global component
-import Header from 'components/ui/header/Header.js'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import InputItems from 'components/ui/inputItems/InputItems'
-// component
-import SwiperList from './components/SwiperList'
-// contents
-import SearchHistory from './components/SearchHistory'
-import SearchResult from './components/SearchResult'
-// scss
-import './style.scss'
-import DjList from "pages/research/components/DjList";
-import HotLiveList from "pages/research/components/HotLiveList";
+
 import {broadcastList, deleteFan, getClipList, postAddFan} from "common/api";
 import {Context} from "context";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
+//context
+import API from 'context/api';
+
+// global component
+import Header from 'components/ui/header/Header.js';
+import CntTitle from 'components/ui/cntTitle/CntTitle';
+import InputItems from 'components/ui/inputItems/InputItems';
+
+// component
+import ClipList from "./components/ClipList";
+import DjList from "pages/research/components/DjList";
+import HotLiveList from "pages/research/components/HotLiveList";
+
+// contents
+import SearchHistory from './components/SearchHistory';
+import SearchResult from './components/SearchResult';
+
+// scss
+import './style.scss';
+
 
 const SearchPage = (props) => {
   const inputRef = useRef(); // 검색 input 관리용 ref
@@ -161,18 +168,16 @@ const SearchPage = (props) => {
           </section>
           <section className='clipSection'>
             <CntTitle title="오늘 인기 있는 클립" />
-            <SwiperList data={hotClipListInfo.list} type="clip" />
+            <ClipList data={hotClipListInfo.list}/>
           </section>
-        </>            
+        </>
         :
         <SearchHistory onInputClick={handleSearch}/>)
       }
 
-
       {searching && <SearchResult searchVal={searchParam}/>}
-
     </div>
-  )
-}
+  );
+};
 
-export default SearchPage
+export default SearchPage;
