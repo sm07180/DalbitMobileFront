@@ -75,29 +75,29 @@ const Allim = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if (context.profile.memNo === roomNo) {history.push(`/mypage/${roomNo}/fanboard`)}
+        if (context.profile.memNo === roomNo) {history.push(`myProfile`)}
         else {history.push(`/mypage/${roomNo}?tab=1`)}
         break;
       case "32":                                                                            //내 지갑
         try {history.push(`/mypage/${context.profile.memNo}/wallet`);}
         catch (e) {console.log(e);}
         break;
-      case "35": history.push('/menu/profile'); break;                              //레벨업 알림
+      case "35": history.push('/myProfile'); break;                                 //레벨업 알림
       case "36":                                                                           //팬 등록 알림
-        try {if(memNo !== "") {history.push(`/mypage/${memNo}`);}}
+        try {if(memNo !== "") {history.push(`myProfile`);}}
         catch (e) {console.log(e);}
         break;
-      case "37": history.push('/customer/qnaList'); break;                          //1:1문의 답변 알림
+      case "37": history.push('/customer/inquire'); break;                          //1:1문의 답변 알림
       case "38":                                                                            //마이 스타 방송 공지 알림
         try {if(memNo !== "") { history.push(`/mypage/${memNo}?tab=0`);}}
         catch (e) {console.log(e);}
         break;
-      case "39": history.push(`/rank?rankType=3&dateType=2`); break;                //좋아요 랭킹 주간 알림
-      case "40": history.push(`/rank?rankType=3&dateType=1`); break;                //좋아요 랭킹 일간 알림
-      case "41": history.push(`/rank?rankType=1&dateType=1`); break;                //DJ 랭킹 일간 알림
-      case "42": history.push(`/rank?rankType=1&dateType=2`); break;                //DJ 랭킹 주간 알림
-      case "43": history.push(`/rank?rankType=2&dateType=1`); break;                //FAN 랭킹 일간 알림
-      case "44": history.push(`/rank?rankType=2&dateType=2`); break;                //FAN 랭킹 주간 알림
+      case "39": history.push(`/rank`); break;                                      //좋아요 랭킹 주간 알림
+      case "40": history.push(`/rank`); break;                                      //좋아요 랭킹 일간 알림
+      case "41": history.push(`/rank`); break;                                      //DJ 랭킹 일간 알림
+      case "42": history.push(`/rank`); break;                                      //DJ 랭킹 주간 알림
+      case "43": history.push(`/rank`); break;                                      //FAN 랭킹 일간 알림
+      case "44": history.push(`/rank`); break;                                      //FAN 랭킹 주간 알림
       case "45": fetchDataPlay(roomNo);break;                                               //마이 스타 클립 알림, 내 클립 선물 알림, 3 = pc 클립을 틀 수 있는 새로운 방법이 필요함
       case "46": fetchDataPlay(roomNo); break;                                              //내 클립 댓글 알림
       case "47": fetchDataPlay(roomNo); break;                                              //클립 알림
