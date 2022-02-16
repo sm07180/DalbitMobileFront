@@ -58,7 +58,7 @@ app.get("*", async (req, res) => {
     }
     res.send(indexHtml);
 })
-https.createServer(ssl, app).listen(6443, err => {
+https.createServer(ssl, app).listen(443, err => {
     if (err) throw err;
     console.log("??")
 });
