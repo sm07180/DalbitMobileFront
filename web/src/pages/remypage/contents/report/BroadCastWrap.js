@@ -14,7 +14,7 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import ReportTabMenu from "pages/remypage/components/ReportTabMenu";
 import DatePickerPage from "pages/remypage/contents/report/DatePicker";
 
-const broadCastWrap = () => {
+const BroadCastWrap = () => {
   const context = useContext(Context);
   const history = useHistory();
   //조회 기간설정
@@ -215,4 +215,4 @@ const broadCastWrap = () => {
   )
 }
 
-export default broadCastWrap;
+export default BroadCastWrap;

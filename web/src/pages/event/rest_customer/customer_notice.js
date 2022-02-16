@@ -34,7 +34,7 @@ export default (props) => {
   }, [])
   return (
     <>
-      <Header title="장기 미접속 회원 탈퇴 안내" />
+      <Header title="장기 미접속 회원 탈퇴 안내" type="back" />
       <div id="customerNotice">
         <p className="text">
           안녕하세요. 달빛라이브입니다.
@@ -64,7 +64,7 @@ export default (props) => {
           </li>
           <li>
             <strong className="tit">관련법령</strong>
-            <span className="color_purple">
+            <span className="color_red">
               정보통신망 제29조 2항 및 동법 시행
               <br /> 령 제16조
             </span>

@@ -13,10 +13,6 @@ import Header from 'components/ui/header/Header'
 
 import './style.scss'
 import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
-import Policy from "pages/recustomer/contents/policy/Policy";
-import Privacy from "pages/recustomer/contents/privacy/Privacy";
-import Minor from "pages/recustomer/contents/minor/Minor";
-import Terms from "pages/recustomer/contents/terms/Terms";
 import Faq from "pages/recustomer/contents/faq/FaqTest";
 import Inquire from "pages/recustomer/contents/inquire/InquireTest";
 
@@ -25,14 +21,14 @@ const Customer = () => {
   const params = useParams();
   const context = useContext(Context);
   const [categoryList, setCategory] = useState([
-    {name : "FAQ", file : "customerMainList-faq", path : "faq"},
-    {name : "운영정책", file : "customerMainList-policy", path : "policy"},
-    {name : "1:1문의", file : "customerMainList-inquire", path : "inquire"}
+    {name : "FAQ", file : "customerMainList-faq", path : "/customer/faq"},
+    {name : "운영정책", file : "customerMainList-policy", path : "/rule"},
+    {name : "1:1문의", file : "customerMainList-inquire", path : "/customer/inquire"}
   ]);
 
   const onClick = (e) => {
     const path = e.currentTarget.dataset.idx
-    history.push("/customer/" + path);
+    history.push(path);
   }
 
   return (
@@ -84,18 +80,6 @@ const Customer = () => {
         :
         params.title === "faq" ?
         <Faq/>
-        :
-        params.title === "policy" ?
-        <Policy/>
-        :
-        params.title === "privacy" ?
-        <Privacy/>
-        :
-        params.title === "minor" ?
-        <Minor/>
-        :
-        params.title === "terms" ?
-        <Terms/>
         :
         (params.title === "inquire" && !params.num) ?
         <Inquire/>

@@ -6,10 +6,6 @@ import Header from 'components/ui/header/Header'
 //Content
 import Faq from './contents/faq/Faq'
 import Inquire from './contents/inquire/Inquire'
-import Policy from './contents/policy/Policy'
-import Privacy from './contents/privacy/Privacy'
-import Minor from './contents/minor/Minor'
-import Terms from './contents/terms/Terms'
 import InquireDetail from './contents/inquireDetail/InquireDetail'
 
 import './style.scss'
@@ -25,22 +21,22 @@ const Customer = () => {
     {
       name : "FAQ",
       file : "customerMainList-faq",
-      path : "faq"
+      path : "/customer/faq"
     },
     {
       name : "운영정책",
       file : "customerMainList-policy",
-      path : "policy"
+      path : "/rule"
     },
     {
       name : "1:1문의",
       file : "customerMainList-inquire",
-      path : "inquire"
+      path : "/customer/inquire"
     },
   ]);
 
   const golink = (path) => {
-    history.push("/customer/" + path);
+    history.push(path);
   }
 
   return (
@@ -94,18 +90,6 @@ const Customer = () => {
         :
         category === "faq" ?
           <Faq/>
-        :
-        category === "policy" ?
-          <Policy/>
-        :
-        category === "privacy" ?
-          <Privacy/>
-        :
-        category === "minor" ?
-          <Minor/>
-        :
-        category === "terms" ?
-          <Terms/>
         :
         (category === "inquire" && !qnaIdx) ?
           <Inquire/>

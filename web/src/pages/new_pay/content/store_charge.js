@@ -1,5 +1,5 @@
 /**
- * @route /pay/store
+ * @route /store
  * @file /pay/content/storeCharge.js
  * @brief 달충전 (구 스토어) 페이지
  *        마이페이지 메뉴 - 달 충전 혹은 마이페이지 - 내지갑 - 달 충전으로 접근 가능

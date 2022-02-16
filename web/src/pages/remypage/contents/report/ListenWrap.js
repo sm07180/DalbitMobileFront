@@ -14,7 +14,7 @@ import DatePicker from "./DatePicker";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import PopSlide from "components/ui/popSlide/PopSlide";
 
-const listenWrap = () =>{
+const ListenWrap = () =>{
   const history = useHistory();
   const context = useContext(Context);
   //조회 기간설정
@@ -187,4 +187,4 @@ const listenWrap = () =>{
   )
 }
 
-export default listenWrap;
+export default ListenWrap;

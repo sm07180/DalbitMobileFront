@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 // global components
 import GenderItems from 'components/ui/genderItems/GenderItems'
@@ -7,13 +7,30 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import '../scss/resultCnt.scss'
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
+import {Context} from "context";
+import {useHistory} from "react-router-dom";
 
 const SearchClipList = (props) => {
   const {data, type} = props
+  const context = useContext(Context); //context
+  const history = useHistory();
 
   const hanldeImgError = (e) => {
     e.currentTarget.src = errorImg;
   }
+
+  // 클립 듣기
+  const playClip = (e) => {
+    const { clipNo } = e.currentTarget.dataset;
+
+    if (clipNo !== undefined) {
+      const clipParam = { clipNo: clipNo, gtx: context, history };
+
+      NewClipPlayerJoin(clipParam);
+    }
+  };
+
 
   return (
     <>
@@ -22,7 +39,7 @@ const SearchClipList = (props) => {
           <>
             {data.map((list,index) => {
               return (
-                <div className="listRow" key={index}>
+                <div className="listRow" key={index} data-clip-no={list.clipNo} onClick={playClip}>
                   <div className="photo">
                     <img src={list.bgImg.thumb150x150} onError={hanldeImgError} />
                   </div>

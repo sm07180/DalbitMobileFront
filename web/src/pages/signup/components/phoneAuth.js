@@ -57,10 +57,12 @@ const PhoneAuth = (props) => {
     const {result, message, data} = await Api.sms_request({
       data: {phoneNo: phoneNum, authType: 0}
     })
-    setSignForm({
-      ...signForm,
-      CMID:data.CMID
-    })
+    if(result === "success") {
+      setSignForm({
+        ...signForm,
+        CMID: data.CMID
+      })
+    }
     return {result:result, message:message};
   }
 

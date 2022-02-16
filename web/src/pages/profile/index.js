@@ -34,7 +34,7 @@ import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
-const socialTabmenu = ['피드','팬보드','클립']
+const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
 
 const ProfilePage = () => {
@@ -514,7 +514,7 @@ const ProfilePage = () => {
           {isMyProfile && <button onClick={() => {
             socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
               socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
-          }}>>등록</button>}
+          }}>등록</button>}
         </div>
 
         {/* 피드 */}

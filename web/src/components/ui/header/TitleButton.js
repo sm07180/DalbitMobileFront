@@ -30,11 +30,11 @@ export const MessageButton = ({history, context, mailboxAction}) => {
 }
 
 export const AlarmButton = ({history, newAlarmCnt=0}) => {
-  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/menu/alarm')} />
+  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')} />
 }
 
 export const StoreButton = ({history}) => {
-  return <button className='store' onClick={() => history.push('/pay/store')} />
+  return <button className='store' onClick={() => history.push('/store')} />
 }
 
 export const SearchButton = ({history}) => {
