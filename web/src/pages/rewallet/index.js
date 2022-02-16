@@ -15,54 +15,85 @@ import './style.scss'
 import {useHistory} from "react-router-dom";
 import {Context} from "context";
 
-const walletTabMenu = ['달 내역', '별 내역', '환전']
+const walletTabMenu = ['달 내역', '별 내역', '환전'];
 
 const WalletPage = (props) => {
-  const [walletType, setWalletType] = useState(walletTabMenu[2])
   const history = useHistory();
   const context = useContext(Context);
   const {walletData} = context;
+  const {walletType, byeolTotCnt, dalTotCnt, popHistory, listHistory} = walletData;
 
-  //달, 별 상세조건 옵션리스트
-  const getWalletPop = () => {
-    Api.getMypageWalletPop({walletType: 0})
-      .then((res) => {
-      const {result, data, message} = res;
+  //달, 별 내역 조회하기
+  //상세조건 옵션리스트, 지갑 내역 리스트 조회 
+  const getWalletHistory = () => {
+    //환전하기 return;
+    if(walletType === walletTabMenu[2]) return;
 
-      if(result ==='success'){
-        const {list} = data;
-        // cnt: 1
-        // order: 1
-        // text: "환전 사용"
-        // type: "use"
-        // walletCode: 1
-
-      } else {
-      }
-    });
-  }
-
-  // 지갑 내역
-  const getWalletList = () => {
-    Api.getMypageWalletList({
-      walletType: 1,  //walletType [0: 별, 1: 달]
-      walletCode: 0,
+    const type = walletType === walletTabMenu[0]? 1 : 0;
+    const popParam = {walletType: type};
+    const listParam = {
+      walletType: type,  // [0: 별, 1: 달]
+      walletCode: 0, // '0' or '0|1|2|3'
       page: 1,
       records: 20
-    }).then((res) => {
-      const {result, data, message} = res;
-
-      if (result === 'success') {
-        const {list, paging, byeolTotCnt, dalTotCnt} = data;
-      } else {
-      }
+    };
+    context.globalAction.dispatchWalletData({
+      type: 'ADD_HISTORY',
+      data: {listHistory: [], popHistory: []}
     });
+
+    Promise.all([
+      Api.getMypageWalletPop(popParam),
+      Api.getMypageWalletList(listParam)])
+      .then(([popRes, listRes]) => {
+        if (popRes.result === 'success' && listRes.result === 'success') {
+          //값을 이상하게 줘서 타입에따라서 받고 안받고 처리함...
+          const byeolAndDal = walletType === walletTabMenu[0]?
+            {dalTotCnt : listRes.data?.dalTotCnt}: {byeolTotCnt : listRes.data?.byeolTotCnt};
+
+          context.globalAction.dispatchWalletData({
+            type: 'ADD_DATA',
+            data: {
+              ...byeolAndDal,
+              listHistory: listRes.data?.list,
+              popHistory: popRes.data?.list,
+            }
+          });
+        } else {
+          context.globalAction.dispatchWalletData({
+            type: 'ADD_HISTORY',
+            data: {listHistory: [], popHistory: []}
+          });
+        }
+
+      });
   }
+
+  //별 수치가 안맞음.
+  const getNewWallet = async () => {
+    const {result, data, message} = await Api.getMyPageNewWallet();
+
+    if(result === 'success'){
+      context.globalAction.dispatchWalletData({type:'ADD_DATA',
+        data:{
+          byeolTotCnt : data?.byeol,
+          dalTotCnt : data?.dal,
+      }});
+    }
+  };
+
+  //tab 이동
+  const setTabType = (walletType) => {
+    context.globalAction.dispatchWalletData({type:'ADD_DATA', data: {walletType}})
+  }
+
   useEffect(() => {
-    getWalletPop();
-    getWalletList();
-    context.globalAction.dispatchWalletData({type:'ADD_HISTORY', data: {listHistory: [], popHistory:[]}});
-  },[]);
+    if(walletType !== walletTabMenu[2]){ //환전하기
+      getWalletHistory(); 
+    }
+    // getWalletList();
+    // context.globalAction.dispatchWalletData({type:'ADD_HISTORY', data: {listHistory: [], popHistory:[], dalCnt:0, byeolCnt:0}});
+  },[walletType]);
 
   // 환전취소
   async function cancelExchangeFetch() {
@@ -85,8 +116,6 @@ const WalletPage = (props) => {
       })
     }
   }
-
-
 
   //ios 본인인증 체크
   const checkSelfAuth = async () => {
@@ -126,30 +155,31 @@ const WalletPage = (props) => {
     fetchSelfAuth()
     // history.push('/money_exchange')
   }
-  
+
   return (
     <div id="walletPage">
       <Header type='back' title='내 지갑'>
         {walletType === walletTabMenu[1] ? (
           <div className="buttonGroup">
             <button className="payCount" onClick={() => {history.push('/pay/store')}}>
-              <i className='iconStar'></i>
-              <span>{Utility.addComma(33000)}</span>
+              <i className='iconStar'/>
+              <span>{Utility.addComma(byeolTotCnt)}</span>
             </button>
           </div>
         ) : (
           <div className="buttonGroup">
             <button className="payCount" onClick={() => {history.push('/pay/store')}}>
-              <i className='iconDal'></i>
-              <span>{Utility.addComma(33000)}</span>
+              <i className='iconDal'/>
+              <span>{Utility.addComma(dalTotCnt)}</span>
             </button>
           </div>
         )}
       </Header>
-      <Tabmenu data={walletTabMenu} tab={walletType} setTab={setWalletType} />
+      <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} />
+
       {/*달 내역 & 별 내역*/}
       {walletType !== walletTabMenu[2] ?
-        <HistoryList />
+        <HistoryList walletData={walletData}/>
         :
         /*환전*/
         <Exchange />
