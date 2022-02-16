@@ -399,8 +399,10 @@ export default function GNB() {
               <li onClick={() => history.push('/search')}/>
               <li onClick={() => history.push('/rank')}/>
               <li onClick={() => history.push('/mypage')}/>
-              <li className="new" onClick={() => history.push('/')}>
-                <span className="newDot"></span>
+              <li className="new" onClick={() => history.push('/notice')}>
+                {globalState.alarmStatus &&
+                  <span className="newDot"/>
+                }
               </li>
             </ul>
           </nav>

@@ -13,6 +13,8 @@ import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
+import Setting from "pages/resetting/Setting";
+import Customer from "pages/recustomer/Customer";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -88,8 +90,12 @@ const Remypage = () => {
       return(<Report />)
     case 'clip' :
       return(<Clip />)
+    case 'setting' :
+      return(<Setting />)
     case 'notice' :
       return(<Allim />)
+    case 'customer' :
+      return(<Customer />)
     default :
       return(
         <>
@@ -106,7 +112,7 @@ const Remypage = () => {
             </div>
           </section>
           <section className="myMenu">
-            <MyMenu data={myMenuItem}/>
+            <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
             {isHybrid() &&
             <div className="versionInfo">
               <span className="title">버전정보</span>

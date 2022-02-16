@@ -1,7 +1,7 @@
 import React from 'react'
 // //components
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header'
 
 export default () => {
   return (

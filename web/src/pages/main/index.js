@@ -21,6 +21,8 @@ import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
+import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
+import LayerPopupEvent from "pages/main/component/layer_popup_event";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -51,6 +53,8 @@ const MainPage = () => {
 
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
+
+  const [popupData, setPopupData] = useState([]);
 
   const [updatePopInfo, setUpdatePopInfo] = useState({
     showPop: false,
@@ -233,7 +237,6 @@ const MainPage = () => {
 
   /* 업데이트 확인 */
   const updatePopFetch = async () => {
-
     if (isHybrid()) {
       if (sessionStorage.getItem('checkUpdateApp') === null) {
         sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
@@ -245,6 +248,29 @@ const MainPage = () => {
           const storeUrl = res.data.storeUrl
           setUpdatePopInfo({showPop: isUpdate, storeUrl})
         })
+      }
+    }
+  }
+
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+
+    console.log('res : ', res);
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
       }
     }
   }
@@ -266,6 +292,7 @@ const MainPage = () => {
     fetchMainInfo()
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
+    fetchMainPopupData('6');
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
@@ -301,7 +328,7 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP 111'} more={'rank'}>
+        <CntTitle title={'일간 TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
         </CntTitle>
         <SwiperList
@@ -329,6 +356,8 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+
+    {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
   return MainLayout;
 }

@@ -129,6 +129,7 @@
         }
         .listColumn {
           width:68px;
+          cursor: pointer;
           .photo {
             margin-bottom:2px;
             background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom,#B620FF,#FF41EC) !important;
@@ -193,6 +194,7 @@
           }
           .listColumn {
             width:102px;
+            cursor: pointer;
             .photo {
               position:relative;
               height:136px;
@@ -258,6 +260,7 @@
           width:102px;
           border-radius:16px;
           overflow:hidden;
+          cursor: pointer;
           .photo {
             height:150px;
             img {
@@ -340,6 +343,7 @@
         @include flex(center);
         height:110px;
         margin-bottom:12px;
+        cursor: pointer;
         .photo {
           position:relative;
           flex-shrink: 0;

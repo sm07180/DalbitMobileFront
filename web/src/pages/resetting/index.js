@@ -6,6 +6,10 @@ import Header from 'components/ui/header/Header'
 
 import Push from './contents/push'
 import Broadcast from './contents/broadcast'
+import Forbid from './contents/forbid'
+import Manager from './contents/manager'
+import BlackList from './contents/blackList'
+import AlarmUser from './contents/alarmUser'
 
 
 import './style.scss'
@@ -63,15 +67,15 @@ const SettingPage = () => {
           <Broadcast/>
         :
         settingType === "forbid" ?
-          <>금지어 관리</>
+          <Forbid />
         :
         settingType === "manager" ?
-          <>매니저 관리</>
+          <Manager />
         :
         settingType === "blockList" ?
-          <>차단회원 관리</>
+          <BlackList />
         :
-          <>알림받기 설정 회원 관리</>
+          <AlarmUser />
       }
    </div>
   )

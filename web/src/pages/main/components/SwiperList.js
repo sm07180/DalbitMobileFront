@@ -24,7 +24,7 @@ const SwiperList = (props) => {
       if (!globalState.baseData.isLogin) {
         history.push("/login");
       }else{
-        history.push(`/profile/${memNo}`);
+        history.push(`/profile/${item.memNo}`);
       }
     }else if(type === 'daldungs') {
       RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);

@@ -14,9 +14,9 @@ const ClipRankList = (props) => {
             </div>
             <div className="rank">{list.rank}</div>
               <div className="listContent">
-                <div className="type">{list.type}</div>
+                <div className="type">{list.subjectName}</div>
                 <div className="title">{list.title}</div>
-                <div className="nick">{list.nickNm}</div>
+                <div className="nick">{list.nickName}</div>
               </div>
           </div>
         )
