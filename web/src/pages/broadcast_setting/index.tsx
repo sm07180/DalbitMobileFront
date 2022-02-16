@@ -54,7 +54,7 @@ type State = {
   welcomeMsgChange: string;
   imageType: number;
   mediaType: 'a'|'v';
-  platFormType:string;
+  micFormType:string;
   camFormType:string;
 };
 
@@ -79,7 +79,7 @@ type Action =
   | { type: "SET_IMAGETYPE"; imageType: number }
   | { type: "SET_MEDIATYPE"; mediaType: 'a'|'v' }
   | { type: "SET_VIDEOSTATE"; videoState: boolean }
-  | { type: "SET_PLATFORM"; platFormType: string }
+  | { type: "SET_MICFORM"; micFormType: string }
   | { type: "SET_CAMFORM"; camFormType: string };
 
 
@@ -101,10 +101,10 @@ function reducer(state: State, action: Action) {
         ...state,
         entryType: action.entryType,
       };
-    case "SET_PLATFORM":
+    case "SET_MICFORM":
       return {
         ...state,
-        platFormType: action.platFormType,
+        micFormType: action.micFormType,
       };
     case "SET_CAMFORM":
       return {
@@ -171,7 +171,7 @@ export default function BroadcastSetting() {
     welcomeMsgChange: "",
     imageType: IMAGE_TYPE.PROFILE,
     mediaType: BROAD_TYPE.AUDIO,
-    platFormType:"",
+    micFormType:"",
     camFormType:""
   });
 
@@ -201,8 +201,8 @@ export default function BroadcastSetting() {
     dispatchWithoutAction({ type: "SET_ENTRY", entryType: access_type });
   }, []);
 
-  const setPlatForm = useCallback((platform_type: string) => {
-    dispatchWithoutAction({ type: "SET_PLATFORM", platFormType: platform_type });
+  const setMicForm = useCallback((micFormType: string) => {
+    dispatchWithoutAction({ type: "SET_MICFORM", micFormType: micFormType });
   }, []);
 
   const setCamForm = useCallback((camFormType: string) => {
@@ -522,41 +522,59 @@ export default function BroadcastSetting() {
     setVideoState(false);
   }, [videoStream]);
 
-  const mediaDevice = useCallback(async () => {
-    [ localTracks.audioTrack, localTracks.videoTrack ] = await Promise.all([
-      // create local tracks, using microphone and camera
-      AgoraRTC.createMicrophoneAudioTrack({
-        encoderConfig: {
-          sampleRate: 48000,
-          stereo: true,
-          bitrate: 192,
-        }}),
-      AgoraRTC.createCameraVideoTrack({ encoderConfig: {
-          width: 1280,
-          // Specify a value range and an ideal value
-          height: { ideal: 720, min: 720, max: 1280 },
-          frameRate: 24,
-          bitrateMin: 1130, bitrateMax: 2000,
-        }})
-    ]);
+  const videoDevice = useCallback(async () =>{
+    localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+        width: 1280,
+        // Specify a value range and an ideal value
+        height: { ideal: 720, min: 720, max: 1280 },
+        frameRate: 24,
+        bitrateMin: 1130, bitrateMax: 2000,
+      }})
 
     // play local track on device detect dialog
     localTracks.videoTrack.play("pre-local-player",{mirror:true});
     // localTracks.audioTrack.play();
-
-    // get mics
-    mics = await AgoraRTC.getMicrophones();
-    currentMic = mics[0];
-    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
-    //$(".mic-input").val(currentMic.label);
-
     // get cameras
     cams = await AgoraRTC.getCameras();
     currentCam = cams[0];
+    setCamForm(currentCam.label)
     sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+    if(currentCam !==null){
+      setVideoState(true)
+    }
+  },[])
+
+  const audioDevice = useCallback(async () => {
+    localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
+      encoderConfig: {
+        sampleRate: 48000,
+        stereo: true,
+        bitrate: 192,
+      }})
+    // get mics
+    mics = await AgoraRTC.getMicrophones();
+    currentMic = mics[0];
+    setMicForm(currentMic.label)
+    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
+    //$(".mic-input").val(currentMic.label);
     //$(".cam-input").val(currentCam.label);
-    setVideoState(true)
+
   }, []);
+
+  async function switchCamera(label) {
+    currentCam = cams.find(cam => cam.label === label);
+    // switch device of local video track.
+    await localTracks.videoTrack.setDevice(currentCam.deviceId);
+    sessionStorage.setItem("cam", JSON.stringify(currentMic.deviceId));
+  }
+
+  async function switchMicrophone(label) {
+    currentMic = mics.find(mic => mic.label === label);
+    console.log(currentMic.label)
+    // switch device of local audio track.
+    await localTracks.audioTrack.setDevice(currentMic.deviceId);
+    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
+  }
 
   useEffect(() => {
     async function initDeviceAudioStream() {
@@ -607,6 +625,7 @@ export default function BroadcastSetting() {
   useEffect(() => {
 
     if (state.mediaType === BROAD_TYPE.AUDIO) {
+      audioDevice();
       constraint = {
         ...constraint,
         video: false,
@@ -616,7 +635,7 @@ export default function BroadcastSetting() {
         ...constraint,
         video: true,
       };
-      mediaDevice();
+      videoDevice();
 
       /*const initDeivce = async () => {
         if (videoStream === null) {
@@ -777,25 +796,24 @@ export default function BroadcastSetting() {
             </div>
 
           </div>
-          {/*<ul id={"micList"} className="access">
+          <ul id={"micList"} className="access">
             {mics.map((item, index) => {
               return(
                 <li
                   key={index}
                   onClick={() => {
-                    setPlatForm(item.label);
-                    sessionStorage.setItem("mic", JSON.stringify(item.deviceId));
-
+                    setMicForm(item.label);
+                    switchMicrophone(item.label)
                   }}
                   className={
-                    state.platFormType == item.label
+                    state.micFormType == item.label
                       ? "access__list active"
                       : "access__list"
                   }
                 >{item.label}</li>
               )
             })}
-          </ul>*/}
+          </ul>
           {/* 방송 타입 */}
           <div className="title">음성/영상 설정</div>
           <ul className="access">
@@ -830,7 +848,7 @@ export default function BroadcastSetting() {
               <div className="title">음성/영상 상태</div>
               {/*<div id="localVideoSection"/>*/}
               <div id="pre-local-player"/>
-              {/*<ul id={"camList"} className="access">
+              <ul id={"camList"} className="access">
                 {cams.map((item, index) => {
                   return(
                     <li
@@ -838,7 +856,7 @@ export default function BroadcastSetting() {
                       onClick={() => {
                         setCamForm(item.label);
                         sessionStorage.setItem("cam", JSON.stringify(item.deviceId));
-
+                        switchCamera(item.label)
                       }}
                       className={
                         state.camFormType == item.label
@@ -848,7 +866,7 @@ export default function BroadcastSetting() {
                     >{item.label}</li>
                   )
                 })}
-              </ul>*/}
+              </ul>
             </>
           )}
           {/*아고라 와우자 분기값 셋팅 테스트용*/}
