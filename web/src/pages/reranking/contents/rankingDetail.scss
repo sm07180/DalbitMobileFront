@@ -291,6 +291,7 @@
         text-align: center;
         @include font(16px, 400, #202020);
         line-height: 55px;
+        cursor: pointer;
         &.active {
           @include font(16px, 700, #FF3C7B);
         }
