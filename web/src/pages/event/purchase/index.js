@@ -52,7 +52,7 @@ export default () => {
     if (context.customHeader['os'] === OS_TYPE['IOS']) {
       return webkit.messageHandlers.openInApp.postMessage('')
     } else {
-      return history.push('/pay/store?event=3')
+      return history.push('/store?event=3')
     }
   }
 

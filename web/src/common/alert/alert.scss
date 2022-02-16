@@ -1,44 +1,24 @@
 @import "../../asset/scss/common/global";
+@import "components/ui/_mixin.scss";
 
 #alert {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: fixed;top: 0;left: 0;
+  @include flex(center,center);
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   text-align: center;
-  z-index: 999;
-
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: $ALERT-ZINDEX;
   .wrapper {
-    display: flex;
-    flex-direction: column;
-
-    .btnClose {
-      width: 36px;
-      height: 36px;
-      background: url("#{$IMG_SERVER}/svg/ic_close_m.svg") center no-repeat;
-      cursor: pointer;
-      margin-left: auto;
-      text-indent: -9999px;
-    }
-
+    @include flex($fd:column);
     .wrapperBg {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 300px;
-      padding: 16px 12px;
-      border-radius: 10px;
+      @include flex(center,center,column);
+      width: 328px;
+      padding: 16px;
+      border-radius: 28px; 
       text-align: center;
-      box-sizing: border-box;
-      background: #fff;
+      background: white;
     }
-
     .title {
       display: block;
       width: 100%;
@@ -51,46 +31,22 @@
       }
     }
     .content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       flex: 1;
-      padding: 22px 20px 34px 20px;
+      @include flex(center,center,column);
+      min-height:72px;
+      margin: 26px 0 20px;
       font-size: 16px;
-      letter-spacing: -0.35px;
-      line-height: 24px;
+      @include font(16px,$Bold,#202020);
       .contentText {
-        word-break: break-all;
+        word-break: keep-all;
       }
     }
     .subCont {
-      display: block;
-      margin-top: 3px;
-      font-size: 12px;
-      line-height: 1.2;
+      margin-top: 4px;
+      word-break: keep-all; 
+      @include font(12px,$Regular,$MAINCOLOR);
       &.isBold {
         font-weight: $bold;
-      }
-    }
-    .btn {
-      width: 100%;
-      height: 44px;
-      font-size: 18px;
-      border-radius: 12px;
-      color: $white;
-      font-weight: $bold;
-      text-align: center;
-      background-color: $primary;
-      &.btn_cancel {
-        width: 49%;
-        background-color: $greishGray;
-      }
-      &.btn_ok {
-        width: 49%;
-        &.isDisable {
-          background: $mediumGray;
-        }
       }
     }
 
@@ -122,8 +78,5 @@
     .btnWrap {
       margin-top: 0;
     }
-  }
-
-  .boost_wrapper {
   }
 }

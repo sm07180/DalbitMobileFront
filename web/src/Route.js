@@ -47,8 +47,9 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 고객센터
-const ReCustomer = React.lazy(() => import('pages/recustomer/Customer'))
-
+const ReCustomer = React.lazy(() => import('pages/recustomer'))
+// 운영정책
+const ReRule = React.lazy(() => import('pages/rerule'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
@@ -156,10 +157,13 @@ const Router = () => {
 
         <Route exact path="/eventzip" component={EventZip} />
 
+        <Route exact path="/rule/" component={ReRule} />
+        <Route exact path="/rule/:category" component={ReRule} />
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
-        <Route exact path="/rank/benefit" component={RankingBenefit} />
-        {/* <Route exact path="/rank/:type" component={RankingGuide} /> */}
+        <Route exact path="/rankBenefit" component={RankingBenefit} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
@@ -179,7 +183,7 @@ const Router = () => {
         <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
-        <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
+        <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
 
         <Route exact path="/pay" component={Pay} />

@@ -9,6 +9,7 @@ import moment from 'moment';
 import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import ClipSubTitle from './components/ClipSubTitle'
 import SwiperList from './components/SwiperList'
@@ -21,19 +22,18 @@ import API from "context/api";
 import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
-import {ClipPlayerJoin} from "common/audio/clip_func";
+import {ClipPlayerJoin, NewClipPlayerJoin} from "common/audio/clip_func";
 import {IMG_SERVER} from "context/config";
 
 const ClipPage = () => {
   const context = useContext(Context);
-
   const history = useHistory();
   const subjectType = useSelector((state)=> state.clip.subjectType); //
   // 떠오른 클립 배경 색상, 나중에 CORS 오류 고치면 없앨거라서 redux 안씀
   const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1'];
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
   const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
-  const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
+  const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
   const [likeClipInfo, setLikeClipInfo] = useState({}); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({}); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
@@ -44,24 +44,23 @@ const ClipPage = () => {
   // 조회 Api
   /* 핫 클립 */
   const getHotClipInfo = () => {
-    Api.getClipRankingList({ rankType: 1, rankingDate: '2022-01-24', page: 1, records: 9 }).then(res => {
+    Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
       if (res.result === 'success') {
         let tempHotClipList = [];
         let temp = [];
-        for (let i = 0; i < 9; i++) {
-
+        for (let i = 0; i < res.data.paging.total; i++) {
           if (res.data.list.length > i) {
             temp.push(res.data.list[i]);
           } else {
             temp.push([]);
           }
 
-          if (i % 3 === 2) {
+          if (i % 3 === 2 || (i + 1) == res.data.paging.total) {
             tempHotClipList.push(temp);
             temp = [];
           }
         }
-        setHotClipInfo(tempHotClipList);
+        setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
 
       }
@@ -159,12 +158,12 @@ const ClipPage = () => {
   }
 
   const playClip = (e) => {
-    const { clipNo } = e.currentTarget.datset;
+    const { clipNo } = e.currentTarget.dataset;
 
     if (clipNo !== undefined) {
-      /*ClipPlayerJoin(e);
-      ClipPlayerJoin(clipNo, globalCtx, history);*/
-      history.push(`/clip/${clipNo}`);
+      const clipParam = { clipNo: clipNo, gtx: context, history };
+
+      NewClipPlayerJoin(clipParam);
     }
   };
 
@@ -190,38 +189,23 @@ const ClipPage = () => {
       {detail === false &&
       <div id="clipPage" >
         <Header title={'클립'} />
-        {/*{hotClipInfo && hotClipInfo.length > 0 &&
-        <section className='hotClipWrap'>
-          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/'} />
-          <HotClipList data={hotClipInfo} />
-        </section>
-        }*/}
         <section className='hotClipWrap'>
           <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
-          {hotClipInfo.length > 0 &&
+          {hotClipInfo.list.length > 0 &&
           <Swiper {...swiperParams}>
-            {hotClipInfo.map((row, index) => {
+            {hotClipInfo.list.map((row, index) => {
               return (<div key={index}>
                 {row.map((coreRow, coreIndex) => {
-                  return (<HotClip key={coreIndex} info={coreRow}/>)
+                  if (Object.keys(coreRow).length > 0) {
+                    return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
+                  }
                 })}
               </div>);
             })}
           </Swiper>}
         </section>
         <section className='bannerWrap'>
-          <Swiper {...swiperParams}>
-            <div>
-              <div className="bannerBox">
-                <div className="bannerItem"/>
-              </div>
-            </div>
-            <div>
-              <div className="bannerBox">
-                <div className="bannerItem"/>
-              </div>
-            </div>
-          </Swiper>
+          <BannerSlide />
         </section>
         <section className="clipDrawer">
           {(listenClipInfo.list > 0 || likeClipInfo.list >0 ) &&
@@ -232,20 +216,20 @@ const ClipPage = () => {
           {listenClipInfo.list &&
           <>
             <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
-            <SwiperList data={listenClipInfo.list} />
+            <SwiperList data={listenClipInfo.list} playAction={playClip} />
           </>
           }
           {likeClipInfo.list &&
           <>
             <ClipSubTitle title={'좋아요 한 클립'} more={'clip/like/list'}/>
-            <SwiperList data={likeClipInfo.list} />
+            <SwiperList data={likeClipInfo.list} playAction={playClip} />
           </>
           }
         </section>
         <section className="nowClipWrap">
           {popularClipInfo.length > 0 &&
           <>
-            <CntTitle title={'방금 떠오른 클립'} more={'/'} />
+            <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
             <Swiper {...swiperParams}>
               {popularClipInfo.map((row, index) => {
                 return (
@@ -253,7 +237,7 @@ const ClipPage = () => {
                     <div>
                       {row.map((coreRow, coreIndex) => {
                         if (Object.keys(coreRow).length > 0) {
-                          return (<NowClip key={coreIndex} info={coreRow}/>)
+                          return (<NowClip key={coreIndex} info={coreRow} playAction={playClip}/>)
                         } else {
                           return <></>;
                         }
@@ -285,7 +269,7 @@ const ClipPage = () => {
           <CntTitle title={`${subSearchInfo.cdNm}는(은) 어떠세요?`}>
             <button onClick={changeList}>새로고침</button>
           </CntTitle>
-          <SwiperList data={subClipInfo.list} />
+          <SwiperList data={subClipInfo.list} playAction={playClip}/>
         </section>
       </div>
       }

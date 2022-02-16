@@ -5,9 +5,11 @@
     >div{
       width: 100%;
       padding: 0 16px;
-    }
-    .hotClip:nth-child(3n) {
-      padding: 0 16px 0 0;
+      &:nth-child(3n) {
+        .hotClip {
+          margin-bottom:0;
+        }
+      }
     }
   }
 }

@@ -63,7 +63,7 @@ export default function Payment() {
             <span className="inquiry__number">1522-0251</span>
           </div> */}
 
-          <button className="payButton payButton--active" onClick={() => history.push("/pay/store")}>
+          <button className="payButton payButton--active" onClick={() => history.push("/store")}>
             확인
           </button>
         </div>

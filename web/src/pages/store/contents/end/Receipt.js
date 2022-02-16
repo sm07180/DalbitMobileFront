@@ -28,9 +28,11 @@ const Receipt = () => {
   const payTracking = () =>{
     if (window.fbq) {
       window.fbq("track", "Purchase");
+      window.fbq("track", "Buy_moon");
     }
     if (window.firebase) {
       window.firebase.analytics().logEvent("Purchase");
+      window.firebase.analytics().logEvent("Buy_moon");
     }
     if (window.kakaoPixel) {
       window.kakaoPixel("114527450721661229").purchase();
@@ -64,7 +66,7 @@ const Receipt = () => {
       case 'CN':
         return "카드 결제"
       case 'MC':
-        return "핸드폰 결제"
+        return "휴대폰 결제"
       case 'GM':
         return '문화상품권'
       case 'HM':

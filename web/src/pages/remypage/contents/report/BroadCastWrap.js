@@ -14,7 +14,7 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import ReportTabMenu from "pages/remypage/components/ReportTabMenu";
 import DatePickerPage from "pages/remypage/contents/report/DatePicker";
 
-const broadCastWrap = () => {
+const BroadCastWrap = () => {
   const context = useContext(Context);
   const history = useHistory();
   //조회 기간설정
@@ -44,9 +44,10 @@ const broadCastWrap = () => {
       startDt: dt.pickdataPrev,
       endDt: dt.pickdataNext,
       page: 1,
-      records: 100
+      records: 999
     }
     API.report_broad({params}).then((res) => {
+      console.log(res);
       if(res.result === "success") {
         if(!(res.data.list.length > 0)) { //리스트 없을 시 api에서 값 자체를 안넘겨줌 -> 고정값 0
           setBroadListInfo([]);
@@ -136,6 +137,7 @@ const broadCastWrap = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return(
     <>
       <section className="periodWrap">
@@ -215,4 +217,4 @@ const broadCastWrap = () => {
   )
 }
 
-export default broadCastWrap;
+export default BroadCastWrap;
