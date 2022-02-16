@@ -65,12 +65,22 @@
                 .stepTip {
                     position: relative;
                     @include flex(center, center, column);
-                    width: 270px; height: 10px;
+                    width: 270px; height: 101px;
+                    padding: 14px;
+                    margin-top: 25px;
                     border-radius: 22px;
                     background-image: url("https://image.dalbitlive.com/event/dalla/7650/event_Tipbox-bg.png");
                     background-position: center;
                     background-repeat: no-repeat;
                     background-size: contain;
+                    box-sizing: border-box;
+                    .tipTitle {
+                        @include font(20px, 900, #FF3C7B);
+                        margin-bottom: 8px;
+                    }
+                    .tipText {
+                        @include font(15px, 500, #010101);
+                    }
                 }
                 .eventBtn {
                     @include flex(center, center);
@@ -81,8 +91,14 @@
                     background-color: #FFF;
                     box-shadow: 0px 4px 0px #A70036;
                     margin-top: 20px; 
+                    &.disable {
+                        pointer-events: none;
+                        border: 2px solid #979797;
+                        @include font(25px, 700, #979797);
+                        background-color: #E5E5E5;
+                        box-shadow: 0px 4px 0px #979797;
+                    }
                 }
-
             }
         }
     }
