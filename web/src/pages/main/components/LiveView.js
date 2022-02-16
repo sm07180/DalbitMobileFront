@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
-import NoResult from 'components/ui/new_noResult'
+import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";
@@ -25,12 +25,8 @@ const LiveView = (props) => {
               }}>
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />
-                  {true &&
-                    <img src={list.bjProfImg.thumb100x100} className="guest" alt="" />
-                  }
-                  {true &&
-                    <div className="video" />
-                  }
+                  { list.gstMemNo && <img src={list.gstProfImg.thumb100x100} className="guest" alt="" /> }
+                  { list.isVideo && <div className="video" /> }
                 </div>
                 <div className='listContent'>
                   <div className="listItem">
@@ -45,13 +41,10 @@ const LiveView = (props) => {
                   </div>
                   <div className="listItem">
                     <span className="state">
-                      <DataCnt type={"totalCnt"} value={list.totalCnt ? list.totalCnt : "123"}/>
-                      <DataCnt type={"entryCnt"} value={list.entryCnt ? list.entryCnt : "123"}/>
-                      {list.boostCnt > 0 ?
-                        <DataCnt type={"boostCnt"} value={list.boostCnt ? list.boostCnt : "123"}/>
-                        :
-                        <DataCnt type={"likeCnt"} value={list.likeCnt ? list.likeCnt : "123"}/>
-                      }
+                      <DataCnt type={"totalCnt"} value={list?.totalCnt} />
+                      <DataCnt type={"entryCnt"} value={list?.entryCnt} />
+                      <DataCnt type={"likeCnt"} value={list.likeCnt + list.boostCnt} />
+                      {list.boostCnt > 0 && <DataCnt type={"boostCnt"} value="" />}
                     </span>
                   </div>
                 </div>

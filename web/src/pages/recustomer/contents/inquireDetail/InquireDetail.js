@@ -23,6 +23,7 @@ const InquireDetail = () => {
       }
     })
     if (res.result === 'success') {
+      console.log(res);
       for (let i = 0; i < res.data.list.length; i++) {
         if(res.data.list[i].qnaIdx === qnaIdx) {
           setQnaDetail(res.data.list[i]);
@@ -69,7 +70,11 @@ const InquireDetail = () => {
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 8,
-  }  
+  }
+
+  useEffect(() => {
+    console.log(addFile);
+  })
   
   return (
     <div id="inquireDetail">

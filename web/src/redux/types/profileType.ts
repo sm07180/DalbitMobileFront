@@ -8,7 +8,16 @@ export const profilePagingDefault = {
   next: 1,
   page: 0,
   prev: 0,
-  records: 5,
+  records: 20,
+  total: 0,
+  totalPage: 0
+}
+
+export const profileClipDefault = {
+  next: 1,
+  page: 0,
+  prev: 0,
+  records: 10,
   total: 0,
   totalPage: 0
 }
@@ -79,6 +88,7 @@ export const profileFeedDefaultState = {
 /* 팬보드 default */
 export const profileFanBoardDefaultState = {
   list: [],
+  listCnt: 0,
   paging: profilePagingDefault,
   isLastPage: false,
 }
@@ -86,7 +96,8 @@ export const profileFanBoardDefaultState = {
 /* 클립 default */
 export const profileClipDefaultState = {
   list: [],
-  paging: profilePagingDefault,
+  paging: profileClipDefault,
+  isLastPage: false,
 }
 
 interface IFanRank {
@@ -243,22 +254,24 @@ export interface IProfileState {
 
 /* 피드 */
 export interface IProfileFeedState {
-  feedList: Array<IFeedData>,
+  feedList: Array<IFeedData>;
   // fixedFeedList: Array<IFeedData>,
   // fixCnt: number;
-  paging: IPaging,
+  paging: IPaging;
   isLastPage: boolean;
 }
 
 /* 팬보드 */
 export interface IProfileFanBoardState {
-  list: Array<IFanBoardData>,
-  paging: IPaging,
+  list: Array<IFanBoardData>;
+  listCnt: number;
+  paging: IPaging;
   isLastPage: boolean;
 }
 
 /* 클립 */
 export interface IProfileClipState {
-  list: Array<IClipData>,
-  paging: IPaging,
+  list: Array<IClipData>;
+  paging: IPaging;
+  isLastPage: boolean;
 }

@@ -129,7 +129,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   );
 
   const viewSpecialList = useCallback(
-    (memNo: number) => {
+    (memNo: string) => {
       if (isLogin === true) {
         setUserMemNo!(memNo);
         setRightTabType && setRightTabType(tabType.SPECIALDJLIST);

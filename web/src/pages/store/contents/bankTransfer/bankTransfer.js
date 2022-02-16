@@ -5,16 +5,14 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/inputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import './bankTransfer.scss'
 import {useHistory, useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
 
 const BankTransfer = () => {
   const location = useLocation()
   const history = useHistory()
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const {prdtNm, prdtPrice, itemNo, itemAmt, webview} = location.state
 
   const context = useContext(Context)
@@ -70,8 +68,7 @@ const BankTransfer = () => {
         receiptCode: userInfo.receiptCode,
         receiptPhone: userInfo.receiptPhone,  //핸드폰번호
         receiptSocial: userInfo.receiptPhone, //주민등록번호
-        receiptBiz: userInfo.receiptBiz,      //사업자번호
-        isDesktop : isDesktop
+        receiptBiz: userInfo.receiptBiz
       }
     })
     if (result === 'success') {

@@ -7,10 +7,11 @@ import Swiper from 'react-id-swiper'
 // css
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
-import {Context} from "context";
+import {Context, GlobalContext} from "context";
 
 const SwiperList = (props) => {
-  const {data, profImgName, type} = props
+  const {data, profImgName, type} = props;
+  const { globalState, globalAction } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
 
@@ -18,11 +19,13 @@ const SwiperList = (props) => {
     slidesPerView: 'auto',
   }
 
-  const goProfile = memNo => history.push(`/profile/${memNo}`);
-
   const onClickAction = (item) => {
     if(type === 'top10' || type === 'myStar') {
-      goProfile(item.memNo)
+      if (!globalState.baseData.isLogin) {
+        history.push("/login");
+      }else{
+        history.push(`/profile/${item.memNo}`);
+      }
     }else if(type === 'daldungs') {
       RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
     }

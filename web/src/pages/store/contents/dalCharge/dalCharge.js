@@ -6,7 +6,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from '../../../../components/ui/cntTitle/CntTitle';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'

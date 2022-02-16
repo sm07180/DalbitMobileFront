@@ -4,7 +4,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTItle/CntTitle'
+import CntTitle from '../../components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
 import Tabmenu from './components/tabmenu'
@@ -16,7 +16,11 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
-import Receipt from "pages/main/popup/receipt";
+// popup
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import UpdatePop from "pages/main/popup/UpdatePop";
+import {setIsRefresh} from "redux/actions/common";
+import {isHybrid} from "context/hybrid";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -47,24 +51,16 @@ const MainPage = () => {
 
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
-  const clearReceipt = () => {
-    setReceiptPop(false)
-    sessionStorage.removeItem('orderId')
-  }
-  useEffect(() => {
-    if (sessionStorage.getItem('orderId') !== null) {
-      const orderId = sessionStorage.getItem('orderId')
-      setReceiptPop(true);
-      setPayOrderId(orderId);
-    }
-    return () => {
-      sessionStorage.removeItem('orderId')
-    }
-  }, [])
+
+  const [updatePopInfo, setUpdatePopInfo] = useState({
+    showPop: false,
+    storeUrl: '',
+  });
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
   const liveList = useSelector(state => state.live);
+  const common = useSelector(state => state.common);
 
   // 조회 API
   const fetchMainInfo = () => dispatch(setMainData());
@@ -99,6 +95,7 @@ const MainPage = () => {
     })
   }, [currentPage, liveListType]);
 
+  /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo();
@@ -106,7 +103,6 @@ const MainPage = () => {
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
     setCurrentPage(0);
-
   }
 
   // scroll
@@ -222,14 +218,58 @@ const MainPage = () => {
     touchEndY = null
   }, [reloadInit])
 
+  const clearReceipt = () => {
+    setReceiptPop(false)
+    sessionStorage.removeItem('orderId')
+  }
+
+  const getReceipt = () => {
+    if (sessionStorage.getItem('orderId') !== null) {
+      const orderId = sessionStorage.getItem('orderId')
+      setReceiptPop(true);
+      setPayOrderId(orderId);
+    }
+  }
+
+  /* 업데이트 확인 */
+  const updatePopFetch = async () => {
+
+    if (isHybrid()) {
+      if (sessionStorage.getItem('checkUpdateApp') === null) {
+        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
+      }
+
+      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
+        Api.verisionCheck().then(res => {
+          const isUpdate = res.data.isUpdate
+          const storeUrl = res.data.storeUrl
+          setUpdatePopInfo({showPop: isUpdate, storeUrl})
+        })
+      }
+    }
+  }
 
   useEffect(() => {
     if (currentPage === 0) setCurrentPage(1)
   }, [currentPage])
 
+  useEffect(() => {
+    if(common.isRefresh) {
+      mainDataReset();
+      window.scrollTo(0, 0);
+      dispatch(setIsRefresh(false));
+    }
+  }, [common.isRefresh]);
+
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
+    getReceipt();
+    updatePopFetch(); // 업데이트 팝업
+    return () => {
+      sessionStorage.removeItem('orderId')
+      sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+    }
   }, [])
 
   useEffect(() => {
@@ -241,8 +281,7 @@ const MainPage = () => {
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
-      ref={iconWrapRef}
-      style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
+      ref={iconWrapRef}>
       <div className="icon-wrap">
         <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
       </div>
@@ -288,10 +327,11 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {receiptPop && <Receipt payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
   </>;
   return MainLayout;
 }
- 
+
 export default MainPage
  
