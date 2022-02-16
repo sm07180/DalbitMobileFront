@@ -11,12 +11,12 @@ import {Context} from 'context'
 import SelectBoxs from 'components/ui/selectBox.js'
 
 //component
-import AppAlarm from '../component/setting/appAlarm2'
-import BroadCastSetting from '../component/setting/broadcast'
-import BanWord from '../component/setting/banWord'
-import Manager from '../component/setting/manager'
-import Blacklist from '../component/setting/blacklist'
-import PushMembers from '../component/setting/push_members'
+import AppAlarm from 'pages/mypage/component/setting/appAlarm2'
+import BroadCastSetting from 'pages/mypage/component/setting/broadcast'
+import BanWord from 'pages/mypage/component/setting/banWord'
+import Manager from 'pages/mypage/component/setting/manager'
+import Blacklist from 'pages/mypage/component/setting/blacklist'
+import PushMembers from 'pages/mypage/component/setting/push_members'
 
 //constant
 import {BC_SETTING_TYPE} from '../constant'
@@ -84,39 +84,6 @@ export default (props) => {
   return (
     <>
       <div className="header-wrap">
-        <h2 className="header-title">
-          {initialScreen ? (
-            '서비스 설정'
-          ) : changeContents === BC_SETTING_TYPE.PUSH ? (
-            'PUSH 알림 설정'
-          ) : changeContents === BC_SETTING_TYPE.BROADCAST ? (
-            <>
-              {subContents === SETTING_TYPE.TITLE
-                ? '방송 제목'
-                : subContents === SETTING_TYPE.WELCOME
-                ? 'DJ 인사말'
-                : subContents === SETTING_TYPE.SHORT_MSG
-                ? '퀵 메시지'
-                : subContents === SETTING_TYPE.JOIN_CLOSE
-                ? '배지 / 입퇴장 메시지'
-                : '방송 / 청취'}
-            </>
-          ) : changeContents === BC_SETTING_TYPE.BANWORD ? (
-            '금지어 관리'
-          ) : changeContents === BC_SETTING_TYPE.MANAGER ? (
-            '매니저 관리'
-          ) : changeContents === BC_SETTING_TYPE.BLACKLIST ? (
-            '차단회원 관리'
-          ) : (
-            '알림받기 설정 회원 관리'
-          )}
-
-          {/* {initialScreen === false && } */}
-          {/* {initialScreen === false && } */}
-          {/* {initialScreen === false && } */}
-          {/* {initialScreen === false && } */}
-          {/* {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH_MEMBERS && } */}
-        </h2>
         <button className="close-btn" onClick={BackFunction}>
           <img src={closeBtn} alt="뒤로가기" />
         </button>
@@ -128,7 +95,7 @@ export default (props) => {
               return (
                 <button key={idx} onClick={() => ToggleContents(v.value)}>
                   {v.text}
-                  <a></a>
+                  <a/>
                 </button>
               )
             })}

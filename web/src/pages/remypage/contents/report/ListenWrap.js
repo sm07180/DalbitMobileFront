@@ -33,9 +33,8 @@ const ListenWrap = () =>{
   const [listenListInfo, setListenListInfo] = useState([]);
   //총 선물한 달, 청취시간
   const [listenTotalInfo, setListenTotalInfo] = useState({giftDalTotCnt: 0, listeningTime: 0});
+  //Popup Open/Close용
   const [bottomSlide, setBottomSlide] = useState(false);
-  //방송요약 아이콘
-  const imgTag = {listenIcon: 'ico_timeListen', dalIcon: 'ico_dal'}
 
 
   //청취내역 조회
@@ -45,7 +44,7 @@ const ListenWrap = () =>{
       startDt: dt.pickdataPrev,
       endDt: dt.pickdataNext,
       page: 1,
-      records: 100
+      records: 999
     }
     API.report_listen({params}).then((res) => {
       if(res.result === "success") {

@@ -78,9 +78,9 @@ const DidLogin = (props) => {
     if (fetching) return;
 
     if (loginInfo.phoneNum === '' && loginInfo.password === '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)와 비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(휴대폰 번호)와 비밀번호를\n 입력하고 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
     } else if (loginInfo.phoneNum === '' && loginInfo.password !== '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(휴대폰 번호)를 입력하고\n 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else if (loginInfo.password === '' && loginInfo.phoneNum !== '') {
       globalCtx.action.alert({msg: `비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else {
@@ -149,7 +149,7 @@ const DidLogin = (props) => {
       }
     } else if (loginInfo.result === 'fail') {
       if (loginInfo.code === '-1') {
-        globalCtx.action.alert({msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`})
+        globalCtx.action.alert({msg: `아이디(전화번호)와 비밀번호를\n 확인하고 다시 로그인해주세요.`})
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
         if (msg === undefined || msg === null || msg === '') {
@@ -216,7 +216,7 @@ const DidLogin = (props) => {
       <Header title="로그인" type="back"/>
       <section className="loginForm">
         <InputItems>
-          <input ref={inputPhoneRef} type="number" placeholder="핸드폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} onChange={onChange}/>
+          <input ref={inputPhoneRef} type="number" pattern="\\d*" placeholder="휴대폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} onChange={onChange}/>
         </InputItems>
         <InputItems>
           <input ref={inputPasswordRef} type="password" placeholder="비밀번호" name={"password"} value={loginInfo.password} onChange={onChange}/>
@@ -224,7 +224,7 @@ const DidLogin = (props) => {
         <SubmitBtn text="로그인" onClick={loginClick}/>
         <div className="linkWrap">
           <div className="linkText" onClick={signPop}>회원가입</div>
-          <div className="linkText">비밀번호 찾기</div>
+          <div className="linkText" onClick={()=>props.history.push("/password")}>비밀번호 찾기</div>
         </div>
       </section>
       {slidePop &&

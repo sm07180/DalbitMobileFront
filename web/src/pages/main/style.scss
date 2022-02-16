@@ -80,12 +80,12 @@
           }
         }
         .info {
-          position:absolute;
-          bottom:0;
-          left:0;
+          @include position-bottom-left;
           @include flex(flex-start,center,column);
           width:100%;
           padding: 25px 16px 12px;
+          // transform:translateX(30%);
+          // transition: transform .7s ease-out;
           .badgeGroup {
             @include flex(center);
             height:16px;
@@ -109,6 +109,21 @@
           }
         }
       }
+      // main slide 애니메이션 지우지 마시오!! 후반에 추가
+      // &-active {
+      //   .listColumn {
+      //     .info {
+      //       transform:translateX(0);
+      //     }
+      //   }
+      // }
+      // &-duplicate-active {
+      //   .listColumn {
+      //     .info {
+      //       transform:translateX(0);
+      //     }
+      //   }
+      // }
     }
     .empty {
       width:100%;
