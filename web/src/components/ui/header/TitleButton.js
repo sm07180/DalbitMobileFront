@@ -34,7 +34,7 @@ export const AlarmButton = ({history, newAlarmCnt=0}) => {
 }
 
 export const StoreButton = ({history}) => {
-  return <button className='store' onClick={() => history.push('/pay/store')} />
+  return <button className='store' onClick={() => history.push('/store')} />
 }
 
 export const SearchButton = ({history}) => {
