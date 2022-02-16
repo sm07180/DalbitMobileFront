@@ -13,7 +13,7 @@ import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
 import Setting from "pages/resetting";
-import Customer from "pages/recustomer/Customer";
+import Customer from "pages/recustomer";
 import Report from "pages/remypage/contents/report/Report";
 
 const myMenuItem = [
@@ -91,7 +91,7 @@ const Remypage = () => {
     case 'clip' :
       return(<Clip />)
     case 'setting' :
-      return(<Setting />)
+      return(history.push(`/mypage/${context.myInfo.memNo}/bcsetting`))
     case 'notice' :
       return(<Allim />)
     case 'customer' :
