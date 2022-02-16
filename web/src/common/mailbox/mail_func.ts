@@ -4,7 +4,7 @@ import {isDesktop} from "../../lib/agent";
 import {Hybrid, isHybrid} from "../../context/hybrid";
 
 /* 우체통 */
-export const goMail = ({context, mailboxAction, targetMemNo, history, isChatListPage=false}) => {
+export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, history, isChatListPage=false}) => {
   const { globalState, globalAction } = context;
 
   if(isDesktop()) {
@@ -15,14 +15,35 @@ export const goMail = ({context, mailboxAction, targetMemNo, history, isChatList
       roomNo: null,
     };
 
-    globalState.mailChatInfo?.setUserInfo(socketUser);
-    globalState.mailChatInfo?.privateChannelDisconnect();
-    mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
-  }else if (isHybrid()) {
     if(isChatListPage) {
-      Hybrid('OpenMailBoxList', ''); // 메일 리스트 페이지
+      openMailboxBanAlert({ userProfile: globalState.userProfile, globalAction, history });
     }else {
-      Hybrid('JoinMailBox', targetMemNo); // 채팅 페이지
+      globalState.mailChatInfo?.setUserInfo(socketUser);
+      globalState.mailChatInfo?.privateChannelDisconnect();
+      mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
+    }
+  }else if (isHybrid()) {
+    if(context.token.isLogin) {
+      const myLevel = context.profile.level;
+      if(myLevel === 0) {
+        return context.action.alert({
+          msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+        })
+      }
+
+      if(isChatListPage) {
+        Hybrid('OpenMailBoxList', ''); // 메일 리스트 페이지
+      }else {
+        if(targetMemLevel > 0) {
+          Hybrid('JoinMailBox', targetMemNo); // 채팅 페이지
+        }else {
+          return context.action.alert({
+            msg: '0레벨 회원에게는 우체통 메시지를<br /> 보낼 수 없습니다.'
+          })
+        }
+      }
+    }else {
+      history.push('/login');
     }
   } else {
     context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)

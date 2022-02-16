@@ -6,7 +6,7 @@ const LevelItems = (props) => {
   const {data,grade} = props
 
   return (
-    <em className={`level`}>Lv{data} {grade}</em>
+    <em className={`level`}>Lv{data} {grade !== '0' ? grade : ''}</em>
   )
 }
 
