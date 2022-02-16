@@ -225,10 +225,11 @@ const ProfileEdit = () => {
             </Header>
             <section className='topSwiper' onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profile} disableSlideTo={true}/>
+                <TopSwiper data={profile}/>
                 :
                 <div className="nonePhoto"
-                     onClick={() => {
+                     onClick={(e) => {
+                       e.stopPropagation();
                        inputRef.current.click();
                      }}>
                   <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
