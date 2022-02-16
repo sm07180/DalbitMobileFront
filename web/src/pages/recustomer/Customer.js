@@ -12,7 +12,7 @@ import Header from 'components/ui/header/Header'
 //Content
 
 import './style.scss'
-import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
+import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetailTest";
 import Policy from "pages/recustomer/contents/policy/Policy";
 import Privacy from "pages/recustomer/contents/privacy/Privacy";
 import Minor from "pages/recustomer/contents/minor/Minor";
