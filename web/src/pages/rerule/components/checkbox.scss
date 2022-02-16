@@ -1,12 +1,12 @@
 @import "components/ui/_mixin.scss";
 
-
-label {
+.checkBox {
+  label {
     @include flex(center);
     margin-top: 32px;
     cursor: pointer;
   }
-input[type='checkbox'] {
+  input[type='checkbox'] {
     position: relative;
     width: 23px;
     height: 23px;
@@ -19,9 +19,9 @@ input[type='checkbox'] {
         background-image: url("https://image.dalbitlive.com/common/input/checkbox-active.png");
     }
   }
-
 .titlewrap {
     margin-left: 8px;
     @include font(14px, 500, #303030);
     letter-spacing: -1px;
   }
+}

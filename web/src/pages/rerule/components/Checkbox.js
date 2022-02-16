@@ -6,6 +6,7 @@ import Utility from 'components/lib/utility'
 import './checkbox.scss'
 
 const Checkbox = ({fnClick, fnChange, title = '', checked = false}) => (
+  <div className='checkBox'>
     <label>
       <input
         onClick={(e) => {
@@ -20,5 +21,6 @@ const Checkbox = ({fnClick, fnChange, title = '', checked = false}) => (
       />
       <div className="titlewrap" dangerouslySetInnerHTML={{__html: Utility.nl2br(title)}}></div>
     </label>
+  </div>
 )
 export default Checkbox
