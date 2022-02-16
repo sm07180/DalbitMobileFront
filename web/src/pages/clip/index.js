@@ -27,7 +27,6 @@ import {IMG_SERVER} from "context/config";
 
 const ClipPage = () => {
   const context = useContext(Context);
-
   const history = useHistory();
   const subjectType = useSelector((state)=> state.clip.subjectType); //
   // 떠오른 클립 배경 색상, 나중에 CORS 오류 고치면 없앨거라서 redux 안씀
