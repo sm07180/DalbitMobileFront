@@ -10,6 +10,7 @@ import Api from "context/api";
 import {Context} from "context";
 import ClipLikeCore from "pages/clip/components/ClipLikeCore";
 import ClipListenCore from "pages/clip/components/ClipListenCore";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
 
 const ClipDetailPage = (props) => {
   const context = useContext(Context);
@@ -30,7 +31,6 @@ const ClipDetailPage = (props) => {
       }
     })
   };
-
 
   useEffect(() => {
     getListData();
