@@ -101,7 +101,7 @@ const Remypage = () => {
       return(
         <>
         <div id="remypage">
-          <Header title={'마이페이지'} />
+          <Header title={'MY'} />
           <section className="myInfo" onClick={goProfile}>
             <MyInfo data={profile} />
           </section>

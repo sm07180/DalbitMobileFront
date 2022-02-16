@@ -4,10 +4,42 @@ import React, {useState,useEffect} from 'react'
 import LevelItems from '../../../components/ui/levelItems/LevelItems'
 import SubmitBtn from '../../../components/ui/submitBtn/SubmitBtn'
 import PopSlide from "../../../components/ui/popSlide/PopSlide";
+import moment from "moment";
+
+const greetingComment = [
+  {start: '060000', end: '120000', comment: '님, 굿모닝이에요!'},
+  {start: '120000', end: '180000', comment: '님, 점심 메뉴는 뭐였어요?'},
+  {start: '180000', end: '240000', comment: '님, 신나는 저녁이에요!'},
+  {start: '000000', end: '060000', comment: '님, 일찍 일어났네요?'},
+]
 
 const MyInfo = (props) => {
   const {data} = props
   const [popSlide, setPopSlide] = useState(false);
+  const [nowComment, setNowComment] = useState('');
+
+  /* time: HH:mm:ss */
+  const getHourMinSec = (time) => {
+    const splitTime = time.split(':');
+    const hour = splitTime[0];
+    const min = splitTime[1];
+    const sec = splitTime[2];
+
+    return `${hour}${min}${sec}`
+  }
+
+  const getNowComment = () => {
+    const now = moment().format('HH:mm:ss');
+    const nowInfo = getHourMinSec(now);
+    _.forEach(greetingComment, (item) => {
+      const startTime = parseInt(item.start);
+      const endTime = parseInt(item.end);
+
+      if(nowInfo >= startTime && nowInfo < endTime) {
+        setNowComment(`${data?.nickNm}${item.comment}`);
+      }
+    })
+  }
 
   /* 레벨 클릭 */
   const openLevelPop = (e) => {
@@ -21,13 +53,16 @@ const MyInfo = (props) => {
     e.stopPropagation();
     setPopSlide(false);
   }
+
+  useEffect(() => {
+    getNowComment();
+  }, []);
   
   return (
     <>
       <div className="textWrap">
         <div className='text'>
-          <span><strong>{data?.nickNm}</strong>님</span>
-          <span>오늘 즐거운 방송해볼까요?</span>
+          <span>{nowComment}</span>
         </div>
         <div className="info">
           <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
