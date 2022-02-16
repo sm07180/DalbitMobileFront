@@ -34,7 +34,7 @@ import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
-const socialTabmenu = ['피드','팬보드','클립']
+const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
 
 const ProfilePage = () => {
@@ -309,7 +309,8 @@ const ProfilePage = () => {
       context,
       mailboxAction,
       targetMemNo: profileData.memNo,
-      history
+      history,
+      targetMemLevel: profileData.level
     }
     goMail(goMailParams);
     setPopSlide(false);

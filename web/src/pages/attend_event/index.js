@@ -230,13 +230,13 @@ export default (props) => {
     const rgEx = /(01[0123456789])(\d{3}|\d{4})\d{4}$/g
     if (!phone) {
       return globalCtx.action.alert({
-        msg: `핸드폰 번호는 필수입력 값입니다.`
+        msg: `휴대폰 번호는 필수입력 값입니다.`
       })
     }
 
     if (!rgEx.test(phone) || phone.length < 11) {
       return globalCtx.action.alert({
-        msg: `올바른 핸드폰 번호가 아닙니다.`
+        msg: `올바른 휴대폰 번호가 아닙니다.`
       })
     }
 

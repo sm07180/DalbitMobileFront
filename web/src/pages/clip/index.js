@@ -27,14 +27,13 @@ import {IMG_SERVER} from "context/config";
 
 const ClipPage = () => {
   const context = useContext(Context);
-
   const history = useHistory();
   const subjectType = useSelector((state)=> state.clip.subjectType); //
   // 떠오른 클립 배경 색상, 나중에 CORS 오류 고치면 없앨거라서 redux 안씀
   const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1'];
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
   const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
-  const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
+  const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
   const [likeClipInfo, setLikeClipInfo] = useState({}); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({}); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
@@ -45,24 +44,23 @@ const ClipPage = () => {
   // 조회 Api
   /* 핫 클립 */
   const getHotClipInfo = () => {
-    Api.getClipRankingList({ rankType: 1, rankingDate: '2022-01-24', page: 1, records: 9 }).then(res => {
+    Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
       if (res.result === 'success') {
         let tempHotClipList = [];
         let temp = [];
-        for (let i = 0; i < 9; i++) {
-
+        for (let i = 0; i < res.data.paging.total; i++) {
           if (res.data.list.length > i) {
             temp.push(res.data.list[i]);
           } else {
             temp.push([]);
           }
 
-          if (i % 3 === 2) {
+          if (i % 3 === 2 || (i + 1) == res.data.paging.total) {
             tempHotClipList.push(temp);
             temp = [];
           }
         }
-        setHotClipInfo(tempHotClipList);
+        setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
 
       }
@@ -193,12 +191,14 @@ const ClipPage = () => {
         <Header title={'클립'} />
         <section className='hotClipWrap'>
           <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
-          {hotClipInfo.length > 0 &&
+          {hotClipInfo.list.length > 0 &&
           <Swiper {...swiperParams}>
-            {hotClipInfo.map((row, index) => {
+            {hotClipInfo.list.map((row, index) => {
               return (<div key={index}>
                 {row.map((coreRow, coreIndex) => {
-                  return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>)
+                  if (Object.keys(coreRow).length > 0) {
+                    return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
+                  }
                 })}
               </div>);
             })}

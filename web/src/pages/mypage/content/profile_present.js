@@ -100,7 +100,7 @@ export default (props) => {
             right: '충전하기'
           },
           callback: () => {
-            history.push('/pay/store')
+            history.push('/store')
           }
         })
       } else {
@@ -169,7 +169,7 @@ export default (props) => {
                         ) : (
                           <button
                             onClick={() => {
-                              history.push('/pay/store')
+                              history.push('/store')
                             }}>
                             충전
                           </button>

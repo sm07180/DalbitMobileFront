@@ -57,7 +57,7 @@ export default function Payment() {
     if (returntype === "chooseok") {
       history.push("/event/purchase");
     } else {
-      history.push("/pay/store");
+      history.push("/store");
     }
   };
 

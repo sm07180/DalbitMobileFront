@@ -51,7 +51,7 @@ export default () => {
     if (osCheck === OS_TYPE['IOS']) {
       StoreLink(context, history)
     } else if (eventData.rate === 5 || eventData.rate === 3) {
-      history.push(`/pay/store`)
+      history.push(`/store`)
     }
   }
 

@@ -21,7 +21,7 @@ export const MessageButton = ({history, context, mailboxAction}) => {
       mailboxAction,
       targetMemNo: context.profile.memNo,
       history,
-      isChatListPage: true
+      isChatListPage: true,
     }
     goMail(goMailParams);
   }
@@ -34,7 +34,7 @@ export const AlarmButton = ({history, newAlarmCnt=0}) => {
 }
 
 export const StoreButton = ({history}) => {
-  return <button className='store' onClick={() => history.push('/pay/store')} />
+  return <button className='store' onClick={() => history.push('/store')} />
 }
 
 export const SearchButton = ({history}) => {
@@ -53,13 +53,6 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-        </div>
-      )
-    case '클립':
-      return (
-        <div className="buttonGroup">
-          <MessageButton history={history} mailboxAction={mailboxAction} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
@@ -91,11 +84,12 @@ const TitleButton = (props) => {
       )
     case 'MY':
       return (
-        <div className="buttonGroup">
+        <></>
+        /*<div className="buttonGroup">
           <StoreButton history={history} />
           <SearchButton history={history} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-        </div>
+        </div>*/
       )
     default :
       return (

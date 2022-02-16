@@ -15,6 +15,7 @@
         @include flex($fd: column);
         margin-bottom:8px;
         letter-spacing: -.3px;
+        span{display: flex;}
         strong {
           display:inline-block;
           max-width:200px;
@@ -153,6 +154,7 @@
     button.logout {
       width:100%;
       line-height:46px;
+      margin-top:20px;
       @include border(#D5D5D5,16px);
       @include font(16px,$Medium,#666);
     }
@@ -160,6 +162,7 @@
   #popSlide {
     .myLevelInfo {
       width:100%;
+      padding: 0 16px 32px;
       .infoItem {
         @include flex(center);
         line-height:25px;

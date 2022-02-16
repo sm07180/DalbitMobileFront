@@ -7,19 +7,19 @@ export default function Footer() {
   return (
     <footer id="footerWrap">
       <ul className="infoList">
-        <li className="infoItem" onClick={() => history.push("/configure/service")}>
+        <li className="infoItem" onClick={() => history.push("/rule/terms")}>
           이용약관
         </li>
-        <li className="infoItem" onClick={() => history.push("/configure/indivisual")}>
+        <li className="infoItem" onClick={() => history.push("/rule/privacy")}>
           개인정보
         </li>
-        <li className="infoItem" onClick={() => history.push("/configure/youth")}>
+        <li className="infoItem" onClick={() => history.push("/rule/minor")}>
           청소년보호
         </li>
-        <li className="infoItem" onClick={() => history.push("/configure/operation")}>
+        <li className="infoItem" onClick={() => history.push("/rule/policy")}>
           운영정책
         </li>
-        <li className="infoItem" onClick={() => history.push("/customer/service")}>
+        <li className="infoItem" onClick={() => history.push("/customer")}>
           고객센터
         </li>
       </ul>

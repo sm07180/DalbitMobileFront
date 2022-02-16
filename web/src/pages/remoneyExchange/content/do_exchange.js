@@ -28,7 +28,7 @@ const DoExchange = () => {
   return(
     <div className="doExchange">
       <Header type={'back'} title={'내 지갑'}>
-        <div className="currentValue" onClick={() => {history.push('/pay/store')}}>
+        <div className="currentValue" onClick={() => {history.push('/store')}}>
           <i className="iconDal"></i>
           1,234
         </div>

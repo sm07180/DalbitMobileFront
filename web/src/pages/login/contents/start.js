@@ -3,15 +3,12 @@ import React from 'react'
 import Header from 'components/ui/header/Header'
 import '../style.scss'
 import {Hybrid, isAndroid, isHybrid} from "context/hybrid";
-import Utility from "components/lib/utility";
-import {OS_TYPE} from "context/config";
 import Api from "context/api";
 import qs from "query-string";
 import {useHistory} from "react-router-dom";
 
 const Start = (props) => {
   const history = useHistory();
-  const customHeader = JSON.parse(Api.customHeader);
   const {webview} = qs.parse(location.search);
 
   //휴대폰으로 계속하기
@@ -31,31 +28,26 @@ const Start = (props) => {
     Hybrid("getSocialToken", {type: vendor})
   }
   const oldLogin = async (vendor) => {
-    if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
-      Hybrid('openGoogleSignIn')
-    } else if (vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) {
-      // 안드로이드 페이스북 로그인
-      Hybrid('openFacebookLogin')
-    } else {
-      const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
-        method: 'get',
-        headers: {
-          authToken: Api.authToken,
-          'custom-header': Api.customHeader,
-          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-        }
-      })
-
-      if (res.status === 200) {
-        const redirectUrl = await res.text()
-        return (window.location.href = `${redirectUrl}`)
+    const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
+      method: 'get',
+      headers: {
+        authToken: Api.authToken,
+        'custom-header': Api.customHeader,
+        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       }
+    })
+
+    if (res.status === 200) {
+      const redirectUrl = await res.text()
+      return (window.location.href = `${redirectUrl}`)
     }
   }
 
   return (
     <div id="loginPage">
-      <Header type="back"/>
+      <Header>
+        <button className="back" onClick={() => history.push('/')} />
+      </Header>
       <section className='loginSns'>
         <h2 className='title'>시작하기</h2>
         <div className="socialLogin">

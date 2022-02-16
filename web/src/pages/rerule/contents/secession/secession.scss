@@ -1,0 +1,127 @@
+@import "components/ui/_mixin.scss";
+
+#secession {
+    .subContent {
+        margin: 0 auto;
+        padding: 10px 16px;
+        .exitWarn {
+            @include flex(center, center, column);
+            width: 100%;
+            padding: 16px 0;
+            img {
+            display: inline-block;
+            width: 70px; height: 60px;
+            }
+            h2 {
+            margin-top: 14px;
+            @include font(16px, 700, #202020);
+            letter-spacing: -1px;
+            }
+        }
+        .infoList {
+            position: relative;
+            @include flex(flex-start, flex-start, column);
+            li {
+                position: relative;
+                width: 100%;
+                padding-left: 10px;
+                margin-bottom: 6px;
+                line-height: 20px;
+                letter-spacing: -1px;
+                word-break: keep-all;
+                @include font(13px, 400, #303030);
+                box-sizing: border-box;
+                &:last-child {
+                    margin-bottom: 0spx;
+                }
+            }
+            &.dot {
+                margin-top: 6px;
+                & > li::before {
+                    content: "";
+                    position: absolute;
+                    left: 0; top: 10px;
+                    @include flex(center, center);
+                    width: 3px; height: 3px;
+                    border-radius: 50%;
+                    background-color: #303030;
+                }
+            }  
+            &.star {
+                margin-top: 6px;
+                li {
+                    @include font(12px, 400, #EC455F);
+                    &::before {
+                        content: "*";
+                        position: absolute;
+                        left: 0;
+                    }
+                }
+                
+            }            
+        }
+        .boldRedPtag {
+            padding: 0 16px;
+            box-sizing: border-box;
+            margin-top: 8px;
+            margin-bottom: 32px;
+            list-style: none;
+            font-size: 12px;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.5;
+            letter-spacing: -0.3px;
+            text-align: left;
+            color: #ec455f;
+        }        
+        .inputBox {
+            @include flex(center);
+            margin-top: 20px;
+            input {
+                flex: 1;
+                padding: 12px 0px 12px 12px;
+                margin-right: 4px;
+                box-sizing: border-box;
+                height: 44px;
+                border-radius: 12px;
+                border: solid 1px #e0e0e0;
+                &::placeholder {
+                    @include font(14px, 400, #9e9e9e);
+                }
+            }
+            p {
+                flex: none;
+                @include font(12px, 400, #303030);
+                word-break: keep-all;
+                letter-spacing: -1px;
+            }
+        }
+        .btnBox {
+            @include flex(center, space-between);
+            margin-top: 23px;
+            .prevBtn {
+                flex: 1;
+                @include flex(center, center);
+                height: 48px;
+                margin-right: 8px;
+                border-radius: 16px;
+                border: 1px solid #D5D5D5;
+                @include font(16px, 500, #666666);
+            }
+            .submitBtn {
+                flex: 1;
+                @include flex(center, center);
+                height: 48px;
+                margin-right: 8px;
+                border-radius: 16px;
+                @include font(16px, 500, #FFFFFF);
+                background-color: #FFD4E1;
+                &.active {
+                    background-color: #FF3C7B;
+
+                }
+            }
+        }
+    }
+}

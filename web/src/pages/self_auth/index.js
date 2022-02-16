@@ -112,7 +112,7 @@ export default (props) => {
 
   const AuthContent = () => {
     if (event) {
-      if (event === '/pay/store') {
+      if (event === '/store') {
         return (
           <>
             <h4>
