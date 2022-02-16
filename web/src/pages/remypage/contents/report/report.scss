@@ -16,7 +16,7 @@
           @include font(15px,500,#303030);
         }
       }
-      .periodBtn{
+      .inputBtn{
         width: 84px;
         background: #202020;
       }
@@ -125,6 +125,7 @@
   }
   #popSlide{
     .slideLayer{
+      padding: 0 16px 32px 16px;
       h3 {
         margin-bottom:20px;
       }

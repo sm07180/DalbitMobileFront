@@ -131,7 +131,7 @@ const BankTransfer = () => {
           </ul>
         </div>
         <div className="cashReceipt">
-          {userInfo.receiptCode === "i" && <InputItems><input type="number" name="receiptPhone" onChange={onChange} maxLength="20" placeholder="주민번호 또는 핸대폰번호를 입력해주세요."/></InputItems>}
+          {userInfo.receiptCode === "i" && <InputItems><input type="number" name="receiptPhone" onChange={onChange} maxLength="20" placeholder="주민번호 또는 핸드폰번호를 입력해주세요."/></InputItems>}
           {userInfo.receiptCode === "b" && <InputItems><input type="number" name="receiptBiz" onChange={onChange} maxLength="20" placeholder="사업자번호를 입력해주세요."/></InputItems>}
         </div>
         <SubmitBtn text="입금계좌 받기" onClick={()=>clickDeposit()} />
