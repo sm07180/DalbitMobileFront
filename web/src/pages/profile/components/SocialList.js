@@ -41,9 +41,9 @@ const SocialList = (props) => {
               {type === 'feed' && (item.photoInfoList.length > 1 ?
                 <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
                   <Swiper {...swiperFeeds}>
-                    {item.photoInfoList.map((photo) => {
+                    {item.photoInfoList.map((photo, index) => {
                       return (
-                        <div>
+                        <div key={index}>
                           <div className="photo">
                             <img src={photo?.imgObj?.thumb500x500} alt="" />
                           </div>

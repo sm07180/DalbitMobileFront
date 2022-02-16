@@ -270,27 +270,12 @@ const SocialSignUp = () => {
   }
   //2. 애드브릭스
   const addAdsData = async () => {
-    const targetVersion = isAndroid() ? '1.6.9' : '1.6.3'; // 이 버전 이상으로 강업되면 예전버전 지우기
-    const successCallback = () => {
-      const firebaseDataArray = [
-        { type : "firebase", key : "CompleteRegistration", value : {} },
-        { type : "adbrix", key : "CompleteRegistration", value : {} },
-      ];
-      kakaoPixel('114527450721661229').completeRegistration()
-      Hybrid('eventTracking', {service :  firebaseDataArray})
-    };
-
-    const failCallback = () => {
-      fbq('track', 'CompleteRegistration')
-      firebase.analytics().logEvent('CompleteRegistration')
-      kakaoPixel('114527450721661229').completeRegistration()
-    }
-
-    if(isHybrid()) {
-      await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
-    }else {
-      failCallback();
-    }
+    const firebaseDataArray = [
+      { type : "firebase", key : "CompleteRegistration", value : {} },
+      { type : "adbrix", key : "CompleteRegistration", value : {} },
+    ];
+    kakaoPixel('114527450721661229').completeRegistration()
+    Hybrid('eventTracking', {service :  firebaseDataArray})
   }
 
   return (

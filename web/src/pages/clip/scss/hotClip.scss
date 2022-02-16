@@ -5,17 +5,20 @@
     >div{
       width: 100%;
       padding: 0 16px;
-    }
-    .hotClip:nth-child(3n) {
-      padding: 0 16px 0 0;
+      &:nth-child(3n) {
+        .hotClip {
+          margin-bottom:0;
+        }
+      }
     }
   }
 }
 
 .hotClip {
   display: flex;
-  padding-bottom: 16px;
-
+  margin-bottom: 16px;
+  cursor: pointer;
+  &:active {cursor: grabbing;}
   .photo {
     flex: none;
     display: inline-block;
@@ -47,9 +50,7 @@
       .type {
         flex-shrink: 0;
         margin-right: 5px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #666666;
+        @include font(12px,$Regular,#666);
       }
       .title {
         line-height: 24px;

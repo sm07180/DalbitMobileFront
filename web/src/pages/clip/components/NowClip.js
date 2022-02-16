@@ -1,77 +1,70 @@
 import React, { useEffect, useRef } from 'react'
-import ListRow from "components/ui/listRow/ListRow";
+
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
 import '../../../components/ui/listRow/listRow.scss';
-import {PHOTO_SERVER} from "context/config";
 
 const NowClip = (props) => {
-  const { info } = props;
+  const {info} = props;
   const bgRef = useRef();
 
   const extractColor = (e) => {
-    const target = e;
-    console.log('tq');
+    let imgData = e.currentTarget;
+    try {
+      if ( imgData.src === errorImg ) return;
 
-    const cnv = document.createElement('canvas');
-    const ctx = cnv.getContext('2d');
-/*
+      const cnv = document.createElement('canvas');
+      const ctx = cnv.getContext('2d');
 
-    cnv.setAttributes('width', e.currentTarget.width);
-    cnv.setAttributes('height', e.currentTarget.height);
-*/
+      ctx.drawImage(imgData, 0, 0, imgData.naturalWidth, imgData.naturalHeight);
+      const canvasData = ctx.getImageData(0, 0, imgData.naturalWidth, imgData.naturalHeight);
 
-    ctx.drawImage(e.currentTarget, 0, 0, e.currentTarget.width, e.currentTarget.height);
-    //e.currentTarget.crossOrigin = '';
-    const imgData = ctx.getImageData(0, 0, e.currentTarget.width, e.currentTarget.height);
+      let colors = [];
+      let blocksize = 1;
 
-    console.log(imgData);
+      let count = 0;
+      let i = 0;
+      while ((i += blocksize * 4) < canvasData.data.length) {
+        ++count;
 
-    let colors = [];
-    let blocksize = 1;
+        let rgba = [canvasData.data[i], canvasData.data[i + 1], canvasData.data[i + 2]];
 
-    let count = 0;
-    let i = 0;
-    while ((i += blocksize * 4) < imgData.data.length) {
-      ++count;
+        const rgbHex = rgba.map(value => {
+          const result = value.toString(16);
+          return result.length === 1 ? '0' + result : result;
+        });
 
-      let rgba = [imgData.data[i], imgData.data[i + 1], imgData.data[i + 2]];
+        colors.push(rgbHex.join(''));
+      }
 
-      const rgbHex = rgba.map(value => {
-        const result = value.toString(16);
-        return result.length === 1 ? '0' + result : result;
+      let picaker = {};
+
+      colors.map(value => {
+        if (picaker.hasOwnProperty(value)) {
+          picaker[value]++;
+        } else {
+          picaker[value] = 1;
+        }
       });
 
-      colors.push(rgbHex.join(''));
+      let result;
+
+      Object.keys(picaker).map(value => {
+        if (result === undefined) {
+          result = value;
+        }
+
+        if (picaker[value] > picaker[result] && value !== '000000') {
+          result = value;
+        }
+      });
+
+      if (result === undefined) result = '000000';
+
+      bgRef.current.style = `background-color: ${hexToRgb(result)}`;
+    } catch (error) {
+      console.log(error, e.currentTarget.src);
     }
-
-    let picaker = {};
-
-    colors.map(value => {
-      if (picaker.hasOwnProperty(value)) {
-        picaker[value]++;
-      } else {
-        picaker[value] = 1;
-      }
-    });
-
-    let result;
-
-    Object.keys(picaker).map(value => {
-      if (result === undefined) {
-        result = value;
-      }
-
-      if (picaker[value] > picaker[result]) {
-        result = value;
-      }
-
-    });
-
-
-    console.log('결과는', result, picaker[result]);
-
-    bgRef.current.style = `background-color: ${hexToRgb(result)}`;
-  }
+  };
 
   const hexToRgb = (target) => {
     /* 맨 앞의 "#" 기호를 삭제하기. */
@@ -101,7 +94,7 @@ const NowClip = (props) => {
       <div className='listWrap' ref={bgRef} style={{backgroundColor: `${info.randomBg}`}}>
         <div className="listRow">
           <div className="photo">
-            <img src={info.bgImg.url} alt="" onError={handleImgError}/>
+            <img crossOrigin="use-credentials" src={info.bgImg.url} alt="" onLoad={extractColor} onError={handleImgError}/>
           </div>
           <div className='listContent'>
             <span className='title'>{info.title}</span>

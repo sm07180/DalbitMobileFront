@@ -94,6 +94,7 @@ const ProfilePage = () => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
+          ...feedData,
           feedList: data.paging.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
           // fixedFeedList: data.fixList, // 고정 피드
           // fixCnt: data.fixList.length, // 고정 피드 개수
@@ -121,7 +122,9 @@ const ProfilePage = () => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
+          ...fanBoardData,
           list: data.paging.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
+          listCnt: data.paging.total,
           paging: data.paging,
           isLastPage,
         }));
@@ -146,6 +149,7 @@ const ProfilePage = () => {
         const callPageNo = data.paging.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileClipData({
+          ...clipData,
           list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
           paging: data.paging,
           isLastPage,
@@ -375,7 +379,7 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
-    // dispatch(setProfileData(profileDefaultState)); // 프로필 상단
+    dispatch(setProfileData(profileDefaultState)); // 프로필 상단
     dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
@@ -467,7 +471,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if(!context.token.isLogin) {
-      return history.push('/login');
+      return history.replace('/login');
     }
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     parameterManager(); // 주소 뒤에 파라미터 체크
@@ -509,7 +513,7 @@ const ProfilePage = () => {
           {isMyProfile && <button onClick={() => {
             socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
               socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
-          }}>>등록</button>}
+          }}>등록</button>}
         </div>
 
         {/* 피드 */}

@@ -6,31 +6,29 @@ import API from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import Swiper from "react-id-swiper";
-import {postImage} from "common/api";
-import { GlobalContext } from "context";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
+import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import ImageUpload from "pages/recustomer/components/ImageUpload";
 import CheckList from "pages/recustomer/components/CheckList";
-import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
-const Write = () => {
+const Write = (props) => {
+  const {setInquire} = props
   const context = useContext(Context);
-  const { globalAction } = useContext(GlobalContext);
   const [inputData, setInputData] = useState({
     title: "",
     faqType: 0,
     contents: "아래 내용을 함께 보내주시면 더욱 빠른 처리가 가능합니다. \n\nOS (ex-Window 버전10) : \n브라우저 : \n문제발생 일시 : \n문의내용 : "
   })
-  const [focus, setFocus] = useState(false);
   const [option, setOption] = useState(false);
-  const [optionValue, setOptionValue] = useState("");
   const [textValue, setTextValue] = useState("");
   const [agree, setAgree] = useState(false);
   const history = useHistory();
 
   const [imageFile, setImageFile] = useState([]);
+  const [imgFile, setImgFile] = useState([]);
+  const [imageFileName, setImageFileName] = useState([]);
   const swiperParams = {
     slidesPerView: "auto",
     spaceBetween: 8
@@ -48,18 +46,21 @@ const Write = () => {
       qnaType: inputData.faqType,
       title: inputData.title,
       contents: inputData.contents,
-      questionFile1: imageFile[0] !== false ? imageFile[0].path : "",
-      questionFile2: imageFile[1] !== false ? imageFile[1].path : "",
-      questionFileName1: imageFile[0] !== false ? imageFile[0].fileName : "",
-      questionFileName2: imageFile[1] !== false ? imageFile[1].fileName : "",
+      questionFile1: imageFile[0],
+      questionFile2: imageFile[1],
+      questionFile3: imageFile[2],
+      questionFileName1: imageFileName[0],
+      questionFileName2: imageFileName[1],
+      questionFileName3: imageFileName[2],
       phone: "",
       email: "",
       nickName: context.profile.nickName
     }
+
     API.center_qna_add({params}).then((res) => {
       if(res.result === "success") {
         context.action.alert({msg: "1:1문의가 등록되었습니다."})
-        // history.push(`/customer/inquire`)
+        setInquire("나의 문의내역");
       } else {
         context.action.alert({msg: res.message});
       }
@@ -84,10 +85,6 @@ const Write = () => {
     setSelectedInfo(name)
   }
 
-  useEffect(() => {
-    console.log(option);
-  })
-
   const onTextFocus = () => {
     setTextValue(inputData.contents);
   }
@@ -109,6 +106,7 @@ const Write = () => {
 
     const fileName = file.name;
 
+    console.log(target.files);
     const fileSplited = fileName.split(".");
     const fileExtension = fileSplited.pop().toLowerCase();
     //
@@ -122,22 +120,32 @@ const Write = () => {
     reader.readAsDataURL(target.files[0]);
     reader.onload = async () => {
       if (reader.result && imageFile.length < 3) {
-        const res = await postImage({
-          dataURL: reader.result,
-          uploadType: "exchange",
-        });
+        const res = await API.image_upload({
+          data: {
+            dataURL: reader.result,
+            uploadType: "qna"
+          }})
         if (res.result === "success") {
-          setImageFile(imageFile.concat(reader.result));
+          console.log(res.data.path);
+          console.log(reader.result);
+          setImageFile(imageFile.concat(res.data.path));
+          setImgFile(imgFile.concat(res.data.url));
+          setImageFileName(imageFileName.concat(fileName));
+        } else {
+          context.action.alert({msg: res.message});
         }
       }
-    };
+    }
   };
 
   const removeImage = (e) => {
     const idx = parseInt(e.currentTarget.dataset.idx)
     const tempImage = imageFile.concat([]);
+    const tempImg = imgFile.concat([]);
     tempImage.splice(idx, 1);
-    setImageFile(tempImage)
+    tempImg.splice(idx, 1);
+    setImageFile(tempImage);
+    setImgFile(tempImg);
   }
 
   const validator = () => {
@@ -177,10 +185,10 @@ const Write = () => {
           <label className="uploadlabel">
             <input className="blind" type="file" onChange={uploadSingleFile} />
           </label>
-          {imageFile.length > 0 &&
+          {imgFile.length > 0 &&
           <div className="uploadListWrap">
             <Swiper {...swiperParams}>
-              {imageFile.map((v, idx) => {
+              {imgFile.map((v, idx) => {
                 return(
                   <div className="uploadList" key={idx}>
                     <img src={v} alt="업로드이미지" />

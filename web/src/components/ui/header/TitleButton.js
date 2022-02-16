@@ -30,7 +30,7 @@ export const MessageButton = ({history, context, mailboxAction}) => {
 }
 
 export const AlarmButton = ({history, newAlarmCnt=0}) => {
-  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/menu/alarm')} />
+  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')} />
 }
 
 export const StoreButton = ({history}) => {
@@ -86,7 +86,7 @@ const TitleButton = (props) => {
     case '랭킹':
       return (        
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rank/benefit")}>혜택</button>
+          <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>
       )
     case 'MY':

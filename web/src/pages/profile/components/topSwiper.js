@@ -24,10 +24,10 @@ const TopSwiper = (props) => {
       delay: 100000,
       disableOnInteraction: false
     },
-    // pagination: {
-    //   el: '.swiper-pagination',
-    //   type: 'fraction'
-    // },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'fraction'
+    },
   }
 
   const roomJoinHandler = () => {
@@ -163,9 +163,6 @@ const TopSwiper = (props) => {
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
         }
-        <div className="pagination">
-          1/{data.profImgList.length}
-        </div>
       </div>
     </>
   )

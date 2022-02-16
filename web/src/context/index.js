@@ -222,6 +222,25 @@ const clipPlayListTabReducer = (state,action) => {
   }
 };
 
+const walletDataReducer = (state, action) => {
+  const {type, data} = action;
+  switch (type) {
+    case 'init': {
+      return state;
+    }
+    case 'add': {
+      return {...state, ...data};
+    }
+    case 'ADD_HISTORY': {
+      const {listHistory, popHistory} = data;
+      return {...state, popHistory, listHistory};
+    }
+    default: {
+      throw new Error("No Action~");
+    }
+  }
+};
+
 const initialData = {
   globalState: {
     status: false,
@@ -328,6 +347,10 @@ const initialData = {
     globalGganbuState: -1,
     gganbuTab: "collect",
     gotomoonTab: "info",
+    walletData: {
+      listHistory: [],      //달, 별 내역
+      popHistory:[]         //사용,획득 조건 리스트
+    }
   },
   globalAction: {},
 };
@@ -589,6 +612,10 @@ const GlobalProvider = (props) => {
     showState: false,
   });
 
+  const [walletData, dispatchWalletData] = useReducer(
+    walletDataReducer,
+    initialData.globalState.walletData
+  );
 
   const action = {
     updateState: (obj) => {
@@ -1090,7 +1117,8 @@ const GlobalProvider = (props) => {
     globalGganbuState,
     gganbuTab,
     gotomoonTab,
-    intervalId
+    intervalId,
+    walletData
   }
 
   const globalState = {
@@ -1184,6 +1212,7 @@ const GlobalProvider = (props) => {
     setGlobalGganbuState,
     setGganbuTab,
     setGotomoonTab,
+    dispatchWalletData
   };
   const bundle = {
     ...value,

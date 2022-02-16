@@ -7,7 +7,6 @@ import Swiper from 'react-id-swiper'
 import './bannerSlide.scss'
 
 const BannerSlide = (props) => {
-  const {data} = props
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
   const [bannerShow, setBannerShow] = useState(false)
@@ -78,7 +77,7 @@ const BannerSlide = (props) => {
               })}
             </Swiper>
           }
-          <button className="bannerMore" onClick={bannerOpen}></button>
+          {/* <button className="bannerMore" onClick={bannerOpen}></button> */}
         </>
         :
         <>
