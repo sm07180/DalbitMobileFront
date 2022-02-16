@@ -48,15 +48,12 @@ const RankDetailPage = () => {
     if (rankingListType === 'DJ') {
       setTabList(['타임','오늘','이번주', '이번달', '올해']);
       setTabName('오늘')
-      fetchRankData(rankSlct, rankType, 1);
     } else if (rankingListType === 'FAN') {
       setTabList(['오늘','이번주', '이번달']);
       setTabName('오늘')
-      fetchRankData(rankSlct, rankType, 1);
     } else if (rankingListType === 'LOVER') {
       setTabList(['오늘','이번주']);
       setTabName('오늘')
-      fetchRankData(rankSlct, rankType, 1);
     }
     setSelect(rankingListType);
   }, []);
@@ -316,7 +313,7 @@ const RankDetailPage = () => {
       <Header position={'sticky'} type={'back'}>
         <h1 className='title'>{select.toUpperCase()}<span className='optionSelect' onClick={bottomSlide}></span></h1>
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rank/benefit")}>혜택</button>
+          <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>
       </Header>
       <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />

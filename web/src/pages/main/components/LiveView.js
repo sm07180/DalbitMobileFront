@@ -8,6 +8,7 @@ import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";
+import Utility from "components/lib/utility";
 
 const LiveView = (props) => {
   const {data} = props
@@ -26,7 +27,7 @@ const LiveView = (props) => {
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />
                   { list.gstMemNo && <img src={list.gstProfImg.thumb100x100} className="guest" alt="" /> }
-                  { list.isVideo && <div className="video" /> }
+                  { list.mediaType === 'v' && <div className="video" /> }
                 </div>
                 <div className='listContent'>
                   <div className="listItem">
@@ -44,7 +45,7 @@ const LiveView = (props) => {
                       <DataCnt type={"totalCnt"} value={list?.totalCnt} />
                       <DataCnt type={"entryCnt"} value={list?.entryCnt} />
                       <DataCnt type={"likeCnt"} value={list.likeCnt + list.boostCnt} />
-                      {list.boostCnt > 0 && <DataCnt type={"boostCnt"} value="" />}
+                      {list.boostCnt > 0 && <i className={`dataCnt boostCnt`} />}
                     </span>
                   </div>
                 </div>
