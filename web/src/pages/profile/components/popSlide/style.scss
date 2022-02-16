@@ -23,7 +23,8 @@
     }
     .listContainer {
       flex:1;
-      height:100%;
+      @include flex($fd:column);
+      overflow-y:hidden;
       > .tabmenu {
         @include subTabmenuStyle-1;
         margin-bottom:12px;
@@ -54,8 +55,8 @@
         }
       }
       .listWrap {
+        flex:1;
         padding:0 16px;
-        height:100%;
         overflow-y:auto;
         .listRow {
           position:relative;

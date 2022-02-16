@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import Lottie from 'react-lottie'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from '../../components/ui/cntTitle/CntTitle'
@@ -16,6 +17,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
+import {IMG_SERVER} from 'context/config'
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
@@ -310,7 +312,16 @@ const MainPage = () => {
          style={{height: '48px'}}
          ref={iconWrapRef}>
       <div className="icon-wrap">
-        <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
+        {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
+        <div id="pocketAni" ref={arrowRefreshRef}>
+          <Lottie
+            options={{
+              loop: true,
+              autoPlay: true,
+              path: `${IMG_SERVER}/common/scroll_refresh.json`
+            }}
+          />
+        </div>
       </div>
     </div>
     <div id="mainPage" ref={MainRef} 

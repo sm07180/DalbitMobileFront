@@ -24,19 +24,19 @@
       }
     }
     .listBack {
+      @include flex;
       margin-left:auto;
       .fixIcon {
         width:30px;
         height:30px;
-        img {
-          width:100%;
-          max-width:14px;
-        }
+        @include BGIMG("profile/fixmark-on.png");
+        background-size:24px;
       }
       div.moreBtn {
         position:relative;
         width:30px;
         height:30px;
+        margin-left:8px;
         cursor: pointer;
         img {
           width:100%;
