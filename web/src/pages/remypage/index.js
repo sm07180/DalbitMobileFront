@@ -19,8 +19,8 @@ import Utility from "components/lib/utility";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:'clip'},
-  {menuNm: '설정', path:'setting'},
+  {menuNm: '클립', path:'myclip'},
+  {menuNm: '설정', path:'oldsetting'},
   {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터', path:'customer'},
 ]
@@ -89,10 +89,10 @@ const Remypage = () => {
   switch (settingCategory) {
     case 'report' :
       return(<Report />)
-    case 'clip' :
+    case 'myclip' :
       return(<Clip />)
-    case 'setting' :
-      return(history.push(`/mypage/${context.myInfo.memNo}/bcsetting`))
+    case 'oldsetting' :
+      return(<Setting />)
     case 'notice' :
       return(<Allim />)
     case 'customer' :
