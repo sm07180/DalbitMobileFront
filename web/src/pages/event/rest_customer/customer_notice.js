@@ -17,6 +17,7 @@ export default () => {
   useEffect(() => {
     async function fetchData() {
       const {result, data, message} = await Api.getLongTermUser({memNo: memNo})
+      // console.log('getLongTermUser : ', result, data, message);
       if (result === 'success') {
         if (data) {
           setDueDate(data.dueDate)

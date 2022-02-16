@@ -21,6 +21,8 @@ import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
+import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
+import LayerPopupEvent from "pages/main/component/layer_popup_event";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -31,6 +33,9 @@ const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.p
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
+
+const eventPopupStartTime = new Date('2020-09-25T09:00:00')
+const eventPopupEndTime = new Date('2020-10-04T23:59:59')
 
 const customHeader = JSON.parse(Api.customHeader)
 
@@ -51,6 +56,10 @@ const MainPage = () => {
 
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
+
+  const [eventPop, setEventPop] = useState(false)
+  const [popupData, setPopupData] = useState([]);
+  const nowTime = new Date()
 
   const [updatePopInfo, setUpdatePopInfo] = useState({
     showPop: false,
@@ -233,7 +242,6 @@ const MainPage = () => {
 
   /* 업데이트 확인 */
   const updatePopFetch = async () => {
-
     if (isHybrid()) {
       if (sessionStorage.getItem('checkUpdateApp') === null) {
         sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
@@ -246,6 +254,43 @@ const MainPage = () => {
           setUpdatePopInfo({showPop: isUpdate, storeUrl})
         })
       }
+    }
+  }
+
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    }
+  }
+
+  async function fetchThxgivingCheck() {
+    const res = await Api.getChooseokCheck()
+
+    if (res.result === 'success') {
+      setEventPop(true)
+      const {memNo} = globalCtx.token
+      const item = localStorage.getItem(`popup_event${memNo}`)
+      if (item !== null && item === memNo) {
+        setEventPop(false)
+      }
+    } else {
+      setEventPop(false)
     }
   }
 
@@ -266,6 +311,8 @@ const MainPage = () => {
     fetchMainInfo()
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
+    fetchMainPopupData('6');
+    fetchThxgivingCheck();
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
@@ -329,6 +376,11 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+
+    {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
+    {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
+      <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
+    )}
   </>;
   return MainLayout;
 }
