@@ -6,9 +6,10 @@ import ListNone from 'components/ui/listNone/ListNone'
 
 // components
 import './inquireLog.scss'
+import moment from "moment";
 
-const InquireLog = () => { 
-  let history = useHistory()
+const InquireLog = () => {
+  const history = useHistory()
   const [inquireLogList , setInquireLogList] = useState([]);
 
   async function fetchInquireLog() {
@@ -25,13 +26,12 @@ const InquireLog = () => {
     }
   }
 
-  const timeFormat = (writeDt) => {
-    let date = writeDt.slice(0, 8)
-    date = [date.slice(2, 4), date.slice(4, 6), date.slice(6)].join('.')
-    return `${date}`
+  const changeDay = (date) => {
+    return moment(date, "YYYYMMDDHHmmss").format("YYYY.MM.DD.HH:mm:ss");
   }
 
-  const golink = (path) => {
+  const golink = (e) => {
+    const path = e.currentTarget.dataset.qnaIdx
     history.push("/customer/inquire/" + path);
   }
 
@@ -41,11 +41,11 @@ const InquireLog = () => {
 
   return (
     <div id='inquireLog'>
-      {inquireLogList.length > 0 ? 
+      {inquireLogList.length > 0 ?
         <div className='inquireLogWrap'>
           {inquireLogList.map((list, index) => {
             return (
-              <div className='inquireLogList' key={index} onClick={() => golink(list.qnaIdx)}>
+              <div className='inquireLogList' key={index} data-qna-idx={list.qnaIdx} onClick={golink}>
                 <div className='inquireLogState'>
                   {list.state === 1 ? <span className='complete'>답변완료</span> : <span className='ing'>답변중</span>}
                 </div>
@@ -53,7 +53,7 @@ const InquireLog = () => {
                   {list.title}
                 </div>
                 <div className='inquireLogDate'>
-                  {timeFormat(list.writeDt)}
+                  {changeDay(list.writeDt)}
                 </div>
               </div>
             )
@@ -61,9 +61,9 @@ const InquireLog = () => {
         </div>
         :
         <ListNone imgType="ui02" text="문의 내역이 없어요." height="375px"/>
-      }      
+      }
     </div>
   )
 }
 
-export default InquireLog
+export default InquireLog;

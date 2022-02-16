@@ -87,9 +87,9 @@ $errorMsg : #FF1919;
       @include font(16px,600,#fff);
     }
     .criteria {
-      @include position-top-right(50%,-25px);
+      @include position-top-right(50%, 0px);
       transform: translateY(-55%);
-      width: 210px; height: 174px;
+      width: 183px; height: 174px;
       @include BGIMG('dalla/character/character_ranking.png');
       image-rendering: -webkit-optimize-contrast;
       .relative {

@@ -117,8 +117,8 @@ const TopSwiper = (props) => {
   useEffect(() => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.topSwiper>.swiper-container').swiper;
-      swiper.update();
-      swiper.slideTo(0);
+      swiper?.update();
+      swiper?.slideTo(0);
     }
   }, [data]);
 

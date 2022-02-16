@@ -168,6 +168,15 @@ legend {
           position:relative;
           width:44px;height:44px;
           border-radius:50%;
+          &[data-url="/notice"] {
+            .newDot {
+              @include position-top-right(4px,4px);
+              display:inline-block;
+              width:8px;height:8px;
+              border-radius:50%;
+              background-color:$MAINCOLOR;
+            }
+          }
           &:hover {
             background-color:#F2F2F2 !important;
           }
@@ -220,15 +229,6 @@ legend {
             &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
             &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
             &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
-          }
-          &.new {
-            .newDot {
-              @include position-top-right(4px,4px);
-              display:inline-block;
-              width:8px;height:8px;
-              border-radius:50%;
-              background-color:$MAINCOLOR;
-            }
           }
         }
       }
@@ -348,6 +348,10 @@ legend {
   #footerWrap {
     display: none;
   }
+}
+
+.defaultPointer {
+  cursor: default;
 }
 
 // .noResultWrap {

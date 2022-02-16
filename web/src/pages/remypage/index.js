@@ -9,12 +9,13 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
-import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 
 import {Hybrid, isHybrid} from "context/hybrid";
-import Setting from "pages/resetting/Setting";
-import Customer from "pages/recustomer/Customer";
+import Setting from "pages/resetting";
+import Customer from "pages/recustomer";
+import Report from "pages/remypage/contents/report/Report";
+import Utility from "components/lib/utility";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -91,7 +92,7 @@ const Remypage = () => {
     case 'clip' :
       return(<Clip />)
     case 'setting' :
-      return(<Setting />)
+      return(history.push(`/mypage/${context.myInfo.memNo}/bcsetting`))
     case 'notice' :
       return(<Allim />)
     case 'customer' :
@@ -100,15 +101,15 @@ const Remypage = () => {
       return(
         <>
         <div id="remypage">
-          <Header title={'MY'} />
+          <Header title={'마이페이지'} />
           <section className="myInfo" onClick={goProfile}>
             <MyInfo data={profile} />
           </section>
           <section className='mydalDetail'>
-            <div className="dalCount">{profile?.dalCnt}달</div>
+            <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
             <div className="buttonGroup">
-              <button>내 지갑</button>
-              <button className='charge'>충전하기</button>
+              <button onClick={() => history.push('/wallet')}>내 지갑</button>
+              <button className='charge' onClick={() => history.push('/store')}>충전하기</button>
             </div>
           </section>
           <section className="myMenu">

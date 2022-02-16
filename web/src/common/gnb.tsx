@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {
   broadcastCheck,
   broadcastContinue,
@@ -13,36 +13,38 @@ import {
 // context
 import {GlobalContext} from "context";
 import {MailboxContext} from "context/mailbox_ctx";
-import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-// static
-import broadText from "./static/bc_t.png";
-import searchIcon from "./static/ico_search_g.svg";
-import storeIcon from "./static/ic_store_g.svg";
-import alarmIcon from "./static/alarm_g.svg";
 import LayerPopupCommon from "../common/layerpopup/index";
 import {MediaType} from "pages/broadcast/constant";
-// import {authReq} from "../pages/self_auth/content/self_auth";
 import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
-import {openMailboxBanAlert} from "./mailbox/mail_func";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setIsRefresh} from "../redux/actions/common";
+
+const gnbTypes = [
+  {url: '/', isUpdate: true},
+  {url: '/clip', isUpdate: true},
+  {url: '/search', isUpdate: true},
+  {url: '/rank', isUpdate: false},
+  {url: '/mypage', isUpdate: false},
+  {url: '/notice', isUpdate: false},
+];
 
 export default function GNB() {
   const context = useContext(GlobalContext);
   const { globalState, globalAction } = context;
-  const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
-  const { isMailboxNew } = mailboxState;
+  const { baseData, clipPlayer, chatInfo, rtcInfo } = globalState;
+  const { mailboxAction } = useContext(MailboxContext);
 
-  const { rankState, rankAction } = useContext(RankContext);
-  const { formState } = rankState;
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const dispatch = useDispatch();
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
+
+  const [activeType, setActiveType] = useState('');
 
   const scrollToTop = useCallback(() => {
     window.scrollTo(0, 0);
@@ -370,6 +372,10 @@ export default function GNB() {
   }, [globalState.baseData.isLogin]);
 
   useEffect(() => {
+    setActiveType(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
     document.addEventListener("self-auth", updateDispatch);
     return () => {
       document.removeEventListener("self-auth", updateDispatch);
@@ -394,16 +400,21 @@ export default function GNB() {
           </div>
           <nav className="gnbNavigation">
             <ul>
-              <li className="active" onClick={() => history.push('/')} />
-              <li onClick={() => history.push('/clip')}/>
-              <li onClick={() => history.push('/search')}/>
-              <li onClick={() => history.push('/rank')}/>
-              <li onClick={() => history.push('/mypage')}/>
-              <li className="new" onClick={() => history.push('/notice')}>
-                {globalState.alarmStatus &&
-                  <span className="newDot"/>
-                }
-              </li>
+              {gnbTypes.map((item, index) => {
+                return (
+                  <li key={index} data-url={item.url}
+                      className={`${activeType === item.url ? 'active' : ''} ${(activeType !== item.url || item.isUpdate) ? '' : 'defaultPointer'}`}
+                      onClick={() => {
+                        history.push(item.url);
+                        if(item.isUpdate) {
+                          dispatch(setIsRefresh(true))
+                        }
+                      }}
+                  >
+                    {item.url === '/notice' && globalState.alarmStatus && <span className="newDot"/>}
+                  </li>
+                )
+              })}
             </ul>
           </nav>
         </div>
