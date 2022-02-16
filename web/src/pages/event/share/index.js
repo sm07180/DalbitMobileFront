@@ -19,6 +19,44 @@ const Share = () => {
                 <div className='stepTop'>
                     <span className='stepBox'>STEP1</span>
                 </div>
+                <div className='stepContent'>
+                    <p className='stepText'>
+                        아래의 <strong>이미지 다운로드</strong> 버튼을 클릭해<br/>
+                        이미지를 저장한다!
+                    </p>
+                    <button className='eventBtn'>이미지 다운로드</button>
+                </div>
+            </div>
+            <div className='step'>
+                <div className='stepTop'>
+                    <span className='stepBox'>STEP2</span>
+                </div>
+                <div className='stepContent'>
+                    <p className='stepText'>
+                        <strong>SNS(페이스북, 인스타그램)</strong>에<br/>
+                        저장한 이미지와 함께 한줄평을 작성 후<br/>
+                        <strong>#달라가달라졌다</strong> 해시태그와 함께글을 게시한다!<br/>
+                        악플은 노노노~ (스위트걸 st.)
+                    </p>
+                </div>
+            </div>
+            <div className='step'>
+                <div className='stepTop'>
+                    <span className='stepBox'>STEP3</span>
+                </div>
+                <div className='stepContent'>
+                    <p className='stepText'>
+                        인증하기 버튼을 클릭해서<br/>
+                        게시글의 URL을 남긴다! 끝!
+                    </p>
+                    <div className='stepTip'>
+                        <div className='tipTitle'>꿀팁!</div>
+                        <p className='tipText'>
+                            게시글에 친구 초대 이벤트에서 받은 <br/>
+                            내 친구 초대 코드까지 남긴다면..?
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
