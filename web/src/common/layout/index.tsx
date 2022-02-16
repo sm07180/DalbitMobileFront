@@ -22,7 +22,7 @@ const Layout = (props) => {
   const clipPlayState = globalState.isShowPlayer || (globalState.clipPlayer !== null && globalState.clipInfo);
   const mailBoxState = clipPlayState && mailboxChattingUrl !== true;
   const playerState = mailBoxState ? "player" : "";
-  const nonContainerPath = /\/broadcast\/|\/clip\//;
+  const nonContainerPath = /\/broadcast\/|\/clip\/[0-9]/;
   const [container , setContainer] = useState("container");
   useEffect(()=>{
     if(locationStateHistory.location.pathname.search(nonContainerPath) > -1){
