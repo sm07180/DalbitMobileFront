@@ -11,13 +11,20 @@
       width: 100%;
       height: 55px;
       padding: 16px;
-      @include BGIMG("common/arrow/rightArrow-757575.png");
-      background-position: calc(100% - 16px) center;
-      background-size:20px;
       cursor: pointer;
       .menuName {
+        flex: 1;
         @include flex(center);
         @include font(15px, 500, #303030);
+      }      
+      .arrow {
+        flex: none;
+        display: inline-block;
+        width: 20px; height: 20px;
+        margin-left: auto;
+        @include BGIMG("common/arrow/rightArrow-757575.png");
+        background-position: center;
+        background-size:cover;
       }
       small {
         margin-left: 8px;

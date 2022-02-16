@@ -1,0 +1,27 @@
+@import "components/ui/_mixin.scss";
+
+
+label {
+    @include flex(center);
+    margin-top: 32px;
+    cursor: pointer;
+  }
+input[type='checkbox'] {
+    position: relative;
+    width: 23px;
+    height: 23px;
+    cursor: pointer;
+    background-image: url("https://image.dalbitlive.com/common/input/checkbox-default.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;    
+    &.on {
+        background-image: url("https://image.dalbitlive.com/common/input/checkbox-active.png");
+    }
+  }
+
+.titlewrap {
+    margin-left: 8px;
+    @include font(14px, 500, #303030);
+    letter-spacing: -1px;
+  }
