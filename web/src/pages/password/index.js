@@ -212,7 +212,7 @@ const PasswordChange = () => {
       <Header position={'sticky'} title={'비밀번호 변경'} type={'back'}/>
       <div className='content'>
         <form>
-
+          <div className='section'>
             <div className='inputWrap'>
               <div className="title">휴대폰 번호</div>
               <div className={`inputItems`} id={'phoneInputItem'}>
@@ -223,7 +223,6 @@ const PasswordChange = () => {
                 <p className='textLog' ref={phoneCheckRef}/>
               </div>
             </div>
-
             <div className='inputWrap'>
               <div className="title">인증번호</div>
               <div className={`inputItems`} id={'authNum'}>
@@ -234,7 +233,6 @@ const PasswordChange = () => {
                 <p className='textLog' ref={authCheckRef}/>
               </div>
             </div>
-
             <div className='inputWrap'>
               <div className="title">비밀번호</div>
               <div className={`inputItems`} id={'passwordInputItem'}>
@@ -244,7 +242,6 @@ const PasswordChange = () => {
                 <p className='textLog' ref={passwordRef}/>
               </div>
             </div>
-
             <div className='inputWrap'>
               <div className="title">비밀번호 확인</div>
               <div className={`inputItems`} id={'passwordCheckInputItem'}>
@@ -254,7 +251,7 @@ const PasswordChange = () => {
                 <p className='textLog' ref={passwordCheckRef}/>
               </div>
             </div>
-
+          </div>
           <SubmitBtn state={!btnActive && 'disabled'} onClick={changePassword} text="변경하기"/>
         </form>
       </div>
