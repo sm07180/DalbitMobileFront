@@ -167,9 +167,12 @@
       &:active {cursor: grabbing;}
       &:last-child {
         width:100%;
+        >div{
+          padding-right: 16px;
+        }
       }
       >div {
-        padding: 0 16px;
+        padding-left: 16px;
       }
     }
     .listWrap {

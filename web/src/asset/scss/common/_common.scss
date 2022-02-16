@@ -455,6 +455,7 @@ legend {
       border-color:$MAINCOLOR;
     }
     &.isDisable {
+      border: 1px solid $mediumGray;
       background: $mediumGray;
     }
   }

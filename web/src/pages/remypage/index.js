@@ -9,12 +9,12 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
-import Clip from "./contents/clip/clip"
-
-import {Hybrid, isHybrid} from "context/hybrid";
+import Report from "./contents/report/Report"
+import Clip from "./contents/clip/Clip"
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
-import Report from "pages/remypage/contents/report/Report";
+
+import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 
 const myMenuItem = [
