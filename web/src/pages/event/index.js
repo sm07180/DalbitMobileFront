@@ -52,6 +52,7 @@ import DallaStore from './dallaStore'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
 import Invite from './invite'
+import Share from './share'
 
 export default (props) => {
   const params = useParams()
@@ -154,6 +155,8 @@ export default (props) => {
       
       case 'invite':
         return <Invite />
+      case 'share':
+        return <Share />
       default:
         return <></>
         break
