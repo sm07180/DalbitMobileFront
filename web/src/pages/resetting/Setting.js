@@ -4,13 +4,12 @@ import {useHistory, useParams} from 'react-router-dom'
 // global components
 import Header from 'components/ui/header/Header'
 
-import Push from './contents/push'
-import Broadcast from './contents/broadcast'
-import Forbid from './contents/forbid'
-import Manager from './contents/manager'
-import BlackList from './contents/blackList'
-import AlarmUser from './contents/alarmUser'
-
+import Push from "pages/resetting/contents/push";
+import Broadcast from "pages/resetting/contents/broadcast";
+import Forbid from 'pages/resetting/contents/forbid'
+import Manager from 'pages/resetting/contents/manager'
+import BlackList from 'pages/resetting/contents/blackList'
+import AlarmUser from 'pages/resetting/contents/alarmUser'
 
 import './style.scss'
 import {Context} from "context";
@@ -57,21 +56,21 @@ const SettingPage = () => {
         </>
         :
         settingType === "push" ?
-          <Push/>
-          :
-          settingType === "broadcast" ?
-            <Broadcast/>
-            :
-            settingType === "forbid" ?
-              <Forbid/>
-              :
-              settingType === "manager" ?
-                <Manager/>
-                :
-                settingType === "blockList" ?
-                  <BlackList/>
-                  :
-                  <AlarmUser/>
+        <Push/>
+        :
+        settingType === "broadcast" ?
+        <Broadcast/>
+        :
+        settingType === "forbid" ?
+        <Forbid/>
+        :
+        settingType === "manager" ?
+        <Manager/>
+        :
+        settingType === "blockList" ?
+        <BlackList/>
+        :
+        <AlarmUser/>
       }
     </div>
   )

@@ -12,7 +12,7 @@ import Header from 'components/ui/header/Header'
 //Content
 
 import './style.scss'
-import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
+import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetailTest";
 import Faq from "pages/recustomer/contents/faq/FaqTest";
 import Inquire from "pages/recustomer/contents/inquire/InquireTest";
 
@@ -61,7 +61,7 @@ const Customer = () => {
               <div className='wait'>잠깐!!</div>
               <div className='textWrap'>
                 <span>자주 묻는 질문은 여기에 모아두었어요.</span>
-                <span data-link="faq" onClick={onClick}>FAQ 보러가기</span>
+                <span data-idx="/customer/faq" onClick={onClick}>FAQ 보러가기</span>
               </div>
               <div className='telWrap'>
                 <div className='telRow'>

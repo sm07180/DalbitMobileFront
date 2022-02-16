@@ -9,7 +9,7 @@ import './inquireLog.scss'
 import moment from "moment";
 
 const InquireLog = () => {
-  let history = useHistory()
+  const history = useHistory()
   const [inquireLogList , setInquireLogList] = useState([]);
 
   async function fetchInquireLog() {
@@ -20,7 +20,6 @@ const InquireLog = () => {
       }
     })
     if (res.result === 'success') {
-      console.log(res);
       if (res.data.list.length !== 0) {
         setInquireLogList(res.data.list)
       }
@@ -31,7 +30,8 @@ const InquireLog = () => {
     return moment(date, "YYYYMMDDHHmmss").format("YYYY.MM.DD.HH:mm:ss");
   }
 
-  const golink = (path) => {
+  const golink = (e) => {
+    const path = e.currentTarget.dataset.idx
     history.push("/customer/inquire/" + path);
   }
 
@@ -45,7 +45,7 @@ const InquireLog = () => {
         <div className='inquireLogWrap'>
           {inquireLogList.map((list, index) => {
             return (
-              <div className='inquireLogList' key={index} onClick={() => golink(list.qnaIdx)}>
+              <div className='inquireLogList' key={index} data-Idx={list.qnaIdx} onClick={golink}>
                 <div className='inquireLogState'>
                   {list.state === 1 ? <span className='complete'>답변완료</span> : <span className='ing'>답변중</span>}
                 </div>

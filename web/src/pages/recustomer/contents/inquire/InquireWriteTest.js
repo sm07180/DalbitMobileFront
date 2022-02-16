@@ -34,12 +34,12 @@ const Write = (props) => {
     spaceBetween: 8
   };
   const [writeInfo, setWriteInfo] = useState([
-    {path: 1, name: "회원정보"}, {path: 2, name: "방송"}, {path: 3, name: "청취"}, {path: 4, name: "결제"},
-    {path: 5, name: "건의"}, {path: 6, name: "장애/버그"}, {path: 7, name: "선물/아이템"}, {path: 99, name: "기타"}
+    {path: 1, name: "회원정보"}, {path: 2, name: "방송"}, {path: 3, name: "청취"}, {path: 4, name: "결제"}, {path: 5, name: "장애/버그"}
   ])
   const [selectedInfo, setSelectedInfo] = useState("문의 유형을 선택해주세요");
   const [popup, setPopup] = useState(false);
 
+  //문의하기 등록
   const fetchData = () => {
     let params = {
       qnaIdx: 0,
@@ -56,7 +56,6 @@ const Write = (props) => {
       email: "",
       nickName: context.profile.nickName
     }
-
     API.center_qna_add({params}).then((res) => {
       if(res.result === "success") {
         context.action.alert({msg: "1:1문의가 등록되었습니다."})
@@ -67,6 +66,7 @@ const Write = (props) => {
     }).catch((e) => console.log(e));
   };
 
+  //작성한 내용으로 inputData변경
   const onChange = (e) => {
     e.preventDefault();
     setInputData({
@@ -75,10 +75,12 @@ const Write = (props) => {
     });
   };
 
+  //문의 유형 클릭시 세부내용 출력
   const changeOption = () => {
     setOption(!option);
   }
 
+  //문의 유형 path값 가져오기
   const changeValue = (e) => {
     const {value, name} = e.currentTarget.dataset;
     setInputData({...inputData, faqType: parseInt(value)});
@@ -98,18 +100,16 @@ const Write = (props) => {
     else {setAgree(false);}
   }
 
+  //이미지 업로드
   const uploadSingleFile = (e) => {
     const target = e.currentTarget;
     if (target.files.length === 0) return;
     let reader = new FileReader();
     const file = target.files[0];
-
     const fileName = file.name;
-
-    console.log(target.files);
     const fileSplited = fileName.split(".");
     const fileExtension = fileSplited.pop().toLowerCase();
-    //
+
     const extValidator = (ext) => {
       const list = ["jpg", "jpeg", "png", "PNG"];
       return list.includes(ext);
@@ -126,8 +126,6 @@ const Write = (props) => {
             uploadType: "qna"
           }})
         if (res.result === "success") {
-          console.log(res.data.path);
-          console.log(reader.result);
           setImageFile(imageFile.concat(res.data.path));
           setImgFile(imgFile.concat(res.data.url));
           setImageFileName(imageFileName.concat(fileName));
@@ -138,6 +136,7 @@ const Write = (props) => {
     }
   };
 
+  //이미지 삭제
   const removeImage = (e) => {
     const idx = parseInt(e.currentTarget.dataset.idx)
     const tempImage = imageFile.concat([]);
@@ -148,6 +147,7 @@ const Write = (props) => {
     setImgFile(tempImg);
   }
 
+  //등록시 예외 조건 확인
   const validator = () => {
     if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
       fetchData();
@@ -174,7 +174,7 @@ const Write = (props) => {
         }
       </InputItems>
       <InputItems title="문의 내용" type="textarea">
-        <textarea rows="10" placeholder={inputData.contents} maxLength="2000" onFocus={onTextFocus} defaultValue={textValue} name="contents" onChange={onChange}/>
+        <textarea rows="10" placeholder={inputData.contents} onFocus={onTextFocus} defaultValue={textValue} name="contents" onChange={onChange}/>
       </InputItems>
       <div className="imageUpload">
         <div className="titleWrap">

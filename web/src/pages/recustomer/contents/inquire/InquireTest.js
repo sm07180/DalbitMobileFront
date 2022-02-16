@@ -15,7 +15,7 @@ const Inquire = () => {
 
   return (
     <div id="inquire">
-      <Header position={'sticky'} title={'1:1 문의'} type={'back'}/>
+      <Header title={'1:1 문의'} type={'back'}/>
       <div className='subContent'>
         <ul className="tabmenu">
           {inquireTabmenu.map((data,index) => {

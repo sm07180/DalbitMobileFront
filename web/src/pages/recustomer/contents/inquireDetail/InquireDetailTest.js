@@ -40,13 +40,6 @@ const InquireDetail = () => {
     return moment(date, "YYYYMMDDHHmmss").format("YY.MM.DD");
   }
 
-  const removeImage = (index) => {
-    const tempImage = addFile.concat([]);
-    tempImage.splice(index, 1)
-
-    setAddFile(tempImage);
-  }
-
   const deleteQna = async () => {
     const res = await Api.center_qna_delete({
       params: {qnaIdx: qnaIdx}
@@ -119,7 +112,6 @@ const InquireDetail = () => {
                   return (
                     <div className='addFileList' key={index}>
                       <img src={list} alt="업로드이미지"/>
-                      <button type="button" className='removeFile' onClick={() => removeImage(index)}/>
                     </div>
                   )
                 })}
