@@ -136,6 +136,10 @@ const Mailbox = React.lazy(() => import("pages/mailbox"));
 const Notice = React.lazy(() => import("pages/remypage/contents/notice/Notice"));
 const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/PostDetail"));
 const Report = React.lazy(() => import("pages/remypage/contents/report/Report"));
+const MyClip = React.lazy(() => import("pages/remypage/contents/clip/Clip"));
+
+//임시 옛날 설정 페이지
+const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -321,6 +325,10 @@ const Router = () => {
         <Route exact path="/notice" component={Notice} />
         <Route exact path="/notice/:num" component={PostDetail} />
         <Route exact path="/report" component={Report} />
+        <Route exact path="/myclip" component={MyClip} />
+
+        {/* 임시 옛날 설정 페이지*/}
+        <Route exact path="/oldsetting" component={OldSetting} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

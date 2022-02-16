@@ -9,12 +9,12 @@ const SwitchList = (props) => {
   return (
     <div className='switchList'>
       <div className='titleWrap'>
-        {mark !== false && <span className='questionMark'></span>}
+        {mark !== false && <span className='questionMark'/>}
         <span className='title'>{title}</span>
       </div>
       <label className="inputLabel">
         <input type="checkbox" className={`blind`} name={allSwitch ? "switchAll" : "switch"} onChange={action}/>
-        <span className={`switchBtn`}></span>
+        <span className={`switchBtn`}/>
       </label>
     </div>
   )

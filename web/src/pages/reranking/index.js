@@ -305,8 +305,8 @@ const RankPage = () => {
       </section>
       <section className='rankingBottom'>
         <p>
-          달라의 숨막히는 순위 경쟁<br/>
-          랭커에 도전해보세요!
+          오늘의 랭킹 순위는?<br/>
+          혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!
         </p>
         <button onClick={() => history.push('/rankDetail/DJ')}>랭킹순위 전체보기</button>
       </section>

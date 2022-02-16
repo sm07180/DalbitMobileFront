@@ -1,6 +1,8 @@
 @import "components/ui/_mixin.scss";
 
-li {
-  position:relative;
-  cursor:pointer;
+.tabmenu {
+  li {
+    position:relative;
+    cursor:pointer;
+  }
 }
