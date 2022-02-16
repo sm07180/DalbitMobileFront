@@ -11,11 +11,10 @@ import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/Clip"
-
-import {Hybrid, isHybrid} from "context/hybrid";
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
-import Report from "pages/remypage/contents/report/Report";
+
+import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 
 const myMenuItem = [
