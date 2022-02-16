@@ -48,7 +48,8 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 고객센터
 const ReCustomer = React.lazy(() => import('pages/recustomer/Customer'))
-
+// 운영정책
+const ReRule = React.lazy(() => import('pages/rerule'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
@@ -155,6 +156,9 @@ const Router = () => {
         <Route exact path="/mobileWeb" component={MobileWeb} />
 
         <Route exact path="/eventzip" component={EventZip} />
+
+        <Route exact path="/rule/" component={ReRule} />
+        <Route exact path="/rule/:category" component={ReRule} />
 
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
