@@ -10,10 +10,16 @@ import Api from "context/api";
 
 import '../invite.scss'
 
-const InviteRank = () => {  
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx;
+const InviteRank = () => {
+  const context = useContext(Context)
+  const {token, profile} = context
   const [popup, setPopup] = useState(false);
+  const [data, setData] = useState({
+    cnt:"",
+    list:[]
+  });
+  const [myData, setMyData] = useState();
+
 
   const temporaryData = [
     {
@@ -310,18 +316,23 @@ const InviteRank = () => {
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log(response);
+      console.log("inviteList", getList);
+      setData({
+        cnt:response.data.listCnt,
+        list:response.data.list
+      })
     })
   }
 
   const getMyRank = ()=>{
-    Api.inviteList({
+    Api.inviteMyRank({
       reqBody: true,
       data:{
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log(response);
+      console.log("inviteMyRank", response);
+      setMyData(response.data)
     })
   }
 
@@ -342,45 +353,45 @@ const InviteRank = () => {
           </div>
         <div className='rankSection'>
           {
-            temporaryData.length > 0 ?
+            data.cnt > 0 ?
             <>
               <div className='inviteMyRank'>
                 <div className='listFront'>
                   <span className='myrankText'>내순위</span>
-                  <span className='rankingBadge'>-</span>
+                  <span className='rankingBadge'>{myData.rankNo}</span>
                 </div>
                 <div className="photo">
-                  <img src={`${profile.profImg.thumb150x150 ? profile.profImg.thumb150x150 : "https://image.dalbitlive.com/images/listNone-userProfile.png"}`} alt="프로필이미지" />
+                  <img src={`${myData.image_profile ? myData.image_profile : "https://image.dalbitlive.com/images/listNone-userProfile.png"}`} alt="프로필이미지" />
                 </div>
                 <div className='listContent'>
                   <div className='listItem'>
-                    <GenderItems data={profile.gender}/>
-                    <span className='nickNm'>{profile.nickNm}</span>
+                    <GenderItems data={myData.mem_sex}/>
+                    <span className='nickNm'>{myData.mem_nick}</span>
                   </div>
                 </div>
                 <div className='listBack'>
-                  <DataCnt type="inviteCnt" value="1231"/>
+                  <DataCnt type="inviteCnt" value={myData.invitation_cnt}/>
                 </div>
               </div>
               <div className='inviteRankWrap'>
               {
-                temporaryData.map((list, index) => {
+                data.list.map((list, index) => {
                   return (
                     <div className='inviteRankList' key={index}>
                       <div className='listFront'>
                         <span className={`rankingBadge`}>{list.rank}</span>
                       </div>
                       <div className="photo">
-                        <img src={list.profImg} alt="프로필이미지" />
+                        <img src={list.image_profile} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>
-                          <GenderItems data={list.gender}/>
-                          <span className='nickNm'>{list.nickNm}</span>
+                          <GenderItems data={list.mem_sex}/>
+                          <span className='nickNm'>{list.mem_nick}</span>
                         </div>
                       </div>
                       <div className='listBack'>
-                        <DataCnt type="inviteCnt" value={list.inviteCnt}/>
+                        <DataCnt type="inviteCnt" value={list.invitation_cnt}/>
                       </div>
                     </div> 
                   )

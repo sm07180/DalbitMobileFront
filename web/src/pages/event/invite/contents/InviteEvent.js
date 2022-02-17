@@ -32,41 +32,41 @@ const InviteEvent = () => {
     }
   };
 
-  // useEffect(()=>{
-  //   //초대코드 유무 체크
-  //   Api.inviteMy({
-  //     reqBody: true,
-  //     data:{
-  //       "memNo": context.token.memNo,
-  //     }
-  //   }).then((response)=>{
-  //     console.log(response);
-  //     if(response.code === "0"){
-  //       setCreatedCode(false);
-  //     }else{
-  //       setCreatedCode(true);
-  //       setCode(response.data.invitation_code);
-  //     }
-  //   });
-  // },[]);
-  //
-  // const registerCode = (code) => {
-  //   Api.inviteRegister({
-  //     reqBody: true,
-  //     data:{
-  //       "memNo": context.token.memNo,
-  //       "invitationCode": code
-  //     }
-  //   }).then((response)=>{
-  //       console.log(response);
-  //       if(response.code === "0000"){
-  //         setCode(code);
-  //         setCreatedCode(true);
-  //       }else{
-  //         createCode();
-  //       }
-  //   })
-  // }
+  useEffect(()=>{
+    //초대코드 유무 체크
+    Api.inviteMy({
+      reqBody: true,
+      data:{
+        "memNo": context.token.memNo,
+      }
+    }).then((response)=>{
+      console.log(response);
+      if(response.code === "0"){
+        setCreatedCode(false);
+      }else{
+        setCreatedCode(true);
+        setCode(response.data.invitation_code);
+      }
+    });
+  },[]);
+
+  const registerCode = (code) => {
+    Api.inviteRegister({
+      reqBody: true,
+      data:{
+        "memNo": context.token.memNo,
+        "invitationCode": code
+      }
+    }).then((response)=>{
+        console.log(response);
+        if(response.code === "0000"){
+          setCode(code);
+          setCreatedCode(true);
+        }else{
+          createCode();
+        }
+    })
+  }
 
   const createCode = () => {
     const codeLength = 6
