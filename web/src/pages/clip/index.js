@@ -69,8 +69,7 @@ const ClipPage = () => {
   const getClipLikeList = () => {
     if (context.token.memNo === undefined) return;
 
-    Api.getHistoryList({
-      memNo: context.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: context.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
       if (res.code === 'C001') {
         setLikeClipInfo(res.data);
       }
@@ -82,8 +81,7 @@ const ClipPage = () => {
   const getClipListenList = () => {
     if (context.token.memNo === undefined) return;
 
-    Api.getHistoryList({
-      memNo: context.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: context.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
       if (res.code === 'C001') {
         setListenClipInfo(res.data);
       }
@@ -92,7 +90,7 @@ const ClipPage = () => {
 
   // 방금 떠오른 클립 리스트 가져오기
   const getClipLastList = () => {
-    API.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 9 }).then(res => {
+    Api.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 9 }).then(res => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
@@ -119,7 +117,7 @@ const ClipPage = () => {
   };
 
   const getClipList = () => {
-    API.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 5, subjectType: subSearchInfo.value }).then(res => {
+    Api.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 5, subjectType: subSearchInfo.value }).then(res => {
       if (res.code === 'C001') {
         setSubClipInfo({ list: res.data.list, paging: {...res.data.paging}});
       }
