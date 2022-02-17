@@ -4,10 +4,12 @@ import ListRow from 'components/ui/listRow/ListRow'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
+import {useHistory} from "react-router-dom";
 
 const listenTab = ['최근','좋아요','선물']
 
 const MyClipListen =()=>{
+  const history = useHistory();
   const [listenType, setListenType] = useState(listenTab[0])
 
   return(
@@ -44,7 +46,7 @@ const MyClipListen =()=>{
           </ListRow>
           <div className="empty listen">
             <p>청취 내역이 없어요<br/>지금 바로 청취해보세요!</p>
-            <button>청취하러 가기</button>
+            <button onClick={() => history.push('/clip')}>청취하러 가기</button>
           </div>
         </section>
     </>

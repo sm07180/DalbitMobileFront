@@ -93,8 +93,6 @@ const BroadCastAudioPlayer = ()=>{
     }
     setMute(!mute);
   }
-
-  console.log(userProfile);
   
 
   return (
@@ -104,17 +102,12 @@ const BroadCastAudioPlayer = ()=>{
       }}>
       <div className="inner-player" onClick={playerBarClickEvent}>
         <div className="inner-player-bg" style={{
-          background: `url("${userProfile.profImg.thumb500x500}") center/cover no-repeat`,
+          background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,
         }}></div>
         <div className="info-wrap">
-          <div className="equalizer">
-            <p>{`LIVE`}</p>
-          </div>
+          <div className="equalizer"></div>
           <div className="thumb" style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)} onClick={(e) => e.stopPropagation()}>
-            {
-              rtcInfo?.userType !== UserType.HOST &&
-              <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
-            }
+            
           </div>
           <div className="room-info">
             <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
@@ -122,10 +115,14 @@ const BroadCastAudioPlayer = ()=>{
           </div>
           <div className="counting"/>
         </div>
-        {
-          rtcInfo?.userType !== UserType.HOST &&
-          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-        }
+        <div className="buttonGroup">
+          {rtcInfo?.userType !== UserType.HOST &&
+            <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
+          }
+          {rtcInfo?.userType !== UserType.HOST &&
+            <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          }
+        </div>
       </div>
     </div>
   )

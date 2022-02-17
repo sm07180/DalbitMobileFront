@@ -253,6 +253,7 @@
               }
             }
             p {
+              line-height:20px;
               @include font(15px,400,#303030);
               @include fontCut;
             }

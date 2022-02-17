@@ -33,6 +33,10 @@ const ClipListenCore = (props) => {
           <GenderItems data={item.gender} />
           <span className="nickNm">{item.nickName}</span>
         </div>
+        <div className="listItem">
+          <DataCnt type={"replyCnt"} value={item.replyCnt ? item.replyCnt : 0}/>
+          <DataCnt type={"goodCnt"} value={item.goodCnt ? item.replyCnt : 0}/>
+        </div>
       </div>
       {/*<button className="trash">
         <img src="https://image.dalbitlive.com/clip/dalla/icoTrash.png" />
