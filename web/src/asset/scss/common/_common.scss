@@ -149,6 +149,7 @@ legend {
         width:328px;
         li {
           width:56px;height:56px;
+
         }
       }
     }
@@ -162,6 +163,16 @@ legend {
           background-color:#ddd;
           + li {
             margin-left:6px;
+          }
+          &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-off.png");}
+          &:nth-child(2) {@include BGIMG("common/gnb/gnbMali-off.png");}
+          &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-off.png");}
+          &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-off.png");}
+          &.active {
+            &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-on.png");}
+            &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-on.png");}
+            &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-on.png");}
+            &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-on.png");}
           }
         }
       }
@@ -236,11 +247,11 @@ legend {
           &:hover::after {content:"마이";}
         }
         &[data-url="/mail"] {
-          @include BGIMG("common/gnb/gnbMy-off.png");
+          @include BGIMG("common/gnb/gnbMail-off.png");
           &:hover::after {content:"우체통";}
         }
         &[data-url="/store"] {
-          @include BGIMG("common/gnb/gnbMy-off.png");
+          @include BGIMG("common/gnb/gnbStore-off.png");
           &:hover::after {content:"스토어";}
         }
         &[data-url="/notice"] {
@@ -260,6 +271,8 @@ legend {
           &[data-url="/search"] {@include BGIMG("common/gnb/gnbSearch-on.png");}
           &[data-url="/rank"] {@include BGIMG("common/gnb/gnbRank-on.png");}
           &[data-url="/mypage"] {@include BGIMG("common/gnb/gnbMy-on.png");}
+          &[data-url="/mail"] {@include BGIMG("common/gnb/gnbMail-on.png");}
+          &[data-url="/store"] {@include BGIMG("common/gnb/gnbStore-on.png");}
           &[data-url="/notice"] {@include BGIMG("common/gnb/gnbAllim-on.png");}
         }
       }
@@ -547,9 +560,6 @@ legend {
 }
 
 @media (max-width: 800px) {
-  .gnbContainer {
-    width:480px;
-  }
   .totalWrap {
     width:480px;
   }

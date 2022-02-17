@@ -411,9 +411,9 @@ export default function GNB() {
           </nav>
           <div className="subGnbNavigation">
             <ul>
-              <li className="active"></li>
-              <li className="active"></li>
-              <li className="active"></li>
+              <li></li>
+              <li></li>
+              <li></li>
               <li className="active"></li>
             </ul>
             {baseData.isLogin === true ?
