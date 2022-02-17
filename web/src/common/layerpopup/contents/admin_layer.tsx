@@ -68,10 +68,10 @@ export default function LayerComponent(props: any) {
               )}
             </div>
             <div className="btnWrap">
-              <button className="btn btn_cancel darkgray" onClick={() => broadCastLink("normal")}>
+              <button className="btn btn_cancel" onClick={() => broadCastLink("normal")}>
                 시청자 모드
               </button>
-              <button className="btn btn_ok mainColor" onClick={() => broadCastLink("admin")}>
+              <button className="btn btn_ok" onClick={() => broadCastLink("admin")}>
                 관리자 모드
               </button>
             </div>
@@ -96,9 +96,10 @@ const Content = styled.div`
   .btnWrap {
     .darkgray {
       background-color: #757575;
+      color:#fff;
     }
     .mainColor {
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
 `;

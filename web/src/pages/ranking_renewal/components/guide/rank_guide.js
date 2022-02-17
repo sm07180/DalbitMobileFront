@@ -1,14 +1,13 @@
-import React, {useState, useMemo} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import React, {useMemo} from 'react'
+import {useParams} from 'react-router-dom'
 //components
 import Layout from 'pages/common/layout'
 import Benefit from './rank_guide_benefit'
-import HowUse from './rank_guide_howUse'
 import MarketingPick from './marketing_pick'
 import MarketingAdv from './marketing_adv'
-import Header from 'components/ui/new_header'
 //static
 import './rank_guide.scss'
+import Header from "components/ui/header/Header";
 
 export default (props) => {
   const params = useParams()
@@ -27,7 +26,7 @@ export default (props) => {
   return (
     <Layout {...props} status="no_gnb">
       <div id="ranking-guide-page">
-        <Header title={subTitle} />
+        <Header title={subTitle} type="back" />
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit />}
           {guideType === 'pick' && <MarketingPick />}

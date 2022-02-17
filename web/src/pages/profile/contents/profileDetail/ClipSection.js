@@ -9,7 +9,7 @@ import {Context} from "context";
 import {useHistory} from "react-router-dom";
 
 const ClipSection = (props) => {
-  const { profileData, clipData, isMyProfile } = props;
+  const { profileData, clipData, isMyProfile, webview } = props;
   const context = useContext(Context);
   const history = useHistory();
 
@@ -18,7 +18,7 @@ const ClipSection = (props) => {
       clipNo: clipNo,
       gtx: context,
       history,
-
+      webview,
     }
     NewClipPlayerJoin(clipParam)
   }

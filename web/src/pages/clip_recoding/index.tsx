@@ -223,7 +223,7 @@ export default function castRecoding(props: any) {
                 size={100}
                 toggleAni={false}
                 trackColor="transparent"
-                fillColor="rgba(99, 43, 235, 0.8)"
+                fillColor="rgba(255, 60, 123, 0.8)"
               />
             </div>
           )}
@@ -235,16 +235,16 @@ export default function castRecoding(props: any) {
                 strokeWidth={8}
                 toggleAni={audioRef.current?.paused}
                 size={100}
-                //trackColor="#ebe3ff"
+                //trackColor="#FF3C7B"
                 trackColor="transparent"
-                fillColor="rgba(99, 43, 235, 0.8)"
+                fillColor="rgba(255, 60, 123, 0.8)"
               />
             </div>
           )}
 
           {/* 10분게이지 */}
           {/* <div
-            style={{ width: `${0.8 * count}px`, backgroundColor: "#632beb", height: "10px", maxWidth: "240px", margin: "10px 0" }}
+            style={{ width: `${0.8 * count}px`, backgroundColor: "#FF3C7B", height: "10px", maxWidth: "240px", margin: "10px 0" }}
           ></div> */}
           {recordState !== -1 ? (
             <span className="recordCount recordCount--active">

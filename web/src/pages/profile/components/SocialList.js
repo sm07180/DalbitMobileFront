@@ -26,12 +26,13 @@ const SocialList = (props) => {
   return (
     <div className="socialList">
       {socialList.map((item, index) => {
-        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
-        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
+        const memNo = type==='feed'? profileData.memNo : item?.writerMemNo;
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo};
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo };
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
-                              modifyEvent={() => goProfileDetailPage(modifyParam)}
+                              modifyEvent={() => {memNo === profileData.memNo && goProfileDetailPage(modifyParam)}}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
             />
             <div className="socialContent">

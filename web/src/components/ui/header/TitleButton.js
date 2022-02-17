@@ -56,27 +56,20 @@ const TitleButton = (props) => {
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
-    case '클립':
-      return (
-        <div className="buttonGroup">
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-        </div>
-      )
     case '클립 랭킹':
       return (
         <div className='buttonGroup'>
           <RankingRewardButton history={history} />
         </div>
       )
-    case '좋아요한 클립':
+    case '좋아요한 클립-':
       return (
         <div className="buttonGroup">
           <button className='play' />
           <button className='shuffle' />
         </div>
       )
-    case '최근 들은 클립':
+    case '최근 들은 클립-':
       return (
         <div className="buttonGroup">
           <button className='play' />
@@ -91,11 +84,12 @@ const TitleButton = (props) => {
       )
     case 'MY':
       return (
-        <div className="buttonGroup">
+        <></>
+        /*<div className="buttonGroup">
           <StoreButton history={history} />
           <SearchButton history={history} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-        </div>
+        </div>*/
       )
     default :
       return (

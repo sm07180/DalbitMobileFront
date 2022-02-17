@@ -24,10 +24,11 @@
     h3 {
       width:100%;
       line-height:48px;
+      padding-top:20px;
       text-align:center;
       @include font(16px,bold,#202020);
     }
-  }  
+  }
   @keyframes popSlideUp {
     0% {transform: translateY(100%);}
     100% {transform: translateY(0);}
