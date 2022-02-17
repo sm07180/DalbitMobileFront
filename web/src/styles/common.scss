@@ -2,6 +2,7 @@
 @import './global.scss';
 @import './variables.scss';
 @import './icons.scss';
+@import "components/ui/_mixin.scss";
 // animation
 @import './animation.scss';
 @import './_mixins.scss';
@@ -93,7 +94,7 @@
     height: 50px;
     border: 3px solid $lighterGray;
     border-radius: 50%;
-    border-top-color: $primary;
+    border-top-color: $MAINCOLOR;
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
   }
@@ -285,7 +286,7 @@ input:-webkit-autofill:active input:-webkit-autofill:active {
 //   height: 64px;
 //   padding-top: 22px;
 //   border-radius: 50%;
-//   background-color: $primary;
+//   background-color: $MAINCOLOR;
 //   z-index: 1;
 //   &::before {
 //     display: block;
@@ -518,7 +519,7 @@ div.MuiToolbar-root,
 //     color: $white;
 //     font-weight: $bold;
 //     text-align: center;
-//     background-color: $primary;
+//     background-color: $MAINCOLOR;
 //     &.isDisable {
 //       background: $mediumGray;
 //     }

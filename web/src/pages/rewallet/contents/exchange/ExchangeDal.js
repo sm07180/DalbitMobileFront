@@ -54,7 +54,7 @@ const ExchangeDal = () => {
               </div>
             )
           })}
-          <SubmitBtn text="결제하기" />
+          <SubmitBtn text="교환하기" />
         </section>
         <section className="noticeInfo">
           <h3>유의사항</h3>
