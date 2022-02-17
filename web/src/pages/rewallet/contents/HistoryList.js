@@ -37,7 +37,8 @@ const HistoryList = (props) => {
 
                 {/*<div className="otherUserNick">계란노른자</div>*/}
                 {/*<span className="privateBdg">몰래</span>*/}
-
+              </div>
+              <div className="listItem">
                 <div className="historyDate">{moment(data?.updateDt,'YYYYMMDD').format('YYYY.MM.DD')}</div>
               </div>
             </div>

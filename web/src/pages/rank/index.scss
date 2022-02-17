@@ -1,4 +1,5 @@
 @import "../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #ranking-page {
   width: 100%;
@@ -183,7 +184,7 @@
     align-items: center;
     height: 56px;
     padding: 0px 10px;
-    background: $primary;
+    background: $MAINCOLOR;
     color: $white;
 
     .subDay {
@@ -239,7 +240,7 @@
     }
 
     &.isSpecial {
-      color: $primary;
+      color: $MAINCOLOR;
       background-color: #eee;
 
       .prevButton {
@@ -1479,7 +1480,7 @@
         font-size: 11px;
       }
       &.on {
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         color: $white;
       }
     }
@@ -1803,16 +1804,16 @@
       font-size: 14px;
       font-weight: 500;
       text-align: center;
-      border: 1px solid $primary;
+      border: 1px solid $MAINCOLOR;
       background: $white;
-      color: $primary;
+      color: $MAINCOLOR;
       border-radius: 16px;
       box-sizing: border-box;
     }
     .specialText {
       margin-bottom: 4px;
       padding: 11px 0;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       color: $white;
       font-size: 14px;
       text-align: center;
@@ -1955,7 +1956,7 @@
   .benefitTop {
     padding: 16px 0;
     text-align: center;
-    background-color: $primary;
+    background-color: $MAINCOLOR;
     color: $white;
     letter-spacing: -0.35px;
     font-size: 14px;
@@ -2009,11 +2010,11 @@
     table {
       th {
         padding: 6px 0;
-        border-top: 1px solid $primary;
-        border-bottom: 1px solid $primary;
+        border-top: 1px solid $MAINCOLOR;
+        border-bottom: 1px solid $MAINCOLOR;
         font-size: 12px;
         font-weight: $regular;
-        color: $primary;
+        color: $MAINCOLOR;
         letter-spacing: -0.3px;
       }
 
@@ -2065,7 +2066,7 @@
       .conditionItem {
         overflow: hidden;
         width: 30%;
-        border: 1px solid $primary;
+        border: 1px solid $MAINCOLOR;
         text-align: center;
         border-radius: 12px;
 
@@ -2075,7 +2076,7 @@
           line-height: 28px;
           letter-spacing: -0.3px;
           color: $white;
-          background-color: $primary;
+          background-color: $MAINCOLOR;
         }
         &__content {
           width: 50%;

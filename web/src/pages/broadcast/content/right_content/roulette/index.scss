@@ -1,4 +1,5 @@
 @import "../../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #roulette {
   display: flex;
@@ -27,7 +28,7 @@
     margin-top: 22px;
     .title {
       font-weight: $bold;
-      color: $primary;
+      color: $MAINCOLOR;
 
       .caption {
         display: inline-block;
@@ -102,7 +103,7 @@
       & > p {
         span {
           margin-left: 5px;
-          color: $primary;
+          color: $MAINCOLOR;
         }
       }
 
@@ -124,7 +125,7 @@
         top: 40px;
         right: 5px;
         padding: 6px 17px;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         border-radius: 12px;
         font-size: 14px;
         font-weight: $regular;
@@ -158,8 +159,8 @@
         align-items: center;
         justify-content: center;
         background-color: $white;
-        border: 1px solid $primary;
-        color: $primary;
+        border: 1px solid $MAINCOLOR;
+        color: $MAINCOLOR;
         &::before {
           display: inline-block;
           width: 24px;

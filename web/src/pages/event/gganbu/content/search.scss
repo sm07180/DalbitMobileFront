@@ -1,4 +1,5 @@
 @import '../../../../styles/variables';
+@import "components/ui/_mixin.scss";
 
 #popupWrap {
   position: fixed;
@@ -66,7 +67,7 @@
       span {
         margin-left: 4px;
         font-size: 12px;
-        color: #632beb;
+        color: $MAINCOLOR;
       }
       p {
         font-size: 12px;
@@ -96,7 +97,7 @@
         letter-spacing: -1px;
         &.active {
           font-weight: 700;
-          color: #632beb;
+          color: $MAINCOLOR;
           &:after {
             position: absolute;
             bottom: 0;
@@ -105,7 +106,7 @@
             content: '';
             width: 48px;
             height: 1px;
-            background-color: #632beb;
+            background-color: $MAINCOLOR;
           }
         }
       }
@@ -169,7 +170,7 @@
             .category {
               font-size: 14px;
               font-size: 700;
-              color: #632beb;
+              color: $MAINCOLOR;
             }
             .time {
               margin-left: 4px;
@@ -202,12 +203,12 @@
           font-weight: 500;
           box-sizing: border-box;
           &.submit {
-            background-color: #632beb;
+            background-color: $MAINCOLOR;
             color: white;
           }
           &.cancel {
-            border: 1px solid #632beb;
-            color: #632beb;
+            border: 1px solid $MAINCOLOR;
+            color: $MAINCOLOR;
           }
           &.accept {
             background-color: #ff2980;
@@ -270,7 +271,7 @@
         margin: 2px 0;
         font-size: 16px;
         font-weight: 700;
-        color: #632beb;
+        color: $MAINCOLOR;
         text-align: center;
       }
       p {
@@ -299,7 +300,7 @@
           margin-right: 4px;
         }
         &:last-child {
-          background-color: #632beb;
+          background-color: $MAINCOLOR;
         }
       }
     }
@@ -321,7 +322,7 @@
       max-width: 240px;
       font-size: 22px;
       font-weight: 500;
-      color: #632beb;
+      color: $MAINCOLOR;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;

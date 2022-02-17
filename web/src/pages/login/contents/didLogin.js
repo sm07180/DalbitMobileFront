@@ -181,7 +181,7 @@ const DidLogin = (props) => {
           }
         })
       } else if(loginInfo.code === '-8') {
-        return props.history.push({pathname: '/event/customer_notice', state: {memNo: loginInfo.data.memNo}});
+        return props.history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         globalCtx.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})}
     }

@@ -10,7 +10,7 @@ import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
 import Report from "./contents/report/Report"
-import Clip from "./contents/clip/Clip"
+import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
 

@@ -1,4 +1,6 @@
 @import '../../../../styles/variables';
+@import "components/ui/_mixin.scss";
+
 #eventList {
   .event-list {
     padding: 0 16px;
@@ -80,7 +82,7 @@
         border-radius: 8px;
         &--isActive {
           width: 100px;
-          background-color: $primary;
+          background-color: $MAINCOLOR;
         }
       }
     }
@@ -95,7 +97,7 @@
       padding: 0 16px 0 16px;
       text-align: center;
       background-color: $white;
-      border: solid 1px $primary;
+      border: solid 1px $MAINCOLOR;
       border-radius: 12px;
 
       .title {
@@ -103,7 +105,7 @@
         font-size: 16px;
         font-weight: bold;
         line-height: 1.5;
-        color: $primary;
+        color: $MAINCOLOR;
         border-bottom: 1px solid $lightGray;
       }
 
@@ -166,18 +168,18 @@
 
               &.info {
                 margin-right: 2px;
-                color: $primary;
+                color: $MAINCOLOR;
                 background-color: $white;
                 border-radius: 12px;
-                border: solid 1px $primary;
+                border: solid 1px $MAINCOLOR;
               }
 
               &.dal {
                 margin-left: 2px;
                 color: $white;
-                background-color: $primary;
+                background-color: $MAINCOLOR;
                 border-radius: 12px;
-                border: solid 1px $primary;
+                border: solid 1px $MAINCOLOR;
               }
             }
           }
@@ -240,7 +242,7 @@
           font-size: 14px;
           line-height: 1.43;
           background-color: $whiteGray;
-          color: $primary;
+          color: $MAINCOLOR;
           &:first-child {
             margin-top: 0;
           }
@@ -286,7 +288,7 @@
       background-color: $white;
       .formText {
         font-weight: bold;
-        color: $primary;
+        color: $MAINCOLOR;
       }
       .infoText {
         text-align: right;
@@ -392,7 +394,7 @@
     line-height: 1.33;
     background-color: $white;
     color: $black;
-    border: solid 1px $primary;
+    border: solid 1px $MAINCOLOR;
     border-radius: 12px;
   }
 
@@ -430,7 +432,7 @@
       text-align: center;
       font-size: 18px;
       line-height: 1.17;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       color: $white;
       border-radius: 12px;
     }

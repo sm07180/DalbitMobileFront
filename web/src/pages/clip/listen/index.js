@@ -7,6 +7,7 @@ import Api from "context/api";
 import {Context} from "context";
 
 import '../scss/clipDetail.scss';
+import '../../../components/ui/listRow/listRow.scss';
 
 const ClipListenPage = (props) => {
   const context = useContext(Context);

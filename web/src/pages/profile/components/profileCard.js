@@ -40,9 +40,7 @@ const ProfileCard = (props) => {
         </div>
         <div className="info">
           <div className="item">
-            <LevelItems data={data.level} grade={data.grade} />
-          </div>
-          <div className="item">
+            <LevelItems data={data.level} />
             <GenderItems data={data.gender} size={18} />
             <span className='nick'>{data.nickNm}</span>
           </div>
