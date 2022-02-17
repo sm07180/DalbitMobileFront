@@ -377,6 +377,117 @@ legend {
     color: #999;
   }
 }
+#player {
+  position: fixed;bottom:0;left:50%;
+  transform:translateX(-50%);z-index: 50;
+  width: 100%;max-width:480px;
+  height: 70px;
+  border-radius: 16px 16px 0 0;
+  overflow:hidden;
+  color: #fff;
+  cursor: pointer;
+  .inner-player {
+    position: relative;
+    @include flex(center,space-between);
+    width: 100%;
+    height: 100%;
+    padding: 0px 12px;
+    .inner-player-bg {
+      @include position-center;
+      width:110%;
+      height:120%;
+      padding: 50% 0;
+      filter: blur(10px);
+      box-sizing: content-box;
+      &::after {
+        content:"";
+        @include position-center;
+        width:100%;
+        height:100%;
+        background-color:rgba(black,.4);
+      }
+    }
+    .info-wrap {
+      position:relative;
+      z-index: 1;
+      @include flex(center);
+      .equalizer {
+        width: 22px;
+        height: 27px;
+        margin-right: 8px;
+        @include BGIMG("common/playerbar_live.png");
+      }
+      .thumb {
+        position: relative;
+        @include flex(center,center);
+        width: 55px;
+        height: 55px;
+        margin-right: 12px;
+        border-radius: 50%;
+        background: #ccc;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        &::before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          border-radius:50%;
+          border:2px solid rgba(white,.3);
+          box-sizing: border-box;
+          z-index: 4;
+        }
+        .playToggle__play,
+        .playToggle__stop {
+          position: relative;
+          padding: 10px;
+          z-index: 5;
+          &.video {
+            background: rgba(0, 0, 0, 0.1);
+          }
+        }
+      }
+
+      .room-info {
+        width: 256px;
+        font-size: 13px;
+
+        .title {
+          width: 100%;
+          margin-bottom: 3px;
+          font-size: 16px;
+          font-weight: 300;
+          @include fontCut;
+        }
+        p {
+          font-weight: 300;
+        }
+      }
+
+      .counting {
+        span {
+          display: inline-block;
+          margin-right: 18px;
+
+          img {
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    .close-btn {
+      position: relative;z-index: 4;
+      display: block;
+      cursor: pointer;
+    }
+  }
+}
+
+
 // mobile
 .mobile-app {
   #GNB {
@@ -393,6 +504,9 @@ legend {
   }
   #footerWrap {
     display: none;
+  }
+  #player {
+    bottom: $NAVIGATION-HEIGHT;
   }
 }
 

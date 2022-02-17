@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { MailboxContext } from "context/mailbox_ctx";
 
 //component
-import Header from "common/ui/header";
+import Header from "components/ui/header/Header";
 import NoResult from "common/ui/no_result";
 import UserList from "./user_list";
 
@@ -13,7 +13,7 @@ export default function chatNewPage() {
 
   return (
     <>
-      <Header title="새로운 메세지" />
+      <Header title="새로운 메세지" type="back"/>
       <div className="chatNewPage subContent gray">
         <div className="tabBox">
           <button className={`${mailboxState.tabState === 1 ? "active" : ""}`} onClick={() => mailboxAction.setTabState!(1)}>

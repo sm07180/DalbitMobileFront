@@ -15,6 +15,7 @@ import CloseBtn from "../images/ic_player_close_btn.svg";
 import PlayIcon from "../static/ic_play.svg";
 import PauseIcon from "../static/ic_pause.svg";
 import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle";
+import { url } from "inspector";
 
 
 const BroadCastAudioPlayer = ()=>{
@@ -26,6 +27,7 @@ const BroadCastAudioPlayer = ()=>{
     isShowPlayer,
     guestInfo,
     exitMarbleInfo,
+    userProfile
   } = globalState;
   const [mute, setMute] = useState(rtcInfo?.audioTag?.muted);
   const roomNo = sessionStorage.getItem("room_no") === null ? "" : sessionStorage.getItem("room_no") as string;
@@ -55,18 +57,6 @@ const BroadCastAudioPlayer = ()=>{
     if (result !== "success") {
       console.log(`broadcastExit fail`);
       return;
-    }
-    if(data && data.getMarbleInfo){
-      globalAction.setExitMarbleInfo({
-        ...exitMarbleInfo,
-        rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
-        yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
-        bMarbleCnt: data.getMarbleInfo.bMarbleCnt,
-        vMarbleCnt: data.getMarbleInfo.vMarbleCnt,
-        isBjYn: data.getMarbleInfo.isBjYn,
-        marbleCnt: data.getMarbleInfo.marbleCnt,
-        pocketCnt: data.getMarbleInfo.pocketCnt,
-      });
     }
 
     if (exitMarbleInfo.marbleCnt > 0 || exitMarbleInfo.pocketCnt > 0) {
@@ -103,19 +93,21 @@ const BroadCastAudioPlayer = ()=>{
     }
     setMute(!mute);
   }
+  
 
   return (
-    <PlayerAudioStyled style={{ display: isShowPlayer ? "" : "none" }}>
+    <div id="player" 
+      style={{
+        display: isShowPlayer ? "" : "none",
+      }}>
       <div className="inner-player" onClick={playerBarClickEvent}>
+        <div className="inner-player-bg" style={{
+          background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,
+        }}></div>
         <div className="info-wrap">
-          <div className="equalizer">
-            <p>{`LIVE`}</p>
-          </div>
+          <div className="equalizer"></div>
           <div className="thumb" style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)} onClick={(e) => e.stopPropagation()}>
-            {
-              rtcInfo?.userType !== UserType.HOST &&
-              <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
-            }
+            
           </div>
           <div className="room-info">
             <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
@@ -123,12 +115,16 @@ const BroadCastAudioPlayer = ()=>{
           </div>
           <div className="counting"/>
         </div>
-        {
-          rtcInfo?.userType !== UserType.HOST &&
-          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-        }
+        <div className="buttonGroup">
+          {rtcInfo?.userType !== UserType.HOST &&
+            <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
+          }
+          {rtcInfo?.userType !== UserType.HOST &&
+            <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          }
+        </div>
       </div>
-    </PlayerAudioStyled>
+    </div>
   )
 }
 
