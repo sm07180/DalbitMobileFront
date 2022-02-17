@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="55" height="24" viewBox="0 0 55 24">
-    <rect width="55" height="24" fill="#ff3c7b" rx="12"/>
+    <rect width="55" height="24" fill="#FF3C7B" rx="12"/>
     <text fill="#fff" font-family="NanumSquareB, NanumSquare" font-size="12px" letter-spacing="-0.025em" transform="translate(38 16)">
         <tspan x="-10.77" y="0">설정</tspan>
     </text>

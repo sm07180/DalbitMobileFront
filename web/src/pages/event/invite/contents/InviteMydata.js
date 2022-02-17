@@ -6,6 +6,7 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 import '../invite.scss'
 import {Context} from "context";
+import {IMG_SERVER} from 'context/config'
 
 const InviteMydata = () => {
   const context = useContext(Context)
@@ -16,27 +17,6 @@ const InviteMydata = () => {
     cnt:"",
     list:[]
   });
-
-  const temporaryData = [
-    {
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      since : "2022.02.09",
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      since : "2022.02.09",
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      since : "2022.02.09",
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    }
-  ]
 
   useEffect(()=>{
     getList();
@@ -86,7 +66,7 @@ const InviteMydata = () => {
                   return (
                     <div className='inviteUserList' key={index}>
                       <div className="photo">
-                        <img src={member.rcv_image_profile} alt="프로필이미지" />
+                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>

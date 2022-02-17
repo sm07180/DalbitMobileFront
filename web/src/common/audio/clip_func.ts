@@ -187,11 +187,10 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
 
 export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
   const { globalState, globalAction } = gtx;
-  if (!globalState.baseData.isLogin) {
-    return history.push("/login");
-  }
-
   if(isDesktop()) {
+    if (!globalState.baseData.isLogin) {
+      return history.push("/login");
+    }
     const { clipInfo, clipPlayer, rtcInfo } = globalState;
     if (clipInfo !== null) {
       globalAction.setAlertStatus!({
@@ -245,7 +244,11 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
       }
     }
   }else if(isMobileWeb()) {
-    gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+    if (globalState.baseData.isLogin) {
+      return gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+    }else {
+      return history.push('/login');
+    }
   }else {
     RoomJoin({roomNo: roomNo})
   }

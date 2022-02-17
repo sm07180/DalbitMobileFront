@@ -2,7 +2,6 @@
 
 #storePage {
   @include flex($fd:column);
-  min-height:100vh;
   section{
     position:relative;
     width:100%;
