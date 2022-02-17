@@ -87,8 +87,6 @@ legend {
         padding-bottom: 80px;
       }
       .subContent {
-        min-height: calc(100vh - 50px);
-        box-sizing: border-box;
         &.gray {
           background: $lighterGray;
         }
