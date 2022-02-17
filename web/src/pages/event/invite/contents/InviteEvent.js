@@ -133,15 +133,16 @@ const InviteEvent = () => {
       }
   }
 
+
   const doCopy = code => {
     if(isHybrid()){
-      alert("공유기능 추가")
+      alert("FIXME 공유기능추가")
     }else {
       if (!document.queryCommandSupported("copy")) {
         return alert("복사하기가 지원되지 않는 브라우저입니다.");
       }
       const textarea = document.createElement("textarea");
-      textarea.value = "/invite/" + code;
+      textarea.value = `https://${location.host}/invite/${code}`;
       textarea.style.top = 0;
       textarea.style.left = 0;
       textarea.style.position = "fixed";
