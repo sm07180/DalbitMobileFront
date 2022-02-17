@@ -1,29 +1,26 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
-import {convertDateFormat} from 'components/lib/dalbit_moment'
+import React, { useEffect, useState, useContext } from 'react'
+import { Context } from "context";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { NewClipPlayerJoin } from "common/audio/clip_func";
+import { IMG_SERVER } from "context/config";
+import { setIsRefresh } from "redux/actions/common";
+import Api from 'context/api';
 import moment from 'moment';
+import Swiper from 'react-id-swiper';
 
 // global components
-import Swiper from 'react-id-swiper'
-import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
-// components
-import ClipSubTitle from './components/ClipSubTitle'
-import SwiperList from './components/SwiperList'
-// contents
+import Header from 'components/ui/header/Header';
+import CntTitle from 'components/ui/cntTitle/CntTitle';
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide';
 
-import './scss/clipPage.scss'
+// components
+import ClipSubTitle from './components/ClipSubTitle';
+import SwiperList from './components/SwiperList';
 import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
-import API from "context/api";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
-import { NewClipPlayerJoin } from "common/audio/clip_func";
-import {IMG_SERVER} from "context/config";
-import {setIsRefresh} from "redux/actions/common";
+
+import './scss/clipPage.scss';
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -31,14 +28,15 @@ const ClipPage = () => {
   const dispatch = useDispatch();
   const common = useSelector(state => state.common);
   const subjectType = useSelector((state)=> state.clip.subjectType); // 검색 조건
-  // 떠오른 클립 배경 색상, IMG 오류 나면 뿌려질 색상값.
-  const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1'];
+
+  const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1']; // 떠오른 클립 배경 색상, IMG 오류 나면 뿌려질 색상값.
+
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
-  const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
   const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
+
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
@@ -146,8 +144,7 @@ const ClipPage = () => {
     } else {
       setSubSearchInfo(subjectType[target + 1]);
     }
-
-  }
+  };
 
   const playClip = (e) => {
     const { clipNo } = e.currentTarget.dataset;
@@ -166,12 +163,15 @@ const ClipPage = () => {
 
   // 링크 다시 눌렀을때, 액션
   const refreshActions = () => {
+    window.scrollTo(0, 0);
+
     getHotClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
+
     setSubSearchInfo(subjectType[1]);
-    window.scrollTo(0, 0);
+
     dispatch(setIsRefresh(false));
   };
 
