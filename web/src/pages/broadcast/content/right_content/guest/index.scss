@@ -1,4 +1,6 @@
 @import "../../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
+
 #GuestWrap {
   padding: 0 3%;
   .title {
@@ -63,8 +65,8 @@
         }
 
         &--apply {
-          border: 1px solid $primary;
-          color: $primary;
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
         }
 
         &--invite {

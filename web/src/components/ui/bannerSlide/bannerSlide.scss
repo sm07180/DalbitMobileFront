@@ -24,7 +24,6 @@
       @include swiperPagination;
       cursor:pointer;
       &:after {
-        content:"모두보기";
         margin-left:4px;
       }
     }

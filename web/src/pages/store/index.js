@@ -7,16 +7,23 @@ import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import './style.scss'
 import _ from "lodash";
 
 const StorePage = () => {
   const history = useHistory()
   const context = useContext(Context);
-  const [select, setSelect] = useState(-1);
+  const [select, setSelect] = useState(1);
   const [storeInfo, setStoreInfo] = useState({
     myDal: 0,
     dalPrice: []
+  })
+  const [payInfo, setPayInfo] = useState({
+    itemNm: "달 100",
+    dal: "100",
+    price: "11000",
+    itemNo: "A1335"
   })
 
   useEffect(() => {
@@ -41,17 +48,27 @@ const StorePage = () => {
 
   const onSelectDal = (index, itemNm, givenDal, price, itemNo) => {
     setSelect(index);
+    setPayInfo({
+      ...payInfo,
+      itemNm: itemNm,
+      dal: givenDal,
+      price: price,
+      itemNo: itemNo
+    })
+  }
+
+  const movePayment = () =>{
     if (context.token.isLogin) {
-        history.push({
-          pathname: '/store/dalcharge',
-          state: {
-            itemNm: itemNm,
-            dal: givenDal,
-            price: price,
-            itemNo: itemNo
-          }
-        })
-    } else {
+      history.push({
+        pathname: '/store/dalcharge',
+        state: {
+          itemNm: payInfo.itemNm,
+          dal: payInfo.dal,
+          price: payInfo.price,
+          itemNo: payInfo.itemNo
+        }
+      })
+    }else{
       history.push('/login')
     }
   }
@@ -62,9 +79,6 @@ const StorePage = () => {
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(storeInfo.myDal)}</span>
-      </section>
-      <section className="bannerWrap">
-        <BannerSlide/>
       </section>
       <section className="storeDalList">
         {storeInfo.dalPrice && storeInfo.dalPrice.map((item, index) => {
@@ -78,6 +92,7 @@ const StorePage = () => {
             </div>
           )
         })}
+        <SubmitBtn onClick={movePayment} text="결제하기" />
       </section>
     </div>
   )

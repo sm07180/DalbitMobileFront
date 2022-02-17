@@ -27,6 +27,9 @@
         }
       }
     }
+    .buttonGroup{
+      margin-right: 12px
+    }
   }
   > .tabmenu {
     @include flex(center);
@@ -315,6 +318,22 @@
   // 입금정보
   .depositInfo {
     padding:0 16px;
+    // 다음 주소 API 팝업
+    #layer {
+      display: none;
+      position: fixed;
+      z-index: 3;
+
+      &__close {
+        position: fixed;
+        width: 20px;
+        color: white;
+        background-color: black;
+        z-index: 2;
+        font-size: 16px;
+      }
+    }
+
     h2 {
       margin-bottom:15px;
       @include font(20px,500,#202020);
@@ -419,12 +438,16 @@
           color:#FF3C7B
         }
       }
+      .noticeBox{
+        @include flex($fd:column);
+        @include font(12px, $Medium, #ff1919);
+      }
       .privacyBox{
         margin-top: 30px;
         .inputLabel {
           margin-bottom:8px;
-          .checkinfo {
-            @include font(16px,500,#303030);
+          .checkInfo {
+            @include font(16px,$SemiBold,#303030);
           }
           sup {
             @include font(12px, 600, #FF3C7B);
@@ -433,7 +456,7 @@
         }
         p {
           letter-spacing: -0.5px;
-          @include font(12px, 400);
+          @include font(12px, $Regular);
         }
       }
       .accountList{

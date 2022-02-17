@@ -1,4 +1,5 @@
 @import '../../styles/variables';
+@import "components/ui/_mixin.scss";
 
 #storyPage {
   .tab {
@@ -15,8 +16,8 @@
       font-weight: $bold;
     }
     .subTab.active {
-      color: $primary;
-      border-bottom: 1px solid $primary;
+      color: $MAINCOLOR;
+      border-bottom: 1px solid $MAINCOLOR;
     }
   }
   .contentWrap {
@@ -126,7 +127,7 @@
           font-weight: $bold;
         }
         .number {
-          color: $primary;
+          color: $MAINCOLOR;
           margin-left: 6px;
           letter-spacing: -0.4px;
         }
@@ -198,7 +199,7 @@
               &__icon {
                 width: 23px;
                 height: 16px;
-                background-color: $primary;
+                background-color: $MAINCOLOR;
                 color: $white;
                 font-size: 10px;
                 letter-spacing: -0.2px;
@@ -254,7 +255,7 @@
 
 .deleteConfWrap_emph {
   margin-top: 16px;
-  color: $primary;
+  color: $MAINCOLOR;
   font-size: 22px;
   font-weight: $bold;
 }

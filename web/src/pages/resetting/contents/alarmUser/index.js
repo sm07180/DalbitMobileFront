@@ -57,10 +57,12 @@ const SettingAlarm = () => {
           </>
         )}
       </section>
-      <section className="noticeInfo">
-        <h3>유의사항</h3>
-        <p>팬으로 등록하지 않고도 🔔 알림받기를 설정하여 선택한 회원의 방송시작 알림을 받을 수 있습니다.</p>
-      </section>
+      {pushMembers.length > 0 &&
+        <section className="noticeInfo">
+          <h3>유의사항</h3>
+          <p>팬으로 등록하지 않고도 🔔 알림받기를 설정하여 선택한 회원의 방송시작 알림을 받을 수 있습니다.</p>
+        </section>
+      }
     </div>
   )
 }

@@ -1,5 +1,5 @@
 // others
-import React, {useContext, useRef, useState,} from "react";
+import React, {useContext, useState,} from "react";
 import {useHistory} from "react-router-dom";
 
 // others
@@ -8,14 +8,11 @@ import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // static
 import {GlobalContext} from "context";
 
-import {
-  broadcastExit,
-} from "common/api";
+import {broadcastExit,} from "common/api";
 import CloseBtn from "../images/ic_player_close_btn.svg";
 import PlayIcon from "../static/ic_play.svg";
 import PauseIcon from "../static/ic_pause.svg";
-import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle";
-import { url } from "inspector";
+import {thumbInlineStyle} from "./PlayerStyle";
 
 
 const BroadCastAudioPlayer = ()=>{
@@ -94,38 +91,26 @@ const BroadCastAudioPlayer = ()=>{
     setMute(!mute);
   }
 
-  console.log(userProfile);
-  
 
   return (
-    <div id="player" 
-      style={{
-        display: isShowPlayer ? "" : "none",
-      }}>
+    <div id="player" style={{display: isShowPlayer ? "" : "none"}}>
       <div className="inner-player" onClick={playerBarClickEvent}>
-        <div className="inner-player-bg" style={{
-          background: `url("${userProfile.profImg.thumb500x500}") center/cover no-repeat`,
-        }}></div>
+        <div className="inner-player-bg"
+             style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`}} />
         <div className="info-wrap">
-          <div className="equalizer">
-            <p>{`LIVE`}</p>
-          </div>
-          <div className="thumb" style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)} onClick={(e) => e.stopPropagation()}>
-            {
-              rtcInfo?.userType !== UserType.HOST &&
-              <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
-            }
-          </div>
+          <div className="equalizer broadcast" />
+          <div className="thumb"
+               style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)}
+               onClick={(e) => e.stopPropagation()} />
           <div className="room-info">
             <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
             <p>{rtcInfo?.roomInfo?.title}</p>
           </div>
           <div className="counting"/>
         </div>
-        {
-          rtcInfo?.userType !== UserType.HOST &&
+        <div className="buttonGroup">
           <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-        }
+        </div>
       </div>
     </div>
   )
