@@ -7,6 +7,7 @@ import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import './style.scss'
 import _ from "lodash";
 
@@ -63,9 +64,9 @@ const StorePage = () => {
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(storeInfo.myDal)}</span>
       </section>
-      <section className="bannerWrap">
+      {/* <section className="bannerWrap">
         <BannerSlide/>
-      </section>
+      </section> */}
       <section className="storeDalList">
         {storeInfo.dalPrice && storeInfo.dalPrice.map((item, index) => {
           return (
@@ -78,6 +79,7 @@ const StorePage = () => {
             </div>
           )
         })}
+        <SubmitBtn text="결제하기" />
       </section>
     </div>
   )
