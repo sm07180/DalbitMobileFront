@@ -24,7 +24,6 @@ import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
-import LayerPopupEvent from "pages/main/component/layer_popup_event";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
