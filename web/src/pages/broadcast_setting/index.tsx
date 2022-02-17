@@ -518,19 +518,36 @@ export default function BroadcastSetting() {
       "devicechange",
       detectStreamDevice
     );
+
     videoStream?.getTracks().forEach((track) => track.stop());
     //setVideoState(false);
   }, [videoStream]);
 
   const videoDevice = async () =>{
-    const result = await setStream();
-    if(result !== null){
-      setVideoStream(result);
-      cams = await AgoraRTC.getCameras();
-      currentCam = cams[0];
-      setCamForm(currentCam.label)
-      sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+    cams = await AgoraRTC.getCameras();
 
+    if (videoStream === null) {
+      const result = await setStream();
+      if(result === null){
+        //장치 연결 관련 팝업
+        let message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
+          " 다른 캡처 장치를 선택해주세요"
+
+        context.action.alert({
+          msg: message
+        })
+        if(cams[1] === null){
+          currentCam.label = "장치연결 확인 바랍니다."
+        }else{
+          currentCam = cams[1];
+        }
+      }else{
+        currentCam = cams[0];
+        setVideoStream(result);
+      }
+    }
+    setCamForm(currentCam.label)
+    sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
       localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
           width: 1280,
           // Specify a value range and an ideal value
@@ -538,32 +555,23 @@ export default function BroadcastSetting() {
           frameRate: 24,
           bitrateMin: 1130, bitrateMax: 2000,
         },cameraId:currentCam.deviceId})
-      console.log("==========>>>>>>>>>>",localTracks.videoTrack)
       // play local track on device detect dialog
-      localTracks.videoTrack.play("pre-local-player",{mirror:true});
+      localTracks.videoTrack.play("pre-local-player",{mirror:false});
       // localTracks.audioTrack.play();
       // get cameras
 
       if(currentCam !==null){
         setVideoState(true)
       }
-    }else{
-      //장치 연결 관련 팝업
-      let message = "현재 다른 응용 프로그램에서\n" +
-        "해당 장치를 사용중입니다.\n" +
-        "다른 캡처 장치를 선택해주세요"
-
-      context.action.alert({
-        msg: message
-      })
-    }
-
   }
 
   const audioDevice = async () => {
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
     setMicForm(currentMic.label)
+    if(currentMic !== null){
+      setMicState(true)
+    }
     sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
     localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
       encoderConfig: {
@@ -579,18 +587,36 @@ export default function BroadcastSetting() {
   }
 
   async function switchCamera(label) {
-    removeVideoStream();
+    let constraints = {video: true, audio: true};
     currentCam = cams.find(cam => cam.label === label);
+    if(videoStream !== null){
+      let camInfo = currentCam.camId;
+      // @ts-ignore
+      constraints = {video: {deviceId: {exact: camInfo}}, audio: true};
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+      }).catch((error) => {
+        if (error.name === 'NotReadableError' || error.name === 'AbortError') {
+          //장치 연결 관련 팝업
+          let message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
+            " 다른 캡처 장치를 선택해주세요"
+          context.action.alert({
+            msg: message
+          })
+        }
+      });
+    }
+
     // switch device of local video track.
     let optionalParams = currentCam.deviceId;
-    console.log("currentCam=====>",optionalParams)
     await localTracks.videoTrack.setDevice(optionalParams);
     sessionStorage.setItem("cam", JSON.stringify(optionalParams));
   }
 
   async function switchMicrophone(label) {
     currentMic = mics.find(mic => mic.label === label);
-    console.log(currentMic.label)
     // switch device of local audio track.
     let optionalParams = currentMic.deviceId;
     await localTracks.audioTrack.setDevice(optionalParams);
@@ -655,40 +681,10 @@ export default function BroadcastSetting() {
         ...constraint,
         video: true,
       };
-      if (videoStream === null) {
         videoDevice();
-      }
 
-/*      const initDeivce = async () => {
-        if (videoStream === null) {
-          const stream = await setStream();
-
-          if (stream !== null && !stream.getVideoTracks()[0]) {
-            streamInterval = setInterval(async () => {
-              const result = await setStream();
-              if (result) {
-                clearInterval(streamInterval);
-                setVideoStream(result);
-              }
-            }, 1000);
-          } else if (stream !== null && stream.getVideoTracks()[0]) {
-            setVideoStream(stream);
-          }
-        } else if (videoStream !== null && !videoStream.getVideoTracks()[0]) {
-          streamInterval = setInterval(async () => {
-            const result = await setStream();
-            if (result) {
-              clearInterval(streamInterval);
-              setVideoStream(result);
-            }
-          }, 1000);
-        } else {
-        }
-      };
-
-      initDeivce();*/
     }
-  }, [videoStream, state.mediaType]);
+  }, [state.mediaType]);
 
   useEffect(() => {
     if (rtcInfo !== null) {
@@ -771,26 +767,38 @@ export default function BroadcastSetting() {
     <>
         <div className="broadcastSetting">
           <div className="headerTitle">방송설정</div>
-         {/* <div className="title">마이크 연결 상태</div>*/}
-{/*          <div className="mikeCheck">
-            <div
+
+          {/* 방송 타입 */}
+          <div className="title">라이브 타입</div>
+          <ul className="access">
+            <li
+              onClick={() => {
+                setMediaType(BROAD_TYPE.VIDEO);
+              }}
               className={
-                state.micState ? "mikeIcon" : "mikeIcon mikeIcon__noSound"
+                state.mediaType == BROAD_TYPE.VIDEO
+                  ? "access__list active"
+                  : "access__list"
               }
             >
-              <div className="mikeIcon__button"></div>
-            </div>
-            <div className="mikeLine">
-              <div
-                className="mikeLine__onBackground"
-                style={{ width: `${audioGauge}%` }}
-              >
-                <div className="mikeLine__button"></div>
-              </div>
-            </div>
-          </div>*/}
+              VIDEO
+            </li>
+            <li
+              onClick={() => {
+                setMediaType(BROAD_TYPE.AUDIO);
+              }}
+              className={
+                state.mediaType == BROAD_TYPE.AUDIO
+                  ? "access__list active"
+                  : "access__list"
+              }
+            >
+              RADIO
+            </li>
+          </ul>
+
           <div className="title">마이크 설정</div>
-          <div className="access">
+          <div className="access" style={{zIndex:3}}>
             <div
               onClick={() => {
                 setMicPop(!micPop);
@@ -817,41 +825,13 @@ export default function BroadcastSetting() {
             </div>
           </div>
           
-          {/* 방송 타입 */}
-          <div className="title">음성/영상 설정</div>
-          <ul className="access">
-            <li
-              onClick={() => {
-                setMediaType(BROAD_TYPE.AUDIO);
-              }}
-              className={
-                state.mediaType == BROAD_TYPE.AUDIO
-                  ? "access__list active"
-                  : "access__list"
-              }
-            >
-              라디오
-            </li>
-            <li
-              onClick={() => {
-                setMediaType(BROAD_TYPE.VIDEO);
-              }}
-              className={
-                state.mediaType == BROAD_TYPE.VIDEO
-                  ? "access__list active"
-                  : "access__list"
-              }
-            >
-              보이는 라디오
-            </li>
-          </ul>
+
 
           {state.mediaType === BROAD_TYPE.VIDEO && (
             <>
-              <div className="title">음성/영상 상태</div>
+              <div className="title">웹캠/비디오 장치 설정</div>
               {/*<div id="localVideoSection"/>*/}
-              <div id="pre-local-player"/>
-              <div className="access">
+              <div className="access" style={{zIndex:2}}>
                 <div
                   onClick={() => {
                     setCamPop(!camPop);
@@ -877,6 +857,8 @@ export default function BroadcastSetting() {
                   })}
                 </div>
               </div>
+
+              <div id="pre-local-player" style={{marginTop:20}}/>
             </>
           )}
           {/*아고라 와우자 분기값 셋팅 테스트용*/}
