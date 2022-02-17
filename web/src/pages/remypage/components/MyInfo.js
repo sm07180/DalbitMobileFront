@@ -7,10 +7,10 @@ import PopSlide from "../../../components/ui/popSlide/PopSlide";
 import moment from "moment";
 
 const greetingComment = [
-  {start: '060000', end: '120000', comment: '님, 굿모닝이에요!'},
-  {start: '120000', end: '180000', comment: '님, 점심 메뉴는 뭐였어요?'},
-  {start: '180000', end: '240000', comment: '님, 신나는 저녁이에요!'},
-  {start: '000000', end: '060000', comment: '님, 일찍 일어났네요?'},
+  {start: '060000', end: '120000', comment: '굿모닝이에요!'},
+  {start: '120000', end: '180000', comment: '점심 메뉴는 뭐였어요?'},
+  {start: '180000', end: '240000', comment: '신나는 저녁이에요!'},
+  {start: '000000', end: '060000', comment: '일찍 일어났네요?'},
 ]
 
 const MyInfo = (props) => {
@@ -36,7 +36,7 @@ const MyInfo = (props) => {
       const endTime = parseInt(item.end);
 
       if(nowInfo >= startTime && nowInfo < endTime) {
-        setNowComment(`${data?.nickNm}${item.comment}`);
+        setNowComment(`${data?.nickNm}님, ${item.comment}`);
       }
     })
   }
