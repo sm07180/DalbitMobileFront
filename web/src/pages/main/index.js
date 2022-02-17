@@ -16,7 +16,6 @@ import LiveView from './components/LiveView'
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
-import {OS_TYPE} from "context/config";
 import {IMG_SERVER} from 'context/config'
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
@@ -24,19 +23,15 @@ import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
-import LayerPopupEvent from "pages/main/component/layer_popup_event";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 20
 
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png';
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
-
-const customHeader = JSON.parse(Api.customHeader)
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -50,7 +45,7 @@ const MainPage = () => {
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [tabFixed, setTabFixed] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
 
   const [payOrderId, setPayOrderId] = useState("")
@@ -86,6 +81,7 @@ const MainPage = () => {
       if (res.result === 'success') {
         const data = res.data;
         let paging = data.paging;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === currentPage : true;
         if(data.paging) {
           totalPage = Math.ceil(data.paging.total / pagePerCnt)
         }else {
@@ -98,6 +94,10 @@ const MainPage = () => {
         } else {
           dispatch(setMainLiveList({list: data.list, paging}));
         }
+
+        if(isLastPage) {
+          document.removeEventListener('scroll', scrollEvent);
+        }
       }
     })
   }, [currentPage, liveListType]);
@@ -105,11 +105,11 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    // fetchLiveInfo();
+    fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
-    setCurrentPage(0);
+    setCurrentPage(1);
   }
 
   // scroll
@@ -139,9 +139,9 @@ const MainPage = () => {
 
     // 스크롤시 추가 리스트
     if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage => currentPage + 1)
     }
-  })
+  }, [])
 
   const mainTouchStart = useCallback(
     (e) => {
@@ -282,10 +282,6 @@ const MainPage = () => {
   }
 
   useEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-  }, [currentPage])
-
-  useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
       window.scrollTo(0, 0);
@@ -296,19 +292,22 @@ const MainPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
+    fetchLiveInfo();
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
+    document.addEventListener('scroll', scrollEvent);
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+      document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
 
   useEffect(() => {
-    if (currentPage > 0) fetchLiveInfo()
-    document.addEventListener('scroll', scrollEvent)
-    return () => document.removeEventListener('scroll', scrollEvent)
+    if (currentPage > 1) {
+      fetchLiveInfo()
+    }
   }, [currentPage, liveListType])
  
   // 페이지 시작

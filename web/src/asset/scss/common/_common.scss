@@ -165,7 +165,7 @@ legend {
             margin-left:6px;
           }
           &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-off.png");}
-          &:nth-child(2) {@include BGIMG("common/gnb/gnbMali-off.png");}
+          &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-off.png");}
           &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-off.png");}
           &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-off.png");}
           &.active {
@@ -184,6 +184,13 @@ legend {
         margin-left:11px;
         @include border(#D9D9D8,2px);
         @include font(14px,SemiBold,#161616);
+        &:hover {
+          border-color:$MAINCOLOR;
+          background-color:$MAINCOLOR;
+          color:white;
+        }
+      }
+      .plusButton {
         &::before {
           content:"+";
           display:inline-block;
@@ -192,11 +199,6 @@ legend {
           line-height:10px;
           margin-right:4px;
           font-size:18px;
-        }
-        &:hover {
-          border-color:$MAINCOLOR;
-          background-color:$MAINCOLOR;
-          color:white;
         }
       }
     }
@@ -246,7 +248,7 @@ legend {
           @include BGIMG("common/gnb/gnbMy-off.png");
           &:hover::after {content:"마이";}
         }
-        &[data-url="/mail"] {
+        &[data-url="/mailbox"] {
           @include BGIMG("common/gnb/gnbMail-off.png");
           &:hover::after {content:"우체통";}
         }
