@@ -1,15 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // css
 import './bannerSlide.scss'
+import {useDispatch} from "react-redux";
+import {setHonorTab} from "redux/actions/honor";
 
 const BannerSlide = (props) => {
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
   const [bannerShow, setBannerShow] = useState(false)
+  const dispatch = useDispatch();
 
   const fetchBannerInfo = (arg) => {
     Api.getBanner({
@@ -41,6 +44,9 @@ const BannerSlide = (props) => {
       click: (s,e) => {
         let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
         const {targetUrl} = evt.target.dataset
+        if (targetUrl.indexOf("/honor") > -1){
+          dispatch(setHonorTab("스페셜DJ"));
+        }
         openBannerUrl(targetUrl)
       }
     }
