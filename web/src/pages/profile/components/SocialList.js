@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -8,10 +8,13 @@ import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 import {useHistory} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {Context} from "context";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
   const history = useHistory();
+  const context = useContext(Context);
+  const {profile} = context;
 
   // 스와이퍼
   const swiperFeeds = {
@@ -26,13 +29,13 @@ const SocialList = (props) => {
   return (
     <div className="socialList">
       {socialList.map((item, index) => {
-        const memNo = type==='feed'? profileData.memNo : item?.writerMemNo;
-        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo};
-        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo };
+        const memNo = type==='feed'? profileData.memNo : item?.writerMemNo; //글 작성자
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
-                              modifyEvent={() => {memNo === profileData.memNo && goProfileDetailPage(modifyParam)}}
+                              modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
             />
             <div className="socialContent">
