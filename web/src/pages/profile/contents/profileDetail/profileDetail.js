@@ -290,11 +290,13 @@ const ProfileDetail = (props) => {
       );
 
       if (result === 'success') {
+        context.action.toast({msg: '댓글이 수정되었습니다.'})
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       } else {
+        context.action.alert({msg: message});
       }
 
     } else if (type === 'fanBoard') {
@@ -454,7 +456,7 @@ const ProfileDetail = (props) => {
 
 /**
  * 프로필 상세 관련 주소이동 공통처리
- * @Param: 
+ * @Param:
  * history : useHistory()
  * action : detail, write, modify
  * type : feed, fanBaord

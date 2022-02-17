@@ -30,7 +30,6 @@ legend {
   top:0;
   margin-top:-48px;
   z-index: 10;
-  background-color: $MAINCOLOR;
   // background-color: rgba(127, 127, 127, 0.3);
   // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   &.rank {
@@ -94,6 +93,9 @@ legend {
           background: $lighterGray;
         }
       }
+      header {
+        top:68px !important;
+      }
     }
     .rightContent {
       float: right;
@@ -111,6 +113,7 @@ legend {
   }
 }
 #GNB {
+  position:-webkit-sticky;
   position:sticky;
   top:0;
   width:100%;min-width:480px;
@@ -121,20 +124,45 @@ legend {
   .gnbContainer {
     position: relative;
     @include flex(center);
-    max-width:800px;
     height:100%;
     margin: 0 auto;
     .gnbHeader {
-      @include flex(center);
+      flex:1;
+      @include flex(center,center);
       width:100%;
-      max-width:480px;
       h1 {
         height:25px;
-        max-width:480px;
+        width:200px;
         cursor: pointer;
         img {
           width:71px;
           height:100%;
+        }
+      }
+    }
+    .gnbNavigation {
+      flex:1;
+      @include flex(center,center);
+      width:480px;
+      ul {
+        @include flex(center,space-between);
+        width:328px;
+        li {
+          width:56px;height:56px;
+        }
+      }
+    }
+    .subGnbNavigation {
+      flex:1;
+      @include flex(center,center);
+      ul {
+        @include flex(center);
+        li {
+          width:44px;height:44px;
+          background-color:#ddd;
+          + li {
+            margin-left:6px;
+          }
         }
       }
       button {
@@ -142,7 +170,7 @@ legend {
         @include flex(center,center);
         width:114px;
         line-height:34px;
-        margin-left:auto;
+        margin-left:11px;
         @include border(#D9D9D8,2px);
         @include font(14px,SemiBold,#161616);
         &::before {
@@ -161,76 +189,78 @@ legend {
         }
       }
     }
-    .gnbNavigation {
-      margin-left:auto;
-      ul {
-        @include flex(center);
-        li {
-          position:relative;
-          width:44px;height:44px;
-          border-radius:50%;
-          &:hover {
-            background-color:#F2F2F2 !important;
+    ul {
+      li {
+        position:relative;
+        // width:44px;height:44px;
+        border-radius:50%;
+        &:hover {
+          background-color:#F2F2F2 !important;
+        }
+        &:hover::before {
+          content:"";
+          @include position-horizon;
+          top:100%;
+          width:13px;height:12px;
+          @include BGIMG("common/gnb/gnb-dot.png");
+        }
+        &:hover::after {
+          @include position-horizon;
+          top:calc(100% + 8px);
+          padding:0 7px 0 7px;
+          height:24px;
+          line-height:22px;
+          border-radius:4px;
+          background-color:#424242;
+          white-space: nowrap;
+          @include font(14px,normal,white);
+        }
+        &[data-url="/"] {
+          @include BGIMG("common/gnb/gnbLive-off.png");
+          &:hover::after {content:"라이브";}
+        }
+        &[data-url="/clip"] {
+          @include BGIMG("common/gnb/gnbClip-off.png");
+          &:hover::after {content:"클립";}
+        }
+        &[data-url="/search"] {
+          @include BGIMG("common/gnb/gnbSearch-off.png");
+          &:hover::after {content:"검색";}
+        }
+        &[data-url="/rank"] {
+          @include BGIMG("common/gnb/gnbRank-off.png");
+          &:hover::after {content:"랭킹";}
+        }
+        &[data-url="/mypage"] {
+          @include BGIMG("common/gnb/gnbMy-off.png");
+          &:hover::after {content:"마이";}
+        }
+        &[data-url="/mail"] {
+          @include BGIMG("common/gnb/gnbMy-off.png");
+          &:hover::after {content:"우체통";}
+        }
+        &[data-url="/store"] {
+          @include BGIMG("common/gnb/gnbMy-off.png");
+          &:hover::after {content:"스토어";}
+        }
+        &[data-url="/notice"] {
+          @include BGIMG("common/gnb/gnbAllim-off.png");
+          &:hover::after {content:"알람";}
+          .newDot {
+            @include position-top-right(4px,4px);
+            display:inline-block;
+            width:8px;height:8px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
           }
-          &:hover::before {
-            content:"";
-            @include position-horizon;
-            top:100%;
-            width:13px;height:12px;
-            @include BGIMG("common/gnb/gnb-dot.png");
-          }
-          &:hover::after {
-            @include position-horizon;
-            top:calc(100% + 8px);
-            padding:0 7px 0 7px;
-            height:24px;
-            line-height:22px;
-            border-radius:4px;
-            background-color:#424242;
-            white-space: nowrap;
-            @include font(14px,normal,white);
-          }
-          &:nth-child(1) {
-            @include BGIMG("common/gnb/gnbLive-off.png");
-            &:hover::after {content:"라이브";}
-          }
-          &:nth-child(2) {
-            @include BGIMG("common/gnb/gnbClip-off.png");
-            &:hover::after {content:"클립";}
-          }
-          &:nth-child(3) {
-            @include BGIMG("common/gnb/gnbSearch-off.png");
-            &:hover::after {content:"검색";}
-          }
-          &:nth-child(4) {
-            @include BGIMG("common/gnb/gnbRank-off.png");
-            &:hover::after {content:"랭킹";}
-          }
-          &:nth-child(5) {
-            @include BGIMG("common/gnb/gnbMy-off.png");
-            &:hover::after {content:"마이";}
-          }
-          &:nth-child(6) {
-            @include BGIMG("common/gnb/gnbAllim-off.png");
-            &:hover::after {content:"알람";}
-          }
-          &.active {
-            &:nth-child(1) {@include BGIMG("common/gnb/gnbLive-on.png");}
-            &:nth-child(2) {@include BGIMG("common/gnb/gnbClip-on.png");}
-            &:nth-child(3) {@include BGIMG("common/gnb/gnbSearch-on.png");}
-            &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
-            &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
-            &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
-          }
-          &.new {
-            .newDot {
-              @include position-top-right(4px,4px);
-              display:inline-block;
-              width:8px;height:8px;
-              border-radius:50%;
-              background-color:$MAINCOLOR;
-            }
-          }
+        }
+        &.active {
+          &[data-url="/"] {@include BGIMG("common/gnb/gnbLive-on.png");}
+          &[data-url="/clip"] {@include BGIMG("common/gnb/gnbClip-on.png");}
+          &[data-url="/search"] {@include BGIMG("common/gnb/gnbSearch-on.png");}
+          &[data-url="/rank"] {@include BGIMG("common/gnb/gnbRank-on.png");}
+          &[data-url="/mypage"] {@include BGIMG("common/gnb/gnbMy-on.png");}
+          &[data-url="/notice"] {@include BGIMG("common/gnb/gnbAllim-on.png");}
         }
       }
     }
@@ -351,6 +381,10 @@ legend {
   }
 }
 
+.cursorPointer {
+  cursor: pointer;
+}
+
 // .noResultWrap {
 //   width: 100%;
 //   display: flex;
@@ -452,6 +486,7 @@ legend {
       border-color:$MAINCOLOR;
     }
     &.isDisable {
+      border: 1px solid $mediumGray;
       background: $mediumGray;
     }
   }

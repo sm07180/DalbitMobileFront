@@ -1,15 +1,14 @@
 import React, {useEffect, useState, useContext} from 'react'
 
 import {Context} from 'context'
-
+import Api from "context/api";
 import GenderItems from 'components/ui/genderItems/GenderItems'
-
 import '../invite.scss'
 
-const InviteEvent = () => {  
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
 
+const InviteEvent = () => {  
+  const context = useContext(Context)
+  const {token, profile} = context
 
   const [createdCode, setCreatedCode] = useState(false)
   const [code, setCode] = useState("")
@@ -33,26 +32,57 @@ const InviteEvent = () => {
     }
   };
 
+  // useEffect(()=>{
+  //   //초대코드 유무 체크
+  //   Api.inviteMy({
+  //     reqBody: true,
+  //     data:{
+  //       "memNo": context.token.memNo,
+  //     }
+  //   }).then((response)=>{
+  //     console.log(response);
+  //     if(response.code === "0"){
+  //       setCreatedCode(false);
+  //     }else{
+  //       setCreatedCode(true);
+  //       setCode(response.data.invitation_code);
+  //     }
+  //   });
+  // },[]);
+  //
+  // const registerCode = (code) => {
+  //   Api.inviteRegister({
+  //     reqBody: true,
+  //     data:{
+  //       "memNo": context.token.memNo,
+  //       "invitationCode": code
+  //     }
+  //   }).then((response)=>{
+  //       console.log(response);
+  //       if(response.code === "0000"){
+  //         setCode(code);
+  //         setCreatedCode(true);
+  //       }else{
+  //         createCode();
+  //       }
+  //   })
+  // }
+
   const createCode = () => {
     const codeLength = 6
-    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let codeText= '';
     const charactersLength = characters.length;
     for ( let i = 0; i < codeLength; i++ ) {
       codeText += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    setCode(codeText)
+    // registerCode(codeText)
   }
 
   const codeSubmit = () => {
     setSubmitCode(true)
   }
 
-  useEffect(() => {
-    if(code !== ""){
-      setCreatedCode(true);
-    }
-  }, [code])
 
   return (
     <div className='inviteEvent'>

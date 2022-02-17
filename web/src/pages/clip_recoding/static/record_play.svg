@@ -19,10 +19,10 @@
     <g id="그룹_19099" data-name="그룹 19099" transform="translate(-130 -511)">
         <g id="그룹_13313" data-name="그룹 13313" transform="translate(-1163 122)">
             <g filter="url(#타원_224)" transform="translate(1293 389)">
-                <circle id="타원_224-2" cx="40" cy="40" r="40" fill="#632beb" data-name="타원 224" transform="translate(10 10)"/>
+                <circle id="타원_224-2" cx="40" cy="40" r="40" fill="#FF3C7B" data-name="타원 224" transform="translate(10 10)"/>
             </g>
             <g id="마스크_그룹_2" clip-path="url(#clip-path)" data-name="마스크 그룹 2" transform="translate(187 193)">
-                <g id="타원_225" fill="none" stroke="#723ef2" stroke-width="2px" data-name="타원 225" transform="translate(1116 206)">
+                <g id="타원_225" fill="none" stroke="#FC6092" stroke-width="2px" data-name="타원 225" transform="translate(1116 206)">
                     <circle cx="40" cy="40" r="40" stroke="none"/>
                     <circle cx="40" cy="40" r="39" class="cls-2"/>
                 </g>
