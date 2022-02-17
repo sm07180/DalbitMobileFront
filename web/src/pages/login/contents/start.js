@@ -36,7 +36,6 @@ const Start = (props) => {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
       }
     })
-
     if (res.status === 200) {
       const redirectUrl = await res.text()
       return (window.location.href = `${redirectUrl}`)
@@ -61,7 +60,7 @@ const Start = (props) => {
           </button>
           <button className="appleBtn" onClick={()=>socialLogin('apple')}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" alt={"애플"}/>
-            <span>apple로 계속하기</span>
+            <span>Apple로 계속하기</span>
           </button>
           <button className="phoneBtn" onClick={didLogin}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" alt={"휴대폰"}/>

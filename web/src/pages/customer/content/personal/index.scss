@@ -1,4 +1,6 @@
 @import '../../../../styles/variables';
+@import "components/ui/_mixin.scss";
+
 input[type='file'] {
   display: none;
 }
@@ -12,7 +14,7 @@ input[type='file'] {
   line-height: 32px;
   font-size: 14px;
   font-weight: $bold;
-  background: $primary;
+  background: $MAINCOLOR;
   color: $white;
   border-radius: 16px;
   display: flex;
@@ -499,7 +501,7 @@ input[type='file'] {
     background-color: $lighterGray;
     font-size: 18px;
     font-weight: $bold;
-    color: $primary;
+    color: $MAINCOLOR;
     text-align: center;
 
     img {
@@ -555,7 +557,7 @@ input[type='file'] {
         dl {
           font-size: 14px;
           dt {
-            color: $primary;
+            color: $MAINCOLOR;
           }
 
           dd {

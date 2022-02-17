@@ -16,17 +16,20 @@ const NewlyAccount = (props) => {
     <>
       <form className="formBox">
         <div className="listRow">
-          <InputItems title="예금주">
+          <div className="title">예금주</div>
+          <InputItems>
             <div className="text" value={exchangeForm?.recent_accountName}/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="은행">
+          <div className="title">은행</div>
+          <InputItems>
             <div className="text" value={exchangeForm?.recent_accountName}/>
           </InputItems>
         </div>
         <div className="listRow">
-          <InputItems title="계좌번호">
+          <div className="title">계좌번호</div>
+          <InputItems>
             <div className="text" value={exchangeForm?.recent_accountNo}/>
           </InputItems>
         </div>
@@ -52,7 +55,8 @@ const NewlyAccount = (props) => {
 
         {exchangeForm?.recent_phoneNo &&
         <div className="listRow">
-          <InputItems title="휴대폰 번호">
+          <div className="title">휴대폰 번호</div>
+          <InputItems>
             <div className="text">{exchangeForm?.recent_phoneNo}</div>
           </InputItems>
         </div>
@@ -60,7 +64,8 @@ const NewlyAccount = (props) => {
 
         {(exchangeForm?.recent_address1 || exchangeForm?.recent_address2) &&
         <div className="listRow address">
-          <InputItems title="주소">
+          <div className="title">주소</div>
+          <InputItems>
             <div className="text">{exchangeForm?.recent_address1} {exchangeForm?.recent_address2}</div>
           </InputItems>
         </div>

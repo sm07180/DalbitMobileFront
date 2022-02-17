@@ -36,7 +36,7 @@ const Write = (props) => {
   const [writeInfo, setWriteInfo] = useState([
     {path: 1, name: "회원정보"}, {path: 2, name: "방송"}, {path: 3, name: "청취"}, {path: 4, name: "결제"}, {path: 5, name: "장애/버그"}
   ])
-  const [selectedInfo, setSelectedInfo] = useState("문의 유형을 선택해주세요");
+  const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
 
   //문의하기 등록
@@ -162,7 +162,7 @@ const Write = (props) => {
         <input type="text" placeholder="문의 제목을 입력해주세요." name="title" onChange={onChange}/>
       </InputItems>
       <InputItems title="문의 유형">
-        <button onClick={changeOption}>{selectedInfo}</button>
+        <button className={`${selectedInfo ? "active" : ""}`} onClick={changeOption}>{selectedInfo ? selectedInfo : "문의 유형을 선택해주세요."}</button>
         {option &&
         <div className="selectWrap">
           {writeInfo.map((v, idx) => {

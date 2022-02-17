@@ -24,10 +24,6 @@ const DepositInfo = (props) => {
     }
   }, [splash]);
 
-  useEffect(()=>{
-    console.log('exchangeForm', exchangeForm)
-  },[exchangeForm]);
-
   //다음 주소 검색 창 띄우기
   const searchAddr = () => {
     const element_layer = document.getElementById('layer');
@@ -253,23 +249,21 @@ const DepositInfo = (props) => {
 
         {/*휴대폰 인증후 미성년자인 경우 노출*/}
         {parentAgree &&
-        <>
-          <div className="listRow">
-            <div className="title">부모동의 사본</div>
-            <InputItems button="찾아보기">
-              <div className="value">{exchangeForm.addFile3?.name || '등록해주세요'}</div>
-              <input type="file" className='blind'
-                     onChange={(e) => uploadSingleFile(e, 2)}/>
-            </InputItems>
-
-          </div>
-          <div className="listRow">
-            <span>가족관계 증명서 또는 주민등록 등본 사본을 등록해주세요.</span>
-            <span className="point">부모님의 주민번호 앞 6자리가 명확히 확인되어야 합니다.</span>
-          </div>
-        </>
+          <>
+            <div className="listRow">
+              <div className="title">부모동의 사본</div>
+              <InputItems button="찾아보기">
+                <div className="value">{exchangeForm.addFile3?.name || '등록해주세요'}</div>
+                <input type="file" className='blind'
+                       onChange={(e) => uploadSingleFile(e, 2)}/>
+              </InputItems>
+            </div>
+            <div className="noticeBox">
+              <span>* 가족관계 증명서 또는 주민등록등본을 등록해주세요.</span>
+              <span>* 부모님의 주민번호 앞 6자리가 명확히 확인되어야 합니다.</span>
+            </div>
+          </>
         }
-
         <div className="privacyBox">
           <CheckList text="개인정보 수집 동의" name="privacy"
                      onClick={() => setExchangeForm((state) => {

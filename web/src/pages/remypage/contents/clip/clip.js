@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 
 //global components
+import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -14,17 +15,19 @@ import Tabmenu from '../../components/tabmenu'
 import './clip.scss'
 import MyClipUpload from './myClipUpload'
 import MyClipListen from './myClipListen'
+import {useHistory} from "react-router-dom";
 
 const tabmenu = ['업로드', '청취내역']
 
 const Clip = () =>{
+  const history = useHistory();
   const [tabType, setTabType] = useState(tabmenu[0])
 
   return(
     <div id="mypageClip">
       <Header position={'sticky'} title={'클립'} type={'back'}>
         {tabType === tabmenu[0] &&
-          <button className="headerBtn">등록</button>
+          <button className="headerBtn" onClick={() => history.push('/clip_upload')}>등록</button>
         }
       </Header>
       <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
