@@ -24,7 +24,7 @@ import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 
-const topTenTabMenu = ['DJ','FAN','LOVER']
+const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 20
@@ -371,7 +371,6 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
-
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
   return MainLayout;

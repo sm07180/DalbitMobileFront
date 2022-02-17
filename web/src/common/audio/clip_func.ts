@@ -244,18 +244,12 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
       }
     }
   }else if(isMobileWeb()) {
-    if(gtx.profile.isLogin) {
-      gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+    if (globalState.baseData.isLogin) {
+      return gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
     }else {
-      history.push('/login');
+      return history.push('/login');
     }
   }else {
     RoomJoin({roomNo: roomNo})
-    /*alert(gtx.profile)
-    if(gtx.profile.isLogin) {
-      RoomJoin({roomNo: roomNo})
-    }else {
-      history.push('/login');
-    }*/
   }
 }
