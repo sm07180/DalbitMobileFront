@@ -7,8 +7,10 @@ import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 // style
 import 'styles/layerpopup.scss'
+import {useHistory} from "react-router-dom";
 
 export default function LayerPopupWrap({data, setData}) {
+  const history = useHistory();
   const [checked, setChecked] = useState({
     idx: -1,
     check: false
@@ -124,8 +126,8 @@ export default function LayerPopupWrap({data, setData}) {
     return (
       <>
         <div className="contents">
-          <a href={popupData.linkUrl}>
-            <img src={popupData.bannerUrl} alt="" />
+          <a>
+            <img src={popupData.bannerUrl} alt="" onClick={() => history.push(popupData.linkUrl)}/>
           </a>
         </div>
         {popupData.is_cookie === 1 && (

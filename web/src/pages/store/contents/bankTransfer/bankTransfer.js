@@ -9,10 +9,12 @@ import InputItems from '../../../../components/ui/inputItems/InputItems';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import './bankTransfer.scss'
 import {useHistory, useLocation} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const BankTransfer = () => {
   const location = useLocation()
   const history = useHistory()
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const {prdtNm, prdtPrice, itemNo, itemAmt, webview} = location.state
 
   const context = useContext(Context)
@@ -34,17 +36,17 @@ const BankTransfer = () => {
     }
     if (!userInfo.phone) {
       return context.action.alert({
-        msg: `핸드폰번호를 입력해주세요.`
+        msg: `휴대폰번호를 입력해주세요.`
       })
     }
     if (!rgEx.test(userInfo.phone)) {
       return context.action.alert({
-        msg: `올바른 핸드폰번호가 아닙니다.`
+        msg: `올바른 휴대폰번호가 아닙니다.`
       })
     }
     if (userInfo.receiptCode === 'i' && !userInfo.receiptPhone) {
       return context.action.alert({
-        msg: `현금영수증 발급을 위하여 \n 주민번호 또는 핸드폰번호를 입력해주세요.`
+        msg: `현금영수증 발급을 위하여 \n 주민번호 또는 휴대폰번호를 입력해주세요.`
       })
     }
     if (userInfo.receiptCode === 'b' && !userInfo.receiptBiz) {
@@ -66,9 +68,10 @@ const BankTransfer = () => {
         rcptNm: userInfo.name,
         phoneNo: userInfo.phone,
         receiptCode: userInfo.receiptCode,
-        receiptPhone: userInfo.receiptPhone,  //핸드폰번호
+        receiptPhone: userInfo.receiptPhone,  //휴대폰번호
         receiptSocial: userInfo.receiptPhone, //주민등록번호
-        receiptBiz: userInfo.receiptBiz
+        receiptBiz: userInfo.receiptBiz,      //사업자번호
+        isDesktop : isDesktop
       }
     })
     if (result === 'success') {
@@ -119,8 +122,8 @@ const BankTransfer = () => {
         <InputItems title="입금자명">
           <input type="text" id="name" name="name" value={userInfo.name} onChange={onChange} placeholder="입금자명을 입력해주세요." />
         </InputItems>
-        <InputItems title="핸드폰 번호">
-          <input type="tel" id="phone" name="phone" value={userInfo.phone} onChange={onChange} placeholder="핸드폰 번호를 입력해주세요."/>
+        <InputItems title="휴대폰 번호">
+          <input type="tel" id="phone" name="phone" value={userInfo.phone} onChange={onChange} placeholder="휴대폰 번호를 입력해주세요."/>
         </InputItems>
         <div className="tabmenuWrap">
           <div className="title">현금영수증</div>
@@ -131,7 +134,7 @@ const BankTransfer = () => {
           </ul>
         </div>
         <div className="cashReceipt">
-          {userInfo.receiptCode === "i" && <InputItems><input type="number" name="receiptPhone" onChange={onChange} maxLength="20" placeholder="주민번호 또는 핸대폰번호를 입력해주세요."/></InputItems>}
+          {userInfo.receiptCode === "i" && <InputItems><input type="number" name="receiptPhone" onChange={onChange} maxLength="20" placeholder="주민번호 또는 휴대폰번호를 입력해주세요."/></InputItems>}
           {userInfo.receiptCode === "b" && <InputItems><input type="number" name="receiptBiz" onChange={onChange} maxLength="20" placeholder="사업자번호를 입력해주세요."/></InputItems>}
         </div>
         <SubmitBtn text="입금계좌 받기" onClick={()=>clickDeposit()} />

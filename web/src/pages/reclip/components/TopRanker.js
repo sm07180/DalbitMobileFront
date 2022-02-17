@@ -36,6 +36,7 @@ const TopRanker = (props) => {
           <>
             <Swiper modules={[Pagination]}
                     pagination={pagination}
+                    initialSlide={targetPage}
                     onSwiper={(swiper) => console.log(swiper)}
                     onSlideChange={handleSwiper}>
               {data.map((list,index) => {

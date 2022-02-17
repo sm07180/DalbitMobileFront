@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import Lottie from 'react-lottie'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from '../../components/ui/cntTitle/CntTitle'
@@ -16,11 +17,14 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {OS_TYPE} from "context/config";
+import {IMG_SERVER} from 'context/config'
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
+import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
+import LayerPopupEvent from "pages/main/component/layer_popup_event";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -51,6 +55,8 @@ const MainPage = () => {
 
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
+
+  const [popupData, setPopupData] = useState([]);
 
   const [updatePopInfo, setUpdatePopInfo] = useState({
     showPop: false,
@@ -98,7 +104,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    fetchLiveInfo();
+    // fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -233,7 +239,6 @@ const MainPage = () => {
 
   /* 업데이트 확인 */
   const updatePopFetch = async () => {
-
     if (isHybrid()) {
       if (sessionStorage.getItem('checkUpdateApp') === null) {
         sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
@@ -245,6 +250,28 @@ const MainPage = () => {
           const storeUrl = res.data.storeUrl
           setUpdatePopInfo({showPop: isUpdate, storeUrl})
         })
+      }
+    }
+  }
+
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
       }
     }
   }
@@ -266,6 +293,7 @@ const MainPage = () => {
     fetchMainInfo()
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
+    fetchMainPopupData('6');
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
@@ -281,16 +309,25 @@ const MainPage = () => {
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
-      ref={iconWrapRef}>
+         style={{height: '48px'}}
+         ref={iconWrapRef}>
       <div className="icon-wrap">
-        <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
+        {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
+        <div ref={arrowRefreshRef}>
+          <Lottie
+            options={{
+              loop: false,
+              autoPlay: true,
+              path: `${IMG_SERVER}/common/scroll_refresh.json`
+            }}
+          />
+        </div>
       </div>
     </div>
     <div id="mainPage" ref={MainRef} 
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
-      onTouchEnd={mainTouchEnd}
-      style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
+      onTouchEnd={mainTouchEnd}>
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
@@ -329,6 +366,8 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+
+    {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
   return MainLayout;
 }

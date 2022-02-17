@@ -1,28 +1,26 @@
 import React, {useContext, useEffect, useMemo, useState} from "react";
-import { GlobalContext } from "context";
+import {GlobalContext} from "context";
 
 import Footer from "../../common/footer";
-import {useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 
 const Layout = (props) => {
   const { children } = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const { globalState } = useContext(GlobalContext);
   const locationStateHistory = useHistory();
   const pathName = window.location.pathname;
   const mailboxChattingUrl = pathName.startsWith("/mailbox");
   const makeFooter = useMemo(() => {
-    if (pathName === "/" || pathName === "/customer/service") {
+    if (pathName === "/") {
       return <Footer />;
     }
-  }, []);
+  }, [pathName]);
 
 
   const clipPlayState = globalState.isShowPlayer || (globalState.clipPlayer !== null && globalState.clipInfo);
   const mailBoxState = clipPlayState && mailboxChattingUrl !== true;
   const playerState = mailBoxState ? "player" : "";
-  const nonContainerPath = /\/broadcast\/|\/clip\//;
+  const nonContainerPath = /\/broadcast\/|\/clip\/[0-9]/;
   const [container , setContainer] = useState("container");
   useEffect(()=>{
     if(locationStateHistory.location.pathname.search(nonContainerPath) > -1){

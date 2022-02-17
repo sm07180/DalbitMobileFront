@@ -16,7 +16,7 @@ let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
   {type: '무통장(계좌이체)', code: 'coocon'},
   {type: '신용/체크카드', fetch: 'pay_card'},
-  {type: '핸드폰', fetch: 'pay_phone'},
+  {type: '휴대폰', fetch: 'pay_phone'},
   {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
   {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
   {type: '페이코', fetch: 'pay_letter', code: 'payco'},
@@ -193,7 +193,7 @@ const DalCharge = () => {
       case "티머니/캐시비":
         if (price * buyItemInfo.itemAmount > 500000) return true;
         break;
-      case "핸드폰":
+      case "휴대폰":
         if (price * buyItemInfo.itemAmount > 1000000) return true;
         break;
       default:

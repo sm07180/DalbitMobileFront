@@ -1,0 +1,224 @@
+@import "components/ui/_mixin.scss";
+
+#share {
+    .fullImage {
+        width: 100%;
+        -webkit-user-drag: none;
+        vertical-align: middle;
+        image-rendering: -webkit-optimize-contrast;
+    }
+    .imageBox {
+        position: relative;
+        .noticeBtn {
+            position: absolute;
+            right: 16px; bottom: 10px;
+            @include flex(center, center);
+            width: 81px; height: 32px;
+            border-radius: 100px;
+            @include font(15px, 500, #FFFFFF);
+            background-color: #393939;
+        }
+    }
+    .content {
+        position: relative;
+        @include flex(flex-start, flex-start, column);
+        width: 100%;
+        background-color: #FF3C7B;
+        .step {
+            position: relative;
+            width: 100%;
+            padding: 0px 16px;
+            .stepTop {
+                @include flex(center);
+                width: 100%;
+                .stepBox {
+                    display: inline-block;
+                    width: 84px; height: 37px;
+                    padding: 1px 0px 10px;
+                    @include font(20px, 900, #FF3C7B);
+                    text-align: center;
+                    background-image: url("https://image.dalbitlive.com/event/dalla/7650/event_stepTop.png");
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    box-sizing: border-box;
+                }
+                &::after {
+                    flex: none;
+                    content: "";
+                    display: block;
+                    width: calc(100% - 100px);
+                    height: 1px;
+                    margin-left: auto;
+                    background-color: #fff;
+                }
+            }
+            .stepContent {
+                @include flex(center, center, column);
+                width: 100%;
+                padding: 8px 0px 30px;
+                .stepText {
+                    @include font(16px, 400, #FFF);
+                    text-align: center;
+                    line-height: 23px;
+                    strong {
+                        font-weight: 700;
+                    }
+                }
+                .stepTip {
+                    position: relative;
+                    @include flex(center, center, column);
+                    width: 270px; height: 101px;
+                    padding: 14px;
+                    margin-top: 25px;
+                    border-radius: 22px;
+                    background-image: url("https://image.dalbitlive.com/event/dalla/7650/event_Tipbox-bg.png");
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-size: contain;
+                    box-sizing: border-box;
+                    .tipTitle {
+                        @include font(20px, 900, #FF3C7B);
+                        margin-bottom: 8px;
+                    }
+                    .tipText {
+                        @include font(15px, 500, #010101);
+                    }
+                }
+                .eventBtn {
+                    @include flex(center, center);
+                    width: 233px; height: 56px;
+                    border: 2px solid #A70036;
+                    border-radius: 22px;
+                    @include font(25px, 700, #FF3C7B);
+                    background-color: #FFF;
+                    box-shadow: 0px 4px 0px #A70036;
+                    margin-top: 20px; 
+                    &.disable {
+                        pointer-events: none;
+                        border: 2px solid #979797;
+                        @include font(25px, 700, #979797);
+                        background-color: #E5E5E5;
+                        box-shadow: 0px 4px 0px #979797;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#layerPop {
+    .popContainer {
+        padding: 20px 0 30px;
+        box-sizing: border-box;
+        .popTitle {
+            @include flex(center, center);
+            width: 100%;
+            @include font(16px, 700, #202020);
+            line-height: 48px;
+        }
+        .popContent {
+            width: 100%;
+            padding: 13px 16px;
+            box-sizing: border-box;
+            .noticeList {
+                position: relative;
+                @include flex(flex-start, flex-start, column);
+                li {
+                    position: relative;
+                    width: 100%;
+                    padding-left: 10px;
+                    margin-bottom: 6px;
+                    line-height: 20px;
+                    letter-spacing: -1px;
+                    word-break: keep-all;
+                    @include font(15px, 400, #202020);
+                    box-sizing: border-box;
+                    &:last-child {
+                        margin-bottom: 0spx;
+                    }
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        left: 0; top: 8px;
+                        @include flex(center, center);
+                        width: 2px; height: 2px;
+                        border-radius: 50%;
+                        background-color: #202020;
+                    }
+                }               
+            }
+        }
+    }
+}
+
+#popSlide {
+    .slideLayer {
+        width: 100%;
+        padding-top: 20px;
+        h3 {
+            @include flex(center, center);
+            width: 100%;
+            @include font(16px, 700, #202020);
+            line-height: 48px;
+        }
+        .shareUrl {
+            @include flex(center, center, column);
+            width: 100%;
+            padding: 38px 16px 32px;
+            .inputBox {
+                position:relative;
+                @include flex(center);
+                width: 80%; height:50px;
+                border-radius:16px;
+                border:1px solid #F6F6F6;
+                background-color:#F6F6F6;
+                &.focus {
+                  border-color:#FF3C7B;
+                  background-color:white;
+                }
+                input {
+                  flex:1;
+                  width:100%;
+                  margin:0 16px;
+                  @include font(15px,400,#202020);
+                  &::placeholder {
+                    color:#999;
+                  }
+                }
+            }
+            .caution {
+                margin-top: 23px;
+                @include font(16px, 500, #303030);
+                text-align: center;
+                line-height: 22px;
+            }
+            .btnWrap {
+                @include flex(center);
+                width: 100%;
+                margin-top: 55px;
+                .cancelBtn {
+                    flex: 1;
+                    @include flex(center, center);
+                    height: 48px;
+                    border: 1px solid #D5D5D5;
+                    border-radius: 16px;
+                    @include font(16px, 500, #666666);
+                    margin-right: 8px;
+                }
+                .submitBtn {
+                    flex: 1;
+                    @include flex(center, center);
+                    height: 48px;
+                    border-radius: 16px;
+                    @include font(16px, 500, #FFFFFF);
+                    background-color: #FF3C7B;
+                    &.disable {
+                        background-color: #FFD4E1;
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+    }
+}

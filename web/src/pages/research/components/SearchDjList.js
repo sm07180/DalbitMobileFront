@@ -7,9 +7,19 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 // css
 import '../scss/resultCnt.scss'
+import {useHistory} from "react-router-dom";
 
 const SearchDjList = (props) => {
   const {data, type, pagingInfo} = props
+  const history = useHistory();
+
+  const goProfile = (e) => {
+    const { memNo } = e.currentTarget.dataset;
+
+    if ( memNo !== undefined ) {
+      history.push(`/profile/${memNo}`);
+    }
+  };
 
   return (
     <>
@@ -18,7 +28,7 @@ const SearchDjList = (props) => {
           <>
             {data.map((list,index) => {
               return (
-                <div className="listRow" key={index}>
+                <div className="listRow" key={index} data-mem-no={list.memNo} onClick={goProfile}>
                   <div className="photo">
                     <img src={list.profImg.thumb150x150} />
                   </div>

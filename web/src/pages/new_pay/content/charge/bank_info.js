@@ -1,16 +1,17 @@
 import React from 'react'
 
+import Header from 'components/ui/header/Header'
+
 import styled from 'styled-components'
 import {IMG_SERVER} from 'context/config'
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header.js'
 
 import hint from '../../static/ico_hint_b_s@2x.png'
 
 export default () => {
   return (
     <Layout status="no_gnb">
-      <Header title="은행별 시스템 점검시간" />
+      <Header title="은행별 시스템 점검시간" type="back"/>
 
       <BankInfoWrap>
         <table>
@@ -203,10 +204,10 @@ const BankInfoWrap = styled.div`
   table {
     th {
       padding: 5px 0;
-      border-top: 1px solid #632beb;
-      border-bottom: 1px solid #632beb;
+      border-top: 1px solid #FF3C7B;
+      border-bottom: 1px solid #FF3C7B;
       font-size: 12px;
-      color: #632beb;
+      color: #FF3C7B;
     }
 
     td {

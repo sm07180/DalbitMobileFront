@@ -19,51 +19,50 @@ import './scss/clipPage.scss'
 import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 import API from "context/api";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
-import errorImg from "pages/broadcast/static/img_originalbox.svg";
-import {ClipPlayerJoin, NewClipPlayerJoin} from "common/audio/clip_func";
+import { NewClipPlayerJoin } from "common/audio/clip_func";
 import {IMG_SERVER} from "context/config";
+import {setIsRefresh} from "redux/actions/common";
 
 const ClipPage = () => {
   const context = useContext(Context);
   const history = useHistory();
-  const subjectType = useSelector((state)=> state.clip.subjectType); //
-  // 떠오른 클립 배경 색상, 나중에 CORS 오류 고치면 없앨거라서 redux 안씀
+  const dispatch = useDispatch();
+  const common = useSelector(state => state.common);
+  const subjectType = useSelector((state)=> state.clip.subjectType); // 검색 조건
+  // 떠오른 클립 배경 색상, IMG 오류 나면 뿌려질 색상값.
   const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1'];
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
   const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
-  const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
-  const [likeClipInfo, setLikeClipInfo] = useState({}); // 좋아요한 클립
-  const [listenClipInfo, setListenClipInfo] = useState({}); // 최근 들은 클립
+  const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
+  const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
+  const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
-  const [subSearchInfo, setSubSearchInfo] = useState({ ...subjectType[1] }); // 아래 카테고리별 검색 조건
-  
-  const [detail, setDetail] = useState(false)
+  const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
   /* 핫 클립 */
   const getHotClipInfo = () => {
-    Api.getClipRankingList({ rankType: 1, rankingDate: '2022-01-24', page: 1, records: 9 }).then(res => {
-      if (res.result === 'success') {
+    Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
+      if (res.result === 'success' && res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
-        for (let i = 0; i < 9; i++) {
-
+        for (let i = 0; i < res.data.paging.total; i++) {
           if (res.data.list.length > i) {
             temp.push(res.data.list[i]);
           } else {
             temp.push([]);
           }
 
-          if (i % 3 === 2) {
+          if (i % 3 === 2 || (i + 1) == res.data.paging.total) {
             tempHotClipList.push(temp);
             temp = [];
           }
         }
-        setHotClipInfo(tempHotClipList);
+        setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
-
+        setHotClipInfo({ list: [], cnt: 0});
       }
     });
   }
@@ -173,41 +172,63 @@ const ClipPage = () => {
     slidesPerView: 'auto',
   };
 
+  // 링크 다시 눌렀을때, 액션
+  const refreshActions = () => {
+    getHotClipInfo();
+    getLastestClipInfo();
+    getClipLastList();
+    getClipLikeList();
+    getClipListenList();
+    setSubSearchInfo(subjectType[1]);
+    window.scrollTo(0, 0);
+    dispatch(setIsRefresh(false));
+  };
+
   useEffect(() => {
     getHotClipInfo();
     getLastestClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
-  },[])
+  }, []);
 
   useEffect(() => {
     getClipList();
   }, [subSearchInfo]);
 
+  useEffect(() => {
+    if(common.isRefresh) {
+      refreshActions();
+    }
+  }, [common.isRefresh]);
+
   return (
     <>
-      {detail === false &&
       <div id="clipPage" >
         <Header title={'클립'} />
         <section className='hotClipWrap'>
           <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
-          {hotClipInfo.length > 0 &&
-          <Swiper {...swiperParams}>
-            {hotClipInfo.map((row, index) => {
-              return (<div key={index}>
-                {row.map((coreRow, coreIndex) => {
-                  return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>)
-                })}
-              </div>);
-            })}
-          </Swiper>}
+          {hotClipInfo.list.length > 0 ?
+            <Swiper {...swiperParams}>
+              {hotClipInfo.list.map((row, index) => {
+                return (<div key={index}>
+                  {row.map((coreRow, coreIndex) => {
+                    if (Object.keys(coreRow).length > 0) {
+                      return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
+                    }
+                  })}
+                </div>);
+              })}
+            </Swiper>
+            :
+            <div className="empty">데이터가 없습니다.</div>
+          }
         </section>
         <section className='bannerWrap'>
           <BannerSlide />
         </section>
         <section className="clipDrawer">
-          {(listenClipInfo.list > 0 || likeClipInfo.list >0 ) &&
+          {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
           <div className="cntTitle">
             <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
           </div>
@@ -226,9 +247,8 @@ const ClipPage = () => {
           }
         </section>
         <section className="nowClipWrap">
-          {popularClipInfo.length > 0 &&
-          <>
-            <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
+          <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
+          {popularClipInfo.length > 0 ?
             <Swiper {...swiperParams}>
               {popularClipInfo.map((row, index) => {
                 return (
@@ -246,7 +266,8 @@ const ClipPage = () => {
                 );
               })}
             </Swiper>
-          </>
+            :
+            <div className="empty">데이터가 없습니다.</div>
           }
         </section>
         <section className='likeSubWrap'>
@@ -271,10 +292,6 @@ const ClipPage = () => {
           <SwiperList data={subClipInfo.list} playAction={playClip}/>
         </section>
       </div>
-      }
-      {/*{detail === true &&
-      <ClipDetail data={popularClipInfo} />
-      }*/}
     </>
   );
 };

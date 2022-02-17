@@ -181,14 +181,14 @@ export default function Payment() {
     if (!phone) {
       return globalAction.setAlertStatus!({
         status: true,
-        content: `핸드폰 번호는 필수입력 값입니다.`,
+        content: `휴대폰 번호는 필수입력 값입니다.`,
       });
     }
 
     if (!rgEx.test(phone)) {
       return globalAction.setAlertStatus!({
         status: true,
-        content: `올바른 핸드폰 번호가 아닙니다.`,
+        content: `올바른 휴대폰 번호가 아닙니다.`,
       });
     }
 

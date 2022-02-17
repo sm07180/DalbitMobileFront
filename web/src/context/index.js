@@ -225,13 +225,15 @@ const clipPlayListTabReducer = (state,action) => {
 const walletDataReducer = (state, action) => {
   const {type, data} = action;
   switch (type) {
-    case 'init': {
-      return state;
+    case 'INIT': {
+      return initialData.globalState.walletData;
     }
-    case 'add': {
+    case 'ADD_DATA': {
+      console.log("ADD_DATA");
       return {...state, ...data};
     }
     case 'ADD_HISTORY': {
+      console.log("ADD_HISTORY");
       const {listHistory, popHistory} = data;
       return {...state, popHistory, listHistory};
     }
@@ -348,8 +350,12 @@ const initialData = {
     gganbuTab: "collect",
     gotomoonTab: "info",
     walletData: {
+      walletType: '달 내역',        // 현재 메뉴 ['달 내역', '별 내역', 환전],
+      dalTotCnt: 0,             //보유 달
+      byeolTotCnt: 0,            //보유 별
       listHistory: [],      //달, 별 내역
-      popHistory:[]         //사용,획득 조건 리스트
+      popHistory:[],        //사용,획득 조건 리스트
+      popHistoryCnt: 0,       //누적합계 (프론트에서 직접 합산 처리)
     }
   },
   globalAction: {},

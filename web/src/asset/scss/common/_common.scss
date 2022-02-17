@@ -26,11 +26,10 @@ legend {
 }
 
 .refresh-wrap {
-  position:relative;
+  @include position-horizon;
   top:0;
   margin-top:-48px;
   z-index: 10;
-  background-color: $MAINCOLOR;
   // background-color: rgba(127, 127, 127, 0.3);
   // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   &.rank {
@@ -60,7 +59,7 @@ legend {
     @include flex($fd:column);
     max-width:800px;
     height:100%;
-    .content {
+    > .content {
       flex:1;
       position:relative;
       @include flex($fd:column);
@@ -169,6 +168,15 @@ legend {
           position:relative;
           width:44px;height:44px;
           border-radius:50%;
+          &[data-url="/notice"] {
+            .newDot {
+              @include position-top-right(4px,4px);
+              display:inline-block;
+              width:8px;height:8px;
+              border-radius:50%;
+              background-color:$MAINCOLOR;
+            }
+          }
           &:hover {
             background-color:#F2F2F2 !important;
           }
@@ -221,15 +229,6 @@ legend {
             &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
             &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
             &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
-          }
-          &.new {
-            .newDot {
-              @include position-top-right(4px,4px);
-              display:inline-block;
-              width:8px;height:8px;
-              border-radius:50%;
-              background-color:$MAINCOLOR;
-            }
           }
         }
       }
@@ -351,6 +350,10 @@ legend {
   }
 }
 
+.cursorPointer {
+  cursor: pointer;
+}
+
 // .noResultWrap {
 //   width: 100%;
 //   display: flex;
@@ -452,6 +455,7 @@ legend {
       border-color:$MAINCOLOR;
     }
     &.isDisable {
+      border: 1px solid $mediumGray;
       background: $mediumGray;
     }
   }

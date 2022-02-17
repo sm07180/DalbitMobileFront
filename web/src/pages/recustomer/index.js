@@ -1,56 +1,44 @@
+/**
+ * @file 모바일/customer/index.js
+ * @brief 고객센터
+ * @todo
+ */
+
 import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
-import Faq from './contents/faq/Faq'
-import Inquire from './contents/inquire/Inquire'
-import Policy from './contents/policy/Policy'
-import Privacy from './contents/privacy/Privacy'
-import Minor from './contents/minor/Minor'
-import Terms from './contents/terms/Terms'
-import InquireDetail from './contents/inquireDetail/InquireDetail'
 
 import './style.scss'
+import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
+import Faq from "pages/recustomer/contents/faq/Faq";
+import Inquire from "pages/recustomer/contents/inquire/Inquire";
 
 const Customer = () => {
-  let history = useHistory()
+  const history = useHistory()
   const params = useParams();
-  const category = params.title;
-  const qnaIdx = params.num;
-  const globalCtx = useContext(Context);
-  const {token, profile} = globalCtx;
+  const context = useContext(Context);
   const [categoryList, setCategory] = useState([
-    {
-      name : "FAQ",
-      file : "customerMainList-faq",
-      path : "faq"
-    },
-    {
-      name : "운영정책",
-      file : "customerMainList-policy",
-      path : "policy"
-    },
-    {
-      name : "1:1문의",
-      file : "customerMainList-inquire",
-      path : "inquire"
-    },
+    {name : "FAQ", file : "customerMainList-faq", path : "/customer/faq"},
+    {name : "운영정책", file : "customerMainList-policy", path : "/rule"},
+    {name : "1:1문의", file : "customerMainList-inquire", path : "/customer/inquire"}
   ]);
 
-  const golink = (path) => {
-    history.push("/customer/" + path);
+  const onClick = (e) => {
+    const path = e.currentTarget.dataset.idx
+    history.push(path);
   }
 
   return (
     <div id='customer'>
-      {!category ?
+      {!params.title ?
         <>
           <Header position={'sticky'} type={'back'}/>
           <div className='content'>
             <div className='mainText'>
-              {!token.isLogin ? <span>달라에게</span> : <span><strong>{profile.nickNm}</strong>님,</span>}
+              {!context.token.isLogin ? <span>달라에게</span> : <span><strong>{context.profile.nickNm}</strong>님,</span>}
               <span>궁금한게 있으시다구요?</span>
             </div>
             <div className='subText'>
@@ -58,24 +46,22 @@ const Customer = () => {
               최대한 빨리 답변 드릴게요!
             </div>
             <div className='categoryWrap'>
-              {
-                categoryList.map((list, index) => {
-                  return (
-                    <div className='categoryList' key={index} onClick={() => golink(list.path)}>
-                      <div className='categoryImg'>
-                        <img src={`https://image.dalbitlive.com/customer/main/${list.file}.png`} alt="FAQ" />
-                      </div>
-                      <div className='categoryName'>{list.name}</div>
+              {categoryList.map((list, index) => {
+                return (
+                  <div className='categoryList' key={index} data-idx={list.path} onClick={onClick}>
+                    <div className='categoryImg'>
+                      <img src={`https://image.dalbitlive.com/customer/main/${list.file}.png`} alt={list.path} />
                     </div>
-                  )
-                })
-              } 
+                    <div className='categoryName'>{list.name}</div>
+                  </div>
+                )
+              })}
             </div>
             <div className='infomation'>
               <div className='wait'>잠깐!!</div>
               <div className='textWrap'>
                 <span>자주 묻는 질문은 여기에 모아두었어요.</span>
-                <span onClick={() => golink("faq")}>FAQ 보러가기</span>
+                <span data-idx="/customer/faq" onClick={onClick}>FAQ 보러가기</span>
               </div>
               <div className='telWrap'>
                 <div className='telRow'>
@@ -92,29 +78,17 @@ const Customer = () => {
           </div>
         </>
         :
-        category === "faq" ?
+        params.title === "faq" ?
           <Faq/>
-        :
-        category === "policy" ?
-          <Policy/>
-        :
-        category === "privacy" ?
-          <Privacy/>
-        :
-        category === "minor" ?
-          <Minor/>
-        :
-        category === "terms" ?
-          <Terms/>
-        :
-        (category === "inquire" && !qnaIdx) ?
-          <Inquire/>
-        :
-        (category === "inquire" && qnaIdx) &&
-          <InquireDetail/>
+          :
+          (params.title === "inquire" && !params.num) ?
+            <Inquire/>
+            :
+            (params.title === "inquire" && params.num) &&
+            <InquireDetail/>
       }
     </div>
   )
 }
 
-export default Customer
+export default Customer;

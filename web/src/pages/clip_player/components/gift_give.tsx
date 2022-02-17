@@ -198,7 +198,7 @@ export default (props) => {
             <div className="myAcount">
               <div className="myAcount__line">
                 <p>{profile.dalCnt.toLocaleString()}</p>
-                <button className="charge" onClick={() => history.push("/pay/store")}>
+                <button className="charge" onClick={() => history.push("/store")}>
                   충전
                 </button>
               </div>
