@@ -1,4 +1,5 @@
 @import "../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #broadcast-level-up-modal {
   position: relative;
@@ -108,7 +109,7 @@
     margin-top: 30px;
     padding: 10px 0;
     border-radius: 12px;
-    background-color: $primary;
+    background-color: $MAINCOLOR;
     font-size: 14px;
     color: #fff;
     text-align: center;

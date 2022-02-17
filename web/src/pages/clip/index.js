@@ -1,29 +1,26 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
-import {convertDateFormat} from 'components/lib/dalbit_moment'
+import React, { useEffect, useState, useContext } from 'react'
+import { Context } from "context";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { NewClipPlayerJoin } from "common/audio/clip_func";
+import { IMG_SERVER } from "context/config";
+import { setIsRefresh } from "redux/actions/common";
+import Api from 'context/api';
 import moment from 'moment';
+import Swiper from 'react-id-swiper';
 
 // global components
-import Swiper from 'react-id-swiper'
-import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
-// components
-import ClipSubTitle from './components/ClipSubTitle'
-import SwiperList from './components/SwiperList'
-// contents
+import Header from 'components/ui/header/Header';
+import CntTitle from 'components/ui/cntTitle/CntTitle';
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide';
 
-import './scss/clipPage.scss'
+// components
+import ClipSubTitle from './components/ClipSubTitle';
+import SwiperList from './components/SwiperList';
 import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
-import API from "context/api";
-import {useDispatch, useSelector} from "react-redux";
-import {useHistory} from "react-router-dom";
-import { NewClipPlayerJoin } from "common/audio/clip_func";
-import {IMG_SERVER} from "context/config";
-import {setIsRefresh} from "redux/actions/common";
+
+import './scss/clipPage.scss';
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -31,21 +28,22 @@ const ClipPage = () => {
   const dispatch = useDispatch();
   const common = useSelector(state => state.common);
   const subjectType = useSelector((state)=> state.clip.subjectType); // 검색 조건
-  // 떠오른 클립 배경 색상, IMG 오류 나면 뿌려질 색상값.
-  const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1'];
+
+  const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1']; // 떠오른 클립 배경 색상, IMG 오류 나면 뿌려질 색상값.
+
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
-  const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
   const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
+
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
   /* 핫 클립 */
   const getHotClipInfo = () => {
     Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
-      if (res.result === 'success' && res.code === 'C001') {
+      if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
         for (let i = 0; i < res.data.paging.total; i++) {
@@ -62,48 +60,37 @@ const ClipPage = () => {
         }
         setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
-        setHotClipInfo({ list: [], cnt: 0});
+        if (hotClipInfo.list.length > 0) setHotClipInfo({ list: [], cnt: 0});
       }
     });
-  }
-
-  // 최신 클립
-  const getLastestClipInfo = () => {
-    Api.getLatestList({listCnt: 10}).then((res) => {
-      if (res.result === 'success') {
-        setNewClipInfo(res.data.list)
-      }
-    })
-  }
+  };
 
   // 좋아요 누른 클립 리스트 가져오기
   const getClipLikeList = () => {
     if (context.token.memNo === undefined) return;
 
-    Api.getHistoryList({
-      memNo: context.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: context.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
       if (res.code === 'C001') {
         setLikeClipInfo(res.data);
       }
-    })
-  }
+    });
+  };
 
 
   // 최근들은 클립 리스트 가져오기
   const getClipListenList = () => {
     if (context.token.memNo === undefined) return;
 
-    Api.getHistoryList({
-      memNo: context.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: context.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
       if (res.code === 'C001') {
         setListenClipInfo(res.data);
       }
-    })
+    });
   };
 
   // 방금 떠오른 클립 리스트 가져오기
   const getClipLastList = () => {
-    API.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 9 }).then(res => {
+    Api.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 9 }).then(res => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
@@ -126,16 +113,17 @@ const ClipPage = () => {
 
         setPopularClipInfo(tempHotClipList);
       }
-    })
+    });
   };
 
   const getClipList = () => {
-    API.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 20, subjectType: subSearchInfo.value }).then(res => {
+    Api.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 5, subjectType: subSearchInfo.value }).then(res => {
       if (res.code === 'C001') {
         setSubClipInfo({ list: res.data.list, paging: {...res.data.paging}});
       }
     });
-  }
+  };
+
   const handleSubjectClick = (e) => {
     const { value } = e.currentTarget.dataset;
 
@@ -154,8 +142,7 @@ const ClipPage = () => {
     } else {
       setSubSearchInfo(subjectType[target + 1]);
     }
-
-  }
+  };
 
   const playClip = (e) => {
     const { clipNo } = e.currentTarget.dataset;
@@ -174,19 +161,20 @@ const ClipPage = () => {
 
   // 링크 다시 눌렀을때, 액션
   const refreshActions = () => {
+    window.scrollTo(0, 0);
+
     getHotClipInfo();
-    getLastestClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
+
     setSubSearchInfo(subjectType[1]);
-    window.scrollTo(0, 0);
+
     dispatch(setIsRefresh(false));
   };
 
   useEffect(() => {
     getHotClipInfo();
-    getLastestClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
@@ -286,9 +274,10 @@ const ClipPage = () => {
           </Swiper>
         </section>
         <section className="clipList">
-          <CntTitle title={`${subSearchInfo.cdNm}는(은) 어떠세요?`}>
+          <div className="cntTitle">
+            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}는(은) 어떠세요?`}</h2>
             <button onClick={changeList}>새로고침</button>
-          </CntTitle>
+          </div>
           <SwiperList data={subClipInfo.list} playAction={playClip}/>
         </section>
       </div>

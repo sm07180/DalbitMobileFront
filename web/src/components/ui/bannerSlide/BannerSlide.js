@@ -32,7 +32,7 @@ const BannerSlide = (props) => {
     slideClass: 'bannerSlide',
     slideActiveClass: 'bannerSlide-active',
     autoplay: {
-      delay: 10000,
+      delay: 3000,
       disableOnInteraction: false
     },
     pagination: {

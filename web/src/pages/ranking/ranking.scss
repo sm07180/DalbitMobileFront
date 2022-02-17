@@ -1,5 +1,6 @@
 @import '../../styles/variables';
 @import '../../styles/mixins';
+@import "components/ui/_mixin.scss";
 
 #ranking-page {
   min-height: 100vh;
@@ -32,7 +33,7 @@
     justify-content: flex-end;
     padding: 5px 16px;
     background-color: #fff;
-    border-top: 1px solid $primary;
+    border-top: 1px solid $MAINCOLOR;
     border-bottom: 1px solid $lighterGray;
     text-align: right;
     color: #616161;
@@ -107,8 +108,8 @@
       background-color: #fff;
       font-size: 16px;
       &--active {
-        border-color: $primary;
-        background-color: $primary;
+        border-color: $MAINCOLOR;
+        background-color: $MAINCOLOR;
         color: #fff;
       }
     }
@@ -131,8 +132,8 @@
       color: #000;
 
       &--active {
-        border-bottom: 1px solid $primary;
-        color: $primary;
+        border-bottom: 1px solid $MAINCOLOR;
+        color: $MAINCOLOR;
         font-weight: 900;
       }
       &--blur {
@@ -160,7 +161,7 @@
       flex-direction: column;
       font-size: 16px;
       font-weight: 700;
-      color: $primary;
+      color: $MAINCOLOR;
 
       .titleWrap {
         position: relative;
@@ -222,7 +223,7 @@
     }
 
     &__profile {
-      background: $primary;
+      background: $MAINCOLOR;
 
       // & > div:first-child {
       //   position: absolute;
@@ -825,7 +826,7 @@
       height: 18px;
       margin-top: 4px;
       font-size: 12px;
-      color: $primary;
+      color: $MAINCOLOR;
       align-items: center;
       &__label {
         min-width: fit-content;

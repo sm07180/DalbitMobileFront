@@ -348,7 +348,12 @@ let Profile = () => {
                     )}
                     <div className="profile__nameWrap">
                       <strong>
-                        {profileData.nickNm}
+                        <span style={{cursor:"pointer"}} onClick={()=>{
+                          history.push(`/profile/${profileData.memNo}`)
+                        }}>
+                          {profileData.nickNm}
+                        </span>
+
                         <span className="subIconWrap">
                       {profileData.gender !== "" && (
                           <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>

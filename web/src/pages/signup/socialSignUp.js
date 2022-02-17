@@ -1,21 +1,32 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import './style.scss'
-import Api from "context/api";
-
-import qs from "query-string";
+import {useHistory} from "react-router-dom";
 import {Hybrid, isAndroid, isHybrid} from "context/hybrid";
-import Utility from "components/lib/utility";
 import {Context} from "context";
+import {PHOTO_SERVER} from "context/config";
+
+import Api from "context/api";
+import qs from "query-string";
+import Utility from "components/lib/utility";
+import useDidMountEffect from "common/hook/useDidMountEffect";
+
 import Header from "components/ui/header/Header";
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-import {PHOTO_SERVER} from "context/config";
-import useDidMountEffect from "common/hook/useDidMountEffect";
-import {useHistory} from "react-router-dom";
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
+
+import PopupPrivacy from './components/PopupPrivacy'
+import PopupTerms from './components/PopupTerms'
+
+import './style.scss'
 
 const SocialSignUp = () => {
   const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search);
   const history = useHistory();
+
+  const [popup, setPopup] = useState(false);
+  const [btnActive, setBtnActive] = useState(false);
+  const [popupVal, setPopupVal] = useState("")
+
   let snsInfo = qs.parse(location.search);
   if (_.hasIn(snsInfo, 'nickNm')) {
     snsInfo = {...snsInfo, nickNm: snsInfo.nickNm.replace(/(\s*)/g, '')}
@@ -278,37 +289,123 @@ const SocialSignUp = () => {
     Hybrid('eventTracking', {service :  firebaseDataArray})
   }
 
+  //약관동의 체크유무
+  const checkSelectAll = () => {
+    const checkboxes = document.querySelectorAll('input[name="checkList"]');
+    const checked = document.querySelectorAll('input[name="checkList"]:checked');
+    const selectAll = document.querySelector('input[name="checkListAll"]');
+
+    if (checkboxes.length === checked.length) {
+      selectAll.checked = true;
+      setBtnActive(true)
+    } else {
+      selectAll.checked = false;
+      setBtnActive(false)
+    }
+  }
+
+  //약관동의 전체선택
+  const selectAll = (e) => {
+    const checkboxes = document.querySelectorAll('input[name="checkList"]');
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = e.target.checked
+    })
+    if (e.target.checked) {
+      setBtnActive(true)
+    } else {
+      setBtnActive(false)
+    }
+  }
+
+  // 팝업 띄우기
+  const popupOpen = (val) => {
+    setPopup(true);
+    setPopupVal(val)
+  }
+
   return (
-    <div id='signPage'>
-      <Header type="back"/>
-      <section className='signField'>
-        <div className='title'>
-          <h2>{`소셜 로그인 정보를\n입력해주세요.`}</h2>
-        </div>
-
-        <div className="profileUpload">
-          <label htmlFor="profileImg">
-            <div className='uploadImg' style={{backgroundImage: `url(${PHOTO_SERVER}${signForm.profImgUrl})`}}/>
-            <span>클릭 이미지 파일 추가</span>
-          </label>
-          <input type="file" id="profileImg" accept="image/jpg, image/jpeg, image/png" onChange={uploadSingleFile}/>
-        </div>
-
-        <div className='inputWrap'>
-          <div className={`inputItems`} id={'nickNameInputItem'}>
-            <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
-              <input type="text" name={"nickName"} placeholder="최대 20자까지 입력" value={signForm.nickName}
-                     onChange={onChange} autoComplete="off" maxLength={20}/>
-            </div>
-            <p className='textLog' ref={nicknameCheckRef} />
+    <>
+      <div id='signPage'>
+        <Header type="back"/>
+        <section className='signField'>
+          <div className='title'>
+            <h2>{`소셜 로그인 정보를\n입력해주세요.`}</h2>
           </div>
-        </div>
 
-        <SubmitBtn text="완료" onClick={signUp}/>
+          <div className="profileUpload">
+            <label htmlFor="profileImg">
+              <div className='uploadImg' style={{backgroundImage: `url(${PHOTO_SERVER}${signForm.profImgUrl})`}}/>
+              <span>클릭 이미지 파일 추가</span>
+            </label>
+            <input type="file" id="profileImg" accept="image/jpg, image/jpeg, image/png" onChange={uploadSingleFile}/>
+          </div>
 
+          <div className='inputWrap'>
+            <div className={`inputItems`} id={'nickNameInputItem'}>
+              <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
+                <input type="text" name={"nickName"} placeholder="최대 20자까지 입력" value={signForm.nickName}
+                      onChange={onChange} autoComplete="off" maxLength={20}/>
+              </div>
+              <p className='textLog' ref={nicknameCheckRef} />
+            </div>
+          </div>
 
-      </section>
-    </div>
+          <div className='agree'>
+            <div className='agreeTitle'>이용 약관 동의</div>
+            <div className="agreeWrap">
+              <div className="agreeListAll">
+                <label className="inputLabel">
+                  <input type="checkbox" className="blind" name="checkListAll" onChange={selectAll}/>
+                  <span className="checkIcon"/>
+                  <p className="checkinfo">네, 모두 동의합니다.</p>
+                </label>
+              </div>
+              <div className='agreeListWrap'>
+                <div className="agreeList">
+                  <label className="inputLabel">
+                    <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
+                    <span className="checkIcon"/>
+                    <p className="checkinfo">(필수) 만 14세 이상입니다.</p>
+                  </label>
+                </div>
+                <div className="agreeList">
+                  <label className="inputLabel">
+                    <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
+                    <span className="checkIcon"/>
+                    <p className="checkinfo">(필수) 이용약관</p>
+                    <button className='policyBtn' onClick={() => popupOpen("terms")}>보기</button>
+                  </label>
+                </div>
+                <div className="agreeList">
+                  <label className="inputLabel">
+                    <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
+                    <span className="checkIcon"/>
+                    <p className="checkinfo">(필수) 개인정보 취급 방침</p>
+                    <button className='policyBtn' onClick={() => popupOpen("privacy")}>보기</button>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <SubmitBtn text="완료" onClick={signUp}/>
+        </section>
+      </div>
+      {
+        popup &&
+        <LayerPopup setPopup={setPopup}>
+          <div className='popTitle'>{popupVal === "terms" ? "이용약관" : "개인정보 취급 방침"}</div>
+          <div className='popContent'>
+            {popupVal=== "terms" ?
+              <PopupTerms/>
+              :
+              <PopupPrivacy/>
+            }
+          </div>
+        </LayerPopup>
+      }
+    </>
+    
   );
 };
 
