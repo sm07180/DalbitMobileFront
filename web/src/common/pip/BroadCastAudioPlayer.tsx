@@ -101,7 +101,6 @@ const BroadCastAudioPlayer = ()=>{
     <div id="player" 
       style={{
         display: isShowPlayer ? "" : "none",
-        color:"gold",
       }}>
       <div className="inner-player" onClick={playerBarClickEvent}>
         <div className="inner-player-bg" style={{
