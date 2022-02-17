@@ -20,9 +20,8 @@ import {
 // others
 import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
-import { GlobalContext } from "context";
+import { Context } from "context";
 import { ModalContext } from "context/modal_ctx";
-
 import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
@@ -153,8 +152,8 @@ let constraint = {
 export default function BroadcastSetting() {
   const history = useHistory();
   const titleInputRef = useRef<any>();
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const context = useContext(Context)
+  const { globalState, globalAction } = useContext(Context);
   const { chatInfo, rtcInfo } = globalState;
   const { modalState } = useContext(ModalContext);
   const { broadcastAction } = useContext(BroadcastContext);
@@ -187,6 +186,10 @@ export default function BroadcastSetting() {
   const [popupCopyright, setPopupCopyright] = useState<boolean>(false);
   const [popupTitle, setPopupTitle] = useState<boolean>(false);
   const [popupWelcome, setPopupWelcome] = useState<boolean>(false);
+
+  //mic cam List Pop
+  const [camPop, setCamPop] = useState<boolean>(false);
+  const [micPop, setMicPop] = useState<boolean>(false);
 
   // dispatch function
   const setMicState = (status: boolean) =>
@@ -516,35 +519,48 @@ export default function BroadcastSetting() {
       detectStreamDevice
     );
     videoStream?.getTracks().forEach((track) => track.stop());
-    setVideoState(false);
+    //setVideoState(false);
   }, [videoStream]);
 
-  const videoDevice = useCallback(async () =>{
+  const videoDevice = async () =>{
+    const result = await setStream();
+    if(result !== null){
+      setVideoStream(result);
+      cams = await AgoraRTC.getCameras();
+      currentCam = cams[0];
+      setCamForm(currentCam.label)
+      sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
 
-    cams = await AgoraRTC.getCameras();
-    currentCam = cams[0];
-    setCamForm(currentCam.label)
-    sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+      localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+          width: 1280,
+          // Specify a value range and an ideal value
+          height: { ideal: 720, min: 720, max: 1280 },
+          frameRate: 24,
+          bitrateMin: 1130, bitrateMax: 2000,
+        },cameraId:currentCam.deviceId})
+      console.log("==========>>>>>>>>>>",localTracks.videoTrack)
+      // play local track on device detect dialog
+      localTracks.videoTrack.play("pre-local-player",{mirror:true});
+      // localTracks.audioTrack.play();
+      // get cameras
 
-    localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
-        width: 1280,
-        // Specify a value range and an ideal value
-        height: { ideal: 720, min: 720, max: 1280 },
-        frameRate: 24,
-        bitrateMin: 1130, bitrateMax: 2000,
-      },cameraId:currentCam.deviceId})
+      if(currentCam !==null){
+        setVideoState(true)
+      }
+    }else{
+      //장치 연결 관련 팝업
+      let message = "현재 다른 응용 프로그램에서\n" +
+        "해당 장치를 사용중입니다.\n" +
+        "다른 캡처 장치를 선택해주세요"
 
-    // play local track on device detect dialog
-    localTracks.videoTrack.play("pre-local-player",{mirror:true});
-    // localTracks.audioTrack.play();
-    // get cameras
-
-    if(currentCam !==null){
-      setVideoState(true)
+      context.action.alert({
+        msg: message
+      })
     }
-  },[])
 
-  const audioDevice = useCallback(async () => {
+  }
+
+  const audioDevice = async () => {
     mics = await AgoraRTC.getMicrophones();
     currentMic = mics[0];
     setMicForm(currentMic.label)
@@ -560,21 +576,25 @@ export default function BroadcastSetting() {
     //$(".mic-input").val(currentMic.label);
     //$(".cam-input").val(currentCam.label);
 
-  }, []);
+  }
 
   async function switchCamera(label) {
+    removeVideoStream();
     currentCam = cams.find(cam => cam.label === label);
     // switch device of local video track.
-    await localTracks.videoTrack.setDevice(currentCam.deviceId);
-    sessionStorage.setItem("cam", JSON.stringify(currentMic.deviceId));
+    let optionalParams = currentCam.deviceId;
+    console.log("currentCam=====>",optionalParams)
+    await localTracks.videoTrack.setDevice(optionalParams);
+    sessionStorage.setItem("cam", JSON.stringify(optionalParams));
   }
 
   async function switchMicrophone(label) {
     currentMic = mics.find(mic => mic.label === label);
     console.log(currentMic.label)
     // switch device of local audio track.
-    await localTracks.audioTrack.setDevice(currentMic.deviceId);
-    sessionStorage.setItem("mic", JSON.stringify(currentMic.deviceId));
+    let optionalParams = currentMic.deviceId;
+    await localTracks.audioTrack.setDevice(optionalParams);
+    sessionStorage.setItem("mic", JSON.stringify(optionalParams));
   }
 
   useEffect(() => {
@@ -624,7 +644,6 @@ export default function BroadcastSetting() {
   }, [audioStream]);
 
   useEffect(() => {
-
     if (state.mediaType === BROAD_TYPE.AUDIO) {
       audioDevice();
       constraint = {
@@ -636,9 +655,11 @@ export default function BroadcastSetting() {
         ...constraint,
         video: true,
       };
-      videoDevice();
+      if (videoStream === null) {
+        videoDevice();
+      }
 
-      /*const initDeivce = async () => {
+/*      const initDeivce = async () => {
         if (videoStream === null) {
           const stream = await setStream();
 
@@ -666,34 +687,6 @@ export default function BroadcastSetting() {
       };
 
       initDeivce();*/
-    }
-    if (
-      state.mediaType === BROAD_TYPE.VIDEO
-    ) {
-      /* if (
-         document.getElementById("localVideoSection") &&
-         document.getElementById("localVideoSection")!.children.length === 0
-       ) {
-         const videoTag = document.createElement("video");
-         videoTag.setAttribute("playsinline", "");
-         videoTag.setAttribute("autoplay", "");
-         videoTag.muted = true;
-         videoTag.srcObject = videoStream;
-         document.getElementById("localVideoSection")?.appendChild(videoTag);
-       }
-
-       setVideoState(true);*/
-    } else {
-      if (
-        document.getElementById("localVideoSection") &&
-        document.getElementById("localVideoSection")!.children.length > 0
-      ) {
-        document
-          .getElementById("localVideoSection")
-          ?.removeChild(
-            document.getElementById("localVideoSection")!.childNodes[0]
-          );
-      }
     }
   }, [videoStream, state.mediaType]);
 
@@ -778,8 +771,8 @@ export default function BroadcastSetting() {
     <>
         <div className="broadcastSetting">
           <div className="headerTitle">방송설정</div>
-          <div className="title">마이크 연결 상태</div>
-          <div className="mikeCheck">
+         {/* <div className="title">마이크 연결 상태</div>*/}
+{/*          <div className="mikeCheck">
             <div
               className={
                 state.micState ? "mikeIcon" : "mikeIcon mikeIcon__noSound"
@@ -795,44 +788,32 @@ export default function BroadcastSetting() {
                 <div className="mikeLine__button"></div>
               </div>
             </div>
-          </div>
-          <ul id={"micList"} className="access">
-            {mics.map((item, index) => {
-              return(
-                <li
-                  key={index}
-                  onClick={() => {
-                    setMicForm(item.label);
-                    switchMicrophone(item.label)
-                  }}
-                  className={
-                    state.micFormType == item.label
-                      ? "access__list active"
-                      : "access__list"
-                  }
-                >{item.label}</li>
-              )
-            })}
-          </ul>
+          </div>*/}
           <div className="title">마이크 설정</div>
           <div className="access">
             <div
               onClick={() => {
-                console.log('test');
-                
+                setMicPop(!micPop);
               }}
-              className={
-                state.mediaType == BROAD_TYPE.AUDIO
-                  ? "access__list active"
-                  : "access__list"
-              }
+              className={"access__list active"}
             >
-              마이크 종류
+              {state.micFormType}
             </div>
-            <div className="access__select">
-              <div className="access__option">1</div>
-              <div className="access__option">1</div>
-              <div className="access__option">1</div>
+            <div className={`access__select ${!micPop &&'hidden'}`}>
+              {mics.map((item, index) => {
+                return(
+                  <div className="access__option"
+                    key={index}
+                    onClick={() => {
+                      if(state.micFormType !== item.label){
+                        setMicForm(item.label);
+                        switchMicrophone(item.label)
+                        setMicPop(false);
+                      }
+                    }}
+                  >{item.label}</div>
+                )
+              })}
             </div>
           </div>
           
@@ -870,25 +851,32 @@ export default function BroadcastSetting() {
               <div className="title">음성/영상 상태</div>
               {/*<div id="localVideoSection"/>*/}
               <div id="pre-local-player"/>
-              <ul id={"camList"} className="access">
-                {cams.map((item, index) => {
-                  return(
-                    <li
-                      key={index}
-                      onClick={() => {
-                        setCamForm(item.label);
-                        sessionStorage.setItem("cam", JSON.stringify(item.deviceId));
-                        switchCamera(item.label)
-                      }}
-                      className={
-                        state.camFormType == item.label
-                          ? "access__list active"
-                          : "access__list"
-                      }
-                    >{item.label}</li>
-                  )
-                })}
-              </ul>
+              <div className="access">
+                <div
+                  onClick={() => {
+                    setCamPop(!camPop);
+                  }}
+                  className={"access__list active"}
+                >
+                  {state.camFormType}
+                </div>
+                <div className={`access__select ${!camPop &&'hidden'}`}>
+                  {cams.map((item, index) => {
+                    return(
+                      <div className="access__option"
+                           key={index}
+                           onClick={() => {
+                             if(state.camFormType !== item.label){
+                               setCamForm(item.label);
+                               switchCamera(item.label)
+                               setCamPop(false);
+                             }
+                           }}
+                      >{item.label}</div>
+                    )
+                  })}
+                </div>
+              </div>
             </>
           )}
           {/*아고라 와우자 분기값 셋팅 테스트용*/}
@@ -1068,7 +1056,7 @@ export default function BroadcastSetting() {
               placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.&#13;&#10;(10 ~ 100자 이내)"
               value={state.welcomeMsgChange}
               onChange={(e) => setWelcomeMsg(e)}
-            ></textarea>
+            />
             <p className="textNumber textNumber__padding">
               {state.welcomeMsgChange.length}/100
             </p>
@@ -1096,7 +1084,6 @@ export default function BroadcastSetting() {
           >
             방송하기
           </button>
-
           {popupCopyright && <LayerCopyright setPopupState={setPopupState} />}
           {popupTitle && <LayerTitle setPopupState={setPopupState} />}
           {popupWelcome && <LayerWelcome setPopupState={setPopupState} />}
