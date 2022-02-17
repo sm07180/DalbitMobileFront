@@ -141,9 +141,12 @@ const ProfileWrite = () => {
           contents: contents
         }
       });
-      context.action.toast({msg: message});
+
       if (result === 'success') {
+        context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
+      } else {
+        context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
       }
     }
   }
@@ -165,12 +168,12 @@ const ProfileWrite = () => {
       setFormState({...formState, photoInfoList: globalPhotoInfoListRef.current.concat({img_name: data?.path, ...data})});
       setImage(null);
 
-      if (photoListSwiperRef.current?.swiper) {
-        photoListSwiperRef.current?.swiper?.update();
-        photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
-      }
+      // if (photoListSwiperRef.current?.swiper) {
+      //   photoListSwiperRef.current?.swiper?.update();
+      //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
+      // }
     } else {
-      context.action.toast({msg: message});
+      context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
     }
   };
 
@@ -240,7 +243,7 @@ const ProfileWrite = () => {
 
   return (
     <div id="profileWrite">
-      <Header title={`${type === 'feed' ? '피드' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
+      <Header title={`${type === 'feed' ? '방송공지' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'
                   defaultValue={formState?.contents || ''}

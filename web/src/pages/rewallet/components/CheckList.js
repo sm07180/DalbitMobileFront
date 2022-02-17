@@ -7,7 +7,7 @@ import React, {useState} from 'react'
 import './checkList.scss'
 
 const CheckList = (props) => {
-  const {text,name,children} = props
+  const {text,name,children, onClick} = props
   const [btnActive,setBtnActive] = useState(false)
   
   const onCheckSelect = () => {
@@ -18,7 +18,7 @@ const CheckList = (props) => {
     <>
       <div className="infoCheckList">
         <label className="inputLabel">
-          <input type="checkbox" className="blind" />
+          <input type="checkbox" className="blind" onClick={onClick}/>
           <span className="checkIcon"></span>
           <p className="checkInfo">{text}</p>
           {children}
@@ -28,4 +28,7 @@ const CheckList = (props) => {
   )
 }
 
+CheckList.defaultProps = {
+  onClick:()=>{}
+}
 export default CheckList

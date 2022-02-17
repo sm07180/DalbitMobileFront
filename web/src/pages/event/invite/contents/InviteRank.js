@@ -6,7 +6,7 @@ import ListNone from 'components/ui/listNone/ListNone'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-
+import Api from "context/api";
 
 import '../invite.scss'
 
@@ -297,6 +297,34 @@ const InviteRank = () => {
       profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
     }
   ]
+
+  useEffect(()=>{
+    getList();
+    getMyRank();
+  },[]);
+
+  const getList = ()=>{
+    Api.inviteList({
+      reqBody: true,
+      data:{
+        "memNo": context.token.memNo,
+      }
+    }).then((response)=>{
+      console.log(response);
+    })
+  }
+
+  const getMyRank = ()=>{
+    Api.inviteList({
+      reqBody: true,
+      data:{
+        "memNo": context.token.memNo,
+      }
+    }).then((response)=>{
+      console.log(response);
+    })
+  }
+
 
   const popupOpen = () => {
     setPopup(true)
