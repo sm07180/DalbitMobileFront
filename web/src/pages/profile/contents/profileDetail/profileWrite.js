@@ -258,7 +258,10 @@ const ProfileWrite = () => {
                        onClick={()=>{setFormState({...formState, others:formState.others === 1? 0: 1})}}/>
             : ( (action==='write' && !isMyProfile || action==='modify') &&
               <CheckList text="비밀글" checkStatus={formState.others===0}
-                         onClick={()=>{setFormState({...formState, others:formState.others === 1? 0: 1})}}/> )}
+                         onClick={() => {
+                           action !== 'modify' &&
+                           setFormState({...formState, others: formState.others === 1 ? 0 : 1})
+                         }}/>)}
           <div className="textCount">
             <span>{formState?.contents?.length || 0}</span> / 1000
           </div>
