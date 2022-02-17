@@ -81,7 +81,7 @@ const ClipAudioPlayer = ()=>{
       , alt:isPaused? "start":"stop"
     }
     return(
-      <PlayerAudioStyled>
+      <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
           <div className="info-wrap">
             <div className="equalizer">
@@ -97,9 +97,12 @@ const ClipAudioPlayer = ()=>{
             </div>
             <div className="counting"/>
           </div>
-          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          <div className="buttonGroup">
+            <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          </div>
+          
         </div>
-      </PlayerAudioStyled>
+      </div>
     )
   }else{
     return (<></>)
