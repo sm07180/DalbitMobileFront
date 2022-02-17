@@ -6,14 +6,31 @@ import Header from 'components/ui/header/Header'
 import SwitchList from '../../../components/switchList'
 
 import './infoOpen.scss'
+import API from "context/api";
+import Toast from "components/ui/toast/Toast";
 
-const InfoOpen = () => {
+const InfoOpen = (props) => {
   const [checkState, setCheckState] = useState(false);
+  const localOpen = [{path: 1, name: "방송 청취 정보 공개"}, {path: 3, name: "공개"}, {path: 2, name: "비공개"}]
+  const {settingData, setSettingData} = props;
+  const [toast, setToast] = useState({
+    state : false,
+    msg : ""
+  });
+  const toastMessage = (text) => {
+    setToast({state: true, msg : text})
+    setTimeout(() => {
+      setToast({state: false})
+    }, 3000)
+  }
 
   const switchAction = (e) => {
     const checking = e.target.checked;
+    const value = e.target.value;
     if(checking){
+      console.log(value);
       setCheckState(true)
+      fetchData(value);
     } else {
       setCheckState(false)
       let radioEle = document.getElementsByName("broadcastLocation");
@@ -24,29 +41,57 @@ const InfoOpen = () => {
       }
     }
   }
+
+  const fetchData = async (slctedVal) => {
+    if(settingData !== null) {
+      console.log(slctedVal);
+      const res = await API.modifyBroadcastSetting({listenOpen: slctedVal})
+      if(res.result === "success") {
+        console.log("@#@##", res);
+        setSettingData({
+          ...settingData,
+          listenOpen: slctedVal
+        })
+        toastMessage(res.message);
+      } else {
+        toastMessage(res.message);
+      }
+    }
+  }
     
   // 페이지 시작
   return (
     <div id="infoOpen">
       <Header position={'sticky'} title={'방송 청취 정보 공개'} type={'back'}/>
       <div className='subContent'>
-          <SwitchList title={"방송 청취 정보 공개"} mark={false} action={switchAction}/>
-          <div className={`locationState ${checkState ? "active" : ""}`}>
+        <div className="switchList">
+          <div className="titleWrap">
+            <span className="title">{localOpen[0].name}</span>
+          </div>
+          <label className="inputLabel">
+            <input type="checkbox" className={`blind`} name="switch" value={localOpen[0].path} onChange={switchAction} />
+            <span className="switchBtn"/>
+          </label>
+        </div>
+          <div className={`locationState ${(checkState || settingData.listenOpen === 1) ? "active" : ""}`}>
             <div className='title'>방송 위치 상태</div>
             <div className='radioWrap'>
               <label className='radioLabel'>
-                <input type="radio" name="broadcastLocation" className='blind'/>
-                <span className='radioBtn'></span>
-                <span className='radioCategoty'>공개</span>
+                <input type="radio" name="broadcastLocation" className='blind' value={localOpen[1].path} onChange={switchAction}/>
+                <span className='radioBtn'/>
+                <span className='radioCategoty'>{localOpen[1].name}</span>
               </label>
               <label className='radioLabel'>
-                <input type="radio" name="broadcastLocation" className='blind'/>
-                <span className='radioBtn'></span>
-                <span className='radioCategoty'>비공개</span>
+                <input type="radio" name="broadcastLocation" className='blind' value={localOpen[2].path} onChange={switchAction}/>
+                <span className='radioBtn'/>
+                <span className='radioCategoty'>{localOpen[2].name}</span>
               </label>
             </div>
           </div>
       </div>
+      {toast.state &&
+       <Toast msg={toast.msg}/>
+      }
     </div>
   )
 }

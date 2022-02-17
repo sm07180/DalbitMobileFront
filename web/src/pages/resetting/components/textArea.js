@@ -6,7 +6,7 @@ import InputItems from '../../../components/ui/inputItems/InputItems';
 import './textArea.scss'
 
 const TextArea = (props) => {
-  const { list, setList, select, setSelect } = props;
+  const { list, setList, select, setSelect, fetchAddData, fetchDeleteData } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("");
@@ -19,6 +19,7 @@ const TextArea = (props) => {
     } else {      
       setValueCount(textVal.length);
       setTextValue(textVal);
+      setSelect({...select, val: textVal});
     } 
   }
   
@@ -31,6 +32,7 @@ const TextArea = (props) => {
       setList(list.concat(textvalue))
       setTextValue("");
       setValueCount(0);
+      fetchAddData();
     } else {
       disable();
     }
@@ -40,15 +42,20 @@ const TextArea = (props) => {
     setSelect({
       state: false,
       val: "",
-      index:-1,
+      index: -1,
     });
     setList(list.splice(select.index));
+    fetchDeleteData();
+  }
+
+  const resetList = () => {
+    setSelect({
+      state: false,
+      val: "",
+      index: -1
+    })
   }
   
-  useEffect(() => {
-    console.log(list);
-  }, [list])
-
   return (
     <div className={`inputTextArea ${textareaState}`}>
       <InputItems type="textarea">
@@ -65,10 +72,10 @@ const TextArea = (props) => {
       </InputItems>
       <div className='btnSection'>
         <div className='leftBtn'>
-          {select.state && <button className='deleteBtn'onClick={removeList}>삭제</button>}
+          {select.state && <button className="deleteBtn" onClick={removeList}>삭제</button>}
         </div>
         <div className='rightBtn'>
-          {select.state && <button className='cancelBtn'>취소</button>}          
+          {select.state && <button className='cancelBtn' onClick={resetList}>취소</button>}
           <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
         </div>
       </div>

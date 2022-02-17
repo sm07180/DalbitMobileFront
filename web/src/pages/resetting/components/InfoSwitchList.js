@@ -4,7 +4,12 @@ import React, {useState, useEffect} from 'react'
 import './switchList.scss'
 
 const SwitchList = (props) => {
-  const {title, mark, allSwitch, action, allCheck} = props
+  const {title, mark, allSwitch, action, data} = props
+
+  const actionPlay = () => {
+    console.log(data);
+    action(data);
+  }
 
   return (
     <div className='switchList'>
@@ -13,8 +18,8 @@ const SwitchList = (props) => {
         <span className='title'>{title}</span>
       </div>
       <label className="inputLabel">
-        <input type="checkbox" className={`blind`} name={allSwitch ? "switchAll" : "switch"} onChange={action}/>
-        {allCheck === 1 ? <span className="switchBtnOn"/> : <span className="switchBtn"/>}
+        <input type="checkbox" className={`blind`} name={allSwitch ? "switchAll" : "switch"} onClick={actionPlay}/>
+        <span className="switchBtn"/>
       </label>
     </div>
   )

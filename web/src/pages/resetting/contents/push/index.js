@@ -167,9 +167,8 @@ const SettingPush = () => {
   }, []);
 
   useEffect(() => {
-    if(!first) {
-      postAlarmData()
-    }
+      console.log(first);
+      postAlarmData();
   }, [myAlimType]);
 
   return (
@@ -185,7 +184,7 @@ const SettingPush = () => {
           </ul>
         </div>
         <div className='switchWrap'>
-          <SwitchList title={"전체 알림 수신"} mark={false} allSwitch={true} action={switchControl}/>
+          <SwitchList title={"전체 알림 수신"} mark={false} allCheck={allCheck} allSwitch={true} action={switchControl}/>
           {alarmArray.map((v, idx) => {
             return(
               <div key={idx}>
@@ -196,7 +195,7 @@ const SettingPush = () => {
                   </div>
                   <label className="inputLabel">
                     <input type="checkbox" className={"blind"} name="switch" data-title={v.text} data-key={v.key} onChange={switchControl} onClick={() => {postAlarmData(v)}} />
-                    <span className="switchBtn"/>
+                    {v.value === 1 ? <span className="switchBtnOn"/> : v.value === 0 && <span className="switchBtn"/>}
                   </label>
                 </div>
               </div>
