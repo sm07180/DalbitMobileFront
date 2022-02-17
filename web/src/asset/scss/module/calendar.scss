@@ -83,7 +83,7 @@
     }
     &:enabled {
       &:hover {
-        background: rgba(#632beb, 0.12);
+        background: rgba(#ff3c7b, 0.12);
       }
       &:focus {
         background: none;
@@ -94,7 +94,7 @@
     }
     &--hasActive {
       color: #fff;
-      background: #632beb;
+      background: #ff3c7b;
       &:hover {
         color: #000;
       }
@@ -102,13 +102,13 @@
     &--active {
       &.react-calendar__tile--range {
         &.react-calendar__month-view__days__day {
-          background: rgba(#632beb, 0.12);
+          background: rgba(#ff3c7b, 0.12);
         }
         &.react-calendar__tile--rangeEnd,
         &.react-calendar__tile--rangeStart {
           color: #fff;
           &::before {
-            background: #632beb;
+            background: #ff3c7b;
             color: #fff;
             border-radius: 50%;
           }
@@ -161,7 +161,7 @@
   // 시작날짜를 선택 시 selectRange 추가 (range 선택이 시작됨)
   &--selectRange {
     .react-calendar__tile--hover {
-      background-color: rgba(#632beb, 0.12);
+      background-color: rgba(#ff3c7b, 0.12);
     }
   }
 }

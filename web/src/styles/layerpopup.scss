@@ -120,9 +120,9 @@
 
           &.active {
             border-color: white;
-            background-color: $primary;
+            background-color: $MAINCOLOR;
             transition: 0.2s all ease 0s;
-            border: 1px solid $primary;
+            border: 1px solid $MAINCOLOR;
 
             &::before,
             &::after {
@@ -379,7 +379,7 @@
               &.txt {
                 text-align: right;
                 em {
-                  color: $primary;
+                  color: $MAINCOLOR;
                   background: #f5f5f5;
                 }
               }
@@ -530,7 +530,7 @@
           color: #fff;
           height: 44px;
           border-radius: 12px;
-          background-color: $primary;
+          background-color: $MAINCOLOR;
           font-size: 18px;
           font-weight: 700;
           /* 취소 */
@@ -558,7 +558,7 @@
             position: absolute;
             width: 100%;
             height: 1px;
-            background: $primary;
+            background: $MAINCOLOR;
             left: 0px;
             bottom: 0px;
             margin: 0px;
@@ -567,7 +567,7 @@
           }
 
           &.on {
-            color: $primary;
+            color: $MAINCOLOR;
             i {
               display: block;
             }
@@ -623,7 +623,7 @@
 
               cursor: pointer;
               &.on {
-                background-color: $primary;
+                background-color: $MAINCOLOR;
                 cursor: pointer;
               }
             }
@@ -691,8 +691,8 @@
         }
 
         &.on {
-          border: 1px solid $primary;
-          color: $primary;
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
           font-weight: 600;
         }
       }
@@ -859,16 +859,16 @@
         > button {
           width: 53px;
           height: 26px;
-          border: 1px solid $primary;
+          border: 1px solid $MAINCOLOR;
           font-size: 12px;
           line-height: 1.2;
           letter-spacing: -0.3px;
           border-radius: 13px;
           transform: skew(-0.03deg);
-          color: $primary;
+          color: $MAINCOLOR;
         }
         .plusFan {
-          background-color: $primary;
+          background-color: $MAINCOLOR;
           color: #fff;
         }
         &.none {
@@ -992,7 +992,7 @@
             margin-top: 24px;
 
             &.on {
-              background: $primary;
+              background: $MAINCOLOR;
             }
             &.off {
               background: $mediumGray;
@@ -1040,7 +1040,7 @@
         font-size: 18px;
         text-align: center;
         letter-spacing: -0.8px;
-        color: $primary;
+        color: $MAINCOLOR;
         line-height: 24px;
         display: block;
         margin-bottom: 20px;
@@ -1064,7 +1064,7 @@
         color: white;
         font-size: 18px;
         text-align: center;
-        background: $primary;
+        background: $MAINCOLOR;
         border-radius: 9px;
         font-weight: bold;
         letter-spacing: -0.8px;
@@ -1141,7 +1141,7 @@
         font-size: 18px;
         font-weight: bold;
         &--purple {
-          color: $primary;
+          color: $MAINCOLOR;
         }
       }
       .subTitle {
@@ -1185,7 +1185,7 @@
         font-weight: bold;
         line-height: 44px;
         text-align: center;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         color: #fff;
         border-radius: 12px;
       }

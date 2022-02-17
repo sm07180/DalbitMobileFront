@@ -1,4 +1,5 @@
 @import "../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #direct-gift-layer {
   position: relative;
@@ -71,7 +72,7 @@
       font-weight: $bold;
 
       &.on {
-        background-color: $primary;
+        background-color: $MAINCOLOR;
       }
     }
   }

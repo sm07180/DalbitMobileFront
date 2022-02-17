@@ -164,11 +164,11 @@
         font-weight: $bold;
         line-height: 44px;
         text-align: center;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         color: #fff;
         border-radius: 12px;
         &.on {
-          background: $primary;
+          background: $MAINCOLOR;
         }
         &.off {
           background: $mediumGray;
@@ -245,7 +245,7 @@
       overflow: hidden;
       border-bottom: 1px solid $lightGray;
       &.isPurple {
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
 

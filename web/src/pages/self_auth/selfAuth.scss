@@ -1,0 +1,83 @@
+@import "components/ui/_mixin.scss";
+
+#selfAuth{
+  section{
+    padding: 0 24px;
+    &.imgWrap{
+      margin-top: 44px;
+    }
+  }
+  .img-wrap {
+    padding-bottom: 20px;
+    text-align: center;
+    h2 {
+      @include font(28px, $Bold, #000);
+      padding-top: 30px;
+    }
+  }
+  .auth-wrap {
+    padding: 10px 0;
+    h4 {
+      text-align: center;
+      @include font(15px, $Medium, #303030);
+      line-height: 20px;
+      strong {
+        font-weight: 600;
+      }
+      span {
+        font-weight: $SemiBold;
+        color: #ff3c7b;
+      }
+    }
+    h5 {
+      text-align: center;
+      font-size: 14px;
+      line-height: 20px;
+      font-weight: 400;
+      span {
+        color: #ff3c7b;
+      }
+    }
+    h4 + h5 {
+      padding-top: 10px;
+    }
+    p {
+      @include font(12px, $Medium, #666);
+      line-height: 18px;
+    }
+    .notice{
+      @include flex(center);
+      padding-top: 32px;
+      @include font(12px, $SemiBold, $MAINCOLOR);
+      margin-bottom: 5px;
+      &Icon{
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        @include BGIMG('common/icon/exclamationBubble.png');
+        margin-right: 4px;
+      }
+    }
+    .btn-wrap {
+      display: flex;
+      padding-top: 25px;
+      button {
+        flex: 1;
+        height: 44px;
+        border-radius: 12px;
+        color: #fff;
+        font-weight: 600;
+        background: #ff3c7b;
+        border: 1px solid #ff3c7b;
+        line-height: 44px;
+        &.cancel {
+          color: #ff3c7b;
+          background: #fff;
+        }
+      }
+      button + button {
+        margin-left: 8px;
+      }
+    }
+  }
+}
