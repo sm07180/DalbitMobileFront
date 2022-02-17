@@ -9,10 +9,10 @@
         li {
           flex:1;
           @include flex(center,center);
-          height:42px;
+          height:48px;
           border-bottom:2px solid #F2F2F2;
           letter-spacing: -1px;
-          @include font(16px,500,#ACACAC);
+          @include font(16px,600,#ACACAC);
           &:nth-child(1) {
             &.active ~ .underline {left:0;}            
           }

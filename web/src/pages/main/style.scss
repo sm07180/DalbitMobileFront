@@ -229,11 +229,11 @@
             margin-right:28px;
           }
           .listColumn {
-            width:102px;
+            width:113px;
             cursor: pointer;
             .photo {
               position:relative;
-              height:136px;
+              height:149px;
               margin-bottom:6px;
               border-radius:16px;
               overflow:hidden;
@@ -302,12 +302,12 @@
           margin-right:28px;
         }
         .listColumn {
-          width:102px;
+          width:113px;
           border-radius:16px;
           overflow:hidden;
           cursor: pointer;
           .photo {
-            height:150px;
+            height:149px;
             &::before {
               content: "";
               @include position-top-left;

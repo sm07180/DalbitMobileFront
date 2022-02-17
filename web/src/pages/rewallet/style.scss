@@ -34,11 +34,11 @@
     padding:0 16px;
     li {
       flex:1;
-      line-height:40px;
-      text-align: center;
-      background-color: #ffffff;
+      @include flex(center, center);
+      height:48px;
       border-bottom:2px solid #f2f2f2;
-      @include font(16px,500,#acacac);
+      @include font(16px,600,#acacac);
+      box-sizing: border-box;
       &.active {
         @include font(16px,bold,#202020);
         border-bottom: solid 2px #202020;
