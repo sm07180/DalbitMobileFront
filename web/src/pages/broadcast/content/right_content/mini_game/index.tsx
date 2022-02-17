@@ -5,16 +5,13 @@ import React, { useContext, useCallback, useEffect, useState } from "react";
 // Api
 import { getMiniGameList } from "common/api";
 
-// Context
-import { GlobalContext } from "context";
-
 import "./index.scss";
 import { tabType, MiniGameType } from "pages/broadcast/constant";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType} from "../../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus} from "../../../../../redux/actions/globalCtx";
 
 export default ({ roomNo }) => {
-  const { globalAction } = useContext(GlobalContext);
 
   const dispatch = useDispatch();
 
@@ -39,11 +36,10 @@ export default ({ roomNo }) => {
       if (result === "success") {
         setMiniGameList(data.list);
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: message,
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: message,
+        }));
       }
     });
   }, []);

@@ -3,8 +3,6 @@ import { useHistory } from "react-router-dom";
 import { makeHourMinute } from "lib/common_fn";
 import Toggle from "common/toggle";
 
-//Context
-import { GlobalContext } from "context";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 
 //api
@@ -17,6 +15,11 @@ import { getWindowBottom, debounceFn } from "lib/common_fn";
 import Header from "common/ui/header";
 import {useDispatch, useSelector} from "react-redux";
 import {setMailBoxChatListInit} from "../../../../redux/actions/mailBox";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxIsMailboxOn,
+  setGlobalCtxSetToastStatus
+} from "../../../../redux/actions/globalCtx";
 
 let totalPage = 1;
 
@@ -24,9 +27,8 @@ export default function chatListPage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const mailboxState = useSelector(({mailBox}) => mailBox);
-  const { globalAction, globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { chatList } = mailboxState;
-  const { isMailboxOn } = globalState;
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const makeMonthDay = (date) => {
@@ -56,7 +58,7 @@ export default function chatListPage() {
         <li
           className="chatListItem"
           onClick={() => {
-            mailBoxJoin(memNo, dispatch, globalAction, history);
+            mailBoxJoin(memNo, dispatch, history);
           }}
           key={idx}
         >
@@ -82,7 +84,7 @@ export default function chatListPage() {
     });
     if (result === "success") {
       const { list, paging, isMailboxOn } = data;
-      globalAction.setIsMailboxOn!(isMailboxOn);
+      dispatch(setGlobalCtxIsMailboxOn(isMailboxOn));
       dispatch(setMailBoxChatListInit(data.list));
       if (currentPage > 1) {
         dispatch(setMailBoxChatListInit(mailboxState.chatList.concat(list)));
@@ -95,41 +97,39 @@ export default function chatListPage() {
       }
     } else {
       //실패
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
 
   const postMailboxUse = async () => {
     const { result, data, message } = await PostMailboxChatUse({
-      isMailboxOn: !isMailboxOn,
+      isMailboxOn: !globalState.isMailboxOn,
     });
     if (result === "success") {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
-      globalAction.setIsMailboxOn!(!isMailboxOn);
+      }));
+      dispatch(setGlobalCtxIsMailboxOn(!globalState.isMailboxOn));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   };
 
   const handleNewMessageClick = () => {
-    if (isMailboxOn) {
+    if (globalState.isMailboxOn) {
       history.push(`/mailbox/chat_new`);
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "우체통 기능을 사용하지 않는 상태이므로 새로운 메세지 기능을 사용할 수 없습니다.",
-      });
+      }));
     }
   };
 
@@ -162,7 +162,7 @@ export default function chatListPage() {
       <div className="chatListPage subContent gray">
         <div className="chatOnOffBox">
           <p>우체통 기능 사용 설정</p>
-          <Toggle active={isMailboxOn} activeCallback={postMailboxUse} />
+          <Toggle active={globalState.isMailboxOn} activeCallback={postMailboxUse} />
         </div>
         {chatList && chatList.length > 0 ? (
           <ul>{createList()}</ul>

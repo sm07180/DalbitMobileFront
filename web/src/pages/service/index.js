@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {Context} from 'context'
 import {OS_TYPE} from 'context/config'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
@@ -10,7 +9,6 @@ import Header from 'components/ui/new_header'
 import './index.scss'
 
 export default function Service() {
-  const context = useContext(Context)
   const hisotry = useHistory()
   const customHeader = JSON.parse(Api.customHeader)
   const [versionShow, setVersionShow] = useState(false)

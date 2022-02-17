@@ -8,7 +8,6 @@ import React, {
 } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {getMain, getBanner, broadcastList, getInnerServerList} from "common/api";
-import { GlobalContext } from "context";
 import { getCookie } from "common/utility/cookie";
 import { PAGE_TYPE } from "pages/rank/constant";
 import moment from "moment";
@@ -37,6 +36,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {
   setRankFormRankType, setRankFormPageType
 } from "redux/actions/rank";
+import {setGlobalCtxBroadClipDim} from "../../redux/actions/globalCtx";
 
 // live list reducer
 let timer;
@@ -81,7 +81,7 @@ const round = [
 export default function Main() {
   const history = useHistory();
   const dispatch = useDispatch()
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const mailboxState = useSelector(({mailBox}) => mailBox);
   const {
     baseData,
@@ -433,7 +433,7 @@ export default function Main() {
           }
           break;
         case "mailbox":
-          openMailboxBanAlert({ userProfile, globalAction, history });
+          openMailboxBanAlert({ userProfile, dispatch, history });
           break;
         default:
           break;
@@ -584,7 +584,7 @@ export default function Main() {
             className="gnbButton gnbButton--liveIcon"
             onClick={() => {
               if (baseData.isLogin === true) {
-                return globalAction.setBroadClipDim!(true);
+                return dispatch(setGlobalCtxBroadClipDim(true));
               } else {
                 return history.push("/login");
               }

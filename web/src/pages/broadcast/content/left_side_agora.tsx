@@ -12,7 +12,6 @@ import styled from "styled-components";
 import { useLastLocation } from "react-router-last-location";
 
 // context
-import { GlobalContext } from "context";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -55,6 +54,12 @@ import {
   setBroadcastCtxComboAnimationEnd,
   setBroadcastCtxIsTtsPlaying, setBroadcastCtxTtsActionInfo
 } from "../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxRtcInfoEmpty,
+  setGlobalCtxRtcInfoInit
+} from "../../../redux/actions/globalCtx";
 
 type ComboType = {
   status: boolean;
@@ -163,8 +168,7 @@ export default function LeftSideAgora(props: {
   } = props;
 
   const lastLocation = useLastLocation();
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
@@ -219,7 +223,7 @@ export default function LeftSideAgora(props: {
       );
       rtcInfo.setRoomInfo(roomInfo);
       rtcInfo.setDisplayWrapRef(displayWrapRef);
-      globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
+      dispatch(setGlobalCtxRtcInfoInit(rtcInfo));
       sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:rtcInfo.roomInfo, userType:rtcInfo.userType}));
     }
   }, [roomInfo]);
@@ -248,7 +252,7 @@ export default function LeftSideAgora(props: {
         videoConstraints
       );
       rtcInfo.setRoomInfo(roomInfo);
-      globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
+      dispatch(setGlobalCtxRtcInfoInit(rtcInfo));
       sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:rtcInfo.roomInfo, userType:rtcInfo.userType}));
       setPlayBtnStatus(false);
     }
@@ -261,9 +265,7 @@ export default function LeftSideAgora(props: {
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          globalAction.dispatchGuestInfo!({
-            type: "EMPTY",
-          });
+          dispatch(setGlobalCtxGuestInfoEmpty());
         });
       }
     }
@@ -345,7 +347,7 @@ export default function LeftSideAgora(props: {
   // 지우지 마세유
   useEffect(()=>{
     // const transitionPromptHook:TransitionPromptHook = (location, action)=>{
-    //   globalAction.setAlertStatus({
+    //   dispatch(setGlobalCtxAlertStatus({
     //     status: true,
     //     type: "confirm",
     //     title: "알림",
@@ -359,7 +361,7 @@ export default function LeftSideAgora(props: {
     //         if (rtcInfo !== null) {
     //           rtcInfo.socketDisconnect();
     //           rtcInfo.stop();
-    //           globalAction.dispatchRtcInfo({ type: "empty" });
+    //           dispatch(setGlobalCtxRtcInfoEmpty());
     //           disconnectGuest();
     //           await rtcInfo.stop();
     //           rtcSessionClear();
@@ -379,7 +381,7 @@ export default function LeftSideAgora(props: {
     //         }
     //       }
     //     },
-    //   });
+    //   }));
     //   return false;
     // }
 
@@ -406,7 +408,6 @@ export default function LeftSideAgora(props: {
       // chat init logic
       chatInfo.setRoomNo(roomNo);
 
-      chatInfo.setGlobalAction(globalAction);
       chatInfo.setGuestAction(guestAction);
 
       chatInfo.setRoomOwner(roomOwner);
@@ -435,11 +436,11 @@ export default function LeftSideAgora(props: {
         const roomExit = async () => {
           const { result } = await broadcastExit({ roomNo });
           if (result === "success") {
-            if (rtcInfo !== null && globalAction.dispatchRtcInfo) {
+            if (rtcInfo !== null) {
               chatInfo.privateChannelDisconnect();
               rtcInfo.stop();
               disconnectGuest();
-              globalAction.dispatchRtcInfo({ type: "empty" });
+              dispatch(setGlobalCtxRtcInfoEmpty());
               rtcSessionClear();
             }
           }
@@ -471,7 +472,7 @@ export default function LeftSideAgora(props: {
           const dispatchRtcInfo = new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
           dispatchRtcInfo.setRoomInfo(roomInfo);
           dispatchRtcInfo.join(roomInfo).then(()=>{
-            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
             sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
           });
           setAgoraRtc({...agoraRtc, ...dispatchRtcInfo});
@@ -632,8 +633,7 @@ export default function LeftSideAgora(props: {
         roomChanged === true
       ) {
         rtcInfo.socketDisconnect();
-        globalAction.dispatchRtcInfo &&
-        globalAction.dispatchRtcInfo({ type: "empty" });
+        dispatch(setGlobalCtxRtcInfoEmpty());
       }
     };
   }, [rtcInfo]);

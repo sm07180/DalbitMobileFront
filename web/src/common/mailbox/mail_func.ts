@@ -3,7 +3,7 @@ import {useDispatch} from "react-redux";
 import {setMailBoxInfo, setMailBoxUserCount} from "../../redux/actions/mailBox";
 import {setGlobalCtxAlertStatus} from "../../redux/actions/globalCtx";
 
-export function mailBoxJoin(memNo: string, dispatch: any, globalAction: any, history: any, prevMemNo?: any) {
+export function mailBoxJoin(memNo: string, dispatch: any, history: any, prevMemNo?: any) {
   const mailBoxEnter = async () => {
     const { result, data, message, code } = await mailChatEnter({
       memNo: memNo,
@@ -47,43 +47,20 @@ export function mailBoxJoin(memNo: string, dispatch: any, globalAction: any, his
 }
 
 export function openMailboxBanAlert(helper: any) {
-  const { userProfile, globalAction, history } = helper;
+  const { userProfile, dispatch, history } = helper;
   if (userProfile === null) {
     history.push("/login");
     return;
   }
   if (userProfile && !userProfile.level) {
     return (
-      globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "<p style='letter-spacing:-0.8px;'>우체통은 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
-      })
+      }))
     );
   } else {
     history.push("/mailbox");
   }
 }
-
-// export function updateMailboxList(mailboxAction: any, globalAction: any) {
-//   const getMailboxList = async () => {
-//     const { result, data, message } = await getMailboxChatList({
-//       page: 1,
-//       records: 20,
-//     });
-//     if (result === "success") {
-//       if (location.pathname === "/mailbox") {
-//         mailboxAction.dispathChatList!({ type: "init", data: data.list });
-//       }
-//     } else {
-//       globalAction.setAlertStatus &&
-//         globalAction.setAlertStatus({
-//           status: true,
-//           type: "alert",
-//           content: message,
-//         });
-//     }
-//   };
-//   getMailboxList();
-// }

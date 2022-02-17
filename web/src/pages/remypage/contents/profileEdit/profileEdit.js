@@ -1,8 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import Api from 'context/api'
+import React from 'react'
 import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
@@ -11,15 +7,14 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import TopSwiper from '../../components/TopSwiper'
 import InputItems from '../../components/InputItems'
 // contents
-
 import './profileEdit.scss'
+import {useSelector} from "react-redux";
 
 const ProfileEdit = () => {
-  const history = useHistory()
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //context
-  const context = useContext(Context)
-  const {token, profile} = context
-  
+  const {token, profile} = globalState
+
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 8,
@@ -32,7 +27,7 @@ const ProfileEdit = () => {
         <button className='saveBtn'>저장</button>
       </Header>
       <section className='topSwiper'>
-        {true ? 
+        {true ?
           <TopSwiper data={profile} />
           :
           <div className="nonePhoto">
@@ -104,7 +99,7 @@ const ProfileEdit = () => {
           <InputItems title={'성별'}>
             <div className="innerBox">
               <GenderItems data={profile.gender} size={18} />
-              {profile.gender === 'm' ? 
+              {profile.gender === 'm' ?
                 <span className='text'>남자</span>
                 :
                 <span className='text'>여자</span>

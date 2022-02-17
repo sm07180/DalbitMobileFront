@@ -1,15 +1,18 @@
-import React, {useEffect, useContext, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import qs from 'query-string'
 import Header from 'components/ui/new_header'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const {memNo} = qs.parse(location.search)
   const [dueDate, setDueDate] = useState('')
   const [longTermDate, setLongTermDate] = useState('')
@@ -23,12 +26,13 @@ export default () => {
           setLongTermDate(data.longTermDate)
         }
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       }
     }
     fetchData()

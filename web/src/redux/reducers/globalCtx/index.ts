@@ -43,12 +43,18 @@ const initUserProfile = {
   isMailboxOn: false,
   profImgList: [],
   age: 0,
+  birth: '',
+  dalCnt: 0,
+  byeolCnt: 0
 }
 const initialState: GlobalCtxStateType = {
   nativePlayer: null,
   message: {
-    visible: false,
-    type: ''
+    title: '',
+    type: '',
+    msg: '',
+    visible:false,
+    callback: ()=>{}
   },
   roomInfo: null,
   baseData: {
@@ -57,24 +63,52 @@ const initialState: GlobalCtxStateType = {
     memNo: '',
   },
   alertStatus: {
+    type:'',
+    confirmText:'',
+    subContStyle:{},
+    closeType:false,
+    confirmCancelText:'',
+    contentStyle: {},
+    subCont: '',
+    title:'',
+    titleStyle: {},
     status: false,
+    content: '',
+    callback: ()=>{},
+    cancelCallback: ()=>{}
   },
   moveToAlert: {
     state: 'ready',
     dest: '',
     alertStatus: {
-      status: false
+      type:'',
+      confirmText:'',
+      subContStyle:{},
+      closeType:false,
+      confirmCancelText:'',
+      contentStyle: {},
+      subCont: '',
+      title:'',
+      titleStyle: {},
+      status: false,
+      content: '',
+      callback: ()=>{},
+      cancelCallback: ()=>{}
     }
   },
   layerPopStatus: {
     status: false,
   },
   toastStatus: {
+    message: '',
     status: false,
   },
 
   tooltipStatus: {
+    style: {},
+    type: '',
     status: false,
+    message: ''
   },
   userProfile: initUserProfile,
   profile: initUserProfile,
@@ -89,7 +123,7 @@ const initialState: GlobalCtxStateType = {
   guestInfo: {
     type: "EMPTY",
   },
-  splashData: null,
+  splashData: {},
   // splashData: null,
   currentChatData: [],
   clipPlayer: null,
@@ -113,6 +147,7 @@ const initialState: GlobalCtxStateType = {
   alarmStatus: false,
   alarmMoveUrl: "",
   realtimeBroadStatus: {
+    profImg: "",
     status: false,
     message: "",
     roomNo: "",
@@ -165,7 +200,7 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, nativePlayer: payload}
   },
   "global/ctx/SET_MESSAGE": (state, {payload}) => {
-    return {...state, message: {...state.message, ...payload}}
+    return {...state, message: {...state.message, visible:true, ...payload}}
   },
   "global/ctx/SET_ROOM_INFO": (state, {payload}) => {
     return {...state, roomInfo: payload}
@@ -207,7 +242,7 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, myInfo: payload}
   },
   "global/ctx/UPDATE_POPUP": (state, {payload}) => {
-    return {...state, popup: {...state.popup, ...payload}, visible: true};
+    return {...state, popup: payload.popup, visible: true};
   },
   "global/ctx/SET_VISIBLE": (state, {payload}) => {
     return {...state, visible: payload}
@@ -409,6 +444,9 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_SPLASH": (state, {payload}) => {
     return {...state, splash: payload}
+  },
+  "global/ctx/SET_SPLASH_DATA": (state, {payload}) => {
+    return {...state, splashData: {...state.splashData, ...payload}}
   },
   "global/ctx/SET_IS_MAILBOX_NEW": (state, {payload}) => {
     return {...state, isMailboxNew: payload}

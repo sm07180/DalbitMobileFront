@@ -1,33 +1,32 @@
 /**
  *
  */
-import React, {useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 //components
-import Utility from 'components/lib/utility'
 import Alert from './content/Alert'
 import AlertNoClose from './content/alert_no_close'
 import Confirm from './content/confirm'
 import ConfirmAdmin from './content/confirm_admin'
 import Toast from './content/toast'
+import {useDispatch, useSelector} from "react-redux";
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
-  const {type, visible} = context.message
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {type, visible} = globalState.message
   /**
    * @brief 로그인,이벤트처리핸들러
    */
 
-  //makeContents
+    //makeContents
   const makeContents = (visible) => {
-    /**
-     * @visible true
-     */
-    switch (visible) {
+      /**
+       * @visible true
+       */
+      switch (visible) {
       case true:
         if (type === 'alert')
           return (

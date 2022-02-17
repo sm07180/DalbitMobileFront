@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 
 import { getSpecialPoint } from "common/api";
 
-import { GlobalContext } from "context";
 // import { RoomJoin } from "context/room";
 
 import { printNumber } from "lib/common_fn";
@@ -31,8 +30,7 @@ function RankListTop() {
 
   const history = useHistory();
   //context
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const gtx = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const rankState = useSelector(({rank}) => rank);
 
   const { formState, rankList, rankTimeData } = rankState;
@@ -193,7 +191,7 @@ function RankListTop() {
                   <div
                     className="nickNameBox"
                     onClick={() => {
-                      RoomValidateFromClip(roomNo, gtx, history, nickNm);
+                      RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
                     }}
                   >
                     <p className="nickNameBox__nick">{nickNm}</p>

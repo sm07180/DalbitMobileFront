@@ -1,25 +1,21 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
-import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
+import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 import DidLogin from './didLogin'
 import Header from './header'
-
-import appleLogo from '../static/apple_logo.svg'
-import facebookLogo from '../static/facebook_logo.svg'
-import googleLogo from '../static/google_logo.svg'
-import kakaoLogo from '../static/kakao_logo.svg'
-import naverLogo from '../static/naver_logo.svg'
-import phoneLogo from '../static/phone_logo.svg'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function loginSns({props}) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const globalCtx = useContext(Context)
 
   const {webview, redirect} = qs.parse(location.search)
   const [loginPop, setLoginPop] = useState(false)
@@ -28,7 +24,6 @@ export default function loginSns({props}) {
   const [moreSection, setMoreSection] = useState(false)
 
   const customHeader = JSON.parse(Api.customHeader)
-  const context = useContext(Context)
 
   const oldLogin = async (vendor) => {
     if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
@@ -39,11 +34,12 @@ export default function loginSns({props}) {
       // 안드로이드 페이스북 로그인
       const successCallback = () => Hybrid('openFacebookLogin')
       const failCallback = () => {
-        context.action.confirm({
+        dispatch(setGlobalCtxMessage({
+          type: "confirm",
           buttonText: {right: '업데이트'},
           msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
           callback: async () => Hybrid('goToPlayStore')
-        })
+        }))
       }
       await Utility.compareAppVersion('1.6.0', successCallback, failCallback)
     } else {
@@ -95,14 +91,14 @@ export default function loginSns({props}) {
       <div className="loginForm">
         <div className='loginStart'>시작하기</div>
 
-        {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
+        {(globalState.nativeTid == '' || globalState.nativeTid == 'init') && (
           <div className="socialLogin">
             <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-google.png" />
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-google.png"/>
               <span>구글로 계속하기</span>
-            </button>            
+            </button>
             <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png" />
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png"/>
               <span>카카오로 계속하기</span>
             </button>
             <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
@@ -114,13 +110,13 @@ export default function loginSns({props}) {
               <span>휴대폰번호로 계속하기</span>
             </button>
             <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-naver.png" />
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-naver.png"/>
               <span>네이버로 계속하기</span>
             </button>
             <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png" />
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png"/>
               <span>페이스북으로 계속하기</span>
-            </button>    
+            </button>
           </div>
         )}
 

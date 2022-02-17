@@ -3,8 +3,6 @@ import React, {useContext, useEffect,} from "react";
 import {useHistory} from "react-router-dom";
 
 // static
-import {GlobalContext} from "context";
-
 import {clipPlayConfirm,} from "common/api";
 import CloseBtn from "../images/ic_player_close_btn.svg";
 
@@ -13,15 +11,18 @@ import PlayIcon from "../static/ic_play.svg";
 import {audioEndHandler} from "../../pages/clip_player/components/player_box";
 
 import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle"
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxIsShowPlayer} from "../../redux/actions/globalCtx";
 
 const ClipAudioPlayer = ()=>{
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipPlayer, clipPlayList, clipInfo, baseData } = globalState;
 
   useEffect(() => {
     if (baseData.isLogin) {
-      globalAction.setIsShowPlayer(true);
+      dispatch(setGlobalCtxIsShowPlayer(true));
     }
   },[baseData]);
 

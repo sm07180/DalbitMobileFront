@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { GlobalContext } from "context";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 // api
@@ -14,7 +13,7 @@ export default (props) => {
   let location = useLocation();
   let checkSearch = location.search.split("?")[1];
   // ctx && commons
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const modalState = useSelector(({modal}) => modal);
   const history = useHistory();
   // state

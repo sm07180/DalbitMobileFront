@@ -2,25 +2,17 @@
  * @file /exchange/index.js
  * @brief 달 교환 페이지
  */
-import React, {useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import _ from 'lodash'
 //layout
 import Layout from 'pages/common/layout'
 //context
-import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 //components
 import Contents from './content'
 import Header from 'components/ui/new_header.js'
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
-  const {profile} = context
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">

@@ -4,12 +4,14 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import {isScrolledToBtm, debounce} from '../util/function'
 import NoResult from 'components/ui/new_noResult'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let totalPage = 1
 const Detail = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const globalCtx = useContext(Context)
   const [storyList, setStoryList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCnt, setTotalCnt] = useState(0)
@@ -37,7 +39,7 @@ const Detail = () => {
           setEmpty(true)
         }
       } else {
-        globalCtx.action.alert({title: 'Error', msg: message})
+        dispatch(setGlobalCtxMessage({type:"alert",title: 'Error', msg: message}))
       }
     })
   }
@@ -50,16 +52,16 @@ const Detail = () => {
         setStoryList(filtered)
         setTotalCnt(totalCnt - 1)
       } else {
-        globalCtx.action.alert({title: 'Error', msg: message})
+        dispatch(setGlobalCtxMessage({type:"alert",title: 'Error', msg: message}))
       }
     })
   }
 
   const onDeleteClick = (roomNo, storyIdx) => {
-    globalCtx.action.confirm({
+    dispatch(setGlobalCtxMessage({type:"confirm",
       msg: `삭제된 사연은<br/> 복구가 불가능합니다.<br/><div class="deleteConfWrap_emph">정말 삭제하시겠습니까?</div>`,
       callback: () => deleteComment(roomNo, storyIdx)
-    })
+    }))
   }
 
   const scrollEvtHdr = debounce(() => {

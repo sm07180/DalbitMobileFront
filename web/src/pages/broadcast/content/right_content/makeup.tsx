@@ -1,9 +1,6 @@
 // React
 import React, { useContext } from "react";
 
-// Context
-import { GlobalContext } from "context";
-
 // static
 import OriginalImg from "../../static/img_originalbox.svg";
 import DailyImg from "../../static/img_makeup_daily.jpg";
@@ -24,7 +21,7 @@ const makeUpArray = [
 ];
 
 const MakeUp = () => {
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
 
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);

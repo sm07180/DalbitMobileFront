@@ -17,21 +17,25 @@ import {
 import PlayBox from "../components/player_box";
 import ClipRightTabRender from "../components/right_tab_render";
 
-import { GlobalContext } from "context";
 import { ClipContext } from "context/clip_ctx";
 
 import "./clip_player.scss";
 import "./tab_contents.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxClipPlayerInit, setGlobalCtxClipPlayListTabAdd,
+  setGlobalCtxClipPlayMode
+} from "../../../redux/actions/globalCtx";
 
 export default function ClipContent() {
   const { clipNo } = useParams<{ clipNo: string }>();
   const history = useHistory();
   const historyState = history.location.state;
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipState, clipAction } = useContext(ClipContext);
   const { clipPlayer, baseData, clipInfo } = globalState;
-  const { dispatchClipPlayList, dispatchClipPlayListTab } = globalAction;
 
   const [playState, setPlayState] = useState(false);
 
@@ -42,34 +46,34 @@ export default function ClipContent() {
       clipNo: clipNo,
     });
     if (result === "success") {
-      createPlayer(data, "firstStart");
+      createPlayer({...data, dispatch:dispatch, globalState:globalState}, "firstStart");
       sessionStorage.setItem("clip", JSON.stringify(data));
       if (!clipInfo?.clipNo || (clipInfo?.clipNo !== data.clipNo && historyState === "firstJoin")) {
         updatePlayList(data);
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
         callback: playFailHandler,
         cancelCallback: playFailHandler,
-      });
+      }));
     }
   };
 
   const createPlayer = (data: any, type: string) => {
     if (clipPlayer === null) {
       newClipPlayer = new ClipPlayerHandler(data);
-      if (type !== "restart") globalAction.setClipPlayMode!("normal");
+      if (type !== "restart")
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"normal"}));
     }
-    newClipPlayer!.setGlobalAction(globalAction);
     newClipPlayer!.clipAudioTag!.onerror = () => {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "오디오 파일을 찾을 수 없습니다.",
         callback: () => history.goBack(),
         cancelCallback: () => history.goBack(),
-      });
+      }));
     };
 
     if (data.file.url === newClipPlayer?.clipAudioTag?.src && data.clipNo !== newClipPlayer!.clipNo) {
@@ -77,9 +81,8 @@ export default function ClipContent() {
     }
     newClipPlayer?.init(data.file.url);
     newClipPlayer?.clipNoUpdate(data.clipNo);
-    globalAction.dispatchClipPlayer!({ type: "init", data: newClipPlayer });
+    dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
     const addObj = { type: "add", data: { ...data, ...{ isPaused: true, isSaved60seconds: false } } };
-    globalAction.dispatchClipInfo!(addObj);
     clipAction.dispatchClipInfo!(addObj);
     newClipPlayer?.start();
     if (globalState.baseData.memNo === data.clipMemNo) {
@@ -114,11 +117,11 @@ export default function ClipContent() {
     }
     if (playListInfo === undefined) return null;
     if (playListInfo.hasOwnProperty("type") && playListInfo.type === "one") {
-      dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: oneData });
+      dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
       if (globalState.clipPlayMode !== "shuffle") {
-        return dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: oneData });
+        return dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
       } else {
-        dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: globalState.clipPlayList });
+        dispatch(setGlobalCtxClipPlayListTabAdd(globalState.clipPlayList));
       }
     }
 
@@ -159,17 +162,17 @@ export default function ClipContent() {
 
   const insertPlayList = (res) => {
     if (res.result === "success") {
-      dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: res.data.list });
+      dispatch(setGlobalCtxClipPlayListTabAdd(res.data.list));
       if (globalState.clipPlayMode !== "shuffle") {
-        dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: res.data.list });
+        dispatch(setGlobalCtxClipPlayListTabAdd(res.data.list));
       } else {
-        dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: globalState.clipPlayList });
+        dispatch(setGlobalCtxClipPlayListTabAdd(globalState.clipPlayList));
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `${res.message}`,
-      });
+      }));
     }
   };
 
@@ -186,7 +189,7 @@ export default function ClipContent() {
     }
     let data = JSON.parse(sessionStorage.getItem("clip")!);
     if (clipNo === data.clipNo) {
-      createPlayer(data, "restart");
+      createPlayer({...data, dispatch:dispatch, globalState:globalState}, "restart");
     } else {
       clipPlay();
     }
@@ -196,7 +199,6 @@ export default function ClipContent() {
       }
     }
     if (globalState.clipPlayList.length > 0) {
-      newClipPlayer?.setGlobalState(globalState);
       newClipPlayer?.findPlayingClip(clipNo);
     }
   }, [clipNo]);
@@ -212,7 +214,6 @@ export default function ClipContent() {
 
   useEffect(() => {
     if (globalState.clipPlayList.length > 0) {
-      newClipPlayer?.setGlobalState(globalState);
       newClipPlayer?.findPlayingClip(clipNo);
     }
   }, [globalState.clipPlayList, newClipPlayer, globalState.clipPlayListTab, clipState.isMyClip]);

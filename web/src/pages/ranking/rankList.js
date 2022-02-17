@@ -1,13 +1,9 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {RoomJoin} from 'context/room'
 import Util from 'components/lib/utility.js'
-// context
-import {Context} from 'context'
 //static
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
 import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
@@ -15,10 +11,13 @@ import time from './static/time_g_s.svg'
 import StarCountIcon from './static/circle_star_s_g.svg'
 
 // constant
-import {RANK_TYPE, DATE_TYPE} from './constant'
+import {RANK_TYPE} from './constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
 
   const {list, rankType} = props
@@ -153,15 +152,16 @@ export default (props) => {
                       src={live}
                       onClick={() => {
                         if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (context.token.isLogin === false) {
-                            context.action.alert({
+                          if (globalState.token.isLogin === false) {
+                            dispatch(setGlobalCtxMessage({
+                              type: "alert",
                               msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                               callback: () => {
                                 history.push('/login')
                               }
-                            })
+                            }))
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 1]}));
                           }
                         } else {
                           RoomJoin({roomNo: roomNo, nickNm: nickNm})

@@ -4,9 +4,6 @@ import React, { useContext, useEffect, useLayoutEffect, useState, useRef } from 
 import { GuestProvider } from "context/guest_ctx";
 import { BroadcastLayerProvider } from "context/broadcast_layer_ctx";
 
-//Test 용코드
-import { GlobalContext } from "context";
-
 // component
 import SideWrapper from "./side_wrapper";
 
@@ -20,7 +17,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRoomInfoReset} from "../../redux/actions/broadcastCtx";
 
 export default function Broadcast() {
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { roomInfo, flipIsLeft } = broadcastState;

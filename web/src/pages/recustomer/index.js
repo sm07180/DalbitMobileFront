@@ -4,9 +4,8 @@
  * @todo
  */
 
-import React, {useState, useEffect, useContext} from 'react'
+import React from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
@@ -14,13 +13,16 @@ import Faq from './contents/faq/Faq'
 import Question from './contents/question/Question'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const Customer = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let history = useHistory()
   const params = useParams();
   const categoty = params.type;
-  const globalCtx = useContext(Context);
-  const {token, profile} = globalCtx;
+  const {token, profile} = globalState;
 
   const golink = (path) => {
     history.push("/customer/" + path);

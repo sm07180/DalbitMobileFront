@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useMemo, useState} from "react";
-import { GlobalContext } from "context";
 
 import Footer from "../../common/footer";
 import {useSelector} from "react-redux";
@@ -7,7 +6,7 @@ import {useHistory} from "react-router-dom";
 
 const Layout = (props) => {
   const { children } = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const locationStateHistory = useHistory();
   const pathName = window.location.pathname;

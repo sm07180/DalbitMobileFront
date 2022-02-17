@@ -1,13 +1,11 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react'
-
-import {Context} from 'context'
+import React, {useCallback, useEffect, useState} from 'react'
 
 import {liveBoxchangeDate} from 'pages/common/rank/rank_fn'
 
 import './detailView.scss'
 import {useDispatch, useSelector} from "react-redux";
 
-import { setRankFormDate } from "redux/actions/rank";
+import {setRankFormDate} from "redux/actions/rank";
 
 const DetailView = ({fetching}) => {
   const dispatch = useDispatch();

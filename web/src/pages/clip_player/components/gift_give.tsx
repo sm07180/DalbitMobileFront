@@ -3,15 +3,21 @@ import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
-import { GlobalContext } from "context";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 
 import { getProfile, postClipSendGift } from "common/api";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxClipInfoAdd,
+  setGlobalCtxSetToastStatus, setGlobalCtxUserProfile
+} from "../../../redux/actions/globalCtx";
 
 let preventClick = false;
 
 export default (props) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipState, clipAction } = useContext(ClipContext);
 
   const { clipInfo, splashData } = globalState;
@@ -43,15 +49,14 @@ export default (props) => {
       if (selectItem.type === "sticker") {
         if (count >= 10) {
           if (count >= 100) {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                content: "콤보 선물은 최대 100개까지 가능합니다.",
-                callback: () => {
-                  return;
-                },
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: "콤보 선물은 최대 100개까지 가능합니다.",
+              callback: () => {
+                return;
+              },
+            }));
             return;
           }
 
@@ -61,15 +66,14 @@ export default (props) => {
         }
       } else {
         if (count >= 10) {
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: "콤보 선물은 최대 10개까지 가능합니다.",
-              callback: () => {
-                return;
-              },
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: "콤보 선물은 최대 10개까지 가능합니다.",
+            callback: () => {
+              return;
+            },
+          }));
         }
         if (count + 1 == 11) return false;
         setCount(count + 1);
@@ -100,21 +104,18 @@ export default (props) => {
     const res = await postClipSendGift(params);
     if (res.result === "success") {
       clipAction.setlottieUrl && clipAction.setlottieUrl!(lottie);
-      globalAction.dispatchClipInfo!({ type: "add", data: { list: res.data.list } });
-      globalAction.callSetToastStatus &&
-        globalAction.callSetToastStatus({
-          status: true,
-          message: alertMsg,
-        });
+      dispatch(setGlobalCtxClipInfoAdd({ list: res.data.list }));
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: alertMsg,
+      }));
 
       // profile 업데이트
       const { result, data } = await getProfile({
         memNo: profile.memNo,
       });
       if (result === "success") {
-        if (globalAction.setUserProfile) {
-          globalAction.setUserProfile(data);
-        }
+        dispatch(setGlobalCtxUserProfile(data));
         clipAction.setLottie &&
           clipAction.setLottie({
             ...lottie,
@@ -135,23 +136,22 @@ export default (props) => {
       preventClick = false;
       // 별 업데이트
       setByeolState(res.data.giftCnt);
-      globalAction.dispatchClipInfo!({ type: "add", data: { byeolCnt: byeolState } });
+      dispatch(setGlobalCtxClipInfoAdd({ byeolCnt: byeolState }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: res.message,
-          callback: () => {
-            return;
-          },
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: res.message,
+        callback: () => {
+          return;
+        },
+      }));
     }
     setState(!state);
   }
 
   useEffect(() => {
-    globalAction.dispatchClipInfo!({ type: "add", data: { byeolCnt: byeolState } });
+    dispatch(setGlobalCtxClipInfoAdd({ byeolCnt: byeolState }));
   }, [byeolState]);
 
   useEffect(() => {

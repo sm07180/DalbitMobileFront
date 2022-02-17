@@ -8,7 +8,6 @@ import { getBroadcastListeners } from "common/api";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { GlobalContext } from "context";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -30,7 +29,7 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { guestState } = useContext(GuestContext);
   const { isLogin } = globalState.baseData;
   const { userCount } = broadcastState;
@@ -65,15 +64,6 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
       setGuestList(guestFilter);
       dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, current:data.list.length}));
     } else {
-      // if (result === "fail") {
-      //   globalAction.setAlertStatus &&
-      //   globalAction.setAlertStatus({
-      //     status: true,
-      //     title: "알림",
-      //     content: `${message}`,
-      //     callback: () => history.push("/"),
-      //   });
-      // }
     }
   };
   const [init , setInit] = useState(false)

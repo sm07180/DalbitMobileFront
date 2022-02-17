@@ -1,19 +1,20 @@
 /**
  * @title 청취자탭 클릭 event(드롭다운 메뉴 내 역활별 ui 및 기능)
  */
-import React, {useEffect, useState, useContext} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 import {BroadCastStore} from 'pages/broadcast/store'
 import Api from 'context/api'
-import {Context} from 'context'
 import qs from 'query-string'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default props => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //context
   const store = useContext(BroadCastStore)
-  const context = useContext(Context)
-  const {broadcastTotalInfo} = context
   const {roomNo} = qs.parse(location.search)
   ///////////////////////////////////
   let selectlistener = ''
@@ -23,7 +24,7 @@ export default props => {
   async function broadListenListReload() {
     const res = await Api.broad_listeners({
       params: {
-        roomNo: context.broadcastTotalInfo.roomNo
+        roomNo: globalState.broadcastTotalInfo.roomNo
       }
     })
     if (res.result === 'success') {
@@ -105,43 +106,49 @@ export default props => {
       case 0: //강제퇴장
         res = drawListenList(props.selectidx)
         if (selectlistener) {
-          context.action.confirm({
+          dispatch(setGlobalCtxMessage({
+            type: "confirm",
             //콜백처리
             callback: () => {
               broadkickout(selectlistener)
             },
             //캔슬콜백처리
-            cancelCallback: () => {},
+            cancelCallback: () => {
+            },
             msg: selectlistener.nickNm + ' 님을 강제퇴장 하시겠습니까?'
-          })
+          }))
         }
         break
       case 1: //매니저 등록
         res = drawListenList(props.selectidx)
         if (selectlistener) {
-          context.action.confirm({
+          dispatch(setGlobalCtxMessage({
+            type: "confirm",
             //콜백처리
             callback: () => {
               broadManager(idx, selectlistener)
             },
             //캔슬콜백처리
-            cancelCallback: () => {},
+            cancelCallback: () => {
+            },
             msg: selectlistener.nickNm + ' 님을 매니저로 지정 하시겠습니까?'
-          })
+          }))
         }
         break
       case 2: //매니저 해임
         res = drawListenList(props.selectidx)
         if (selectlistener) {
-          context.action.confirm({
+          dispatch(setGlobalCtxMessage({
+            type: "confirm",
             //콜백처리
             callback: () => {
               broadManager(idx, selectlistener)
             },
             //캔슬콜백처리
-            cancelCallback: () => {},
+            cancelCallback: () => {
+            },
             msg: selectlistener.nickNm + ' 님을 매니저에서 해임 하시겠습니까?'
-          })
+          }))
         }
         break
       case 3: //게스트 초대
@@ -171,7 +178,7 @@ export default props => {
     const BJViewManeger = ['강퇴하기', '', '매니저 해임', '게스트 초대', '프로필 보기', '신고하기']
     const {selectidx} = props
     //props.rcvData.data.user.auth
-    if (context.broadcastTotalInfo.auth == 0) {
+    if (globalState.broadcastTotalInfo.auth == 0) {
       //청취자
       if (store.listenerList[selectidx].auth === 0 || store.listenerList[selectidx].auth === 1) {
         return listenerView.map((list, index) => {
@@ -187,7 +194,7 @@ export default props => {
           )
         })
       }
-    } else if (context.broadcastTotalInfo.auth == 1) {
+    } else if (globalState.broadcastTotalInfo.auth == 1) {
       // 매니저
       if (store.listenerList[selectidx].auth === 0) {
         return ManegerView.map((list, index) => {
@@ -216,7 +223,7 @@ export default props => {
           )
         })
       }
-    } else if (context.broadcastTotalInfo.auth == 3) {
+    } else if (globalState.broadcastTotalInfo.auth == 3) {
       // BJ
       if (store.listenerList[selectidx].auth === 0) {
         return BJView.map((list, index) => {

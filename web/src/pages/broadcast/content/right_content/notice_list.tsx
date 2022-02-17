@@ -1,17 +1,16 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 // Api
 import { getNoticeList, postNoticeWrite, deleteNoticeWrite } from "common/api";
-import { GlobalContext } from "context";
 // component
 import NoResult from "common/ui/no_result";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 import {BROAD_NOTICE_LENGTH} from "../../constant";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 export default function NoticeList(props: any) {
-  //ctx
-  const { globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { roomOwner, roomNo } = props;
   //state
@@ -40,9 +39,7 @@ export default function NoticeList(props: any) {
       });
       if (result === "success") {
         searchNotice(roomNo);
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({ status: true, message: message });
-        }
+        dispatch(setGlobalCtxSetToastStatus({ status: true, message: message }));
       }
     }
     fetchNoticeFunc();
@@ -84,14 +81,14 @@ export default function NoticeList(props: any) {
   };
 
   const DeleteNotice = () => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: "공지사항을 삭제하시겠습니까?",
       callback: () => {
         fetchNoticeDelete(roomNo, noticeMsg);
       },
-    });
+    }));
   };
 
   return (

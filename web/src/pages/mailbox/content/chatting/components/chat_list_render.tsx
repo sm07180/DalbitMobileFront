@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { dateFormatterKorDay, makeHourMinute } from "lib/common_fn";
 
-import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setMailBoxImgSliderInit, setMailBoxOtherInfo} from "../../../../../redux/actions/mailBox";
@@ -11,7 +10,7 @@ function timeCheck(time: Date) {
 
 function ChatList({ msgGroup }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { baseData } = globalState;
   const dispatch = useDispatch();
   const mailboxState = useSelector(({mailBox}) => mailBox);

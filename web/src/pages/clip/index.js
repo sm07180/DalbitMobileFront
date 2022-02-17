@@ -1,12 +1,10 @@
-import React, {useContext, useState, useEffect, useRef, useCallback, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
-import {Hybrid} from 'context/hybrid'
 import {clipJoin, clipReg} from 'pages/common/clipPlayer/clip_func'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config.js'
 import {convertDateFormat} from 'components/lib/dalbit_moment'
@@ -20,21 +18,27 @@ import BannerList from '../main/component/bannerList'
 import LayerPopupWrap from '../main/component/layer_popup_wrap'
 import ClipRegPopup from './components/clip_reg_popup'
 import Layout from 'pages/common/layout'
-import NoResult from 'components/ui/noResult'
 //static
-import newIcon from './static/new_circle_m.svg'
 import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import filterIcon from './static/choose_circle_w.svg'
-
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 //scss
 import './clip.scss'
 import {useDispatch, useSelector} from "react-redux";
 
 import {setFormDateType} from "redux/actions/clipRank";
+import {
+  setGlobalCtxClipMainSort,
+  setGlobalCtxClipRefresh,
+  setGlobalCtxClipTab,
+  setGlobalCtxDateState,
+  setGlobalCtxMessage,
+  setGlobalCtxUpdatePopup
+} from "redux/actions/globalCtx";
+
+const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 
 let tempScrollEvent = null
 let touchStartY = null
@@ -43,9 +47,8 @@ const refreshDefaultHeight = 49
 const clipRankingRecords = 100
 const clipRankingCheckIdx = 3
 export default (props) => {
-  const context = useContext(Context)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const customHeader = JSON.parse(Api.customHeader)
-  const globalCtx = useContext(Context)
   const clipRankState = useSelector(({clipRank}) => clipRank);
   const {formState, clipRankList} = clipRankState
 
@@ -63,9 +66,9 @@ export default (props) => {
   }
 
   const nextCalcDate = useCallback(() => {
-    const date = calcDate(new Date(context.dateState), 7)
-    context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
-  }, [context.dateState])
+    const date = calcDate(new Date(globalState.dateState), 7)
+    dispatch(setGlobalCtxDateState(convertDateFormat(date, 'YYYY-MM-DD')));
+  }, [globalState.dateState])
 
   const goPrev = (e) => {
     swiper.slidePrev()
@@ -73,9 +76,9 @@ export default (props) => {
   }
 
   const prevCalcDate = useCallback(() => {
-    const date = calcDate(new Date(context.dateState), -7)
-    context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
-  }, [context.dateState])
+    const date = calcDate(new Date(globalState.dateState), -7)
+    dispatch(setGlobalCtxDateState(convertDateFormat(date, 'YYYY-MM-DD')));
+  }, [globalState.dateState])
 
   let swiperParamsBest = {
     slidesPerView: 'auto',
@@ -186,9 +189,10 @@ export default (props) => {
       setDate(data.checkDate)
       setPopularType(data.type)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const fetchMyData = async () => {
@@ -205,9 +209,10 @@ export default (props) => {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const fetchDataListLatest = async () => {
@@ -217,9 +222,10 @@ export default (props) => {
     if (result === 'success') {
       setLatestList(data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -234,9 +240,10 @@ export default (props) => {
       setClipRankDayList(data.list.slice(0, clipRankingCheckIdx))
     } else {
       setClipRankDayList([])
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -251,16 +258,17 @@ export default (props) => {
       setClipRankWeekList(data.list.slice(0, clipRankingCheckIdx))
     } else {
       setClipRankWeekList([])
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
   const fetchMarketingClip = async () => {
     const {result, data, message} = await Api.getMarketingClipList({
       recDate: convertDateFormat(convertMonday(), 'YYYY-MM-DD'),
-      isLogin: context.token.isLogin,
+      isLogin: globalState.token.isLogin,
       isClick: false
     })
     if (result === 'success') {
@@ -268,28 +276,29 @@ export default (props) => {
       setTableSwiperIndex(data.leaderList.length - 1)
       setMinRecDate(data.minRecDate)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const isLast = useMemo(() => {
     const currentDate = convertDateFormat(convertMonday(), 'YYYY-MM-DD')
 
-    if (context.dateState === currentDate) {
+    if (globalState.dateState === currentDate) {
       return true
     } else {
       return false
     }
-  }, [context.dateState])
+  }, [globalState.dateState])
 
   const isLastPrev = useMemo(() => {
-    if (context.dateState <= minRecDate) {
+    if (globalState.dateState <= minRecDate) {
       return true
     } else {
       return false
     }
-  }, [context.dateState])
+  }, [globalState.dateState])
 
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
@@ -297,9 +306,10 @@ export default (props) => {
       setTop3On(true)
       setListTop3(data)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const fetchDataClipType = async () => {
@@ -308,9 +318,10 @@ export default (props) => {
       setClipType(data)
       setTop3On(true)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const fetchDataPlay = async (clipNum, type) => {
@@ -343,19 +354,21 @@ export default (props) => {
       if (type === 'dal') {
         localStorage.removeItem('clipPlayListInfo')
       }
-      clipJoin(data, context)
+      clipJoin(data)
     } else {
       if (code === '-99') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
   }
@@ -370,15 +383,17 @@ export default (props) => {
           key={`popular-` + idx}
           onClick={() => {
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (context.token.isLogin === false) {
-                context.action.alert({
+              if (globalState.token.isLogin === false) {
+                dispatch(setGlobalCtxMessage({
+                  type: "alert",
                   msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                   callback: () => {
                     history.push('/login')
                   }
-                })
+                }))
               } else {
-                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+
+                dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}))
               }
             } else {
               fetchDataPlay(clipNo, 'recommend')
@@ -428,15 +443,16 @@ export default (props) => {
           className="slideWrap"
           onClick={() => {
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (globalCtx.token.isLogin === false) {
-                context.action.alert({
+              if (globalState.token.isLogin === false) {
+                dispatch(setGlobalCtxMessage({
+                  type: "alert",
                   msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                   callback: () => {
                     history.push('/login')
                   }
-                })
+                }))
               } else {
-                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}))
               }
             } else {
               fetchDataPlay(clipNo, 'new')
@@ -489,15 +505,16 @@ export default (props) => {
                   className="categoryBestItem"
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (globalCtx.token.isLogin === false) {
-                        context.action.alert({
+                      if (globalState.token.isLogin === false) {
+                        dispatch(setGlobalCtxMessage({
+                          type: "alert",
                           msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                           callback: () => {
                             history.push('/login')
                           }
-                        })
+                        }))
                       } else {
-                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}))
                       }
                     } else {
                       fetchDataPlay(clipNo, 'theme')
@@ -540,7 +557,7 @@ export default (props) => {
 
     setTimeout(() => {
       window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
-      context.action.updateClipSort(2)
+      dispatch(setGlobalCtxClipMainSort(2))
     }, 150)
   }
   const handleScroll = (e) => {
@@ -571,12 +588,13 @@ export default (props) => {
       window.scrollTo(0, scrollY)
     }
 
-    if (context.clipRefresh && type === 'category') {
-      context.action.updatClipRefresh(false)
+    if (globalState.clipRefresh && type === 'category') {
+      dispatch(setGlobalCtxClipRefresh(false))
     } else if (type === 'popular') {
       fetchDataListPopular()
     } else {
-      context.action.updatClipRefresh(true)
+
+      dispatch(setGlobalCtxClipRefresh(true))
     }
 
     if (refreshAni) {
@@ -714,8 +732,8 @@ export default (props) => {
           fetchDataListLatest()
           fetchDataListPopular()
           fetchDataListTop3()
-          if (context.token.isLogin) fetchMyData()
-          context.action.updatClipRefresh(!context.clipRefresh)
+          if (globalState.token.isLogin) fetchMyData()
+          dispatch(setGlobalCtxClipRefresh(!globalState.clipRefresh))
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
@@ -735,7 +753,7 @@ export default (props) => {
       touchStartY = null
       touchEndY = null
     },
-    [reloadInit, context.clipRefresh]
+    [reloadInit, globalState.clipRefresh]
   )
   const toggleMyClip = (e) => {
     e.stopPropagation()
@@ -748,11 +766,11 @@ export default (props) => {
 
   const goRecommend = () => {
     history.push('/clip_recommend')
-    context.action.updateDateState(context.dateState)
+    dispatch(setGlobalCtxDateState(globalState.dateState))
   }
 
   function loginCheck(memNo) {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push(`/login?redirect=/mypage/${memNo}`)
     } else {
       history.push(`/mypage/${memNo}`)
@@ -761,34 +779,35 @@ export default (props) => {
 
   // const goClip = (tabParam, tabParam) => {
   //   if (tabParam === 0) {
-  //     context.action.updateClipTab(0)
+  //     dispatch(setGlobalCtxClipTab(0)
   //   } else if (tabParam === 1) {
-  //     context.action.updateClipTab(1)
+  //     dispatch(setGlobalCtxClipTab(1)
   //   }
   //   history.push(`/mypage/${context.token.memNo}/my_clip?tab=${tabParam}&subTab=${subTabParam}`)
   // }
 
   const goClip = (tab) => {
-    context.action.updateClipTab(+tab)
-    history.push(`/mypage/${context.token.memNo}/my_clip`)
+    dispatch(setGlobalCtxClipTab(+tab))
+    history.push(`/mypage/${globalState.token.memNo}/my_clip`)
   }
 
   const goClipReg = (type) => {
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+      dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}))
     } else {
-      if (context.token.isLogin === false) {
-        return context.action.alert({
+      if (globalState.token.isLogin === false) {
+        return dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
         if (type === 'recording') {
-          clipReg('record', globalCtx)
+          clipReg('record')
         } else if (type === 'upload') {
-          clipReg('upload', globalCtx)
+          clipReg('upload')
         }
       }
     }
@@ -826,10 +845,10 @@ export default (props) => {
     fetchDataListLatest()
     fetchDataClipType()
     fetchMainPopupData(13)
-    if (context.token.isLogin === true) {
+    if (globalState.token.isLogin === true) {
       fetchMyData()
     }
-    context.action.updateDateState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
+    dispatch(setGlobalCtxDateState(convertDateFormat(convertMonday(), 'YYYY-MM-DD')))
     fetchMarketingClip()
   }, [])
 
@@ -861,7 +880,7 @@ export default (props) => {
   useEffect(() => {
     if (marketingClipList.length > 0) {
       const date = marketingClipList[tableSwiperIndex].recDate
-      context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
+      dispatch(setGlobalCtxDateState(convertDateFormat(date, 'YYYY-MM-DD')))
     }
   }, [tableSwiperIndex, marketingClipList])
 
@@ -887,7 +906,7 @@ export default (props) => {
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
         </div>
-        {context.token.isLogin === true ? (
+        {globalState.token.isLogin === true ? (
           <>
             <div className="clipRegWrap">
               <button className="clipReg__button" onClick={() => goClipReg('recording')}>
@@ -901,7 +920,7 @@ export default (props) => {
               <h3 className="clipTitle" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
                 <em
                   onClick={() => {
-                    context.action.updatePopup('MYCLIP')
+                    dispatch(setGlobalCtxUpdatePopup({popup: ['MYCLIP']}))
                   }}>
                   내 클립 현황
                 </em>
@@ -949,7 +968,7 @@ export default (props) => {
               )}
             </div>
           </>
-        ) : context.token.isLogin === true ? (
+        ) : globalState.token.isLogin === true ? (
           <div ref={myClipRef} style={{minHeight: '127px'}}></div>
         ) : (
           <div ref={myClipRef}></div>
@@ -1007,44 +1026,45 @@ export default (props) => {
             <ul className="rankClipList">
               {formState.dateType === DATE_TYPE.DAY
                 ? clipRankDayList.map((v, i) => {
-                    return (
-                      <li
-                        key={`day-${i}`}
-                        className="rankClipListItem"
-                        onClick={() => {
-                          if (customHeader['os'] === OS_TYPE['Desktop']) {
-                            if (context.token.isLogin === false) {
-                              context.action.alert({
-                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                callback: () => {
-                                  history.push('/login')
-                                }
-                              })
-                            } else {
-                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                            }
+                  return (
+                    <li
+                      key={`day-${i}`}
+                      className="rankClipListItem"
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (globalState.token.isLogin === false) {
+                            dispatch(setGlobalCtxMessage({
+                              type: "alert",
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            }))
                           } else {
-                            fetchDataPlay(v.clipNo, 'dal')
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}))
                           }
-                        }}>
-                        <div className="rankClipListItem__thumb">
-                          <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
-                        </div>
-                        <p className="rankClipListItem__title">{v.title}</p>
-                        <p className="rankClipListItem__nickName">{v.nickName}</p>
-                      </li>
-                    )
-                  })
+                        } else {
+                          fetchDataPlay(v.clipNo, 'dal')
+                        }
+                      }}>
+                      <div className="rankClipListItem__thumb">
+                        <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지"/>
+                      </div>
+                      <p className="rankClipListItem__title">{v.title}</p>
+                      <p className="rankClipListItem__nickName">{v.nickName}</p>
+                    </li>
+                  )
+                })
                 : clipRankWeekList.map((v, i) => {
-                    return (
-                      <li key={`week-${i}`} className="rankClipListItem week" onClick={() => loginCheck(v.memNo)}>
-                        <div className="rankClipListItem__thumb">
-                          <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
-                        </div>
-                        <p className="rankClipListItem__title">{v.nickName}</p>
-                      </li>
-                    )
-                  })}
+                  return (
+                    <li key={`week-${i}`} className="rankClipListItem week" onClick={() => loginCheck(v.memNo)}>
+                      <div className="rankClipListItem__thumb">
+                        <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지"/>
+                      </div>
+                      <p className="rankClipListItem__title">{v.nickName}</p>
+                    </li>
+                  )
+                })}
             </ul>
           </div>
         ) : (
@@ -1062,7 +1082,7 @@ export default (props) => {
                 className="weekClip__title"
                 onClick={() => {
                   goRecommend()
-                  context.action.updateDateState(context.dateState)
+                  dispatch(setGlobalCtxDateState(context.dateState)
                 }}>
                 주간 클립테이블
               </h3>
@@ -1120,13 +1140,13 @@ export default (props) => {
                 실시간 클립
               </h3>
               <button type="button" onClick={() => setDetailPopup(true)} className="sortCate">
-                {context.clipMainSort === 1 && <span>최신순</span>}
-                {context.clipMainSort === 3 && <span>선물순</span>}
-                {context.clipMainSort === 4 && <span>재생순</span>}
-                {context.clipMainSort === 2 && <span>인기순</span>}
-                {context.clipMainSort === 6 && <span>랜덤</span>}
-                {context.clipMainSort === 5 && <span>스페셜DJ</span>}
-                <img src={filterIcon} alt="카테고리 필터 이미지" />
+                {globalState.clipMainSort === 1 && <span>최신순</span>}
+                {globalState.clipMainSort === 3 && <span>선물순</span>}
+                {globalState.clipMainSort === 4 && <span>재생순</span>}
+                {globalState.clipMainSort === 2 && <span>인기순</span>}
+                {globalState.clipMainSort === 6 && <span>랜덤</span>}
+                {globalState.clipMainSort === 5 && <span>스페셜DJ</span>}
+                <img src={filterIcon} alt="카테고리 필터 이미지"/>
               </button>
               <div className="sequenceBox">
                 <div className="sequenceItem">

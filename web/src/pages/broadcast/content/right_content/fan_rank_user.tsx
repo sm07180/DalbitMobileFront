@@ -1,7 +1,6 @@
 // api
 import { getFanRankList, getGoodRankList, postAddFan, deleteFan } from "common/api";
 import { useHistory, useParams } from "react-router-dom";
-import { GlobalContext } from "context";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
@@ -20,6 +19,7 @@ import goodIcon from "../../../../common/modal/contents/mypage/static/like_red_m
 import hintIcon from "../../../../common/modal/contents/mypage/static/hint.svg";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 export default function FanList(props: { profile: any }) {
   const { profile } = props;
@@ -27,7 +27,7 @@ export default function FanList(props: { profile: any }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { userMemNo } = broadcastState;
   const [popupState, setPopupState] = useState(false);
   const [fanTabType, setFanTabType] = useState("recent"); //recent, accrue, good
@@ -67,11 +67,11 @@ export default function FanList(props: { profile: any }) {
         } else {
           fetchData();
         }
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     AddFanFunc();
@@ -87,11 +87,11 @@ export default function FanList(props: { profile: any }) {
         } else {
           fetchData();
         }
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     DeleteFanFunc();

@@ -2,8 +2,8 @@ import {createAction} from "typesafe-actions";
 import {tabType} from "../../pages/broadcast/constant";
 import {AnyDataType, BooleanDataType, RouletteHistoryType, VideoEffectType} from "../types/broadcastCtxType";
 import {userBroadcastSettingType} from "../../common/realtime/chat_socket";
-import {GlobalCtxStateType, MultiViewerType} from "../types/globalCtxType";
-
+import {GlobalCtxStateType, MessageType, MultiViewerType} from "../types/globalCtxType";
+  // dispatch(setGlobalCtxMessage({type:"alert",
 // ctx_state
 export const SET_NATIVE_PLAYER 					= 'global/ctx/SET_NATIVE_PLAYER';
 export const SET_MESSAGE 					      = 'global/ctx/SET_MESSAGE';
@@ -77,6 +77,7 @@ export const SET_BACK_STATE 					  = 'global/ctx/SET_BACK_STATE';
 export const SET_BACK_FUNCTION 					= 'global/ctx/SET_BACK_FUNCTION';
 export const SET_SELF_AUTH 					    = 'global/ctx/SET_SELF_AUTH';
 export const SET_SPLASH 					      = 'global/ctx/SET_SPLASH';
+export const SET_SPLASH_DATA			      = 'global/ctx/SET_SPLASH_DATA';
 export const SET_IS_MAILBOX_NEW 				= 'global/ctx/SET_IS_MAILBOX_NEW';
 export const SET_USE_MAILBOX 					  = 'global/ctx/SET_USE_MAILBOX';
 export const SET_IS_MAILBOX_ON 					= 'global/ctx/SET_IS_MAILBOX_ON';
@@ -145,13 +146,13 @@ export const CLIP_PLAY_LIST_TAB_EMPTY 				      = 'global/ctx/CLIP_PLAY_LIST_TAB
 
 
 export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<any>();
-export const setGlobalCtxMessage = createAction(SET_MESSAGE)<any>();
+export const setGlobalCtxMessage = createAction(SET_MESSAGE)<MessageType>();
 export const setGlobalCtxRoomInfo = createAction(SET_ROOM_INFO)<any>();
 export const setGlobalCtxUpdateProfile = createAction(UPDATE_PROFILE)<any>();
 export const setGlobalCtxCustomHeader = createAction(SET_CUSTOM_HEADER)<any>();
 export const setGlobalCtxUpdateToken = createAction(UPDATE_TOKEN)<any>();
 export const setGlobalCtxMyInfo = createAction(SET_MY_INFO)<any>();
-export const setGlobalCtxUpdatePopup = createAction(UPDATE_POPUP)<{ str?:string, terms?:string, pageName?:number }>();
+export const setGlobalCtxUpdatePopup = createAction(UPDATE_POPUP)<Pick<GlobalCtxStateType, 'popup'>>();
 export const setGlobalCtxVisible = createAction(SET_VISIBLE)<any>();
 export const setGlobalCtxGnbVisible = createAction(SET_GNB_VISIBLE)<boolean>();
 export const setGlobalCtxGnbState = createAction(SET_GNB_STATE)<any>();
@@ -216,6 +217,7 @@ export const setGlobalCtxBackState = createAction(SET_BACK_STATE)<any>();
 export const setGlobalCtxBackFunction = createAction(SET_BACK_FUNCTION)<any>();
 export const setGlobalCtxSelfAuth = createAction(SET_SELF_AUTH)<any>();
 export const setGlobalCtxSplash = createAction(SET_SPLASH)<any>();
+export const setGlobalCtxSplashData = createAction(SET_SPLASH_DATA)<any>();
 export const setGlobalCtxIsMailboxNew = createAction(SET_IS_MAILBOX_NEW)<any>();
 export const setGlobalCtxUseMailbox = createAction(SET_USE_MAILBOX)<any>();
 export const setGlobalCtxIsMailboxOn = createAction(SET_IS_MAILBOX_ON)<any>();
@@ -235,7 +237,7 @@ export const setGlobalCtxMoveToAlert = createAction(SET_MOVE_TO_ALERT)<any>();
 export const setGlobalCtxSetToastStatus = createAction(SET_TOAST_STATUS)<any>();
 export const setGlobalCtxTooltipStatus = createAction(SET_TOOLTIP_STATUS)<any>();
 export const setGlobalCtxUserProfile = createAction(SET_USER_PROFILE)<any>();
-export const setGlobalCtxBroadClipDim = createAction(SET_BROAD_CLIP_DIM)<any>();
+export const setGlobalCtxBroadClipDim = createAction(SET_BROAD_CLIP_DIM)<boolean>();
 export const setGlobalCtxCheckDev = createAction(SET_CHECK_DEV)<any>();
 export const setGlobalCtxCheckAdmin = createAction(SET_CHECK_ADMIN)<any>();
 export const setGlobalCtxShadowAdmin = createAction(SET_SHADOW_ADMIN)<any>();
@@ -245,7 +247,7 @@ export const setGlobalCtxClipPlayMode = createAction(SET_CLIP_PLAY_MODE)<Pick<Gl
 // export const setGlobalCtxClipPlayMode = createAction(SET_CLIP_PLAY_MODE)<"" | "normal" | "allLoop" | "oneLoop" | "shuffle">();
 export const setGlobalCtxUrlInfo = createAction(SET_URL_INFO)<any>();
 export const setGlobalCtxBroadcastAdminLayer = createAction(SET_BROADCAST_ADMIN_LAYER)<any>();
-export const setGlobalCtxInBroadcast = createAction(SET_IN_BROADCAST)<any>();
+export const setGlobalCtxInBroadcast = createAction(SET_IN_BROADCAST)<boolean>();
 export const setGlobalCtxAlarmStatus = createAction(SET_ALARM_STATUS)<any>();
 export const setGlobalCtxAlarmMoveUrl = createAction(SET_ALARM_MOVE_URL)<any>();
 export const setGlobalCtxRealtimeBroadStatus = createAction(SET_REALTIME_BROAD_STATUS)<any>();

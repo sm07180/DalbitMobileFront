@@ -1,9 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
-// context
-import { GlobalContext } from "context";
-
 import NoResult from "common/ui/no_result";
 import MyProfile from "./myProfile";
 import LikeListTop from "./like_list_top";
@@ -19,11 +16,11 @@ import bronzeMedalIcon from "../static/medal_bronze_m.svg";
 import likeRedIcon from "../static/like_red_m.svg";
 
 import { RANK_TYPE } from "../constant";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 function LikeList({ empty }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const rankState = useSelector(({rank}) => rank);
 
   const { formState, likeList, rankList } = rankState;

@@ -1,23 +1,22 @@
-import React, {useContext, useState, useEffect, useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import _ from 'lodash'
 
 import NoResult from 'components/ui/noResult'
-
-import {Context} from 'context'
-import {RoomJoin} from 'context/room'
 import Api from 'context/api'
-import {OS_TYPE} from 'context/config.js'
 import {IMG_SERVER} from 'context/config'
 
 import hitIcon from '../../menu/static/ico_hit_g.svg'
 
 import './recommend_dj2.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function RecommendDj() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
-  const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
 
   const [fetchedList, setFetchedList] = useState([])
@@ -37,9 +36,10 @@ export default function RecommendDj() {
       setFetchedList(data.list.slice(0, 6))
       setMemList(memNoList)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
 
     setTimeout(() => {
@@ -90,7 +90,7 @@ export default function RecommendDj() {
   }
 
   useEffect(() => {
-    const {token, profile} = context
+    const {token, profile} = globalState
 
     if (!token.isLogin) {
       history.push({
@@ -100,7 +100,7 @@ export default function RecommendDj() {
         }
       })
     }
-  }, [context.profile, context.token.isLogin])
+  }, [globalState.profile, globalState.token.isLogin])
 
   useEffect(() => {
     fetchRecommendedDJList()

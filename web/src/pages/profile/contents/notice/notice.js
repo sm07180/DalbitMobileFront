@@ -1,34 +1,31 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
-import ListRow from 'components/ui/listRow/ListRow'
 // components
-
 // contents
 import Allim from './allim'
 import Post from './post'
 
 import './notice.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const noticeTabmenu = ['알림','공지사항']
 
 const NoticePage = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   //context
-  const context = useContext(Context)
-  const {token, profile} = context
-  
+  const {token, profile} = globalState
+
   const [noticeType, setNoticeType] = useState(noticeTabmenu[0])
 
   // 페이지 시작
   return (
     <div id="notice">
-      <Header type={'back'} />
+      <Header type={'back'}/>
       <section className="noticeWrap">
         <ul className="tabmenu">
           {noticeTabmenu.map((data,index) => {

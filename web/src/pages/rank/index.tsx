@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { GlobalContext } from "context";
 import {
   getRankList,
   getRankTimeList,
@@ -61,7 +60,7 @@ const records = 50;
 
 const Ranking = function() {
   const dispatch = useDispatch();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const rankState = useSelector(({rank}) => rank);
 
   let location = useLocation();

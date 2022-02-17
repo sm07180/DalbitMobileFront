@@ -1,8 +1,5 @@
-import React, {useContext, useState, useRef, useCallback} from 'react'
+import React, {useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
-import Api from 'context/api'
 
 import {RoomJoin} from 'context/room'
 
@@ -19,10 +16,9 @@ import {convertDateToText} from 'pages/common/rank/rank_fn'
 import {useSelector} from "react-redux";
 
 function RankListTop({specialPop}) {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   const rankState = useSelector(({rank}) => rank);
-  //context
-  const context = useContext(Context)
   const {rankList, formState, rankTimeData} = rankState
 
   const TopBoxRef = useRef(null)
@@ -137,8 +133,8 @@ function RankListTop({specialPop}) {
                   <div
                     className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)

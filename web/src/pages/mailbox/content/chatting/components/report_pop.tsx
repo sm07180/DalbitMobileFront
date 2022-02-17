@@ -3,11 +3,11 @@
  * @role : 우체통채팅 신고하기 및 차단 기능 팝업
  */
 import React, { useContext, useState, useEffect } from "react";
-import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // api
 import { postReportUser, MypageBlackListAdd } from "common/api";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../../redux/actions/globalCtx";
 //tab
 let PROFILE_REPORT_TAB = {
   BLACK: 0,
@@ -16,7 +16,7 @@ let PROFILE_REPORT_TAB = {
 export default (props) => {
   const history = useHistory();
   const { setReportPop, setPageType, pageType } = props;
-  const { globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
   const mailboxState = useSelector(({mailBox}) => mailBox);
   const { mailNo } = useParams<{ mailNo: string }>();
   //state
@@ -89,22 +89,18 @@ export default (props) => {
       cont: reportReason,
     });
     if (result === "success") {
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: `${mailboxState.mailboxInfo?.title}님을 신고하였습니다.`,
-        });
-        closePopup();
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: `${mailboxState.mailboxInfo?.title}님을 신고하였습니다.`,
+      }));
+      closePopup();
     } else {
-      globalAction.setAlertStatus;
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: `이미 신고한 회원 입니다.`,
-          callback: () => closePopup(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: `이미 신고한 회원 입니다.`,
+        callback: () => closePopup(),
+      }));
     }
   }
   const SubmitClick = () => {
@@ -121,44 +117,40 @@ export default (props) => {
       chatNo: mailNo,
     });
     if (result === "success") {
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: message,
-        });
-        history.goBack();
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: message,
+      }));
+      history.goBack();
     } else if (code === "-3") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-          callback: () => closePopup(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+        callback: () => closePopup(),
+      }));
     } else if (code === "C006") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "이미 차단회원으로 등록된\n회원입니다.",
-          callback: () => closePopup(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "이미 차단회원으로 등록된\n회원입니다.",
+        callback: () => closePopup(),
+      }));
     }
   }
   const validateReport = () => {
     if (select === 0) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 선택해주세요.`,
-      });
+      }));
     }
     if (select !== 0 && reportReason.length < 10) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 10자 이상 입력해주세요.`,
-      });
+      }));
     }
   };
   const closePopup = () => {

@@ -1,7 +1,6 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 // context
-import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 
@@ -10,9 +9,21 @@ import BottomSlide from './bottomSlide'
 
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAdminChecker,
+  setGlobalCtxIsMailboxOn,
+  setGlobalCtxMessage,
+  setGlobalCtxMyInfo,
+  setGlobalCtxNativeTid,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 
 export default function loginForm({props, setLoginPop}) {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
   const {webview, redirect} = qs.parse(location.search)
@@ -95,7 +106,7 @@ export default function loginForm({props, setLoginPop}) {
           if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
         }
 
-        globalCtx.action.updateToken(loginInfo.data)
+        dispatch(setGlobalCtxUpdateToken(loginInfo.data));
         const profileInfo = await Api.profile({params: {memNo}})
         const myInfo = await Api.mypage()
         setTimeout(() => {
@@ -116,9 +127,9 @@ export default function loginForm({props, setLoginPop}) {
             return (window.location.href = decodedUrl)
           }
 
-          globalCtx.action.updateProfile(profileInfo.data) // 타인/내정보 update
-          globalCtx.action.updateMyInfo(myInfo.data) // 내정보 update
-          globalCtx.action.updateIsMailboxOn(profileInfo.data.isMailboxOn)
+          dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
+          dispatch(setGlobalCtxMyInfo(myInfo.data));
+          dispatch(setGlobalCtxIsMailboxOn(profileInfo.data.isMailboxOn));
 
           //--##마이페이지 Redirect
           if (mypageURL !== '') {
@@ -132,15 +143,17 @@ export default function loginForm({props, setLoginPop}) {
         }
       } else if (loginInfo.result === 'fail') {
         if (loginInfo.code === '-1') {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`
-          })
+          }))
         } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
           let msg = loginInfo.data.opMsg
           if (msg === undefined || msg === null || msg === '') {
             msg = loginInfo.message
           }
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             title: '달빛라이브 사용 제한',
             msg: `${msg}`,
             callback: () => {
@@ -148,9 +161,10 @@ export default function loginForm({props, setLoginPop}) {
                 Hybrid('CloseLayerPopUp')
               }
             }
-          })
+          }))
         } else if (loginInfo.code === '-6') {
-          globalCtx.action.confirm({
+          dispatch(setGlobalCtxMessage({
+            type: "confirm",
             msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
             callback: () => {
               const callResetListen = async (mem_no) => {
@@ -163,20 +177,22 @@ export default function loginForm({props, setLoginPop}) {
                     clickLoginBtn()
                   }, 700)
                 } else {
-                  globalCtx.action.alert({
+                  dispatch(setGlobalCtxMessage({
+                    type: "alert",
                     msg: `${fetchResetListen.message}`
-                  })
+                  }))
                   setFetching(false)
                 }
               }
               callResetListen(loginInfo.data.memNo)
             }
-          })
+          }))
         } else {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             title: '로그인 실패',
             msg: `${loginInfo.message}`
-          })
+          }))
         }
       }
 
@@ -187,26 +203,29 @@ export default function loginForm({props, setLoginPop}) {
     const inputPasswordNode = inputPasswordRef.current
 
     if (phoneNum === '' && password === '') {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `아이디(전화번호)와 비밀번호를 입력하고 다시 로그인해주세요.`,
         callback: () => {
           inputPhoneNode.focus()
         }
-      })
+      }))
     } else if (phoneNum === '' && password !== '') {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `아이디(전화번호)를 입력하고 다시 로그인해주세요.`,
         callback: () => {
           inputPhoneNode.focus()
         }
-      })
+      }))
     } else if (password === '' && phoneNum !== '') {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `비밀번호를 입력하고 다시 로그인해주세요.`,
         callback: () => {
           inputPasswordNode.focus()
         }
-      })
+      }))
     } else {
       fetchPhoneLogin(phoneNum, password)
     }
@@ -222,22 +241,22 @@ export default function loginForm({props, setLoginPop}) {
       })
     }
 
-    if (globalCtx.nativeTid == 'init') {
+    if (globalState.nativeTid == 'init') {
       if (isHybrid()) {
         Hybrid('getNativeTid')
       } else if (!isHybrid()) {
-        globalCtx.action.updateNativeTid('')
+        dispatch(setGlobalCtxNativeTid(''));
       }
     }
-  }, [globalCtx.nativeTid])
+  }, [globalState.nativeTid])
 
   //admincheck
   const fetchAdmin = async () => {
     const adminFunc = await Api.getAdmin()
     if (adminFunc.result === 'success') {
-      globalCtx.action.updateAdminChecker(true)
+      dispatch(setGlobalCtxAdminChecker(true));
     } else if (adminFunc.result === 'fail') {
-      globalCtx.action.updateAdminChecker(false)
+      dispatch(setGlobalCtxAdminChecker(false));
     }
   }
 
@@ -245,7 +264,7 @@ export default function loginForm({props, setLoginPop}) {
     const checkboxes = document.querySelectorAll('input[name="checkList"]');
     const checked = document.querySelectorAll('input[name="checkList"]:checked');
     const selectAll = document.querySelector('input[name="checkListAll"]');
-    
+
     if(checkboxes.length === checked.length)  {
       selectAll.checked = true;
       setBtnActive(true)
@@ -254,9 +273,9 @@ export default function loginForm({props, setLoginPop}) {
       setBtnActive(false)
     }
   }
-  
+
   const selectAll = (e) => {
-    const checkboxes = document.querySelectorAll('input[name="checkList"]');  
+    const checkboxes = document.querySelectorAll('input[name="checkList"]');
     checkboxes.forEach((checkbox) => {
       checkbox.checked = e.target.checked
     })
@@ -312,56 +331,56 @@ export default function loginForm({props, setLoginPop}) {
               value={password}
               onChange={changePassword}
             />
-            <button className={`loginBtn ${phoneNum && password ? "active" : "" }`} onClick={clickLoginBtn}>
+            <button className={`loginBtn ${phoneNum && password ? "active" : ""}`} onClick={clickLoginBtn}>
               로그인
             </button>
           </div>
 
-          <div className="linkWrap">  
-            <div className="linkText" onClick={signPop}>회원가입</div>          
+          <div className="linkWrap">
+            <div className="linkText" onClick={signPop}>회원가입</div>
             <div className="linkText" onClick={() => history.push('/password')}>비밀번호 재설정</div>
           </div>
         </div>
       </div>
       {slidePop &&
-        <BottomSlide setSlidePop={setSlidePop} props={props} > 
-          <div className='slideHeader'>이용약관동의</div>
-          <div className="agreeWrap">
-						<div className="agreeListAll">
+      <BottomSlide setSlidePop={setSlidePop} props={props}>
+        <div className='slideHeader'>이용약관동의</div>
+        <div className="agreeWrap">
+          <div className="agreeListAll">
+            <label className="inputLabel">
+              <input type="checkbox" className="blind" name="checkListAll" onChange={selectAll}/>
+              <span className="checkIcon"></span>
+              <p className="checkinfo">네, 모두 동의합니다.</p>
+            </label>
+          </div>
+          <div className='agreeListWrap'>
+            <div className="agreeList">
               <label className="inputLabel">
-                <input type="checkbox" className="blind" name="checkListAll" onChange={selectAll}/>
+                <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                 <span className="checkIcon"></span>
-                <p className="checkinfo">네, 모두 동의합니다.</p>
+                <p className="checkinfo">(필수) 만 14세 이상입니다.</p>
               </label>
-						</div>
-            <div className='agreeListWrap'>
-              <div className="agreeList">
-                <label className="inputLabel">
-                  <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
-                  <span className="checkIcon"></span>
-                  <p className="checkinfo">(필수) 만 14세 이상입니다.</p>
-                </label>
-              </div>
-              <div className="agreeList">
-                <label className="inputLabel">
-                  <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
-                  <span className="checkIcon"></span>
-                  <p className="checkinfo">(필수) 이용약관</p>
-                  <button className='policyBtn'>보기</button>
-                </label>
-              </div>
-              <div className="agreeList">
-                <label className="inputLabel">
-                  <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
-                  <span className="checkIcon"></span>
-                  <p className="checkinfo">(필수) 개인정보 취급 방침</p>
-                  <button className='policyBtn'>보기</button>
-                </label>
-              </div>
-            </div>						
-					</div>
-					<button className={`submitBtn ${btnActive ? "active" : ""}`} onClick={goSignPage}>다음</button>
-        </BottomSlide>      
+            </div>
+            <div className="agreeList">
+              <label className="inputLabel">
+                <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
+                <span className="checkIcon"></span>
+                <p className="checkinfo">(필수) 이용약관</p>
+                <button className='policyBtn'>보기</button>
+              </label>
+            </div>
+            <div className="agreeList">
+              <label className="inputLabel">
+                <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
+                <span className="checkIcon"></span>
+                <p className="checkinfo">(필수) 개인정보 취급 방침</p>
+                <button className='policyBtn'>보기</button>
+              </label>
+            </div>
+          </div>
+        </div>
+        <button className={`submitBtn ${btnActive ? "active" : ""}`} onClick={goSignPage}>다음</button>
+      </BottomSlide>
       }
     </div>
   )

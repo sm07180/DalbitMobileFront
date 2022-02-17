@@ -1,13 +1,13 @@
-import React, {useState, useHistory, useContext, useEffect} from 'react'
-import {Context} from 'context'
-import Layout from 'pages/common/layout'
+import React, {useContext, useEffect, useState} from 'react'
 import Api from 'context/api'
-import {List, arrayMove} from 'react-movable'
+import {arrayMove, List} from 'react-movable'
 import {PlayListStore} from '../store'
-import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const playListCtx = useContext(PlayListStore)
 
   sessionStorage.setItem('play_clip_no', '101600394204306')
@@ -56,7 +56,7 @@ export default (props) => {
       playListCtx.action.updateList(data.list)
       setIsFilterOn(false)
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
     }
   }
 
@@ -88,7 +88,7 @@ export default (props) => {
       handleFilterClick(0)
       playListCtx.action.updateDeleteList('')
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
     }
   }
 

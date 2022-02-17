@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
@@ -35,7 +34,7 @@ const RankPage = () => {
   const [rankTabType, setRankTabType] = useState(rankTabmenu[0])
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
 
-  
+
   // API 호출
   const fetchTimeRank = async () => {
     const res = await Api.getRankTimeList({
@@ -45,7 +44,7 @@ const RankPage = () => {
       rankingDate: "2022-01-17 10:00:00"
     });
     if (res.result === "success") {
-      setTimeDjRank(res.data.list) 
+      setTimeDjRank(res.data.list)
     }
   };
 
@@ -62,9 +61,9 @@ const RankPage = () => {
     if (result === "success") {
       setMyRank(data);
       if(dateType === 1){
-        setTimeDjRank(data.list)  
+        setTimeDjRank(data.list)
       } else if(dateType === 2) {
-        setTimeFanRank(data.list)     
+        setTimeFanRank(data.list)
       } else if(dateType === 3) {
         setTimeLoverRank(data.list)
       }
@@ -174,22 +173,22 @@ const RankPage = () => {
                 <DataCnt type={"djGoodPoint"} value={timeLoverRank.djGoodPoint ? timeLoverRank.djGoodPoint : "123"}/>
               </div>
             </RankingList>
-            : 
+            :
             <>
               <p>순위가 없습니다.</p>
             </>
           }
-        </div>        
-      </section>      
+        </div>
+      </section>
       <section className='rankingBottom'>
           <p>
             달라의 숨막히는 순위 경쟁<br/>
-            랭커에 도전해보세요! 
+            랭커에 도전해보세요!
           </p>
           <button onClick={clickDetailOpen}>랭킹순위 전체보기</button>
       </section>
       {popSlide &&
-        <PopSlide setPopSlide={setPopSlide}> 
+        <PopSlide setPopSlide={setPopSlide}>
           <div className='selectWrap'>
             <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
             <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
@@ -197,7 +196,7 @@ const RankPage = () => {
             <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>이번달</div>
             <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
           </div>
-        </PopSlide>      
+        </PopSlide>
       }
       {popup &&
         <LayerPopup setPopup={setPopup}>
@@ -230,7 +229,7 @@ const RankPage = () => {
           </div>
         </LayerPopup>
       }
-    </div>      
+    </div>
   )
 }
 

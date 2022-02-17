@@ -1,16 +1,8 @@
 // 사용안함 20.08.25
-import React, {useContext} from 'react'
-import {Switch, Route, useParams} from 'react-router-dom'
+import React from 'react'
 import styled from 'styled-components'
-
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 // component //
-import Layout from 'pages/common/layout'
-import Api from 'context/api'
-import GoldIcon from '../static/gold.svg'
-import SilverIcon from '../static/silver.svg'
-import BronzeIcon from '../static/bronze.svg'
 import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import HeartIcon from '../static/heart.svg'
@@ -34,8 +26,6 @@ import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
 
 export default (props) => {
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
 
   return (
     <FalseLoginWrapper>

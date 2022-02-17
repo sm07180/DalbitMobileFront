@@ -4,7 +4,6 @@ import React, {useContext, useState, useEffect} from "react";
 // Component
 import RouletteEditTab from './roulette_tab_edit';
 import "./index.scss";
-import {GlobalContext} from "../../../../../context";
 import RouletteTabWin from "./roulette_tab_win";
 import {getHistoryMiniGame, getRouletteWinList} from "../../../../../common/api";
 import {MiniGameType} from "../../../constant";
@@ -14,7 +13,6 @@ import {setBroadcastCtxMiniGameInfo, setBroadcastCtxRouletteHistory} from "../..
 type rouletteTabType = "editOption" | "winList";
 
 export default function Roulette ({ roomNo }) {
-  const { globalAction } = useContext(GlobalContext);
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
@@ -124,7 +122,7 @@ export default function Roulette ({ roomNo }) {
     <div id="roulette">
       <RouletteTab rouletteTab={rouletteTab} setRouletteTab={setRouletteTab} />
       {rouletteTab === 'editOption' ?
-        <RouletteEditTab roomNo={roomNo} globalAction={globalAction} dispatch={dispatch}
+        <RouletteEditTab roomNo={roomNo} dispatch={dispatch}
                          broadcastState={broadcastState} isFree={isFree} setIsFree={setIsFree}
                          price={price} setPrice={setPrice} options={options} setOptions={setOptions}
                          toggleCaption={toggleCaption} setToggleCaption={setToggleCaption}

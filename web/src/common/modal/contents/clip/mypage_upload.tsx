@@ -1,12 +1,10 @@
 // tab navigation
 // api
 import { getProfile, postGiftDal } from "common/api";
-import { GlobalContext } from "context";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./modal_clip.scss";
 export default (props) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
   const history = useHistory();
   //clip Link
   const clipLink = (type: string) => {

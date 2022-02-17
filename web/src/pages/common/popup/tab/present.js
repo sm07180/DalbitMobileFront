@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Navi from './navibar'
 import SendDirect from './present-direct'
 import SendItem from './present-item.js'
 import Api from 'context/api'
-import {Context} from 'context'
 import {BroadCastStore} from 'pages/broadcast/store'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const testData = [
   {
@@ -21,8 +21,10 @@ const testBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 //-------------------------------------------------------- declare start
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [sendType, setSendType] = useState(0)
-  const context = useContext(Context)
   const store = useContext(BroadCastStore)
   const [profile, setProfile] = useState()
   const [common, setCommon] = useState()
@@ -32,19 +34,20 @@ export default (props) => {
   // 선물하기
   async function send(count, itemNo, flag) {
     if (itemNo < 0) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           return
         },
         // title: '달빛라디오',
         msg: '아이템을 선택해 주세요'
-      })
+      }))
     }
 
     const res = await Api.send_gift({
       data: {
-        roomNo: context.broadcastTotalInfo.roomNo,
-        memNo: context.broadcastTotalInfo.bjMemNo,
+        roomNo: globalState.broadcastTotalInfo.roomNo,
+        memNo: globalState.broadcastTotalInfo.bjMemNo,
         itemNo: itemNo,
         itemCnt: count,
         isSecret: flag
@@ -54,9 +57,9 @@ export default (props) => {
       // 프로필 업데이트 profile api에는 dalRate가 없어서 member_info_view 조회함 profile에 dalRate 추가 후 profile 만 호출하도록 변경해야 함
       broadProfile()
       // 선물 보내고 context.profile 업데이트
-      const profile = await Api.profile({params: {memNo: context.token.memNo}})
+      const profile = await Api.profile({params: {memNo: globalState.token.memNo}})
       if (profile.result === 'success') {
-        context.action.updateProfile(profile.data)
+        dispatch(setGlobalCtxUpdateProfile(profile.data));
       }
     }
     setState(!state)
@@ -101,7 +104,7 @@ export default (props) => {
           profile={store.broadcastProfileInfo}
           send={send}
           common={common}
-          bjNickNm={context.broadcastTotalInfo.bjNickNm}
+          bjNickNm={globalState.broadcastTotalInfo.bjNickNm}
           flag={state}
         />
       ) : (

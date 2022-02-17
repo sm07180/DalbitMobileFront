@@ -5,10 +5,10 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 // constant
 import { tabType } from "../../constant";
 // ctx
-import { GlobalContext } from "context";
 import NoResult from "common/ui/no_result";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 // flag
 let currentPage = 1;
@@ -19,7 +19,6 @@ export default function LikeList(props: { profile: any; roomNo: string }) {
   // ctx
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { userMemNo } = broadcastState;
   // state
   const [likelist, setLikelist] = useState<any>([]);
@@ -57,12 +56,11 @@ export default function LikeList(props: { profile: any; roomNo: string }) {
         }
       }
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+      }));
     }
   }
   const showMoreList = () => {

@@ -1,5 +1,4 @@
-import React, {useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 
 import {convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 
@@ -8,6 +7,7 @@ import {DATE_TYPE, RANK_TYPE} from '../constant'
 import guideIcon from '../static/guide_s.png'
 import {useDispatch, useSelector} from "react-redux";
 import {setRankFormDateType} from "redux/actions/rank";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 const btnArray = [
   {val: DATE_TYPE.TIME, text: '타임'},
@@ -18,8 +18,8 @@ const btnArray = [
 ]
 
 function DateBtnWrap({fetching}) {
+
   const dispatch = useDispatch();
-  const context = useContext(Context)
   const rankState = useSelector(({rank}) => rank);
 
   const {formState} = rankState
@@ -43,7 +43,7 @@ function DateBtnWrap({fetching}) {
           <img
             src={guideIcon}
             onClick={() => {
-              context.action.updatePopup('RANK_POP', 'like')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['RANK_POP', 'like']}))
             }}
           />
         </div>

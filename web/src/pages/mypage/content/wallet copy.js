@@ -5,7 +5,6 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 
 // context
-import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 
 // component
@@ -22,6 +21,8 @@ import paging from 'components/ui/paging.js'
 import WalletPop from '../component/wallet/wallet_pop'
 
 import '../index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 // concat
 
@@ -66,7 +67,8 @@ const reducer = (state, action) => {
 
 export default (props) => {
   let history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [formState, formDispatch] = useReducer(reducer, {
     coinType: 'dal',
@@ -145,7 +147,8 @@ export default (props) => {
       exchangeIdx: cancelExchange
     })
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         title: '환전 취소가 완료되었습니다.',
         className: 'mobile',
         msg: message,
@@ -153,15 +156,16 @@ export default (props) => {
           fetchData()
           setCancelExchange(null)
         }
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         msg: message,
         callback: () => {
           fetchData()
           setCancelExchange(null)
         }
-      })
+      }))
     }
   }
   const checkSelfAuth = async () => {
@@ -177,25 +181,28 @@ export default (props) => {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
         if (res.data.company === '기타') {
-          return context.action.alert({
+          return dispatch(setGlobalCtxMessage({
+            type:"alert",
             msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
-          })
+          }))
         }
         const {parentsAgreeYn, adultYn} = res.data
         if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
         if (myBirth > baseYear) {
-          return context.action.alert({
+          return dispatch(setGlobalCtxMessage({
+            type:"alert",
             msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-          })
+          }))
         } else {
           history.push('/money_exchange')
         }
       } else if (res.result === 'fail' && res.code === '0') {
         history.push('/selfauth')
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type:"alert",
           msg: res.message
-        })
+        }))
       }
     }
     fetchSelfAuth()
@@ -417,7 +424,7 @@ export default (props) => {
           <div>
             {formState.coinType === 'dal' ? (
               <>
-                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                {globalState.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <CoinChargeBtn
                     onClick={() => {
                       webkit.messageHandlers.openInApp.postMessage('')
@@ -437,9 +444,9 @@ export default (props) => {
               <>
                 {
                   <CoinChargeBtn
-                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? ' exchange ios' : ' exchange'}
+                    className={globalState.customHeader['os'] === OS_TYPE['IOS'] ? ' exchange ios' : ' exchange'}
                     onClick={() => {
-                      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+                      if (globalState.customHeader['os'] === OS_TYPE['IOS']) {
                         async function fetchTokenShort() {
                           const res = await Api.getTokenShort()
                           if (res.result === 'success') {
@@ -448,9 +455,10 @@ export default (props) => {
                               'https://' + location.hostname + '/mypage/' + res.data.memNo + '/wallet?ppTT=' + res.data.authToken
                             )
                           } else {
-                            context.action.alert({
+                            dispatch(setGlobalCtxMessage({
+                              type:"alert",
                               msg: res.message
-                            })
+                            }))
                           }
                         }
                         fetchTokenShort()
@@ -461,7 +469,7 @@ export default (props) => {
                     달교환
                   </CoinChargeBtn>
                 }
-                {context.customHeader['os'] !== OS_TYPE['IOS'] ? (
+                {globalState.customHeader['os'] !== OS_TYPE['IOS'] ? (
                   <CoinChargeBtn
                     className="exchange"
                     onClick={() => {
@@ -470,7 +478,7 @@ export default (props) => {
                     환전하기
                   </CoinChargeBtn>
                 ) : (
-                  context.customHeader['os'] === OS_TYPE['IOS'] &&
+                  globalState.customHeader['os'] === OS_TYPE['IOS'] &&
                   totalCoin >= 570 && (
                     <CoinChargeBtn
                       className="exchange"

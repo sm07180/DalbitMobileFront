@@ -10,7 +10,6 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
@@ -22,12 +21,14 @@ import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
 import GganbuReward from '../../event/gganbu/content/gganbuReward'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //---------------------------------------------------------------------
-  const context = useContext(Context)
-  const {profile} = context
   let {tabType} = props
   if (tabType === undefined || (tabType !== 'charge' && tabType !== 'change')) tabType = 'charge'
 
@@ -61,9 +62,9 @@ export default (props) => {
       setChargeList(res.data.list.slice(0, 9))
       setMyDal(Utility.addComma(res.data.dalCnt))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -73,9 +74,9 @@ export default (props) => {
       setExchangeList(res.data.list)
       setMyByeol(Utility.addComma(res.data.byeolCnt))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -184,12 +185,12 @@ export default (props) => {
           gganbuData = await Api.getGganbuObtainMarble(param)
         }
 
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: res.message,
           callback: () => {
             if(gganbuData) {
               const data = gganbuData.data;
-            
+
               if (data.s_return === 1) {
                 setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
                 setRewardPop(true);
@@ -207,14 +208,14 @@ export default (props) => {
               Hybrid('CloseLayerPopup')
             }
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: res.message,
           callback: () => {
             Hybrid('CloseLayerPopup')
           }
-        })
+        }))
       }
     }
 
@@ -237,16 +238,16 @@ export default (props) => {
     //         vmarbleCnt : data.vmarbleCnt,
     //         totalmarbleCnt : data.marbleCnt,
     //       })
-    //     } 
+    //     }
     //   }
     // }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:"confirm",
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange()
       }
-    })
+    }))
   }
 
   const tabClick = (type) => {

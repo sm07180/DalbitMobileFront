@@ -1,9 +1,9 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
-import {Context} from 'context'
 import NoResult from 'components/ui/new_noResult'
 import {IMG_SERVER} from 'context/config'
+import {useSelector} from "react-redux";
 
 // static
 const GoldMedal = `${IMG_SERVER}/svg/medal_gold_b.svg`
@@ -11,8 +11,9 @@ const SivelMedal = `${IMG_SERVER}/svg/medal_silver_b.svg`
 const BronzeMedal = `${IMG_SERVER}/svg/medal_bronze_m.svg`
 
 export default function VideoEventList({djRankList, eventSubType}) {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   return (
     <ul className="event_list">
       {Array.isArray(djRankList) && djRankList.length > 0 ? (
@@ -46,8 +47,8 @@ export default function VideoEventList({djRankList, eventSubType}) {
                     <div
                       className="thumb"
                       onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
+                        if (globalState.token.isLogin) {
+                          if (globalState.token.memNo === memNo) {
                             history.push(`/menu/profile`)
                           } else {
                             history.push(`/mypage/${memNo}`)
@@ -66,8 +67,8 @@ export default function VideoEventList({djRankList, eventSubType}) {
                       <p
                         className="nick"
                         onClick={() => {
-                          if (context.token.isLogin) {
-                            if (context.token.memNo === memNo) {
+                          if (globalState.token.isLogin) {
+                            if (globalState.token.memNo === memNo) {
                               history.push(`/menu/profile`)
                             } else {
                               history.push(`/mypage/${memNo}`)
@@ -84,8 +85,8 @@ export default function VideoEventList({djRankList, eventSubType}) {
                     <div
                       className="thumb"
                       onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
+                        if (globalState.token.isLogin) {
+                          if (globalState.token.memNo === memNo) {
                             history.push(`/menu/profile`)
                           } else {
                             history.push(`/mypage/${qupidMemNo}`)
@@ -101,8 +102,8 @@ export default function VideoEventList({djRankList, eventSubType}) {
                       <p
                         className="nick"
                         onClick={() => {
-                          if (context.token.isLogin) {
-                            if (context.token.memNo === memNo) {
+                          if (globalState.token.isLogin) {
+                            if (globalState.token.memNo === memNo) {
                               history.push(`/menu/profile`)
                             } else {
                               history.push(`/mypage/${qupidMemNo}`)
@@ -133,8 +134,8 @@ export default function VideoEventList({djRankList, eventSubType}) {
                     <div
                       className="thumb"
                       onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
+                        if (globalState.token.isLogin) {
+                          if (globalState.token.memNo === memNo) {
                             history.push(`/menu/profile`)
                           } else {
                             history.push(`/mypage/${memNo}`)
@@ -153,8 +154,8 @@ export default function VideoEventList({djRankList, eventSubType}) {
                       <p
                         className="nick"
                         onClick={() => {
-                          if (context.token.isLogin) {
-                            if (context.token.memNo === memNo) {
+                          if (globalState.token.isLogin) {
+                            if (globalState.token.memNo === memNo) {
                               history.push(`/menu/profile`)
                             } else {
                               history.push(`/mypage/${memNo}`)

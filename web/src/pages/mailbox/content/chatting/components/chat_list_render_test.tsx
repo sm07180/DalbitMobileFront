@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { dateFormatterKorDay, makeHourMinute } from "lib/common_fn";
 
-import { GlobalContext } from "context";
 import {useSelector} from "react-redux";
 
 function timeCheck(time: Date) {
@@ -9,7 +8,7 @@ function timeCheck(time: Date) {
 }
 
 function ChatList({ prevObj }) {
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { baseData } = globalState;
 
   const mailboxState = useSelector(({mailBox}) => mailBox);

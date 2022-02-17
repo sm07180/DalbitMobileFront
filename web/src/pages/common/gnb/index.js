@@ -1,33 +1,30 @@
-import React, {useEffect, useState, useContext, useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import styled from 'styled-components'
-import Lottie from 'react-lottie'
-
-import {Context} from 'context'
-import {RoomMake} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static image
 //import Logo from './static/logo@2x.png'
 import Logo from './static/logo_w_no_symbol.svg'
-import Search from './static/search_w.svg'
 import Alarm from './static/alarm_w.svg'
-import Store from './static/store_w.svg'
-import My from './static/ic_my.svg'
-import Menu from './static/ic_menu.svg'
-import Mic from './static/ic_broadcastng_p.svg'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 // style
 import 'styles/main.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxIsMailboxNew,
+  setGlobalCtxLogoChange,
+  setGlobalCtxMessage,
+  setGlobalCtxUpdatePopup
+} from "redux/actions/globalCtx";
 
 let alarmCheckIntervalId = null
 
 export default (props) => {
-  //context
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
-  const {logoChange, token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {logoChange, token} = globalState
   const {webview} = props
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
@@ -61,19 +58,20 @@ export default (props) => {
       }
     }
     if (category === 'mailbox') {
-      if (!context.myInfo.level) {
-        const myProfile = await Api.profile({ params: { memNo: token.memNo } })
-        if(myProfile.data.level === 0) {
-          return globalCtx.action.alert({
+      if (!globalState.myInfo.level) {
+        const myProfile = await Api.profile({params: {memNo: token.memNo}})
+        if (myProfile.data.level === 0) {
+          return dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-          })
+          }))
         }
       }
 
       if (isHybrid()) {
         Hybrid('OpenMailBoxList')
       } else {
-        context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+        dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 5]}));
       }
       return false
     }
@@ -82,9 +80,10 @@ export default (props) => {
         if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
           return webkit.messageHandlers.openInApp.postMessage('')
         } else {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'
-          })
+          }))
           return
         }
       } else {
@@ -98,9 +97,9 @@ export default (props) => {
     const gnbHeight = 48
 
     if (!logoChange && window.scrollY >= gnbHeight) {
-      globalCtx.action.updateLogoChange(true)
+      dispatch(setGlobalCtxLogoChange(true));
     } else if (logoChange && window.scrollY < gnbHeight) {
-      globalCtx.action.updateLogoChange(false)
+      dispatch(setGlobalCtxLogoChange(false));
     }
   }
 
@@ -142,18 +141,19 @@ export default (props) => {
     const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        globalCtx.action.updateIsMailboxNew(data.isNew)
+        dispatch(setGlobalCtxIsMailboxNew(data.isNew));
       } else {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
-    if (context.token.isLogin) isMailboxNewCheck()
+    if (globalState.token.isLogin) isMailboxNewCheck()
   }, [])
 
   const createMailboxIcon = () => {
-    if (!globalCtx.isMailboxOn && globalCtx.token.isLogin) {
+    if (!globalState.isMailboxOn && globalState.token.isLogin) {
       return (
         <button
           className="alarmSize"
@@ -161,7 +161,7 @@ export default (props) => {
             if (isHybrid()) {
               moveToLogin('mailbox')
             } else {
-              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+              dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 5]}));
             }
           }}>
           <img src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg" alt="우체통" />
@@ -169,7 +169,7 @@ export default (props) => {
       )
     }
 
-    if (globalCtx.isMailboxNew && globalCtx.token.isLogin) {
+    if (globalState.isMailboxNew && globalState.token.isLogin) {
       return (
         <button
           className="alarmSize"
@@ -177,7 +177,7 @@ export default (props) => {
             if (isHybrid()) {
               moveToLogin('mailbox')
             } else {
-              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+              dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 5]}));
             }
           }}>
           <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
@@ -191,7 +191,7 @@ export default (props) => {
             if (isHybrid()) {
               moveToLogin('mailbox')
             } else {
-              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+              dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 5]}));
             }
           }}>
           <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="우체통" />

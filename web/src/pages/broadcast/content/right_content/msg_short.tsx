@@ -1,5 +1,4 @@
 import React, {useContext, useReducer, useEffect, useRef, DispatchWithoutAction} from "react";
-import { GlobalContext } from "context";
 
 import { getBroadcastShortCut, broadcastShortCutModify } from "common/api";
 
@@ -11,6 +10,7 @@ import { tabType } from "pages/broadcast/constant";
 import MsgContent from "./msg_short_item";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxMsgShortCut} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 type ActionType = {
   type: string;
   val: any;
@@ -43,8 +43,6 @@ const reducer = (state: Array<any>, action: ActionType) => {
 export default function MsgShort() {
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { globalAction, globalState } = useContext(GlobalContext);
-
   const [state, dispatchWithoutAction] = useReducer(reducer, []);
 
   const modifyState = async (idx: number) => {
@@ -64,12 +62,10 @@ export default function MsgShort() {
         } else {
           dispatch(setBroadcastCtxMsgShortCut(res.data.list));
         }
-
-        globalAction.callSetToastStatus &&
-          globalAction.callSetToastStatus({
-            status: true,
-            message: res.message,
-          });
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: res.message,
+        }));
       }
     }
   };

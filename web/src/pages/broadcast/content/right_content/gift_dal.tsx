@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-// ctx
-import { GlobalContext } from "context";
 // constant
 import { tabType } from "../../constant";
 // Api
 import { getProfile, postGiftDal } from "common/api";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 let preventClick = false;
 
@@ -15,8 +14,7 @@ export default function GiftDal(props: { common: any; profile: any }) {
   const { profile, common } = props;
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { userMemNo, userNickNm } = broadcastState;
   const history = useHistory();
   const { splashData } = globalState;
@@ -69,28 +67,26 @@ export default function GiftDal(props: { common: any; profile: any }) {
           dal: dal,
         });
         if (result === "success") {
-          globalAction.callSetToastStatus &&
-            globalAction.callSetToastStatus({
-              status: true,
-              message: message,
-            });
+          dispatch(setGlobalCtxSetToastStatus({
+            status: true,
+            message: message,
+          }));
 
           fetchData();
           setText("");
         } else if (result === "fail") {
-          globalAction.callSetToastStatus &&
-            globalAction.callSetToastStatus({
-              status: true,
-              message: message,
-            });
+          dispatch(setGlobalCtxSetToastStatus({
+            status: true,
+            message: message,
+          }));
         }
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: `직접입력 선물은 최소 ${common.giftDalMin}달 부터 선물이 가능합니다.`,
           callback: () => {},
-        });
+        }));
       }
 
       preventClick = false;

@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import {getProfile, miniGameStart} from "common/api";
 
 // Context
-import { GlobalContext } from "context";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Static
@@ -24,6 +23,11 @@ import "./index.scss";
 import {MiniGameType} from "pages/broadcast/constant";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxMiniGameResult} from "../../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../redux/actions/globalCtx";
 
 const rouletteImgs = {
   2: Roulette2,
@@ -40,8 +44,7 @@ let rouletteStart = false;
 export default (props: { roomOwner?: boolean }) => {
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-
-  const { globalAction, globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
 
   const { miniGameInfo, miniGameResult } = broadcastState;
 
@@ -56,25 +59,23 @@ export default (props: { roomOwner?: boolean }) => {
   const miniGameStartHandler = () => {
     if (rouletteStart === false) {
       if (props.roomOwner === false) {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "confirm",
-            title: "룰렛",
-            content: `룰렛을 돌리시겠습니까?<br />룰렛에는 달 ${miniGameInfo.payAmt}개가 차감되며<br />차감된 달은 DJ에게 선물됩니다.`,
-            callback: () => {
-              fetchMiniGameStart();
-            },
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          type: "confirm",
+          title: "룰렛",
+          content: `룰렛을 돌리시겠습니까?<br />룰렛에는 달 ${miniGameInfo.payAmt}개가 차감되며<br />차감된 달은 DJ에게 선물됩니다.`,
+          callback: () => {
+            fetchMiniGameStart();
+          },
+        }));
       } else {
         fetchMiniGameStart();
       }
     } else {
-      globalAction.callSetToastStatus &&
-        globalAction.callSetToastStatus({
-          status: true,
-          message: "룰렛 진행 중에는 룰렛을 돌릴 수 없습니다.",
-        });
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: "룰렛 진행 중에는 룰렛을 돌릴 수 없습니다.",
+      }));
     }
   };
 
@@ -87,11 +88,10 @@ export default (props: { roomOwner?: boolean }) => {
     });
 
     if (result === "fail") {
-      globalAction.callSetToastStatus &&
-        globalAction.callSetToastStatus({
-          status: true,
-          message,
-        });
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message,
+      }));
 
       dispatchDimLayer({
         type: "INIT",
@@ -103,9 +103,7 @@ export default (props: { roomOwner?: boolean }) => {
           memNo: globalState.userProfile!.memNo,
         });
         if (result === "success") {
-          if (globalAction.setUserProfile) {
-            globalAction.setUserProfile(data);
-          }
+          dispatch(setGlobalCtxUserProfile(data));
         }
       }
 
@@ -151,10 +149,9 @@ export default (props: { roomOwner?: boolean }) => {
 
   useEffect(() => {
     if (miniGameInfo.isFree && props.roomOwner === false) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: false,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: false,
+      }));
 
       dispatchDimLayer({
         type: "INIT",

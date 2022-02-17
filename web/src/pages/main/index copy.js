@@ -2,15 +2,10 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
-import {NavLink} from 'react-router-dom'
-import {Link} from 'react-router-dom'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {NavLink, useHistory} from 'react-router-dom'
 //context
 import Api from 'context/api'
-import {Context} from 'context'
-import {StoreLink} from 'context/link'
-import qs from 'query-string'
-import moment from 'moment'
 //import Lottie from 'react-lottie'
 import LottiePlayer from 'lottie-web'
 import styled from 'styled-components'
@@ -23,7 +18,6 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupWrap from './component/layer_popup_wrap.js'
-import LayerPopupCommon from './component/layer_popup_common.js'
 import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import LayerPopupInput from './component/layer_popup_input.js'
@@ -31,9 +25,6 @@ import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
 import RankingTimer from './component/rankingTimer'
-
-import Swiper from 'react-id-swiper'
-import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
 import {RoomMake} from 'context/room'
 import {clipExit} from 'pages/common/clipPlayer/clip_func'
@@ -41,19 +32,26 @@ import {Hybrid} from 'context/hybrid'
 
 // static
 import RankArrow from './static/arrow_right_b.svg'
+import 'styles/main.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setRankFormRankType,
+  setRankFormReset,
+  setRankLevelList,
+  setRankLikeList,
+  setRankList,
+  setRankMyInfo
+} from "redux/actions/rank";
+import {
+  setGlobalCtxAttendStamp,
+  setGlobalCtxMessage,
+  setGlobalCtxPlayer,
+  setGlobalCtxUpdatePopup
+} from "redux/actions/globalCtx";
+
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
 const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
-
-import 'styles/main.scss'
-import {useDispatch} from "react-redux";
-import {
-  setRankMyInfo,
-  setRankList,
-  setRankLevelList,
-  setRankLikeList,
-  setRankFormReset, setRankFormRankType
-} from "redux/actions/rank";
 
 let concatenating = false
 
@@ -93,6 +91,8 @@ const round = [
 ]
 
 export default (props) => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -109,8 +109,6 @@ export default (props) => {
 
   const TopSectionHeightRef = useRef(0)
 
-  //context
-  const globalCtx = useContext(Context)
   const history = useHistory()
   const dispatch = useDispatch()
 
@@ -436,7 +434,7 @@ export default (props) => {
 
     if (res.result === 'success') {
       setEventPop(true)
-      const {memNo} = globalCtx.token
+      const {memNo} = globalState.token
       const item = localStorage.getItem(`popup_event${memNo}`)
       if (item !== null && item === memNo) {
         setEventPop(false)
@@ -511,7 +509,7 @@ export default (props) => {
         setLiveCategoryFixed(true)
       } else {
         setLiveCategoryFixed(false)
-        if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
+        if (globalState.attendStamp === false) dispatch(setGlobalCtxAttendStamp(true))
       }
 
       const GAP = 500
@@ -548,7 +546,7 @@ export default (props) => {
     fetchThxgivingCheck()
 
     return () => {
-      globalCtx.action.updateAttendStamp(false)
+      dispatch(setGlobalCtxAttendStamp(false))
     }
   }, [])
 
@@ -724,10 +722,10 @@ export default (props) => {
   )
 
   useEffect(() => {
-    if (globalCtx.profile && globalCtx.profile.gender === 'n' && globalCtx.profile.birth === '20200101') {
+    if (globalState.profile && globalState.profile.gender === 'n' && globalState.profile.birth === '20200101') {
       setInputState(true)
     }
-  }, [globalCtx.profile])
+  }, [globalState.profile])
 
   useEffect(() => {
     if (sessionStorage.getItem('checkUpdateApp') === 'otherJoin' || sessionStorage.getItem('checkUpdateApp') == null) {
@@ -753,13 +751,13 @@ export default (props) => {
   }, [])
 
   return (
-    <Layout {...props} sticker={globalCtx.sticker}>
+    <Layout {...props} sticker={globalState.sticker}>
       <div
         className="refresh-wrap"
         ref={iconWrapRef}
         style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
         <div className="icon-wrap">
-          <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
+          <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef}/>
         </div>
       </div>
       <div
@@ -798,41 +796,44 @@ export default (props) => {
                 className="broadBtn"
                 onClick={() => {
                   if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    if (globalCtx.token.isLogin === false) {
-                      globalCtx.action.alert({
+                    if (globalState.token.isLogin === false) {
+                      dispatch(setGlobalCtxMessage({
+                        type: "alert",
                         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                         callback: () => {
                           history.push('/login')
                         }
-                      })
+                      }))
                     } else {
-                      globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                      dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 1]}));
                     }
                   } else {
                     if (!broadcastBtnActive) {
                       if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
                         if (Utility.getCookie('clip-player-info')) {
-                          globalCtx.action.confirm({
+                          dispatch(setGlobalCtxMessage({
+                            type: "confirm",
                             msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
                             callback: () => {
-                              clipExit(globalCtx)
-                              RoomMake(globalCtx)
+                              clipExit()
+                              RoomMake()
                             }
-                          })
+                          }))
                         } else {
-                          RoomMake(globalCtx)
+                          RoomMake()
                         }
                       } else {
-                        globalCtx.action.confirm({
+                        dispatch(setGlobalCtxMessage({
+                          type: "confirm",
                           msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
                           callback: () => {
                             sessionStorage.removeItem('room_no')
                             Utility.setCookie('listen_room_no', null)
                             Hybrid('ExitRoom', '')
-                            globalCtx.action.updatePlayer(false)
-                            RoomMake(globalCtx)
+                            dispatch(setGlobalCtxPlayer(false))
+                            RoomMake()
                           }
-                        })
+                        }))
                       }
                       setBroadcastBtnActive(true)
                       setTimeout(() => setBroadcastBtnActive(false), 3000)
@@ -945,14 +946,15 @@ export default (props) => {
           {Array.isArray(initData.myStar) && initData.myStar.length > 0 && (
             <div className="section my-star" ref={StarSectionRef}>
               <div className="title-wrap">
-                <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
-                  <img className="rank-arrow" src={starNew} />
+                <div className="title"
+                     onClick={() => (window.location.href = `/mypage/${globalState.token.memNo}/edit_star`)}>
+                  <img className="rank-arrow" src={starNew}/>
                   <div className="txt">나의스타</div>
-                  <img className="rank-arrow" src={RankArrow} />
+                  <img className="rank-arrow" src={RankArrow}/>
                 </div>
               </div>
               <div className="content-wrap my-star-list">
-                <StarList list={initData.myStar} />
+                <StarList list={initData.myStar}/>
               </div>
             </div>
           )}

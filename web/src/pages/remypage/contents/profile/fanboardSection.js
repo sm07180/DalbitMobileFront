@@ -1,19 +1,19 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React, {useState} from 'react'
 
 // global components
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
 import SocialList from '../../components/SocialList'
+import {useDispatch, useSelector} from "react-redux";
 
 const fanboardTabmenu = ['전체','내댓글']
 
 const FanboardSection = (props) => {
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
-  
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token, profile} = globalState
+
   const [fanboardType, setFanboardType] = useState(fanboardTabmenu[0])
 
   const data = profile
@@ -21,7 +21,7 @@ const FanboardSection = (props) => {
   return (
     <div className="fanboardSection">
       <ul className="subTabmenu">
-        {fanboardTabmenu.map((data,index) => {
+        {fanboardTabmenu.map((data, index) => {
           const param = {
             item: data,
             tab: fanboardType,

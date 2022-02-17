@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import './index.scss'
 import Api from 'context/api'
 // global components
@@ -23,12 +22,14 @@ import ClipSection from './contents/profileDetail/clipSection'
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
 import {profileClipDefaultState, profileFanBoardDefaultState, profileFeedDefaultState} from "redux/types/profileType";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
 const ProfilePage = () => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const params = useParams();
 
   const [showSlide, setShowSlide] = useState(false);
@@ -49,16 +50,17 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
-    let targetMemNo = params.memNo ? params.memNo : context.profile.memNo;
+    let targetMemNo = params.memNo ? params.memNo : globalState.profile.memNo;
 
     Api.profile({params: {memNo: targetMemNo }}).then(res => {
       if(res.code === '0') {
         dispatch(setProfileData(res.data))
       }else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => history.goBack(),
           msg: res.message
-        })
+        }))
       }
     })
   };
@@ -66,7 +68,7 @@ const ProfilePage = () => {
   /* 피드 데이터 호출 */
   const getFeedData = () => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
       pageNo: 1,
       pagePerCnt: 9999,
       topFix: 0,
@@ -86,9 +88,10 @@ const ProfilePage = () => {
           }
         }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -96,7 +99,7 @@ const ProfilePage = () => {
   /* 팬보드 데이터 */
   const getFanBoardData = () => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
       page: 1,
       records: 9999
     }
@@ -111,7 +114,7 @@ const ProfilePage = () => {
   /* 클립 데이터 */
   const getClipData = () => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
       page: 1,
       records: 10
     }
@@ -119,7 +122,7 @@ const ProfilePage = () => {
       if (res.result === 'success') {
         dispatch(setProfileClipData(res.data));
       } else {
-        context.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
       }
     })
   }
@@ -133,40 +136,43 @@ const ProfilePage = () => {
   const addFan = (memNo, memNick, callback) => {
     Api.fan_change({data: {memNo}}).then(res => {
       if (res.result === 'success') {
-        if(typeof callback === 'function') callback();
-        context.action.toast({
+        if (typeof callback === 'function') callback();
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     })
   }
 
   /* 팬 해제 */
   const deleteFan = (memNo, memNick, callback) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
-            if(typeof callback === 'function') callback();
-            context.action.toast({ msg: res.message })
+            if (typeof callback === 'function') callback();
+            dispatch(setGlobalCtxMessage({type: "toast", msg: res.message}))
           } else if (res.result === 'fail') {
-            context.action.alert({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
           }
         });
       }
-    })
+    }))
   }
 
   /* 프로필 이동 */
   const goProfile = memNo => {
     if(memNo) {
       if(isMyProfile) {
-        if(context.profile.memNo !== memNo) {
+        if (globalState.profile.memNo !== memNo) {
           history.push(`/profile/${memNo}`)
         }
       }else {

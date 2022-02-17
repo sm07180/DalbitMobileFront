@@ -1,12 +1,10 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import qs from 'query-string'
 //context
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 
 // etc
-import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
@@ -14,12 +12,13 @@ import {clipExit} from './clip_func'
 
 import IconStart from './static/play_w_m.svg'
 import IconPause from './static/pause_w_m.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxClipPlayerState} from "redux/actions/globalCtx";
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const globalCtx = useContext(Context)
-  const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {clipState, clipPlayerState, clipPlayerInfo} = globalState
   const {webview} = qs.parse(location.search)
 
   const settingSessionInfo = (type) => {
@@ -37,7 +36,7 @@ export default (props) => {
             onClick={() => {
               if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerPause')
-              globalCtx.action.updateClipPlayerState('paused')
+              dispatch(setGlobalCtxClipPlayerState('paused'));
               settingSessionInfo('paused')
             }}>
             <img src={IconPause} alt="멈춤" />
@@ -50,7 +49,7 @@ export default (props) => {
             onClick={() => {
               if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerStart')
-              globalCtx.action.updateClipPlayerState('playing')
+              dispatch(setGlobalCtxClipPlayerState('playing'));
               settingSessionInfo('playing')
             }}>
             <img src={IconStart} alt="시작" />
@@ -104,7 +103,7 @@ export default (props) => {
           className="close"
           onClick={() => {
             sessionStorage.removeItem('clip_active')
-            clipExit(globalCtx)
+            clipExit()
             sessionStorage.setItem('listening', 'N')
           }}>
           닫기

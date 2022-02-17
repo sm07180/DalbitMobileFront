@@ -1,18 +1,16 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
-// context
-import { GlobalContext } from "context";
 
 import NoResult from "common/ui/no_result";
 import GuidePop from "./rank_guide_pop";
 
 //static
 import guideIcon from "../static/guide_s.svg";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 function LevelList({ empty }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const rankState = useSelector(({rank}) => rank);
 
   const { levelList } = rankState;

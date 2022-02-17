@@ -14,7 +14,6 @@ import {
 } from "common/api";
 
 // Context
-import {GlobalContext} from "context";
 import {GuestContext} from "context/guest_ctx";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
@@ -61,6 +60,11 @@ import {
   setBroadcastCtxSettingObject,
   setBroadcastCtxSoundVolume
 } from "../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxRtcInfoEmpty, setGlobalCtxSetToastStatus
+} from "../../../redux/actions/globalCtx";
 
 export const IconWrap = (props: {
   roomOwner: boolean | null;
@@ -72,8 +76,7 @@ export const IconWrap = (props: {
   const { useBoost } = roomInfo;
 
   const history = useHistory();
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { rtcInfo, baseData, guestInfo, chatInfo } = globalState;
 
   const dispatch = useDispatch();
@@ -110,19 +113,16 @@ export const IconWrap = (props: {
       if (heartActive === true) {
         const { result, message } = await broadcastLike({ roomNo, memNo: roomInfo.bjMemNo});
         if (result === "fail") {
-          if (globalAction.setAlertStatus) {
-            globalAction.setAlertStatus({ status: true, content: message });
-          }
+
+          dispatch(setGlobalCtxAlertStatus({ status: true, content: message }));
         } else if (result === "success") {
           dispatch(setBroadcastCtxLikeClicked(false));
         }
       } else if (heartActive === false) {
-        if (globalAction.setAlertStatus) {
-          globalAction.setAlertStatus({
-            status: true,
-            content: "좋아요는 방송청취 60초 후에 가능합니다.",
-          });
-        }
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: "좋아요는 방송청취 60초 후에 가능합니다.",
+        }));
       }
     } else if (baseData.isLogin == false) {
       history.push("/login");
@@ -201,10 +201,10 @@ export const IconWrap = (props: {
     if (result === "success") {
       dispatch(setBroadcastCtxChatFreeze(data.isFeeze));
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
+      }));
     }
   }, [chatFreeze]);
 
@@ -226,59 +226,57 @@ export const IconWrap = (props: {
       document.execCommand("copy");
       document.body.removeChild(textarea);
 
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "링크를 복사하였습니다!",
-      });
+      }));
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
+      }));
     }
   }, []);
 
   const broadcastOffClick = useCallback(() => {
     // togglController();
-    if (globalAction.setAlertStatus) {
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "알림",
-        content: `방송을 정말 ${
-          roomOwner === true ? "종료하" : "나가"
-        }시겠습니까?`,
-        callback: async () => {
-          const { data, result } = await broadcastExit({ roomNo });
-          if (result === "success") {
-            if (roomNo && chatInfo !== null) {
-              chatInfo.privateChannelDisconnect();
-            }
-            if (rtcInfo !== null) {
-              rtcInfo.socketDisconnect();
-              rtcInfo.stop();
-              globalAction.dispatchRtcInfo({ type: "empty" });
-              disconnectGuest();
-              await rtcInfo.stop();
-              rtcSessionClear();
-              if (roomOwner === true) {
-                dispatchDimLayer({
-                  type: "BROAD_END",
-                  others: {
-                    roomOwner: true,
-                    roomNo: roomNo,
-                  },
-                });
-              } else {
-                setTimeout(() => {
-                history.push("/");
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      title: "알림",
+      content: `방송을 정말 ${
+        roomOwner === true ? "종료하" : "나가"
+      }시겠습니까?`,
+      callback: async () => {
+        const { data, result } = await broadcastExit({ roomNo });
+        if (result === "success") {
+          if (roomNo && chatInfo !== null) {
+            chatInfo.privateChannelDisconnect();
+          }
+          if (rtcInfo !== null) {
+            rtcInfo.socketDisconnect();
+            rtcInfo.stop();
+            dispatch(setGlobalCtxRtcInfoEmpty());
+            disconnectGuest();
+            await rtcInfo.stop();
+            rtcSessionClear();
+            if (roomOwner === true) {
+              dispatchDimLayer({
+                type: "BROAD_END",
+                others: {
+                  roomOwner: true,
+                  roomNo: roomNo,
+                },
               });
-              }
+            } else {
+              setTimeout(() => {
+              history.push("/");
+            });
             }
           }
-        },
-      });
-    }
+        }
+      },
+    }));
   }, [chatInfo, rtcInfo, guestState.guestObj]);
 
   const disconnectGuest = () => {
@@ -288,9 +286,7 @@ export const IconWrap = (props: {
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          globalAction.dispatchGuestInfo!({
-            type: "EMPTY",
-          });
+          dispatch(setGlobalCtxGuestInfoEmpty());
         });
       }
     }
@@ -420,13 +416,13 @@ export const IconWrap = (props: {
     if (rtcInfo?.userType === UserType.HOST && savedMicState && videoActive) {
       if (broadcastState.isTTSPlaying) {
         await stopBroadcastMic();
-        globalAction.callSetToastStatus &&
-          globalAction.callSetToastStatus({
-            status: true,
-            message: broadcastState.ttsActionInfo.ttsText
-              ? "목소리가 재생되는 동안 마이크가 OFF됩니다."
-              : "사운드 아이템이 재생되는 동안 마이크가 OFF됩니다.",
-          });
+
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: broadcastState.ttsActionInfo.ttsText
+            ? "목소리가 재생되는 동안 마이크가 OFF됩니다."
+            : "사운드 아이템이 재생되는 동안 마이크가 OFF됩니다.",
+        }));
       } else {
         await startBroadcastMic();
       }
@@ -458,10 +454,10 @@ export const IconWrap = (props: {
           dispatch(setBroadcastCtxMsgShortCut(res.data.list));
         }
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: res.message,
-        });
+        }));
       }
     }
     if (msgShortCut.length === 0) {
@@ -780,12 +776,11 @@ export const IconWrap = (props: {
               className="icon"
               onClick={() => {
                 if (broadcastState.miniGameInfo.status === true) {
-                  globalAction.callSetToastStatus &&
-                    globalAction.callSetToastStatus({
-                      status: true,
-                      message:
-                        "이미 진행중인 게임이 있습니다.\n종료 후 다시 시도해주세요.",
-                    });
+                  dispatch(setGlobalCtxSetToastStatus({
+                    status: true,
+                    message:
+                      "이미 진행중인 게임이 있습니다.\n종료 후 다시 시도해주세요.",
+                  }));
                 } else {
                   dispatch(setBroadcastCtxRightTabType(tabType.ROULETTE));
                 }

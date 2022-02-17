@@ -23,7 +23,7 @@ export default function userList() {
             key={index}
             onClick={() => {
               if (isMailboxOn) {
-                mailBoxJoin(memNo, dispatch, null, history);
+                mailBoxJoin(memNo, dispatch, history);
               } else {
                 dispatch(setGlobalCtxSetToastStatus({
                   status: true,

@@ -1,8 +1,4 @@
-import React, {useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import Api from 'context/api'
+import React from 'react'
 // global components
 import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
@@ -12,11 +8,6 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import './profileWrite.scss'
 
 const ProfileWrite = () => {
-  const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
-
   // 페이지 시작
   return (
     <div id="profileWrite">
@@ -35,7 +26,7 @@ const ProfileWrite = () => {
               <input type="file" className='blind' />
               <button className='insertBtn'>+</button>
             </label>
-            : 
+            :
             <label>
               <div className="insertPicture">
                 <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />

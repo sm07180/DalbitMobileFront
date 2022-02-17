@@ -7,7 +7,6 @@ import styled from 'styled-components'
 //context
 import API from 'context/api'
 import Room, {RoomJoin} from 'context/room'
-import {Context} from 'context'
 import Util from 'components/lib/utility.js'
 
 // component
@@ -20,9 +19,11 @@ import boostIcon from '../static/ico_like_g.svg'
 import starIcon from '../static/ico_hit_g_s.svg'
 import PeopleIcon from '../static/people_g_s.svg'
 import EntryImg from '../static/new_person_w_s.svg'
+import {useDispatch, useSelector} from "react-redux";
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
-  const ctx = useContext(Context)
   //update
   function update(mode) {
     switch (true) {
@@ -35,10 +36,10 @@ export default (props) => {
     }
   }
   const linkMypage = (memNo) => {
-    if (ctx.token.isLogin === true) {
-      if (memNo !== ctx.profile.memNo) {
+    if (globalState.token.isLogin === true) {
+      if (memNo !== globalState.profile.memNo) {
         history.push(`/mypage/${memNo}`)
-      } else if (memNo === ctx.profile.memNo) {
+      } else if (memNo === globalState.profile.memNo) {
         history.push(`/menu/profile`)
       }
     } else {

@@ -1,13 +1,16 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {BotButton} from './bot-button'
-import {Context} from 'context'
 import Api from 'context/api'
 import {BroadCastStore} from '../../store'
 import Swiper from 'react-id-swiper'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup, setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //-------------------------------------------------------- declare start
   const [splashData, setSplashData] = useState()
   const [point, setPoint] = useState()
@@ -15,7 +18,6 @@ export default (props) => {
   const [active, setActive] = useState(false)
   const [send, setSend] = useState(false)
   const [directDalCnt, setDirectDalCnt] = useState(0)
-  const context = useContext(Context)
   const store = useContext(BroadCastStore)
 
   const {broadcastProfileInfo} = store
@@ -74,20 +76,22 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => {
             setText(dalcount)
           },
           msg: res.message
-        })
+        }))
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           return
         },
         msg: `직접입력 선물은 최소 ${splashData.giftDalMin}달 부터 선물이 가능합니다.`
-      })
+      }))
       return
     }
   }
@@ -100,18 +104,20 @@ export default (props) => {
     let calc = totalPrice * rate
     let iosPrice = totalPrice + calc
 
-    context.action.updatePopup('CHARGE', {
-      name: directDalCnt > 0 ? `달 ${directDalCnt}` : `달 ${text}`,
-      price: osType === 2 ? iosPrice : totalPrice
-    })
+    dispatch(setGlobalCtxUpdatePopup({
+      popup: ['CHARGE', {
+        name: directDalCnt > 0 ? `달 ${directDalCnt}` : `달 ${text}`,
+        price: osType === 2 ? iosPrice : totalPrice
+      }]
+    }))
   }
 
   useEffect(() => {
     commonData()
   }, [])
   useEffect(() => {
-    context.action.updatePopup('CHARGE')
-    context.action.updatePopupVisible(false)
+    dispatch(setGlobalCtxUpdatePopup({popup: ['CHARGE']}))
+    dispatch(setGlobalCtxVisible(false));
   }, [])
   //-------------------------------------------------------- components start
   return (

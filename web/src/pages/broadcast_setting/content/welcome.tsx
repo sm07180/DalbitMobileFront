@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
-import { GlobalContext } from "context";
-
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastOption} from "../../../redux/actions/modal";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 function BroadcastSettingWelcome(props: any) {
   const { setPopupState } = props;
 
@@ -24,7 +23,6 @@ function BroadcastSettingWelcome(props: any) {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { globalAction } = useContext(GlobalContext);
   const modalState = useSelector(({modal}) => modal);
 
   const [title, setTitle] = useState("");
@@ -34,11 +32,11 @@ function BroadcastSettingWelcome(props: any) {
 
   const insertTitle = useCallback(async () => {
     if (title === "" || title.length < 10) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "인사말을 10자 이상 입력하세요.",
-      });
+      }));
     } else {
       const res = await insertBroadcastOption({
         optionType: 2,
@@ -66,15 +64,11 @@ function BroadcastSettingWelcome(props: any) {
 
   const modifyTitle = useCallback(async () => {
     if (title === "" || title.length < 10) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "인사말을 10자 이상 입력하세요.",
-      });
-      // globalAction.callSetToastStatus!({
-      //   status: true,
-      //   message: "인사말을 10자 이상 입력하세요.",
-      // });
+      }));
       return;
     }
 
@@ -102,11 +96,11 @@ function BroadcastSettingWelcome(props: any) {
 
       closePopup();
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "적용할 인사말을 선택하세요.",
-      });
+      }));
     }
   }, [deleteIdx, list]);
 

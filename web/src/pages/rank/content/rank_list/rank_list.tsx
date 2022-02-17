@@ -5,8 +5,6 @@ import { useHistory } from "react-router-dom";
 import { printNumber } from "lib/common_fn";
 
 // context
-// import {Context} from 'context'
-import { GlobalContext } from "context";
 import { RoomValidateFromClip } from "common/audio/clip_func";
 import { convertDateToText } from "lib/rank_fn";
 import { RANK_TYPE, DATE_TYPE } from "pages/rank/constant";
@@ -29,7 +27,6 @@ function RankList() {
   const { formState, rankList } = rankState;
 
   const history = useHistory();
-  const gtx = useContext(GlobalContext);
 
   const sliceStart = useMemo(() => {
     if (
@@ -239,7 +236,7 @@ function RankList() {
                   <button
                     onClick={() => {
                       if (roomNo !== "") {
-                        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+                        RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
                       } else {
                         let alertMsg;
                         if (isNaN(listenRoomNo)) {
@@ -258,7 +255,8 @@ function RankList() {
                             callback: () => {
                               RoomValidateFromClip(
                                 listenRoomNo,
-                                gtx,
+                                globalState,
+                                dispatch,
                                 history,
                                 "",
                                 "listener"

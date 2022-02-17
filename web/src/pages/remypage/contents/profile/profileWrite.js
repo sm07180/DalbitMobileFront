@@ -1,8 +1,4 @@
-import React, {useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import Api from 'context/api'
+import React from 'react'
 // global components
 import Header from 'components/ui/header/Header'
 // components
@@ -11,10 +7,6 @@ import Header from 'components/ui/header/Header'
 import './profileWrite.scss'
 
 const ProfileWrite = () => {
-  const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
 
   // 페이지 시작
   return (

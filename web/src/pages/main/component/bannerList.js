@@ -25,7 +25,7 @@ export default React.forwardRef((props, ref) => {
       if (clipUrl.test(linkUrl)) {
         if (isHybrid()) {
           const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
-          clipJoinApi(clip_no, globalCtx)
+          clipJoinApi(clip_no)
         } else {
           globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
         }
@@ -55,7 +55,7 @@ export default React.forwardRef((props, ref) => {
         if (clipUrl.test(linkUrl)) {
           if (isHybrid()) {
             const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
-            clipJoinApi(clip_no, globalCtx)
+            clipJoinApi(clip_no)
           } else {
             globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
           }

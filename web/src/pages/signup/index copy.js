@@ -1,13 +1,11 @@
-import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
+import React, {useEffect, useReducer, useRef, useState} from 'react'
 import styled from 'styled-components'
-
-import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 import {PHOTO_SERVER} from 'context/config'
-import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
+import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 
 //components
 import SignField from './components/signField'
@@ -18,14 +16,22 @@ import SignField from './components/signField'
 // import IcoCheckOn from './static/checkbox_on.svg'
 // import IcoCheckOff from './static/checkbox_off.svg'
 // import IcoArrow from './static/arrow.svg'
-
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxMessage,
+  setGlobalCtxUpdateLogin,
+  setGlobalCtxUpdatePopup,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 
 let intervalId = null
 let setTime = 300
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {webview, redirect} = qs.parse(location.search)
 
   const memIdRef = useRef(null)
@@ -118,7 +124,7 @@ export default (props) => {
     }
   }
 
-  const [changes, dispatch] = useReducer(reducer, {
+  const [changes, dispatchWithoutAction] = useReducer(reducer, {
     memId: '',
     loginPwd: '',
     loginPwdCheck: '',
@@ -234,7 +240,7 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      dispatch({name: 'CMID', value: data.CMID})
+      dispatchWithoutAction({name: 'CMID', value: data.CMID})
       setValidate({
         name: 'memId',
         check: true,
@@ -245,16 +251,18 @@ export default (props) => {
       startAuthTimer()
     } else {
       setValidate({name: 'memId', check: false, text: message})
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
       if (code === '-1') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
           // callback: () => {
           //   props.history.push('/login')
           // }
-        })
+        }))
       }
     }
   }
@@ -266,7 +274,7 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      dispatch({name: 'CMID', value: true})
+      dispatchWithoutAction({name: 'CMID', value: true})
       setValidate({name: 'auth', check: true, text: message})
       setValidate({name: 'memId', check: true})
       clearInterval(intervalId)
@@ -317,9 +325,10 @@ export default (props) => {
     }
 
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.'
-      })
+      }))
     }
 
     //파일을 배열 버퍼로 읽는 최신 약속 기반 API
@@ -463,14 +472,15 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      dispatch({
+      dispatchWithoutAction({
         name: 'profImgUrl',
         value: data.path
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.'
-      })
+      }))
     }
   }
   useEffect(() => {
@@ -501,7 +511,7 @@ export default (props) => {
 
   //생년월일
   const birthChange = (birth) => {
-    dispatch({name: 'birth', value: birth})
+    dispatchWithoutAction({name: 'birth', value: birth})
   }
   // const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
   const validateBirth = () => {
@@ -545,8 +555,8 @@ export default (props) => {
   //성별
   const genderBtnHandle = (e) => {
     const {value} = e.target
-    if (value === gender) return dispatch({name: 'gender', value: 'n'})
-    dispatch({name: 'gender', value: value})
+    if (value === gender) return dispatchWithoutAction({name: 'gender', value: 'n'})
+    dispatchWithoutAction({name: 'gender', value: value})
   }
 
   //약관동의
@@ -569,7 +579,7 @@ export default (props) => {
   }
   const termsBtnHandle = (e) => {
     const {name} = e.target
-    dispatch({name: name, value: changes[name] === 'y' ? 'n' : 'y'})
+    dispatchWithoutAction({name: name, value: changes[name] === 'y' ? 'n' : 'y'})
   }
   const termsMoreBtnHandle = (e) => {
     const {name} = e.target
@@ -578,24 +588,28 @@ export default (props) => {
         return setTermOpen(!termOpen)
         break
       case 'term1':
-        return context.action.updatePopup('TERMS', 'service')
+
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'service']}));
         break
       case 'term2':
-        return context.action.updatePopup('TERMS', 'privacy')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'privacy']}));
         break
       case 'term3':
-        return context.action.updatePopup('TERMS', 'youthProtect')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'youthProtect']}));
         break
       case 'term4':
-        return context.action.updatePopup('TERMS', 'operating')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'operating']}));
         break
       default:
         break
     }
   }
   useEffect(() => {
-    if (term1 === 'y' && term2 === 'y' && term3 === 'y' && term4 === 'y') return dispatch({name: 'allTerm', value: 'y'})
-    dispatch({name: 'allTerm', value: 'n'})
+    if (term1 === 'y' && term2 === 'y' && term3 === 'y' && term4 === 'y') return dispatchWithoutAction({
+      name: 'allTerm',
+      value: 'y'
+    })
+    dispatchWithoutAction({name: 'allTerm', value: 'n'})
   }, [term1, term2, term3, term4])
   const validateTerm = () => {
     if (term1 === 'n' || term2 === 'n' || term3 === 'n' || term4 === 'n') {
@@ -618,7 +632,7 @@ export default (props) => {
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
 
-      context.action.updateToken(loginInfo.data)
+      dispatch(setGlobalCtxUpdateToken(loginInfo.data));
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
         if (isHybrid()) {
@@ -633,14 +647,15 @@ export default (props) => {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)
         }
-        context.action.updateProfile(profileInfo.data)
+        dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
         return props.history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         title: '로그인 실패',
         msg: `${loginInfo.message}`
-      })
+      }))
     }
   }
 
@@ -669,7 +684,7 @@ export default (props) => {
 
   //회원가입 Data fetch
   async function sighUpFetch() {
-    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
+    const nativeTid = globalState.nativeTid == null || globalState.nativeTid == 'init' ? '' : globalState.nativeTid
     const {result, data, message} = await Api.member_join({
       data: {
         memType: changes.memType,
@@ -686,43 +701,46 @@ export default (props) => {
         profImg: changes.profImgUrl,
         profImgRacy: 3,
         nativeTid: nativeTid,
-        os: context.customHeader.os
+        os: globalState.customHeader.os
       }
     })
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
       addAdsData();
 
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           //애드브릭스 이벤트 전달
           if (data.adbrixData != '' && data.adbrixData != 'init') {
             Hybrid('adbrixEvent', data.adbrixData)
             // if (__NODE_ENV === 'dev') {
-              // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
+            // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
             // }
           }
           loginFetch()
         },
         msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
-      context.action.updateLogin(false)
+      }))
+      dispatch(setGlobalCtxUpdateLogin(false));
     }
   }
 
   //회원가입 완료 버튼
   const signUp = () => {
     if (CMID !== true && memType === 'p') {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '휴대폰 본인인증을 진행해주세요.'
-      })
+      }))
     }
     validateNick()
-    if(context.appInfo.showBirthForm) {
+    if (globalState.appInfo.showBirthForm) {
       validateBirth()
     }
     if (memType === 'p') {
@@ -746,9 +764,10 @@ export default (props) => {
     validateKey.unshift(temp)
     for (let index = 0; index < validateKey.length; index++) {
       if (validate[validateKey[index]].check === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: validate[validateKey[index]].text
-        })
+        }))
         break
       }
     }
@@ -781,7 +800,7 @@ export default (props) => {
                   maxLength={11}
                   autoComplete="off"
                   value={memId}
-                  onChange={(e) => dispatch(e.target)}
+                  onChange={(e) => dispatchWithoutAction(e.target)}
                 />
                 <button className={`certificationBtn ${btnState.memId ? "active" : ""}`} disabled={!btnState.memId} onClick={fetchSmsReq}>
                   인증요청
@@ -800,14 +819,14 @@ export default (props) => {
                   placeholder="인증 번호 4자리"
                   autoComplete="off"
                   value={auth}
-                  onChange={(e) => dispatch(e.target)}
+                  onChange={(e) => dispatchWithoutAction(e.target)}
                   disabled={true}
                 />
               </div>
             </InputItem>
           </SignField>
       }
-      {        
+      {
         step === 2 &&
           <SignField title="닉네임을 설정해주세요." btnFunction={phoneCertification}>
             <InputItem button={false} validate={validate.nickNm.check}>
@@ -822,13 +841,13 @@ export default (props) => {
                   autoComplete="off"
                   maxLength={20}
                   value={nickNm}
-                  onChange={(e) => dispatch(e.target)}
+                  onChange={(e) => dispatchWithoutAction(e.target)}
                 />
               </div>
             </InputItem>
           </SignField>
       }
-      {        
+      {
         step === 3 &&
           <SignField title="비밀번호를 설정해주세요." btnFunction={phoneCertification}>
             {memType === 'p' && (
@@ -845,7 +864,7 @@ export default (props) => {
                        autoComplete="off"
                        maxLength={20}
                        value={loginPwd}
-                       onChange={(e) => dispatch(e.target)}
+                       onChange={(e) => dispatchWithoutAction(e.target)}
                      />
                    </div>
                  </InputItem>
@@ -861,7 +880,7 @@ export default (props) => {
                        autoComplete="off"
                        maxLength={20}
                        value={loginPwdCheck}
-                       onChange={(e) => dispatch(e.target)}
+                       onChange={(e) => dispatchWithoutAction(e.target)}
                      />
                    </div>
                  </InputItem>
@@ -869,7 +888,7 @@ export default (props) => {
              )}
           </SignField>
       }
-      {        
+      {
         step === 4 &&
           <SignField title={`소셜 로그인 정보를\n입력해주세요.`} btnFunction={phoneCertification}>
             <InputItem button={false} validate={validate.nickNm.check}>
@@ -884,7 +903,7 @@ export default (props) => {
                   autoComplete="off"
                   maxLength={20}
                   value={nickNm}
-                  onChange={(e) => dispatch(e.target)}
+                  onChange={(e) => dispatchWithoutAction(e.target)}
                 />
               </div>
               <ProfileUpload
@@ -904,8 +923,8 @@ export default (props) => {
                   }}
                 />
               </ProfileUpload>
-            </InputItem>            
-          </SignField>  
+            </InputItem>
+          </SignField>
       }
     </div>
     // <Layout status="no_gnb" header="회원가입">

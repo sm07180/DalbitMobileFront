@@ -11,15 +11,12 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 
 import qs from 'query-string'
 
-//context
-import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import closeBtn from './close.svg'
 ////---------------------------------------------------------------------
 export default (props) => {
   //context
-  const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
   const history = useHistory()
 

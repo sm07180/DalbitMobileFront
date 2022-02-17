@@ -6,7 +6,6 @@ import styled from "styled-components";
 import {getBroadcastBoost, getMoonLandMissionSel, miniGameEnd, postBroadcastRoomExtend} from "common/api";
 
 // ctx
-import {GlobalContext} from "context";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // lib
@@ -35,13 +34,18 @@ import {
   setBroadcastCtxStoryState,
   setBroadcastCtxUserMemNo
 } from "../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxTooltipStatus
+} from "../../../redux/actions/globalCtx";
 
 let boostInterval;
 
 export default function ChatHeaderWrap(prop: any) {
   const { roomOwner, roomNo, roomInfo, displayWrapRef } = prop;
   const { likes, startDt } = roomInfo;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const { baseData, chatInfo } = globalState;
   const dispatch = useDispatch();
@@ -95,11 +99,10 @@ export default function ChatHeaderWrap(prop: any) {
     }
   };
   const tooltipToggle = () => {
-    globalAction.setTooltipStatus &&
-      globalAction.setTooltipStatus({
-        status: true,
-        message: "방송 시작부터 현재까지 입장한 모든 청취자 수의 합계입니다.",
-      });
+    dispatch(setGlobalCtxTooltipStatus({
+      status: true,
+      message: "방송 시작부터 현재까지 입장한 모든 청취자 수의 합계입니다.",
+    }));
   };
   const createFanBadgeList = () => {
     const { fanBadgeList } = roomInfo;
@@ -117,10 +120,10 @@ export default function ChatHeaderWrap(prop: any) {
             key={idx}
             onClick={() => {
               if (val.tipMsg !== "") {
-                globalAction.callSetToastStatus!({
+                dispatch(setGlobalCtxSetToastStatus({
                   status: true,
                   message: val.tipMsg,
-                });
+                }));
               }
             }}
           >
@@ -328,19 +331,15 @@ export default function ChatHeaderWrap(prop: any) {
                     if (result === "success") {
                       dispatch(setBroadcastCtxExtendTime(false));
                       dispatch(setBroadcastCtxExtendTimeOnce(true));
-                      if (globalAction.setAlertStatus) {
-                        globalAction.setAlertStatus({
-                          status: true,
-                          content: "연장에 성공하였습니다.",
-                        });
-                      }
+                      dispatch(setGlobalCtxAlertStatus({
+                        status: true,
+                        content: "연장에 성공하였습니다.",
+                      }));
                     } else if (result === "fail") {
-                      if (globalAction.setAlertStatus) {
-                        globalAction.setAlertStatus({
-                          status: true,
-                          content: message,
-                        });
-                      }
+                      dispatch(setGlobalCtxAlertStatus({
+                        status: true,
+                        content: message,
+                      }));
                     }
                   }}
                 >
@@ -540,26 +539,25 @@ export default function ChatHeaderWrap(prop: any) {
                 </button>
                 <button
                   onClick={() => {
-                    globalAction.setAlertStatus &&
-                      globalAction.setAlertStatus({
-                        status: true,
-                        type: "confirm",
-                        title: "종료하기",
-                        content:
-                          "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
-                        callback: async () => {
-                          const { result, data, message } = await miniGameEnd({
-                            roomNo: roomNo,
-                            gameNo: MiniGameType.ROLUTTE,
-                            rouletteNo: broadcastState.miniGameInfo.rouletteNo,
-                            versionIdx: broadcastState.miniGameInfo.versionIdx,
-                          });
+                    dispatch(setGlobalCtxAlertStatus({
+                      status: true,
+                      type: "confirm",
+                      title: "종료하기",
+                      content:
+                        "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
+                      callback: async () => {
+                        const { result, data, message } = await miniGameEnd({
+                          roomNo: roomNo,
+                          gameNo: MiniGameType.ROLUTTE,
+                          rouletteNo: broadcastState.miniGameInfo.rouletteNo,
+                          versionIdx: broadcastState.miniGameInfo.versionIdx,
+                        });
 
-                          if (result === "success") {
-                            dispatch(setBroadcastCtxMiniGameInfo({status:false}));
-                          }
-                        },
-                      });
+                        if (result === "success") {
+                          dispatch(setBroadcastCtxMiniGameInfo({status:false}));
+                        }
+                      },
+                    }));
                   }}
                 >
                   <img src={CloseIcon} alt="미니게임 삭제" />

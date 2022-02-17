@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { GlobalContext } from "context";
 //api
 import { getChatImageList, postChatImageDelete, postReportImg } from "common/api";
 
@@ -11,10 +10,11 @@ import {
   setMailBoxImgSliderInit,
   setMailBoxImgSliderPopupClose
 } from "../../../../../redux/actions/mailBox";
+import {setGlobalCtxAlertStatus} from "../../../../../redux/actions/globalCtx";
 
 export default (props) => {
   const { startMemNo } = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
   const mailboxState = useSelector(({mailBox}) => mailBox);
 
@@ -34,14 +34,14 @@ export default (props) => {
       setImgList(data.list);
       setSliderState(true);
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {
           dispatch(setMailBoxImgSliderPopupClose());
         },
-      });
+      }));
     }
   };
 
@@ -86,11 +86,11 @@ export default (props) => {
       settingDeletedImgList(imgList);
       actionImgDelete(imgList, settingCurrentSlideIdx(imgList));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     }
   };
 
@@ -105,29 +105,29 @@ export default (props) => {
       imagePath: currentImgPath,
     });
     if (result === "sccess") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     }
   };
 
   const handleReportIconClick = () => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: "현재 이미지를 부적절한 이미지로 <br/> 신고하시겠습니까?",
       callback: () => {
         postImageReport();
       },
-    });
+    }));
   };
 
   const settingCurrentSlideNum = () => {
@@ -197,15 +197,14 @@ export default (props) => {
             <button
               className="delet"
               onClick={() => {
-                globalAction.setAlertStatus &&
-                  globalAction.setAlertStatus({
-                    status: true,
-                    type: "confirm",
-                    content: `업로드된 이미지를 <br/> 삭제하시겠습니까?`,
-                    callback: () => {
-                      postImgDelete();
-                    },
-                  });
+                dispatch(setGlobalCtxAlertStatus({
+                  status: true,
+                  type: "confirm",
+                  content: `업로드된 이미지를 <br/> 삭제하시겠습니까?`,
+                  callback: () => {
+                    postImgDelete();
+                  },
+                }));
               }}
             >
               삭제

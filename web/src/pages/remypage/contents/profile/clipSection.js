@@ -1,16 +1,15 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
+import React from 'react'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipSection = (props) => {
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token, profile} = globalState
 
   const data = profile
 

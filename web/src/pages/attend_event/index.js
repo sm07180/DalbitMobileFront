@@ -1,8 +1,7 @@
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 import {IMG_SERVER} from 'context/config'
 import API from 'context/api'
-import {Context} from 'context'
 import Utility from 'components/lib/utility'
 import Swiper from 'react-id-swiper'
 
@@ -10,7 +9,7 @@ import Swiper from 'react-id-swiper'
 import Layout from 'pages/common/layout'
 import './attend_event.scss'
 import AttendList from './attend_list'
-import {Link, useHistory, location, useLocation} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import WinList from './attend_win_list'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -18,18 +17,22 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 // static
 import btnClose from './static/ico_close.svg'
 import arrowIcon from './static/ic_arrow_y_down.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAttendStamp, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let intervalId = null
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   let location = useLocation()
   const {webview} = qs.parse(location.search)
   if (location.pathname.startsWith('/attend_event')) {
     history.push(webview ? `/event/attend_event?webview=${webview}` : `/event/attend_event`)
   }
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const {token} = globalState
   const [phone, setPhone] = useState('')
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
@@ -102,9 +105,10 @@ export default (props) => {
       })
       setNewWinList(newList)
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -119,7 +123,7 @@ export default (props) => {
   }
 
   useEffect(() => {
-    globalCtx.action.updateAttendStamp(false)
+    dispatch(setGlobalCtxAttendStamp(false));
     fetchEventAttendDate()
     fetchEventAttendWinList()
     fetchEventAttendLunarDate()
@@ -143,38 +147,44 @@ export default (props) => {
           intervalFormatter(status.input_enddate)
 
           if (status.gifticon_win === '1') {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
               buttonMsg: `휴대폰 번호 입력하기`,
               callback: () => {
                 phoneInput.current.focus()
               }
-            })
+            }))
           } else if (status.gifticon_win === '2') {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken_pop@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
               buttonMsg: `휴대폰 번호 입력하기`,
               callback: () => {
                 phoneInput.current.focus()
               }
-            })
+            }))
           } else if (status.the_day === '6' && status.sunday_all_day === '0') {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: `<div class="attend-alert-box" ><p class="title">매일 출석체크 선물 지급 완료!</p><p class="sub-title">다음 주에는 일주일을<br />모두 출석해서 기프티콘<br />당첨 기회를 받으세요!</p></div>`
-            })
+            }))
           } else {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: `<div class="attend-alert-box" ><p class="title">매일 출석체크 선물 지급 완료!</p><p class="sub-title">아쉽지만 기프티콘은<br />당첨되지 않았네요..ㅠㅠ<br />다음 주에는 기프티콘<br />당첨의 행운이 있기를..!</p></div>`
-            })
+            }))
           }
         } else {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: message
-          })
+          }))
         }
       } else {
         if (!token.isLogin) {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             callback: () => {
               history.push({
                 pathname: '/login',
@@ -185,11 +195,12 @@ export default (props) => {
             },
 
             msg: message
-          })
+          }))
         } else {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: message
-          })
+          }))
         }
       }
     }
@@ -229,15 +240,17 @@ export default (props) => {
   const clickSaveButton = () => {
     const rgEx = /(01[0123456789])(\d{3}|\d{4})\d{4}$/g
     if (!phone) {
-      return globalCtx.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `핸드폰 번호는 필수입력 값입니다.`
-      })
+      }))
     }
 
     if (!rgEx.test(phone) || phone.length < 11) {
-      return globalCtx.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `올바른 핸드폰 번호가 아닙니다.`
-      })
+      }))
     }
 
     async function fetchEventAttendInput() {
@@ -247,17 +260,19 @@ export default (props) => {
       if (result === 'success') {
         // const {isCheck} = data
 
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `<div class="attend-alert-box" ><p class="title">다시 한 번 축하드립니다!</p><p class="sub-title">평일 기준 7일 이내 입력하신 번호로
           기프티콘을 전송해드립니다.</p></div>`,
           callback: () => {
             location.reload()
           }
-        })
+        }))
       } else {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
     fetchEventAttendInput()

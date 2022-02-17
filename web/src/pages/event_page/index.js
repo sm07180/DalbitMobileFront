@@ -1,12 +1,11 @@
 import Utility from 'components/lib/utility'
 //context
-import {Context} from 'context'
 import API from 'context/api'
 import {PHOTO_SERVER} from 'context/config.js'
 // component
 import Layout from 'pages/common/layout'
 import NoResult from 'pages/main/component/NoResult.js'
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import CommentEvent from './comment_event'
 import './event_page.scss'
@@ -18,6 +17,7 @@ import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 
 export default (props) => {
+
   const [eventType, setEventType] = useState('event') // event, comment
   // const [eventType, setEventType] = useState('comment')
 
@@ -29,8 +29,6 @@ export default (props) => {
   const [myRankInfo, setMyRankInfo] = useState({})
 
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
 
   const RankType = {
     exp: 1,

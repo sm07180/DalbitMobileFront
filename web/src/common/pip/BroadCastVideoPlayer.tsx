@@ -8,13 +8,18 @@ import {NoticeDisplayStyled, PlayerVideoStyled} from "./PlayerStyle";
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 
 // static
-import {GlobalContext} from "context";
-
 import {broadcastExit} from "common/api";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxExitMarbleInfo,
+  setGlobalCtxGuestInfoEmpty, setGlobalCtxIsShowPlayer,
+  setGlobalCtxRtcInfoEmpty
+} from "../../redux/actions/globalCtx";
 
 const BroadCastVideoPlayer = ()=>{
   const history = useHistory();
-  const {globalState, globalAction} = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {chatInfo, rtcInfo, isShowPlayer, guestInfo, exitMarbleInfo} = globalState;
   const displayWrapRef = useRef<HTMLDivElement>(null);
 
@@ -25,7 +30,7 @@ const BroadCastVideoPlayer = ()=>{
     Object.keys(guestInfo).forEach((v) => {
       guestInfo[v].stop?.();
     });
-    globalAction.dispatchGuestInfo({type: "EMPTY"});
+    dispatch(setGlobalCtxGuestInfoEmpty());
   };
 
   const closeClickEvent = async (e) => {
@@ -40,7 +45,7 @@ const BroadCastVideoPlayer = ()=>{
       return;
     }
     if(data && data.getMarbleInfo){
-      globalAction.setExitMarbleInfo({
+      dispatch(setGlobalCtxExitMarbleInfo({
         ...exitMarbleInfo,
         rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
         yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
@@ -49,15 +54,17 @@ const BroadCastVideoPlayer = ()=>{
         isBjYn: data.getMarbleInfo.isBjYn,
         marbleCnt: data.getMarbleInfo.marbleCnt,
         pocketCnt: data.getMarbleInfo.pocketCnt,
-      });
+      }))
     }
 
     if (exitMarbleInfo.marbleCnt > 0 || exitMarbleInfo.pocketCnt > 0) {
-      globalAction.setExitMarbleInfo({...exitMarbleInfo, showState: true});
+      dispatch(setGlobalCtxExitMarbleInfo({
+        ...exitMarbleInfo, showState: true
+      }));
     }
     if (guestInfo !== null) {
       guestInfo[Object.keys(guestInfo)[0]].stop?.();
-      globalAction.dispatchGuestInfo({ type: "EMPTY" });
+      dispatch(setGlobalCtxGuestInfoEmpty());
     }
     if (chatInfo && chatInfo.privateChannelHandle !== null) {
       chatInfo.privateChannelDisconnect();
@@ -67,8 +74,8 @@ const BroadCastVideoPlayer = ()=>{
     rtcInfo.socketDisconnect();
     rtcInfo.stop();
     disconnectGuest();
-    globalAction.dispatchRtcInfo({ type: "empty" });
-    globalAction.setIsShowPlayer(false);
+    dispatch(setGlobalCtxRtcInfoEmpty());
+    dispatch(setGlobalCtxIsShowPlayer(false));
   };
 
   const playerBarClickEvent = () => {

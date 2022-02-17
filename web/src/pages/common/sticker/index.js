@@ -3,55 +3,57 @@
  * @brief 공통 팝업
  * @use context.action.updatePopup('CHARGE')
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import {RoomJoin} from '../../../context/room'
 //components
 import closeIco from './static/ic_close_w.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSticker} from "redux/actions/globalCtx";
 
 //contents
 
 //
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //state
   const [layout, setLayout] = useState('')
-  //context
-  const context = useContext(Context)
   //   레이어팝업컨텐츠
 
   //useEffect
 
   useEffect(() => {
-    console.log('context.sticker ' + context.sticker)
-  }, [context.sticker])
+    console.log('context.sticker ' + globalState.sticker)
+  }, [globalState.sticker])
 
   //---------------------------------------------------------------------
   return (
     <Content>
       <p
         onClick={() => {
-          const {push_type} = context.stickerMsg
-          const {isLogin} = context.token
+          const {push_type} = globalState.stickerMsg
+          const {isLogin} = globalState.token
           let room_no, mem_no, board_idx
 
           switch (push_type + '') {
             case '1': //-----------------방송방 [room_no]
-              room_no = context.stickerMsg.room_no
+              room_no = globalState.stickerMsg.room_no
               RoomJoin({roomNo: room_no})
               break
             case '2': //------------------메인
               window.location.href = '/'
               break
             case '31': //-----------------마이페이지>팬 보드
-              mem_no = context.stickerMsg.mem_no
+              mem_no = globalState.stickerMsg.mem_no
               if (mem_no != undefined) {
                 if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
               }
               break
             case '32': //-----------------마이페이지>내 지갑
-              mem_no = context.stickerMsg.mem_no
+              mem_no = globalState.stickerMsg.mem_no
               if (mem_no != undefined) {
                 if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
               }
@@ -59,19 +61,19 @@ export default (props) => {
             case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
               break
             case '34': //-----------------마이페이지>알림>해당 알림 글
-              mem_no = context.stickerMsg.mem_no
+              mem_no = globalState.stickerMsg.mem_no
               if (mem_no != undefined) {
                 if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
               }
               break
             case '35': //-----------------마이페이지
-              mem_no = context.stickerMsg.mem_no
+              mem_no = globalState.stickerMsg.mem_no
               if (mem_no !== undefined) {
                 if (isLogin) window.location.href = `/mypage/${mem_no}/`
               }
               break
             case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
-              mem_no = context.stickerMsg.mem_no
+              mem_no = globalState.stickerMsg.mem_no
               if (mem_no !== undefined) {
                 if (isLogin) window.location.href = `/mypage/${mem_no}/`
               }
@@ -81,7 +83,7 @@ export default (props) => {
               break
             case '5': //------------------스페셜 DJ 선정 페이지(미정)
               //window.location.href = `/event/specialDj`
-              board_idx = context.stickerMsg.board_idx
+              board_idx = globalState.stickerMsg.board_idx
               if (board_idx !== undefined) {
                 window.location.href = `/customer/notice/${board_idx}`
               }
@@ -90,17 +92,17 @@ export default (props) => {
               window.location.href = `/`
               break
             case '7': //------------------공지사항 페이지 [board_idx](미정)
-              board_idx = context.stickerMsg.board_idx
+              board_idx = globalState.stickerMsg.board_idx
               if (board_idx !== undefined) {
                 window.location.href = `/customer/notice/${board_idx}`
               }
               break
             case '45': //-----------------Clip PLay
-              room_no = context.stickerMsg.room_no
+              room_no = globalState.stickerMsg.room_no
               if (room_no) clipPlay(room_no)
               break
             case '46': //-----------------Clip PLay
-              room_no = context.stickerMsg.room_no
+              room_no = globalState.stickerMsg.room_no
               if (room_no) clipPlay(room_no)
               break
             default:
@@ -108,14 +110,14 @@ export default (props) => {
               //window.location.href = `/`
               break
           }
-          context.action.updateSticker(false)
+          dispatch(setGlobalCtxSticker(false));
         }}>
-        {context.stickerMsg.title}
+        {globalState.stickerMsg.title}
       </p>
       <a
         href="#"
         onClick={() => {
-          context.action.updateSticker(false)
+          dispatch(setGlobalCtxSticker(false));
         }}>
         <img src={closeIco} />
       </a>

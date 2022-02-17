@@ -1,13 +1,12 @@
-import React, {useState, useEffect, useReducer, useContext} from 'react'
+import React, {useEffect, useReducer, useState} from 'react'
 import styled from 'styled-components'
-import {Context} from 'context'
 import Api from 'context/api'
 //router
 import {useHistory, useLocation} from 'react-router-dom'
 
 // image
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 //component
 import Checkbox from '../../content/checkbox'
 import closeBtn from '../../component/ic_back.svg'
@@ -15,10 +14,13 @@ import NewIcon from '../../static/newIcon.svg'
 import Header from '../header.js'
 import ArrowRight from '../../component/arrow_right.svg'
 import BookMark from '../../component/book_mark_red.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxNoticeState} from "redux/actions/globalCtx";
+
 const List = (props) => {
-  //context
-  const context = useContext(Context)
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let history = useHistory()
   let location = useLocation()
   let yourMemNo
@@ -55,28 +57,34 @@ const List = (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => {
             setWriteShow(false)
-            context.action.updateNoticeState(true)
+            dispatch(setGlobalCtxNoticeState(true));
           },
           msg: res.message
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
         if (coment.length === 0) {
-          context.action.alert({
-            cancelCallback: () => {},
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
+            cancelCallback: () => {
+            },
             msg: '공지사항 제목을 입력해주세요.'
-          })
+          }))
         }
         if (comentContent.length === 0) {
-          context.action.alert({
-            cancelCallback: () => {},
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
+            cancelCallback: () => {
+            },
             msg: '공지사항 내용을 입력해주세요.'
-          })
+          }))
         }
         //console.log(res)
       }
@@ -94,19 +102,22 @@ const List = (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.updateNoticeState(true)
+        dispatch(setGlobalCtxNoticeState(true));
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
-    context.action.confirm({
+
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       callback: () => {
         fetcNoticeDelete()
       },
       msg: '게시글을 삭제하시겠습니까?'
-    })
+    }))
   }
   //func
   //dateFormat
@@ -121,12 +132,13 @@ const List = (props) => {
 
   //alertfunc
   const modifyBtn = () => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       callback: () => {
         setWriteShow(false)
       },
       msg: '현재 작성 중인 게시글은 저장되지 않습니다.<br /><b>취소하시겠습니까?</b>'
-    })
+    }))
   }
   const WriteToggle = () => {
     if (writeShow === false) {
@@ -176,9 +188,9 @@ const List = (props) => {
   const IntTime = parseInt(timestamp)
   //transfer memNo
   const historyMem = (yourMemNo) => {
-    if (yourMemNo !== context.profile.memNo) {
+    if (yourMemNo !== globalState.profile.memNo) {
       history.push(`/mypage/${yourMemNo}`)
-    } else if (yourMemNo !== context.profile.memNo) return false
+    } else if (yourMemNo !== globalState.profile.memNo) return false
   }
   //-------------------------------------------------------------------------
   return (
@@ -219,7 +231,7 @@ const List = (props) => {
             <div className="detail_contents">
               <pre>{contents}</pre>
             </div>
-            <Buttons className={yourMemNo === ctx.profile.memNo ? 'on' : ''}>
+            <Buttons className={yourMemNo === globalState.profile.memNo ? 'on' : ''}>
               <button onClick={WriteToggle}>
                 {/* <em></em> */}
                 수정

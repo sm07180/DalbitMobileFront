@@ -1,11 +1,11 @@
-import React, {useReducer, useEffect, useState, useContext} from 'react'
+import React, {useEffect, useReducer, useState} from 'react'
 import DoExchange from './content/do_exchange'
 import Result from './content/result'
 import Message from 'pages/common/message'
 import Api from 'context/api'
-import {Context} from 'context'
 import './index.scss'
-import Layout from 'pages/common/layout/new_layout'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function exchangeReducer(state, action) {
   switch (action.type) {
@@ -26,7 +26,9 @@ function exchangeReducer(state, action) {
 }
 
 export default function MoneyExchange(props) {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [exchangeState, exchangeDispatch] = useReducer(exchangeReducer, {status: 0})
 
   const [auth, setAuth] = useState(false)
@@ -40,20 +42,22 @@ export default function MoneyExchange(props) {
       }
       if (myBirth > baseYear) {
         setAuth(false)
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`,
           callback: () => props.history.push('/'),
           cancleCallback: () => props.history.push('/')
-        })
+        }))
       } else {
         const res = await Api.self_auth_check({})
         if (res.data.company === '기타') {
           setAuth(false)
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`,
             callback: () => props.history.push('/'),
             cancleCallback: () => props.history.push('/')
-          })
+          }))
         } else {
           setAuth(true)
         }
@@ -67,7 +71,7 @@ export default function MoneyExchange(props) {
       {auth && (
         <div className="exchange-modal">
           <div className="exchangeWrap">
-            {exchangeState.status === 0 && <DoExchange state={exchangeState} dispatch={exchangeDispatch} />}
+            {exchangeState.status === 0 && <DoExchange state={exchangeState} exchangeDispatch={exchangeDispatch} />}
             {exchangeState.status === 2 && <Result state={exchangeState} dispatch={exchangeDispatch} />}
           </div>
         </div>
@@ -79,7 +83,6 @@ export default function MoneyExchange(props) {
 
 // import React, {useState, useContext, useEffect} from 'react'
 
-// import {Context} from 'context'
 
 // import BackBtn from './static/ic_back.svg'
 // import IconNotice from './static/ic_notice.svg'
@@ -179,10 +182,10 @@ export default function MoneyExchange(props) {
 //         state: {...data}
 //       })
 //     } else {
-//       context.action.alert({
+//       dispatch(setGlobalCtxMessage({type:"alert",
 //         msg: res.message,
 //         callback: () => {
-//           context.action.alert({visible: false})
+//           dispatch(setGlobalCtxMessage({type:"alert",visible: false})
 //         }
 //       })
 //     }
@@ -206,10 +209,10 @@ export default function MoneyExchange(props) {
 //         state: {...data}
 //       })
 //     } else {
-//       context.action.alert({
+//       dispatch(setGlobalCtxMessage({type:"alert",
 //         msg: res.message,
 //         callback: () => {
-//           context.action.alert({visible: false})
+//           dispatch(setGlobalCtxMessage({type:"alert",visible: false})
 //         }
 //       })
 //     }
@@ -225,10 +228,10 @@ export default function MoneyExchange(props) {
 //     } else if (!Number.isInteger(parseInt(exchangeStar))) {
 //       return
 //     } else if (exchangeStar > byeolCnt) {
-//       context.action.alert({
+//       dispatch(setGlobalCtxMessage({type:"alert",
 //         msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.',
 //         callback: () => {
-//           context.action.alert({
+//           dispatch(setGlobalCtxMessage({type:"alert",
 //             visible: false
 //           })
 //         }
@@ -245,10 +248,10 @@ export default function MoneyExchange(props) {
 //       if (result === 'success') {
 //         setExchangeCalc({...data})
 //       } else {
-//         context.action.alert({
+//         dispatch(setGlobalCtxMessage({type:"alert",
 //           msg: '환전 신청별은\n최소 570개 이상이어야 합니다.',
 //           callback: () => {
-//             context.action.alert({visible: false})
+//             dispatch(setGlobalCtxMessage({type:"alert",visible: false})
 //           }
 //         })
 //       }
@@ -269,11 +272,11 @@ export default function MoneyExchange(props) {
 //     }
 
 //     if (!extValidator(fileExtension)) {
-//       return context.action.alert({
+//       return dispatch(setGlobalCtxMessage({type:"alert",
 //         msg: 'jpg, png 이미지만 사용 가능합니다.',
 //         title: '',
 //         callback: () => {
-//           context.action.alert({visible: false})
+//           dispatch(setGlobalCtxMessage({type:"alert",visible: false})
 //         }
 //       })
 //     }
@@ -442,11 +445,11 @@ export default function MoneyExchange(props) {
 //               setConsentName(fileName)
 //             }
 //           } else {
-//             context.action.alert({
+//             dispatch(setGlobalCtxMessage({type:"alert",
 //               msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
 //               title: '',
 //               callback: () => {
-//                 context.action.alert({visible: false})
+//                 dispatch(setGlobalCtxMessage({type:"alert",visible: false})
 //               }
 //             })
 //           }
@@ -565,11 +568,11 @@ export default function MoneyExchange(props) {
 //         console.log(age)
 //         if (age <= 15) {
 //           setNoUsage(true)
-//           context.action.alert({
+//           dispatch(setGlobalCtxMessage({type:"alert",
 //             msg: '17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
 //             title: '',
 //             callback: () => {
-//               context.action.alert({visible: false})
+//               dispatch(setGlobalCtxMessage({type:"alert",visible: false})
 //             }
 //           })
 //         } else {

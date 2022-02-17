@@ -4,20 +4,28 @@
  */
 
 import {OS_TYPE} from 'context/config.js'
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-export const StoreLink = async (context, history) => {
-  if (!context.token.isLogin) {
+export const StoreLink = async () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  if (!globalState.token.isLogin) {
     history.push('/login')
     return
   }
 
-  if (context.customHeader['os'] === OS_TYPE['IOS']) {
-    if(context.customHeader['appBuild'] && parseInt(context.customHeader['appBuild']) > 196){
+  if (globalState.customHeader['os'] === OS_TYPE['IOS']) {
+    if (globalState.customHeader['appBuild'] && parseInt(globalState.customHeader['appBuild']) > 196) {
       webkit.messageHandlers.openInApp.postMessage('')
-    }else{
-      context.action.alert({
+    } else {
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '현재 앱 내 결제에 문제가 있어 작업중입니다\n도움이 필요하시면 1:1문의를 이용해 주세요.'
-      })
+      }))
     }
   } else {
     history.push('/pay/store')

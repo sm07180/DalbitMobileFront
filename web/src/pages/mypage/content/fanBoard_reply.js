@@ -3,28 +3,25 @@
  * @brief 마이페이지 팬보드2.5v
  */
 
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 //modules
 import styled from 'styled-components'
 import qs from 'query-string'
-import {useLocation, useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 // context
-import {Context} from 'context'
-import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import Api from 'context/api'
 //components
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import WriteBoard from './board_write'
 //svg
-import BJicon from '../component/bj.svg'
-import WriteIcon from '../component/ic_write.svg'
 import closeBtn from '../component/ic_back.svg'
-import MoreBtnIcon from '../static/ic_new_more.svg'
-import ReplyIcon from '../static/ic_reply_purple.svg'
-import LockIcon from '../static/lock_g.svg'
-import ArrowDownIcon from '../static/arrow_down_g.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxFanBoardBigIdx, setGlobalCtxMessage, setGlobalCtxToggleState} from "redux/actions/globalCtx";
+
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //props.replyIdx 대댓글관련 모든 api통신에서 필요
   const history = useHistory()
   const replyIdx = props.replyShowIdx
@@ -33,10 +30,6 @@ export default (props) => {
   if (!props.titleReplyInfo) return null
   //location && context
   let location = useLocation()
-  const ctx = useContext(Context)
-  const context = useContext(Context)
-  //profileGlobal info
-  const {profile} = ctx
 
   const {webview} = qs.parse(location.search)
   //urlNumber
@@ -72,15 +65,15 @@ export default (props) => {
   }
   // 토글분기 및 전체 상황관리
   const WriteToggles = () => {
-    if (context.toggleState === false) {
-      context.action.updateToggleAction(true)
+    if (globalState.toggleState === false) {
+      dispatch(setGlobalCtxToggleState(true));
     } else {
-      context.action.updateToggleAction(false)
+      dispatch(setGlobalCtxToggleState(false));
     }
-    if (context.fanBoardBigIdx !== replyIdx) {
-      context.action.updateFanBoardBigIdxMsg(replyIdx)
-    } else if (context.fanBoardBigIdx === replyIdx) {
-      context.action.updateFanBoardBigIdxMsg(0)
+    if (globalState.fanBoardBigIdx !== replyIdx) {
+      dispatch(setGlobalCtxFanBoardBigIdx(replyIdx));
+    } else if (globalState.fanBoardBigIdx === replyIdx) {
+      dispatch(setGlobalCtxFanBoardBigIdx(0));
     }
   }
   //작성하기 토글
@@ -157,15 +150,17 @@ export default (props) => {
       setTextChange('')
       fetchDataReplyList()
       setThisBigIdx(0)
-      context.action.updateFanBoardBigIdxMsg(textChange)
+      dispatch(setGlobalCtxFanBoardBigIdx(textChange));
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: '수정 내용을 입력해주세요.'
-        })
+        }))
       }
-      // context.action.alert({
+      // dispatch(setGlobalCtxMessage({type:"alert",
       //   callback: () => {},
       //   msg: res.message
       // })
@@ -188,12 +183,14 @@ export default (props) => {
       setThisBigIdx(0)
     } else if (res.result === 'fail') {
       if (modifyMsg.length === 0) {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: '수정 내용을 입력해주세요.'
-        })
+        }))
       }
-      // context.action.alert({
+      // dispatch(setGlobalCtxMessage({type:"alert",
       //   cancelCallback: () => {},
       //   msg: res.message
       // })
@@ -218,12 +215,14 @@ export default (props) => {
       if (res.result === 'success') {
         fetchDataReplyList()
         setThisBigIdx(0)
-        context.action.updateFanBoardBigIdxMsg(-1)
+        dispatch(setGlobalCtxFanBoardBigIdx(-1));
       } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataDelete()
@@ -248,10 +247,6 @@ export default (props) => {
     )
   }
 
-  const ReplyInfoTransfer = () => {
-    context.action.updateFanboardReplyNum(-1)
-    context.action.updateToggleAction(true)
-  }
   //------------------------------------------------------------
   return (
     <div className="replyWrap">
@@ -289,11 +284,11 @@ export default (props) => {
               let link = ''
               if (webview) {
                 link =
-                  context.token.memNo !== writerNo
+                  globalState.token.memNo !== writerNo
                     ? history.push(`/mypage/${writerNo}?webview=${webview}`)
                     : history.push(`/menu/profile`)
               } else {
-                link = context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
+                link = globalState.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
               }
             }
             return (
@@ -302,11 +297,11 @@ export default (props) => {
                 <div className="reply_Wrap__main">
                   <div className="reply_list_header">
                     {/* 상세기능영역 */}
-                    {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
+                    {(urlrStr === globalState.token.memNo || writerNo === globalState.token.memNo) && (
                       <>
                         <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
                         <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
-                          {writerNo === context.token.memNo && (
+                          {writerNo === globalState.token.memNo && (
                             <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>
                           )}
                           <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>

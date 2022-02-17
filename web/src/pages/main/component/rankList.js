@@ -1,12 +1,10 @@
-import React, {useEffect, useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import {IMG_SERVER} from 'context/config'
 
 // component
 import Swiper from 'react-id-swiper'
+import {useSelector} from "react-redux";
 
 // static
 const GoldMedal = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
@@ -16,10 +14,10 @@ const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
 const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
 
 export default (props) => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   let {rankType, djRank, fanRank} = props
-  const globalCtx = useContext(Context)
-  const MyMemNo = globalCtx.profile && globalCtx.profile.memNo
+  const MyMemNo = globalState.profile && globalState.profile.memNo
 
   if (djRank === undefined || fanRank === undefined) {
     return null
@@ -43,8 +41,8 @@ export default (props) => {
                   className="rank-slide"
                   key={`dj-${idx}`}
                   onClick={() => {
-                    console.log(globalCtx.token.isLogin)
-                    if (globalCtx.token.isLogin) {
+                    console.log(globalState.token.isLogin)
+                    if (globalState.token.isLogin) {
                       history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
                     } else {
                       history.push('/login')
@@ -76,7 +74,7 @@ export default (props) => {
                   className="rank-slide"
                   key={`fan-${idx}`}
                   onClick={() => {
-                    if (globalCtx.token.isLogin) {
+                    if (globalState.token.isLogin) {
                       history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
                     } else {
                       history.push('/login')

@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
 
-import { GlobalContext } from "context";
-
 import { useHistory } from "react-router-dom";
 import { printNumber } from "lib/common_fn";
 
@@ -21,11 +19,11 @@ import { Stats } from "fs";
 
 import {setRankData} from "redux/actions/rank";
 import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 export default function MyProfile() {
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const rankState = useSelector(({rank}) => rank);
   const { formState, myInfo, rankTimeData, rankData } = rankState;
   const [myProfile, setMyProfile] = useState<any>(false);
@@ -69,11 +67,10 @@ export default function MyProfile() {
         //   myInfo: myInfo,
         // });
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: "랭킹 보상을 받을 수 있는\n기간이 지났습니다.",
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: "랭킹 보상을 받을 수 있는\n기간이 지났습니다.",
+        }));
       }
     }
     feachrankingReward();
@@ -154,28 +151,26 @@ export default function MyProfile() {
         </p>
         <button
           onClick={() => {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "confirm",
-                content: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #632beb;">반영하시겠습니까?</span>`,
-                callback: () => {
-                  globalAction.setAlertStatus &&
-                    globalAction.setAlertStatus({
-                      status: true,
-                      content: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
-                      callback: () => {
-                        rankSettingBtn(true);
-                        setRankSetting(true);
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "confirm",
+              content: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #632beb;">반영하시겠습니까?</span>`,
+              callback: () => {
+                dispatch(setGlobalCtxAlertStatus({
+                  status: true,
+                  content: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
+                  callback: () => {
+                    rankSettingBtn(true);
+                    setRankSetting(true);
 
-                        dispatch(setRankData({
-                          ...rankState.rankData,
-                          isRankData: true,
-                        }));
-                      },
-                    });
-                },
-              });
+                    dispatch(setRankData({
+                      ...rankState.rankData,
+                      isRankData: true,
+                    }));
+                  },
+                }));
+              },
+            }));
           }}
         >
           <img src="https://image.dalbitlive.com/ranking/ico_circle_x_g@2x.png" alt="icon" /> 반영하기

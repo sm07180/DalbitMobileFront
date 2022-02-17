@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import { postAddFan, broadcastLike } from "common/api";
 
 // Context
-import { GlobalContext } from "context";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Constant
@@ -17,6 +16,7 @@ import {
   setBroadcastCtxLikeClicked,
   setBroadcastCtxRightTabType
 } from "../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 let liked = false;
 
@@ -29,8 +29,6 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
   const { roomOwner, roomInfo, roomNo } = props;
 
   const history = useHistory();
-
-  const { globalAction } = useContext(GlobalContext);
 
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
@@ -75,12 +73,10 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
             callback = async () => {
               const { result } = await postAddFan({ memNo: roomInfo.bjMemNo });
               if (result === "success") {
-                if (globalAction.callSetToastStatus) {
-                  globalAction.callSetToastStatus({
-                    status: true,
-                    message: `${roomInfo.bjNickNm}님의 팬이 되었습니다`,
-                  });
-                }
+                dispatch(setGlobalCtxSetToastStatus({
+                  status: true,
+                  message: `${roomInfo.bjNickNm}님의 팬이 되었습니다`,
+                }));
                 dispatch(setBroadcastCtxIsFan(true));
                 faned = true;
               }
@@ -91,10 +87,10 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
               const { result, message } = await broadcastLike({ roomNo, memNo: roomInfo.bjMemNo });
 
               if (result === "fail") {
-                globalAction.setAlertStatus!({
+                dispatch(setGlobalCtxAlertStatus({
                   status: true,
                   content: message,
-                });
+                }));
               } else if (result === "success") {
                 dispatch(setBroadcastCtxLikeClicked(false));
                 liked = true;

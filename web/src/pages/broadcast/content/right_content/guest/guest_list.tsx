@@ -3,17 +3,18 @@ import React, { useCallback, useEffect, useState, useContext } from "react";
 import { guestManagement, guest, getBroadcastListeners } from "common/api";
 
 import { GuestContext } from "context/guest_ctx";
-import { GlobalContext } from "context";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import NoResult from "common/ui/no_result";
 import GuestItem from "./guest_item";
 
 import "./index.scss";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../../redux/actions/globalCtx";
 
 export default function GuestList(props: any) {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { guestState, guestAction } = useContext(GuestContext);
 
@@ -41,7 +42,7 @@ export default function GuestList(props: any) {
   }
 
   const exitGuest = useCallback(async (item: any) => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       type: "confirm",
       status: true,
       content: `${item.nickNm}님의 게스트 연결을\n종료하시겠습니까?`,
@@ -52,11 +53,11 @@ export default function GuestList(props: any) {
           mode: 6,
         });
       },
-    });
+    }));
   }, []);
 
   const cancleGuest = useCallback((item: any) => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: `${item.nickNm}님의 게스트 초대를\n취소하시겠습니까?`,
@@ -67,7 +68,7 @@ export default function GuestList(props: any) {
           mode: 2,
         });
       },
-    });
+    }));
   }, []);
 
   const inviteGuest = useCallback(
@@ -85,25 +86,25 @@ export default function GuestList(props: any) {
               return v.memNo === memNo;
             }) < 0
           ) {
-            globalAction.setAlertStatus!({
+            dispatch(setGlobalCtxAlertStatus({
               status: true,
               content: "방송방에 존재하지 않는 사용자입니다.",
-            });
+            }));
             return;
           }
         } else {
-          globalAction.setAlertStatus!({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             content: "방송방에 존재하지 않는 사용자입니다.",
-          });
+          }));
           return;
         }
 
         if (guestState.guestConnectStatus === true) {
-          globalAction.setAlertStatus!({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             content: "이미 방송 중인 게스트가 있습니다.\br게스트 연결종료 후 게스트를 초대해주세요.",
-          });
+          }));
         } else {
           const res = await guest({
             roomNo: props.roomNo,
@@ -111,15 +112,15 @@ export default function GuestList(props: any) {
             mode: 1,
           });
           if (res.result === "success") {
-            globalAction.callSetToastStatus!({
+            dispatch(setGlobalCtxSetToastStatus({
               status: true,
               message: "게스트 초대 요청을 보냈습니다.",
-            });
+            }));
           } else {
-            globalAction.callSetToastStatus!({
+            dispatch(setGlobalCtxSetToastStatus({
               status: true,
               message: res.message,
-            });
+            }));
           }
         }
       } else {

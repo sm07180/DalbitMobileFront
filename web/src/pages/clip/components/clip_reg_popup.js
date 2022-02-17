@@ -1,17 +1,19 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {clipReg} from 'pages/common/clipPlayer/clip_func'
-import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
-import {Hybrid} from 'context/hybrid'
 
 import '../clip.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default function ClipRegPop(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {setRegPopupState} = props
-  const context = useContext(Context)
   const history = useHistory()
   // reference
   const customHeader = JSON.parse(Api.customHeader)
@@ -49,20 +51,21 @@ export default function ClipRegPop(props) {
 
   const goClipReg = (type) => {
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+      dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}))
     } else {
-      if (context.token.isLogin === false) {
-        return context.action.alert({
+      if (globalState.token.isLogin === false) {
+        return dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
         if (type === 'recording') {
-          clipReg('record', context)
+          clipReg('record')
         } else if (type === 'upload') {
-          clipReg('upload', context)
+          clipReg('upload')
         }
       }
     }

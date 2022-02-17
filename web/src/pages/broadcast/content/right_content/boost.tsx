@@ -1,11 +1,14 @@
 import React, {useCallback, useContext, useEffect, useReducer, useState} from "react";
-// ctx
-import {GlobalContext} from "context";
 // Api
 import {getBroadcastBoost, getProfile, postBroadcastBoost} from "common/api";
 import {tabType} from "pages/broadcast/constant";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType, setBroadcastCtxUseBoost} from "../../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../redux/actions/globalCtx";
 
 let preventClick = false;
 
@@ -26,8 +29,7 @@ function counterReducer(state, action) {
 
 export default function Profile(props: { roomNo: string; roomOwner: boolean; roomInfo: any }) {
   const { roomNo, roomOwner, roomInfo } = props;
-  // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
   // state
   const [boostList, setBoostList] = useState<any>({});
@@ -165,22 +167,21 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
         addTimer(1800); //부스터 사용 ( 30분 연장 )
         fetchData(); // 부스트 사용 후 다시 조회
 
-        globalAction.callSetToastStatus && globalAction.callSetToastStatus({ status: true, message: "부스터가 사용되었습니다" });
+        dispatch(setGlobalCtxSetToastStatus({ status: true, message: "부스터가 사용되었습니다" }));
 
         const { result, data } = await getProfile({ memNo: globalState.baseData.memNo });
         if (result === "success") {
-          globalAction.setUserProfile!(data);
+          dispatch(setGlobalCtxUserProfile(data));
         }
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: res.message,
-            callback: () => {
-              return;
-            },
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          type: "alert",
+          content: res.message,
+          callback: () => {
+            return;
+          },
+        }));
       }
       preventClick = false;
     }

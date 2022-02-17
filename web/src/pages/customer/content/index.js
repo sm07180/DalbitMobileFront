@@ -3,13 +3,12 @@
  * @brief 고객센터 index
  *
  */
-import React, {useState, useEffect, useContext} from 'react'
-import {Switch, Route} from 'react-router-dom'
+import React, {useContext, useEffect} from 'react'
+import {Route, Switch} from 'react-router-dom'
 
 import styled from 'styled-components'
 //context
 import {CustomerStore} from '../store'
-import {Context} from 'context';
 import {COLOR_MAIN} from 'context/color'
 import useResize from 'components/hooks/useResize'
 //components
@@ -27,14 +26,17 @@ import AppInfoRoute from './app_info/route'
 import Layout from 'pages/common/layout/new_layout'
 import EventWinner from 'pages/customer/content/event/event_winner.js'
 import WinnerInfoForm from 'pages/customer/content/event/winner_info_form.js'
-import Api from "context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxNoServiceInfo} from "redux/actions/globalCtx";
 //
 
 const Index = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //---------------------------------------------------------------------
   //context
   const store = useContext(CustomerStore)
-  const context = useContext(Context);
   Index.store = store
 
   const {title, num} = props.match.params
@@ -111,16 +113,16 @@ const Index = (props) => {
   }
 
   useEffect(() => {
-    const noServiceInfo = context.noServiceInfo;
+    const noServiceInfo = globalState.noServiceInfo;
     const isQnaPage = title === 'personal' || title === 'qnaList';
 
-    if(context.token.isLogin) {
-      if(noServiceInfo.americanAge >= noServiceInfo.limitAge) {
-        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", passed: true});
-      }else if(context.profile.memJoinYn === 'o' || isQnaPage) {
-        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
-      }else {
-        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
+    if (globalState.token.isLogin) {
+      if (noServiceInfo.americanAge >= noServiceInfo.limitAge) {
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, showPageYn: "n", passed: true}));
+      } else if (globalState.profile.memJoinYn === 'o' || isQnaPage) {
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, showPageYn: "n"}));
+      } else {
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, showPageYn: "y"}));
       }
     }
   }, [title]);

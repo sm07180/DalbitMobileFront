@@ -40,6 +40,18 @@ import {
   setBroadcastCtxStoryState,
   setBroadcastCtxUserCount2, setBroadcastCtxUserMemNo
 } from "../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus, setGlobalCtxChatInfoInit,
+  setGlobalCtxCurrentChatDataEmpty,
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxIsShowPlayer,
+  setGlobalCtxMailBlockUser, setGlobalCtxMoveToAlert,
+  setGlobalCtxRealtimeBroadStatus,
+  setGlobalCtxRtcInfoEmpty, setGlobalCtxSetToastStatus,
+  setGlobalCtxSplash,
+  setGlobalCtxSplashData,
+  setGlobalCtxTooltipStatus
+} from "../../redux/actions/globalCtx";
 
 // lib
 const socketClusterClient = require("socketcluster-client");
@@ -63,7 +75,6 @@ export class ChatSocketHandler {
   public socket: any;
   public chatUserInfo: chatUserInfoType;
   public roomOwner: boolean;
-  public globalAction: any | null;
   public broadcastAction: any | null;
   public mailboxAction: any | null;
   public dispatch: any | null;
@@ -126,7 +137,6 @@ export class ChatSocketHandler {
     this.chatCnt = 0;
 
     if (reConnectHandler !== undefined && reConnectHandler !== null) {
-      this.setGlobalAction(this.reConnect.globalAction);
       this.setBroadcastAction(this.reConnect.broadcastAction);
       this.setRoomOwner(this.reConnect.roomOwner);
     }
@@ -166,10 +176,6 @@ export class ChatSocketHandler {
     this.reConnect.setUserInfo(this.chatUserInfo);
   }
 
-  setGlobalAction(action: any) {
-    this.globalAction = action;
-    this.reConnect.setGlobalAction(this.globalAction);
-  }
 
   setBroadcastAction(action: any) {
     this.broadcastAction = action;
@@ -345,9 +351,7 @@ export class ChatSocketHandler {
             this.reConnect.setPrivateChannelNo(this.privateChannelNo);
           }
 
-          if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-            this.globalAction.dispatchCurrentChatData({ type: "empty" });
-          }
+          this.dispatch(setGlobalCtxCurrentChatDataEmpty());
         }
       }
     };
@@ -386,9 +390,7 @@ export class ChatSocketHandler {
   }
 
   privateChannelDisconnect() {
-    if (this.globalAction && this.globalAction.setIsShowPlayer) {
-      this.globalAction.setIsShowPlayer(false);
-    }
+    this.dispatch(setGlobalCtxIsShowPlayer(false));
 
     if (this.privateChannelHandle) {
       //console.log(`@@chat socket ...`, this.privateChannelHandle)
@@ -398,9 +400,7 @@ export class ChatSocketHandler {
       this.privateChannelNo = "";
       this.reConnect.setPrivateChannelNo(this.privateChannelNo);
 
-      if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-        this.globalAction.dispatchCurrentChatData({ type: "empty" });
-      }
+      this.dispatch(setGlobalCtxCurrentChatDataEmpty());
     }
   }
 
@@ -431,53 +431,44 @@ export class ChatSocketHandler {
           switch (cmd) {
             case "reqSocketPush": {
               const { reqSocketPush } = data;
-              if (this.globalAction) {
-                this.globalAction.setRealtimeBroadStatus!({
-                  status: true,
-                  type: "broadAlarm",
-                  message: `${reqSocketPush.msg}`,
-                  roomNo: `${reqSocketPush.roomNo}`,
-                  profImg: `${reqSocketPush.profImg.thumb62x62}`,
-                });
-              }
+              this.dispatch(setGlobalCtxRealtimeBroadStatus({
+                status: true,
+                type: "broadAlarm",
+                message: `${reqSocketPush.msg}`,
+                roomNo: `${reqSocketPush.roomNo}`,
+                profImg: `${reqSocketPush.profImg.thumb62x62}`,
+              }))
               return null;
             }
             case "mailBoxPubChat": {
               const { mailBoxPubChat } = data;
               this.dispatch(setMailBoxIsMailBoxNew(true));
               this.dispatch(setMailBoxChatListUpdate(mailBoxPubChat));
-              if (this.globalAction) {
-                this.globalAction.setRealtimeBroadStatus!({
-                  status: true,
-                  type: "MailAlarm",
-                  nickNm: `${mailBoxPubChat.nickNm}`,
-                  message: `${mailBoxPubChat.msg}`,
-                  roomNo: `${mailBoxPubChat.chatNo}`,
-                  profImg: `${mailBoxPubChat.profImg.thumb62x62}`,
-                  time: `${mailBoxPubChat.sendDt}`,
-                  memNo: `${mailBoxPubChat.memNo}`,
-                });
-              }
+              this.dispatch(setGlobalCtxRealtimeBroadStatus({
+                status: true,
+                type: "MailAlarm",
+                nickNm: `${mailBoxPubChat.nickNm}`,
+                message: `${mailBoxPubChat.msg}`,
+                roomNo: `${mailBoxPubChat.chatNo}`,
+                profImg: `${mailBoxPubChat.profImg.thumb62x62}`,
+                time: `${mailBoxPubChat.sendDt}`,
+                memNo: `${mailBoxPubChat.memNo}`,
+              }));
               return null;
             }
             case "reqMemBlack": {
               const { reqMemBlack } = data;
               const { memNo, blackMemNo } = reqMemBlack;
-              if (this.globalAction) {
-                this.globalAction.setMailBlockUser!({
-                  memNo: memNo,
-                  blackMemNo: blackMemNo,
-                });
-              }
+              this.dispatch(setGlobalCtxMailBlockUser({
+                memNo: memNo,
+                blackMemNo: blackMemNo,
+              }));
               return null;
             }
             case "reqChangeItem": {
               getItems().then((resolve) => {
-                if (this.globalAction && this.globalAction.setSplashData && this.splashData !== null) {
-                  this.globalAction.setSplashData({
-                    ...this.splashData,
-                    items: [...resolve.data.items],
-                  });
+                if (this.splashData !== null) {
+                  this.dispatch(setGlobalCtxSplashData({items: [...resolve.data.items]}))
                 }
               });
               break;
@@ -549,20 +540,15 @@ export class ChatSocketHandler {
                     if (
                       this.rtcInfo &&
                       this.rtcInfo !== null &&
-                      this.globalAction &&
-                      this.globalAction.setAlertStatus &&
-                      this.globalAction.dispatchRtcInfo &&
-                      this.globalAction.dispatchGuestInfo &&
                       this.history
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
                       if (this.guestInfo && this.guestInfo !== null) {
                         this.guestInfo.stop && this.guestInfo.stop();
-                        this.globalAction.dispatchGuestInfo({ type: "EMPTY" });
+                        this.dispatch(setGlobalCtxGuestInfoEmpty());
                       }
-
-                      this.globalAction.dispatchRtcInfo({ type: "empty" });
+                      this.dispatch(setGlobalCtxRtcInfoEmpty());
 
                       if (
                         this.guestAction &&
@@ -575,7 +561,7 @@ export class ChatSocketHandler {
                         this.guestAction.setGuestConnectStatus(false);
                       }
 
-                      this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                      this.dispatch(setGlobalCtxIsShowPlayer(false));
                       rtcSessionClear();
 
                       if (this.history.location.pathname.match("/broadcast/")) {
@@ -590,10 +576,10 @@ export class ChatSocketHandler {
                         }
                       } else {
                         setTimeout(() => {
-                          this.globalAction.setAlertStatus({
+                          this.dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             content: "방송이 종료되었습니다.",
-                          });
+                          }))
                         }, 600);
                       }
                       // setTimeout(() => {
@@ -609,15 +595,12 @@ export class ChatSocketHandler {
                     }
                     if (
                       this.rtcInfo !== null &&
-                      this.globalAction &&
-                      this.globalAction.setAlertStatus &&
-                      this.globalAction.dispatchRtcInfo &&
                       this.history
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
-                      this.globalAction.dispatchRtcInfo({ type: "empty" });
-                      this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                      this.dispatch(setGlobalCtxRtcInfoEmpty());
+                      this.dispatch(setGlobalCtxIsShowPlayer(false));
                       rtcSessionClear();
 
                       if (this.history.location.pathname.match("/broadcast/")) {
@@ -632,19 +615,12 @@ export class ChatSocketHandler {
                         }
                       } else {
                         setTimeout(() => {
-                          this.globalAction.setAlertStatus({
+                          this.dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             content: "방송이 종료되었습니다.",
-                          });
+                          }));
                         }, 600);
                       }
-
-                      // setTimeout(() => {
-                      //   this.globalAction.setAlertStatus({
-                      //     status: true,
-                      //     content: "방송이 종료되었습니다.",
-                      //   });
-                      // }, 600);
                     }
 
                     return null;
@@ -687,21 +663,19 @@ export class ChatSocketHandler {
 
                     const { msg, type } = recvMsg;
                     if (type === "system") {
-                      if (this.globalAction !== null && this.globalAction.setTooltipStatus) {
-                        this.globalAction.setTooltipStatus({
-                          status: true,
-                          message: msg,
-                          type: "system",
-                        });
-                      }
+                      this.dispatch(setGlobalCtxTooltipStatus({
+                        status: true,
+                        message: msg,
+                        type: "system",
+                      }));
 
                       setTimeout(() => {
-                        this.globalAction.setTooltipStatus!({
+                        this.dispatch(setGlobalCtxTooltipStatus({
                           status: false,
                           message: "",
                           style: {},
                           type: "",
-                        });
+                        }));
                       }, 4000);
 
                       return null;
@@ -806,10 +780,10 @@ export class ChatSocketHandler {
                         (!this.roomOwner && lottieData?.soundFileUrl && this.userSettingObj?.normalSound) )) {
                       if ((lottieData?.ttsUseYn === 'y' && isTTSItem && this.roomInfo?.djTtsSound === false) ||
                           (lottieData?.soundFileUrl && this.roomInfo?.djNormalSound === false)) {
-                        this.globalAction?.callSetToastStatus && this.globalAction.callSetToastStatus({
+                        this.dispatch(setGlobalCtxSetToastStatus({
                           status: true,
                           message: 'DJ설정으로 소리가 나오지 않습니다'
-                        });
+                        }));
                       }
                     }
                     // tts : 방장설정이 off이면 재생 x, on이면 청취자 개인설정에 따라 재생
@@ -822,10 +796,10 @@ export class ChatSocketHandler {
                     }
                     if(memNo === this.chatUserInfo.memNo && isTTSItem && (reqGiftImg.ttsData && reqGiftImg.ttsData.error)) {
                       console.log('chat_socket : ', reqGiftImg.ttsData.error);
-                      this.globalAction.callSetToastStatus({
+                      this.dispatch(setGlobalCtxSetToastStatus({
                         status: true,
                         message: "TTS 목소리 재생을 실패했습니다.",
-                      });
+                      }));
                     }
 
                     if (lottieData && isSecret === false) {
@@ -1112,22 +1086,21 @@ export class ChatSocketHandler {
 
                     if (
                       this.roomOwner === false &&
-                      data.reqKickOut.revMemNo === this.chatUserInfo.memNo &&
-                      this.globalAction &&
-                      this.globalAction.setAlertStatus
+                      data.reqKickOut.revMemNo === this.chatUserInfo.memNo
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
-                      this.globalAction.dispatchRtcInfo({ type: "empty" });
-                      this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+
+                      this.dispatch(setGlobalCtxRtcInfoEmpty());
+                      this.dispatch(setGlobalCtxIsShowPlayer(false));
                       rtcSessionClear();
-                      this.globalAction.setMoveToAlert({
+                      this.dispatch(setGlobalCtxMoveToAlert({
                         dest: "/",
                         alertStatus: {
                           status: true,
                           content: data.recvMsg.msg,
                         }
-                      })
+                      }));
                     }
 
                     if (auth === AuthType.DJ || auth === AuthType.MANAGER) {
@@ -1397,30 +1370,26 @@ export class ChatSocketHandler {
                       // 초대 거절
                       case 4:
                         if (this.roomOwner === true) {
-                          if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
-                            this.globalAction.callSetToastStatus({
-                              status: true,
-                              message: "게스트 초대가 거절당했습니다.",
+                          this.dispatch(setGlobalCtxSetToastStatus({
+                            status: true,
+                            message: "게스트 초대가 거절당했습니다.",
+                          }));
+                          if (this.guestAction !== null && this.guestAction.dispatchStatus) {
+                            this.guestAction.dispatchStatus({
+                              type: "reject",
                             });
-                            if (this.guestAction !== null && this.guestAction.dispatchStatus) {
-                              this.guestAction.dispatchStatus({
-                                type: "reject",
-                              });
-                            }
                           }
                         }
 
                         if (this.chatUserInfo === user.memNo) {
-                          if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
-                            this.globalAction.callSetToastStatus({
-                              status: true,
-                              message: "게스트 초대를 거절했습니다.",
+                          this.dispatch(setGlobalCtxSetToastStatus({
+                            status: true,
+                            message: "게스트 초대를 거절했습니다.",
+                          }));
+                          if (this.guestAction !== null && this.guestAction.dispatchStatus) {
+                            this.guestAction.dispatchStatus({
+                              type: "reject",
                             });
-                            if (this.guestAction !== null && this.guestAction.dispatchStatus) {
-                              this.guestAction.dispatchStatus({
-                                type: "reject",
-                              });
-                            }
                           }
                         }
                         return null;
@@ -1578,12 +1547,10 @@ export class ChatSocketHandler {
                     this.dispatch(setBroadcastCtxChatFreeze(jsonObj.isFreeze));
                     this.setChatFreeze(jsonObj.isFreeze);
 
-                    if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
-                      this.globalAction.callSetToastStatus({
-                        status: true,
-                        message: jsonObj.msg,
-                      });
-                    }
+                    this.dispatch(setGlobalCtxSetToastStatus({
+                      status: true,
+                      message: jsonObj.msg,
+                    }));
 
                     return null;
                   }
@@ -1701,12 +1668,10 @@ export class ChatSocketHandler {
                       ...reqMiniGameEdit,
                     }));
 
-                    this.globalAction !== null &&
-                      this.globalAction.callSetToastStatus &&
-                      this.globalAction.callSetToastStatus({
-                        status: true,
-                        message: reqMiniGameEdit.msg,
-                      });
+                    this.dispatch(setGlobalCtxSetToastStatus({
+                      status: true,
+                      message: reqMiniGameEdit.msg,
+                    }));
 
                     return null;
                   }
@@ -1857,11 +1822,11 @@ export class ChatSocketHandler {
                       const djSetting = {djNormalSound: dj_normal_sound, djTtsSound: dj_tts_sound};
                       this.setRoomInfo({...this.roomInfo, ...djSetting});
                       this.dispatch(setBroadcastCtxRoomInfoSettingUpdate(djSetting));
-                      this.globalAction && text && !this.roomOwner &&
-                      this.globalAction.callSetToastStatus({
+                      text && !this.roomOwner &&
+                      this.dispatch(setGlobalCtxSetToastStatus({
                         status: true,
                         message: text,
-                      });
+                      }));
                     }
                     return null;
                   }
@@ -1880,15 +1845,12 @@ export class ChatSocketHandler {
 
                 if (
                   this.rtcInfo !== null &&
-                  this.globalAction &&
-                  this.globalAction.setAlertStatus &&
-                  this.globalAction.dispatchRtcInfo &&
                   this.history
                 ) {
                   this.privateChannelDisconnect();
                   this.rtcInfo?.stop();
-                  this.globalAction.dispatchRtcInfo({ type: "empty" });
-                  this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                  this.dispatch(setGlobalCtxRtcInfoEmpty());
+                  this.dispatch(setGlobalCtxIsShowPlayer(false));
                   rtcSessionClear();
                   if (window.location.pathname.match("/broadcast/")) {
                     if (this.broadcastLayerAction && this.broadcastLayerAction.dispatchDimLayer) {
@@ -1902,19 +1864,13 @@ export class ChatSocketHandler {
                     }
                   } else {
                     setTimeout(() => {
-                      this.globalAction.setAlertStatus({
+                      this.dispatch(setGlobalCtxAlertStatus({
                         status: true,
                         content: "방송이 종료되었습니다.",
-                      });
+                      }));
                     }, 600);
                   }
 
-                  // setTimeout(() => {
-                  //   this.globalAction.setAlertStatus({
-                  //     status: true,
-                  //     content: "방송이 종료되었습니다.",
-                  //   });
-                  // }, 600);
                 }
               }
             }
@@ -2199,11 +2155,10 @@ export class ChatSocketHandler {
     //         type: "click",
     //         callback: () => {
     //           val.tipMsg &&
-    //             this.globalAction &&
-    //             this.globalAction.callSetToastStatus!({
+    //             this.dispatch(setGlobalCtxSetToastStatus({
     //               status: true,
     //               message: val.tipMsg,
-    //             });
+    //             }));
     //         },
     //       },
     //     ],
@@ -2254,11 +2209,10 @@ export class ChatSocketHandler {
             type: "click",
             callback: () => {
               val.tipMsg &&
-                this.globalAction &&
-                this.globalAction.callSetToastStatus!({
+                this.dispatch(setGlobalCtxSetToastStatus({
                   status: true,
                   message: val.tipMsg,
-                });
+                }));
             },
           },
         ],
@@ -2331,7 +2285,6 @@ export class ReConnectChat {
   public reTryCnt: any;
   public isRetry: any;
   public chatUserInfo: chatUserInfoType;
-  public globalAction: any | null;
   public isRetryFinish: any;
   public lastRetryTime: any;
   public privateChannelNo: string;
@@ -2370,9 +2323,6 @@ export class ReConnectChat {
     this.broadcastAction = action;
   }
 
-  setGlobalAction(action: any) {
-    this.globalAction = action;
-  }
 
   setMsgListWrapRef(msgListWrap: any) {
     this.msgListWrapRef = msgListWrap;
@@ -2412,20 +2362,17 @@ export class ReConnectChat {
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
         const chatInfo = new ChatSocketHandler(this.chatUserInfo, this, this.dispatch);
-        this.globalAction &&
-          this.globalAction.dispatchChatInfo &&
-          this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+        this.dispatch(setGlobalCtxChatInfoInit(chatInfo));
       } else {
         if (this.isRetryFinish == false) {
-          this.globalAction.setAlertStatus &&
-            this.globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
-              callback: () => {
-                window.location.href = "/";
-              },
-            });
+          this.dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
+            callback: () => {
+              window.location.href = "/";
+            },
+          }));
         }
         this.isRetryFinish = true;
       }

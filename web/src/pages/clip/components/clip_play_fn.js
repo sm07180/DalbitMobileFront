@@ -30,7 +30,7 @@ export async function ClipPlayFn(clipNum, type, context, history) {
         localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       }
 
-      clipJoin(data, context)
+      clipJoin(data)
     } else {
       if (code === '-99') {
         context.action.alert({

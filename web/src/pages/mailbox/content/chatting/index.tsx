@@ -8,8 +8,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { mailChatExit, mailChatSend, mailChatPrevChatting } from "common/api";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 import { usePrevious } from "lib/hooks";
-// context
-import { GlobalContext } from "context";
 //component
 import Header from "common/ui/header";
 import ChatInput from "./components/chat_input";
@@ -25,6 +23,11 @@ import {
   setMailBoxPushChatInfo,
   setMailBoxUserCount
 } from "../../../../redux/actions/mailBox";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxMailBlockUser,
+  setGlobalCtxSetToastStatus
+} from "../../../../redux/actions/globalCtx";
 
 // global var
 let lastPrevIdx: string | number = "0";
@@ -46,8 +49,7 @@ const initInterval = (callback: () => boolean) => {
 export default function chatting() {
   const { mailNo } = useParams<{ mailNo: string }>();
   const history = useHistory();
-  // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { baseData, mailChatInfo, mailBlockUser } = globalState;
   const dispatch = useDispatch();
   const mailboxState = useSelector(({mailBox}) => mailBox);
@@ -73,21 +75,19 @@ export default function chatting() {
     const { result, message } = await mailChatExit({ chatNo: mailNo });
     if (result === "success") {
       history.goBack();
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: message,
-        });
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: message,
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {
           history.push(`/`);
         },
-      });
+      }));
     }
   }
   async function mailChatPrevChattingFetch(next?: string) {
@@ -116,14 +116,14 @@ export default function chatting() {
         if (lastPrevIdx !== 0) setPrevList([]);
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {
           history.push(`/`);
         },
-      });
+      }));
     }
   }
   // 메세지 전송 선물
@@ -137,11 +137,11 @@ export default function chatting() {
     });
     if (result === "success") {
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     }
   }
   // function-----------------------------------------------------------------------------------
@@ -159,12 +159,12 @@ export default function chatting() {
   }, []);
   // 대화 퇴장
   const exitMail = () => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: `퇴장할 경우 대화 내용이 삭제됩니다. 정말 퇴장하시겠습니까?`,
       callback: () => mailChatExitFetch(),
-    });
+    }));
   };
   // 더보기 버튼 신고/차단
   const moreBtnDetail = (type: number) => {
@@ -212,14 +212,14 @@ export default function chatting() {
       if (mailChatInfo !== null) {
         mailChatInfo.sendSocketMessageMail(mailNo, "mailBoxChat", chatType, 3, chatText, (result: boolean) => {
           if (result === false) {
-            globalAction.setAlertStatus!({
+            dispatch(setGlobalCtxAlertStatus({
               status: true,
               type: "alert",
               content: "채팅방 접속이 원할하지 않습니다.",
               callback: () => {
                 history.goBack();
               },
-            });
+            }));
           } else {
             // Clear Init
             setTimeout(() => {
@@ -365,7 +365,6 @@ export default function chatting() {
     if (mailChatInfo !== null) {
       mailChatInfo.setRoomNo(mailNo);
       mailChatInfo.setMailMsgListWrapRef(mailMsgListWrapRef);
-      mailChatInfo.setGlobalAction(globalAction);
       mailChatInfo.setDefaultData({ history });
       if (mailChatInfo.privateChannelHandle === null) {
         initInterval(() => {
@@ -437,27 +436,25 @@ export default function chatting() {
   // BLOCK EXIT
   useEffect(() => {
     if (mailBlockUser.blackMemNo === baseData.memNo) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "차단 되었습니다.",
         callback: () => {
-          if (globalAction.setMailBlockUser) {
-            globalAction.setMailBlockUser({
-              memNo: "",
-              blackMemNo: "",
-            });
-          }
+          dispatch(setGlobalCtxMailBlockUser({
+            memNo: "",
+            blackMemNo: "",
+          }));
           history.goBack();
         },
-      });
+      }));
     }
   }, [mailBlockUser]);
   useEffect(() => {
     const info = JSON.parse(sessionStorage.getItem("chattingInfo")!);
     const { memNo } = info;
     if (history.action === "POP" && history.location.pathname.includes("/chatting/")) {
-      mailBoxJoin(memNo, dispatch, globalAction, history, mailboxState.mailboxInfo?.memNo);
+      mailBoxJoin(memNo, dispatch, history, mailboxState.mailboxInfo?.memNo);
     }
   }, [history.action]);
   // ---------------------------------------------------------------------------------------------

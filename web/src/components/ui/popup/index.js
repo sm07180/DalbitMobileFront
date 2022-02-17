@@ -1,11 +1,9 @@
 /**
  *
  */
-import React, {useContext} from 'react'
+import React from 'react'
 //context
-import {Context} from 'context'
 //components
-import Utility from 'components/lib/utility'
 import Alert from './content/alert'
 import AlertNoClose from './content/alert_no_close'
 import Confirm from './content/confirm'
@@ -14,24 +12,26 @@ import Toast from './content/toast'
 import LayerPop from './content/layerPop'
 
 import './popup.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Popup = (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
-  const {type, visible} = context.message
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {type, visible} = globalState.message
   /**
    * @brief 로그인,이벤트처리핸들러
    */
 
   const closePopupDim = (e) => {
     const target = e.target;
-    
+
     if (target.id === "popup") {
-      if (context.message.btnCloseCallback !== undefined) {
-        context.message.btnCloseCallback()
+      if (globalState.message.btnCloseCallback !== undefined) {
+        globalState.message.btnCloseCallback()
       }
-      context.action.layerPop({visible: false})
+      dispatch(setGlobalCtxMessage({type: "layerPop", visible: false}));
     }
   };
 

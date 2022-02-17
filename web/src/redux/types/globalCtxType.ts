@@ -8,7 +8,7 @@ export type GlobalCtxStateType = {
   roomInfo?: any
   customHeader?: any
   token?: any
-  popup?: any
+  popup?: Array<any>
   visible?: boolean
   gnbVisible?: boolean
   login?: boolean
@@ -164,11 +164,17 @@ export type UserProfileType = {
   isMailboxOn: boolean
   profImgList: Array<any>
   age: number
+  birth: string
+  dalCnt: number
+  byeolCnt: number
 }
 
 export type MessageType = {
+  title?: string,
   type: '' | 'alert' | 'layerPop' | 'alert_no_close' | 'toast' | 'confirm' | 'confirm_admin'
-  visible: boolean
+  msg?: string
+  callback?: any
+  visible?: boolean
 }
 export type ExitMarbleInfoType = {
   rMarbleCnt: number
@@ -201,6 +207,7 @@ export type MailBlockUserType = {
   blackMemNo: string
 }
 export type RealtimeBroadStatusType = {
+  profImg: string
   status: boolean
   message: string
   roomNo: string
@@ -220,9 +227,13 @@ export type LayerStatusType = {
   searchSide: boolean
 }
 export type TooltipStatusType = {
+  style: any
+  type: string
   status: boolean
+  message: string
 }
 export type ToastStatusType = {
+  message: string
   status: boolean
 }
 export type LayerPopStatusType = {
@@ -235,6 +246,18 @@ export type MoveToAlertType = {
 }
 export type AlertStatusType = {
   status: boolean
+  content: any
+  callback: any
+  cancelCallback: any
+  titleStyle: any
+  title:string
+  contentStyle:any
+  subCont:any
+  closeType:boolean
+  confirmCancelText:string
+  confirmText:string
+  type:string
+  subContStyle:any
 }
 export type BaseDataType = {
   authToken: string | null

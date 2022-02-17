@@ -4,17 +4,16 @@
  */
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-// context
-import { GlobalContext } from "context";
 // component
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import {useDispatch, useSelector} from "react-redux";
 import {setMailBoxGiftItemInfo} from "../../../../../redux/actions/mailBox";
+import {setGlobalCtxAlertStatus} from "../../../../../redux/actions/globalCtx";
 // global var
 let selectObj = {};
 export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
   const { splashData } = globalState;
   const history = useHistory();
@@ -57,13 +56,12 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
       if (selectItem.type === "sticker") {
         if (count >= 10) {
           if (count >= 100) {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                content: "콤보 선물은 최대 100개까지 가능합니다.",
-                callback: () => {},
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: "콤보 선물은 최대 100개까지 가능합니다.",
+              callback: () => {},
+            }));
             return;
           }
           setCount(count + 10);
@@ -72,13 +70,12 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
         }
       } else {
         if (count >= 10) {
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: "콤보 선물은 최대 10개까지 가능합니다.",
-              callback: () => {},
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: "콤보 선물은 최대 10개까지 가능합니다.",
+            callback: () => {},
+          }));
         }
         if (count + 1 == 11) return false;
         setCount(count + 1);

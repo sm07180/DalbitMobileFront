@@ -1,16 +1,15 @@
 import React, {useEffect, useContext} from 'react'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import {useDispatch, useSelector} from "react-redux";
 
 import {setRankData} from "redux/actions/rank";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
   const history = useHistory()
   const rankState = useSelector(({rank}) => rank);
   const dispatch = useDispatch()
-  const context = useContext(Context)
 
   const closePopup = () => {
     setResetPointPop(false)
@@ -53,7 +52,7 @@ export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
             <button
               className="btn btn_ok"
               onClick={() => {
-                context.action.alert({
+                dispatch(setGlobalCtxMessage({type:"alert",
                   msg: `지금부터 팬 랭킹 점수가<br />반영되지 않습니다.`,
                   callback: () => {
                     closePopup()
@@ -64,7 +63,7 @@ export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
                       isRankData: false
                     }));
                   }
-                })
+                }))
               }}>
               확인
             </button>

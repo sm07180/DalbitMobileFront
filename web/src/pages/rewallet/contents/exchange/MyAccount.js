@@ -1,6 +1,5 @@
-import React, {useState, useEffect,useContext} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 // global components
 import InputItems from 'components/ui/inputItems/InputItems'
@@ -10,9 +9,6 @@ import PopSlide from 'components/ui/popSlide/PopSlide'
 
 const MyAccount = (props) => {
   const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {profile} = context
 
   const [accountInfo, setAccountInfo] = useState(true)
   const [slidePop, setSlidePop] = useState(false)
@@ -33,7 +29,7 @@ const MyAccount = (props) => {
   const onClickExchange = () => {
     history.push('/wallet/result')
   }
-  
+
   return (
     <>
       {accountInfo === false ?

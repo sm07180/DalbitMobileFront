@@ -1,31 +1,28 @@
-import React, {useEffect, useState, useCallback, useContext} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
 
-import {Context} from 'context'
-
-import {RANK_TYPE, DATE_TYPE} from '../constant'
-
-import PopupSuccess from '../reward/reward_success_pop'
+import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 import point from '../static/ico-point.png'
 import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_w_s.svg'
 import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function MyProfile(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {rankType, dateType, setMyInfo} = props
   const rankState = useSelector(({rank}) => rank);
   const history = useHistory()
-  const global_ctx = useContext(Context)
 
   const {formState, myInfo} = rankState
 
-  const {token} = global_ctx
+  const {token} = globalState
 
   const [popup, setPopup] = useState(false)
 

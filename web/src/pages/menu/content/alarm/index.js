@@ -1,18 +1,21 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import Room, {RoomJoin} from 'context/room'
+import {RoomJoin} from 'context/room'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
-import {Context} from 'context'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import NoResult from 'components/ui/noResult'
 import Header from 'components/ui/new_header'
 import NoticeTab from 'pages/common/noticeTab'
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const currentDate = new Date()
 export default function Alert() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
   const [alarmList, setAlarmList] = useState([])
@@ -42,19 +45,21 @@ export default function Alert() {
         playCnt: data.playCnt
       }
       localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-      clipJoin(data, context, 'none', 'push')
+      clipJoin(data, 'none', 'push')
     } else {
       if (code === '-99') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
   }
@@ -99,14 +104,14 @@ export default function Alert() {
         history.push(`/customer/notice/${roomNo}`)
         break
       case 31:
-        if (context.profile.memNo === roomNo) {
+        if (globalState.profile.memNo === roomNo) {
           history.push(`/mypage/${roomNo}/fanboard`)
         } else {
           history.push(`/mypage/${roomNo}?tab=1`)
         }
         break
       case 32:
-        history.push(`/mypage/${context.profile.memNo}/wallet`)
+        history.push(`/mypage/${globalState.profile.memNo}/wallet`)
         break
       case 33:
         break
@@ -150,7 +155,7 @@ export default function Alert() {
         fetchDataPlay(roomNo)
         break
       case 48:
-        history.push(`/mypage/${context.profile.memNo}/my_clip`)
+        history.push(`/mypage/${globalState.profile.memNo}/my_clip`)
         break
       case 53:
         history.push(`/event/attend_event`)
@@ -204,15 +209,17 @@ export default function Alert() {
       delete_notiIdx: deleteIdx
     })
     if (res.result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
         callback: () => {
           fetchData()
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             visible: false
-          })
+          }))
         }
-      })
+      }))
     } else {
     }
   }

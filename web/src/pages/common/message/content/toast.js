@@ -1,21 +1,23 @@
 /**
  * @file toast.js
  * @brief toast 기능
- * @use context.action.toast({msg: '메세지'})
+ * @use // dispatch(setGlobalCtxMessage({type:"toast",msg: '메세지'})
  */
 import React, {useRef, useContext, useEffect, useState, useMemo} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const lifeTime = 2800 // milisec
 let msgArray = []
 let copyArray = []
 
 export default () => {
-  const context = useContext(Context)
-  const {msg} = context.message
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {msg} = globalState.message
 
   const [last, setLast] = useState(false)
 
@@ -69,9 +71,9 @@ export default () => {
 
   useEffect(() => {
     if (last === true && msgData.length === 0) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type:"toast",
         message: ''
-      })
+      }))
       setLast(false)
     }
   }, [last, msgData])

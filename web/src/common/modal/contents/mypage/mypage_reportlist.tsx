@@ -1,6 +1,5 @@
 // tab navigation
 import React, { useContext, useState, useEffect } from "react";
-import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // api
 import { postReportUser, MypageBlackListAdd } from "common/api";
@@ -8,11 +7,12 @@ import { PROFILE_REPORT_TAB } from "./constant";
 import Caution from "../../static/caution.png";
 import "./mypage_modal.scss";
 import { profile } from "console";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 export default (props) => {
   const modalState = useSelector(({modal}) => modal);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
   //state
   const [select, setSelect] = useState<number>(0);
   const [pageType, setPageType] = useState(1);
@@ -94,24 +94,20 @@ export default (props) => {
       cont: reportReason,
     });
     if (result === "success") {
-      globalAction.setAlertStatus;
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: `${reportInfo.nickNm}님을 신고하였습니다.`,
-          callback: () => history.goBack(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: `${reportInfo.nickNm}님을 신고하였습니다.`,
+        callback: () => history.goBack(),
+      }));
     } else {
-      globalAction.setAlertStatus;
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: `이미 신고한 회원 입니다.`,
-          // callback: () => history.goBack(),
-          callback: () => history.goBack(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: `이미 신고한 회원 입니다.`,
+        // callback: () => history.goBack(),
+        callback: () => history.goBack(),
+      }));
     }
   }
   const SubmitClick = () => {
@@ -129,45 +125,43 @@ export default (props) => {
       memNo: reportInfo.memNo,
     });
     if (result === "success") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => history.goBack(),
-      });
+      }));
     } else if (code === "-3") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-          callback: () => history.goBack(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+        callback: () => history.goBack(),
+      }));
     } else if (code === "C006") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "이미 차단회원으로 등록된\n회원입니다.",
-          callback: () => history.goBack(),
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "이미 차단회원으로 등록된\n회원입니다.",
+        callback: () => history.goBack(),
+      }));
     }
   }
 
   //
   const validateReport = () => {
     if (select === 0) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 선택해주세요.`,
-      });
+      }));
     }
     if (select !== 0 && reportReason.length < 10) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: `신고 사유를 10자 이상 입력해주세요.`,
-      });
+      }));
     }
   };
 

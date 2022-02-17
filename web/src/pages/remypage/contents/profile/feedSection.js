@@ -1,15 +1,14 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React from 'react'
 
 import Swiper from 'react-id-swiper'
 // components
 import SocialList from '../../components/SocialList'
+import {useDispatch, useSelector} from "react-redux";
 
 const FeedSection = (props) => {
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token, profile} = globalState
 
   const data = profile
 

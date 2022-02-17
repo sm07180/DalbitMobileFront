@@ -17,8 +17,6 @@ import {
 // lib
 import Swiper from "react-id-swiper";
 import { CHAT_CONFIG, IMG_SERVER } from "constant/define";
-// ctx
-import { GlobalContext } from "context";
 import { printNumber, addComma } from "lib/common_fn";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 // constant
@@ -47,7 +45,6 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { globalAction } = useContext(GlobalContext);
   const mailboxState = useSelector(({mailBox}) => mailBox);
 
   const { baseData } = globalState;
@@ -437,7 +434,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
     globalState.mailChatInfo?.setUserInfo(socketUser);
     globalState.mailChatInfo?.privateChannelDisconnect();
-    mailBoxJoin(memNo, dispatch, globalAction, history);
+    mailBoxJoin(memNo, dispatch, history);
   };
   return (
     <>

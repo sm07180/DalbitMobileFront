@@ -1,7 +1,6 @@
 import React, {Children, useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 // context
-import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from './header'
@@ -43,6 +42,6 @@ export default function signField(props) {
           <button className='signBtn' onClick={btnFunction}>완료</button>
         </form>
       </div>
-    </div>    
+    </div>
   )
 }

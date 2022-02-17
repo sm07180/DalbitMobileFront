@@ -1,7 +1,5 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
+import React, {useEffect, useState} from 'react'
+import {useParams} from 'react-router-dom'
 
 import Api from 'context/api'
 // global components
@@ -11,16 +9,10 @@ import ListRow from 'components/ui/listRow/ListRow'
 // contents
 // css
 import './profileDetail.scss'
-import {useDispatch, useSelector} from "react-redux";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 
 const ProfileDetail = () => {
-  const history = useHistory()
-  const dispatch = useDispatch();
-  const profileData = useSelector(state => state.profile);
   //context
-  const context = useContext(Context)
-  const {token, profile} = context
   const {memNo, type, index} = useParams();
   const [item, setItem] = useState(null);
 

@@ -1,17 +1,13 @@
-import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
+import React, {useEffect, useReducer, useRef, useState} from 'react'
 import styled from 'styled-components'
-
-import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 import {PHOTO_SERVER} from 'context/config'
-import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
+import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 
 //components
-import Layout from 'pages/common/layout/new_layout'
-import DatePicker from './content/datepicker'
 import SignField from './components/signField'
 
 //static
@@ -22,12 +18,21 @@ import IcoCheckOff from './static/checkbox_off.svg'
 import IcoArrow from './static/arrow.svg'
 
 import './style.scss'
+import {useSelector} from "react-redux";
+import {
+  setGlobalCtxMessage,
+  setGlobalCtxUpdateLogin,
+  setGlobalCtxUpdatePopup,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 
 let intervalId = null
 let setTime = 300
 
 export default (props) => {
-  const context = useContext(Context)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview, redirect} = qs.parse(location.search)
 
   const memIdRef = useRef(null)
@@ -247,16 +252,18 @@ export default (props) => {
       startAuthTimer()
     } else {
       setValidate({name: 'memId', check: false, text: message})
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
       if (code === '-1') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
           // callback: () => {
           //   props.history.push('/login')
           // }
-        })
+        }))
       }
     }
   }
@@ -319,9 +326,10 @@ export default (props) => {
     }
 
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.'
-      })
+      }))
     }
 
     //파일을 배열 버퍼로 읽는 최신 약속 기반 API
@@ -470,9 +478,10 @@ export default (props) => {
         value: data.path
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.'
-      })
+      }))
     }
   }
   useEffect(() => {
@@ -580,16 +589,16 @@ export default (props) => {
         return setTermOpen(!termOpen)
         break
       case 'term1':
-        return context.action.updatePopup('TERMS', 'service')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'service']}))
         break
       case 'term2':
-        return context.action.updatePopup('TERMS', 'privacy')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'privacy']}))
         break
       case 'term3':
-        return context.action.updatePopup('TERMS', 'youthProtect')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'youthProtect']}))
         break
       case 'term4':
-        return context.action.updatePopup('TERMS', 'operating')
+        return dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'operating']}))
         break
       default:
         break
@@ -619,8 +628,7 @@ export default (props) => {
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
-
-      context.action.updateToken(loginInfo.data)
+      dispatch(setGlobalCtxUpdateToken(loginInfo.data));
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
         if (isHybrid()) {
@@ -635,14 +643,15 @@ export default (props) => {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)
         }
-        context.action.updateProfile(profileInfo.data)
+        dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
         return props.history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         title: '로그인 실패',
         msg: `${loginInfo.message}`
-      })
+      }))
     }
   }
 
@@ -671,7 +680,7 @@ export default (props) => {
 
   //회원가입 Data fetch
   async function sighUpFetch() {
-    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
+    const nativeTid = globalState.nativeTid == null || globalState.nativeTid == 'init' ? '' : globalState.nativeTid
     const {result, data, message} = await Api.member_join({
       data: {
         memType: changes.memType,
@@ -688,43 +697,46 @@ export default (props) => {
         profImg: changes.profImgUrl,
         profImgRacy: 3,
         nativeTid: nativeTid,
-        os: context.customHeader.os
+        os: globalState.customHeader.os
       }
     })
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
       addAdsData();
 
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           //애드브릭스 이벤트 전달
           if (data.adbrixData != '' && data.adbrixData != 'init') {
             Hybrid('adbrixEvent', data.adbrixData)
             // if (__NODE_ENV === 'dev') {
-              // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
+            // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
             // }
           }
           loginFetch()
         },
         msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
-      context.action.updateLogin(false)
+      }))
+      dispatch(setGlobalCtxUpdateLogin(false));
     }
   }
 
   //회원가입 완료 버튼
   const signUp = () => {
     if (CMID !== true && memType === 'p') {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '휴대폰 본인인증을 진행해주세요.'
-      })
+      }))
     }
     validateNick()
-    if(context.appInfo.showBirthForm) {
+    if (globalState.appInfo.showBirthForm) {
       validateBirth()
     }
     if (memType === 'p') {
@@ -748,9 +760,10 @@ export default (props) => {
     validateKey.unshift(temp)
     for (let index = 0; index < validateKey.length; index++) {
       if (validate[validateKey[index]].check === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: validate[validateKey[index]].text
-        })
+        }))
         break
       }
     }
@@ -809,7 +822,7 @@ export default (props) => {
             </InputItem>
           </SignField>
       }
-      {        
+      {
         step === 2 &&
           <SignField title="닉네임을 설정해주세요." btnFunction={phoneCertification}>
             <InputItem button={false} validate={validate.nickNm.check}>
@@ -830,7 +843,7 @@ export default (props) => {
             </InputItem>
           </SignField>
       }
-      {        
+      {
         step === 3 &&
           <SignField title="비밀번호를 설정해주세요." btnFunction={phoneCertification}>
             {memType === 'p' && (
@@ -871,7 +884,7 @@ export default (props) => {
              )}
           </SignField>
       }
-      {        
+      {
         step === 4 &&
           <SignField title={`소셜 로그인 정보를\n입력해주세요.`} btnFunction={phoneCertification}>
             <InputItem button={false} validate={validate.nickNm.check}>
@@ -906,8 +919,8 @@ export default (props) => {
                   }}
                 />
               </ProfileUpload>
-            </InputItem>            
-          </SignField>  
+            </InputItem>
+          </SignField>
       }
     </div>
     // <Layout status="no_gnb" header="회원가입">

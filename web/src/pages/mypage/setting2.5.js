@@ -7,17 +7,19 @@ import Layout from 'pages/common/layout'
 import Header from './component/header'
 //context
 import Api from 'context/api'
-import {Context} from 'context'
 import {DalbitTextArea} from './content/textarea'
 //image
 import camera from 'images/camera.svg'
 import delIcon from './static/del_g.svg'
 import './setting.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxEditImage, setGlobalCtxTempImage, setGlobalCtxUpdateProfile, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   // ctx
-  const context = useContext(Context)
-  const {profile, token, tempImage, editImage} = context
+  const {profile, token, tempImage, editImage} = globalState
   const history = useHistory()
   // state
   const [nickname, setNickname] = useState('')
@@ -48,13 +50,10 @@ export default (props) => {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({type:"alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         title: '',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
+      }))
     }
     reader.readAsArrayBuffer(file)
     //오리엔테이션 뽑아내는 함수
@@ -119,8 +118,6 @@ export default (props) => {
             img.width = img.width / 5
             img.height = img.height / 5
           }
-          // context.action.updateTempImage(originalCacheURL)
-          // context.action.updateEditImage(originalCacheURL)
           history.push('/ImageEditor', {
             src: originalCacheURL,
             mimeType: fileExtension,
@@ -155,27 +152,23 @@ export default (props) => {
           const res2 = await Api.profile_edit({data})
 
           if (res2.result === 'success') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({type:"toast",
               msg: '프로필 이미지 업로드 성공'
-            })
+            }))
             setPhotoPath(res.data.path)
             setPhotoUploading(false)
             setActive(true)
-            context.action.updateTempImage(editImage)
+            dispatch(setGlobalCtxTempImage(editImage))
           } else {
-            return context.action.alert({
+            return dispatch(setGlobalCtxMessage({type:"alert",
               msg: `${res2.message}`
-            })
+            }))
           }
-          // context.action.updateEditImage('')
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type:"alert",
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
             title: '',
-            callback: () => {
-              context.action.alert({visible: false})
-            }
-          })
+          }))
         }
       }
     }
@@ -191,23 +184,22 @@ export default (props) => {
   }
   const validationCheck = () => {
     if (!profile.nickNm || !nickname) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({type:"alert",
         msg: '닉네임을 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
           if (nicknameReference.current) {
             nicknameReference.current.focus()
           }
         }
-      })
+      }))
     }
     if (gender === 'n') {
-      return context.action.confirm({
+      return dispatch(setGlobalCtxMessage({type:"confirm",
         msg: '성별을 선택하지 않으셨습니다. \n 이대로 저장하시겠습니까?',
         callback: () => {
           saveUpload()
         }
-      })
+      }))
     }
     saveUpload()
   }
@@ -222,19 +214,18 @@ export default (props) => {
     console.log(data)
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
-      context.action.updateProfile({...res.data, birth: profile.birth})
-      return context.action.alert({
+      dispatch(setGlobalCtxUpdateProfile({...res.data, birth: profile.birth}));
+      return dispatch(setGlobalCtxMessage({type:"alert",
         msg: '저장되었습니다.',
         title: '',
         callback: () => {
-          context.action.alert({visible: false})
           history.push('/menu/profile')
         }
-      })
+      }))
     } else {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({type:"alert",
         msg: `${res.message}`
-      })
+      }))
     }
   }
   const checkAuth = () => {
@@ -264,10 +255,10 @@ export default (props) => {
 
   useEffect(() => {
     if (
-      (nickname !== '' && nickname !== context.profile.nickNm) ||
-      (profileMsg !== '' && profileMsg !== context.profile.profMsg) ||
-      (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
-      (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
+      (nickname !== '' && nickname !== globalState.profile.nickNm) ||
+      (profileMsg !== '' && profileMsg !== globalState.profile.profMsg) ||
+      (photoPath !== '' && photoPath !== globalState.profile.profImg.path) ||
+      (gender !== 'n' && gender !== '' && gender !== globalState.profile.gender)
     ) {
       setActive(true)
     } else {
@@ -280,10 +271,10 @@ export default (props) => {
       if (profile === null || profile || profile.birth === '') {
         Api.mypage().then((result) => {
           if (profile instanceof Object) {
-            context.action.updateProfile({
+            dispatch(setGlobalCtxUpdateProfile({
               ...profile,
               ...result.data
-            })
+            }))
           }
         })
         return null
@@ -293,8 +284,8 @@ export default (props) => {
     checkAuth()
 
     return () => {
-      context.action.updateTempImage(null)
-      context.action.updateEditImage(null)
+      dispatch(setGlobalCtxTempImage(null));
+      dispatch(setGlobalCtxEditImage(null));
     }
   }, [])
 
@@ -352,7 +343,7 @@ export default (props) => {
                 <button
                   className="btn__confirm"
                   onClick={() => {
-                    authReq('5', formTag, context)
+                    authReq('5', formTag, dispatch)
                   }}>
                   본인인증
                 </button>

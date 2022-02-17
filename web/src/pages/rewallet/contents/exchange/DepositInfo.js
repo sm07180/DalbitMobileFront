@@ -1,5 +1,4 @@
-import React, {useState, useEffect,useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 
 // global components
 import InputItems from 'components/ui/inputItems/InputItems'
@@ -8,14 +7,11 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import CheckList from '../../components/CheckList'
 
 const DepositInfo = (props) => {
-  //context
-  const context = useContext(Context)
-  const {profile} = context
 
   const onClickFileBtn = () => {
     console.log('test');
   }
-  
+
   return (
     <>
       <form className="formBox">

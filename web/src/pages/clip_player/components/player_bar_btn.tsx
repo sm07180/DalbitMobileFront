@@ -58,7 +58,7 @@ export default function ClipPlayerBarButton() {
           status: true,
           message: "현재 클립을 반복합니다.",
         }));
-        dispatch(setGlobalCtxClipPlayMode("oneLoop"));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"oneLoop"}));
         clipPlayer!.loopStart();
         break;
 
@@ -68,7 +68,7 @@ export default function ClipPlayerBarButton() {
           status: true,
           message: "전체 클립을 반복합니다.",
         }));
-        dispatch(setGlobalCtxClipPlayMode("allLoop"));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"allLoop"}));
         clipPlayer!.loopEnd();
         break;
       case "allLoop":
@@ -77,7 +77,7 @@ export default function ClipPlayerBarButton() {
           status: true,
           message: "클립을 셔플하여 재생합니다.",
         }));
-        dispatch(setGlobalCtxClipPlayMode("shuffle"));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"shuffle"}));
         const test = globalState.clipPlayList!.sort(() => {
           return Math.round(Math.random()) - 0.5;
         });
@@ -89,7 +89,7 @@ export default function ClipPlayerBarButton() {
           status: true,
           message: "클립을 반복하지 않습니다.",
         }));
-        dispatch(setGlobalCtxClipPlayMode("normal"));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"normal"}));
         break;
       default:
         break;

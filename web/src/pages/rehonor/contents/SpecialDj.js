@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState}from 'react'
-import {Context} from 'context'
 
 import Api from 'context/api'
 import moment from "moment";
@@ -9,17 +8,18 @@ import PhotoFrame from 'components/ui/photoFrame/PhotoFrame'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
+import {useDispatch, useSelector} from "react-redux";
 // global components
 
 const SpecialDj = (props) => {
-  const context = useContext(Context)
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [ dateData, setDateData ] = useState([]);
   const [ specialDjList, setSpecialDjList ] = useState([]);
   const [ popup, setPopup ] = useState(false);
   const [ popupData, setPopupData ] = useState({});
-  
-  const {token, profile} = context
+
+  const {token, profile} = globalState
 
   const NowDate = new Date;
   let NowYear = moment(NowDate).format("YYYY");
@@ -28,7 +28,7 @@ const SpecialDj = (props) => {
   async function fetchHonor() {
     const res = await Api.getSpecialDjHistory({
       yy: NowYear - 1,
-      mm: NowMonth 
+      mm: NowMonth
     })
     if (res.result === 'success') {
       setSpecialDjList(res.data.list);
@@ -76,7 +76,7 @@ const SpecialDj = (props) => {
       {
         specialDjList.length > 0 ?
           <div className='gridWrap column2'>
-            {specialDjList.map((list, index) => {   
+            {specialDjList.map((list, index) => {
               return (
                 <div className='gridList' key={index}>
                   <div className='listRow'>
@@ -105,7 +105,7 @@ const SpecialDj = (props) => {
                   </div>
                 </div>
               )
-            })}            
+            })}
           </div>
         :
         <></>
@@ -195,7 +195,7 @@ const SpecialDj = (props) => {
                   <span>2021.12</span>
                   <span>55기</span>
                 </div>
-              </div>              
+              </div>
             </div>
           </div>
         </LayerPopup>

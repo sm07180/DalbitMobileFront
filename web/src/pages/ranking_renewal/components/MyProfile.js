@@ -1,13 +1,11 @@
-import React, {useEffect, useState, useCallback, useContext} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
+import {convertDateToText} from 'pages/common/rank/rank_fn'
 
-import {Context} from 'context'
-import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth, dateTimeConvert} from 'pages/common/rank/rank_fn'
-
-import {RANK_TYPE, DATE_TYPE} from '../constant'
+import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 import PopupSuccess from '../reward/reward_success_pop'
 
@@ -16,22 +14,22 @@ import BadgeList from 'common/badge_list'
 import point from '../static/ico-point.png'
 import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_g_s.svg'
+import likeIcon from '../static/like_g_s.svg'
 import peopleWhite from '../static/people_g_s.svg'
 import timeWhite from '../static/time_g_s.svg'
 import trophyImg from '../static/rankingtop_back@2x.png'
-import likeIcon from '../static/like_g_s.svg'
 import likeRedIcon from '../static/like_red_m.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {setRankData, setRankMyInfo} from "redux/actions/rank";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function MyProfile({rankSettingBtn, setRankSetting, setResetPointPop}) {
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const rankState = useSelector(({rank}) => rank);
   const history = useHistory()
-  const global_ctx = useContext(Context)
-  const context = useContext(Context)
 
-  const {token} = global_ctx
+  const {token} = globalState
 
   const {formState, myInfo, rankTimeData, rankData} = rankState
 
@@ -130,11 +128,12 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
         </p>
         <button
           onClick={() => {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
               type: 'confirm',
               msg: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #632beb;">반영하시겠습니까?</span>`,
               callback: () => {
-                context.action.alert({
+                dispatch(setGlobalCtxMessage({
+                  type: "alert",
                   msg: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
                   callback: () => {
                     rankSettingBtn(true)
@@ -144,9 +143,9 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                       isRankData: true
                     }))
                   }
-                })
+                }))
               }
-            })
+            }))
           }}>
           <img src="https://image.dalbitlive.com/ranking/ico_circle_x_g@2x.png" alt="icon" /> 반영하기
         </button>
@@ -193,7 +192,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
   useEffect(() => {
     const createMyRank = () => {
       if (token.isLogin) {
-        setMyProfile(global_ctx.profile)
+        setMyProfile(globalState.profile)
       } else {
         return null
       }
@@ -276,7 +275,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                               <span
                                 className="bestFanBox__nickname"
                                 onClick={() => {
-                                  if (context.token.isLogin) {
+                                  if (globalState.token.isLogin) {
                                     history.push(`/mypage/${myInfo.myDjMemNo}`)
                                   } else {
                                     history.push('/modal/login')

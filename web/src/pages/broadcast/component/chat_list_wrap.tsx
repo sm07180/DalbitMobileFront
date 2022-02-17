@@ -1,9 +1,6 @@
 // React
 import React, { useRef, useState, useContext, useEffect } from "react";
 
-// Context
-import { GlobalContext } from "context";
-
 import { MediaType } from "../constant";
 
 // Component
@@ -22,7 +19,7 @@ const MsgListWrap = (props: {
 }) => {
   const { forceChatScrollDown, setForceChatScrollDown, roomInfo } = props;
 
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { chatInfo, rtcInfo } = globalState;
 
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);

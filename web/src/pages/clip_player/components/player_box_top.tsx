@@ -5,15 +5,14 @@ import { tabType } from "../constant";
 
 import { printNumber, addComma } from "lib/common_fn";
 
-import { GlobalContext } from "context";
 import { ClipContext } from "context/clip_ctx";
 
 import iconPlay from "../static/play_g_s.svg";
+import {useSelector} from "react-redux";
 
 export default function ClipPlayerTop() {
   const history = useHistory();
-
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { clipState, clipAction } = useContext(ClipContext);
   const { clipInfo, clipPlayer } = globalState;
   const { setRightTabType, setUserMemNo } = clipAction;

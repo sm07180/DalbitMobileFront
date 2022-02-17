@@ -1,34 +1,35 @@
-import React, {useState, useEffect, useContext, useCallback, useRef, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
 import Api from 'context/api'
 
 import {
   convertDateFormat,
-  convertSetSpecialDate,
+  convertDateTimeForamt,
+  convertDateToText,
   convertMonday,
   convertMonth,
-  convertDateToText,
-  convertDateTimeForamt
+  convertSetSpecialDate
 } from 'pages/common/rank/rank_fn'
 
 import {
-  setRankMyInfo,
-  setRankList,
   setRankData,
+  setRankFormInit,
+  setRankFormPage,
+  setRankFormPageType,
+  setRankFormSearch,
   setRankLevelList,
   setRankLikeList,
-  setRankTotalPage,
-  setRankSpecialList,
-  setRankWeeklyList,
+  setRankList,
+  setRankMyInfo,
+  setRankScrollY,
   setRankSecondList,
+  setRankSpecialList,
+  setRankSpecialPoint,
+  setRankSpecialPointList,
   setRankTimeData,
-  setRankFormInit,
-  setRankFormSearch,
-  setRankFormPage,
-  setRankFormPageType, setRankScrollY, setRankSpecialPoint, setRankSpecialPointList
+  setRankTotalPage,
+  setRankWeeklyList
 } from "redux/actions/rank";
 
 //components
@@ -53,30 +54,42 @@ import LikeListTop from './components/like_list_top'
 import MonthlyDJ from './components/monthlyDJ'
 
 //constant
-import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
-
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
+import {DATE_TYPE, PAGE_TYPE, RANK_TYPE} from './constant'
 import './index.scss'
 import level from 'pages/level'
 
 import benefitIcon from './static/benefit@3x.png'
 import hallOfFameIcon from './static/ic_fame.svg'
 import rankingPageIcon from './static/ic_ranking_page.svg'
-import awardIcon from './static/ic_award.png'
 import {useDispatch, useSelector} from "react-redux";
+
+const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 
 let timer
 let touchStartY = null
 let touchEndY = null
 let initial = true
 const records = 50
-function Ranking() {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const rankState = useSelector(({rank}) => rank);
-  const context = useContext(Context)
 
-  const {formState, myInfo, rankList, levelList, likeList, totalPage, rankTimeData, rankData, weeklyList, secondList} = rankState
+function Ranking() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const history = useHistory()
+  const rankState = useSelector(({rank}) => rank);
+
+  const {
+    formState,
+    myInfo,
+    rankList,
+    levelList,
+    likeList,
+    totalPage,
+    rankTimeData,
+    rankData,
+    weeklyList,
+    secondList
+  } = rankState
 
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
@@ -247,7 +260,7 @@ function Ranking() {
             formState[formState.pageType].rankType === RANK_TYPE.FAN ||
             formState[formState.pageType].rankType === RANK_TYPE.LIKE
           ) {
-            if (context.token.isLogin) {
+            if (globalState.token.isLogin) {
               if (listWrapRef.current.classList.length === 1) {
                 listWrapRef.current.className = 'listFixed more'
               }
@@ -269,7 +282,7 @@ function Ranking() {
             formState[formState.pageType].rankType === RANK_TYPE.DJ ||
             formState[formState.pageType].rankType === RANK_TYPE.FAN
           ) {
-            if (context.token.isLogin) {
+            if (globalState.token.isLogin) {
               listWrapRef.current.className = 'more'
             } else {
               listWrapRef.current.className = ''
@@ -551,7 +564,7 @@ function Ranking() {
     return () => {
       didFetch = true
     }
-  }, [formState, context.token.isLogin])
+  }, [formState, globalState.token.isLogin])
 
   useEffect(() => {
     let didFetch = false
@@ -585,7 +598,7 @@ function Ranking() {
             formState[formState.pageType].rankType === RANK_TYPE.FAN ||
             formState[formState.pageType].rankType === RANK_TYPE.LIKE
           ) {
-            if (context.token.isLogin) {
+            if (globalState.token.isLogin) {
               listWrapRef.current.className = 'listFixed more'
             } else {
               listWrapRef.current.className = 'listFixed'
@@ -609,7 +622,7 @@ function Ranking() {
               formState[formState.pageType].rankType === RANK_TYPE.FAN ||
               formState[formState.pageType].rankType === RANK_TYPE.LIKE
             ) {
-              if (context.token.isLogin) {
+              if (globalState.token.isLogin) {
                 listWrapRef.current.className = 'more'
               } else {
                 listWrapRef.current.className = ''

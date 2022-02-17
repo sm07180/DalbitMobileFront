@@ -1,18 +1,19 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 // context
-import {Context} from 'context'
 
 import NoResult from 'components/ui/new_noResult'
 //static
 import guideIcon from '../static/guide_s.png'
-import fanIcon from '../static/ic_circle_fan_s_dkgr.svg'
-import people from '../static/people_g_s.svg'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
+
 function LevelList({empty}) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const rankState = useSelector(({rank}) => rank);
 
   const {levelList} = rankState
@@ -24,7 +25,7 @@ function LevelList({empty}) {
         <img
           src={guideIcon}
           onClick={() => {
-            context.action.updatePopup('RANK_POP', 'level')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['RANK_POP', 'level']}));
             // context.action.updatePopup('RANK_POP', 'level')
           }}
         />
@@ -56,8 +57,8 @@ function LevelList({empty}) {
                   <div
                     className="thumbBox"
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)
@@ -84,8 +85,8 @@ function LevelList({empty}) {
                       <span
                         className="bestFanBox__nickname"
                         onClick={() => {
-                          if (context.token.isLogin) {
-                            if (context.token.memNo === fanMemNo) {
+                          if (globalState.token.isLogin) {
+                            if (globalState.token.memNo === fanMemNo) {
                               history.push(`/menu/profile`)
                             } else {
                               history.push(`/mypage/${fanMemNo}`)

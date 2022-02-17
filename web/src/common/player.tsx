@@ -19,9 +19,6 @@ import {
   UserType,
 } from "common/realtime/rtc_socket";
 
-// static
-import { GlobalContext } from "context";
-
 import {
   broadcastExit,
   broadcastInfoNew,
@@ -68,7 +65,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   const history = useHistory();
   const historyState = history.location.state;
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { globalAction } = useContext(GlobalContext);
   const dispatch = useDispatch();
   const { clipInfo, clipPlayer, mode } = props;
 
@@ -314,7 +310,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
       // chat init logic
       chatInfo.setRoomNo(roomNo);
       chatInfo.setMsgListWrapRef(null);
-      chatInfo.setGlobalAction(globalAction);
       chatInfo.setRoomOwner(roomOwner);
       chatInfo.setDefaultData({ history });
       chatInfo.setRoomInfo(roomInfo);
@@ -473,7 +468,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
       clipNo: setClipNo,
     });
     if (result === "success") {
-      newClipPlayer!.setGlobalAction(globalAction);
 
       if (
         data.file.url === newClipPlayer?.clipAudioTag?.src &&
@@ -569,7 +563,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   useEffect(() => {
     if (rtcInfo !== null) {
       // for dj host, audio publishing - refresh case
-      // globalAction.setIsShowPlayer && dispatch(setGlobalCtxIsShowPlayer(false);
       rtcInfo.setDisplayWrapRef(displayWrapRef);
       rtcInfo.initVideoTag();
       if (roomOwner === true) {

@@ -29,22 +29,6 @@ export default () => {
     }
   };
 
-  const fetchPlayList = async () => {
-    // console.log("clipPlayListTab", clipPlayListTab);
-    // const { result, data, message } = await getPlayList({
-    //   sortType: 5,
-    //   records: 100,
-    // });
-    // if (result === "success") {
-    //   setList(data.list);
-    // } else {
-    //   globalAction.setAlertStatus!({
-    //     status: true,
-    //     content: `${message}`,
-    //   });
-    // }
-  };
-
   const createList = () => {
     if (clipPlayListTab === null) return null;
     if (clipPlayListTab.length === 0) return null;
@@ -105,9 +89,6 @@ export default () => {
     fetchDataClipType();
   }, []);
 
-  useEffect(() => {
-    if (!isEdit) fetchPlayList();
-  }, [isEdit]);
 
   return (
     <div className="tabPlayList">

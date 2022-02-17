@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect, useReducer } from "react";
 import styled from "styled-components";
 
 import CloseBtn from "../../static/close_w_l.svg";
-import { GlobalContext } from "context";
 import SelectBox from "common/ui/dalbit_selectbox";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../../../../redux/actions/globalCtx";
 type ActionType = {
   type: string;
   idx?: number;
@@ -37,7 +38,7 @@ const selectReducer = (state: OrderType, action: ActionType) => {
 
 export default function detailPopup(props) {
   const { setAddPopup } = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
   let popurInit = {
     isOpen: false,
     selectIdx: 0,
@@ -110,23 +111,20 @@ export default function detailPopup(props) {
   };
   const applyClick = () => {
     if (addName === "" || addName.length > 20) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "예금주명을 확인해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "예금주명을 확인해주세요",
+      }));
     } else if (addBank === "" || addBank == 0) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "은행을 선택해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "은행을 선택해주세요",
+      }));
     } else if (addAccountNumber === "" || addAccountNumber.length < 9) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "계좌번호를 확인해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "계좌번호를 확인해주세요",
+      }));
     } else {
       setAddPopup(false);
       props.setAddInfo({

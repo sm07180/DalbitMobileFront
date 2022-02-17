@@ -2,7 +2,6 @@ import React, { useEffect, useCallback, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 //context
-import { GlobalContext } from "context";
 import { GuestContext } from "context/guest_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
@@ -27,8 +26,13 @@ import MicOnIcon from "../static/ic_mic.svg";
 import MicOffIcon from "../static/ic_mic_off.svg";
 // import GuestOffIcon from "../static/ic_more_out.svg";
 import GuestOffIcon from "../static/ico_runout_w_s.svg";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus, setGlobalCtxGuestInfoAdd,
+  setGlobalCtxGuestInfoEmpty, setGlobalCtxGuestInfoRemove, setGlobalCtxRtcInfoInit,
+  setGlobalCtxSetToastStatus
+} from "../../../redux/actions/globalCtx";
 
 const initInterval = (callback) => {
   const intervalTime = 100;
@@ -64,12 +68,9 @@ function GuestComponent(props) {
   const { roomOwner, roomNo, roomInfo, displayWrapRef } = props;
 
   const history = useHistory();
-
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const { guestInfo, rtcInfo, chatInfo } = globalState;
-  const dispatchGuestInfo = globalAction.dispatchGuestInfo!;
-
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const { guestInfo, rtcInfo, chatInfo } = globalState;
 
   const { guestAction, guestState } = useContext(GuestContext);
   const { guestConnectStatus, guestObj } = guestState;
@@ -95,7 +96,7 @@ function GuestComponent(props) {
   const applyGuest = async () => {
     if (guestState.newApplyGuest === true) {
       //게스트 신청 취소
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "confirm",
         title: "게스트 신청 취소",
@@ -107,7 +108,7 @@ function GuestComponent(props) {
             mode: 7,
           });
         },
-      });
+      }));
     } else {
       //게스트 신청
       const res = await guest({
@@ -117,22 +118,22 @@ function GuestComponent(props) {
       });
 
       if (res.result === "success") {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "게스트 신청이 완료되었습니다.",
-        });
+        }));
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: res.message,
-        });
+        }));
       }
     }
   };
 
   const exitGuest = useCallback(
     (item) => {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "confirm",
         content: "게스트 연결을 종료하시겠습니까?",
@@ -146,12 +147,7 @@ function GuestComponent(props) {
             if (guestInfo !== null) {
               if (guestInfo[item]) {
                 guestInfo[item].stop();
-                dispatchGuestInfo({
-                  type: "REMOVE",
-                  data: {
-                    memNo: item,
-                  },
-                });
+                dispatch(setGlobalCtxGuestInfoRemove({memNo:item}));
               }
               dispatchGuestObj({
                 type: "INIT",
@@ -161,12 +157,7 @@ function GuestComponent(props) {
           } else {
             if (guestInfo !== null) {
               if (guestInfo[item]) {
-                dispatchGuestInfo({
-                  type: "REMOVE",
-                  data: {
-                    memNo: item,
-                  },
-                });
+                dispatch(setGlobalCtxGuestInfoRemove({memNo:item}));
               }
               dispatchGuestObj({
                 type: "INIT",
@@ -175,7 +166,7 @@ function GuestComponent(props) {
             }
           }
         },
-      });
+      }));
     },
     [roomNo]
   );
@@ -226,10 +217,10 @@ function GuestComponent(props) {
 
   const checkStatus = useCallback(() => {
     if (guestState.guestStatus.inviteCancle === true) {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "DJ님이 게스트 초대를 취소하셨습니다.",
-      });
+      }));
     } else if (micState === true && audioStream !== null) {
       HostSocketConnect();
     } else {
@@ -269,13 +260,11 @@ function GuestComponent(props) {
           chatInfo.setGuestInfo(newGuestInfo);
         }
 
-        dispatchGuestInfo({
-          type: "ADD",
-          data: {
-            RTC: newGuestInfo,
-            memNo: item.memNo,
-          },
-        });
+        dispatch(setGlobalCtxGuestInfoAdd({
+          RTC: newGuestInfo,
+          memNo: item.memNo,
+        }));
+
       } else if (guestInfo !== null && guestInfo[item.memNo]) {
         guestInfo[item.memNo].initVideoTag();
 
@@ -335,13 +324,10 @@ function GuestComponent(props) {
 
       initInterval(() => {
         if (newGuestInfo.getPeerConnectionCheck()) {
-          dispatchGuestInfo({
-            type: "ADD",
-            data: {
-              RTC: newGuestInfo,
-              memNo: globalState.baseData.memNo,
-            },
-          });
+          dispatch(setGlobalCtxGuestInfoAdd({
+            RTC: newGuestInfo,
+            memNo: globalState.baseData.memNo,
+          }));
 
           if (chatInfo !== null) {
             chatInfo.setGuestInfo(newGuestInfo);
@@ -389,11 +375,7 @@ function GuestComponent(props) {
         newRtcInfo.setDisplayWrapRef(displayWrapRef);
         initInterval(() => {
           if (newRtcInfo.getWsConnectionCheck()) {
-            globalAction.dispatchRtcInfo!({
-              type: "init",
-              data: newRtcInfo,
-            });
-
+            dispatch(setGlobalCtxRtcInfoInit(newRtcInfo));
             return true;
           }
           return false;
@@ -411,10 +393,10 @@ function GuestComponent(props) {
     if (res.result === "success") {
       connectHost(res.data);
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: res.message,
-      });
+      }));
     }
   }, [guestInfo, globalState.baseData.memNo, rtcInfo]);
 
@@ -476,11 +458,11 @@ function GuestComponent(props) {
 
       audioStreamChecker = setTimeout(() => {
         if (audioStream === null) {
-          globalAction.setAlertStatus!({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             content:
               "게스트 연결을 위해 마이크 권한을 허용해\n주세요. 마이크 권한설정은\n'방송가이드'메뉴를 클릭하세요.\n5분 간 마이크 연결되지 않은 경우 자동으로\n게스트 연결이 취소됩니다.)",
-          });
+          }));
         }
       }, 1000);
 
@@ -494,10 +476,10 @@ function GuestComponent(props) {
         setMicCheck(false);
         setMicState(false);
 
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: "연결 시도 시간이 초과되어 자동으로 게스트 연결이 취소되었습니다.\n마이크 연결 후 다시 게스트 신청해주세요.",
-        });
+        }));
       }, 300000);
     }
 
@@ -545,7 +527,7 @@ function GuestComponent(props) {
   useEffect(() => {
     // 게스트 초대
     if (guestState.guestStatus.invite === true && roomOwner === false) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "confirm",
         content: "DJ님이 게스트로 초대했습니다.\n게스트로 방송에 참여하시겠습니까?",
@@ -559,7 +541,7 @@ function GuestComponent(props) {
             mode: 4,
           });
         },
-      });
+      }));
     }
 
     // 게스트 초대 수락
@@ -604,10 +586,7 @@ function GuestComponent(props) {
           if (v === globalState.baseData.memNo) {
             guestInfo[v].socketDisconnect();
           }
-
-          dispatchGuestInfo({
-            type: "EMPTY",
-          });
+          dispatch(setGlobalCtxGuestInfoEmpty());
         });
         dispatchGuestObj({
           type: "INIT",

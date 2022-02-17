@@ -50,10 +50,6 @@ function BroadcastSettingTitle(props: any) {
         type: "alert",
         content: "제목을 2자 이상 입력하세요.",
       }));
-      // globalAction.callSetToastStatus!({
-      //   status: true,
-      //   message: "제목을 2자 이상 입력하세요.",
-      // });
       return;
     }
 
@@ -75,10 +71,6 @@ function BroadcastSettingTitle(props: any) {
         type: "alert",
         content: "제목을 2자 이상 입력하세요.",
       }));
-      // globalAction.callSetToastStatus!({
-      //   status: true,
-      //   message: "제목을 2자 이상 입력하세요.",
-      // });
     } else {
       const res = await insertBroadcastOption({
         optionType: 1,

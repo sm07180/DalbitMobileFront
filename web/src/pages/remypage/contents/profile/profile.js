@@ -1,8 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import Api from 'context/api'
+import React, {useRef, useState} from 'react'
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
@@ -15,17 +11,18 @@ import FanboardSection from './fanboardSection'
 import ClipSection from './clipSection'
 
 import './profile.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
 const Myprofile = () => {
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const {token, profile} = globalState
   const tabMenuRef = useRef();
   const myprofileRef = useRef();
-  
+
   const [socialType, setSocialType] = useState(socialTabmenu[0])
 
   // 페이지 시작

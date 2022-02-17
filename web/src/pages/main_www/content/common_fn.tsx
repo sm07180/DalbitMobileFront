@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { GlobalContext } from "context";
+import {useSelector} from "react-redux";
 
 export const RoomTypeConvertToText = (props: { roomType: string }) => {
   const { roomType } = props;
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { splashData } = globalState;
   if (splashData && splashData !== null) {
     const text = splashData.roomType.find((v) => {

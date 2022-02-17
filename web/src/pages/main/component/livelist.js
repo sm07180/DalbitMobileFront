@@ -5,19 +5,20 @@ import styled from 'styled-components'
 //context
 import Room, {RoomJoin} from 'context/room'
 import Api from 'context/api'
-import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 
 import Util from 'components/lib/utility.js'
 
 import BadgeList from 'common/badge_list'
 import {RoomValidateFromClip} from "common/audio/clip_func";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const makeContents = (props) => {
   let history = useHistory()
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const customHeader = JSON.parse(Api.customHeader)
-  const globalCtx = useContext(Context)
-  const context = useContext(Context)
   const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
   return list.map((list, idx) => {
@@ -61,17 +62,19 @@ const makeContents = (props) => {
         key={`live-${idx}`}
         onClick={() => {
           if (customHeader['os'] === OS_TYPE['Desktop']) {
-            if (globalCtx.token.isLogin === false) {
-              globalCtx.action.alert({
-                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                callback: () => {
+            if (globalState.token.isLogin === false) {
+              dispatch(setGlobalCtxMessage({
+                type: "alert", msg: '해당 서비스를 위해<br/>로그인을 해주세요.'
+                , visible: true
+                , callback: () => {
                   history.push('/login')
                 }
-              })
+              }));
             } else {
               RoomValidateFromClip(
                   roomNo,
-                  globalCtx,
+                  globalState,
+                  dispatch,
                   history,
                   bjNickNm
               )

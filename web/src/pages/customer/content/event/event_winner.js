@@ -1,22 +1,24 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import utility from 'components/lib/utility'
-import {Context} from 'context'
 
 import imgPrize from './static/img_prize.svg'
 import NoResult from 'components/ui/new_noResult'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function EventWinner() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
   const [resultPrize, setResultPrize] = useState([])
 
   const [resultBoolean, setResultBoolean] = useState(false)
   const [winnerRankList, setWinnerRankList] = useState([])
 
   const eventIdx = history.location.pathname.split('/')[3]
-  const memNo = context.token.memNo
+  const memNo = globalState.token.memNo
   const eventTitle = history.location.state.title
   const announcementDate = history.location.state.announcementDate
 
@@ -36,7 +38,8 @@ export default function EventWinner() {
   }
 
   const dalReceive = (receiveDal, prizeIdx, state) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       callback: () => {
         receiveWayClick(prizeIdx, 2, state)
         fnReceiveDal()
@@ -46,16 +49,17 @@ export default function EventWinner() {
         utility.addComma(receiveDal) +
         '달이 즉시 지급됩니다. <br/>' +
         '<p style="margin-top: 16px; font-size:22px; font-weight: bold; color: #632beb;">바로 받으시겠습니까?</p>'
-    })
+    }))
   }
 
   function fnReceiveDal() {
-    context.action.alert({
+    dispatch(setGlobalCtxMessage({
+      type: "alert",
       msg: '지급이 완료되었습니다. <br/>마이페이지 > 내 지갑에서 확인하실 수 있습니다.',
       callback: async () => {
-        window.location.href='/'
+        window.location.href = '/'
       }
-    })
+    }))
   }
 
   const checkSelfAuth = (prizeIdx, minorYn, state) => {
@@ -93,12 +97,13 @@ export default function EventWinner() {
           })
         }
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: async () => {
-            window.location.href='/'
+            window.location.href = '/'
           }
-        })
+        }))
       }
     }
     prizeReceiveWay()
@@ -130,12 +135,13 @@ export default function EventWinner() {
     if (result === 'success') {
       setResultPrize(data)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
-          window.location.href='/'
+          window.location.href = '/'
         }
-      })
+      }))
     }
   }
 
@@ -149,12 +155,13 @@ export default function EventWinner() {
     if (result === 'success') {
       setWinnerRankList(data.rankList)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: async () => {
-          window.location.href='/'
+          window.location.href = '/'
         }
-      })
+      }))
     }
   }
 
@@ -165,8 +172,8 @@ export default function EventWinner() {
   }, [])
 
   useEffect(() => {
-    if (!context.token.isLogin) history.push('/')
-  }, [context.token])
+    if (!globalState.token.isLogin) history.push('/')
+  }, [globalState.token])
 
   return (
     <div id="winnerList">

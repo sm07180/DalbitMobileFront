@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -12,7 +11,7 @@ const Post = (props) => {
   const {data} = props
   const [postInfo, setPostInfo] = useState([]);
   const [postNoticeIdx, setPostNoticeIdx] = useState(0);
-  
+
   // 조회 API
   const fetchPostInfo = () => {
     Api.notice_list({

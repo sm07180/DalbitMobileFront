@@ -1,5 +1,5 @@
-import React, {useContext, useEffect} from 'react'
-import {Switch, Route, useParams, useHistory, Redirect} from 'react-router-dom'
+import React from 'react'
+import {Redirect, Route, Switch, useHistory, useParams} from 'react-router-dom'
 import styled from 'styled-components'
 
 import Nav from './content/nav.js'
@@ -7,14 +7,14 @@ import Nav from './content/nav.js'
 import Profile from './content/profile.js'
 import Search from './content/search'
 import Alarm from './content/alarm'
-
-import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
 // component //
 import Layout from 'pages/common/layout'
-import Api from 'context/api'
-import LoginStay from '../login/components/loginState'
+import {useDispatch, useSelector} from "react-redux";
+
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let history = useHistory()
   let params = useParams()
   const categoryList = [
@@ -24,8 +24,7 @@ export default (props) => {
     {type: 'search', component: Search}
   ]
 
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
+  const {token, profile} = globalState
   // useEffect(() => {
   //   const {memNo} = token
   //   Api.profile({params: {memNo: memNo}}).then((profileInfo) => {

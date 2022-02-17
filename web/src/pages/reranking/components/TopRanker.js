@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react'
-import {Context} from 'context'
 
 import Swiper from 'react-id-swiper'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
@@ -8,7 +7,6 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 const TopRanker = (props) => {
   const [popup, setPopup] = useState(false);
   const {data, rankingListType} = props
-  const context = useContext(Context)
 
   // 스와이퍼
   const swiperParams = {
@@ -20,14 +18,14 @@ const TopRanker = (props) => {
       clickable: true
     }
   }
-  
-  const popOpen = () => {  
+
+  const popOpen = () => {
     setPopup(true);
   }
 
   return (
     <React.Fragment>
-      {data && data.length > 0 &&    
+      {data && data.length > 0 &&
         <div className='rankingTop3'>
           <div className='topHeader'>오늘 TOP3
             <span className='questionMark' onClick={popOpen}></span>
@@ -111,7 +109,7 @@ const TopRanker = (props) => {
                 </div>
               </Swiper>
             )
-          })}      
+          })}
         </div>
       }
       <>
@@ -125,7 +123,7 @@ const TopRanker = (props) => {
                 받은 별, 청취자 수, 받은 좋아요 <br/>(부스터 포함)의 종합 순위입니다.
               </div>
             </>
-            
+
           }
           {
             rankingListType === "fan" &&
@@ -135,7 +133,7 @@ const TopRanker = (props) => {
               보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.
               </div>
             </>
-            
+
           }
           {
             rankingListType === "lover" &&
@@ -148,7 +146,7 @@ const TopRanker = (props) => {
                 <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
               </div>
             </>
-            
+
           }
         </LayerPopup>
       }

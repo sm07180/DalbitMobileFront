@@ -2,7 +2,6 @@ import React, {useEffect, useRef, useState, useContext, useCallback} from 'react
 //modules
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
@@ -20,20 +19,22 @@ import SimpleMessageIconW from '../static/message_w.svg'
 // components
 import NoResult from 'components/ui/new_noResult'
 import {ClipPlayerJoin} from "common/audio/clip_func";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 //flag
 let currentPage = 1
 let timer
 let moreState = false
 export default (props) => {
   //ctx
-  const context = useContext(Context)
   let history = useHistory()
   const {chartListType, clipTypeActive, clipType, clipCategoryFixed, selectType, reloadInit} = props
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
   const customHeader = JSON.parse(Api.customHeader)
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //api
   //   if (res.data.paging && res.data.paging.totalPage === 1) {
   const fetchDataList = async (next) => {
@@ -41,8 +42,8 @@ export default (props) => {
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.getClipList({
       // slctType: context.clipMainSort,
-      slctType: context.clipMainSort,
-      dateType: context.clipMainDate,
+      slctType: globalState.clipMainSort,
+      dateType: globalState.clipMainDate,
       subjectType: clipTypeActive,
       djType: 0,
       gender: '',
@@ -66,9 +67,7 @@ export default (props) => {
         }
       }
     } else {
-      context.action.alert({
-        msg: res.message
-      })
+      dispatch(setGlobalCtxMessage({type:"alert", msg:res.message, visible:true}));
     }
   }
 
@@ -86,27 +85,26 @@ export default (props) => {
     if (result === 'success') {
       const nowPage = getPageFormIdx(idx)
       const playListInfoData = {
-        slctType: context.clipMainSort,
-        dateType: context.clipMainDate,
+        slctType: globalState.clipMainSort,
+        dateType: globalState.clipMainDate,
         subjectType: clipTypeActive,
         page: nowPage,
         records: 100
       }
 
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      clipJoin(data, context)
+      clipJoin(data);
     } else {
       if (code === '-99') {
-        context.action.alert({
-          msg: message,
-          callback: () => {
+        dispatch(setGlobalCtxMessage({
+          type: "alert", msg: message, visible: true, callback: () => {
             history.push('/login')
           }
-        })
+        }));
       } else {
-        context.action.alert({
-          msg: message
-        })
+        dispatch(setGlobalCtxMessage({
+          type: "alert", msg: message, visible: true
+        }));
       }
     }
   }
@@ -136,18 +134,17 @@ export default (props) => {
           onClick={() => {
             // fetchDataPlay(clipNo, idx)
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (globalCtx.token.isLogin === false) {
-                context.action.alert({
-                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                  callback: () => {
+              if (globalState.token.isLogin === false) {
+                dispatch(setGlobalCtxMessage({
+                  type: "alert", msg: '해당 서비스를 위해<br/>로그인을 해주세요.', visible: true, callback: () => {
                     history.push('/login')
                   }
-                })
+                }));
               } else {
                 const nowPage = getPageFormIdx(idx);
                 const playListInfoData = {
-                  slctType: context.clipMainSort,
-                  dateType: context.clipMainDate,
+                  slctType: globalState.clipMainSort,
+                  dateType: globalState.clipMainDate,
                   subjectType: clipTypeActive,
                   page: nowPage,
                   records: 100
@@ -156,8 +153,7 @@ export default (props) => {
                     "clipPlayListInfo",
                     JSON.stringify(playListInfoData)
                 );
-                ClipPlayerJoin(clipNo,globalCtx,history);
-                //globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                ClipPlayerJoin(clipNo,globalState,dispatch,history);
               }
             } else {
               fetchDataPlay(clipNo, idx)
@@ -240,7 +236,7 @@ export default (props) => {
   useEffect(() => {
     setList([])
     fetchDataList()
-  }, [context.clipMainSort, context.clipRefresh, clipTypeActive, context.clipMainDate])
+  }, [globalState.clipMainSort, globalState.clipRefresh, clipTypeActive, globalState.clipMainDate])
 
   //----------------------------------------------------------------
   useEffect(() => {
@@ -288,15 +284,14 @@ export default (props) => {
                   key={`simpleList` + idx}
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (globalCtx.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
+                      if (globalState.token.isLogin === false) {
+                        dispatch(setGlobalCtxMessage({
+                          type: "alert", msg: '해당 서비스를 위해<br/>로그인을 해주세요.', visible: true, callback: () => {
                             history.push('/login')
                           }
-                        })
+                        }));
                       } else {
-                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 4]}));
                       }
                     } else {
                       fetchDataPlay(clipNo, idx)

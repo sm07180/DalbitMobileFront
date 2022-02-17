@@ -1,9 +1,5 @@
-import React, {useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React, {useState} from 'react'
 import {IMG_SERVER} from 'context/config'
-
-import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
@@ -11,12 +7,12 @@ import ListRow from 'components/ui/listRow/ListRow'
 // contents
 // css
 import './profileDetail.scss'
+import {useSelector} from "react-redux";
 
 const ProfileDetail = () => {
-  const history = useHistory()
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const {token, profile} = globalState
   const [textValue, setTextValue] = useState('');
 
   const onChangeTextarea = (e) => {
@@ -51,10 +47,10 @@ const ProfileDetail = () => {
           <div className="text">
           일주년 일부 방송 끝!
           신년이기도 하고 1일이라 바쁘신 분들도 많으실텐데
-          와주신 모든 분들 너무 감사합니다!  
+          와주신 모든 분들 너무 감사합니다!
           내일 오후에는 정규 시간, 룰렛으로  만나요 : )<br/>
           <br/>
-          *1/2 수정되엉ㅆ따 
+          *1/2 수정되엉ㅆ따
           </div>
           <div className="info">
             <i className='comment'></i>
