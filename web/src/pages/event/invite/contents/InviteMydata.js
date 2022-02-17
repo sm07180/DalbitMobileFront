@@ -3,8 +3,9 @@ import React, {useEffect, useState} from 'react'
 import ListNone from 'components/ui/listNone/ListNone'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-
+import Api from "context/api";
 import '../invite.scss'
+import {response} from "express";
 
 const InviteMydata = () => {
   const [popup, setPopup] = useState(false);
@@ -29,6 +30,21 @@ const InviteMydata = () => {
       profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
     }
   ]
+
+  // useEffect(()=>{
+  //   getList();
+  // },[]);
+  //
+  // const getList = ()=>{
+  //   Api.inviteMyList({
+  //     reqBody: true,
+  //     data:{
+  //       "memNo": context.token.memNo,
+  //     }
+  //   }).then((response)=>{
+  //     console.log(response);
+  //   })
+  // }
 
   const popupOpen = () => {
     setPopup(true)

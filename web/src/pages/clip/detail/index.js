@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useMemo} from 'react';
+import React, {useEffect, useState, useMemo} from 'react';
 import Header from "components/ui/header/Header";
 import API from "context/api";
 import Swiper from "react-id-swiper";
@@ -9,11 +9,9 @@ import {useParams} from "react-router-dom";
 
 import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
-import errorImg from '../../broadcast/static/img_originalbox.svg';
 
-const Index = (props) => {
+const ClipDetailPage = (props) => {
   const { type } = useParams();
-  const isDesktop = useSelector((state)=> state.common.isDesktop); //
   const categoryType = useSelector((state)=> state.clip.categoryType); //
   const termType = useSelector((state)=> state.clip.termType); //
   const subjectType = useSelector((state)=> state.clip.subjectType); //
@@ -35,7 +33,8 @@ const Index = (props) => {
 
   const handleTermSelect = (value) => {
     const targetData = termType.find(row => row.index == value);
-    setSearchInfo({...searchInfo, termType: targetData});
+    console.log(targetData);
+    setSearchInfo({...searchInfo, dateType: targetData});
   };
 
   const handleCategorySelect = (value) => {
@@ -67,7 +66,7 @@ const Index = (props) => {
       <section className="filterWrap">
         <div className="tabmenu">
           {subjectType.length > 0 &&
-            <Swiper {...swiperParams}>
+            <Swiper slidesPerView="auto" initialSlide={searchInfo.subjectType.sortNo}>
               {subjectType.map((data, index)=>{
                 return(
                   <ul key={index}>
@@ -94,4 +93,4 @@ const Index = (props) => {
   );
 };
 
-export default Index;
+export default ClipDetailPage;
