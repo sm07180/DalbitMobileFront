@@ -1,8 +1,6 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 //context
-import {Context} from 'context/index.js'
-import Room, {RoomJoin} from 'context/room'
 import API from 'context/api'
 // component
 import Header from 'components/ui/new_header.js'
@@ -10,9 +8,10 @@ import InitialRecomend from './components/recomend'
 import List from './components/list'
 
 //static
-import SearchIco from './static/ic_search.svg'
 //scss
 import './search.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 // concat flag
 let currentPage = 1
@@ -22,8 +21,9 @@ let moreState = false
 let btnAccess = false
 
 export default (props) => {
-  // ctx && path
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const location = useLocation()
   const {search, state} = location
@@ -74,9 +74,10 @@ export default (props) => {
       if (res.result === 'success') {
         setRecoListClip(res.data.list)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
   }
@@ -86,9 +87,10 @@ export default (props) => {
     if (result === 'success') {
       setClipType(data)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   //검색 fetch 1. 맴버 2. 방송방 3. 클립
@@ -123,9 +125,10 @@ export default (props) => {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
   async function fetchSearchLive(next) {
@@ -159,9 +162,10 @@ export default (props) => {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
   async function fetchSearchClip(next) {
@@ -195,9 +199,10 @@ export default (props) => {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
   //function
@@ -230,12 +235,13 @@ export default (props) => {
     btnAccess = true
 
     if (result.length < 2) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `두 글자 이상 입력해 주세요.`,
         callback: () => {
           btnAccess = false
         }
-      })
+      }))
     } else {
       currentPage = 1
       setSearchState(true)
