@@ -248,7 +248,7 @@ const App = () => {
       locale: CHAT_CONFIG.locale.ko_KR,
       roomNo: null,
     };
-    const chatInfo = new ChatSocketHandler(socketUser);
+    const chatInfo = new ChatSocketHandler(socketUser, null, dispatch);
     // chatInfo.setSplashData(globalState.splashData);
     //deep copy chatInfo
     let cloneMailInfo = Object.assign(
@@ -537,7 +537,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (globalState.splash !== null && globalState.token !== null && globalState.token.memNo && globalState.profile !== null) {
+    if (globalState.splash !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
       setReady(true)
     }
   }, [globalState.splash, globalState.token, globalState.profile])
