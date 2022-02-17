@@ -27,9 +27,9 @@ const LoginPage = () => {
     }
   },[]);
 
-  if (isMobileWeb()){
-    return <Start/>
-  }else{
+  // if (isMobileWeb()){
+  //   return <Start/>
+  // }else{
     return (
       <div id="loginPage">
         <section className='loginMain'>
@@ -44,7 +44,7 @@ const LoginPage = () => {
         </section>
       </div>
     )
-  }
+  // }
 
 }
 

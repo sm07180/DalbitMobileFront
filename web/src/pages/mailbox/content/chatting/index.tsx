@@ -475,7 +475,7 @@ export default function chatting() {
           </ul>
         </div>
       </Header>
-      <div className="chatBoxPage subContent">
+      <div className="chatBoxPage">
         {/* list view */}
         <div className="chatPrevWrapper" ref={PrevRef}>
           {/* animationviewer */}

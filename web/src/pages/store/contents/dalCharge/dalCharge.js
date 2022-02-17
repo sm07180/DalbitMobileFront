@@ -267,10 +267,6 @@ const DalCharge = () => {
       {popSlide === true &&
       <PopSlide setPopSlide={setPopSlide}>
         <div className='title'>인증 정보를 확인해주세요!</div>
-        <div className="infoBox">
-          <p className='name'>홍길동</p>
-          <p className='phoneNum'>010-111-2222</p>
-        </div>
         <p className='text'>
           안전한 계좌 정보 등록을 위해 한번 더<br/>
           본인인증을 해주셔야 합니다.<br/>
