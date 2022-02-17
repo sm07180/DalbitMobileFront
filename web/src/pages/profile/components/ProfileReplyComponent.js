@@ -64,25 +64,25 @@ const ProfileReplyComponent = (props) => {
       </div>
 
       <button className='more' ref={isMoreRef} onClick={() => setIsMore(!isMore)}>
-        <img src="" alt="" />
-
+        {/*<img src="" alt="" />*/}
+        {isMore &&
+        <div>
+          {(isMyProfile || isMyContents || adminChecker) &&
+          <button onClick={() => replyDelete(item?.replyIdx)}>삭제</button>
+          }
+          {isMyContents &&
+          <button onClick={() => {
+            blurBlock();
+            replyEditFormActive(item?.replyIdx, item?.contents);
+          }}>수정</button>
+          }
+          {!isMyContents &&
+          <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>
+          }
+        </div>}
       </button>
 
-      {isMore &&
-      <>
-        {(isMyProfile || isMyContents || adminChecker) &&
-        <button onClick={() => replyDelete(item?.replyIdx)}>삭제</button>
-        }
-        {isMyContents &&
-        <button onClick={() => {
-          blurBlock();
-          replyEditFormActive(item?.replyIdx, item?.contents);
-        }}>수정</button>
-        }
-        {!isMyContents &&
-        <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>
-        }
-      </>}
+
     </ListRow>
 
 
