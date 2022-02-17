@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react'
 import './switchList.scss'
 
 const SwitchList = (props) => {
-  const {title, mark, allSwitch, action} = props  
+  const {title, mark, allSwitch, action} = props
 
   return (
     <div className='switchList'>
@@ -14,7 +14,7 @@ const SwitchList = (props) => {
       </div>
       <label className="inputLabel">
         <input type="checkbox" className={`blind`} name={allSwitch ? "switchAll" : "switch"} onChange={action}/>
-        <span className={`switchBtn`}/>
+        <span className="switchBtn"/>
       </label>
     </div>
   )
