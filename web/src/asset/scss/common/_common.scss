@@ -375,6 +375,7 @@ legend {
     color: #999;
   }
 }
+
 #player {
   position: fixed;bottom: 0;left:50%;
   transform:translateX(-50%);
@@ -382,31 +383,28 @@ legend {
   max-width:480px;
   height: 70px;
   z-index: 50;
-  background-color: rgba(0, 0, 0, 0.85);
   color: #fff;
   border-radius: 16px 16px 0 0;
   overflow:hidden;
   cursor: pointer;
   .inner-player {
     position: relative;
+    @include flex(center,space-between);
     width: 100%;
     height: 100%;
     padding: 0px 24px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
     box-sizing: border-box;
     .inner-player-bg {
       @include position-center;
       width:120%;
       height:120%;
-      filter: blur(5px);
+      filter: blur(21px);
+      opacity: .6;
     }
     .info-wrap {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      position:relative;
+      z-index: 1;
+      @include flex(center);
       .equalizer {
         width: 36px;
         height: 36px;
