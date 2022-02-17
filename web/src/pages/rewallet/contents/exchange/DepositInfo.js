@@ -82,7 +82,7 @@ const DepositInfo = (props) => {
       <form className="formBox">
         <div className="listRow">
           <div className={"title"}>예금주</div>
-         <InputItems>
+          <InputItems>
             <input type="text" placeholder=""
                    onChange={(e) =>
                      setExchangeForm({...exchangeForm, accountName: e.target.value})}/>

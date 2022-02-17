@@ -348,7 +348,6 @@
       }
       .listRow {
         @include flex(center);
-        overflow: hidden;
         margin-bottom: 8px;
         &:last-child{margin-bottom: 0;}
         &.address {
@@ -375,6 +374,7 @@
         }
         .inputBox {
           .select {
+            position:relative;
             flex:1;
             @include flex(center);
             margin:0 16px;
@@ -389,6 +389,10 @@
               margin-left:auto;
               @include BGIMG('wallet/ico_arrowDown.png')
             }
+          }
+          .selectWrap {
+            @include selectWrapStyle-1;
+            max-height:180px;
           }
           .value {
             margin:0 16px;
