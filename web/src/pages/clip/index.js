@@ -45,7 +45,7 @@ const ClipPage = () => {
   /* 핫 클립 */
   const getHotClipInfo = () => {
     Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
-      if (res.result === 'success' && res.code === 'C001') {
+      if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
         for (let i = 0; i < res.data.paging.total; i++) {
@@ -62,19 +62,10 @@ const ClipPage = () => {
         }
         setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
       } else {
-        setHotClipInfo({ list: [], cnt: 0});
+        if (hotClipInfo.list.length > 0) setHotClipInfo({ list: [], cnt: 0});
       }
     });
-  }
-
-  // 최신 클립
-  const getLastestClipInfo = () => {
-    Api.getLatestList({listCnt: 10}).then((res) => {
-      if (res.result === 'success') {
-        setNewClipInfo(res.data.list)
-      }
-    })
-  }
+  };
 
   // 좋아요 누른 클립 리스트 가져오기
   const getClipLikeList = () => {
@@ -85,8 +76,8 @@ const ClipPage = () => {
       if (res.code === 'C001') {
         setLikeClipInfo(res.data);
       }
-    })
-  }
+    });
+  };
 
 
   // 최근들은 클립 리스트 가져오기
@@ -98,7 +89,7 @@ const ClipPage = () => {
       if (res.code === 'C001') {
         setListenClipInfo(res.data);
       }
-    })
+    });
   };
 
   // 방금 떠오른 클립 리스트 가져오기
@@ -126,16 +117,17 @@ const ClipPage = () => {
 
         setPopularClipInfo(tempHotClipList);
       }
-    })
+    });
   };
 
   const getClipList = () => {
-    API.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 20, subjectType: subSearchInfo.value }).then(res => {
+    API.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 5, subjectType: subSearchInfo.value }).then(res => {
       if (res.code === 'C001') {
         setSubClipInfo({ list: res.data.list, paging: {...res.data.paging}});
       }
     });
-  }
+  };
+
   const handleSubjectClick = (e) => {
     const { value } = e.currentTarget.dataset;
 
@@ -175,7 +167,6 @@ const ClipPage = () => {
   // 링크 다시 눌렀을때, 액션
   const refreshActions = () => {
     getHotClipInfo();
-    getLastestClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
@@ -186,7 +177,6 @@ const ClipPage = () => {
 
   useEffect(() => {
     getHotClipInfo();
-    getLastestClipInfo();
     getClipLastList();
     getClipLikeList();
     getClipListenList();
