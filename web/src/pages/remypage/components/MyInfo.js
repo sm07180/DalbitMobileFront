@@ -37,7 +37,7 @@ const MyInfo = (props) => {
       const endTime = parseInt(item.end);
 
       if(nowInfo >= startTime && nowInfo < endTime) {
-        setNowComment(`${data?.nickNm}님,<br/>${item.comment}`);
+        setNowComment(item.comment);
       }
     })
   }
@@ -63,7 +63,8 @@ const MyInfo = (props) => {
     <>
       <div className="textWrap">
         <div className='text'>
-          <span dangerouslySetInnerHTML={{__html: Utility.nl2br(nowComment)}} />
+          <span><strong>{data?.nickNm}</strong>님</span>
+          <span>{nowComment}</span>
         </div>
         <div className="info">
           <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
