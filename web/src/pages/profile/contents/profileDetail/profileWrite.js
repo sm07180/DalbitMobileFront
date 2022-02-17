@@ -49,7 +49,7 @@ const ProfileWrite = () => {
   const [formState, setFormState] = useState({
     title: '',
     contents: '',
-    others: 0,  //topFix 고정여부 [0, 1] / viewOn 비밀글 여부( 등록만 가능, 수정불가 ) [0, 1]
+    others: type==='feed'? 0: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
     photoInfoList: []
   });
   const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
@@ -86,7 +86,7 @@ const ProfileWrite = () => {
         data: {
           title,
           contents,
-          topFix: 0,//others,
+          topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
       });
@@ -121,7 +121,7 @@ const ProfileWrite = () => {
         data: {
           title,
           contents,
-          topFix: 0,//others,
+          topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
           noticeIdx: index,
           chrgrName: profile?.nickName,
@@ -253,11 +253,15 @@ const ProfileWrite = () => {
         />
         <div className="bottomGroup">
           {/*비밀글 viewOn : [0 : 비밀글, 1 : 기본]*/}
-          {!isMyProfile && type==='fanBoard' &&
-          <CheckList text="비밀글" checkStatus={formState.others === 0}
-                     readOnly={ action==='modify'}
-                     onClick={() => action==='write'&& setFormState({...formState, others: formState.others === 1 ? 0 : 1})}
-          />}
+          {type === 'feed' ?
+            <CheckList text="상단고정" checkStatus={formState.others===1}
+                       onClick={()=>{setFormState({...formState, others:formState.others === 1? 0: 1})}}/>
+            : ( (action==='write' && !isMyProfile || action==='modify') &&
+              <CheckList text="비밀글" checkStatus={formState.others===0}
+                         onClick={() => {
+                           action !== 'modify' &&
+                           setFormState({...formState, others: formState.others === 1 ? 0 : 1})
+                         }}/>)}
           <div className="textCount">
             <span>{formState?.contents?.length || 0}</span> / 1000
           </div>
