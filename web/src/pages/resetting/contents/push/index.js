@@ -17,11 +17,7 @@ import {Context} from "context";
 const SettingPush = () => {
   let first = true;
   let isSelect = false;
-  const tabList = ['무음','소리','진동'];
-  const [tabType, setTabType] = useState(tabList[0])
-  const [switchEle, setSwitchEle] = useState(false)
-  const [switchAll, setSwitchAll] = useState(false)
-  const [myAlimType, setMyAlimType] = useState(-1);
+  const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
   const [allCheck, setAllCheck] = useState(0);
   const context = useContext(Context);
   const [toast, setToast] = useState({
@@ -45,26 +41,26 @@ const SettingPush = () => {
     }
   ])
 
-  const fetchData = () => {
-    const res = API.appNotify_list({
+  const fetchData = async () => {
+    const res = await API.appNotify_list({
       params: {}
     })
-    if(res.result === "success") {
-      console.log(res);
+    if(res.result === "success") { //0 알림X, 1 알림ㅇ
+      console.log("fetchSuccess", res);
       setAlarmArray(alarmArray.map((v) => {
         v.value = res.data[v.key];
         return v;
       }))
       setMyAlimType(res.data.alimType);
     } else {
-      console.log(res);
+      context.action.alert({msg: res.message});
     }
   }
 
-  const postAlarmData = async (arg) => {
-    if(arg !== undefined) {
+  const postAlarmData = async (org) => {
+    if(org !== undefined) {
       setAlarmArray(alarmArray.map((v) => {
-        if(arg.key === v.key) {arg.value = arg.value === 0 ? 1 : 0}
+        if(org.key === v.key) {org.value = org.value === 0 ? 1 : 0}
         return v
       }))
     }
@@ -73,6 +69,7 @@ const SettingPush = () => {
         return [x.key, x.value];
       })
     )
+    console.log("#@$@WEFR", alarmObj);
     let all = 0;
     if(alarmArray.every((v) => {return v.value === 1})) {
       setAllCheck(1);
@@ -85,19 +82,23 @@ const SettingPush = () => {
         ...alarmObj
       }
     })
-    let message;
+    console.log(myAlimType);
     if(res.result === "success") {
-      console.log(res);
-      if(arg === undefined) {
+      console.log("success", res);
+      if(org === undefined) {
         if(!(isSelect === true)) {
           if(myAlimType === "n") {
-            context.action.alert({msg: "알림 모드가 무음으로 변경되었습니다."})
+            toastMessage("알림 모드가 무음으로 변경되었습니다.")
           } else if(myAlimType === "s") {
-            context.action.alert({msg: "알림 모드가 "})
+            toastMessage("알림 모드가 소리로 변경되었습니다.")
+          } else if(myAlimType === "v") {
+            toastMessage("알림 모드가 진동으로 변경되었습니다.")
           }
         }
-      }}
-
+      }
+    } else {
+      console.log(res);
+    }
   }
 
   const toastMessage = (text) => {
@@ -113,8 +114,11 @@ const SettingPush = () => {
     const on = document.querySelectorAll('input[name="switch"]:checked');
     const switchAll = document.querySelector('input[name="switchAll"]');
     const thisParent = e.currentTarget.closest('.switchList');
-    const title = thisParent.querySelector('.title').innerText;
+    const title = (thisParent.querySelector('.title').innerText || e.currentTarget.dataset.title);
+    first = false;
+    isSelect = false;
     if(e.target.name === "switchAll") {
+      console.log("전체 알림 수신시")
       switchs.forEach((checkbox) => {
         checkbox.checked = e.target.checked
       })
@@ -123,7 +127,9 @@ const SettingPush = () => {
       } else {
         toastMessage(`${title} \n 푸시를 받지 않습니다.`)
       }
+      selectAll();
     } else {
+      console.log("개별 알림 수신시")
       if(e.target.checked){
         toastMessage(`${title} \n 푸시를 받습니다.`)
       } else {
@@ -137,9 +143,34 @@ const SettingPush = () => {
     }
   }
 
+  const onClick = (e) => {
+    first = false;
+    isSelect = false;
+    setMyAlimType(e.currentTarget.dataset.value);
+  }
+
+  const selectAll = () => {
+    first = false;
+    isSelect = true;
+    if(allCheck === 0) {
+      setAllCheck(1);
+      setAlarmArray(alarmArray.map((v) => {v.value = 1; return v;}));
+    } else if(allCheck === 1) {
+      setAllCheck(0);
+      setAlarmArray(alarmArray.map((v) => {v.value = 0; return v;}));
+    }
+    postAlarmData();
+  }
+
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if(!first) {
+      postAlarmData()
+    }
+  }, [myAlimType]);
 
   return (
     <div id="push">
@@ -147,13 +178,28 @@ const SettingPush = () => {
       <div className='subContent'>
         <div className='tabWrap'>
           <p className='topText'>메시지 알림</p>
-          <Tabmenu data={tabList} tab={tabType} setTab={setTabType} />
+          <ul className="tabmenu">
+            <li className={myAlimType === "n" ? "active" : ""} onClick={onClick} data-value="n" >무음</li>
+            <li className={myAlimType === "s" ? "active" : ""} onClick={onClick} data-value="s" >소리</li>
+            <li className={myAlimType === "v" ? "active" : ""} onClick={onClick} data-value="v" >진동</li>
+          </ul>
         </div>
         <div className='switchWrap'>
           <SwitchList title={"전체 알림 수신"} mark={false} allSwitch={true} action={switchControl}/>
           {alarmArray.map((v, idx) => {
             return(
-              <SwitchList key={idx} title={v.text} action={switchControl}/>
+              <div key={idx}>
+                <div className="switchList">
+                  <div className="titleWrap">
+                    <span className="questionMark"/>
+                    <span className="title">{v.text}</span>
+                  </div>
+                  <label className="inputLabel">
+                    <input type="checkbox" className={"blind"} name="switch" data-title={v.text} data-key={v.key} onChange={switchControl} onClick={() => {postAlarmData(v)}} />
+                    <span className="switchBtn"/>
+                  </label>
+                </div>
+              </div>
             )
           })}
         </div>
@@ -165,4 +211,4 @@ const SettingPush = () => {
   )
 }
 
-export default SettingPush
+export default SettingPush;

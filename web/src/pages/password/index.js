@@ -11,7 +11,7 @@ import {useHistory} from "react-router-dom";
 import {Context} from "context";
 
 
-const PasswordChange = () => {
+const PasswordChange = (props) => {
   const history = useHistory();
   const context = useContext(Context)
   const [phoneAuthRequest, setPhoneAuthRequest] = useState(false);
@@ -206,7 +206,7 @@ const PasswordChange = () => {
     if (checkPasswordValue.check && checkAuthValue.check) {
       passwordFetch().then((res)=>{
         if (res.result === 'success') {
-          context.action.alert({callback: () => {history.push('/login/didLogin')}, msg: '비밀번호가 변경되었습니다.'})
+          context.action.alert({callback: () => {!props?.backEvent? history.push('/login/didLogin') : props.backEvent()}, msg: '비밀번호가 변경되었습니다.'})
         } else {
           context.action.alert({msg: res.message})
         }
@@ -242,7 +242,7 @@ const PasswordChange = () => {
 
   return (
     <div id='passwordSetting'>
-      <Header position={'sticky'} title={'비밀번호 변경'} type={'back'}/>
+      <Header position={'sticky'} title={'비밀번호 변경'} type={'back'} backEvent={props?.backEvent}/>
       <div className='content'>
         <form>
           <div className='section'>
@@ -292,4 +292,7 @@ const PasswordChange = () => {
   )
 }
 
+PasswordChange.defaultProps = {
+  backEvent: null
+};
 export default PasswordChange

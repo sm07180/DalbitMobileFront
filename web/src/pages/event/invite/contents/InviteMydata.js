@@ -1,13 +1,21 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 import ListNone from 'components/ui/listNone/ListNone'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-
+import Api from "context/api";
 import '../invite.scss'
+import {Context} from "context";
 
 const InviteMydata = () => {
+  const context = useContext(Context)
+  const {token, profile} = context
+
   const [popup, setPopup] = useState(false);
+  const [data, setData] = useState({
+    cnt:"",
+    list:[]
+  });
 
   const temporaryData = [
     {
@@ -30,6 +38,25 @@ const InviteMydata = () => {
     }
   ]
 
+  useEffect(()=>{
+    getList();
+  },[]);
+
+  const getList = ()=>{
+    Api.inviteMyList({
+      reqBody: true,
+      data:{
+        "memNo": context.token.memNo,
+      }
+    }).then((response)=>{
+      console.log("inviteMyList", getList);
+      setData({
+        cnt:response.data.listCnt,
+        list:response.data.list
+      })
+    })
+  }
+
   const popupOpen = () => {
     setPopup(true)
   }
@@ -42,32 +69,32 @@ const InviteMydata = () => {
             <span className='dataTitle'>
               <img src='https://image.dalbitlive.com/event/invite/eventPage_myData-title.png' alt="초대친구 현황" className='titleImg'/>
             </span>
-            <button className='questionMark' onClick={popupOpen}></button>
+            <button className='questionMark' onClick={popupOpen}/>
           </div>
           <div className='countWrap'>
             <span className='countTitle'>내가 초대한 친구</span>
-            <span className='countData'>100</span>
+            <span className='countData'>{data.cnt}</span>
           </div>
         </div>
         <div className='inviteUser'>
           {
-            temporaryData.length > 0 ?
+            data.cnt > 0 ?
             <>
               <div className='inviteUserWrap'>
               {
-                temporaryData.map((list, index) => {
+                data.list.map((member, index) => {
                   return (
                     <div className='inviteUserList' key={index}>
                       <div className="photo">
-                        <img src={list.profImg} alt="프로필이미지" />
+                        <img src={member.rcv_image_profile} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>
-                          <GenderItems data={list.gender}/>
-                          <span className='nickNm'>{list.nickNm}</span>
+                          <GenderItems data={member.rcv_mem_sex}/>
+                          <span className='nickNm'>{member.rcv_mem_nick}</span>
                         </div>
                         <div className='listItem'>
-                          <span className='since'>가입일 {list.since}</span>
+                          <span className='since'>가입일 {member.rcv_mem_join_date}</span>
                         </div>
                       </div>
                     </div> 

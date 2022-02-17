@@ -70,11 +70,12 @@ const TitleButton = (props) => {
       )
     case 'MY':
       return (
-        <div className="buttonGroup">
+        <></>
+        /*<div className="buttonGroup">
           <StoreButton history={history} />
           <SearchButton history={history} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-        </div>
+        </div>*/
       )
     default :
       return (

@@ -21,7 +21,7 @@ const SearchHistory = (props) => {
   return (
     <div className='searchHistory'>
       <CntTitle title="최근 검색어">
-        <button className='removeAll' onClick={delHistory}>모두삭제</button>
+        {historyData.length > 0 && <button className='removeAll' onClick={delHistory}>모두삭제</button>}
       </CntTitle>
       <div className='historyWrap'>
         {historyData.map((list,index) => {

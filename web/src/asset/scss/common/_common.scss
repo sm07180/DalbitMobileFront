@@ -93,6 +93,9 @@ legend {
           background: $lighterGray;
         }
       }
+      header {
+        top:68px !important;
+      }
     }
     .rightContent {
       float: right;
@@ -110,6 +113,7 @@ legend {
   }
 }
 #GNB {
+  position:-webkit-sticky;
   position:sticky;
   top:0;
   width:100%;min-width:480px;
@@ -120,20 +124,56 @@ legend {
   .gnbContainer {
     position: relative;
     @include flex(center);
-    max-width:800px;
     height:100%;
     margin: 0 auto;
     .gnbHeader {
-      @include flex(center);
+      flex:1;
+      @include flex(center,center);
       width:100%;
-      max-width:480px;
       h1 {
         height:25px;
-        max-width:480px;
+        width:200px;
         cursor: pointer;
         img {
           width:71px;
           height:100%;
+        }
+      }
+    }
+    .gnbNavigation {
+      flex:1;
+      @include flex(center,center);
+      width:480px;
+      ul {
+        @include flex(center,space-between);
+        width:328px;
+        li {
+          width:56px;height:56px;
+
+        }
+      }
+    }
+    .subGnbNavigation {
+      flex:1;
+      @include flex(center,center);
+      ul {
+        @include flex(center);
+        li {
+          width:44px;height:44px;
+          background-color:#ddd;
+          + li {
+            margin-left:6px;
+          }
+          &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-off.png");}
+          &:nth-child(2) {@include BGIMG("common/gnb/gnbMali-off.png");}
+          &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-off.png");}
+          &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-off.png");}
+          &.active {
+            &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-on.png");}
+            &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-on.png");}
+            &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-on.png");}
+            &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-on.png");}
+          }
         }
       }
       button {
@@ -141,7 +181,7 @@ legend {
         @include flex(center,center);
         width:114px;
         line-height:34px;
-        margin-left:auto;
+        margin-left:11px;
         @include border(#D9D9D8,2px);
         @include font(14px,SemiBold,#161616);
         &::before {
@@ -160,76 +200,80 @@ legend {
         }
       }
     }
-    .gnbNavigation {
-      margin-left:auto;
-      ul {
-        @include flex(center);
-        li {
-          position:relative;
-          width:44px;height:44px;
-          border-radius:50%;
-          &[data-url="/notice"] {
-            .newDot {
-              @include position-top-right(4px,4px);
-              display:inline-block;
-              width:8px;height:8px;
-              border-radius:50%;
-              background-color:$MAINCOLOR;
-            }
+    ul {
+      li {
+        position:relative;
+        // width:44px;height:44px;
+        border-radius:50%;
+        &:hover {
+          background-color:#F2F2F2 !important;
+        }
+        &:hover::before {
+          content:"";
+          @include position-horizon;
+          top:100%;
+          width:13px;height:12px;
+          @include BGIMG("common/gnb/gnb-dot.png");
+        }
+        &:hover::after {
+          @include position-horizon;
+          top:calc(100% + 8px);
+          padding:0 7px 0 7px;
+          height:24px;
+          line-height:22px;
+          border-radius:4px;
+          background-color:#424242;
+          white-space: nowrap;
+          @include font(14px,normal,white);
+        }
+        &[data-url="/"] {
+          @include BGIMG("common/gnb/gnbLive-off.png");
+          &:hover::after {content:"라이브";}
+        }
+        &[data-url="/clip"] {
+          @include BGIMG("common/gnb/gnbClip-off.png");
+          &:hover::after {content:"클립";}
+        }
+        &[data-url="/search"] {
+          @include BGIMG("common/gnb/gnbSearch-off.png");
+          &:hover::after {content:"검색";}
+        }
+        &[data-url="/rank"] {
+          @include BGIMG("common/gnb/gnbRank-off.png");
+          &:hover::after {content:"랭킹";}
+        }
+        &[data-url="/mypage"] {
+          @include BGIMG("common/gnb/gnbMy-off.png");
+          &:hover::after {content:"마이";}
+        }
+        &[data-url="/mail"] {
+          @include BGIMG("common/gnb/gnbMail-off.png");
+          &:hover::after {content:"우체통";}
+        }
+        &[data-url="/store"] {
+          @include BGIMG("common/gnb/gnbStore-off.png");
+          &:hover::after {content:"스토어";}
+        }
+        &[data-url="/notice"] {
+          @include BGIMG("common/gnb/gnbAllim-off.png");
+          &:hover::after {content:"알람";}
+          .newDot {
+            @include position-top-right(4px,4px);
+            display:inline-block;
+            width:8px;height:8px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
           }
-          &:hover {
-            background-color:#F2F2F2 !important;
-          }
-          &:hover::before {
-            content:"";
-            @include position-horizon;
-            top:100%;
-            width:13px;height:12px;
-            @include BGIMG("common/gnb/gnb-dot.png");
-          }
-          &:hover::after {
-            @include position-horizon;
-            top:calc(100% + 8px);
-            padding:0 7px 0 7px;
-            height:24px;
-            line-height:22px;
-            border-radius:4px;
-            background-color:#424242;
-            white-space: nowrap;
-            @include font(14px,normal,white);
-          }
-          &:nth-child(1) {
-            @include BGIMG("common/gnb/gnbLive-off.png");
-            &:hover::after {content:"라이브";}
-          }
-          &:nth-child(2) {
-            @include BGIMG("common/gnb/gnbClip-off.png");
-            &:hover::after {content:"클립";}
-          }
-          &:nth-child(3) {
-            @include BGIMG("common/gnb/gnbSearch-off.png");
-            &:hover::after {content:"검색";}
-          }
-          &:nth-child(4) {
-            @include BGIMG("common/gnb/gnbRank-off.png");
-            &:hover::after {content:"랭킹";}
-          }
-          &:nth-child(5) {
-            @include BGIMG("common/gnb/gnbMy-off.png");
-            &:hover::after {content:"마이";}
-          }
-          &:nth-child(6) {
-            @include BGIMG("common/gnb/gnbAllim-off.png");
-            &:hover::after {content:"알람";}
-          }
-          &.active {
-            &:nth-child(1) {@include BGIMG("common/gnb/gnbLive-on.png");}
-            &:nth-child(2) {@include BGIMG("common/gnb/gnbClip-on.png");}
-            &:nth-child(3) {@include BGIMG("common/gnb/gnbSearch-on.png");}
-            &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
-            &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
-            &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
-          }
+        }
+        &.active {
+          &[data-url="/"] {@include BGIMG("common/gnb/gnbLive-on.png");}
+          &[data-url="/clip"] {@include BGIMG("common/gnb/gnbClip-on.png");}
+          &[data-url="/search"] {@include BGIMG("common/gnb/gnbSearch-on.png");}
+          &[data-url="/rank"] {@include BGIMG("common/gnb/gnbRank-on.png");}
+          &[data-url="/mypage"] {@include BGIMG("common/gnb/gnbMy-on.png");}
+          &[data-url="/mail"] {@include BGIMG("common/gnb/gnbMail-on.png");}
+          &[data-url="/store"] {@include BGIMG("common/gnb/gnbStore-on.png");}
+          &[data-url="/notice"] {@include BGIMG("common/gnb/gnbAllim-on.png");}
         }
       }
     }
@@ -331,6 +375,170 @@ legend {
     color: #999;
   }
 }
+#player {
+  position: fixed;bottom: 0;left:50%;
+  transform:translateX(-50%);
+  width: 100%;
+  max-width:480px;
+  height: 70px;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  border-radius: 16px 16px 0 0;
+  overflow:hidden;
+  cursor: pointer;
+  .inner-player {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0px 24px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    .inner-player-bg {
+      @include position-center;
+      width:120%;
+      height:120%;
+      filter: blur(5px);
+    }
+    .info-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .equalizer {
+        width: 36px;
+        height: 36px;
+        margin-right: 8px;
+        color: #fdad2b;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+
+        ul {
+          padding-top: 1px;
+          height: 14px;
+          width: 20px;
+          margin: 0 auto;
+          padding: 0 0 0 0;
+          position: relative;
+          li {
+            width: 2px;
+            float: left;
+            margin: 0 2px 0 0;
+            padding: 0;
+            height: 14px;
+            position: relative;
+            list-style-type: none;
+            span {
+              display: block;
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              height: 14px;
+              background: #fdad2b;
+              transform: none;
+            }
+          }
+          li:nth-child(1) span {
+            animation: equalizer-bar 2s 1s ease-out alternate infinite;
+          }
+          li:nth-child(2) span {
+            animation: equalizer-bar 2s 0.5s ease-out alternate infinite;
+          }
+          li:nth-child(3) span {
+            animation: equalizer-bar 2s 1.5s ease-out alternate infinite;
+          }
+          li:nth-child(4) span {
+            animation: equalizer-bar 2s 0.25s ease-out alternate infinite;
+          }
+          li:nth-child(5) span {
+            animation: equalizer-bar 2s 2s ease-out alternate infinite;
+          }
+        }
+        p {
+          margin-top: auto;
+          padding-top: 6px;
+          font-size: 11px;
+        }
+      }
+
+      .thumb {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        margin-right: 16px;
+        background: #ccc;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        &::before {
+          position: absolute;
+          content: "";
+          /* background: rgba(0, 0, 0, 0.3); */
+          width: 100%;
+          height: 100%;
+          z-index: 4;
+        }
+        .playToggle__play,
+        .playToggle__stop {
+          position: relative;
+          padding: 10px;
+          z-index: 5;
+
+          &.video {
+            background: rgba(0, 0, 0, 0.1);
+          }
+        }
+      }
+
+      .room-info {
+        width: 256px;
+        font-size: 13px;
+        letter-spacing: -0.35px;
+
+        .title {
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-bottom: 3px;
+          font-size: 16px;
+          font-weight: 300;
+        }
+        p {
+          font-weight: 300;
+        }
+      }
+
+      .counting {
+        span {
+          display: inline-block;
+          margin-right: 18px;
+
+          img {
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+
+    .close-btn {
+      display: block;
+      cursor: pointer;
+    }
+  }
+}
+
+
 // mobile
 .mobile-app {
   #GNB {
@@ -350,8 +558,8 @@ legend {
   }
 }
 
-.defaultPointer {
-  cursor: default;
+.cursorPointer {
+  cursor: pointer;
 }
 
 // .noResultWrap {
@@ -516,9 +724,6 @@ legend {
 }
 
 @media (max-width: 800px) {
-  .gnbContainer {
-    width:480px;
-  }
   .totalWrap {
     width:480px;
   }

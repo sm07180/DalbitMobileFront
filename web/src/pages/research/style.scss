@@ -1,6 +1,12 @@
 @import '../../styles/global.scss';
 @import "components/ui/_mixin.scss";
 
+$SEARCH-HEADER: 112px;
+
+.container .totalWrap #searchPage .tabmenu {
+  top: $GNB-HEIGHT + $SEARCH-HEADER !important;
+}
+
 #searchPage {
   header {
     align-items: flex-start;

@@ -1,11 +1,32 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+
+import '../../../components/ui/listRow/listRow.scss';
 
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
-import '../../../components/ui/listRow/listRow.scss';
+
+const hexToRgb = (target) => {
+  /* 맨 앞의 "#" 기호를 삭제하기. */
+  var hex = target.trim().replace( "#", "" );
+
+  /* rgb로 각각 분리해서 배열에 담기. */
+  var rgb = ( 3 === hex.length ) ?
+    hex.match( /[a-f\d]/gi ) : hex.match( /[a-f\d]{2}/gi );
+
+  rgb.forEach(function (str, x, arr){
+    /* rgb 각각의 헥사값이 한자리일 경우, 두자리로 변경하기. */
+    if ( str.length == 1 ) str = str + str;
+
+    /* 10진수로 변환하기. */
+    arr[ x ] = parseInt( str, 16 );
+  });
+
+  return "rgba(" + rgb.join(", ") + ", 0.16)";
+};
 
 const NowClip = (props) => {
   const {info} = props;
   const bgRef = useRef();
+  const [ bgInfo, setBgInfo ] = useState(hexToRgb(info.randomBg));
 
   const extractColor = (e) => {
     let imgData = e.currentTarget;
@@ -66,32 +87,13 @@ const NowClip = (props) => {
     }
   };
 
-  const hexToRgb = (target) => {
-    /* 맨 앞의 "#" 기호를 삭제하기. */
-    var hex = target.trim().replace( "#", "" );
-
-    /* rgb로 각각 분리해서 배열에 담기. */
-    var rgb = ( 3 === hex.length ) ?
-      hex.match( /[a-f\d]/gi ) : hex.match( /[a-f\d]{2}/gi );
-
-    rgb.forEach(function (str, x, arr){
-      /* rgb 각각의 헥사값이 한자리일 경우, 두자리로 변경하기. */
-      if ( str.length == 1 ) str = str + str;
-
-      /* 10진수로 변환하기. */
-      arr[ x ] = parseInt( str, 16 );
-    });
-
-    return "rgba(" + rgb.join(", ") + ", 0.16)";
-  }
-
   const handleImgError = (e) => {
     e.currentTarget.src = errorImg;
   };
 
   return (
     <>
-      <div className='listWrap' ref={bgRef} style={{backgroundColor: `${info.randomBg}`}}>
+      <div className='listWrap' ref={bgRef} style={{background: `${bgInfo}`}}>
         <div className="listRow">
           <div className="photo">
             <img crossOrigin="use-credentials" src={info.bgImg.url} alt="" onLoad={extractColor} onError={handleImgError}/>

@@ -11,6 +11,7 @@
     .tabmenu {
       @include flex(center);
       margin-bottom:12px;
+      cursor: pointer;
       .swiper-wrapper {
         padding-left:16px;
       }

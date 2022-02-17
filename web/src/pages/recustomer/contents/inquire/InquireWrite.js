@@ -176,31 +176,7 @@ const Write = (props) => {
       <InputItems title="문의 내용" type="textarea">
         <textarea rows="10" placeholder={inputData.contents} onFocus={onTextFocus} defaultValue={textValue} name="contents" onChange={onChange}/>
       </InputItems>
-      <div className="imageUpload">
-        <div className="titleWrap">
-          <span className="title">사진 첨부</span>
-          <span className="subTitle">(최대 10MB, 최대 3매)</span>
-        </div>
-        <div className="uploadWrap">
-          <label className="uploadlabel">
-            <input className="blind" type="file" onChange={uploadSingleFile} />
-          </label>
-          {imgFile.length > 0 &&
-          <div className="uploadListWrap">
-            <Swiper {...swiperParams}>
-              {imgFile.map((v, idx) => {
-                return(
-                  <div className="uploadList" key={idx}>
-                    <img src={v} alt="업로드이미지" />
-                    <button type="button" className="removeFile" data-idx={idx} onClick={removeImage}/>
-                  </div>
-                )
-              })}
-            </Swiper>
-          </div>
-          }
-        </div>
-      </div>
+      <ImageUpload title="사진 첨부" subTitle="(최대 10MB, 최대 3매)" onChange={uploadSingleFile} onClick={removeImage} imgFile={imgFile} />
       <label className="inputLabel">
         <input type="checkbox" className="blind" name="checkList" onClick={onClick}/>
         <span className="checkIcon"/>
