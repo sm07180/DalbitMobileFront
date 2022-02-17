@@ -13,7 +13,6 @@ import Tabmenu from './components/Tabmenu'
 import FanStarLike from './components/popSlide/FanStarLike'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
 import FanboardSection from './contents/profileDetail/fanboardSection'
@@ -294,7 +293,6 @@ const ProfilePage = () => {
         }
 
         {/* 프로필 사진 확대 */}
-        {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
       </section>
       {popSlide &&
         <PopSlide setPopSlide={setPopSlide}>
