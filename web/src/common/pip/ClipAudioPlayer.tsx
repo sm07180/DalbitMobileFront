@@ -84,10 +84,9 @@ const ClipAudioPlayer = ()=>{
       <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
           <div className="info-wrap">
-            <div className="inner-player-bg" style={{
-              background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,
-            }}></div>
-            <div className="equalizer clip"></div>
+            <div className="inner-player-bg"
+                 style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,}} />
+            <div className="equalizer clip" />
             <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle}>
               <img src={toggleInfo.src} className={toggleInfo.className} alt={toggleInfo.alt}/>
             </div>
@@ -98,7 +97,6 @@ const ClipAudioPlayer = ()=>{
             <div className="counting"/>
           </div>
           <div className="buttonGroup">
-            {/* <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/> */}
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
           
