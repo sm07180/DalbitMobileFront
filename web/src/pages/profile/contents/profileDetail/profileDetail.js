@@ -291,6 +291,7 @@ const ProfileDetail = (props) => {
 
       if (result === 'success') {
         context.action.toast({msg: '댓글이 수정되었습니다.'})
+
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
@@ -307,12 +308,14 @@ const ProfileDetail = (props) => {
       }});
 
       if(result ==='success'){
+        context.action.toast({msg: '댓글이 수정되었습니다.'})
+
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       }else{
-
+        context.action.alert({msg: message});
       }
 
     }
