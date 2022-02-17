@@ -72,6 +72,13 @@ const TitleButton = (props) => {
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
+    case '클립':
+      return (
+        <div className="buttonGroup">
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+        </div>
+      )
     case '클립 랭킹':
       return (
         <div className='buttonGroup'>

@@ -1,4 +1,6 @@
 @import '../../../../styles/global.scss';
+@import "components/ui/_mixin.scss";
+
 #search {
   //서치 컨트롤러
   .controllerWrap {
@@ -184,8 +186,8 @@
       }
     }
     .activeFiter {
-      background-color: $primary;
-      border: solid 1px $primary;
+      background-color: $MAINCOLOR;
+      border: solid 1px $MAINCOLOR;
       color: white;
     }
   }
@@ -204,8 +206,8 @@
       border-bottom: 1px solid $lightGray;
     }
     .activeFiter {
-      border-bottom: 1px solid $primary;
-      color: $primary;
+      border-bottom: 1px solid $MAINCOLOR;
+      color: $MAINCOLOR;
     }
   }
   .chartListDetail {
@@ -283,7 +285,7 @@
           &--type {
             font-style: normal;
             font-size: 14px;
-            color: $primary;
+            color: $MAINCOLOR;
             font-weight: normal;
             letter-spacing: -0.5px;
           }
@@ -304,7 +306,7 @@
           }
           .subject {
             font-size: 14px;
-            color: $primary;
+            color: $MAINCOLOR;
             font-weight: normal;
             letter-spacing: -0.5px;
           }
@@ -395,7 +397,7 @@
       }
       &__count {
         margin-left: 8px;
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
     &__member,

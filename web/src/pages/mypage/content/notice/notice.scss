@@ -1,4 +1,5 @@
 @import '../../../../styles/global';
+@import "components/ui/_mixin.scss";
 
 #broadcastNotice {
   width: 100%;
@@ -39,7 +40,7 @@
       height: 64px;
       padding-top: 22px;
       border-radius: 50%;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       z-index: 1;
       &::before {
         display: block;
@@ -287,7 +288,7 @@
         }
 
         &.on {
-          color: $primary;
+          color: $MAINCOLOR;
           &::before {
             display: inline-block;
             width: 16px;
@@ -514,7 +515,7 @@
           height: 44px;
           margin-top: 6px;
           border-radius: 12px;
-          background-color: $primary;
+          background-color: $MAINCOLOR;
           font-size: 18px;
           font-weight: $bold;
           text-align: center;
@@ -669,7 +670,7 @@
       border-radius: 12px;
       margin-bottom: 50px;
       &.active {
-        background: $primary;
+        background: $MAINCOLOR;
       }
     }
 
@@ -684,7 +685,7 @@
       border-radius: 12px;
       margin-bottom: 50px;
       &.active {
-        background: $primary;
+        background: $MAINCOLOR;
       }
     }
   }
@@ -795,7 +796,7 @@
       height: 50px;
       border: 3px solid $lighterGray;
       border-radius: 50%;
-      border-top-color: $primary;
+      border-top-color: $MAINCOLOR;
       animation: spin 1s ease-in-out infinite;
       -webkit-animation: spin 1s ease-in-out infinite;
     }

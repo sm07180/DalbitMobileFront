@@ -16,7 +16,7 @@ const ClipDetailPage = (props) => {
   const termType = useSelector((state)=> state.clip.termType); //
   const subjectType = useSelector((state)=> state.clip.subjectType); //
   const firstSubjectType = useMemo(() => (subjectType.find(row => row.value === type) || subjectType[0]), []);
-  const [ clipLastInfo, setClipLastInfo] = useState({ list: [], paging: {}});
+  const [ clipLastInfo, setClipLastInfo ] = useState({ list: [], paging: {}});
   // slctType - 정렬순서(0: 전체, 1: 최신순, 2: 인기순, 3: 선물순 4: 재생순, 5:오래된순->스페셜DJ, 6:랜덤
   // dateType - 기간 타입(0: 전체, 1: 24시간, 2: 7일)
   // subjectType - 클립 주제(null or '' - 전체,
@@ -33,7 +33,6 @@ const ClipDetailPage = (props) => {
 
   const handleTermSelect = (value) => {
     const targetData = termType.find(row => row.index == value);
-    console.log(targetData);
     setSearchInfo({...searchInfo, dateType: targetData});
   };
 

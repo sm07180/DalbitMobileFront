@@ -84,7 +84,8 @@ $SEARCH-HEADER: 112px;
         }
         .listItem {
           @include flex(center,center);
-          width:100%;
+          width: 100%;
+          height: 17px;
           margin: 6px 0;
           .nick {
             margin-left:4px;
