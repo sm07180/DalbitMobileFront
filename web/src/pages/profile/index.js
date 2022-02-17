@@ -532,7 +532,7 @@ const ProfilePage = () => {
 
         {/* 클립 */}
         {socialType === socialTabmenu[2] &&
-          <ClipSection profileData={profileData} clipData={clipData} isMyProfile={isMyProfile} />
+          <ClipSection profileData={profileData} clipData={clipData} isMyProfile={isMyProfile} webview={webview} />
         }
 
         {/* 프로필 사진 확대 */}
