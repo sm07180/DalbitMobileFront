@@ -405,7 +405,6 @@ const ProfilePage = () => {
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
         const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
 
-        console.log('fanBoardData', fanBoardData, list);
         const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
         if (result === 'success') {
           dispatch(setProfileFanBoardData({...fanBoardData, list}));
