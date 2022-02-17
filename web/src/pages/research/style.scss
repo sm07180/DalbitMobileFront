@@ -163,9 +163,13 @@
 
   // searchResult page
   .tabmenu {
+    position: sticky;
+    top: 112px;
     @include flex(center);
     margin-bottom:18px;
     padding: 4px 16px;
+    background-color: #FFF;
+    z-index: 2;
     li {
       @include flex(center, center);
       height: 36px;
