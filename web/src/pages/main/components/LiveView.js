@@ -43,10 +43,7 @@ const LiveView = (props) => {
                     <span className="state">
                       <DataCnt type={"totalCnt"} value={list?.totalCnt} />
                       <DataCnt type={"entryCnt"} value={list?.entryCnt} />
-                      {list.boostCnt > 0 ?
-                        <DataCnt type={"boostCnt"} value={list.likeCnt + list.boostCnt} />
-                        : <DataCnt type={"likeCnt"} value={list.likeCnt + list.boostCnt} />
-                       }
+                      <DataCnt type={`${list.boostCnt > 0 ? "boostCnt" : "likeCnt"}`} value={list.likeCnt} />
                     </span>
                   </div>
                 </div>

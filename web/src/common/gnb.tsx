@@ -395,7 +395,15 @@ export default function GNB() {
       <aside id="GNB">
         <div className="gnbContainer">
           <div className="gnbHeader">
-            <h1 onClick={() => history.push('/')}><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
+            <h1 onClick={() => {
+              if(location.pathname === '/') {
+                dispatch(setIsRefresh(true))
+              }else {
+                history.push('/')
+              }
+            }}>
+              <img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" />
+            </h1>
           </div>
           <nav className="gnbNavigation">
             <ul>
