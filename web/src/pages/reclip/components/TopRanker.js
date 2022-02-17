@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 // global components
+import NoResult from "components/ui/noResult/NoResult";
 
 const TopRanker = (props) => {
   const {data} = props
@@ -24,20 +25,16 @@ const TopRanker = (props) => {
   const pagination = {
     clickable: true,
     renderBullet: function (index, className) {
-      console.log('들어오니?')
       return '<span class="active">' + (index + 1) + "</span>";
     },
   };
 
   return (
-    <React.Fragment>
+    <>
       <section className="topRanker">
-        {data.length > 0 &&
+        {data.length > 0 ?
           <>
-            <Swiper modules={[Pagination]}
-                    pagination={pagination}
-                    initialSlide={targetPage}
-                    onSwiper={(swiper) => console.log(swiper)}
+            <Swiper initialSlide={targetPage}
                     onSlideChange={handleSwiper}>
               {data.map((list,index) => {
                 return (
@@ -65,14 +62,20 @@ const TopRanker = (props) => {
               })}
             </Swiper>
             <div className="swiper-pagination">
-              <span className={`${targetPage === 0 ? 'active' : ''}`}/>
-              <span className={`${targetPage === 1 ? 'active' : ''}`}/>
+              {data.length > 1 &&
+                <>
+                  <span className={`${targetPage === 0 ? 'active' : ''}`}/>
+                  <span className={`${targetPage === 1 ? 'active' : ''}`}/>
+                </>
+              }
             </div>
           </>
+          :
+          <NoResult/>
         }
       </section>
-    </React.Fragment>
-  )
-}
+    </>
+  );
+};
 
-export default TopRanker
+export default TopRanker;

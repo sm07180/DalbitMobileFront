@@ -17,7 +17,7 @@ export default function LayerPopupWrap({data, setData}) {
   })
   const customHeader = JSON.parse(Api.customHeader)
 
-  const handleDimClick = () => {
+  const closePopup = () => {
     const res = data.filter((v, idx) => {
       if (idx === 0) {
         return false
@@ -26,14 +26,14 @@ export default function LayerPopupWrap({data, setData}) {
       }
     })
     setData(res)
+  }
 
-    if (checked.check === true) {
-      setPopupCookie('popup_notice_' + `${checked.idx}`, 'y')
-      setChecked({
-        idx: -1,
-        check: false
-      })
-    }
+  const dontShowAction = (v) => {
+    setPopupCookie('popup_notice_' + `${v.idx}`, 'y')
+    setChecked({
+      idx: -1,
+      check: false
+    })
   }
 
   const setPopupCookie = (c_name, value) => {
@@ -99,25 +99,6 @@ export default function LayerPopupWrap({data, setData}) {
             </div>
           </div>
         </div>
-
-        {popupData.is_cookie === 1 && (
-          <div className="checkbox-wrap">
-            <label htmlFor={`chk${popupData.idx}`} className="checkbox-label">
-              <input
-                type="checkbox"
-                id={`chk${popupData.idx}`}
-                onClick={(e) => {
-                  setChecked({
-                    idx: popupData.idx,
-                    check: e.target.checked
-                  })
-                }}
-                className={`${checked.check && `active`}`}
-              />
-              오늘 하루 보지 않기
-            </label>
-          </div>
-        )}
       </>
     )
   }
@@ -125,29 +106,9 @@ export default function LayerPopupWrap({data, setData}) {
   const makeImgInner = (popupData) => {
     return (
       <>
-        <div className="contents">
-          <a>
-            <img src={popupData.bannerUrl} alt="" onClick={() => history.push(popupData.linkUrl)}/>
-          </a>
-        </div>
-        {popupData.is_cookie === 1 && (
-          <div className="checkbox-wrap">
-            <label htmlFor={`chk${popupData.idx}`} className="checkbox-label">
-              <input
-                type="checkbox"
-                id={`chk${popupData.idx}`}
-                onClick={(e) => {
-                  setChecked({
-                    idx: popupData.idx,
-                    check: e.target.checked
-                  })
-                }}
-                className={`${checked.check && `active`}`}
-              />
-              오늘 하루 보지 않기
-            </label>
-          </div>
-        )}
+        <a>
+          <img src={popupData.bannerUrl} alt="" onClick={() => history.push(popupData.linkUrl)}/>
+        </a>
       </>
     )
   }
@@ -161,29 +122,37 @@ export default function LayerPopupWrap({data, setData}) {
   }, [])
 
   return (
-    <div id="mainLayerPopup" onClick={handleDimClick}>
-      <div className="popup">
-        <div className="popup__wrap">
-          {
-            // data.length > 0 &&
-            data.map((v, idx) => {
-              const {popup_type} = v
-              return (
-                <div key={idx} className={`popbox ${idx === 0 && 'active'}`}>
-                  <div className={`popup__box ${popup_type === 0 ? 'popup__img' : 'popup__text'}`}>
-                    <button className="btn-close" onClick={handleDimClick}>
-                      닫기
-                    </button>
-                    <div className="popup__inner" onClick={(e) => e.stopPropagation()}>
-                      {popup_type === 0 ? makeImgInner(v) : makeTextInner(v)}
-                    </div>
+    <>
+      {
+        data.map((v, idx) => {
+          const {popup_type} = v
+          console.log(v)
+          return (
+            <div id="eventPop" onClick={closePopup} key={idx}>
+              <div className="popLayer">
+                <div className="popContainer">
+                  <div className="popContent" onClick={(e) => e.stopPropagation()}>
+                    {popup_type === 0 ? makeImgInner(v) : makeTextInner(v)}
                   </div>
                 </div>
-              )
-            })
-          }
-        </div>
-      </div>
-    </div>
+                <div className='closeWrap'>
+                  {v.is_cookie === 1 && (
+                    <label htmlFor={`chk${v.idx}`} className='dontShowLabel'>
+                      <input
+                        type="checkbox"
+                        id={`chk${v.idx}`}
+                        className={`dontShow`}
+                      />
+                      <button className='dontShowBtn' onClick={dontShowAction(v)}>오늘 하루 보지 않기</button>
+                    </label> 
+                  )}                      
+                  <button className='close'onClick={closePopup}>닫기</button>
+                </div>
+              </div>
+            </div>
+          )
+        })
+      }       
+    </>
   )
 }

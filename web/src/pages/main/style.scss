@@ -11,6 +11,10 @@
       }
       #mainPage {
         header {display:none;}
+        .tabmenuWrap.isFixed {
+          top: $GNB-HEIGHT;
+          max-width:480px;
+        }
       }
     }
   }

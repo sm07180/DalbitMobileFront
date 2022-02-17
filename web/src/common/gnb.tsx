@@ -27,8 +27,8 @@ const gnbTypes = [
   {url: '/clip', isUpdate: true},
   {url: '/search', isUpdate: true},
   {url: '/rank', isUpdate: false},
-  {url: '/mypage', isUpdate: false},
-  {url: '/notice', isUpdate: false},
+  // {url: '/mypage', isUpdate: false},
+  // {url: '/notice', isUpdate: false},
 ];
 
 export default function GNB() {
@@ -389,14 +389,6 @@ export default function GNB() {
         <div className="gnbContainer">
           <div className="gnbHeader">
             <h1 onClick={() => history.push('/')}><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
-            <button onClick={()=>{
-              if (baseData.isLogin === true) {
-                scrollToTop();
-                return globalAction.setBroadClipDim!(true);
-              } else {
-                return history.push("/login");
-              }
-            }}>방송하기</button>
           </div>
           <nav className="gnbNavigation">
             <ul>
@@ -417,6 +409,24 @@ export default function GNB() {
               })}
             </ul>
           </nav>
+          <div className="subGnbNavigation">
+            <ul>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li className="active"></li>
+            </ul>
+            {baseData.isLogin === true ?
+              <button onClick={()=>{
+                if (baseData.isLogin === true) {
+                  scrollToTop();
+                  return globalAction.setBroadClipDim!(true);
+                }
+              }}>만들기</button>
+            :
+              <button onClick={()=> history.push("/login")}>로그인</button>
+            }
+          </div>
         </div>
       </aside>
       }
