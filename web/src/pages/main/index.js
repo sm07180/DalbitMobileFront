@@ -24,7 +24,6 @@ import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
-import LayerPopupEvent from "pages/main/component/layer_popup_event";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -62,6 +61,7 @@ const MainPage = () => {
     showPop: false,
     storeUrl: '',
   });
+  const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -201,9 +201,13 @@ const MainPage = () => {
           refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         }, 17)
 
+        setPullToRefreshPause(false);
         mainDataReset();
 
-        await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+        await new Promise((resolve, _) => setTimeout(() => {
+          resolve();
+          setPullToRefreshPause(true);
+        }, 300))
         clearInterval(loadIntervalId)
 
         setReloadInit(false)
@@ -313,12 +317,13 @@ const MainPage = () => {
          ref={iconWrapRef}>
       <div className="icon-wrap">
         {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
-        <div id="pocketAni" ref={arrowRefreshRef}>
+        <div className="arrow-refresh-icon" ref={arrowRefreshRef}>
           <Lottie
+            isPaused={pullToRefreshPause}
             options={{
               loop: true,
               autoPlay: true,
-              path: `${IMG_SERVER}/common/scroll_refresh.json`
+              path: `${IMG_SERVER}/common/scroll_refresh.json`,
             }}
           />
         </div>

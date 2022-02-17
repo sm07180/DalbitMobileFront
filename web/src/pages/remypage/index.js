@@ -9,12 +9,12 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import Allim from "pages/remypage/contents/notice/Allim";
+import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
-
-import {Hybrid, isHybrid} from "context/hybrid";
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
-import Report from "pages/remypage/contents/report/Report";
+
+import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 
 const myMenuItem = [
@@ -101,7 +101,7 @@ const Remypage = () => {
       return(
         <>
         <div id="remypage">
-          <Header title={'마이페이지'} />
+          <Header title={'MY'} />
           <section className="myInfo" onClick={goProfile}>
             <MyInfo data={profile} />
           </section>

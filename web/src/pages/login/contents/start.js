@@ -61,7 +61,7 @@ const Start = (props) => {
           </button>
           <button className="appleBtn" onClick={()=>socialLogin('apple')}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" alt={"애플"}/>
-            <span>apple로 계속하기</span>
+            <span>Apple로 계속하기</span>
           </button>
           <button className="phoneBtn" onClick={didLogin}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" alt={"휴대폰"}/>
