@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useContext, useMemo} from 'react'
+import React, {useState, useEffect,useContext, useMemo, useRef} from 'react'
 import {Context} from 'context'
 
 // global components
@@ -8,20 +8,25 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import CheckList from '../../components/CheckList'
 
 const DepositInfo = (props) => {
-  const {exchangeForm, setExchangeForm, uploadSingleFile} = props;
+  const {exchangeForm, setExchangeForm, exchangeSubmit, uploadSingleFile, parentAgree} = props;
   //context
-  const context = useContext(Context)
-  const {profile, splash} = context
+  const context = useContext(Context);
+  const {profile, splash} = context;
 
-  const [selectBank, setSelectBank] = useState('은행선택');
+  //은행 선택 값 (단순 화면 표기용)
+  const [selectBank, setSelectBank] = useState({visible: false, value:'은행선택'});
 
   const bankList = useMemo(() => {
     if (splash !== null) {
-      return [{cd: '0', cdNm: '은행선택'}, ...splash.exchangeBankCode];
+      return [...splash.exchangeBankCode];
     } else {
       return [];
     }
   }, [splash]);
+
+  useEffect(()=>{
+    console.log('exchangeForm', exchangeForm)
+  },[exchangeForm]);
 
   //다음 주소 검색 창 띄우기
   const searchAddr = () => {
@@ -72,6 +77,23 @@ const DepositInfo = (props) => {
   //   ,addFile2:''  //통장사본
   //   ,addFile3:''  //미성년자 부모님 동의
 
+  //blur
+  const selectBoxRef = useRef(null);
+  const clickEvent = (e) => {
+    if (selectBoxRef.current !== e.target) {
+      //blur로 판단
+      setSelectBank((prev)=> { return {...prev, visible: false}; });
+    }
+  }
+  useEffect(() => {
+    document.body.addEventListener('click', clickEvent);
+    return () => {
+      document.body.removeEventListener('click', clickEvent);
+    };
+  },[]);
+
+  useEffect(()=>{},[])
+
   return (
     <>
       {/*다음 주소 검색*/}
@@ -92,15 +114,21 @@ const DepositInfo = (props) => {
         <div className="listRow">
           <div className={"title"}>은행</div>
           <InputItems>
-            <div className="select">{selectBank}</div>
-            {<div className="selectWrap">
+            <div className="select" ref={selectBoxRef}
+                 onClick={()=>{ setSelectBank({...selectBank, visible:true})}}
+            >{selectBank.value}</div>
+            {selectBank.visible &&
+              <div className="selectWrap">
               {bankList.map((item, index) => {
-                return <div key={index} className="option"
-                            onClick={() => {
-                              setSelectBank(item?.cdNm);
-                              setExchangeForm({...exchangeForm, bankCode:item.cd});
-                            }}
-                >{item.cdNm}</div>}
+                  return <div key={index} className="option"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                //단순 화면 표기용
+                                setSelectBank({...selectBank, visible:false, value: item?.cdNm});
+                                //계좌 폼 정보
+                                setExchangeForm({...exchangeForm, bankCode:item.cd});
+                              }}
+                  >{item.cdNm}</div>}
               )}
             </div>}
           </InputItems>
@@ -130,11 +158,39 @@ const DepositInfo = (props) => {
           <div className="title">주민등록번호</div>
           <div className="inputGroup">
             <InputItems>
-              <input type="number" maxLength={6} autoComplete="off" placeholder='앞 6자리'/>
+              <input type="number" maxLength={6} placeholder='앞 6자리'
+                     autoComplete="new-password"
+                     onChange={(e) => {
+                       const num = e.target.value;
+                       if(!Number.isNaN(Number(num))) {
+                         if (num?.length < 7) {
+                           setExchangeForm({...exchangeForm, fSocialNo: num})
+                         } else {
+                           e.target.value = exchangeForm?.fSocialNo;
+                         }
+                       } else {
+                         e.target.value = exchangeForm?.fSocialNo;
+                       }
+                     }}
+              />
             </InputItems>
             <span className='line'>-</span>
             <InputItems>
-              <input type="password" maxLength={7} autoComplete="off" placeholder='뒤 7자리'/>
+              <input type="password" maxLength={7} placeholder='뒤 7자리'
+                     autoComplete="new-password"
+                     onChange={(e) => {
+                       const num = e.target.value;
+                       if(!Number.isNaN(Number(num))) {
+                         if (num?.length < 8) {
+                           setExchangeForm({...exchangeForm, bSocialNo: num})
+                         } else {
+                           e.target.value = exchangeForm?.bSocialNo;
+                         }
+                       } else {
+                         e.target.value = exchangeForm?.bSocialNo;
+                       }
+                     }}
+              />
             </InputItems>
           </div>
         </div>
@@ -142,7 +198,20 @@ const DepositInfo = (props) => {
         <div className="listRow">
           <div className="title">휴대폰 번호</div>
           <InputItems>
-            <input type="num" placeholder=""/>
+            <input type="num" placeholder=""
+                   onChange={(e) => {
+                     const num = e.target.value;
+                     if(!Number.isNaN(Number(num))) {
+                       if (num?.length < 12) {
+                         setExchangeForm({...exchangeForm, phoneNo: num})
+                       } else {
+                         e.target.value = exchangeForm?.phoneNo;
+                       }
+                     } else {
+                       e.target.value = exchangeForm?.phoneNo;
+                     }
+                   }}
+            />
           </InputItems>
         </div>
 
@@ -185,19 +254,23 @@ const DepositInfo = (props) => {
         </div>
 
         {/*휴대폰 인증후 미성년자인 경우 노출*/}
-        <div className="listRow">
-          <div className="title">부모동의 사본</div>
-          <InputItems button="찾아보기">
-            <div className="value">{exchangeForm.addFile3?.name || '등록해주세요'}</div>
-            <input type="file" className='blind'
-                   onChange={(e) => uploadSingleFile(e, 2)}/>
-          </InputItems>
+        {parentAgree &&
+        <>
+          <div className="listRow">
+            <div className="title">부모동의 사본</div>
+            <InputItems button="찾아보기">
+              <div className="value">{exchangeForm.addFile3?.name || '등록해주세요'}</div>
+              <input type="file" className='blind'
+                     onChange={(e) => uploadSingleFile(e, 2)}/>
+            </InputItems>
 
-        </div>
-        <div className="listRow">
-        <span>가족관계 증명서 또는 주민등록 등본 사본을 등록해주세요.</span>
-        <span className="point">부모님의 주민번호 앞 6자리가 명확히 확인되어야 합니다.</span>
-      </div>
+          </div>
+          <div className="listRow">
+            <span>가족관계 증명서 또는 주민등록 등본 사본을 등록해주세요.</span>
+            <span className="point">부모님의 주민번호 앞 6자리가 명확히 확인되어야 합니다.</span>
+          </div>
+        </>
+        }
 
         <div className="privacyBox">
           <CheckList text="개인정보 수집 동의" name="privacy"
@@ -208,7 +281,8 @@ const DepositInfo = (props) => {
           </CheckList>
           <p>회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된 개인정보는 확인 후 폐기 처리 합니다.)</p>
         </div>
-        <SubmitBtn text="환전 신청하기" state="disabled" />
+        {/*disabled*/}
+        <SubmitBtn text="환전 신청하기" state="" onClick={exchangeSubmit}/>
       </form>
 
     </>
