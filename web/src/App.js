@@ -102,8 +102,8 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 let alarmCheckIntervalId = 0;
 
 const setServerDataJson = () =>{
-  const serverData = document.getElementById('__SERVER_DATA__')?.innerHTML;
-  if (serverData !== '') {
+  const serverData = document?.getElementById('__SERVER_DATA__')?.innerHTML;
+  if (serverData && serverData !== '' && serverData !== 'null') {
     try {
       return JSON.parse(serverData);
     } catch (e) {
