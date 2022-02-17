@@ -14,7 +14,7 @@ const DepositInfo = (props) => {
   const {profile, splash} = context;
 
   //은행 선택 값 (단순 화면 표기용)
-  const [selectBank, setSelectBank] = useState({visible: false, value:'은행선택'});
+  const [selectBank, setSelectBank] = useState(false);
 
   const bankList = useMemo(() => {
     if (splash !== null) {
@@ -82,7 +82,7 @@ const DepositInfo = (props) => {
   const clickEvent = (e) => {
     if (selectBoxRef.current !== e.target) {
       //blur로 판단
-      setSelectBank((prev)=> { return {...prev, visible: false}; });
+      setSelectBank(false);
     }
   }
   useEffect(() => {
@@ -91,8 +91,6 @@ const DepositInfo = (props) => {
       document.body.removeEventListener('click', clickEvent);
     };
   },[]);
-
-  useEffect(()=>{},[])
 
   return (
     <>
@@ -115,18 +113,18 @@ const DepositInfo = (props) => {
           <div className={"title"}>은행</div>
           <InputItems>
             <div className="select" ref={selectBoxRef}
-                 onClick={()=>{ setSelectBank({...selectBank, visible:true})}}
-            >{selectBank.value}</div>
-            {selectBank.visible &&
+                 onClick={()=>{ setSelectBank(true)}}
+            >{exchangeForm.bankName || '은행선택'}</div>
+            {selectBank &&
               <div className="selectWrap">
               {bankList.map((item, index) => {
                   return <div key={index} className="option"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 //단순 화면 표기용
-                                setSelectBank({...selectBank, visible:false, value: item?.cdNm});
+                                setSelectBank( false);
                                 //계좌 폼 정보
-                                setExchangeForm({...exchangeForm, bankCode:item.cd});
+                                setExchangeForm({...exchangeForm, bankCode: item.cd, bankName: item?.cdNm});
                               }}
                   >{item.cdNm}</div>}
               )}
