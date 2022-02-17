@@ -92,18 +92,9 @@ const Invite = () => {
                     }          
                   </div>
               }
-              {
-                tabData[0].active &&
-                <InviteEvent/>
-              }
-              {
-                tabData[1].active &&
-                <InviteRank/>
-              }
-              {
-                tabData[2].active &&
-                <InviteMydata/>
-              }
+              {tabData[0].active && <InviteEvent/>}
+              {tabData[1].active && <InviteRank/>}
+              {tabData[2].active && <InviteMydata/>}
             </div>
           </div>
         :
