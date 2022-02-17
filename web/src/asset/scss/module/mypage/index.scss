@@ -769,9 +769,13 @@
       }
       .btnWrap {
         margin-top: 14px;
-
+        button{
+          margin-right: 4px;
+          &:last-child{margin-right: 0}
+        }
         .btn_fan,
         .btn_gift {
+          @include flex(center,center);
           width: 49%;
           height: 36px;
           font-size: 14px;

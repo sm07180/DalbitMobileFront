@@ -27,6 +27,23 @@ $errorMsg : #FF1919;
   }
 }
 
+.totalWrap {
+  #renewalRanking {
+    header {
+      padding: 0px 6px 0px 16px;
+      .back {
+        display: none;
+      }
+      .title {
+        position: relative;
+        top: auto; left: auto;
+        width: auto;
+        @include font(24px, 700, #202020);
+      }
+    }
+  }
+}
+
 #renewalRanking {
   header {
     .benefits {
