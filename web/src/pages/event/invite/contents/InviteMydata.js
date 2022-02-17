@@ -7,9 +7,11 @@ import Api from "context/api";
 import '../invite.scss'
 import {Context} from "context";
 import {IMG_SERVER} from 'context/config'
+import {useHistory} from "react-router-dom";
 
 const InviteMydata = () => {
   const context = useContext(Context)
+  const history = useHistory();
   const {token, profile} = context
 
   const [popup, setPopup] = useState(false);
@@ -64,7 +66,7 @@ const InviteMydata = () => {
               {
                 data.list.map((member, index) => {
                   return (
-                    <div className='inviteUserList' key={index}>
+                    <div className='inviteUserList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
                       <div className="photo">
                         <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>
