@@ -160,7 +160,7 @@ export default function chatListPage() {
         </div>
       </Header>
 
-      <div className="chatListPage subContent gray">
+      <div className="chatListPage">
         <div className="chatOnOffBox">
           <p>우체통 기능 사용 설정</p>
           <Toggle active={isMailboxOn} activeCallback={postMailboxUse} />

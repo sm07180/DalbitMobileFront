@@ -87,14 +87,15 @@ legend {
         padding-bottom: 80px;
       }
       .subContent {
-        min-height: calc(100vh - 50px);
-        box-sizing: border-box;
         &.gray {
           background: $lighterGray;
         }
       }
       header {
-        top:68px !important;
+        top:$GNB-HEIGHT !important;
+        .buttonGroup {
+          display:none;
+        }
       }
     }
     .rightContent {
@@ -165,7 +166,7 @@ legend {
             margin-left:6px;
           }
           &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-off.png");}
-          &:nth-child(2) {@include BGIMG("common/gnb/gnbMali-off.png");}
+          &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-off.png");}
           &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-off.png");}
           &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-off.png");}
           &.active {
@@ -184,6 +185,13 @@ legend {
         margin-left:11px;
         @include border(#D9D9D8,2px);
         @include font(14px,SemiBold,#161616);
+        &:hover {
+          border-color:$MAINCOLOR;
+          background-color:$MAINCOLOR;
+          color:white;
+        }
+      }
+      .plusButton {
         &::before {
           content:"+";
           display:inline-block;
@@ -192,11 +200,6 @@ legend {
           line-height:10px;
           margin-right:4px;
           font-size:18px;
-        }
-        &:hover {
-          border-color:$MAINCOLOR;
-          background-color:$MAINCOLOR;
-          color:white;
         }
       }
     }
@@ -246,7 +249,7 @@ legend {
           @include BGIMG("common/gnb/gnbMy-off.png");
           &:hover::after {content:"마이";}
         }
-        &[data-url="/mail"] {
+        &[data-url="/mailbox"] {
           @include BGIMG("common/gnb/gnbMail-off.png");
           &:hover::after {content:"우체통";}
         }
@@ -382,7 +385,7 @@ legend {
   height: 70px;
   border-radius: 16px 16px 0 0;
   overflow:hidden;
-  color: #fff;
+  color: white;
   cursor: pointer;
   .inner-player {
     position: relative;
@@ -413,7 +416,8 @@ legend {
         width: 22px;
         height: 27px;
         margin-right: 8px;
-        @include BGIMG("common/playerbar_live.png");
+        &.broadcast {@include BGIMG("common/playerbar_live.png");}
+        &.clip {@include BGIMG("common/playerbar_clip.png");}
       }
       .thumb {
         position: relative;
@@ -436,17 +440,7 @@ legend {
           box-sizing: border-box;
           z-index: 4;
         }
-        .playToggle__play,
-        .playToggle__stop {
-          position: relative;
-          padding: 10px;
-          z-index: 5;
-          &.video {
-            background: rgba(0, 0, 0, 0.1);
-          }
-        }
       }
-
       .room-info {
         width: 256px;
         font-size: 13px;
@@ -462,7 +456,6 @@ legend {
           font-weight: 300;
         }
       }
-
       .counting {
         span {
           display: inline-block;
@@ -476,15 +469,28 @@ legend {
         }
       }
     }
-
-    .close-btn {
-      position: relative;z-index: 4;
-      display: block;
-      cursor: pointer;
+    .buttonGroup {
+      @include flex(center,center);
+      .playToggle__play,
+      .playToggle__stop {
+        position: relative;
+        width:28px;
+        height:28px;
+        z-index: 5;
+        &.video {
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+      .close-btn {
+        position: relative;z-index: 4;
+        display: block;
+        width:28px;
+        height:28px;
+        cursor: pointer;
+      }
     }
   }
 }
-
 
 // mobile
 .mobile-app {
@@ -511,36 +517,6 @@ legend {
 .cursorPointer {
   cursor: pointer;
 }
-
-// .noResultWrap {
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: column;
-//   span {
-//     font-size: 14px;
-//     line-height: 1.25;
-//     color: $greishGray;
-//     &.noResult {
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       flex-direction: column;
-//       font-size: 14px;
-//       line-height: 1.4;
-//       text-align: center;
-//       &::before {
-//         display: inline-block;
-//         content: "";
-//         width: 82px;
-//         height: 68px;
-//         margin-bottom: 16px;
-//         background: url("#{$IMG_SERVER}/images/api/pc_img_noresult.svg") no-repeat center;
-//       }
-//     }
-//   }
-// }
 
 .broadcast-menu {
   &__links {

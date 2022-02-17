@@ -104,7 +104,7 @@ const Toast = styled.div`
   padding: 10px;
   font-size: 16px;
   text-align: center;
-  background-color: rgba(99, 43, 235, 0.9);
+  background-color: rgba(#FF3C7B, 0.9);
   color: #fff;
   border-radius: 12px;
   z-index: 120;
