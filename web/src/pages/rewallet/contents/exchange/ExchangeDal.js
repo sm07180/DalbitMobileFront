@@ -1,7 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
+import React, {useState} from 'react'
 import Utility from 'components/lib/utility'
 
 // global components
@@ -22,7 +19,6 @@ const dalPrice = [
 ]
 
 const ExchangeDal = () => {
-  const context = useContext(Context);
   const [select, setSelect] = useState(3);
 
   const [orderPage, setOrderPage] = useState(true);
@@ -32,7 +28,7 @@ const ExchangeDal = () => {
   // 결재단위 셀렉트
   const onSelectDal = (e) => {
     const {targetIndex} = e.currentTarget.dataset
-    
+
     setSelect(targetIndex)
   }
 

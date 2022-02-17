@@ -1,8 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-
-import Api from 'context/api'
+import React from 'react'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 // components

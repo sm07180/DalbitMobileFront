@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 
@@ -10,15 +10,17 @@ import Tree from './content/Tree'
 import Lover from './content/Lover'
 
 import './style.scss'
-import {Context} from "context";
 import moment from 'moment';
+import {useDispatch, useSelector} from "react-redux";
 
 const TreePage = () => {
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const tabMenuRef = useRef();
   const tabBtnRef = useRef();
-  const eventDuration = { end1: '2021-12-30 23:59:59', end2: '2022-01-06 23:59:59'};
+  const eventDuration = {end1: '2021-12-30 23:59:59', end2: '2022-01-06 23:59:59'};
   const [tabContent, setTabContent] = useState({name: 'tree'}) // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
   const [loverSeqNo, setLoverSeqNo] = useState(1);
@@ -54,7 +56,7 @@ const TreePage = () => {
   };
 
   useEffect(() => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login');
     }
 

@@ -1,11 +1,7 @@
-import React, {useContext, useEffect} from "react"
-import {GlobalContext} from "context";
+import React from "react"
 import BroadCastPlayer from "./BroadCastPlayer";
 import ClipAudioPlayer from "./ClipAudioPlayer";
-import {rtcSessionClear, UserType} from "../realtime/rtc_socket";
-import {broadcastExit, broadcastInfoNew, broadcastJoin} from "../api";
-import {authCheck} from "../../pages/broadcast/side_wrapper";
-import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 /**
  * index - 클립, 방송 라우팅
@@ -15,18 +11,19 @@ import {useHistory} from "react-router-dom";
  * ClipAudioPlayer - 클립 effect, 뷰
  * PlayerStyle - styled component, inline style util
  */
-const PipPlayer = () =>{
-  const { globalState } = useContext(GlobalContext);
+const PipPlayer = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const { clipPlayer, clipInfo, rtcInfo } = globalState;
+  const {clipPlayer, clipInfo, rtcInfo} = globalState;
 
   const broadcastPage = window.location.pathname.startsWith("/broadcast");
   const clipPlayerPage = window.location.pathname.startsWith("/clip/");
   const mailboxChatting = window.location.pathname.startsWith("/mailbox");
 
-  if(rtcInfo){
-    if(!broadcastPage && !mailboxChatting){
-      return <BroadCastPlayer />;
+  if (rtcInfo) {
+    if (!broadcastPage && !mailboxChatting) {
+      return <BroadCastPlayer/>;
     }
   }else if(clipInfo){
     if(clipPlayer && !clipPlayerPage && !mailboxChatting){

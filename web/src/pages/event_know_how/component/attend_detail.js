@@ -1,7 +1,5 @@
-import React, {useEffect, useContext, useCallback, useState, useRef} from 'react'
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-
-import {Context} from 'context'
 import {KnowHowContext} from '../store'
 import Api from 'context/api'
 
@@ -20,11 +18,16 @@ import LikeOffIcon from '../static/like_g_m.svg'
 import LikeOnIcon from '../static/like_red_m.svg'
 import GridIcon from '../static/grid_w_s.svg'
 import CloseIcon from '../static/close.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
 function AttendDetail() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const params = useParams()
 
-  const context = useContext(Context)
   const {KnowHowState, KnowHowAction} = useContext(KnowHowContext)
 
   const {list, order, condition} = KnowHowState
@@ -95,12 +98,13 @@ function AttendDetail() {
         })
       )
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '조회에 실패했습니다.',
         callback: () => {
           history.goBack()
         }
-      })
+      }))
     }
   }, [])
 
@@ -126,7 +130,8 @@ function AttendDetail() {
   }, [isLike, detail])
 
   const deleteKnowhow = useCallback(() => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '노하우를 정말 삭제하시겠습니까?',
       callback: async () => {
         const res = await Api.knowhow_delete({
@@ -135,7 +140,8 @@ function AttendDetail() {
 
         if (res.result === 'success') {
           setTimeout(() => {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: '삭제가 완료 되었습니다.',
               callback: async () => {
                 if (
@@ -169,12 +175,12 @@ function AttendDetail() {
                 }
                 history.goBack()
               }
-            })
+            }))
           })
         } else {
         }
       }
-    })
+    }))
   }, [detail, condition, order])
 
   const MakeImgSlider = () => {
@@ -231,8 +237,8 @@ function AttendDetail() {
           <img
             src={detail.profImg && detail.profImg.url}
             onClick={() => {
-              if (context.token.isLogin) {
-                if (context.token.memNo === detail.mem_no) {
+              if (globalState.token.isLogin) {
+                if (globalState.token.memNo === detail.mem_no) {
                   history.push('/menu/profile')
                 } else {
                   history.push(`/mypage/${detail.mem_no}`)
@@ -273,11 +279,11 @@ function AttendDetail() {
             <img
               src={isLike === false ? LikeOffIcon : LikeOnIcon}
               onClick={() => {
-                if (context.token.isLogin) updateLike()
+                if (globalState.token.isLogin) updateLike()
                 else history.push('/login')
               }}
             />
-            {context.token.isLogin && context.token.memNo === detail.mem_no && (
+            {globalState.token.isLogin && globalState.token.memNo === detail.mem_no && (
               <img
                 src={MoreIcon}
                 onClick={() => {
@@ -285,7 +291,7 @@ function AttendDetail() {
                 }}
               />
             )}
-            {context.token.isLogin && isAdmin === 1 && (
+            {globalState.token.isLogin && isAdmin === 1 && (
               <img
                 src={CloseIcon}
                 onClick={(e) => {

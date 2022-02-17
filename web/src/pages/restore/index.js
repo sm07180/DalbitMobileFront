@@ -1,8 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from "context";
-
-import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 // global components
@@ -11,7 +8,6 @@ import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
-import DalCharge from './contents/dalCharge/dalCharge'
 // css
 import './style.scss'
 
@@ -26,7 +22,6 @@ const dalPrice = [
 
 const StorePage = () => {
   const history = useHistory()
-  const context = useContext(Context);
   const [select, setSelect] = useState(3);
 
   const [orderPage, setOrderPage] = useState(false);
@@ -36,7 +31,7 @@ const StorePage = () => {
   // 결재단위 셀렉트
   const onSelectDal = (e) => {
     const {targetIndex} = e.currentTarget.dataset
-    
+
     setSelect(targetIndex)
   }
   // Submit 버튼 클릭

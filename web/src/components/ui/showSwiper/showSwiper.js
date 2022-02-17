@@ -26,8 +26,8 @@ const ShowSwiper = (props) => {
   useEffect(() => {
     if (imageList.length > 1) {
       const swiper = document.querySelector('#popShowSwiper .swiper-container').swiper;
-      swiper.update();
-      swiper.slideTo(0);
+      swiper?.update();
+      swiper?.slideTo(0);
     }
   }, [imageList]);
 

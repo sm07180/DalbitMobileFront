@@ -19,7 +19,7 @@ const MultiImageViewer = () => {
 
   useEffect(() => {
     if (multiViewer.show && swiper !== null) {
-      swiper.update();
+      swiper?.update();
     }
   }, [multiViewer.show, multiViewer.list, swiper]);
 

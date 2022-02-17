@@ -1,11 +1,10 @@
-import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
-import Navigation from 'components/ui/navigation/Navigation'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
@@ -17,8 +16,6 @@ import LiveView from './components/LiveView'
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
-import {Context} from "context";
-import {isDesktop} from "lib/agent";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -27,7 +24,6 @@ const pagePerCnt = 20
 
 const MainPage = () => {
   const history = useHistory()
-  const context = useContext(Context);
   const headerRef = useRef()
   const overRef = useRef()
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
@@ -107,7 +103,7 @@ const MainPage = () => {
     document.addEventListener('scroll', scrollEvent)
     return () => document.removeEventListener('scroll', scrollEvent)
   }, [currentPage, liveListType])
- 
+
   // 페이지 시작
   let MainLayout = <>
     <div id="main">
@@ -147,6 +143,5 @@ const MainPage = () => {
   </>;
   return MainLayout;
 }
- 
+
 export default MainPage
- 

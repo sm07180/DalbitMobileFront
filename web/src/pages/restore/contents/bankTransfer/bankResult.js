@@ -1,11 +1,7 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
+import React, {useEffect} from 'react'
 import Utility from 'components/lib/utility'
 
 // global components
-import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
@@ -13,14 +9,13 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import './bankResult.scss'
 
 const BankTransfer = () => {
-  const context = useContext(Context);
 
   // 조회 Api
 
   // 결재단위 셀렉트
   const onSelectMethod = (e) => {
     const {targetIndex} = e.currentTarget.dataset
-    
+
     setSelect(targetIndex)
   }
 

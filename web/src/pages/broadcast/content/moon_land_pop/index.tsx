@@ -1,7 +1,5 @@
 import React, {useState, useMemo, useContext} from 'react';
 
-// Context
-// import {GlobalContext} from "context";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 import "./index.scss";
 import {addComma} from "../../../../lib/common_fn";

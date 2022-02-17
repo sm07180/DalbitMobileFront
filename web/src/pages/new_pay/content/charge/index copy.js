@@ -8,15 +8,13 @@
  * @date_20200728 스마트문상, 도서문화상품권 숨김처리
  */
 
-import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
-import moment from 'moment'
 
 //context
-import { Context } from 'context'
-import { OS_TYPE } from 'context/config.js'
-import { COLOR_MAIN } from 'context/color'
+import {OS_TYPE} from 'context/config.js'
+import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import qs from 'query-string'
 import Utility from 'components/lib/utility'
@@ -28,7 +26,9 @@ import LayerPopupWrap from '../../../main/component/layer_popup_wrap.js'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
-import { Hybrid } from "context/hybrid";
+import {Hybrid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
 const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
@@ -36,13 +36,14 @@ const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
-  //context
-  const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   //state
-  const [selectedPay, setSelectedPay] = useState({ type: '', fetch: '' })
+  const [selectedPay, setSelectedPay] = useState({type: '', fetch: ''})
   const [moreState, setMoreState] = useState(false)
   const [bankPop, setBankPop] = useState(false)
   const [popupData, setPopupData] = useState([])
@@ -90,19 +91,20 @@ export default (props) => {
     const { type, fetch, code } = selectedPay
 
     // if (type === '카카오페이' || type === '페이코') {
-    //   return context.action.alert({
+    //   return dispatch(setGlobalCtxMessage({type:"alert",
     //     msg: `결제대행사 장애가 발생하여 일시적으로 결제가 불가능합니다.
     //     잠시 다른 결제수단을 이용 부탁드립니다.`
     //   })
     // }
 
     if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
-      return context.action.confirm({
+      return dispatch(setGlobalCtxMessage({
+        type: "confirm",
         msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
         callback: () => {
           window.location.href = 'market://details?id=kr.co.inforexseoul.radioproject'
         }
-      })
+      }))
     }
 
     if (code === 'coocon') {
@@ -183,9 +185,10 @@ export default (props) => {
       MCASH_PAYMENT(payForm)
       payForm.innerHTML = ''
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -210,12 +213,13 @@ export default (props) => {
         )
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
-          context.action.alert({ visible: false })
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
     }
   }
 
@@ -284,12 +288,12 @@ export default (props) => {
   const quantityCalc = (type) => {
     if (type === 'plus') {
       if (totalQuantity === 10) {
-        return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
+        return dispatch(setGlobalCtxMessage({type: "toast", msg: '최대 10개까지 구매 가능합니다.'}))
       }
       setTotalQuantity(totalQuantity + 1)
     } else if (type === 'minus') {
       if (totalQuantity === 1) {
-        return context.action.toast({ msg: '최소 1개부터 구매 가능합니다.' })
+        return dispatch(setGlobalCtxMessage({type: "toast", msg: '최소 1개부터 구매 가능합니다.'}))
       }
       setTotalQuantity(totalQuantity - 1)
     }
@@ -353,7 +357,8 @@ export default (props) => {
           if (Utility.getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
             payFetch(res.data.ci);
           } else {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg:
                 `
               <div style="font-size: 16px; text-align: left;">
@@ -377,7 +382,7 @@ export default (props) => {
                 setPopupCookie();
                 payFetch(res.data.ci);
               }
-            })
+            }))
           }
         }
       } else {

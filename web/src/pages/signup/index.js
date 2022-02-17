@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Header from 'components/ui/header/Header'
 import PhoneAuth from "./components/phoneAuth";
@@ -10,23 +10,31 @@ import Api from "context/api";
 import qs from "query-string";
 import {Hybrid, isAndroid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxMessage,
+  setGlobalCtxUpdateLogin,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 
 const SignUpPage = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const [step, setStep] = useState(1);
   const {webview, redirect} = qs.parse(location.search);
 
   const [signForm, setSignForm] = useState({
-    phoneNum:"",
-    requestNum:"",
-    CMID:"",
-    nickName:"",
-    password:"",
-    passwordCheck:"",
-    memType : "p"
+    phoneNum: "",
+    requestNum: "",
+    CMID: "",
+    nickName: "",
+    password: "",
+    passwordCheck: "",
+    memType: "p"
   })
 
   useEffect(() => {
@@ -49,12 +57,12 @@ const SignUpPage = () => {
 
   //1. 회원가입
   async function signUp() {
-    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
+    const nativeTid = globalState.nativeTid == null || globalState.nativeTid == 'init' ? '' : globalState.nativeTid
     const {result, data, message} = await Api.member_join({
       data: {
         memType: signForm.memType, memId: signForm.phoneNum, memPwd: signForm.password, nickNm: signForm.nickName,
         birth: '', term1: 'y', term2: 'y', term3: 'y', term4: 'y', term5: 'y',
-        profImg: '', profImgRacy: 3, nativeTid: nativeTid, os: context.customHeader.os
+        profImg: '', profImgRacy: 3, nativeTid: nativeTid, os: globalState.customHeader.os
       }
     })
     console.log(result, data, message);
@@ -62,7 +70,8 @@ const SignUpPage = () => {
       //Facebook,Firebase 이벤트 호출
       addAdsData();
 
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           //애드브릭스 이벤트 전달
           if (data.adbrixData != '' && data.adbrixData != 'init') {
@@ -71,12 +80,13 @@ const SignUpPage = () => {
           loginFetch()
         },
         msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달라 즐겁게 사용하세요.'
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
-      context.action.updateLogin(false)
+      }))
+      dispatch(setGlobalCtxUpdateLogin(false));
     }
   }
 
@@ -92,8 +102,7 @@ const SignUpPage = () => {
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
-
-      context.action.updateToken(loginInfo.data)
+      dispatch(setGlobalCtxUpdateToken(loginInfo.data));
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
         if (isHybrid()) {
@@ -108,14 +117,15 @@ const SignUpPage = () => {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)
         }
-        context.action.updateProfile(profileInfo.data)
+        dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
         return history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         title: '로그인 실패',
         msg: `${loginInfo.message}`
-      })
+      }))
     }
   }
 

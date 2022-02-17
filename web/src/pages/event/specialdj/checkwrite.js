@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 import Header from 'components/ui/new_header.js'
@@ -20,7 +19,6 @@ let subSelect2 = ''
 export default (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-
   const history = useHistory()
 
   const [deligate, setDeligate] = useState(false)
@@ -32,8 +30,6 @@ export default (props) => {
   const [contents, setContents] = useState('')
   const [already, setalready] = useState('')
   const [toggleCheck, setToggleCheck] = useState({})
-
-  const context = useContext(Context)
 
   const [select1, setSelect1] = useState('')
   const [selectSub1, setSelectsub1] = useState('')

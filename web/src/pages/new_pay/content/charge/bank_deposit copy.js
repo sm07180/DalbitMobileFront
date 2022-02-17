@@ -4,15 +4,13 @@
  * @brief 무통장 입금(계좌이체) 신청 페이지
  */
 
-import React, {useEffect, useContext, useState, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {useHistory, useLocation} from 'react-router-dom'
 
 //context
-import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
-import qs from 'query-string'
 
 //layout
 import Header from 'components/ui/new_header'
@@ -20,12 +18,16 @@ import Header from 'components/ui/new_header'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoDown from '../../static/arrow_down_g.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation()
   const history = useHistory()
   const {prdtNm, prdtPrice, itemNo, webview, event, itemAmt} = location.state
-  const context = useContext(Context)
 
   //state
   //현금영수증 코드 (n: 안함, i : 소득공제, b: 지출증빙)
@@ -44,34 +46,40 @@ export default () => {
   const clickDepositButton = () => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if (name.length < 2) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `이름은 필수입력 값입니다.`
-      })
+      }))
     }
     if (!phone) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `핸드폰 번호는 필수입력 값입니다.`
-      })
+      }))
     }
     if (!rgEx.test(phone)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `올바른 핸드폰 번호가 아닙니다.`
-      })
+      }))
     }
     if (receiptCode === 'i' && iValType === 'social' && receiptSocial.length < 13) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `현금영수증 발급을 위하여 \n 주민번호를 입력해주세요.`
-      })
+      }))
     }
     if (receiptCode === 'i' && iValType === 'phone' && !receiptPhone) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `현금영수증 발급을 위하여 \n 휴대폰번호를 입력해주세요.`
-      })
+      }))
     }
     if (receiptCode === 'b' && receiptBiz.length < 10) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `현금영수증 발급을 위하여 \n 사업자번호를 입력해주세요.`
-      })
+      }))
     }
     getDepositInfo()
   }
@@ -105,9 +113,10 @@ export default () => {
         }
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 

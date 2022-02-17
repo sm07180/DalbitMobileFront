@@ -4,17 +4,13 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import React, {useContext} from 'react'
+import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
 import Popup from 'components/ui/popup'
-
-import Common from "common";
 import Modal from "common/modal";
-import Alert from "common/alert";
-import {Context} from "context";
-import {route} from "express/lib/router";
+import {useSelector} from "react-redux";
 
 // import Main from 'pages/main'
 //----- dalla -----//
@@ -113,7 +109,8 @@ const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
 const Router = () => {
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   return (
     <React.Suspense
       fallback={
@@ -121,8 +118,8 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <ScrollToTop />
-      <Popup />
+      <ScrollToTop/>
+      <Popup/>
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
@@ -167,7 +164,7 @@ const Router = () => {
         <Route exact path="/myProfile" component={Profile} />
         <Route exact path="/profile/:memNo" main={Profile}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const targetMemNo = match.params.memNo
                  if(myMemNo === targetMemNo) {
                    return <Redirect to={{ pathname: '/myProfile' }} />

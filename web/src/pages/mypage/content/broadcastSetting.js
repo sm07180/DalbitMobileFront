@@ -2,13 +2,11 @@
  * @file /mypage/context/broadcastSetting.js
  * @brief 마이페이지 방송설정(금지어 관리, 매니저 관리, 차단회원 관리)
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 //context
-import {Context} from 'context'
 //ui
-import SelectBoxs from 'components/ui/selectBox.js'
 
 //component
 import AppAlarm from '../component/setting/appAlarm2'
@@ -19,11 +17,11 @@ import Blacklist from '../component/setting/blacklist'
 import PushMembers from '../component/setting/push_members'
 
 //constant
-import {BC_SETTING_TYPE} from '../constant'
-import {SETTING_TYPE} from '../constant'
+import {BC_SETTING_TYPE, SETTING_TYPE} from '../constant'
 //svg
 import ArrowIcon from '../component/arrow_right.svg'
 import closeBtn from '../component/ic_back.svg'
+
 const selectBoxData = [
   {value: BC_SETTING_TYPE.PUSH, text: 'Push 알림 설정'},
   {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
@@ -35,8 +33,6 @@ const selectBoxData = [
 
 export default (props) => {
   //-----------------------------------------------------------------------------
-  //contenxt
-  const context = useContext(Context)
 
   //state
   const [initialScreen, setInitialScreen] = useState(true)

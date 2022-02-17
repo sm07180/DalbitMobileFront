@@ -1,11 +1,13 @@
-import React, {useContext, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {IMG_SERVER} from "context/config";
 import ListRow from "components/ui/listRow/ListRow";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const ListRowComponent = (props) => {
-  const { item, isMyProfile, index, type } = props;
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {item, isMyProfile, index, type} = props;
   const moreRef = useRef([]);
 
   /* 더보기 박스 열기 */
@@ -61,11 +63,12 @@ const ListRowComponent = (props) => {
         <div className="time">{item.writeDate ? item.writeDate : item.writeDt}</div>
       </div>
       <div className='moreBtn' onClick={() => moreBoxClick(index)}>
-        <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
+        <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기"/>
         <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-          {(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}
-          {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button>삭제하기</button>}
-          {context.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}
+          {(globalState.profile.memNo === item.mem_no || globalState.adminChecker) && <button>수정하기</button>}
+          {(isMyProfile || globalState.profile.memNo === item.mem_no || globalState.adminChecker) &&
+          <button>삭제하기</button>}
+          {globalState.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}
         </div>
       </div>
     </ListRow>

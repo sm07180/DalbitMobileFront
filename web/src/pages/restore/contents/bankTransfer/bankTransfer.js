@@ -1,7 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
+import React, {useState} from 'react'
 import Utility from 'components/lib/utility'
 
 // global components
@@ -18,7 +15,6 @@ import './bankTransfer.scss'
 const receiptTabmenu = ['신청안함','소득공제용','지출증빙용']
 
 const BankTransfer = () => {
-  const context = useContext(Context);
   const [receiptTabType, setReceiptTabType] = useState(receiptTabmenu[0]);
 
   const [bankResult, setBankResult] = useState(true);

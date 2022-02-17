@@ -1,21 +1,21 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
 
 export default function AwardsDetail(props) {
   const {
     selectedDJ: {djMemNo, djNickNm, djMsg, djProfImg, djTitle}
-  } = props
+  } = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
 
-  const context = useContext(Context)
-
   const directUser = () => {
-    !context.token.isLogin
+    !globalState.token.isLogin
       ? history.push({
-          pathname: '/login',
-          state: {state: 'event/award/2020'}
-        })
+        pathname: '/login',
+        state: {state: 'event/award/2020'}
+      })
       : history.push(`/mypage/${djMemNo}`)
   }
 

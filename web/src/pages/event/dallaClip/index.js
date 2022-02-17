@@ -1,16 +1,16 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
+import React from 'react'
 
 import Swiper from 'react-id-swiper'
 import Header from 'components/ui/new_header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import HotClipList from './components/hotClipList'
 import ClipList from './components/clipList'
 
 import './dallaClip.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipPage = () => {
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   // 스와이퍼 params
   const swiperParams = {
     slidesPerView: 'auto',
@@ -18,8 +18,8 @@ const ClipPage = () => {
 
   const likeSubjectLists = [
     {
-      icon : '🎤',
-      name : '커버/노래'
+      icon: '🎤',
+      name: '커버/노래'
     },
     {
       icon : '🌱',
@@ -81,7 +81,7 @@ const ClipPage = () => {
       name : '달디의 편한 갬성'
     },
   ]
-  
+
   return (
     <div id="clipPage">
       <Header title="클립"></Header>
@@ -222,7 +222,7 @@ const ClipPage = () => {
           </div> */}
         </Swiper>
       </section>
-      
+
       <section className='bannerWrap'>
         <Swiper {...swiperParams}>
           <div className="bannerBox">
@@ -237,7 +237,7 @@ const ClipPage = () => {
         </Swiper>
       </section>
       <section className="clipListWrap">
-        <CntTitle title={`${context.profile.nickNm}님의 클립서랍`} />
+        <CntTitle title={`${globalState.profile.nickNm}님의 클립서랍`}/>
         <div className="subTitle">
           최근 들은 클립
           <div className="titleMore">더보기</div>

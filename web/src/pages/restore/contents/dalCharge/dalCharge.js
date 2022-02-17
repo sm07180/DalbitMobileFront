@@ -1,7 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
+import React, {useEffect, useState} from 'react'
 import Utility from 'components/lib/utility'
 
 // global components
@@ -17,7 +14,6 @@ import './dalCharge.scss'
 const paymentMethod = ['계좌 간편결제','무통장(계좌이체)','신용/체크카드','휴대폰','카카오페이(머니)','카카오페이(카드)','페이코','티머니/캐시비','문화상품권','해피머니상품권']
 
 const DalCharge = () => {
-  const context = useContext(Context);
   const [select, setSelect] = useState(3);
   const [popSlide, setPopSlide] = useState(false);
 
@@ -27,7 +23,7 @@ const DalCharge = () => {
   // 결제수단 선택
   const onSelectMethod = (e) => {
     const {targetIndex} = e.currentTarget.dataset
-    
+
     setSelect(targetIndex)
     if (Number(targetIndex) === 1) {
       setPopSlide(!popSlide)

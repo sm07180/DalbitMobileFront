@@ -4,8 +4,6 @@
  * @author 손완휘
  */
 import App from 'App'
-//context
-import {GlobalProvider} from 'context'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -21,9 +19,7 @@ import store from "redux/store";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <GlobalProvider>
-        <App/>
-      </GlobalProvider>
+      <App/>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')

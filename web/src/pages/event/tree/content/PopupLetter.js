@@ -1,17 +1,20 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Swiper from 'react-id-swiper';
-import {IMG_SERVER, PHOTO_SERVER} from 'context/config';
+import {PHOTO_SERVER} from 'context/config';
 import './popup.scss';
 import Api from "context/api";
-import {Context} from "context";
 import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const PopupLetter = (props) => {
-  const { onClose, seqNo } = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const context = useContext(Context);
-  const [pageInfo, setPageInfo] = useState({ pageNo: 1, pagePerCnt: 5 });
-  const [listInfo, setListInfo] = useState({ cnt: 0, list: []});
+  const {onClose, seqNo} = props;
+
+  const [pageInfo, setPageInfo] = useState({pageNo: 1, pagePerCnt: 5});
+  const [listInfo, setListInfo] = useState({cnt: 0, list: []});
 
   const swiperParams = {
     pagination: {
@@ -25,13 +28,13 @@ const PopupLetter = (props) => {
       if (res.code === '00000') {
         const { cnt, list } = res.data;
         if (cnt < 0) {
-          context.action.alert({msg: '사연이 존재하지 않습니다'});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: '사연이 존재하지 않습니다'}));
           onClose();
         } else {
           setListInfo({cnt, list});
         }
       } else {
-        context.action.alert({msg: `${res.code === '99994' ? '사연이 존재하지 않습니다.' : res.message}`});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: `${res.code === '99994' ? '사연이 존재하지 않습니다.' : res.message}`}));
         onClose();
       }
     }).catch(e => console.log(e));
