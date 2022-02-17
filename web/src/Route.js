@@ -241,7 +241,7 @@ const Router = () => {
                  const {memNo, type, action} = match.params;
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
-                 } else if(myMemNo !== memNo || action === 'write'){
+                 } else if(action === 'write'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
                  }
                    return <Route component={ProfileContentsWrite} />

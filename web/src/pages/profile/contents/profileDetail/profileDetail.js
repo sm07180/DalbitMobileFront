@@ -20,6 +20,7 @@ const ProfileDetail = (props) => {
   const context = useContext(Context)
   const {token, profile} = context
   const {memNo, type, index} = useParams();
+  //memNo :글이 작성되있는 프로필 주인의 memNo
 
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
@@ -62,7 +63,7 @@ const ProfileDetail = (props) => {
   const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
 
   //내가 작성한 글 여부
-  const isMyContents = (token?.isLogin) && item && profile?.memNo === (type === 'feed' ? item?.mem_no : item?.writer_mem_no);
+  const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === (type === 'feed' ? item?.mem_no : item?.writer_mem_no)?.toString();
   const adminChecker = context?.adminChecker;
 
   /* 프로필 사진 확대 */
@@ -290,11 +291,14 @@ const ProfileDetail = (props) => {
       );
 
       if (result === 'success') {
+        context.action.toast({msg: '댓글이 수정되었습니다.'})
+
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       } else {
+        context.action.alert({msg: message});
       }
 
     } else if (type === 'fanBoard') {
@@ -305,12 +309,14 @@ const ProfileDetail = (props) => {
       }});
 
       if(result ==='success'){
+        context.action.toast({msg: '댓글이 수정되었습니다.'})
+
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       }else{
-
+        context.action.alert({msg: message});
       }
 
     }
@@ -365,10 +371,10 @@ const ProfileDetail = (props) => {
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
             {isMore &&
               <div className="isMore">
-                {isMyProfile && isMyContents &&
-                  <button onClick={() => goProfileDetailPage({history, memNo, action:'modify',type, index })}>
+                {isMyContents &&
+                  <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>
                     수정하기</button>}
-                {(isMyProfile && isMyContents || adminChecker) &&
+                {(isMyContents || adminChecker) &&
                   <button onClick={deleteContents}>삭제하기</button>}
                 {!isMyContents &&
                   <button onClick={() => openBlockReportPop({memNo:item?.mem_no || item?.writer_mem_no, memNick: item?.nickName})}>
@@ -454,7 +460,7 @@ const ProfileDetail = (props) => {
 
 /**
  * 프로필 상세 관련 주소이동 공통처리
- * @Param: 
+ * @Param:
  * history : useHistory()
  * action : detail, write, modify
  * type : feed, fanBaord
@@ -466,15 +472,15 @@ export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
   if(!history) return;
   if (type !== 'feed' && type !== 'fanBoard') return;
 
-  if (action === 'detail') { //상세
+  if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
       history.push(`/profileDetail/${memNo}/${type}/${index}`);
   } else if (action === 'write') { // 작성
-    if(type=='feed'){
+    if(type=='feed'){ // 작성 memNo : 프로필 주인의 memNo
       history.push(`/profileWrite/${memNo}/${type}/write`);
-    }else if(type ==='fanBoard'){
+    }else if(type ==='fanBoard'){ // 작성 memNo : 프로필 주인의 memNo
       history.push(`/profileWrite/${memNo}/${type}/write`);
     }
-  } else if (action === 'modify') { // 수정
+  } else if (action === 'modify') { // 수정 memNo : 프로필 주인의 memNo
       history.push(`/profileWrite/${memNo}/${type}/modify/${index}`);
   }
 };
