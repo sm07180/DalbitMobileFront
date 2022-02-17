@@ -13,7 +13,7 @@ const SwiperList = (props) => {
 
   return (
     <>
-      {data && data.length > 0 &&
+      {(data && data.length > 0) ?
         <Swiper {...swiperParams}>
           {data.map((list, index)=>{
             return(
@@ -26,7 +26,10 @@ const SwiperList = (props) => {
             )
           })}
         </Swiper>
+        :
+        <div className="empty">데이터가 없습니다.</div>
       }
+
     </>
   )
 };
