@@ -27,6 +27,9 @@
         }
       }
     }
+    .buttonGroup{
+      margin-right: 12px
+    }
   }
   > .tabmenu {
     @include flex(center);
