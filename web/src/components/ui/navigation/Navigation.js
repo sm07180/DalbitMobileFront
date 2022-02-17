@@ -18,7 +18,9 @@ const Navigation = (props) => {
     <div id="navigation">
       <nav className="bottomGnb">
         <div className="navi" onClick={() => {
-          dispatch(setIsRefresh(true));
+          if(location.pathname === '/') {
+            dispatch(setIsRefresh(true))
+          }
           history.push('/')
         }} />
         <div className="navi" onClick={() => history.push('/clip')} />
