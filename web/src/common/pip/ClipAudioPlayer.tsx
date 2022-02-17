@@ -17,7 +17,7 @@ import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle"
 const ClipAudioPlayer = ()=>{
   const history = useHistory();
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { clipPlayer, clipPlayList, clipInfo, baseData } = globalState;
+  const { clipPlayer, clipPlayList, clipInfo, baseData, userProfile } = globalState;
 
   useEffect(() => {
     if (baseData.isLogin) {
@@ -84,10 +84,10 @@ const ClipAudioPlayer = ()=>{
       <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
           <div className="info-wrap">
-            <div className="equalizer">
-              {!isPaused && <ul>{[1,2,3,4,5].map((value,index) => <li key={index}><span/></li>)}</ul>}
-              <p>CLIP</p>
-            </div>
+            <div className="inner-player-bg" style={{
+              background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,
+            }}></div>
+            <div className="equalizer clip"></div>
             <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle}>
               <img src={toggleInfo.src} className={toggleInfo.className} alt={toggleInfo.alt}/>
             </div>
@@ -98,6 +98,7 @@ const ClipAudioPlayer = ()=>{
             <div className="counting"/>
           </div>
           <div className="buttonGroup">
+            {/* <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/> */}
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
           

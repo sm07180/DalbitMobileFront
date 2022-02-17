@@ -416,7 +416,8 @@ legend {
         width: 22px;
         height: 27px;
         margin-right: 8px;
-        @include BGIMG("common/playerbar_live.png");
+        &.broadcast {@include BGIMG("common/playerbar_live.png");}
+        &.clip {@include BGIMG("common/playerbar_clip.png");}
       }
       .thumb {
         position: relative;
