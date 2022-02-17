@@ -274,9 +274,10 @@ const ClipPage = () => {
           </Swiper>
         </section>
         <section className="clipList">
-          <CntTitle title={`${subSearchInfo.cdNm}는(은) 어떠세요?`}>
+          <div className="cntTitle">
+            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}는(은) 어떠세요?`}</h2>
             <button onClick={changeList}>새로고침</button>
-          </CntTitle>
+          </div>
           <SwiperList data={subClipInfo.list} playAction={playClip}/>
         </section>
       </div>
