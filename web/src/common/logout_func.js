@@ -11,7 +11,7 @@ export const BeforeLogout = (dispatch, fetch) => {
     if (Utility.getCookie('clip-player-info')) {
       dispatch(setGlobalCtxMessage({type:"confirm",
         callback: () => {
-          clipExit()
+          clipExit(dispatch)
           setTimeout(() => {
             fetch()
           }, 300)

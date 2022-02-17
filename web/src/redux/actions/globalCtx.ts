@@ -144,6 +144,10 @@ export const CLIP_PLAY_LIST_TAB_INIT  				      = 'global/ctx/CLIP_PLAY_LIST_TAB
 export const CLIP_PLAY_LIST_TAB_ADD   				      = 'global/ctx/CLIP_PLAY_LIST_TAB_ADD';
 export const CLIP_PLAY_LIST_TAB_EMPTY 				      = 'global/ctx/CLIP_PLAY_LIST_TAB_EMPTY';
 
+export const WALLET_INIT_DATA 				              = 'global/ctx/WALLET_INIT_DATA';
+export const WALLET_ADD_DATA 				                = 'global/ctx/WALLET_ADD_DATA';
+export const WALLET_ADD_HISTORY 				            = 'global/ctx/WALLET_ADD_HISTORY';
+
 
 export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<any>();
 export const setGlobalCtxMessage = createAction(SET_MESSAGE)<MessageType>();
@@ -284,3 +288,6 @@ export const setGlobalCtxClipPlayListTabInit = createAction(CLIP_PLAY_LIST_TAB_I
 export const setGlobalCtxClipPlayListTabAdd = createAction(CLIP_PLAY_LIST_TAB_ADD)<any>();
 export const setGlobalCtxClipPlayListTabEmpty = createAction(CLIP_PLAY_LIST_TAB_EMPTY)();
 
+export const setGlobalCtxWalletInitData = createAction(WALLET_INIT_DATA)();
+export const setGlobalCtxWalletAddData = createAction(WALLET_ADD_DATA)<any>();
+export const setGlobalCtxWalletAddHistory = createAction(WALLET_ADD_HISTORY)<any>();

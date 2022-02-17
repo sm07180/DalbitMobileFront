@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState} from 'react'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems';
@@ -7,10 +7,11 @@ import Tabmenu from '../Tabmenu'
 
 import './style.scss'
 import {MypageBlackListAdd, postReportUser} from "common/api";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-const blockReportTabmenu = ['차단하기','신고하기']
+const blockReportTabmenu = ['차단하기', '신고하기']
 const blockTypes = [
   {key: '프로필 사진', value: '1'},
   {key: '음란성', value: '2'},
@@ -22,9 +23,10 @@ const REPORT_MIN_LENGTH = 10; // 신고하기 최소 글자
 const REPORT_MAX_LENGTH = 100; // 신고하기 최대 글자
 
 const BlockReport = (props) => {
-  const {blockReportInfo, closeBlockReportPop} = props
+  const {blockReportInfo, closeBlockReportPop} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const context = useContext(Context);
   const [openSelect, setOpenSelect] = useState(false)
   const [tabType, setTabType] = useState(blockReportTabmenu[1])
   const [selectedInfo, setSelectedInfo] = useState({key: '신고 유형을 선택해주세요.', value: ''})
@@ -41,20 +43,23 @@ const BlockReport = (props) => {
     MypageBlackListAdd({memNo: blockReportInfo.memNo}).then(res => {
       const { message, result } = res;
       if (result === "success") {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => history.goBack(),
-        });
+        }));
       } else if (res.code === "-3") {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => history.goBack(),
-        });
+        }));
       } else if (code === "C006") {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: "이미 차단회원으로 등록된\n회원입니다.",
           callback: () => history.goBack(),
-        });
+        }));
       }
     })
   }
@@ -68,13 +73,15 @@ const BlockReport = (props) => {
     }
     postReportUser(reportApiParams).then(res => {
       if (res.result === "success") {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `${blockReportInfo.memNick}님을 신고하였습니다.`,
-        });
+        }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `이미 신고한 회원 입니다.`,
-        });
+        }));
       }
     });
   }
@@ -87,17 +94,21 @@ const BlockReport = (props) => {
   /* 신고 valid 체크 */
   const reportValidationCheck = () => {
     if (selectedInfo.value === '') {
-      return context.action.alert({
-        callback: () => {},
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: '신고 사유를 선택해주세요.'
-      })
+      }))
     }
 
     if (selectedInfo.value !== '' && reportReason.length < REPORT_MIN_LENGTH) {
-      return context.action.alert({
-        callback: () => {},
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: `신고 사유를 ${REPORT_MIN_LENGTH}자 이상 입력해주세요.`
-      })
+      }))
     }
 
     if(selectedInfo.value !== '' && reportReason.length < REPORT_MAX_LENGTH) {

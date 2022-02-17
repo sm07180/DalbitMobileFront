@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react'
-import Utility ,{addComma} from 'components/lib/utility'
+import React, {useEffect, useState} from 'react'
+import Utility from 'components/lib/utility'
 
 // global components
-import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import Tabmenu from '../../components/tabmenu'
 // contents
@@ -11,24 +10,23 @@ import NewlyAccount from './NewlyAccount'
 import MyAccount from './MyAccount'
 import {useHistory} from "react-router-dom";
 import Api from "context/api";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxWalletAddData} from "redux/actions/globalCtx";
 
 const Exchange = (props) => {
-  const depositTabmenu = ['신규 정보','최근 계좌','내 계좌'];
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const depositTabmenu = ['신규 정보', '최근 계좌', '내 계좌'];
 
-  const [depositType,setDepositType] = useState(depositTabmenu[2]);
+  const [depositType, setDepositType] = useState(depositTabmenu[2]);
   const history = useHistory();
-  const context = useContext(Context);
-  const {profile, walletData} = context;
+  const {profile, walletData} = globalState;
   const {byeolTotCnt, dalTotCnt} = walletData;
   const [calcFormShow, setCalcFormShow] = useState(false);
 
   useEffect(() => {
-    if(byeolTotCnt === 0 || dalTotCnt ===0) {
-      context.globalAction.dispatchWalletData({
-        type: 'ADD_DATA',
-        data: {dalTotCnt: profile?.dalCnt || 0, byeolTotCnt: profile?.byeolCnt || 0}
-      });
+    if (byeolTotCnt === 0 || dalTotCnt === 0) {
+      dispatch(setGlobalCtxWalletAddData({dalTotCnt: profile?.dalCnt || 0, byeolTotCnt: profile?.byeolCnt || 0}));
     }
   },[profile]);
 
@@ -47,7 +45,7 @@ const Exchange = (props) => {
     ,addFile1:''  //신분증사본
     ,addFile2:''  //통장사본
     ,addFile3:''  //미성년자인 경우 부모님 동의
-    
+
     ,agree: false  //3자 제공 동의 (단순 체크 확인로직 처리 api 전송 x)
     ,zoneCode: ''  //우편번호 폼 단순 표기용
   });
@@ -55,9 +53,9 @@ const Exchange = (props) => {
   //환전 계산하기
   const exchangeCalc = async (sendByeolCnt = 0) => {
     if (sendByeolCnt < 570) {
-      context.action.alert({msg: '환전 신청별은\n570개 이상이어야 합니다.'});
+      dispatch(setGlobalCtxMessage({type: "alert", msg: '환전 신청별은\n570개 이상이어야 합니다.'}));
     } else if (sendByeolCnt > byeolTotCnt) {
-      context.action.alert({msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'}))
       return;
     } else {
       const res = await Api.exchangeCalc({
@@ -87,12 +85,13 @@ const Exchange = (props) => {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      });
+      }));
       return;
     }
     reader.readAsDataURL(target.files[0]);
@@ -113,17 +112,18 @@ const Exchange = (props) => {
           // })
           // dispatch({type: 'file', val: arr})
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
             callback: () => {
-              context.action.alert({visible: false})
+              dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
             }
-          })
+          }))
         }
       }
     };
   }
-  
+
   //환전 신청하기
   const exchangeSubmit = async () => {
     // param
@@ -149,7 +149,7 @@ const Exchange = (props) => {
     if (result === 'success') {
       history.push('/wallet/result');
     } else {
-      context.action.alert({msg: message});
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}));
     }
   }
 

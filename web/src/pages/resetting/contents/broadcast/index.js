@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import React, {useState} from 'react'
+import {useParams} from 'react-router-dom'
 
 // global components
 import Header from 'components/ui/header/Header'
@@ -14,20 +14,22 @@ import InOutMessage from './inOutMessage'
 
 import './broadcast.scss'
 import API from "context/api";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SettingBroadcast = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const params = useParams();
   const settingCategory = params.category;
-  const context = useContext(Context);
 
   const [menuListInfo, setMenuListInfo] = useState([
-    {text:'방송 제목', path: '/setting/broadcast/title'},
-    {text:'DJ 인사말', path: '/setting/broadcast/greeting'},
-    {text:'퀵 메시지', path: '/setting/broadcast/message'},
-    {text:'방송 청취 정보 공개', path: '/setting/broadcast/infoOpen'},
-    {text:'선물 시 자동 스타 추가', path: false},
-    {text:'배지 / 입·퇴장 메시지', path: '/setting/broadcast/inOutMessage'},
+    {text: '방송 제목', path: '/setting/broadcast/title'},
+    {text: 'DJ 인사말', path: '/setting/broadcast/greeting'},
+    {text: '퀵 메시지', path: '/setting/broadcast/message'},
+    {text: '방송 청취 정보 공개', path: '/setting/broadcast/infoOpen'},
+    {text: '선물 시 자동 스타 추가', path: false},
+    {text: '배지 / 입·퇴장 메시지', path: '/setting/broadcast/inOutMessage'},
   ]);
 
   const golink = (path) => {
@@ -43,9 +45,9 @@ const SettingBroadcast = () => {
     }
     API.modifyBroadcastSetting({params}).then((res) => {
       if(res.result === "success") {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
         setMenuListInfo(menuListInfo.map((v, idx) => {
-          if(idx === index) {
+          if (idx === index) {
             v.value = !value
           }
           return v
@@ -72,7 +74,8 @@ const SettingBroadcast = () => {
                   :
                   <MenuList text={list.text} key={index}>
                     <label className="inputLabel">
-                      <input type="checkbox" className={`blind`} name={"autoAddStar"} data-value={list.path} data-idx={index} onClick={fetchData}/>
+                      <input type="checkbox" className={`blind`} name={"autoAddStar"} data-value={list.path}
+                             data-idx={index} onClick={fetchData}/>
                       <span className={`switchBtn`}/>
                     </label>
                   </MenuList>
@@ -81,7 +84,7 @@ const SettingBroadcast = () => {
               )
             })}
           </div>
-        </div>        
+        </div>
         :
         settingCategory === "title" ?
           <Title/>
@@ -97,7 +100,7 @@ const SettingBroadcast = () => {
         :
         settingCategory === "inOutMessage" &&
           <InOutMessage/>
-      }      
+      }
     </>
   )
 }

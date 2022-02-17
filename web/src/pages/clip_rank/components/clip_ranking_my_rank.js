@@ -69,7 +69,7 @@ export default function ClipRankingMyRank() {
         <>
           {Object.keys(myInfo).length > 0 && myInfo.myRank != 0 && (
             /* 최상위 순위 반영이므로 map(x)*/
-            <div className="myRanking" onClick={() => ClipPlay(myInfo.myClipNo, globalState, history)}>
+            <div className="myRanking" onClick={() => ClipPlay(myInfo.myClipNo, dispatch, globalState, history)}>
               <div className="rankingList">
                 <div className="rankingList__item">
                   <p className="rankingList__item--title">

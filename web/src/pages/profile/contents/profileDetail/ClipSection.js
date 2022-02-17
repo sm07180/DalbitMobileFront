@@ -1,22 +1,24 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import NoResult from 'components/ui/noResult/NoResult'
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipSection = (props) => {
-  const { profileData, clipData, isMyProfile, webview } = props;
-  const context = useContext(Context);
+  const {profileData, clipData, isMyProfile, webview} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
   const listenClip = (clipNo,) => {
     const clipParam = {
       clipNo: clipNo,
-      gtx: context,
+      globalState,
+      dispatch,
       history,
       webview,
     }

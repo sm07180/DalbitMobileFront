@@ -4,17 +4,13 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import React, {useContext} from 'react'
+import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
 import Popup from 'components/ui/popup'
-
-import Common from "common";
 import Modal from "common/modal";
-import Alert from "common/alert";
-import {Context} from "context";
-import {route} from "express/lib/router";
+import {useDispatch, useSelector} from "react-redux";
 
 // import Main from 'pages/main'
 //----- dalla -----//
@@ -142,7 +138,8 @@ const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
 
 const Router = () => {
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   return (
     <React.Suspense
       fallback={
@@ -150,8 +147,8 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <ScrollToTop />
-      <Popup />
+      <ScrollToTop/>
+      <Popup/>
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
@@ -211,7 +208,7 @@ const Router = () => {
         <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
         <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
                render={({location, match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const targetMemNo = match.params.memNo
                  const searchData = location.search
                  if(myMemNo === targetMemNo) {
@@ -224,12 +221,12 @@ const Router = () => {
         {/*피드, 팬보드 등록*/}
         <Route exact path={"/profileWrite/:memNo/:type/:action"} main={ProfileContentsWrite}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const {memNo, type, action} = match.params;
-                 if(!context.token?.isLogin){
-                   return <Redirect to={{ pathname: '/login' }} />
-                 } else if((type ==='feed' && myMemNo !== memNo) || action === 'modify'){
-                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 if (!globalState.token?.isLogin) {
+                   return <Redirect to={{pathname: '/login'}}/>
+                 } else if ((type === 'feed' && myMemNo !== memNo) || action === 'modify') {
+                   return <Redirect to={{pathname: '/myProfile'}}/>
                  }
                   return <Route component={ProfileContentsWrite} />
                }}
@@ -237,12 +234,12 @@ const Router = () => {
         {/*피드, 팬보드 수정*/}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const {memNo, type, action} = match.params;
-                 if(!context.token?.isLogin){
-                   return <Redirect to={{ pathname: '/login' }} />
-                 } else if(action === 'write'){
-                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 if (!globalState.token?.isLogin) {
+                   return <Redirect to={{pathname: '/login'}}/>
+                 } else if (action === 'write') {
+                   return <Redirect to={{pathname: '/myProfile'}}/>
                  }
                    return <Route component={ProfileContentsWrite} />
                }}
@@ -252,11 +249,12 @@ const Router = () => {
                render={({ match}) => {
                  const {memNo, type, index} = match.params;
 
-                 if(!context.token?.isLogin){
+                 if (!globalState.token?.isLogin) {
 
-                   return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
+                   return <Redirect
+                     to={{pathname: '/login', search: `?redirect=/profileDetail/${memNo}/${type}/${index}`}}/>
                  } else {
-                   return <Route component={ProfileDetail} />
+                   return <Route component={ProfileDetail}/>
                  }
                }}
         />

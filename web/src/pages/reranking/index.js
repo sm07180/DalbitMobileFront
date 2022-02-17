@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
@@ -17,16 +16,17 @@ import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/r
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const RankPage = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
-  const context = useContext(Context);
-
-  const {token, profile} = context;
+  const {token, profile} = globalState;
 
   //하단 FAN/LOVER탭 array
-  const dayTabmenu = ['FAN','LOVER']
+  const dayTabmenu = ['FAN', 'LOVER']
 
   //DJ List 기간 선택 pop flag
   const [popSlide, setPopSlide] = useState(false)

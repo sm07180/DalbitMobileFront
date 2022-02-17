@@ -1,18 +1,24 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React, {useEffect} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBroadcastAdminLayer,
+  setGlobalCtxInBroadcast,
+  setGlobalCtxShadowAdmin
+} from "../../../redux/actions/globalCtx";
 
-const AdminLayerPopup = (props: any)=> {
-  const { globalState, globalAction } = useContext(GlobalContext);
+const AdminLayerPopup = (props: any) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const closePopup = () => {
-    globalAction.setBroadcastAdminLayer!((prevState) => ({
-      ...prevState,
+    dispatch(setGlobalCtxBroadcastAdminLayer({
+      ...globalState.broadcastAdminLayer,
       status: false,
       roomNo: "",
       nickNm: "",
-    }));
+    }))
   };
 
   const closePopupDim = (e) => {
@@ -24,23 +30,23 @@ const AdminLayerPopup = (props: any)=> {
   //clip Link
   const broadCastLink = (type: string) => {
     if (type === "admin") {
-      globalAction.setShadowAdmin!(1);
+      dispatch(setGlobalCtxShadowAdmin(1));
       closePopup();
       if (globalState.inBroadcast) {
         window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
         setTimeout(() => {
-          globalAction.setInBroadcast!(false);
+          dispatch(setGlobalCtxInBroadcast(false));
         }, 10);
       } else {
         history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
       }
     } else {
-      globalAction.setShadowAdmin!(0);
+      dispatch(setGlobalCtxShadowAdmin(0));
       closePopup();
       if (globalState.inBroadcast) {
         window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
         setTimeout(() => {
-          globalAction.setInBroadcast!(false);
+          dispatch(setGlobalCtxInBroadcast(false));
         }, 10);
       } else {
         history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);

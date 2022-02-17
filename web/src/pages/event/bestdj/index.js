@@ -1,24 +1,26 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header.js'
 
 import './bestdj.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBestDjData} from "redux/actions/globalCtx";
 
 export default function bestdj() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const globalCtx = useContext(Context)
 
-  const [ bestDjMemNumber, setBestDjMemNumber ] = useState([]);
-  const [ fanRank, setFanRank ] = useState([]);
+  const [bestDjMemNumber, setBestDjMemNumber] = useState([]);
+  const [fanRank, setFanRank] = useState([]);
 
   const fetchBestdjInfo = async () => {
     const res = await Api.bestdj_info([]);
 
-    globalCtx.action.updateBestDjState(res.data);
+    dispatch(setGlobalCtxBestDjData(res.data));
 
     // if (res.result === 'success') {
     //   let fanRankList = [];
@@ -55,28 +57,33 @@ export default function bestdj() {
           className="img__full"
           />
           <div className="listWrap">
-            {globalCtx.bestDjData.map((item, index) => {
-                return (
-                  <div className="list" key={index}>
-                    <img
+            {globalState.bestDjData.map((item, index) => {
+              return (
+                <div className="list" key={index}>
+                  <img
                     src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-user-${index + 1}.png`}
                     alt="베스트DJ"
                     className="img__full"
-                    />
-                    <div className="clickArea" id={`${item.bestDjMemNo}`} 
-                         onClick={() => {history.push(`/mypage/${item.bestDjMemNo}`)}}/>
-                    <div className="fanRank">
-                      <ul className="fanRankListWrap">
+                  />
+                  <div className="clickArea" id={`${item.bestDjMemNo}`}
+                       onClick={() => {
+                         history.push(`/mypage/${item.bestDjMemNo}`)
+                       }}/>
+                  <div className="fanRank">
+                    <ul className="fanRankListWrap">
                       {item.fanRankList.length > 0 ?
                         item.fanRankList.map((rankData, idx) => {
-                          return (                            
+                          return (
                             <li className="fanRankList"
                                 id={`${rankData.memNo}`}
-                                onClick={() => {history.push(`/mypage/${rankData.memNo}`)}}
+                                onClick={() => {
+                                  history.push(`/mypage/${rankData.memNo}`)
+                                }}
                                 key={idx}
-                              >
-                              <div className={`fanRankThumb ${rankData.rank === 1 ? 'gold' : rankData.rank === 2 ? 'silver' : 'bronze'}`}
-                              style={{backgroundImage: `url(${rankData.profImg.url})`}}></div>
+                            >
+                              <div
+                                className={`fanRankThumb ${rankData.rank === 1 ? 'gold' : rankData.rank === 2 ? 'silver' : 'bronze'}`}
+                                style={{backgroundImage: `url(${rankData.profImg.url})`}}></div>
                               <div className="fanRankNick">{rankData.nickNm}</div>
                             </li>
                           )
@@ -91,7 +98,7 @@ export default function bestdj() {
                   </div>
                 )
               })
-            }            
+            }
           </div>
           <div className="footer">
             <img

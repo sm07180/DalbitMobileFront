@@ -56,7 +56,7 @@ export const clipJoin = (data, context, webview) => {
           Utility.setCookie('listen_room_no', null)
           Hybrid('ExitRoom', '')
           context.action.updatePlayer(false)
-          clipJoin(data)
+          clipJoin(data, dispatch, globalState)
         }
       })
     }

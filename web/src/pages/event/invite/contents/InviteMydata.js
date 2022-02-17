@@ -1,25 +1,25 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import ListNone from 'components/ui/listNone/ListNone'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 import '../invite.scss'
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const InviteMydata = () => {
-  const context = useContext(Context)
-  const {token, profile} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
-    cnt:"",
-    list:[]
+    cnt: "",
+    list: []
   });
 
   const temporaryData = [
     {
-      gender : "m",
+      gender: "m",
       nickNm : "일이삼사오육칠팔구십",
       since : "2022.02.09",
       profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
@@ -45,8 +45,8 @@ const InviteMydata = () => {
   const getList = ()=>{
     Api.inviteMyList({
       reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
+      data: {
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       console.log("inviteMyList", getList);
@@ -61,13 +61,14 @@ const InviteMydata = () => {
     setPopup(true)
   }
 
-  return (    
+  return (
     <>
       <div className='inviteMydata'>
         <div className='inviteData'>
           <div className='titleWrap'>
             <span className='dataTitle'>
-              <img src='https://image.dalbitlive.com/event/invite/eventPage_myData-title.png' alt="초대친구 현황" className='titleImg'/>
+              <img src='https://image.dalbitlive.com/event/invite/eventPage_myData-title.png' alt="초대친구 현황"
+                   className='titleImg'/>
             </span>
             <button className='questionMark' onClick={popupOpen}/>
           </div>
@@ -97,16 +98,16 @@ const InviteMydata = () => {
                           <span className='since'>가입일 {member.rcv_mem_join_date}</span>
                         </div>
                       </div>
-                    </div> 
+                    </div>
                   )
                 })
               }
               </div>
             </>
-            :
-            <ListNone imgType="event01" text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
+              :
+              <ListNone imgType="event01" text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
           }
-        </div>    
+        </div>
       </div>
       {
         popup &&

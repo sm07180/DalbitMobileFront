@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
@@ -6,11 +6,12 @@ import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const MainSlide = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {data} = props
-  const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
@@ -19,7 +20,7 @@ const MainSlide = (props) => {
       delay: 10000,
       disableOnInteraction: false
     },
-    on:{
+    on: {
       click: (s, e) => {
         let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
         if(evt.type === 'touchend' || evt.type === 'pointerup') {
@@ -35,7 +36,7 @@ const MainSlide = (props) => {
                 history.push(target.roomNo);
               }else {
                 // 방송방으로 이동
-                RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
+                RoomValidateFromClip(target.roomNo, dispatch, globalState, history, target.nickNm);
               }
             }
           })

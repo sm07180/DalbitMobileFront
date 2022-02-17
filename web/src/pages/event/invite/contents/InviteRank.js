@@ -1,6 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 
 import ListNone from 'components/ui/listNone/ListNone'
 import GenderItems from 'components/ui/genderItems/GenderItems'
@@ -9,14 +7,16 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 
 import '../invite.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const InviteRank = () => {
-  const context = useContext(Context)
-  const {token, profile} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token, profile} = globalState
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
-    cnt:"",
-    list:[]
+    cnt: "",
+    list: []
   });
   const [myData, setMyData] = useState();
 
@@ -312,8 +312,8 @@ const InviteRank = () => {
   const getList = ()=>{
     Api.inviteList({
       reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
+      data: {
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       console.log("inviteList", getList);
@@ -327,8 +327,8 @@ const InviteRank = () => {
   const getMyRank = ()=>{
     Api.inviteMyRank({
       reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
+      data: {
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       console.log("inviteMyRank", response);
@@ -345,12 +345,14 @@ const InviteRank = () => {
     <>
       <div className='inviteRank'>
         <div className='imageBox'>
-          <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-benefit.png" alt="초대왕에게 드리는 놀라운 혜택!" className='fullImage'/>
+          <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-benefit.png" alt="초대왕에게 드리는 놀라운 혜택!"
+               className='fullImage'/>
           <button className='noticePopBtn' onClick={popupOpen}>유의사항</button>
-        </div>      
+        </div>
         <div className='imageBox'>
-            <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-title.png" alt="초대왕 랭킹" className='fullImage'/>
-          </div>
+          <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-title.png" alt="초대왕 랭킹"
+               className='fullImage'/>
+        </div>
         <div className='rankSection'>
           {
             data.cnt > 0 ?
@@ -393,7 +395,7 @@ const InviteRank = () => {
                       <div className='listBack'>
                         <DataCnt type="inviteCnt" value={list.invitation_cnt}/>
                       </div>
-                    </div> 
+                    </div>
                   )
                 })
               }
@@ -401,7 +403,7 @@ const InviteRank = () => {
             </>
             :
             <ListNone imgType="event01" text="랭킹 내역이 없어요." height="300px"/>
-          }        
+          }
         </div>
       </div>
       {

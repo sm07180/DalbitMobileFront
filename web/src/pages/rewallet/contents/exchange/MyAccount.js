@@ -1,18 +1,18 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import {useDispatch, useSelector} from "react-redux";
 // components
 
 const MyAccount = (props) => {
   const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {profile, splash} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {profile, splash} = globalState
 
   const [accountInfo, setAccountInfo] = useState(true)
   const [slidePop, setSlidePop] = useState(false)
@@ -41,7 +41,7 @@ const MyAccount = (props) => {
   const onClickExchange = () => {
     history.push('/wallet/result')
   }
-  
+
   return (
     <>
       {accountInfo === false ?

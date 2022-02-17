@@ -1,12 +1,10 @@
-import React, {useState, useEffect, useContext, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {convertDateFormat} from 'components/lib/dalbit_moment'
 import Utility from 'components/lib/utility'
 
 import {OS_TYPE} from 'context/config'
-import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
@@ -16,9 +14,13 @@ import NoResult from 'components/ui/new_noResult'
 import {ClipPlayFn} from 'pages/clip/components/clip_play_fn'
 
 import '../scss/clip.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxDateState, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function ClipRecommend() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
 
@@ -34,22 +36,22 @@ export default function ClipRecommend() {
 
   const isLast = useMemo(() => {
     const currentDate = convertDateFormat(convertMonday(), 'YYYY-MM-DD')
-    if (context.dateState >= currentDate) {
+    if (globalState.dateState >= currentDate) {
       return true
     } else {
       return false
     }
-  }, [context.dateState])
+  }, [globalState.dateState])
 
   const isLastPrev = useMemo(() => {
     const currentDate = convertDateFormat(new Date('2020-10-26'), 'YYYY-MM-DD')
 
-    if (context.dateState <= currentDate) {
+    if (globalState.dateState <= currentDate) {
       return true
     } else {
       return false
     }
-  }, [context.dateState])
+  }, [globalState.dateState])
 
   const viewToggle = () => {
     if (textView === false) {
@@ -62,8 +64,8 @@ export default function ClipRecommend() {
   }
   const fetchMarketingClipList = async () => {
     const {result, data, message} = await Api.getMarketingClipList({
-      recDate: context.dateState,
-      isLogin: context.token.isLogin,
+      recDate: globalState.dateState,
+      isLogin: globalState.token.isLogin,
       isClick: true
     })
     if (result === 'success') {
@@ -86,7 +88,7 @@ export default function ClipRecommend() {
       }
     } else {
       setLoading(true)
-      context.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
     }
   }
 
@@ -101,16 +103,16 @@ export default function ClipRecommend() {
 
   const createListenAllBtn = () => {
     if (
-      context.customHeader['os'] === OS_TYPE['Desktop'] ||
-      (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 284) ||
-      (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] >= 52)
+      globalState.customHeader['os'] === OS_TYPE['Desktop'] ||
+      (globalState.customHeader['os'] === OS_TYPE['IOS'] && globalState.customHeader['appBuild'] >= 284) ||
+      (globalState.customHeader['os'] === OS_TYPE['Android'] && globalState.customHeader['appBuild'] >= 52)
     ) {
       return (
         <button
           className="allPlay"
           onClick={() => {
-            ClipPlayFn(marketingClipList[0].clipNo, 'all', context, history)
-            context.action.updateDateState(marketingClipObj.recDate)
+            ClipPlayFn(marketingClipList[0].clipNo, 'all', globalState, dispatch, history)
+            dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
           }}>
           전체듣기
         </button>
@@ -120,7 +122,7 @@ export default function ClipRecommend() {
 
   useEffect(() => {
     fetchMarketingClipList()
-  }, [context.dateState])
+  }, [globalState.dateState])
 
   return (
     <Layout status="no_gnb">
@@ -135,8 +137,8 @@ export default function ClipRecommend() {
                     className={`prev ${isLastPrev === true ? ' noHover' : 'on'}`}
                     disabled={isLastPrev === true}
                     onClick={() => {
-                      const date = calcDate(new Date(context.dateState), -7)
-                      context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
+                      const date = calcDate(new Date(globalState.dateState), -7)
+                      dispatch(setGlobalCtxDateState(convertDateFormat(date, 'YYYY-MM-DD')))
                     }}>
                     이전
                   </button>
@@ -145,8 +147,8 @@ export default function ClipRecommend() {
                     className={`next ${isLast === true ? ' noHover' : 'on'}`}
                     disabled={isLast === true}
                     onClick={() => {
-                      const date = calcDate(new Date(context.dateState), 7)
-                      context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
+                      const date = calcDate(new Date(globalState.dateState), 7)
+                      dispatch(setGlobalCtxDateState(convertDateFormat(date, 'YYYY-MM-DD')))
                     }}>
                     다음
                   </button>
@@ -156,8 +158,8 @@ export default function ClipRecommend() {
                   <div
                     className="video"
                     onClick={() => {
-                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history)
-                      context.action.updateDateState(marketingClipObj.recDate)
+                      ClipPlayFn(marketingClipObj.clipNo, 'dal', globalState, dispatch, history)
+                      dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                     }}>
                     {marketingClipObj.bannerUrl ? (
                       <img src={marketingClipObj.bannerUrl} alt="클립썸네일이미지" width="360" height="208" />
@@ -170,8 +172,8 @@ export default function ClipRecommend() {
                     <ul
                       className="scoreBox"
                       onClick={() => {
-                        ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history)
-                        context.action.updateDateState(marketingClipObj.recDate)
+                        ClipPlayFn(marketingClipObj.clipNo, 'dal', globalState, dispatch, history)
+                        dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                       }}>
                       <li className="scoreList">
                         <button className="scoreButton">
@@ -227,8 +229,8 @@ export default function ClipRecommend() {
                     <h4
                       className="playName"
                       onClick={() => {
-                        ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history)
-                        context.action.updateDateState(marketingClipObj.recDate)
+                        ClipPlayFn(marketingClipObj.clipNo, 'dal', globalState, dispatch, history)
+                        dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                       }}>
                       {marketingClipObj.title}
                     </h4>
@@ -239,7 +241,7 @@ export default function ClipRecommend() {
                         className="nickName"
                         onClick={() => {
                           history.push(`/mypage/${marketingClipObj.clipMemNo}`)
-                          context.action.updateDateState(marketingClipObj.recDate)
+                          dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                         }}>
                         {marketingClipObj.nickNm}
                       </p>
@@ -247,7 +249,7 @@ export default function ClipRecommend() {
                         className="fileNumber"
                         onClick={() => {
                           history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)
-                          context.action.updateDateState(marketingClipObj.recDate)
+                          dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                         }}>
                         {Utility.addComma(marketingClipObj.regCnt)}
                       </button>
@@ -290,8 +292,8 @@ export default function ClipRecommend() {
                         <div
                           className="thumbnail"
                           onClick={() => {
-                            ClipPlayFn(v.clipNo, 'dal', context, history)
-                            context.action.updateDateState(marketingClipObj.recDate)
+                            ClipPlayFn(v.clipNo, 'dal', globalState, dispatch, history)
+                            dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                           }}>
                           <img src={v.bgImg.thumb150x150} alt="썸네일" className="thumbnail__img" />
 
@@ -301,8 +303,8 @@ export default function ClipRecommend() {
                         <div
                           className="textItem"
                           onClick={() => {
-                            ClipPlayFn(v.clipNo, 'dal', context, history)
-                            context.action.updateDateState(marketingClipObj.recDate)
+                            ClipPlayFn(v.clipNo, 'dal', globalState, dispatch, history)
+                            dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                           }}>
                           <div className="textItem__titleBox">
                             <div className="textItem__category">{v.subjectName}</div>
@@ -330,8 +332,8 @@ export default function ClipRecommend() {
                             <span
                               className="textItem__moreButton--play"
                               onClick={() => {
-                                ClipPlayFn(v.clipNo, 'dal', context, history)
-                                context.action.updateDateState(marketingClipObj.recDate)
+                                ClipPlayFn(v.clipNo, 'dal', globalState, dispatch, history)
+                                dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                               }}>
                               플레이 아이콘
                             </span>
@@ -341,7 +343,7 @@ export default function ClipRecommend() {
                               className="textItem__moreButton--people"
                               onClick={() => {
                                 history.push(`/mypage/${v.memNo}`)
-                                context.action.updateDateState(marketingClipObj.recDate)
+                                dispatch(setGlobalCtxDateState(marketingClipObj.recDate))
                               }}>
                               사람 아이콘
                             </span>

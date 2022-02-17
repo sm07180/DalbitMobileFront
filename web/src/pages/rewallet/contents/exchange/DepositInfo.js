@@ -1,17 +1,18 @@
-import React, {useState, useEffect,useContext, useMemo} from 'react'
-import {Context} from 'context'
+import React, {useMemo, useState} from 'react'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import CheckList from '../../components/CheckList'
+import {useDispatch, useSelector} from "react-redux";
 
 const DepositInfo = (props) => {
   const {exchangeForm, setExchangeForm, uploadSingleFile} = props;
-  //context
-  const context = useContext(Context)
-  const {profile, splash} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile, splash} = globalState
 
   const [selectBank, setSelectBank] = useState('은행선택');
 

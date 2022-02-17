@@ -1,8 +1,7 @@
-import React, {useEffect, useState, useRef, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import {authReq} from 'pages/self_auth'
-import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
@@ -14,19 +13,22 @@ import PopupChoice from './content/popupChoice'
 
 import './style.scss'
 import PopupItems from "pages/event/welcome/content/popupItems";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const EventWelcome = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
-  const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo:''})
+  const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo: ''})
   const [tabContent, setTabContent] = useState({name: 'Lisen', quality: 'n', userQuality: 'n', djQuality: 'n'}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
-  const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
-  
+  const [resultItemPopInfo, setResultItemPopInfo] = useState({open: false, giftInfo: {}}); // 아이템 보상 결과 팝업
+
   const nowTime = moment().format('YYMMDD')
   const eStartTime = '220201'
 
@@ -73,33 +75,36 @@ const EventWelcome = () => {
       return
     }
 
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login')
       return
     }
 
     if (eventAuth.check === false) {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({
+        type: "confirm",
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('9', context.authRef, context)
+          authReq('9', globalState.authRef, dispatch)
         }
-      })
+      }))
       return
     }
 
     if (eventAuth.adultYn === 'n') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `시청자 선물은 19세 이상인 회원님만 받을 수 있습니다.`
-      })
+      }))
       return
     }
 
     if (tabContent.quality === 'n') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: `이벤트 참여대상이 아닙니다.
               신입회원님들을 위한 이벤트이니 양해 부탁드립니다.`
-      })
+      }))
       return
     }
     const temp = stepItemInfo.find((row) => row.stepNo == targetNum)
@@ -107,7 +112,7 @@ const EventWelcome = () => {
     if (temp.dalCnt >= temp.maxDalCnt && temp.likeCnt >= temp.maxLikeCnt && temp.memTime >= temp.maxMemTime) {
       setChoicePopInfo({...choicePopInfo, open: true, stepNo: targetNum, list: temp.itemList})
     } else {
-      context.action.toast({msg: `조건을 만족하지 못했습니다.`})
+      dispatch(setGlobalCtxMessage({type: "toast", msg: `조건을 만족하지 못했습니다.`}))
     }
   }
 
@@ -130,11 +135,12 @@ const EventWelcome = () => {
     }
 
     if(giftStepNo == 3) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `축하드립니다!
               ALL CLEAR 선물에 자동으로 응모되었습니다.
               결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
-      })
+      }))
     }
     setResultItemPopInfo({ open: false, giftInfo: {} });
   };

@@ -816,11 +816,11 @@ export default (props) => {
                             msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
                             callback: () => {
                               clipExit()
-                              RoomMake()
+                              RoomMake(dispatch, globalState)
                             }
                           }))
                         } else {
-                          RoomMake()
+                          RoomMake(dispatch, globalState)
                         }
                       } else {
                         dispatch(setGlobalCtxMessage({
@@ -831,7 +831,7 @@ export default (props) => {
                             Utility.setCookie('listen_room_no', null)
                             Hybrid('ExitRoom', '')
                             dispatch(setGlobalCtxPlayer(false))
-                            RoomMake()
+                            RoomMake(dispatch, globalState)
                           }
                         }))
                       }

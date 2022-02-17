@@ -125,6 +125,16 @@ export type GlobalCtxStateType = {
   globalGganbuState: number
   gganbuTab: "" | "collect" | "betting"
   goToMoonTab: "" | "info" | "rank"
+  walletData: WalletDataType
+}
+
+export type WalletDataType = {
+  walletType: '달 내역' | '별 내역' | '환전'
+  dalTotCnt: number,             //보유 달
+  byeolTotCnt: number,            //보유 별
+  listHistory: Array<any>,      //달, 별 내역
+  popHistory: Array<any>,        //사용,획득 조건 리스트
+  popHistoryCnt: number,       //누적합계 (프론트에서 직접 합산 처리)
 }
 
 export type UserProfileType = {

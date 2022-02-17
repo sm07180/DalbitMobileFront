@@ -1,4 +1,4 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import ListRow from 'components/ui/listRow/ListRow'
 import GenderItems from 'components/ui/genderItems/GenderItems'
@@ -9,15 +9,15 @@ import {useHistory} from "react-router-dom";
 import _ from 'lodash';
 import Api from "context/api";
 import Utility from "components/lib/utility";
-import {useSelector} from "react-redux";
-import {Hybrid, isHybrid} from 'context/hybrid';
+import {useDispatch, useSelector} from "react-redux";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const uploadTab = ['마이 클립','청취 회원','좋아요 회원','선물한 회원'];
 
-const MyClipUpload =()=>{
-  const context = useContext(Context);
+const MyClipUpload = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [uploadType, setUploadType] = useState(uploadTab[0]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +31,7 @@ const MyClipUpload =()=>{
 
   const playClip = (clipNo, index) => {
     if (!clipNo) return;
-    const clipParam = { clipNo: clipNo, gtx: context, history };
+    const clipParam = {clipNo: clipNo, globalState, dispatch, history};
     NewClipPlayerJoin(clipParam);
   };
 
@@ -54,7 +54,7 @@ const MyClipUpload =()=>{
         setMyClipInfo({total: paging.total, totalPage: paging.totalPage, list: items});
       } else {
         setMyClipInfo({total: 0, totalPage: 1, list: []});
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -139,26 +139,26 @@ const MyClipUpload =()=>{
   return(
     <>
       <ul className="tabmenu">
-        {uploadTab.length > 0 && 
-          <Swiper {...swiperParams}>
-            {uploadTab.map((data, index)=>{
-              const param ={
-                item: data,
-                tab: uploadType,
-                setTab: setUploadType,
-              }
-              return(
-                <div key={index}>
-                  <TabBtn param={param} />
-                </div>
-              )
-            })}
-          </Swiper>
+        {uploadTab.length > 0 &&
+        <Swiper {...swiperParams}>
+          {uploadTab.map((data, index) => {
+            const param = {
+              item: data,
+              tab: uploadType,
+              setTab: setUploadType,
+            }
+            return (
+              <div key={index}>
+                <TabBtn param={param}/>
+              </div>
+            )
+          })}
+        </Swiper>
         }
       </ul>
       <section className="totalWrap">
         <div className='total'>
-          <TotalWrap />
+          <TotalWrap/>
         </div>
       </section>
       <section className="listWrap">
@@ -169,7 +169,7 @@ const MyClipUpload =()=>{
                 <span className="title">{item.title}</span>
               </div>
               <div className="listItem">
-                <GenderItems data={item.gender} />
+                <GenderItems data={item.gender}/>
                 <span className="nickNm">{item.nickName}</span>
               </div>
               <div className="listItem">
@@ -179,13 +179,15 @@ const MyClipUpload =()=>{
                 <DataCnt type={"goodCnt"} value={item.countGood}/>
               </div>
             </div>
-            {uploadType === uploadTab[0] && 
-              <div className="moreBtn" onClick={() => { openMorePop(index)} }>
-                { morePop === index && <div className="moreBtnType" onClick={() => {
+              {uploadType === uploadTab[0] &&
+              <div className="moreBtn" onClick={() => {
+                openMorePop(index)
+              }}>
+                {morePop === index && <div className="moreBtnType" onClick={() => {
                 }}>비공개</div>}
               </div>
-            }
-          </ListRow>
+              }
+            </ListRow>
           )
         })}
         { !myClipInfo.list.length === 0 &&

@@ -894,7 +894,7 @@ export default function Main() {
               <option key={idx} value={v.host}>{v.name}</option>
           )}
         </select>}
-
+        </div>
       </div>
     </>
   );

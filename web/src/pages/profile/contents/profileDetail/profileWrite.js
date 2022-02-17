@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 import Api from 'context/api'
 
@@ -14,15 +13,17 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
 
-  //context
-  const context = useContext(Context);
-  const {token, profile} = context;
+  const {token, profile} = globalState;
 
   //수정 : index 필수
   if (action === 'modify' && !index) {
@@ -70,7 +71,7 @@ const ProfileWrite = () => {
     }
 
     if(!confirm)
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
 
     return confirm;
   };
@@ -90,7 +91,7 @@ const ProfileWrite = () => {
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
       });
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
       if (result === 'success') {
         history.goBack();
       }
@@ -103,7 +104,7 @@ const ProfileWrite = () => {
           viewOn: others
         }
       });
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
       if (result === 'success') {
         history.goBack();
       }
@@ -127,7 +128,7 @@ const ProfileWrite = () => {
           chrgrName: profile?.nickName,
         }
       });
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
       if (result === 'success') {
         history.goBack();
       }
@@ -143,10 +144,10 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
-        context.action.toast({msg: '팬보드를 수정했습니다.'});
+        dispatch(setGlobalCtxMessage({type: "toast", msg: '팬보드를 수정했습니다.'}));
         history.goBack();
       } else {
-        context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'}));
       }
     }
   }
@@ -173,7 +174,7 @@ const ProfileWrite = () => {
       //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
       // }
     } else {
-      context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
+      dispatch(setGlobalCtxMessage({type: "alert", msg: '사진 업로드를 실패하였습니다.'}));
     }
   };
 
@@ -185,13 +186,13 @@ const ProfileWrite = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
           status: true,
           type: 'alert',
           content: image.content,
           callback: () => {
           }
-        })
+        }))
       } else {
         noticePhotoUpload();
       }

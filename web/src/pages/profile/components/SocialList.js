@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -8,13 +8,14 @@ import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 import {useHistory} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const context = useContext(Context);
-  const {profile} = context;
+  const {profile} = globalState;
 
   // 스와이퍼
   const swiperFeeds = {

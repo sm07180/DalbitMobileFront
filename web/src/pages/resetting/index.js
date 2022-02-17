@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 // global components
@@ -12,14 +12,18 @@ import BlackList from 'pages/resetting/contents/blackList'
 import AlarmUser from 'pages/resetting/contents/alarmUser'
 
 import './style.scss'
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const SettingPage = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const params = useParams();
   const settingType = params.type;
-  const context = useContext(Context);
   const history = useHistory()
-  const [setting, setSetting] = useState([{name: "Push알림 설정", path: "push"}, {name: "방송/청취 설정", path: "broadcast"}, {name: "금지어 관리", path: "forbid"},
+  const [setting, setSetting] = useState([{name: "Push알림 설정", path: "push"}, {
+    name: "방송/청취 설정",
+    path: "broadcast"
+  }, {name: "금지어 관리", path: "forbid"},
     {name: "매니저 관리", path: "manager"}, {name: "차단회원 관리", path: "blockList"}, {name: "알림받기 설정 회원 관리", path: "alarmUser"}
   ]);
 
@@ -29,7 +33,7 @@ const SettingPage = () => {
   }
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {
+    if (!(globalState.token.isLogin)) {
       history.push("/login");
     }
   }, []);

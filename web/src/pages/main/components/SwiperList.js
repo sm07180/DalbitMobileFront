@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 
@@ -7,12 +7,12 @@ import Swiper from 'react-id-swiper'
 // css
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
-import {Context, GlobalContext} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const SwiperList = (props) => {
   const {data, profImgName, type} = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const swiperParams = {
@@ -20,14 +20,14 @@ const SwiperList = (props) => {
   }
 
   const onClickAction = (item) => {
-    if(type === 'top10' || type === 'myStar') {
+    if (type === 'top10' || type === 'myStar') {
       if (!globalState.baseData.isLogin) {
         history.push("/login");
       }else{
         history.push(`/profile/${item.memNo}`);
       }
     }else if(type === 'daldungs') {
-      RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
+      RoomValidateFromClip(item.roomNo, dispatch, globalState, history, item.bjNickNm);
     }
   }
 

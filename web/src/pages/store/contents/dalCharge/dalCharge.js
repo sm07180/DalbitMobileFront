@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory, useLocation} from "react-router-dom";
-import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -10,7 +9,8 @@ import CntTitle from '../../../../components/ui/cntTitle/CntTitle';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
@@ -30,13 +30,14 @@ let paymentList = [
 
 const DalCharge = () => {
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const location = useLocation();
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const isDesktop = useSelector((state) => state.common.isDesktop)
   const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
-  const { itemNm, dal, price, itemNo, webview} =location.state
+  const {itemNm, dal, price, itemNo, webview} = location.state
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
@@ -56,12 +57,13 @@ const DalCharge = () => {
         }
       });
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
-        callback:()=>{
+        callback: () => {
           history.push("/store");
         }
-      })
+      }))
     }
   };
 
@@ -156,18 +158,21 @@ const DalCharge = () => {
           payForm.innerHTML = ''
         }
       } else {
-        context.action.alert({msg: response.message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: response.message}))
       }
     });
   }
 
   //상품수량 +,-
   const calcBuyItem = (type) => {
-    if(type === '+'){
-      if (buyItemInfo.itemAmount === 10) return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
-      setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount+1})
+    if(type === '+') {
+      if (buyItemInfo.itemAmount === 10) return dispatch(setGlobalCtxMessage({
+        type: "toast",
+        msg: '최대 10개까지 구매 가능합니다.'
+      }))
+      setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount + 1})
     }else if(type === '-'){
-      if (buyItemInfo.itemAmount === 1) return context.action.toast({ msg: '최소 1개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 1) return dispatch(setGlobalCtxMessage({type: "toast", msg: '최소 1개까지 구매 가능합니다.'}))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount-1})}
   }
 

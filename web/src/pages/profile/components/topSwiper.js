@@ -1,18 +1,19 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import {IMG_SERVER} from 'context/config'
 
 import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
-import {Context} from "context";
 import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const TopSwiper = (props) => {
-  const {data, openShowSlide, webview} = props
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {data, openShowSlide, webview} = props;
   const history = useHistory();
-  
+
   const swiperPicture = {
     slidesPerView: 'auto',
     spaceBetween: 8,
@@ -30,7 +31,8 @@ const TopSwiper = (props) => {
     const params = {
       roomNo: data.roomNo,
       history,
-      context,
+      dispatch,
+      globalState,
       nickNm: data.nickNm,
       listenRoomNo: data.listenRoomNo,
       webview

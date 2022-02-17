@@ -1,14 +1,15 @@
-import React, {useContext, useEffect, useState} from "react";
+import React from "react";
 import GenderItems from "components/ui/genderItems/GenderItems";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 import clip from '../static/clip.svg';
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipDetailCore = (props) => {
-  const { item } = props;
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {item} = props;
   const history = useHistory();
 
   const handleImgError = (e) => {
@@ -16,10 +17,10 @@ const ClipDetailCore = (props) => {
   };
 
   const playClip = (e) => {
-    const { clipNo } = e.currentTarget.dataset;
+    const {clipNo} = e.currentTarget.dataset;
 
     if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, gtx: context, history };
+      const clipParam = {clipNo: clipNo, globalState, dispatch, history};
 
       NewClipPlayerJoin(clipParam);
     }

@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
@@ -11,15 +10,16 @@ import Terms from './contents/terms/Terms'
 import Secession from './contents/secession/Secession'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const Rule = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
   const params = useParams();
-  
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
-  const category = params.category;
 
+  const {token, profile} = globalState
+  const category = params.category;
 
 
   const golink = (path) => {
@@ -39,27 +39,27 @@ const Rule = () => {
             <div className='menuWrap'>
               <div className='menuList' onClick={() => {golink("terms")}}>
                 <div className='menuName'>서비스 이용약관</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("privacy")}}>
                 <div className='menuName'>개인정보 취급방침</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("minor")}}>
                 <div className='menuName'>청소년 보호정책</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("policy")}}>
                 <div className='menuName'>운영정책</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("secession")}}>
                 <div className='menuName'>회원탈퇴</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList'>
                 <div className='menuName'>사용자 ID</div>
-                <span className='uid'>{profile.memId}</span>                  
+                <span className='uid'>{profile.memId}</span>
               </div>
             </div>
           </div>

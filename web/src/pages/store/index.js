@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -9,10 +8,13 @@ import Header from 'components/ui/header/Header'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import './style.scss'
 import _ from "lodash";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const StorePage = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context);
   const [select, setSelect] = useState(-1);
   const [storeInfo, setStoreInfo] = useState({
     myDal: 0,
@@ -32,25 +34,26 @@ const StorePage = () => {
           dalPrice: response.data.list
         })
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: response.message
-        })
+        }))
       }
     });
   }
 
   const onSelectDal = (index, itemNm, givenDal, price, itemNo) => {
     setSelect(index);
-    if (context.token.isLogin) {
-        history.push({
-          pathname: '/store/dalcharge',
-          state: {
-            itemNm: itemNm,
-            dal: givenDal,
-            price: price,
-            itemNo: itemNo
-          }
-        })
+    if (globalState.token.isLogin) {
+      history.push({
+        pathname: '/store/dalcharge',
+        state: {
+          itemNm: itemNm,
+          dal: givenDal,
+          price: price,
+          itemNo: itemNo
+        }
+      })
     } else {
       history.push('/login')
     }

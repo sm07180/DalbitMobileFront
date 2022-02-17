@@ -1,9 +1,7 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
+import React, {useEffect, useState} from 'react'
 
 import Api from 'context/api'
 import {convertDateFormat} from 'components/lib/dalbit_moment'
-import moment from 'moment';
 
 // global components
 import Swiper from 'react-id-swiper'
@@ -20,9 +18,11 @@ import ClipDetail from '../clip/components/ClipDetail'
 
 import './style.scss'
 import HotClip from "pages/clip/components/HotClip";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipPage = () => {
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [popularClipInfo, setPopularClipInfo] = useState([])
   const [newClipInfo, setNewClipInfo] = useState([])
@@ -110,13 +110,13 @@ const ClipPage = () => {
       name : 'ASMR'
     },
   ]
-  
+
   return (
     <>
     {detail === false &&
     <div id="clipPage">
       <Header title={'클립'} />
-      {hotClipInfo && hotClipInfo.length > 0 && 
+      {hotClipInfo && hotClipInfo.length > 0 &&
         <section className='hotClipWrap'>
           <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/'} />
           <HotClipList data={hotClipInfo} />
@@ -136,8 +136,8 @@ const ClipPage = () => {
         </Swiper>
       </section>
       <section className="clipDrawer">
-        <CntTitle title={`${context.profile.nickNm}님의 클립서랍`} />
-        <ClipSubTitle title={'최근 들은 클립'} more={'/clip/detail'} />
+        <CntTitle title={`${globalState.profile.nickNm}님의 클립서랍`}/>
+        <ClipSubTitle title={'최근 들은 클립'} more={'/clip/detail'}/>
         <SwiperList data={newClipInfo} />
         <ClipSubTitle title={'좋아요 한 클립'} more={'/'}/>
         <SwiperList data={newClipInfo} />

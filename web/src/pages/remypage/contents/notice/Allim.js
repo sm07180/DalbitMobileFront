@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -8,11 +7,13 @@ import ListRow from 'components/ui/listRow/ListRow'
 import moment from "moment";
 import {RoomJoin} from "context/room";
 import {clipJoin} from "pages/common/clipPlayer/clip_func";
+import {useDispatch, useSelector} from "react-redux";
 // components
 
 const Allim = () => {
-  const [alarmList, setAlarmList] = useState({list : [], cnt : 0});
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0});
   const history = useHistory();
 
   //회원 알림 db값 가져오기
@@ -54,7 +55,7 @@ const Allim = () => {
           ...res.data
         }
         localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-        clipJoin(oneClipPlayList, context, 'none', 'push') //해당 데이터의 클립창 열기
+        clipJoin(oneClipPlayList, dispatch, globalState, 'none', 'push') //해당 데이터의 클립창 열기
       }
     }).catch((e) => {console.log(e)});
   };
@@ -75,12 +76,18 @@ const Allim = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if (context.profile.memNo === roomNo) {history.push(`myProfile`)}
-        else {history.push(`/mypage/${roomNo}?tab=1`)}
+        if (globalState.profile.memNo === roomNo) {
+          history.push(`myProfile`)
+        } else {
+          history.push(`/mypage/${roomNo}?tab=1`)
+        }
         break;
       case "32":                                                                            //내 지갑
-        try {history.push(`/mypage/${context.profile.memNo}/wallet`);}
-        catch (e) {console.log(e);}
+        try {
+          history.push(`/mypage/${globalState.profile.memNo}/wallet`);
+        } catch (e) {
+          console.log(e);
+        }
         break;
       case "35": history.push('/myProfile'); break;                                 //레벨업 알림
       case "36":                                                                           //팬 등록 알림
@@ -102,8 +109,11 @@ const Allim = () => {
       case "46": fetchDataPlay(roomNo); break;                                              //내 클립 댓글 알림
       case "47": fetchDataPlay(roomNo); break;                                              //클립 알림
       case "48":                                                                            //마이페이지 클립 업로드/청취내역 알림
-        try {history.push(`/mypage/${context.profile.memNo}/my_clip`);}
-        catch (e) {console.log(e);}
+        try {
+          history.push(`/mypage/${globalState.profile.memNo}/my_clip`);
+        } catch (e) {
+          console.log(e);
+        }
         break;
       case "53": history.push(`/event/attend_event`); break;                        //출석체크 알림
       case "50":                                                                            //
@@ -121,7 +131,7 @@ const Allim = () => {
 
   //푸시 설정하기로 이동(알림 없을때 출력)
   const onClick = () => {
-    history.push(`/mypage/${context.myInfo.memNo}/bcsetting`);
+    history.push(`/mypage/${globalState.myInfo.memNo}/bcsetting`);
   };
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import {createReducer} from "typesafe-actions";
-import {DAY_COOKIE_PERIOD, GlobalCtxActions, GlobalCtxStateType} from "../../types/globalCtxType";
+import {DAY_COOKIE_PERIOD, GlobalCtxActions, GlobalCtxStateType, WalletDataType} from "../../types/globalCtxType";
 import {convertDateFormat} from "../../../lib/dalbit_moment";
 import {convertMonday} from "../../../lib/rank_fn";
 import Api from "../../../context/api";
@@ -46,6 +46,14 @@ const initUserProfile = {
   birth: '',
   dalCnt: 0,
   byeolCnt: 0
+}
+const initWalletData:WalletDataType = {
+  walletType: '달 내역',
+  dalTotCnt: 0,
+  byeolTotCnt: 0,
+  listHistory: [],
+  popHistory: [],
+  popHistoryCnt: 0
 }
 const initialState: GlobalCtxStateType = {
   nativePlayer: null,
@@ -193,7 +201,9 @@ const initialState: GlobalCtxStateType = {
   globalGganbuState: -1,
   gganbuTab: "collect",
   goToMoonTab: "info",
+  walletData:initWalletData
 };
+
 
 const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState, {
   "global/ctx/SET_NATIVE_PLAYER": (state, {payload}) => {
@@ -658,8 +668,17 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   "global/ctx/CLIP_PLAY_LIST_TAB_EMPTY": (state) => {
     return {...state, clipPlayListTab:[]}
   },
+  "global/ctx/WALLET_INIT_DATA": (state) => {
+    return {...state, walletData:initWalletData}
+  },
+  "global/ctx/WALLET_ADD_DATA": (state, {payload}) => {
+    return {...state, walletData:{...state.walletData, ...payload}}
+  },
+  "global/ctx/WALLET_ADD_HISTORY": (state, {payload}) => {
+    const {listHistory, popHistory} = payload;
+    return {...state, walletData:{...state.walletData, popHistory, listHistory}};
+  },
 });
-
 
 export default global;
 

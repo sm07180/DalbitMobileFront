@@ -1,9 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {useHistory} from "react-router-dom";
-import {Context} from "context";
 import {goMail} from "common/mailbox/mail_func";
-import {MailboxContext} from "context/mailbox_ctx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
@@ -13,13 +11,16 @@ export const RankingRewardButton = ({history}) => {
   return <button className='benefits' onClick={() => history.push('/clip_rank/reward')} >혜택</button>
 }
 
-export const MessageButton = ({history, context, mailboxAction}) => {
+export const MessageButton = ({history}) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   /* 우체통 이동 */
   const goMailAction = () => {
     const goMailParams = {
-      context,
-      mailboxAction,
-      targetMemNo: context.profile.memNo,
+      dispatch,
+      globalState,
+      targetMemNo: globalState.profile.memNo,
       history,
       isChatListPage: true,
     }
@@ -42,25 +43,25 @@ export const SearchButton = ({history}) => {
 }
 
 const TitleButton = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const context = useContext(Context);
-  const { mailboxAction } = useContext(MailboxContext);
   const mainState = useSelector((state) => state.main);
 
   switch (props.title) {
     case '메인':
       return (
         <div className="buttonGroup">
-          <RankingButton history={history} />
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          <RankingButton history={history}/>
+          <MessageButton history={history}/>
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt}/>
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          <MessageButton history={history}/>
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt}/>
         </div>
       )
     case '클립 랭킹':
@@ -70,7 +71,7 @@ const TitleButton = (props) => {
         </div>
       )
     case '랭킹':
-      return (        
+      return (
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>

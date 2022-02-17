@@ -1,14 +1,14 @@
-import React, {useEffect, useState, useContext} from 'react'
-
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import Api from "context/api";
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../invite.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 
-const InviteEvent = () => {  
-  const context = useContext(Context)
-  const {token, profile} = context
+const InviteEvent = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token, profile} = globalState
 
   const [createdCode, setCreatedCode] = useState(false)
   const [code, setCode] = useState("")
@@ -36,8 +36,8 @@ const InviteEvent = () => {
     //초대코드 유무 체크
     Api.inviteMy({
       reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
+      data: {
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       console.log(response);
@@ -53,8 +53,8 @@ const InviteEvent = () => {
   const registerCode = (code) => {
     Api.inviteRegister({
       reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
+      data: {
+        "memNo": globalState.token.memNo,
         "invitationCode": code
       }
     }).then((response)=>{
@@ -92,16 +92,16 @@ const InviteEvent = () => {
       <div className='imageBox'>
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-method.png" alt="참여방법 안내" className='fullImage'/>
         {
-          createdCode ? 
+          createdCode ?
             <button className={`inviteBtn share`}>
               <span className='codeText'>{code}</span>
               <span className='btnName'>초대코드 공유하기</span>
             </button>
-          :
+            :
             <button className={`inviteBtn create`} onClick={createCode}>
               <span className='btnName'>초대코드 생성하기</span>
             </button>
-        }        
+        }
       </div>
       {
         !submitCode ?
@@ -138,7 +138,7 @@ const InviteEvent = () => {
               </div>
             </div>
           </div>
-      }      
+      }
       <div className='imageBox'>
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-notice.png" alt="유의사항" className='fullImage'/>
       </div>

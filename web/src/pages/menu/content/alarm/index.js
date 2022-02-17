@@ -45,7 +45,7 @@ export default function Alert() {
         playCnt: data.playCnt
       }
       localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-      clipJoin(data, 'none', 'push')
+      clipJoin(data, dispatch, globalState, 'none', 'push')
     } else {
       if (code === '-99') {
         dispatch(setGlobalCtxMessage({

@@ -1,7 +1,6 @@
-import React, {useState, useEffect, useContext, useReducer} from 'react'
+import React, {useEffect, useReducer, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
-import {Context} from 'context'
 //context
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -12,9 +11,18 @@ import Checkbox from '../../components/Checkbox'
 import WarnIcon from '../../static/warn.svg'
 
 import './secession.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxGnbVisible,
+  setGlobalCtxMessage,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 //
 const Secession = (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
   const reducer = (state, action) => ({...state, ...action})
@@ -31,49 +39,53 @@ const Secession = (props) => {
 
     if (res.result === 'success') {
       async function secfun(obj) {
-        const res = await Api.member_logout({data: context.token.authToken})
+        const res = await Api.member_logout({data: globalState.token.authToken})
         if (res.result === 'success') {
           Utility.setCookie('custom-header', '', -1)
           Hybrid('GetLogoutToken', res.data)
-          context.action.updateToken(res.data)
-          context.action.updateGnbVisible(false)
-          context.action.updateProfile(null)
-          context.action.alert({
+          dispatch(setGlobalCtxUpdateToken(res.data))
+          dispatch(setGlobalCtxGnbVisible(false));
+          dispatch(setGlobalCtxUpdateProfile(null));
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '회원 탈퇴가 완료 되었습니다.',
             callback: () => {
               history.push(`/`)
             }
-          })
+          }))
         }
       }
       secfun()
     } else {
       if (registMemId !== myMemId) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: 'UID가 일치하지않습니다.'
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
   }
   const Validate = () => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '정말 회원탈퇴 하시겠습니까 ?',
       callback: () => {
         if (state.click1 === true) {
           FethData()
         }
       }
-    })
+    }))
   }
 
   //----------------
   useEffect(() => {
-    if (context.profile.memId) {
-      setMyMemId(context.profile.memId)
+    if (globalState.profile.memId) {
+      setMyMemId(globalState.profile.memId)
     }
   }, [])
 
@@ -84,13 +96,15 @@ const Secession = (props) => {
   }
   const NoneValidate = (e) => {
     if (state.click1 === false) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '내용확인 버튼을 클릭해주세요.'
-      })
+      }))
     } else if (registMemId.length === 0) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'UID를 입력해주세요.'
-      })
+      }))
     }
   }
 

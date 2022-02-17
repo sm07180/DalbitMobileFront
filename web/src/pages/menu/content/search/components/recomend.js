@@ -34,7 +34,7 @@ export default (props) => {
         playlist: true
       }
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      clipJoin(data)
+      clipJoin(data, dispatch, globalState)
     } else {
       if (code === '-99') {
         dispatch(setGlobalCtxMessage({

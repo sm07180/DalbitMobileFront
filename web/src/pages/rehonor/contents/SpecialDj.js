@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Context, GlobalContext} from 'context'
+import React, {useEffect, useState} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -12,22 +11,26 @@ import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SpecialDj = (props) => {
-
-  const context = useContext(Context);
-
-  const gtx = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory();
 
-  const {token, profile} = context;
+  const {token, profile} = globalState;
 
   const [specialList, setSpecialList] = useState([]);
 
   let date = new Date();
 
-  const [dateVal, setDateVal] = useState({year: date.getFullYear(), month: date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1, title: "이번달"});
+  const [dateVal, setDateVal] = useState({
+    year: date.getFullYear(),
+    month: date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1,
+    title: "이번달"
+  });
 
 
 
@@ -55,16 +58,17 @@ const SpecialDj = (props) => {
   }
 
   const goLive = (roomNo, nickNm) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      })
+      }))
     } else {
-      if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+      if (getDeviceOSTypeChk() === 3) {
+        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
       } else {
         RoomJoin({roomNo: roomNo, nickNm: nickNm})
       }

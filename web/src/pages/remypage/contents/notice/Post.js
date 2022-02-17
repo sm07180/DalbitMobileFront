@@ -1,15 +1,17 @@
-import React, {useEffect, useState, useContext, useRef, useReducer} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 // components
 import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Post = () => {
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
   const [postPageInfo, setPostPageInfo] = useState({noticeType: 0, page: 1, records: 20}); //페이지 스크롤
@@ -18,8 +20,8 @@ const Post = () => {
   // 조회 API
   const fetchData = () => {
     Api.noticeList(postPageInfo).then((res) => {
-      if(res.result === "success") {
-        if(postPageInfo.page !== 1) {
+      if (res.result === "success") {
+        if (postPageInfo.page !== 1) {
           let temp = []
           res.data.list.forEach((value) => {
             if(postListInfo.list.findIndex((target) => target.noticeIdx == value.noticeIdx) === -1) { //list의 인덱스가 현재 noticeIdx-1일경우 그 값을 temp에 담아줌
@@ -33,7 +35,7 @@ const Post = () => {
         }
       } else {
         setPostListInfo({cnt: 0, list: [], totalPage: 0});
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };

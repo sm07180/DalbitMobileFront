@@ -13,9 +13,7 @@ import {
 } from "../../../redux/actions/globalCtx";
 import {useDispatch, useSelector} from "react-redux";
 
-export const clipJoin = (data, webview, isPush) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+export const clipJoin = (data, dispatch, globalState, webview, isPush) => {
 
   let passAppbuild = false
   if (
@@ -153,30 +151,26 @@ export const clipJoin = (data, webview, isPush) => {
       return globalState.action.confirm({
         msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
         callback: () => {
-          clipExit()
+          clipExit(dispatch)
           sessionStorage.removeItem('room_no')
           Utility.setCookie('listen_room_no', null)
           Hybrid('ExitRoom', '')
           globalState.action.updatePlayer(false)
-          clipJoin(data)
+          clipJoin(data, dispatch, globalState)
         }
       })
     }
   }
 }
 
-export const clipExit = () => {
-  const dispatch = useDispatch();
+export const clipExit = (dispatch) => {
   Utility.setCookie('clip-player-info', '', -1)
   Hybrid('ClipPlayerEnd')
   dispatch(setGlobalCtxClipState(null));
   dispatch(setGlobalCtxClipPlayerState(null));
   dispatch(setGlobalCtxPlayer(null));
 }
-export const clipReg = (type) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+export const clipReg = (type, dispatch, globalState) => {
   if (!globalState.token.isLogin) return (window.location.href = '/login')
   const text = type === 'upload' ? '업로드' : '녹음'
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
@@ -184,7 +178,7 @@ export const clipReg = (type) => {
       dispatch(setGlobalCtxMessage({type:"confirm",
         msg: `현재 재생 중인 클립이 있습니다.\n클립을 ${text}하시겠습니까?`,
         callback: () => {
-          clipExit()
+          clipExit(dispatch)
           if (type === 'upload') {
             Hybrid('ClipUploadJoin')
           } else {
@@ -228,7 +222,7 @@ export async function clipJoinApi(clipNum) {
     clipNo: clipNum
   })
   if (result === 'success') {
-    clipJoin(data)
+    clipJoin(data, dispatch, globalState)
   } else {
     if (code === '-99') {
 

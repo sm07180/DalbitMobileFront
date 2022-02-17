@@ -1,10 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
-import Swiper from 'react-id-swiper'
+import React, {useEffect, useState} from 'react';
 
 import Api from 'context/api'
 //global components
 import Header from 'components/ui/header/Header'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 // components
 import Tabmenu from '../../components/Tabmenu'
@@ -13,24 +11,29 @@ import RankingList from '../../components/RankingList'
 
 import './clipRanking.scss'
 import moment from "moment";
-import {array} from "@storybook/addon-knobs";
-import {ClipPlayFn} from "pages/clip/components/clip_play_fn";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
 import NoResult from "components/ui/noResult/NoResult";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxDateState} from "redux/actions/globalCtx";
 
 const ClipRanking = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const tabmenu = ['오늘', '이번주'];
-  const context = useContext(Context);
   const history = useHistory();
-  const [ rankClipInfo, setRankClipInfo ] = useState({ list: [], paging: {}, topInfo: [] });
-  const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100});
-  const [ breakNo, setBreakNo ] = useState(47);
+  const [rankClipInfo, setRankClipInfo] = useState({list: [], paging: {}, topInfo: []});
+  const [searchInfo, setSearchInfo] = useState({
+    rankType: 1,
+    rankingDate: moment().format('YYYY-MM-DD'),
+    page: 1,
+    records: 100
+  });
+  const [breakNo, setBreakNo] = useState(47);
 
   const getRankInfo = async () => {
     if (rankClipInfo.list.length > 0) {
-      setRankClipInfo({ list: [], paging: {}, topInfo: [] });
+      setRankClipInfo({list: [], paging: {}, topInfo: []});
     }
 
     const todayInfo = await Api.getClipRankingList({ ...searchInfo, })
@@ -55,9 +58,9 @@ const ClipRanking = () => {
   const playList = (e) => {
     e.preventDefault();
     if (rankClipInfo.list.length > 0) {
-      const clipParam = { clipNo: rankClipInfo.list[0].clipNo, gtx: context, history, type: 'all' };
+      const clipParam = {clipNo: rankClipInfo.list[0].clipNo, globalState, dispatch, history, type: 'all'};
       NewClipPlayerJoin(clipParam);
-      context.action.updateDateState(searchInfo.rankingDate);
+      dispatch(setGlobalCtxDateState(searchInfo.rankingDate));
     }
   };
 

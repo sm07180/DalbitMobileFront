@@ -1,22 +1,21 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 
 import Swiper from 'react-id-swiper'
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
 // global components
 
 const TopRanker = (props) => {
-  const {data, rankSlct, rankType} = props
-
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {data, rankSlct, rankType} = props;
 
   const history = useHistory();
-
-  const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
 
@@ -35,16 +34,18 @@ const TopRanker = (props) => {
   }
 
   const goLive = (roomNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      })
+      }))
     } else {
-      if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+      if (getDeviceOSTypeChk() === 3) {
+        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, nickNm: nickNm})
@@ -52,19 +53,19 @@ const TopRanker = (props) => {
           let alertMsg
           if (isNaN(listenRoomNo)) {
             alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
               type: 'alert',
               msg: alertMsg
-            })
+            }))
           } else {
             alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
+            dispatch(setGlobalCtxMessage({
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
                 return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
               }
-            })
+            }))
           }
         }
       }
@@ -77,22 +78,22 @@ const TopRanker = (props) => {
 
   return (
     <React.Fragment>
-      {data && data.length > 0 &&    
-        <Swiper {...swiperParams}>
-          {data.map((list, index) => {
-            return (
-              <div className='rankingTop3' key={index}>
-                <div className='topHeader'>{
+      {data && data.length > 0 &&
+      <Swiper {...swiperParams}>
+        {data.map((list, index) => {
+          return (
+            <div className='rankingTop3' key={index}>
+              <div className='topHeader'>{
                 index === 0 ?
                   rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
                   :
-                index === 1 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
-                  :
-                  `${index + 1}회차`
-                } TOP3
-                  <span className='questionMark' onClick={() => setPopup(true)}></span>
-                </div>
+                  index === 1 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                    :
+                    `${index + 1}회차`
+              } TOP3
+                <span className='questionMark' onClick={() => setPopup(true)}></span>
+              </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
                     if (data.isEmpty){

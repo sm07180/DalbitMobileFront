@@ -4,26 +4,26 @@
  * @todo
  */
 
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
-
 import './style.scss'
 import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
 import Faq from "pages/recustomer/contents/faq/Faq";
 import Inquire from "pages/recustomer/contents/inquire/Inquire";
+import {useDispatch, useSelector} from "react-redux";
 
 const Customer = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   const params = useParams();
-  const context = useContext(Context);
   const [categoryList, setCategory] = useState([
-    {name : "FAQ", file : "customerMainList-faq", path : "/customer/faq"},
-    {name : "운영정책", file : "customerMainList-policy", path : "/rule"},
-    {name : "1:1문의", file : "customerMainList-inquire", path : "/customer/inquire"}
+    {name: "FAQ", file: "customerMainList-faq", path: "/customer/faq"},
+    {name: "운영정책", file: "customerMainList-policy", path: "/rule"},
+    {name: "1:1문의", file: "customerMainList-inquire", path: "/customer/inquire"}
   ]);
 
   const onClick = (e) => {
@@ -38,7 +38,8 @@ const Customer = () => {
           <Header position={'sticky'} type={'back'}/>
           <div className='content'>
             <div className='mainText'>
-              {!context.token.isLogin ? <span>달라에게</span> : <span><strong>{context.profile.nickNm}</strong>님,</span>}
+              {!globalState.token.isLogin ? <span>달라에게</span> :
+                <span><strong>{globalState.profile.nickNm}</strong>님,</span>}
               <span>궁금한게 있으시다구요?</span>
             </div>
             <div className='subText'>

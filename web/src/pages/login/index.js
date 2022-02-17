@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from "context";
 import {isMobileWeb} from "../../context/hybrid";
 // global components
 // components
@@ -8,11 +7,13 @@ import {isMobileWeb} from "../../context/hybrid";
 // css
 import './style.scss'
 import Start from "pages/login/contents/start";
+import {useDispatch, useSelector} from "react-redux";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
-  const {token} = context
+  const {token} = globalState
 
   const loginStart = () => {
     if (!token.isLogin) {

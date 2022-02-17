@@ -1,20 +1,21 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 //context
-import {Context} from 'context'
 
 // static
 import './rankList.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const EventRankList = (props) => {
   const {
-		type,
+    type,
     rankList,
     photoSize,
-		listNum
-  } = props
-  const globalCtx = useContext(Context)
+    listNum
+  } = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
 
   // 프로필 이동 이벤트
@@ -27,19 +28,21 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
-			<div className="rankNum">
-				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
-				{type === 'my' ? <span className="num">{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}</span> : <span className="num">{listNum + 1}</span>}
-				{rankList && rankList.upDown && <p className="rankChange">
-					{rankList && rankList.upDown === 'new' ? (
-						<span className="new">NEW</span>
-					) : rankList && rankList.upDown > 0 ? (
-						<span className="up">{Math.abs(rankList && rankList.upDown)}</span>
-					) : rankList && rankList.upDown < 0 ? (
-						<span className="down">{Math.abs(rankList && rankList.upDown)}</span>
-					) : (
-						<span>{rankList && rankList.upDown}</span>
+    <div className={`eventRankList ${type === 'my' && globalState.token.isLogin ? 'my' : ''}`}>
+      <div className="rankNum">
+        {type === 'my' && globalState.token.isLogin ? <span className='tit'>내순위</span> : <></>}
+        {type === 'my' ?
+          <span className="num">{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}</span> :
+          <span className="num">{listNum + 1}</span>}
+        {rankList && rankList.upDown && <p className="rankChange">
+          {rankList && rankList.upDown === 'new' ? (
+            <span className="new">NEW</span>
+          ) : rankList && rankList.upDown > 0 ? (
+            <span className="up">{Math.abs(rankList && rankList.upDown)}</span>
+          ) : rankList && rankList.upDown < 0 ? (
+            <span className="down">{Math.abs(rankList && rankList.upDown)}</span>
+          ) : (
+            <span>{rankList && rankList.upDown}</span>
 					)}
 				</p>}
 			</div>

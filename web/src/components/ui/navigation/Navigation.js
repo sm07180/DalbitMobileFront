@@ -1,26 +1,25 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
 import './navigation.scss'
 import {useHistory} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
-import {GlobalContext} from "context";
 import {isHybrid} from "context/hybrid";
+import {setGlobalCtxBroadClipDim, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 const Navigation = (props) => {
-  const history = useHistory();
   const dispatch = useDispatch();
-  const context = useContext(GlobalContext);
-  const { globalState, globalAction } = context;
-  const { baseData} = globalState;
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const history = useHistory();
+  const {baseData} = globalState;
   return (
     <>
-    <div id="navigation">
-      <nav className="bottomGnb">
-        <div className="navi" onClick={() => {
-          if(location.pathname === '/') {
-            dispatch(setIsRefresh(true))
-          }
+      <div id="navigation">
+        <nav className="bottomGnb">
+          <div className="navi" onClick={() => {
+            if (location.pathname === '/') {
+              dispatch(setIsRefresh(true))
+            }
           history.push('/')
         }} />
         <div className="navi" onClick={() => history.push('/clip')} />
@@ -28,9 +27,10 @@ const Navigation = (props) => {
           if (baseData.isLogin === true) {
             if(isHybrid()) {
               window.scrollTo(0, 0);
-              return globalAction.setBroadClipDim(true);
+
+              return dispatch(setGlobalCtxBroadClipDim(true));
             }else {
-              context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+              dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 1]}));
             }
           } else {
             return history.push("/login");

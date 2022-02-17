@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 
@@ -16,38 +15,43 @@ import Customer from "pages/recustomer";
 
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
 
 const myMenuItem = [
-  {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:'myclip'},
-  {menuNm: '설정', path:'oldsetting'},
-  {menuNm: '공지사항', path:'notice'},
-  {menuNm: '고객센터', path:'customer'},
+  {menuNm: '리포트', path: 'report'},
+  {menuNm: '클립', path: 'myclip'},
+  {menuNm: '설정', path: 'oldsetting'},
+  {menuNm: '공지사항', path: 'notice'},
+  {menuNm: '고객센터', path: 'customer'},
 ]
 
 const Remypage = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const params = useParams()
   const settingCategory = params.category;
-  //context
-  const context = useContext(Context)
-  const {splash, token, profile} = context;
+  const {splash, token, profile} = globalState;
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
     if (result === 'success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data));
     } else {
       if (code === '-5') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => history.goBack(),
           msg: message
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => history.goBack(),
           msg: '회원정보를 찾을 수 없습니다.'
-        })
+        }))
       }
     }
   }
@@ -58,15 +62,16 @@ const Remypage = () => {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', res.data)
         }
-        context.action.updateToken(res.data)
-        context.action.updateProfile(null)
+        dispatch(setGlobalCtxUpdateToken(res.data));
+        dispatch(setGlobalCtxUpdateProfile(null));
         // props.history.push('/')
         window.location.href = '/'
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           title: '로그아웃 실패',
           msg: `${res.message}`
-        })
+        }))
       }
     });
   }

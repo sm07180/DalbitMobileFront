@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useMemo, useCallback, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import ListRow from "components/ui/listRow/ListRow";
 import Utility from "components/lib/utility";
-import {IMG_SERVER} from "context/config";
-import {Context} from "context";
 
 const ProfileReplyComponent = (props) => {
   const {item, profile, isMyProfile, adminChecker, dateKey, replyDelete,

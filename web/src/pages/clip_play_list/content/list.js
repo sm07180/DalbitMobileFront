@@ -121,7 +121,7 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, 'new')
+      clipJoin(data, dispatch, globalState, 'new')
     } else {
       dispatch(setGlobalCtxMessage({
         type: "alert",

@@ -67,7 +67,7 @@ export default function ClipHistory() {
         localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       }
 
-      clipJoin(data, webview)
+      clipJoin(data, dispatch, globalState, webview)
     } else {
       if (code === '-99') {
         dispatch(setGlobalCtxMessage({

@@ -1,28 +1,27 @@
-import React, {useState, useContext, useEffect} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
 
 // global components
 import Header from 'components/ui/header/Header'
-import TabBtn from 'components/ui/tabBtn/TabBtn'
 import Toast from 'components/ui/toast/Toast'
 // components
-import Tabmenu from '../../components/tabmenu'
 
 import SwitchList from '../../components/switchList'
 
 import './push.scss'
 import API from "context/api";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SettingPush = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let first = true;
   let isSelect = false;
   const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
   const [allCheck, setAllCheck] = useState(0);
-  const context = useContext(Context);
   const [toast, setToast] = useState({
-    state : false,
-    msg : ""
+    state: false,
+    msg: ""
   });
   const [alarmArray, setAlarmArray] = useState([
     {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림', msg: '마이스타가 방송 시작 시<br>'},
@@ -53,7 +52,7 @@ const SettingPush = () => {
       }))
       setMyAlimType(res.data.alimType);
     } else {
-      context.action.alert({msg: res.message});
+      dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
     }
   }
 

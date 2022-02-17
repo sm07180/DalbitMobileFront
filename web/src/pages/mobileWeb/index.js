@@ -1,17 +1,18 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from "context";
 
 // global components
 // components
 // contents
 // css
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const mobileWeb = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
-  const {token} = context
+  const {token} = globalState
 
   const loginStart = () => {
     if (!token.isLogin) {

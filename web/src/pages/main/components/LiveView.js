@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 // global components
@@ -7,21 +7,22 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import {RoomValidateFromClip} from "common/audio/clip_func";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const LiveView = (props) => {
-  const {data} = props
+  const {data} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let locationStateHistory = useHistory();
-  const context = useContext(Context);
 
   return (
     <div className="liveListWrap">
       {data && data.length > 0 ?
         <>
-          {data.map((list,index) => {
+          {data.map((list, index) => {
             return (
               <div className="listRow" key={index} onClick={() => {
-                RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
+                RoomValidateFromClip(list.roomNo, dispatch, globalState, locationStateHistory, list.bjNickNm);
               }}>
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />

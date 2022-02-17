@@ -45,7 +45,7 @@ export default function ClipRankingListTop3() {
               <div
                 className="TopBoxThumb__pic"
                 onClick={() => {
-                  ClipPlay(v.clipNo, globalState, history)
+                  ClipPlay(v.clipNo, dispatch, globalState, history)
                 }}
               >
                 <img src={v.bgImg.thumb120x120} alt="프로필 사진" />
@@ -66,7 +66,7 @@ export default function ClipRankingListTop3() {
                 <div
                   className="TopBoxThumb__item"
                   onClick={() => {
-                    ClipPlay(v.clipNo, globalState, history);
+                    ClipPlay(v.clipNo, dispatch, globalState, history);
                   }}
                 >
                   <img src={v.bgImg.thumb190x190} alt="플레이어 썸네일" />
@@ -79,10 +79,10 @@ export default function ClipRankingListTop3() {
               {/* 일간일 때 title, nickName */}
               {/* 주간일 때 subjectName, title */}
               <span className="category" onClick={() => {
-                ClipPlay(v.clipNo, globalState, history)
+                ClipPlay(v.clipNo, dispatch, globalState, history)
               }}>{v.subjectName}</span>
               <span className="subject" onClick={() => {
-                ClipPlay(v.clipNo, globalState, history)
+                ClipPlay(v.clipNo, dispatch, globalState, history)
               }}>{v.title}</span>
               <strong className="nickName" onClick={() => {
                 loginCheck(v.memNo);

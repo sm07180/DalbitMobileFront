@@ -10,6 +10,13 @@ import profileClip from './profile/clip';
 import clip from './clip/clip';
 import honor from './honor/index';
 
+import globalCtx from './globalCtx';
+import broadcastCtx from './broadcastCtx';
+import clipRank from './clipRank';
+import modal from './modal';
+import rank from './rank';
+import mailBox from './mailBox';
+
 const rootReducer = combineReducers({
   common
   ,member
@@ -21,6 +28,12 @@ const rootReducer = combineReducers({
   , profileClip
   , clip
   , honor
+  , globalCtx
+  , broadcastCtx
+  , clipRank
+  , modal
+  , rank
+  , mailBox
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
