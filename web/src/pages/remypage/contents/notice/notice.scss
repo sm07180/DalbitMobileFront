@@ -59,7 +59,7 @@
       .title {
         margin-bottom:2px;
         letter-spacing: -1px;
-        @include font(15px,400,#303030);
+        @include font(15px,500,#303030);
         @include fontLineCut;
       }
       .date {
@@ -89,7 +89,7 @@
       .title {
         margin-bottom:2px;
         letter-spacing: -1px;
-        @include font(15px,400,#303030);
+        @include font(15px,500,#303030);
         @include fontCut;
       }
       .text {

@@ -9,6 +9,7 @@
     .saveBtn {
       width:40px;height:40px;
       margin-left:auto;
+      @include font(15px, 500, #303030);
     }
   }
   .nonePhoto {

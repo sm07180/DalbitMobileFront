@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
@@ -104,7 +104,7 @@ const InviteMydata = () => {
               </div>
             </>
             :
-            <ListNone imgType="event01" text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
+            <NoResult text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} />
           }
         </div>    
       </div>

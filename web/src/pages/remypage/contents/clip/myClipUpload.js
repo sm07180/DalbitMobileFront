@@ -102,8 +102,8 @@ const MyClipUpload =()=>{
               <div className="listItem">
                 <DataCnt type={"listenerCnt"} value={"123"}/>
                 <DataCnt type={"presentCnt"} value={"123"}/>
-                <DataCnt type={"replyCnt"} value={"123"}/>
                 <DataCnt type={"goodCnt"} value={"123"}/>
+                <DataCnt type={"replyCnt"} value={"123"}/>
               </div>
             </div>
             {uploadType === uploadTab[0] && 

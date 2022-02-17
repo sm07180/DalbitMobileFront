@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from 'react'
 
 import {Context} from 'context'
 
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
@@ -400,7 +400,7 @@ const InviteRank = () => {
               </div>
             </>
             :
-            <ListNone imgType="event01" text="랭킹 내역이 없어요." height="300px"/>
+            <NoResult text="랭킹 내역이 없어요." />
           }        
         </div>
       </div>
