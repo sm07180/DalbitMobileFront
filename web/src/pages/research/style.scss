@@ -1,6 +1,12 @@
 @import '../../styles/global.scss';
 @import "components/ui/_mixin.scss";
 
+$SEARCH-HEADER: 112px;
+
+.container .totalWrap #searchPage .tabmenu {
+  top: $GNB-HEIGHT + $SEARCH-HEADER !important;
+}
+
 #searchPage {
   header {
     align-items: flex-start;
@@ -69,7 +75,8 @@
         }
         .listItem {
           @include flex(center,center);
-          width:100%;
+          width: 100%;
+          height: 17px;
           margin: 6px 0;
           .nick {
             margin-left:4px;
@@ -163,9 +170,13 @@
 
   // searchResult page
   .tabmenu {
+    position: sticky;
+    top: 112px;
     @include flex(center);
     margin-bottom:18px;
     padding: 4px 16px;
+    background-color: #FFF;
+    z-index: 2;
     li {
       @include flex(center, center);
       height: 36px;

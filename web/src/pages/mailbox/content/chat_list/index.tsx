@@ -15,7 +15,9 @@ import { getMailboxChatList, PostMailboxChatUse } from "common/api";
 import { getWindowBottom, debounceFn } from "lib/common_fn";
 
 //component
-import Header from "common/ui/header";
+import Header from "components/ui/header/Header";
+
+import '../../mailbox.scss';
 
 let totalPage = 1;
 
@@ -150,11 +152,12 @@ export default function chatListPage() {
 
   return (
     <>
-      <Header>
-        <h2 className="header-title">우체통</h2>
-        <button className="btnMassageAdd" onClick={handleNewMessageClick}>
-          <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가" />
-        </button>
+      <Header title="우체통" type="back">
+        <div className="buttonGroup">
+          <button className="btnMassageAdd" onClick={handleNewMessageClick}>
+            <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가" />
+          </button>
+        </div>
       </Header>
 
       <div className="chatListPage subContent gray">

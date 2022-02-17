@@ -32,6 +32,9 @@
           margin-left:auto;
           @include BGIMG("common/icoArrow-b.png");
         }
+        &.active {
+          @include font(15px,500,#202020);
+        }
       }
       .selectWrap {
         @include position-top-left(50px);
