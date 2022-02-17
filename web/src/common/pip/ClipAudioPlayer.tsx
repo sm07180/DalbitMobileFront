@@ -64,6 +64,14 @@ const ClipAudioPlayer = ()=>{
     }
   };
 
+  const playIconClick = () => {
+    if (clipInfo!.isPaused) {
+      clipPlayer!.start();
+    } else {
+      clipPlayer!.stop();
+    }
+  }
+
   const playToggle = (e)=>{
     e.stopPropagation()
     if(!clipInfo?.isPaused){
@@ -97,6 +105,7 @@ const ClipAudioPlayer = ()=>{
             <div className="counting"/>
           </div>
           <div className="buttonGroup">
+             <img onClick={playIconClick} src={clipInfo!.isPaused ? PauseIcon : PlayIcon} className="playToggle__play" alt={"thumb img"}/>
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
           
