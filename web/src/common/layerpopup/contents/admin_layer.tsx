@@ -96,9 +96,10 @@ const Content = styled.div`
   .btnWrap {
     .darkgray {
       background-color: #757575;
+      color:#fff;
     }
     .mainColor {
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
 `;

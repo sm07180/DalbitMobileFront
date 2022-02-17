@@ -117,8 +117,8 @@ const TopSwiper = (props) => {
   useEffect(() => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.topSwiper>.swiper-container').swiper;
-      swiper.update();
-      swiper.slideTo(0);
+      swiper?.update();
+      swiper?.slideTo(0);
     }
   }, [data]);
 
@@ -139,7 +139,7 @@ const TopSwiper = (props) => {
         : data.profImgList.length === 1 ?
         <div onClick={() => openShowSlide(data.profImgList)}>
           <div className="photo">
-            <img src={data.profImgList[0].profImg.thumb500x500} style={{width:'100%', height:'360px'}} alt="" />
+            <img src={data.profImgList[0].profImg.thumb500x500} style={{width:'100%', height:'100%', objectFit:'cover'}} alt="" />
           </div>
         </div>
         :
