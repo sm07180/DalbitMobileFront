@@ -1,20 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import { getEmoticon } from "common/api";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
-
-type ActionType = {
-  type: string;
-  val: any;
-  idx?: number;
-};
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 export default function Emoticon(props) {
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const { broadcastState } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { chatFreeze } = broadcastState;
   const [emoticon, setEmoticon] = useState<Array<any>>([]);
   const [category, setCategory] = useState<Array<any>>([]);
@@ -34,10 +29,10 @@ export default function Emoticon(props) {
           }
         });
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "채팅 얼리기 중에는 채팅 입력이 불가능합니다.",
-      });
+      }));
     }
   };
 

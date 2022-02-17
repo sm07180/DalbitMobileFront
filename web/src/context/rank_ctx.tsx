@@ -1,7 +1,6 @@
-import React, { useState, useReducer, createContext } from "react";
-import { RANK_TYPE } from "pages/rank/constant";
-
-import { dateTimeConvert } from "lib/rank_fn";
+import { useState, useReducer, createContext } from "react";
+import {RANK_TYPE} from "../pages/rank/constant";
+import React from "react";
 
 type RankState = {
   rankList: Array<any>;

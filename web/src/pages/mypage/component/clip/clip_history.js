@@ -1,22 +1,23 @@
 // Api
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 // context
 import Api from 'context/api'
-import {Context} from 'context'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 import {HISTORY_SUBTAB_TYPE} from 'pages/mypage/content/constant'
 // router
-import {useParams, useHistory} from 'react-router-dom'
-import {Hybrid} from 'context/hybrid'
+import {useHistory} from 'react-router-dom'
 import qs from 'query-string'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxClipType, setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 // scss
 
 // ----------------------------------------------------------------------
 export default function ClipHistory() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
-  const context = useContext(Context)
   const {webview, subTab} = qs.parse(location.search)
   // state
   const [historyList, setHistoryList] = useState([])
@@ -58,7 +59,7 @@ export default function ClipHistory() {
       } else {
         const nowPage = getPageFormIdx(idx)
         const playListInfoData = {
-          memNo: context.profile.memNo,
+          memNo: globalState.profile.memNo,
           page: nowPage,
           records: 100,
           slctType: historyTab
@@ -66,19 +67,21 @@ export default function ClipHistory() {
         localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       }
 
-      clipJoin(data, context, webview)
+      clipJoin(data, webview)
     } else {
       if (code === '-99') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
   }
@@ -95,10 +98,10 @@ export default function ClipHistory() {
             className="noResult__uploadBtn"
             onClick={() => {
               if (customHeader['os'] === OS_TYPE['Desktop']) {
-                context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 2]}));
               } else {
                 if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
-                  context.action.alert({msg: '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'})
+                  dispatch(setGlobalCtxMessage({type: "alert", msg: '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'}))
                   return
                 }
                 history.push(`/clip`)
@@ -120,10 +123,10 @@ export default function ClipHistory() {
                   className="uploadList__container"
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                     } else {
                       if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
-                        context.action.alert({msg: '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'})
+                        dispatch(setGlobalCtxMessage({type: "alert", msg: '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'}))
                         return
                       }
                       fetchDataPlay(clipNo, idx)
@@ -132,7 +135,7 @@ export default function ClipHistory() {
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
                     <div className="uploadList__topWrap">
-                      {context.clipType.map((v, index) => {
+                      {globalState.clipType.map((v, index) => {
                         if (v.value === subjectType) {
                           return (
                             <div key={index} className="uploadList__categoryWrap">
@@ -180,7 +183,7 @@ export default function ClipHistory() {
     const fetchDataClipType = async () => {
       const {result, data} = await Api.getClipType({})
       if (result === 'success') {
-        context.action.updateClipType(data)
+        dispatch(setGlobalCtxClipType(data));
       } else {
       }
     }
@@ -193,7 +196,7 @@ export default function ClipHistory() {
   useEffect(() => {
     const fetchDataList = async () => {
       const {result, data, message} = await Api.getHistoryList({
-        memNo: context.profile.memNo,
+        memNo: globalState.profile.memNo,
         records: 100,
         slctType: historyTab
       })
@@ -202,9 +205,10 @@ export default function ClipHistory() {
         setHistoryList(data.list)
       } else {
         setHistoryLoading(false)
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
 

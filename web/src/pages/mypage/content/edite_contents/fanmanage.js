@@ -1,14 +1,12 @@
-import React, {useEffect, useState, useContext, useRef, useReducer} from 'react'
+import React, {useEffect, useState} from 'react'
 import qs from 'query-string'
 //styled
 import styled from 'styled-components'
 //context
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 //scroll
-import {Scrollbars} from 'react-custom-scrollbars'
-import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 //svg
 import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
@@ -23,6 +21,8 @@ import PstarIconP from '../../static/ic_p_star_p.svg'
 import PtimeIconP from '../../static/ic_p_time_p.svg'
 //
 import NoResult from 'components/ui/noResult'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxFanEditLength, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 //---------------------------------------------------------------------------------
 // concat flag
@@ -34,10 +34,10 @@ console.log()
 export default (props) => {
   const {sortNum} = props
   const history = useHistory()
-  //context
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview} = qs.parse(location.search)
-  const {profile} = ctx
   var urlrStr = location.pathname.split('/')[2]
   //state
   const [list, setList] = useState([])
@@ -90,7 +90,7 @@ export default (props) => {
           moreState = true
           setNextList(res.data.list)
         } else {
-          ctx.action.updateFanEditeLength(res.data.list.length)
+          dispatch(setGlobalCtxFanEditLength(res.data.list.length))
           setList(res.data.list)
           fetchData('next')
         }
@@ -107,20 +107,24 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        ctx.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: `${nickNm}님의 팬이 되었습니다`
-        })
+        }))
       } else if (res.result === 'fail') {
-        ctx.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataFanRegist(memNo)
   }
   const Cancel = (memNo, nickNm) => {
-    ctx.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         async function fetchDataFanCancel(memNo) {
@@ -130,19 +134,23 @@ export default (props) => {
             }
           })
           if (res.result === 'success') {
-            ctx.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: res.message
-            })
+            }))
           } else if (res.result === 'fail') {
-            ctx.action.alert({
-              callback: () => {},
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
+              callback: () => {
+              },
               msg: res.message
-            })
+            }))
           }
         }
+
         fetchDataFanCancel(memNo)
       }
-    })
+    }))
   }
   // 팬등록 버튼 토글
   const registToggle = (isFan, memNo, nickNm) => {
@@ -202,10 +210,12 @@ export default (props) => {
       setDefaultMemo(res.data.fanMemo)
       setMemoContent(res.data.fanMemo)
     } else if (res.result === 'fail') {
-      ctx.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: res.message
-      })
+      }))
     }
   }
   async function fetchDataPostMemo() {
@@ -227,21 +237,23 @@ export default (props) => {
         return item
       })
       setList(test)
-      ctx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           setPopState(false)
           setMemoContent('')
         },
         msg: res.message
-      })
+      }))
     } else if (res.result === 'fail') {
-      ctx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           setPopState(false)
           setMemoContent('')
         },
         msg: res.message
-      })
+      }))
     }
   }
   //삭제하기
@@ -258,20 +270,23 @@ export default (props) => {
       })
       setList(test)
     } else if (res.result === 'fail') {
-      ctx.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: res.message
-      })
+      }))
     }
   }
   // 삭제하기 클릭
   const DeleteItem = (memNo) => {
-    ctx.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       callback: () => {
         fetchDeleteList(memNo)
       },
       msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
-    })
+    }))
   }
   const Link = (memNo) => {
     if (webview && webview === 'new') {
@@ -282,27 +297,28 @@ export default (props) => {
   }
   return (
     <Wrap>
-      {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
+      {(globalState.fanEditeLength === -1 || globalState.fanEditeLength === 0) && <NoResult/>}
       {list &&
-        list.map((item, idx) => {
-          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item
-          return (
-            <React.Fragment key={idx}>
-              {nickNm !== '' && (
-                <div className="list">
-                  <div className="list__imgBox" onClick={() => Link(memNo)}>
-                    <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
-                  </div>
-                  <div className="list__infoBox" onClick={() => Link(memNo)}>
-                    <span className="list__nick">{nickNm}</span>
-                    <span className={sortNum === 0 ? 'list__registDt list__registDt--active' : 'list__registDt'}>
+      list.map((item, idx) => {
+        const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item
+        return (
+          <React.Fragment key={idx}>
+            {nickNm !== '' && (
+              <div className="list">
+                <div className="list__imgBox" onClick={() => Link(memNo)}>
+                  <img src={profImg.thumb120x120} alt="팬 프로필 이미지"/>
+                </div>
+                <div className="list__infoBox" onClick={() => Link(memNo)}>
+                  <span className="list__nick">{nickNm}</span>
+                  <span className={sortNum === 0 ? 'list__registDt list__registDt--active' : 'list__registDt'}>
                       등록일 - {Utility.dateFormatterKor(regDt)}
                     </span>
-                    <div className="list__details">
-                      <span className={sortNum === 1 ? 'list__details__time list__details__time--active' : 'list__details__time'}>
+                  <div className="list__details">
+                      <span
+                        className={sortNum === 1 ? 'list__details__time list__details__time--active' : 'list__details__time'}>
                         {listenTime}분
                       </span>
-                      <span
+                    <span
                         className={sortNum === 2 ? 'list__details__byeol list__details__byeol--active' : 'list__details__byeol'}>
                         {Utility.printNumber(giftedByeol)}
                       </span>

@@ -1,12 +1,15 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import CloseBtn from '../../static/close_w_l.svg'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function detailPopup(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {setAddPopup, bank} = props
-  const context = useContext(Context)
 
   const [addName, setAddName] = useState('')
   const [addBank, setAddBank] = useState('')
@@ -17,18 +20,21 @@ export default function detailPopup(props) {
   }
   const applyClick = () => {
     if (addName === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '예금주명을 입력해주세요'
-      })
+      }))
     } else if (addBank === '' || addBank.split(',')[0] == 0) {
       console.log(addBank)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '은행을 선택해주세요'
-      })
+      }))
     } else if (addAccountNumber === '' || addAccountNumber.length < 9) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '계좌번호를 확인해주세요'
-      })
+      }))
     } else {
       setAddPopup(false)
       props.setAddInfo({

@@ -1,16 +1,17 @@
 // tab navigation
 // api
 import { getProfile, postGiftDal, splash, postSendGift } from "common/api";
-import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
 
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "./mypage_modal.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 export default (props) => {
-  const { modalState, modalAction } = useContext(ModalContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const modalState = useSelector(({modal}) => modal);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const { splashData } = globalState;
 
@@ -54,18 +55,18 @@ export default (props) => {
         dal: dal,
       });
       if (result === "success") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "선물이 성공적으로 발송되었습니다.",
           callback: () => history.goBack(),
-        });
+        }));
       } else if (result === "fail") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
 
@@ -78,18 +79,18 @@ export default (props) => {
         isSecret: false,
       });
       if (result === "success") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "선물이 성공적으로 발송되었습니다.",
           callback: () => history.goBack(),
-        });
+        }));
       } else if (result === "fail") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
 
@@ -100,12 +101,12 @@ export default (props) => {
         const { roomNo, memNo, itemNo } = modalState.mypageInfo;
         sendDirectDal(roomNo, memNo, itemNo, dal);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: `직접입력 선물은 최소 ${dalMin}달 부터 선물이 가능합니다.`,
           callback: () => {},
-        });
+        }));
       }
     }
   };

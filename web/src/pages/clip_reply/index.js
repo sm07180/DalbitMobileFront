@@ -1,9 +1,8 @@
-import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 import {useParams} from 'react-router-dom'
 import qs from 'query-string'
 //context
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 //layout
 import Layout2 from 'pages/common/layout2.5'
@@ -13,14 +12,20 @@ import WriteBoard from '../../pages/mypage/content/board_write'
 import NoResult from 'components/ui/noResult'
 //scss
 import '../mypage/index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBackState, setGlobalCtxMessage, setGlobalCtxPlayer} from "redux/actions/globalCtx";
+
 export default (props) => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview} = qs.parse(location.search)
   let params = useParams()
   const LocationClip = params.clipNo
   //state
   const [boardList, setBoardList] = useState([])
   const [totalCount, setTotalCount] = useState(-1)
+
   //list fetch
   async function fetchReplyList() {
     const {result, data} = await Api.getClipReplyList({
@@ -35,9 +40,10 @@ export default (props) => {
         setTotalCount(0)
       }
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   //update list emit
@@ -58,9 +64,10 @@ export default (props) => {
     fetchReplyList()
   }, [])
   useEffect(() => {
-    globalCtx.action.updateSetBack(null)
-    globalCtx.action.updatePlayer(false)
-    return () => {}
+    dispatch(setGlobalCtxBackState(null))
+    dispatch(setGlobalCtxPlayer(false));
+    return () => {
+    }
   }, [])
   //-----------------------render
   return (

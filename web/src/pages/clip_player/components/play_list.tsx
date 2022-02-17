@@ -1,13 +1,15 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
-import { GlobalContext } from "context";
 import { getPlayList, getClipType } from "common/api";
 import PlayListEdit from "./play_list_edit";
 import { useHistory } from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxClipPlayListTabAdd} from "../../../redux/actions/globalCtx";
 
 export default () => {
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const { clipInfo, clipPlayListTab } = globalState;
 
@@ -20,27 +22,11 @@ export default () => {
     if (result === "success") {
       setClipType(data);
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `${message}`,
-      });
+      }))
     }
-  };
-
-  const fetchPlayList = async () => {
-    // console.log("clipPlayListTab", clipPlayListTab);
-    // const { result, data, message } = await getPlayList({
-    //   sortType: 5,
-    //   records: 100,
-    // });
-    // if (result === "success") {
-    //   setList(data.list);
-    // } else {
-    //   globalAction.setAlertStatus!({
-    //     status: true,
-    //     content: `${message}`,
-    //   });
-    // }
   };
 
   const createList = () => {
@@ -97,15 +83,12 @@ export default () => {
       const { type } = JSON.parse(sessionStorage.getItem("clipPlayListInfo")!);
       const oneData = JSON.parse(sessionStorage.getItem("clip")!);
       if (type === "one") {
-        globalAction.dispatchClipPlayListTab && globalAction.dispatchClipPlayListTab({ type: "add", data: oneData });
+        dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
       }
     }
     fetchDataClipType();
   }, []);
 
-  useEffect(() => {
-    if (!isEdit) fetchPlayList();
-  }, [isEdit]);
 
   return (
     <div className="tabPlayList">

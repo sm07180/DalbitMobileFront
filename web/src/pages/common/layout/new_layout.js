@@ -1,27 +1,26 @@
 /**
  *
  */
-import React, {useMemo, useContext} from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 
 //layout
-import {Global} from 'App'
 import Gnb from 'pages/common/gnb'
 import NewPlayer from 'pages/common/newPlayer'
 import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
-import Message from 'pages/common/message'
 //import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
 import Header from 'components/ui/new_header.js'
+import {useDispatch, useSelector} from "react-redux";
 //
 const Layout = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {children, webview} = props
-  const context = useContext(Context)
   const playerCls = useMemo(() => {
-    return context.player || context.clipState ? 'player_show' : ''
+    return globalState.player || globalState.clipState ? 'player_show' : ''
   })
   const isLoginPage = location.pathname === '/login' ? true : false
   //---------------------------------------------------------------------
@@ -29,7 +28,7 @@ const Layout = (props) => {
   return (
     <React.Fragment>
       {/* Sticker */}
-      {context.sticker && <Sticker />}
+      {globalState.sticker && <Sticker/>}
       {/* GNB */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {props.header !== undefined && <Header title={props.header} />}

@@ -8,8 +8,6 @@ import { getBroadcastListeners } from "common/api";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -18,18 +16,23 @@ import { tabType } from "pages/broadcast/constant";
 // component
 import ListenerListItem from "./listener_list_item";
 import { AuthType } from "constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxListenerList,
+  setBroadcastCtxRightTabType, setBroadcastCtxUserCount,
+  setBroadcastCtxUserMemNo,
+} from "../../../../redux/actions/broadcastCtx";
 
 export default function ListenerList(props: { roomInfo: any; roomOwner: boolean; roomNo: string; profile: any }) {
   const { roomInfo, roomOwner, roomNo, profile } = props;
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { guestState } = useContext(GuestContext);
   const { isLogin } = globalState.baseData;
   const { userCount } = broadcastState;
-  const { setRightTabType, setUserMemNo, setListenerList } = broadcastAction;
   const { guestConnectStatus, guestObj } = guestState;
   // state
   const [listenersList, setListenersList] = useState<Array<any>>([]);
@@ -38,8 +41,8 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
   // 프로필 보기
   const viewProfile = useCallback((memNo: string) => {
     if (isLogin === true) {
-      setRightTabType && setRightTabType(tabType.PROFILE);
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     } else {
       return history.push("/login");
     }
@@ -52,28 +55,15 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
     const { result, data, message } = await getBroadcastListeners({ roomNo, page, records });
 
     if (result === "success" && data.hasOwnProperty("list")) {
-      setListenerList && setListenerList(data.list);
+      dispatch(setBroadcastCtxListenerList(data.list));
       const listenersFilter = data.list.filter((user) => user.auth === AuthType.LISTENER && user.isGuest === false);
       const managerFilter = data.list.filter((user) => user.auth === AuthType.MANAGER && user.isGuest === false);
       const guestFilter = data.list.filter((user) => user.isGuest === true);
       setListenersList(listenersFilter);
       setManagerList(managerFilter);
       setGuestList(guestFilter);
-
-      broadcastAction.setUserCount &&
-      broadcastAction.setUserCount((prev) => {
-        return { ...prev, current: data.list.length };
-      });
+      dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, current:data.list.length}));
     } else {
-      // if (result === "fail") {
-      //   globalAction.setAlertStatus &&
-      //   globalAction.setAlertStatus({
-      //     status: true,
-      //     title: "알림",
-      //     content: `${message}`,
-      //     callback: () => history.push("/"),
-      //   });
-      // }
     }
   };
   const [init , setInit] = useState(false)

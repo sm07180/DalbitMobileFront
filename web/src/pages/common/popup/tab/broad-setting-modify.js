@@ -2,13 +2,12 @@
  * @file 라이브탭 방송수정
  * @brief 방송세팅수정
  */
-import React, {useMemo, useEffect, useContext, useState, useCallback, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 //context
 //import {Context} from 'pages/live/store'
-import {Context} from 'context'
 //hooks
 import useChange from 'components/hooks/useChange'
 //components
@@ -16,10 +15,13 @@ import Api from 'context/api'
 import Navi from './navibar'
 import {Scrollbars} from 'react-custom-scrollbars'
 import qs from 'query-string'
+import {useDispatch, useSelector} from "react-redux";
+
 export default props => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {roomNo} = qs.parse(location.search)
-  const {broadcastTotalInfo} = context
+  const {broadcastTotalInfo} = globalState
 
   //기존이미지 패스및 룸넘버 변수화
 

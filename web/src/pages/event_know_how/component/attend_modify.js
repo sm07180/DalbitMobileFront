@@ -1,13 +1,17 @@
 import React, {useState, useEffect, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
-import {Context} from 'context'
 import {KnowHowContext} from '../store'
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function AttendModify() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const params = useParams()
 
@@ -30,12 +34,12 @@ function AttendModify() {
         })
       )
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: '조회에 실패했습니다.',
         callback: () => {
           history.goBack()
         }
-      })
+      }))
     }
   }, [])
 

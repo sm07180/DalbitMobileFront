@@ -1,35 +1,40 @@
-import React, {useContext, useCallback} from 'react'
+import React, {useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function AwardsBtmBtn(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {selectedDJ, djMemNo, isFan, toggleFan} = props
   const history = useHistory()
-  const context = useContext(Context)
 
   const becomeFan = useCallback(async () => {
     const {result, message} = await Api.fan_change({data: {memNo: djMemNo}})
     if (result === 'success') {
-      context.action.alert_no_close({
+      dispatch(setGlobalCtxMessage({
+        type: "alert_no_close",
         msg: `${selectedDJ?.djNickNm} 님의 팬이 되었습니다`,
         callback: () => toggleFan(message)
-      })
+      }))
     }
   }, [isFan, selectedDJ])
 
   const cancelFan = useCallback(async () => {
     const {result, message} = await Api.mypage_fan_cancel({data: {memNo: djMemNo}})
     if (result === 'success') {
-      context.action.alert_no_close({
+      dispatch(setGlobalCtxMessage({
+        type: "alert_no_close",
         msg: message,
         callback: () => toggleFan()
-      })
+      }))
     }
   }, [isFan, selectedDJ])
 
   const toggleFanHandler = () => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push({
         pathname: '/login',
         state: {state: 'event/award/2020'}
@@ -37,11 +42,12 @@ export default function AwardsBtmBtn(props) {
     } else {
       if (isFan) {
         // a fan -> not a fan
-        context.action.confirm({
+        dispatch(setGlobalCtxMessage({
+          type: "confirm",
           msg: `${selectedDJ?.djNickNm} 님의 팬을 취소 하시겠습니까?`,
           callback: () => cancelFan(),
-          cancelCallback: () => context.action.confirm({visible: false})
-        })
+          cancelCallback: () => dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
+        }))
       } else {
         // not a fan -> a fan
         becomeFan()
@@ -50,7 +56,7 @@ export default function AwardsBtmBtn(props) {
   }
 
   const redirectUser = () => {
-    !context.token.isLogin
+    !globalState.token.isLogin
       ? history.push({
           pathname: '/login',
           state: {state: 'event/award/2020'}

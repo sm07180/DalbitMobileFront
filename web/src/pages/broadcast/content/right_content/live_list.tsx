@@ -7,11 +7,8 @@ import React, {
   useMemo,
 } from "react";
 import { useHistory } from "react-router-dom";
-import { RoomTypeConvertToText } from "pages/main/content/common_fn";
 import { printNumber } from "lib/common_fn";
 
-// ctx
-import { GlobalContext } from "context";
 // api
 import { broadcastList, broadcastExit } from "common/api";
 
@@ -20,6 +17,8 @@ import SelectBox from "common/ui/dalbit_selectbox";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import NoResult from "common/ui/no_result";
 import {rtcSessionClear} from "../../../../common/realtime/rtc_socket";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxRtcInfoEmpty} from "../../../../redux/actions/globalCtx";
 
 type ActionType = {
   type: string;
@@ -80,8 +79,9 @@ export default function LiveList(props: {
   roomNo: string;
 }) {
   const { common, roomOwner, roomNo } = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { chatInfo, rtcInfo } = globalState;
   const isLogin: boolean = useMemo(() => {
     return globalState.baseData.isLogin;
@@ -134,29 +134,26 @@ export default function LiveList(props: {
       }
     })();
 
-    if (globalAction.setAlertStatus) {
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "알림",
-        content: alertMsg,
-        callback: async () => {
-          const { result } = await broadcastExit({ roomNo });
-          if (result === "success") {
-            if (chatInfo !== null && rtcInfo !== null) {
-              chatInfo.privateChannelDisconnect();
-              //chatInfo.destroy({ isdestroySocket: false, destroyChannelName: targetRoomNo });
-              rtcInfo.socketDisconnect();
-              rtcInfo.stop();
-              globalAction.dispatchRtcInfo &&
-                globalAction.dispatchRtcInfo({ type: "empty" });
-              rtcSessionClear();
-            }
-            window.location.href = `/broadcast/${targetRoomNo}`;
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      title: "알림",
+      content: alertMsg,
+      callback: async () => {
+        const { result } = await broadcastExit({ roomNo });
+        if (result === "success") {
+          if (chatInfo !== null && rtcInfo !== null) {
+            chatInfo.privateChannelDisconnect();
+            //chatInfo.destroy({ isdestroySocket: false, destroyChannelName: targetRoomNo });
+            rtcInfo.socketDisconnect();
+            rtcInfo.stop();
+            dispatch(setGlobalCtxRtcInfoEmpty());
+            rtcSessionClear();
           }
-        },
-      });
-    }
+          window.location.href = `/broadcast/${targetRoomNo}`;
+        }
+      },
+    }));
   };
 
   useEffect(() => {

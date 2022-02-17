@@ -1,23 +1,24 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import qs from 'query-string'
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
 import Header from 'components/ui/new_header.js'
-import Layout from 'pages/common/layout/new_layout'
 import DjCheckBox from './component/dj_check_box'
 import PopupCondition from './component/popup_condition'
-import PopupGoods from './component/popup_goods'
 import PopupMoon from './component/popup_moon'
 import PopupSend from './component/popup_send'
 
 import './index.scss'
 import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function SpecialDjBest() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const parameter = qs.parse(location.search)
   const history = useHistory()
 
@@ -38,12 +39,13 @@ export default function SpecialDjBest() {
     let eventMonth = today.getMonth() + 1 < 10 ? `0${today.getMonth() + 1}` : today.getMonth() + 1
 
     if (parameter.select_year + parameter.select_month !== eventYear.toString() + eventMonth.toString()) {
-      context.action.alert_no_close({
+      dispatch(setGlobalCtxMessage({
+        type: "alert_no_close",
         msg: `이벤트 기간이 아닙니다.`,
         callback: () => {
           history.goBack()
         }
-      })
+      }))
     }
   }
 
@@ -63,12 +65,13 @@ export default function SpecialDjBest() {
       setInfoData(data.eventInfo)
       setBestData(data.userInfo)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
           history.goBack()
         }
-      })
+      }))
     }
   }
 
@@ -76,7 +79,7 @@ export default function SpecialDjBest() {
   useEffect(() => {
     eventDateCheck()
     getSpecialDj()
-  }, [context.token.isLogin])
+  }, [globalState.token.isLogin])
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -150,8 +153,8 @@ export default function SpecialDjBest() {
             </ul>
           </div>
 
-          {context.token.isLogin && conditionData ? (
-            <DjCheckBox infoData={infoData} conditionData={conditionData} bestData={bestData} setSendPop={setSendPop} />
+          {globalState.token.isLogin && conditionData ? (
+            <DjCheckBox infoData={infoData} conditionData={conditionData} bestData={bestData} setSendPop={setSendPop}/>
           ) : (
             <div className="btnWrap login">
               <button

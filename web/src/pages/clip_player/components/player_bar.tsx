@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function ClipPlayerBar() {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipPlayer } = globalState;
   const { clipAudioTag } = clipPlayer!;
 

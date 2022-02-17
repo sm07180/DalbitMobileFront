@@ -2,12 +2,9 @@
  * @file /mypage/content/fan-board.js
  * @brief 마이페이지 팬보드2.5v
  */
-import React, {useEffect, useState, useContext, useRef} from 'react'
-import {useParams} from 'react-router-dom'
+import React, {useEffect, useRef, useState} from 'react'
 //modules
-import qs from 'query-string'
 // context
-import {Context} from 'context'
 //api
 import Api from 'context/api'
 //components
@@ -17,16 +14,18 @@ import WriteBoard from './board_write'
 //svg
 import NoResult from 'components/ui/new_noResult'
 import UserReport from "pages/mypage/content/user_report";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBackState} from "redux/actions/globalCtx";
 // concat
 // let currentPage = 1
 // let timer
 // let total = 2
 //layout
 export default (props) => {
-  //context
-  const ctx = useContext(Context)
-  const context = useContext(Context)
-  const {profile} = ctx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile} = globalState
   //urlNumber
   let urlrStr
   if (props.location) {
@@ -184,13 +183,13 @@ export default (props) => {
   //   }
   // }, [nextList])
   useEffect(() => {
-    context.action.updateSetBack(null)
+    dispatch(setGlobalCtxBackState(null))
     if (profile.memNo === urlrStr) {
       setIsOther(true)
     } else {
       setIsOther(false)
     }
-    if (context.token.memNo === profile.memNo) {
+    if (globalState.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
 
@@ -219,10 +218,10 @@ export default (props) => {
       {totalCount === 0 && <NoResult type="default" text="등록된 팬보드가 없습니다." />}
       {totalCount > 0 && (
         <div ref={BoardListRef}>
-          <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />
+          <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction}/>
         </div>
       )}
-      {context.userReport.state === true && <UserReport {...props} urlrStr={context.userReport.targetMemNo} />}
+      {globalState.userReport.state === true && <UserReport {...props} urlrStr={globalState.userReport.targetMemNo}/>}
     </div>
   )
 }

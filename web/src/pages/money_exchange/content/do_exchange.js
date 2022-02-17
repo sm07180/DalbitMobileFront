@@ -1,6 +1,5 @@
-import React, {useState, useContext, useEffect, useReducer, useMemo} from 'react'
+import React, {useEffect, useMemo, useReducer, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 // import {selfAuthCheck, getExchangeHistory, getExchangeCalc, exchangeApply, exchangeReApply} from 'common/api'
 import calcAge from 'components/lib/calc_age'
@@ -18,8 +17,8 @@ import Header from 'components/ui/new_header'
 import Popup from 'pages/common/popup'
 import AddPop from './subcontent/do_exchange_add_pop'
 import SettingPop from './subcontent/do_exchange_setting_pop'
-
-import ic_close from '../static/ic_close_round_g.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 const FormDataReducer = (state, action) => {
   switch (action.type) {
@@ -161,16 +160,17 @@ const formInit = {
   usageAlert: false
 }
 
-export default function DoExchange({state, dispatch}) {
-  const context = useContext(Context)
+export default function DoExchange({state, exchangeDispatch}) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const bank = useMemo(() => {
-    if (context.splash !== null) {
-      return [{cd: '0', cdNm: '은행선택'}, ...context.splash.exchangeBankCode]
+    if (globalState.splash !== null) {
+      return [{cd: '0', cdNm: '은행선택'}, ...globalState.splash.exchangeBankCode]
     } else {
       return []
     }
-  }, [context.splash])
+  }, [globalState.splash])
 
   const history = useHistory()
   const [badgeSpecial, setBadgeSpecial] = useState(false)
@@ -204,7 +204,7 @@ export default function DoExchange({state, dispatch}) {
   const [deleteState, setDeleteState] = useState('')
   const [popState, setPopState] = useState(1)
 
-  const userProfile = context.profile || {}
+  const userProfile = globalState.profile || {}
 
   const exchangeSubmit = async () => {
     const paramData = {
@@ -225,14 +225,14 @@ export default function DoExchange({state, dispatch}) {
     const res = await Api.exchangeApply({data: {...paramData}})
 
     if (res.result === 'success') {
-      dispatch({type: 'result', value: {...res.data}})
+      exchangeDispatch({type: 'result', value: {...res.data}})
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
     }
   }
   const repplySubmit = async () => {
@@ -255,14 +255,14 @@ export default function DoExchange({state, dispatch}) {
     const res = await Api.exchangeReApply({data: {...paramData}})
 
     if (res.result === 'success') {
-      dispatch({type: 'result', value: {...res.data}})
+      exchangeDispatch({type: 'result', value: {...res.data}})
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
     }
   }
 
@@ -277,37 +277,31 @@ export default function DoExchange({state, dispatch}) {
     } else {
       if (result.skip !== undefined && result.skip === true) {
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: result.content,
           callback: () => {
-            context.action.alert({
-              visible: false
-            })
           }
-        })
+        }))
       }
     }
   }
 
   const fnExchangeCalc = async () => {
     if (formData.byeolCnt < 570) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '환전 신청별은\n570개 이상이어야 합니다.',
         callback: () => {
-          context.action.alert({
-            visible: false
-          })
         }
-      })
+      }))
     } else if (formData.byeolCnt > currentByeol) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.',
         callback: () => {
-          context.action.alert({
-            visible: false
-          })
         }
-      })
+      }))
       return
     } else {
       const res = await Api.exchangeCalc({
@@ -357,12 +351,12 @@ export default function DoExchange({state, dispatch}) {
         )
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
     }
   }
   //환전하기 리뉴얼
@@ -372,9 +366,10 @@ export default function DoExchange({state, dispatch}) {
     if (result === 'success') {
       setAddList(data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   async function fetchAddAccount() {
@@ -390,9 +385,10 @@ export default function DoExchange({state, dispatch}) {
     setAddBool(false)
     if (result === 'success') {
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   async function fetchDeleteAccount() {
@@ -407,19 +403,22 @@ export default function DoExchange({state, dispatch}) {
     setModiInfo('')
     setModiBool(false)
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         //콜백처리
         callback: () => {
           setDeleteState('')
         },
         //캔슬콜백처리
-        cancelCallback: () => {},
+        cancelCallback: () => {
+        },
         msg: message
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   async function fetchModiAccount() {
@@ -438,24 +437,26 @@ export default function DoExchange({state, dispatch}) {
     setModiInfo('')
     setModiBool(false)
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   useEffect(() => {
     if (formData.noUsage === true && formData.usageAlert === true) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
         callback: () => {
           formDispatch({type: 'usageAlert', val: false})
-          context.action.alert({visible: false})
         }
-      })
+      }))
     }
   }, [formData.usageAlert])
 
@@ -499,7 +500,7 @@ export default function DoExchange({state, dispatch}) {
 
     fetchMainPopupData('11')
 
-    // context.action.alert({
+    // dispatch(setGlobalCtxMessage({type:"alert",
     //   className: 'mobile',
     //   title: '추석 연휴 기간 환전신청 및 지급 안내',
     //   msg: `<p style="line-height:1.7">추석 연휴 기간 환전처리 일정을 안내드립니다.\n
@@ -556,7 +557,7 @@ export default function DoExchange({state, dispatch}) {
             <div
               className="doExchangeWrap__contentsHeader--info"
               onClick={() => {
-                context.action.updatePopup('GUIDANCE')
+                dispatch(setGlobalCtxUpdatePopup({popup: ['GUIDANCE']}));
               }}>
               <span className="doExchangeWrap__contentsHeader--icon" />
               <span>환전안내</span>
@@ -648,7 +649,8 @@ export default function DoExchange({state, dispatch}) {
             </button>
           )}
         </div>
-        {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} bank={bank} />}
+        {radioCheck === 0 &&
+        <MakeFormWrap state={formData} formDispatch={formDispatch} inspection={checkInspection} bank={bank}/>}
         {radioCheck === 1 && (
           <MakeRepplyWrap
             state={exchangeHistory.value}

@@ -1,18 +1,15 @@
-import React, {useState, useEffect, useContext, useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 // context
 import Api from 'context/api'
-import {Context} from 'context'
 //route
 import {OS_TYPE} from 'context/config.js'
 import qs from 'query-string'
-import Room, {RoomJoin} from 'context/room'
+import {RoomJoin} from 'context/room'
 // utility
-import Utility, {printNumber, addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Swiper from 'react-id-swiper'
-
-import BadgeList from 'common/badge_list'
 //component
 import ProfileReport from './profile_report'
 import UserReport from './user_report'
@@ -25,6 +22,22 @@ import AdminIcon from '../../menu/static/ic_home_admin.svg'
 import EditIcon from '../static/edit_g_l.svg'
 import AlarmOffIcon from '../static/alarm_off_p.svg'
 import AlarmOnIcon from '../static/alarm_on_w.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxClose,
+  setGlobalCtxCloseFanCnt,
+  setGlobalCtxCloseFanRank,
+  setGlobalCtxCloseGoodCnt,
+  setGlobalCtxClosePresent,
+  setGlobalCtxCloseRank,
+  setGlobalCtxCloseSpecial,
+  setGlobalCtxCloseStarCnt,
+  setGlobalCtxMessage,
+  setGlobalCtxMultiViewer,
+  setGlobalCtxMyPageFanCnt,
+  setGlobalCtxMyPageReport,
+  setGlobalCtxUpdatePopup
+} from "redux/actions/globalCtx";
 
 const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
 const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
@@ -32,10 +45,11 @@ const PostBoxIcon = 'https://image.dalbitlive.com/svg/ico_postbox_p.svg'
 const PostBoxOffIcon = 'https://image.dalbitlive.com/svg/postbox_g_off.svg'
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //context & webview
   let history = useHistory()
-  const context = useContext(Context)
-  const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
+  const {mypageReport, close, closeFanCnt, closeStarCnt, token} = globalState
   const {profile, location, webview, locHash, setProfileInfo} = props
   const customHeader = JSON.parse(Api.customHeader)
 
@@ -56,7 +70,7 @@ export default (props) => {
     setZoom(true)
   }
   // 로그인한 user memNo
-  const myProfileNo = context.profile.memNo
+  const myProfileNo = globalState.profile.memNo
   const createFanList = () => {
     if (profile.fanRank == false) return null
     let result = []
@@ -83,10 +97,11 @@ export default (props) => {
         )
       }
     }
+
     result = result.concat(
       <button
         className="btn__fanMore"
-        onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}
+        onClick={() => profile.fanRank.length > 0 && dispatch(setGlobalCtxClose(true))}
         key="btn"
         style={{display: 'none'}}>
         <span></span>
@@ -99,7 +114,7 @@ export default (props) => {
             <button
               className="btn__fanRank"
               onClick={() => {
-                context.action.updateCloseRank(true)
+                dispatch(setGlobalCtxCloseRank(true))
                 setRankTabType('tabRank')
               }}>
               팬랭킹
@@ -108,7 +123,7 @@ export default (props) => {
             <button
               className="btn__fanRank"
               onClick={() => {
-                profile.fanRank.length > 0 && context.action.updateCloseFanRank(true)
+                profile.fanRank.length > 0 && dispatch(setGlobalCtxCloseFanRank(true))
                 setRankTabType('tabRank')
               }}>
               팬랭킹
@@ -185,20 +200,24 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: `${nickNm}님의 팬이 되었습니다`
-      })
-      context.action.updateMypageFanCnt(myProfileNo)
+      }))
+      dispatch(setGlobalCtxMyPageFanCnt(myProfileNo));
     } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: res.message
-      })
+      }))
     }
   }
   //function:팬해제
   const Cancel = (myProfileNo, nickNm) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         async function fetchDataFanCancel(myProfileNo) {
@@ -208,20 +227,24 @@ export default (props) => {
             }
           })
           if (res.result === 'success') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: res.message
-            })
-            context.action.updateMypageFanCnt(myProfileNo + 1)
+            }))
+            dispatch(setGlobalCtxMyPageFanCnt(myProfileNo + 1));
           } else if (res.result === 'fail') {
-            context.action.alert({
-              callback: () => {},
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
+              callback: () => {
+              },
               msg: res.message
-            })
+            }))
           }
         }
+
         fetchDataFanCancel(myProfileNo)
       }
-    })
+    }))
   }
   //function:팬등록
   const fanRegist = (myProfileNo, nickNm) => {
@@ -230,23 +253,23 @@ export default (props) => {
   //func star count
   const viewStarList = () => {
     if (profile.starCnt > 0) {
-      context.action.updateCloseStarCnt(true)
+      dispatch(setGlobalCtxCloseStarCnt(true))
     }
   }
   //func fuan count
   const viewFanList = () => {
     if (profile.fanCnt > 0) {
-      context.action.updateCloseFanCnt(true)
+      dispatch(setGlobalCtxCloseFanCnt(true))
     }
   }
   //func Good count
   const viewGoodList = () => {
     if (myProfileNo !== profile.memNo) {
-      context.action.updateCloseFanRank(true)
+      dispatch(setGlobalCtxCloseFanRank(true))
       setRankTabType('tabGood')
     } else {
       if (profile.likeTotCnt > 0) {
-        context.action.updateCloseRank(true)
+        dispatch(setGlobalCtxCloseRank(true))
         setRankTabType('tabGood')
       }
     }
@@ -298,11 +321,11 @@ export default (props) => {
   const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
-      context.action.updateMypageReport(false)
-      context.action.updateClose(false)
-      context.action.updateCloseFanCnt(false)
-      context.action.updateCloseStarCnt(false)
-      context.action.updateCloseGoodCnt(false)
+      dispatch(setGlobalCtxMyPageReport(false))
+      dispatch(setGlobalCtxClose(false))
+      dispatch(setGlobalCtxCloseFanCnt(false))
+      dispatch(setGlobalCtxCloseStarCnt(false))
+      dispatch(setGlobalCtxCloseGoodCnt(false))
     } else if (e.state === 'layer') {
       setPopup(true)
     }
@@ -332,15 +355,16 @@ export default (props) => {
   }
   // check special Dj
   const checkSpecialDj = () => {
+
     if (profile.wasSpecial === true && profile.badgeSpecial === 0) {
       return (
-        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
-          <div className="specialIcon prev" />
+        <div className="checkBadge" onClick={() => dispatch(setGlobalCtxCloseSpecial(true))}>
+          <div className="specialIcon prev"/>
         </div>
       )
     } else if (profile.badgeSpecial > 0) {
       return (
-        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
+        <div className="checkBadge" onClick={() => dispatch(setGlobalCtxCloseSpecial(true))}>
           <div className="specialIcon">
             {profile.specialDjCnt && profile.specialDjCnt > 0 ? (
               <em className="specialIcon__count">{profile.specialDjCnt}</em>
@@ -371,7 +395,8 @@ export default (props) => {
   )
 
   const callAlarmReceiveConfirm = useCallback(() => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       title: '알림받기 설정',
       msg: `팬으로 등록하지 않아도
       🔔알림받기를 설정하면
@@ -388,23 +413,26 @@ export default (props) => {
             isReceive: data.isReceive
           })
 
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             title: '방송 알림 설정을 완료하였습니다',
             msg: `마이페이지 > 서비스 설정 ><br/> [알림설정 관리]에서
               설정한 회원을<br/> 확인하고 삭제 할 수 있습니다.
             `
-          })
+          }))
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: message
-          })
+          }))
         }
       }
-    })
+    }))
   }, [profile])
 
   const callAlarmCancelConfirm = useCallback(() => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
       callback: async () => {
         const {result, data, message} = await editAlarm(false)
@@ -414,16 +442,18 @@ export default (props) => {
             ...profile,
             isReceive: data.isReceive
           })
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '설정해제가 완료되었습니다.'
-          })
+          }))
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: message
-          })
+          }))
         }
       }
-    })
+    }))
   }, [profile])
 
   //경험치바 퍼센트 정리
@@ -459,7 +489,7 @@ export default (props) => {
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
   useEffect(() => {
     if (myProfileNo === profile.memNo) {
-      if (context.adminChecker === true) {
+      if (globalState.adminChecker === true) {
         setShowAdmin(true)
       }
       setShowPresent(false)
@@ -477,24 +507,26 @@ export default (props) => {
         <button
           className="liveIcon"
           onClick={async () => {
-            if (!context.myInfo.level) {
-              const myProfile = await Api.profile({ params: { memNo: token.memNo } })
-              if(myProfile.data.level === 0) {
-                return context.action.alert({
+            if (!globalState.myInfo.level) {
+              const myProfile = await Api.profile({params: {memNo: token.memNo}})
+              if (myProfile.data.level === 0) {
+                return dispatch(setGlobalCtxMessage({
+                  type: "alert",
                   msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-                })
+                }))
               }
             }
             if (!profile.level) {
-              return context.action.alert({
+              return dispatch(setGlobalCtxMessage({
+                type: "alert",
                 msg: '0레벨 회원에게는 우체통 메시지를 \n 보낼 수 없습니다.'
-              })
+              }))
             }
 
             if (isHybrid()) {
               Hybrid('JoinMailBox', profile.memNo)
             } else {
-              context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+              dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 5]}));
             }
           }}>
           {profile.isMailboxOn ? (
@@ -532,7 +564,7 @@ export default (props) => {
       <div className="profile-content">
         {myProfileNo !== profile.memNo && (
           <>
-            <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon">
+            <div onClick={() => dispatch(setGlobalCtxMyPageReport(true))} className="reportIcon">
               <span className="blind">신고하기</span>
             </div>
           </>
@@ -543,25 +575,26 @@ export default (props) => {
               className="liveIcon"
               onClick={() => {
                 if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  if (context.token.isLogin === false) {
-                    context.action.alert({
+                  if (globalState.token.isLogin === false) {
+                    dispatch(setGlobalCtxMessage({
+                      type: "alert",
                       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                       callback: () => {
                         history.push('/login')
                       }
-                    })
+                    }))
                   } else {
-                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                    dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 2]}));
                   }
                 } else {
                   if (webview === 'new') {
                     if (
-                      context.customHeader['os'] === OS_TYPE['Android'] ||
-                      (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
+                      globalState.customHeader['os'] === OS_TYPE['Android'] ||
+                      (globalState.customHeader['os'] === OS_TYPE['IOS'] && globalState.customHeader['appBuild'] >= 178)
                     ) {
                       //IOS 웹뷰에서 같은 방 진입시
                       if (
-                        context.customHeader['os'] === OS_TYPE['IOS'] &&
+                        globalState.customHeader['os'] === OS_TYPE['IOS'] &&
                         Utility.getCookie('listen_room_no') == profile.roomNo
                       ) {
                         return Hybrid('CloseLayerPopup')
@@ -578,14 +611,14 @@ export default (props) => {
                   if (
                     webview === 'new' &&
                     Utility.getCookie('clip-player-info') &&
-                    context.customHeader['os'] === OS_TYPE['IOS']
+                    globalState.customHeader['os'] === OS_TYPE['IOS']
                   ) {
-                    return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+                    return dispatch(setGlobalCtxMessage({type: "alert", msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`}))
                   } else {
                     if (
                       webview === 'new' &&
                       Utility.getCookie('listen_room_no') &&
-                      context.customHeader['os'] === OS_TYPE['IOS']
+                      globalState.customHeader['os'] === OS_TYPE['IOS']
                     ) {
                       return false
                     } else {
@@ -603,22 +636,23 @@ export default (props) => {
               className="liveIcon"
               onClick={() => {
                 if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  if (context.token.isLogin === false) {
-                    context.action.alert({
+                  if (globalState.token.isLogin === false) {
+                    dispatch(setGlobalCtxMessage({
+                      type: "alert",
                       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                       callback: () => {
                         history.push('/login')
                       }
-                    })
+                    }))
                   } else {
-                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                    dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 2]}));
                   }
                 } else {
                   if (webview === 'new') {
-                    if (context.customHeader['os'] === OS_TYPE['Android'] || context.customHeader['os'] === OS_TYPE['IOS']) {
+                    if (globalState.customHeader['os'] === OS_TYPE['Android'] || globalState.customHeader['os'] === OS_TYPE['IOS']) {
                       //IOS 웹뷰에서 같은 방 진입시
                       if (
-                        context.customHeader['os'] === OS_TYPE['IOS'] &&
+                        globalState.customHeader['os'] === OS_TYPE['IOS'] &&
                         Utility.getCookie('listen_room_no') == profile.listenRoomNo
                       ) {
                         return Hybrid('CloseLayerPopup')
@@ -626,19 +660,19 @@ export default (props) => {
                       let alertMsg
                       if (isNaN(profile.listenRoomNo)) {
                         alertMsg = `${profile.nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-                        context.action.alert({
+                        dispatch(setGlobalCtxMessage({
                           type: 'alert',
                           msg: alertMsg
-                        })
+                        }))
                       } else {
                         alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-                        context.action.confirm({
+                        dispatch(setGlobalCtxMessage({
                           type: 'confirm',
                           msg: alertMsg,
                           callback: () => {
                             return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
                           }
-                        })
+                        }))
                       }
                     }
                   }
@@ -650,33 +684,33 @@ export default (props) => {
                   if (
                     webview === 'new' &&
                     Utility.getCookie('clip-player-info') &&
-                    context.customHeader['os'] === OS_TYPE['IOS']
+                    globalState.customHeader['os'] === OS_TYPE['IOS']
                   ) {
-                    return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+                    return dispatch(setGlobalCtxMessage({type: "alert", msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`}))
                   } else {
                     if (
                       webview === 'new' &&
                       Utility.getCookie('listen_room_no') &&
-                      context.customHeader['os'] === OS_TYPE['IOS']
+                      globalState.customHeader['os'] === OS_TYPE['IOS']
                     ) {
                       return false
                     } else {
                       let alertMsg
                       if (isNaN(profile.listenRoomNo)) {
                         alertMsg = `${profile.nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-                        context.action.alert({
+                        dispatch(setGlobalCtxMessage({
                           type: 'alert',
                           msg: alertMsg
-                        })
+                        }))
                       } else {
                         alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-                        context.action.confirm({
+                        dispatch(setGlobalCtxMessage({
                           type: 'confirm',
                           msg: alertMsg,
                           callback: () => {
                             return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
                           }
-                        })
+                        }))
                       }
                     }
                   }
@@ -691,10 +725,10 @@ export default (props) => {
         <div className="profile-image">
           <figure
             onClick={() => {
-              context.action.updateMultiViewer({
+              dispatch(setGlobalCtxMultiViewer({
                 show: true,
                 list: profile.profImgList.length ? profile.profImgList : [{profImg: profile.profImg}]
-              })
+              }));
             }}
             style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
             <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
@@ -770,10 +804,9 @@ export default (props) => {
             <button
               className="btn__fanRank cupid"
               onClick={() => {
-                {
-                  profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                  setRankTabType('tabGood')
-                }
+
+                profile.likeTotCnt > 0 && dispatch(setGlobalCtxCloseRank(true))
+                setRankTabType('tabGood')
               }}>
               왕큐피트
             </button>
@@ -781,7 +814,7 @@ export default (props) => {
             <button
               className="btn__fanRank cupid"
               onClick={() => {
-                profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
+                profile.likeTotCnt > 0 && dispatch(setGlobalCtxCloseFanRank(true))
                 setRankTabType('tabGood')
               }}>
               왕큐피트
@@ -821,10 +854,10 @@ export default (props) => {
         {/* 선물하기 */}
         {showPresent && profile.memNo !== '10000000000000' && (
           <div className="buttonWrap">
-            {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+            {globalState.customHeader['os'] !== OS_TYPE['IOS'] && (
               <button
                 onClick={() => {
-                  context.action.updateClosePresent(true)
+                  dispatch(setGlobalCtxClosePresent(true))
                 }}
                 className="btnGift">
                 {/* <span></span> */}
@@ -850,7 +883,7 @@ export default (props) => {
                 )}
                 {profile.isReceive === true && (
                   <button className="btnAlarm">
-                    <img src={AlarmOnIcon} alt="알람 on" onClick={callAlarmCancelConfirm} />
+                    <img src={AlarmOnIcon} alt="알람 on" onClick={callAlarmCancelConfirm}/>
                   </button>
                 )}
               </>
@@ -858,17 +891,18 @@ export default (props) => {
           </div>
         )}
       </div>
-      {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
-      {context.userReport.state === true && <UserReport {...props} urlrStr={context.userReport.targetMemNo} />}
-      {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
-      {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
-      {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
-      {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
-      {context.closeSpeical === true && <ProfileFanList {...props} reportShow={reportShow} name="스디" />}
-      {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
-      {context.closeRank === true && <ProfileRank {...props} type={rankTabType} name="랭킹" />}
-      {context.closeFanRank === true && <ProfileFanRank {...props} type={rankTabType} name="뉴팬랭킹" />}
-      {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
+
+      {globalState.mypageReport === true && <ProfileReport {...props} reportShow={reportShow}/>}
+      {globalState.userReport.state === true && <UserReport {...props} urlrStr={globalState.userReport.targetMemNo}/>}
+      {globalState.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹"/>}
+      {globalState.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬"/>}
+      {globalState.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타"/>}
+      {globalState.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요"/>}
+      {globalState.closeSpeical === true && <ProfileFanList {...props} reportShow={reportShow} name="스디"/>}
+      {globalState.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물"/>}
+      {globalState.closeRank === true && <ProfileRank {...props} type={rankTabType} name="랭킹"/>}
+      {globalState.closeFanRank === true && <ProfileFanRank {...props} type={rankTabType} name="뉴팬랭킹"/>}
+      {popupExp && <LayerPopupExp setPopupExp={setPopupExp}/>}
     </div>
   )
 }

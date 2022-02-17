@@ -26,7 +26,7 @@ export async function ClipPlay(clipNum, context, history) {
       ) {
         localStorage.removeItem('clipPlayListInfo')
       }
-      clipJoin(data, context)
+      clipJoin(data)
     } else {
       if (code === '-99') {
         context.action.alert({

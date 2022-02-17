@@ -1,10 +1,8 @@
-import React, {useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 
 import './index.scss'
 
 export default () => {
-  const context = useContext(Context)
   return (
     <div id="proofShoptPopupWrap">
       <div className="title">

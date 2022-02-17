@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
 import {VIEW_TYPE} from '../constant'
 
 import Gallery_w from '../static/gallery_w.svg'
 import {size} from 'lodash'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function proofWirte(props) {
   const {setViewType, viewType, item, setScrollToList, fetchEventProofshotList, eventStatusCheck} = props
@@ -13,7 +14,8 @@ function proofWirte(props) {
   const [imageData, setImageData] = useState('')
   const [delicate, setDelicate] = useState(false)
   let history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const TextareaRef = useRef()
   const textareaResize = (e) => {
@@ -38,13 +40,18 @@ function proofWirte(props) {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type:"alert",
+        visible: true,
         msg: 'gif, jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({
+            type:"alert",
+            visible: false,
+          }));
         }
-      })
+      }));
     }
     reader.readAsDataURL(target.files[0])
     reader.onload = async () => {
@@ -60,13 +67,18 @@ function proofWirte(props) {
           }
           setImageData(res.data.url)
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type:"alert",
+            visible: true,
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
             title: '',
             callback: () => {
-              context.action.alert({visible: false})
+              dispatch(setGlobalCtxMessage({
+                type:"alert",
+                visible: false,
+              }));
             }
-          })
+          }));
         }
       }
     }
@@ -82,7 +94,9 @@ function proofWirte(props) {
 
       const {result, data} = res
       if (result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type:"alert",
+          visible: true,
           msg: '작성 완료되었습니다.',
           callback: async () => {
             setViewType(VIEW_TYPE.MAIN)
@@ -90,12 +104,14 @@ function proofWirte(props) {
             await eventStatusCheck()
             setScrollToList(true)
           }
-        })
+        }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type:"alert",
+          visible: true,
           msg: res.message,
           callback: () => {}
-        })
+        }));
       }
     }
   }
@@ -111,28 +127,34 @@ function proofWirte(props) {
       })
       const {result, data} = res
       if (result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type:"alert",
+          visible: true,
           msg: '수정이 완료 되었습니다.',
           callback: () => {
             setViewType(VIEW_TYPE.MAIN)
             fetchEventProofshotList()
             setScrollToList(true)
           }
-        })
+        }));
       }
     }
   }
 
   const checkInspection = () => {
     if (content.length < 10) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
+        visible: true,
         msg: '10자 이상 내용을\n 작성해주세요.'
-      })
+      }));
       return false
     } else if (imageData === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
+        visible: true,
         msg: '이미지를 등록해주세요.'
-      })
+      }));
       return false
     } else {
       return true

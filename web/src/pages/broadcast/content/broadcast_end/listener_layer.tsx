@@ -5,15 +5,16 @@ import { broadcastSummary, postAddFan, deleteFan } from "common/api";
 
 import { secToDateConvertor } from "lib/common_fn";
 
-import { GlobalContext } from "context";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 import { OS_TYPE, TAB_TYPE } from "./constant";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 function BroadcastEndByListener() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const { globalAction } = useContext(GlobalContext);
   const { dimLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
 
   const [summary, setSummary] = useState<{ [key: string]: any } | null>(null);
@@ -29,15 +30,15 @@ function BroadcastEndByListener() {
             ...summary,
             isFan: false,
           });
-          globalAction.callSetToastStatus!({
+          dispatch(setGlobalCtxSetToastStatus({
             status: true,
             message: "팬 해제에 성공 했습니다.",
-          });
+          }));
         } else {
-          globalAction.callSetToastStatus!({
+          dispatch(setGlobalCtxSetToastStatus({
             status: true,
             message: message,
-          });
+          }));
         }
       } else {
         const { result, message } = await postAddFan({ memNo: summary.djMemNo });
@@ -48,15 +49,15 @@ function BroadcastEndByListener() {
             isFan: true,
           });
 
-          globalAction.callSetToastStatus!({
+          dispatch(setGlobalCtxSetToastStatus({
             status: true,
             message: "팬 등록에 성공 했습니다.",
-          });
+          }));
         } else {
-          globalAction.callSetToastStatus!({
+          dispatch(setGlobalCtxSetToastStatus({
             status: true,
             message: message,
-          });
+          }));
         }
       }
     }

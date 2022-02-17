@@ -3,21 +3,22 @@
  * @brief 로그인 폼
  */
 import { SOCIAL_URL } from "constant/define";
-import { GlobalContext } from "context";
 import React, { useCallback, useContext, useState } from "react";
 import appleLogo from "../static/apple_logo.svg";
 import facebookLogo from "../static/facebook_logo.svg";
 import googleLogo from "../static/google_logo.svg";
 import kakaoLogo from "../static/kakao_logo.svg";
 import naverLogo from "../static/naver_logo.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 //props type
 type FormProps = {
   onSubmit: (form: { id: string; password: string }) => void;
 };
 export default function login_form({ onSubmit }: FormProps) {
-  const { globalState } = useContext(GlobalContext);
-  const { globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { baseData } = globalState;
 
   const [check, setCheck] = useState<boolean>(false);
@@ -56,20 +57,20 @@ export default function login_form({ onSubmit }: FormProps) {
     e.preventDefault();
     if (!globalState.alertStatus.status) {
       if ((form.id === "" || form.id.length === 0) && (form.password === "" || form.password.length === 0)) {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: "아이디(전화번호)와 비밀번호를 입력하고 다시 로그인해주세요.",
-        });
+        }));
       } else if (form.id === "" || form.id.length === 0) {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: "아이디(전화번호)를 입력하고 다시 로그인해주세요.",
-        });
+        }));
       } else if (form.password === "" || form.password.length === 0) {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: "비밀번호를 입력하고 다시 로그인해주세요.",
-        });
+        }));
       } else {
         onSubmit(form);
         setForm({

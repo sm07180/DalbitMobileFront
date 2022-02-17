@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useContext } from 'react'
-import { ClipRankContext } from 'context/clip_rank_ctx'
 import { calcDateFormat, convertDateFormat } from "components/lib/dalbit_moment";
 import { convertMonday } from "pages/common/rank/rank_fn";
 import { DATE_TYPE } from '../constant'
+import {setFormChangeDate} from "redux/actions/clipRank";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function ClipRankHandleDateBtn() {
-  const { clipRankState, clipRankAction } = useContext(ClipRankContext)
-
+  const dispatch = useDispatch();
+  const clipRankState = useSelector(({clipRank}) => clipRank);
   const { formState } = clipRankState
-  const formDispatch = clipRankAction.formDispatch
 
   const isEqualDateFormat = useMemo(() => {
     if(formState.dateType === DATE_TYPE.DAY) {
@@ -39,15 +39,9 @@ export default function ClipRankHandleDateBtn() {
   const changeDate = useCallback((handle) => {
     const calcNumber = formState.dateType === DATE_TYPE.DAY ? 1 : 7;
     if(handle === 'prev') {
-      formDispatch({
-        type: 'CHANGE_DATE',
-        val: calcDateFormat(formState.rankingDate, parseInt(`-${calcNumber}`))
-      })
+      dispatch(setFormChangeDate(calcDateFormat(formState.rankingDate, parseInt(`-${calcNumber}`))))
     } else {
-      formDispatch({
-        type: 'CHANGE_DATE',
-        val: calcDateFormat(formState.rankingDate, calcNumber)
-      })
+      dispatch(setFormChangeDate(calcDateFormat(formState.rankingDate, calcNumber)))
     }
   }, [formState])
 

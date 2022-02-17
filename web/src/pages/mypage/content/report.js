@@ -10,8 +10,6 @@ import _ from 'lodash'
 //layout
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 
-// context
-import {Context} from 'context'
 import Api from 'context/api'
 // static
 import mic from 'images/mini/mic.svg'
@@ -33,6 +31,8 @@ import Header from '../component/header.js'
 import DatePopup from './report_popup'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxReportDate} from "redux/actions/globalCtx";
 
 let pickerHolder = true
 
@@ -60,8 +60,8 @@ let currentPage = 1
 let timer
 let moreState = false
 export default (props) => {
-  const context = useContext(Context)
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //state
   const [validate, setValidate] = useState({
     pickdata: false
@@ -115,9 +115,9 @@ export default (props) => {
         setResultState(1)
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -154,9 +154,9 @@ export default (props) => {
         setResultState(1)
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -286,11 +286,11 @@ export default (props) => {
     setlistentotal([])
     setPickerCssOn(false)
     setChanges({pickdataPrev: dateWeekAgo, pickdataNext: dateToday})
-    ctx.action.updateReportDate({
+    dispatch(setGlobalCtxReportDate({
       type: 2,
       prev: dateWeekAgo,
       next: dateToday
-    })
+    }));
 
     if (selectType === 0) {
       setSelectType(1)
@@ -344,11 +344,11 @@ export default (props) => {
     }, 10)
   }
   useEffect(() => {
-    ctx.action.updateReportDate({
+    dispatch(setGlobalCtxReportDate({
       type: 2,
       prev: changes.pickdataPrev,
       next: changes.pickdataNext
-    })
+    }));
   }, [])
   return (
     <>
@@ -375,9 +375,9 @@ export default (props) => {
           onClick={() => {
             setPopupState(true)
           }}>
-          <span className={ctx.reportDate.type === 4 ? 'none' : ''}>{dateType[ctx.reportDate.type]}</span>
+          <span className={globalState.reportDate.type === 4 ? 'none' : ''}>{dateType[globalState.reportDate.type]}</span>
           <p>
-            {moment(ctx.reportDate.prev).format('YYYY-MM-DD')} ~ {moment(ctx.reportDate.next).format('YYYY-MM-DD')}
+            {moment(globalState.reportDate.prev).format('YYYY-MM-DD')} ~ {moment(globalState.reportDate.next).format('YYYY-MM-DD')}
           </p>
         </div>
 

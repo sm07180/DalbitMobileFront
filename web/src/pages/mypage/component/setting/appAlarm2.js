@@ -2,10 +2,9 @@
  * @file /mypage/context/appAlarm.js
  * @brief 마이페이지 어플알람 2.5v
  **/
-import React, {useState, useEffect, useContext, useRef, useCallback, useLayoutEffect} from 'react'
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 
 // constant
@@ -15,6 +14,9 @@ import {BC_SETTING_TYPE} from '../../constant'
 import alarmOn from '../ic_alarmtoggleon.svg'
 import alarmOff from '../ic_alarmtoggleoff.svg'
 import GuideIcon from '../../static/guide.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
+
 let first = true
 let isSelect = false
 
@@ -43,16 +45,18 @@ const msgOn = ' 푸시를 받습니다.'
 const msgOff = ' 푸시를 받지 않습니다.'
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {setChangeContents, setInitialScreen} = props
 
-  //contenxt
-  const context = useContext(Context)
   //state
   const [allBtnState, setAllBtnState] = useState([])
   const [isClickAll, setIsClickAll] = useState(false)
   const [allCheck, setAllCheck] = useState(0)
   const [myAlimType, setMyAlimType] = useState(-1)
   const [alarmArray, setAlarmArray] = useState(AlarmArray)
+
   // api
 
   async function fetchData() {
@@ -75,9 +79,10 @@ export default (props) => {
       )
       setMyAlimType(res.data.alimType)
     } else if (res.result === 'fail') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     }
   }
   // 수정
@@ -119,27 +124,32 @@ export default (props) => {
       if (arg === undefined) {
         if (isSelect === true) {
           if (all === 1) {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: '모든 알림 푸시를 받습니다.'
-            })
+            }))
           } else {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: '모든 알림 푸시를 받지 않습니다.'
-            })
+            }))
           }
         } else {
           if (myAlimType === 'n') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: '알림 모드가 무음으로 변경되었습니다.'
-            })
+            }))
           } else if (myAlimType === 's') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: '알림 모드가 소리로 변경되었습니다.'
-            })
+            }))
           } else if (myAlimType === 'v') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: '알림 모드가 진동으로 변경되었습니다.'
-            })
+            }))
           }
         }
       } else {
@@ -152,14 +162,16 @@ export default (props) => {
           message = resultData.msg + msgOff
         }
 
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: message
-        })
+        }))
       }
     } else if (res.result === 'fail') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -187,15 +199,17 @@ export default (props) => {
     postAlarmData()
   }
   const openPopup = (key) => {
-    context.action.updatePopup('ALARM', key)
+    dispatch(setGlobalCtxUpdatePopup({popup: ['ALARM', key]}))
   }
 
   const openCallbackPopup = useCallback((key, callback, buttonText) => {
-    context.action.updatePopup('ALARM', {
-      key,
-      callback,
-      buttonText
-    })
+    dispatch(setGlobalCtxUpdatePopup({
+      popup: ['ALARM', {
+        key,
+        callback,
+        buttonText
+      }]
+    }))
   }, [])
 
   const makeContent = () => {

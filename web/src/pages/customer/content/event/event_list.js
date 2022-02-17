@@ -1,26 +1,30 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
 import NoResult from 'components/ui/new_noResult'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function EventList() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const [eventList, setEventList] = useState([])
 
   const countIngAlert = () => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login?redirect=/customer/event')
     } else {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '당첨자 집계 중입니다. <br/>조금만 기다려주세요.'
-      })
+      }))
     }
   }
 
   const announcePage = (eventIdx, title, announcementDate) => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login?redirect=/customer/event')
     } else {
       history.push({
@@ -58,9 +62,10 @@ export default function EventList() {
       if (result === 'success') {
         setEventList(data)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
     fetchData()

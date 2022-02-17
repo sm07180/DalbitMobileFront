@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useLayoutEffect, useState, useRef, useMemo, useCallback} from 'react';
-import {GlobalContext} from "../../../context";
 import {IMG_SERVER} from "../../../constant/define";
 import {MediaType} from "../constant";
 import MoonLandAnimateChildren from "./moon_land_animate_children";
@@ -27,7 +26,7 @@ const MoonLandAnimationComponent = (props: any) => {
 
   //receiveSocket -> component
   const [pointAnimate, setPointAnimate] = useState<any>(null);
-  
+
   //애니메이션 실행 큐 테스트용
   const [aniQueue, setAniQueue] = useState<Array<Object>>([]);
   const aniQueueValueRef = useRef<Array<Object>>([]);

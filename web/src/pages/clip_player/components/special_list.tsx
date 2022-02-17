@@ -1,20 +1,19 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useParams, useLocation } from "react-router-dom";
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 // api
 import { getSpecialList, getProfile } from "common/api";
 // scss
 // constant
 import { tabType } from "../constant";
+import {useSelector} from "react-redux";
 
 export default (props) => {
   // ctx && commons
 
   const { clipState, clipAction } = useContext(ClipContext);
   const { setRightTabType, setUserMemNo } = clipAction;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { userMemNo } = clipState;
 
   const history = useHistory();

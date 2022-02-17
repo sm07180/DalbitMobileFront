@@ -1,20 +1,22 @@
-import React, {useContext, useRef, useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Api from "context/api";
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 
 const PhoneAuth = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let {signForm, onChange, setStep, setSignForm} = props;
-  const context = useContext(Context);
   const [authCheck, setAuthCheck] = useState(false);
-  const [authBtnValue,setAuthBtnValue] = useState("인증요청")
+  const [authBtnValue, setAuthBtnValue] = useState("인증요청")
 
   const phoneNumRef = useRef(null);
   const requestNumRef = useRef(null);
   const phoneCheckRef = useRef(null);
   const authCheckRef = useRef(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if(rgEx.test(signForm.phoneNum)){
       setAuthCheck(true);
@@ -47,7 +49,7 @@ const PhoneAuth = (props) => {
           requestNumRef.current.disabled = false;
           setAuthBtnValue("재발송");
         }else{
-          context.action.alert({msg: res.message});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
         }
       });
     }

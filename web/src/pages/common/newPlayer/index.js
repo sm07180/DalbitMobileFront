@@ -2,22 +2,21 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState, useContext, useEffect} from 'react'
-import _ from 'lodash'
+import React, {useState} from 'react'
 //context
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 // etc
 import Content from './content'
-import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxPlayer} from "redux/actions/globalCtx";
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //useState
   const [visible, setVisible] = useState(true)
+
   //---------------------------------------------------------------------
   function update(mode) {
     switch (true) {
@@ -25,7 +24,7 @@ export default (props) => {
         sessionStorage.removeItem('room_no')
         Utility.setCookie('listen_room_no', null)
         Hybrid('ExitRoom', '')
-        context.action.updatePlayer(false)
+        dispatch(setGlobalCtxPlayer(false));
         break
       case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
         // let roomNo = sessionStorage.getItem('room_no')
@@ -68,7 +67,7 @@ export default (props) => {
   return (
     <React.Fragment>
       {/* 미디어 플레이어 */}
-      {context.nativePlayer && context.player && visible && <Content {...props} update={update} />}
+      {globalState.nativePlayer && globalState.player && visible && <Content {...props} update={update}/>}
       {/* <Content {...props} update={update} /> */}
     </React.Fragment>
   )

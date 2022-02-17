@@ -5,7 +5,6 @@ import { broadcastSummary } from "common/api";
 import { secToDateConvertor } from "lib/common_fn";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
-import { GlobalContext } from "context";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 import heartIcon from "./static/ic_heart_r.svg";
@@ -14,9 +13,10 @@ import expIcon from "./static/ic_exp.svg";
 import NoResultImg from "./static/no_result_img.svg";
 
 import "./index.scss";
+import {useDispatch, useSelector} from "react-redux";
 
 function BroadcastEndByDj() {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { exitMarbleInfo } = globalState;
   const history = useHistory();
   const { dimLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
@@ -156,29 +156,6 @@ function BroadcastEndByDj() {
               dispatchDimLayer({
                 type: "INIT",
               });
-              /*globalAction.setExitMarbleInfo &&
-                globalAction.setExitMarbleInfo({
-                  ...globalState.exitMarbleInfo,
-                  rMarbleCnt: exitMarbleInfo.rMarbleCnt,
-                  yMarbleCnt: exitMarbleInfo.yMarbleCnt,
-                  bMarbleCnt: exitMarbleInfo.bMarbleCnt,
-                  vMarbleCnt: exitMarbleInfo.vMarbleCnt,
-                  isBjYn: exitMarbleInfo.isBjYn,
-                  marbleCnt: exitMarbleInfo.marbleCnt,
-                  pocketCnt: exitMarbleInfo.pocketCnt,
-                });*/
-              /*if (
-                (globalState.exitMarbleInfo &&
-                  globalState.exitMarbleInfo.marbleCnt > 0) ||
-                (globalState.exitMarbleInfo &&
-                  globalState.exitMarbleInfo.pocketCnt > 0)
-              ) {
-                globalAction.setExitMarbleInfo &&
-                  globalAction.setExitMarbleInfo({
-                    ...globalState.exitMarbleInfo,
-                    showState: true,
-                  });
-              }*/
             }}
           >
             확인

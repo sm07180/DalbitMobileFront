@@ -1,5 +1,4 @@
-import React, {useState, useEffect,useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
@@ -7,10 +6,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 
 const NewlyAccount = (props) => {
-  //context
-  const context = useContext(Context)
-  const {profile} = context
-  
+
   return (
     <>
       <form className="formBox">

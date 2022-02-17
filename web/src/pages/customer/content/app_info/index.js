@@ -1,22 +1,24 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 export default function AppInfo() {
-  const history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const {profile} = context
+  const history = useHistory()
+
+  const {profile} = globalState
 
   const handleHistory = (url) => {
     history.push(`/customer/appInfo/${url}`)
   }
 
   const checklogin = () => {
-    if (context.token.isLogin === true) {
+    if (globalState.token.isLogin === true) {
       history.push(`/secession`)
-    } else if (context.token.isLogin === false) {
+    } else if (globalState.token.isLogin === false) {
       history.push('/login')
     }
   }

@@ -1,7 +1,5 @@
-import React, {useState, useEffect, useRef, useCallback, useContext} from 'react'
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-
-import {Context} from 'context'
 import {KnowHowContext} from '../store'
 import Api from 'context/api'
 
@@ -9,6 +7,8 @@ import {DEVICE_TYPE} from '../constant'
 import {InspectionCheckWithAlert} from '../common_fn'
 
 import uploadIcon from '../static/gallery_g.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let ImgHeight = 0
 const DeviceArr = [
@@ -20,7 +20,9 @@ const DeviceArr = [
 ]
 
 function AttendAdd() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {KnowHowState, KnowHowAction} = useContext(KnowHowContext)
 
   const {mine, condition, order, list} = KnowHowState
@@ -99,13 +101,14 @@ function AttendAdd() {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
     }
     reader.readAsDataURL(target.files[0])
     reader.onload = async () => {
@@ -128,13 +131,14 @@ function AttendAdd() {
           )
           console.log(res.data.url)
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: res.message,
             title: '',
             callback: () => {
-              context.action.alert({visible: false})
+              dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
             }
-          })
+          }))
         }
       }
     }
@@ -143,7 +147,8 @@ function AttendAdd() {
   function deleteFile(e, idx) {
     e.preventDefault()
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '첨부파일을 삭제하시겠습니까?\n삭제된 파일은 복원되지 않습니다.',
       callback: () => {
         document.getElementById('img' + idx).value = ''
@@ -179,17 +184,17 @@ function AttendAdd() {
                   }
                 })
                 .flat()
-            )
-        context.action.confirm({visible: false})
+          )
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       cancelCallback: () => {
-        context.action.confirm({visible: false})
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       buttonText: {
         left: '취소',
         right: '삭제'
       }
-    })
+    }))
   }
 
   const insertKnowHow = useCallback(async () => {
@@ -207,7 +212,8 @@ function AttendAdd() {
       })
 
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '참여 완료하였습니다.',
           callback: async () => {
             const listRes = await Api.knowhow_list({
@@ -225,18 +231,20 @@ function AttendAdd() {
 
             history.goBack()
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '노하우 등록에 실패하셧습니다'
-        })
+        }))
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: result.msg
-      })
+      }))
     }
-  }, [title, contents, uploadFile, additional, device, context.token])
+  }, [title, contents, uploadFile, additional, device, globalState.token])
 
   const modifyKnowHow = useCallback(async () => {
     const result = InspectionCheckWithAlert(device, additional, title, contents, uploadFile)
@@ -254,7 +262,8 @@ function AttendAdd() {
       })
 
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '수정 완료하였습니다.',
           callback: () => {
             const findModifyList = list.findIndex((v) => {
@@ -272,16 +281,18 @@ function AttendAdd() {
             }
             history.goBack()
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '노하우 등록에 실패하셧습니다'
-        })
+        }))
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: result.msg
-      })
+      }))
     }
   }, [title, contents, uploadFile, additional, device])
 
@@ -299,7 +310,7 @@ function AttendAdd() {
   }, [contents])
 
   useEffect(() => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login')
     }
 
@@ -412,7 +423,7 @@ function AttendAdd() {
                 ref={TextareaRef}
                 className="attendAddWrap__commonTitle--contents"
                 value={contents}
-                placeholder="내용을 작성해주세요. (나만의 방송 노하우, 제품 추천 
+                placeholder="내용을 작성해주세요. (나만의 방송 노하우, 제품 추천
                   등)"
                 onChange={(e) => {
                   if (e.target.value.length <= 1000) setContents(e.target.value)

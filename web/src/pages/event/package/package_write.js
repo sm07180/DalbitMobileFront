@@ -1,13 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 import Header from 'components/ui/new_header.js'
 import './package.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const packageEventWrite = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
 
   //state
   const [deligate, setDeligate] = useState(false)
@@ -24,16 +26,18 @@ const packageEventWrite = () => {
     if (res.result === 'success') {
       if (res.data.isOk === 0) {
         //참여불가능
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `<div class="packageEventAlertColor">지원신청을 위해서는 방송시간이<br/>10시간 이상이어야 합니다.<br/><span >누적 방송 시간 : ${res.data.airTimeStr}</span></div>`,
           callback: () => {
             history.push('/')
           }
-        })
+        }))
       }
     } else {
-      if (!context.token.isLogin) {
-        context.action.alert({
+      if (!globalState.token.isLogin) {
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message,
           callback: () => {
             history.push({
@@ -43,14 +47,15 @@ const packageEventWrite = () => {
               }
             })
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message,
           callback: () => {
             history.push('/')
           }
-        })
+        }))
       }
     }
   }
@@ -67,17 +72,20 @@ const packageEventWrite = () => {
     })
     const {result} = res
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '작성 완료되었습니다.',
         callback: () => {
           history.push('/')
         }
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
-        callback: () => {}
-      })
+        callback: () => {
+        }
+      }))
     }
   }
 
@@ -100,7 +108,8 @@ const packageEventWrite = () => {
   }
 
   function confirm() {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       remsg: '신청하시겠습니까?',
       msg: '웹캠 지원 신청서 작성을 완료한 뒤에는 신청 내용 수정이 불가능합니다.',
 
@@ -109,77 +118,78 @@ const packageEventWrite = () => {
         packageEventUpload()
       },
       //캔슬콜백처리
-      cancelCallback: () => {}
-    })
+      cancelCallback: () => {
+      }
+    }))
   }
 
   function alertDeligate() {
     if (name === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '이름을 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
     if (phone === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '휴대폰 번호를 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
 
     if (postCode === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '주소를 검색해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
 
     if (address === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '주소를 검색해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
 
     if (detailAdress === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '상세 주소를 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
 
     if (device === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '보유장비 내용을 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
 
     if (contents === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '방송 소개 내용을 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
       return
     }
 

@@ -2,22 +2,19 @@ import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import { useHistory } from "react-router-dom";
 import { addComma } from "../../../lib/common_fn";
-import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
 import { RoomValidateFromClip } from "common/audio/clip_func";
 
 import NoResult from "common/ui/no_result";
 import SpecialHandleHistory from "./special_history_handle";
 import ProfileImage from "common/ui/profileImage";
 import live from "../static/live_m.svg";
+import {useDispatch, useSelector} from "react-redux";
 
 function SpecialList({ empty }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
-  const { rankState } = useContext(RankContext);
-
-  const gtx = useContext(GlobalContext);
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const rankState = useSelector(({rank}) => rank);
   const { specialList } = rankState;
 
   return (
@@ -95,7 +92,7 @@ function SpecialList({ empty }) {
                           <img
                             src={live}
                             onClick={() => {
-                              RoomValidateFromClip(v.roomNo, gtx, history, v.nickNm);
+                              RoomValidateFromClip(v.roomNo, globalState, dispatch, history, v.nickNm);
                             }}
                             className="liveBox__img"
                           />

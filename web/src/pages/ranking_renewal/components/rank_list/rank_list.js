@@ -1,25 +1,24 @@
-import React, {useContext, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import {RoomJoin} from 'context/room'
 import {OS_TYPE} from 'context/config.js'
-import {IMG_SERVER} from 'context/config'
 
-import {printNumber, convertDateToText} from 'pages/common/rank/rank_fn'
+import {convertDateToText, printNumber} from 'pages/common/rank/rank_fn'
 
 // context
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import {DATE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 import BadgeList from 'common/badge_list'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 function RankList() {
-  //context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
-  const {rankState} = useContext(RankContext)
+  const rankState = useSelector(({rank}) => rank);
   const customHeader = JSON.parse(Api.customHeader)
 
   const {rankList, formState} = rankState
@@ -92,8 +91,8 @@ function RankList() {
                   <div
                     className="myRanking__rank"
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)
@@ -120,8 +119,8 @@ function RankList() {
                   <div
                     className="myRanking__content"
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)
@@ -196,15 +195,15 @@ function RankList() {
                     <button
                       onClick={() => {
                         if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (context.token.isLogin === false) {
-                            context.action.alert({
+                          if (globalState.token.isLogin === false) {
+                            globalState.action.alert({
                               msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                               callback: () => {
                                 history.push('/login')
                               }
                             })
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 2]}))
                           }
                         } else {
                           if (roomNo !== '') {
@@ -213,19 +212,19 @@ function RankList() {
                             let alertMsg
                             if (isNaN(listenRoomNo)) {
                               alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-                              context.action.alert({
-                                type: 'alert',
+                              dispatch(setGlobalCtxMessage({
+                                type: "alert",
                                 msg: alertMsg
-                              })
+                              }))
                             } else {
                               alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-                              context.action.confirm({
-                                type: 'confirm',
+                              dispatch(setGlobalCtxMessage({
+                                type: "confirm",
                                 msg: alertMsg,
                                 callback: () => {
                                   return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
                                 }
-                              })
+                              }))
                             }
                           }
                         }

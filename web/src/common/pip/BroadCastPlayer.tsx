@@ -2,15 +2,21 @@
 import React, {useContext, useEffect} from "react";
 
 // static
-import {GlobalContext} from "context";
 import {MediaType} from "pages/broadcast/constant";
 import BroadCastVideoPlayer from "./BroadCastVideoPlayer";
 import BroadCastAudioPlayer from "./BroadCastAudioPlayer";
 import {rtcSessionClear, UserType} from "../realtime/rtc_socket";
 import {broadcastExit, broadcastInfoNew} from "../api";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxIsShowPlayer,
+  setGlobalCtxRtcInfoEmpty
+} from "../../redux/actions/globalCtx";
 
 const BroadCastPlayer = ()=> {
-  const {globalAction, globalState} = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {baseData, rtcInfo, chatInfo, guestInfo} = globalState;
   const mediaType = rtcInfo?.roomInfo?.mediaType;
 
@@ -64,7 +70,7 @@ const BroadCastPlayer = ()=> {
 
   useEffect(() => {
     if (chatInfo !== null && rtcInfo !== null) {
-      globalAction.setIsShowPlayer(true);
+      dispatch(setGlobalCtxIsShowPlayer(true));
       //rtcInfo.initVideoTag();
       if (rtcInfo.getWsConnectionCheck()) {
         if (rtcInfo?.userType === UserType.HOST) {
@@ -75,7 +81,7 @@ const BroadCastPlayer = ()=> {
         }
       }
     } else {
-      globalAction.setIsShowPlayer(false);
+      dispatch(setGlobalCtxIsShowPlayer(false));
     }
   },[chatInfo, rtcInfo]);
 
@@ -83,18 +89,18 @@ const BroadCastPlayer = ()=> {
     const {result} = await broadcastExit({ roomNo:rtcInfo?.getRoomNo() as string });
     if (result === "success") {
       rtcSessionClear();
-      globalAction.setIsShowPlayer(false);
+      dispatch(setGlobalCtxIsShowPlayer(false));
       if (rtcInfo !== null) {
         chatInfo?.privateChannelDisconnect();
         rtcInfo.socketDisconnect();
         rtcInfo.stop();
-        globalAction.dispatchRtcInfo({ type: "empty" });
+        dispatch(setGlobalCtxRtcInfoEmpty());
 
         if (guestInfo) {
           Object.keys(guestInfo).forEach((v) => {
             guestInfo[v].stop?.();
           });
-          globalAction.dispatchGuestInfo({type: "EMPTY"});
+          dispatch(setGlobalCtxGuestInfoEmpty());
         }
       }
     }

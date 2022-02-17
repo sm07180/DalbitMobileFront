@@ -1,14 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 
-import { MailboxContext } from "context/mailbox_ctx";
-
 //component
 import Header from "components/ui/header/Header";
 import NoResult from "common/ui/no_result";
 import UserList from "./user_list";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxTabState} from "../../../../redux/actions/mailBox";
 
 export default function chatNewPage() {
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const { chatTargetData } = mailboxState;
 
   return (
@@ -16,10 +17,10 @@ export default function chatNewPage() {
       <Header title="새로운 메세지" type="back"/>
       <div className="chatNewPage subContent gray">
         <div className="tabBox">
-          <button className={`${mailboxState.tabState === 1 ? "active" : ""}`} onClick={() => mailboxAction.setTabState!(1)}>
+          <button className={`${mailboxState.tabState === 1 ? "active" : ""}`} onClick={() => dispatch(setMailBoxTabState(1)) }>
             팬 <span>{mailboxState.chatTargetData?.fanTotalCnt}명</span>
           </button>
-          <button className={`${mailboxState.tabState === 2 ? "active" : ""}`} onClick={() => mailboxAction.setTabState!(2)}>
+          <button className={`${mailboxState.tabState === 2 ? "active" : ""}`} onClick={() => dispatch(setMailBoxTabState(2))}>
             스타 <span>{mailboxState.chatTargetData?.starTotalCnt}명</span>
           </button>
         </div>

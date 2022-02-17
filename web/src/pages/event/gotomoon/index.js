@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useRef, useContext, useCallback} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header.js'
@@ -9,10 +8,14 @@ import TopInfo from "./content/topInfo";
 import GotoMoonRanking from "./content/ranking";
 
 import "./style.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxGoToMoonTab} from "redux/actions/globalCtx";
 
 export default function Gotomoon() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
-  const globalCtx = useContext(Context)
 
   const tabWrapRef = useRef(null);
   const tabBtnRef = useRef(null);
@@ -21,9 +24,9 @@ export default function Gotomoon() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [insDate, setInsDate] = useState("");
-  
+
   const loginCheck = () => {
-    if (!globalCtx.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login')
       return
     } else {
@@ -53,34 +56,38 @@ export default function Gotomoon() {
   }, []);
 
 
-  useEffect(() => {        
-    if (tabFixed) {window.scrollTo(0, 0);}
-  }, [globalCtx.gotomoonTab]);
+  useEffect(() => {
+    if (tabFixed) {
+      window.scrollTo(0, 0);
+    }
+  }, [globalState.gotomoonTab]);
 
   useEffect(() => {
     loginCheck();
     document.addEventListener("scroll", scrollTabFixEvent);
     return () => document.removeEventListener("scroll", scrollTabFixEvent);
   }, [])
-  
+
   return (
     <div id="goToMoon">
       <Header title="이벤트" />
       <div className="page">
         <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoom-visual.png" className="img_full" alt="달빛라이브에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
-        <div className="pageContent" ref={tabWrapRef} style={{ paddingTop: tabFixed ? "50px" : "" }}>
+        <div className="pageContent" ref={tabWrapRef} style={{paddingTop: tabFixed ? "50px" : ""}}>
           <div className={`tabWrap ${tabFixed === true ? "fixed" : ""}`} ref={tabBtnRef}>
-            <button className="tabMenu" onClick={() =>globalCtx.action.updateGotomoonTab('info')}>
-              <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-info.png" className="titleImg" alt="이벤트 설명"/>
+            <button className="tabMenu" onClick={() => dispatch(setGlobalCtxGoToMoonTab('info'))}>
+              <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-info.png" className="titleImg"
+                   alt="이벤트 설명"/>
             </button>
-            <button className="tabMenu" onClick={() =>globalCtx.action.updateGotomoonTab('rank')}>
-              <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-rank.png" className="titleImg" alt="이벤트 랭킹"/>
+            <button className="tabMenu" onClick={() => dispatch(setGlobalCtxGoToMoonTab('rank'))}>
+              <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-rank.png" className="titleImg"
+                   alt="이벤트 랭킹"/>
             </button>
           </div>
 
-          {globalCtx.gotomoonTab  === "info" ?
-            <TopInfo startDate={startDate} endDate={endDate}/>            
-          : 
+          {globalState.gotomoonTab === "info" ?
+            <TopInfo startDate={startDate} endDate={endDate}/>
+            :
             <GotoMoonRanking moonNumber={moonNumber} endDate={endDate}/>
           }
         </div>

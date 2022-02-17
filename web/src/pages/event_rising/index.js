@@ -1,12 +1,10 @@
-import Util from 'components/lib/utility'
 //globalCtx
-import {Context} from 'context'
 import API from 'context/api'
 import {PHOTO_SERVER} from 'context/config.js'
 // component
 import Layout from 'pages/common/layout'
 import NoResult from 'pages/main/component/NoResult.js'
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import './event_rising.scss'
 
@@ -15,8 +13,13 @@ import btnClose from './static/ico_close.svg'
 import BronzeMedal from './static/medal_bronze@2x.png'
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [eventType, setEventType] = useState(1) // star, fan
 
   const [risingList, setRisingList] = useState([])
@@ -25,8 +28,7 @@ export default (props) => {
   const [risingState, setRisingState] = useState({})
 
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const {token} = globalState
 
   useEffect(() => {
     async function fetchInitData() {
@@ -89,7 +91,7 @@ export default (props) => {
         <img
           src="https://image.dalbitlive.com/event/rising/200715/rising_star_img.png"
           onClick={() => {
-            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail']}));
           }}
         />
       )
@@ -98,7 +100,7 @@ export default (props) => {
         <img
           src="https://image.dalbitlive.com/event/rising/200722/rising_star_img.png"
           onClick={() => {
-            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail2')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail2']}));
           }}
         />
       )
@@ -112,7 +114,7 @@ export default (props) => {
         <img
           src="https://image.dalbitlive.com/event/rising/200715/rising_fan_img.png"
           onClick={() => {
-            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail']}));
           }}
         />
       )
@@ -121,7 +123,7 @@ export default (props) => {
         <img
           src="https://image.dalbitlive.com/event/rising/200722/rising_fan_img.png"
           onClick={() => {
-            globalCtx.action.updatePopup('TERMS', 'rising-event-gift-detail2')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-gift-detail2']}));
           }}
         />
       )
@@ -133,7 +135,7 @@ export default (props) => {
       return (
         <button
           onClick={() => {
-            globalCtx.action.updatePopup('TERMS', 'rising-event-detail')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-detail']}));
           }}>
           자세히
         </button>
@@ -142,7 +144,7 @@ export default (props) => {
       return (
         <button
           onClick={() => {
-            globalCtx.action.updatePopup('TERMS', 'rising-event-detail2')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'rising-event-detail2']}));
           }}>
           자세히
         </button>

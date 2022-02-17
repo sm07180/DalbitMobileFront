@@ -7,8 +7,6 @@ import React, {
 } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 
-import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
 import {
   getRankList,
   getRankTimeList,
@@ -19,6 +17,21 @@ import {
 import { convertDateFormat } from "lib/common_fn";
 import { convertDateTimeForamt, convertSetSpecialDate } from "lib/rank_fn";
 import { RANK_TYPE, DATE_TYPE, PAGE_TYPE } from "./constant";
+
+import {
+  setRankMyInfo,
+  setRankList,
+  setRankData,
+  setRankLevelList,
+  setRankLikeList,
+  setRankTotalPage,
+  setRankSpecialList,
+  setRankWeeklyList,
+  setRankSecondList,
+  setRankTimeData,
+  setRankFormPage,
+  setRankFormPageType, setRankScrollY
+} from "redux/actions/rank";
 
 import RankBtnWrap from "./content/rank_btn_wrap";
 import DateBtnWrap from "./content/date_btn_wrap";
@@ -40,13 +53,15 @@ import awardIcon from "./static/ic_award.png";
 import Layout from "common/layout";
 
 import "./index.scss";
+import {useDispatch, useSelector} from "react-redux";
 
 let timer;
 const records = 50;
 
 const Ranking = function() {
-  const { globalState } = useContext(GlobalContext);
-  const { rankState, rankAction } = useContext(RankContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const rankState = useSelector(({rank}) => rank);
 
   let location = useLocation();
   const initialRank = location.state;
@@ -63,18 +78,6 @@ const Ranking = function() {
     weeklyList,
     secondList,
   } = rankState;
-
-  const formDispatch = rankAction.formDispatch!;
-  const setMyInfo = rankAction.setMyInfo!;
-  const setRankList = rankAction.setRankList!;
-  const setRankData = rankAction.setRankData!;
-  const setLevelList = rankAction.setLevelList!;
-  const setLikeList = rankAction.setLikeList!;
-  const setTotalPage = rankAction.setTotalPage!;
-  const setSpecialList = rankAction.setSpecialList!;
-  const setWeeklyList = rankAction.setWeeklyList!;
-  const setSecondList = rankAction.setSecondList!;
-  const setRankTimeData = rankAction.setRankTimeData!;
 
   const history = useHistory();
   const [empty, setEmpty] = useState(false);
@@ -130,54 +133,51 @@ const Ranking = function() {
         if (formState[formState.pageType].rankType === RANK_TYPE.LEVEL) {
           // level
           if (formState.page > 1) {
-            setLevelList(levelList.concat(res.data.list));
+            dispatch(setRankLevelList(levelList.concat(res.data.list)));
           } else {
-            setLevelList(res.data.list);
+            dispatch(setRankLevelList(res.data.list));
           }
-          setRankList([]);
-          setLikeList([]);
-          setTotalPage(res.data.paging.totalPage);
+          dispatch(setRankList([]));
+          dispatch(setRankLikeList([]));
+          dispatch(setRankTotalPage(res.data.paging.totalPage));
           setEmpty(false);
         } else {
           // dj, fan, good
           const { data } = res;
           const { isRankData } = data;
           if (formState.page > 1) {
-            setRankList(rankList.concat(res.data.list));
-            setRankData({
+            dispatch(setRankList(rankList.concat(res.data.list)));
+            dispatch(setRankData({
               isRankData,
-            });
+            }));
             setEmpty(false);
           } else {
             if (res.data.list.length < 4) {
               setEmpty(true);
             } else {
-              setRankList(res.data.list);
+              dispatch(setRankList(res.data.list));
               setEmpty(false);
             }
-            setRankData({
+            dispatch(setRankData({
               isRankData,
-            });
+            }));
           }
-          setLevelList([]);
-          setLikeList([]);
-          setTotalPage(res.data.paging.totalPage);
-
-          setMyInfo({
-            ...res.data,
-          });
+          dispatch(setRankLevelList([]));
+          dispatch(setRankLikeList([]));
+          dispatch(setRankTotalPage(res.data.paging.totalPage));
+          dispatch(setRankMyInfo(res.data));
         }
       } else {
         setEmpty(true);
-        setRankList([]);
-        setLevelList([]);
-        setMyInfo({ ...myInfo });
+        dispatch(setRankList([]));
+        dispatch(setRankLevelList([]));
+        dispatch(setRankMyInfo(myInfo));
       }
     } else {
       setEmpty(true);
-      setRankList([]);
-      setLevelList([]);
-      setMyInfo({ ...myInfo });
+      dispatch(setRankList([]));
+      dispatch(setRankLevelList([]));
+      dispatch(setRankMyInfo(myInfo));
     }
   };
 
@@ -191,11 +191,11 @@ const Ranking = function() {
     });
     if (res.result === "success") {
       if (res.data.list.length > 0) {
-        setSpecialList(res.data.list);
+        dispatch(setRankSpecialList(res.data.list));
         setEmpty(false);
       } else {
         setEmpty(true);
-        setSpecialList([]);
+        dispatch(setRankSpecialList([]));
       }
     }
   }, [formState]);
@@ -207,14 +207,14 @@ const Ranking = function() {
     });
     if (res.result === "success") {
       if (formState.page > 1) {
-        setWeeklyList(weeklyList.concat(res.data.list));
+        dispatch(setRankWeeklyList(weeklyList.concat(res.data.list)));
       } else {
-        setWeeklyList(res.data.list);
+        dispatch(setRankWeeklyList(res.data.list));
       }
-      setTotalPage(res.data.paging.totalPage);
+      dispatch(setRankTotalPage(res.data.paging.totalPage));
       setEmpty(false);
     } else {
-      setWeeklyList([]);
+      dispatch(setRankWeeklyList([]));
       setEmpty(true);
     }
   }, [formState]);
@@ -226,14 +226,14 @@ const Ranking = function() {
     });
     if (res.result === "success") {
       if (formState.page > 1) {
-        setSecondList(secondList.concat(res.data.list));
+        dispatch(setRankSecondList(secondList.concat(res.data.list)));
       } else {
-        setSecondList(res.data.list);
+        dispatch(setRankSecondList(res.data.list));
       }
-      setTotalPage(res.data.paging.totalPage);
+      dispatch(setRankTotalPage(res.data.paging.totalPage));
       setEmpty(false);
     } else {
-      setSecondList([]);
+      dispatch(setRankSecondList([]));
       setEmpty(true);
     }
   }, [formState]);
@@ -253,21 +253,22 @@ const Ranking = function() {
     const { data } = res;
     const { isRankData } = data;
     if (res.result === "success") {
-      setRankTimeData({
+
+      dispatch(setRankTimeData({
         ...rankTimeData,
         ...res.data,
-      });
+      }));
 
       if (formState.page > 1) {
-        setRankList(rankList.concat(res.data.list));
+        dispatch(setRankList(rankList.concat(res.data.list)));
       } else {
         // dj, fan, like
         if (formState.page > 1) {
-          setRankList(rankList.concat(res.data.list));
-          setRankTimeData({
+          dispatch(setRankList(rankList.concat(res.data.list)));
+          dispatch(setRankTimeData({
             ...rankTimeData,
             ...res.data,
-          });
+          }));
 
           setEmpty(false);
         } else {
@@ -275,23 +276,22 @@ const Ranking = function() {
             setEmpty(true);
           } else {
             setEmpty(false);
-            setRankList(res.data.list);
-
-            setRankData({
+            dispatch(setRankList(res.data.list));
+            dispatch(setRankData({
               isRankData,
-            });
+            }));
           }
         }
-        setLevelList([]);
-        setLikeList([]);
-        setTotalPage(res.data.paging.totalPage);
-        setMyInfo({
+        dispatch(setRankLevelList([]));
+        dispatch(setRankLikeList([]));
+        dispatch(setRankTotalPage(res.data.paging.totalPage));
+        dispatch(setRankMyInfo({
           myInfo,
           ...res.data,
-        });
+        }));
       }
     } else {
-      setRankList([]);
+      dispatch(setRankList([]));
       setEmpty(true);
     }
   }, [formState]);
@@ -313,13 +313,13 @@ const Ranking = function() {
     }
 
     if (formState[formState.pageType].dateType !== DATE_TYPE.TIME) {
-      setRankTimeData({
+      dispatch(setRankTimeData({
         prevDate: "",
         nextDate: "",
         rankRound: 0,
         titleText: "",
         isRankData: false,
-      });
+      }));
     }
   }, [formState, globalState.baseData.isLogin]);
 
@@ -328,7 +328,7 @@ const Ranking = function() {
       if (timer) window.clearTimeout(timer);
       timer = window.setTimeout(function() {
         //스크롤
-        rankAction.setScrollY!(window.scrollY);
+        dispatch(setRankScrollY(window.scrollY));
         const windowHeight =
           "innerHeight" in window
             ? window.innerHeight
@@ -361,23 +361,17 @@ const Ranking = function() {
                 (formState.page < 60 &&
                   formState[formState.pageType].dateType === DATE_TYPE.YEAR)
               ) {
-                formDispatch({
-                  type: "PAGE",
-                });
+                dispatch(setRankFormPage());
               }
             } else if (
               formState[formState.pageType].rankType === RANK_TYPE.LEVEL ||
               formState[formState.pageType].rankType === RANK_TYPE.LIKE
             ) {
               if (formState.page < 4) {
-                formDispatch({
-                  type: "PAGE",
-                });
+                dispatch(setRankFormPage());
               }
             } else {
-              formDispatch({
-                type: "PAGE",
-              });
+              dispatch(setRankFormPage());
             }
           }
         }
@@ -423,10 +417,7 @@ const Ranking = function() {
             <button
               className="benefitSize"
               onClick={() => {
-                formDispatch({
-                  type: "PAGE_TYPE",
-                  val: PAGE_TYPE.RANKING,
-                });
+                dispatch(setRankFormPageType(PAGE_TYPE.RANKING));
               }}
             >
               <img src={rankingPageIcon} width={60} alt="랭킹" />
@@ -437,10 +428,7 @@ const Ranking = function() {
             <button
               className="hallOfFame"
               onClick={() => {
-                formDispatch({
-                  type: "PAGE_TYPE",
-                  val: PAGE_TYPE.FAME,
-                });
+                dispatch(setRankFormPageType(PAGE_TYPE.FAME));
               }}
             >
               <img src={hallOfFameIcon} alt="명예의 전당" />
@@ -466,7 +454,7 @@ const Ranking = function() {
             formState[formState.pageType].rankType === RANK_TYPE.FAN ||
             formState[formState.pageType].rankType === RANK_TYPE.LIKE) && (
             <>
-              <DateBtnWrap formState={formState} formDispatch={formDispatch} />
+              <DateBtnWrap formState={formState} />
               {formState[formState.pageType].rankType === RANK_TYPE.DJ &&
                 formState.page < 40 &&
                 formState[formState.pageType].dateType === DATE_TYPE.MONTH && (

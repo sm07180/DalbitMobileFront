@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxImgViewerPath} from "../../redux/actions/globalCtx";
 
-export default function ImageViewer(props: { path: string; setImgViewerPath?: (data: string) => void }) {
-  const { path, setImgViewerPath } = props;
+export default function ImageViewer(props: { path: string; }) {
+  const dispatch = useDispatch();
+
+  const { path } = props;
   return (
     <ViewerWrap
       onClick={() => {
-        if (setImgViewerPath) {
-          setImgViewerPath("");
-        }
+        dispatch(setGlobalCtxImgViewerPath(''));
       }}
     >
       <img src={path} />

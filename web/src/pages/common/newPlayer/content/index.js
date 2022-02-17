@@ -2,21 +2,19 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import _ from 'lodash'
 //context
-import {Context} from 'context'
 import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
 // etc
 // image
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
-  const {broadcastTotalInfo} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //useState
   // const [info, setInfo] = useState({
   //   /**
@@ -28,7 +26,7 @@ export default (props) => {
   //   title: '',
   //   auth: 0
   // })
-  const [info, setInfo] = useState(context.nativePlayer)
+  const [info, setInfo] = useState(globalState.nativePlayer)
 
   //---------------------------------------------------------------------
   const makeCloseBtn = () => {
@@ -46,10 +44,10 @@ export default (props) => {
   //useEffect Native
   useEffect(() => {
     //@Native
-    if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      setInfo(context.nativePlayer)
+    if (globalState.nativePlayer !== null && globalState.nativePlayer !== undefined) {
+      setInfo(globalState.nativePlayer)
     }
-  }, [context.nativePlayer])
+  }, [globalState.nativePlayer])
   //--
   useEffect(() => {
     if (info.auth === 3) {

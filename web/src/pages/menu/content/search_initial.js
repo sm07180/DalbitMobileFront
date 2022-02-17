@@ -23,7 +23,6 @@ import specialIcon from '../static/ico_speciladj_s.svg'
 import fanIcon from '../static/ico_fan.svg'
 import twentyIcon from '../static/ico_20.svg'
 import allIcon from '../static/ico_all.svg'
-import {Context} from 'context'
 function usePrevious(value) {
   const ref = useRef()
   useEffect(() => {
@@ -35,7 +34,6 @@ function usePrevious(value) {
 const makeContents = (props) => {
   const {list, liveListType} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
-  const ctx = useContext(Context)
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
       const {

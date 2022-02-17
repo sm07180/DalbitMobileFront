@@ -1,15 +1,16 @@
-import React, {useState, useHistory, useContext, useEffect} from 'react'
-import {Context} from 'context'
+import React, {useContext, useEffect, useState} from 'react'
 import Api from 'context/api'
-
-import {Hybrid} from 'context/hybrid'
 import {PlayListStore} from '../store'
 
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import {OS_TYPE} from 'context/config.js'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const playListCtx = useContext(PlayListStore)
   const customHeader = JSON.parse(Api.customHeader)
 
@@ -24,7 +25,7 @@ export default () => {
     if (result === 'success') {
       playListCtx.action.updateClipType(data)
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
     }
   }
 
@@ -52,7 +53,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
         }
       } else {
         //추천(인기)
@@ -61,7 +62,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
         }
       }
     } else if (playListInfo.hasOwnProperty('memNo')) {
@@ -72,7 +73,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
         }
       } else {
         //마이페이지 업로드목록
@@ -81,7 +82,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
         }
       }
     } else if (playListInfo.hasOwnProperty('recDate')) {
@@ -90,7 +91,7 @@ export default () => {
         playListCtx.action.updateList(data.list)
         setTotalList(data.list.length)
       } else {
-        globalCtx.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
       }
     } else if (playListInfo.hasOwnProperty('rankType')) {
       const {result, data, message} = await Api.getClipRankingList({...playListInfo})
@@ -98,7 +99,7 @@ export default () => {
         playListCtx.action.updateList(data.list)
         setTotalList(data.list.length)
       } else {
-        globalCtx.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
       }
     } else {
       //나머지 기본 '/clip/list' 조회(최신, 테마슬라이더, 각 주제별, 서치)
@@ -107,7 +108,7 @@ export default () => {
         playListCtx.action.updateList(data.list)
         setTotalList(data.list.length)
       } else {
-        globalCtx.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
       }
     }
   }
@@ -120,9 +121,10 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, globalCtx, 'new')
+      clipJoin(data, 'new')
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
           if (list[nextClipIdx + 1] !== undefined) {
@@ -131,7 +133,7 @@ export default () => {
             clipPlay(list[0].clipNo)
           }
         }
-      })
+      }))
     }
   }
 

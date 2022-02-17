@@ -1,0 +1,107 @@
+import { createAction } from "typesafe-actions";
+import {tabType} from "../../pages/broadcast/constant";
+import {AnyDataType, BooleanDataType, RouletteHistoryType, VideoEffectType} from "../types/broadcastCtxType";
+import {userBroadcastSettingType} from "../../common/realtime/chat_socket";
+
+// ctx_state
+export const SET_RIGHT_TAB_TYPE                     = 'broadcast/ctx/SET_RIGHT_TAB_TYPE';
+export const SET_USER_MEM_NO                        = 'broadcast/ctx/SET_USER_MEM_NO';
+export const SET_USER_NICK_NAME                     = 'broadcast/ctx/SET_USER_NICK_NAME';
+export const SET_USER_COUNT                         = 'broadcast/ctx/SET_USER_COUNT';
+export const SET_USER_COUNT2                        = 'broadcast/ctx/SET_USER_COUNT2';
+export const SET_LISTENER_LIST                      = 'broadcast/ctx/SET_LISTENER_LIST';
+export const SET_MSG_SHORT_CUT                      = 'broadcast/ctx/SET_MSG_SHORT_CUT';
+export const SET_USE_BOOST                          = 'broadcast/ctx/SET_USE_BOOST';
+export const SET_EXTEND_TIME                        = 'broadcast/ctx/SET_EXTEND_TIME';
+export const SET_EXTEND_TIME_ONCE                   = 'broadcast/ctx/SET_EXTEND_TIME_ONCE';
+export const SET_STORY_STATE                        = 'broadcast/ctx/SET_STORY_STATE';
+export const SET_NOTICE_STATE                       = 'broadcast/ctx/SET_NOTICE_STATE';
+export const SET_LIKE_STATE                         = 'broadcast/ctx/SET_LIKE_STATE';
+export const SET_COMMON_BADGE_LIST                  = 'broadcast/ctx/SET_COMMON_BADGE_LIST';
+export const SET_BOOST                              = 'broadcast/ctx/SET_BOOST';
+export const SET_CHAT_FREEZE                        = 'broadcast/ctx/SET_CHAT_FREEZE';
+export const SET_LIKE_CLICKED                       = 'broadcast/ctx/SET_LIKE_CLICKED';
+export const SET_IS_FAN                             = 'broadcast/ctx/SET_IS_FAN';
+export const SET_CHAT_COUNT                         = 'broadcast/ctx/SET_CHAT_COUNT';
+export const SET_FLIP_IS_LEFT                       = 'broadcast/ctx/SET_FLIP_IS_LEFT';
+export const SET_IS_WIDE                            = 'broadcast/ctx/SET_IS_WIDE';
+export const SET_VIDEO_EFFECT                       = 'broadcast/ctx/SET_VIDEO_EFFECT';
+export const SET_MINI_GAME_INFO                     = 'broadcast/ctx/SET_MINI_GAME_INFO';
+export const SET_MINI_GAME_RESULT                   = 'broadcast/ctx/SET_MINI_GAME_RESULT';
+export const SET_ROULETTE_HISTORY                   = 'broadcast/ctx/SET_ROULETTE_HISTORY';
+export const SET_TTS_ACTOR_INFO                     = 'broadcast/ctx/SET_TTS_ACTOR_INFO';
+export const SET_TTS_ACTION_INFO                    = 'broadcast/ctx/SET_TTS_ACTION_INFO';
+export const SET_IS_TTS_PLAYING                     = 'broadcast/ctx/SET_IS_TTS_PLAYING';
+export const SET_SETTING_OBJECT                     = 'broadcast/ctx/SET_SETTING_OBJECT';
+export const SET_SOUND_VOLUME                       = 'broadcast/ctx/SET_SOUND_VOLUME';
+
+// ctx_reducer
+export const SET_ROOM_INFO_SETTING_UPDATE           = 'broadcast/ctx/SET_ROOM_INFO_SETTING_UPDATE';
+export const SET_ROOM_INFO_BOOSTER_ON               = 'broadcast/ctx/SET_ROOM_INFO_BOOSTER_ON';
+export const SET_ROOM_INFO_BOOSTER_OFF              = 'broadcast/ctx/SET_ROOM_INFO_BOOSTER_OFF';
+export const SET_ROOM_INFO_GRANT_REFRESH            = 'broadcast/ctx/SET_ROOM_INFO_GRANT_REFRESH';
+export const SET_ROOM_INFO_FREEZE                   = 'broadcast/ctx/SET_ROOM_INFO_FREEZE';
+export const SET_ROOM_INFO_LIKES                    = 'broadcast/ctx/SET_ROOM_INFO_LIKES';
+export const SET_ROOM_INFO_MOON_CHECK               = 'broadcast/ctx/SET_ROOM_INFO_MOON_CHECK';
+export const SET_ROOM_INFO_MIC_STATE                = 'broadcast/ctx/SET_ROOM_INFO_MIC_STATE';
+export const SET_ROOM_INFO_VIDEO_STATE              = 'broadcast/ctx/SET_ROOM_INFO_VIDEO_STATE';
+export const SET_ROOM_INFO_NEW_FAN_CNT              = 'broadcast/ctx/SET_ROOM_INFO_NEW_FAN_CNT';
+export const SET_ROOM_INFO_RESET                    = 'broadcast/ctx/SET_ROOM_INFO_RESET';
+export const SET_ROOM_INFO_REFRESH                  = 'broadcast/ctx/SET_ROOM_INFO_REFRESH';
+export const SET_CHAT_ANIMATION_START               = 'broadcast/ctx/SET_CHAT_ANIMATION_START';
+export const SET_CHAT_ANIMATION_END                 = 'broadcast/ctx/SET_CHAT_ANIMATION_END';
+export const SET_COMBO_ANIMATION_START              = 'broadcast/ctx/SET_COMBO_ANIMATION_START';
+export const SET_COMBO_ANIMATION_END                = 'broadcast/ctx/SET_COMBO_ANIMATION_END';
+export const SET_REAL_TIME_VALUE_SET_LIKE_FAN_RANK  = 'broadcast/ctx/SET_REAL_TIME_VALUE_SET_LIKE_FAN_RANK';
+
+export const setBroadcastCtxRightTabType = createAction(SET_RIGHT_TAB_TYPE)<tabType>();
+export const setBroadcastCtxUserMemNo = createAction(SET_USER_MEM_NO)<string>();
+export const setBroadcastCtxUserNickName = createAction(SET_USER_NICK_NAME)<string>();
+export const setBroadcastCtxUserCount = createAction(SET_USER_COUNT)<any>();
+export const setBroadcastCtxUserCount2 = createAction(SET_USER_COUNT2)<any>();
+export const setBroadcastCtxListenerList = createAction(SET_LISTENER_LIST)<Array<any>>();
+export const setBroadcastCtxMsgShortCut = createAction(SET_MSG_SHORT_CUT)<Array<any>>();
+export const setBroadcastCtxUseBoost = createAction(SET_USE_BOOST)<boolean>();
+export const setBroadcastCtxExtendTime = createAction(SET_EXTEND_TIME)<boolean>();
+export const setBroadcastCtxExtendTimeOnce = createAction(SET_EXTEND_TIME_ONCE)<boolean>();
+export const setBroadcastCtxStoryState = createAction(SET_STORY_STATE)<number>();
+export const setBroadcastCtxNoticeState = createAction(SET_NOTICE_STATE)<number>();
+export const setBroadcastCtxLikeState = createAction(SET_LIKE_STATE)<number>();
+export const setBroadcastCtxCommonBadgeList = createAction(SET_COMMON_BADGE_LIST)<Array<any>>();
+export const setBroadcastCtxBoost = createAction(SET_BOOST)<BooleanDataType>();
+export const setBroadcastCtxChatFreeze = createAction(SET_CHAT_FREEZE)<boolean>();
+export const setBroadcastCtxLikeClicked = createAction(SET_LIKE_CLICKED)<boolean>();
+export const setBroadcastCtxIsFan = createAction(SET_IS_FAN)<boolean>();
+export const setBroadcastCtxChatCount = createAction(SET_CHAT_COUNT)<number>();
+export const setBroadcastCtxFlipIsLeft = createAction(SET_FLIP_IS_LEFT)<boolean>();
+export const setBroadcastCtxIsWide = createAction(SET_IS_WIDE)<boolean>();
+export const setBroadcastCtxVideoEffect = createAction(SET_VIDEO_EFFECT)<VideoEffectType>();
+export const setBroadcastCtxMiniGameInfo = createAction(SET_MINI_GAME_INFO)<AnyDataType>();
+export const setBroadcastCtxMiniGameResult = createAction(SET_MINI_GAME_RESULT)<AnyDataType>();
+export const setBroadcastCtxRouletteHistory = createAction(SET_ROULETTE_HISTORY)<RouletteHistoryType>();
+export const setBroadcastCtxTtsActorInfo = createAction(SET_TTS_ACTOR_INFO)<Array<any>>();
+export const setBroadcastCtxTtsActionInfo = createAction(SET_TTS_ACTION_INFO)<ttsActionInfoType>();
+export const setBroadcastCtxIsTtsPlaying = createAction(SET_IS_TTS_PLAYING)<boolean>();
+export const setBroadcastCtxSettingObject = createAction(SET_SETTING_OBJECT)<userBroadcastSettingType | null>();
+export const setBroadcastCtxSoundVolume = createAction(SET_SOUND_VOLUME)<number>();
+
+export const setBroadcastCtxRoomInfoSettingUpdate = createAction(SET_ROOM_INFO_SETTING_UPDATE)<any>();
+export const setBroadcastCtxRoomInfoBoosterOn = createAction(SET_ROOM_INFO_BOOSTER_ON)();
+export const setBroadcastCtxRoomInfoBoosterOff = createAction(SET_ROOM_INFO_BOOSTER_OFF)();
+export const setBroadcastCtxRoomInfoGrantRefresh = createAction(SET_ROOM_INFO_GRANT_REFRESH)<any>();
+export const setBroadcastCtxRoomInfoFreeze = createAction(SET_ROOM_INFO_FREEZE)<any>();
+export const setBroadcastCtxRoomInfoLikes = createAction(SET_ROOM_INFO_LIKES)<any>();
+export const setBroadcastCtxRoomInfoMoonCheck = createAction(SET_ROOM_INFO_MOON_CHECK)<any>();
+export const setBroadcastCtxRoomInfoMicState = createAction(SET_ROOM_INFO_MIC_STATE)<any>();
+export const setBroadcastCtxRoomInfoVideoState = createAction(SET_ROOM_INFO_VIDEO_STATE)<any>();
+export const setBroadcastCtxRoomInfoNewFanCnt = createAction(SET_ROOM_INFO_NEW_FAN_CNT)<any>();
+export const setBroadcastCtxRoomInfoReset = createAction(SET_ROOM_INFO_RESET)<any>();
+export const setBroadcastCtxRoomInfoRefresh = createAction(SET_ROOM_INFO_REFRESH)();
+export const setBroadcastCtxChatAnimationStart = createAction(SET_CHAT_ANIMATION_START)<any>();
+export const setBroadcastCtxChatAnimationEnd = createAction(SET_CHAT_ANIMATION_END)();
+export const setBroadcastCtxComboAnimationStart = createAction(SET_COMBO_ANIMATION_START)<any>();
+export const setBroadcastCtxComboAnimationEnd = createAction(SET_COMBO_ANIMATION_END)();
+export const setBroadcastCtxRealTimeValueSetLikeFanRank = createAction(SET_REAL_TIME_VALUE_SET_LIKE_FAN_RANK)<any>();
+
+
+

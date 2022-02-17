@@ -1,21 +1,19 @@
 import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
 
-// context
-import { GlobalContext } from "context";
-
 // image
 import btnClose from "common/static/image/mic_alarm_close_g.png";
 import TipIcon from "../static/ic_tip.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxTooltipStatus} from "../../redux/actions/globalCtx";
 
 export const TooltipUI = () => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { message, status } = globalState.tooltipStatus;
 
   const closeTooltip = () => {
-    if (globalAction.setTooltipStatus) {
-      globalAction.setTooltipStatus({ status: false });
-    }
+    dispatch(setGlobalCtxTooltipStatus({ status: false }));
   };
 
   return (

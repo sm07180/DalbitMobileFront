@@ -1,25 +1,31 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import qs from 'query-string'
 //styled
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
-import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxClose,
+  setGlobalCtxCloseFanCnt,
+  setGlobalCtxCloseStarCnt,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
+
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview} = qs.parse(location.search)
   const {name} = props
-  //context------------------------------------------
-  const context = useContext(Context)
-  const ctx = useContext(Context)
-  const MyMemNo = context.profile && context.profile.memNo
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  const myProfileNo = ctx.profile.memNo
+  const myProfileNo = globalState.profile.memNo
   //state
   const [rankInfo, setRankInfo] = useState('')
   const [starInfo, setStarInfo] = useState('')
@@ -78,10 +84,12 @@ export default (props) => {
       setFanInfo(res.data.list)
       //console.log(res)
     } else {
-      context.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: res.message
-      })
+      }))
     }
     return
   }
@@ -101,17 +109,20 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => {
             setSelect(memNo)
           },
           msg: '팬등록에 성공하였습니다.'
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataFanRegist(memNo)
@@ -125,17 +136,20 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           callback: () => {
             setSelect(memNo + 1)
           },
           msg: '팬등록을 해제하였습니다.'
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataFanCancel(memNo)
@@ -143,21 +157,21 @@ export default (props) => {
   const CancelBtn = () => {
     console.log('cancel..')
     if (name === '팬 랭킹') {
-      context.action.updateClose(false)
+      dispatch(setGlobalCtxClose(false));
     } else if (name === '팬') {
-      context.action.updateCloseFanCnt(false)
+      dispatch(setGlobalCtxCloseFanCnt(false));
     } else if (name === '스타') {
-      context.action.updateCloseStarCnt(false)
+      dispatch(setGlobalCtxCloseStarCnt(false));
     }
   }
 
   const DimCancel = () => {
     if (name === '팬 랭킹') {
-      context.action.updateClose(false)
+      dispatch(setGlobalCtxClose(false));
     } else if (name === '팬') {
-      context.action.updateCloseFanCnt(false)
+      dispatch(setGlobalCtxCloseFanCnt(false));
     } else if (name === '스타') {
-      context.action.updateCloseStarCnt(false)
+      dispatch(setGlobalCtxCloseStarCnt(false));
     }
   }
 
@@ -206,9 +220,9 @@ export default (props) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = globalState.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
                       } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = globalState.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -216,12 +230,12 @@ export default (props) => {
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
-                          {isFan === false && memNo !== ctx.token.memNo && (
+                          {isFan === false && memNo !== globalState.token.memNo && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
                             </button>
                           )}
-                          {isFan === true && memNo !== ctx.token.memNo && (
+                          {isFan === true && memNo !== globalState.token.memNo && (
                             <button onClick={() => Cancel(memNo, isFan)}>팬</button>
                           )}
                         </List>
@@ -233,9 +247,9 @@ export default (props) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = globalState.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
                       } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = globalState.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -258,9 +272,9 @@ export default (props) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = globalState.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
                       } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = globalState.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -268,12 +282,12 @@ export default (props) => {
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
-                          {isFan === false && memNo !== ctx.token.memNo && (
+                          {isFan === false && memNo !== globalState.token.memNo && (
                             <button onClick={() => Regist(memNo)} className="plusFan">
                               +팬등록
                             </button>
                           )}
-                          {isFan === true && memNo !== ctx.token.memNo && (
+                          {isFan === true && memNo !== globalState.token.memNo && (
                             <button onClick={() => Cancel(memNo, isFan)}>팬</button>
                           )}
                         </List>

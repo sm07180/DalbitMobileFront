@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Utility, {addComma} from 'components/lib/utility'
-import {RankContext} from 'context/rank_ctx'
 import styled, {css} from 'styled-components'
 import NoResult from 'components/ui/new_noResult'
 import ProfileImage from 'components/ui/profileImage'
 import '../index.scss'
+import {useSelector} from "react-redux";
 
 function Second({empty}) {
   const history = useHistory()
-  const {rankState} = useContext(RankContext)
+  const rankState = useSelector(({rank}) => rank);
   const {secondList} = rankState
 
   return (

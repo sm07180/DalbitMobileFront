@@ -1,14 +1,16 @@
-import React, {useEffect, useState, useCallback, useContext} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import Cropper from 'react-cropper'
-import {Context} from 'context'
 import Header from '../new_header'
 import './index.scss'
 import CropImg from './static/ico-crop.png'
 import CropRotation from './static/ico-rotation.png'
+import {useDispatch, useSelector} from "react-redux";
 
 function DalbitCropper(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {imgInfo, onClose, onCrop, className} = props
-  const context = useContext(Context)
   //state
   const [state, setState] = useState({
     status: true,
@@ -113,7 +115,7 @@ function DalbitCropper(props) {
   }, [])
 
   return (
-    <div className={`croperWrap ${className} ${context.player || context.clipState ? 'gutter' : ''}`}>
+    <div className={`croperWrap ${className} ${globalState.player || globalState.clipState ? 'gutter' : ''}`}>
       <Header>
         <button className="croperClose" onClick={() => onClose()} type="button">
           크롭퍼 닫기

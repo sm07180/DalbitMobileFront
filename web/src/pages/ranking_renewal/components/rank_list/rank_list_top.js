@@ -1,9 +1,5 @@
-import React, {useContext, useState, useRef, useCallback} from 'react'
+import React, {useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
-import Api from 'context/api'
 
 import {RoomJoin} from 'context/room'
 
@@ -17,13 +13,12 @@ import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
 import liveIcon from '../../static/live_white_l.svg'
 import {DATE_TYPE, PAGE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 import {convertDateToText} from 'pages/common/rank/rank_fn'
+import {useSelector} from "react-redux";
 
 function RankListTop({specialPop}) {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-
-  //context
-  const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rank}) => rank);
   const {rankList, formState, rankTimeData} = rankState
 
   const TopBoxRef = useRef(null)
@@ -138,8 +133,8 @@ function RankListTop({specialPop}) {
                   <div
                     className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)

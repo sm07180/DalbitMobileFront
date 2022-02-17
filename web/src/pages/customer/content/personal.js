@@ -3,7 +3,7 @@
  * @brief 1:1 문의
  *
  */
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 //styled-component
 import styled from 'styled-components'
@@ -13,12 +13,13 @@ import useClick from 'components/hooks/useClick'
 import useChange from 'components/hooks/useChange'
 //context
 import Api from 'context/api'
-import {IMG_SERVER, WIDTH_PC, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {Context} from 'context'
+import {WIDTH_MOBILE} from 'context/config'
 import {CustomerStore} from '../store'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import MyPersonal from './mypersonal'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // static
 const Personal = (props) => {
   const selectBoxData = [
@@ -35,7 +36,9 @@ const Personal = (props) => {
   //console.log(faqNum)
   //--------------------------------------------------------------------------
   //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const store = useContext(CustomerStore)
   Personal.store = store
@@ -56,64 +59,73 @@ const Personal = (props) => {
     const res = await Api.center_qna_add({...obj})
     if (res.result === 'fail') {
     } else if (res.result === 'success') {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({
+        type: "confirm",
         msg: '1:1 문의를 등록하시겠습니까?',
         callback: () => {
           //alert
           setTimeout(() => {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: '1:1 문의 등록을 완료하였습니다.',
               callback: () => {
                 history.push('/')
               }
-            })
+            }))
           }, 0)
         }
-      })
+      }))
     }
   }
   //update
   function update(mode) {
     switch (true) {
       case mode.cancel !== undefined: //------------------------------취소
-        context.action.confirm({
+        dispatch(setGlobalCtxMessage({
+          type: "confirm",
           //콜백처리
           callback: () => {
             window.location.reload()
           },
           //캔슬콜백처리
-          cancelCallback: () => {},
+          cancelCallback: () => {
+          },
           msg: '취소할 경우 작성 내용이 초기화됩니다. 취소하시겠습니까?'
-        })
+        }))
         break
       case mode.submit !== undefined: //------------------------------문의하기
         let submitObj = {data: changes}
         var validationCheck = false
         var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
         if (submitObj.data.qnaType === 0) {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '문의 유형을 선택해주세요.'
-          })
+          }))
           return false
         } else if (submitObj.data.email === undefined || submitObj.data.email === '') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '이메일 주소를 입력해주세요.'
-          })
+          }))
           return false
         } else if (!submitObj.data.email.match(regExp)) {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '이메일 형식을 확인 후 다시 입력해주세요'
-          })
+          }))
           return false
         } else if (submitObj.data.title === undefined || submitObj.data.title === '') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '문의 제목을 입력해주세요.'
-          })
+          }))
           return false
         } else if (submitObj.data.contents === undefined || submitObj.data.contents === '') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '문의 내용을 입력해주세요.'
-          })
+          }))
           return false
         } else {
           validationCheck = true
@@ -147,13 +159,13 @@ const Personal = (props) => {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'gif,jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
-          context.action.alert({visible: false})
         }
-      })
+      }))
     }
     reader.readAsDataURL(target.files[0])
     reader.onload = async () => {
@@ -170,13 +182,13 @@ const Personal = (props) => {
             questionFile: res.data.path
           })
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
             title: '',
             callback: () => {
-              context.action.alert({visible: false})
             }
-          })
+          }))
         }
       }
     }

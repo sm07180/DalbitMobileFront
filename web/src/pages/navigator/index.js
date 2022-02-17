@@ -4,13 +4,8 @@
  */
 import React, {useEffect, useMemo, useState, useContext} from 'react'
 import qs from 'qs'
-//context
-import {Context} from 'context'
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
   //queryString
   const queryString = useMemo(() => {
     if (props.location.search === undefined) return ''

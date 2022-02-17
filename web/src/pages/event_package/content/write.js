@@ -2,8 +2,9 @@ import React, {useState, useEffect, useContext} from 'react'
 // import Header from './component/header'
 import Header from 'components/ui/new_header'
 import API from 'context/api'
-import {Context} from 'context'
 import {VIEW_TYPE} from '../constant/'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch} from "react-redux";
 
 export default (props) => {
   const {setViewType, viewType} = props
@@ -11,8 +12,7 @@ export default (props) => {
   const [phone, setPhone] = useState('')
   const [content, setContent] = useState('')
   const [delicate, setDelicate] = useState(false)
-
-  const global_ctx = useContext(Context)
+  const dispatch = useDispatch();
 
   async function uploadFn() {
     const res = await API.eventPackageWrite({
@@ -22,12 +22,14 @@ export default (props) => {
     })
 
     if (res.result === 'success') {
-      global_ctx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
+        visible: true,
         msg: '작성이 완료 되었습니다.',
         callback: () => {
           setViewType(0)
         }
-      })
+      }));
     }
   }
   useEffect(() => {

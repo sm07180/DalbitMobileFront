@@ -4,21 +4,23 @@
  *
  * 변경사항 : 요청 URL API서버로 변경
  */
-import React, {useState, useEffect, useCallback, useContext} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
-import {OS_TYPE, API_SERVER, PHOTO_SERVER} from 'context/config.js'
+import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from "context/hybrid";
-import Utility from "components/lib/utility";
 import {getDeviceOSTypeChk} from '../../../common/DeviceCommon';
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const customHeader = JSON.parse(Api.customHeader);
-  const context = useContext(Context);
   const [redirectList, setRedirectList] = useState([]);
 
   /** host 주소값으로 리스트에서 같은 값이 있는지 검색
@@ -48,13 +50,13 @@ export default () => {
 
   //서버 이동 브릿지 호출 함수 : (로그아웃 후 서버 이동 시킴)
   const serverChangeAction = async (host, api, photo, socketURL) => {
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       const logoutInfo = await Api.member_logout();
       if (logoutInfo.result === 'success') {
         Hybrid('GetLogoutToken', logoutInfo.data);
-        clearInterval(context.intervalId);
-        context.action.updateToken(logoutInfo.data);
-        context.action.updateProfile(null);
+        clearInterval(globalState.intervalId);
+        dispatch(setGlobalCtxUpdateToken(logoutInfo.data));
+        dispatch(setGlobalCtxUpdateProfile(null));
 
         Hybrid('setAppHost', {host, api, photo, socketURL});
       }

@@ -1,16 +1,19 @@
-import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
+import React, {useCallback, useLayoutEffect, useState} from 'react'
 
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
 import RoundHandler from './component/round_handler'
 import RoundList from './component/round_list'
 import MyRank from './component/my_rank'
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function SpecialLeague() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const [tabState, setTabState] = useState('league') //league, benefit
   const [myData, setMyData] = useState({
@@ -36,12 +39,13 @@ export default function SpecialLeague() {
       setMyData(data)
       setRankList(data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
           history.goBack()
         }
-      })
+      }))
     }
   }
 
@@ -51,7 +55,7 @@ export default function SpecialLeague() {
         <div className="tab_content league">
           <RoundHandler nowRoundNo={nowRoundNo} />
 
-          {context.token.isLogin && myData.isSpecial && <MyRank myData={myData} />}
+          {globalState.token.isLogin && myData.isSpecial && <MyRank myData={myData}/>}
           <RoundList rankList={rankList} />
         </div>
       )

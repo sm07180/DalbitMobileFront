@@ -1,6 +1,5 @@
-import React, {useContext, useState, useCallback} from 'react'
+import React, {useCallback, useContext, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import {KnowHowContext} from '../store'
 
 import Api from 'context/api'
@@ -12,9 +11,13 @@ import LikeIcon from '../static/like_g_s.svg'
 import LikeRedIcon from '../static/like_red_s.svg'
 import ViewIcon from '../static/view_g_s.svg'
 import MoreIcon from '../static/morelist_g.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function AttendList() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const {KnowHowState, KnowHowAction} = useContext(KnowHowContext)
 
@@ -31,7 +34,8 @@ function AttendList() {
   }
 
   const deleteKnowhow = useCallback(() => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '노하우를 정말 삭제하시겠습니까?',
       callback: async () => {
         const res = await Api.knowhow_delete({
@@ -40,7 +44,8 @@ function AttendList() {
 
         if (res.result === 'success') {
           setTimeout(() => {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: '삭제가 완료 되었습니다.',
               callback: async () => {
                 if (
@@ -74,12 +79,12 @@ function AttendList() {
                 }
                 setMoreIdx(-1)
               }
-            })
+            }))
           })
         } else {
         }
       }
-    })
+    }))
   }, [list, moreIdx, condition, order])
 
   return (
@@ -124,7 +129,7 @@ function AttendList() {
                   </span>
                 )}
 
-                {context.token.isLogin && v.mem_no === context.token.memNo && (
+                {globalState.token.isLogin && v.mem_no === globalState.token.memNo && (
                   <img
                     className={`moreIcon`}
                     src={MoreIcon}

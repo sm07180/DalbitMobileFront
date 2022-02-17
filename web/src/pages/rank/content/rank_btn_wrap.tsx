@@ -1,7 +1,15 @@
 import React, { useContext } from "react";
 
-import { RankContext } from "context/rank_ctx";
 import { PAGE_TYPE, RANK_TYPE } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+
+import {
+  setRankMyInfo,
+  setRankList,
+  setRankLevelList,
+  setRankLikeList,
+  setRankFormReset, setRankFormRankType, setRankFormPageType, setRankData, setRankFormDate
+} from "redux/actions/rank";
 
 const btnArray = [
   { val: RANK_TYPE.DJ, text: "DJ" },
@@ -17,11 +25,11 @@ const fameArray = [
 ];
 
 function RankBtnWrap() {
-  const { rankState, rankAction } = useContext(RankContext);
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rank}) => rank);
 
   const { formState } = rankState;
 
-  const formDispatch = rankAction.formDispatch!;
 
   return (
     <div className="rankTab">
@@ -37,10 +45,7 @@ function RankBtnWrap() {
                 onClick={() => {
                   if (formState[formState.pageType].rankType !== v.val) {
                     scrollTo(0, 0);
-                    formDispatch({
-                      type: "RANK_TYPE",
-                      val: v.val,
-                    });
+                    dispatch(setRankFormRankType(v.val));
                   }
                 }}
               >
@@ -61,10 +66,7 @@ function RankBtnWrap() {
                 onClick={() => {
                   if (formState[formState.pageType].rankType !== v.val) {
                     scrollTo(0, 0);
-                    formDispatch({
-                      type: "RANK_TYPE",
-                      val: v.val,
-                    });
+                    dispatch(setRankFormRankType(v.val));
                   }
                 }}
               >

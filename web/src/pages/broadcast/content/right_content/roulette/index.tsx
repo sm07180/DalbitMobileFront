@@ -4,17 +4,17 @@ import React, {useContext, useState, useEffect} from "react";
 // Component
 import RouletteEditTab from './roulette_tab_edit';
 import "./index.scss";
-import {GlobalContext} from "../../../../../context";
-import {BroadcastContext} from "../../../../../context/broadcast_ctx";
 import RouletteTabWin from "./roulette_tab_win";
 import {getHistoryMiniGame, getRouletteWinList} from "../../../../../common/api";
 import {MiniGameType} from "../../../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxMiniGameInfo, setBroadcastCtxRouletteHistory} from "../../../../../redux/actions/broadcastCtx";
 
 type rouletteTabType = "editOption" | "winList";
 
 export default function Roulette ({ roomNo }) {
-  const { globalAction } = useContext(GlobalContext);
-  const { broadcastAction, broadcastState } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   // editTab
   const [price, setPrice] = useState<string>("");
@@ -34,13 +34,13 @@ export default function Roulette ({ roomNo }) {
     const pagingSize = broadcastState.rouletteHistory.pagingSize;
 
     if(result === 'success') {
-      broadcastAction.setRouletteHistory && broadcastAction.setRouletteHistory({
+      dispatch(setBroadcastCtxRouletteHistory({
         ...broadcastState.rouletteHistory,
         currentPage: 1,
         allData: data.list,
         renderingData: data.list.slice(0, pagingSize),
         totalCnt: Number(data.totalCnt),
-      })
+      }))
     }
   }
 
@@ -51,16 +51,15 @@ export default function Roulette ({ roomNo }) {
     const pagingSize = winListInfo.pagingSize;
 
     if(allData.length > currentPage * pagingSize) {
-      broadcastAction.setRouletteHistory &&
-      broadcastAction.setRouletteHistory({
+      dispatch(setBroadcastCtxRouletteHistory({
         ...broadcastState.rouletteHistory,
         currentPage: currentPage + 1,
         renderingData: allData.slice(0,(currentPage+1) * pagingSize)
-      })
+      }));
     }
   };
 
-  const setMiniGameInfo = (data) => broadcastAction.setMiniGameInfo && broadcastAction.setMiniGameInfo(data);
+  const setMiniGameInfo = (data) => dispatch(setBroadcastCtxMiniGameInfo(data));
 
   /* 룰렛설정 이전 정보 세팅 */
   const getMiniGameInfo = async () => {
@@ -88,13 +87,13 @@ export default function Roulette ({ roomNo }) {
     if(result === 'success') {
       const currentPage = broadcastState.rouletteHistory.currentPage;
       const pagingSize = broadcastState.rouletteHistory.pagingSize;
-
-      broadcastAction.setRouletteHistory && broadcastAction.setRouletteHistory({
+      dispatch(setBroadcastCtxRouletteHistory({
         ...broadcastState.rouletteHistory,
         allData: data.list,
         renderingData: data.list.slice(0, currentPage * pagingSize), // 마지막에 그려진 데이터는 지워지고 앞에 새로운 데이터가 그려진다
         totalCnt: Number(data.totalCnt),
-      })
+      }));
+
     }
   }
 
@@ -123,7 +122,7 @@ export default function Roulette ({ roomNo }) {
     <div id="roulette">
       <RouletteTab rouletteTab={rouletteTab} setRouletteTab={setRouletteTab} />
       {rouletteTab === 'editOption' ?
-        <RouletteEditTab roomNo={roomNo} globalAction={globalAction} broadcastAction={broadcastAction}
+        <RouletteEditTab roomNo={roomNo} dispatch={dispatch}
                          broadcastState={broadcastState} isFree={isFree} setIsFree={setIsFree}
                          price={price} setPrice={setPrice} options={options} setOptions={setOptions}
                          toggleCaption={toggleCaption} setToggleCaption={setToggleCaption}

@@ -2,7 +2,6 @@
 import React, { useMemo, useContext } from "react";
 
 // Context
-import { BroadcastContext } from "context/broadcast_ctx";
 
 // Static
 import settingIcon from "./static/systemsetting.png";
@@ -12,13 +11,16 @@ import flipRightIcon from "./static/ic_flip_right.svg";
 import wideIcon from "./static/ic_br_wide.svg";
 import narrowIcon from "./static/ic_br_narrow.svg";
 import { MediaType } from "pages/broadcast/constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxFlipIsLeft, setBroadcastCtxIsWide} from "../redux/actions/broadcastCtx";
 
 export default function Guide() {
   const isBroadcastPath = useMemo(() => {
     return window.location.pathname.startsWith("/broadcast/");
   }, [window.location.pathname]);
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   const { flipIsLeft, isWide, roomInfo } = broadcastState;
 
@@ -55,7 +57,7 @@ export default function Guide() {
             <div className="guideItem">
               <button
                 onClick={() => {
-                  broadcastAction.setFlipIsLeft && broadcastAction.setFlipIsLeft(!flipIsLeft);
+                  dispatch(setBroadcastCtxFlipIsLeft(!flipIsLeft));
                 }}
               >
                 <div className="guideItem__icon">
@@ -76,7 +78,7 @@ export default function Guide() {
               <div className="guideItem">
                 <button
                   onClick={() => {
-                    broadcastAction.setIsWide && broadcastAction.setIsWide(!isWide);
+                    dispatch(setBroadcastCtxIsWide(!isWide));
                   }}
                 >
                   <div className="guideItem__icon">

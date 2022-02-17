@@ -1,8 +1,7 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //context
-import {Context} from 'context'
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
@@ -10,6 +9,8 @@ import Utility from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
 import './comment.scss'
 import moment from 'moment'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const EventComment = (props) => {
   const {
@@ -23,9 +24,11 @@ const EventComment = (props) => {
     noResultMsg,
     maxLength,
     contTitle
-  } = props
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  } = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token} = globalState
   const history = useHistory()
   const contRef = useRef()
   const lengthRef = useRef()
@@ -54,7 +57,7 @@ const EventComment = (props) => {
     lengthRef.current.innerText = e.currentTarget.value.length
 
     if (value.length >= maxLength) {
-      globalCtx.action.toast({msg: `최대 ${maxLength}자 이내 입력 가능합니다.`})
+      dispatch(setGlobalCtxMessage({type: "toast", msg: `최대 ${maxLength}자 이내 입력 가능합니다.`}))
       return
     }
   }
@@ -82,7 +85,7 @@ const EventComment = (props) => {
       contRef.current.value = ''
       lengthRef.current.innerText = contRef.current.value.length
     } else {
-      globalCtx.action.toast({msg: `${contTitle}을 입력해주세요.`})
+      dispatch(setGlobalCtxMessage({type: "toast", msg: `${contTitle}을 입력해주세요.`}))
     }
   }
 
@@ -91,13 +94,14 @@ const EventComment = (props) => {
     const {targetNum} = e.currentTarget.dataset
 
     if (targetNum !== undefined) {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({
+        type: "confirm",
         callback: () => {
           setMoreState(-1)
           commentDel(targetNum)
         },
         msg: `해당 ${contTitle}을 삭제하시겠습니까?\n`
-      })
+      }))
     }
   }
 
@@ -106,13 +110,14 @@ const EventComment = (props) => {
     const {targetNum} = e.currentTarget.dataset
 
     if (targetNum !== undefined) {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({
+        type: "confirm",
         callback: () => {
           setMoreState(-1)
           commentRpt(targetNum)
         },
         msg: `해당 ${contTitle}을 신고하시겠습니까?\n`
-      })
+      }))
     }
   }
 
@@ -146,15 +151,15 @@ const EventComment = (props) => {
 
   return (
     <div className="commentEventWrap">
-      {globalCtx.token.isLogin && (
+      {globalState.token.isLogin && (
         <div className="addInputBox">
           <div className="userBox">
             <div className="photo">
-              <img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm} />
+              <img src={globalState.profile.profImg.thumb62x62} alt={globalState.profile.nickNm}/>
             </div>
-            <div className="userNick">{globalCtx.profile.nickNm}</div>
+            <div className="userNick">{globalState.profile.nickNm}</div>
           </div>
-          <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100} />
+          <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100}/>
           <div className="textCount">
             <strong ref={lengthRef}>0</strong>/100
           </div>

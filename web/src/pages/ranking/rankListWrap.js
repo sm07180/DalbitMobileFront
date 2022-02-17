@@ -1,24 +1,20 @@
-import React, {useContext, useState, useEffect, useCallback} from 'react'
-import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
+import React, {useCallback, useState} from 'react'
 import Api from 'context/api'
 
 //components
 import NoResult from 'components/ui/noResult'
 import RankListComponent from './rankList'
 import RankListTop from './rankListTop'
-import PopupSuccess from './reward/reward_success_pop'
 
 // constant
-import {RANK_TYPE, DATE_TYPE, DAY_TYPE} from './constant'
+import {DATE_TYPE} from './constant'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 //static
 
 export default (props) => {
-  const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
   const {rankType, dateType, setDateType, rankList, myInfo, selectedDate, handleDate, setMyInfo} = props
 
   const [dateTitle, setDateTitle] = useState({
@@ -119,9 +115,10 @@ export default (props) => {
         setRewardPop(data)
       } else {
         if (clickState === 2) {
-          return globalCtx.action.alert({
+          return dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
-          })
+          }))
         }
         setMyInfo({...myInfo, isReward: false})
       }

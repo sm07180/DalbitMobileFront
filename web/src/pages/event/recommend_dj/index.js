@@ -1,19 +1,19 @@
-import React, {useContext, useState, useEffect, useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 
-import {GENDER_TYPE, AGE_TYPE} from './constant'
+import {AGE_TYPE, GENDER_TYPE} from './constant'
 
 import NoResult from 'components/ui/noResult'
 import Header from 'components/ui/new_header.js'
-
-import {Context} from 'context'
 import {RoomJoin} from 'context/room'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {IMG_SERVER} from 'context/config'
 
 import './recommend_dj.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 const genderList = [
   {
@@ -51,9 +51,11 @@ const ageList = [
 ]
 
 export default function RecommendDj() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
-  const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
 
   const [selectedGenderArr, setSelectedGenderArr] = useState([])
@@ -79,9 +81,10 @@ export default function RecommendDj() {
       //   }
       // }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
 
     setTimeout(() => {
@@ -97,14 +100,16 @@ export default function RecommendDj() {
         const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
         if (result === 'success') {
           toggleFan(listIdx)
-          context.action.alert_no_close({
+          dispatch(setGlobalCtxMessage({
+            type: "alert_no_close",
             msg: `${nickNm} 님의 팬이 되셨습니다.`,
             callback: () => history.push(`/mypage/${memNo}`)
-          })
+          }))
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: message
-          })
+          }))
         }
       }
     },
@@ -115,14 +120,16 @@ export default function RecommendDj() {
     async (memNo, nickNm, listIdx) => {
       const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
       if (result === 'success') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: `${nickNm} 님의 팬이 되셨습니다.`
-        })
+        }))
         toggleFan(listIdx)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     },
     [fetchedList]
@@ -132,24 +139,27 @@ export default function RecommendDj() {
     async (memNo, listIdx) => {
       const {result, message} = await Api.mypage_fan_cancel({data: {memNo}})
       if (result === 'success') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '팬을 취소하였습니다'
-        })
+        }))
         toggleFan(listIdx)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     },
     [fetchedList]
   )
 
   const confirmCancelFan = (memNo, nickNm, listIdx) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `${nickNm} 님의 팬을 취소하시겠습니까?`,
       callback: () => cancelFanHandler(memNo, listIdx)
-    })
+    }))
   }
 
   const joinChar = (state) => state.join('|')
@@ -179,7 +189,7 @@ export default function RecommendDj() {
   }
 
   useEffect(() => {
-    const {token, profile} = context
+    const {token, profile} = globalState
 
     if (!token.isLogin) {
       history.push({
@@ -203,7 +213,7 @@ export default function RecommendDj() {
         // setSelectedAgeArr(getAge)
       }
     }
-  }, [context.profile, context.token.isLogin])
+  }, [globalState.profile, globalState.token.isLogin])
 
   useEffect(() => {
     if (selectedGenderArr.length) {
@@ -298,7 +308,7 @@ export default function RecommendDj() {
                     onClick={() => {
                       if (customHeader['os'] === OS_TYPE['Desktop']) {
                         console.log('hello')
-                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                        dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 1]}));
                       } else {
                         RoomJoin({roomNo: list.roomNo, nickNm: list.nickNm})
                       }

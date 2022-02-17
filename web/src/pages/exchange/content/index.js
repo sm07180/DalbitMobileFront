@@ -2,31 +2,26 @@
  * @file /exchange/index.js
  * @brief 달 교환 페이지
  */
-import React, {useEffect, useState, useContext, useCallback} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import _ from 'lodash'
 
 import NoResult from 'components/ui/noResult'
 import Popup from './auto_exchange_pop'
 import GganbuReward from '../../event/gganbu/content/gganbuReward'
-
-import ic_guide from '../static/guide_s.svg'
-import ic_toggle_off from '../static/toggle_off_s.svg'
-import ic_toggle_on from '../static/toggle_on_s.svg'
-import ic_close from '../static/ic_close_round_g.svg'
 import ic_notice from '../static/ic_notice.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  const context = useContext(Context)
-  const {profile} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let history = useHistory()
   //useState
   const [list, setList] = useState(false)
@@ -62,9 +57,10 @@ export default (props) => {
       if (_.hasIn(res.data, 'byeolCnt')) setMydal(res.data.byeolCnt)
     } else {
       setListState(0)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -107,13 +103,15 @@ export default (props) => {
       })
       if (res.result === 'success' && _.hasIn(res, 'data')) {
         setMydal(res.data.byeolCnt)
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: res.message
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
 
@@ -136,26 +134,28 @@ export default (props) => {
             vmarbleCnt : data.vmarbleCnt,
             totalmarbleCnt : data.marbleCnt,
           })
-        } 
+        }
       } else {
 
       }
     }
-      
+
 
     if (selected.byeol > mydal) {
-      return context.action.confirm({
+      return dispatch(setGlobalCtxMessage({
+        type: "confirm",
         msg: `달 교환은 50별부터 가능합니다.`
-      })
+      }))
     }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange()
         fetchPayComplete()
       }
-    })
+    }))
   }
 
   const creatResult = () => {
@@ -200,13 +200,15 @@ export default (props) => {
     if (result === 'success') {
       setAutoState(data.autoChange)
       if (data.autoChange === 0) {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '자동교환을 설정(OFF) 하였습니다'
-        })
+        }))
       } else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '자동교환을 설정(ON) 하였습니다'
-        })
+        }))
       }
     }
   }, [autoState])

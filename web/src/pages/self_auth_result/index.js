@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory, useLocation} from 'react-router-dom'
@@ -6,19 +6,24 @@ import qs from 'query-string'
 import {Hybrid} from 'context/hybrid'
 
 //context
-import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage,
+  setGlobalCtxWalletIdx
+} from "redux/actions/globalCtx";
 
 //
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   const location = useLocation()
 
@@ -43,12 +48,13 @@ export default (props) => {
         if (parentsAgreeYn === 'n' && adultYn === 'n') return setAuthState(2)
         if (parentsAgreeYn === 'y' && adultYn === 'n') return setAuthState(3)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message,
           callback: () => {
             window.location.href = '/'
           }
-        })
+        }))
       }
     }
     fetchSelfAuth()
@@ -56,14 +62,15 @@ export default (props) => {
 
   useEffect(() => {
     if (result === 'fail' || code === 'C007' || code === 'C008') {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
           // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
           // context.action.updateWalletIdx(1)
           window.location.href = '/'
         }
-      })
+      }))
     } else if(url === '10') {
       setAuthState(10)
     } else if (returntype === 'profile') {
@@ -78,24 +85,24 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
-    } else if(returntype === '') {
+    } else if (returntype === '') {
       setAuthState(10)
-    } else if(returntype === '' && url === '11') {
+    } else if (returntype === '' && url === '11') {
       setAuthState(11)
     } else {
       checkAuth()
     }
 
-    context.action.updateSetBack(true)
-    context.action.updateBackFunction({name: 'selfauth'})
+    dispatch(setGlobalCtxBackState(true))
+    dispatch(setGlobalCtxBackFunction({name: 'selfauth'}))
     return () => {
-      context.action.updateSetBack(null)
+      dispatch(setGlobalCtxBackState(null))
     }
   }, [])
 
   const goWallet = () => {
-    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-    context.action.updateWalletIdx(1)
+    props.history.push(`/mypage/${globalState.profile.memNo}/wallet`)
+    dispatch(setGlobalCtxWalletIdx(1));
   }
 
   const goBack = () => {
@@ -111,9 +118,10 @@ export default (props) => {
     }
 
     if (myBirth > baseYear) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-      })
+      }))
     }
 
     history.push(`/legalauth`)

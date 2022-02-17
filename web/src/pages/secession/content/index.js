@@ -1,35 +1,30 @@
-import React, {useState, useEffect, useContext} from 'react'
-import styled from 'styled-components'
+import React, {useContext, useEffect} from 'react'
 //context
 import {SecssionStore} from '../store'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import Api from 'context/api'
-import {Context} from 'context'
 //components
 import Exit from './exit'
 import Header from 'components/ui/new_header.js'
+import {useDispatch, useSelector} from "react-redux";
 
 //
 const Index = (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const store = useContext(SecssionStore)
   Index.store = store
   //---------------------------------------------------------------------
 
   useEffect(() => {
-    if (context.token.isLogin === false) {
+    if (globalState.token.isLogin === false) {
       location.href = '/'
     }
-  }, [context.token.isLogin])
+  }, [globalState.token.isLogin])
   return (
     <>
-      {context.token.isLogin === true && (
+      {globalState.token.isLogin === true && (
         <>
-          <Header title="회원탈퇴" />
-          <Exit />
+          <Header title="회원탈퇴"/>
+          <Exit/>
         </>
       )}
     </>

@@ -1,7 +1,5 @@
-import React, {useState, useCallback, useEffect, useContext, useRef} from 'react'
+import React, {useCallback, useContext, useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
 import Api from 'context/api'
 
 import {KnowHowContext} from '../store'
@@ -9,8 +7,7 @@ import {KnowHowContext} from '../store'
 import {CONDITION_TYPE, ORDER_TYPE, TAB_TYPE} from '../constant'
 
 import AttendList from './attend_list'
-
-import RefreshIcon from '../static/ic_arrow_refresh.svg'
+import {useDispatch, useSelector} from "react-redux";
 
 const MainTab = [
   {text: '이벤트 홈', value: TAB_TYPE.HOME},
@@ -24,7 +21,9 @@ const Conditions = [
 ]
 
 function Attend() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {KnowHowState, KnowHowAction} = useContext(KnowHowContext)
 
   const {condition, order, list, tab, mine, myCnt} = KnowHowState
@@ -34,7 +33,7 @@ function Attend() {
   const setTab = KnowHowAction.setTab
   const setMine = KnowHowAction.setMine
   const setList = KnowHowAction.setList
-  const {token} = context
+  const {token} = globalState
 
   const MainTabRef = useRef(null)
   const TabRef = useRef(null)

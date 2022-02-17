@@ -1,6 +1,4 @@
 import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
-import { ModalContext } from "context/modal_ctx";
-import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import { NODE_ENV } from "constant/define";
 import { getCookie, setCookie } from "common/utility/cookie";
@@ -28,11 +26,15 @@ import Layout from "common/layout";
 import BankTimePopup from "./bank_time_pop";
 import LayerPopupWrap from "../../main_www/content/layer_popup_wrap";
 import { date } from "@storybook/addon-knobs";
+import {useDispatch, useSelector} from "react-redux";
+import {setPayInfo} from "../../../redux/actions/modal";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 export default function Payment() {
   const history = useHistory();
-  const { modalState, modalAction } = useContext(ModalContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const modalState = useSelector(({modal}) => modal);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { payInfo } = modalState;
   const { baseData } = globalState;
 
@@ -101,7 +103,7 @@ export default function Payment() {
     if (selectedBtn === -1) return null;
     const selectedMathod = payMethod[selectedBtn];
     // if (selectedMathod.type === "카카오페이" || selectedMathod.type === "페이코") {
-    //   return globalAction.setAlertStatus!({
+    //   return dispatch(setGlobalCtxAlertStatus({
     //     status: true,
     //     content: `결제대행사 장애가 발생하여 일시적으로 결제가 불가능합니다.
     //     잠시 다른 결제수단을 이용 부탁드립니다.`,
@@ -179,10 +181,10 @@ export default function Payment() {
       // MCASH_PAYMENT(ft);
       ft.innerHTML = "";
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   }
 
@@ -203,10 +205,10 @@ export default function Payment() {
         setPopupState(true);
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: res.message,
-      });
+      }));
     }
   }
 
@@ -227,13 +229,13 @@ export default function Payment() {
   };
 
   const goBank = () => {
-    modalAction.setPayInfo!({
+    dispatch(setPayInfo({
       itemName: itemName,
       //itemPrice: String(Number(itemPrice) * totalQuantity),
       itemPrice: itemPrice,
       itemNo: itemNo,
       itemCnt: totalQuantity,
-    });
+    }));
     history.push("/payment/bank");
   };
 
@@ -277,7 +279,7 @@ export default function Payment() {
     // console.log("itemCnt", itemCnt);
     // console.log("totalQuantity", totalQuantity);
     if (result == "success") {
-      modalAction.setPayInfo!({
+      dispatch(setPayInfo({
         itemName: itemName,
         itemPrice: String(Number(itemPrice) * totalQuantity),
         itemNo: itemNo,
@@ -287,10 +289,11 @@ export default function Payment() {
         cardName: cardName,
         itemCnt: totalQuantity,
         returntype: returntype,
-      });
+      }));
+
       history.push("/payment/result");
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
         callback: () => {
@@ -299,25 +302,25 @@ export default function Payment() {
         cancelCallback: () => {
           history.push("/store");
         },
-      });
+      }));
     }
   };
 
   const quantityCalc = (type) => {
     if (type === "plus") {
       if (totalQuantity === 10) {
-        return globalAction.callSetToastStatus!({
+        return dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "최대 10개까지 구매 가능합니다.",
-        });
+        }));
       }
       setTotalQuantity(totalQuantity + 1);
     } else if (type === "minus") {
       if (totalQuantity === 1) {
-        return globalAction.callSetToastStatus!({
+        return dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "최소 1개부터 구매 가능합니다.",
-        });
+        }));
       }
 
       setTotalQuantity(totalQuantity - 1);
@@ -361,42 +364,42 @@ export default function Payment() {
               fontSize: "15px",
               textAlign: "left",
             };
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                contentStyle: contStyle,
-                content: `
-          ★ 필수 : 인증 정보를 확인해 주세요.
-          <br />
-          -----------------------------------------------
-          <br />
-          회원 이름 : <span style='color: #632beb; font-weight: bold;'>${
-            res.data.memName
-          }</span>
-          <br />
-          연락처 : 
-          <span style='color: #632beb; font-weight: bold;'>
-          ${res.data.phoneNo.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
-          </span>
-          <br />
-          -----------------------------------------------
-          <br /> <br />
-          - 안전한 계좌 정보 등록을 위해
-          <br />
-            한 번 더 본인인증을 해주셔야 합니다.
-          <br />
-          - (중요) 추가 인증 시에는 반드시
-          <br />
-            위의 회원정보와 일치해야 합니다.
-          <br />
-            ※ 추가 인증은 딱 1회만 진행됩니다.
-          `,
-                callback: () => {
-                  setPopupCookie();
-                  fetchPay(res.data.ci);
-                },
-              });
+
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              contentStyle: contStyle,
+              content: `
+              ★ 필수 : 인증 정보를 확인해 주세요.
+              <br />
+              -----------------------------------------------
+              <br />
+              회원 이름 : <span style='color: #632beb; font-weight: bold;'>${
+                res.data.memName
+              }</span>
+              <br />
+              연락처 : 
+              <span style='color: #632beb; font-weight: bold;'>
+              ${res.data.phoneNo.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
+              </span>
+              <br />
+              -----------------------------------------------
+              <br /> <br />
+              - 안전한 계좌 정보 등록을 위해
+              <br />
+                한 번 더 본인인증을 해주셔야 합니다.
+              <br />
+              - (중요) 추가 인증 시에는 반드시
+              <br />
+                위의 회원정보와 일치해야 합니다.
+              <br />
+                ※ 추가 인증은 딱 1회만 진행됩니다.
+              `,
+              callback: () => {
+                setPopupCookie();
+                fetchPay(res.data.ci);
+              },
+            }));
           }
         }
       } else {
@@ -509,7 +512,7 @@ export default function Payment() {
             </p>
             <p>
               깐부 게임에 참여중인 회원은 1만원 이상 달 구매 시 받은 구슬을 사용했을 경우 달 환불이 불가합니다.
-            </p>     
+            </p>
           </div>
         </div>
         {bankPop && <BankTimePopup setBankPop={setBankPop} goBank={goBank} />}

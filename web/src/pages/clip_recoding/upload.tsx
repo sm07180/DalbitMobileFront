@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect, useContext, useMemo, useCallback } from "react";
-import { GlobalContext } from "context";
 import { useHistory, useLocation } from "react-router-dom";
 import { postImage, postAudio, postClip, getClipType, selfAuthCheck } from "common/api";
 import "./upload.scss";
 import closeIcon from "./static/ic_close_round.svg";
 import LayerCopyright from "../../common/layerpopup/contents/copyright";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../redux/actions/globalCtx";
 export default function Cast() {
   const history = useHistory();
   const location = useLocation();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { state } = location;
-
-  const { globalState, globalAction } = useContext(GlobalContext);
 
   const fileInput = useRef<HTMLInputElement>(null);
   const imgInput = useRef<HTMLInputElement>(null);
@@ -59,10 +60,10 @@ export default function Cast() {
       if (result === "success") {
         setThemeList(data);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: message,
-        });
+        }));
       }
     };
     fetchDataClipType();
@@ -95,17 +96,17 @@ export default function Cast() {
     const reader = new FileReader();
 
     if (!/\.(|mp3|m4a)$/i.test(file.name)) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "mp3, m4a 형식의 파일만 등록 가능합니다.",
-      });
+      }));
     }
 
     if (file.size / 1024 > 30720) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "첨부 파일 용량이 초과되었습니다. 최대 30MB까지 첨부 가능합니다.",
-      });
+      }));
     }
 
     reader.readAsArrayBuffer(file);
@@ -115,15 +116,15 @@ export default function Cast() {
         audioContext.decodeAudioData(myArrayBuffer, async (audioBuffer) => {
           let duration = Math.floor(audioBuffer.duration);
           if (duration > 600) {
-            return globalAction.setAlertStatus!({
+            return dispatch(setGlobalCtxAlertStatus({
               status: true,
               content: "파일 재생시간이 10분을 초과하였습니다. 최대 10분 재생시간의 파일까지 첨부 가능합니다.",
-            });
+            }));
           } else if (duration < 30) {
-            return globalAction.setAlertStatus!({
+            return dispatch(setGlobalCtxAlertStatus({
               status: true,
               content: "파일 재생시간이 30초 미만입니다. 30초 이상의 파일을 첨부해주세요.",
-            });
+            }));
           } else {
             const { result, message, data } = await postAudio({
               file: file,
@@ -135,10 +136,10 @@ export default function Cast() {
               setAudioPlaytime(calcTime(duration));
               setAudioSize(String(Math.floor(file.size / 1024)));
             } else {
-              globalAction.setAlertStatus!({
+              dispatch(setGlobalCtxAlertStatus({
                 status: true,
                 content: message,
-              });
+              }));
             }
           }
         });
@@ -152,10 +153,10 @@ export default function Cast() {
     const file = target.files[0];
 
     if (!/\.(|jpg|jpeg|png|PNG)$/i.test(file.name)) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "jpg, png 이미지만 사용 가능합니다.",
-      });
+      }));
     }
 
     reader.readAsDataURL(target.files[0]);
@@ -169,10 +170,10 @@ export default function Cast() {
           setImgSrc(data.url);
           setImgPath(data.path);
         } else {
-          globalAction.setAlertStatus!({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             content: "사진 업로드에 실패하였습니다.\n다시 시도해주세요.",
-          });
+          }));
         }
       }
     };
@@ -196,7 +197,7 @@ export default function Cast() {
     }
     const { result, message, data } = await postClip({ ...param });
     if (result === "success") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "클립 업로드 성공하였습니다.",
         callback: () => {
@@ -205,16 +206,16 @@ export default function Cast() {
         cancelCallback: () => {
           history.push(`/clip/${data.clipNo}`);
         },
-      });
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   };
   const checkUpload = () => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       title: "클립 업로드 시 유의 사항",
       titleStyle: {
@@ -224,7 +225,7 @@ export default function Cast() {
       type: "confirm",
       content: "음원, MR 등 직접 제작하지 않은<br>클립은 삭제될 수 있습니다.<br><br>등록하시겠습니까?",
       callback: () => clipUpload(),
-    });
+    }));
   };
 
   const makeListenTypeBtn = () => {
@@ -233,11 +234,11 @@ export default function Cast() {
         <button
           key={idx}
           onClick={() => {
-            if (idx === 2 && globalState.userProfile!.age < 20) {
-              return globalAction.setAlertStatus!({
+            if (idx === 2 && globalState.userProfile.age < 20) {
+              return dispatch(setGlobalCtxAlertStatus({
                 status: true,
                 content: "20세 이상 회원이 아닙니다.",
-              });
+              }));
             }
             setListenType(idx);
           }}
@@ -251,23 +252,23 @@ export default function Cast() {
 
   const handleAudioUploadCancel = () => {
     if (state !== undefined) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         type: "confirm",
         status: true,
         content: "다시 녹음하시겠습니까? 현재 녹음된 내용은 저장되지 않습니다.",
         callback: () => {
           history.goBack();
         },
-      });
+      }));
     } else {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         type: "confirm",
         status: true,
         content: "업로드 된 파일을 삭제하시겠습니까?",
         callback: () => {
           setAudioPath("");
         },
-      });
+      }));
     }
   };
 

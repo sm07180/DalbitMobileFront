@@ -3,9 +3,6 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import Lottie from "react-lottie";
 
-// Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Component
@@ -14,13 +11,13 @@ import GiftLayer from "../content/right_content/send_gift";
 
 // static
 import presentAnimation from "../static/chat-present.json";
+import {useDispatch, useSelector} from "react-redux";
 
 const GiftComponent = (props: { roomNo: string; roomInfo: roomInfoType; roomOwner: boolean | null }) => {
   const { roomInfo, roomNo, roomOwner } = props;
 
   const history = useHistory();
-
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
 
   const { layer, dispatchLayer } = useContext(BroadcastLayerContext);
 

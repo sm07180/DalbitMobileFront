@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import NoResult from 'components/ui/new_noResult'
 import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
 
 // static
 const GoldMedal = `${IMG_SERVER}/svg/medal_gold_b.svg`
@@ -12,8 +12,8 @@ const BronzeMedal = `${IMG_SERVER}/svg/medal_bronze_m.svg`
 
 export default function StatusList({nowEventNo, scoreData}) {
   const history = useHistory()
-  const context = useContext(Context)
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const eventNo = () => {
     const eventNoList = [1, 2, 3, 4, 5]
     return eventNoList.map((number, index) => {
@@ -73,8 +73,8 @@ export default function StatusList({nowEventNo, scoreData}) {
                   <span
                     className="nick"
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)

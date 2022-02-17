@@ -1,21 +1,15 @@
 /**
  * @title 탭 guest
  */
-import React, {useState, useEffect, useContext, useRef} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
+import React, {useRef, useState} from 'react'
+import {IMG_SERVER} from 'context/config'
 import styled from 'styled-components'
-import {Context} from 'context'
-import API from 'context/api'
 //components----------------------------------------------------
-import RequestEvent from './guest-request-event'
 import {Scrollbars} from 'react-custom-scrollbars'
-import {BroadCastStore} from '../../store'
 import EventBtnRequest from './guest-btn-request'
 import EventBtnInvite from './guest-btn-invite'
+
 export default props => {
-  //context------------------------------------------------------------
-  const context = useContext(Context)
   //------------------------------------------------------------------
   //0.게스트정보..배열 호출 state-------------------------------------
   //1.초대정보..배열 호출 state-------------------------------------
