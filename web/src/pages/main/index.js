@@ -143,6 +143,12 @@ const MainPage = () => {
     }
   })
 
+  useEffect(() => {
+    if (currentPage > 0) fetchLiveInfo()
+    document.addEventListener('scroll', scrollEvent)
+    return () => document.removeEventListener('scroll', scrollEvent)
+  }, [currentPage, liveListType])
+
   const mainTouchStart = useCallback(
     (e) => {
       if (reloadInit === true || window.scrollY !== 0) return
@@ -361,7 +367,7 @@ const MainPage = () => {
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView'  ref={overTabRef}>
+      <section className='liveView' ref={overTabRef}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
         <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
           <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
