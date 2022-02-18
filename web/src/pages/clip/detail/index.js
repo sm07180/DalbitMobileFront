@@ -22,11 +22,39 @@ const ClipDetailPage = (props) => {
   // subjectType - 클립 주제(null or '' - 전체,
   const [ searchInfo, setSearchInfo ] = useState({search: '', slctType: categoryType[0], dateType: termType[0], page: 1, records: 30, subjectType: firstSubjectType, });
 
+  const chagneSubject = (value) => {
+    switch (value) {
+      case '01':
+        return '커버';
+      case '02':
+        return '작사/작곡';
+      case '03':
+        return '더빙';
+      case '04':
+        return '수다/대화';
+      case '05':
+        return '고민/사연';
+      case '06':
+        return '힐링';
+      case '07':
+        return '성우';
+      case '08':
+        return 'ASMR';
+      default:
+        break;
+    }
+  };
+
   // 방금 떠오른 클립 리스트 가져오기
   const getClipLastList = () => {
     API.getClipList({ gender: '', djType: 0, slctType: searchInfo.slctType.index, dateType: searchInfo.dateType.index, page: searchInfo.page, records: searchInfo.records, subjectType: (searchInfo.subjectType.value || '') }).then(res => {
       if (res.code === 'C001') {
-        setClipLastInfo({ list: res.data.list, paging: {...res.data.paging}});
+        let tempList = res.data.list;
+        tempList.map((value, index) => {
+          tempList[index].subjectType = chagneSubject(value.subjectType);
+        });
+
+        setClipLastInfo({ list: tempList, paging: {...res.data.paging}});
       }
     });
   };

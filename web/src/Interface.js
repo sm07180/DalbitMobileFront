@@ -160,8 +160,8 @@ export default () => {
         let mypageURL = ''
         const _parse = qs.parse(location.search)
         if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-          mypageURL = `/mypage`
-          if (_parse.mypage !== '/') mypageURL = `/profile/${memNo}${_parse.mypage}`
+          mypageURL = `/mypage/${memNo}`
+          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
         }
 
         context.action.updateToken(loginInfo.data)
@@ -191,9 +191,9 @@ export default () => {
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
           //TODO: 추후 웹브릿지 연결
-          window.location.replace('/signup?' + qs.stringify(social_result.data) + '&webview=new')
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
         } else {
-          window.location.replace('/signup?' + qs.stringify(social_result.data))
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data))
         }
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
@@ -244,6 +244,8 @@ export default () => {
   }
 
   const newSocialLogin = async (inputData) => {
+    alert(JSON.stringify(inputData));
+
     const {webview, redirect} = qs.parse(location.search)
     let social_result = await Api.new_social_login(inputData);
     let sessionRoomNo = sessionStorage.getItem('room_no');
@@ -259,7 +261,6 @@ export default () => {
       const loginInfo = await Api.member_login({
         data: social_result.data
       })
-
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
 
@@ -270,8 +271,8 @@ export default () => {
         let mypageURL = ''
         const _parse = qs.parse(location.search)
         if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-          mypageURL = `/mypage`
-          // if (_parse.mypage !== '/') mypageURL = `/profile/${memNo}${_parse.mypage}`
+          mypageURL = `/mypage/${memNo}`
+          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
         }
 
         context.action.updateToken(loginInfo.data)
@@ -279,7 +280,6 @@ export default () => {
 
         if (profileInfo.result === 'success') {
           if (webview && webview === 'new') {
-            Hybrid('GetLoginTokenNewWin', loginInfo.data)
           } else {
             Hybrid('GetLoginToken', loginInfo.data)
           }
@@ -295,15 +295,14 @@ export default () => {
             return (window.location.href = mypageURL)
           }
 
-          // return history.push('/')
-          return (window.location.href = '/')
+          return window.location.href = '/'
         }
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
           //TODO: 추후 웹브릿지 연결
-          window.location.replace('/signup?' + qs.stringify(social_result.data) + '&webview=new')
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
         } else {
-          window.location.replace('/signup?' + qs.stringify(social_result.data))
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data))
         }
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg

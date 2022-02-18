@@ -55,9 +55,9 @@ const ProfileEdit = () => {
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
+      //const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
       initProfileInfo.current = {nickNm, profImg, profMsg, gender};
-      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList: sortImgList});
+      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList});
       setCurrentAvatar(profImg);
       setHasGender(gender !== 'n');
 
@@ -215,6 +215,14 @@ const ProfileEdit = () => {
   }, [image]);
 
   const emptySwiperItems = useMemo(() => Array(10 - (profileInfo?.profImgList?.length || 0)).fill(''), [profileInfo]);
+  const topSwiperList = useMemo(() => {
+    if (profile?.profImgList?.length > 0) {
+      return profile?.profImgList.concat([]).filter((data, index)=> !data.isLeader);
+    } else {
+      return [];
+    }
+  },[profile?.profImgList]);
+
   return (
       <>{
           !passwordPageView ?
@@ -224,9 +232,9 @@ const ProfileEdit = () => {
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='topSwiper' onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}>
+            <section className='topSwiper' onClick={()=> showImagePopUp(topSwiperList, 'profileList')}>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profile}/>
+                <TopSwiper data={{...profile, profImgList: topSwiperList}}/>
                 :
                 <div className="nonePhoto"
                      onClick={(e) => {
@@ -251,7 +259,7 @@ const ProfileEdit = () => {
               </div>
 
               <div className="coverPhoto">
-                <div className="title">커버사진 <small>(최대 10장)</small></div>
+                <div className="title">프로필사진<small>(최대 10장)</small></div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>

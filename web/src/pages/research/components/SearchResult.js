@@ -42,7 +42,8 @@ const SearchResult = (props) => {
       default:
         break;
     }
-  }
+  };
+
   // DJ 정보 가져오기
   async function getSearchDjInfo() {
     const res = await Api.member_search({ params: { ...searchData } });
