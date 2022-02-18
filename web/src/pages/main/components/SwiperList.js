@@ -40,6 +40,8 @@ const SwiperList = (props) => {
   }, [data]);
 
   return (
+    <>
+    {data && data.length > 0 &&
     <Swiper {...swiperParams}>
       {data.map((item,index) => {
         return (
@@ -57,6 +59,8 @@ const SwiperList = (props) => {
         )
       })}
     </Swiper>
+    }
+    </>
   )
 }
 

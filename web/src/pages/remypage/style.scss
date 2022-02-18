@@ -1,8 +1,28 @@
 @import "../../components/ui/mixin";
 
+/* 피씨일때 헤더 없애기 */
+#root {
+  .container {
+    .totalWrap {
+      #remypage {
+        header {
+          .buttonGroup {
+            display:none;
+          }
+        }
+      }
+    }
+  }
+  .content-article {
+    height: auto;
+    min-height:calc(100vh - #{$NAVIGATION-HEIGHT});
+  }
+}
+
 #remypage {
   flex:1;
   @include flex($fd:column);
+  height:100%;
   .myInfo {
     @include flex;
     padding:16px 16px 25px;
@@ -169,7 +189,7 @@
     }
   }
   .buttonWrap {
-    margin:0 16px 60px;
+    margin:0 16px 20px;
     button.logout {
       width:100%;
       line-height:46px;
