@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react'
-import Utility ,{addComma} from 'components/lib/utility'
+import React, {useContext, useEffect, useState} from 'react'
+import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
 // global components
@@ -10,7 +10,6 @@ import Tabmenu from './components/tabmenu'
 import HistoryList from './contents/HistoryList'
 import Exchange from './contents/exchange/Exchange'
 // css
-
 import './style.scss'
 import {useHistory} from "react-router-dom";
 import {Context} from "context";
@@ -22,10 +21,26 @@ const WalletPage = (props) => {
   const context = useContext(Context);
   const {walletData} = context;
   const {walletType, byeolTotCnt, dalTotCnt, popHistory, listHistory} = walletData;
+  //선택 코드
+  const [selectedCode, setSelectedCode] = useState('0');
+  //pageNo
+  const [pageNo, setPageNo] = useState(1);
+  //loadingFlag
+  const [isLoading, setIsLoading] = useState(false);
+  //마지막 페이지
+  const [lastPage, setLastPage] = useState(0);
+
+  //탭 이동 데이터 리셋
+  const dataReset = () => {
+    setSelectedCode('0');
+    setPageNo(1);
+  };
+  //공용 변수
+  let pagePerCnt = 20;
 
   //달, 별 내역 조회하기
   //상세조건 옵션리스트, 지갑 내역 리스트 조회 
-  const getWalletHistory = () => {
+  const getWalletHistory = (pageNo, code) => {
     //환전하기 return;
     if(walletType === walletTabMenu[2]) return;
 
@@ -33,14 +48,10 @@ const WalletPage = (props) => {
     const popParam = {walletType: type};
     const listParam = {
       walletType: type,  // [0: 별, 1: 달]
-      walletCode: 0, // '0' or '0|1|2|3'
-      page: 1,
-      records: 20
+      walletCode: code, // '0' or '0|1|2|3'
+      page: pageNo,
+      records: pagePerCnt
     };
-    context.globalAction.dispatchWalletData({
-      type: 'ADD_HISTORY',
-      data: {listHistory: [], popHistory: []}
-    });
 
     Promise.all([
       Api.getMypageWalletPop(popParam),
@@ -50,19 +61,23 @@ const WalletPage = (props) => {
           //값을 이상하게 줘서 타입에따라서 받고 안받고 처리함...
           const byeolAndDal = walletType === walletTabMenu[0]?
             {dalTotCnt : listRes.data?.dalTotCnt}: {byeolTotCnt : listRes.data?.byeolTotCnt};
-
+          setLastPage(Math.ceil(listRes.data.paging.total / pagePerCnt));
           context.globalAction.dispatchWalletData({
             type: 'ADD_DATA',
             data: {
               ...byeolAndDal,
-              listHistory: listRes.data?.list,
+              listHistory: pageNo === 1 ? listRes.data?.list : walletData.listHistory.concat(listRes.data?.list),
               popHistory: popRes.data?.list,
             }
           });
-        } else {
+          setIsLoading(false);
+        } else if (listRes.message === "사용내역이 없습니다.") {
           context.globalAction.dispatchWalletData({
             type: 'ADD_HISTORY',
-            data: {listHistory: [], popHistory: []}
+            data: {
+              listHistory: [],
+              popHistory: popRes.data?.list
+            }
           });
         }
 
@@ -89,11 +104,22 @@ const WalletPage = (props) => {
 
   useEffect(() => {
     if(walletType !== walletTabMenu[2]){ //환전하기
-      getWalletHistory(); 
+      getWalletHistory(1, '0');
+      //데이터 초기화
+      dataReset();
     }
+    //스크롤 초기화
+    document.documentElement.scrollTop = 0;
     // getWalletList();
     // context.globalAction.dispatchWalletData({type:'ADD_HISTORY', data: {listHistory: [], popHistory:[], dalCnt:0, byeolCnt:0}});
   },[walletType]);
+
+  //내역 선택
+  useEffect(() => {
+    getWalletHistory(1, selectedCode);
+    setPageNo(0);
+    document.documentElement.scrollTop = 0;
+  }, [selectedCode]);
 
   // 환전취소
   async function cancelExchangeFetch() {
@@ -179,7 +205,7 @@ const WalletPage = (props) => {
 
       {/*달 내역 & 별 내역*/}
       {walletType !== walletTabMenu[2] ?
-        <HistoryList walletData={walletData}/>
+        <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode} setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading} getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch} walletType={walletType}/>
         :
         /*환전*/
         <Exchange />

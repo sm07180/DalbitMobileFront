@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use("/dist",express.static(path.join(__dirname, './dist')));
 
 app.get("*", async (req, res) => {
-    let indexHtml = fs.readFileSync('./dist/index.html','utf-8');
+    let indexHtml = fs.readFileSync('./dist/indexLocalServer.html','utf-8');
     const customHeader = req.headers['custom-header'];
     const redirecturl = req.headers['redirecturl'];
     if(customHeader){
@@ -33,32 +33,9 @@ app.get("*", async (req, res) => {
     }else{
         indexHtml = indexHtml.replace("#redirectUrl", "")
     }
-    try {
-        const aaa = axios.create({
-            baseURL:'https://devapi.dalbitlive.com',
-            headers: {
-                authToken: req.cookies.authToken,
-                'custom-header': req.cookies['custom-header'],
-                'content-type':  'application/json',
-                cookie: req.headers.cookie
-            },
-            params: null,
-            data:null,
-            withCredentials: true,
-        });
-
-        let https1 = await aaa.get('/token')
-        if(https1.data.result === 'success'){
-            indexHtml = indexHtml.replace("#authData", JSON.stringify(https1.data.data))
-        }else{
-            indexHtml = indexHtml.replace("#authData", "")
-        }
-    } catch (e) {
-        console.log(e)
-    }
     res.send(indexHtml);
 })
-https.createServer(ssl, app).listen(6443, err => {
+https.createServer(ssl, app).listen(443, err => {
     if (err) throw err;
     console.log("??")
 });
