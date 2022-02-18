@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {ReactNode, useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 //util
 import {debounceFn, getWindowBottom, makeHourMinute} from "lib/common_fn";
@@ -11,10 +11,9 @@ import {mailBoxJoin} from "common/mailbox/mail_func";
 //api
 import {getMailboxChatList, PostMailboxChatUse} from "common/api";
 
-//component
-import Header from "components/ui/header/Header";
-
 import '../../mailbox.scss';
+import TitleButton from "../../../../components/ui/header/TitleButton";
+import {isMobileWeb} from "../../../../context/hybrid";
 
 let totalPage = 1;
 
@@ -149,13 +148,13 @@ export default function chatListPage() {
 
   return (
     <>
-      <Header title="메시지" type={'back'}>
+      <CustomHeader title="메시지" type={'back'}>
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
             <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가"/>
           </button>
         </div>
-      </Header>
+      </CustomHeader>
 
       <div className="chatListPage">
         <div className="chatOnOffBox">
@@ -179,4 +178,20 @@ export default function chatListPage() {
       </div>
     </>
   );
+}
+export const CustomHeader = ({title, type, children, position='sticky', newAlarmCnt, backEvent}:{
+  title?:any, type?:any, children?:any, position?:any, newAlarmCnt?:any, backEvent?:any
+}) => {
+  const history = useHistory()
+
+  const goBack = () => backEvent? backEvent() : history.goBack();
+
+  return (
+    <header className={`${type ? type : ''} ${position ? position : ''}`}>
+      {!isMobileWeb() && type === 'back' && <button className="back" onClick={goBack} />}
+      {title && <h1 className="title">{title}</h1>}
+      <TitleButton title={title} newAlarmCnt={newAlarmCnt} />
+      {children}
+    </header>
+  )
 }
