@@ -1,18 +1,15 @@
-import React, { useState, useContext, useCallback, useEffect, useLayoutEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { makeHourMinute } from "lib/common_fn";
+import React, {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
+//util
+import {debounceFn, getWindowBottom, makeHourMinute} from "lib/common_fn";
 import Toggle from "common/toggle";
 
 //Context
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
-import { mailBoxJoin } from "common/mailbox/mail_func";
-import {isHybrid} from 'context/hybrid'
+import {GlobalContext} from "context";
+import {MailboxContext} from "context/mailbox_ctx";
+import {mailBoxJoin} from "common/mailbox/mail_func";
 //api
-import { getMailboxChatList, PostMailboxChatUse } from "common/api";
-
-//util
-import { getWindowBottom, debounceFn } from "lib/common_fn";
+import {getMailboxChatList, PostMailboxChatUse} from "common/api";
 
 //component
 import Header from "components/ui/header/Header";
@@ -128,7 +125,7 @@ export default function chatListPage() {
     } else {
       globalAction.callSetToastStatus!({
         status: true,
-        message: "우체통 기능을 사용하지 않는 상태이므로 새로운 메세지 기능을 사용할 수 없습니다.",
+        message: "메시지 기능을 사용하지 않는 상태이므로 새로운 메세지 기능을 사용할 수 없습니다.",
       });
     }
   };
@@ -152,17 +149,17 @@ export default function chatListPage() {
 
   return (
     <>
-      <Header title="우체통" type={isHybrid() ? 'back' : ''}>
+      <Header title="메시지" type={'back'}>
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
-            <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가" />
+            <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가"/>
           </button>
         </div>
       </Header>
 
       <div className="chatListPage">
         <div className="chatOnOffBox">
-          <p>우체통 기능 사용 설정</p>
+          <p>메시지 기능 사용 설정</p>
           <Toggle active={isMailboxOn} activeCallback={postMailboxUse} />
         </div>
         {chatList && chatList.length > 0 ? (

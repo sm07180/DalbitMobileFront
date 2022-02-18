@@ -1,6 +1,6 @@
 /**
  * @brief : mailbox/chatting/index.tsx
- * @role : 우체통채팅 ui 및 기능 index role
+ * @role : 메시지채팅 ui 및 기능 index role
  */
 import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
