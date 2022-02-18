@@ -138,12 +138,6 @@ const MainPage = () => {
       setCurrentPage(currentPage => currentPage + 1)
     }
   })
-  
-  useEffect(() => {
-    if (currentPage > 0) fetchLiveInfo()
-    document.addEventListener('scroll', scrollEvent)
-    return () => document.removeEventListener('scroll', scrollEvent)
-  }, [currentPage, liveListType])
 
   const mainTouchStart = useCallback(
     (e) => {
@@ -302,9 +296,11 @@ const MainPage = () => {
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
+    document.addEventListener('scroll', scrollEvent);
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+      document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
  
