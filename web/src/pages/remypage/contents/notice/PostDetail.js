@@ -6,6 +6,7 @@ import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
 import moment from "moment";
+import './notice.scss'
 // components
 
 const PostDetail = () => {
@@ -38,19 +39,21 @@ const PostDetail = () => {
   return (
     <>
       <div id="notice">
-        <div className="postDetail">
-          <Header title={'공지사항'} type={'back'} />
-          <section className="detailView">
-            <div className="titleWrap">
-              <div className="title">{postDetailInfo.title}</div>
-              <div className="date">{changeDay(postDetailInfo.writeDt)}</div>
-            </div>
-            <div className="detailContent">
-              {/*<>태그값 정상적으로 출력해주기 위해 사용*/}
-              <p dangerouslySetInnerHTML={{__html: postDetailInfo.contents}}/>
-            </div>
-          </section>
-        </div>
+        <section className="noticeWrap">
+          <div className="postDetail">
+            <Header title={'공지사항'} type={'back'} />
+            <section className="detailView">
+              <div className="titleWrap">
+                <div className="title">{postDetailInfo.title}</div>
+                <div className="date">{changeDay(postDetailInfo.writeDt)}</div>
+              </div>
+              <div className="detailContent">
+                {/*<>태그값 정상적으로 출력해주기 위해 사용*/}
+                <p dangerouslySetInnerHTML={{__html: postDetailInfo.contents}}/>
+              </div>
+            </section>
+          </div>
+        </section>
       </div>
     </>
   )
