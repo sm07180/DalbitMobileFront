@@ -126,9 +126,12 @@ export default function LayerPopupWrap({data, setData}) {
       {
         data.map((v, idx) => {
           const {popup_type} = v
-          console.log(v)
           return (
-            <div id="eventPop" onClick={closePopup} key={idx}>
+            <div id="eventPop"
+                 onClick={closePopup}
+                 key={idx}
+                 style={{zIndex: 99 - idx}}
+            >
               <div className="popLayer">
                 <div className="popContainer">
                   <div className="popContent" onClick={(e) => e.stopPropagation()}>
@@ -143,16 +146,16 @@ export default function LayerPopupWrap({data, setData}) {
                         id={`chk${v.idx}`}
                         className={`dontShow`}
                       />
-                      <button className='dontShowBtn' onClick={dontShowAction(v)}>오늘 하루 보지 않기</button>
-                    </label> 
-                  )}                      
-                  <button className='close'onClick={closePopup}>닫기</button>
+                      <button className='dontShowBtn' onClick={() => dontShowAction(v)}>오늘 하루 보지 않기</button>
+                    </label>
+                  )}
+                  <button className='close' onClick={closePopup}>닫기</button>
                 </div>
               </div>
             </div>
           )
         })
-      }       
+      }
     </>
   )
 }
