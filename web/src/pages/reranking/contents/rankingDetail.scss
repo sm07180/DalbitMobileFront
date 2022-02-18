@@ -21,9 +21,12 @@
     }
   }
   .tabmenu {
-    position:relative;
+    position:sticky;
+    top: 116px;
     @include flex(center);
     padding:0 16px;
+    background-color: #fff;
+    z-index: 2;
     li {
       flex: 1;
       @include flex(center, center);
