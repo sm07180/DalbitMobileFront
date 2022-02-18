@@ -97,7 +97,7 @@ export default function LayerPopupWrap({setEventPop, popupData}) {
                       }}
                       className={`${checked.check && `active`}`}
                     />
-                    오늘 하루 보지 않기
+                    다시 보지 않음
                   </label>
                 </div>
               </div>

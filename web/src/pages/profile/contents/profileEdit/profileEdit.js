@@ -24,7 +24,6 @@ const ProfileEdit = () => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    spaceBetween: 8,
   }
 
   //이미지 크로퍼

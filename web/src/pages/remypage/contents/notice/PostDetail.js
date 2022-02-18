@@ -7,6 +7,8 @@ import Utility from 'components/lib/utility'
 import Header from 'components/ui/header/Header'
 import moment from "moment";
 // components
+// css
+import '../../style.scss'
 
 const PostDetail = () => {
   const location = useLocation();
