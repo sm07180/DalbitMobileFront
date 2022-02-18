@@ -228,7 +228,7 @@ export default (props) => {
         title: '',
         callback: () => {
           context.action.alert({visible: false})
-          history.push('/menu/profile')
+          history.push('/myPprofile')
         }
       })
     } else {

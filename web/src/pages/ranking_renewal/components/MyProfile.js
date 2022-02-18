@@ -248,7 +248,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                 <div
                   className="thumbBox"
                   onClick={() => {
-                    history.push(`/menu/profile`)
+                    history.push(`/myProfile`)
                   }}>
                   <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
@@ -278,7 +278,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                                 className="bestFanBox__nickname"
                                 onClick={() => {
                                   if (context.token.isLogin) {
-                                    history.push(`/mypage/${myInfo.myDjMemNo}`)
+                                    history.push(`/profile/${myInfo.myDjMemNo}`)
                                   } else {
                                     history.push('/modal/login')
                                   }

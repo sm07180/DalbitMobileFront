@@ -91,5 +91,7 @@ const TopSwiper = (props) => {
     </>
   )
 }
-
+TopSwiper.defaultProps = {
+  openShowSlide: () => {}
+}
 export default TopSwiper

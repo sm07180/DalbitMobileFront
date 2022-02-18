@@ -25,14 +25,14 @@ export default function awardEventResultDj({resultList}) {
 
             return (
               <li className="awardDjItem" key={idx}>
-                <div className="djThumbBox" onClick={() => history.push(`/mypage/${memNo}`)}>
+                <div className="djThumbBox" onClick={() => history.push(`/profile/${memNo}`)}>
                   <img src={profileImage.thumb336x336} alt={nickNm} />
                   <p className="nickName">{nickNm}</p>
                 </div>
 
                 <ul className="bestFanList">
                   {fan1_nickNm && (
-                    <li className="bestFanItem" onClick={() => history.push(`/mypage/${fan1_memNo}`)}>
+                    <li className="bestFanItem" onClick={() => history.push(`/profile/${fan1_memNo}`)}>
                       <div className="thumb">
                         <img src={fan1_profileImage.thumb62x62} alt={fan1_nickNm} className="thumb__image" />
                         <img src="https://image.dalbitlive.com/event/award/201214/ico_medal1.png" className="thumb__medal" />
@@ -42,7 +42,7 @@ export default function awardEventResultDj({resultList}) {
                   )}
 
                   {fan2_nickNm && (
-                    <li className="bestFanItem" onClick={() => history.push(`/mypage/${fan2_memNo}`)}>
+                    <li className="bestFanItem" onClick={() => history.push(`/profile/${fan2_memNo}`)}>
                       <div className="thumb">
                         <img src={fan2_profileImage.thumb62x62} alt={fan2_nickNm} className="thumb__image" />
                         <img src="https://image.dalbitlive.com/event/award/201214/ico_medal2.png" className="thumb__medal" />
@@ -52,7 +52,7 @@ export default function awardEventResultDj({resultList}) {
                   )}
 
                   {fan3_nickNm && (
-                    <li className="bestFanItem" onClick={() => history.push(`/mypage/${fan3_memNo}`)}>
+                    <li className="bestFanItem" onClick={() => history.push(`/profile/${fan3_memNo}`)}>
                       <div className="thumb">
                         <img src={fan3_profileImage.thumb62x62} alt={fan3_nickNm} className="thumb__image" />
                         <img src="https://image.dalbitlive.com/event/award/201214/ico_medal3.png" className="thumb__medal" />

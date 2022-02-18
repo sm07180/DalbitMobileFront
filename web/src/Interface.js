@@ -191,9 +191,9 @@ export default () => {
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
           //TODO: 추후 웹브릿지 연결
-          window.location.replace('/signup?' + qs.stringify(social_result.data) + '&webview=new')
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
         } else {
-          window.location.replace('/signup?' + qs.stringify(social_result.data))
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data))
         }
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
@@ -244,6 +244,8 @@ export default () => {
   }
 
   const newSocialLogin = async (inputData) => {
+    alert(JSON.stringify(inputData));
+
     const {webview, redirect} = qs.parse(location.search)
     let social_result = await Api.new_social_login(inputData);
     let sessionRoomNo = sessionStorage.getItem('room_no');
@@ -259,7 +261,6 @@ export default () => {
       const loginInfo = await Api.member_login({
         data: social_result.data
       })
-
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
 
@@ -279,7 +280,6 @@ export default () => {
 
         if (profileInfo.result === 'success') {
           if (webview && webview === 'new') {
-            Hybrid('GetLoginTokenNewWin', loginInfo.data)
           } else {
             Hybrid('GetLoginToken', loginInfo.data)
           }
@@ -295,15 +295,14 @@ export default () => {
             return (window.location.href = mypageURL)
           }
 
-          //return props.history.push('/')
-          // return (window.location.href = '/')
+          return window.location.href = '/'
         }
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
           //TODO: 추후 웹브릿지 연결
-          window.location.replace('/signup?' + qs.stringify(social_result.data) + '&webview=new')
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
         } else {
-          window.location.replace('/signup?' + qs.stringify(social_result.data))
+          window.location.replace('/socialSignup?' + qs.stringify(social_result.data))
         }
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
@@ -762,7 +761,7 @@ export default () => {
         break
       case 'native-goto-fanboard': //----- 청취자요약정보 팬보드이동
         const {memNo} = event.detail
-        history.push(`/mypage/${memNo}`)
+        history.push(`/profile/${memNo}`)
         break
       case 'native-join-room': //----- 청취자요양정보 방조인
         const {roomNo} = event.detail
@@ -893,18 +892,17 @@ export default () => {
         mem_no = pushMsg.mem_no
         if (mem_no != undefined) {
           if (isLogin) {
-            if (context.profile.memNo === mem_no) {
-              window.location.href = `/mypage/${context.profile.memNo}/fanboard`
-            } else {
-              window.location.href = `/mypage/${mem_no}?tab=1`
-            }
+            history.push(`/profile/${context.profile.memNo}?tab=1`)
           }
         }
         break
       case '32': //-----------------마이페이지>내 지갑
         mem_no = pushMsg.mem_no
         if (mem_no != undefined) {
-          if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+          // if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+          if (isLogin) {
+            history.push('/wallet')
+          }
         }
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
@@ -913,20 +911,29 @@ export default () => {
         mem_no = pushMsg.mem_no
         if (mem_no != undefined) {
           // if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
-          if (isLogin) window.location.href = `/menu/alarm`
+          // if (isLogin) window.location.href = `/menu/alarm`
+          if (isLogin) {
+            history.push('/notice');
+          }
         }
         break
       case '35': //-----------------마이페이지
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
           // if (isLogin) window.location.href = `/mypage/${mem_no}/`
-          if (isLogin) window.location.href = `/menu/profile`
+          // if (isLogin) window.location.href = `/menu/profile`
+          if (isLogin) {
+            history.push('/mypage');
+          }
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          if (isLogin) window.location.href = `/mypage/${mem_no}/`
+          // if (isLogin) window.location.href = `/mypage/${mem_no}/`
+          if (isLogin) {
+            history.push(`/profile/${mem_no}`);
+          }
         }
         break
       case '37': //-----------------1:1 문의 답변
@@ -938,7 +945,10 @@ export default () => {
       case '38': //-----------------스타의 방송공지
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
+          // if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
+          if (isLogin) {
+            history.push(`/profile/${mem_no}?tab=0`)
+          }
         }
         break
       case '39': //-----------------좋아요
@@ -973,7 +983,10 @@ export default () => {
         break
       case '48': //-----------------마이클립
         if (isLogin) {
-          window.location.href = `/mypage/${context.profile.memNo}/my_clip`
+          // window.location.href = `/mypage/${context.profile.memNo}/my_clip`
+          if (isLogin) {
+            history.push(`/myProfile?tab=2`)
+          }
         }
         break
       case '50': //-----------------직접입력 URL
@@ -982,7 +995,7 @@ export default () => {
           if (isLogin) window.location.href = redirect_url
         }
         break
-      case '52': //------------------우체통알람
+      case '52': //------------------메시지알람
         const memNo = pushMsg.mem_no
         if (memNo !== undefined) {
           // if (__NODE_ENV === 'dev') {
@@ -1013,7 +1026,11 @@ export default () => {
         //window.location.href = `/event/specialDj`
         board_idx = pushMsg.board_idx
         if (board_idx !== undefined) {
-          window.location.href = `/customer/notice/${board_idx}`
+          // window.location.href = `/customer/notice/${board_idx}`
+          history.push({
+            pathname: `/notice/${board_idx}`,
+            state: board_idx,
+          })
         }
         break
       case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
@@ -1022,7 +1039,11 @@ export default () => {
       case '7': //------------------공지사항 페이지 [board_idx](미정)
         board_idx = pushMsg.board_idx
         if (board_idx !== undefined) {
-          window.location.href = `/customer/notice/${board_idx}`
+          // window.location.href = `/customer/notice/${board_idx}`
+          history.push({
+            pathname: `/notice/${board_idx}`,
+            state: board_idx,
+          })
         }
         break
       case '65': // 깐부 수락 / 신청

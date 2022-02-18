@@ -91,7 +91,7 @@ export default (props) => {
                   <div
                     className="thumbBox"
                     onClick={() => {
-                      history.push(`/mypage/${memNo}`)
+                      history.push(`/profile/${memNo}`)
                     }}>
                     <img src={holder} className="thumbBox__frame" />
                     <img src={profImg.thumb120x120} className="thumbBox__pic" />

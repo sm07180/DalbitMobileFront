@@ -177,7 +177,7 @@ const List = (props) => {
   //transfer memNo
   const historyMem = (yourMemNo) => {
     if (yourMemNo !== context.profile.memNo) {
-      history.push(`/mypage/${yourMemNo}`)
+      history.push(`/profile/${yourMemNo}`)
     } else if (yourMemNo !== context.profile.memNo) return false
   }
   //-------------------------------------------------------------------------

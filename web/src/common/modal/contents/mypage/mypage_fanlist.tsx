@@ -33,7 +33,7 @@ export default (props) => {
           const { nickNm, isFan, memNo, profImg } = fanItem;
           return (
             <li className="rankitem" key={idx + "rankItem"}>
-              <div className="thumbBox" onClick={() => history.push(`/mypage/${memNo}`)}>
+              <div className="thumbBox" onClick={() => history.push(`/profile/${memNo}`)}>
                 <img src={profImg[`thumb62x62`]} className="thumbBox__thumb" alt="thumb" />
               </div>
               <div className="textBox">

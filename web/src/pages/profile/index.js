@@ -303,7 +303,7 @@ const ProfilePage = () => {
     setPopLike(true)
   }
 
-  /* 우체통 이동 */
+  /* 메시지 이동 */
   const goMailAction = () => {
     const goMailParams = {
       context,
@@ -462,10 +462,13 @@ const ProfilePage = () => {
   useEffect(() => {
     if(socialType === socialTabmenu[0]) {
       getFeedData();
+      setScrollPagingCnt(1);
     }else if(socialType === socialTabmenu[1]) {
       getFanBoardData();
+      setScrollPagingCnt(1);
     }else if(socialType === socialTabmenu[2]) {
       getClipData();
+      setScrollPagingCnt(1);
     }
   }, [socialType])
 

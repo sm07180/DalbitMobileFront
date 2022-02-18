@@ -1,6 +1,6 @@
 /**
  * @brief : mailbox/chatting - gift_pop.tsx
- * @role : 우체통 선물하기 팝업 ui / 기능
+ * @role : 메시지 선물하기 팝업 ui / 기능
  */
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";

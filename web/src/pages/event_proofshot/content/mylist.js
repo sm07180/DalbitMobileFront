@@ -47,7 +47,7 @@ function Mylist(props) {
         {item instanceof Object && (
           <>
             <div className="list__content">
-              <a href={'/menu/profile'} className="list__img">
+              <a href={'/myProfile'} className="list__img">
                 <img src={item.profImg['thumb62x62']} />
               </a>
               <div className="title">

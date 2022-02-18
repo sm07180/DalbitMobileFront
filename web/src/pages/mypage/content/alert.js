@@ -143,7 +143,7 @@ export default (props) => {
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/mypage/${myMemNo}/wallet`)
+                      props.history.push(`/wallet`)
                     }}>
                     <figure>
                       <img src={moonIco} />
@@ -157,7 +157,7 @@ export default (props) => {
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/menu/profile`)
+                      props.history.push(`/myProfile`)
                     }}>
                     <figure>
                       <img src={alarmIco} />

@@ -29,7 +29,7 @@ export default function userList() {
               } else {
                 globalAction.callSetToastStatus!({
                   status: true,
-                  message: "상대방이 우체통 기능을 사용하지 않는 상태이므로 대화가 불가능합니다.",
+                  message: "상대방이 메시지 기능을 사용하지 않는 상태이므로 대화가 불가능합니다.",
                 });
               }
             }}

@@ -292,9 +292,9 @@ export default (props) => {
   }
   const Link = (memNo) => {
     if (webview && webview === 'new') {
-      history.push(`/mypage/${memNo}?webview=new`)
+      history.push(`/profile/${memNo}?webview=new`)
     } else {
-      history.push(`/mypage/${memNo}`)
+      history.push(`/profile/${memNo}`)
     }
   }
   return (

@@ -206,9 +206,9 @@ export default (props) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
                       let link = ''
                       if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                        link = `/profile/${memNo}?webview=${webview}`
                       } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                        link = `/profile/${memNo}`
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
@@ -231,12 +231,7 @@ export default (props) => {
                     name === '스타' &&
                     starInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
-                      let link = ''
-                      if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                      } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                      }
+                      let link = `/profile/${memNo}?webview=${webview}`
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
                           <a href={link}>
@@ -256,12 +251,7 @@ export default (props) => {
                     name === '팬' &&
                     fanInfo.map((item, index) => {
                       const {title, id, profImg, nickNm, isFan, memNo} = item
-                      let link = ''
-                      if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                      } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                      }
+                      let link = `/profile/${memNo}?webview=${webview}`;
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
                           <a href={link}>

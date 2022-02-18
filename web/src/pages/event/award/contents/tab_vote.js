@@ -179,7 +179,7 @@ export default function awardEventVote() {
                 <div
                   className="thumb"
                   onClick={() => {
-                    history.push(`/mypage/${djMemNo}`)
+                    history.push(`/profile/${djMemNo}`)
                   }}>
                   <img src={djProfImg.thumb336x336} alt={djNickNm} />
                   <p className="nickName">{djNickNm}</p>

@@ -180,7 +180,7 @@ export default () => {
           <ul className="list-item search">
             {userList.map((item, index) => {
               const {memNo, nickNm, memId, profImg} = item
-              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              const link = webview ? `/profile/${memNo}?webview=${webview}` : `/profile/${memNo}`
               return (
                 <li key={index}>
                   <a onClick={() => history.push(link)}>
@@ -225,7 +225,7 @@ export default () => {
             {blackList.map((item, index) => {
               const {memNo, nickNm, memId, profImg, regDt} = item
               const date = Utility.dateFormatter(regDt)
-              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              const link = webview ? `/profile/${memNo}?webview=${webview}` : `/profile/${memNo}`
               return (
                 <li key={index}>
                   <a onClick={() => history.push(link)}>
@@ -271,7 +271,7 @@ export default () => {
             {manegerSearchList.map((item, index) => {
               const {memNo, nickNm, memId, profImg, regDt} = item
               const date = Utility.dateFormatter(regDt)
-              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              const link = webview ? `/profile/${memNo}?webview=${webview}` : `/profile/${memNo}`
               return (
                 <li key={index}>
                   <a onClick={history.push(link)}>

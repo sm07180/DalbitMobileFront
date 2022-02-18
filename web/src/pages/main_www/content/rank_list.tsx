@@ -23,7 +23,7 @@ export default function RealTimeRank(props: any) {
   const { isLogin } = baseData;
   const goMypage = (memNo: string) => {
     if (isLogin) {
-      history.push(`/mypage/${memNo}`);
+      history.push(`/profile/${memNo}`);
     } else if (isLogin === false) {
       globalAction.setUrlInfo!((prevState) => ({
         ...prevState,

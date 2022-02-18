@@ -34,7 +34,7 @@ export default function RoundList({rankList}) {
                     <span className="up_down down">{Math.abs(parseInt(upDown))}</span>
                   )}
                 </div>
-                <div className="thumb_box" onClick={() => history.push(`/mypage/${memNo}`)}>
+                <div className="thumb_box" onClick={() => history.push(`/profile/${memNo}`)}>
                   <img src={profImg.thumb120x120} alt={nickName} />
                   <span className="nick"> {nickName}</span>
                 </div>
@@ -81,7 +81,7 @@ export default function RoundList({rankList}) {
                     <span className="up_down down">{Math.abs(parseInt(upDown))}</span>
                   )}
                 </div>
-                <div className="thumb_box" onClick={() => history.push(`/mypage/${memNo}`)}>
+                <div className="thumb_box" onClick={() => history.push(`/profile/${memNo}`)}>
                   <img src={profImg.thumb120x120} alt={nickName} />
                   <span className="nick">{nickName}</span>
                 </div>

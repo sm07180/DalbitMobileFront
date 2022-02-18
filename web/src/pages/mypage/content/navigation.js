@@ -42,7 +42,7 @@ export default (props) => {
           const {type, txt} = bundle
           return (
             <NavLink
-              to={webview ? `/mypage/${memNo}/${type}?webview=${webview}` : `/mypage/${memNo}/${type}`}
+              to={webview ? `/profile/${memNo}/${type}?webview=${webview}` : `/profile/${memNo}/${type}`}
               activeClassName="active"
               key={index}>
               <TabText>{txt}</TabText>

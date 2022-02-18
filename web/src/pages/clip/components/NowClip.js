@@ -24,7 +24,7 @@ const hexToRgb = (target) => {
 };
 
 const NowClip = (props) => {
-  const {info} = props;
+  const {info, playAction} = props;
   const bgRef = useRef();
   const [ bgInfo, setBgInfo ] = useState(hexToRgb(info.randomBg));
 
@@ -93,7 +93,7 @@ const NowClip = (props) => {
 
   return (
     <>
-      <div className='listWrap' ref={bgRef} style={{background: `${bgInfo}`}}>
+      <div className='listWrap' ref={bgRef} style={{background: `${bgInfo}`}} data-clip-no={info.clipNo} onClick={playAction}>
         <div className="listRow">
           <div className="photo">
             <img crossOrigin="use-credentials" src={info.bgImg.url} alt="" onLoad={extractColor} onError={handleImgError}/>

@@ -244,7 +244,7 @@ const ClipPage = () => {
                     <div>
                       {row.map((coreRow, coreIndex) => {
                         if (Object.keys(coreRow).length > 0) {
-                          return (<NowClip key={coreIndex} info={coreRow} playAction={playClip}/>)
+                          return (<NowClip key={coreIndex} info={coreRow} playAction={playClip} />)
                         } else {
                           return <></>;
                         }

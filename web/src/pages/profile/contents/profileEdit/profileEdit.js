@@ -38,6 +38,7 @@ const ProfileEdit = () => {
 
   //프로필 정보
   const initProfileInfo = useRef(null);
+  const nickNameRef = useRef(null);
   const [profileInfo, setProfileInfo] = useState({
     birth: null, nickNm: null, gender: null, profImg: null, profMsg: null, memId: null, profImgList: []
   })
@@ -54,9 +55,9 @@ const ProfileEdit = () => {
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
+      //const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
       initProfileInfo.current = {nickNm, profImg, profMsg, gender};
-      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList: sortImgList});
+      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList});
       setCurrentAvatar(profImg);
       setHasGender(gender !== 'n');
 
@@ -214,6 +215,14 @@ const ProfileEdit = () => {
   }, [image]);
 
   const emptySwiperItems = useMemo(() => Array(10 - (profileInfo?.profImgList?.length || 0)).fill(''), [profileInfo]);
+  const topSwiperList = useMemo(() => {
+    if (profile?.profImgList?.length > 0) {
+      return profile?.profImgList.concat([]).filter((data, index)=> !data.isLeader);
+    } else {
+      return [];
+    }
+  },[profile?.profImgList]);
+
   return (
       <>{
           !passwordPageView ?
@@ -223,9 +232,9 @@ const ProfileEdit = () => {
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='topSwiper' onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}>
+            <section className='topSwiper' onClick={()=> showImagePopUp(topSwiperList, 'profileList')}>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profile}/>
+                <TopSwiper data={{...profile, profImgList: topSwiperList}}/>
                 :
                 <div className="nonePhoto"
                      onClick={(e) => {
@@ -250,7 +259,7 @@ const ProfileEdit = () => {
               </div>
 
               <div className="coverPhoto">
-                <div className="title">커버사진 <small>(최대 10장)</small></div>
+                <div className="title">프로필사진<small>(최대 10장)</small></div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
@@ -279,18 +288,21 @@ const ProfileEdit = () => {
               </div>
             </section>
             <section className="editInfo">
-              <InputItems title={'닉네임'}>
-                <input type="text" maxLength="15" placeholder={profile.nickNm}
+              <InputItems title="닉네임">
+                <input type="text" maxLength="15" defaultValue={profile.nickNm} ref={nickNameRef}
                        onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
-                <button className='inputDel'></button>
+                <button className='inputDel'
+                        onClick={(e) => {
+                          //닉네임 초기화
+                          if (nickNameRef.current) nickNameRef.current.value = '';
+                          setProfileInfo({...profileInfo, nickNm: ''})
+                        }}/>
               </InputItems>
-              <InputItems title={'UID'}>
-                <input type="text" placeholder={profile.memId} disabled/>
+              <InputItems title="휴대폰번호" button="인증하기">
+                <input type="text" placeholder="휴대폰 인증을 해주세요" disabled/>
               </InputItems>
-              <InputItems title={'비밀번호'}>
-                <input type="password" name={"password"} maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} placeholder=''
-                       onClick={() => setPasswordPageView(true)}/>
-                <button className='inputChange' onClick={() => setPasswordPageView(true)}>변경</button>
+              <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
+                <input type="password" name="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} disabled />
               </InputItems>
               <div className="inputItems">
                 <div className="title">성별</div>
