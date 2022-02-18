@@ -24,6 +24,7 @@ const ClipDetailCore = (props) => {
       NewClipPlayerJoin(clipParam);
     }
   };
+
   return (
     <div className="listRow" data-clip-no={item.clipNo} onClick={playClip}>
       <div className="photo">
