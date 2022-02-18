@@ -45,7 +45,7 @@ import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
-import PlayMaker from './playMaker'
+import PlayMaker from './playmaker'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
@@ -138,7 +138,7 @@ export default (props) => {
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
-      case 'playMaker':
+      case 'playmaker':
         return <PlayMaker />
       // case 'gganbu':
       //   return <Gganbu />
