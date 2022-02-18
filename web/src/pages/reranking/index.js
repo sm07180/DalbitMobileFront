@@ -25,8 +25,8 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
-  //하단 FAN/LOVER탭 array
-  const dayTabmenu = ['FAN','LOVER']
+  //하단 FAN/CUPID탭 array
+  const dayTabmenu = ['FAN','CUPID']
 
   //DJ List 기간 선택 pop flag
   const [popSlide, setPopSlide] = useState(false)
@@ -46,13 +46,13 @@ const RankPage = () => {
   //fan List
   const [fanRank, setFanRank] = useState([]);
 
-  //lover List
-  const [loverRank, setLoverRank] = useState([]);
+  //cupid List
+  const [cupidRank, setCupidRank] = useState([]);
 
   //내 순위 정보
-  const [myRank, setMyRank] = useState({dj: 0, fan: 0, lover: 0});
+  const [myRank, setMyRank] = useState({dj: 0, fan: 0, cupid: 0});
 
-  //하단 FAN/LOVER탭
+  //하단 FAN/CUPID탭
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
 
   // 페이지 셋팅
@@ -192,7 +192,7 @@ const RankPage = () => {
       } else if(rankSlct === 2) {
         setFanRank(data.list)
       } else if(rankSlct === 3) {
-        setLoverRank(data.list)
+        setCupidRank(data.list)
       }
     }
   }
@@ -202,7 +202,7 @@ const RankPage = () => {
       if (res.result === "success"){
         let djRank = 0;
         let fanRank = 0;
-        let loverRank = 0;
+        let cupidRank = 0;
 
         res.data.map((res) => {
           if (res.s_rankSlct === "DJ"){
@@ -210,10 +210,10 @@ const RankPage = () => {
           } else if (res.s_rankSlct === "FAN") {
             fanRank = res.s_rank;
           } else {
-            loverRank = res.s_rank;
+            cupidRank = res.s_rank;
           }
         });
-        setMyRank({dj: djRank, fan: fanRank, lover: loverRank});
+        setMyRank({dj: djRank, fan: fanRank, cupid: cupidRank});
       }
     });
   }
@@ -290,11 +290,11 @@ const RankPage = () => {
       </section>
       }
       <section className='dailyRankList'>
-        <CntTitle title={'일간 FAN / LOVER'} more={`${dayTabType === "FAN" ? "/rankDetail/FAN" : "/rankDetail/LOVER"}`}/>
+        <CntTitle title={'일간 FAN / CUPID'} more={`${dayTabType === "FAN" ? "/rankDetail/FAN" : "/rankDetail/CUPID"}`}/>
         <Tabmenu data={dayTabmenu} tab={dayTabType} setTab={setDayTabType} />
         <div className='listWrap'>
-          {fanRank.length > 0 || loverRank.length > 0 ?
-            <RankingList data={dayTabType === "FAN" ? fanRank : loverRank} tab={dayTabType}>
+          {fanRank.length > 0 || cupidRank.length > 0 ?
+            <RankingList data={dayTabType === "FAN" ? fanRank : cupidRank} tab={dayTabType}>
             </RankingList>
             :
             <>
@@ -303,12 +303,12 @@ const RankPage = () => {
           }
         </div>
       </section>
-      <section className='rankingBottom'>
+      <section className='rankingBottom'onClick={() => history.push('/rankDetail/DJ')}>
         <p>
           오늘의 랭킹 순위는?<br/>
           혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!
         </p>
-        <button onClick={() => history.push('/rankDetail/DJ')}>랭킹순위 전체보기</button>
+        <button>랭킹순위 전체보기</button>
       </section>
       {popSlide &&
       <PopSlide setPopSlide={setPopSlide}>
@@ -333,22 +333,22 @@ const RankPage = () => {
             </div>
           </div>
           <div className='standardList'>
-            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popSubTitle'>FAN 랭킹</div>
             <div className='popText'>
-              받은 별, 청취자 수, 받은 좋아요<br/>
-              (부스터 포함)의 종합 순위입니다.
+              보낸 달과 보낸 좋아요(부스터 포함)의<br/>
+              종합 순위입니다.
             </div>
           </div>
           <div className='standardList'>
-            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popSubTitle'>CUPID 랭킹</div>
             <div className='popText'>
-              받은 별, 청취자 수, 받은 좋아요<br/>
-              (부스터 포함)의 종합 순위입니다.
+              보낸 좋아요 개수 (부스터 포함)의<br/>
+              1~200위의 순위입니다.
             </div>
           </div>
         </div>
         <div className='popInfo'>
-          <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
+          <span>Honey</span>(허니)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
         </div>
       </LayerPopup>
       }
