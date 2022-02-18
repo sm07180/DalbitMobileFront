@@ -1295,7 +1295,8 @@
       @include flex(center, center, column);
       width: 328px; min-height: 400px;
       border-radius: 24px;
-      background: #fff;      
+      background: #fff;
+      overflow: hidden;
       .popContent {
         @include flex(center, center, column);
         width: 100%;
