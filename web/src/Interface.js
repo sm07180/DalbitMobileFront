@@ -356,9 +356,6 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
-
-    alert("123");
-
     const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
 
     switch (event.type) {
