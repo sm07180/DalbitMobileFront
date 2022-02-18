@@ -99,9 +99,13 @@
     }
   }
   .editInfo {
-    padding:12px 16px 24px;
+    padding:17px 16px 38px;
     .inputItems {
       flex:1;
+      margin-bottom: 18px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
       .inputBox {
         button {
           flex-shrink: 0;
@@ -129,7 +133,6 @@
       .selectMenu {
         @include flex(center);
         width: 100%;
-        margin-bottom:16px;
         li {
           flex: 1;
           @include flex(center, center);

@@ -1,3 +1,5 @@
+@import "components/ui/_mixin.scss";
+
 .appDownloadPopup {
   display: flex;
   flex-direction: column;
@@ -33,7 +35,7 @@
       font-size: 18px;
       text-align: center;
       letter-spacing: -0.8px;
-      color: #632beb;
+      color: $MAINCOLOR;
       line-height: 24px;
       display: block;
       margin-bottom: 20px;
@@ -51,13 +53,14 @@
 
     button {
       display: flex;
+      justify-content: center;
       align-items: center;
       width: 100%;
       height: 48px;
       color: #fff;
       font-size: 18px;
       text-align: center;
-      background: #632beb;
+      background: $MAINCOLOR;
       border-radius: 9px;
       font-weight: bold;
       letter-spacing: -0.8px;
@@ -65,7 +68,6 @@
       &.androidIcon {
         &::before {
           content: '';
-          margin-left: 20px;
           margin-right: 10px;
           width: 36px;
           height: 36px;
