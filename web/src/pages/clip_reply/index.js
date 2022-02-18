@@ -7,7 +7,7 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 //layout
 import Layout2 from 'pages/common/layout2.5';
-import Header from 'components/ui/new_header';
+import Header from 'components/ui/header/Header';
 import BoardList from '../../pages/mypage/content/board_list';
 import WriteBoard from '../../pages/mypage/content/board_write';
 import NoResult from "components/ui/noResult/NoResult";

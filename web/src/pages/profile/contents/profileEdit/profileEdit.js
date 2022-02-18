@@ -280,8 +280,8 @@ const ProfileEdit = () => {
               </div>
             </section>
             <section className="editInfo">
-              <InputItems title={'닉네임'}>
-                <input type="text" maxLength="15" placeholder={profile.nickNm} ref={nickNameRef}
+              <InputItems title="닉네임">
+                <input type="text" maxLength="15" defaultValue={profile.nickNm} ref={nickNameRef}
                        onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
                 <button className='inputDel'
                         onClick={(e) => {
@@ -290,13 +290,11 @@ const ProfileEdit = () => {
                           setProfileInfo({...profileInfo, nickNm: ''})
                         }}/>
               </InputItems>
-              <InputItems title={'UID'}>
-                <input type="text" placeholder={profile.memId} disabled/>
+              <InputItems title="휴대폰번호" button="인증하기">
+                <input type="text" placeholder="휴대폰 인증을 해주세요" disabled/>
               </InputItems>
-              <InputItems title={'비밀번호'}>
-                <input type="password" name={"password"} maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} placeholder=''
-                       onClick={() => setPasswordPageView(true)}/>
-                <button className='inputChange' onClick={() => setPasswordPageView(true)}>변경</button>
+              <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
+                <input type="password" name="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} disabled />
               </InputItems>
               <div className="inputItems">
                 <div className="title">성별</div>
