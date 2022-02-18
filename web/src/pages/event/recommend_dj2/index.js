@@ -12,7 +12,7 @@ import hitIcon from '../../menu/static/ico_hit_g.svg'
 
 import './recommend_dj2.scss'
 
-export default function RecommendDj() {
+const RecommendDj2 = () => {
   const history = useHistory()
 
   const context = useContext(Context)
@@ -168,3 +168,5 @@ export default function RecommendDj() {
     </div>
   )
 }
+
+export default RecommendDj2

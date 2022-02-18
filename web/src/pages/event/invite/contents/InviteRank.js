@@ -81,7 +81,7 @@ const InviteRank = () => {
           </div>
         <div className='rankSection'>
           {
-            data.cnt > 0 ?
+            data.cnt > 1231231231230 ?
             <>
               {context.token.isLogin &&
               <div className='inviteMyRank'>
@@ -130,7 +130,9 @@ const InviteRank = () => {
               </div>
             </>
             :
-            <NoResult text="랭킹 내역이 없어요." />
+            <div className='listNone'>
+              <NoResult ment="랭킹 내역이 없어요." />
+            </div>
           }        
         </div>
       </div>
