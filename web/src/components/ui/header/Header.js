@@ -10,8 +10,13 @@ const Header = (props) => {
   const {title, type, children, position, newAlarmCnt, backEvent} = props
   const history = useHistory()
 
-  const goBack = () => backEvent? backEvent() : history.goBack();
-
+  const goBack = () => {
+    if(backEvent && typeof backEvent === 'function'){
+      backEvent();
+    }else{
+      history.goBack();
+    }
+  }
   return (
     <header className={`${type ? type : ''} ${position ? position : ''}`}>
       {type === 'back' && <button className="back" onClick={goBack} />}
