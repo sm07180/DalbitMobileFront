@@ -248,7 +248,7 @@ legend {
         }
         &[data-url="/mailbox"] {
           @include BGIMG("common/gnb/gnbMail-off.png");
-          &:hover::after {content:"우체통";}
+          &:hover::after {content:"메시지";}
         }
         &[data-url="/store"] {
           @include BGIMG("common/gnb/gnbStore-off.png");
