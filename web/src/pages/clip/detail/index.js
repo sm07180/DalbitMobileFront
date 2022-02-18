@@ -9,6 +9,7 @@ import {useParams} from "react-router-dom";
 
 import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
+import Utility from "components/lib/utility";
 
 const ClipDetailPage = (props) => {
   const { type } = useParams();
@@ -16,7 +17,7 @@ const ClipDetailPage = (props) => {
   const termType = useSelector((state)=> state.clip.termType); //
   const subjectType = useSelector((state)=> state.clip.subjectType); //
   const firstSubjectType = useMemo(() => (subjectType.find(row => row.value === type) || subjectType[0]), []);
-  const [ clipLastInfo, setClipLastInfo ] = useState({ list: [], paging: {}});
+  const [ clipLastInfo, setClipLastInfo ] = useState({ list: [], paging: {}, cnt: 0 });
   // slctType - 정렬순서(0: 전체, 1: 최신순, 2: 인기순, 3: 선물순 4: 재생순, 5:오래된순->스페셜DJ, 6:랜덤
   // dateType - 기간 타입(0: 전체, 1: 24시간, 2: 7일)
   // subjectType - 클립 주제(null or '' - 전체,
@@ -48,25 +49,35 @@ const ClipDetailPage = (props) => {
   // 방금 떠오른 클립 리스트 가져오기
   const getClipLastList = () => {
     API.getClipList({ gender: '', djType: 0, slctType: searchInfo.slctType.index, dateType: searchInfo.dateType.index, page: searchInfo.page, records: searchInfo.records, subjectType: (searchInfo.subjectType.value || '') }).then(res => {
-      if (res.code === 'C001') {
+      if (res.code === 'C001' && res.data.list.length > 0) {
         let tempList = res.data.list;
         tempList.map((value, index) => {
           tempList[index].subjectType = chagneSubject(value.subjectType);
         });
 
-        setClipLastInfo({ list: tempList, paging: {...res.data.paging}});
+        if (searchInfo.page !== 1) {
+          let temp =  [];
+          tempList.forEach(value => {
+            if (clipLastInfo.list.findIndex(target => target.clipNo === value.clipNo) === -1) {
+              temp.push(value);
+            }
+          })
+          setClipLastInfo({...res.data, list: clipLastInfo.list.concat(temp), cnt: res.data.paging.total });
+        } else {
+          setClipLastInfo({ ...res.data, list: tempList, cnt: res.data.paging.total });
+        }
       }
     });
   };
 
   const handleTermSelect = (value) => {
     const targetData = termType.find(row => row.index == value);
-    setSearchInfo({...searchInfo, dateType: targetData});
+    setSearchInfo({...searchInfo, dateType: targetData, page: 1});
   };
 
   const handleCategorySelect = (value) => {
     const targetData = categoryType.find(row => row.index == value);
-    setSearchInfo({...searchInfo, slctType: targetData});
+    setSearchInfo({...searchInfo, slctType: targetData, page: 1});
   };
 
   const handleSubjectSelect = (e) => {
@@ -74,14 +85,30 @@ const ClipDetailPage = (props) => {
     const targetData = subjectType.find(row => row.value === targetValue);
 
     if (targetData !== undefined) {
-      setSearchInfo({...searchInfo, subjectType: targetData});
+      setSearchInfo({...searchInfo, subjectType: targetData, page: 1});
     }
   };
+
+  const scrollEvent = () => {
+    if (clipLastInfo.cnt > searchInfo.page && Utility.isHitBottom()) {
+      setSearchInfo({...searchInfo, page: searchInfo.page + 1});
+      window.removeEventListener('scroll', scrollEvent);
+    } else if (clipLastInfo.cnt === searchInfo.page) {
+      window.removeEventListener('scroll', scrollEvent);
+    }
+  }
 
   // 스와이퍼 params
   const swiperParams = {
     slidesPerView: 'auto',
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvent);
+    return () => {
+      window.removeEventListener('scroll', scrollEvent);
+    }
+  }, [clipLastInfo]);
 
   useEffect(() => {
     getClipLastList();
