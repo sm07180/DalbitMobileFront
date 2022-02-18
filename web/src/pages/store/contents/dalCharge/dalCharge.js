@@ -227,7 +227,7 @@ const DalCharge = () => {
           </div>
           <div className="infoList">
             <div className="title">총</div>
-            <p>{Utility.addComma(dal * buyItemInfo.itemAmount)} <strong>개</strong></p>
+            <p>{Utility.addComma((dal * buyItemInfo.itemAmount) + bonusDal)} <strong>개</strong></p>
           </div>
         </div>
         <div className="infoBox" style={{marginTop:'10px'}}>

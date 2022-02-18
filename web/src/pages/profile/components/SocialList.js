@@ -27,13 +27,13 @@ const SocialList = (props) => {
   }
 
   return (
-    <div className="socialList">
+    <div className="socialListWrap">
       {socialList.map((item, index) => {
         const memNo = type==='feed'? profileData.memNo : item?.writerMemNo; //글 작성자
         const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
         const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
         return (
-          <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
+          <div className='socialList' key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
                               modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
@@ -68,7 +68,7 @@ const SocialList = (props) => {
                 <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
               </div>
             </div>
-          </React.Fragment>
+          </div>
         )
       })}
     </div>

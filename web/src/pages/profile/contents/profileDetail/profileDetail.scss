@@ -68,6 +68,9 @@
         white-space: pre-line;
         @include font(14px,400,black);
       }
+      .swiperPhoto{
+        margin-bottom: 16px;
+      }
       .info {
         @include flex(center);
         i {
@@ -135,13 +138,14 @@
             }
           }
         }
-        button.more {
-          flex-shrink: 0;
-          width:30px;
-          height:30px;
-          margin-bottom:auto;
+        .listBack {
+          @include flex;
           margin-left:auto;
-          @include BGIMG("mypage/dalla/btn_more.png");
+          margin-bottom:auto;
+          div.moreBtn {
+            @include moreBtnStyle-1;
+            margin-left:8px;
+          }
         }
       }
     }

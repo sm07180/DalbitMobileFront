@@ -8,27 +8,28 @@ import './totalInfo.scss'
 const TotalInfo = (props) => {
   const {data, goProfile} = props
   const [openBadge,setOpenBadge] = useState(false);
-  let badgeTotalCnt = 0;
-
+  const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   // 
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
   }
 
   useEffect(() => {
-    console.log(data);
+    let badgeLength = 0;
     if(data.badgeSpecial > 0) {
-      badgeTotalCnt++
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
     }
     if(data.isSpecial) {
-      badgeTotalCnt++
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
     }
     if(data.commonBadgeList.length > 0) {
       for(let i = 0; i < data.commonBadgeList.length; i++){
-        badgeTotalCnt++
+        badgeLength++
+        setBadgeTotalCnt(badgeLength)
       }
     }
-    return badgeTotalCnt
   },[data])
 
   return (
@@ -40,7 +41,7 @@ const TotalInfo = (props) => {
           <BadgeItems data={data} type="isBadge" />
         </div>
         {
-          badgeTotalCnt > 4 &&
+          badgeTotalCnt > 3 &&
             <button onClick={onOpenBdage}>열기/닫기</button>
         }
       </div>
@@ -82,14 +83,17 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
-      <div className="comment">
-        <div className="title">
-          <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
-        </div>
-        <div className="text">
-          {data.profMsg}
-        </div>
-      </div>
+      {
+        data.profMsg &&
+          <div className="comment">
+            <div className="title">
+              <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
+            </div>
+            <div className="text">
+              {data.profMsg}
+            </div>
+          </div>
+      }      
     </>
   )
 }
