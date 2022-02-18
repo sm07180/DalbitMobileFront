@@ -3,6 +3,16 @@
 $btnActive : #FF3C7B;
 $btnDisable : #FFD8E4;
 
+.container {
+  .totalWrap {
+    #loginPage {
+      .loginMain {
+        height: calc(100vh - 89px);
+      }
+    }
+  }
+}
+
 #loginPage {
   .loginMain {
     position: relative;

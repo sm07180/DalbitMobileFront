@@ -28,7 +28,7 @@
             .tabMenu {
                 position: relative;
                 flex: 1;
-                @include flex(flex-start, center);
+                @include flex(center, center);
                 height: 50px;
                 background-color: #543100;
                 cursor: pointer;             
@@ -313,6 +313,7 @@
                     .questionMark {
                         display: inline-block;
                         width: 22px; height: 22px;
+                        margin-top: -6px;
                         background-image: url("https://image.dalbitlive.com/common/icon/questionMark.png");
                         background-position: center;
                         background-repeat: no-repeat;
@@ -415,6 +416,7 @@
                 @include flex(center, center, column);
                 width: 100%;
                 margin: 16px auto 8px;
+                padding: 0;
                 span {
                     margin-bottom: 16px;
                     text-align: center;
