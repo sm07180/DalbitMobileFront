@@ -47,7 +47,7 @@ export default function AlarmPop() {
             </p>
           ) : context.popup_code[1] === 'isMailbox' ? (
             <p>
-              내 우체통에
+              내 메시지에
               <br /> 새로운 대화가 등록되면
               <br /> 메시지로 알려드립니다.
             </p>

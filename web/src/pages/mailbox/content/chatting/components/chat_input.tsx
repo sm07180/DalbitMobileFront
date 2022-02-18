@@ -55,7 +55,7 @@ export default function chatInput(props) {
   const chatNoUseToast = () => {
     globalAction.callSetToastStatus!({
       status: true,
-      message: "우체통 기능을 사용하지 않는 상태이므로 사용할 수 없습니다.",
+      message: "메시지 기능을 사용하지 않는 상태이므로 사용할 수 없습니다.",
     });
   };
   const openGiftPop = () => {

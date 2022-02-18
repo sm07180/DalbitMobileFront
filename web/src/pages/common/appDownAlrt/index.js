@@ -54,7 +54,7 @@ const appDownAlrt = (props) => {
             ) : pageName == 4 ? (
                 '클립 청취를 '
             ) : pageName == 5 ? (
-                '우체통 이용을 '
+                '메시지 이용을 '
             ) : (
                 <></>
             )}

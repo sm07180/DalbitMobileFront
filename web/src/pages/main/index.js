@@ -138,6 +138,12 @@ const MainPage = () => {
       setCurrentPage(currentPage => currentPage + 1)
     }
   })
+  
+  useEffect(() => {
+    if (currentPage > 0) fetchLiveInfo()
+    document.addEventListener('scroll', scrollEvent)
+    return () => document.removeEventListener('scroll', scrollEvent)
+  }, [currentPage, liveListType])
 
   const mainTouchStart = useCallback(
     (e) => {

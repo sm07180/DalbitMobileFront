@@ -14,7 +14,7 @@ export const RankingRewardButton = ({history}) => {
 }
 
 export const MessageButton = ({history, context, mailboxAction}) => {
-  /* 우체통 이동 */
+  /* 메시지 이동 */
   const goMailAction = () => {
     const goMailParams = {
       context,

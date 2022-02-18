@@ -510,7 +510,7 @@ export default function Main() {
                   <img
                     className="icon mailbox"
                     src="https://image.dalbitlive.com/svg/postbox_w_on.svg"
-                    alt="우체통"
+                    alt="메시지"
                   />
                 </div>
               ) : (
@@ -522,13 +522,13 @@ export default function Main() {
                     <img
                       className="icon mailbox"
                       src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg"
-                      alt="우체통"
+                      alt="메시지"
                     />
                   ) : (
                     <img
                       className="icon mailbox"
                       src="https://image.dalbitlive.com/svg/postbox_w.svg"
-                      alt="우체통"
+                      alt="메시지"
                     />
                   )}
                 </div>
