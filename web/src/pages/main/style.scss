@@ -25,23 +25,34 @@
     position:fixed;
     z-index:$HEADER-ZINDEX;
     width:100%;
+    border-bottom:1px solid transparent;
+    background-color:transparent;
     header {
       text-indent:-99999px;
-      .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-w.png");}
-      .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-w.png");}
-      .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-w.png");}
-    }
-    &.isShow {
-      header {
-        border-bottom:1px solid #eee;
-        background-color:white;
-        h1 {
-          width:71px;height:25px;
-          @include BGIMG("common/header/LOGO.png");
+      h1 {
+        width:71px;height:25px;
+        @include BGIMG("common/header/LOGO.png");
+        opacity: 0;
+      }
+      button {
+        display: inline-block;
+        width: 40px; height: 40px;
+        img {
+          width: 100%;
         }
-        .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-b.png");}
-        .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-b.png");}
-        .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-b.png");}
+      }
+    }
+    &.fadeIn {
+      animation: fadeIn 0.2s linear forwards;
+      h1 {
+        animation: show 0.2s linear forwards;
+      }
+
+    }
+    &.fadeOut {
+      animation: fadeOut 0.2s linear forwards; 
+      h1 {
+        animation: hide 0.2s linear forwards;
       }
     }
   }
@@ -218,14 +229,22 @@
             margin-right:28px;
           }
           .listColumn {
-            width:102px;
+            width:113px;
             cursor: pointer;
             .photo {
               position:relative;
-              height:136px;
+              height:149px;
               margin-bottom:6px;
               border-radius:16px;
               overflow:hidden;
+              &::before {
+                content: "";
+                @include position-top-left;
+                width: 100%; height: 100%;
+                border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+                border-radius:16px;
+                box-sizing: border-box;
+              }
               &::after {
                 content:"";
                 @include position-bottom-left;
@@ -283,12 +302,20 @@
           margin-right:28px;
         }
         .listColumn {
-          width:102px;
+          width:113px;
           border-radius:16px;
           overflow:hidden;
           cursor: pointer;
           .photo {
-            height:150px;
+            height:149px;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:16px;
+              box-sizing: border-box;
+            }
             img {
               height:100%;
               object-fit: cover;
@@ -375,6 +402,14 @@
           flex-shrink: 0;
           width:110px;
           height:110px;
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:16px;
+            box-sizing: border-box;
+          }
           img {
             width:100%;
             border-radius:16px;
@@ -393,33 +428,73 @@
             @include BGIMG("common/icon/ico_video.png");
           }
         }
-      }
-      .listContent {
-        @include flex($fd:column);
-        min-width:0;
-        height:100%;
-        margin-left:16px;
-        .listItem {
-          @include flex(center);
-          min-height:2px;
-          margin-bottom:2px;
-          &:last-child {
-            margin-top: auto;
-          }
-          .title {
-            @include font(15px,700,#303030);
-            @include fontCut;
-          }
-          .nickNm {
-            margin-left:4px;
-            @include font(13px,400,#666);
-            @include fontCut;
-          }
-          .state {
-            @include font(13px,400,#999);
+        .listContent {
+          flex: 1;
+          @include flex($fd:column);
+          min-width:0;
+          height:100%;
+          margin-left:16px;
+          .listItem {
+            @include flex(center);
+            min-height:2px;
+            margin-bottom:2px;
+            &:last-child {
+              margin-top: auto;
+            }
+            .title {
+              @include font(15px,700,#303030);
+              @include fontCut;
+            }
+            .nickNm {
+              margin-left:4px;
+              @include font(13px,400,#666);
+              @include fontCut;
+            }
+            .state {
+              @include font(13px,400,#999);
+            }
           }
         }
-      }
+      }      
     }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    border-bottom:1px solid transparent;
+    background-color:transparent;
+  }
+  100% {
+    border-bottom:1px solid #eee;
+    background-color:white;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    border-bottom:1px solid #eee;
+    background-color:white;
+
+  }
+  100% {
+    border-bottom:1px solid transparent;
+    background-color:transparent;
+
+  }
+}
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

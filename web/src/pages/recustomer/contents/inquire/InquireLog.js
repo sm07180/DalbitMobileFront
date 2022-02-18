@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 
 // components
 import './inquireLog.scss'
@@ -60,7 +60,7 @@ const InquireLog = () => {
           })}
         </div>
         :
-        <ListNone imgType="ui02" text="문의 내역이 없어요." height="375px"/>
+        <NoResult text="문의 내역이 없어요." />
       }
     </div>
   )

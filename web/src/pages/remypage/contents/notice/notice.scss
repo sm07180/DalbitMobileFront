@@ -9,10 +9,14 @@
     li {
       flex:1;
       @include flex(center,center);
-      height:42px;
+      height:48px;
       border-bottom:2px solid #F2F2F2;
       letter-spacing: -1px;
-      @include font(16px,700,#202020);
+      @include font(16px,600,#ACACAC);
+      box-sizing: border-box;
+      &.active {        
+        @include font(16px,700,#202020);
+      }
       &:nth-child(1) {
         &.active {
           ~ .underline {
@@ -59,7 +63,7 @@
       .title {
         margin-bottom:2px;
         letter-spacing: -1px;
-        @include font(15px,400,#303030);
+        @include font(15px,500,#303030);
         @include fontLineCut;
       }
       .date {
@@ -89,7 +93,7 @@
       .title {
         margin-bottom:2px;
         letter-spacing: -1px;
-        @include font(15px,400,#303030);
+        @include font(15px,500,#303030);
         @include fontCut;
       }
       .text {

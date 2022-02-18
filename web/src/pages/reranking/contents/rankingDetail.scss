@@ -21,18 +21,22 @@
     }
   }
   .tabmenu {
-    position:relative;
+    position:sticky;
+    top: 116px;
     @include flex(center);
     padding:0 16px;
+    background-color: #fff;
+    z-index: 2;
     li {
       flex: 1;
       @include flex(center, center);
-      padding: 10px 0;
-      border-bottom: 2px solid #ccc;
-      @include font(16px,500,#ccc);
+      height: 48px;
+      border-bottom: 2px solid #F2F2F2;
+      @include font(16px,600,#ACACAC);
+      box-sizing: border-box;
       &.active {
-        @include font(16px,700,#333);
-        border-bottom: 2px solid #333;
+        @include font(16px,700,#202020);
+        border-bottom: 2px solid #202020;
       }
     }
   }
@@ -72,8 +76,8 @@
         position: relative;
         @include flex(center, center);
         width: 100%;
-        padding: 10px 16px;
-        @include font(16px, 500, #272727);
+        padding: 14px 16px;
+        @include font(18px, 600, #272727);
         line-height: 40px;
         .questionMark {
           position: absolute;
@@ -94,10 +98,25 @@
         flex:1;
         &:nth-child(1) {
           order:2;
-          .listColumn {width:100px;}
+          .listColumn {
+            width:100px;
+            .photo {
+              width: 100px; height: 100px;
+            }
+          }
         }
-        &:nth-child(2) {order:1;}
-        &:nth-child(3) {order:3;}
+        &:nth-child(2) {
+          order:1;
+          .photo {
+            width: 84px; height: 84px;
+          }
+        }
+        &:nth-child(3) {
+          order:3;
+          .photo {
+            width: 84px; height: 84px;
+          }
+        }
         .listColumn {
           @include flex(center, center, column);
           width:84px;
@@ -109,6 +128,15 @@
             @include flex(flex-end, center);
             width:100%;
             margin-top:auto;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:50%;
+              box-sizing: border-box;
+            }
+
             img {
               width:100%;
               border-radius: 50%;
@@ -212,9 +240,18 @@
         }
         .photo {
           flex: none;
-          width:60px;
+          position: relative;
+          width:60px; height: 60px;
           border-radius: 50%;
-          cursor: pointer;
+          cursor: pointer;          
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:50%;
+            box-sizing: border-box;
+          }
           img {
             width:100%;
             border-radius: 50%;
