@@ -39,34 +39,36 @@ const ShowSwiper = (props) => {
 
   return (
     <div id="popShowSwiper">
-      {showTopOptionSection &&
-      <div className="buttonGroup">
-        <button onClick={() => readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>대표 사진</button>
-        <button onClick={() => deleteButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>삭제</button>
-      </div>
-      }
-      {imageList.length > 1 ?
-        <Swiper {...swiperParams}>
-          {imageList.map((item, index) => {
-            return (
-              <div key={index}>
-                {/*프로필 편집에서 사용하는 영역*/}
-                <div className="photo">
-                  <img src={`${item[imageKeyName]}${imageParam}`} alt="" />
+      <div className="showWrapper">
+        {showTopOptionSection &&
+        <div className="buttonGroup">
+          <button onClick={() => readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>대표 사진</button>
+          <button onClick={() => deleteButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>삭제</button>
+        </div>
+        }
+        {imageList.length > 1 ?
+          <Swiper {...swiperParams}>
+            {imageList.map((item, index) => {
+              return (
+                <div key={index}>
+                  {/*프로필 편집에서 사용하는 영역*/}
+                  <div className="photo">
+                    <img src={`${item[imageKeyName]}${imageParam}`} alt="" />
+                  </div>
                 </div>
+              )
+            })}
+          </Swiper>
+          : imageList.length === 1 &&
+          (
+            <div>
+              <div className="photo">
+                <img src={`${imageList[0][imageKeyName]}${imageParam}`} alt="" />
               </div>
-            )
-          })}
-        </Swiper>
-        : imageList.length === 1 &&
-        (
-          <div>
-            <div className="photo">
-              <img src={`${imageList[0][imageKeyName]}${imageParam}`} alt="" />
             </div>
-          </div>
-        )
-      }
+          )
+        }
+      </div>
       <button className='popClose' onClick={clickPopClose} />
     </div>
   )

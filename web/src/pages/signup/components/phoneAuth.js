@@ -3,12 +3,13 @@ import Api from "context/api";
 import {Context} from 'context'
 
 
+//Step 1. 휴대폰 인증
 const PhoneAuth = (props) => {
   let {signForm, onChange, setStep, setSignForm} = props;
   const context = useContext(Context);
   const [authCheck, setAuthCheck] = useState(false);
   const [authBtnValue,setAuthBtnValue] = useState("인증요청")
-
+  const [nextButton, setNextButton] = useState(false);
   const phoneNumRef = useRef(null);
   const requestNumRef = useRef(null);
   const phoneCheckRef = useRef(null);
@@ -22,6 +23,15 @@ const PhoneAuth = (props) => {
       setAuthCheck(false);
     }
   },[signForm.phoneNum]);
+
+
+  useEffect(()=>{
+    if(signForm.requestNum.length === 6){
+      setNextButton(true);
+    }else{
+      setNextButton(false);
+    }
+  },[signForm.requestNum]);
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode;
@@ -117,7 +127,7 @@ const PhoneAuth = (props) => {
         </div>
       </div>
 
-      <button type={"button"} className={`submitBtn`} onClick={nextStep}>다음</button>
+      <button type={"button"} className={`submitBtn ${nextButton ? "" : "disabled"}`} onClick={nextStep}>다음</button>
     </section>
   );
 };

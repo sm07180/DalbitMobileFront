@@ -1,5 +1,18 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+   #rankingList {
+     .tabmenu {
+       position: sticky;
+       top:116px;
+       background-color: #FFF;
+       z-index: 2;
+     }
+   }
+  } 
+ }
+
 #rankingList {
   header {
     .benefits {
@@ -22,7 +35,7 @@
   }
   .tabmenu {
     position:sticky;
-    top: 116px;
+    top: 48px;
     @include flex(center);
     padding:0 16px;
     background-color: #fff;

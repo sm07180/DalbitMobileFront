@@ -85,7 +85,6 @@ const PasswordSetting = (props) => {
   //다음
   const nextStep = () => {
     if (checkPasswordValue.check) {
-      console.log("api call member join", signForm);
       sighUp();
     } else if(signForm.password !== signForm.passwordCheck) {
       document.getElementById('passwordCheckInputItem').classList.add("error");
@@ -131,7 +130,7 @@ const PasswordSetting = (props) => {
         </div>
       </div>
 
-      <button type={"button"} className={`submitBtn`} onClick={nextStep}>완료</button>
+      <button type={"button"} className={`submitBtn ${checkPasswordValue.check ? "" : "disabled"}`} onClick={nextStep}>완료</button>
     </section>
 
   );

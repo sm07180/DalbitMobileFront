@@ -634,7 +634,7 @@ export default (props) => {
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        return props.history.push('/event/recommend_dj2')
+        return props.history.push('/')
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({
