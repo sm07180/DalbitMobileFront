@@ -117,7 +117,6 @@
           width: 28px;
         }
       }
-
     }
     .swiper-wrapper {
       padding-left:16px;
@@ -161,6 +160,9 @@
         @include font(12px,400,#666);
         @include fontCut;
       }
+    }
+    .mgt24{
+      .subTitle{margin-top: 24px;}
     }
   }
   .likeSubWrap{

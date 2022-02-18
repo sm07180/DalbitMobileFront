@@ -1157,7 +1157,7 @@ const UpdateWrap = styled.div`
     height: 32px;
     margin-top: 10px;
     border-radius: 8px;
-    background-color: #632beb;
+    background-color: #FF3C7B;
     color: #fff;
     font-size: 14px;
     font-weight: 600;
@@ -1186,7 +1186,7 @@ const UpdateWrap = styled.div`
         margin-bottom: 4px;
         font-size: 16px;
         letter-spacing: -0.4px;
-        color: #632beb;
+        color: #FF3C7B;
       }
       p {
         width: 90%;

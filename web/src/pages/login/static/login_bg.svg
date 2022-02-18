@@ -3,7 +3,7 @@
         <radialGradient id="prefix__radial-gradient" cx=".5" cy=".5" r=".444" gradientTransform="matrix(-.006 1 -1.644 -.01 1.325 .005)" gradientUnits="objectBoundingBox">
             <stop offset="0" stop-color="#8556f6"/>
             <stop offset=".987" stop-color="#632ceb"/>
-            <stop offset="1" stop-color="#632beb"/>
+            <stop offset="1" stop-color="#FF3C7B"/>
         </radialGradient>
     </defs>
     <path id="prefix__사각형_820" fill="url(#prefix__radial-gradient)" d="M0 0H360V738H0z" data-name="사각형 820"/>

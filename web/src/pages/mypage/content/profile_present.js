@@ -371,7 +371,7 @@ const MyPoint = styled.div`
     color: #000;
     b {
       display: inline-block;
-      color: #632beb;
+      color: #FF3C7B;
       margin-right: 3px;
     }
   }
@@ -451,9 +451,9 @@ const PointButton = styled.button`
   color: #000;
   font-weight: bold;
   border-style: solid;
-  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-color: ${(props) => (props.active == 'active' ? '#FF3C7B' : '#e0e0e0')};
   border-width: 1px;
-  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
+  color: ${(props) => (props.active == 'active' ? '#FF3C7B' : '#000')};
   box-sizing: border-box;
   border-radius: 12px;
 
@@ -528,7 +528,7 @@ const ButtonArea = styled.div`
     color: #fff;
   }
   button:last-child {
-    background: #632beb;
+    background: #FF3C7B;
     color: #fff;
   }
 `

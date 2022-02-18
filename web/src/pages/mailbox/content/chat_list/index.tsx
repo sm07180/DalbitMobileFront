@@ -152,7 +152,7 @@ export default function chatListPage() {
 
   return (
     <>
-      <Header title="우체통" type="back">
+      <Header title="메시지" type="back">
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
             <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가" />
@@ -162,7 +162,7 @@ export default function chatListPage() {
 
       <div className="chatListPage">
         <div className="chatOnOffBox">
-          <p>우체통 기능 사용 설정</p>
+          <p>메시지 기능 사용 설정</p>
           <Toggle active={isMailboxOn} activeCallback={postMailboxUse} />
         </div>
         {chatList && chatList.length > 0 ? (

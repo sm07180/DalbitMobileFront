@@ -79,7 +79,7 @@
           border: 4px solid #8bd6c2;
           border-radius: 36px;
           background-color: #fff;
-          color: #632beb;
+          color: #FF3C7B;
           font-size: 17px;
           font-weight: bold;
           line-height: 38px;
@@ -167,9 +167,9 @@
       line-height: 18px;
 
       &.active {
-        color: #632beb;
+        color: #FF3C7B;
         font-weight: bold;
-        border-bottom: 1px solid #632beb;
+        border-bottom: 1px solid #FF3C7B;
       }
     }
   }
@@ -200,7 +200,7 @@
 
           &.active {
             color: #fff;
-            background-color: #632beb;
+            background-color: #FF3C7B;
           }
         }
         & > button:not(:last-child) {
@@ -218,16 +218,16 @@
         height: 32px;
         margin-right: 2px;
         background-color: #fff;
-        border: 1px solid #632beb;
+        border: 1px solid #FF3C7B;
         border-radius: 16px;
-        color: #632beb;
+        color: #FF3C7B;
         font-size: 14px;
         font-weight: bold;
         line-height: 16px;
         letter-spacing: -0.35px;
 
         &.active {
-          background-color: #632beb;
+          background-color: #FF3C7B;
           color: #fff;
         }
       }
@@ -235,7 +235,7 @@
       &--add {
         width: 72px;
         height: 32px;
-        background-color: #632beb;
+        background-color: #FF3C7B;
         border-radius: 16px;
         & > span {
           display: flex;
@@ -269,7 +269,7 @@
 
         &--count {
           margin-left: 6px;
-          color: #632beb;
+          color: #FF3C7B;
           font-weight: normal;
         }
 
@@ -445,9 +445,9 @@
           border: 1px solid #e0e0e0;
           border-radius: 12px;
           &.active {
-            background-color: #632beb;
+            background-color: #FF3C7B;
             color: #fff;
-            border: 1px solid #632beb;
+            border: 1px solid #FF3C7B;
           }
         }
       }
@@ -596,7 +596,7 @@
       color: #fff;
 
       &.active {
-        background-color: #632beb;
+        background-color: #FF3C7B;
       }
     }
   }
@@ -720,7 +720,7 @@
         align-items: center;
         min-width: 70px;
         &.purple {
-          color: #632beb;
+          color: #FF3C7B;
         }
       }
       &--value {

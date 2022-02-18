@@ -140,7 +140,7 @@
         height: 30px;
         border-radius: 50%;
         background: url('./static/arrow_right_w.svg') no-repeat center;
-        background-color: #632beb;
+        background-color: #FF3C7B;
       }
       &--title {
         margin-bottom: 7px;
@@ -180,7 +180,7 @@
         color: #fff;
 
         &.active {
-          background-color: #632beb;
+          background-color: #FF3C7B;
         }
       }
     }
@@ -190,7 +190,7 @@
       flex-direction: column;
       margin-bottom: 39px;
       padding: 16px 18px;
-      border: 1px solid #632beb;
+      border: 1px solid #FF3C7B;
       border-radius: 12px;
       background-color: white;
 
@@ -222,7 +222,7 @@
         text-align: right;
 
         &--p {
-          color: #632beb;
+          color: #FF3C7B;
         }
       }
     }
@@ -241,8 +241,8 @@
         color: #bdbdbd;
         text-align: center;
         &.on {
-          color: #632beb;
-          border: 1px solid #632beb;
+          color: #FF3C7B;
+          border: 1px solid #FF3C7B;
           background-color: #fff;
         }
         &--left {
@@ -446,7 +446,7 @@
       color: #fff;
 
       &.active {
-        background-color: #632beb;
+        background-color: #FF3C7B;
       }
     }
     #layer {
@@ -495,8 +495,8 @@
       padding: 24px 0 8px;
       font-size: 16px;
       line-height: 1.25;
-      color: #632beb;
-      border-bottom: 1px solid #632beb;
+      color: #FF3C7B;
+      border-bottom: 1px solid #FF3C7B;
     }
 
     &__list {
@@ -515,7 +515,7 @@
         &--purple {
           display: flex;
           margin-right: 2px;
-          color: #632beb;
+          color: #FF3C7B;
           font-size: 20px;
         }
       }
@@ -532,7 +532,7 @@
       margin-top: 32px;
       padding: 12px 0;
       border-radius: 12px;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       font-size: 18px;
       color: #fff;
     }
@@ -642,8 +642,8 @@
 //     padding: 24px 0 8px;
 //     font-size: 16px;
 //     line-height: 1.25;
-//     color: #632beb;
-//     border-bottom: 1px solid #632beb;
+//     color: #FF3C7B;
+//     border-bottom: 1px solid #FF3C7B;
 //   }
 // }
 
@@ -656,7 +656,7 @@
 
 //   &__title {
 //     font-size: 24px;
-//     color: #632beb;
+//     color: #FF3C7B;
 //     text-align: center;
 //     width: 100%;
 //     margin-top: 20px;
@@ -672,7 +672,7 @@
 //     width: 6px;
 //     height: 6px;
 //     border-radius: 50%;
-//     background: #632beb;
+//     background: #FF3C7B;
 //     margin-left: 6px;
 //     margin-bottom: 4px;
 //     vertical-align: bottom;
@@ -707,7 +707,7 @@
 
 //   &__title {
 //     display: block;
-//     color: #632beb;
+//     color: #FF3C7B;
 //     font-weight: 600;
 //     font-size: 18px;
 //     margin-bottom: 8px;
@@ -715,7 +715,7 @@
 // }
 
 // .deposit {
-//   border-top: 1px solid #632beb;
+//   border-top: 1px solid #FF3C7B;
 //   &__list {
 //     display: flex;
 //     justify-content: space-between;
@@ -728,7 +728,7 @@
 
 //   &__value {
 //     font-size: 14px;
-//     color: #632beb;
+//     color: #FF3C7B;
 //   }
 // }
 
@@ -740,7 +740,7 @@
 // }
 
 // .payInquiry--purple {
-//   color: #632beb;
+//   color: #FF3C7B;
 // }
 
 // .pay_button--purple {
@@ -749,7 +749,7 @@
 //   border-radius: 4px;
 //   height: 40px;
 //   line-height: 40px;
-//   background: #632beb;
+//   background: #FF3C7B;
 //   color: #fff;
 //   font-size: 16px;
 // }
@@ -768,8 +768,8 @@
 //     font-size: 16px;
 //     font-weight: 600;
 //     line-height: 1.25;
-//     color: #632beb;
-//     border-bottom: 1px solid #632beb;
+//     color: #FF3C7B;
+//     border-bottom: 1px solid #FF3C7B;
 
 //     &--point {
 //       vertical-align: middle;
@@ -922,7 +922,7 @@
 //     &--purple {
 //       font-size: 16px;
 //       font-weight: 600;
-//       color: #632beb;
+//       color: #FF3C7B;
 //     }
 //   }
 // }
@@ -1087,7 +1087,7 @@
 //   width: 100%;
 //   height: 40px;
 //   color: #fff;
-//   background: #632beb;
+//   background: #FF3C7B;
 //   margin-bottom: 50px;
 //   font-weight: 600;
 // }
@@ -1128,7 +1128,7 @@
 
 //   &__number {
 //     padding-left: 8px;
-//     color: #632beb;
+//     color: #FF3C7B;
 //   }
 // }
 

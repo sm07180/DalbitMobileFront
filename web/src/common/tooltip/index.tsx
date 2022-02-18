@@ -73,7 +73,7 @@ const TipStyled = styled.div`
   left: 13px;
   width: calc(100% - 26px);
   padding: 6px 0;
-  background-color: #632beb;
+  background-color: #FF3C7B;
   border-radius: 10px;
   z-index: 4;
   img {

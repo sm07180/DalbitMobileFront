@@ -109,8 +109,8 @@ const Content = styled.div`
 
         &--active {
           background-color: #fff;
-          color: #632beb;
-          border-color: #632beb;
+          color: #FF3C7B;
+          border-color: #FF3C7B;
         }
       }
     }

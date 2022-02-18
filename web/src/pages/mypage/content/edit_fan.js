@@ -68,7 +68,7 @@ const EditeWrap = styled.div`
       width: 58px;
       height: 32px;
       border-radius: 16px;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       font-size: 14px;
       font-weight: 600;
       letter-spacing: -0.35px;
@@ -101,7 +101,7 @@ const EditeWrap = styled.div`
 
     &--active {
       color: #fff;
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
 `

@@ -4,8 +4,8 @@
       <circle cx="18" cy="18" r="18" stroke="none"/>
       <circle cx="18" cy="18" r="17.5" fill="none"/>
     </g>
-    <rect id="사각형_187" data-name="사각형 187" width="2" height="18" rx="1" transform="translate(8)" fill="#632beb"/>
-    <rect id="사각형_188" data-name="사각형 188" width="2" height="18" rx="1" transform="translate(18 8) rotate(90)" fill="#632beb"/>
+    <rect id="사각형_187" data-name="사각형 187" width="2" height="18" rx="1" transform="translate(8)" fill="#FF3C7B"/>
+    <rect id="사각형_188" data-name="사각형 188" width="2" height="18" rx="1" transform="translate(18 8) rotate(90)" fill="#FF3C7B"/>
     <rect id="사각형_227" data-name="사각형 227" width="36" height="36" transform="translate(-9 -9)" fill="none"/>
   </g>
 </svg>

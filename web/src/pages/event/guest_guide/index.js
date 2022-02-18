@@ -169,7 +169,7 @@ const Content = styled.div`
         display: block;
         b {
           line-height: 17px;
-          color: #632beb;
+          color: #FF3C7B;
           position: relative;
           i {
             font-style: normal;

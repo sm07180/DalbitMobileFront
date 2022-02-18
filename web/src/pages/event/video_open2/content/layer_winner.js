@@ -201,7 +201,7 @@ const PopupWrap = styled.div`
 
         &.active {
           position: relative;
-          color: #632beb;
+          color: #FF3C7B;
           font-weight: 600;
 
           &:after {
@@ -211,7 +211,7 @@ const PopupWrap = styled.div`
             left: 0;
             width: 100%;
             height: 1px;
-            background-color: #632beb;
+            background-color: #FF3C7B;
           }
         }
       }

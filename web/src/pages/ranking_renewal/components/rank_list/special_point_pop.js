@@ -128,7 +128,7 @@ const PopupWrap = styled.div`
       font-weight: 600;
 
       span {
-        color: #632beb;
+        color: #FF3C7B;
       }
     }
 
@@ -139,9 +139,9 @@ const PopupWrap = styled.div`
         display: flex;
         justify-content: space-between;
         padding: 7px 0;
-        color: #632beb;
-        border-top: 1px solid #632beb;
-        border-bottom: 1px solid #632beb;
+        color: #FF3C7B;
+        border-top: 1px solid #FF3C7B;
+        border-bottom: 1px solid #FF3C7B;
 
         span {
           display: block;

@@ -155,7 +155,7 @@ export default function MyProfile() {
               globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
-                content: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #632beb;">반영하시겠습니까?</span>`,
+                content: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #FF3C7B;">반영하시겠습니까?</span>`,
                 callback: () => {
                   globalAction.setAlertStatus &&
                     globalAction.setAlertStatus({

@@ -2,7 +2,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="store_w" width="40" height="40" viewBox="0 0 40 40">
     <defs>
         <style>
-            .cls-1{fill:none}.cls-4{fill:#632beb}.cls-5,.cls-6{stroke:none}.cls-6{fill:#fff}
+            .cls-1{fill:none}.cls-4{fill:#FF3C7B}.cls-5,.cls-6{stroke:none}.cls-6{fill:#fff}
         </style>
     </defs>
     <path id="사각형_238" d="M0 0H40V40H0z" class="cls-1"/>
