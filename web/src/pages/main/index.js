@@ -337,7 +337,7 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP 10'} more={'rank'}>
+        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
         <SwiperList
