@@ -56,12 +56,15 @@
   .rankingContent {
     box-sizing: border-box;
     .swiper-container {
+      position: relative;
       @include flex(center);
       width: 100%;
       padding: 0 16px;
       box-sizing: border-box;
       .swiper-pagination {
-        position: relative;bottom:0;
+        position: absolute;
+        bottom:0; left: 50%;
+        transform: translateX(-50%);
         @include flex(center,center);
         width:auto;
         margin:0 12px;
@@ -98,6 +101,7 @@
           transform: translateY(-50%);
           width: 20px; height: 20px;
           @include BGIMG('common/icon/ico_questionMark-bgGray.png');
+          cursor: pointer;
         }
       }
       .topContent{

@@ -92,7 +92,8 @@
       min-width:0;
       .title {
         margin-bottom:2px;
-        letter-spacing: -1px;
+        letter-spacing: -0.5px;
+        line-height: 18px;
         @include font(15px,500,#303030);
         @include fontCut;
       }

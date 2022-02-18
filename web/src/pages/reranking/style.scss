@@ -70,13 +70,14 @@ $errorMsg : #FF1919;
     @include flex(flex-start, flex-start, column);
     width: 100%;
     height: 410px;
-    padding: 15px;
+    padding: 15px 15px 60px;
     margin: 0;
-    border-bottom: 60px solid;
-    border-image: linear-gradient(to right, nth($gradient,1), nth($gradient,2), nth($gradient,3), nth($gradient,4));
-    border-image-slice: 1;
+    background-image: url("https://image.dalbitlive.com/ranking/dalla/rankingTopBg.png");
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: contain;
     &::before {
-      @include position-bottom-left(40px,-40px);
+      @include position-bottom-left(125px,-40px);
       content: "TOP10";
       @include font(55px,900,#FF3C7B);
       transform: rotate(-90deg);
@@ -111,13 +112,12 @@ $errorMsg : #FF1919;
       width: 100px;
       margin-top: 8px;
       padding: 2px 0;
-      border-radius:8px;
       background-color: #1A1A1A;
       letter-spacing: 2px;
-      @include font(16px,600,#fff);
+      @include font(17px,600,#fff);
     }
     .criteria {
-      @include position-top-right(50%, 0px);
+      @include position-top-right(35%, 0px);
       transform: translateY(-55%);
       width: 183px; height: 174px;
       @include BGIMG('dalla/character/character_ranking.png');

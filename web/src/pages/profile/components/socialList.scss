@@ -81,16 +81,16 @@
       }
       .info {
         @include flex(center);
-        .dataCnt {
-          height: 20px;
-          padding-left: 24px;
-          line-height: 20px;
-          @include font(13px, 400, #6B6B6B);
-          background-size: 20px 20px;
-          &.replyCnt {
-            background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-tailCnt.png");
-          }
-        }
+      }
+    }    
+    .dataCnt {
+      height: 20px;
+      padding-left: 24px;
+      line-height: 20px;
+      @include font(13px, 400, #6B6B6B);
+      background-size: 20px 20px;
+      &.replyCnt {
+        background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-tailCnt.png");
       }
     }
   }

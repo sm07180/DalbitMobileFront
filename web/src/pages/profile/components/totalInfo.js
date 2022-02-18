@@ -37,6 +37,7 @@ const TotalInfo = (props) => {
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">뱃지</div>
         <div className="badgeGroup">
+          <BadgeItems data={data} type="grade" />
           <BadgeItems data={data} type="commonBadgeList" />
           <BadgeItems data={data} type="isBadge" />
         </div>

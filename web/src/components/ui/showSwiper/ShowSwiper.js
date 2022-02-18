@@ -68,8 +68,8 @@ const ShowSwiper = (props) => {
             </div>
           )
         }
+        <button className='popClose' onClick={clickPopClose} />
       </div>
-      <button className='popClose' onClick={clickPopClose} />
     </div>
   )
 }
