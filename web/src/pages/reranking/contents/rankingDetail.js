@@ -19,7 +19,7 @@ const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
   const rankingListType = params.type
-  //Ranking 종류(DJ, FAN, LOVER)
+  //Ranking 종류(DJ, FAN, CUPID)
   const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
   //Ranking 기간(타임, 일간 등등)
   const [rankType, setRankType] = useState(1);
@@ -51,7 +51,7 @@ const RankDetailPage = () => {
     } else if (rankingListType === 'FAN') {
       setTabList(['오늘','이번주', '이번달']);
       setTabName('오늘')
-    } else if (rankingListType === 'LOVER') {
+    } else if (rankingListType === 'CUPID') {
       setTabList(['오늘','이번주']);
       setTabName('오늘')
     }
@@ -232,7 +232,7 @@ const RankDetailPage = () => {
       setRankSlct(2);
       setRankType(1);
     } else {      
-      setSelect("LOVER")
+      setSelect("CUPID")
       setTabName('오늘');
       setTabList(['오늘','이번주']);
       setRankSlct(3);
@@ -318,7 +318,7 @@ const RankDetailPage = () => {
       </Header>
       <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
       <div className="rankingContent">
-        <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "LOVER"} rankType={rankType}/>
+        <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
         <div className='listWrap'>
           <RankingList data={rankList} tab={select}>
           </RankingList>
@@ -330,7 +330,7 @@ const RankDetailPage = () => {
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
             <div className={`selectOption ${select === "FAN" ? "active" : ""}`} onClick={optionSelect}>FAN</div>
-            <div className={`selectOption ${select === "LOVER" ? "active" : ""}`} onClick={optionSelect}>LOVER</div>
+            <div className={`selectOption ${select === "CUPID" ? "active" : ""}`} onClick={optionSelect}>CUPID</div>
           </div>
         </PopSlide>
       }

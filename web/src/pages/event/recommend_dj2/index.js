@@ -5,9 +5,7 @@ import _ from 'lodash'
 import NoResult from 'components/ui/noResult'
 
 import {Context} from 'context'
-import {RoomJoin} from 'context/room'
 import Api from 'context/api'
-import {OS_TYPE} from 'context/config.js'
 import {IMG_SERVER} from 'context/config'
 
 import hitIcon from '../../menu/static/ico_hit_g.svg'
@@ -18,7 +16,6 @@ export default function RecommendDj() {
   const history = useHistory()
 
   const context = useContext(Context)
-  const customHeader = JSON.parse(Api.customHeader)
 
   const [fetchedList, setFetchedList] = useState([])
   const [refresh, setRefresh] = useState(false)

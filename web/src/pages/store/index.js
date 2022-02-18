@@ -6,14 +6,16 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import './style.scss'
 import _ from "lodash";
+import {useSelector} from "react-redux";
+import {OS_TYPE} from "context/config";
 
 const StorePage = () => {
   const history = useHistory()
   const context = useContext(Context);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [select, setSelect] = useState(1);
   const [storeInfo, setStoreInfo] = useState({
     myDal: 0,
@@ -57,7 +59,7 @@ const StorePage = () => {
     })
   }
 
-  const movePayment = () =>{
+  const movePayment = () => {
     if (context.token.isLogin) {
       history.push({
         pathname: '/store/dalcharge',
@@ -68,7 +70,7 @@ const StorePage = () => {
           itemNo: payInfo.itemNo
         }
       })
-    }else{
+    } else {
       history.push('/login')
     }
   }

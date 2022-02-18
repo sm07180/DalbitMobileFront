@@ -104,10 +104,20 @@ export default function LayerPopupWrap({data, setData}) {
   }
 
   const makeImgInner = (popupData) => {
+    const linkUrl = popupData.linkUrl
     return (
       <>
         <a>
-          <img src={popupData.bannerUrl} alt="" onClick={() => history.push(popupData.linkUrl)}/>
+          <img src={popupData.bannerUrl} alt="" onClick={() => {
+            if(linkUrl.includes('notice')) {
+              history.push({
+                pathname: linkUrl,
+                state: linkUrl.split('/')[2]
+              })
+            }else {
+              history.push(linkUrl)
+            }
+          }}/>
         </a>
       </>
     )

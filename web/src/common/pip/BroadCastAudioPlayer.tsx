@@ -108,9 +108,12 @@ const BroadCastAudioPlayer = ()=>{
           </div>
           <div className="counting"/>
         </div>
-        <div className="buttonGroup">
-          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-        </div>
+        {
+          rtcInfo?.userType !== UserType.HOST &&
+          <div className="buttonGroup">
+            <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          </div>
+        }
       </div>
     </div>
   )

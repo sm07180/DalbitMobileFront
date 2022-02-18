@@ -3799,18 +3799,6 @@ export default class API {
     })
   }
 
-  //추천받은 회원 체크
-  static inviteCheck = async (obj) => {
-    const {reqBody, data} = obj || {}
-    return await ajax({
-      url: '/event/invite/check',
-      method: 'GET',
-      reqBody: reqBody,
-      data: data,
-    })
-  }
-
-
   //추천코드 보상 지급
   static inviteReward = async (obj) => {
     const {reqBody, data} = obj || {}

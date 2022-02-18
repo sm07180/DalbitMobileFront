@@ -6,12 +6,11 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
 import {IMG_SERVER} from 'context/config'
-import {isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const InviteEvent = () => {  
   const context = useContext(Context)
   const history = useHistory();
-  const {token, profile} = context
 
   const [code, setCode] = useState("")                    //나의 초대코드
   const [createdCode, setCreatedCode] = useState(false)   //초대코드 생성 여부
@@ -96,22 +95,24 @@ const InviteEvent = () => {
   const registerFriendCode = () => {
     if (context.token.isLogin) {
       selfAuthCheck().then((res) => {
-        if (res === 'success') {
+        if (res.result === 'success') {
           Api.inviteReward({
             reqBody: true,
             data: {
               "rcvMemNo": context.token.memNo,
-              "invitationCode": friendCode.current.value
+              "invitationCode": friendCode.current.value,
+              "memPhone": res.phoneNo
             }
           }).then((response) => {
-            console.log("inviteReward", response);
-            if (response.data === 1) {
+            if (response.code === "0000") {
               context.action.alert({msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "});
               history.push("/event/invite")
-            } else if (response.data === -1) {
+            } else if (response.code === "C001") {
               context.action.alert({msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"});
-            } else if (response.data === -3) {
+            } else if (response.code === "C003") {
               context.action.alert({msg: "이미 초대코드를 등록 했습니다."});
+            } else if (response.code === "C005") {
+              context.action.alert({msg: "16세 이하 및 55세 이상은 \n이벤트 참여가 불가능합니다."});
             } else {
               context.action.alert({msg: response.message});
             }
@@ -125,18 +126,20 @@ const InviteEvent = () => {
 
   //본인인증
   const  selfAuthCheck = async () =>{
-    const {result, code} = await Api.self_auth_check();
+    const {result, data} = await Api.self_auth_check();
       if(result === 'success'){
-        return result;
+        return {result : result, phoneNo : data.phoneNo};
       }else{
         history.push(`/selfauth?event=/event`)
       }
   }
 
-
   const doCopy = code => {
     if(isHybrid()){
-      alert("FIXME 공유기능추가")
+      Hybrid("sendShareUrl", {
+        shareLink: `https://${location.host}/invite/${code}`,
+        title: "dalla 달라 | 초대코드"
+      })
     }else {
       if (!document.queryCommandSupported("copy")) {
         return alert("복사하기가 지원되지 않는 브라우저입니다.");
@@ -156,7 +159,6 @@ const InviteEvent = () => {
   };
 
 
-
   return (
     <div className='inviteEvent'>
       <div className='imageBox'>
@@ -166,9 +168,9 @@ const InviteEvent = () => {
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-method.png" alt="참여방법 안내" className='fullImage'/>
         {
           createdCode ? 
-            <button className={`inviteBtn share`}>
+            <button className={`inviteBtn share`} onClick={()=>doCopy(code)}>
               <span className='codeText'>{code}</span>
-              <span className='btnName' onClick={()=>doCopy(code)}>초대코드 공유하기</span>
+              <span className='btnName'>초대코드 공유하기</span>
             </button>
           :
             <button className={`inviteBtn create`} onClick={createCode}>
