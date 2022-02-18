@@ -15,7 +15,7 @@ import './style.scss'
 const Rule = () => {
   let history = useHistory()
   const params = useParams();
-  
+
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
   const category = params.category;
@@ -37,29 +37,29 @@ const Rule = () => {
           <Header position={'sticky'} title="운영 정책 / 회원탈퇴" type={'back'}/>
           <div className='content'>
             <div className='menuWrap'>
-              <div className='menuList' onClick={() => {golink("terms")}}>
+              <div className='menuList' onClick={() => {golink("termsT")}}>
                 <div className='menuName'>서비스 이용약관</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("privacy")}}>
                 <div className='menuName'>개인정보 취급방침</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("minor")}}>
                 <div className='menuName'>청소년 보호정책</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("policy")}}>
                 <div className='menuName'>운영정책</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList' onClick={() => {golink("secession")}}>
                 <div className='menuName'>회원탈퇴</div>
-                <span className='arrow'></span>                  
+                <span className='arrow'></span>
               </div>
               <div className='menuList'>
                 <div className='menuName'>사용자 ID</div>
-                <span className='uid'>{profile.memId}</span>                  
+                <span className='uid'>{profile.memId}</span>
               </div>
             </div>
           </div>
@@ -77,8 +77,8 @@ const Rule = () => {
         category === "secession" ?
           <Secession/>
         :
-        category === "terms" &&
-          <Terms/>
+          (category === "terms" ||  category === "termsT") &&
+          <Terms type={category}/>
       }
     </div>
   )

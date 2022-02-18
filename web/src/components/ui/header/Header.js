@@ -14,7 +14,13 @@ const Header = (props) => {
   const history = useHistory()
   const context = useContext(Context);
 
-  const goBack = () => backEvent? backEvent() : history.goBack();
+  const goBack = () => {
+    if(backEvent && typeof backEvent === 'function'){
+      backEvent();
+    }else{
+      history.goBack();
+    }
+  }
 
   const goAdmin = () => {
     if (NODE_ENV === "dev") {
