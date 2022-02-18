@@ -52,7 +52,14 @@ const BannerSlide = (props) => {
   }
 
   const openBannerUrl = (value) => {
-    history.push(value)
+    if(value.includes('notice')) {
+      history.push({
+        pathname: value,
+        state: value.split('/')[2]
+      })
+    }else {
+      history.push(value)
+    }
   }
 
   useEffect(() => {

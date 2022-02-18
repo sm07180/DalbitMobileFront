@@ -407,7 +407,7 @@ let Profile = () => {
                           {globalState.baseData.memNo !== profileData.memNo && (
                               <button
                                   className="rankingList__goFanboardBtn"
-                                  onClick={() => history.push(`/mypage/${profileData.memNo}/fanboard`)}
+                                  onClick={() => history.push(`/profile/${profileData.memNo}?tab=1`)}
                               />
                           )}
                         </div>

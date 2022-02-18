@@ -113,25 +113,9 @@ export default (props) => {
       })
     } else {
       if (props.type === 'clip_board') {
-        if (webview) {
-          context.token.memNo !== props.data.writerMemNo
-            ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
-            : history.push(`/menu/profile?webview=${webview}`)
-        } else {
-          context.token.memNo !== props.data.writerMemNo
-            ? history.push(`/mypage/${props.data.writerMemNo}`)
-            : history.push(`/menu/profile`)
-        }
+        history.push(`/profile/${props.data.writerMemNo}?webview=${webview}&tab=2`)
       } else {
-        if (webview) {
-          context.token.memNo !== props.data.writerMemNo
-            ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
-            : history.push(`/menu/profile?webview=${webview}`)
-        } else {
-          context.token.memNo !== props.data.writerMemNo
-            ? history.push(`/mypage/${props.data.writerMemNo}`)
-            : history.push(`/menu/profile`)
-        }
+        history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
       }
     }
   }

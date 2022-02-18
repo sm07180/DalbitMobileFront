@@ -76,10 +76,10 @@ const Allim = () => {
         break;
       case "31":                                                                           //팬보드 새 글 알림
         if (context.profile.memNo === roomNo) {history.push(`myProfile`)}
-        else {history.push(`/mypage/${roomNo}?tab=1`)}
+        else {history.push(`/profile/${roomNo}?tab=1`)}
         break;
       case "32":                                                                            //내 지갑
-        try {history.push(`/mypage/${context.profile.memNo}/wallet`);}
+        try {history.push(`/wallet`);}
         catch (e) {console.log(e);}
         break;
       case "35": history.push('/myProfile'); break;                                 //레벨업 알림
@@ -89,7 +89,7 @@ const Allim = () => {
         break;
       case "37": history.push('/customer/inquire'); break;                          //1:1문의 답변 알림
       case "38":                                                                            //마이 스타 방송 공지 알림
-        try {if(memNo !== "") { history.push(`/mypage/${memNo}?tab=0`);}}
+        try {if(memNo !== "") { history.push(`/profile/${memNo}?tab=0`);}}
         catch (e) {console.log(e);}
         break;
       case "39": history.push(`/rank`); break;                                      //좋아요 랭킹 주간 알림
@@ -102,7 +102,7 @@ const Allim = () => {
       case "46": fetchDataPlay(roomNo); break;                                              //내 클립 댓글 알림
       case "47": fetchDataPlay(roomNo); break;                                              //클립 알림
       case "48":                                                                            //마이페이지 클립 업로드/청취내역 알림
-        try {history.push(`/mypage/${context.profile.memNo}/my_clip`);}
+        try {history.push(`/profile/${context.profile.memNo}?tab=2`);}
         catch (e) {console.log(e);}
         break;
       case "53": history.push(`/event/attend_event`); break;                        //출석체크 알림
@@ -121,7 +121,7 @@ const Allim = () => {
 
   //푸시 설정하기로 이동(알림 없을때 출력)
   const onClick = () => {
-    history.push(`/mypage/${context.myInfo.memNo}/bcsetting`);
+    history.push(`/profile/${context.myInfo.memNo}`);
   };
 
   useEffect(() => {

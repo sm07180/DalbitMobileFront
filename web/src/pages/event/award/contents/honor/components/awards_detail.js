@@ -16,7 +16,7 @@ export default function AwardsDetail(props) {
           pathname: '/login',
           state: {state: 'event/award/2020'}
         })
-      : history.push(`/mypage/${djMemNo}`)
+      : history.push(`/profile/${djMemNo}`)
   }
 
   return (

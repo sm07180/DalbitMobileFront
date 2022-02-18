@@ -597,7 +597,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   {globalState.baseData.memNo !== profileData.memNo && (
                     <button
                       className="rankingList__goFanboardBtn"
-                      onClick={() => history.push(`/mypage/${profileData.memNo}/fanboard`)}
+                      onClick={() => history.push(`/profile/${profileData.memNo}?tab=1`)}
                     />
                   )}
                 </div>
