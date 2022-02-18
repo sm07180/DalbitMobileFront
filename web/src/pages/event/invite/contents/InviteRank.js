@@ -2,7 +2,7 @@ import React, {useEffect, useState, useContext} from 'react'
 
 import {Context} from 'context'
 
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
@@ -10,9 +10,11 @@ import Api from "context/api";
 import {IMG_SERVER} from 'context/config'
 
 import '../invite.scss'
+import {useHistory} from "react-router-dom";
 
 const InviteRank = () => {
   const context = useContext(Context)
+  const history = useHistory();
   const {token, profile} = context
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
@@ -92,23 +94,23 @@ const InviteRank = () => {
               </div>
               <div className='inviteRankWrap'>
               {
-                data.list.map((list, index) => {
+                data.list.map((member, index) => {
                   return (
-                    <div className='inviteRankList' key={index}>
+                    <div className='inviteRankList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
                       <div className='listFront'>
-                        <span className={`rankingBadge`}>{list.rank}</span>
+                        <span className={`rankingBadge`}>{member.rank}</span>
                       </div>
                       <div className="photo">
-                        <img src={list.profImg.thumb88x88} alt="프로필이미지" />
+                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>
-                          <GenderItems data={list.mem_sex}/>
-                          <span className='nickNm'>{list.mem_nick}</span>
+                          <GenderItems data={member.mem_sex}/>
+                          <span className='nickNm'>{member.mem_nick}</span>
                         </div>
                       </div>
                       <div className='listBack'>
-                        <DataCnt type="inviteCnt" value={list.invitation_cnt}/>
+                        <DataCnt type="inviteCnt" value={member.invitation_cnt}/>
                       </div>
                     </div> 
                   )
@@ -117,7 +119,7 @@ const InviteRank = () => {
               </div>
             </>
             :
-            <ListNone imgType="event01" text="랭킹 내역이 없어요." height="300px"/>
+            <NoResult text="랭킹 내역이 없어요." />
           }        
         </div>
       </div>

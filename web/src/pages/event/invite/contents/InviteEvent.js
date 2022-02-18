@@ -39,29 +39,25 @@ const InviteEvent = () => {
 
   useEffect(()=>{
     //초대코드 유무 체크
-    Api.inviteMy({
-      reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
-      }
-    }).then((response)=>{
-      console.log(response);
-      setMyInfo(response.data);
-
-      //초대코드 생성 유무
-      if(response.data.invitation_code !== ""){
-        setCreatedCode(true);
-        setCode(response.data.invitation_code);
-      }else{
-        setCreatedCode(false);
-      }
-
-      //친구초대코드 등록 유무
-      if(response.data.send_mem_no !== "0"){
-        setSubmitCode(true);
-      }
-
-    });
+    if (context.token.isLogin) {
+      Api.inviteMy({
+        reqBody: true,
+        data: {"memNo": context.token.memNo}
+      }).then((response) => {
+        setMyInfo(response.data);
+        //초대코드 생성 유무
+        if (response.data.invitation_code !== "") {
+          setCreatedCode(true);
+          setCode(response.data.invitation_code);
+        } else {
+          setCreatedCode(false);
+        }
+        //친구초대코드 등록 유무
+        if (response.data.send_mem_no !== "0") {
+          setSubmitCode(true);
+        }
+      });
+    }
   },[]);
 
   const registerCode = (code) => {
@@ -83,40 +79,48 @@ const InviteEvent = () => {
   }
 
   const createCode = () => {
-    const codeLength = 6
-    const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let codeText= '';
-    const charactersLength = characters.length;
-    for ( let i = 0; i < codeLength; i++ ) {
-      codeText += characters.charAt(Math.floor(Math.random() * charactersLength));
+    if (context.token.isLogin) {
+      const codeLength = 5
+      const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456788';
+      let codeText= '';
+      const charactersLength = characters.length;
+      for ( let i = -1; i < codeLength; i++ ) {
+        codeText += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      registerCode(codeText)
+    }else{
+      history.push('/login')
     }
-    registerCode(codeText)
   }
 
   const registerFriendCode = () => {
-    selfAuthCheck().then((res)=>{
-      if(res === 'success') {
-        Api.inviteReward({
-          reqBody: true,
-          data: {
-            "rcvMemNo": context.token.memNo,
-            "invitationCode": friendCode.current.value
-          }
-        }).then((response) => {
-          console.log("inviteReward", response);
-          if (response.data === 1) {
-            context.action.alert({msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "});
-            history.push("/event/invite")
-          } else if(response.data === -1){
-            context.action.alert({msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"});
-          } else if(response.data === -3){
-            context.action.alert({msg: "이미 초대코드를 등록 했습니다."});
-          } else{
-            context.action.alert({msg: response.message});
-          }
-        })
-      }
-    })
+    if (context.token.isLogin) {
+      selfAuthCheck().then((res) => {
+        if (res === 'success') {
+          Api.inviteReward({
+            reqBody: true,
+            data: {
+              "rcvMemNo": context.token.memNo,
+              "invitationCode": friendCode.current.value
+            }
+          }).then((response) => {
+            console.log("inviteReward", response);
+            if (response.data === 1) {
+              context.action.alert({msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "});
+              history.push("/event/invite")
+            } else if (response.data === -1) {
+              context.action.alert({msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"});
+            } else if (response.data === -3) {
+              context.action.alert({msg: "이미 초대코드를 등록 했습니다."});
+            } else {
+              context.action.alert({msg: response.message});
+            }
+          })
+        }
+      })
+    }else{
+      history.push('/login')
+    }
   }
 
   //본인인증
@@ -129,15 +133,16 @@ const InviteEvent = () => {
       }
   }
 
+
   const doCopy = code => {
     if(isHybrid()){
-      alert("공유기능 추가")
+      alert("FIXME 공유기능추가")
     }else {
       if (!document.queryCommandSupported("copy")) {
         return alert("복사하기가 지원되지 않는 브라우저입니다.");
       }
       const textarea = document.createElement("textarea");
-      textarea.value = "/invite/" + code;
+      textarea.value = `https://${location.host}/invite/${code}`;
       textarea.style.top = 0;
       textarea.style.left = 0;
       textarea.style.position = "fixed";

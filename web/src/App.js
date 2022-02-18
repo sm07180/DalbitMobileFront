@@ -100,7 +100,21 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 
 
 let alarmCheckIntervalId = 0;
+
+const setServerDataJson = () =>{
+  const serverData = document?.getElementById('__SERVER_DATA__')?.innerHTML;
+  if (serverData && serverData !== '' && serverData !== 'null') {
+    try {
+      return JSON.parse(serverData);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
+}
+
 const App = () => {
+  let serverDataJson = setServerDataJson();
   const { mailboxAction } = useContext(MailboxContext);
   const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
@@ -235,13 +249,7 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-    let tokenInfo = {};
-    let elementById = document.getElementById('serverToken');
-    if(elementById && elementById.value && elementById.value !== ''){
-      tokenInfo = JSON.parse(elementById.value);
-    }else{
-      tokenInfo = await Api.getToken()
-    }
+    let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
@@ -415,9 +423,17 @@ const App = () => {
 
   //SPLASH Room
   async function fetchSplash() {
-    const res = await Api.splash({})
-    if (res.result === 'success') {
-      const {data} = res
+    let splashData = null;
+    if(serverDataJson){
+      splashData = {
+        result : 'success',
+        data : serverDataJson.splash
+      };
+    }else {
+      splashData = await Api.splash({})
+    }
+    if (splashData.result === 'success') {
+      const {data} = splashData
       const {roomType, useMailBox} = data
       if (roomType) {
         globalCtx.action.updateRoomType(roomType)

@@ -43,7 +43,7 @@ const MainPage = () => {
 
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
-  const [headerFixed, setHeaderFixed] = useState(false)
+  const [headerFixed, setHeaderFixed] = useState("")
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
@@ -108,7 +108,7 @@ const MainPage = () => {
     fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
-    setHeaderFixed(false);
+    setHeaderFixed("fadeOut");
     setCurrentPage(1);
   }
 
@@ -122,9 +122,9 @@ const MainPage = () => {
     if (overNode && headerNode) {
       const overTop = overNode.offsetTop - headerNode.clientHeight
       if (window.scrollY >= overTop) {
-        setHeaderFixed(true)
+        setHeaderFixed("fadeIn")
       } else {
-        setHeaderFixed(false)
+        setHeaderFixed("fadeOut")
       }
     }
 
@@ -333,7 +333,7 @@ const MainPage = () => {
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
-      <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
+      <div className={`headerWrap ${headerFixed && headerFixed}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>
@@ -354,10 +354,12 @@ const MainPage = () => {
           type="top10"
         />
       </section>
-      <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
-        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
-      </section>
+      {mainState.newBjList.length > 0 &&
+        <section className='daldungs'>
+          <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs"/>
+        </section>
+      }
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>

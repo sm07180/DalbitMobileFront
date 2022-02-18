@@ -24,10 +24,14 @@ export default function chatInput(props) {
 
   //function
   const handleChangeInput = (e) => {
+    
     textareaRef.current.style.height = "auto";
     textareaRef.current.style.height = textareaRef.current.scrollHeight - 24 + "px";
     const { value } = e.target;
     let space = /\s/;
+    
+    console.log(textareaRef.current.scrollHeight,value);
+    
     if (space.exec(value) && value.length === 1) {
       return false;
     } else {

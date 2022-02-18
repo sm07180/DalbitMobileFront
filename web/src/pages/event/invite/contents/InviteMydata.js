@@ -1,15 +1,17 @@
 import React, {useContext, useEffect, useState} from 'react'
 
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 import '../invite.scss'
 import {Context} from "context";
 import {IMG_SERVER} from 'context/config'
+import {useHistory} from "react-router-dom";
 
 const InviteMydata = () => {
   const context = useContext(Context)
+  const history = useHistory();
   const {token, profile} = context
 
   const [popup, setPopup] = useState(false);
@@ -64,7 +66,7 @@ const InviteMydata = () => {
               {
                 data.list.map((member, index) => {
                   return (
-                    <div className='inviteUserList' key={index}>
+                    <div className='inviteUserList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
                       <div className="photo">
                         <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>
@@ -84,7 +86,7 @@ const InviteMydata = () => {
               </div>
             </>
             :
-            <ListNone imgType="event01" text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
+            <NoResult text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} />
           }
         </div>    
       </div>

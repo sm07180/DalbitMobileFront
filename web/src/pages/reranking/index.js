@@ -254,12 +254,16 @@ const RankPage = () => {
     setPopup(true);
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
+
   // 페이지 시작
   return (
     <div id="renewalRanking">
       <Header title={'랭킹'} type={'back'}/>
       <section className='rankingTop'>
-        <CntTitle more={'/rankDetail/DJ'} />
+        <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
         <div className='title' onClick={selectChart}>
           <div>DJ 실시간</div>
           <div>
@@ -304,11 +308,9 @@ const RankPage = () => {
         </div>
       </section>
       <section className='rankingBottom'>
-        <p>
-          오늘의 랭킹 순위는?<br/>
-          혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!
-        </p>
-        <button onClick={() => history.push('/rankDetail/DJ')}>랭킹순위 전체보기</button>
+        <p>오늘의 랭킹 순위는?</p>
+        <p>혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!</p>
+        <button onClick={() => history.push('/rankDetail/DJ')}>랭킹순위 전체보기 &gt;</button>
       </section>
       {popSlide &&
       <PopSlide setPopSlide={setPopSlide}>
@@ -328,22 +330,22 @@ const RankPage = () => {
           <div className='standardList'>
             <div className='popSubTitle'>DJ 랭킹</div>
             <div className='popText'>
-              받은 별, 청취자 수, 받은 좋아요<br/>
+              받은 별, 청취자 수, 받은 좋아요<br/>              
               (부스터 포함)의 종합 순위입니다.
             </div>
           </div>
           <div className='standardList'>
-            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popSubTitle'>FAN 랭킹</div>
             <div className='popText'>
-              받은 별, 청취자 수, 받은 좋아요<br/>
-              (부스터 포함)의 종합 순위입니다.
+              보낸 달과 보낸 좋아요(부스터 포함)의<br/>
+              종합 순위입니다.
             </div>
           </div>
           <div className='standardList'>
-            <div className='popSubTitle'>DJ 랭킹</div>
+            <div className='popSubTitle'>LOVER 랭킹</div>
             <div className='popText'>
-              받은 별, 청취자 수, 받은 좋아요<br/>
-              (부스터 포함)의 종합 순위입니다.
+              보낸 좋아요 개수 (부스터 포함)의<br/>
+              1~200위의 순위입니다.
             </div>
           </div>
         </div>

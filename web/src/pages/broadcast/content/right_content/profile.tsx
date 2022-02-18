@@ -538,7 +538,12 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
               )}
               <div className="profile__nameWrap">
                 <strong>
-                  {profileData.nickNm}
+                  <span style={{cursor:"pointer"}} onClick={()=>{
+                    history.push(`/profile/${profileData.memNo}`)
+                  }}>
+                    {profileData.nickNm}
+                  </span>
+
                   <span className="subIconWrap">
                     {/* {<span className="nationIcon"></span>} */}
                     {profileData.gender !== "" && (
