@@ -33,13 +33,13 @@ const EventZip = () => {
           </div>
         </div>
 
-        <div className='eventList end'>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/event7590.png)`}}/>
-          <div className='eventInfo'>
-            <div className='eventTitle'>친구 초대, 초대왕 도전!</div>
-            <div className='eventDate'>02.21 - 03.07</div>
-          </div>
-        </div>
+        {/*<div className='eventList end'>*/}
+        {/*  <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/event7590.png)`}}/>*/}
+        {/*  <div className='eventInfo'>*/}
+        {/*    <div className='eventTitle'>친구 초대, 초대왕 도전!</div>*/}
+        {/*    <div className='eventDate'>02.21 - 03.07</div>*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
     </div>
    </div>

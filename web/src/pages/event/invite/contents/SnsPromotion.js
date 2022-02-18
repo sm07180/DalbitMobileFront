@@ -63,7 +63,7 @@ const SnsPromotion = () => {
           <img src="https://image.dalbitlive.com/common/logo/logo.png" alt="dalla 로고"/>
         </div>
         <div className='text'>
-          <strong>초대 코드</strong>를 사용해 달라에 가입하고<br/>
+          달라에 가입하고 <strong>초대코드</strong>를 사용해 <br/>
           <strong>최대 100만원</strong> 받아가세요!
         </div>
         <div className='method'>
