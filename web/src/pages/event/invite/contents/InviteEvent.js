@@ -11,7 +11,6 @@ import {Hybrid, isHybrid} from "context/hybrid";
 const InviteEvent = () => {  
   const context = useContext(Context)
   const history = useHistory();
-  const {token, profile} = context
 
   const [code, setCode] = useState("")                    //나의 초대코드
   const [createdCode, setCreatedCode] = useState(false)   //초대코드 생성 여부
