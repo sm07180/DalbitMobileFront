@@ -35,7 +35,7 @@ const SocialList = (props) => {
         const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
         return (
           <div className='socialList' key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} openBlockReportPop={openBlockReportPop}
                               modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
             />

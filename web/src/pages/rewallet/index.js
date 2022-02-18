@@ -21,12 +21,18 @@ const WalletPage = (props) => {
   const location = useLocation();
   const context = useContext(Context);
   const {walletData, token} = context;
+  
+  //아이폰 앱에서 달교환 버튼 클릭시 새창 띄움
+  const isIOS = useMemo(() => {
+    const agent = window.navigator.userAgent.match(/(ios webview)/gi);
+    return !agent? false : agent[0] === 'ios webview';
+    } ,[]);  //아이폰이면 환전 메뉴를 다르게 보여주는 정책!
 
-  const isIOS = useMemo(() => getDeviceOSTypeChk() === OS_TYPE['IOS'] ,[]);  //아이폰이면 환전 메뉴를 다르게 보여주는 정책!
+  //const search = location?.search || '';
+  //history.push(`/login?goBack=${location.pathname + search}`);
+  if(!token?.isLogin) history.push(`/login`);
+
   const walletTabMenu = ['달 내역', '별 내역', isIOS? '달 교환' : '환전'];
-
-  if(!token?.isLogin) history.push('/login');
-
   const {walletType, byeolTotCnt, dalTotCnt, popHistory, listHistory} = walletData;
   //선택 코드
   const [selectedCode, setSelectedCode] = useState('0');
@@ -170,7 +176,7 @@ const WalletPage = (props) => {
       })
     }
   }
-
+  //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
       <Header type='back' title='내 지갑'>
