@@ -104,10 +104,20 @@ export default function LayerPopupWrap({data, setData}) {
   }
 
   const makeImgInner = (popupData) => {
+    const linkUrl = popupData.linkUrl
     return (
       <>
         <a>
-          <img src={popupData.bannerUrl} alt="" onClick={() => history.push(popupData.linkUrl)}/>
+          <img src={popupData.bannerUrl} alt="" onClick={() => {
+            if(linkUrl.includes('notice')) {
+              history.push({
+                pathname: linkUrl,
+                state: linkUrl.split('/')[2]
+              })
+            }else {
+              history.push(linkUrl)
+            }
+          }}/>
         </a>
       </>
     )
@@ -126,9 +136,12 @@ export default function LayerPopupWrap({data, setData}) {
       {
         data.map((v, idx) => {
           const {popup_type} = v
-          console.log(v)
           return (
-            <div id="eventPop" onClick={closePopup} key={idx}>
+            <div id="eventPop"
+                 onClick={closePopup}
+                 key={idx}
+                 style={{zIndex: 99 - idx}}
+            >
               <div className="popLayer">
                 <div className="popContainer">
                   <div className="popContent" onClick={(e) => e.stopPropagation()}>
@@ -143,16 +156,16 @@ export default function LayerPopupWrap({data, setData}) {
                         id={`chk${v.idx}`}
                         className={`dontShow`}
                       />
-                      <button className='dontShowBtn' onClick={dontShowAction(v)}>오늘 하루 보지 않기</button>
-                    </label> 
-                  )}                      
-                  <button className='close'onClick={closePopup}>닫기</button>
+                      <button className='dontShowBtn' onClick={() => dontShowAction(v)}>오늘 하루 보지 않기</button>
+                    </label>
+                  )}
+                  <button className='close' onClick={closePopup}>닫기</button>
                 </div>
               </div>
             </div>
           )
         })
-      }       
+      }
     </>
   )
 }

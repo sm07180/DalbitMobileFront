@@ -6,11 +6,12 @@ import qs from 'query-string'
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 //layout
-import Layout2 from 'pages/common/layout2.5'
-import Header from 'components/ui/new_header'
-import BoardList from '../../pages/mypage/content/board_list'
-import WriteBoard from '../../pages/mypage/content/board_write'
-import NoResult from 'components/ui/noResult'
+import Layout2 from 'pages/common/layout2.5';
+import Header from 'components/ui/new_header';
+import BoardList from '../../pages/mypage/content/board_list';
+import WriteBoard from '../../pages/mypage/content/board_write';
+import NoResult from "components/ui/noResult/NoResult";
+
 //scss
 import '../mypage/index.scss'
 export default (props) => {
@@ -23,11 +24,11 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(-1)
   //list fetch
   async function fetchReplyList() {
-    const {result, data} = await Api.getClipReplyList({
+    const {result, data, code} = await Api.getClipReplyList({
       clipNo: LocationClip,
       records: 999
     })
-    if (result === 'success') {
+    if (result === 'success' && code === '0') {
       setBoardList(data.list)
       if (data.paging) {
         setTotalCount(data.paging.total)
@@ -71,11 +72,14 @@ export default (props) => {
           <WriteBoard {...props} type={'clip_board'} set={setAction} />
           {totalCount === -1 && (
             <div className="loading">
-              <span></span>
+              <span/>
             </div>
           )}
-          {totalCount === 0 && <NoResult />}
-          {totalCount > 0 && <BoardList list={boardList} totalCount={totalCount} set={setAction} type="clip_board" />}
+          {totalCount > 0 ?
+            <BoardList list={boardList} totalCount={totalCount} set={setAction} type="clip_board" />
+            :
+            <NoResult />
+          }
         </div>
       </div>
     </Layout2>

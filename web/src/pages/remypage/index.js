@@ -33,6 +33,7 @@ const Remypage = () => {
   //context
   const context = useContext(Context)
   const {splash, token, profile} = context;
+  const customHeader = JSON.parse(Api.customHeader)
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -127,7 +128,7 @@ const Remypage = () => {
             {isHybrid() &&
             <div className="versionInfo">
               <span className="title">버전정보</span>
-              <span className="version">현재 버전 {splash?.version}</span>
+              <span className="version">현재 버전 {customHeader.appVer}</span>
             </div>
             }
           </section>

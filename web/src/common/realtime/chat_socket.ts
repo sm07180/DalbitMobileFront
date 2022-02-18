@@ -1006,6 +1006,9 @@ export class ChatSocketHandler {
                     const enterInfo = commonBadgeList[0];
                     const { startColor, endColor } = enterInfo;
                     const { enterAni, enterBgImg } = enterAniInfo;
+                    if(!enterAni || !enterBgImg){
+                      return null;
+                    }
                     if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
                       this.broadcastAction.dispatchChatAnimation({
                         type: "start",
@@ -1729,7 +1732,7 @@ export class ChatSocketHandler {
                     const closeImg = document.createElement("img");
                     const player = document.getElementById("local-player");
                     let msgYn = false; // 메시지 표출 여부 값;
-                    
+
                     if (!noticeDisplay) return null;
                     noticeDisplay.innerHTML = ''; // 기존 알림 삭제
 
@@ -1752,7 +1755,7 @@ export class ChatSocketHandler {
 
                     // 영상 OFF일때 메시지 삭제
                     if (reqRoomState.mediaOn) return null;
-                    
+
                     // 새로운 알림 DOM 생성 및 이벤트 부여
                     elem.id = "isMediaNotice";
                     elem.textContent = data.recvMsg.msg;
