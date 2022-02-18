@@ -16,6 +16,7 @@ import Customer from "pages/recustomer";
 
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
+import {OS_TYPE} from "context/config";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -86,6 +87,15 @@ const Remypage = () => {
     }
   }, [])
 
+  //충전하기 버튼
+  const storeAndCharge = () => {
+    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+      return webkit.messageHandlers.openInApp.postMessage('')
+    } else {
+      history.push('/store')
+    }
+  }
+
   // 페이지 시작
   switch (settingCategory) {
     case 'report' :
@@ -110,7 +120,7 @@ const Remypage = () => {
             <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
             <div className="buttonGroup">
               <button onClick={() => history.push('/wallet')}>내 지갑</button>
-              <button className='charge' onClick={() => history.push('/store')}>충전하기</button>
+              <button className='charge' onClick={storeAndCharge}>충전하기</button>
             </div>
           </section>
           <section className="myMenu">
