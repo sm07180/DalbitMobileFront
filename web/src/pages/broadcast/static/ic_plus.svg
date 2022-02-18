@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="add" width="24" height="24" viewBox="0 0 24 24">
     <defs>
         <style>
-            .cls-2{fill:#fff;stroke:#632beb}.cls-3{stroke:none}.cls-4{fill:none}
+            .cls-2{fill:#fff;stroke:#ff3c7b}.cls-3{stroke:none}.cls-4{fill:none}
         </style>
     </defs>
     <path id="사각형_297" fill="rgba(255,255,255,0)" d="M0 0H24V24H0z" opacity="0.51"/>

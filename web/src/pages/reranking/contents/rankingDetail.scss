@@ -84,10 +84,7 @@
           top: 50%; right: 16px;
           transform: translateY(-50%);
           width: 20px; height: 20px;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg transform='translate(-648 -296)'%3E%3Ccircle cx='20' cy='20' r='20' transform='translate(648 296)' fill='%23666'/%3E%3Ctext id='_' data-name='%3F' transform='translate(674 325)' fill='%23fff' font-size='22' font-family='NotoSansCJKkr-Medium, Noto Sans CJK KR' font-weight='500' letter-spacing='-0.05em'%3E%3Ctspan x='-10.802' y='0'%3E%3F%3C/tspan%3E%3C/text%3E%3C/g%3E%3C/svg%3E%0A");
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: contain;
+          @include BGIMG('common/icon/ico_questionMark-bgGray.png');
         }
       }
       .topContent{
@@ -160,12 +157,9 @@
           }
         }
         .badgeLive {
-          @include flex(center, center);
-          width: 100px; height: 28px;
-          margin: 12px auto 0;
-          @include font(12px,700,#FF3C7B);
-          border-radius: 100px;
-          background: #FFE0D8;
+          width:100px;height:28px;
+          @include BGIMG('ranking/dalla/badgeLiveTop.png');
+          margin: 12px auto;
           cursor: pointer;
         }
       }

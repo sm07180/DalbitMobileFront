@@ -180,7 +180,7 @@ const MyClipUpload = (props) => {
         </Swiper>
         }
       </ul>
-      <section className="totalWrap">
+      <section className="totalCountWrap">
         <div className='total'>
           <TotalWrap/>
         </div>

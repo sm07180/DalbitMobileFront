@@ -1,0 +1,16 @@
+@import "../../../components/ui/mixin";
+
+#playMaker{
+  position: relative;
+  width: 100%;
+  img{
+    width: 100%;
+  }
+  .applyBtn{
+    position: absolute;
+    width: calc(100% - 32px);
+    left: 0;
+    bottom: 6.13%;
+    margin: 0 16px;
+  }
+}
