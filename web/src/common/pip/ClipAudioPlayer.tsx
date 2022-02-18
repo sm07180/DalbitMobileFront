@@ -91,13 +91,11 @@ const ClipAudioPlayer = ()=>{
     return(
       <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
+          <div className="inner-player-bg"
+               style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
-            <div className="inner-player-bg"
-                 style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,}} />
             <div className="equalizer clip" />
-            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle}>
-              <img src={toggleInfo.src} className={toggleInfo.className} alt={toggleInfo.alt}/>
-            </div>
+            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
             <div className="room-info">
               <p className="title">{`${clipInfo.nickName}`}</p>
               <p>{clipInfo.title}</p>

@@ -92,14 +92,14 @@ export default function RecommendDj() {
   const addFanImageHandler = useCallback(
     async (memNo, nickNm, listIdx) => {
       if (fetchedList[listIdx].isFan) {
-        history.push(`/mypage/${memNo}`)
+        history.push(`/profile/${memNo}`)
       } else {
         const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
         if (result === 'success') {
           toggleFan(listIdx)
           context.action.alert_no_close({
             msg: `${nickNm} 님의 팬이 되셨습니다.`,
-            callback: () => history.push(`/mypage/${memNo}`)
+            callback: () => history.push(`/profile/${memNo}`)
           })
         } else {
           context.action.alert({

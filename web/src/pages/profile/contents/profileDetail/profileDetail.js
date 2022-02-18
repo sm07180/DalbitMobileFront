@@ -391,26 +391,26 @@ const ProfileDetail = (props) => {
           <pre className="text">{item?.contents}</pre>
 
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
-              <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-                <Swiper {...swiperFeeds}>
-                  {item.photoInfoList.map((photo) => {
-                    return (
-                      <div>
-                        <div className="photo">
-                          <img src={photo?.imgObj?.thumb500x500} alt="" />
-                        </div>
+            <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
+              <Swiper {...swiperFeeds}>
+                {item.photoInfoList.map((photo) => {
+                  return (
+                    <div>
+                      <div className="photo">
+                        <img src={photo?.imgObj?.thumb500x500} alt="" />
                       </div>
-                    )
-                  })}
-                </Swiper>
-              </div>
-              : item?.photoInfoList?.length === 1 ?
-                <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
-                  <div className="photo">
-                    <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
-                  </div>
+                    </div>
+                  )
+                })}
+              </Swiper>
+            </div>
+            : item?.photoInfoList?.length === 1 ?
+              <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                <div className="photo">
+                  <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
                 </div>
-                : <></>
+              </div>
+            : <></>
           )}
           <div className="info">
             {/*<i className='like'></i>
@@ -423,11 +423,11 @@ const ProfileDetail = (props) => {
         {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
           {replyList.map((item, index) => {
-              const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
-              return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
-                                            replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
-                                            blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
-                                            openBlockReportPop={openBlockReportPop}
+            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
+            return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
+                                          replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
+                                          blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
+                                          openBlockReportPop={openBlockReportPop}
               />
             })}
         </div>

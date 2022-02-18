@@ -163,7 +163,7 @@ export default (props) => {
 
   //WEBVIEW CHECK
   if (profile.memNo === token.memNo && webview && webview === 'new') {
-    history.push(`/mypage/${profile.memNo}?webview=new`)
+    history.push(`/profile/${profile.memNo}?webview=new`)
   }
 
   useEffect(() => {
@@ -193,13 +193,13 @@ export default (props) => {
       if (type === 'story') {
         history.push(`/${type}?webview=new`)
       } else {
-        history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}?webview=new`)
+        history.push(type == 'customer' ? `/customer` : `/profile/${profile.memNo}?webview=new`)
       }
     } else {
       if (type === 'story') {
         history.push(`/${type}`)
       } else {
-        history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+        history.push(type == 'customer' ? `/customer` : `/profile/${profile.memNo}`)
       }
     }
   }
@@ -225,7 +225,7 @@ export default (props) => {
                 const myProfile = await Api.profile({ params: { memNo: token.memNo } })
                 if(myProfile.data.level === 0) {
                   return globalCtx.action.alert({
-                    msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+                    msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
                   })
                 }
               }
@@ -236,8 +236,8 @@ export default (props) => {
                 context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
               }
             }}>
-            <img className="icon" src={MailboxIcon} alt="우체통" />
-            <span className="text">우체통</span>
+            <img className="icon" src={MailboxIcon} alt="메시지" />
+            <span className="text">메시지</span>
             <span className={settingClassName}></span>
           </button>
         )

@@ -237,7 +237,7 @@ export default function Detail(props) {
         msg: res.message,
         callback: () => {
           context.action.alert({visible: false})
-          history.push('/menu/profile')
+          history.push('/mypage')
         }
       })
     } else {
@@ -245,7 +245,7 @@ export default function Detail(props) {
         msg: res.message,
         callback: () => {
           context.action.alert({visible: false})
-          history.push('/menu/profile')
+          history.push('/mypage')
         }
       })
     }

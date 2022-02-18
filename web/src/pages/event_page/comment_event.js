@@ -120,7 +120,7 @@ export default function CommentEvent() {
                   className="profile-img"
                   style={{backgroundImage: `url(${profImg.thumb120x120})`}}
                   onClick={() => {
-                    history.push(`/mypage/${writerNo}`)
+                    history.push(`/profile/${writerNo}`)
                   }}></div>
                 <div className="content">
                   <div className="name-date-wrap">

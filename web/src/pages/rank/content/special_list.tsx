@@ -47,7 +47,7 @@ function SpecialList({ empty }) {
                         className="profileBox"
                         onClick={() => {
                           if (globalState.baseData.isLogin) {
-                            history.push(`/mypage/${v.memNo}`);
+                            history.push(`/profile/${v.memNo}`);
                           } else {
                             history.push("/login");
                           }
@@ -60,7 +60,7 @@ function SpecialList({ empty }) {
                           className="nickNameBox"
                           onClick={() => {
                             if (globalState.baseData.isLogin) {
-                              history.push(`/mypage/${v.memNo}`);
+                              history.push(`/profile/${v.memNo}`);
                             } else {
                               history.push("/login");
                             }

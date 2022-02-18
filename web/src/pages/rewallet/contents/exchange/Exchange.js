@@ -3,6 +3,7 @@ import Utility ,{addComma} from 'components/lib/utility'
 
 // global components
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import Tabmenu from '../../components/tabmenu'
 // contents
@@ -12,8 +13,11 @@ import MyAccount from './MyAccount'
 import {useHistory} from "react-router-dom";
 import Api from "context/api";
 import {Context} from "context";
+import {Hybrid} from "context/hybrid";
 
 const Exchange = (props) => {
+  const {isIOS} = props;
+
   const origin_depositTabmenu = ['신규 정보','최근 계좌','내 계좌'];
 
   const [depositType, setDepositType] = useState(origin_depositTabmenu[0]);
@@ -22,26 +26,16 @@ const Exchange = (props) => {
   const {profile, walletData} = context;
   const {byeolTotCnt, dalTotCnt} = walletData;
   const [calcFormShow, setCalcFormShow] = useState(false);
+  const [popup, setPopup] = useState(false)
 
-
-  useEffect(()=>{
-    getMyAccountData(); //내 계좌 정보 조회
-    recentExchangeData(); //최근 환전신청 내역 조회
-  },[]);
-
-  useEffect(() => {
-    if(byeolTotCnt === 0 || dalTotCnt ===0) {
-      context.globalAction.dispatchWalletData({
-        type: 'ADD_DATA',
-        data: {dalTotCnt: profile?.dalCnt || 0, byeolTotCnt: profile?.byeolCnt || 0}
-      });
-    }
-  },[profile]);
+  const noticePop =()=>{
+    setPopup(true)
+  }
 
   //부모님 동의서 파일첨부란 필요 여부
   const [parentAgree, setParentAgree] = useState(false);  
 
-  //환전 신청할 별 갯수
+  //환전 신청할 별 갯수 및 환전 금액계산수치 (reqByeolCnt만 씀,  realCash)
   const [exchangeCalcData, setExchangeCalcData] = useState({reqByeolCnt: 0, realCash:0});
 
   //신규 환전 신청폼
@@ -97,16 +91,51 @@ const Exchange = (props) => {
     }
   };
 
-  //최근 환전내역 승인건 조회하기 (조회된 결과가 있으면 : 최근, 계좌추가 탭 활성화)
-  const recentExchangeData = async () => {
-    //미성년자 여부 체크 (부모님 동의서 자료첨부란 활성)
-    const authCheck = await Api.self_auth_check();
-    if (authCheck.result === 'success') {
-      if (authCheck.data.parentsAgreeYn === 'y') {  //미성년자 대상인 경우
-        setParentAgree(true);
-      }
+  //본인인증 체크 (환전 탭 이용하기 전 호출 필수)
+  const checkSelfAuth = async () => {
+    //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
+    let myBirth
+    const baseYear = new Date().getFullYear() - 11;
+
+    const myInfoRes = await Api.mypage();
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
     }
 
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({});
+      if (res.result === 'success') {
+        if (res.data.company === '기타') {
+          return context.action.alert({
+            msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
+          })
+        }
+        const {parentsAgreeYn, adultYn} = res.data
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
+        if (myBirth > baseYear) {
+          return context.action.alert({
+            msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+          })
+        } else { //성공
+
+          //부모님 동의 대상자 체크
+          if(parentsAgreeYn === 'y'){
+            setParentAgree(true);
+          }
+        }
+      } else if (res.result === 'fail' && res.code === '0') {
+        history.push('/selfauth')
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+    fetchSelfAuth()
+  };
+
+  //최근 환전내역 승인건 조회하기 (조회된 결과가 있으면 : 최근, 계좌추가 탭 활성화)
+  const recentExchangeData = async () => {
     //최근 계좌 내역 탭 활성화
     const {result, data, message} = await Api.exchangeSelect();
 
@@ -142,12 +171,22 @@ const Exchange = (props) => {
       context.action.alert({msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'})
       return;
     } else {
+      
+      //본인인증 먼저 체크
+      await checkSelfAuth();
+
       const res = await Api.exchangeCalc({
         data: {byeol: sendByeolCnt}
       })
       context.action.alert({msg:res.message});
 
       if (res.result === 'success') {
+        //result :
+        // basicCash: 34200
+        // benefitCash: 0
+        // feeCash: 500
+        // realCash: 32580
+        // taxCash: 1120
         setExchangeCalcData({...exchangeCalcData, ...res.data});
         setCalcFormShow(true);
       }
@@ -295,10 +334,24 @@ const Exchange = (props) => {
     }
   }
 
+  useEffect(()=>{
+    getMyAccountData(); //내 계좌 정보 조회
+    recentExchangeData(); //최근 환전신청 내역 조회
+  },[]);
+
+  useEffect(() => {
+    if(byeolTotCnt === 0 || dalTotCnt ===0) {
+      context.globalAction.dispatchWalletData({
+        type: 'ADD_DATA',
+        data: {dalTotCnt: profile?.dalCnt || 0, byeolTotCnt: profile?.byeolCnt || 0}
+      });
+    }
+  },[profile]);
+
   return (
     <>
     <section className="doExchange">
-      <button className='noticeBtn'>
+      <button className='noticeBtn' onClick={noticePop}>
         <span className="noticeIcon">?</span>환전이 궁금하시다면?
       </button>
       <div className="amountBox">
@@ -309,6 +362,9 @@ const Exchange = (props) => {
           <span className="unit">개</span>
         </div>
       </div>
+
+      {!isIOS
+        &&
       <div className="infoBox">
           {profile?.badgeSpecial > 0 && (
             <>
@@ -319,33 +375,44 @@ const Exchange = (props) => {
           <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
           <p>별 1개당 KRW 60으로 환전됩니다.</p>
       </div>
+      }
+      {!isIOS &&
       <div className="amountBox apply">
         <i className="iconStar"/>
         <p>환전 신청 별</p>
-        <div className={`counter ${exchangeCalcData?.reqByeolCnt>569? 'active':''}`}>
+        <div className={`counter ${exchangeCalcData?.reqByeolCnt > 569 ? 'active' : ''}`}>
           <input className='num' placeholder={0}
-                 onChange = {(e) => {
-                        const joinNum = e.target.value.split(',').join('');
-                        const num = Number(joinNum);
-                        if(num > byeolTotCnt){
-                          e.target.value = Utility.addComma(byeolTotCnt);
-                          setExchangeCalcData({...exchangeCalcData, reqByeolCnt: byeolTotCnt });
-                        }else if(!Number.isNaN(num) ){
-                          e.target.value = Utility.addComma(num);
-                          setExchangeCalcData({...exchangeCalcData, reqByeolCnt: num });
-                        } else {
-                          e.target.value = exchangeCalcData?.reqByeolCnt;
-                        }
+                 onChange={(e) => {
+                   setCalcFormShow(false); //수정하면 계산 다시하게하기
+                   const joinNum = e.target.value.split(',').join('');
+                   const num = Number(joinNum);
+                   if (num > byeolTotCnt) {
+                     e.target.value = Utility.addComma(byeolTotCnt);
+                     setExchangeCalcData({...exchangeCalcData, reqByeolCnt: byeolTotCnt});
+                   } else if (!Number.isNaN(num)) {
+                     e.target.value = Utility.addComma(num);
+                     setExchangeCalcData({...exchangeCalcData, reqByeolCnt: num});
+                   } else {
+                     e.target.value = exchangeCalcData?.reqByeolCnt;
+                   }
                  }}
           />
           <span className='unit'>개</span>
         </div>
       </div>
+      }
+
       <div className="buttonGroup">
-        <button onClick={() => exchangeCalc(exchangeCalcData?.reqByeolCnt || 0)}>
-          환전 계산하기
-        </button>
-        <button className='exchange' onClick={() => history.push('/wallet/exchange')}>
+        { !isIOS &&
+          <button onClick={() => exchangeCalc(exchangeCalcData?.reqByeolCnt || 0)}>
+            환전 계산하기
+          </button>
+        }
+        <button className='exchange'
+                onClick={() =>
+                  isIOS ?
+                    Hybrid('openUrl', `https://${window.location.host}/wallet?exchange`) :
+                    history.push('/wallet/exchange')}>
           달 교환
         </button>
       </div>
@@ -353,6 +420,7 @@ const Exchange = (props) => {
 
     {/* 환전 계산하기 결과 */}
     {calcFormShow &&
+      <>
     <section className="receiptBoard">
       <div className="receiptList">
         <span>환전 신청 금액</span>
@@ -371,8 +439,8 @@ const Exchange = (props) => {
         <p className="point">KRW {Utility.addComma(exchangeCalcData?.realCash)}</p>
       </div>
     </section>
-    }
 
+    {/*계좌 입력 란*/}
     <section className="depositInfo">
       <h2>입금 정보</h2>
       <Tabmenu data={depositTabmenu} tab={depositType} setTab={setDepositType} />
@@ -383,16 +451,34 @@ const Exchange = (props) => {
                      uploadSingleFile={uploadSingleFile}
         />
         : depositType === depositTabmenu[1] ?
-          /*최근 계좌*/
+          /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
         <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}/>
         :
-          /*내 계좌*/
+          /*내 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
         <MyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
                    accountList={accountList} setAccountList={setAccountList}
                    getMyAccountData={getMyAccountData}
         />
       }
     </section>
+    {
+      popup &&
+      <LayerPopup setPopup={setPopup}>
+        <div className='popTitle'>환전 유의사항</div>
+        <div className='popContent'>
+          <div className="wrap">
+            <h3>◈ 환전은?</h3>
+            <p>방송 중 DJ가 타회원에게 받은 "별"선물을 현금으로 전환하는 것입니다.</p>
+            <p>방송에서 보유한 "별"은 1개당 60KRW으로 환전 됩니다.</p>
+            <p>또한, 보유한 "별"은 570별 이상부터 환전 신청이 가능합니다. (원천징수세액 3.3%, 이체수수료 500원 제외)</p>
+            <p>★ 보유한 “별”은 최종 선물을 받은 일을 기준으로 12개월이 지나면 소멸됩니다.</p>
+            <p></p>
+          </div>
+        </div>
+      </LayerPopup>
+    }
+    </>
+    }
     </>
   )
 }

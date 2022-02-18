@@ -68,10 +68,11 @@ const HistoryList = (props) => {
           <div className="listRow" key={index}>
             <div className="listContent">
               <div className="listItem">
-                {data?.type === 4 && data?.exchangeIdx > 0
-                && <button className="exCancelBtn" onClick={() => cancelExchangeFetch(data.exchangeIdx)}>취소하기</button>}
                 <div className="historyText">{data?.contents}</div>
-
+                {data?.type === 4 && data?.exchangeIdx > 0 &&
+                <button className="exCancelBtn"
+                        onClick={() => cancelExchangeFetch(data.exchangeIdx)}>취소하기</button>
+                }
                 {/*<div className="otherUserNick">계란노른자</div>*/}
                 {/*<span className="privateBdg">몰래</span>*/}
               </div>
@@ -105,14 +106,16 @@ const HistoryList = (props) => {
               <div className="historyScroll">
                 {popHistory.map((data,index) => {
                   return (
-                    <CheckList text={data.text} index={index} key={index} code={`${data.walletCode}`} beforeCode={beforeCode} setBeforeCode={setBeforeCode}>
+                    <CheckList text={`${data.text} (${data?.cnt||'0'}건)`} index={index} key={index} code={`${data.walletCode}`} beforeCode={beforeCode} setBeforeCode={setBeforeCode}>
                     </CheckList>
                   )
                 })}
               </div>
             </div>
             <div className="buttonGroup">
-              <button className="cancel">취소</button>
+              <button className="cancel"
+                      onClick={() => setSlidePop(false)}
+              >취소</button>
               <button className="apply" onClick={() =>{
                 setSelectedCode(beforeCode);
                 setSlidePop(false);

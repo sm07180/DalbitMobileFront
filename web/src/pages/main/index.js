@@ -16,7 +16,7 @@ import LiveView from './components/LiveView'
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER} from "context/config";
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
@@ -43,7 +43,7 @@ const MainPage = () => {
 
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
-  const [headerFixed, setHeaderFixed] = useState("")
+  const [headerFixed, setHeaderFixed] = useState(false)
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
@@ -58,7 +58,7 @@ const MainPage = () => {
     storeUrl: '',
   });
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
-  const [isLastPage, setIsLastPage] = useState(false);
+
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -82,7 +82,6 @@ const MainPage = () => {
       if (res.result === 'success') {
         const data = res.data;
         let paging = data.paging;
-        const isLastPage = data.list.length > 0 ? data.paging.totalPage === currentPage : true;
         if(data.paging) {
           totalPage = Math.ceil(data.paging.total / pagePerCnt)
         }else {
@@ -95,8 +94,6 @@ const MainPage = () => {
         } else {
           dispatch(setMainLiveList({list: data.list, paging}));
         }
-
-        setIsLastPage(isLastPage);
       }
     })
   }, [currentPage, liveListType]);
@@ -107,7 +104,7 @@ const MainPage = () => {
     fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
-    setHeaderFixed("fadeOut");
+    setHeaderFixed(false);
     setCurrentPage(1);
   }
 
@@ -121,9 +118,9 @@ const MainPage = () => {
     if (overNode && headerNode) {
       const overTop = overNode.offsetTop - headerNode.clientHeight
       if (window.scrollY >= overTop) {
-        setHeaderFixed("fadeIn")
+        setHeaderFixed(true)
       } else {
-        setHeaderFixed("fadeOut")
+        setHeaderFixed(false)
       }
     }
 
@@ -140,7 +137,13 @@ const MainPage = () => {
     if (totalPage > currentPage && Utility.isHitBottom()) {
       setCurrentPage(currentPage => currentPage + 1)
     }
-  }, [])
+  })
+  
+  useEffect(() => {
+    if (currentPage > 0) fetchLiveInfo()
+    document.addEventListener('scroll', scrollEvent)
+    return () => document.removeEventListener('scroll', scrollEvent)
+  }, [currentPage, liveListType])
 
   const mainTouchStart = useCallback(
     (e) => {
@@ -292,12 +295,6 @@ const MainPage = () => {
     fetchLiveInfo()
   }, [currentPage, liveListType])
 
-  useEffect(() => {
-    if(isLastPage) {
-      document.removeEventListener('scroll', scrollEvent);
-    }
-  }, [isLastPage])
-
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
@@ -305,11 +302,9 @@ const MainPage = () => {
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
-    document.addEventListener('scroll', scrollEvent);
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
-      document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
  
@@ -332,18 +327,18 @@ const MainPage = () => {
         </div>
       </div>
     </div>
-    <div id="mainPage" ref={MainRef} 
+    <div id="mainPage" ref={MainRef}
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
-      <div className={`headerWrap ${headerFixed && headerFixed}`} ref={headerRef}>
+      <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>
         <MainSlide data={mainState.topBanner}/>
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
+        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP 10'} more={'rank'}>
@@ -357,16 +352,14 @@ const MainPage = () => {
           type="top10"
         />
       </section>
-      {mainState.newBjList.length > 0 &&
-        <section className='daldungs'>
-          <CntTitle title={'방금 착륙한 NEW 달둥스'} />
-          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs"/>
-        </section>
-      }
+      <section className='daldungs'>
+        <CntTitle title={'방금 착륙한 NEW 달린이'} />
+        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
+      </section>
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView'  ref={overTabRef}>
+      <section className='liveView' ref={overTabRef}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
         <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
           <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
@@ -377,6 +370,7 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
   return MainLayout;

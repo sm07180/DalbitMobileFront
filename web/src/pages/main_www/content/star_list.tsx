@@ -57,7 +57,7 @@ export default function MyStar(props: any) {
                   //   saveUrlAndRedirect(`/mypage/${memNo}`)
                   // }
                   // 20.08.25
-                  history.push(`/mypage/${memNo}`);
+                  history.push(`/profile/${memNo}`);
                 }}
               >
                 <div className="thumb">

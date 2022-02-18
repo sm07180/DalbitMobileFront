@@ -54,16 +54,16 @@ const appDownAlrt = (props) => {
             ) : pageName == 4 ? (
                 '클립 청취를 '
             ) : pageName == 5 ? (
-                '우체통 이용을 '
+                '메시지 이용을 '
             ) : (
                 <></>
             )}
             위해
-            <br /> 달빛라이브 어플을 설치하신 후<br /> 이용해 주세요.
+            <br /> 달라 어플을 설치하신 후<br /> 이용해 주세요.
           </b>
 
           <p>
-            달빛라이브 어플을 설치하시면
+            달라 어플을 설치하시면
             <br />
             더욱 다양한 편의기능을
             <br />
@@ -76,7 +76,7 @@ const appDownAlrt = (props) => {
                     appCheckDwon()
                     context.action.updatePopupVisible(false)
                   }}>
-                달빛 라이브 어플 설치하기
+                달라 어플 설치하기
               </button>
           ) : osCheck === OS_TYPE['IOS'] ? (
               <button
@@ -85,7 +85,7 @@ const appDownAlrt = (props) => {
                     iosbutton()
                     context.action.updatePopupVisible(false)
                   }}>
-                달빛 라이브 어플 설치하기
+                달라 어플 설치하기
               </button>
           ) : (
               ''
