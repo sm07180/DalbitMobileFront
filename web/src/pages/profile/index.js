@@ -462,10 +462,13 @@ const ProfilePage = () => {
   useEffect(() => {
     if(socialType === socialTabmenu[0]) {
       getFeedData();
+      setScrollPagingCnt(1);
     }else if(socialType === socialTabmenu[1]) {
       getFanBoardData();
+      setScrollPagingCnt(1);
     }else if(socialType === socialTabmenu[2]) {
       getClipData();
+      setScrollPagingCnt(1);
     }
   }, [socialType])
 

@@ -21,6 +21,7 @@ import AnimationViewer from "./components/animation_viewer";
 import ImgSlidePopup from "./components/img_pop";
 
 import '../../mailbox.scss';
+import {CustomHeader} from "../chat_list";
 
 // global var
 let lastPrevIdx: string | number = "0";
@@ -459,7 +460,7 @@ export default function chatting() {
   // ---------------------------------------------------------------------------------------------
   return (
     <>
-      <Header title={mailboxState.mailboxInfo?.title} type="back">
+      <CustomHeader title={mailboxState.mailboxInfo?.title} type="back">
         <div className="buttonGroup">
           <button className="btnMore" onClick={() => setMore(!more)}>
             <img src="https://image.dalbitlive.com/mailbox/ico_more_vertical_g.svg" alt="더보기" />
@@ -471,7 +472,7 @@ export default function chatting() {
             <li onClick={exitMail}>나가기</li>
           </ul>
         </div>
-      </Header>
+      </CustomHeader>
       <div className="chatBoxPage">
         {/* list view */}
         <div className="chatPrevWrapper" ref={PrevRef}>

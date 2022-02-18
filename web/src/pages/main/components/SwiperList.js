@@ -20,13 +20,13 @@ const SwiperList = (props) => {
   }
 
   const onClickAction = (item) => {
-    if(type === 'top10' || type === 'favorites') {
+    if(type === 'top10') {
       if (!globalState.baseData.isLogin) {
         history.push("/login");
       }else{
         history.push(`/profile/${item.memNo}`);
       }
-    }else if(type === 'daldungs') {
+    }else if(type === 'daldungs' || type === 'favorites') {
       RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
     }
   }
