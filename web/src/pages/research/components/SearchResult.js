@@ -56,7 +56,7 @@ const SearchResult = (props) => {
         });
         setSearchDjInfo({...res.data, list: searchDjInfo.list.concat(temp)});
       } else {
-        setSearchDjInfo({...res.data, list: tempList});
+        setSearchDjInfo({...res.data });
       }
     } else {
       if (searchData.page === 1) {

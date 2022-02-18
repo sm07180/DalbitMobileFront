@@ -16,8 +16,7 @@ import LiveView from './components/LiveView'
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
-import {OS_TYPE} from "context/config";
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER} from "context/config";
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
@@ -25,17 +24,14 @@ import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 
-const topTenTabMenu = ['DJ','FAN','LOVER']
+const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 20
 
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png';
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
-
-const customHeader = JSON.parse(Api.customHeader)
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -357,7 +353,7 @@ const MainPage = () => {
         />
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+        <CntTitle title={'방금 착륙한 NEW 달린이'} />
         <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
       </section>
       <section className='bannerWrap'>
