@@ -7,7 +7,6 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
-import {IMG_SERVER} from 'context/config'
 
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
@@ -15,13 +14,18 @@ import {useHistory} from "react-router-dom";
 const InviteRank = () => {
   const context = useContext(Context)
   const history = useHistory();
-  const {token, profile} = context
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
     cnt:"",
     list:[]
   });
-  const [myData, setMyData] = useState();
+  const [myData, setMyData] = useState({
+    rankNo: "",
+    mem_sex: "",
+    mem_nick: "",
+    invitation_cnt:"",
+    thumb88x88:""
+  });
 
   useEffect(()=>{
     getList();
@@ -35,7 +39,6 @@ const InviteRank = () => {
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log("inviteList", getList);
       setData({
         cnt:response.data.listCnt,
         list:response.data.list
@@ -50,11 +53,17 @@ const InviteRank = () => {
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log("inviteMyRank", response);
-      setMyData(response.data)
+      console.log(response.data);
+
+      setMyData({
+        rankNo: response.data.rankNo,
+        mem_sex: response.data.mem_sex,
+        mem_nick: response.data.mem_nick,
+        invitation_cnt:response.data.invitation_cnt,
+        thumb88x88:response.data.profImg.thumb88x88
+      })
     })
   }
-
 
   const popupOpen = () => {
     setPopup(true)
@@ -74,13 +83,14 @@ const InviteRank = () => {
           {
             data.cnt > 0 ?
             <>
+              {context.token.isLogin &&
               <div className='inviteMyRank'>
                 <div className='listFront'>
                   <span className='myrankText'>내순위</span>
                   <span className='rankingBadge'>{myData.rankNo === 0 ? "-" : myData.rankNo}</span>
                 </div>
                 <div className="photo">
-                  <img src={myData.profImg.thumb88x88} alt="프로필이미지" />
+                  <img src={myData.thumb88x88} alt="프로필이미지"/>
                 </div>
                 <div className='listContent'>
                   <div className='listItem'>
@@ -92,13 +102,14 @@ const InviteRank = () => {
                   <DataCnt type="inviteCnt" value={myData.invitation_cnt}/>
                 </div>
               </div>
+              }
               <div className='inviteRankWrap'>
               {
                 data.list.map((member, index) => {
                   return (
                     <div className='inviteRankList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
                       <div className='listFront'>
-                        <span className={`rankingBadge`}>{member.rank}</span>
+                        <span className={`rankingBadge`}>{index+1}</span>
                       </div>
                       <div className="photo">
                         <img src={member.profImg.thumb88x88} alt="프로필이미지" />
@@ -112,7 +123,7 @@ const InviteRank = () => {
                       <div className='listBack'>
                         <DataCnt type="inviteCnt" value={member.invitation_cnt}/>
                       </div>
-                    </div> 
+                    </div>
                   )
                 })
               }

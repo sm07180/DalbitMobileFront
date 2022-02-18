@@ -101,7 +101,6 @@ const DidLogin = (props) => {
         room_no: sessionRoomNo
       }
     })
-    console.log(loginInfo);
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
@@ -211,15 +210,21 @@ const DidLogin = (props) => {
     setPopupVal(val)
   }
 
+  const onKeyPress = e =>{
+    if(e.key ==='Enter' || e.key === 13){
+      loginClick()
+    }
+  }
+
   return (
     <div id='loginPage'>
       <Header title="로그인" type="back"/>
       <section className="loginForm">
         <InputItems>
-          <input ref={inputPhoneRef} type="number" pattern="\\d*" placeholder="휴대폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} onChange={onChange}/>
+          <input ref={inputPhoneRef} type="number" pattern="\d*" placeholder="휴대폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} autoFocus onChange={onChange}/>
         </InputItems>
         <InputItems>
-          <input ref={inputPasswordRef} type="password" placeholder="비밀번호" name={"password"} value={loginInfo.password} onChange={onChange}/>
+          <input ref={inputPasswordRef} type="password" placeholder="비밀번호" name={"password"} value={loginInfo.password} onChange={onChange} onKeyPress={onKeyPress}/>
         </InputItems>
         <SubmitBtn text="로그인" onClick={loginClick}/>
         <div className="linkWrap">
