@@ -144,7 +144,7 @@ const DidLogin = (props) => {
         if (props.location.state) {
           return (window.location.href = `/${props.location.state.state}`)
         }
-        return props.history.push('/')
+        return window.location.href = "/"
       }
     } else if (loginInfo.result === 'fail') {
       if (loginInfo.code === '-1') {
