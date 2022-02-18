@@ -1,5 +1,20 @@
 @import "components/ui/_mixin.scss";
 
+/*
+  피씨일때 헤더 없애기
+*/
+#root {
+  .container {
+    .totalWrap {
+      #storePage {
+        button.back {
+          display:none;
+        }
+      }
+    }
+  }
+}
+
 #storePage {
   @include flex($fd:column);
   section{
