@@ -272,7 +272,7 @@ const SocialSignUp = () => {
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        return history.push('/event/recommend_dj2')
+        return history.push('/')
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})
@@ -388,7 +388,7 @@ const SocialSignUp = () => {
             </div>
           </div>
 
-          <SubmitBtn text="완료" onClick={signUp}/>
+          <button type={"button"} className={`submitBtn ${(btnActive && checkNickNameValue.check) ? "" : "disabled"}`} onClick={signUp}>완료</button>
         </section>
       </div>
       {
