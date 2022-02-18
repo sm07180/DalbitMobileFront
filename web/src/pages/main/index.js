@@ -329,7 +329,7 @@ const MainPage = () => {
         </div>
       </div>
     </div>
-    <div id="mainPage" ref={MainRef} 
+    <div id="mainPage" ref={MainRef}
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
@@ -340,7 +340,7 @@ const MainPage = () => {
         <MainSlide data={mainState.topBanner}/>
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
+        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP 10'} more={'rank'}>

@@ -20,7 +20,7 @@ const SwiperList = (props) => {
   }
 
   const onClickAction = (item) => {
-    if(type === 'top10' || type === 'myStar') {
+    if(type === 'top10' || type === 'favorites') {
       if (!globalState.baseData.isLogin) {
         history.push("/login");
       }else{
@@ -33,7 +33,7 @@ const SwiperList = (props) => {
 
   useEffect(() => {
     if (data.length > 0) {
-      const swiper = document.querySelector('.favorites .swiper-container')?.swiper;
+      const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
       swiper?.update();
       swiper?.slideTo(0);
     }

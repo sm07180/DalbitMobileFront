@@ -38,6 +38,7 @@ const ProfileEdit = () => {
 
   //프로필 정보
   const initProfileInfo = useRef(null);
+  const nickNameRef = useRef(null);
   const [profileInfo, setProfileInfo] = useState({
     birth: null, nickNm: null, gender: null, profImg: null, profMsg: null, memId: null, profImgList: []
   })
@@ -280,9 +281,14 @@ const ProfileEdit = () => {
             </section>
             <section className="editInfo">
               <InputItems title={'닉네임'}>
-                <input type="text" maxLength="15" placeholder={profile.nickNm}
+                <input type="text" maxLength="15" placeholder={profile.nickNm} ref={nickNameRef}
                        onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
-                <button className='inputDel'></button>
+                <button className='inputDel'
+                        onClick={(e) => {
+                          //닉네임 초기화
+                          if (nickNameRef.current) nickNameRef.current.value = '';
+                          setProfileInfo({...profileInfo, nickNm: ''})
+                        }}/>
               </InputItems>
               <InputItems title={'UID'}>
                 <input type="text" placeholder={profile.memId} disabled/>
