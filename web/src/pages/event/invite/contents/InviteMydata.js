@@ -6,14 +6,11 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 import '../invite.scss'
 import {Context} from "context";
-import {IMG_SERVER} from 'context/config'
 import {useHistory} from "react-router-dom";
 
 const InviteMydata = () => {
   const context = useContext(Context)
   const history = useHistory();
-  const {token, profile} = context
-
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
     cnt:"",
@@ -31,7 +28,6 @@ const InviteMydata = () => {
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log("inviteMyList", getList);
       setData({
         cnt:response.data.listCnt,
         list:response.data.list
@@ -66,7 +62,7 @@ const InviteMydata = () => {
               {
                 data.list.map((member, index) => {
                   return (
-                    <div className='inviteUserList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
+                    <div className='inviteUserList' key={index} onClick={() => history.push(`/profile/${member.rcv_mem_no}`)}>
                       <div className="photo">
                         <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>

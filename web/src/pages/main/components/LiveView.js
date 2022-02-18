@@ -30,7 +30,7 @@ const LiveView = (props) => {
                 </div>
                 <div className='listContent'>
                   <div className="listItem">
-                    <BadgeItems data={list} type={'liveBadgeList'} />
+                    <BadgeItems data={list} type={'isBadge'} />
                   </div>
                   <div className="listItem">
                     <span className='title'>{list.title}</span>

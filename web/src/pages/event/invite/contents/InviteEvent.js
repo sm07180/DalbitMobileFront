@@ -6,12 +6,11 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
 import {IMG_SERVER} from 'context/config'
-import {isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const InviteEvent = () => {  
   const context = useContext(Context)
   const history = useHistory();
-  const {token, profile} = context
 
   const [code, setCode] = useState("")                    //나의 초대코드
   const [createdCode, setCreatedCode] = useState(false)   //초대코드 생성 여부
@@ -133,10 +132,12 @@ const InviteEvent = () => {
       }
   }
 
-
   const doCopy = code => {
     if(isHybrid()){
-      alert("FIXME 공유기능추가")
+      Hybrid("sendShareUrl", {
+        shareLink: `https://${location.host}/invite/${code}`,
+        title: "dalla 달라 | 초대코드"
+      })
     }else {
       if (!document.queryCommandSupported("copy")) {
         return alert("복사하기가 지원되지 않는 브라우저입니다.");
@@ -156,7 +157,6 @@ const InviteEvent = () => {
   };
 
 
-
   return (
     <div className='inviteEvent'>
       <div className='imageBox'>
@@ -166,9 +166,9 @@ const InviteEvent = () => {
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-method.png" alt="참여방법 안내" className='fullImage'/>
         {
           createdCode ? 
-            <button className={`inviteBtn share`}>
+            <button className={`inviteBtn share`} onClick={()=>doCopy(code)}>
               <span className='codeText'>{code}</span>
-              <span className='btnName' onClick={()=>doCopy(code)}>초대코드 공유하기</span>
+              <span className='btnName'>초대코드 공유하기</span>
             </button>
           :
             <button className={`inviteBtn create`} onClick={createCode}>
