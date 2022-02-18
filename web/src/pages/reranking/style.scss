@@ -388,6 +388,7 @@ $errorMsg : #FF1919;
     background: url("https://image.dalbitlive.com/dalla/character/character_rankingBottom.png") #1a1a1a no-repeat;
     background-position: right bottom;
     background-size: contain;
+    cursor: pointer;
     p:nth-child(1) {
       @include font(18px, 600, #FFFFFF);
       letter-spacing: -1px;
