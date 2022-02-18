@@ -72,7 +72,7 @@
     "react-dom": "^17.0.2",
     "react-error-boundary": "^3.0.2",
     "react-exif-orientation-img": "^0.1.5",
-    "react-id-swiper": "^4.0.0",
+    "react-id-swiper": "^1.6.9",
     "react-load-script": "^0.0.6",
     "react-lottie": "^1.2.3",
     "react-movable": "^2.5.1",

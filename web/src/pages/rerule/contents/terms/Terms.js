@@ -6,12 +6,12 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 // components
 import './terms.scss'
-import {Hybrid} from "context/hybrid";
+import {Hybrid, isMobileWeb} from "context/hybrid";
 
 const Terms = (props) => {
   const history = useHistory();
   const backEvent = ()=>{
-    if(props.type === 'termsT'){
+    if(!isMobileWeb() && props.type === 'termsT'){
       history.goBack();
     }else if(props.type === 'terms'){
       Hybrid('CloseLayerPopup')
