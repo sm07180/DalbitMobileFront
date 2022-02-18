@@ -5,7 +5,7 @@
   @include flex($fd:column);
   .myInfo {
     @include flex;
-    padding:16px 16px 14px;
+    padding:16px 16px 25px;
     cursor: pointer;
     .textWrap {
       @include flex($fd:column);
@@ -13,7 +13,7 @@
       @include font(19px,400,black);
       .text {
         @include flex($fd: column);
-        margin-bottom:8px;
+        margin-bottom:18px;
         letter-spacing: -.3px;
         span{display: flex;}
         strong {
@@ -58,14 +58,24 @@
         }
       }
     }
-    .photo {
-      width:75px;
-      height:75px;
+    .photoWrap {
+      @include flex(center,center,column);
       margin-left:auto;
-      img {
-        width:100%;
-        border-radius:50%;
-        object-fit: cover;
+      .photo {
+        width:75px;
+        height:75px;
+        img {
+          width:100%;
+          border-radius:50%;
+          object-fit: cover;
+        }
+      }
+      button {
+        width:72px;
+        line-height:23px;
+        margin-top:auto;
+        @include border(#E0E0E0,100px);
+        @include font(12px,$Medium,#5A5A5A);
       }
     }
   }
@@ -150,7 +160,7 @@
     }
   }
   .buttonWrap {
-    margin: auto 16px 60px;
+    margin:0 16px 60px;
     button.logout {
       width:100%;
       line-height:46px;

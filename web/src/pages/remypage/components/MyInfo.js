@@ -77,8 +77,11 @@ const MyInfo = (props) => {
           <span>{data?.likeTotCnt}</span>
         </div>
       </div>
-      <div className="photo">
-        {data && <img src={data.profImg?.thumb150x150} alt="" />}
+      <div className="photoWrap">
+        <div className="photo">
+          {data && <img src={data.profImg?.thumb150x150} alt="" />}
+        </div>
+        <button>프로필 보기</button>
       </div>
       {popSlide &&
         <PopSlide title="내 레벨" setPopSlide={setPopSlide}>
