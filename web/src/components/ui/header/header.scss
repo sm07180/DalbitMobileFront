@@ -47,6 +47,9 @@ header {
   .buttonGroup {
     @include flex(center);
     margin-left:auto;
+    & > button {
+      margin-left: 8px;
+    }
   }
   button {
     position:relative;

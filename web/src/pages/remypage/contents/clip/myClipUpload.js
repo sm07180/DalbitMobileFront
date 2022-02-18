@@ -180,7 +180,7 @@ const MyClipUpload = (props) => {
         </Swiper>
         }
       </ul>
-      <section className="totalWrap">
+      <section className="totalCountWrap">
         <div className='total'>
           <TotalWrap/>
         </div>
@@ -200,8 +200,8 @@ const MyClipUpload = (props) => {
                 <div className="listItem">
                   <DataCnt type={"listenerCnt"} value={item.countPlay}/>
                   <DataCnt type={"presentCnt"} value={item.countByeol}/>
-                  <DataCnt type={"replyCnt"} value={item.countReply}/>
                   <DataCnt type={"goodCnt"} value={item.countGood}/>
+                  <DataCnt type={"replyCnt"} value={item.countReply}/>
                 </div>
               </div>
               {searchInfo.myClipType === 0 &&
