@@ -32,11 +32,7 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
 
   const routeMypage = (item) => {
     if (global_ctx.token.isLogin) {
-      if (global_ctx.profile.memNo === item.mem_no) {
-        history.push('/menu/profile')
-      } else {
-        history.push(`/mypage/${item.mem_no}`)
-      }
+      history.push(`/profile/${item.mem_no}`)
     } else {
       history.push('/login')
     }

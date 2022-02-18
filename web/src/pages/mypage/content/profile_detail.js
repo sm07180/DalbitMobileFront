@@ -64,16 +64,7 @@ export default (props) => {
       if (profile.fanRank[index] == undefined) {
       } else {
         const {memNo, profImg, rank} = profile.fanRank[index]
-        let link = ''
-        if (memNo == myProfileNo) {
-          if (webview) {
-            link = `/mypage/${memNo}?webview=${webview}`
-          } else {
-            link = `/menu/profile`
-          }
-        } else {
-          link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-        }
+        let link = `/profile/${memNo}?webview=${webview}`
         result = result.concat(
           <div
             style={{backgroundImage: `url(${profImg.thumb88x88})`}}

@@ -238,7 +238,7 @@ export default function ClipRecommend() {
                       <p
                         className="nickName"
                         onClick={() => {
-                          history.push(`/mypage/${marketingClipObj.clipMemNo}`)
+                          history.push(`/profile/${marketingClipObj.clipMemNo}`)
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
                         {marketingClipObj.nickNm}
@@ -246,7 +246,7 @@ export default function ClipRecommend() {
                       <button
                         className="fileNumber"
                         onClick={() => {
-                          history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)
+                          history.push(`/profile/${marketingClipObj.clipMemNo}?tab=2`)
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
                         {Utility.addComma(marketingClipObj.regCnt)}
@@ -340,7 +340,7 @@ export default function ClipRecommend() {
                             <span
                               className="textItem__moreButton--people"
                               onClick={() => {
-                                history.push(`/mypage/${v.memNo}`)
+                                history.push(`/profile/${v.memNo}`)
                                 context.action.updateDateState(marketingClipObj.recDate)
                               }}>
                               사람 아이콘

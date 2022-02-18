@@ -173,7 +173,7 @@ export default function GotoMoonRanking(props) {
                     else if(rank_num <= 30) {eventReward = 100;}
 
                     return (
-                      <div className={`rankingList`} key={index} id={mem_no} onClick={() => {history.push(`/mypage/${mem_no}`)}}>
+                      <div className={`rankingList`} key={index} id={mem_no} onClick={() => {history.push(`/profile/${mem_no}`)}}>
                         <div className="listFront">
                           <span className={`badgeRanking ${rank_num > 30 ? "" : "top30"}`}>{rank_num}</span>
                         </div>

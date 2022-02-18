@@ -59,7 +59,7 @@ export default function (props) {
             list.map((wizardItem, idx) => {
               const {profileImage, nickName, rank, completeCnt, lastDate, mem_no} = wizardItem
               return (
-                <div key={idx} className="listItem" onClick={() => history.push(`/mypage/${mem_no}`)}>
+                <div key={idx} className="listItem" onClick={() => history.push(`/profile/${mem_no}`)}>
                   <RankDivideRender rank={rank} />
                   <div className="listInfo">
                     <img src={profileImage[`thumb62x62`]} className="profImg" alt="프로필이미지" />

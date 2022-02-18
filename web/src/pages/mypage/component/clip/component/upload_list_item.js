@@ -160,14 +160,14 @@ export default function UploadClip(props) {
         ) : (
           // [ 청취 회원 | 좋아요 회원 | 선물한 회원 ]
           <li key={`member_list-${idx}`} className="member_list">
-            <Link to={`/mypage/${item.memNo}`}>
+            <Link to={`/profile/${item.memNo}`}>
               <div className="prof_thumb">
                 <img src={item.profImg['thumb120x120']} alt="profile image" />
               </div>
             </Link>
 
             <div className="text_wrap">
-              <Link to={`/mypage/${item.memNo}`}>
+              <Link to={`/profile/${item.memNo}`}>
                 <div className="text_box">
                   <em className={`icon_wrap ${item.gender === 'f' ? 'icon_female' : 'icon_male'}`}>성별</em>
                   <p>{item.nickName}</p>
