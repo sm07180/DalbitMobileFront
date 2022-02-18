@@ -152,7 +152,7 @@ export default function chatListPage() {
 
   return (
     <>
-      <Header title="우체통" type="back">
+      <Header title="우체통" type="">
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
             <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가" />
