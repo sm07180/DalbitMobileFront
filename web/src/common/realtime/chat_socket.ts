@@ -1006,7 +1006,7 @@ export class ChatSocketHandler {
                     const enterInfo = commonBadgeList[0];
                     const { startColor, endColor } = enterInfo;
                     const { enterAni, enterBgImg } = enterAniInfo;
-                    if(!enterAni || !enterBgImg){
+                    if(enterAni.indexOf('NULL') > -1){
                       return null;
                     }
                     if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
