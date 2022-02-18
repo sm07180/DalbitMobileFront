@@ -32,7 +32,7 @@ const DjList = (props) => {
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div className='listWrap' key={index} data-mem-no={list.memNo} onClick={goProfile}>
+            <div className='listWrap' key={index} data-mem-no={list.memNo}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.profImg.thumb150x150} />
