@@ -55,8 +55,9 @@ const WeeklyPick = (props) => {
 
       if (scrollHeight - 10 <= scrollTop + height && pageNo < listData.lastPageNo){
         setLoading(true);
-        setPageNo(pageNo + 1)
-        getWeeklyList(pageNo + 1);
+        let nexPageNo = pageNo + 1;
+        setPageNo(nexPageNo);
+        getWeeklyList(nexPageNo);
       }
     }
   }

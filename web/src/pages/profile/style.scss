@@ -3,18 +3,13 @@
 #myprofile {
   position:relative;
   header {
-    border-bottom:1px solid #D3D3D3;
     .buttonGroup {
       button {
         width:40px;
         height:40px;
         text-indent: -99999px;
-        &.editBtn {
-          @include BGIMG('common/header/icoEdit-b.png');
-        }
-        &.moreBtn {
-          @include BGIMG('common/header/icoMore-b.png');
-        }
+        &.editBtn {@include BGIMG('common/header/icoEdit-b.png');}
+        &.moreBtn {@include BGIMG('common/header/icoMore-b.png');}
       }
     }
   }
@@ -167,7 +162,7 @@
       }
       .subArea {
         @include flex(center);
-        padding:0 16px;
+        padding:8px 16px;
         .title {
           letter-spacing: -1px;
           @include font(15px,500,#202020);

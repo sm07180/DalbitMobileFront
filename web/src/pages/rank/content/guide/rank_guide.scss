@@ -1,4 +1,5 @@
 @import "../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 #ranking-guide-page {
   .header {
@@ -46,8 +47,8 @@
       box-sizing: border-box;
 
       &.active {
-        border-color: $primary;
-        background-color: $primary;
+        border-color: $MAINCOLOR;
+        background-color: $MAINCOLOR;
         color: #fff;
       }
     }

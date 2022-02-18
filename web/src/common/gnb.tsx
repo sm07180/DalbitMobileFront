@@ -31,6 +31,13 @@ const gnbTypes = [
   // {url: '/notice', isUpdate: false},
 ];
 
+const gntSubTypes = [
+  {url: '/mypage'},
+  {url: '/mailbox'},
+  {url: '/store'},
+  {url: '/notice'},
+]
+
 export default function GNB() {
   const context = useContext(GlobalContext);
   const { globalState, globalAction } = context;
@@ -388,7 +395,15 @@ export default function GNB() {
       <aside id="GNB">
         <div className="gnbContainer">
           <div className="gnbHeader">
-            <h1 onClick={() => history.push('/')}><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
+            <h1 onClick={() => {
+              if(location.pathname === '/') {
+                dispatch(setIsRefresh(true))
+              }else {
+                history.push('/')
+              }
+            }}>
+              <img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" />
+            </h1>
           </div>
           <nav className="gnbNavigation">
             <ul>
@@ -398,7 +413,7 @@ export default function GNB() {
                       className={`${activeType === item.url ? 'active' : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
                       onClick={() => {
                         history.push(item.url);
-                        if(item.isUpdate) {
+                        if(item.isUpdate && activeType === item.url) {
                           dispatch(setIsRefresh(true))
                         }
                       }}
@@ -410,20 +425,26 @@ export default function GNB() {
             </ul>
           </nav>
           <div className="subGnbNavigation">
-            <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li className="active"></li>
-            </ul>
-            {baseData.isLogin === true ?
-              <button onClick={()=>{
-                if (baseData.isLogin === true) {
-                  scrollToTop();
-                  return globalAction.setBroadClipDim!(true);
-                }
-              }}>만들기</button>
-            :
+            {baseData.isLogin ?
+              <>
+                <ul>
+                  {gntSubTypes.map((item, index) => {
+                    return (
+                      <li key={index} data-url={item.url}
+                          className={`${activeType === item.url ? 'active' : ''} ${activeType !== item.url ? 'cursorPointer' : ''}`}
+                          onClick={() => history.push(item.url)}
+                      />
+                    )
+                  })}
+                </ul>
+                <button className="plusButton" onClick={()=>{
+                  if (baseData.isLogin === true) {
+                    scrollToTop();
+                    return globalAction.setBroadClipDim!(true);
+                  }
+                }}>만들기</button>
+              </>
+              :
               <button onClick={()=> history.push("/login")}>로그인</button>
             }
           </div>

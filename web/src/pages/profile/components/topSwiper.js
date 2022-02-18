@@ -40,7 +40,7 @@ const TopSwiper = (props) => {
 
   useEffect(() => {
     if (data.profImgList.length > 1) {
-      const swiper = document.querySelector('.topSwiper>.swiper-container').swiper;
+      const swiper = document.querySelector('.topSwiper>.swiper-container')?.swiper;
       swiper?.update();
       swiper?.slideTo(0);
     }
@@ -70,7 +70,7 @@ const TopSwiper = (props) => {
         <div
           className='swiper-slide'
           style={{
-            backgroundImage: `url("https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg")`,
+            backgroundImage: `url("${IMG_SERVER}/profile/photoNone.png")`,
             backgroundSize: 'cover'
           }}
         />

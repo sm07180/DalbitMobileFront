@@ -87,14 +87,12 @@ legend {
         padding-bottom: 80px;
       }
       .subContent {
-        min-height: calc(100vh - 50px);
-        box-sizing: border-box;
         &.gray {
           background: $lighterGray;
         }
       }
       header {
-        top:68px !important;
+        top:$GNB-HEIGHT !important;
       }
     }
     .rightContent {
@@ -165,7 +163,7 @@ legend {
             margin-left:6px;
           }
           &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-off.png");}
-          &:nth-child(2) {@include BGIMG("common/gnb/gnbMali-off.png");}
+          &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-off.png");}
           &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-off.png");}
           &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-off.png");}
           &.active {
@@ -184,6 +182,13 @@ legend {
         margin-left:11px;
         @include border(#D9D9D8,2px);
         @include font(14px,SemiBold,#161616);
+        &:hover {
+          border-color:$MAINCOLOR;
+          background-color:$MAINCOLOR;
+          color:white;
+        }
+      }
+      .plusButton {
         &::before {
           content:"+";
           display:inline-block;
@@ -192,11 +197,6 @@ legend {
           line-height:10px;
           margin-right:4px;
           font-size:18px;
-        }
-        &:hover {
-          border-color:$MAINCOLOR;
-          background-color:$MAINCOLOR;
-          color:white;
         }
       }
     }
@@ -246,7 +246,7 @@ legend {
           @include BGIMG("common/gnb/gnbMy-off.png");
           &:hover::after {content:"마이";}
         }
-        &[data-url="/mail"] {
+        &[data-url="/mailbox"] {
           @include BGIMG("common/gnb/gnbMail-off.png");
           &:hover::after {content:"우체통";}
         }
@@ -256,7 +256,7 @@ legend {
         }
         &[data-url="/notice"] {
           @include BGIMG("common/gnb/gnbAllim-off.png");
-          &:hover::after {content:"알람";}
+          &:hover::after {content:"알림";}
           .newDot {
             @include position-top-right(4px,4px);
             display:inline-block;
@@ -375,146 +375,84 @@ legend {
     color: #999;
   }
 }
-
 #player {
-  position: fixed;bottom: 0;left:50%;
-  transform:translateX(-50%);
-  width: 100%;
-  max-width:480px;
+  position: fixed;bottom:0;left:50%;
+  transform:translateX(-50%);z-index: 50;
+  width: 100%;max-width:480px;
   height: 70px;
-  z-index: 50;
-  color: #fff;
   border-radius: 16px 16px 0 0;
   overflow:hidden;
+  color: white;
   cursor: pointer;
   .inner-player {
     position: relative;
     @include flex(center,space-between);
     width: 100%;
     height: 100%;
-    padding: 0px 24px;
-    box-sizing: border-box;
+    padding: 0px 12px;
     .inner-player-bg {
       @include position-center;
-      width:120%;
+      width:110%;
       height:120%;
-      filter: blur(21px);
-      opacity: .6;
+      padding: 50% 0;
+      filter: blur(10px);
+      box-sizing: content-box;
+      &::after {
+        content:"";
+        @include position-center;
+        width:100%;
+        height:100%;
+        background-color:rgba(black,.4);
+      }
     }
     .info-wrap {
       position:relative;
       z-index: 1;
       @include flex(center);
       .equalizer {
-        width: 36px;
-        height: 36px;
+        width: 22px;
+        height: 27px;
         margin-right: 8px;
-        color: #fdad2b;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-
-        ul {
-          padding-top: 1px;
-          height: 14px;
-          width: 20px;
-          margin: 0 auto;
-          padding: 0 0 0 0;
-          position: relative;
-          li {
-            width: 2px;
-            float: left;
-            margin: 0 2px 0 0;
-            padding: 0;
-            height: 14px;
-            position: relative;
-            list-style-type: none;
-            span {
-              display: block;
-              position: absolute;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              height: 14px;
-              background: #fdad2b;
-              transform: none;
-            }
-          }
-          li:nth-child(1) span {
-            animation: equalizer-bar 2s 1s ease-out alternate infinite;
-          }
-          li:nth-child(2) span {
-            animation: equalizer-bar 2s 0.5s ease-out alternate infinite;
-          }
-          li:nth-child(3) span {
-            animation: equalizer-bar 2s 1.5s ease-out alternate infinite;
-          }
-          li:nth-child(4) span {
-            animation: equalizer-bar 2s 0.25s ease-out alternate infinite;
-          }
-          li:nth-child(5) span {
-            animation: equalizer-bar 2s 2s ease-out alternate infinite;
-          }
-        }
-        p {
-          margin-top: auto;
-          padding-top: 6px;
-          font-size: 11px;
-        }
+        &.broadcast {@include BGIMG("common/playerbar_live.png");}
+        &.clip {@include BGIMG("common/playerbar_clip.png");}
       }
-
       .thumb {
         position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 48px;
-        height: 48px;
-        margin-right: 16px;
-        background: #ccc;
+        @include flex(center,center);
+        width: 55px;
+        height: 55px;
+        margin-right: 12px;
         border-radius: 50%;
+        background: #ccc;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
         &::before {
           position: absolute;
           content: "";
-          /* background: rgba(0, 0, 0, 0.3); */
           width: 100%;
           height: 100%;
+          border-radius:50%;
+          border:2px solid rgba(white,.3);
+          box-sizing: border-box;
           z-index: 4;
         }
-        .playToggle__play,
-        .playToggle__stop {
-          position: relative;
-          padding: 10px;
-          z-index: 5;
-
-          &.video {
-            background: rgba(0, 0, 0, 0.1);
-          }
-        }
       }
-
       .room-info {
         width: 256px;
         font-size: 13px;
-        letter-spacing: -0.35px;
 
         .title {
           width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
           margin-bottom: 3px;
           font-size: 16px;
           font-weight: 300;
+          @include fontCut;
         }
         p {
           font-weight: 300;
         }
       }
-
       .counting {
         span {
           display: inline-block;
@@ -528,14 +466,28 @@ legend {
         }
       }
     }
-
-    .close-btn {
-      display: block;
-      cursor: pointer;
+    .buttonGroup {
+      @include flex(center,center);
+      .playToggle__play,
+      .playToggle__stop {
+        position: relative;
+        width:28px;
+        height:28px;
+        z-index: 5;
+        &.video {
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+      .close-btn {
+        position: relative;z-index: 4;
+        display: block;
+        width:28px;
+        height:28px;
+        cursor: pointer;
+      }
     }
   }
 }
-
 
 // mobile
 .mobile-app {
@@ -554,41 +506,14 @@ legend {
   #footerWrap {
     display: none;
   }
+  #player {
+    bottom: $NAVIGATION-HEIGHT;
+  }
 }
 
 .cursorPointer {
   cursor: pointer;
 }
-
-// .noResultWrap {
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   flex-direction: column;
-//   span {
-//     font-size: 14px;
-//     line-height: 1.25;
-//     color: $greishGray;
-//     &.noResult {
-//       display: flex;
-//       justify-content: center;
-//       align-items: center;
-//       flex-direction: column;
-//       font-size: 14px;
-//       line-height: 1.4;
-//       text-align: center;
-//       &::before {
-//         display: inline-block;
-//         content: "";
-//         width: 82px;
-//         height: 68px;
-//         margin-bottom: 16px;
-//         background: url("#{$IMG_SERVER}/images/api/pc_img_noresult.svg") no-repeat center;
-//       }
-//     }
-//   }
-// }
 
 .broadcast-menu {
   &__links {

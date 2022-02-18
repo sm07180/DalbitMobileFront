@@ -62,25 +62,26 @@ const ProfileReplyComponent = (props) => {
           <span>{Utility.addComma(3211)}</span>
         </div>*/}
       </div>
-
-      <button className='more' ref={isMoreRef} onClick={() => setIsMore(!isMore)}>
-        {/*<img src="" alt="" />*/}
-        {isMore &&
-        <div>
-          {(isMyProfile || isMyContents || adminChecker) &&
-          <button onClick={() => replyDelete(item?.replyIdx)}>삭제</button>
-          }
-          {isMyContents &&
-          <button onClick={() => {
-            blurBlock();
-            replyEditFormActive(item?.replyIdx, item?.contents);
-          }}>수정</button>
-          }
-          {!isMyContents &&
-          <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>
-          }
-        </div>}
-      </button>
+      <div className="listBack">
+        <div className='moreBtn' ref={isMoreRef} onClick={() => setIsMore(!isMore)}>
+          <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
+          {isMore &&
+          <div className="isMore">
+            {(isMyProfile || isMyContents || adminChecker) &&
+            <button onClick={() => replyDelete(item?.replyIdx)}>삭제하기</button>
+            }
+            {isMyContents &&
+            <button onClick={() => {
+              blurBlock();
+              replyEditFormActive(item?.replyIdx, item?.contents);
+            }}>수정하기</button>
+            }
+            {!isMyContents &&
+            <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>
+            }
+          </div>}
+        </div>
+      </div>
 
 
     </ListRow>

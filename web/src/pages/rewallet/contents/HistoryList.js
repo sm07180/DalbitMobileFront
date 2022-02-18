@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react'
-import Utility ,{addComma} from 'components/lib/utility'
+import React, {useEffect, useState} from 'react'
+import Utility from 'components/lib/utility'
 import moment from 'moment';
 
 // global components
@@ -8,14 +8,51 @@ import PopSlide from 'components/ui/popSlide/PopSlide'
 import CheckList from '../components/CheckList'
 
 const HistoryList = (props) => {
-  const {walletData} = props;
-  const [slidePop, setSlidePop] = useState(false)
+  const {walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading, setIsLoading, getWalletHistory, lastPage, cancelExchangeFetch, walletType} = props;
+  const [slidePop, setSlidePop] = useState(false);
 
   const {popHistory, listHistory, popHistoryCnt} = walletData;
+
+  const [beforeCode, setBeforeCode] = useState("0");
+
+  useEffect(() => {
+    if (slidePop){
+      setBeforeCode(selectedCode);
+    }
+  }, [slidePop]);
 
   const onClickPopSlide = () => {
     setSlidePop(true)
   }
+
+  useEffect(() => {
+    if (typeof document !== "undefined"){
+      document.addEventListener("scroll", scrollEvent);
+    }
+
+    return () => {
+      if (typeof document !== "undefined"){
+        document.removeEventListener("scroll", scrollEvent);
+      }
+    }
+
+  }, [walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading, setIsLoading, getWalletHistory, lastPage]);
+
+  const scrollEvent = () => {
+    if (!isLoading){
+      let scrollHeight = document.documentElement.scrollHeight;
+      let scrollTop = document.documentElement.scrollTop;
+      let offsetHieght = document.documentElement.offsetHeight;
+
+      if (scrollHeight - 10 <= scrollTop + offsetHieght && pageNo < lastPage){
+        setIsLoading(true);
+        let nexPageNo = pageNo + 1;
+        setPageNo(nexPageNo);
+        getWalletHistory(nexPageNo, selectedCode);
+      }
+    }
+  }
+
 
   return (
     <>
@@ -32,17 +69,22 @@ const HistoryList = (props) => {
             <div className="listContent">
               <div className="listItem">
                 {data?.type === 4 && data?.exchangeIdx > 0
-                && <button className="exCancelBtn">취소하기</button>}
+                && <button className="exCancelBtn" onClick={() => cancelExchangeFetch(data.exchangeIdx)}>취소하기</button>}
                 <div className="historyText">{data?.contents}</div>
 
                 {/*<div className="otherUserNick">계란노른자</div>*/}
                 {/*<span className="privateBdg">몰래</span>*/}
-
+              </div>
+              <div className="listItem">
                 <div className="historyDate">{moment(data?.updateDt,'YYYYMMDD').format('YYYY.MM.DD')}</div>
               </div>
             </div>
-            <div className={`quantity${data?.dalCnt < 0 ? ' minous' : ''}`}>
-              {Utility.addComma(`${data?.dalCnt < 0 ? '':'+'}${data?.dalCnt}`)}
+            <div className={`quantity${(data?.dalCnt < 0 || data?.byeolCnt < 0) ? ' minous' : ''}`}>
+              {walletType === "달 내역" ?
+                Utility.addComma(`${data?.dalCnt < 0 ? '':'+'}${data?.dalCnt}`)
+                :
+                Utility.addComma(`${data?.byeolCnt < 0 ? '':'+'}${data?.byeolCnt}`)
+              }
             </div>
           </div>
         )}
@@ -63,8 +105,7 @@ const HistoryList = (props) => {
               <div className="historyScroll">
                 {popHistory.map((data,index) => {
                   return (
-                    <CheckList text={data.text} key={index}>
-                      <input type="checkbox" className="blind" name={`check-${index}`} /> ({Utility.addComma(data.cnt)}건)
+                    <CheckList text={data.text} index={index} key={index} code={`${data.walletCode}`} beforeCode={beforeCode} setBeforeCode={setBeforeCode}>
                     </CheckList>
                   )
                 })}
@@ -72,13 +113,16 @@ const HistoryList = (props) => {
             </div>
             <div className="buttonGroup">
               <button className="cancel">취소</button>
-              <button className="apply">적용</button>
+              <button className="apply" onClick={() =>{
+                setSelectedCode(beforeCode);
+                setSlidePop(false);
+              }}>적용</button>
             </div>
           </section>
         </PopSlide>
       }
     </>
   )
-}
+};
 
 export default HistoryList

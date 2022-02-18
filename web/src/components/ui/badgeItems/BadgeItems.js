@@ -9,7 +9,7 @@ const BadgeItems = (props) => {
   const liveBadgeList =  data.liveBadgeList
   const fanBadge = [data.fanBadge]
   const isBadge = {
-    special: true, //data.isSpecial,
+    special: data.isSpecial,
     recommend: data.isRecomm,
     new: data.isNew,
     contents: data.isConDj,
@@ -64,7 +64,8 @@ const BadgeItems = (props) => {
           <span>{fanBadge.text}</span>
         </em>
       }
-      {type === 'isBadge' && (isBadge.badgeSpecial == 2 ? (
+      {type === 'isBadge' && (
+        isBadge.badgeSpecial == 2 ? (
         <em className="badgeItem bestDj">베스트DJ</em>
       ) : isBadge.badgeSpecial === 1 ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>

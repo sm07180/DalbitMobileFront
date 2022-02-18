@@ -607,7 +607,7 @@ export default function LeftSideAgora(props: {
               if (rtcInfo.getPeerConnectionCheck()) {
                 rtcInfo.setDisplayWrapRef(displayWrapRef);
                 setConnectedStatus(false);
-                setPlayBtnStatus(true);
+                rtcInfo?.playMediaTag();
                 return true;
               }
               return false;

@@ -5,8 +5,16 @@ import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import {useSelector} from "react-redux";
 
+import rankingIcon from "./static/ranking.svg"
+import MessageIcon from "./static/message.svg"
+import alarmIcon from "./static/alarm.svg"
+
 export const RankingButton = ({history}) => {
-  return <button className='ranking' onClick={() => history.push('/rank')} />
+  return (
+    <button className='ranking' onClick={() => history.push('/rank')}>
+      <img src={rankingIcon} alt="랭킹페이지 이동"/>
+    </button>
+  )    
 }
 
 export const RankingRewardButton = ({history}) => {
@@ -26,11 +34,19 @@ export const MessageButton = ({history, context, mailboxAction}) => {
     goMail(goMailParams);
   }
   // 레벨 체크(1레벨 이상),
-  return <button className='message' onClick={goMailAction} />
+  return (    
+    <button className='message' onClick={goMailAction}>
+      <img src={MessageIcon} alt="랭킹페이지 이동"/>
+    </button>
+  )
 }
 
 export const AlarmButton = ({history, newAlarmCnt=0}) => {
-  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')} />
+  return (
+    <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')}>
+      <img src={alarmIcon} alt="랭킹페이지 이동"/>
+    </button>
+  )
 }
 
 export const StoreButton = ({history}) => {
@@ -52,6 +68,13 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <RankingButton history={history} />
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+        </div>
+      )
+    case '클립':
+      return (
+        <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
