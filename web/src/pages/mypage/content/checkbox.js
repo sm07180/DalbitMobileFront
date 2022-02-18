@@ -81,7 +81,7 @@ const Wrap = styled.div`
 
     &.on {
       border-color: #fff;
-      background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
+      background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#FF3C7B')};
       transition: 0.2s all ease 0s;
 
       &::before,

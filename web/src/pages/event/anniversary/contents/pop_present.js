@@ -64,7 +64,7 @@ const LayerPopup = styled.div`
     width:100%; height:44px;
     margin-bottom:16px;
     border-radius:12px;
-    background:#632BEB;
+    background:#FF3C7B;
     font-size:18px font-weight:700; color:#fff;
   }
 

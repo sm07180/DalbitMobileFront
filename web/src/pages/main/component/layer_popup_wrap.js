@@ -156,7 +156,7 @@ export default function LayerPopupWrap({data, setData}) {
                         id={`chk${v.idx}`}
                         className={`dontShow`}
                       />
-                      <button className='dontShowBtn' onClick={() => dontShowAction(v)}>오늘 하루 보지 않기</button>
+                      <button className='dontShowBtn' onClick={() => dontShowAction(v)}>다시 보지 않음</button>
                     </label>
                   )}
                   <button className='close' onClick={closePopup}>닫기</button>

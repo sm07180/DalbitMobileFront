@@ -1075,7 +1075,7 @@ const RoomBadgeWrap = styled.div`
       background: rgba(236, 69, 95, 0.7);
     }
     &.recomm {
-      background: rgba(99, 43, 235, 0.7);
+      background: rgba(255, 60, 123, 0.7);
     }
     &.special {
       background: rgba(236, 69, 95, 0.7);

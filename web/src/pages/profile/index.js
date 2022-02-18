@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './style.scss'
@@ -42,6 +42,7 @@ const ProfilePage = () => {
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
+  const tabmenuRef = useRef();
 
   const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
   const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
@@ -511,7 +512,7 @@ const ProfilePage = () => {
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
-        <div className="tabmenuWrap">
+        <div className="tabmenuWrap" ref={tabmenuRef}>
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} tabChangeAction={socialTabChangeAction} />
           {(socialType === socialTabmenu[0] && isMyProfile || socialType === socialTabmenu[1])
             && <button onClick={() => {

@@ -337,7 +337,7 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP 10'} more={'rank'}>
+        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
         <SwiperList
@@ -349,8 +349,12 @@ const MainPage = () => {
         />
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달린이'} />
-        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
+        {mainState.newBjList.length > 0 &&
+        <>
+          <CntTitle title={'방금 착륙한 NEW 달린이'} />
+          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
+        </>
+        }
       </section>
       <section className='bannerWrap'>
         <BannerSlide/>

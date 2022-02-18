@@ -3,7 +3,7 @@
  * @brief 색상설정
  * @example import {COLOR_WHITE} from 'context/color'
  */
-export const COLOR_MAIN = '#632beb'
+export const COLOR_MAIN = '#FF3C7B'
 ///////////////////////////////////
 export const COLOR_WHITE = '#FFFFFF'
 export const COLOR_GRAY = '#bdbdbd'

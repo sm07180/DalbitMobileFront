@@ -33,7 +33,7 @@
 // }
 
 // const SelectListWrap = styled.div`
-//   border: 1px solid #632beb;
+//   border: 1px solid #FF3C7B;
 //   border-top: none;
 //   /* animation-duration: 0.1s;
 //   animation-iteration-count: 1;
@@ -66,7 +66,7 @@
 //     transform: skew(-0.03deg);
 //     letter-spacing: -0.5px;
 //     &:hover {
-//       color: #632beb;
+//       color: #FF3C7B;
 //       background-color: #f8f8f8;
 //     }
 //   }
@@ -77,9 +77,9 @@
 //   width: 136px;
 
 //   box-sizing: border-box;
-//   border: 1px solid #632beb;
+//   border: 1px solid #FF3C7B;
 //   font-size: 16px;
-//   color: #632beb;
+//   color: #FF3C7B;
 //   outline: none;
 //   letter-spacing: -0.5px;
 //   line-height: 36px;
@@ -101,7 +101,7 @@
 //     height: 2px;
 //     top: 16px;
 //     right: 20px;
-//     background-color: #632beb;
+//     background-color: #FF3C7B;
 //     transform: rotate(45deg);
 //     transition-property: transform;
 //     /* transition-duration: 0.1s;
@@ -115,7 +115,7 @@
 //     height: 2px;
 //     top: 16px;
 //     right: 12px;
-//     background-color: #632beb;
+//     background-color: #FF3C7B;
 //     transform: rotate(-45deg);
 //     transition-property: transform;
 //     /* transition-duration: 0.1s;

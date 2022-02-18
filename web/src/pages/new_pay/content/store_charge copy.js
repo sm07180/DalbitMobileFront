@@ -328,7 +328,7 @@ const Content = styled.section`
       }
       .emp {
         font-weight: bold;
-        color: #632beb;
+        color: #FF3C7B;
       }
     }
   }

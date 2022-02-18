@@ -367,7 +367,7 @@ const Content = styled.section`
     line-height: 22px;
     transform: skew(-0.03deg);
     span {
-      color: #632beb;
+      color: #FF3C7B;
       font-weight: normal;
     }
   }
@@ -385,7 +385,7 @@ const List = styled.div`
     cursor: pointer;
     background: #eeeeee;
     &.on {
-      background: #632beb;
+      background: #FF3C7B;
       border-radius: 12px;
     }
     & > p {
@@ -420,6 +420,6 @@ const List = styled.div`
   }
 
   .on .item-wrap {
-    border: 1px solid #632beb;
+    border: 1px solid #FF3C7B;
   }
 `

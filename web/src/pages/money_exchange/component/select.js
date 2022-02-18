@@ -118,7 +118,7 @@ const SelectListWrap = styled.div`
     z-index: 10;
     border-top: none;
     &:hover {
-      color: #632beb;
+      color: #FF3C7B;
       background-color: #f8f8f8;
     }
   }
@@ -153,7 +153,7 @@ const Selected = styled.div`
     height: 2px;
     top: 20px;
     right: 16px;
-    background-color: #632beb;
+    background-color: #FF3C7B;
     transform: rotate(45deg);
     transition-property: transform;
     /* transition-duration: 0.1s;
@@ -167,7 +167,7 @@ const Selected = styled.div`
     height: 2px;
     top: 20px;
     right: 10px;
-    background-color: #632beb;
+    background-color: #FF3C7B;
     transform: rotate(-45deg);
     transition-property: transform;
     /* transition-duration: 0.1s;
@@ -189,7 +189,7 @@ const SelectBoxWrap = styled.div`
 //     height: 2px;
 //     top: 16px;
 //     right: 12px;
-//     background-color: #632beb;
+//     background-color: #FF3C7B;
 //     transform: rotate(45deg);
 //     transition-property: transform;
 //     /* transition-duration: 0.1s;
@@ -203,7 +203,7 @@ const SelectBoxWrap = styled.div`
 //     height: 2px;
 //     top: 16px;
 //     right: 4px;
-//     background-color: #632beb;
+//     background-color: #FF3C7B;
 //     transform: rotate(-45deg);
 //     transition-property: transform;
 //     /* transition-duration: 0.1s;

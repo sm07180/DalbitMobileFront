@@ -371,12 +371,12 @@ export default function Payment() {
           <br />
           -----------------------------------------------
           <br />
-          회원 이름 : <span style='color: #632beb; font-weight: bold;'>${
+          회원 이름 : <span style='color: #FF3C7B; font-weight: bold;'>${
             res.data.memName
           }</span>
           <br />
           연락처 : 
-          <span style='color: #632beb; font-weight: bold;'>
+          <span style='color: #FF3C7B; font-weight: bold;'>
           ${res.data.phoneNo.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
           </span>
           <br />
