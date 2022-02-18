@@ -79,7 +79,7 @@ export default (props) => {
                     <img
                       className="myModalWrap__profImg"
                       src={item.profImg.thumb62x62}
-                      onClick={() => history.push(`/mypage/${item.memNo}`)}
+                      onClick={() => history.push(`/profile/${item.memNo}`)}
                     />
                     <span className="myModalWrap__name">{item.nickNm}</span>
                     <div className="myModalWrap__fanBtn">

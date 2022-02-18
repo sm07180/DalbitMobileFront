@@ -55,7 +55,7 @@ export default function AwardsBtmBtn(props) {
           pathname: '/login',
           state: {state: 'event/award/2020'}
         })
-      : history.push(`/mypage/${djMemNo}/fanboard`)
+      : history.push(`/profile/${djMemNo}?tab=1`)
   }
 
   const buttonsList = [

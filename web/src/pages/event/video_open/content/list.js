@@ -32,11 +32,7 @@ export default function VideoEventList({videoRankList}) {
                   className="thumb"
                   onClick={() => {
                     if (context.token.isLogin) {
-                      if (context.token.memNo === memNo) {
-                        history.push(`/menu/profile`)
-                      } else {
-                        history.push(`/mypage/${memNo}`)
-                      }
+                      history.push(`/profile/${memNo}`)
                     } else {
                       history.push(`/login`)
                     }
@@ -52,11 +48,7 @@ export default function VideoEventList({videoRankList}) {
                     className="nick"
                     onClick={() => {
                       if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${memNo}`)
-                        }
+                        history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)
                       }

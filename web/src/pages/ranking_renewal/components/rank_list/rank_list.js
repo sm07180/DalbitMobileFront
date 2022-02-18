@@ -93,11 +93,7 @@ function RankList() {
                     className="myRanking__rank"
                     onClick={() => {
                       if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${memNo}`)
-                        }
+                        history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)
                       }
@@ -121,11 +117,7 @@ function RankList() {
                     className="myRanking__content"
                     onClick={() => {
                       if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${memNo}`)
-                        }
+                        history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)
                       }

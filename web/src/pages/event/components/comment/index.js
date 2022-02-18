@@ -64,7 +64,7 @@ const EventComment = (props) => {
     const {targetMemNo} = e.currentTarget.dataset
 
     if (targetMemNo !== undefined && targetMemNo > 0) {
-      history.push(`/mypage/${targetMemNo}`)
+      history.push(`/profile/${targetMemNo}`)
     }
   }
 

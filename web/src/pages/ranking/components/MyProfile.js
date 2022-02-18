@@ -134,7 +134,7 @@ export default function MyProfile(props) {
               <div
                 className="myRanking__profile__wrap"
                 onClick={() => {
-                  history.push(`/menu/profile`)
+                  history.push(`/myProfile`)
                 }}>
                 <div className="myRanking__left myRanking__left--profile">
                   <p

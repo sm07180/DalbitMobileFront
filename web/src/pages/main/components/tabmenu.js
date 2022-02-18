@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {useRef} from 'react'
 
 // components
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 
 const Tabmenu = (props) => {
   const {data,tab,setTab,setPage, defaultTab} = props
-
+  
   return (
     <ul className="tabmenu">
       {data.map((data,index) => {

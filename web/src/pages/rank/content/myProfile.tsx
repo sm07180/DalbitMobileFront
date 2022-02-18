@@ -259,7 +259,7 @@ export default function MyProfile() {
               <div
                 className="profileWrap"
                 onClick={() => {
-                  history.push(`/mypage/${globalState.baseData.memNo}`);
+                  history.push(`/profile/${globalState.baseData.memNo}`);
                 }}
               >
                 <div className="myRanking__rank">
@@ -296,7 +296,7 @@ export default function MyProfile() {
                                 className="bestFanBox__nickname"
                                 onClick={() => {
                                   if (globalState.baseData.isLogin) {
-                                    history.push(`/mypage/${myInfo.myDjMemNo}`);
+                                    history.push(`/profile/${myInfo.myDjMemNo}`);
                                   } else {
                                     history.push("/login");
                                   }
