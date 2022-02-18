@@ -2,8 +2,6 @@ import React, {useContext, useState, useEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 
-import NoResult from 'components/ui/noResult'
-
 import {Context} from 'context'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
@@ -11,6 +9,7 @@ import {IMG_SERVER} from 'context/config'
 import hitIcon from '../../menu/static/ico_hit_g.svg'
 
 import './recommend_dj2.scss'
+import NoResult from "components/ui/noResult/NoResult";
 
 const RecommendDj2 = () => {
   const history = useHistory()
