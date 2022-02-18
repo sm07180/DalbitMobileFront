@@ -2,301 +2,26 @@ import React, {useEffect, useState, useContext} from 'react'
 
 import {Context} from 'context'
 
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
+import {IMG_SERVER} from 'context/config'
 
 import '../invite.scss'
+import {useHistory} from "react-router-dom";
 
-const InviteRank = () => {  
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx;
+const InviteRank = () => {
+  const context = useContext(Context)
+  const history = useHistory();
+  const {token, profile} = context
   const [popup, setPopup] = useState(false);
-
-  const temporaryData = [
-    {
-      rank : 1,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 100,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 2,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 98,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 3,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 96,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 4,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 94,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 5,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 92,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 6,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 90,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 7,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 88,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 8,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 86,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 9,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 84,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 10,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 82,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 11,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 80,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 12,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 78,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 13,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 76,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 14,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 74,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 15,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 72,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 16,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 70,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 17,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 68,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 18,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 66,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 19,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 64,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 20,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 62,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 21,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 60,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 22,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 58,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 23,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 56,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 24,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 54,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 25,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 52,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 26,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 50,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 27,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 48,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 28,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 46,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 29,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 44,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 30,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 42,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 31,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 40,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 32,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 38,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 33,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 36,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 34,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 34,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 35,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 32,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 36,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 30,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 37,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 28,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 38,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 26,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 39,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 24,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      rank : 40,
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      inviteCnt : 1,
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    }
-  ]
+  const [data, setData] = useState({
+    cnt:"",
+    list:[]
+  });
+  const [myData, setMyData] = useState();
 
   useEffect(()=>{
     getList();
@@ -310,18 +35,23 @@ const InviteRank = () => {
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log(response);
+      console.log("inviteList", getList);
+      setData({
+        cnt:response.data.listCnt,
+        list:response.data.list
+      })
     })
   }
 
   const getMyRank = ()=>{
-    Api.inviteList({
+    Api.inviteMyRank({
       reqBody: true,
       data:{
         "memNo": context.token.memNo,
       }
     }).then((response)=>{
-      console.log(response);
+      console.log("inviteMyRank", response);
+      setMyData(response.data)
     })
   }
 
@@ -342,45 +72,45 @@ const InviteRank = () => {
           </div>
         <div className='rankSection'>
           {
-            temporaryData.length > 0 ?
+            data.cnt > 0 ?
             <>
               <div className='inviteMyRank'>
                 <div className='listFront'>
                   <span className='myrankText'>내순위</span>
-                  <span className='rankingBadge'>-</span>
+                  <span className='rankingBadge'>{myData.rankNo === 0 ? "-" : myData.rankNo}</span>
                 </div>
                 <div className="photo">
-                  <img src={`${profile.profImg.thumb150x150 ? profile.profImg.thumb150x150 : "https://image.dalbitlive.com/images/listNone-userProfile.png"}`} alt="프로필이미지" />
+                  <img src={myData.profImg.thumb88x88} alt="프로필이미지" />
                 </div>
                 <div className='listContent'>
                   <div className='listItem'>
-                    <GenderItems data={profile.gender}/>
-                    <span className='nickNm'>{profile.nickNm}</span>
+                    <GenderItems data={myData.mem_sex}/>
+                    <span className='nickNm'>{myData.mem_nick}</span>
                   </div>
                 </div>
                 <div className='listBack'>
-                  <DataCnt type="inviteCnt" value="1231"/>
+                  <DataCnt type="inviteCnt" value={myData.invitation_cnt}/>
                 </div>
               </div>
               <div className='inviteRankWrap'>
               {
-                temporaryData.map((list, index) => {
+                data.list.map((member, index) => {
                   return (
-                    <div className='inviteRankList' key={index}>
+                    <div className='inviteRankList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
                       <div className='listFront'>
-                        <span className={`rankingBadge`}>{list.rank}</span>
+                        <span className={`rankingBadge`}>{member.rank}</span>
                       </div>
                       <div className="photo">
-                        <img src={list.profImg} alt="프로필이미지" />
+                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>
-                          <GenderItems data={list.gender}/>
-                          <span className='nickNm'>{list.nickNm}</span>
+                          <GenderItems data={member.mem_sex}/>
+                          <span className='nickNm'>{member.mem_nick}</span>
                         </div>
                       </div>
                       <div className='listBack'>
-                        <DataCnt type="inviteCnt" value={list.inviteCnt}/>
+                        <DataCnt type="inviteCnt" value={member.invitation_cnt}/>
                       </div>
                     </div> 
                   )
@@ -389,7 +119,7 @@ const InviteRank = () => {
               </div>
             </>
             :
-            <ListNone imgType="event01" text="랭킹 내역이 없어요." height="300px"/>
+            <NoResult text="랭킹 내역이 없어요." />
           }        
         </div>
       </div>

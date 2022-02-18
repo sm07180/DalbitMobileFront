@@ -36,7 +36,7 @@ const Write = (props) => {
   const [writeInfo, setWriteInfo] = useState([
     {path: 1, name: "회원정보"}, {path: 2, name: "방송"}, {path: 3, name: "청취"}, {path: 4, name: "결제"}, {path: 5, name: "장애/버그"}
   ])
-  const [selectedInfo, setSelectedInfo] = useState("문의 유형을 선택해주세요");
+  const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
 
   //문의하기 등록
@@ -162,7 +162,7 @@ const Write = (props) => {
         <input type="text" placeholder="문의 제목을 입력해주세요." name="title" onChange={onChange}/>
       </InputItems>
       <InputItems title="문의 유형">
-        <button onClick={changeOption}>{selectedInfo}</button>
+        <button className={`${selectedInfo ? "active" : ""}`} onClick={changeOption}>{selectedInfo ? selectedInfo : "문의 유형을 선택해주세요."}</button>
         {option &&
         <div className="selectWrap">
           {writeInfo.map((v, idx) => {
@@ -176,31 +176,7 @@ const Write = (props) => {
       <InputItems title="문의 내용" type="textarea">
         <textarea rows="10" placeholder={inputData.contents} onFocus={onTextFocus} defaultValue={textValue} name="contents" onChange={onChange}/>
       </InputItems>
-      <div className="imageUpload">
-        <div className="titleWrap">
-          <span className="title">사진 첨부</span>
-          <span className="subTitle">(최대 10MB, 최대 3매)</span>
-        </div>
-        <div className="uploadWrap">
-          <label className="uploadlabel">
-            <input className="blind" type="file" onChange={uploadSingleFile} />
-          </label>
-          {imgFile.length > 0 &&
-          <div className="uploadListWrap">
-            <Swiper {...swiperParams}>
-              {imgFile.map((v, idx) => {
-                return(
-                  <div className="uploadList" key={idx}>
-                    <img src={v} alt="업로드이미지" />
-                    <button type="button" className="removeFile" data-idx={idx} onClick={removeImage}/>
-                  </div>
-                )
-              })}
-            </Swiper>
-          </div>
-          }
-        </div>
-      </div>
+      <ImageUpload title="사진 첨부" subTitle="(최대 10MB, 최대 3매)" onChange={uploadSingleFile} onClick={removeImage} imgFile={imgFile} />
       <label className="inputLabel">
         <input type="checkbox" className="blind" name="checkList" onClick={onClick}/>
         <span className="checkIcon"/>

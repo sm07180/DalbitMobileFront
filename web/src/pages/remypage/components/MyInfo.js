@@ -5,6 +5,7 @@ import LevelItems from '../../../components/ui/levelItems/LevelItems'
 import SubmitBtn from '../../../components/ui/submitBtn/SubmitBtn'
 import PopSlide from "../../../components/ui/popSlide/PopSlide";
 import moment from "moment";
+import Utility from "components/lib/utility";
 
 const greetingComment = [
   {start: '060000', end: '120000', comment: '굿모닝이에요!'},
@@ -36,7 +37,7 @@ const MyInfo = (props) => {
       const endTime = parseInt(item.end);
 
       if(nowInfo >= startTime && nowInfo < endTime) {
-        setNowComment(`${data?.nickNm}님, ${item.comment}`);
+        setNowComment(item.comment);
       }
     })
   }
@@ -62,6 +63,7 @@ const MyInfo = (props) => {
     <>
       <div className="textWrap">
         <div className='text'>
+          <span><strong>{data?.nickNm}</strong>님</span>
           <span>{nowComment}</span>
         </div>
         <div className="info">
@@ -77,8 +79,11 @@ const MyInfo = (props) => {
           <span>{data?.likeTotCnt}</span>
         </div>
       </div>
-      <div className="photo">
-        {data && <img src={data.profImg?.thumb150x150} alt="" />}
+      <div className="photoWrap">
+        <div className="photo">
+          {data && <img src={data.profImg?.thumb150x150} alt="" />}
+        </div>
+        <button>프로필 보기</button>
       </div>
       {popSlide &&
         <PopSlide title="내 레벨" setPopSlide={setPopSlide}>

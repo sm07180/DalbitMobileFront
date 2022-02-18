@@ -1,50 +1,43 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
-import ListNone from 'components/ui/listNone/ListNone'
+import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 import '../invite.scss'
-import {response} from "express";
+import {Context} from "context";
+import {IMG_SERVER} from 'context/config'
+import {useHistory} from "react-router-dom";
 
 const InviteMydata = () => {
+  const context = useContext(Context)
+  const history = useHistory();
+  const {token, profile} = context
+
   const [popup, setPopup] = useState(false);
+  const [data, setData] = useState({
+    cnt:"",
+    list:[]
+  });
 
-  const temporaryData = [
-    {
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      since : "2022.02.09",
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      since : "2022.02.09",
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    },
-    {
-      gender : "m",
-      nickNm : "일이삼사오육칠팔구십",
-      since : "2022.02.09",
-      profImg : "https://image.dalbitlive.com/images/listNone-userProfile.png"
-    }
-  ]
+  useEffect(()=>{
+    getList();
+  },[]);
 
-  // useEffect(()=>{
-  //   getList();
-  // },[]);
-  //
-  // const getList = ()=>{
-  //   Api.inviteMyList({
-  //     reqBody: true,
-  //     data:{
-  //       "memNo": context.token.memNo,
-  //     }
-  //   }).then((response)=>{
-  //     console.log(response);
-  //   })
-  // }
+  const getList = ()=>{
+    Api.inviteMyList({
+      reqBody: true,
+      data:{
+        "memNo": context.token.memNo,
+      }
+    }).then((response)=>{
+      console.log("inviteMyList", getList);
+      setData({
+        cnt:response.data.listCnt,
+        list:response.data.list
+      })
+    })
+  }
 
   const popupOpen = () => {
     setPopup(true)
@@ -58,32 +51,32 @@ const InviteMydata = () => {
             <span className='dataTitle'>
               <img src='https://image.dalbitlive.com/event/invite/eventPage_myData-title.png' alt="초대친구 현황" className='titleImg'/>
             </span>
-            <button className='questionMark' onClick={popupOpen}></button>
+            <button className='questionMark' onClick={popupOpen}/>
           </div>
           <div className='countWrap'>
             <span className='countTitle'>내가 초대한 친구</span>
-            <span className='countData'>100</span>
+            <span className='countData'>{data.cnt}</span>
           </div>
         </div>
         <div className='inviteUser'>
           {
-            temporaryData.length > 0 ?
+            data.cnt > 0 ?
             <>
               <div className='inviteUserWrap'>
               {
-                temporaryData.map((list, index) => {
+                data.list.map((member, index) => {
                   return (
-                    <div className='inviteUserList' key={index}>
+                    <div className='inviteUserList' key={index} onClick={() => history.push(`/profile/${member.mem_no}`)}>
                       <div className="photo">
-                        <img src={list.profImg} alt="프로필이미지" />
+                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>
-                          <GenderItems data={list.gender}/>
-                          <span className='nickNm'>{list.nickNm}</span>
+                          <GenderItems data={member.rcv_mem_sex}/>
+                          <span className='nickNm'>{member.rcv_mem_nick}</span>
                         </div>
                         <div className='listItem'>
-                          <span className='since'>가입일 {list.since}</span>
+                          <span className='since'>가입일 {member.rcv_mem_join_date}</span>
                         </div>
                       </div>
                     </div> 
@@ -93,7 +86,7 @@ const InviteMydata = () => {
               </div>
             </>
             :
-            <ListNone imgType="event01" text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} height="300px"/>
+            <NoResult text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} />
           }
         </div>    
       </div>

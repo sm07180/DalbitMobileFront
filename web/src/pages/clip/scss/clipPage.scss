@@ -10,7 +10,7 @@
     .nickName {
       font-weight: bold;
       color: #FF3C7B;
-      letter-spacing: -2px;
+      letter-spacing: -0.5px;
     }
   }
   .subTitle{
@@ -96,6 +96,14 @@
     }
   }
   .clipDrawer, .clipList {
+    .cntTitle {
+      h2 {
+        >img {
+          width: 28px;
+        }
+      }
+
+    }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {
@@ -110,18 +118,31 @@
     }
     .listColumn{
       .photo{
+        position: relative;
+        width: 100px; height: 100px;
+        border-radius:16px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:16px;
+          box-sizing: border-box;
+        }
         img {
           border-radius: 16px
         }
       }
       .title{
         width:100%;
-        margin-top: 2px;
+        line-height: 19px;
+        margin-top: 6px;
         @include font(14px,500,#202020);
         @include fontCut;
       }
       .nick{
         width:100%;
+        line-height: 16px;
         @include font(12px,400,#666);
         @include fontCut;
       }
@@ -189,8 +210,17 @@
       }
       .listRow {
         .photo {
+          position: relative;
           width:50px;
           height:50px;
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:16px;
+            box-sizing: border-box;
+          }
           img {
             border-radius:16px;
           }

@@ -31,6 +31,39 @@ module.exports = (_, options) => {
     });
     const ENV_URL = dotenv.getEnvs().env;
 
+    const spreadElements = [
+        new HtmlWebPackPlugin({
+            template: './public/index.html', // public/index.html 파일을 읽는다.
+            filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
+            chunks: ['app'],
+            showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
+        }),
+        new HtmlWebPackPlugin({
+            template: './public/html/login.html',
+            filename: 'login.html',
+            chunks: ['login']
+        }),
+        new CopyWebpackPlugin([{from: './public/static'}]),
+
+        new webpack.DefinePlugin({
+            __NODE_ENV: JSON.stringify(env),
+            __WEBRTC_SOCKET_URL: JSON.stringify(ENV_URL['WEBRTC_SOCKET_URL']),
+            __API_SERVER_URL: JSON.stringify(ENV_URL['API_SERVER_URL']),
+            __STATIC_PHOTO_SERVER_URL: JSON.stringify(ENV_URL['STATIC_PHOTO_SERVER_URL']),
+            __USER_PHOTO_SERVER_URL: JSON.stringify(ENV_URL['USER_PHOTO_SERVER_URL']),
+            __PAY_SERVER_URL: JSON.stringify(ENV_URL['PAY_SERVER_URL']),
+            __SOCIAL_URL: JSON.stringify(ENV_URL['SOCIAL_URL']),
+            __CHAT_SOCKET_URL: JSON.stringify(ENV_URL["CHAT_SOCKET_URL"]),
+        })];
+    if(env === "dev"){
+        let localWebHtmlPack = new HtmlWebPackPlugin({
+            template: './public/indexLocalServer.html', // public/index.html 파일을 읽는다.
+            filename: 'indexLocalServer.html', // output으로 출력할 파일은 index.html 이다.
+            chunks: ['app'],
+            showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
+        });
+        spreadElements.push(localWebHtmlPack);
+    }
     const config = {
         entry: {
             app: './src/index.js',
@@ -98,29 +131,7 @@ module.exports = (_, options) => {
 
         plugins: [
             //new LoadablePlugin(), new MiniCssExtractPlugin(),
-            new HtmlWebPackPlugin({
-                template: './public/index.html', // public/index.html 파일을 읽는다.
-                filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
-                chunks: ['app'],
-                showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
-            }),
-            new HtmlWebPackPlugin({
-                template: './public/html/login.html',
-                filename: 'login.html',
-                chunks: ['login']
-            }),
-            new CopyWebpackPlugin([{from: './public/static'}]),
-
-            new webpack.DefinePlugin({
-                __NODE_ENV: JSON.stringify(env),
-                __WEBRTC_SOCKET_URL: JSON.stringify(ENV_URL['WEBRTC_SOCKET_URL']),
-                __API_SERVER_URL: JSON.stringify(ENV_URL['API_SERVER_URL']),
-                __STATIC_PHOTO_SERVER_URL: JSON.stringify(ENV_URL['STATIC_PHOTO_SERVER_URL']),
-                __USER_PHOTO_SERVER_URL: JSON.stringify(ENV_URL['USER_PHOTO_SERVER_URL']),
-                __PAY_SERVER_URL: JSON.stringify(ENV_URL['PAY_SERVER_URL']),
-                __SOCIAL_URL: JSON.stringify(ENV_URL['SOCIAL_URL']),
-                __CHAT_SOCKET_URL: JSON.stringify(ENV_URL["CHAT_SOCKET_URL"]),
-            })
+            ...spreadElements
         ]
     }
     if (mode === 'development') {

@@ -254,12 +254,16 @@ const RankPage = () => {
     setPopup(true);
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
+
   // 페이지 시작
   return (
     <div id="renewalRanking">
       <Header title={'랭킹'} type={'back'}/>
       <section className='rankingTop'>
-        <CntTitle more={'/rankDetail/DJ'} />
+        <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
         <div className='title' onClick={selectChart}>
           <div>DJ 실시간</div>
           <div>
@@ -303,12 +307,10 @@ const RankPage = () => {
           }
         </div>
       </section>
-      <section className='rankingBottom'onClick={() => history.push('/rankDetail/DJ')}>
-        <p>
-          오늘의 랭킹 순위는?<br/>
-          혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!
-        </p>
-        <button>랭킹순위 전체보기</button>
+      <section className='rankingBottom' onClick={() => history.push('/rankDetail/DJ')}>
+        <p>오늘의 랭킹 순위는?</p>
+        <p>혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!</p>
+        <button>랭킹순위 전체보기 &gt;</button>
       </section>
       {popSlide &&
       <PopSlide setPopSlide={setPopSlide}>

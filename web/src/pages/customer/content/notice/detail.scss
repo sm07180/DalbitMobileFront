@@ -1,4 +1,6 @@
 @import '../../../../styles/variables';
+@import "components/ui/_mixin.scss";
+
 $WIDTH_MOBILE: 600px;
 
 #noticeDetail {
@@ -42,7 +44,7 @@ $WIDTH_MOBILE: 600px;
       display: block;
       margin: 20px auto 100px auto;
       padding: 12px 24px;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       border-radius: 8px;
       color: $white;
     }

@@ -16,7 +16,7 @@ import ImageGuide from './image_guide'
 import PaymentMrnoing from './payment_morning'
 import PaymentLunch from './payment_lunch'
 import RestChange from './rest_customer/customer_change'
-import RestClear from './rest_customer/customer_clear'
+import RestClear from './rest_customer/CustomerClear'
 import RestNotice from './rest_customer/customer_notice'
 import HappyTime from './happy_time'
 import Specialdj from './specialdj'
@@ -45,9 +45,7 @@ import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
-import DallaClip from './dallaClip'
-import DallaClipAll from './dallaClipAll'
-import DallaStore from './dallaStore'
+import PlayMaker from './playMaker'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
@@ -85,7 +83,7 @@ export default (props) => {
       case 'customer_change':
         return <RestChange />
       case 'customer_clear':
-        return <RestClear />
+        return <RestClear memNo={props.location.state.memNo} />
       case 'customer_notice':
         return <RestNotice memNo={props.location.state.memNo} />
       case 'happy_time':
@@ -140,12 +138,8 @@ export default (props) => {
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
-      case 'dallaClip':
-        return <DallaClip />
-      case 'dallaClipAll':
-        return <DallaClipAll />
-      case 'dallaStore':
-        return <DallaStore />
+      case 'playmaker':
+        return <PlayMaker />
       // case 'gganbu':
       //   return <Gganbu />
       // case 'participant':

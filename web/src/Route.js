@@ -136,7 +136,9 @@ const Mailbox = React.lazy(() => import("pages/mailbox"));
 const Notice = React.lazy(() => import("pages/remypage/contents/notice/Notice"));
 const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/PostDetail"));
 const Report = React.lazy(() => import("pages/remypage/contents/report/Report"));
-const MyClip = React.lazy(() => import("pages/remypage/contents/clip/Clip"));
+const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
+
+const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 
 //임시 옛날 설정 페이지
 const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
@@ -241,7 +243,7 @@ const Router = () => {
                  const {memNo, type, action} = match.params;
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
-                 } else if(myMemNo !== memNo || action === 'write'){
+                 } else if(action === 'write'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
                  }
                    return <Route component={ProfileContentsWrite} />
@@ -326,6 +328,7 @@ const Router = () => {
         <Route exact path="/notice/:num" component={PostDetail} />
         <Route exact path="/report" component={Report} />
         <Route exact path="/myclip" component={MyClip} />
+        <Route exact path="/invite/:code" component={InviteSns} />
 
         {/* 임시 옛날 설정 페이지*/}
         <Route exact path="/oldsetting" component={OldSetting} />

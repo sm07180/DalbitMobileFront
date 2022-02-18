@@ -3,7 +3,6 @@
 #myprofile {
   position:relative;
   header {
-    border-bottom:1px solid #D3D3D3;
     .buttonGroup {
       button {
         width:40px;
@@ -167,7 +166,7 @@
       }
       .subArea {
         @include flex(center);
-        padding:0 16px;
+        padding:8px 16px;
         .title {
           letter-spacing: -1px;
           @include font(15px,500,#202020);

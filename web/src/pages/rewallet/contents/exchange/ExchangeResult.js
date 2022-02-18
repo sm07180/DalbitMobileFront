@@ -11,25 +11,40 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // contents
 // css
 import './exchangeResult.scss'
+import {useHistory, useLocation, useParams} from "react-router-dom";
 
 const ExchangeResult = () => {
   const context = useContext(Context);
+  const history = useHistory();
+  const location = useLocation();
 
-  // 조회 Api
+  const {reqByeolCnt, accountName, bankName, accountNo} = location.state;
 
-  // 결재단위 셀렉트
-  const onSelectMethod = (e) => {
-    const {targetIndex} = e.currentTarget.dataset
-    
-    setSelect(targetIndex)
-  }
+  const [realCash, setRealCash] = useState(location.state?.realCash || 0);
 
   useEffect(() => {
-  },[])
+    
+    //환전 계산 하지 않고 환전 신청한 경우에 별갯수로 환전금액 계산하기
+    if(!realCash){
+
+      Api.exchangeCalc({
+        data: {byeol: reqByeolCnt}
+      }).then((res) => {
+        if (res.result === 'success') {
+          const {realCash} = res.data;
+          setRealCash(realCash || 0);
+        }
+      });
+    }
+  },[]);
 
   return (
     <div id="resultPage">
-      <Header title="환전하기" type="back" />
+      <Header title="환전하기" type="back"
+              backEvent={() => {
+                history.push('/mypage');
+              }}
+      />
       <section className="bankResult">
         <div className="resultText">
           <div className="title">
@@ -43,26 +58,31 @@ const ExchangeResult = () => {
         <div className="receiptBoard">
           <div className="receiptList">
             <span>환전 신청 별</span>
-            <p>{Utility.addComma(3000)}</p>
+            <p>{Utility.addComma(reqByeolCnt)}</p>
           </div>
           <div className="receiptList">
             <span>환전 실수령액</span>
-            <p><span className="point">{Utility.addComma(173560)}</span>원</p>
+            <p><span className="point">{Utility.addComma(realCash)}</span>원</p>
           </div>
           <div className="receiptList">
             <span>예금주</span>
-            <p>(주)여보야</p>
+            <p>{accountName}</p>
           </div>
           <div className="receiptList">
             <span>입금 예정 은행</span>
-            <p>KB국민은행</p>
+            <p>{bankName}</p>
           </div>
           <div className="receiptList">
             <span>계좌번호</span>
-            <p>455-555-456789</p>
+            <p>{`${accountNo?.concat([]).slice(0, 3)}-${accountNo?.concat([]).slice(4, 6)}-${accountNo?.concat([]).slice(6, accountNo.length)}`}</p>
           </div>
         </div>
-        <SubmitBtn text="확인" />
+
+        <SubmitBtn text="확인"
+                   onClick={() => {
+                     history.push('/mypage');
+                   }}
+        />
       </section>
     </div>
   )
