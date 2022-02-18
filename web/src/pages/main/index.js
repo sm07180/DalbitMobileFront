@@ -43,7 +43,7 @@ const MainPage = () => {
 
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
-  const [headerFixed, setHeaderFixed] = useState("")
+  const [headerFixed, setHeaderFixed] = useState(false)
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
@@ -58,7 +58,7 @@ const MainPage = () => {
     storeUrl: '',
   });
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
-  const [isLastPage, setIsLastPage] = useState(false);
+
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -82,7 +82,6 @@ const MainPage = () => {
       if (res.result === 'success') {
         const data = res.data;
         let paging = data.paging;
-        const isLastPage = data.list.length > 0 ? data.paging.totalPage === currentPage : true;
         if(data.paging) {
           totalPage = Math.ceil(data.paging.total / pagePerCnt)
         }else {
@@ -95,8 +94,6 @@ const MainPage = () => {
         } else {
           dispatch(setMainLiveList({list: data.list, paging}));
         }
-
-        setIsLastPage(isLastPage);
       }
     })
   }, [currentPage, liveListType]);
@@ -107,7 +104,7 @@ const MainPage = () => {
     fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
-    setHeaderFixed("fadeOut");
+    setHeaderFixed(false);
     setCurrentPage(1);
   }
 
@@ -121,9 +118,9 @@ const MainPage = () => {
     if (overNode && headerNode) {
       const overTop = overNode.offsetTop - headerNode.clientHeight
       if (window.scrollY >= overTop) {
-        setHeaderFixed("fadeIn")
+        setHeaderFixed(true)
       } else {
-        setHeaderFixed("fadeOut")
+        setHeaderFixed(false)
       }
     }
 
@@ -292,12 +289,6 @@ const MainPage = () => {
     fetchLiveInfo()
   }, [currentPage, liveListType])
 
-  useEffect(() => {
-    if(isLastPage) {
-      document.removeEventListener('scroll', scrollEvent);
-    }
-  }, [isLastPage])
-
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
@@ -336,7 +327,7 @@ const MainPage = () => {
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
-      <div className={`headerWrap ${headerFixed && headerFixed}`} ref={headerRef}>
+      <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>

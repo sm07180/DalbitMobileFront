@@ -12,7 +12,7 @@ import alarmIcon from "./static/alarm.svg"
 export const RankingButton = ({history}) => {
   return (
     <button className='ranking' onClick={() => history.push('/rank')}>
-      <img src={rankingIcon} alt="랭킹페이지 이동"/>
+      {/* <img src={rankingIcon} alt="랭킹페이지 이동"/> */}
     </button>
   )    
 }
@@ -36,7 +36,7 @@ export const MessageButton = ({history, context, mailboxAction}) => {
   // 레벨 체크(1레벨 이상),
   return (    
     <button className='message' onClick={goMailAction}>
-      <img src={MessageIcon} alt="랭킹페이지 이동"/>
+      {/* <img src={MessageIcon} alt="랭킹페이지 이동"/> */}
     </button>
   )
 }
@@ -44,7 +44,7 @@ export const MessageButton = ({history, context, mailboxAction}) => {
 export const AlarmButton = ({history, newAlarmCnt=0}) => {
   return (
     <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')}>
-      <img src={alarmIcon} alt="랭킹페이지 이동"/>
+      {/* <img src={alarmIcon} alt="랭킹페이지 이동"/> */}
     </button>
   )
 }
