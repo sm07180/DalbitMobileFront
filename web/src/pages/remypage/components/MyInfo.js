@@ -15,8 +15,7 @@ const greetingComment = [
 ]
 
 const MyInfo = (props) => {
-  const {data} = props
-  const [popSlide, setPopSlide] = useState(false);
+  const {data, setPopSlide} = props
   const [nowComment, setNowComment] = useState('');
 
   /* time: HH:mm:ss */
@@ -49,12 +48,6 @@ const MyInfo = (props) => {
     setPopSlide(true)
   }
 
-  const closeLevelPop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setPopSlide(false);
-  }
-
   useEffect(() => {
     getNowComment();
   }, []);
@@ -85,22 +78,6 @@ const MyInfo = (props) => {
         </div>
         <button>프로필 보기</button>
       </div>
-      {popSlide &&
-        <PopSlide title="내 레벨" setPopSlide={setPopSlide}>
-          <section className="myLevelInfo">
-            <div className="infoItem">
-              <LevelItems data={data?.level} />
-              <span>{data?.grade}</span>
-              <p>{data?.expRate}%</p>
-            </div>
-            <div className="levelGauge">
-              <span className="gaugeBar" style={{width:`${data?.expRate}%`}}></span>
-            </div>
-            <div className="exp">다음 레벨까지 {data?.expNext} EXP 남음</div>
-            <SubmitBtn text="확인" onClick={closeLevelPop} />
-          </section>
-        </PopSlide>
-      }
     </>
   )
 }
