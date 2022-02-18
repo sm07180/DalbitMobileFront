@@ -49,7 +49,7 @@ const MainPage = () => {
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [tabFixed, setTabFixed] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
 
   const [payOrderId, setPayOrderId] = useState("")
@@ -139,7 +139,7 @@ const MainPage = () => {
 
     // 스크롤시 추가 리스트
     if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage => currentPage + 1)
     }
   })
 
@@ -280,10 +280,6 @@ const MainPage = () => {
       }
     }
   }
-
-  useEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-  }, [currentPage])
 
   useEffect(() => {
     if(common.isRefresh) {

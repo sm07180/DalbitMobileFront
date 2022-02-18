@@ -31,7 +31,7 @@ export default function TabFan(props) {
           pathname: '/login',
           state: {state: 'event/award/2020'}
         })
-      : history.push(`/mypage/${memNo}`)
+      : history.push(`/profile/${memNo}`)
   }
 
   return (

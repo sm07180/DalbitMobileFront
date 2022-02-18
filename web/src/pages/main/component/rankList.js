@@ -45,7 +45,7 @@ export default (props) => {
                   onClick={() => {
                     console.log(globalCtx.token.isLogin)
                     if (globalCtx.token.isLogin) {
-                      history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                      history.push(`/profile/${memNo}`)
                     } else {
                       history.push('/login')
                     }
@@ -77,7 +77,7 @@ export default (props) => {
                   key={`fan-${idx}`}
                   onClick={() => {
                     if (globalCtx.token.isLogin) {
-                      history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                      history.push(`/profile/${memNo}`)
                     } else {
                       history.push('/login')
                     }

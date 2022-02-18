@@ -46,7 +46,7 @@ function LikeListTop() {
                   className={`TopBoxThumb ${formState[formState.pageType].rankType === RANK_TYPE.DJ ? "dj" : "fan"}`}
                   onClick={() => {
                     if (globalState.baseData.isLogin) {
-                      history.push(`/mypage/${memNo}`);
+                      history.push(`/profile/${memNo}`);
                     } else {
                       history.push("/login");
                     }
@@ -66,9 +66,9 @@ function LikeListTop() {
                       onClick={() => {
                         if (globalState.baseData.isLogin) {
                           if (globalState.baseData.memNo === memNo) {
-                            history.push(`/menu/profile`);
+                            history.push(`/myProfile`);
                           } else {
-                            history.push(`/mypage/${djMemNo}`);
+                            history.push(`/profile/${djMemNo}`);
                           }
                         } else {
                           history.push(`/login`);

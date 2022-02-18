@@ -94,7 +94,7 @@ export default (props) => {
   }, [])
 
   const goWallet = () => {
-    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    props.history.push(`/wallet`)
     context.action.updateWalletIdx(1)
   }
 

@@ -146,7 +146,7 @@ function ChatList({ msgGroup }) {
                                 className="thumb"
                                 onClick={() => {
                                   sessionStorage.setItem("isBeforeMailbox", "Y");
-                                  history.push(`/mypage/${memNo}`);
+                                  history.push(`/profile/${memNo}`);
                                 }}
                               >
                                 <img src={profImg.thumb80x80} />

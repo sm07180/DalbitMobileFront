@@ -233,9 +233,9 @@ function AttendDetail() {
             onClick={() => {
               if (context.token.isLogin) {
                 if (context.token.memNo === detail.mem_no) {
-                  history.push('/menu/profile')
+                  history.push('/myProfile')
                 } else {
-                  history.push(`/mypage/${detail.mem_no}`)
+                  history.push(`/profile/${detail.mem_no}`)
                 }
               } else {
                 history.push('/login')

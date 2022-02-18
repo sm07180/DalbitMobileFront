@@ -64,7 +64,7 @@ export default function bestdj() {
                     className="img__full"
                     />
                     <div className="clickArea" id={`${item.bestDjMemNo}`} 
-                         onClick={() => {history.push(`/mypage/${item.bestDjMemNo}`)}}/>
+                         onClick={() => {history.push(`/profile/${item.bestDjMemNo}`)}}/>
                     <div className="fanRank">
                       <ul className="fanRankListWrap">
                       {item.fanRankList.length > 0 ?
@@ -72,7 +72,7 @@ export default function bestdj() {
                           return (                            
                             <li className="fanRankList"
                                 id={`${rankData.memNo}`}
-                                onClick={() => {history.push(`/mypage/${rankData.memNo}`)}}
+                                onClick={() => {history.push(`/profile/${rankData.memNo}`)}}
                                 key={idx}
                               >
                               <div className={`fanRankThumb ${rankData.rank === 1 ? 'gold' : rankData.rank === 2 ? 'silver' : 'bronze'}`}

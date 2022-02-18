@@ -75,9 +75,9 @@ export default function StatusList({nowEventNo, scoreData}) {
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
+                          history.push(`/mypage`)
                         } else {
-                          history.push(`/mypage/${memNo}`)
+                          history.push(`/profile/${memNo}`)
                         }
                       } else {
                         history.push(`/login`)

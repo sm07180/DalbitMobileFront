@@ -240,7 +240,7 @@ export default function ClipPlayerIconBox() {
                 className="goBtn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  history.push(`/mypage/${clipInfo.clipMemNo}?clip`);
+                  history.push(`/profile/${clipInfo.clipMemNo}?tab=2`);
                 }}
               >
                 다른 클립 보러가기
