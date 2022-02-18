@@ -57,7 +57,6 @@ const RankPage = () => {
 
   // 페이지 셋팅
   useEffect(() => {
-    timer();
     getMyRank();
     fetchRankData(1, 1);
     fetchRankData(2, 1);
@@ -94,7 +93,7 @@ const RankPage = () => {
     week.setHours(0);
     week.setMinutes(0);
     week.setSeconds(0);
-    let reMainTime = select === "time" ? counting(time, now) : select === "today" ? counting(day, now) : select === "thisweek" ? counting(week, now) : select === "thismonth" ? moment(now).format('MM/DD') : moment(now).format('YYYY');
+    let reMainTime = select === "time" ? counting(time, now) : select === "today" ? counting(day, now) : select === "thisweek" ? `${moment(now).format('M')}월 ${chngNumberToString(weekNumberByThurFnc(now))}째 주` : select === "thismonth" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
     setDaySetting(reMainTime);
   }
 
@@ -113,18 +112,14 @@ const RankPage = () => {
 
     let countDown = "";
 
-    if (days > 0) {
-      countDown += `${days}/`
-    }
-
     if (hours > 0) {
       if (hours < 10){
-        countDown += `0${hours}/`
+        countDown += `0${hours}:`
       } else {
-        countDown += `${hours}/`
+        countDown += `${hours}:`
       }
     } else {
-      countDown += "00/"
+      countDown += "00:"
     }
 
     if (minutes > 0) {
@@ -140,12 +135,12 @@ const RankPage = () => {
     if (select !== "thisweek"){
       if (seconds > 0) {
         if (seconds < 10){
-          countDown += `/0${seconds}`
+          countDown += `:0${seconds}`
         } else {
-          countDown += `/${seconds}`
+          countDown += `:${seconds}`
         }
       } else {
-        countDown += "/00"
+        countDown += ":00"
       }
     }
     return countDown;
@@ -242,11 +237,25 @@ const RankPage = () => {
 
   //DJ 랭킹 시간별 List호출
   useEffect(() => {
+    let interval = "";
     timer();
     if (select === "time"){
       fetchTimeRank();
+      interval = setInterval(() => {
+        timer();
+      }, 1000);
     } else {
+      if (select === "today"){
+        interval = setInterval(() => {
+          timer();
+        }, 1000);
+      } else {
+        timer();
+      }
       fetchRankData(1, select === "today" ? 1 : select === "thisweek" ? 2 : select === "thismonth" ? 3 : 4);
+    }
+    return () => {
+      clearInterval(interval);
     }
   }, [select]);
 
@@ -256,6 +265,30 @@ const RankPage = () => {
 
   const golink = (path) => {
     history.push(path);
+  }
+
+  const weekNumberByThurFnc = (paramDate) => {
+
+    const year = paramDate.getFullYear();
+    const month = paramDate.getMonth();
+    const date = paramDate.getDate();
+
+    // 인풋한 달의 첫 날과 마지막 날의 요일
+    const firstDate = new Date(year, month, 1);
+    const firstDayOfWeek = firstDate.getDay() === 0 ? 7 : firstDate.getDay();
+
+
+    // 날짜 기준으로 몇주차 인지
+    let weekNo = Math.ceil((firstDayOfWeek - 1 + date) / 7);
+
+    return weekNo;
+  };
+
+
+
+  const chngNumberToString = (number) => {
+    let val = number === 2 ? "둘" : number === 3 ? "셋" : number === 4 ? "넷" : number === 5 ? "다섯" : "첫";
+    return val
   }
 
   // 페이지 시작
