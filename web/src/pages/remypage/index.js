@@ -17,6 +17,9 @@ import Customer from "pages/recustomer";
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 import {OS_TYPE} from "context/config";
+import PopSlide from "components/ui/popSlide/PopSlide";
+import LevelItems from "components/ui/levelItems/LevelItems";
+import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -34,6 +37,7 @@ const Remypage = () => {
   const context = useContext(Context)
   const {splash, token, profile} = context;
   const customHeader = JSON.parse(Api.customHeader)
+  const [popSlide, setPopSlide] = useState(false);
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -96,6 +100,12 @@ const Remypage = () => {
     }
   }
 
+  const closeLevelPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPopSlide(false);
+  }
+
   // 페이지 시작
   switch (settingCategory) {
     case 'report' :
@@ -114,7 +124,7 @@ const Remypage = () => {
         <div id="remypage">
           <Header title={'MY'} />
           <section className="myInfo" onClick={goProfile}>
-            <MyInfo data={profile} />
+            <MyInfo data={profile} setPopSlide={setPopSlide} />
           </section>
           <section className='mydalDetail'>
             <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
@@ -135,6 +145,23 @@ const Remypage = () => {
           <section className="buttonWrap">
             <button className='logout' onClick={logout}>로그아웃</button>
           </section>
+
+          {popSlide &&
+            <PopSlide title="내 레벨" setPopSlide={setPopSlide}>
+              <section className="myLevelInfo">
+                <div className="infoItem">
+                  <LevelItems data={profile?.level} />
+                  <span>{profile?.grade}</span>
+                  <p>{profile?.expRate}%</p>
+                </div>
+                <div className="levelGauge">
+                  <span className="gaugeBar" style={{width:`${profile?.expRate}%`}}></span>
+                </div>
+                <div className="exp">다음 레벨까지 {profile?.expNext} EXP 남음</div>
+                <SubmitBtn text="확인" onClick={closeLevelPop} />
+              </section>
+            </PopSlide>
+          }
         </div>
       </>
       )

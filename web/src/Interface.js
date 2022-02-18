@@ -295,8 +295,8 @@ export default () => {
             return (window.location.href = mypageURL)
           }
 
-          //return props.history.push('/')
-          // return (window.location.href = '/')
+          // return history.push('/')
+          return (window.location.href = '/')
         }
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
