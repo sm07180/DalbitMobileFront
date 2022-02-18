@@ -249,15 +249,7 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-    let tokenInfo = {};
-    if(serverDataJson){
-      tokenInfo = {
-        result : 'success',
-        data : serverDataJson.token
-      };
-    }else{
-      tokenInfo = await Api.getToken()
-    }
+    let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
