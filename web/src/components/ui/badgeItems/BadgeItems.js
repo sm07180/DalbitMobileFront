@@ -9,7 +9,7 @@ const BadgeItems = (props) => {
   const liveBadgeList =  data.liveBadgeList
   const fanBadge = [data.fanBadge]
   const isBadge = {
-    special: true, //data.isSpecial,
+    special: data.isSpecial,
     recommend: data.isRecomm,
     new: data.isNew,
     contents: data.isConDj,

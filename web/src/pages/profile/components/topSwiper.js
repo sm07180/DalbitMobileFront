@@ -70,7 +70,7 @@ const TopSwiper = (props) => {
         <div
           className='swiper-slide'
           style={{
-            backgroundImage: `url("https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg")`,
+            backgroundImage: `url("${IMG_SERVER}/profile/photoNone.png")`,
             backgroundSize: 'cover'
           }}
         />

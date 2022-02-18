@@ -42,32 +42,8 @@
         background-size:24px;
       }
       div.moreBtn {
-        position:relative;
-        width:30px;
-        height:30px;
+        @include moreBtnStyle-1;
         margin-left:8px;
-        cursor: pointer;
-        img {
-          width:100%;
-        }
-        .isMore {
-          @include position-top-right(100%,0);
-          z-index: $MORE-ZINDEX;
-          @include flex($fd:column);
-          width:124px;
-          border-radius:8px;
-          background-color:white;
-          box-shadow: 0 1px 8px rgba(black,.16);
-          button {
-            line-height:40px;
-            text-indent:12px;
-            text-align:left;
-            @include font(13px,400,#303030);
-            + button {
-              border-top:1px solid #F2F2F2;;
-            }
-          }
-        }
       }
     }
   }
@@ -75,6 +51,7 @@
     padding: 2px 16px 16px;
     .text {
       margin-bottom:16px;
+      word-break: break-all;
       @include font(13px,400,#202020);
     }
     .swiperPhoto {

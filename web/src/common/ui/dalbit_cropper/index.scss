@@ -1,5 +1,5 @@
 @import "../../../asset/scss/common/variables";
-@import "conponents/ui/_mixin.scss";
+@import "components/ui/_mixin.scss";
 
 .croperWrap {
   position: fixed;
@@ -9,7 +9,7 @@
   min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.8);
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
-  z-index: $POPSLIDE-ZINDEX;
+  z-index: $POPUP-ZINDEX;
   &.gutter {
     min-height: calc(100vh - 80px);
   }

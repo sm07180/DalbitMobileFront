@@ -5,6 +5,19 @@
     .swiper-slide {
       height:268px;
     }
+    .photo {
+      height:268px;
+    }
+  }
+}
+#profileEdit {
+  .topSwiper {
+    .swiper-slide {
+      height:268px;
+    }
+    .photo {
+      height:268px;
+    }
   }
 }
 
@@ -12,7 +25,6 @@
   position: relative;
   .swiper-slide {
     @include flex(center,center);
-    background-color:#ddd;
     .photo {
       width:100%;
       height:100%;
