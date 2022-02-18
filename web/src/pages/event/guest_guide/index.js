@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header/Header'
 
 export default () => {
   const [noticeView, setNoticeView] = useState(false)
@@ -28,7 +28,7 @@ export default () => {
   return (
     <Content>
       <div id="guestGuide">
-        <Header title="게스트 가이드" />
+        <Header title="게스트 가이드" type="back"/>
         <div className="event-content">
           <button onClick={bottomGo}>버튼</button>
           <div className="topPoint"></div>
