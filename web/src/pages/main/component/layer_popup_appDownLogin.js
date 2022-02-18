@@ -61,10 +61,10 @@ export default function LayerPopupAppDownLogin(props) {
             <div className="appDownloadPopup__content">
               <div className="appDownloadPopup__monnImg"></div>
 
-              <b>달빛라이브 어플을 설치해 보세요!</b>
+              <b>달라 어플을 설치해 보세요!</b>
 
               <p>
-                달빛라이브 어플을 설치하시면
+                달라 어플을 설치하시면
                 <br />
                 더욱 다양한 편의기능을 이용하실 수 있습니다.
               </p>
@@ -75,7 +75,7 @@ export default function LayerPopupAppDownLogin(props) {
                     appCheckDwon()
                     context.action.updatePopupVisible(false)
                   }}>
-                  달빛 라이브 어플 설치하기
+                  달라 어플 설치하기
                 </button>
               ) : osCheck === OS_TYPE['IOS'] ? (
                 <button
@@ -84,7 +84,7 @@ export default function LayerPopupAppDownLogin(props) {
                     iosbutton()
                     context.action.updatePopupVisible(false)
                   }}>
-                  달빛 라이브 어플 설치하기
+                  달라 어플 설치하기
                 </button>
               ) : (
                 ''
