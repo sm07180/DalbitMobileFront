@@ -31,8 +31,8 @@ const SearchPage = (props) => {
   const [searchVal, setSearchVal] = useState(''); // 검색 value 값
   const [searchParam, setSearchParam] = useState(''); // child로 넘길 검색 값
 
-  const [searching, setSearching] = useState(false);
-  const [ focusYn, setFocusYn ] = useState(false);
+  const [searching, setSearching] = useState(false); // 검색 결과창 접근 여부
+  const [ focusYn, setFocusYn ] = useState(false); // 인풋박스 포커스 여부
   const [djListInfo, setDjListInfo] = useState({list: []}); // 믿고 보는 DJ 정보
   const [liveListInfo, setLiveListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 지금 핫한 라이브 정보
   const [hotClipListInfo, setHotClipListInfo] = useState({ checkDate: '', list: [], totalCnt: 0, type: 0}); // 오늘 인기 있는 클립 정보
@@ -157,11 +157,11 @@ const SearchPage = (props) => {
   };
 
   const handleFocus = () => {
-
+    setFocusYn(true);
   };
 
   const handleBlur = () => {
-
+    setFocusYn(false);
   };
 
   const refreshActions = () => {
@@ -191,13 +191,13 @@ const SearchPage = (props) => {
       <Header title="검색">
         <div className='searchForm'>
           <InputItems>
-            <input type="text" placeholder="닉네임, 방송, 클립을 입력해주세요." value={searchVal} onFocus={() => {}} onBlur={() => {}} onChange={onChange} onKeyDown={handleSubmit}/>
-            {searchVal.length > 0 && <button className='inputDel' onClick={removeValue}/>}
+            <input type="text" placeholder="닉네임, 방송, 클립을 입력해주세요." value={searchVal} onFocus={handleFocus} onBlur={handleBlur} onChange={onChange} onKeyDown={handleSubmit}/>
+            {focusYn && <button className='inputDel' onClick={removeValue}/>}
           </InputItems>
-          <button className='searchCancel' onClick={removeValue}>취소</button>
+          {(focusYn || searching) && <button className='searchCancel' onClick={removeValue}>취소</button>}
         </div>
       </Header>
-      {!searching && ( searchVal.length === 0 ?
+      {!searching && (!focusYn ?
         <>
           {djListInfo.list.length > 0 &&
           <section className='djSection'>
