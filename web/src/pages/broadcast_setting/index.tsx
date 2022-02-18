@@ -15,7 +15,7 @@ import {
   broadcastExit,
   getRoomType,
   postImage,
-  getBroadcastSetting, broadcastInfoNew,
+  getBroadcastSetting, broadcastInfoNew, broadcastAllExit,
 } from "common/api";
 // others
 import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
@@ -704,6 +704,7 @@ export default function BroadcastSetting() {
             globalAction.dispatchRtcInfo &&
             globalAction.dispatchRtcInfo({ type: "empty" });
             rtcSessionClear();
+            broadcastAllExit();
           }
         },
         cancelCallback: () => {
@@ -824,7 +825,7 @@ export default function BroadcastSetting() {
               })}
             </div>
           </div>
-          
+
 
 
           {state.mediaType === BROAD_TYPE.VIDEO && (
