@@ -88,10 +88,10 @@
 
   .rankTop3Box {
     padding: 0 16px;
-    background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+    background-image: linear-gradient(to bottom, #FF3C7B, #FF3C7B 58%, #ffa7b4);
     &.realTime {
       padding-bottom: 18px;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       background-image: none;
     }
   }
@@ -99,7 +99,7 @@
   .likeTopBox {
     position: relative;
     padding: 0 16px;
-    background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+    background-image: linear-gradient(to bottom, #FF3C7B, #FF3C7B 58%, #ffa7b4);
   }
 
   .rankTopBox {
@@ -133,8 +133,8 @@
       background-color: $white;
       font-size: 16px;
       &--active {
-        border-color: #632beb;
-        background-color: #632beb;
+        border-color: #FF3C7B;
+        background-color: #FF3C7B;
         color: $white;
       }
     }
@@ -171,8 +171,8 @@
       font-size: 16px;
       color: #000;
       &--active {
-        border-bottom: 1px solid #632beb;
-        color: #632beb;
+        border-bottom: 1px solid #FF3C7B;
+        color: #FF3C7B;
         font-weight: $bold;
       }
     }
@@ -261,7 +261,7 @@
     border-radius: 10px;
     padding: 5px 16px 5px 20px;
     &Wrap{
-      background:#632beb;
+      background:#FF3C7B;
       width:100%;
       padding:10px 16px 0 16px;
       box-sizing: border-box;
@@ -1596,7 +1596,7 @@
       height: 18px;
       margin-top: 4px;
       font-size: 12px;
-      color: #632beb;
+      color: #FF3C7B;
       align-items: center;
 
       i.icon {
@@ -1891,7 +1891,7 @@
       height: 18px;
       margin-top: 4px;
       font-size: 12px;
-      color: #632beb;
+      color: #FF3C7B;
       align-items: center;
       &__label {
         margin-right: 4px;
@@ -2158,7 +2158,7 @@
       font-weight: 500;
 
       span {
-        color: #632beb;
+        color: #FF3C7B;
       }
     }
 
@@ -2169,9 +2169,9 @@
         display: flex;
         justify-content: space-between;
         padding: 7px 0;
-        color: #632beb;
-        border-top: 1px solid #632beb;
-        border-bottom: 1px solid #632beb;
+        color: #FF3C7B;
+        border-top: 1px solid #FF3C7B;
+        border-bottom: 1px solid #FF3C7B;
 
         span {
           display: block;

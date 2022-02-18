@@ -10,6 +10,7 @@ import Tabmenu from '../../components/tabmenu'
 import DepositInfo from './DepositInfo'
 import NewlyAccount from './NewlyAccount'
 import MyAccount from './MyAccount'
+import ExchangeNoticePop from './ExchangeNoticePop'
 import {useHistory} from "react-router-dom";
 import Api from "context/api";
 import {Context} from "context";
@@ -26,10 +27,10 @@ const Exchange = (props) => {
   const {profile, walletData} = context;
   const {byeolTotCnt, dalTotCnt} = walletData;
   const [calcFormShow, setCalcFormShow] = useState(false);
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState(false);
 
   const noticePop =()=>{
-    setPopup(true)
+    setPopup(true);
   }
 
   //부모님 동의서 파일첨부란 필요 여부
@@ -347,134 +348,124 @@ const Exchange = (props) => {
 
   return (
     <>
-    <section className="doExchange">
-      <button className='noticeBtn' onClick={noticePop}>
-        <span className="noticeIcon">?</span>환전이 궁금하시다면?
-      </button>
-      <div className="amountBox">
-        <i className="iconStar"></i>
-        <p>보유 별</p>
-        <div className='counter active'>
-          <input className="num" value={Utility.addComma(byeolTotCnt)} disabled/>
-          <span className="unit">개</span>
-        </div>
-      </div>
-
-      {!isIOS
-        &&
-      <div className="infoBox">
-          {profile?.badgeSpecial > 0 && (
-            <>
-              <p className="special">DJ님은 스페셜 DJ 입니다.</p>
-              <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
-            </>
-          )}
-          <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
-          <p>별 1개당 KRW 60으로 환전됩니다.</p>
-      </div>
-      }
-      {!isIOS &&
-      <div className="amountBox apply">
-        <i className="iconStar"/>
-        <p>환전 신청 별</p>
-        <div className={`counter ${exchangeCalcData?.reqByeolCnt > 569 ? 'active' : ''}`}>
-          <input className='num' placeholder={0}
-                 onChange={(e) => {
-                   setCalcFormShow(false); //수정하면 계산 다시하게하기
-                   const joinNum = e.target.value.split(',').join('');
-                   const num = Number(joinNum);
-                   if (num > byeolTotCnt) {
-                     e.target.value = Utility.addComma(byeolTotCnt);
-                     setExchangeCalcData({...exchangeCalcData, reqByeolCnt: byeolTotCnt});
-                   } else if (!Number.isNaN(num)) {
-                     e.target.value = Utility.addComma(num);
-                     setExchangeCalcData({...exchangeCalcData, reqByeolCnt: num});
-                   } else {
-                     e.target.value = exchangeCalcData?.reqByeolCnt;
-                   }
-                 }}
-          />
-          <span className='unit'>개</span>
-        </div>
-      </div>
-      }
-
-      <div className="buttonGroup">
-        { !isIOS &&
-          <button onClick={() => exchangeCalc(exchangeCalcData?.reqByeolCnt || 0)}>
-            환전 계산하기
-          </button>
-        }
-        <button className='exchange'
-                onClick={() =>
-                  isIOS ?
-                    Hybrid('openUrl', `https://${window.location.host}/wallet?exchange`) :
-                    history.push('/wallet/exchange')}>
-          달 교환
+      <section className="doExchange">
+        <button className='noticeBtn' onClick={noticePop}>
+          <span className="noticeIcon">?</span>환전이 궁금하시다면?
         </button>
-      </div>
-    </section>
+        <div className="amountBox">
+          <i className="iconStar"></i>
+          <p>보유 별</p>
+          <div className='counter active'>
+            <input className="num" value={Utility.addComma(byeolTotCnt)} disabled/>
+            <span className="unit">개</span>
+          </div>
+        </div>
 
-    {/* 환전 계산하기 결과 */}
-    {calcFormShow &&
-      <>
-    <section className="receiptBoard">
-      <div className="receiptList">
-        <span>환전 신청 금액</span>
-        <p>KRW {Utility.addComma(exchangeCalcData?.basicCash)}</p>
-      </div>
-      <div className="receiptList">
-        <span>원천징수세액</span>
-        <p>-{Utility.addComma(exchangeCalcData?.taxCash)}</p>
-      </div>
-      <div className="receiptList">
-        <span>이체 수수료</span>
-        <p>-{Utility.addComma(exchangeCalcData?.feeCash)}</p>
-      </div>
-      <div className="receiptList">
-        <span>환전 예상 금액</span>
-        <p className="point">KRW {Utility.addComma(exchangeCalcData?.realCash)}</p>
-      </div>
-    </section>
+        {!isIOS
+          &&
+        <div className="infoBox">
+            {profile?.badgeSpecial > 0 && (
+              <>
+                <p className="special">DJ님은 스페셜 DJ 입니다.</p>
+                <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
+              </>
+            )}
+            <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
+            <p>별 1개당 KRW 60으로 환전됩니다.</p>
+        </div>
+        }
+        {!isIOS &&
+        <div className="amountBox apply">
+          <i className="iconStar"/>
+          <p>환전 신청 별</p>
+          <div className={`counter ${exchangeCalcData?.reqByeolCnt > 569 ? 'active' : ''}`}>
+            <input className='num' placeholder={0}
+                  onChange={(e) => {
+                    setCalcFormShow(false); //수정하면 계산 다시하게하기
+                    const joinNum = e.target.value.split(',').join('');
+                    const num = Number(joinNum);
+                    if (num > byeolTotCnt) {
+                      e.target.value = Utility.addComma(byeolTotCnt);
+                      setExchangeCalcData({...exchangeCalcData, reqByeolCnt: byeolTotCnt});
+                    } else if (!Number.isNaN(num)) {
+                      e.target.value = Utility.addComma(num);
+                      setExchangeCalcData({...exchangeCalcData, reqByeolCnt: num});
+                    } else {
+                      e.target.value = exchangeCalcData?.reqByeolCnt;
+                    }
+                  }}
+            />
+            <span className='unit'>개</span>
+          </div>
+        </div>
+        }
 
-    {/*계좌 입력 란*/}
-    <section className="depositInfo">
-      <h2>입금 정보</h2>
-      <Tabmenu data={depositTabmenu} tab={depositType} setTab={setDepositType} />
+        <div className="buttonGroup">
+          { !isIOS &&
+            <button onClick={() => exchangeCalc(exchangeCalcData?.reqByeolCnt || 0)}>
+              환전 계산하기
+            </button>
+          }
+          <button className='exchange'
+                  onClick={() =>
+                    isIOS ?
+                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange`) :
+                      history.push('/wallet/exchange')}>
+            달 교환
+          </button>
+        </div>
+      </section>
 
-      {depositType === depositTabmenu[0] ?
-        /*신규 정보*/
-        <DepositInfo exchangeSubmit={exchangeSubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
-                     uploadSingleFile={uploadSingleFile}
-        />
-        : depositType === depositTabmenu[1] ?
-          /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
-        <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}/>
-        :
-          /*내 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
-        <MyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
-                   accountList={accountList} setAccountList={setAccountList}
-                   getMyAccountData={getMyAccountData}
-        />
-      }
-    </section>
+      {/* 환전 계산하기 결과 */}
+      {calcFormShow &&
+        <>
+      <section className="receiptBoard">
+        <div className="receiptList">
+          <span>환전 신청 금액</span>
+          <p>KRW {Utility.addComma(exchangeCalcData?.basicCash)}</p>
+        </div>
+        <div className="receiptList">
+          <span>원천징수세액</span>
+          <p>-{Utility.addComma(exchangeCalcData?.taxCash)}</p>
+        </div>
+        <div className="receiptList">
+          <span>이체 수수료</span>
+          <p>-{Utility.addComma(exchangeCalcData?.feeCash)}</p>
+        </div>
+        <div className="receiptList">
+          <span>환전 예상 금액</span>
+          <p className="point">KRW {Utility.addComma(exchangeCalcData?.realCash)}</p>
+        </div>
+      </section>
+
+      {/*계좌 입력 란*/}
+      <section className="depositInfo">
+        <h2>입금 정보</h2>
+        <Tabmenu data={depositTabmenu} tab={depositType} setTab={setDepositType} />
+
+        {depositType === depositTabmenu[0] ?
+          /*신규 정보*/
+          <DepositInfo exchangeSubmit={exchangeSubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
+                      uploadSingleFile={uploadSingleFile}
+          />
+          : depositType === depositTabmenu[1] ?
+            /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
+          <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}/>
+          :
+            /*내 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
+          <MyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
+                    accountList={accountList} setAccountList={setAccountList}
+                    getMyAccountData={getMyAccountData}
+          />
+        }
+      </section>
+    </>
+    }
     {
       popup &&
       <LayerPopup setPopup={setPopup}>
-        <div className='popTitle'>환전 유의사항</div>
-        <div className='popContent'>
-          <div className="wrap">
-            <h3>◈ 환전은?</h3>
-            <p>방송 중 DJ가 타회원에게 받은 "별"선물을 현금으로 전환하는 것입니다.</p>
-            <p>방송에서 보유한 "별"은 1개당 60KRW으로 환전 됩니다.</p>
-            <p>또한, 보유한 "별"은 570별 이상부터 환전 신청이 가능합니다. (원천징수세액 3.3%, 이체수수료 500원 제외)</p>
-            <p>★ 보유한 “별”은 최종 선물을 받은 일을 기준으로 12개월이 지나면 소멸됩니다.</p>
-            <p></p>
-          </div>
-        </div>
+        <ExchangeNoticePop />
       </LayerPopup>
-    }
-    </>
     }
     </>
   )

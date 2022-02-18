@@ -182,11 +182,11 @@ const ListWrap = styled.div`
 
     &.title {
       margin-top: 18px;
-      color: #632beb;
+      color: #FF3C7B;
       font-size: 14px;
       letter-spacing: -0.35px;
       border-color: #bdbdbd;
-      border-top: 1px solid #632beb;
+      border-top: 1px solid #FF3C7B;
 
       .how-to-get {
         border: none;
@@ -201,7 +201,7 @@ const ListWrap = styled.div`
       .detail,
       .type,
       .date {
-        color: #632beb;
+        color: #FF3C7B;
         font-size: 16px;
         font-weight: 600;
       }

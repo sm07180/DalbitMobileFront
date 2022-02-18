@@ -315,10 +315,10 @@ const Content = styled.div`
         border-bottom-right-radius: 12px;
       }
       &.active {
-        border-color: #632beb;
+        border-color: #FF3C7B;
         z-index: 5;
         font-weight: 800;
-        color: #632beb;
+        color: #FF3C7B;
         background-color: #fff;
       }
     }

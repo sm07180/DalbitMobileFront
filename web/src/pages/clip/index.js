@@ -228,10 +228,10 @@ const ClipPage = () => {
           </>
           }
           {likeClipInfo.list &&
-          <>
+          <div className="mgt24">
             <ClipSubTitle title={'좋아요 한 클립'} more={'clip/like/list'}/>
             <SwiperList data={likeClipInfo.list} playAction={playClip} />
-          </>
+          </div>
           }
         </section>
         <section className="nowClipWrap">

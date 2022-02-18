@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="alarm_off_p" width="24" height="24" viewBox="0 0 24 24">
     <defs>
         <style>
-            .cls-2{fill:none;stroke:#632beb;stroke-width:1.2px;stroke-miterlimit:10}
+            .cls-2{fill:none;stroke:#FF3C7B;stroke-width:1.2px;stroke-miterlimit:10}
         </style>
     </defs>
     <g id="ic_alarm">
@@ -12,5 +12,5 @@
             <path id="패스_4094" d="M9.291 15.845a3.426 3.426 0 1 0 6.7 0" class="cls-2" transform="translate(-5.327 -3.608)"/>
         </g>
     </g>
-    <path id="패스_4299" fill="none" stroke="#632beb" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2px" d="M237.056-36.7l10.017 10.017 5.3 5.3z" transform="translate(-233.104 40.651)"/>
+    <path id="패스_4299" fill="none" stroke="#FF3C7B" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2px" d="M237.056-36.7l10.017 10.017 5.3 5.3z" transform="translate(-233.104 40.651)"/>
 </svg>
