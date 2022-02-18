@@ -1,5 +1,15 @@
 @import "components/ui/_mixin.scss";
 
+.container{
+  #walletPage{
+    header{
+      .buttonGroup{
+        display: flex;
+      }
+    }
+  }
+}
+
 #walletPage{
   section{
     position: relative;
