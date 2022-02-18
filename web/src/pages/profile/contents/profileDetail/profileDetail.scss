@@ -68,6 +68,9 @@
         white-space: pre-line;
         @include font(14px,400,black);
       }
+      .swiperPhoto{
+        margin-bottom: 16px;
+      }
       .info {
         @include flex(center);
         i {
@@ -136,12 +139,31 @@
           }
         }
         button.more {
+          position: relative;
           flex-shrink: 0;
           width:30px;
           height:30px;
           margin-bottom:auto;
           margin-left:auto;
           @include BGIMG("mypage/dalla/btn_more.png");
+          >div {
+            @include position-top-right(100%,0);
+            z-index: $MORE-ZINDEX;
+            @include flex($fd:column);
+            width:124px;
+            border-radius:8px;
+            background-color:white;
+            box-shadow: 0 1px 8px rgba(black,.16);
+            button {
+              line-height:40px;
+              text-indent:12px;
+              text-align:left;
+              @include font(13px,400,#303030);
+              + button {
+                border-top:1px solid #F2F2F2;;
+              }
+            }
+          }
         }
       }
     }

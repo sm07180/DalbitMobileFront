@@ -3,6 +3,7 @@ import Utility ,{addComma} from 'components/lib/utility'
 
 // global components
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import Tabmenu from '../../components/tabmenu'
 // contents
@@ -22,6 +23,11 @@ const Exchange = (props) => {
   const {profile, walletData} = context;
   const {byeolTotCnt, dalTotCnt} = walletData;
   const [calcFormShow, setCalcFormShow] = useState(false);
+  const [popup, setPopup] = useState(false)
+
+  const noticePop =()=>{
+    setPopup(true)
+  }
 
 
   useEffect(()=>{
@@ -298,7 +304,7 @@ const Exchange = (props) => {
   return (
     <>
     <section className="doExchange">
-      <button className='noticeBtn'>
+      <button className='noticeBtn' onClick={noticePop}>
         <span className="noticeIcon">?</span>환전이 궁금하시다면?
       </button>
       <div className="amountBox">
@@ -393,6 +399,22 @@ const Exchange = (props) => {
         />
       }
     </section>
+    {
+      popup &&
+      <LayerPopup setPopup={setPopup}>
+        <div className='popTitle'>환전 유의사항</div>
+        <div className='popContent'>
+          <div className="wrap">
+            <h3>◈ 환전은?</h3>
+            <p>방송 중 DJ가 타회원에게 받은 "별"선물을 현금으로 전환하는 것입니다.</p>
+            <p>방송에서 보유한 "별"은 1개당 60KRW으로 환전 됩니다.</p>
+            <p>또한, 보유한 "별"은 570별 이상부터 환전 신청이 가능합니다. (원천징수세액 3.3%, 이체수수료 500원 제외)</p>
+            <p>★ 보유한 “별”은 최종 선물을 받은 일을 기준으로 12개월이 지나면 소멸됩니다.</p>
+            <p></p>
+          </div>
+        </div>
+      </LayerPopup>
+    }
     </>
   )
 }
