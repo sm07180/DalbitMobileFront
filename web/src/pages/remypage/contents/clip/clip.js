@@ -23,13 +23,13 @@ const Clip = () =>{
   const history = useHistory();
   const [tabType, setTabType] = useState(tabmenu[0])
 
+  const uploadClick = (e) => {
+    history.push('/clip_upload');
+  };
+
   return(
     <div id="mypageClip">
-      <Header position={'sticky'} title={'클립'} type={'back'}>
-        {tabType === tabmenu[0] &&
-          <button className="headerBtn" onClick={() => history.push('/clip_upload')}>등록</button>
-        }
-      </Header>
+      <Header position={'sticky'} title={'클립'} type={'back'} />
       <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
       <div className="contentWrap">
         {tabType === tabmenu[0] ?
