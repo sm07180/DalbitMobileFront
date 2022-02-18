@@ -6,6 +6,7 @@ import { MailboxContext } from "context/mailbox_ctx";
 import Header from "components/ui/header/Header";
 import NoResult from "common/ui/no_result";
 import UserList from "./user_list";
+import {CustomHeader} from "../chat_list";
 
 export default function chatNewPage() {
   const { mailboxAction, mailboxState } = useContext(MailboxContext);
@@ -13,7 +14,7 @@ export default function chatNewPage() {
 
   return (
     <>
-      <Header title="새로운 메세지" type="back"/>
+      <CustomHeader title="새로운 메세지" type="back"/>
       <div className="chatNewPage subContent gray">
         <div className="tabBox">
           <button className={`${mailboxState.tabState === 1 ? "active" : ""}`} onClick={() => mailboxAction.setTabState!(1)}>

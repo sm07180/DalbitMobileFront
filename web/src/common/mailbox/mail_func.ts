@@ -3,7 +3,7 @@ import {CHAT_CONFIG} from "../../constant/define";
 import {isDesktop} from "../../lib/agent";
 import {Hybrid, isHybrid} from "../../context/hybrid";
 
-/* 우체통 */
+/* 메시지 */
 export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, history, isChatListPage=false}) => {
   const { globalState, globalAction } = context;
 
@@ -27,7 +27,7 @@ export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, his
       const myLevel = context.profile.level;
       if(myLevel === 0) {
         return context.action.alert({
-          msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+          msg: '메시지은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
         })
       }
 
@@ -38,7 +38,7 @@ export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, his
           Hybrid('JoinMailBox', targetMemNo); // 채팅 페이지
         }else {
           return context.action.alert({
-            msg: '0레벨 회원에게는 우체통 메시지를<br /> 보낼 수 없습니다.'
+            msg: '0레벨 회원에게는 메시지를<br /> 보낼 수 없습니다.'
           })
         }
       }
@@ -70,13 +70,13 @@ export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any
         globalAction.setAlertStatus!({
           status: true,
           type: "alert",
-          content: "<p style='letter-spacing:-0.8px;'>우체통은 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
+          content: "<p style='letter-spacing:-0.8px;'>메시지은 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
         });
       } else if (code === "-6") {
         globalAction.setAlertStatus!({
           status: true,
           type: "alert",
-          content: "<p style='letter-spacing:-0.8px;'>0레벨 회원에게는 우체통 메시지를<br /> 보낼 수 없습니다.</p>",
+          content: "<p style='letter-spacing:-0.8px;'>0레벨 회원에게는 메시지를<br /> 보낼 수 없습니다.</p>",
         });
       } else {
         globalAction.setAlertStatus!({
@@ -105,7 +105,7 @@ export function openMailboxBanAlert(helper: any) {
       globalAction.setAlertStatus({
         status: true,
         type: "alert",
-        content: "<p style='letter-spacing:-0.8px;'>우체통은 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
+        content: "<p style='letter-spacing:-0.8px;'>메시지는 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
       })
     );
   } else {

@@ -229,7 +229,7 @@ export default (props) => {
                         return (
                           <li className="rankitem" key={idx}>
                             <div className="rankitemWrap">
-                              <div className="thumbBox" onClick={() => history.push(`/mypage/${item.memNo}`)}>
+                              <div className="thumbBox" onClick={() => history.push(`/profile/${item.memNo}`)}>
                                 <img src={profImg.thumb62x62} className="thumbBox__thumb" alt="thumb" />
                                 {idx < 5 && (
                                   <>
@@ -304,7 +304,7 @@ export default (props) => {
                           return (
                             <li className="rankitem" key={idx}>
                               <div className="rankitemWrap">
-                                <div className="thumbBox" onClick={() => history.push(`/mypage/${item.memNo}`)}>
+                                <div className="thumbBox" onClick={() => history.push(`/profile/${item.memNo}`)}>
                                   <img src={profImg.thumb62x62} className="thumbBox__thumb" alt="thumb" />
                                   {idx < 5 && (
                                     <>
@@ -357,7 +357,7 @@ export default (props) => {
                           return (
                             <li className="rankitem" key={idx}>
                               <div className="rankitemWrap">
-                                <div className="thumbBox" onClick={() => history.push(`/mypage/${item.memNo}`)}>
+                                <div className="thumbBox" onClick={() => history.push(`/profile/${item.memNo}`)}>
                                   <img src={profImg.thumb62x62} className="thumbBox__thumb" alt="thumb" />
                                   {idx < 5 && (
                                     <>

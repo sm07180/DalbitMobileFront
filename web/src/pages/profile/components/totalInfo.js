@@ -4,6 +4,7 @@ import {IMG_SERVER} from 'context/config'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 
 import './totalInfo.scss'
+import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
   const {data, goProfile} = props
@@ -90,9 +91,7 @@ const TotalInfo = (props) => {
             <div className="title">
               <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
             </div>
-            <div className="text">
-              {data.profMsg}
-            </div>
+            <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
           </div>
       }      
     </>

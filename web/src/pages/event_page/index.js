@@ -199,7 +199,7 @@ export default (props) => {
                               className="thumb"
                               style={{backgroundImage: `url(${PHOTO_SERVER}${profileImage})`}}
                               onClick={() => {
-                                history.push(`/mypage/${mem_no}`)
+                                history.push(`/profile/${mem_no}`)
                               }}></div>
                             <div className="nick-name-wrap">
                               <span className="nick-name">{nickName}</span>
@@ -215,7 +215,7 @@ export default (props) => {
                                 className="thumb"
                                 style={{backgroundImage: `url(${PHOTO_SERVER}${fanImage})`}}
                                 onClick={() => {
-                                  history.push(`/mypage/${fanRank1}`)
+                                  history.push(`/profile/${fanRank1}`)
                                 }}></div>
                               <div className="fan-nick">{fanNick}</div>
                             </div>

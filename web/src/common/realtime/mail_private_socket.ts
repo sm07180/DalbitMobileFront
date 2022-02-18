@@ -294,7 +294,7 @@ export class MailChatSocketHandler {
           //     this.setSplashData(resolve.data);
           //   });
           // }
-          //우체통 :우체통방에 룸넘버는 1로시작 그외 방송방은 9
+          //메시지 :메시지방에 룸넘버는 1로시작 그외 방송방은 9
           if (channelName.startsWith("1")) {
             if (this.mailMsgListWrapRef !== null) {
               const { cmd, mailBoxChat, reqMailBoxImageChatDelete } = data;
@@ -395,7 +395,7 @@ export class MailChatSocketHandler {
       }
     });
   }
-  //우체통 메세지 전송
+  //메시지 메세지 전송
   sendSocketMessageMail(
     channelName: string,
     command: string,

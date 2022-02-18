@@ -108,8 +108,8 @@ const DidLogin = (props) => {
       let mypageURL = ''
       const _parse = qs.parse(location.search)
       if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-        mypageURL = `/mypage/${memNo}`
-        if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
+        mypageURL = `/profile/${memNo}`
+        if (_parse.mypage !== '/') mypageURL = `/profile/${memNo}${_parse.mypage}`
       }
 
       globalCtx.action.updateToken(loginInfo.data)

@@ -32,14 +32,14 @@ export default (props) => {
     if (!context.token.isLogin) {
       history.push(`/login`)
     } else {
-      history.push(`/mypage/${memNo}`)
+      history.push(`/profile/${memNo}`)
     }
   }
   const Join = (roomNo, memNo) => {
     if (roomNo !== '' && roomNo !== '0') {
       RoomJoin({roomNo: roomNo})
     } else if (roomNo === '0') {
-      history.push(`/mypage/${memNo}`)
+      history.push(`/profile/${memNo}`)
     }
   }
 

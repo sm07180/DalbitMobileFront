@@ -148,7 +148,7 @@ export default () => {
                       <td
                         className="nick"
                         onClick={() => {
-                          history.push(`/mypage/${memNo}`)
+                          history.push(`/profile/${memNo}`)
                         }}>
                         <div className="thumb">
                           <img src={profImg.thumb120x120} />
