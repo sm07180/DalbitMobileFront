@@ -39,10 +39,7 @@ const TotalInfo = (props) => {
           <BadgeItems data={data} type="commonBadgeList" />
           <BadgeItems data={data} type="isBadge" />
         </div>
-        {
-          badgeTotalCnt > 4 &&
-            <button onClick={onOpenBdage}>열기/닫기</button>
-        }
+        {badgeTotalCnt > 4 && <button onClick={onOpenBdage}>열기/닫기</button>}
       </div>
       <div className="rankInfo">
         <div className="box">
