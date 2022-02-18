@@ -231,6 +231,7 @@
             .dataCnt {
               @include font(12px, 400, #FFF);
               margin-right: 16px;
+              padding-left: 20px;
               &:last-child{ margin-right: 0;}
               &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-clipGoodCnt.png");}
               &.replyCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-clipReplyCnt.png");}

@@ -28,7 +28,7 @@
             .tabMenu {
                 position: relative;
                 flex: 1;
-                @include flex(center, center);
+                @include flex(flex-start, center);
                 height: 50px;
                 background-color: #543100;
                 cursor: pointer;             
@@ -42,7 +42,7 @@
                     top: 4px; right: 0;
                     display: inline-block;
                     width: 1px; height: 42px;
-                    background-color: #fff;
+                    background-color: #7e5858;
                 }
                 &:last-child::after {
                     content: none;
