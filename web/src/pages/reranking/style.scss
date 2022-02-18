@@ -117,7 +117,7 @@ $errorMsg : #FF1919;
       @include font(17px,600,#fff);
     }
     .criteria {
-      @include position-top-right(46%, 0px);
+      @include position-top-right(40%, 0px);
       transform: translateY(-55%);
       width: 183px; height: 174px;
       @include BGIMG('dalla/character/character_ranking.png');
