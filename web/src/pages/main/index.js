@@ -62,6 +62,7 @@ const MainPage = () => {
     storeUrl: '',
   });
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -97,6 +98,8 @@ const MainPage = () => {
         } else {
           dispatch(setMainLiveList({list: data.list, paging}));
         }
+
+        setIsLastPage(isLastPage);
       }
     })
   }, [currentPage, liveListType]);
@@ -292,9 +295,20 @@ const MainPage = () => {
     }
   }, [common.isRefresh]);
 
+  useEffect(() => {
+    fetchLiveInfo()
+  }, [currentPage, liveListType])
+
+  useEffect(() => {
+    if(isLastPage) {
+      document.removeEventListener('scroll', scrollEvent);
+    }
+  }, [isLastPage])
+
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
+    // fetchLiveInfo();
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
@@ -303,12 +317,6 @@ const MainPage = () => {
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
     }
   }, [])
-
-  useEffect(() => {
-    if (currentPage > 0) fetchLiveInfo()
-    document.addEventListener('scroll', scrollEvent)
-    return () => document.removeEventListener('scroll', scrollEvent)
-  }, [currentPage, liveListType])
  
   // 페이지 시작
   let MainLayout = <>
@@ -344,7 +352,7 @@ const MainPage = () => {
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP 10'} more={'rank'}>
-          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
         <SwiperList
           data={topRankType === 'DJ' ? mainState.dayRanking.djRank
@@ -364,7 +372,8 @@ const MainPage = () => {
       <section className='liveView'  ref={overTabRef}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
         <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
-          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
+          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
+                   defaultTab={1} />
         </div>
         <LiveView data={liveList.list}/>
       </section>
