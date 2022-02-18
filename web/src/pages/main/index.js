@@ -354,10 +354,12 @@ const MainPage = () => {
           type="top10"
         />
       </section>
-      <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
-        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
-      </section>
+      {mainState.newBjList.length > 0 &&
+        <section className='daldungs'>
+          <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs"/>
+        </section>
+      }
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>

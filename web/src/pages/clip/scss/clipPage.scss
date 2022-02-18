@@ -96,6 +96,14 @@
     }
   }
   .clipDrawer, .clipList {
+    .cntTitle {
+      h2 {
+        >img {
+          width: 28px;
+        }
+      }
+
+    }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {
