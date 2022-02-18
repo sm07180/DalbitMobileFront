@@ -62,9 +62,18 @@
           position:relative;
           margin-bottom:12px;
           .photo {
+            position: relative;
             width:58px;
             height:58px;
             margin:0 8px 0 3px;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:50%;
+              box-sizing: border-box;
+            }    
             img {
               width:100%;
               border-radius: 50%;

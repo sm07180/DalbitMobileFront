@@ -142,7 +142,7 @@ const TopRanker = (props) => {
                               {data.roomNo && <div className='badgeLive' onClick={(e) => {
                                 e.stopPropagation();
                                 goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                              }}>LIVE</div>}
+                              }}></div>}
                             </>
                           }
                         </div>
