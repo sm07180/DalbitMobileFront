@@ -319,7 +319,7 @@ const Router = () => {
         <Route exact path="/broadcast/:roomNo" component={Broadcast} />
         <Route exact path="/broadcast_setting" component={BroadcastSetting} />
 
-        {/*  www 우체통관련  */}
+        {/*  www 메시지관련  */}
         <Route exact path="/mailbox" component={Mailbox} />
         <Route exact path="/mailbox/:category" component={Mailbox} />
         <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />

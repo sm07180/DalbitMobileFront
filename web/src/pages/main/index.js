@@ -16,8 +16,7 @@ import LiveView from './components/LiveView'
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
-import {OS_TYPE} from "context/config";
-import {IMG_SERVER} from 'context/config'
+import {IMG_SERVER} from "context/config";
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
@@ -25,17 +24,14 @@ import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 
-const topTenTabMenu = ['DJ','FAN','LOVER']
+const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 20
 
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png';
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
-
-const customHeader = JSON.parse(Api.customHeader)
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -49,7 +45,7 @@ const MainPage = () => {
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [tabFixed, setTabFixed] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
 
   const [payOrderId, setPayOrderId] = useState("")
@@ -105,7 +101,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    // fetchLiveInfo();
+    fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -139,7 +135,7 @@ const MainPage = () => {
 
     // 스크롤시 추가 리스트
     if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage => currentPage + 1)
     }
   })
 
@@ -282,10 +278,6 @@ const MainPage = () => {
   }
 
   useEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-  }, [currentPage])
-
-  useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
       window.scrollTo(0, 0);
@@ -304,9 +296,11 @@ const MainPage = () => {
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
+    document.addEventListener('scroll', scrollEvent);
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+      document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
  
@@ -355,13 +349,13 @@ const MainPage = () => {
         />
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+        <CntTitle title={'방금 착륙한 NEW 달린이'} />
         <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
       </section>
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView'  ref={overTabRef}>
+      <section className='liveView' ref={overTabRef}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
         <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
           <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}

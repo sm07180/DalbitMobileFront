@@ -65,7 +65,7 @@ export default (props) => {
         const myProfile = await Api.profile({ params: { memNo: token.memNo } })
         if(myProfile.data.level === 0) {
           return globalCtx.action.alert({
-            msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+            msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
           })
         }
       }
@@ -164,7 +164,7 @@ export default (props) => {
               globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
             }
           }}>
-          <img src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg" alt="우체통" />
+          <img src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg" alt="메시지" />
         </button>
       )
     }
@@ -180,7 +180,7 @@ export default (props) => {
               globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
             }
           }}>
-          <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
+          <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="메시지" />
         </button>
       )
     } else {
@@ -194,7 +194,7 @@ export default (props) => {
               globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
             }
           }}>
-          <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="우체통" />
+          <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="메시지" />
         </button>
       )
     }

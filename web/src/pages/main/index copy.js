@@ -884,7 +884,7 @@ export default (props) => {
                   to={'/rank'}
                   onClick={(event) => {
                     event.preventDefault()
-                    history.push('/menu/profile')
+                    history.push('/myProfile')
                   }}>
                   마이
                 </NavLink>

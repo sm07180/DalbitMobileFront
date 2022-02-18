@@ -117,7 +117,7 @@ export default function RankPopup(props) {
                             rankList.map((item, index) => {
                               return (
                                 <li key={index} className="fan-list">
-                                  <div onClick={() => history.push(`/mypage/${item.memNo}`)}>
+                                  <div onClick={() => history.push(`/profile/${item.memNo}`)}>
                                     <span className="thumb" style={{backgroundImage: `url(${item.profImg.thumb62x62})`}}></span>
                                     <span className="nickNm">{item.nickName}</span>
                                   </div>

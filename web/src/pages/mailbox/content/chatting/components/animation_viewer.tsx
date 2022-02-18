@@ -1,6 +1,6 @@
 /**
  * @brief : mailbox/chatting/item_animation.tsx
- * @role : 우체통 선물 view
+ * @role : 메시지 선물 view
  */
 import React, { useRef, useContext, useEffect } from "react";
 // ctx

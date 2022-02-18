@@ -101,7 +101,7 @@ function LikeList({ empty }) {
                       className="thumbBox"
                       onClick={() => {
                         if (globalState.baseData.isLogin) {
-                          history.push(`/mypage/${memNo}`);
+                          history.push(`/profile/${memNo}`);
                         } else {
                           history.push("/login");
                         }
@@ -114,7 +114,7 @@ function LikeList({ empty }) {
                         className="likeListDetail"
                         onClick={() => {
                           if (globalState.baseData.isLogin) {
-                            history.push(`/mypage/${memNo}`);
+                            history.push(`/profile/${memNo}`);
                           } else {
                             history.push("/login");
                           }
@@ -136,7 +136,7 @@ function LikeList({ empty }) {
                           className="bestFanBox__nickname"
                           onClick={() => {
                             if (globalState.baseData.isLogin) {
-                              history.push(`/mypage/${djMemNo}`);
+                              history.push(`/profile/${djMemNo}`);
                             } else {
                               history.push("/login");
                             }

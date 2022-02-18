@@ -8,17 +8,41 @@ import Tabmenu from './Tabmenu'
 import SearchDjList from "pages/research/components/SearchDjList";
 import SearchLiveList from "pages/research/components/SearchLiveList";
 import SearchClipList from "pages/research/components/SearchClipList";
+import {useSelector} from "react-redux";
 // css
 
 const SearchResult = (props) => {
   const {searchVal} = props; // 검색할 값
   const tabmenu = ['전체','DJ','라이브', '클립']; // 메뉴 리스트
   const [searchData, setSearchData] = useState({search: searchVal, tabType: 0, page: 1, records: 5});
+  const subjectType = useSelector((state)=> state.clip.subjectType); // 검색 조건
 
   const [searchDjInfo, setSearchDjInfo] = useState({list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }}); // 믿고 보는 DJ 정보
   const [searchLiveInfo, setSearchLiveInfo] = useState({list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }}); // 지금 핫한 라이브 정보
   const [searchClipInfo, setSearchClipInfo] = useState({list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }}); // 오늘 인기 있는 클립 정보
 
+  const chagneSubject = (value) => {
+    switch (value) {
+      case '01':
+        return '커버';
+      case '02':
+        return '작사/작곡';
+      case '03':
+        return '더빙';
+      case '04':
+        return '수다/대화';
+      case '05':
+        return '고민/사연';
+      case '06':
+        return '힐링';
+      case '07':
+        return '성우';
+      case '08':
+        return 'ASMR';
+      default:
+        break;
+    }
+  }
   // DJ 정보 가져오기
   async function getSearchDjInfo() {
     const res = await Api.member_search({ params: { ...searchData } });
@@ -29,10 +53,10 @@ const SearchResult = (props) => {
           if (searchDjInfo.list.findIndex(target => target.memNo === value.memNo) === -1) {
             temp.push(value);
           }
-        })
+        });
         setSearchDjInfo({...res.data, list: searchDjInfo.list.concat(temp)});
       } else {
-        setSearchDjInfo({...res.data});
+        setSearchDjInfo({...res.data });
       }
     } else {
       if (searchData.page === 1) {
@@ -67,16 +91,21 @@ const SearchResult = (props) => {
   async function getSearchClipInfo() {
     const res = await Api.getClipList({ ...searchData, slctType: 0, dateType: 0, });
     if (res.result === 'success' && res.code === 'C001') {
+      let tempList = res.data.list;
+      tempList.map((value, index) => {
+        tempList[index].subjectType = chagneSubject(value.subjectType);
+      });
+
       if (searchData.page !== 1) {
         let temp =  [];
-        res.data.list.forEach(value => {
+        tempList.forEach(value => {
           if (searchClipInfo.list.findIndex(target => target.memNo === value.memNo) === -1) {
             temp.push(value);
           }
         })
         setSearchClipInfo({...res.data, list: searchClipInfo.list.concat(temp)});
       } else {
-        setSearchClipInfo({...res.data});
+        setSearchClipInfo({...res.data, list: tempList });
       }
     } else {
       if (searchData.page === 1) {

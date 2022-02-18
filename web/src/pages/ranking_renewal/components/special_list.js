@@ -46,11 +46,7 @@ function SpecialList({empty}) {
                         className="profileBox"
                         onClick={() => {
                           if (context.token.isLogin) {
-                            if (context.token.memNo === v.memNo) {
-                              history.push(`/menu/profile`)
-                            } else {
-                              history.push(`/mypage/${v.memNo}`)
-                            }
+                            history.push(`/profile/${v.memNo}`)
                           } else {
                             history.push('/login')
                           }
@@ -62,11 +58,7 @@ function SpecialList({empty}) {
                           className="nickNameBox special"
                           onClick={() => {
                             if (context.token.isLogin) {
-                              if (context.token.memNo === v.memNo) {
-                                history.push(`/menu/profile`)
-                              } else {
-                                history.push(`/mypage/${v.memNo}`)
-                              }
+                              history.push(`/profile/${v.memNo}`)
                             } else {
                               history.push('/login')
                             }
