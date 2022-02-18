@@ -135,6 +135,7 @@
         padding: 0;
         li{
           width: 54px;
+          height: 36px;
           line-height: 36px;
           @include border(#e3e3e3, 18px);
           @include font(13px, 400, #303030);

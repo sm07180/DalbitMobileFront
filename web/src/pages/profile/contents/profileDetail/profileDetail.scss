@@ -68,6 +68,9 @@
         white-space: pre-line;
         @include font(14px,400,black);
       }
+      .swiperPhoto{
+        margin-bottom: 16px;
+      }
       .info {
         @include flex(center);
         i {

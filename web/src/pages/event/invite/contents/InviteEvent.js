@@ -95,22 +95,24 @@ const InviteEvent = () => {
   const registerFriendCode = () => {
     if (context.token.isLogin) {
       selfAuthCheck().then((res) => {
-        if (res === 'success') {
+        if (res.result === 'success') {
           Api.inviteReward({
             reqBody: true,
             data: {
               "rcvMemNo": context.token.memNo,
-              "invitationCode": friendCode.current.value
+              "invitationCode": friendCode.current.value,
+              "memPhone": res.phoneNo
             }
           }).then((response) => {
-            console.log("inviteReward", response);
-            if (response.data === 1) {
+            if (response.code === "0000") {
               context.action.alert({msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "});
               history.push("/event/invite")
-            } else if (response.data === -1) {
+            } else if (response.code === "C001") {
               context.action.alert({msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"});
-            } else if (response.data === -3) {
+            } else if (response.code === "C003") {
               context.action.alert({msg: "이미 초대코드를 등록 했습니다."});
+            } else if (response.code === "C005") {
+              context.action.alert({msg: "16세 이하 및 55세 이상은 \n이벤트 참여가 불가능합니다."});
             } else {
               context.action.alert({msg: response.message});
             }
@@ -124,9 +126,9 @@ const InviteEvent = () => {
 
   //본인인증
   const  selfAuthCheck = async () =>{
-    const {result, code} = await Api.self_auth_check();
+    const {result, data} = await Api.self_auth_check();
       if(result === 'success'){
-        return result;
+        return {result : result, phoneNo : data.phoneNo};
       }else{
         history.push(`/selfauth?event=/event`)
       }

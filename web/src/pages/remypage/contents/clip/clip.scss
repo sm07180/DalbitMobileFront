@@ -18,7 +18,7 @@
       @include font(15px, 500, #303030);
     }
   }
-  .tabmenu {
+  >.tabmenu {
     @include flex(center);
     margin-bottom: 12px;
     padding: 0 16px;
@@ -44,10 +44,15 @@
     }
   }
   .contentWrap{
-    .tabmenu {
+    >.tabmenu {
       margin-bottom: 20px;
       padding: 0;
-      &.listen{padding-left: 16px;}
+      &.listen{
+        @include flex();
+        >li:first-child{
+          margin-left: 16px;
+        }
+      }
       li {
         flex:none;
         line-height:36px;
@@ -59,10 +64,22 @@
         @include font(13px,400,#acacac);
         margin-right: 4px;
         border: none;
-        &:last-child{margin-right:0;}
         &.active {
           @include font(13px,bold,#fff);
           background: #202020;
+        }
+      }
+      .swiper-container{
+        .swiper-wrapper{
+          .swiper-slide{
+            width: auto;
+            &:first-child{
+              li{margin-left: 16px}
+            }
+            &:last-child{
+              li{margin-right: 5px}
+            }
+          }
         }
       }
     }

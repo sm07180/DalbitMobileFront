@@ -134,7 +134,7 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/money_exchange')
+                  history.push('/wallet?exchange');
                 }}>
                 확인
               </button>
@@ -183,7 +183,7 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/money_exchange')
+                  history.push('/wallet?exchange')
                 }}>
                 확인
               </button>
