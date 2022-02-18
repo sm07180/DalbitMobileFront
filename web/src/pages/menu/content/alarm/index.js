@@ -100,27 +100,27 @@ export default function Alert() {
         break
       case 31:
         if (context.profile.memNo === roomNo) {
-          history.push(`/mypage/${roomNo}/fanboard`)
+          history.push(`/profile/${roomNo}?tab=1`)
         } else {
-          history.push(`/mypage/${roomNo}?tab=1`)
+          history.push(`/profile/${roomNo}?tab=1`)
         }
         break
       case 32:
-        history.push(`/mypage/${context.profile.memNo}/wallet`)
+        history.push(`/wallet`)
         break
       case 33:
         break
       case 35:
-        history.push('/menu/profile')
+        history.push('/myProfile')
         break
       case 36:
-        history.push(`/mypage/${memNo}`)
+        history.push(`/profile/${memNo}`)
         break
       case 37:
         history.push('/customer/qnaList')
         break
       case 38:
-        history.push(`/mypage/${memNo}?tab=0`)
+        history.push(`/profile/${memNo}?tab=0`)
         break
       case 39:
         history.push(`/rank?rankType=3&dateType=2`)
@@ -150,7 +150,7 @@ export default function Alert() {
         fetchDataPlay(roomNo)
         break
       case 48:
-        history.push(`/mypage/${context.profile.memNo}/my_clip`)
+        history.push(`/profile/${context.profile.memNo}?tab=2`)
         break
       case 53:
         history.push(`/event/attend_event`)

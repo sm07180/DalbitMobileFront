@@ -7,7 +7,7 @@ import Toggle from "common/toggle";
 import { GlobalContext } from "context";
 import { MailboxContext } from "context/mailbox_ctx";
 import { mailBoxJoin } from "common/mailbox/mail_func";
-
+import {isHybrid} from 'context/hybrid'
 //api
 import { getMailboxChatList, PostMailboxChatUse } from "common/api";
 
@@ -152,7 +152,7 @@ export default function chatListPage() {
 
   return (
     <>
-      <Header title="우체통" type="">
+      <Header title="우체통" type={isHybrid() ? 'back' : ''}>
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
             <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가" />

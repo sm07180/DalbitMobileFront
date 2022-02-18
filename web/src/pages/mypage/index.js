@@ -228,7 +228,7 @@ export default (props) => {
   // my MemNo vs Your check
 
   if (memNo === token.memNo && webview && webview !== 'new') {
-    window.location.href = '/menu/profile?webview=' + webview
+    window.location.href = '/myProfile?webview=' + webview
   }
   if (!profileInfo || !profile) {
     if (!token.isLogin) {

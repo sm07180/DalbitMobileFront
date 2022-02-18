@@ -163,7 +163,7 @@ export default (props) => {
 
   //WEBVIEW CHECK
   if (profile.memNo === token.memNo && webview && webview === 'new') {
-    history.push(`/mypage/${profile.memNo}?webview=new`)
+    history.push(`/profile/${profile.memNo}?webview=new`)
   }
 
   useEffect(() => {
@@ -193,13 +193,13 @@ export default (props) => {
       if (type === 'story') {
         history.push(`/${type}?webview=new`)
       } else {
-        history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}?webview=new`)
+        history.push(type == 'customer' ? `/customer` : `/profile/${profile.memNo}?webview=new`)
       }
     } else {
       if (type === 'story') {
         history.push(`/${type}`)
       } else {
-        history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+        history.push(type == 'customer' ? `/customer` : `/profile/${profile.memNo}`)
       }
     }
   }

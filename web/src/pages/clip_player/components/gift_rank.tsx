@@ -65,7 +65,7 @@ export default (props) => {
             return (
               <li key={index} className="giftRankItem">
                 <div className="giftRankBox">
-                  <div className="thumbBox" onClick={() => history.push(`/mypage/${item.memNo}`)}>
+                  <div className="thumbBox" onClick={() => history.push(`/profile/${item.memNo}`)}>
                     <img src={item.profImg.thumb62x62} width={40} className="thumbBox__thumb" alt="thumb" />
                     {item.isFan ? <img src={fanIcon} className="thumbBox__fan" width={12} /> : ""}
                   </div>

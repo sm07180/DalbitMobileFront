@@ -64,7 +64,7 @@ function BroadcastEndByListener() {
 
   const linkFanboard = useCallback(() => {
     if (summary !== null) {
-        history.replace(`/mypage/${summary.djMemNo}`);
+        history.replace(`/profile/${summary.djMemNo}`);
     }
   }, [summary]);
 

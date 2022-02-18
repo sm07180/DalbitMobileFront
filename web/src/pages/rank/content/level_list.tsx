@@ -61,7 +61,7 @@ function LevelList({ empty }) {
                     className="thumbBox"
                     onClick={() => {
                       if (globalState.baseData.isLogin) {
-                        history.push(`/mypage/${memNo}`);
+                        history.push(`/profile/${memNo}`);
                       } else {
                         history.push("/login");
                       }
@@ -86,7 +86,7 @@ function LevelList({ empty }) {
                         className="bestFanBox__nickname"
                         onClick={() => {
                           if (globalState.baseData.isLogin) {
-                            history.push(`/mypage/${fanMemNo}`);
+                            history.push(`/profile/${fanMemNo}`);
                           } else {
                             history.push("/login");
                           }

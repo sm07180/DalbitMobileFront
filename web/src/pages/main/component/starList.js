@@ -34,7 +34,7 @@ export default (props) => {
               className="list"
               key={`star-list${idx}`}
               onClick={() => {
-                history.push(`/mypage/${memNo}`)
+                history.push(`/profile/${memNo}`)
               }}>
               <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb62x62']})`} : {}}>
                 {roomNo !== undefined && roomNo !== '' && <em className="icon_wrap icon_live icon_live_star">라이브중</em>}

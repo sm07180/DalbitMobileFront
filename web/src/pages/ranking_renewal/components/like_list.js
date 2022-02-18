@@ -86,11 +86,7 @@ function LikeList({empty}) {
                 className="thumbBox"
                 onClick={() => {
                   if (context.token.isLogin) {
-                    if (context.token.memNo === memNo) {
-                      history.push(`/menu/profile`)
-                    } else {
-                      history.push(`/mypage/${memNo}`)
-                    }
+                    history.push(`/profile/${memNo}`)
                   } else {
                     history.push(`/login`)
                   }
@@ -102,11 +98,7 @@ function LikeList({empty}) {
                   className="likeListDetail"
                   onClick={() => {
                     if (context.token.isLogin) {
-                      if (context.token.memNo === memNo) {
-                        history.push(`/menu/profile`)
-                      } else {
-                        history.push(`/mypage/${memNo}`)
-                      }
+                      history.push(`/profile/${memNo}`)
                     } else {
                       history.push(`/login`)
                     }
@@ -126,7 +118,7 @@ function LikeList({empty}) {
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
+                          history.push(`/myProfile`)
                         } else {
                           history.push(`/mypage/${djMemNo}`)
                         }

@@ -47,13 +47,13 @@ export default (props) => {
             case '31': //-----------------마이페이지>팬 보드
               mem_no = context.stickerMsg.mem_no
               if (mem_no != undefined) {
-                if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+                if (isLogin) window.location.href = `/profile/${mem_no}?tab=1`
               }
               break
             case '32': //-----------------마이페이지>내 지갑
               mem_no = context.stickerMsg.mem_no
               if (mem_no != undefined) {
-                if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+                if (isLogin) window.location.href = `/wallet`
               }
               break
             case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
@@ -61,19 +61,19 @@ export default (props) => {
             case '34': //-----------------마이페이지>알림>해당 알림 글
               mem_no = context.stickerMsg.mem_no
               if (mem_no != undefined) {
-                if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+                if (isLogin) window.location.href = `/notice`
               }
               break
             case '35': //-----------------마이페이지
               mem_no = context.stickerMsg.mem_no
               if (mem_no !== undefined) {
-                if (isLogin) window.location.href = `/mypage/${mem_no}/`
+                if (isLogin) window.location.href = `/mypage`
               }
               break
             case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
               mem_no = context.stickerMsg.mem_no
               if (mem_no !== undefined) {
-                if (isLogin) window.location.href = `/mypage/${mem_no}/`
+                if (isLogin) window.location.href = `/profile/${mem_no}`
               }
               break
             case '4': //------------------등록 된 캐스트(미정)
