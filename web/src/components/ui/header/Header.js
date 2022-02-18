@@ -5,7 +5,6 @@ import {useHistory} from 'react-router-dom'
 import TitleButton from './TitleButton';
 // css
 import './header.scss'
-import {isHybrid} from "../../../context/hybrid";
 
 const Header = (props) => {
   const {title, type, children, position, newAlarmCnt, backEvent} = props
@@ -15,7 +14,7 @@ const Header = (props) => {
 
   return (
     <header className={`${type ? type : ''} ${position ? position : ''}`}>
-      {isHybrid() && type === 'back' && <button className="back" onClick={goBack} />}
+      {type === 'back' && <button className="back" onClick={goBack} />}
       {title && <h1 className="title">{title}</h1>}
       <TitleButton title={title} newAlarmCnt={newAlarmCnt} />
       {children}

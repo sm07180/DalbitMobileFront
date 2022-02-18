@@ -996,7 +996,7 @@ export default () => {
           if (isLogin) window.location.href = redirect_url
         }
         break
-      case '52': //------------------우체통알람
+      case '52': //------------------메시지알람
         const memNo = pushMsg.mem_no
         if (memNo !== undefined) {
           // if (__NODE_ENV === 'dev') {
