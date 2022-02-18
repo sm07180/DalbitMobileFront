@@ -11,7 +11,6 @@ import {setHonorTab} from "redux/actions/honor";
 const BannerSlide = (props) => {
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
-  const [bannerShow, setBannerShow] = useState(false)
   const dispatch = useDispatch();
 
   const fetchBannerInfo = (arg) => {
@@ -51,15 +50,6 @@ const BannerSlide = (props) => {
       }
     }
   }
-  
-  // bannerOpen
-  const bannerOpen = () => {
-    if (bannerShow === false) {
-      setBannerShow(true)
-    } else {
-      setBannerShow(false)
-    }
-  }
 
   const openBannerUrl = (value) => {
     if(value.includes('notice')) {
@@ -78,34 +68,16 @@ const BannerSlide = (props) => {
 
   return (
     <div id="banner">
-      {bannerShow === false ?
-        <>
-          {bannerList && bannerList.length > 0 &&
-            <Swiper {...swiperBanner}>
-              {bannerList.map((list,index) => {
-                return (
-                  <div key={index}>
-                    <img src={list.bannerUrl} data-target-url={list.linkUrl} alt={list.title} />
-                  </div>
-                )
-              })}
-            </Swiper>
-          }
-          {/* <button className="bannerMore" onClick={bannerOpen}></button> */}
-        </>
-        :
-        <>
+      {bannerList && bannerList.length > 0 &&
+        <Swiper {...swiperBanner}>
           {bannerList.map((list,index) => {
             return (
-              <div className='bannerList' key={index}>
+              <div key={index}>
                 <img src={list.bannerUrl} data-target-url={list.linkUrl} alt={list.title} />
-                {index === 0 && 
-                  <button className={`bannerMore ${bannerShow === true ? 'isShow': ''}`} onClick={bannerOpen}></button>
-                }
               </div>
             )
           })}
-        </>
+        </Swiper>
       }
     </div>
   )
