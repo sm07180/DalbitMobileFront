@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
@@ -8,11 +8,28 @@ import './totalInfo.scss'
 const TotalInfo = (props) => {
   const {data, goProfile} = props
   const [openBadge,setOpenBadge] = useState(false);
+  let badgeTotalCnt = 0;
 
   // 
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
   }
+
+  useEffect(() => {
+    console.log(data);
+    if(data.badgeSpecial > 0) {
+      badgeTotalCnt++
+    }
+    if(data.isSpecial) {
+      badgeTotalCnt++
+    }
+    if(data.commonBadgeList.length > 0) {
+      for(let i = 0; i < data.commonBadgeList.length; i++){
+        badgeTotalCnt++
+      }
+    }
+    return badgeTotalCnt
+  },[data])
 
   return (
     <>
@@ -22,7 +39,10 @@ const TotalInfo = (props) => {
           <BadgeItems data={data} type="commonBadgeList" />
           <BadgeItems data={data} type="isBadge" />
         </div>
-        <button onClick={onOpenBdage}>열기/닫기</button>
+        {
+          badgeTotalCnt > 4 &&
+            <button onClick={onOpenBdage}>열기/닫기</button>
+        }
       </div>
       <div className="rankInfo">
         <div className="box">

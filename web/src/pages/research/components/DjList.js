@@ -15,6 +15,7 @@ const DjList = (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
+    spaceBetween: 16,
   }
 
   const goProfile = (e) => {

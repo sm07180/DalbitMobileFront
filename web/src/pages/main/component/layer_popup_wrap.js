@@ -126,7 +126,6 @@ export default function LayerPopupWrap({data, setData}) {
       {
         data.map((v, idx) => {
           const {popup_type} = v
-          console.log(v)
           return (
             <div id="eventPop" onClick={closePopup} key={idx}>
               <div className="popLayer">

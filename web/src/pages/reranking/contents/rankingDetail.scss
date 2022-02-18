@@ -21,18 +21,22 @@
     }
   }
   .tabmenu {
-    position:relative;
+    position:sticky;
+    top: 116px;
     @include flex(center);
     padding:0 16px;
+    background-color: #fff;
+    z-index: 2;
     li {
       flex: 1;
       @include flex(center, center);
-      padding: 10px 0;
-      border-bottom: 2px solid #ccc;
-      @include font(16px,500,#ccc);
+      height: 48px;
+      border-bottom: 2px solid #F2F2F2;
+      @include font(16px,600,#ACACAC);
+      box-sizing: border-box;
       &.active {
-        @include font(16px,700,#333);
-        border-bottom: 2px solid #333;
+        @include font(16px,700,#202020);
+        border-bottom: 2px solid #202020;
       }
     }
   }
@@ -72,18 +76,15 @@
         position: relative;
         @include flex(center, center);
         width: 100%;
-        padding: 10px 16px;
-        @include font(16px, 500, #272727);
+        padding: 14px 16px;
+        @include font(18px, 600, #272727);
         line-height: 40px;
         .questionMark {
           position: absolute;
           top: 50%; right: 16px;
           transform: translateY(-50%);
           width: 20px; height: 20px;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg transform='translate(-648 -296)'%3E%3Ccircle cx='20' cy='20' r='20' transform='translate(648 296)' fill='%23666'/%3E%3Ctext id='_' data-name='%3F' transform='translate(674 325)' fill='%23fff' font-size='22' font-family='NotoSansCJKkr-Medium, Noto Sans CJK KR' font-weight='500' letter-spacing='-0.05em'%3E%3Ctspan x='-10.802' y='0'%3E%3F%3C/tspan%3E%3C/text%3E%3C/g%3E%3C/svg%3E%0A");
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: contain;
+          @include BGIMG('common/icon/ico_questionMark-bgGray.png');
         }
       }
       .topContent{
@@ -94,10 +95,25 @@
         flex:1;
         &:nth-child(1) {
           order:2;
-          .listColumn {width:100px;}
+          .listColumn {
+            width:100px;
+            .photo {
+              width: 100px; height: 100px;
+            }
+          }
         }
-        &:nth-child(2) {order:1;}
-        &:nth-child(3) {order:3;}
+        &:nth-child(2) {
+          order:1;
+          .photo {
+            width: 84px; height: 84px;
+          }
+        }
+        &:nth-child(3) {
+          order:3;
+          .photo {
+            width: 84px; height: 84px;
+          }
+        }
         .listColumn {
           @include flex(center, center, column);
           width:84px;
@@ -109,6 +125,15 @@
             @include flex(flex-end, center);
             width:100%;
             margin-top:auto;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:50%;
+              box-sizing: border-box;
+            }
+
             img {
               width:100%;
               border-radius: 50%;
@@ -132,12 +157,9 @@
           }
         }
         .badgeLive {
-          @include flex(center, center);
-          width: 100px; height: 28px;
-          margin: 12px auto 0;
-          @include font(12px,700,#FF3C7B);
-          border-radius: 100px;
-          background: #FFE0D8;
+          width:100px;height:28px;
+          @include BGIMG('ranking/dalla/badgeLiveTop.png');
+          margin: 12px auto;
           cursor: pointer;
         }
       }
@@ -212,9 +234,18 @@
         }
         .photo {
           flex: none;
-          width:60px;
+          position: relative;
+          width:60px; height: 60px;
           border-radius: 50%;
-          cursor: pointer;
+          cursor: pointer;          
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:50%;
+            box-sizing: border-box;
+          }
           img {
             width:100%;
             border-radius: 50%;
