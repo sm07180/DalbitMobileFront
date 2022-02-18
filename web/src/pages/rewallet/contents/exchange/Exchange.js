@@ -85,9 +85,6 @@ const Exchange = (props) => {
     if (result === 'success') {
       setAccountList(data.list)
     } else {
-      context.action.alert({
-        msg: message
-      })
     }
   };
 
