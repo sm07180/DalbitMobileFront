@@ -105,7 +105,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    // fetchLiveInfo();
+    fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -142,12 +142,6 @@ const MainPage = () => {
       setCurrentPage(currentPage => currentPage + 1)
     }
   })
-
-  useEffect(() => {
-    if (currentPage > 0) fetchLiveInfo()
-    document.addEventListener('scroll', scrollEvent)
-    return () => document.removeEventListener('scroll', scrollEvent)
-  }, [currentPage, liveListType])
 
   const mainTouchStart = useCallback(
     (e) => {
