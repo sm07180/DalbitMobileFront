@@ -20,6 +20,6 @@ export const StoreLink = async (context, history) => {
       })
     }
   } else {
-    history.push('/pay/store')
+    history.push('/store')
   }
 }

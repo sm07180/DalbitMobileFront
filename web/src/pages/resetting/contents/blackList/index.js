@@ -9,7 +9,7 @@ import ListRow from 'components/ui/listRow/ListRow'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 
 // components
-import Tabmenu from '../../components/Tabmenu'
+import Tabmenu from '../../components/tabmenu'
 import FilterBtn from '../../components/FilterBtn'
 import SettingList from '../../components/SettingList'
 

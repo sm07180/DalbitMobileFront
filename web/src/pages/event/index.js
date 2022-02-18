@@ -16,7 +16,7 @@ import ImageGuide from './image_guide'
 import PaymentMrnoing from './payment_morning'
 import PaymentLunch from './payment_lunch'
 import RestChange from './rest_customer/customer_change'
-import RestClear from './rest_customer/customer_clear'
+import RestClear from './rest_customer/CustomerClear'
 import RestNotice from './rest_customer/customer_notice'
 import HappyTime from './happy_time'
 import Specialdj from './specialdj'
@@ -49,8 +49,10 @@ import PlayMaker from './playMaker'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
+import Invite from './invite'
+import Share from './share'
 
-export default () => {
+export default (props) => {
   const params = useParams()
 
   const createContent = () => {
@@ -81,9 +83,9 @@ export default () => {
       case 'customer_change':
         return <RestChange />
       case 'customer_clear':
-        return <RestClear />
+        return <RestClear memNo={props.location.state.memNo} />
       case 'customer_notice':
-        return <RestNotice />
+        return <RestNotice memNo={props.location.state.memNo} />
       case 'happy_time':
         return <HappyTime />
       case 'specialdj':
@@ -144,6 +146,11 @@ export default () => {
       //   return <Participant />
       // case 'marblePocket':
       //   return <MarblePocket />
+      
+      case 'invite':
+        return <Invite />
+      case 'share':
+        return <Share />
       default:
         return <></>
         break

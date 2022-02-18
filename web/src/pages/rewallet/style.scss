@@ -1,5 +1,15 @@
 @import "components/ui/_mixin.scss";
 
+.container{
+  #walletPage{
+    header{
+      .buttonGroup{
+        display: flex;
+      }
+    }
+  }
+}
+
 #walletPage{
   section{
     position: relative;
@@ -26,6 +36,9 @@
           @include BGIMG("mypage/dalla/icon_star.png");
         }
       }
+    }
+    .buttonGroup{
+      margin-right: 12px
     }
   }
   > .tabmenu {
@@ -348,7 +361,6 @@
       }
       .listRow {
         @include flex(center);
-        overflow: hidden;
         margin-bottom: 8px;
         &:last-child{margin-bottom: 0;}
         &.address {
@@ -375,6 +387,7 @@
         }
         .inputBox {
           .select {
+            position:relative;
             flex:1;
             @include flex(center);
             margin:0 16px;
@@ -389,6 +402,10 @@
               margin-left:auto;
               @include BGIMG('wallet/ico_arrowDown.png')
             }
+          }
+          .selectWrap {
+            @include selectWrapStyle-1;
+            max-height:180px;
           }
           .value {
             margin:0 16px;
@@ -415,12 +432,16 @@
           color:#FF3C7B
         }
       }
+      .noticeBox{
+        @include flex($fd:column);
+        @include font(12px, $Medium, #ff1919);
+      }
       .privacyBox{
         margin-top: 30px;
         .inputLabel {
           margin-bottom:8px;
-          .checkinfo {
-            @include font(16px,500,#303030);
+          .checkInfo {
+            @include font(16px,$SemiBold,#303030);
           }
           sup {
             @include font(12px, 600, #FF3C7B);
@@ -429,7 +450,7 @@
         }
         p {
           letter-spacing: -0.5px;
-          @include font(12px, 400);
+          @include font(12px, $Regular);
         }
       }
       .accountList{

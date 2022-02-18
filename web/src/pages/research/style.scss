@@ -1,6 +1,12 @@
 @import '../../styles/global.scss';
 @import "components/ui/_mixin.scss";
 
+$SEARCH-HEADER: 112px;
+
+.container .totalWrap #searchPage .tabmenu {
+  top: $GNB-HEIGHT + $SEARCH-HEADER !important;
+}
+
 #searchPage {
   header {
     align-items: flex-start;
@@ -56,23 +62,28 @@
   }
   .djSection {
     padding-top:10px;
-    .listColumn {
-      width: 87px;
-      .photo {
-        height:87px;
-        img {
-          border-radius:50%;
+    .listWrap {
+      @include flex(center, center, column);
+      .listColumn {
+        width: 87px;
+        cursor: pointer;
+        .photo {
+          height:87px;
+          img {
+            border-radius:50%;
+          }
         }
-      }
-      .listItem {
-        @include flex(center,center);
-        width:100%;
-        margin: 6px 0;
-        .nick {
-          margin-left:4px;
-          @include font(12px, 400, #666666);
-          @include fontCut;
-        }
+        .listItem {
+          @include flex(center,center);
+          width: 100%;
+          height: 17px;
+          margin: 6px 0;
+          .nick {
+            margin-left:4px;
+            @include font(12px, 400, #666666);
+            @include fontCut;
+          }
+        }      
       }
       button {
         width: 62px;
@@ -86,7 +97,7 @@
           @include font(12px, 500, #303030);
         }
       }
-    }
+    }    
   }
   .liveSection {
     .listColumn {
@@ -94,6 +105,12 @@
       height: 150px;
       border-radius: 16px;
       overflow: hidden;
+      cursor: pointer;
+      .photo {
+        img {
+          width:auto;
+        }
+      }
       .nick {
         @include position-bottom-left;
         width:100%;
@@ -111,6 +128,7 @@
   .clipSection {
     .listColumn {
       width: 113px;
+      cursor: pointer;
       .photo {
         height:113px;
         img {
@@ -152,9 +170,13 @@
 
   // searchResult page
   .tabmenu {
+    position: sticky;
+    top: 112px;
     @include flex(center);
     margin-bottom:18px;
     padding: 4px 16px;
+    background-color: #FFF;
+    z-index: 2;
     li {
       @include flex(center, center);
       height: 36px;
@@ -175,6 +197,7 @@
   .djResult {
     .listRow {
       margin-bottom:16px;
+      cursor: pointer;
       .photo {
         width:64px;
         height:64px;
@@ -191,6 +214,7 @@
     .listRow {
       align-items: normal;
       margin-bottom:12px;
+      cursor: pointer;
       .listItem:nth-child(3) {
         margin-top: auto;
       }
@@ -214,6 +238,7 @@
   .clipResult {
     .listRow {
       margin-bottom:12px;
+      cursor: pointer;
       .photo {
         width:72px;
         height:72px;

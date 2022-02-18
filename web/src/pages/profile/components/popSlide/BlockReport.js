@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
 import Tabmenu from '../Tabmenu'
 
@@ -87,14 +87,14 @@ const BlockReport = (props) => {
   /* 신고 valid 체크 */
   const reportValidationCheck = () => {
     if (selectedInfo.value === '') {
-      context.action.alert({
+      return context.action.alert({
         callback: () => {},
         msg: '신고 사유를 선택해주세요.'
       })
     }
 
     if (selectedInfo.value !== '' && reportReason.length < REPORT_MIN_LENGTH) {
-      context.action.alert({
+      return context.action.alert({
         callback: () => {},
         msg: `신고 사유를 ${REPORT_MIN_LENGTH}자 이상 입력해주세요.`
       })
@@ -147,7 +147,7 @@ const BlockReport = (props) => {
             <strong>{blockReportInfo?.memNick}</strong>님을<br/>
             신고하시겠습니까?
           </div>
-          <InputItems title={`신고 유형`}>
+          <InputItems title="신고 유형">
             <button onClick={openPopSelect}>{selectedInfo.key}</button>
             {openSelect &&
             <div className="selectWrap">
@@ -162,7 +162,7 @@ const BlockReport = (props) => {
           <InputItems title={`신고 내용`} type="textarea">
             <textarea maxLength={REPORT_MAX_LENGTH}
                       rows="4"
-                      placeholder={"placeHolder"}
+                      placeholder="상세한 신고 내용을 기재해주세요. 허위 신고는 제재 대상이 될 수 있습니다. (최하 10글자 이상)"
                       onChange={reportReasonHandler}
             />
             <div className='count'>{reportReason.length}/{REPORT_MAX_LENGTH}</div>

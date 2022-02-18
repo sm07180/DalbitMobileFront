@@ -1,0 +1,205 @@
+@import "../../../../components/ui/mixin";
+
+#clipRanking{
+  header {
+    .buttonGroup {
+      .benefits {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        @include font(14px,$Regular,#303030);
+      }
+    }
+  }
+  .tabmenu {
+    @include tabmenuStyle-1;
+    padding:0 16px;
+  }
+  .topRanker {
+    @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left top;
+    h2 {
+      line-height: 40px;
+      margin-top: 2px;
+      text-align:center;
+      @include font(16px,$SemiBold,#272727);
+    }
+    .swiper-container {
+      .swiper-slide {
+        .rankerWrap {
+          @include flex(center);
+          width:100%;
+          padding:0 8px;
+          .ranker {
+            flex:1;
+            margin-top:auto;
+            .listColumn {
+              @include flex(center,center,column);
+              width:94px;
+              margin: 0 auto;
+              .photo {
+                position:relative;
+                width: 84px;
+                height: 84px;
+                margin-bottom:8px;
+                background-color: #acacac;
+                border-radius: 16px;
+                img {
+                  width:100%;
+                  border-radius:16px;
+                }
+                .rank {
+                  @include position-top-left;
+                  @include flex(center, center);
+                  width: 32px;
+                  line-height: 32px;
+                  border-radius: 50%;
+                  background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
+                  @include font(20px, 700, #fff);
+                }
+                .play {
+                  @include position-top-right;
+                  display: inline-block;
+                  width: 28px;
+                  height: 28px;
+                  @include BGIMG('clip/dalla/ico_playAll.png');
+                  background-size:auto 14px;
+                }
+              }
+              .title {
+                width: 100%;
+                margin-bottom:2px;
+                text-align:center;
+                @include font(13px,$Bold,#202020);
+                @include fontCut;
+              }
+              .nick {
+                width:100%;
+                text-align:center;
+                @include font(12px,$Regular,#666);
+                @include fontCut;
+              }
+            }
+            &:nth-child(1) {
+              .photo {
+                width:100px;height:100px;
+              }
+            }
+            &:nth-child(2) {
+              order: -1;
+            }
+          }
+        }
+      }
+    }
+    .swiper-pagination {
+      position: relative;
+      bottom:0;
+      @include flex(center,center);
+      width:100%;
+      padding:16px 0 12px;
+      span {
+        width: 8px; height: 5px;
+        margin: 0 2px;
+        border-radius: 100px;
+        background-color:#D2D2D2;
+        &.active {
+          width: 15px; height: 5px;
+          background-color: #202020;
+        }
+      }
+    }
+  }
+  .listWrap {
+    @include flex(center, flex-start, column);
+    height: 100%;
+    margin: 0 16px;
+    padding: 12px 0 30px;
+    border-top:1px solid #F2F2F2;
+    .listAll{
+      @include flex(center, space-between);
+      width: 100%;
+      margin-bottom: 16px;
+      span {
+        @include font(12px,$Medium,#666);
+      }
+      button {
+        @include flex(center, center);
+        width: 84px;
+        line-height: 32px;
+        margin-left: auto;
+        @include font(13px,$Medium,white);
+        background: #202020;
+        border-radius: 100px;
+        .iconPlayAll{
+          display: inline-block;
+          width: 9px;
+          height: 9px;
+          margin-left:2px;
+          @include BGIMG('clip/dalla/ico_playAll.png');
+        }
+      }
+    }
+    .listRow {
+      @include flex(center);
+      width: 100%;
+      margin-bottom:15px;
+      min-width: 0;
+      &:last-child {
+        margin-bottom:0px;
+      }
+      .rank {
+        order:-1;
+        flex: none;
+        width: 30px;
+        margin-right:8px;
+        text-align:center;
+        @include font(16px,600,#333);
+      }
+      .photo {
+        position: relative;
+        flex: none;
+        width:72px;
+        height: 72px;
+        border-radius: 16px;
+        overflow: hidden;
+        background-color: #acacac;
+        img {
+          width:100%;
+        }
+        .play {
+          display: block;
+          @include position-top-right(0px, 0px);
+          width: 28px;
+          height: 28px;
+          @include BGIMG('clip/dalla/ico_playAll.png');
+          background-size:auto 14px;
+        }
+      }
+      .listContent {
+        flex: 1;
+        padding: 0 16px;
+        overflow: hidden;        
+        div {
+          + div {
+            margin-top:4px;
+          }
+          &.type{
+            @include font(12px, 400, #999);
+            @include fontCut;
+          }
+          &.title{
+            @include font(14px, 500, #202020);
+            @include fontCut;
+          }
+          &.nick {
+            @include font(13px,400,#666);
+            @include fontCut;
+          }
+        }
+      }
+    }
+  }
+}

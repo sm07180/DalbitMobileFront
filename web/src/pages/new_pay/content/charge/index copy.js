@@ -348,7 +348,7 @@ export default (props) => {
       if (res.result === 'success') {
         const ciValue = res.data.ci;
         if (ciValue === null || ciValue === false || ciValue === "testuser" || ciValue === "admin" || ciValue.length < 10) {
-          history.push(`/selfauth?event=/pay/store`)
+          history.push(`/selfauth?event=/store`)
         } else {
           if (Utility.getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
             payFetch(res.data.ci);
@@ -381,7 +381,7 @@ export default (props) => {
           }
         }
       } else {
-        history.push(`/selfauth?event=/pay/store`)
+        history.push(`/selfauth?event=/store`)
       }
     }
     fetchSelfAuth()

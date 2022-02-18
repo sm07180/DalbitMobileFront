@@ -20,9 +20,12 @@ const MainSlide = (props) => {
       disableOnInteraction: false
     },
     on:{
-      click: (swiper, event) => {
-        if(event.type === 'touchend' || event.type === 'pointerup') {
-          const paths = event.path || event.composedPath();
+      click: (s, e) => {
+        let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
+        if(evt.type === 'touchend' || evt.type === 'pointerup') {
+          evt.preventDefault();
+          evt.stopPropagation();
+          const paths = evt.path || evt.composedPath();
           let swiperIndex = "";
           paths.forEach(dom => {
             if(dom.dataset && dom.dataset.swiperIndex) {
@@ -54,7 +57,7 @@ const MainSlide = (props) => {
                   <ListColumn photo={list.profImg.thumb500x500} index={index}>
                     <div className='info'>
                       <div className="badgeGroup">
-                        <BadgeItems data={list.liveBadgeList} />
+                        <BadgeItems data={list} type='liveBadgeList' />
                       </div>
                       <span className="title">{list.title}</span>
                       <span className="nick">{list.nickNm}</span>

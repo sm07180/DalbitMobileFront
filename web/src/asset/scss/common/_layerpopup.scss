@@ -1,4 +1,5 @@
 @import "./variables";
+@import "components/ui/_mixin.scss";
 
 #layerPopup {
   position: fixed;
@@ -163,11 +164,11 @@
         font-weight: $bold;
         line-height: 44px;
         text-align: center;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         color: #fff;
         border-radius: 12px;
         &.on {
-          background: $primary;
+          background: $MAINCOLOR;
         }
         &.off {
           background: $mediumGray;
@@ -244,7 +245,7 @@
       overflow: hidden;
       border-bottom: 1px solid $lightGray;
       &.isPurple {
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
 
@@ -388,7 +389,7 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 9;
+  z-index: $POPUP-ZINDEX;
   display: flex;
   justify-content: center;
   align-items: center;

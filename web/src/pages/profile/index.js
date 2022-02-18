@@ -1,55 +1,62 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context, GlobalContext} from 'context'
+import {Context} from 'context'
 import './style.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
-import TopSwiper from './components/TopSwiper'
-import ProfileCard from './components/ProfileCard'
-import TotalInfo from './components/TotalInfo'
+import TopSwiper from './components/topSwiper'
+import ProfileCard from './components/profileCard'
+import TotalInfo from './components/totalInfo'
 import Tabmenu from './components/Tabmenu'
-import FanStarLike from './components/popSlide/FanStarLike'
+import FanStarLike from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 // contents
-import FeedSection from './contents/profileDetail/feedSection'
-import FanboardSection from './contents/profileDetail/fanboardSection'
-import ClipSection from './contents/profileDetail/clipSection'
+import FeedSection from './contents/profileDetail/FeedSection'
+import FanboardSection from './contents/profileDetail/FanboardSection'
+import ClipSection from './contents/profileDetail/ClipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
 import {
+  profileClipDefault,
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileFeedDefaultState
+  profileFeedDefaultState, profilePagingDefault
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
+import LikePopup from "pages/profile/components/popSlide/LikePopup";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
-const socialTabmenu = ['피드','팬보드','클립']
+const socialTabmenu = ['방송공지','팬보드','클립']
+const socialDefault = socialTabmenu[0];
 
 const ProfilePage = () => {
   const history = useHistory()
   const context = useContext(Context)
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
 
-  const [showSlide, setShowSlide] = useState(false);
-  const [imgList, setImgList] = useState([]);
-  const [socialType, setSocialType] = useState(socialTabmenu[0])
-  const [isMyProfile, setIsMyProfile] = useState(false);
-  const [popSlide, setPopSlide] = useState(false);
-  const [popFanStarLike, setPopFanStarLike] = useState(false);
-  const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
-  const [popBlockReport, setPopBlockReport] = useState(false);
-  const [popPresent, setPopPresent] = useState(false);
-  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
+  const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
+  const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
+  const [socialType, setSocialType] = useState() // 피드 | 팬보드 | 클립
+  const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
+  const [popSlide, setPopSlide] = useState(false); // 팝업 슬라이드
+  const [popFanStar, setPopFanStar] = useState(false); // 팬스타 팝업
+  const [popLike, setPopLike] = useState(false); // 좋아요 팝업
+  const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
+  const [popBlockReport, setPopBlockReport] = useState(false); // 차단/신고 팝업
+  const [popPresent, setPopPresent] = useState(false); // 선물 팝업
+  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
+  const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
+
+  const [webview, setWebview] = useState('');
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -77,23 +84,22 @@ const ProfilePage = () => {
   const getFeedData = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      pageNo: 1,
-      pagePerCnt: 9999,
+      pageNo: feedData.paging.next,
+      pagePerCnt: feedData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
       if (res.result === 'success') {
         const data = res.data;
+        const callPageNo = data.paging.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
-          feedList: data.list, // 피드(고정 피드 제외)
-          fixedFeedList: data.fixList, // 고정 피드
-          fixCnt: data.fixList.length, // 고정 피드 개수
+          ...feedData,
+          feedList: data.paging.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
+          // fixedFeedList: data.fixList, // 고정 피드
+          // fixCnt: data.fixList.length, // 고정 피드 개수
           paging: data.paging, // 호출한 페이지 정보
-          scrollPaging: { // 스크롤 페이징 정보
-            ...feedData.scrollPaging,
-            pageNo: 1,
-            currentCnt: data.list.length,
-          }
+          isLastPage,
         }));
       } else {
         context.action.alert({
@@ -107,13 +113,25 @@ const ProfilePage = () => {
   const getFanBoardData = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      page: 1,
-      records: 9999
+      page: fanBoardData.paging.next,
+      records: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
         const data= res.data;
-        dispatch(setProfileFanBoardData({...fanBoardData, list: data.list, paging: data.paging}));
+        const callPageNo = data.paging.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileFanBoardData({
+          ...fanBoardData,
+          list: data.paging.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
+          listCnt: data.paging.total,
+          paging: data.paging,
+          isLastPage,
+        }));
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
       }
     })
   }
@@ -122,21 +140,29 @@ const ProfilePage = () => {
   const getClipData = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      page: 1,
-      records: 10
+      page: clipData.paging.next,
+      records: clipData.paging.records
     }
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
-        dispatch(setProfileClipData(res.data));
+        const data= res.data;
+        const callPageNo = data.paging.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileClipData({
+          ...clipData,
+          list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
+          paging: data.paging,
+          isLastPage,
+        }));
       } else {
-        context.action.alert({msg: message})
+        context.action.alert({ msg: res.message })
       }
     })
   }
 
   /* 팬 등록 해제 */
-  const fanToggle = (memNo, memNick, isFanYn, callback) => {
-    isFanYn ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  const fanToggle = (memNo, memNick, isFan, callback) => {
+    isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
   }
 
   /* 팬 등록 */
@@ -197,6 +223,7 @@ const ProfilePage = () => {
   /* 방송시작 알림 설정 */
   const editAlarm = useCallback(() => {
     const isReceive = profileData.isReceive;
+    setPopSlide(false);
     if(isReceive) {
       context.action.confirm({
         msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
@@ -240,7 +267,7 @@ const ProfilePage = () => {
     setPopSlide(true)
   }
 
-  /* 차단/신고 팝업 열기 */
+  /* 차단/신고 팝업 열기 (param: {memNo: '', memNick: ''}) */
   const openBlockReportPop = (blockReportInfo) => {
     if(popSlide) setPopSlide(false);
     setPopBlockReport(true);
@@ -263,11 +290,17 @@ const ProfilePage = () => {
     setShowSlide(true);
   }
 
-  /* 팬,스타,좋아요 슬라이드 팝업 열기/닫기 */
-  const openPopFanStarLike = (e) => {
+  /* 팬,스타 슬라이드 팝업 열기/닫기 */
+  const openPopFanStar = (e) => {
     const {targetType} = e.currentTarget.dataset
-    setOpenFanStarLikeType(targetType)
-    setPopFanStarLike(true)
+    setOpenFanStarType(targetType)
+    setPopFanStar(true)
+  }
+
+  /* 좋아요 슬라이드 팝업 열기/닫기 */
+  const openPopLike = (e) => {
+    const {targetType} = e.currentTarget.dataset
+    setPopLike(true)
   }
 
   /* 우체통 이동 */
@@ -276,49 +309,176 @@ const ProfilePage = () => {
       context,
       mailboxAction,
       targetMemNo: profileData.memNo,
-      history
+      history,
+      targetMemLevel: profileData.level
     }
     goMail(goMailParams);
+    setPopSlide(false);
+  }
+
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback((scrollTarget, callback) => {
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight === targetHeight + scrollTop) {
+      callback()
+    }
+  }, []);
+
+  /* 피드, 팬보드, 클립 페이징 */
+  const profileScrollEvent = useCallback(() => {
+    const callback = () => {
+      setScrollPagingCnt(scrollPagingCnt => scrollPagingCnt + 1);
+    }
+    scrollEvent(document.documentElement, callback);
+  }, []);
+
+  /* 스크롤 이벤트 remove */
+  const removeScrollEvent = useCallback(() => {
+    document.removeEventListener('scroll', profileScrollEvent);
+  }, []);
+
+  // 피드 / 팬보드 / 클립 탭 변경시 액션
+  const socialTabChangeAction = (item) => {
+    if(item === socialTabmenu[0]) {
+      dispatch(setProfileFeedData({...feedData, paging: profilePagingDefault, isLastPage: false}));
+      removeScrollEvent();
+      document.addEventListener('scroll', profileScrollEvent);
+    }else if(item === socialTabmenu[1]) {
+      dispatch(setProfileFanBoardData({...fanBoardData, paging: profilePagingDefault, isLastPage: false}));
+      removeScrollEvent();
+      document.addEventListener('scroll', profileScrollEvent);
+    }else if(item === socialTabmenu[2]) {
+      dispatch(setProfileClipData({...clipData, paging: profileClipDefault, isLastPage: false}));
+      removeScrollEvent();
+      document.addEventListener('scroll', profileScrollEvent);
+    }
+  }
+
+  /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
+  const parameterManager = () => {
+    if(location.search) {
+      const searchParams = location.search.split('?')[1];
+      searchParams.split('&').forEach(item => {
+        const itemSplit = item.split('=');
+        const paramType = itemSplit[0].toLowerCase();
+        if(paramType === 'webview') {
+          setWebview(itemSplit[1]);
+        }else if(paramType === 'tab') {
+          if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) {
+            setSocialType(socialTabmenu[itemSplit[1]]);
+          }else {
+            setSocialType(socialDefault); // default
+          }
+        }
+      });
+    }else {
+      setSocialType(socialDefault); // default
+    }
   }
 
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
-    dispatch(setProfileData(profileDefaultState));
-    dispatch(setProfileFeedData(profileFeedDefaultState));
-    dispatch(setProfileFanBoardData(profileFanBoardDefaultState));
-    dispatch(setProfileClipData(profileClipDefaultState));
+    dispatch(setProfileData(profileDefaultState)); // 프로필 상단
+    dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
+    dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
+    dispatch(setProfileClipData(profileClipDefaultState)); // 클립
   }
+
+  /* 피드글, 팬보드 삭제후 데이터 비우기 */
+  const deleteContents = (type, index, memNo) => {
+    const callback = async () => {
+      if (type === 'feed') {
+        const {result, data, message} = await Api.mypage_notice_delete({
+          data: {
+            delChrgrName: profileData?.nickNm,
+            noticeIdx: index,
+          }
+        })
+        if (result === 'success') {
+          const feedList = feedData.feedList.concat([]).filter((feed, _index) => feed.noticeIdx !== index);
+          dispatch(setProfileFeedData({...feedData, feedList}));
+        } else {
+          context.action.toast({msg: message});
+        }
+      } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
+        const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
+
+        const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
+        if (result === 'success') {
+          dispatch(setProfileFanBoardData({...fanBoardData, list}));
+        } else {
+          context.action.toast({msg: message});
+        }
+      }
+    }
+    context.action.confirm({
+      msg: '정말 삭제 하시겠습니까?',
+      callback
+    });
+  }
+
+  /* 스크롤 페이징 이펙트 */
+  useEffect(() => {
+    if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
+      getFeedData();
+    }else if(socialType === socialTabmenu[1] && scrollPagingCnt > 1 && !fanBoardData.isLastPage) {
+      getFanBoardData();
+    }else if(socialType === socialTabmenu[2] && scrollPagingCnt > 1 && !clipData.isLastPage) {
+      getClipData();
+    }
+  }, [scrollPagingCnt]);
+
+  /* 피드 마지막 페이지 호출 이펙트 */
+  useEffect(() => {
+    if(feedData.isLastPage){
+      removeScrollEvent();
+    }
+  }, [feedData.isLastPage])
+
+  /* 팬보드 마지막 페이지 호출 이펙트 */
+  useEffect(() => {
+    if(fanBoardData.isLastPage){
+      removeScrollEvent();
+    }
+  }, [fanBoardData.isLastPage])
+
+  /* 클립 마지막 페이지 호출 이펙트 */
+  useEffect(() => {
+    if(clipData.isLastPage){
+      removeScrollEvent();
+    }
+  }, [clipData.isLastPage])
 
   /* 프로필 상단 데이터 */
   useEffect(() => {
-    getProfileData();
-  }, [history.location.pathname]);
+    if(context.token.isLogin) {
+      getProfileData();
+    }
+  }, [location.pathname]);
 
-  /* 피드 데이터 */
+  /* 피드 / 팬보드 / 클립 */
   useEffect(() => {
     if(socialType === socialTabmenu[0]) {
       getFeedData();
+    }else if(socialType === socialTabmenu[1]) {
+      getFanBoardData();
+    }else if(socialType === socialTabmenu[2]) {
+      getClipData();
     }
   }, [socialType])
 
-  /* 팬보드 */
   useEffect(() => {
-    if(socialType === socialTabmenu[1]) {
-      getFanBoardData();
+    if(!context.token.isLogin) {
+      return history.replace('/login');
     }
-  }, [socialType]);
-
-  /* 클립 */
-  useEffect(() => {
-    if(socialType === socialTabmenu[2]) {
-      getClipData();
-    }
-  }, [socialType]);
-
-  useEffect(() => {
-    setIsMyProfile(!params.memNo);
+    setIsMyProfile(!params.memNo); // 내 프로필인지 체크
+    parameterManager(); // 주소 뒤에 파라미터 체크
+    document.addEventListener('scroll', profileScrollEvent);
     return () => {
       resetProfileData();
+      removeScrollEvent();
     }
   }, []);
 
@@ -328,7 +488,7 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className='editBtn'>수정</button>
+            <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
           </div>
           :
           <div className="buttonGroup">
@@ -336,13 +496,12 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      {/* <div onClick={goMailAction}>askldjlkasdjf</div> */}
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} />
+        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
-                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle} setPopPresent={setPopPresent}
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
+                     openPopFanStar={openPopFanStar} openPopLike={openPopLike} setPopPresent={setPopPresent}
         />
       </section>
       <section className='totalInfo'>
@@ -350,29 +509,36 @@ const ProfilePage = () => {
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap">
-          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
-          {isMyProfile && <button>등록</button>}
+          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} tabChangeAction={socialTabChangeAction} />
+          {(socialType === socialTabmenu[0] && isMyProfile || socialType === socialTabmenu[1])
+            && <button onClick={() => {
+            socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
+              socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
+          }}>등록</button>}
         </div>
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
           <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
-                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} />
+                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {socialType === socialTabmenu[1] &&
-          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} />
+          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile}
+                           deleteContents={deleteContents} openBlockReportPop={openBlockReportPop} />
         }
 
         {/* 클립 */}
         {socialType === socialTabmenu[2] &&
-          <ClipSection profileData={profileData} clipData={clipData} isMyProfile={isMyProfile} />
+          <ClipSection profileData={profileData} clipData={clipData} isMyProfile={isMyProfile} webview={webview} />
         }
 
         {/* 프로필 사진 확대 */}
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
       </section>
+
+      {/* 더보기 */}
       {popSlide &&
         <PopSlide setPopSlide={setPopSlide}>
           <section className='profileMore'>
@@ -385,16 +551,34 @@ const ProfilePage = () => {
           </section>
         </PopSlide>
       }
-      {popFanStarLike &&
-        <PopSlide setPopSlide={setPopFanStarLike}>
-          <FanStarLike type={openFanStarLikeType} isMyProfile={isMyProfile} />
+
+      {/* 팬 / 스타 */}
+      {popFanStar &&
+        <PopSlide setPopSlide={setPopFanStar}>
+          <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
+                       goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
+                       scrollEvent={scrollEvent}
+          />
         </PopSlide>
       }
+
+      {/* 좋아요 */}
+      {popLike &&
+        <PopSlide setPopSlide={setPopLike}>
+          <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
+          />
+        </PopSlide>
+      }
+
+      {/* 차단 */}
       {popBlockReport &&
         <PopSlide setPopSlide={setPopBlockReport}>
           <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
         </PopSlide>
       }
+
+      {/* 선물하기 */}
       {popPresent &&
         <PopSlide setPopSlide={setPopPresent}>
           <Present profileData={profileData} setPopPresent={setPopPresent} />

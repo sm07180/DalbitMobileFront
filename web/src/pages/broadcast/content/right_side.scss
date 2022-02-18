@@ -1,6 +1,7 @@
 @import "../../../asset/scss/common/global";
 @import "../content/right_content/listeners.scss";
 @import "../content/right_content/live_list.scss";
+@import "components/ui/_mixin.scss";
 
 #broadcast-page {
   // common
@@ -13,13 +14,12 @@
       display: flex;
       flex-direction: row;
       width: 100%;
-      border-bottom: 1px solid $primary;
+      border-bottom: 1px solid $MAINCOLOR;
 
       .btnTab {
         display: inline-block;
         width: 25%;
         height: 50px;
-        margin-right: -1px;
         line-height: 50px;
         font-size: 16px;
         text-align: center;
@@ -28,10 +28,12 @@
         border: 1px solid $lightGray;
         border-bottom: 0;
         cursor: pointer;
+        + .btnTab {
+          border-left:0;
+        }
         &:first-child {
           border-radius: 10px 0 0 0;
         }
-
         &:last-child {
           margin-right: 0;
           border-radius: 0 10px 0 0;
@@ -39,8 +41,8 @@
         &:hover,
         &--active {
           color: $white;
-          background-color: $primary;
-          border: 1px solid $primary;
+          background-color: $MAINCOLOR;
+          border: 1px solid $MAINCOLOR;
         }
       }
     }
@@ -160,7 +162,7 @@
         }
 
         &.active {
-          background-color: $primary;
+          background-color: $MAINCOLOR;
         }
 
         &.snow {
@@ -176,7 +178,7 @@
           background-color: $lighterGray;
 
           &.active {
-            background-color: $primary;
+            background-color: $MAINCOLOR;
           }
 
           &.snow {
@@ -394,7 +396,7 @@
         &__number {
           margin-left: 16px;
           font-size: 20px;
-          color: #632beb;
+          color: $MAINCOLOR;
           letter-spacing: -0.5px;
           font-weight: $bold;
         }
@@ -426,7 +428,7 @@
         &:hover,
         &.active {
           opacity: 1;
-          border: 1px solid $primary;
+          border: 1px solid $MAINCOLOR;
         }
         &.guest {
           &:hover {
@@ -459,7 +461,7 @@
           color: $white;
           border-radius: 14px;
           &--dj {
-            background: $primary;
+            background: $MAINCOLOR;
           }
           &--guest {
             background: $emerald;
@@ -482,7 +484,7 @@
         display: inline-block;
         width: 100px;
         font-size: 18px;
-        color: $primary;
+        color: $MAINCOLOR;
       }
 
       .graph {
@@ -501,7 +503,7 @@
           width: 100%;
           height: 100%;
           padding-right: 10px;
-          background: #632beb;
+          background: $MAINCOLOR;
           text-align: right;
           line-height: 1.2;
           color: #fff;
@@ -585,14 +587,14 @@
         width: 15px;
         height: 15px;
         margin-top: 2px;
-        border: 1px solid $primary;
+        border: 1px solid $MAINCOLOR;
         border-radius: 15px;
         position: relative;
         &::before {
           content: "+";
           font-size: 18px;
           line-height: 18px;
-          color: $primary;
+          color: $MAINCOLOR;
           position: absolute;
           bottom: 0px;
         }
@@ -622,7 +624,7 @@
           background: $darkGray;
         }
         .ico__new {
-          display: inline-block;
+          @include flex(center, center);
           content: "";
           position: absolute;
           top: -6px;
@@ -632,8 +634,6 @@
           background: $red;
           color: $white;
           font-size: 10px;
-          text-align: center;
-          line-height: 10px;
           padding: 2px 2px;
           border-radius: 10px;
         }
@@ -825,7 +825,7 @@
       }
       .btn__send {
         width: 60%;
-        background: $primary;
+        background: $MAINCOLOR;
         color: $white;
       }
     }
@@ -1044,7 +1044,7 @@
               float: left;
               align-items: center;
               margin-right: 4px;
-              color: $primary;
+              color: $MAINCOLOR;
               &.video {
                 padding: 8px 0 0px 10px;
               }
@@ -1073,7 +1073,7 @@
                 &.bj {
                   padding: 0 6px;
                   border-radius: 10px;
-                  background: $primary;
+                  background: $MAINCOLOR;
 
                   &.new {
                     background-color: rgba(69, 147, 236, 1);
@@ -1213,7 +1213,7 @@
         color: $mediumGray;
         &.nickNm {
           font-weight: $bold;
-          color: $primary;
+          color: $MAINCOLOR;
         }
         &.reportMsg {
           display: block;
@@ -1230,7 +1230,7 @@
       strong {
         display: inline-block;
         margin-right: 4px;
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
 
@@ -1254,8 +1254,8 @@
           margin-bottom: 0px;
         }
         &--active {
-          border: 1px solid $primary;
-          color: $primary;
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
           font-weight: $bold;
         }
       }
@@ -1548,7 +1548,7 @@
         border-radius: 10px;
       }
       .btn__gift {
-        background: $primary;
+        background: $MAINCOLOR;
         color: $white;
       }
     }
@@ -1624,8 +1624,8 @@
         }
 
         &--on {
-          border: 1px solid $primary;
-          color: $primary;
+          border: 1px solid $MAINCOLOR;
+          color: $MAINCOLOR;
           font-weight: $bold;
         }
       }
@@ -1666,7 +1666,7 @@
           position: absolute;
           width: 100%;
           height: 1px;
-          background: $primary;
+          background: $MAINCOLOR;
           left: 0px;
           bottom: 0px;
           margin: 0px;
@@ -1675,7 +1675,7 @@
         }
 
         &.on {
-          color: $primary;
+          color: $MAINCOLOR;
           i {
             display: block;
           }
@@ -1698,7 +1698,7 @@
         color: #fff;
         height: 44px;
         border-radius: 12px;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         font-size: 18px;
         &:nth-child(odd) {
           margin-right: 4px;
@@ -1772,7 +1772,7 @@
       font-size: 24px;
       color: $gray;
       em {
-        color: $primary;
+        color: $MAINCOLOR;
         font-weight: $bold;
       }
     }
@@ -1864,20 +1864,20 @@
       &__minusBtn {
         width: 24px;
         height: 24px;
-        background: url(https://image.dalbitlive.com/svg/ico_minus_p.svg)
+        background: url(https://image.dalbitlive.com/common/icon/ico_minus-p.png)
           no-repeat center center / cover;
         &.notActive {
-          background: url(https://image.dalbitlive.com/svg/ico_minus_g.svg)
+          background: url(https://image.dalbitlive.com/common/icon/ico_minus-g.png)
             no-repeat center center / cover;
         }
       }
       &__plusBtn {
         width: 24px;
         height: 24px;
-        background: url(https://image.dalbitlive.com/svg/ico_add_p.svg)
+        background: url(https://image.dalbitlive.com/common/icon/ico_add-p.png)
           no-repeat center center / cover;
         &.notActive {
-          background: url(https://image.dalbitlive.com/svg/ico_add_g.svg)
+          background: url(https://image.dalbitlive.com/common/icon/ico_add-g.png)
             no-repeat center center / cover;
         }
       }
@@ -1889,7 +1889,7 @@
       color: $white;
       font-size: 16px;
       text-align: center;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       border-radius: 10px;
 
       &.item {
@@ -1986,7 +1986,7 @@
       width: 100%;
       height: 48px;
       border-radius: 10px;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       color: #fff;
       font-size: 16px;
       letter-spacing: -0.4px;
@@ -2000,17 +2000,17 @@
       button {
         width: 49%;
         height: 48px;
-        border: 1px solid $primary;
+        border: 1px solid  $MAINCOLOR;
         border-radius: 10px;
         font-size: 16px;
         letter-spacing: -0.4px;
         text-align: center;
       }
       &__cancelBtn {
-        color: $primary;
+        color:  $MAINCOLOR;
       }
       &__modifyBtn {
-        background-color: $primary;
+        background-color:  $MAINCOLOR;
         color: #fff;
       }
     }
@@ -2068,7 +2068,7 @@
       height: 48px;
       margin-top: 16px;
       border-radius: 10px;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       color: #fff;
       font-size: 16px;
       letter-spacing: -0.4px;
@@ -2122,9 +2122,9 @@
       &__cancel {
         width: 44px;
         height: 24px;
-        color: $primary;
+        color:  $MAINCOLOR;
         border-radius: 10px;
-        border: solid 1px $primary;
+        border: solid 1px  $MAINCOLOR;
       }
     }
     &__contentsBox {
@@ -2183,20 +2183,24 @@
   .btn__fan {
     font-size: 13px;
     text-align: center;
-    color: $mediumGray;
-    border: 1px solid $mediumGray;
+    color: #fff;
+    // border: 1px solid $mediumGray;
     transition: all 0.2s ease-in;
+    background: $MAINCOLOR;
 
     &:hover {
-      color: $darkGray;
-      border: 1px solid $darkGray;
+      color: #fff;
+      background: #ff0052;
+      // border: 1px solid $MAINCOLOR;
     }
     &--active {
-      color: $primary;
-      border: 1px solid $primary;
+      color: $mediumGray;
+      border: 1px solid $mediumGray;
+      background: #fff;
       &:hover {
-        color: $primary;
-        border: 1px solid $primary;
+        color: $darkGray;
+        border: 1px solid $darkGray;
+        background: #fff;
       }
     }
   }
@@ -2235,7 +2239,7 @@
       }
       &--count {
         margin-left: 8px;
-        color: $primary;
+        color: $MAINCOLOR;
         font-weight: $regular;
       }
       &--buttonWrap {
@@ -2246,8 +2250,8 @@
       &--button {
         padding: 8px 17px;
         color: #fff;
-        background-color: $primary;
-        border: 1px solid $primary;
+        background-color: $MAINCOLOR;
+        border: 1px solid $MAINCOLOR;
         border-radius: 13px;
         font-size: 14px;
         font-weight: $light;
@@ -2356,8 +2360,8 @@
           color: #757575;
           font-size: 14px;
           &.on {
-            border: 1px solid $primary;
-            color: $primary;
+            border: 1px solid $MAINCOLOR;
+            color: $MAINCOLOR;
           }
         }
       }
@@ -2372,8 +2376,8 @@
           color: $greishGray;
 
           &.on {
-            border: 1px solid $primary;
-            color: $primary;
+            border: 1px solid $MAINCOLOR;
+            color: $MAINCOLOR;
           }
         }
       }
@@ -2545,7 +2549,7 @@
       .notice {
         display: flex;
         margin-left: auto;
-        width: 90px;
+        width: 100px;
         color: #a0a0a0;
         height: 16px;
         margin-top: 40px;
@@ -2569,7 +2573,7 @@
         border-radius: 10px;
         background: $mediumGray;
         &--active {
-          background: #632beb;
+          background: $MAINCOLOR;
         }
       }
     }
@@ -2592,7 +2596,7 @@
         background-color: #fff;
 
         &.on {
-          background-color: #632beb;
+          background-color: $MAINCOLOR;
           color: #fff;
         }
       }
@@ -2646,8 +2650,8 @@
       cursor: pointer;
 
       &--active {
-        color: #632beb;
-        border-bottom: 1px solid #632beb;
+        color: $MAINCOLOR;
+        border-bottom: 1px solid $MAINCOLOR;
         font-weight: $bold;
       }
     }
@@ -2674,9 +2678,9 @@
       cursor: pointer;
 
       &--active {
-        color: #632beb;
+        color: $MAINCOLOR;
         font-weight: $bold;
-        border-bottom: 1px solid #632beb;
+        border-bottom: 1px solid $MAINCOLOR;
       }
     }
   }
@@ -2790,7 +2794,7 @@
       &__nick {
         display: inline-block;
         max-width: 200px;
-        color: #632beb;
+        color: $MAINCOLOR;
         vertical-align: bottom;
         overflow: hidden;
         white-space: nowrap;
@@ -2809,11 +2813,11 @@
       table {
         th {
           padding: 5px 0;
-          border-top: 1px solid #632beb;
-          border-bottom: 1px solid #632beb;
+          border-top: 1px solid $MAINCOLOR;
+          border-bottom: 1px solid $MAINCOLOR;
           font-size: 12px;
           text-align: center;
-          color: #632beb;
+          color: $MAINCOLOR;
         }
         tr {
           width: 50%;
@@ -2892,8 +2896,8 @@
           height: 100px;
           top: 0;
           left: 0;
-          background-color: rgba($primary, 0.5);
-          border: 2px solid $primary;
+          background-color: rgba($MAINCOLOR, 0.5);
+          border: 2px solid $MAINCOLOR;
           border-radius: 20px;
           box-sizing: border-box;
           overflow: hidden;

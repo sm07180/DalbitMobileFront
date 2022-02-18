@@ -24,7 +24,10 @@ $errorMsg : #FF1919;
       }
     }
     .inputWrap {
-      margin-bottom: 32px;      
+      margin-bottom: 12px;
+      &:last-of-type {
+        margin-bottom: 32px;
+      }
       .inputItems {
         .inputBox {
           position:relative;
@@ -129,6 +132,78 @@ $errorMsg : #FF1919;
       letter-spacing: -0.5px;
       text-align: center;
       transform: skew(-0.03deg);
+    }
+  }
+  .agree {
+    padding: 20px 0px 32px;
+    .agreeTitle {
+      margin-bottom: 24px;
+      @include font(18px, 700, #202328);
+    }
+    .agreeWrap {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      .agreeListAll {
+        position: relative;
+        @include flex(center);
+        width: 100%;
+        .checkinfo {
+          @include font(14px, 500, #212429);
+        }
+      }
+      .agreeListWrap {
+        position: relative;
+        @include flex(center, center, column);
+        width: 100%;
+        padding-top: 16px;
+        margin-top: 16px;
+        border-top: 1px solid #F2F2F2;
+        .agreeList {
+          position: relative;
+          @include flex(center);
+          width: 100%;
+          margin-bottom: 18px;                    
+          .checkinfo {
+            @include font(14px, 400, #43464A);
+          }               
+          &:last-child {
+            margin-bottom: 0px;   
+          }    
+        }
+      }
+      .inputLabel {
+        flex: 1;
+        @include flex(center);
+        cursor: pointer;
+        .blind {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0 0 0 0);
+        }
+        .checkIcon {
+          flex: none;
+          display: inline-block;
+          width: 23px; height: 23px;
+          margin-right: 10px;
+          border-radius: 50%;
+          background-image: url("https://image.dalbitlive.com/common/input/checkbox-default.png");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;              
+        }  
+        .blind:checked + .checkIcon{
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E ");
+        }
+        .policyBtn {
+          margin-left: auto;
+          @include font(13px, 400, #999999);
+          text-decoration: underline;
+        }
+      }
     }
   }
 }

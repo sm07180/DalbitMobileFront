@@ -23,17 +23,26 @@
     }
     .listContainer {
       flex:1;
-      height:100%;
+      @include flex($fd:column);
+      overflow-y:hidden;
       > .tabmenu {
         @include subTabmenuStyle-1;
         margin-bottom:12px;
-        .swiper-slide {
-          width:auto;
+        .swiper-container {
+          width:100%;
+          .swiper-slide {
+            width:auto;
+            &:first-child {
+              margin-left:16px;
+            }
+            &:last-child {
+              margin-right:12px;
+            }
+          }
+        }
+        .likeTab {
           &:first-child {
             margin-left:16px;
-          }
-          &:last-child {
-            margin-right:12px;
           }
         }
         button {
@@ -46,7 +55,7 @@
         }
       }
       .listWrap {
-        height:100%;
+        flex:1;
         padding:0 16px;
         overflow-y:auto;
         .listRow {
@@ -81,9 +90,6 @@
             }
             .date {
               @include font(11px,400,#999);
-            }
-            .like {
-              @include font(12px,400,#999);
             }
           }
           .back {
@@ -143,7 +149,6 @@
       }
       .inputItems {
         .title {
-          position:relative;
           @include flex(flex-start);
           &:after {
             content:"";
@@ -151,7 +156,7 @@
             width:4px;height:4px;
             margin-top:4px;
             border-radius:50%;
-            background-color:#FF3C7B;
+            background-color:$MAINCOLOR;
           }
         }
         .inputBox {
@@ -171,19 +176,7 @@
             }
           }
           .selectWrap {
-            @include position-top-left(50px);
-            z-index: 10;
-            width:100%;
-            max-height:230px;
-            padding:0 16px;
-            background-color: white;
-            border-radius:16px;
-            box-shadow:0 2px 3px rgba(black,.16);
-            overflow-y:auto;
-            .option {
-              line-height:50px;
-              @include font(15px,500,#202020);
-            }
+            @include selectWrapStyle-1;
           }
         }
         .textareaBox {
@@ -308,6 +301,20 @@
         &.active {
           opacity: 1;
         }
+      }
+    }
+  }
+  #layerPop {
+    .profileRankNotice {
+      height:280px;
+      text-align:center;
+      .title {
+        margin-bottom:6px;
+        @include font(16px,$SemiBold,$MAINCOLOR);
+      }
+      .text {
+        margin-bottom:22px;
+        @include font(12px,$Regular,#666);
       }
     }
   }

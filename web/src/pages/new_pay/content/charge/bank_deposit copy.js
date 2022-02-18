@@ -50,12 +50,12 @@ export default () => {
     }
     if (!phone) {
       return context.action.alert({
-        msg: `핸드폰 번호는 필수입력 값입니다.`
+        msg: `휴대폰 번호는 필수입력 값입니다.`
       })
     }
     if (!rgEx.test(phone)) {
       return context.action.alert({
-        msg: `올바른 핸드폰 번호가 아닙니다.`
+        msg: `올바른 휴대폰 번호가 아닙니다.`
       })
     }
     if (receiptCode === 'i' && iValType === 'social' && receiptSocial.length < 13) {

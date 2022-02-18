@@ -8,6 +8,9 @@
     }
     .title {
       pointer-events: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      width: auto;
       .optionSelect {
         display: inline-block;
         width: 20px; height: 20px;
@@ -28,8 +31,8 @@
       border-bottom: 2px solid #ccc;
       @include font(16px,500,#ccc);
       &.active {
-        @include font(16px,700,#333);   
-        border-bottom: 2px solid #333;       
+        @include font(16px,700,#333);
+        border-bottom: 2px solid #333;
       }
     }
   }
@@ -77,10 +80,7 @@
           top: 50%; right: 16px;
           transform: translateY(-50%);
           width: 20px; height: 20px;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg transform='translate(-648 -296)'%3E%3Ccircle cx='20' cy='20' r='20' transform='translate(648 296)' fill='%23666'/%3E%3Ctext id='_' data-name='%3F' transform='translate(674 325)' fill='%23fff' font-size='22' font-family='NotoSansCJKkr-Medium, Noto Sans CJK KR' font-weight='500' letter-spacing='-0.05em'%3E%3Ctspan x='-10.802' y='0'%3E%3F%3C/tspan%3E%3C/text%3E%3C/g%3E%3C/svg%3E%0A");
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: contain;
+          @include BGIMG('common/icon/ico_questionMark-bgGray.png');
         }
       }
       .topContent{
@@ -90,14 +90,17 @@
       .ranker {
         flex:1;
         &:nth-child(1) {
+          order:2;
           .listColumn {width:100px;}
         }
-        &:nth-child(2) {order:-1;}
+        &:nth-child(2) {order:1;}
+        &:nth-child(3) {order:3;}
         .listColumn {
           @include flex(center, center, column);
           width:84px;
           height:128px;
           margin:0 auto;
+          cursor: pointer;
           .photo {
             position: relative;
             @include flex(flex-end, center);
@@ -126,12 +129,10 @@
           }
         }
         .badgeLive {
-          @include flex(center, center);
-          width: 100px; height: 28px;
-          margin: 12px auto 0;
-          @include font(12px,700,#FF3C7B);
-          border-radius: 100px;
-          background: #FFE0D8;
+          width:100px;height:28px;
+          @include BGIMG('ranking/dalla/badgeLiveTop.png');
+          margin: 12px auto;
+          cursor: pointer;
         }
       }
       .cupidWrap {
@@ -146,13 +147,14 @@
           @include flex(center);
           width: 61px; height: 20px;
           border-radius: 100px;
-          padding-left: 20px;
+          padding: 0px 6px 0px 20px;
           margin: -18px 0 12px;
           @include font(12px,500,#FFFFFF);
           @include BGIMG('common/icon/icoppyong.png');
           background-color:#303030;
           background-position: 4px center;
           background-size: 16px 16px;
+          box-sizing: border-box;
         }
         .cupidContent {
           @include flex(center, center, column);
@@ -190,7 +192,7 @@
         @include flex(center);
         width: 100%;
         margin-bottom:15px;
-        min-width: 0;
+        min-width: 0;        
         &:last-child {
           margin-bottom:0px;
         }
@@ -206,6 +208,7 @@
           flex: none;
           width:60px;
           border-radius: 50%;
+          cursor: pointer;
           img {
             width:100%;
             border-radius: 50%;
@@ -215,7 +218,7 @@
           flex: 1;
           padding: 0 16px;
           @include flex(center, center, column);
-          overflow: hidden;        
+          overflow: hidden;
           .listItem {
             @include flex(center);
             width: 100%;
@@ -269,18 +272,20 @@
           }
         }
       }
-    } 
+    }
   }
   #popSlide {
     .selectWrap {
       position: relative;
       @include flex(center, center, column);
       width: 100%;
+      padding: 20px 0 30px;
       .selectOption {
         width: 100%;
         text-align: center;
         @include font(16px, 400, #202020);
         line-height: 55px;
+        cursor: pointer;
         &.active {
           @include font(16px, 700, #FF3C7B);
         }
@@ -325,5 +330,5 @@
       background-repeat: no-repeat;
       background-size: 16px 16px;
     }
-  }
+  }  
 }

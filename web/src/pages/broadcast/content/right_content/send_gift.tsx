@@ -86,6 +86,8 @@ export default function SendGift(props: {
 
   const categoryList = common.itemCategories;
 
+  const [inputValue, setInputValue] = useState('');
+
   // 아이템 선택하기
   const selectItem = (idx: number, selectItem: any) => {
     if (itemNo === selectItem.itemNo) {
@@ -597,6 +599,8 @@ export default function SendGift(props: {
                               forwardedRef={ttsInputRef}
                               validator={ttsInputValidator}
                               disabled={false}
+                              value={inputValue}
+                              setValue={setInputValue}
                     />
                   </>
                   :
@@ -606,6 +610,8 @@ export default function SendGift(props: {
                               forwardedRef={ttsInputRef}
                               validator={ttsInputValidator}
                               disabled={true}
+                              value={inputValue}
+                              setValue={setInputValue}
                     />
                   </>
                   }

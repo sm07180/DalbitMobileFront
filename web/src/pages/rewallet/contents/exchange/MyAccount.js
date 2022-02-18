@@ -1,9 +1,9 @@
-import React, {useState, useEffect,useContext} from 'react'
+import React, {useState, useEffect, useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
 // global components
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
@@ -12,11 +12,19 @@ const MyAccount = (props) => {
   const history = useHistory()
   //context
   const context = useContext(Context)
-  const {profile} = context
+  const {profile, splash} = context
 
   const [accountInfo, setAccountInfo] = useState(true)
   const [slidePop, setSlidePop] = useState(false)
   const [modifySlidePop, setModifySlidePop] = useState(true)
+
+  const bankList = useMemo(() => {
+    if (splash !== null) {
+      return [{cd: '0', cdNm: '은행선택'}, ...splash.exchangeBankCode];
+    } else {
+      return [];
+    }
+  }, [splash]);
 
   // 계좌 추가/수정
   const onClickAddAcount = () => {
@@ -76,6 +84,15 @@ const MyAccount = (props) => {
                 <div className="listRow">
                   <InputItems title="은행">
                     <div className="select">은행선택</div>
+                    <div className="selectWrap">
+
+                    {bankList.map((item, index) => {
+                      return <div key={index} className="option"
+                                  onClick={() => {
+                                  }}
+                      >{item.cdNm}</div> })
+                    }
+                    </div>
                   </InputItems>
                 </div>
                 <div className="listRow">

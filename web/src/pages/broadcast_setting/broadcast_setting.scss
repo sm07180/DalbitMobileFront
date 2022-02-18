@@ -1,4 +1,5 @@
 @import "../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
 
 .broadcastSetting {
   padding: 40px 16px;
@@ -7,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $primary;
+    color: $MAINCOLOR;
     letter-spacing: -0.85px;
     font-size: 34px;
     font-weight: $bold;
@@ -147,6 +148,7 @@
   }
 
   .access {
+    position:relative;
     display: flex;
     width: 100%;
 
@@ -170,14 +172,27 @@
       }
 
       &.active {
-        color: $primary;
-        border-color: $primary;
+        color: $MAINCOLOR;
+        border-color: $MAINCOLOR;
         margin-right: 0;
       }
 
       &:first-child {
         margin-left: 1px;
       }
+    }
+    &__select {
+      @include position-top-left(100%);
+      z-index: 1;
+      width:100%;
+      background-color:white;
+      box-shadow:0 2px 3px rgba(black, .16);
+    }
+    &__option {
+      line-height:50px;
+      margin:0 20px;
+      cursor:pointer;
+      z-index: 100;
     }
   }
 
@@ -196,8 +211,8 @@
       cursor: pointer;
 
       &--active {
-        color: $primary;
-        border-color: $primary;
+        color: $MAINCOLOR;
+        border-color: $MAINCOLOR;
       }
     }
   }
@@ -299,14 +314,12 @@
 
   .notice {
     display: flex;
-    margin-left: auto;
-    width: 90px;
+    width: 100px;
     color: #a0a0a0;
     height: 16px;
-    margin-top: 40px;
-    margin-bottom: 15px;
     cursor: pointer;
     padding-left: 22px;
+    margin: 20px 0 15px auto;
     background: url(https://image.dalbitlive.com/svg/ic_mark.svg) center left no-repeat;
     font-size: 12px;
   }
@@ -378,7 +391,7 @@
     border-radius: 10px;
     background: $mediumGray;
     &--active {
-      background: $primary;
+      background: $MAINCOLOR;
     }
   }
 

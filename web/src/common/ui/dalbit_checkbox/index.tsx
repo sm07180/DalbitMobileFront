@@ -58,7 +58,7 @@ export default function DalbitCheckbox(props: CheckboxProps) {
 DalbitCheckbox.defaultProps = {
   status: false,
   size: 24,
-  backgroundColor: "#632beb",
+  backgroundColor: "#FF3C7B",
 };
 
 const CheckboxWrap = styled.div`
@@ -127,8 +127,8 @@ const Chechbox = styled.input`
   }
 
   &.on {
-    border-color: ${(props: CheckboxProps) => (props.bgColor ? `${props.bgColor}` : "#632beb")};
-    background-color: ${(props: CheckboxProps) => (props.bgColor ? `${props.bgColor}` : "#632beb")};
+    border-color: ${(props: CheckboxProps) => (props.bgColor ? `${props.bgColor}` : "#FF3C7B")};
+    background-color: ${(props: CheckboxProps) => (props.bgColor ? `${props.bgColor}` : "#FF3C7B")};
     transition: 0.2s all ease 0s;
 
     &::before,

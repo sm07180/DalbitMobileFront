@@ -12,7 +12,9 @@ import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header'
+
+import './selfAuth.scss'
 
 export const openAuthPage = (formTagRef, context) => {
   var KMCIS_window
@@ -112,7 +114,7 @@ export default (props) => {
 
   const AuthContent = () => {
     if (event) {
-      if (event === '/pay/store') {
+      if (event === '/store') {
         return (
           <>
             <h4>
@@ -152,103 +154,36 @@ export default (props) => {
           <br />
           <span>본인인증 절차</span>가 필요합니다.
         </h4>
-        <p>
-          ※ 환전 신청은 만 14세 이상의 회원만 가능합니다.
-          <br />
-          ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
-          <br />※ 만 14세~만 19세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
-        </p>
+        <div className="noticeInfo">
+          <h3>유의사항</h3>
+          <p>환전 신청은 만 14세 이상의 회원만 가능합니다.</p> 
+          <p>환전 승인을 위해 최초 1회 본인인증이 필요합니다.</p>
+          <p>만 14세~만 19세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.</p>
+        </div>
       </>
     )
   }
 
   //---------------------------------------------------------------------
   return (
-    <Layout {...props} status="no_gnb">
-      <Header title="본인인증" goBack={goBack} />
-      <Content>
+    <div id ="selfAuth">
+      <Header type="back"/>
+      <section className="imgWrap">
         <div className="img-wrap">
           <img src={`${IMG_SERVER}/images/api/img_rabbit_02.svg`} />
           <h2>본인인증</h2>
         </div>
+      </section>
+      <section className="authWrap">
         <div className="auth-wrap">
           <AuthContent />
           <div className="btn-wrap">
             <button onClick={authClick}>본인 인증하기</button>
           </div>
         </div>
-      </Content>
-    </Layout>
+      </section>
+    </div>
   )
 }
 //---------------------------------------------------------------------
 
-const Content = styled.div`
-  padding: 30px 16px;
-  .img-wrap {
-    padding-bottom: 20px;
-    text-align: center;
-    h2 {
-      font-size: 24px;
-      line-height: 24px;
-      color: #000;
-      padding-top: 30px;
-    }
-  }
-  .auth-wrap {
-    padding: 10px 0;
-    h4 {
-      text-align: center;
-      color: #000;
-      font-size: 14px;
-      font-weight: 400;
-      line-height: 20px;
-      strong {
-        font-weight: 600;
-      }
-      span {
-        font-weight: 600;
-        color: ${COLOR_MAIN};
-      }
-    }
-    h5 {
-      text-align: center;
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: 400;
-      span {
-        color: ${COLOR_MAIN};
-      }
-    }
-    h4 + h5 {
-      padding-top: 10px;
-    }
-    p {
-      padding-top: 35px;
-      color: #757575;
-      font-size: 12px;
-      line-height: 18px;
-    }
-    .btn-wrap {
-      display: flex;
-      padding-top: 25px;
-      button {
-        flex: 1;
-        height: 44px;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 600;
-        background: ${COLOR_MAIN};
-        border: 1px solid ${COLOR_MAIN};
-        line-height: 44px;
-        &.cancel {
-          color: ${COLOR_MAIN};
-          background: #fff;
-        }
-      }
-      button + button {
-        margin-left: 8px;
-      }
-    }
-  }
-`

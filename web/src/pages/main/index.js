@@ -2,12 +2,13 @@ import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import Lottie from 'react-lottie'
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
+import CntTitle from '../../components/ui/cntTitle/CntTitle'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 // components
-import Tabmenu from './components/Tabmenu'
+import Tabmenu from './components/tabmenu'
 import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
@@ -15,19 +16,22 @@ import LiveView from './components/LiveView'
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
-import {OS_TYPE} from "context/config";
+import {IMG_SERVER} from 'context/config'
+// popup
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import UpdatePop from "pages/main/popup/UpdatePop";
+import {setIsRefresh} from "redux/actions/common";
+import {isHybrid} from "context/hybrid";
+import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 
-const topTenTabMenu = ['DJ','FAN','LOVER']
+const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 20
 
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png';
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
-
-const customHeader = JSON.parse(Api.customHeader)
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -41,12 +45,24 @@ const MainPage = () => {
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [tabFixed, setTabFixed] = useState(false)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
+
+  const [payOrderId, setPayOrderId] = useState("")
+  const [receiptPop, setReceiptPop] = useState(false)
+
+  const [popupData, setPopupData] = useState([]);
+
+  const [updatePopInfo, setUpdatePopInfo] = useState({
+    showPop: false,
+    storeUrl: '',
+  });
+  const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
   const liveList = useSelector(state => state.live);
+  const common = useSelector(state => state.common);
 
   // 조회 API
   const fetchMainInfo = () => dispatch(setMainData());
@@ -65,6 +81,7 @@ const MainPage = () => {
       if (res.result === 'success') {
         const data = res.data;
         let paging = data.paging;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === currentPage : true;
         if(data.paging) {
           totalPage = Math.ceil(data.paging.total / pagePerCnt)
         }else {
@@ -77,18 +94,22 @@ const MainPage = () => {
         } else {
           dispatch(setMainLiveList({list: data.list, paging}));
         }
+
+        if(isLastPage) {
+          document.removeEventListener('scroll', scrollEvent);
+        }
       }
     })
   }, [currentPage, liveListType]);
 
+  /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
-    setCurrentPage(0);
-
+    setCurrentPage(1);
   }
 
   // scroll
@@ -118,9 +139,9 @@ const MainPage = () => {
 
     // 스크롤시 추가 리스트
     if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
+      setCurrentPage(currentPage => currentPage + 1)
     }
-  })
+  }, [])
 
   const mainTouchStart = useCallback(
     (e) => {
@@ -181,9 +202,13 @@ const MainPage = () => {
           refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         }, 17)
 
+        setPullToRefreshPause(false);
         mainDataReset();
 
-        await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+        await new Promise((resolve, _) => setTimeout(() => {
+          resolve();
+          setPullToRefreshPause(true);
+        }, 300))
         clearInterval(loadIntervalId)
 
         setReloadInit(false)
@@ -204,38 +229,112 @@ const MainPage = () => {
     touchEndY = null
   }, [reloadInit])
 
+  const clearReceipt = () => {
+    setReceiptPop(false)
+    sessionStorage.removeItem('orderId')
+  }
+
+  const getReceipt = () => {
+    if (sessionStorage.getItem('orderId') !== null) {
+      const orderId = sessionStorage.getItem('orderId')
+      setReceiptPop(true);
+      setPayOrderId(orderId);
+    }
+  }
+
+  /* 업데이트 확인 */
+  const updatePopFetch = async () => {
+    if (isHybrid()) {
+      if (sessionStorage.getItem('checkUpdateApp') === null) {
+        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
+      }
+
+      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
+        Api.verisionCheck().then(res => {
+          const isUpdate = res.data.isUpdate
+          const storeUrl = res.data.storeUrl
+          setUpdatePopInfo({showPop: isUpdate, storeUrl})
+        })
+      }
+    }
+  }
+
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    }
+  }
 
   useEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-  }, [currentPage])
+    if(common.isRefresh) {
+      mainDataReset();
+      window.scrollTo(0, 0);
+      dispatch(setIsRefresh(false));
+    }
+  }, [common.isRefresh]);
 
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
+    fetchLiveInfo();
+    getReceipt();
+    updatePopFetch(); // 업데이트 팝업
+    fetchMainPopupData('6');
+    document.addEventListener('scroll', scrollEvent);
+    return () => {
+      sessionStorage.removeItem('orderId')
+      sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+      document.removeEventListener('scroll', scrollEvent)
+    }
   }, [])
 
   useEffect(() => {
-    if (currentPage > 0) fetchLiveInfo()
-    document.addEventListener('scroll', scrollEvent)
-    return () => document.removeEventListener('scroll', scrollEvent)
+    if (currentPage > 1) {
+      fetchLiveInfo()
+    }
   }, [currentPage, liveListType])
  
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
-      ref={iconWrapRef}
-      style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
+         style={{height: '48px'}}
+         ref={iconWrapRef}>
       <div className="icon-wrap">
-        <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
+        {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
+        <div className="arrow-refresh-icon" ref={arrowRefreshRef}>
+          <Lottie
+            isPaused={pullToRefreshPause}
+            options={{
+              loop: true,
+              autoPlay: true,
+              path: `${IMG_SERVER}/common/scroll_refresh.json`,
+            }}
+          />
+        </div>
       </div>
     </div>
     <div id="mainPage" ref={MainRef} 
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
-      onTouchEnd={mainTouchEnd}
-      style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
+      onTouchEnd={mainTouchEnd}>
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title="메인" position="relative"/>
+        <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>
         <MainSlide data={mainState.topBanner}/>
@@ -270,9 +369,12 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
+    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
+    {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+    {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
   return MainLayout;
 }
- 
+
 export default MainPage
  

@@ -19,7 +19,7 @@ export default () => {
       if (customHeader['os'] === OS_TYPE['IOS']) {
         StoreLink(context, history)
       } else {
-        history.push(`/pay/store`)
+        history.push(`/store`)
       }
     }
   }

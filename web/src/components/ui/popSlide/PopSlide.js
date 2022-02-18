@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 // css
-import './popSlide.scss'
+import './popslide.scss'
 
 const PopSlide = (props) => {
   const {setPopSlide, title, children} = props
@@ -16,6 +16,8 @@ const PopSlide = (props) => {
   const closePopupDim = (e) => {
     const target = e.target
     if (target.id === 'popSlide') {
+      e.preventDefault();
+      e.stopPropagation();
       closePopup()
     }
   }

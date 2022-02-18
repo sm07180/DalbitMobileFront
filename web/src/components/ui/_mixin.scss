@@ -7,13 +7,15 @@ $IMGSERVER: unquote("https://image.dalbitlive.com");
 // height 값 관리
 $HEADER-HEIGHT: 48px;
 $NAVIGATION-HEIGHT: 50px;
+$GNB-HEIGHT: 68px;
 
 // z-inde 관리
-$ALERT-ZINDEX: 60;
-$POPUP-ZINDEX: 60;
-$MORE-ZINDEX: 50;
-$POPSLIDE-ZINDEX: 50;
-$NAVIGATION-ZINDEX: 30;
+$ALERT-ZINDEX: 100;
+$POPUP-ZINDEX: 90;
+$POPSLIDE-ZINDEX: 80;
+$MORE-ZINDEX: 20;
+$GNB-ZINDEX: 50;
+$NAVIGATION-ZINDEX: 50;
 $HEADER-ZINDEX: 30;
 
 // SUIT FONT-WEIGHT;
@@ -102,7 +104,6 @@ $ExtraBold: 800;
   line-height:20px;
   padding:0 8px 0 10px;
   border-radius:100px 0 0 100px;
-  letter-spacing: -1px;
   @include font(12px,400,white);
   background-color:rgba(0,0,0,.4);
 }
@@ -343,6 +344,22 @@ $ExtraBold: 800;
   }
 }
 
+@mixin selectWrapStyle-1 {
+  @include position-top-left(50px);
+  z-index: 10;
+  width:100%;
+  max-height:230px;
+  padding:0 16px;
+  background-color: white;
+  border-radius:16px;
+  box-shadow:0 2px 3px rgba(black,.16);
+  overflow-y:auto;
+  .option {
+    line-height:50px;
+    @include font(15px,500,#202020);
+  }
+}
+
 @mixin navigationStyle {
   #navigation {
     height:50px;
@@ -354,7 +371,6 @@ $ExtraBold: 800;
       display:flex;
       align-items:center;
       width:100%;
-      max-width:460px;
       height:50px;
       background-color:white;
       pointer-events: initial;

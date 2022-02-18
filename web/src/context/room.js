@@ -16,7 +16,7 @@ import React, {useEffect, useState, useContext} from 'react'
 
 //context
 import Api from 'context/api'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 import {Context} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
@@ -124,7 +124,22 @@ export const RoomJoin = async (obj) => {
       } else if (Room.context.adminChecker === false && roomNo === Utility.getCookie('listen_room_no')) {
         return Hybrid('EnterRoom', '')
       } else {
-        return Room.context.action.confirm({
+        if(Utility.getCookie('listen_room_no') !== 'null' && Utility.getCookie('listen_room_no') !== undefined) {
+          return Room.context.action.confirm({
+            callback: () => {
+              sessionStorage.removeItem('room_active')
+              return RoomJoin({roomNo: roomNo, shadow: 0})
+            },
+            cancelCallback: () => {
+              sessionStorage.removeItem('room_active')
+            },
+            msg: '현재 청취 중인 방송방이 있습니다.\n방송에 입장하시겠습니까?',
+          })
+        }else {
+          sessionStorage.removeItem('room_active')
+          return RoomJoin({roomNo: roomNo, shadow: 0})
+        }
+        /*return Room.context.action.confirm({
           callback: () => {
             sessionStorage.removeItem('room_active')
             return RoomJoin({roomNo: roomNo, shadow: 0})
@@ -133,7 +148,7 @@ export const RoomJoin = async (obj) => {
             sessionStorage.removeItem('room_active')
           },
           msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
-        })
+        })*/
       }
     }
   }
@@ -313,13 +328,13 @@ export const RoomJoin = async (obj) => {
       sessionStorage.setItem('room_no', roomNo)
       Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
-      Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
-      //TODO:Facebook,Firebase 이벤트 호출 추후 앱 배포 되면 삭
-      try {
-        fbq('track', 'RoomJoin')
-        firebase.analytics().logEvent('RoomJoin')
-        kakaoPixel('114527450721661229').viewCart('RoomJoin')
-      } catch (e) {}
+
+      // RoomJoin 이벤트 (회원 비회원 분리)
+      const newRoomJoinCmd = Room.context.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
+      const oldRoomJoinCmd = 'RoomJoin';
+      Utility.addAdsData(newRoomJoinCmd);
+      Utility.addAdsData(oldRoomJoinCmd);
+
       return true
     }
   }

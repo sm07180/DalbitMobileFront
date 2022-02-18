@@ -1,37 +1,35 @@
-import React, {useEffect, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-
+import React from 'react'
 // global components
 import Header from 'components/ui/header/Header'
 // components
 import Tabmenu from './components/Tabmenu'
 // contents
-import SpecialDj from './contents/SpecialDj'
 import WeeklyPick from './contents/WeeklyPick'
-
+import SpecialDj from "pages/rehonor/contents/SpecialDj";
+import {useDispatch, useSelector} from "react-redux";
 
 import './style.scss'
+import {setHonorTab} from "redux/actions/honor";
 
-const Honor = () => {  
-  const [tabList, setTabList] = useState(["스페셜DJ", "위클리 픽"]);
-  const [TabName, setTabName] = useState(tabList[0])
-  
-  useEffect(() => {
+const honorTabmenu = ["스페셜DJ", "위클리 픽"]
 
-  }, [TabName])
+const Honor = () => {
+  const {tab} = useSelector((state) => state.honor);
+
+  const dispatch = useDispatch();
+
+
 
   // 페이지 시작
   return (
    <div id='honor'>
-      <Header position="sticky" title="명예의 전당" type="back"/>
-      <div className='content'>
-        <Tabmenu data={tabList} tab={TabName} setTab={setTabName} />
-        { TabName === "스페셜DJ" ?
-          <SpecialDj/>
-          :
-          <WeeklyPick/>
-        }
-      </div>
+      <Header title="명예의 전당" type="back"/>
+      <Tabmenu data={honorTabmenu} tab={tab} setTab={(val) => dispatch(setHonorTab(val))} />
+      {tab === honorTabmenu[0] ?
+        <SpecialDj />
+        :
+        <WeeklyPick />
+      }
    </div>
   )
 }

@@ -690,6 +690,7 @@ export default class API {
       params: params
     })
   }
+
   /**
    * @brief 마이페이지 리포트 청취내역 조회
    * @method "GET""
@@ -1823,6 +1824,14 @@ export default class API {
     })
   }
 
+  static getMyRank = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
+      params: data
+    })
+  }
+
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -2014,6 +2023,15 @@ export default class API {
       params: params
     })
   }
+
+  static noticeList = async (obj) => {
+    return await ajax({
+      url: `/center/notice`,
+      method: "GET",
+      params: obj
+    })
+  };
+
   /**
    * @brief 고객센터 공지사항 상세 목록 조회
    * @method "GET"
@@ -2242,6 +2260,16 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/rest/pay/simple`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+  //결제완료 영수증 확인
+  static pay_receipt = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/receipt`,
       method: method || 'POST',
       data: data
     })
@@ -3759,6 +3787,86 @@ export default class API {
       params: data,
     })
   }
+
+  //추천코드 및 회원 등록
+  static inviteRegister = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/register',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //추천받은 회원 체크
+  static inviteCheck = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/check',
+      method: 'GET',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+
+  //추천코드 보상 지급
+  static inviteReward = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/reward',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //초대페이지 회원 정보
+  static inviteMy = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/my',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //친구초대 회원 리스트
+  static inviteList = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/list',
+      method: 'GET',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //친구초대 내정보
+  static inviteMyRank = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/my-rank',
+      method: 'GET',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //친구초대 회원 리스트
+  static inviteMyList = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/my-list',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+
 }
 
 API.customHeader = null

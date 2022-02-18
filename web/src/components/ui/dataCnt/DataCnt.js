@@ -5,7 +5,7 @@ import Utility from 'components/lib/utility'
 import './dataCnt.scss'
 
 const DataCnt = (props) => {
-  const {type, value, clickEvent} = props  
+  const {type, value, clickEvent} = props
   {/* type에는 전송받은 데이터의 key명을 string으로 입력,
       value에는 해당배열.key 형태로 입력
       clickEvent에는 해당 요소의 클릭이벤트를 함수로 입력  */}
@@ -23,3 +23,7 @@ const DataCnt = (props) => {
 }
 
 export default DataCnt
+
+DataCnt.defaultProps = {
+  clickEvent: () => {}
+}

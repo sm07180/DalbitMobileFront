@@ -3,9 +3,11 @@
 #banner {
   position:relative;
   .swiper-container {
+    cursor: pointer;
+    &:active {cursor: pointer;}
     .bannerSlide {
       position:relative;
-      flex:none;
+      flex-shrink:0;
       width:100%;
       height:0;
       padding-top:30.558%;
@@ -22,7 +24,6 @@
       @include swiperPagination;
       cursor:pointer;
       &:after {
-        content:"모두보기";
         margin-left:4px;
       }
     }

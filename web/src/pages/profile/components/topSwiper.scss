@@ -1,8 +1,17 @@
 @import "components/ui/_mixin.scss";
 
+#myprofile {
+  .topSwiper {
+    .swiper-slide {
+      height:268px;
+    }
+  }
+}
+
 .topSwiper {
+  position: relative;
   .swiper-slide {
-    height:360px;
+    @include flex(center,center);
     background-color:#ddd;
     .photo {
       width:100%;
@@ -17,5 +26,37 @@
   .swiper-pagination {
     @include swiperPagination;
     bottom:31px;
+  }
+  .swiperBottom {
+    @include position-bottom-right(30px,0);z-index: 1;
+    @include flex(center);
+    .specialBdg {
+      @include flex(center,center,column);
+      width:57px;
+      height:28px;
+      line-height:12px;
+      margin-right:6px;
+      border-radius:100px;
+      background-color: $MAINCOLOR;
+      img {
+        height:12px;
+      }
+      span {
+        @include font(10px,$Bold,white);
+      }
+    }
+    .liveBdg {
+      width:60px;
+      height:28px;
+      margin-right:8px;
+      img {
+        width:100%;
+      }
+    }
+    .pagination {
+      @include swiperPagination;
+      position:static;
+      margin-left:8px;
+    }
   }
 }

@@ -427,7 +427,7 @@ export default (props) => {
                 ) : (
                   <CoinChargeBtn
                     onClick={() => {
-                      history.push('/pay/store')
+                      history.push('/store')
                     }}>
                     충전하기
                   </CoinChargeBtn>

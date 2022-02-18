@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Utility ,{addComma} from 'components/lib/utility'
-
-import Api from 'context/api'
+import moment from 'moment';
 
 // global components
 import PopSlide from 'components/ui/popSlide/PopSlide'
@@ -9,21 +8,10 @@ import PopSlide from 'components/ui/popSlide/PopSlide'
 import CheckList from '../components/CheckList'
 
 const HistoryList = (props) => {
+  const {walletData} = props;
   const [slidePop, setSlidePop] = useState(false)
-  const [historyInfo, setHistoryInfo] = useState([])
 
-  // 조회 API
-  const fetchPopSlideInfo = () => {
-    Api.getMypageWalletPop({walletType: 1}).then((res) => {
-      if (res.result === 'success') {
-        setHistoryInfo(res.data.list)
-      }
-    })
-  }
-
-  useEffect(() => {
-    fetchPopSlideInfo()
-  },[])
+  const {popHistory, listHistory, popHistoryCnt} = walletData;
 
   const onClickPopSlide = () => {
     setSlidePop(true)
@@ -31,6 +19,7 @@ const HistoryList = (props) => {
 
   return (
     <>
+      {/* 상세내역 리스트 */}
       <section className="optionWrap">
         <div className="selectBox">
           <button onClick={onClickPopSlide}>전체<i className="arrowDownIcon" /></button>
@@ -38,37 +27,29 @@ const HistoryList = (props) => {
         <div className="sub">최근 6개월 이내</div>
       </section>
       <section className='listWrap'>
-        <div className="listRow">
-          <div className="listContent">
-            <div className="listItem">
-              <div className="historyText">굿스타트 이벤트 2위</div>
-              <div className="historyDate">22.01.03</div>
+        {listHistory.map((data, index)=>
+          <div className="listRow" key={index}>
+            <div className="listContent">
+              <div className="listItem">
+                {data?.type === 4 && data?.exchangeIdx > 0
+                && <button className="exCancelBtn">취소하기</button>}
+                <div className="historyText">{data?.contents}</div>
+
+                {/*<div className="otherUserNick">계란노른자</div>*/}
+                {/*<span className="privateBdg">몰래</span>*/}
+              </div>
+              <div className="listItem">
+                <div className="historyDate">{moment(data?.updateDt,'YYYYMMDD').format('YYYY.MM.DD')}</div>
+              </div>
+            </div>
+            <div className={`quantity${data?.dalCnt < 0 ? ' minous' : ''}`}>
+              {Utility.addComma(`${data?.dalCnt < 0 ? '':'+'}${data?.dalCnt}`)}
             </div>
           </div>
-          <div className="quantity">+{Utility.addComma(7000)}</div>
-        </div>
-        <div className="listRow">
-          <div className="listContent">
-            <div className="listItem">
-              <div className="historyText">환전신청</div>
-              <button className="exCancelBtn">취소하기</button>
-            </div>
-            <div className="historyDate">22.01.03</div>
-          </div>
-          <div className="quantity minous">-{Utility.addComma(7000)}</div>
-        </div>
-        <div className="listRow">
-          <div className="listContent">
-            <div className="listItem">
-              <div className="historyText">선물 "소라게"</div>
-              <div className="otherUserNick">계란노른자</div>
-              <span className="privateBdg">몰래</span>
-            </div>
-            <div className="historyDate">22.01.03</div>
-          </div>
-          <div className="quantity minous">-{Utility.addComma(7000)}</div>
-        </div>
+        )}
       </section>
+
+      {/* 상세내역 검색조건 팝업 */}
       {slidePop &&
         <PopSlide setPopSlide={setSlidePop}>
           <section className='walletHistoryCheck'>
@@ -77,11 +58,11 @@ const HistoryList = (props) => {
               <div className="listAll">
                 <CheckList text="전체내역">
                   <input type="checkbox" className="blind" name="checkListAll" />&nbsp;
-                  ({Utility.addComma(1100)}건)
+                  ({Utility.addComma(popHistoryCnt)}건)
                 </CheckList>
               </div>
               <div className="historyScroll">
-                {historyInfo.map((data,index) => {
+                {popHistory.map((data,index) => {
                   return (
                     <CheckList text={data.text} key={index}>
                       <input type="checkbox" className="blind" name={`check-${index}`} /> ({Utility.addComma(data.cnt)}건)

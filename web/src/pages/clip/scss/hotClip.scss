@@ -1,0 +1,75 @@
+@import "components/ui/_mixin.scss";
+
+.hotClipWrap{
+  .swiper-slide {
+    >div{
+      width: 100%;
+      padding: 0 16px;
+      &:nth-child(3n) {
+        .hotClip {
+          margin-bottom:0;
+        }
+      }
+    }
+  }
+}
+
+.hotClip {
+  display: flex;
+  margin-bottom: 16px;
+  cursor: pointer;
+  &:active {cursor: grabbing;}
+  .photo {
+    flex: none;
+    display: inline-block;
+    width: 112px;
+    height: 112px;
+    margin-right: 16px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 16px;
+    }
+  }
+
+  .info {
+    display: inline-block;
+    @include fontCut;
+    img {
+      height: 36px;
+      margin: 17px 0;
+      object-fit: contain;
+    }
+
+    .textArea {
+      div {
+        @include flex(center);
+        height: 20px;
+      }
+      .type {
+        flex-shrink: 0;
+        margin-right: 5px;
+        @include font(12px,$Regular,#666);
+      }
+      .title {
+        line-height: 24px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #202020;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .nickName {
+        line-height: 18px;
+        font-size: 13px;
+        font-weight: 400;
+        color: #999;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+    }
+  }
+}

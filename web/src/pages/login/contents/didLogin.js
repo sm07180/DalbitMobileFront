@@ -1,9 +1,15 @@
 import React, {useContext, useRef, useState} from 'react'
 
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/InputItems'
+import InputItems from '../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
+
+import PopupPrivacy from '../components/PopupPrivacy'
+import PopupTerms from '../components/PopupTerms'
+
+
 import {Context} from 'context'
 import '../style.scss'
 import Utility from "components/lib/utility";
@@ -17,6 +23,9 @@ const DidLogin = (props) => {
   const [fetching, setFetching] = useState(false)
   const [btnActive, setBtnActive] = useState(false)
   const [slidePop, setSlidePop] = useState(false)
+  const [popup, setPopup] = useState(false)
+  const [popupVal, setPopupVal] = useState("")
+
   const [loginInfo, setLoginInfo] = useState({ phoneNum : '', password : '', })
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
@@ -69,9 +78,9 @@ const DidLogin = (props) => {
     if (fetching) return;
 
     if (loginInfo.phoneNum === '' && loginInfo.password === '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)와 비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(휴대폰 번호)와 비밀번호를\n 입력하고 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
     } else if (loginInfo.phoneNum === '' && loginInfo.password !== '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(휴대폰 번호)를 입력하고\n 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else if (loginInfo.password === '' && loginInfo.phoneNum !== '') {
       globalCtx.action.alert({msg: `비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else {
@@ -140,7 +149,7 @@ const DidLogin = (props) => {
       }
     } else if (loginInfo.result === 'fail') {
       if (loginInfo.code === '-1') {
-        globalCtx.action.alert({msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`})
+        globalCtx.action.alert({msg: `아이디(전화번호)와 비밀번호를\n 확인하고 다시 로그인해주세요.`})
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
         if (msg === undefined || msg === null || msg === '') {
@@ -171,6 +180,8 @@ const DidLogin = (props) => {
             callResetListen(loginInfo.data.memNo)
           }
         })
+      } else if(loginInfo.code === '-8') {
+        return props.history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         globalCtx.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})}
     }
@@ -195,12 +206,17 @@ const DidLogin = (props) => {
     });
   };
 
+  const popupOpen = (val) => {
+    setPopup(true);
+    setPopupVal(val)
+  }
+
   return (
     <div id='loginPage'>
       <Header title="로그인" type="back"/>
       <section className="loginForm">
         <InputItems>
-          <input ref={inputPhoneRef} type="number" placeholder="핸드폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} onChange={onChange}/>
+          <input ref={inputPhoneRef} type="number" pattern="\\d*" placeholder="휴대폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} onChange={onChange}/>
         </InputItems>
         <InputItems>
           <input ref={inputPasswordRef} type="password" placeholder="비밀번호" name={"password"} value={loginInfo.password} onChange={onChange}/>
@@ -208,7 +224,7 @@ const DidLogin = (props) => {
         <SubmitBtn text="로그인" onClick={loginClick}/>
         <div className="linkWrap">
           <div className="linkText" onClick={signPop}>회원가입</div>
-          <div className="linkText">비밀번호 찾기</div>
+          <div className="linkText" onClick={()=>props.history.push("/password")}>비밀번호 찾기</div>
         </div>
       </section>
       {slidePop &&
@@ -235,7 +251,7 @@ const DidLogin = (props) => {
                 <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                 <span className="checkIcon"/>
                 <p className="checkinfo">(필수) 이용약관</p>
-                <button className='policyBtn'>보기</button>
+                <button className='policyBtn' onClick={() => popupOpen("terms")}>보기</button>
               </label>
             </div>
             <div className="agreeList">
@@ -243,13 +259,26 @@ const DidLogin = (props) => {
                 <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                 <span className="checkIcon"/>
                 <p className="checkinfo">(필수) 개인정보 취급 방침</p>
-                <button className='policyBtn'>보기</button>
+                <button className='policyBtn' onClick={() => popupOpen("privacy")}>보기</button>
               </label>
             </div>
           </div>
         </div>
         <SubmitBtn text="다음" state={!btnActive && 'disabled'} onClick={signUp}/>
       </PopSlide>
+      }
+      {
+        popup &&
+        <LayerPopup setPopup={setPopup}>
+          <div className='popTitle'>{popupVal === "terms" ? "이용약관" : "개인정보 취급 방침"}</div>
+          <div className='popContent'>
+            {popupVal=== "terms" ?
+              <PopupTerms/>
+              :
+              <PopupPrivacy/>
+            }
+          </div>
+        </LayerPopup>
       }
     </div>
   )

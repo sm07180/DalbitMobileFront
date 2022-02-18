@@ -3,7 +3,6 @@
 #myprofile {
   position:relative;
   header {
-    border-bottom:1px solid #D3D3D3;
     .buttonGroup {
       button {
         width:40px;
@@ -252,6 +251,9 @@
         text-align:center;
         @include font(16px,400,#202020);
       }
+    }
+    .myLevelInfo {
+      padding: 0 16px 32px;
     }
   }
 }

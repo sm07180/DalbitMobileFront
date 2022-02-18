@@ -1,57 +1,81 @@
-import React, {useState} from 'react'
-import Swiper from 'react-id-swiper'
+import React, {useState, useEffect} from 'react'
+import { Navigation, Pagination } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/react';
 // global components
+import NoResult from "components/ui/noResult/NoResult";
 
-const TopRanker = () => {
+const TopRanker = (props) => {
+  const {data} = props
+
+  console.log(data);
+  const [targetPage, setTargetPage] = useState(1);
+
   // 스와이퍼
-  const swiperParams = {
-    slidesPerView: 'auto',
+  const handleSwiper = (swiper) => {
+    setTargetPage(swiper.realIndex);
   }
 
-  return (
-    <React.Fragment> 
-      <div className='rankingTop3'>
-        <div className='topHeader'>오늘의 TOP3</div>
-        <Swiper {...swiperParams}>
-          <div>
-            <div className="ranker">
-              <div className="listColumn">
-                <div className="photo">
-                  <img src="" alt="" />
-                  <div className='rankerRank'>1</div>
-                  <span className="play"></span>
-                </div>
-                <div className='rankerName'>이름------------------</div>
-                <div className='rankerNick'>11111111111111111</div>
-              </div>
-            </div>
-            <div className="ranker">
-              <div className="listColumn">
-                <div className="photo">
-                  <img src="" alt="" />
-                  <div className='rankerRank'>2</div>
-                  <span className="play"></span>
-                </div>
-                <div className='rankerName'>이름------------------</div>
-                <div className='rankerNick'>222222222222222222</div>
-              </div>
-            </div>
-            <div className="ranker">
-              <div className="listColumn">
-                <div className="photo">
-                  <img src="" alt="" />
-                  <div className='rankerRank'>3</div>
-                  <span className="play"></span>
-                </div>
-                <div className='rankerName'>이름------------------</div>
-                <div className='rankerNick'>333333333333333333333</div>
-              </div>
-            </div>
-          </div>
-        </Swiper>
-      </div>
-    </React.Fragment>
-  )
-}
+  // 왜 안되냐 ******
+  /* <Swiper slidesPerView="auto" initialSlide={targetPage}
+          pagination={pagination}
+          onSwiper={(swiper) => console.log(swiper)}
+          modules={[Pagination]}
+          onSlideChange={handleSwiper}> initialSlide={targetPage}
+  **/
+  const pagination = {
+    clickable: true,
+    renderBullet: function (index, className) {
+      return '<span class="active">' + (index + 1) + "</span>";
+    },
+  };
 
-export default TopRanker
+  return (
+    <>
+      <section className="topRanker">
+        {data.length > 0 ?
+          <>
+            <Swiper initialSlide={targetPage}
+                    onSlideChange={handleSwiper}>
+              {data.map((list,index) => {
+                return (
+                <SwiperSlide key={index}>
+                  <h2>{list.title}의 TOP3</h2>
+                  <div className="rankerWrap">
+                    {list.list.map((row,index2) => {
+                      return (
+                        <div className="ranker" key={`list-${index2}`}>
+                          <div className="listColumn">
+                            <div className="photo">
+                              <img src={row.profImg.thumb100x100} alt="" />
+                              <div className='rank'>{row.rank}</div>
+                              <span className="play"/>
+                            </div>
+                            <div className='title'>{row.fileName}</div>
+                            <div className='nick'>{row.nickName}</div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </SwiperSlide>
+                )
+              })}
+            </Swiper>
+            <div className="swiper-pagination">
+              {data.length > 1 &&
+                <>
+                  <span className={`${targetPage === 0 ? 'active' : ''}`}/>
+                  <span className={`${targetPage === 1 ? 'active' : ''}`}/>
+                </>
+              }
+            </div>
+          </>
+          :
+          <NoResult/>
+        }
+      </section>
+    </>
+  );
+};
+
+export default TopRanker;
