@@ -24,6 +24,7 @@ const ClipDetailCore = (props) => {
       NewClipPlayerJoin(clipParam);
     }
   };
+
   return (
     <div className="listRow" data-clip-no={item.clipNo} onClick={playClip}>
       <div className="photo">
@@ -31,12 +32,12 @@ const ClipDetailCore = (props) => {
       </div>
       <div className="listInfo">
         <div className="listItem">
+          <span className="subject">{item.subjectType}</span>
           <span className="title">{item.title}</span>
         </div>
         <div className="listItem">
           <GenderItems data={item.gender} />
           <span className="nickNm">{item.nickName}</span>
-          <div>{item.subjectType}</div>
         </div>
         <div className="listItem">
           <DataCnt type={"replyCnt"} value={item.playCnt}/>
