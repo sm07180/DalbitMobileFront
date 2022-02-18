@@ -75,12 +75,6 @@ const StorePage = () => {
     }
   }
 
-  const moveEvnet = () =>{
-    history.push({
-      pathname: '/event/invite'
-    })
-  }
-
   return (
     <div id="storePage">
       <Header title={'스토어'} position="sticky" type="back"/>
@@ -101,7 +95,6 @@ const StorePage = () => {
           )
         })}
         <SubmitBtn onClick={movePayment} text="결제하기" />
-        <SubmitBtn onClick={moveEvnet} text="은창주임" />
       </section>
     </div>
   )
