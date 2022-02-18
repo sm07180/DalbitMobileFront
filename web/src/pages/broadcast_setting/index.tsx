@@ -317,31 +317,25 @@ export default function BroadcastSetting() {
     }
 
     if (state.micState === true && state.titleChange.length > 2) {
-      if (audioStream !== null) {
-        audioStream.getAudioTracks().forEach(track => {
-          track.stop()
-          audioStream.removeTrack(track);
-        });
-      }
-      if (videoStream !== null) {
-        videoStream.getVideoTracks().forEach(track => {
-          track.stop()
-          videoStream.removeTrack(track);
-        });
-      }
-      Object.keys(localTracks).forEach(trackName => {
-        let track = localTracks[trackName];
-        if (track) {
-          track.stop();
-          track.close();
-          localTracks[trackName] = undefined;
-        }
-      })
       createBroadcastRoom();
     }
   };
 
   async function createBroadcastRoom() {
+    if (audioStream !== null) {
+      removeStream();
+    }
+    if (videoStream !== null) {
+      removeVideoStream();
+    }
+    Object.keys(localTracks).forEach(trackName => {
+      let track = localTracks[trackName];
+      if (track) {
+        track.stop();
+        track.close();
+        localTracks[trackName] = undefined;
+      }
+    })
     const makeRoom = async () => {
       const createInfo = {
         roomType: state.roomType,
@@ -518,7 +512,6 @@ export default function BroadcastSetting() {
       "devicechange",
       detectStreamDevice
     );
-
     videoStream?.getTracks().forEach((track) => track.stop());
     //setVideoState(false);
   }, [videoStream]);
@@ -536,33 +529,34 @@ export default function BroadcastSetting() {
         context.action.alert({
           msg: message
         })
-        if(cams[1] === null){
-          currentCam.label = "장치연결 확인 바랍니다."
-        }else{
-          currentCam = cams[1];
-        }
+        currentCam = cams[1];
+        sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+            width: 1280,
+            // Specify a value range and an ideal value
+            height: { ideal: 720, min: 720, max: 1280 },
+            frameRate: 24,
+            bitrateMin: 1130, bitrateMax: 2000,
+          },cameraId:currentCam.deviceId})
+        localTracks.videoTrack.play("pre-local-player",{mirror:false});
       }else{
         currentCam = cams[0];
-        setVideoStream(result);
+        sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+            width: 1280,
+            // Specify a value range and an ideal value
+            height: { ideal: 720, min: 720, max: 1280 },
+            frameRate: 24,
+            bitrateMin: 1130, bitrateMax: 2000,
+          },cameraId:currentCam.deviceId})
+        localTracks.videoTrack.play("pre-local-player",{mirror:false});
       }
-    }
-    setCamForm(currentCam.label)
-    sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
-      localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
-          width: 1280,
-          // Specify a value range and an ideal value
-          height: { ideal: 720, min: 720, max: 1280 },
-          frameRate: 24,
-          bitrateMin: 1130, bitrateMax: 2000,
-        },cameraId:currentCam.deviceId})
-      // play local track on device detect dialog
-      localTracks.videoTrack.play("pre-local-player",{mirror:false});
-      // localTracks.audioTrack.play();
-      // get cameras
-
+      setVideoStream(result);
+      setCamForm(currentCam.label)
       if(currentCam !==null){
         setVideoState(true)
       }
+    }
   }
 
   const audioDevice = async () => {
@@ -622,7 +616,19 @@ export default function BroadcastSetting() {
     await localTracks.audioTrack.setDevice(optionalParams);
     sessionStorage.setItem("mic", JSON.stringify(optionalParams));
   }
-
+  const clickEvent = (e) => {
+    e.preventDefault();
+    if(camPop) setCamPop(false);
+    if(micPop) setMicPop(false);
+  }
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      window.addEventListener('click', clickEvent);
+      return () => {
+        window.removeEventListener('click', clickEvent);
+      }
+    }
+  });
   useEffect(() => {
     async function initDeviceAudioStream() {
       const stream = await setStream();
@@ -664,7 +670,14 @@ export default function BroadcastSetting() {
       if (audioCheckerId !== null) {
         clearInterval(audioCheckerId);
       }
-
+      Object.keys(localTracks).forEach(trackName => {
+        let track = localTracks[trackName];
+        if (track) {
+          track.stop();
+          track.close();
+          localTracks[trackName] = undefined;
+        }
+      })
       audioCtx.close();
     };
   }, [audioStream]);
@@ -684,7 +697,12 @@ export default function BroadcastSetting() {
         videoDevice();
 
     }
-  }, [state.mediaType]);
+    return ()=>{
+      if(videoStream !== null){
+        removeVideoStream()
+      }
+    }
+  }, [state.mediaType,videoStream]);
 
   useEffect(() => {
     if (rtcInfo !== null) {
@@ -824,9 +842,6 @@ export default function BroadcastSetting() {
               })}
             </div>
           </div>
-          
-
-
           {state.mediaType === BROAD_TYPE.VIDEO && (
             <>
               <div className="title">웹캠/비디오 장치 설정</div>
