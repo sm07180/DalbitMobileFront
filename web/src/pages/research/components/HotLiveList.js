@@ -17,6 +17,7 @@ const HotLiveList = (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
+    spaceBetween: 12,
   }
 
   const RoomEnter = (e) => {

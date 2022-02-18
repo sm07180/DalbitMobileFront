@@ -81,7 +81,7 @@ export default function Guide() {
                 >
                   <div className="guideItem__icon">
                     <img src={isWide ? 
-                      "https://image.dalbitlive.com/common/icon/ico_brWide.png"
+                      wideIcon
                       : 
                       narrowIcon
                       } alt="화면 좌우 전환" />

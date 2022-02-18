@@ -9,7 +9,7 @@ const DESKTOP = 'DESKTOP';
 const SERVER = 'SERVER';
 export const getDevice = ()=>{
     if(isBrowser()){
-        if(/(iPhone)/gi.test(userAgent)){
+        if(/(iPhone|iPad)/gi.test(userAgent)){
             return IOS
         }else if(/(Android)/gi.test(userAgent)){
             return ANDROID;

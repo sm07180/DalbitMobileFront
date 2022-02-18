@@ -217,7 +217,7 @@
         font-size: 16px;
         font-weight: 700;
         color: #fff;
-        background: #632BEB;
+        background: $MAINCOLOR;
       }
     }
   }
@@ -232,12 +232,12 @@
     &_title {
       font-size: 16px;
       font-weight: 700;
-      color: #632BEB;
+      color: $MAINCOLOR;
     }
     &_count {
       font-size: 16px;
       font-weight: 400;
-      color: #632BEB;
+      color: $MAINCOLOR;
     }
     &_wrap {
       margin-top: 10px;
@@ -318,7 +318,7 @@
       & > span {
         font-size: 14px;
         font-weight: 400;
-        color: #632BEB;
+        color: $MAINCOLOR;
       }
     }
   }

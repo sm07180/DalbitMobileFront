@@ -93,9 +93,6 @@ legend {
       }
       header {
         top:$GNB-HEIGHT !important;
-        .buttonGroup {
-          display:none;
-        }
       }
     }
     .rightContent {
@@ -259,7 +256,7 @@ legend {
         }
         &[data-url="/notice"] {
           @include BGIMG("common/gnb/gnbAllim-off.png");
-          &:hover::after {content:"알람";}
+          &:hover::after {content:"알림";}
           .newDot {
             @include position-top-right(4px,4px);
             display:inline-block;

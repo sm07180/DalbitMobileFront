@@ -43,7 +43,7 @@ const MainPage = () => {
 
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
-  const [headerFixed, setHeaderFixed] = useState(false)
+  const [headerFixed, setHeaderFixed] = useState("")
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
@@ -58,6 +58,7 @@ const MainPage = () => {
     storeUrl: '',
   });
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -95,9 +96,7 @@ const MainPage = () => {
           dispatch(setMainLiveList({list: data.list, paging}));
         }
 
-        if(isLastPage) {
-          document.removeEventListener('scroll', scrollEvent);
-        }
+        setIsLastPage(isLastPage);
       }
     })
   }, [currentPage, liveListType]);
@@ -108,7 +107,7 @@ const MainPage = () => {
     fetchLiveInfo();
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
-    setHeaderFixed(false);
+    setHeaderFixed("fadeOut");
     setCurrentPage(1);
   }
 
@@ -122,9 +121,9 @@ const MainPage = () => {
     if (overNode && headerNode) {
       const overTop = overNode.offsetTop - headerNode.clientHeight
       if (window.scrollY >= overTop) {
-        setHeaderFixed(true)
+        setHeaderFixed("fadeIn")
       } else {
-        setHeaderFixed(false)
+        setHeaderFixed("fadeOut")
       }
     }
 
@@ -289,10 +288,20 @@ const MainPage = () => {
     }
   }, [common.isRefresh]);
 
+  useEffect(() => {
+    fetchLiveInfo()
+  }, [currentPage, liveListType])
+
+  useEffect(() => {
+    if(isLastPage) {
+      document.removeEventListener('scroll', scrollEvent);
+    }
+  }, [isLastPage])
+
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
-    fetchLiveInfo();
+    // fetchLiveInfo();
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
@@ -303,12 +312,6 @@ const MainPage = () => {
       document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
-
-  useEffect(() => {
-    if (currentPage > 1) {
-      fetchLiveInfo()
-    }
-  }, [currentPage, liveListType])
  
   // 페이지 시작
   let MainLayout = <>
@@ -333,7 +336,7 @@ const MainPage = () => {
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
-      <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
+      <div className={`headerWrap ${headerFixed && headerFixed}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>
@@ -344,7 +347,7 @@ const MainPage = () => {
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP 10'} more={'rank'}>
-          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
         <SwiperList
           data={topRankType === 'DJ' ? mainState.dayRanking.djRank
@@ -354,17 +357,20 @@ const MainPage = () => {
           type="top10"
         />
       </section>
-      <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
-        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
-      </section>
+      {mainState.newBjList.length > 0 &&
+        <section className='daldungs'>
+          <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs"/>
+        </section>
+      }
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
       <section className='liveView'  ref={overTabRef}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
         <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
-          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
+          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
+                   defaultTab={1} />
         </div>
         <LiveView data={liveList.list}/>
       </section>

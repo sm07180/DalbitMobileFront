@@ -1,5 +1,20 @@
 @import "components/ui/_mixin.scss";
 
+/*
+  피씨일때 헤더 없애기
+*/
+#root {
+  .container {
+    .totalWrap {
+      #clipPage {
+        .buttonGroup {
+          display:none;
+        }
+      }
+    }
+  }
+}
+
 #clipPage{
   section {
     position: relative;
@@ -96,6 +111,14 @@
     }
   }
   .clipDrawer, .clipList {
+    .cntTitle {
+      h2 {
+        >img {
+          width: 28px;
+        }
+      }
+
+    }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {
@@ -110,6 +133,17 @@
     }
     .listColumn{
       .photo{
+        position: relative;
+        width: 100px; height: 100px;
+        border-radius:16px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:16px;
+          box-sizing: border-box;
+        }
         img {
           border-radius: 16px
         }
@@ -191,8 +225,17 @@
       }
       .listRow {
         .photo {
+          position: relative;
           width:50px;
           height:50px;
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:16px;
+            box-sizing: border-box;
+          }
           img {
             border-radius:16px;
           }

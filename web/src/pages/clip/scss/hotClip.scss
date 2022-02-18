@@ -20,11 +20,20 @@
   cursor: pointer;
   &:active {cursor: grabbing;}
   .photo {
+    position: relative;
     flex: none;
     display: inline-block;
     width: 112px;
     height: 112px;
     margin-right: 16px;
+    &::before {
+      content: "";
+      @include position-top-left;
+      width: 100%; height: 100%;
+      border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+      border-radius:16px;
+      box-sizing: border-box;
+    }
     img {
       width: 100%;
       height: 100%;

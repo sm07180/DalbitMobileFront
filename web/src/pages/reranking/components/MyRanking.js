@@ -16,8 +16,8 @@ const MyRanking = (props) => {
         <p className='rankData'>{data.fan !== 0 ? data.fan : "-"}</p>
       </li>
       <li>
-        <p className='rankCategory'>LOVER</p>
-        <p className='rankData'>{data.lover !== 0 ? data.lover : "-"}</p>
+        <p className='rankCategory'>CUPID</p>
+        <p className='rankData'>{data.cupid !== 0 ? data.cupid : "-"}</p>
       </li>
     </ul>
   )
