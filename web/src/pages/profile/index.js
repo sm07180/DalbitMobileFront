@@ -93,7 +93,7 @@ const ProfilePage = () => {
     Api.mypage_notice_sel(apiParams).then(res => {
       if (res.result === 'success') {
         const data = res.data;
-        const callPageNo = data.paging.page;
+        const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
           ...feedData,
@@ -121,7 +121,7 @@ const ProfilePage = () => {
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
         const data= res.data;
-        const callPageNo = data.paging.page;
+        const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
           ...fanBoardData,
@@ -148,7 +148,7 @@ const ProfilePage = () => {
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
         const data= res.data;
-        const callPageNo = data.paging.page;
+        const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileClipData({
           ...clipData,
