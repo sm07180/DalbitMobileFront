@@ -51,6 +51,7 @@ import PlayMaker from './playMaker'
 // import MarblePocket from './gganbu/content/marblePocket'
 import Invite from './invite'
 import Share from './share'
+import PlatformWar from './platformWar'
 
 export default (props) => {
   const params = useParams()
@@ -151,6 +152,8 @@ export default (props) => {
         return <Invite />
       case 'share':
         return <Share />
+      case 'platformWar':
+        return <PlatformWar />
       default:
         return <></>
         break
