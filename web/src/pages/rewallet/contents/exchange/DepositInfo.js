@@ -88,6 +88,14 @@ const DepositInfo = (props) => {
     };
   },[]);
 
+  //환전신청 조건 실패시 true!
+  const vaildationFaild = useMemo(()=>{
+    const {accountName, bankCode, accountNo, fSocialNo, bSocialNo, phoneNo, address1, address2,
+      addFile1, addFile2, addFile3} = exchangeForm;
+    return !accountName || !bankCode || !accountNo || !fSocialNo || !bSocialNo || !phoneNo || !address1 || !address2
+      || !addFile1 || !addFile2 || (parentAgree && addFile3);
+  },[exchangeForm, parentAgree]);
+
   return (
     <>
       {/*다음 주소 검색*/}
@@ -274,7 +282,7 @@ const DepositInfo = (props) => {
           <p>회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된 개인정보는 확인 후 폐기 처리 합니다.)</p>
         </div>
         {/*disabled*/}
-        <SubmitBtn text="환전 신청하기" state="" onClick={exchangeSubmit}/>
+        <SubmitBtn text="환전 신청하기" state={vaildationFaild?'disabled':''} onClick={exchangeSubmit}/>
       </form>
 
     </>
