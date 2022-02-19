@@ -201,7 +201,7 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/myProfile/edit')
+                  history.replace('/myProfile/edit')
                 }}>
                 확인
               </button>
