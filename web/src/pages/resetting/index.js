@@ -19,7 +19,7 @@ const SettingPage = () => {
   const settingType = params.type;
   const context = useContext(Context);
   const history = useHistory()
-  const [setting, setSetting] = useState([{name: "Push알림 설정", path: "push"}, {name: "방송/청취 설정", path: "broadcast"}, {name: "금지어 관리", path: "forbid"},
+  const [setting, setSetting] = useState([{name: "Push알림 설정", path: "push"}, {name: "방송/청취 설정", path: "streaming"}, {name: "금지어 관리", path: "forbid"},
     {name: "매니저 관리", path: "manager"}, {name: "차단회원 관리", path: "blockList"}, {name: "알림받기 설정 회원 관리", path: "alarmUser"}
   ]);
 
@@ -58,7 +58,7 @@ const SettingPage = () => {
         settingType === "push" ?
           <Push/>
           :
-          settingType === "broadcast" ?
+          settingType === "streaming" ?
             <Broadcast/>
             :
             settingType === "forbid" ?
