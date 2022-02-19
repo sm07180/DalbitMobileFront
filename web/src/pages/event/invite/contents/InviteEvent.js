@@ -59,20 +59,25 @@ const InviteEvent = () => {
   },[submitCode]);
 
   const registerCode = (code) => {
-    Api.inviteRegister({
-      reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
-        "invitationCode": code
+    selfAuthCheck().then((res) => {
+      if (res.result === 'success') {
+        Api.inviteRegister({
+          reqBody: true,
+          data:{
+            "memNo": context.token.memNo,
+            "invitationCode": code,
+            "memPhone": res.phoneNo
+          }
+        }).then((response)=>{
+          console.log(response);
+          if(response.code === "0000"){
+            setCode(code);
+            setCreatedCode(true);
+          }else{
+            context.action.alert({msg: "초대코드 발급에 실패했습니다. \n 잠시후 다시 시도해주세요."});
+          }
+        })
       }
-    }).then((response)=>{
-        console.log(response);
-        if(response.code === "0000"){
-          setCode(code);
-          setCreatedCode(true);
-        }else{
-          context.action.alert({msg: "초대코드 발급에 실패했습니다. \n 잠시후 다시 시도해주세요."});
-        }
     })
   }
 
