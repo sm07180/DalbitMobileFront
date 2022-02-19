@@ -23,7 +23,7 @@ const BadgeItems = (props) => {
   return (
     <>
       {
-        type === 'grade' &&
+        data?.level > 0 && type === 'grade' &&
           <em className="badgeItem grade">{data.grade}</em>
       }
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {

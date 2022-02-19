@@ -33,6 +33,7 @@ import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -420,6 +421,14 @@ const ProfilePage = () => {
     });
   }
 
+  const headerBackEvent = () => {
+    if(webview === 'new' && isHybrid()) {
+      Hybrid('CloseLayerPopup');
+    }else {
+      history.goBack();
+    }
+  }
+
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
@@ -489,7 +498,7 @@ const ProfilePage = () => {
   // 페이지 시작
   return (
     <div id="myprofile">
-      <Header title={`${profileData.nickNm}`} type={'back'}>
+      <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
             <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
@@ -501,7 +510,7 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} />
+        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
