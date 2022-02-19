@@ -81,7 +81,7 @@ const InviteRank = () => {
           </div>
         <div className='rankSection'>
           {
-            data.cnt > 1231231231230 ?
+            data.cnt > 0 ?
             <>
               {context.token.isLogin &&
               <div className='inviteMyRank'>

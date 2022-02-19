@@ -5,7 +5,6 @@ import Api from "context/api";
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
-import {IMG_SERVER} from 'context/config'
 import {Hybrid, isHybrid} from "context/hybrid";
 
 const InviteEvent = () => {  
@@ -57,7 +56,7 @@ const InviteEvent = () => {
         }
       });
     }
-  },[]);
+  },[submitCode]);
 
   const registerCode = (code) => {
     Api.inviteRegister({
@@ -158,7 +157,6 @@ const InviteEvent = () => {
       context.action.alert({msg: `초대코드가 복사되었습니다.`});
     }
   };
-
 
   return (
     <div className='inviteEvent'>
