@@ -81,7 +81,7 @@ export default (props) => {
           onClick={() => {
             applyClick()
           }}>
-          오늘 하루 보지 않기 <img src={`${IMG_SERVER}/images/api/ico_layer_checkbox.svg`} />
+          다시 보지 않음 <img src={`${IMG_SERVER}/images/api/ico_layer_checkbox.svg`} />
         </p>
 
         <button

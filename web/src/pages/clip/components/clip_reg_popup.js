@@ -109,7 +109,7 @@ export default function ClipRegPop(props) {
                   handleCookie()
                 }}
               />
-              <span>오늘하루 열지 않음</span>
+              <span>다시 보지 않음</span>
             </label>
           </div>
         </div>

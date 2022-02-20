@@ -1104,7 +1104,7 @@ const Content = styled.section`
     padding: 3px 0 5px 5px;
     font-size: 12px;
     letter-spacing: -0.3px;
-    color: #632beb;
+    color: #FF3C7B;
   }
 `
 const ProfileUpload = styled.div`
@@ -1278,9 +1278,9 @@ const TermsInput = styled.div`
 
       &.y {
         border-color: #fff;
-        background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
+        background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#FF3C7B')};
         transition: 0.2s all ease 0s;
-        border: 1px solid #632beb;
+        border: 1px solid #FF3C7B;
 
         &::before,
         &::after {

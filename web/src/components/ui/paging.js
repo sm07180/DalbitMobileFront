@@ -105,7 +105,7 @@
 
 //   &.active {
 //     color: #fff;
-//     border-color: #632beb;
-//     background-color: #632beb;
+//     border-color: #FF3C7B;
+//     background-color: #FF3C7B;
 //   }
 // `

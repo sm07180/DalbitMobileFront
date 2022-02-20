@@ -267,7 +267,7 @@ const Wrap = styled.div`
       background-color: #bdbdbd;
     }
     .submitOn {
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
 `

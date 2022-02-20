@@ -119,7 +119,7 @@ const PopupWrap = styled.div`
         margin: 16px 0 8px;
         font-size: 16px;
         font-weight: 700;
-        color: #632beb;
+        color: #FF3C7B;
       }
       p {
         margin-bottom: 8px;
@@ -159,7 +159,7 @@ const PopupWrap = styled.div`
       height: 44px;
       margin-top: 30px;
       border-radius: 12px;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       font-size: 18px;
       font-weight: 500;
       color: #fff;

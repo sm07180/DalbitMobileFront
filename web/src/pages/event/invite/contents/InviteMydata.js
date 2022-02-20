@@ -82,7 +82,7 @@ const InviteMydata = () => {
               </div>
             </>
             :
-            <NoResult text={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} />
+            <NoResult ment={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} />
           }
         </div>    
       </div>

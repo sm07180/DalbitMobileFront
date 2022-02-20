@@ -249,6 +249,13 @@ legend {
         &[data-url="/mailbox"] {
           @include BGIMG("common/gnb/gnbMail-off.png");
           &:hover::after {content:"메시지";}
+          .newDot {
+            @include position-top-right(4px,4px);
+            display:inline-block;
+            width:8px;height:8px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
+          }
         }
         &[data-url="/store"] {
           @include BGIMG("common/gnb/gnbStore-off.png");

@@ -81,7 +81,7 @@ $SEARCH-HEADER: 112px;
       @include flex(center, center, column);
       .listColumn {
         width: 87px;
-        cursor: pointer;
+        /*cursor: pointer;*/
         .photo {
           position: relative;
           height:87px;          

@@ -20,13 +20,13 @@
 // const Select = styled.select`
 //   width: 136px;
 //   height: 40px;
-//   border: solid 1px #632beb;
+//   border: solid 1px #FF3C7B;
 //   background: url(${props => props.bg}) no-repeat center right;
 //   appearance: none;
 //   font-size: 16px;
 //   font-weight: 700;
 //   letter-spacing: -0.4px;
-//   color: #632beb;
+//   color: #FF3C7B;
 //   padding: 10px 0px 10px 15px;
 //   box-sizing: border-box;
 //   margin-left: 5px;
@@ -44,5 +44,5 @@
 // const Option = styled.option`
 //   font-size: 16px;
 //   letter-spacing: -0.4px;
-//   color: #632beb;
+//   color: #FF3C7B;
 // `
