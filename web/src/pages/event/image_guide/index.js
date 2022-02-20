@@ -60,7 +60,7 @@ export default () => {
           />
           <img
             src="https://image.dalbitlive.com/event/image_guide/20201028/img04.jpg"
-            alt="권한 변경을 하려는 경우 IOS 앱 '설정'클릭 후 페이지 하단의 달빛라이브를 클릭하세요"
+            alt="권한 변경을 하려는 경우 IOS 앱 '설정'클릭 후 페이지 하단의 달라를 클릭하세요"
           />
           <img src="https://image.dalbitlive.com/event/image_guide/20201028/img05.jpg" alt="사진을 클릭하세요" />
           <img

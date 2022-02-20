@@ -12,8 +12,6 @@ import TabBtn from "components/ui/tabBtn/TabBtn";
 import Header from "components/ui/header/Header";
 
 const Post = () => {
-  const noticeTabmenu = ['알림','공지사항']
-  const [noticeType, setNoticeType] = useState(noticeTabmenu[1])
   const context = useContext(Context);
   const history = useHistory();
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
@@ -97,12 +95,7 @@ const Post = () => {
 
   return (
     <div id="notice">
-      <Header type={context.customHeader.os !== 3 ? "back" : ""}/>
       <section className="noticeWrap">
-        <ul className="tabmenu">
-          <li onClick={() => history.push("/alarm")}>알림</li>
-          <li className="active" onClick={() => history.push("/post")}>공지사항</li>
-        </ul>
         <div className="post">
           {postListInfo.list.map((list,index) => {
             return (

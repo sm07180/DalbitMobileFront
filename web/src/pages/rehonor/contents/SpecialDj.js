@@ -70,8 +70,6 @@ const SpecialDj = (props) => {
   const popupOpen = (memNo) => {
     fetchSpecialHistory(memNo);
     setPopup(true);
-
-    console.log(specialHistory);
   }
 
   const goProfile = (memNo) => {
@@ -98,7 +96,7 @@ const SpecialDj = (props) => {
   return (
     <>
       <DetailView dateVal={dateVal} setDateVal={setDateVal}/>
-      <p className='infomation'>달라의 celebrity! 스페셜 DJ를 소개합니다.</p>
+      <p className='infomation'><strong>달라의 celebrity!</strong> 스페셜 DJ를 소개합니다.</p>
       <section className="listSection">
         {specialList.length > 0 &&
           <div className={`listWrap specialDj`}>
@@ -123,7 +121,9 @@ const SpecialDj = (props) => {
                     <img src={profile.profImg.thumb120x120} alt="" />
                     <FrameItems content={profile} />
                   </div>
-                  <span className='level'>{list.level}</span>
+                  <div className='listItem'>
+                    <span className='level'>{list.level}</span>
+                  </div>
                   <div className='listItem'>
                     <GenderItems data={list.gender} />
                     <span className='nickNm'>{list.nickNm}</span>

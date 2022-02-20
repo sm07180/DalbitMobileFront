@@ -365,7 +365,7 @@ const ProfileDetail = (props) => {
 
   return (
     <div id="profileDetail">
-      <Header title={item?.nickName} type={'back'}>
+      <Header title={item?.nickName} type="back">
         <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -389,7 +389,6 @@ const ProfileDetail = (props) => {
         <div className="detail">
           {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
           <pre className="text">{item?.contents}</pre>
-
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
               <Swiper {...swiperFeeds}>

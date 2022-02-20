@@ -646,7 +646,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                       }
                     }}
                   >
-                    왕큐피트
+                    CUPID
                   </button>
                   <div className={`rankingList__item `}>
                     <img
@@ -669,7 +669,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                       }
                     }}
                   >
-                    왕큐피트
+                    CUPID
                   </button>
                   <div
                     className={`rankingList__item`}

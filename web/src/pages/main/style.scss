@@ -16,11 +16,6 @@
           max-width:480px;
         }
       }
-      .content.player {
-        .fixedButton {
-          bottom: 80px;
-        }
-      }
     }
   }
 }
@@ -80,7 +75,7 @@
           &:after {
             @include whiteScreen;
             bottom:0;
-            background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 20%, rgba(255,255,255,0));
+            background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 40%, rgba(255,255,255,0));
           }
           img {
             width:100%;
@@ -131,6 +126,22 @@
       //     }
       //   }
       // }
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      left: auto;
+      right: 0;
+      width: auto;
+      height: 20px;
+      line-height: 20px;
+      padding: 0 8px 0 10px;
+      border-radius: 100px 0 0 100px;
+      font-size: 12px;
+      font-weight: 400;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
     }
     .empty {
       width:100%;
@@ -450,65 +461,71 @@
     }
   } 
 }
-
-.fixedButton {
+.floatingEvent {
   position: fixed;
-  bottom: 30px;
-  right: 50%;
-  margin-right: -220px;
-  z-index: 13;
-  width: 48px;
-  .attendStampActive {
-    width: 48px;
-    height: 48px;
-    cursor: pointer;
-    margin: 5px 0 0;
-
-    &.basic {
-      background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
-        center no-repeat;
-      background-size: 100%;
-    }
-
-    &.motion {
+  bottom: 15%;
+  width: 100%; max-width: 480px;
+  z-index: 20;
+  .floatingWrap {
+    position: relative;
+    .fixedButton {
+      position: absolute;
+      right: 10px;
+      z-index: 13;
       width: 48px;
-      height: 48px;
-      position: relative;
-
-      &::after {
-        position: absolute;
-        top: 0px;
-        left: 0px;
+      .attendStampActive {
         width: 48px;
         height: 48px;
-        border-radius: 50%;
-        overflow: hidden;
-        content: "";
-        background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
-          center no-repeat;
-        background-size: 48px;
-        animation: rotate_image 1s linear infinite;
-        transform-origin: 50% 50%;
-        @keyframes rotate_image {
-          100% {
-            transform: rotate(360deg);
+        cursor: pointer;
+        margin: 5px 0 0;
+    
+        &.basic {
+          background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
+            center no-repeat;
+          background-size: 100%;
+        }
+    
+        &.motion {
+          width: 48px;
+          height: 48px;
+          position: relative;
+    
+          &::after {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            content: "";
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
+              center no-repeat;
+            background-size: 48px;
+            animation: rotate_image 1s linear infinite;
+            transform-origin: 50% 50%;
+            @keyframes rotate_image {
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+          }
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 48px;
+            height: 48px;
+            z-index: 1;
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
+              center no-repeat;
+            background-size: 60px;
           }
         }
       }
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 48px;
-        height: 48px;
-        z-index: 1;
-        background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
-          center no-repeat;
-        background-size: 60px;
-      }
     }
-  }
+  }  
 }
 
 @keyframes fadeIn {

@@ -201,7 +201,7 @@ export default () => {
           msg = loginInfo.message
         }
         context.action.alert({
-          title: '달빛라이브 사용 제한',
+          title: '달라 사용 제한',
           msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
@@ -309,7 +309,7 @@ export default () => {
           msg = loginInfo.message
         }
         context.action.alert({
-          title: '달빛라이브 사용 제한',
+          title: '달라 사용 제한',
           msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {

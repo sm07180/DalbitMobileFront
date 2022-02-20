@@ -110,11 +110,11 @@ $errorMsg : #FF1919;
     }
     .countDown {
       @include flex(center, center);
-      width: 100px;
+      width: 103px;
       margin-top: 8px;
-      padding: 2px 0;
       background-color: #1A1A1A;
       letter-spacing: 2px;
+      line-height: 25px;
       @include font(17px,600,#fff);
     }
     .criteria {

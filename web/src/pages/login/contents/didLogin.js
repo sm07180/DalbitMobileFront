@@ -174,7 +174,7 @@ const DidLogin = (props) => {
         if (msg === undefined || msg === null || msg === '') {
           msg = loginInfo.message
         }
-        globalCtx.action.alert({title: '달빛라이브 사용 제한', msg: `${msg}`,
+        globalCtx.action.alert({title: '달라 사용 제한', msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
               Hybrid('CloseLayerPopUp')
