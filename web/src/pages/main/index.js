@@ -374,7 +374,7 @@ const MainPage = () => {
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
-    {/* <AttendEventBtn scrollOn={scrollOn}/> */}
+    <AttendEventBtn scrollOn={""}/>
 
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
