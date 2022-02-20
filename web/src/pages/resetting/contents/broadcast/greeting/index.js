@@ -11,15 +11,10 @@ import Toast from "components/ui/toast/Toast";
 
 const Greeting = () => {
   const [titleList, setTitleList] = useState([])
-  const [titleSelect, setTitleSelect] = useState({
-    state: false,
-    val: "",
-    index: -1
-  })
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
+  const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
+  const [toast, setToast] = useState({state : false, msg : ""});
+
+  //토스트 메시지 출력
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
     setTimeout(() => {
@@ -27,6 +22,7 @@ const Greeting = () => {
     }, 3000)
   }
 
+  //등록된 인사말 버튼 클릭시 정보 조회
   const selectGreeting = (e) => {
     let selectVal = e.currentTarget.childNodes[0].childNodes[0].innerText;
     const {targetIndex} = e.currentTarget.dataset;
@@ -37,6 +33,7 @@ const Greeting = () => {
     });
   }
 
+  //인사말 등록
   const fetchAddData = async () => {
     const res = await API.insertBroadcastOption({
       optionType: 2,
@@ -53,6 +50,7 @@ const Greeting = () => {
     }
   }
 
+  //인사말 삭제
   const fetchDeleteData = async () => {
     const res = await API.deleteBroadcastOption({
       optionType: 2,
@@ -65,11 +63,10 @@ const Greeting = () => {
     }
   }
 
+  //인사말 데이터 정보 조회
   const fetchData = async () => {
     const res = await API.getBroadcastOption({optionType: 2});
-    if(res.result === "success") {
-      setTitleList(res.data.list);
-    }
+    if(res.result === "success") {setTitleList(res.data.list);}
   }
 
   useEffect(() => {
@@ -99,9 +96,7 @@ const Greeting = () => {
         </div>
         }
       </div>
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
+      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }

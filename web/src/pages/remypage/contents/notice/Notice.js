@@ -29,21 +29,7 @@ const NoticePage = () => {
 
   return (
     <div id="notice">
-      <Header type={'back'} />
       <section className="noticeWrap">
-        <ul className="tabmenu">
-          {noticeTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: noticeType,
-              setTab: setNoticeType,
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
-          <div className="underline"/>
-        </ul>
         {noticeType === noticeTabmenu[0] && <Allim data={context.profile} />}
         {noticeType === noticeTabmenu[1] && <Post data={context.profile} />}
       </section>
