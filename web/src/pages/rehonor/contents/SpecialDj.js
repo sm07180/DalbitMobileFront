@@ -70,8 +70,6 @@ const SpecialDj = (props) => {
   const popupOpen = (memNo) => {
     fetchSpecialHistory(memNo);
     setPopup(true);
-
-    console.log(specialHistory);
   }
 
   const goProfile = (memNo) => {

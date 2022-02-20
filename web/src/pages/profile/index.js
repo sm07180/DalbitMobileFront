@@ -6,6 +6,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import TopSwiper from './components/topSwiper'
 import ProfileCard from './components/profileCard'
@@ -57,6 +58,10 @@ const ProfilePage = () => {
   const [popPresent, setPopPresent] = useState(false); // 선물 팝업
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
   const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
+
+  const [specialHistory, setSpecialHistory] = useState([]); // 해당유저의 스페셜DJ 데이터
+  const [specialLog, setSpecialLog] = useState([]); // 해당유저의 스페셜DJ 획득 로그
+  const [popHistory, setPopHistory] = useState(false); // 스페셜DJ 약력 팝업 생성
 
   const [webview, setWebview] = useState('');
 
@@ -161,6 +166,27 @@ const ProfilePage = () => {
       }
     })
   }
+
+  /* 스페셜DJ 약력 조회 */
+  const fetchSpecialHistory = (memNo) => {
+    Api.specialHistory({params: {memNo: memNo}}).then((res) => {
+      if (res.result === 'success') {
+        setSpecialHistory(res.data)
+        setSpecialLog(res.data.list)
+      } else {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
+      }
+    });
+  }
+
+  useEffect(() => {
+    if(profileData.memNo){
+      fetchSpecialHistory(profileData.memNo);
+    }
+  },[popHistory])
 
   /* 팬 등록 해제 */
   const fanToggle = (memNo, memNick, isFan, callback) => {
@@ -510,7 +536,7 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
+        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} setPopHistory={setPopHistory} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -596,6 +622,40 @@ const ProfilePage = () => {
         <PopSlide setPopSlide={setPopPresent}>
           <Present profileData={profileData} setPopPresent={setPopPresent} />
         </PopSlide>
+      }
+
+      {/* 스페셜DJ 약력 팝업 */}
+      {popHistory &&
+        <LayerPopup setPopup={setPopHistory}>
+          <section className="honorPopup">
+            <div className='title'>
+              <span><strong>{specialHistory.nickNm}</strong>님은</span>
+              <span>현재 스페셜DJ입니다.</span>
+            </div>
+            <div className='table'>
+              <div className='summary'>
+                <span>스페셜 DJ 약력</span>
+                <span>총 {specialHistory.specialDjCnt}회</span>
+              </div>
+              <div className='tableInfo'>
+                <div className='thead'>
+                  <span>선정 일자</span>
+                  <span>선정 기수</span>
+                </div>
+                <div className='tbody'>
+                  {specialLog.map((list,index) => {
+                    return (
+                      <div className='tbodyList' key={index}>
+                        <span>{list.selectionDate}</span>
+                        <span>{list.roundNo}</span>
+                      </div>  
+                    )
+                  })}             
+                </div>
+              </div>
+            </div>
+          </section>
+        </LayerPopup>
       }
     </div>
   )
