@@ -1,4 +1,17 @@
 @import '../../../styles/variables';
+@import 'components/ui/_mixin.scss';
+
+#root {
+    .container {
+        .totalWrap {
+            #bestDj {
+                .footerBtn {
+                    
+                }
+            }
+        }
+    }
+}
 
 #bestDj {
     .header-wrap {
@@ -201,7 +214,7 @@
           padding: 5px 10px;
           border-radius: 100px;
           background-color: #483BF0;          
-          font-size: 3vw;
+          font-size: 1.5vw;
           font-weight: 700;
           color: #FFF;
           cursor: pointer;
