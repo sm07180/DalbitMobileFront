@@ -37,7 +37,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, scrollEvent} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, scrollEvent, likePopTabState} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
 
@@ -51,7 +51,7 @@ const LikePopup = (props) => {
 
   // 서브 탭
   const [currentSubTabInfo, setCurrentSubTabInfo] = useState(
-    isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]
+    {key: '', value:'', rankType: 0, rankSlct: 0}
   ); // 현재 선택된 서브탭
   const [fanRankSubTabInfo, setFanRankSubTabInfo] = useState(myProfileTabInfos.subTab.fanRank[0]); // 팬랭킹 탭에서의 서브탭
   const [totalRankSubTabInfo, setTotalRankSubTabInfo] = useState(myProfileTabInfos.subTab.totalRank[1]); // 전체랭킹 탭에서의 서브탭
@@ -198,6 +198,13 @@ const LikePopup = (props) => {
 
   useEffect(() => {
     addScrollEvent()
+    if(typeof likePopTabState === 'number') {
+      setCurrentSubTabInfo(
+        isMyProfile ? myProfileTabInfos.subTab.totalRank[likePopTabState] : notMyProfileTabInfos.subTab.rank[likePopTabState]
+      );
+    }else {
+      setCurrentSubTabInfo(isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]);
+    }
     return () => removeScrollEvent();
   },[])
 

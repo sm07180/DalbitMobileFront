@@ -57,8 +57,8 @@ const ProfilePage = () => {
   const [popPresent, setPopPresent] = useState(false); // 선물 팝업
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
   const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
-
   const [webview, setWebview] = useState('');
+  const [likePopTabState, setLikePopTabState] = useState('');
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -299,9 +299,11 @@ const ProfilePage = () => {
     setPopFanStar(true)
   }
 
-  /* 좋아요 슬라이드 팝업 열기/닫기 */
-  const openPopLike = (e) => {
-    const {targetType} = e.currentTarget.dataset
+  /* 좋아요 슬라이드 팝업 열기/닫기 (tabState는 열고싶은 탭 있을때 파라미터를 넘긴다 탭 순서대로 0부터) */
+  const openPopLike = (e, tabState) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikePopTabState(tabState)
     setPopLike(true)
   }
 
@@ -518,7 +520,7 @@ const ProfilePage = () => {
         />
       </section>
       <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} />
+        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} setLikePopTabState={setLikePopTabState} />
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap" ref={tabmenuRef}>
@@ -580,6 +582,7 @@ const ProfilePage = () => {
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
                      setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
+                     likePopTabState={likePopTabState}
           />
         </PopSlide>
       }

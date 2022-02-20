@@ -7,7 +7,7 @@ import './totalInfo.scss'
 import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
-  const {data, goProfile} = props
+  const {data, goProfile, openPopLike} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   // 
@@ -49,7 +49,7 @@ const TotalInfo = (props) => {
       </div>
       <div className="rankInfo">
         <div className="box">
-          <div className="title">
+          <div className="title" onClick={(e) => openPopLike(e, 0)}>
             <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
@@ -71,7 +71,7 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title">
+          <div className="title" onClick={openPopLike}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
