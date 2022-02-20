@@ -21,6 +21,7 @@ const SpecialDj = (props) => {
   const {token, profile} = context;
   const [specialList, setSpecialList] = useState([]);
   const [specialHistory, setSpecialHistory] = useState([]);
+  const [specialLog, setSpecialLog] = useState([]);
   const [popup, setPopup] = useState(false);
 
   let date = new Date();
@@ -56,6 +57,7 @@ const SpecialDj = (props) => {
     }).then((res) => {
       if (res.result === 'success') {
         setSpecialHistory(res.data)
+        setSpecialLog(res.data.list)
       } else {
         context.action.alert({
           callback: () => {},
@@ -141,13 +143,13 @@ const SpecialDj = (props) => {
         <LayerPopup setPopup={setPopup}>
           <section className="honorPopup">
             <div className='title'>
-              <span><strong>{profile.nickNm}</strong>님은</span>
+              <span><strong>{specialHistory.nickNm}</strong>님은</span>
               <span>현재 스페셜DJ입니다.</span>
             </div>
             <div className='table'>
               <div className='summary'>
                 <span>스페셜 DJ 약력</span>
-                <span>총 {popupData.specialCnt}회</span>
+                <span>총 {specialHistory.specialDjCnt}회</span>
               </div>
               <div className='tableInfo'>
                 <div className='thead'>
@@ -155,14 +157,14 @@ const SpecialDj = (props) => {
                   <span>선정 기수</span>
                 </div>
                 <div className='tbody'>
-                  <div className='tbodyList'>
-                    <span>2022.02</span>
-                    <span>57기</span>
-                  </div>
-                  <div className='tbodyList'>
-                    <span>2022.01</span>
-                    <span>56기</span>
-                  </div>                  
+                  {specialLog.map((list,index) => {
+                    return (
+                      <div className='tbodyList' key={index}>
+                        <span>{list.selectionDate}</span>
+                        <span>{list.roundNo}</span>
+                      </div>  
+                    )
+                  })}             
                 </div>
               </div>
             </div>

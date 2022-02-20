@@ -221,6 +221,9 @@
           @include font(16px,$Bold,$MAINCOLOR);
           @include fontCut;
         }
+        span {
+          @include flex(center);
+        }
       }
       .table {
         width: 100%;
