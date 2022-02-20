@@ -9,22 +9,20 @@ import moment from "moment";
 // components
 // css
 import '../../style.scss'
+import "./notice.scss"
+import {Context} from "context";
 
 const PostDetail = () => {
   const location = useLocation();
+  const context = useContext(Context);
+  const history = useHistory();
   const noticeIdx = location.state;
   const [postDetailInfo, setPostDetailInfo] = useState([]);
 
   //공지사항 상제 정보 조회
   const fetchPostDetailInfo = () => {
-    Api.notice_list_detail({
-      params: {
-        noticeIdx: noticeIdx
-      }
-    }).then((res) => {
-      if (res.result === 'success') {
-        setPostDetailInfo(res.data)
-      };
+    Api.notice_list_detail({params: {noticeIdx: noticeIdx}}).then((res) => {
+      if (res.result === 'success') {setPostDetailInfo(res.data)};
     }).catch((e) => console.log(e));
   };
 
@@ -35,6 +33,10 @@ const PostDetail = () => {
 
   useEffect(() => {
     fetchPostDetailInfo();
+  }, []);
+
+  useEffect(() => {
+    if(!(context.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (

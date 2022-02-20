@@ -18,10 +18,8 @@ const SettingPush = () => {
   let isSelect = false;
   const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
   const context = useContext(Context);
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
+  const [toast, setToast] = useState({state : false, msg : ""});
+  //푸쉬 알림 설정 리스트
   const [alarmArray, setAlarmArray] = useState([
     {key: 'isAll', value: 0, text: '전체 알림 수신', msg: '전체 알림 수신 시<br>', path: false},
     {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림', msg: '마이스타가 방송 시작 시<br>', path: false},
@@ -40,6 +38,7 @@ const SettingPush = () => {
     }
   ])
 
+  //알림 설정 조회
   const fetchData = async () => {
     const res = await API.appNotify_list({
       params: {}
@@ -56,6 +55,7 @@ const SettingPush = () => {
     }
   }
 
+  //알림 설정 수정시
   const postAlarmData = async (org) => {
     if(org !== undefined) {
       setAlarmArray(alarmArray.map((v) => {
@@ -72,27 +72,18 @@ const SettingPush = () => {
       })
     )
     const res = await API.appNotify_modify({
-      data: {
-        isAll: alarmArray[0].value,
-        alimType: myAlimType,
-        ...alarmObj
-      }
+      data: {isAll: alarmArray[0].value, alimType: myAlimType, ...alarmObj}
     })
     if(res.result === "success") {
       if(org === undefined) {
         if(!(isSelect === true)) {
-          if(myAlimType === "n") {
-            toastMessage("알림 모드가 무음으로 변경되었습니다.")
-          } else if(myAlimType === "s") {
-            toastMessage("알림 모드가 소리로 변경되었습니다.")
-          } else if(myAlimType === "v") {
-            toastMessage("알림 모드가 진동으로 변경되었습니다.")
-          }
-        }
-      }
-    }
+          if(myAlimType === "n") {toastMessage("알림 모드가 무음으로 변경되었습니다.")}
+          else if(myAlimType === "s") {toastMessage("알림 모드가 소리로 변경되었습니다.")}
+          else if(myAlimType === "v") {toastMessage("알림 모드가 진동으로 변경되었습니다.")}
+        }}}
   }
 
+  //하단 토스트 메시지 출력
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
     setTimeout(() => {
@@ -100,6 +91,7 @@ const SettingPush = () => {
     }, 3000)
   }
 
+  //토글 클릭시 값 변경
   const switchControl = (e) => {
     const switchs = document.querySelectorAll('input[name="switch"]');
     const on = document.querySelectorAll('input[name="switch"]:checked');
@@ -108,6 +100,7 @@ const SettingPush = () => {
     const title = (thisParent.querySelector('.title').innerText || e.currentTarget.dataset.title);
     first = false;
     isSelect = false;
+    //전체 알림 수신 클릭시
     if(e.target.name === "switchAll") {
       if(e.target.checked) {
         setAlarmArray(alarmArray.map((v) => {
@@ -125,21 +118,24 @@ const SettingPush = () => {
         toastMessage(`${title} \n 푸시를 받지 않습니다.`)
       }
     } else {
+      //개별 알림 클릭시
       alarmArray[0].value = 0;
-      if(e.target.checked){
+      alarmArray[0].path = false;
+      if(e.target.checked) {
         toastMessage(`${title} \n 푸시를 받습니다.`)
       } else {
         toastMessage(`${title} \n 푸시를 받지 않습니다.`)
       }
       if(switchs.length === on.length) {
         switchAll.checked = true;
-      }else {
+      } else {
         switchAll.checked = false;
       }
       postAlarmData();
     }
   }
 
+  //진동,무음,소리 설정 변경
   const onClick = (e) => {
     first = false;
     isSelect = false;
@@ -185,9 +181,7 @@ const SettingPush = () => {
           })}
         </div>
       </div>
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
+      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }
