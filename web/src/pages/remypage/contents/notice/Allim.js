@@ -12,7 +12,6 @@ import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
 import './notice.scss'
 import Header from "components/ui/header/Header";
-import TabBtn from "components/ui/tabBtn/TabBtn";
 
 const Allim = () => {
   const noticeTabmenu = ['알림','공지사항']
