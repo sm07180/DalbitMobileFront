@@ -1,26 +1,5 @@
 @import "components/ui/_mixin.scss";
 
-#myprofile {
-  .topSwiper {
-    .swiper-slide {
-      height:268px;
-    }
-    .photo {
-      height:268px;
-    }
-  }
-}
-#profileEdit {
-  .topSwiper {
-    .swiper-slide {
-      height:268px;
-    }
-    .photo {
-      height:268px;
-    }
-  }
-}
-
 .topSwiper {
   position: relative;
   .swiper-slide {

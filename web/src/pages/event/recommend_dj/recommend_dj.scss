@@ -1,37 +1,21 @@
 @import '../../../styles/global';
 
 #recommendDj {
-  .header-wrap {
-    position: sticky;
-    top: 0;
-    z-index: 1;
-
-    h2 {
-      color: $black;
-      font-size: 18px;
-      line-height: 20px;
-      letter-spacing: -0.45px;
-    }
-
-    .btn__refresh {
-      position: absolute;
-      top: 50%;
-      right: 16px;
-      transform: translateY(-50%);
-      .refresh-img {
-        width: 100%;
-        max-width: 32px;
-        &.active {
-          @include rotate_animation();
-        }
+  .btn__refresh {
+    width:30px;height:30px;
+    .refresh-img {
+      width: 100%;
+      max-width: 32px;
+      &.active {
+        @include rotate_animation();
       }
     }
   }
 
   .subContent {
-    padding: 0px 16px;
-    padding: 0px 16px 50px 16px;
+    padding: 0px 16px 50px;
     box-sizing: border-box;
+    background-color: #eee;
   }
 
   .btnBox {

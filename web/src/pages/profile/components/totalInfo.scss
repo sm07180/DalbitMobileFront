@@ -25,15 +25,14 @@
       flex-wrap:wrap;
       margin-left: 8px;
       .badgeItem {
-        line-height: 18px;
+        height:18px;
+        line-height: 19px;
         margin-top:1px;
         margin-bottom:1px;
       }
-      .badge {
-        display: inline-block;
-        margin:1px 4px;
-        padding:0 12px;
-        background-color:gold;
+      .grade {
+        background-color:black;
+        padding: 0 7px;
       }
     }
     button {
