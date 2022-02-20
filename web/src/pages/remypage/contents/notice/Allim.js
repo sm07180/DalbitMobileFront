@@ -14,8 +14,6 @@ import './notice.scss'
 import Header from "components/ui/header/Header";
 
 const Allim = () => {
-  const noticeTabmenu = ['알림','공지사항']
-  const [noticeType, setNoticeType] = useState(noticeTabmenu[0])
   const [alarmList, setAlarmList] = useState({list : [], cnt : 0});
   const context = useContext(Context);
   const global = useContext(GlobalContext);
@@ -26,7 +24,6 @@ const Allim = () => {
   const fetchData = () => {
     let params = {page: 1, records: 1000};
     Api.my_notification(params).then((res) => {
-      console.log(res.data.newCnt);
       if(res.result === "success") {
         if(res.data.list.length > 0) {
           setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt});
@@ -118,13 +115,7 @@ const Allim = () => {
 
   return (
     <div id="notice">
-      <Header type="back"/>
       <section className="noticeWrap">
-        <ul className="tabmenu">
-          <li className="active" onClick={() => history.push("/alarm")}>알림</li>
-          <li onClick={() => history.push("/post")}>공지사항</li>
-          <div className='underline'></div>
-        </ul>
         <div className="allim">
           {alarmList.list.length > 0 ?
             <>

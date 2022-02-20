@@ -26,7 +26,7 @@ const myMenuItem = [
   {menuNm: '리포트', path:'report'},
   {menuNm: '클립', path:'myclip'},
   {menuNm: '설정', path:'setting'},
-  {menuNm: '공지사항', path:'post'},
+  {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터', path:'customer'},
 ]
 
@@ -115,7 +115,7 @@ const Remypage = () => {
       return(<Clip />)
     case 'setting' :
       return(<Setting />)
-    case 'post' :
+    case 'notice' :
       return(<Notice />)
     case 'customer' :
       return(<Customer />)
