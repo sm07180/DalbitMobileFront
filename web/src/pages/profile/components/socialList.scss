@@ -61,37 +61,39 @@
     }
     .swiper-slide {
       width:100%;
-      height:225px;
       background-color:#ddd;
       .photo {
         height:100%;
         img {
           width:100%;
           height:100%;
-          img {
-            width:100%;
-            height:100%;
-            border-radius:5px;
-            object-fit: cover;
-          }
+          border-radius:8px;
+          object-fit: cover;
         }
-      }
-      .swiper-pagination {
-        @include swiperPagination;
       }
       .info {
         @include flex(center);
-        .dataCnt {
-          height: 20px;
-          padding-left: 24px;
-          line-height: 20px;
-          @include font(13px, 400, #6B6B6B);
-          background-size: 20px 20px;
-          &.replyCnt {
-            background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-tailCnt.png");
-            cursor:pointer;
-          }
-        }
+      }
+    }    
+    .swiper-pagination {
+      @include position-bottom-right(17px, 0);
+      left: auto;
+      @include flex(center, center);
+      width: auto; height: 20px;
+      padding: 0 10px;
+      border-radius: 10px 0 0 10px;
+      background-color: rgba($color: #000000, $alpha: 0.4);
+      @include font(13px, 500, #FFF);
+      letter-spacing: 1px;
+    }
+    .dataCnt {
+      height: 20px;
+      padding-left: 24px;
+      line-height: 20px;
+      @include font(13px, 400, #6B6B6B);
+      background-size: 20px 20px;
+      &.replyCnt {
+        background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-tailCnt.png");
       }
     }
   }

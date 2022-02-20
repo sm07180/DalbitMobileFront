@@ -6,7 +6,7 @@
     .saveBtn {
       width:40px;height:40px;
       margin-left:auto;
-      @include font(15px, 500, #303030);
+      @include font(16px,$SemiBold,#202020);
     }
   }
   .nonePhoto {
@@ -65,6 +65,7 @@
       .swiper-slide {
         width:auto;
         margin-right:8px;
+        cursor:pointer;
         &:last-child {
           margin-right:32px;
         }

@@ -16,8 +16,9 @@ const MenuList = (props) => {
     <div className='menuList' data-target-link={path} onClick={onClickLink}>
       <div className='menuName'>{text}</div>
       {children}
+      <span className={text === "선물 시 자동 스타 추가" ? "" : "arrow"}/>
     </div>
   )
 }
 
-export default MenuList
+export default MenuList;

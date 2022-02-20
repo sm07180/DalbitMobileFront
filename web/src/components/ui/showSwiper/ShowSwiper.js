@@ -18,7 +18,9 @@ const ShowSwiper = (props) => {
       type: 'fraction'
     },
     on: {
-      init: (a) => setSwiper(a)
+      init: function(){
+        setSwiper(this);
+      }
     }
   }
 
@@ -68,8 +70,8 @@ const ShowSwiper = (props) => {
             </div>
           )
         }
+        <button className='popClose' onClick={clickPopClose} />
       </div>
-      <button className='popClose' onClick={clickPopClose} />
     </div>
   )
 }

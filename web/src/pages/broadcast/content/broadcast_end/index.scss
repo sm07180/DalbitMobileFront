@@ -3,6 +3,7 @@
 
 #boradcast-end-modal {
   position: relative;
+  z-index: $ALERT-ZINDEX;
   width: 328px;
   height: auto;
   background-color: #fff;

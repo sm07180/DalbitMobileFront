@@ -13,10 +13,13 @@ import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
 
+import AttendEventBtn from './component/AttendEventBtn'
+
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {IMG_SERVER} from "context/config";
+
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
@@ -47,6 +50,8 @@ const MainPage = () => {
   const [tabFixed, setTabFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
+
+  const [scrollOn, setScrollOn] = useState(false)
 
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
@@ -114,6 +119,12 @@ const MainPage = () => {
     const overTabNode = overTabRef.current
     const overNode = overRef.current
     const headerNode = headerRef.current
+    
+    if (window.scrollY >= 1) {
+      setScrollOn(true)
+    } else {
+      setScrollOn(false)
+    }
 
     if (overNode && headerNode) {
       const overTop = overNode.offsetTop - headerNode.clientHeight
@@ -337,7 +348,7 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP 10'} more={'rank'}>
+        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
         <SwiperList
@@ -349,8 +360,12 @@ const MainPage = () => {
         />
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달린이'} />
-        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
+        {mainState.newBjList.length > 0 &&
+        <>
+          <CntTitle title={'방금 착륙한 NEW 달린이'} />
+          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
+        </>
+        }
       </section>
       <section className='bannerWrap'>
         <BannerSlide/>
@@ -366,6 +381,8 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+
+    <AttendEventBtn scrollOn={scrollOn}/>
 
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;

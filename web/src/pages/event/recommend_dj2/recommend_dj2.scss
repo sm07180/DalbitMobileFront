@@ -1,3 +1,5 @@
+@import "components/ui/_mixin.scss";
+
 #recommendDj2 {
   .subContent {
     display: flex;
@@ -13,7 +15,11 @@
         width: 100%;
       }
     }
+    .wrap {
+      @include flex(center, center, column);
+    }
     .listBox {
+      flex: 1;
       position: relative;
       z-index: 1;
       display: flex;
@@ -64,12 +70,12 @@
             right: 0;
             width: 25%;
             height: 25%;
-            background: url('https://image.dalbitlive.com/event/recommend_dj2/ico_check.png') center/contain no-repeat;
+            background: url('https://image.dalbitlive.com/event/recommend_dj2/renewal/ico_check.png') center/contain no-repeat;
           }
         }
         &.active {
           .thumbnail {
-            border: 2px solid #632beb;
+            border: 2px solid #FF3C7B;
           }
           .icoCheck {
             position: absolute;
@@ -77,7 +83,7 @@
             right: 0;
             width: 25%;
             height: 25%;
-            background: url('https://image.dalbitlive.com/event/recommend_dj2/ico_check_active.png') center/contain no-repeat;
+            background: url('https://image.dalbitlive.com/event/recommend_dj2/renewal/ico_check_active.png') center/contain no-repeat;
           }
         }
         .userText {
@@ -88,9 +94,9 @@
             width: 100%;
             height: 18px;
             line-height: 18px;
-            margin: 4px 0 2px;
+            margin: 6px 0 2px;
             padding: 0 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             text-align: center;
             text-overflow: ellipsis;
@@ -98,17 +104,18 @@
             overflow: hidden;
             box-sizing: border-box;
             &.man {
-              color: #5885ff;
+              color: #8989EB;
             }
             &.woman {
-              color: #e431ff;
+              color: #FF927B;
             }
           }
           .subject {
             height: 40px;
             padding: 0 8px;
             line-height: 20px;
-            font-size: 13px;
+            margin-top: 7px;
+            @include font(13px, 400, #000000);
             text-align: center;
             white-space: normal;
             display: -webkit-box;
@@ -131,41 +138,49 @@
             span {
               margin-left: 4px;
               vertical-align: center;
-              font-size: 12px;
-              font-weight: 500;
-              color: #444;
+              font-size: 13px;
+              font-weight: 400;
+              color: #999999;
             }
           }
         }
       }
     }
     .combo {
-      position: fixed;
-      bottom: 0;
+      position: relative;
       z-index: 1;
-      display: flex;
+      @include flex(center);
       width: 100%;
       padding: 16px 16px 24px;
       background-color: #fff;
     }
     .refreshBtn {
+      flex: none;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 48px;
       img {
         height: 100%;
-        margin-right: 4px;
+        margin-right: 8px;
       }
     }
     .startBtn {
-      width: calc(100% - 32px);
+      flex: 1;
       height: 48px;
       border-radius: 12px;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       font-size: 18px;
       font-weight: 700;
       color: #fff;
+    }
+  }
+}
+
+.container {
+  .totalWrap {
+    .content-article {
+      min-height: auto;
     }
   }
 }

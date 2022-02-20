@@ -129,7 +129,7 @@ const Content = styled.div`
         line-height: 44px;
         font-size: 18px;
         font-weight: bold;
-        background-color: #632beb;
+        background-color: #FF3C7B;
         color: #fff;
         border-radius: 12px;
       }

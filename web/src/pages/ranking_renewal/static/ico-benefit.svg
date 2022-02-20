@@ -4,11 +4,11 @@
             .cls-3{fill:#00b5f1}.cls-4{fill:#008ed4}.cls-6{fill:#ff9d00}.cls-8{fill:#fff}
         </style>
     </defs>
-    <g id="사각형_6174" fill="none" stroke="#632beb" data-name="사각형 6174">
+    <g id="사각형_6174" fill="none" stroke="#FF3C7B" data-name="사각형 6174">
         <rect width="57" height="22" stroke="none" rx="11"/>
         <rect width="56" height="21" x=".5" y=".5" rx="10.5"/>
     </g>
-    <text id="혜택" fill="#632beb" font-family="NanumSquareEB, NanumSquare" font-size="12px" transform="translate(39 15)">
+    <text id="혜택" fill="#FF3C7B" font-family="NanumSquareEB, NanumSquare" font-size="12px" transform="translate(39 15)">
         <tspan x="-10.92" y="0">혜택</tspan>
     </text>
     <g id="그룹_19128" data-name="그룹 19128" transform="translate(-184.398 -449.106)">

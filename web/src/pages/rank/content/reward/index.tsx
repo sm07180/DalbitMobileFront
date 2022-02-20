@@ -233,7 +233,7 @@ const PopupWrap = styled.div`
       margin-bottom: 25px;
       padding: 18px 25px 12px 25px;
       border-radius: 20px;
-      border: 1px solid #632beb;
+      border: 1px solid #FF3C7B;
 
       .title {
         display: inline-block;
@@ -243,7 +243,7 @@ const PopupWrap = styled.div`
         left: 50%;
         transform: translateX(-50%);
         padding: 0 11px;
-        color: #632beb;
+        color: #FF3C7B;
         text-align: center;
         font-size: 14px;
         background-color: #fff;
@@ -320,7 +320,7 @@ const PopupWrap = styled.div`
           span {
             font-size: 18px;
             font-weight: 500;
-            color: #632beb;
+            color: #FF3C7B;
           }
 
           label {
@@ -385,7 +385,7 @@ const PopupWrap = styled.div`
       width: 100%;
       height: 44px;
       border-radius: 12px;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       letter-spacing: -0.4px;
       color: #ffffff;
       font-weight: 500;

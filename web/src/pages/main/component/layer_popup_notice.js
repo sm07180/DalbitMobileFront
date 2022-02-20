@@ -88,7 +88,7 @@ export default (props) => {
                       applyClick(popupData.idx, 'imgType')
                     }}
                   />
-                  오늘 하루 보지 않기
+                  다시 보지 않음
                 </label>
               </div>
             )}

@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header/Header'
 
 import './bestdj.scss'
 
@@ -47,7 +47,7 @@ export default function bestdj() {
 
   return (
     <div id="bestDj">
-      <Header title="베스트DJ" />
+      <Header title="베스트DJ" type="back" />
       <div className="subContent">
           <img
           src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-top.png`}

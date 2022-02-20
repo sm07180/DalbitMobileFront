@@ -26,10 +26,12 @@
     }
 
     .attendStateList {
-      @include flex;
       position: absolute;
       left: 8%;
       top: 57%;
+      @include flex;
+      align-items: center;
+      justify-content: center;
       width: 83%;
       padding: 10px 0;
       border-radius: 12px;
@@ -206,7 +208,7 @@
     &__giftTitle {
       padding-bottom: 8px;
       font-size: 22px;
-      color: #632beb;
+      color: #FF3C7B;
     }
 
     &__content {

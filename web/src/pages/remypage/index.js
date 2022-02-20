@@ -8,7 +8,6 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
-import Allim from "pages/remypage/contents/notice/Allim";
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
@@ -20,12 +19,14 @@ import {OS_TYPE} from "context/config";
 import PopSlide from "components/ui/popSlide/PopSlide";
 import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
+import Post from "pages/remypage/contents/notice/Post";
+import Notice from "pages/remypage/contents/notice/Notice";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
   {menuNm: '클립', path:'myclip'},
-  {menuNm: '설정', path:'oldsetting'},
-  {menuNm: '공지사항', path:'notice'},
+  {menuNm: '설정', path:'setting'},
+  {menuNm: '공지사항', path:'post'},
   {menuNm: '고객센터', path:'customer'},
 ]
 
@@ -112,10 +113,10 @@ const Remypage = () => {
       return(<Report />)
     case 'myclip' :
       return(<Clip />)
-    case 'oldsetting' :
+    case 'setting' :
       return(<Setting />)
-    case 'notice' :
-      return(<Allim />)
+    case 'post' :
+      return(<Notice />)
     case 'customer' :
       return(<Customer />)
     default :

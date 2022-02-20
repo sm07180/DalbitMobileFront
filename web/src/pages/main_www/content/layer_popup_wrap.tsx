@@ -103,7 +103,7 @@ export default function LayerPopupWrap({ data, setData, setPopupState }) {
                   handleCookie(popupData.idx);
                 }}
               />
-              <span>오늘하루 열지 않음</span>
+              <span>다시 보지 않음</span>
             </label>
           </div>
         )}
@@ -130,7 +130,7 @@ export default function LayerPopupWrap({ data, setData, setPopupState }) {
                   handleCookie(popupData.idx);
                 }}
               />
-              <span>오늘하루 열지 않음</span>
+              <span>다시 보지 않음</span>
             </label>
           </div>
         )}
@@ -138,7 +138,7 @@ export default function LayerPopupWrap({ data, setData, setPopupState }) {
           <div className="chk-label">
             <label htmlFor={`chkimg${popupData.idx}`}>
               <input type="checkbox" id={`chkimg${popupData.idx}`} onClick={() => handleCookie(popupData.idx)} />
-              오늘 하루 보지 않기
+              다시 보지 않음
             </label>
           </div>
         )} */}

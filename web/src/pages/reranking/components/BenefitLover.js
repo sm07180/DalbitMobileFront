@@ -8,7 +8,7 @@ export default () => {
   return (
     <>
       <div className="benefitTop">
-        <p className="mainText">TOP LOVER에 도전해보세요!</p>
+        <p className="mainText">TOP CUPID에 도전해보세요!</p>
         <p className="subText">심쿵유발자의 든든한 사랑꾼이 될 수 있습니다.</p>
       </div>
 

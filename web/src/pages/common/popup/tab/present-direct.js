@@ -152,11 +152,11 @@ export default (props) => {
         <p>* 달 선물하기는 100% 전달됩니다.</p>
       </TextArea>
       <ButtonArea>
-        <BotButton title={'충전하기'} borderColor={'#632beb'} color={'#632beb'} clickEvent={() => broadCastCharge()} />
+        <BotButton title={'충전하기'} borderColor={'#FF3C7B'} color={'#FF3C7B'} clickEvent={() => broadCastCharge()} />
         <BotButton
           title={'선물하기'}
           borderColor={'#bdbdbd'}
-          background={send ? '#632beb' : '#bdbdbd'}
+          background={send ? '#FF3C7B' : '#bdbdbd'}
           color={'#fff'}
           clickEvent={() => giftSend()}
         />
@@ -225,10 +225,10 @@ const PointButton = styled.button`
   width: 64px;
   height: 32px;
   border-style: solid;
-  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-color: ${(props) => (props.active == 'active' ? '#FF3C7B' : '#e0e0e0')};
   border-width: 1px;
   border-radius: 10px;
-  color: ${(props) => (props.active == 'active' ? '#632beb' : '#616161')};
+  color: ${(props) => (props.active == 'active' ? '#FF3C7B' : '#616161')};
   font-weight: 400;
 `
 const TextArea = styled.div`
@@ -261,7 +261,7 @@ const PointInput = styled.input`
   font-weight: 400;
   line-height: 1.14;
   letter-spacing: -0.35px;
-  border-color: ${(props) => (props.active === 'active' ? '#632beb' : '#e0e0e0')};
+  border-color: ${(props) => (props.active === 'active' ? '#FF3C7B' : '#e0e0e0')};
 `
 const ButtonArea = styled.div`
   display: flex;

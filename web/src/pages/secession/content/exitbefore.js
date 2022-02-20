@@ -218,7 +218,7 @@ const Wrap = styled.div`
     width: 100%;
     margin: 20px auto 186px auto;
     padding: 16px 135px;
-    background-color: #632beb;
+    background-color: #FF3C7B;
     color: #fff;
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {

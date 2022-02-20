@@ -30,7 +30,7 @@ const CheckWrap = styled.div`
     cursor: pointer;
     background: #fff url(${IMG_SERVER}/images/api/ico-checkbox-off.svg) no-repeat center center / cover;
     &.on {
-      background: #632beb url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center / cover;
+      background: #FF3C7B url(${IMG_SERVER}/images/api/ico-checkbox-on.svg) no-repeat center center / cover;
     }
   }
 `

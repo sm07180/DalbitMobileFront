@@ -191,7 +191,7 @@
             border-radius: 8px;
             border: 1px solid #bdbdbd;
             background-color: #fff;
-            color: #632beb;
+            color: #FF3C7B;
             font-weight: 700;
           }
         }
@@ -336,9 +336,9 @@
 
             &.success {
               .stamp-box-item-wrap {
-                border: 1px solid #632beb;
-                box-shadow: 0px 4px 0 0 rgba(99, 43, 235, 0.2);
-                color: #632beb;
+                border: 1px solid #FF3C7B;
+                box-shadow: 0px 4px 0 0 rgba(255, 60, 123, 0.2);
+                color: #FF3C7B;
 
                 .stamp-date {
                   background-color: #8556f6;
@@ -451,7 +451,7 @@
           padding: 10px;
           border-radius: 20px;
           background-color: #5640bd;
-          box-shadow: 0px 4px 0 0 rgba(99, 43, 235, 0.2);
+          box-shadow: 0px 4px 0 0 rgba(255, 60, 123, 0.2);
 
           .title-label {
             position: absolute;
@@ -896,10 +896,10 @@
       table {
         th {
           padding: 5px 0;
-          border-top: 1px solid #632beb;
-          border-bottom: 1px solid #632beb;
+          border-top: 1px solid #FF3C7B;
+          border-bottom: 1px solid #FF3C7B;
           font-size: 12px;
-          color: #632beb;
+          color: #FF3C7B;
         }
 
         td {

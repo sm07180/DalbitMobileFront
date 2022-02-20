@@ -12,7 +12,7 @@ import './rankingBenefit.scss'
 
 const RankingBenefit = () => {
   //탭 목록
-  const [tabList, setTabList] = useState(["DJ", "FAN", "LOVER"]);
+  const [tabList, setTabList] = useState(["DJ", "FAN", "CUPID"]);
   //현재 선택된 탭 이름
   const [tabName, setTabName] = useState(tabList[0]);
 
@@ -30,7 +30,7 @@ const RankingBenefit = () => {
             <BenefitFan/>
         }
         {
-          tabName === "LOVER" &&
+          tabName === "CUPID" &&
             <BenefitLover/>
         }
       </div>

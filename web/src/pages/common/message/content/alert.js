@@ -163,7 +163,7 @@ const Alert = styled.section`
   .remsg {
     display: block;
     font-size: 22px;
-    color: #632beb;
+    color: #FF3C7B;
     line-height: 26px;
     text-align: center;
     margin-bottom: 8px;

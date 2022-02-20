@@ -16,6 +16,11 @@
           max-width:480px;
         }
       }
+      .content.player {
+        .fixedButton {
+          bottom: 80px;
+        }
+      }
     }
   }
 }
@@ -92,10 +97,8 @@
           // transition: transform .7s ease-out;
           .badgeGroup {
             @include flex(center);
+            margin-bottom: 8px;
             height:16px;
-          }
-          .badgeGroup {
-            @include flex(center);
           }
           .title {
             width:72%;
@@ -336,9 +339,6 @@
       @include font(15px,400,#999);
     }
   }
-  .bannerWrap {
-    margin-bottom:35px;
-  }
   .liveView {
     .cntTitle {
       margin-bottom:8px;
@@ -422,12 +422,14 @@
           @include flex($fd:column);
           min-width:0;
           height:100%;
+          padding: 8px 0;
           margin-left:16px;
+          box-sizing: border-box;
           .listItem {
             @include flex(center);
             min-height:2px;
             margin-bottom:2px;
-            &:last-child {
+            &:nth-child(3) {
               margin-top: auto;
             }
             .title {
@@ -445,6 +447,66 @@
           }
         }
       }      
+    }
+  } 
+}
+
+.fixedButton {
+  position: fixed;
+  bottom: 30px;
+  right: 50%;
+  margin-right: -220px;
+  z-index: 13;
+  width: 48px;
+  .attendStampActive {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    margin: 5px 0 0;
+
+    &.basic {
+      background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
+        center no-repeat;
+      background-size: 100%;
+    }
+
+    &.motion {
+      width: 48px;
+      height: 48px;
+      position: relative;
+
+      &::after {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+        content: "";
+        background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
+          center no-repeat;
+        background-size: 48px;
+        animation: rotate_image 1s linear infinite;
+        transform-origin: 50% 50%;
+        @keyframes rotate_image {
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 48px;
+        height: 48px;
+        z-index: 1;
+        background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
+          center no-repeat;
+        background-size: 60px;
+      }
     }
   }
 }

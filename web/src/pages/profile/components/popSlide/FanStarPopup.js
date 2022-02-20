@@ -244,6 +244,7 @@ const FanStarPopup = (props) => {
         <NoResult />
         }
       </div>
+      <button className="popClose"></button>
     </section>
   )
 }

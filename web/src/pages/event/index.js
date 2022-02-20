@@ -51,6 +51,7 @@ import PlayMaker from './playMaker'
 // import MarblePocket from './gganbu/content/marblePocket'
 import Invite from './invite'
 import Share from './share'
+import PlatformWar from './platformWar'
 
 export default (props) => {
   const params = useParams()
@@ -73,7 +74,8 @@ export default (props) => {
       case 'my_history':
         return <AttendHistory />
       case 'guest_guide':
-        return <GuestGuide />
+      case 'guest_guideT':
+        return <GuestGuide title={title}/>
       case 'image_guide':
         return <ImageGuide />
       case 'payment_morning':
@@ -146,11 +148,13 @@ export default (props) => {
       //   return <Participant />
       // case 'marblePocket':
       //   return <MarblePocket />
-      
+
       case 'invite':
         return <Invite />
       case 'share':
         return <Share />
+      case 'platformWar':
+        return <PlatformWar />
       default:
         return <></>
         break

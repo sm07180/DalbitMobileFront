@@ -8,7 +8,8 @@
         width:40px;
         height:40px;
         text-indent: -99999px;
-        &.editBtn {@include BGIMG('common/header/icoEdit-b.png');}
+        @include font(16px,$SemiBold,#202020);
+        &.editBtn {text-indent: 0;}
         &.moreBtn {@include BGIMG('common/header/icoMore-b.png');}
       }
     }
@@ -247,6 +248,7 @@
         line-height:55px;
         text-align:center;
         @include font(16px,400,#202020);
+        cursor: pointer;
       }
     }
     .myLevelInfo {

@@ -118,7 +118,7 @@ const SearchResult = (props) => {
   // 탭 변경 이벤트
   const handleTabmenu = (value) => {
     if (value !== undefined) {
-      setSearchData({...searchData, tabType: parseInt(value), records: (value == 0 ? 5 : 7), page: 1});
+      setSearchData({...searchData, tabType: parseInt(value), records: (value == 0 ? 5 : 50), page: 1});
     }
   };
 
