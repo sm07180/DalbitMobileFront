@@ -17,7 +17,7 @@ import {Context} from "context";
 import {Hybrid} from "context/hybrid";
 
 const Exchange = (props) => {
-  const {isIOS} = props;
+  const {isIOS, tabMenuRef} = props;
 
   const origin_depositTabmenu = ['신규 정보','최근 계좌','내 계좌'];
 
@@ -410,7 +410,7 @@ const Exchange = (props) => {
           <button className='exchange'
                   onClick={() =>
                     isIOS ?
-                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange`) :
+                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange=1`) :
                       history.push('/wallet/exchange')}>
             달 교환
           </button>
@@ -447,7 +447,7 @@ const Exchange = (props) => {
         {depositType === depositTabmenu[0] ?
           /*신규 정보*/
           <DepositInfo exchangeSubmit={exchangeSubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
-                      uploadSingleFile={uploadSingleFile} parentAgree={parentAgree}
+                      uploadSingleFile={uploadSingleFile} parentAgree={parentAgree} tabMenuRef={tabMenuRef}
           />
           : depositType === depositTabmenu[1] ?
             /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/

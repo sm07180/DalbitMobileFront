@@ -33,6 +33,7 @@ export default props => {
         callback: () => {
           console.log('callback처리')
         },
+        // title: '달라',
         msg: '빠른 말이 수정되었습니다.'
       })
       selectShortcut() // 빠른 말 수정 완료 후 조회
@@ -110,6 +111,10 @@ const MacroInput = props => {
         callback: () => {
           console.log()
         },
+<<<<<<< HEAD
+=======
+        // title: '달라라디오',
+>>>>>>> origin/br_Renewal-jiho
         msg: '입력 가능한 수를 초과했습니다.'
       })
     }

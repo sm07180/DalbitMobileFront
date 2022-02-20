@@ -57,7 +57,7 @@ const Rule = () => {
                 <div className='menuName'>회원탈퇴</div>
                 <span className='arrow'></span>
               </div>
-              <div className='menuList'>
+              <div className='menuList uid'>
                 <div className='menuName'>사용자 ID</div>
                 <span className='uid'>{profile.memId}</span>
               </div>
