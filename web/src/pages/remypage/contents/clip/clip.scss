@@ -125,7 +125,13 @@
           border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
           border-radius:16px;
           box-sizing: border-box;
-        }    
+        }
+        .photoLock{
+          @include position-top-left;
+          width: 100%;
+          height: 100%;
+          @include BGIMG('mypage/dalla/clip/myClipLock.png');
+        }
         img {
           border-radius: 16px;
         }
@@ -158,6 +164,7 @@
         margin-bottom: auto;
         @include BGIMG('mypage/dalla/clip/ico_moreBtn.png');
         cursor: pointer;
+        z-index: 999;
         div{
           @include position-top-right(40px,0);
           width: 124px;
@@ -185,5 +192,13 @@
         margin-top: 18px;
       }
     }
+  }
+
+  .closeArea {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
   }
 }
