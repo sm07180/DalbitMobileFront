@@ -289,6 +289,7 @@ const LikePopup = (props) => {
         <NoResult />
         }
       </div>
+      <button className="popClose"></button>
       {noticePop &&
         <LayerPopup title="랭킹 기준" setPopup={setNoticePop}>
           <section className="profileRankNotice">
