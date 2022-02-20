@@ -43,7 +43,7 @@ export default function awardEventGuide() {
             <li>
               DJ TOP 7 30인의 후보 명단의 선발 기준은 다음과 같습니다.
               <br />
-              ① 오픈 이후 달빛라이브의 스페셜 DJ 이력이 있는 회원
+              ① 오픈 이후 달라의 스페셜 DJ 이력이 있는 회원
               <br />
               ② DJ 연간 랭킹 상위 회원
               <br />

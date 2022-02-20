@@ -8,7 +8,7 @@ export default function QnaInfo() {
       </h3>
       <div className="InfoInnerBox">
         <p className="introBox">
-          <span>달빛라이브</span>는 회원님들의
+          <span>달라</span>는 회원님들의
           <br />
           소중한 의견 및 제안으로 만들어지고 있습니다. <br />
           <span>

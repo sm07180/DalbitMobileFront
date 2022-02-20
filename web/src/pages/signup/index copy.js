@@ -706,7 +706,7 @@ export default (props) => {
           // }
           loginFetch()
         },
-        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
+        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달라 즐겁게 사용하세요.'
       })
     } else {
       context.action.alert({
@@ -1077,7 +1077,7 @@ export default (props) => {
 const AgeGuidance = () => {
   return (
     <p className="birthText">
-      * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
+      * 달라는 만 14세 이상부터 이용 가능한 서비스입니다.
       <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
     </p>
   )

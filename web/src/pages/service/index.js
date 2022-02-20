@@ -99,7 +99,7 @@ export default function Service() {
         <Header title="고객센터" />
         <div className="serviceWrap__contents">
           <div className="serviceWrap__contents--tip">
-            달빛 라이브에 대한 궁금한 사항이나 장애 등은
+            달라에 대한 궁금한 사항이나 장애 등은
             <br />
             고객센터 전화문의 또는 1:1문의로 접수해주세요.
             <br />
