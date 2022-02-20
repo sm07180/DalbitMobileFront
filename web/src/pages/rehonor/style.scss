@@ -1,5 +1,15 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+    #honor {
+      .tabmenu {
+        top: $PC-TABTOP;
+      }
+    }
+  }
+}
+
 #honor {
   // 뱃지 아이콘 mixin
   @mixin specialCnt {
@@ -41,8 +51,12 @@
   }
 
   .tabmenu {
+    position:sticky;
+    top: $MOBILE-TABTOP;
     padding:0 16px;
     @include tabmenuStyle-1;
+    background-color: #FFF;
+    z-index: 11;
   }
   section {
     position:relative;
@@ -206,6 +220,9 @@
           max-width: 200px;
           @include font(16px,$Bold,$MAINCOLOR);
           @include fontCut;
+        }
+        span {
+          @include flex(center);
         }
       }
       .table {

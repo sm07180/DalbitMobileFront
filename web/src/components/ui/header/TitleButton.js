@@ -38,7 +38,7 @@ export const StoreButton = ({history}) => {
 }
 
 export const SearchButton = ({history}) => {
-  return <button className='search' onClick={() => history.push('/menu/search')} />
+  return <button className='search' onClick={() => history.push('/search')} />
 }
 
 const TitleButton = (props) => {
@@ -86,7 +86,7 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <StoreButton history={history} />
-          <SearchButton history={history} />
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )

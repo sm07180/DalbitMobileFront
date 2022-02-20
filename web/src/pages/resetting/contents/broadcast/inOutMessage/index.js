@@ -15,14 +15,9 @@ const InOutMessage = (props) => {
   const {settingData, setSettingData} = props;
 
   const fetchData = async (type) => {
-    const res = await API.modifyBroadcastSetting({
-      [type]: !settingData[type]
-    });
+    const res = await API.modifyBroadcastSetting({[type]: !settingData[type]});
     if(res.result === "success") {
-      setSettingData({
-        ...settingData,
-        [type]: !settingData[type]
-      })
+      setSettingData({...settingData, [type]: !settingData[type]})
     }
   }
 
@@ -50,4 +45,4 @@ const InOutMessage = (props) => {
   )
 }
 
-export default InOutMessage
+export default InOutMessage;

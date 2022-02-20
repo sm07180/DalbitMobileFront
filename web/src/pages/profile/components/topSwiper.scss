@@ -1,26 +1,5 @@
 @import "components/ui/_mixin.scss";
 
-#myprofile {
-  .topSwiper {
-    .swiper-slide {
-      height:268px;
-    }
-    .photo {
-      height:268px;
-    }
-  }
-}
-#profileEdit {
-  .topSwiper {
-    .swiper-slide {
-      height:268px;
-    }
-    .photo {
-      height:268px;
-    }
-  }
-}
-
 .topSwiper {
   position: relative;
   .swiper-slide {
@@ -40,8 +19,11 @@
     bottom:31px;
   }
   .swiperBottom {
-    @include position-bottom-right(30px,0);z-index: 1;
+    @include position-bottom-right(26px,0);z-index: 1;
     @include flex(center);
+    &.pagenation {
+      right: 40px;
+    }
     .specialBdg {
       @include flex(center,center,column);
       width:57px;
@@ -50,6 +32,7 @@
       margin-right:6px;
       border-radius:100px;
       background-color: $MAINCOLOR;
+      cursor: pointer;
       img {
         height:12px;
       }

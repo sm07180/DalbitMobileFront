@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useContext, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './style.scss'
@@ -6,6 +6,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import TopSwiper from './components/topSwiper'
 import ProfileCard from './components/profileCard'
@@ -58,6 +59,12 @@ const ProfilePage = () => {
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
   const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
 
+  const [specialHistory, setSpecialHistory] = useState([]); // 해당유저의 스페셜DJ 데이터
+  const [specialLog, setSpecialLog] = useState([]); // 해당유저의 스페셜DJ 획득 로그
+  const [popHistory, setPopHistory] = useState(false); // 스페셜DJ 약력 팝업 생성
+ 
+  const [noticePop, setNoticePop] = useState(false); // 좋아요 랭킹기준 안내팝업
+
   const [webview, setWebview] = useState('');
 
   const dispatch = useDispatch();
@@ -65,6 +72,15 @@ const ProfilePage = () => {
   const feedData = useSelector(state => state.feed);
   const fanBoardData = useSelector(state => state.fanBoard);
   const clipData = useSelector(state => state.profileClip);
+
+  /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
+  const profileDataNoReader = useMemo(() => {
+    if (profileData?.profImgList?.length > 0) {
+      return {...profileData, profImgList: profileData?.profImgList.concat([]).filter((data, index)=> !data.isLeader)};
+    } else {
+      return profileData;
+    }
+  },[profileData]);
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
@@ -161,6 +177,27 @@ const ProfilePage = () => {
       }
     })
   }
+
+  /* 스페셜DJ 약력 조회 */
+  const fetchSpecialHistory = (memNo) => {
+    Api.specialHistory({params: {memNo: memNo}}).then((res) => {
+      if (res.result === 'success') {
+        setSpecialHistory(res.data)
+        setSpecialLog(res.data.list)
+      } else {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
+      }
+    });
+  }
+
+  useEffect(() => {
+    if(profileData.memNo){
+      fetchSpecialHistory(profileData.memNo);
+    }
+  },[popHistory])
 
   /* 팬 등록 해제 */
   const fanToggle = (memNo, memNick, isFan, callback) => {
@@ -501,16 +538,16 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
+            <button className="editBtn" onClick={()=>history.push('/myProfile/edit')}>편집</button>
           </div>
           :
           <div className="buttonGroup">
-            <button className='moreBtn' onClick={openMoreList}>더보기</button>
+            <button className="moreBtn" onClick={openMoreList}>더보기</button>
           </div>
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
+        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} setPopHistory={setPopHistory} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -579,7 +616,7 @@ const ProfilePage = () => {
       {popLike &&
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent} setNoticePop={setNoticePop}
           />
         </PopSlide>
       }
@@ -596,6 +633,58 @@ const ProfilePage = () => {
         <PopSlide setPopSlide={setPopPresent}>
           <Present profileData={profileData} setPopPresent={setPopPresent} />
         </PopSlide>
+      }
+
+      {/* 선물하기 */}
+      {noticePop &&
+        <LayerPopup title="랭킹 기준" setPopup={setNoticePop}>
+          <section className="profileRankNotice">
+            <div className="title">최근 팬 랭킹</div>
+            <div className="text">최근 3개월 간 내 방송에서 선물을 많이<br/>
+            보낸 팬 순위입니다.</div>
+            <div className="title">누적 팬 랭킹</div>
+            <div className="text">전체 기간 동안 해당 회원의 방송에서<br/>
+            선물을 많이 보낸 팬 순위입니다.</div>
+            <div className="title">좋아요 전체 랭킹</div>
+            <div className="text">팬 여부와 관계없이 해당 회원의<br/>
+            방송에서 좋아요(부스터 포함)를 보낸<br/>
+            전체 회원 순위입니다.</div>
+          </section>
+        </LayerPopup>
+      }
+
+      {/* 스페셜DJ 약력 팝업 */}
+      {popHistory &&
+        <LayerPopup setPopup={setPopHistory}>
+          <section className="honorPopup">
+            <div className='title'>
+              <span><strong>{specialHistory.nickNm}</strong>님은</span>
+              <span>현재 스페셜DJ입니다.</span>
+            </div>
+            <div className='table'>
+              <div className='summary'>
+                <span>스페셜 DJ 약력</span>
+                <span>총 {specialHistory.specialDjCnt}회</span>
+              </div>
+              <div className='tableInfo'>
+                <div className='thead'>
+                  <span>선정 일자</span>
+                  <span>선정 기수</span>
+                </div>
+                <div className='tbody'>
+                  {specialLog.map((list,index) => {
+                    return (
+                      <div className='tbodyList' key={index}>
+                        <span>{list.selectionDate}</span>
+                        <span>{list.roundNo}</span>
+                      </div>  
+                    )
+                  })}             
+                </div>
+              </div>
+            </div>
+          </section>
+        </LayerPopup>
       }
     </div>
   )

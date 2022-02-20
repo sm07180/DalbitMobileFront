@@ -9,6 +9,11 @@ $HEADER-HEIGHT: 52px;
 $NAVIGATION-HEIGHT: 50px;
 $GNB-HEIGHT: 68px;
 
+//scroll 시 tab 고정 TOP값 (PC)
+$PC-TABTOP : 120px;
+$MOBILE-TABTOP : 52px;
+$TAB-ZINDEX : 15;
+
 // z-inde 관리
 $ALERT-ZINDEX: 100;
 $POPUP-ZINDEX: 90;
@@ -330,7 +335,7 @@ $ExtraBold: 800;
   @include flex(center);
   li {
     flex:1;
-    line-height:40px;
+    line-height:44px;
     text-align: center;
     background-color: #ffffff;
     border-bottom:2px solid #f2f2f2;

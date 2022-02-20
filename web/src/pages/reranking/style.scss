@@ -53,6 +53,7 @@ $errorMsg : #FF1919;
     .benefits {
       display: inline-block;
       width: 40px; height: 40px;
+      @include font(16px, 400, #5A5A5A);
     }
   }
   .cntTitle {
