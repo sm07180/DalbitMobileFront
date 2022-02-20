@@ -9,7 +9,7 @@ import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 
 const TopSwiper = (props) => {
-  const {data, openShowSlide, webview} = props
+  const {data, openShowSlide, webview, isMyProfile} = props
   const context = useContext(Context);
   const history = useHistory();
   
@@ -82,7 +82,7 @@ const TopSwiper = (props) => {
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {webview === '' && (data.roomNo !== "" || data.listenRoomNo !== "") &&
+        {!isMyProfile && webview === '' && (data.roomNo !== "" || data.listenRoomNo !== "") &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
