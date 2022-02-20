@@ -77,7 +77,7 @@ const StorePage = () => {
 
   return (
     <div id="storePage">
-      <Header title={'스토어'} position="sticky" type="back" backEvent={()=>history.push("/")}/>
+      <Header title={'스토어'} position="sticky" type="back" backEvent={()=>history.push("/myPage")}/>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(storeInfo.myDal)}</span>
