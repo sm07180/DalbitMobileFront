@@ -18,7 +18,9 @@ const ShowSwiper = (props) => {
       type: 'fraction'
     },
     on: {
-      init: (a) => setSwiper(a)
+      init: function(){
+        setSwiper(this);
+      }
     }
   }
 

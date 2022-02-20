@@ -35,7 +35,7 @@ const gntSubTypes = [
   {url: '/mypage'},
   {url: '/mailbox'},
   {url: '/store'},
-  {url: '/notice'},
+  {url: '/alarm'},
 ]
 
 export default function GNB() {
