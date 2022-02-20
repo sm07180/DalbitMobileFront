@@ -62,10 +62,11 @@ const ProfilePage = () => {
   const [specialHistory, setSpecialHistory] = useState([]); // 해당유저의 스페셜DJ 데이터
   const [specialLog, setSpecialLog] = useState([]); // 해당유저의 스페셜DJ 획득 로그
   const [popHistory, setPopHistory] = useState(false); // 스페셜DJ 약력 팝업 생성
- 
+
   const [noticePop, setNoticePop] = useState(false); // 좋아요 랭킹기준 안내팝업
 
   const [webview, setWebview] = useState('');
+  const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -336,9 +337,11 @@ const ProfilePage = () => {
     setPopFanStar(true)
   }
 
-  /* 좋아요 슬라이드 팝업 열기/닫기 */
-  const openPopLike = (e) => {
-    const {targetType} = e.currentTarget.dataset
+  /* 좋아요 슬라이드 팝업 열기/닫기 (tabState는 열고싶은 탭 있을때 파라미터를 넘긴다 탭 순서대로 0부터) */
+  const openPopLike = (e, tabState) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikePopTabState(tabState)
     setPopLike(true)
   }
 
@@ -547,7 +550,8 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} setPopHistory={setPopHistory} />
+        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile}
+                   setPopHistory={setPopHistory} type="profile" />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -555,7 +559,7 @@ const ProfilePage = () => {
         />
       </section>
       <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} />
+        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap" ref={tabmenuRef}>
@@ -617,6 +621,7 @@ const ProfilePage = () => {
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
                      setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent} setNoticePop={setNoticePop}
+                     likePopTabState={likePopTabState}
           />
         </PopSlide>
       }
@@ -677,9 +682,9 @@ const ProfilePage = () => {
                       <div className='tbodyList' key={index}>
                         <span>{list.selectionDate}</span>
                         <span>{list.roundNo}</span>
-                      </div>  
+                      </div>
                     )
-                  })}             
+                  })}
                 </div>
               </div>
             </div>
