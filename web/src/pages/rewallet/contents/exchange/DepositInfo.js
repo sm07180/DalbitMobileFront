@@ -91,9 +91,9 @@ const DepositInfo = (props) => {
   //환전신청 조건 실패시 true!
   const vaildationFaild = useMemo(()=>{
     const {accountName, bankCode, accountNo, fSocialNo, bSocialNo, phoneNo, address1, address2,
-      addFile1, addFile2, addFile3} = exchangeForm;
+      addFile1, addFile2, addFile3, agree} = exchangeForm;
     return !accountName || !bankCode || !accountNo || !fSocialNo || !bSocialNo || !phoneNo || !address1 || !address2
-      || !addFile1 || !addFile2 || (parentAgree && addFile3);
+      || !addFile1 || !addFile2 || !agree || (parentAgree && !addFile3);
   },[exchangeForm, parentAgree]);
 
   return (
@@ -108,6 +108,7 @@ const DepositInfo = (props) => {
           <div className={"title"}>예금주</div>
           <InputItems>
             <input type="text" placeholder=""
+                   defaultValue={exchangeForm?.accountName}
                    onChange={(e) =>
                      setExchangeForm({...exchangeForm, accountName: e.target.value})}/>
           </InputItems>
@@ -140,6 +141,7 @@ const DepositInfo = (props) => {
           <div className={"title"}>계좌번호</div>
           <InputItems>
             <input type="text" placeholder=""
+                   defaultValue={exchangeForm?.accountNo}
                    onChange={(e) => {
                      const num = e.target.value;
                      if(!Number.isNaN(Number(num))) {
@@ -162,6 +164,7 @@ const DepositInfo = (props) => {
             <InputItems>
               <input type="number" maxLength={6} placeholder='앞 6자리'
                      autoComplete="new-password"
+                     defaultValue={exchangeForm?.fSocialNo}
                      onChange={(e) => {
                        const num = e.target.value;
                        if(!Number.isNaN(Number(num))) {
@@ -180,6 +183,7 @@ const DepositInfo = (props) => {
             <InputItems>
               <input type="password" maxLength={7} placeholder='뒤 7자리'
                      autoComplete="new-password"
+                     defaultValue={exchangeForm?.bSocialNo}
                      onChange={(e) => {
                        const num = e.target.value;
                        if(!Number.isNaN(Number(num))) {
@@ -201,6 +205,7 @@ const DepositInfo = (props) => {
           <div className="title">휴대폰 번호</div>
           <InputItems>
             <input type="num" placeholder=""
+                   defaultValue={exchangeForm?.phoneNo}
                    onChange={(e) => {
                      const num = e.target.value;
                      if(!Number.isNaN(Number(num))) {
@@ -233,24 +238,25 @@ const DepositInfo = (props) => {
           <div className="title">상세주소</div>
           <InputItems>
             <input type="text" placeholder='상세주소를 입력 해주세요'
+                   defaultValue={exchangeForm?.address2}
                    onChange={(e)=>{setExchangeForm({...exchangeForm, address2: e.target.value})}}/>
           </InputItems>
         </div>
 
         <div className="listRow">
           <div className="title">신분증사본</div>
-          <InputItems button="찾아보기">
+          <InputItems button="찾아보기" onClick={()=>{document.querySelector('#depositInfo_fileInput__1')?.click(); }}>
             <div className="value">{exchangeForm.addFile1?.name || '등록해주세요'}</div>
-            <input type="file" className='blind'
+            <input id={"depositInfo_fileInput__1"} type="file" className='blind'
                    onChange={(e) => uploadSingleFile(e, 0)}/>
           </InputItems>
         </div>
 
         <div className="listRow">
           <div className="title">통장사본</div>
-          <InputItems button="찾아보기" >
+          <InputItems button="찾아보기" onClick={()=>{document.querySelector('#depositInfo_fileInput__2')?.click(); }}>
             <div className="value">{exchangeForm.addFile2?.name || '등록해주세요'}</div>
-            <input type="file" className='blind'
+            <input id={"depositInfo_fileInput__2"} type="file" className='blind'
                    onChange={(e) => uploadSingleFile(e, 1)}/>
           </InputItems>
         </div>
@@ -260,9 +266,9 @@ const DepositInfo = (props) => {
           <>
             <div className="listRow">
               <div className="title">부모동의 사본</div>
-              <InputItems button="찾아보기">
+              <InputItems button="찾아보기" onClick={()=>{document.querySelector('#depositInfo_fileInput__3')?.click(); }}>
                 <div className="value">{exchangeForm.addFile3?.name || '등록해주세요'}</div>
-                <input type="file" className='blind'
+                <input id={"depositInfo_fileInput__3"} type="file" className='blind'
                        onChange={(e) => uploadSingleFile(e, 2)}/>
               </InputItems>
             </div>

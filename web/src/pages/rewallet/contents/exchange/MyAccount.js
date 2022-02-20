@@ -10,7 +10,7 @@ import Api from "context/api";
 // components
 
 const MyAccount = (props) => {
-  const {repplySubmit, accountList, setAccountList, getMyAccountData} = props;
+  const {repplySubmit, accountList, setAccountList, getMyAccountData, recent_exchangeIndex} = props;
 
   const history = useHistory();
   //context
@@ -183,6 +183,12 @@ const MyAccount = (props) => {
       )}
     </div>);
 
+  //환전신청 조건 실패시 true!
+  const vaildationFaild = useMemo(() => {
+    const {recent_accountName, recent_accountNo, recent_bankCode} = exchangeForm;
+    return !(recent_exchangeIndex > 0) || !recent_accountName || !recent_accountNo || !recent_bankCode;
+  },[exchangeForm]);
+
   return (
     <>
       {accountList.length === 0?
@@ -210,7 +216,7 @@ const MyAccount = (props) => {
         })
         }
           <button className='addAccountBtn haveList' onClick={onClickAddAcount}>+ 계좌추가</button>
-          <SubmitBtn text="환전 신청하기" state={false && "disabled"} onClick={() =>{ true && repplySubmit()}}/>
+          <SubmitBtn text="환전 신청하기" state={vaildationFaild ? 'disabled' : ''} onClick={() =>{repplySubmit(exchangeForm)}}/>
       </div>
       }
 
