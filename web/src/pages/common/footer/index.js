@@ -107,14 +107,14 @@ const Info = styled.ul`
 `
 const Menu = styled.div`
   margin-bottom: 0;
-  border-top: 1px solid #632beb;
+  border-top: 1px solid #FF3C7B;
   border-bottom: 1px solid #e0e0e0;
   padding: 18px 0;
   button {
     display: inline-block;
     margin-right: 10px;
     padding: 5px;
-    color: #632beb;
+    color: #FF3C7B;
     font-size: 14px;
   }
 `

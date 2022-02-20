@@ -359,8 +359,8 @@ const Content = styled.div`
       border-bottom-right-radius: 12px;
     }
     button.on {
-      border: 1px solid #632beb;
-      color: #632beb;
+      border: 1px solid #FF3C7B;
+      color: #FF3C7B;
       background: #fff;
       z-index: 2;
     }
@@ -375,7 +375,7 @@ const Content = styled.div`
       color: #fff;
       font-size: 18px;
       font-weight: bold;
-      background: #632beb;
+      background: #FF3C7B;
     }
     button:disabled {
       background: #757575;

@@ -114,6 +114,6 @@ const NavBtn = styled.button`
   background-image: url(${(props) => props.icon});
 
   &.active {
-    background-color: #632beb;
+    background-color: #FF3C7B;
   }
 `

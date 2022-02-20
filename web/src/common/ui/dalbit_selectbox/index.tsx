@@ -145,13 +145,13 @@ const SelectBox = styled.div`
     .select {
       display: flex;
       align-items: center;
-      border: 1px solid ${(props: any) => (props.selectBordercolor ? props.selectBordercolor : "#632beb")};
+      border: 1px solid ${(props: any) => (props.selectBordercolor ? props.selectBordercolor : "#FF3C7B")};
       box-sizing: border-box;
       width: 100%;
       height: 100%;
       /* padding: 0px 12px; */
       position: relative;
-      color: ${(props: any) => (props.selectFontColor ? props.selectFontColor : "#632beb")};
+      color: ${(props: any) => (props.selectFontColor ? props.selectFontColor : "#FF3C7B")};
       font-weight: 500;
       border-radius: ${(props: any) => (props.borderRadius ? props.borderRadius : "0px")};
 
@@ -163,8 +163,8 @@ const SelectBox = styled.div`
         width: 12px;
         height: 12px;
         transform: translate(-50%, -40%) rotate(-135deg);
-        border-left: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#632beb")};
-        border-top: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#632beb")};
+        border-left: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#FF3C7B")};
+        border-top: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#FF3C7B")};
         content: "";
       }
       cursor: pointer;
@@ -180,8 +180,8 @@ const SelectBox = styled.div`
           height: 12px;
           top: 60%;
           transform: translate(-50%, -60%) rotate(45deg);
-          border-left: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#632beb")};
-          border-top: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#632beb")};
+          border-left: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#FF3C7B")};
+          border-top: 2px solid ${(props: any) => (props.iconColor ? props.iconColor : "#FF3C7B")};
           content: "";
         }
       }
@@ -232,7 +232,7 @@ const SelectBox = styled.div`
 
       &:hover {
         background: #f8f8f8;
-        color: ${(props: any) => (props.hoverFontcolor ? props.hoverFontcolor : "#632beb")};
+        color: ${(props: any) => (props.hoverFontcolor ? props.hoverFontcolor : "#FF3C7B")};
       }
 
       &:active {

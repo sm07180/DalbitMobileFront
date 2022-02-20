@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './style.scss'
@@ -33,6 +33,7 @@ import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -42,6 +43,7 @@ const ProfilePage = () => {
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
+  const tabmenuRef = useRef();
 
   const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
   const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
@@ -91,7 +93,7 @@ const ProfilePage = () => {
     Api.mypage_notice_sel(apiParams).then(res => {
       if (res.result === 'success') {
         const data = res.data;
-        const callPageNo = data.paging.page;
+        const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
           ...feedData,
@@ -119,7 +121,7 @@ const ProfilePage = () => {
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
         const data= res.data;
-        const callPageNo = data.paging.page;
+        const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
           ...fanBoardData,
@@ -146,7 +148,7 @@ const ProfilePage = () => {
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
         const data= res.data;
-        const callPageNo = data.paging.page;
+        const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileClipData({
           ...clipData,
@@ -419,6 +421,14 @@ const ProfilePage = () => {
     });
   }
 
+  const headerBackEvent = () => {
+    if(webview === 'new' && isHybrid()) {
+      Hybrid('CloseLayerPopup');
+    }else {
+      history.goBack();
+    }
+  }
+
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
@@ -488,7 +498,7 @@ const ProfilePage = () => {
   // 페이지 시작
   return (
     <div id="myprofile">
-      <Header title={`${profileData.nickNm}`} type={'back'}>
+      <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
             <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
@@ -500,7 +510,7 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} />
+        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -511,7 +521,7 @@ const ProfilePage = () => {
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
-        <div className="tabmenuWrap">
+        <div className="tabmenuWrap" ref={tabmenuRef}>
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} tabChangeAction={socialTabChangeAction} />
           {(socialType === socialTabmenu[0] && isMyProfile || socialType === socialTabmenu[1])
             && <button onClick={() => {

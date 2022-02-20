@@ -449,7 +449,7 @@ const LiveList = styled.div`
       align-items: center;
 
       .broadcast-type {
-        color: #632beb;
+        color: #FF3C7B;
         font-size: 11px;
         letter-spacing: -0.28px;
         margin-right: 10px;

@@ -86,7 +86,7 @@ const PopupWrap = styled.div`
       background: white;
       opacity: 1;
       &-active {
-        background: #632beb;
+        background: #FF3C7B;
       }
     }
   }

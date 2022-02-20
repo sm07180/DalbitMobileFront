@@ -15,6 +15,7 @@ import './profileEdit.scss'
 import PasswordChange from "pages/password";
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {authReq} from "pages/self_auth";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -24,7 +25,6 @@ const ProfileEdit = () => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    spaceBetween: 8,
   }
 
   //이미지 크로퍼
@@ -50,6 +50,10 @@ const ProfileEdit = () => {
 
   //비밀번호 페이지(컴포넌트) 표시 여부
   const [passwordPageView, setPasswordPageView] = useState(false);
+
+  // 본인인증 여부
+  const [authState, setAuthState] = useState(false);
+  const [phone, setPhone] = useState('');
 
   //profile state 갱신시 state 갱신
   const dispatchProfileInfo = useCallback(() => {
@@ -112,8 +116,25 @@ const ProfileEdit = () => {
     }
   }
 
+  /* 본인인증 열기 */
+  const getAuth = () => {
+    authReq('5', context.authRef, context);
+  }
+
+  /* 본인인증 여부 */
+  const getAuthCheck = async () => {
+    const res = await Api.self_auth_check({})
+    if (res.result === 'success') {
+      setAuthState(true)
+      setPhone(res.data.phoneNo)
+    } else {
+      setAuthState(false)
+    }
+  }
+
   useEffect(() => {
     getMyInfo();
+    getAuthCheck();
   }, []);
 
   useEffect(() => {
@@ -298,8 +319,8 @@ const ProfileEdit = () => {
                           setProfileInfo({...profileInfo, nickNm: ''})
                         }}/>
               </InputItems>
-              <InputItems title="휴대폰번호" button="인증하기">
-                <input type="text" placeholder="휴대폰 인증을 해주세요" disabled/>
+              <InputItems title="휴대폰번호" button="인증하기" onClick={getAuth}>
+                <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
               </InputItems>
               <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
                 <input type="password" name="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} disabled />

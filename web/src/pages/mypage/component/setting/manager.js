@@ -585,7 +585,7 @@ const Content = styled.div`
       font-weight: 600;
       font-style: normal;
       margin-left: 4px;
-      color: #632beb;
+      color: #FF3C7B;
     }
   }
   .tab {
@@ -595,7 +595,7 @@ const Content = styled.div`
       width: 80px;
       height: 32px;
       border-radius: 12px;
-      border: solid 1px #632beb;
+      border: solid 1px #FF3C7B;
       margin-right: 2px;
       border: solid 1px #e0e0e0;
       background-color: #ffffff;
@@ -606,8 +606,8 @@ const Content = styled.div`
       color: #000000;
     }
     .on {
-      border: solid 1px #632beb;
-      background-color: #632beb;
+      border: solid 1px #FF3C7B;
+      background-color: #FF3C7B;
       color: #fff;
     }
   }
@@ -631,7 +631,7 @@ const Content = styled.div`
       text-align: left;
       color: #000000;
       > span {
-        color: #632beb;
+        color: #FF3C7B;
         margin-left: 8px;
       }
     }

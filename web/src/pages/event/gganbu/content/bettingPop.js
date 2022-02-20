@@ -398,7 +398,7 @@ const PopupWrap = styled.div`
         background-color: #BDBDBD;
         pointer-events : none;
         &.active {
-          background-color: #632BEB;
+          background-color: #FF3C7B;
           pointer-events : auto;
         }
       }
@@ -422,7 +422,7 @@ const PopupWrap = styled.div`
             font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
             font-size: 16px;
             font-weight: 700;
-            color: #632BEB;
+            color: #FF3C7B;
           }
         }
         .bettingMarble {
@@ -483,7 +483,7 @@ const PopupWrap = styled.div`
           border: 1px solid #E0E0E0;
           &:nth-child(1){border-radius:12px 0 0 12px;}
           &:nth-child(2){border-radius:0 12px 12px 0;}
-          &.active {border: 1px solid #632BEB;}
+          &.active {border: 1px solid #FF3C7B;}
           .bettingSelect {
             position: absolute;
             top: 0;
@@ -494,7 +494,7 @@ const PopupWrap = styled.div`
             border: 0;
             cursor: pointer;
             &:checked ~ .selectRow > .selectRadio {
-              border: 5px solid #632BEB;
+              border: 5px solid #FF3C7B;
             }
             
           }
@@ -558,7 +558,7 @@ const PopupWrap = styled.div`
               font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
               font-size: 12px;
               font-weight: 700;
-              color: #632BEB;
+              color: #FF3C7B;
             }
             .percentTotal {
               font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;

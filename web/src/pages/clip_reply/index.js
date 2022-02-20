@@ -68,7 +68,7 @@ export default (props) => {
     <Layout2 {...props} webview={webview} status="no_gnb" type={'clipBack'}>
       <div id="clip_reply">
         <div className="fanboard">
-          {!props.type ? <Header title="클립 댓글" goBack={goBack} /> : <></>}
+          {!props.type ? <Header title="클립 댓글" type={'back'} /> : <></>}
           <WriteBoard {...props} type={'clip_board'} set={setAction} />
           {totalCount === -1 && (
             <div className="loading">
