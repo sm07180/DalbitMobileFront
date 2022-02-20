@@ -13,8 +13,8 @@ function WeeklyPick({empty}) {
   return (
     <div className="specialPage">
       <div className="notice">
-        달빛라이브 달대리을 심쿵하게 한<br />
-        이주의 달빛 DJ는 누구일까요?
+        달라 달대리을 심쿵하게 한<br />
+        이주의 달라 DJ는 누구일까요?
       </div>
       {empty === true ? (
         <NoResult type="default" text="조회 된 결과가 없습니다." />

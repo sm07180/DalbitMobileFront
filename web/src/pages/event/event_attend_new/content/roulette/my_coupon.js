@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import API from 'context/api'
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+
+import Header from 'components/ui/header/Header'
 //components
 import {useHistory} from 'react-router-dom'
 
@@ -83,7 +84,7 @@ export default () => {
   return (
     <div id="attendEventPage">
       <div className="win-list-box">
-        <Header title="응모권 지급 내역" />
+        <Header position={'sticky'} title={'응모권 지급 내역'} type={'back'}/>
         <div className="content">
           <div className="note coupon">응모권 지급 내역은 최근 획득 일시 기준 7일 간 저장됩니다.</div>
           <table>

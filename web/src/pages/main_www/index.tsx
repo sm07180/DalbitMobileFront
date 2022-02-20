@@ -498,7 +498,7 @@ export default function Main() {
             </button>
           </div>
           <h1 className="gnb-logo" onClick={reLoad}>
-            <img src={Logo} alt="달빛라이브" />
+            <img src={Logo} alt="달라" />
           </h1>
           <div className="icon-wrap">
             {mailboxState.useMailbox &&

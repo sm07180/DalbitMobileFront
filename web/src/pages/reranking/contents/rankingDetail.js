@@ -311,7 +311,7 @@ const RankDetailPage = () => {
   return (
     <div id="rankingList">
       <Header position={'sticky'} type={'back'}>
-        <h1 className='title'>{select.toUpperCase()}<span className='optionSelect' onClick={bottomSlide}></span></h1>
+        <h1 className='title' onClick={bottomSlide}>{select.toUpperCase()}<span className='optionSelect'></span></h1>
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>
