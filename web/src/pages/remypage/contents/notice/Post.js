@@ -97,7 +97,7 @@ const Post = () => {
 
   return (
     <div id="notice">
-      <Header type={context.customHeader.os !== 3 ? "back" : ""}/>
+      <Header type="back"/>
       <section className="noticeWrap">
         <ul className="tabmenu">
           <li onClick={() => history.push("/alarm")}>알림</li>
