@@ -73,7 +73,8 @@ export default (props) => {
       case 'my_history':
         return <AttendHistory />
       case 'guest_guide':
-        return <GuestGuide />
+      case 'guest_guideT':
+        return <GuestGuide title={title}/>
       case 'image_guide':
         return <ImageGuide />
       case 'payment_morning':
@@ -146,7 +147,7 @@ export default (props) => {
       //   return <Participant />
       // case 'marblePocket':
       //   return <MarblePocket />
-      
+
       case 'invite':
         return <Invite />
       case 'share':
