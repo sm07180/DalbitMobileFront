@@ -88,7 +88,7 @@ export default function SpecialDjBest() {
       <img
         src={`${IMG_SERVER}/event/specialdj/common/img_visual.png`}
         className="top_image"
-        alt="우리모두 달빛하여 스페샬디제이 되세"
+        alt="우리모두 달라하여 스페샬디제이 되세"
       />
       <div className="tab_box">
         <button onClick={() => setTabState('support')}>
@@ -139,8 +139,8 @@ export default function SpecialDjBest() {
               <img src={`${IMG_SERVER}/event/specialdj/common/tit_notice.png`} alt="기억해 주세요" />
             </h4>
             <ul className="notice_list">
-              <li>달빛라이브의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
-              <li>달빛라이브의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
+              <li>달라의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
+              <li>달라의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
               <li>스페셜 DJ 유지 기간은 정책에 의거, 유지 기간의 변경이 있을 수 있습니다.</li>
               <li>스페셜 DJ 선발 후 운영원칙을 상습/의도적으로 위반하는 경우 자격이 박탈 될 수 있습니다.</li>
               <li>지원 요건을 충족해도 스페셜 DJ에 미지원한 DJ들은 스페셜 DJ에 선정되지 않습니다.</li>

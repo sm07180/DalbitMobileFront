@@ -16,7 +16,7 @@ function Second({ empty }) {
     <div className="specialPage">
       <div className="notice">
         나를 표현하는 시간 15초 <br />
-        달빛라이브 광고모델을 소개합니다.
+        달라 광고모델을 소개합니다.
       </div>
 
       {empty === true ? (

@@ -2,8 +2,9 @@ import React, {useState, useEffect, useContext} from 'react'
 
 import API from 'context/api'
 import {Context} from 'context'
+
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header'
 
 //components
 import {useHistory} from 'react-router-dom'
@@ -102,7 +103,7 @@ export default () => {
   return (
     <div id="attendEventPage">
       <div className="win-list-box">
-        <Header title="상품 당첨자" />
+        <Header position={'sticky'} title={'상품 당첨자'} type={'back'}/>
 
         <div className="content">
           {/* <p className="note">

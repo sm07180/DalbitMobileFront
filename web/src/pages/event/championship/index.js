@@ -99,8 +99,8 @@ export default () => {
 
   return (
     <div id="championship_page">
-      <img src={imgList.topBgImg} alt="달빛라이브 챔피언십" />
-      {/* <img src={`${IMG_SERVER}/event/championship/4round/4round_title.png`} alt="달빛라이브 챔피언십" /> */}
+      <img src={imgList.topBgImg} alt="달라 챔피언십" />
+      {/* <img src={`${IMG_SERVER}/event/championship/4round/4round_title.png`} alt="달라 챔피언십" /> */}
       <button className="btnBack" onClick={() => clickCloseBtn()}>
         <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
       </button>
