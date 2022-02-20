@@ -460,10 +460,27 @@ export default function ChatHeaderWrap(prop: any) {
                         </span>
                       </span>
                     )}
-                    {text === "베스트DJ" && (
-                      <span className="fan-badge imgBadge">
-                        <em className="icon_wrap icon_bestdj_broadcast"></em>
+                    {text === "Best" && (
+                      <span
+                      className="fan-badge"
+                      style={{
+                        backgroundImage: 
+                        `linear-gradient(to right, ${startColor} ${bgAlpha * 100}%, ${endColor} ${bgAlpha * 100}%)`,
+                        border: borderColor
+                          ? `1px solid ${borderColor}`
+                          : "none",
+                        backgroundSize: "contain",
+                      }}
+                    >
+                      {icon && <img src={icon} alt={text} />}
+                      <span
+                        style={{
+                          color: `${textColor}`,
+                        }}
+                      >
+                        {text}
                       </span>
+                    </span>
                     )}
                     {text === "콘텐츠DJ" && (
                       <span className="fan-badge imgBadge">
@@ -472,7 +489,7 @@ export default function ChatHeaderWrap(prop: any) {
                     )}
                     {text &&
                       text !== "신입DJ" &&
-                      text !== "베스트DJ" &&
+                      text !== "Best" &&
                       text !== "콘텐츠DJ" && (
                         <span
                           className="fan-badge"
