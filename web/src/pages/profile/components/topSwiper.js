@@ -41,7 +41,7 @@ const TopSwiper = (props) => {
     RoomValidateFromProfile(params);
   }
 
-  
+
   /* 스페셜DJ 약력 팝업 생성 */
   const popupOpen = () => {
     setPopHistory(true);
