@@ -39,14 +39,16 @@ const Message = () => {
   //내용값 가져오기
   const valueChange = (e) => {
     let val = e.target.value;
-    if(val !== "") {setBtnActive(true)}
+    let index = parseInt(e.currentTarget.dataset.idx)
+    if(val !== "") {setBtnActive(index)}
     setMessageList(messageList.map((v) => {v.text = e.target.value; return v;}));
   }
 
   //명령값 가져오기
   const titleChange = (e) => {
     let val = e.target.value;
-    if(val !== "") {setBtnActive(true)}
+    let index = parseInt(e.currentTarget.dataset.idx)
+    if(val !== "") {setBtnActive(index);}
     setMessageList(messageList.map((v) => {v.order = e.target.value; return v;}));
   }
 
@@ -69,16 +71,16 @@ const Message = () => {
                     <span className='listIndex'>{item.orderNo}</span>
                     <span className='listTitle'>퀵 메시지</span>
                   </div>
-                  <button className={`saveBtn ${btnActive && 'active'}`} data-idx={index} onClick={fetchEditData}>저장</button>
+                  <button className={`saveBtn ${btnActive === index && 'active'}`} data-idx={index} onClick={fetchEditData}>저장</button>
                 </div>
                 <div className='listContent'>
                   <div className='listRow'>
                     <div className='category'>명령어</div>
-                    <input type="text" className='inputText' name="order" onChange={titleChange} defaultValue={item.order}/>
+                    <input type="text" className='inputText' name="order" data-idx={index} onChange={titleChange} defaultValue={item.order}/>
                   </div>
                   <div className='listRow'>
                     <div className='category'>내용</div>
-                    <input type="text" className='inputText' name="text" onChange={valueChange} defaultValue={item.text}/>
+                    <input type="text" className='inputText' name="text" data-idx={index} onChange={valueChange} defaultValue={item.text}/>
                   </div>
                 </div>
               </div>

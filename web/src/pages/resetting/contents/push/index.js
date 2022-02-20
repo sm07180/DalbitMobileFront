@@ -13,12 +13,13 @@ import './push.scss'
 import API from "context/api";
 import {Context} from "context";
 
+let first = true;
 const SettingPush = () => {
-  let first = true;
   let isSelect = false;
   const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
   const context = useContext(Context);
   const [toast, setToast] = useState({state : false, msg : ""});
+  const [value, setValue] = useState({});
   //푸쉬 알림 설정 리스트
   const [alarmArray, setAlarmArray] = useState([
     {key: 'isAll', value: 0, text: '전체 알림 수신', msg: '전체 알림 수신 시<br>', path: false},
@@ -75,12 +76,7 @@ const SettingPush = () => {
       data: {isAll: alarmArray[0].value, alimType: myAlimType, ...alarmObj}
     })
     if(res.result === "success") {
-      if(org === undefined) {
-        if(!(isSelect === true)) {
-          if(myAlimType === "n") {toastMessage("알림 모드가 무음으로 변경되었습니다.")}
-          else if(myAlimType === "s") {toastMessage("알림 모드가 소리로 변경되었습니다.")}
-          else if(myAlimType === "v") {toastMessage("알림 모드가 진동으로 변경되었습니다.")}
-        }}}
+      }
   }
 
   //하단 토스트 메시지 출력
@@ -150,6 +146,14 @@ const SettingPush = () => {
     postAlarmData();
   }, [myAlimType]);
 
+  useEffect(() => {
+    if(!first) {
+      if(myAlimType === "n") {toastMessage("알림 모드가 무음으로 변경되었습니다.")}
+      else if(myAlimType === "s") {toastMessage("알림 모드가 소리로 변경되었습니다.")}
+      else if(myAlimType === "v") {toastMessage("알림 모드가 진동으로 변경되었습니다.")}
+    }
+  }, [myAlimType]);
+
   return (
     <div id="push">
       <Header position={'sticky'} title={'Push 알림 설정'} type={'back'}/>
@@ -171,8 +175,8 @@ const SettingPush = () => {
                   <span className="title">{v.text}</span>
                 </div>
                 <label className="inputLabel">
-                  <input type="checkbox" className={`blind`} name={v.text === "전체 알림 수신" ? "switchAll" : "switch"} data-title={v.text} data-key={v.key} data-value={v.value} onChange={switchControl} onClick={() => {postAlarmData(v)}}
-                         checked={v.path}
+                  <input type="checkbox" className={`blind`} name={v.text === "전체 알림 수신" ? "switchAll" : "switch"} data-title={v.text}
+                         data-key={v.key} data-value={v.value} onChange={switchControl} onClick={() => {postAlarmData(v)}} checked={v.path}
                   />
                   <span className="switchBtn"/>
                 </label>

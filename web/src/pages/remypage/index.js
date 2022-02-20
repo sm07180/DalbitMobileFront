@@ -20,6 +20,7 @@ import PopSlide from "components/ui/popSlide/PopSlide";
 import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import Post from "pages/remypage/contents/notice/Post";
+import Notice from "pages/remypage/contents/notice/Notice";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -115,7 +116,7 @@ const Remypage = () => {
     case 'setting' :
       return(<Setting />)
     case 'post' :
-      return(<Post />)
+      return(<Notice />)
     case 'customer' :
       return(<Customer />)
     default :
