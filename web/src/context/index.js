@@ -229,11 +229,9 @@ const walletDataReducer = (state, action) => {
       return initialData.globalState.walletData;
     }
     case 'ADD_DATA': {
-      console.log("ADD_DATA");
       return {...state, ...data};
     }
     case 'ADD_HISTORY': {
-      console.log("ADD_HISTORY");
       const {listHistory, popHistory} = data;
       return {...state, popHistory, listHistory};
     }

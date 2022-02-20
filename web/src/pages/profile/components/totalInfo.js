@@ -4,31 +4,33 @@ import {IMG_SERVER} from 'context/config'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 
 import './totalInfo.scss'
+import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
   const {data, goProfile} = props
   const [openBadge,setOpenBadge] = useState(false);
-  let badgeTotalCnt = 0;
-
+  const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   // 
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
   }
 
   useEffect(() => {
-    console.log(data);
+    let badgeLength = 0;
     if(data.badgeSpecial > 0) {
-      badgeTotalCnt++
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
     }
     if(data.isSpecial) {
-      badgeTotalCnt++
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
     }
     if(data.commonBadgeList.length > 0) {
       for(let i = 0; i < data.commonBadgeList.length; i++){
-        badgeTotalCnt++
+        badgeLength++
+        setBadgeTotalCnt(badgeLength)
       }
     }
-    return badgeTotalCnt
   },[data])
 
   return (
@@ -36,10 +38,13 @@ const TotalInfo = (props) => {
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">뱃지</div>
         <div className="badgeGroup">
+          <span className="badgeItem grade">{data.grade}</span>
           <BadgeItems data={data} type="commonBadgeList" />
           <BadgeItems data={data} type="isBadge" />
         </div>
-        {badgeTotalCnt > 4 && <button onClick={onOpenBdage}>열기/닫기</button>}
+        {badgeTotalCnt > 3 &&
+          <button onClick={onOpenBdage}>열기/닫기</button>
+        }
       </div>
       <div className="rankInfo">
         <div className="box">
@@ -79,14 +84,15 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
-      <div className="comment">
-        <div className="title">
-          <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
-        </div>
-        <div className="text">
-          {data.profMsg}
-        </div>
-      </div>
+      {
+        data.profMsg &&
+          <div className="comment">
+            <div className="title">
+              <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
+            </div>
+            <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
+          </div>
+      }      
     </>
   )
 }

@@ -6,9 +6,19 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 // components
 import './terms.scss'
+import {Hybrid, isMobileWeb} from "context/hybrid";
 
-const Terms = (props) => { 
-  
+const Terms = (props) => {
+  const history = useHistory();
+
+  const backEvent = ()=>{
+    if(props.type === 'termsT'){
+      history.goBack();
+    }else if(props.type === 'terms'){
+      Hybrid('CloseLayerPopup')
+    }
+  }
+
 
   return (
     <div id="terms">
@@ -371,7 +381,7 @@ const Terms = (props) => {
             <li>본 약관은 2021. 10. 25일부터 시행됩니다.</li>
             <li>본 약관은 2022. 02. 21일부터 시행됩니다.</li>
           </ul>
-        </div>          
+        </div>
       </div>
     </div>
   )

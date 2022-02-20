@@ -42,7 +42,7 @@ export default (props) => {
           const {type, txt} = bundle
           return (
             <NavLink
-              to={webview ? `/mypage/${memNo}/${type}?webview=${webview}` : `/mypage/${memNo}/${type}`}
+              to={webview ? `/profile/${memNo}/${type}?webview=${webview}` : `/profile/${memNo}/${type}`}
               activeClassName="active"
               key={index}>
               <TabText>{txt}</TabText>
@@ -98,11 +98,11 @@ const Navigation = styled.div`
     }
 
     &.active {
-      border-top: 1px solid #632beb;
+      border-top: 1px solid #FF3C7B;
       border-left: none;
       border-right: none;
 
-      background-color: #632beb;
+      background-color: #FF3C7B;
       & > div {
         color: #fff;
       }

@@ -1,5 +1,15 @@
 @import "../../../../components/ui/mixin";
 
+.container {
+  .totalWrap {
+    #report{
+      .tabmenu {
+        top: $PC-TABTOP;
+      }
+    }
+  }
+}
+
 #report{
   @include flex($fd:column);
   height:100%;
@@ -103,9 +113,13 @@
     }
   }
   .tabmenu {
+    position: sticky;
+    top: $MOBILE-TABTOP;
     @include flex(center);
     margin-bottom: 16px;
     padding: 0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
       flex:1;
       @include flex(center, center);
@@ -135,6 +149,7 @@
         padding: 0;
         li{
           width: 54px;
+          height: 36px;
           line-height: 36px;
           @include border(#e3e3e3, 18px);
           @include font(13px, 400, #303030);

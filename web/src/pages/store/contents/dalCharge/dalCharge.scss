@@ -35,6 +35,10 @@
         p {
           margin-left: auto;
           @include font(15px,500,#202020);
+          .totalCnt {
+            margin-right: 3px;
+            @include font(23px,500,#202020);
+          }
           &.quantity {
             @include flex(center);
             span {

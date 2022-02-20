@@ -7,14 +7,30 @@ $SEARCH-HEADER: 112px;
   top: $GNB-HEIGHT + $SEARCH-HEADER !important;
 }
 
+/*
+  피씨일때 헤더 없애기
+*/
+#root {
+  .container {
+    .totalWrap {
+      #searchPage {
+        header {
+          .buttonGroup {
+            display:none;
+          }
+        }
+      }
+    }
+  }
+}
+
 #searchPage {
   header {
-    align-items: flex-start;
-    flex-direction: column;
+    flex-wrap:wrap;
     height: auto;
     padding: 0 16px;
     h1 {
-      height: 48px;
+      height: $HEADER-HEIGHT;
     }
     .searchForm {
       position: relative;
@@ -65,7 +81,7 @@ $SEARCH-HEADER: 112px;
       @include flex(center, center, column);
       .listColumn {
         width: 87px;
-        cursor: pointer;
+        /*cursor: pointer;*/
         .photo {
           position: relative;
           height:87px;          
@@ -116,16 +132,7 @@ $SEARCH-HEADER: 112px;
       overflow: hidden;
       cursor: pointer;
       .photo {
-        position: relative;
-        width: 100%; height: 100%;
-        &::before {
-          content: "";
-          @include position-top-left;
-          width: 100%; height: 100%;
-          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-          border-radius:16px;
-          box-sizing: border-box;
-        }
+        @include photoStyle(113px, 149px, 16px);
         img {
           width:auto;
         }
@@ -201,18 +208,19 @@ $SEARCH-HEADER: 112px;
   // searchResult page
   .tabmenu {
     position: sticky;
-    top: 112px;
+    top: 116px;
     @include flex(center);
     margin-bottom:18px;
     padding: 4px 16px;
     background-color: #FFF;
-    z-index: 2;
+    z-index: $TAB-ZINDEX;
     li {
       @include flex(center, center);
       height: 36px;
       padding: 0 15px;
       border-radius: 100px;
       margin-right: 4px;
+      margin-bottom: 5px;
       background-color: #F6F6F6;
       @include font(13px, 400, #ACACAC);
       &:last-child {

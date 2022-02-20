@@ -143,7 +143,7 @@ const TitleWrap = styled.div`
   align-items: center;
 `
 const TitleText = styled.div`
-  color: #632beb;
+  color: #FF3C7B;
   font-size: 20px;
   letter-spacing: -0.5px;
   font-weight: 600;

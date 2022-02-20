@@ -54,10 +54,10 @@ const MainSlide = (props) => {
                 {list.bannerUrl && list.nickNm === "banner" && list.roomType === 'link' ?
                   <ListColumn photo={list.bannerUrl} index={index} />
                   :
-                  <ListColumn photo={list.profImg.thumb500x500} index={index}>
+                  <ListColumn photo={list.bannerUrl} index={index}>
                     <div className='info'>
                       <div className="badgeGroup">
-                        <BadgeItems data={list} type='liveBadgeList' />
+                        <BadgeItems data={list} type='isBadge' />
                       </div>
                       <span className="title">{list.title}</span>
                       <span className="nick">{list.nickNm}</span>

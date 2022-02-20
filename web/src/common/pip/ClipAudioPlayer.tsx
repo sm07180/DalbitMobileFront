@@ -57,14 +57,16 @@ const ClipAudioPlayer = ()=>{
     sessionStorage.removeItem("clipPlayListInfo");
   };
 
-  const playerBarClickEvent = () => {
+  const playerBarClickEvent = (e) => {
+    e.preventDefault();
     if (clipInfo !== undefined && clipInfo !== null) {
       const { clipNo } = clipInfo;
       history.push(`/clip/${clipNo}`);
     }
   };
 
-  const playIconClick = () => {
+  const playIconClick = (e) => {
+    e.stopPropagation();
     if (clipInfo!.isPaused) {
       clipPlayer!.start();
     } else {
@@ -91,13 +93,11 @@ const ClipAudioPlayer = ()=>{
     return(
       <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
+          <div className="inner-player-bg"
+               style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
-            <div className="inner-player-bg"
-                 style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,}} />
             <div className="equalizer clip" />
-            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle}>
-              <img src={toggleInfo.src} className={toggleInfo.className} alt={toggleInfo.alt}/>
-            </div>
+            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
             <div className="room-info">
               <p className="title">{`${clipInfo.nickName}`}</p>
               <p>{clipInfo.title}</p>
@@ -105,7 +105,7 @@ const ClipAudioPlayer = ()=>{
             <div className="counting"/>
           </div>
           <div className="buttonGroup">
-             <img onClick={playIconClick} src={clipInfo!.isPaused ? PauseIcon : PlayIcon} className="playToggle__play" alt={"thumb img"}/>
+            <img onClick={playIconClick} src={clipInfo!.isPaused ? PauseIcon : PlayIcon} className="playToggle__play" alt={"thumb img"}/>
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
           

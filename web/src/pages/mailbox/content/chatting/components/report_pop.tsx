@@ -1,6 +1,6 @@
 /**
  * @brief : mailbox/chatting/report_pop.tsx
- * @role : 우체통채팅 신고하기 및 차단 기능 팝업
+ * @role : 메시지채팅 신고하기 및 차단 기능 팝업
  */
 import React, { useContext, useState, useEffect } from "react";
 import { GlobalContext } from "context";
@@ -203,7 +203,7 @@ export default (props) => {
                   <b>{reportReason.length}</b> / 100
                 </span>
 
-                <div className="btnWrap">
+                <div className="buttonWrap">
                   <button className="SubmitReport SubmitReport__cancel" onClick={closePopup}>
                     취소
                   </button>

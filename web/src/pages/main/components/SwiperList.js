@@ -20,26 +20,28 @@ const SwiperList = (props) => {
   }
 
   const onClickAction = (item) => {
-    if(type === 'top10' || type === 'myStar') {
+    if(type === 'top10') {
       if (!globalState.baseData.isLogin) {
         history.push("/login");
       }else{
         history.push(`/profile/${item.memNo}`);
       }
-    }else if(type === 'daldungs') {
+    }else if(type === 'daldungs' || type === 'favorites') {
       RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
     }
   }
 
   useEffect(() => {
     if (data.length > 0) {
-      const swiper = document.querySelector('.top10 .swiper-container')?.swiper;
+      const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
       swiper?.update();
       swiper?.slideTo(0);
     }
   }, [data]);
 
   return (
+    <>
+    {data && data.length > 0 &&
     <Swiper {...swiperParams}>
       {data.map((item,index) => {
         return (
@@ -57,6 +59,8 @@ const SwiperList = (props) => {
         )
       })}
     </Swiper>
+    }
+    </>
   )
 }
 

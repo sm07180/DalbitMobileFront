@@ -50,15 +50,15 @@ const Start = (props) => {
       <section className='loginSns'>
         <h2 className='title'>시작하기</h2>
         <div className="socialLogin">
-          <button className="googleBtn" onClick={()=>socialLogin('google')}>
+          <button className="googleBtn" onClick={()=>{socialLogin('google')}}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-google.png" alt={"구글"}/>
             <span>구글로 계속하기</span>
           </button>
-          <button className="kakaoBtn" onClick={()=>socialLogin('kakao')}>
+          <button className="kakaoBtn" onClick={()=>{socialLogin('kakao')}}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png" alt={"카카오"}/>
             <span>카카오로 계속하기</span>
           </button>
-          <button className="appleBtn" onClick={()=>socialLogin('apple')}>
+          <button className="appleBtn" onClick={()=>{socialLogin('apple')}}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" alt={"애플"}/>
             <span>Apple로 계속하기</span>
           </button>
@@ -66,11 +66,11 @@ const Start = (props) => {
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" alt={"휴대폰"}/>
             <span>휴대폰번호로 계속하기</span>
           </button>
-          <button className="naverBtn" onClick={()=>socialLogin('naver')}>
+          <button className="naverBtn" onClick={()=>{socialLogin('naver')}}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-naver.png" alt={"네이버"}/>
             <span>네이버로 계속하기</span>
           </button>
-          <button className="facebookBtn" onClick={()=>socialLogin('facebook')}>
+          <button className="facebookBtn" onClick={()=>{socialLogin('facebook')}}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png" alt={"페이스북"}/>
             <span>페이스북으로 계속하기</span>
           </button>

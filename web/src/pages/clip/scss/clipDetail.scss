@@ -1,40 +1,55 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+    #clipDetail {
+      .tabmenu {
+        top: $PC-TABTOP;
+      }
+    }
+  }
+}
+
 #clipDetail {
   position:relative;
   width: 100%;
   section{
     position: relative;
   }
-  .filterWrap {
-    padding-top:10px;
-    .tabmenu {
-      @include flex(center);
-      margin-bottom:12px;
-      cursor: pointer;
-      .swiper-wrapper {
-        padding-left:16px;
-      }
-      .swiper-slide {
-        width:auto;
-        &:last-child {
-          margin-right:32px;
-        }
-      }
-      li {
-        flex: none;
-        line-height:36px;
-        margin-right:4px;
-        padding: 0 15px;
-        border-radius: 100px;
-        background: #f6f6f6;
-        @include font(13px,400,#acacac);
-        &.active{
-          @include font(13px,500,white);
-          background: #202020;
-        }
+  .tabmenu {
+    position:sticky;
+    top: $MOBILE-TABTOP;
+    @include flex(center);
+    padding-bottom:12px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
+    cursor: pointer;
+
+    .swiper-wrapper {
+      padding-left:16px;
+    }
+    .swiper-slide {
+      width:auto;
+      &:last-child {
+        margin-right:32px;
       }
     }
+    li {
+      flex: none;
+      line-height:36px;
+      margin-right:4px;
+      padding: 0 15px;
+      border-radius: 100px;
+      background: #f6f6f6;
+      @include font(13px,400,#acacac);
+      &.active{
+        @include font(13px,500,white);
+        background: #202020;
+      }
+    }
+  }
+  .filterWrap {
+    padding-top:10px;    
     .filterGroup {
       @include flex($jc:flex-end);
       padding: 0 16px;
@@ -124,8 +139,13 @@
         &:nth-child(2) {
           margin-bottom: 3px;          
         }
+        .subject {
+          font-size: 12px;
+          font-weight: 400;
+          color: #999;
+          margin-right: 6px;
+        }
         .title{
-          width: 100%;
           @include font(14px,500);
           @include fontCut;
         }

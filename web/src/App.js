@@ -618,7 +618,9 @@ const App = () => {
         }
       })
 
-      return (
+      window.location.href = '/error';
+
+      /*return (
         <section id="error">
           <button
             className="closeButon"
@@ -645,7 +647,7 @@ const App = () => {
             </button>
           </div>
         </section>
-      )
+      )*/
     }
   }
 

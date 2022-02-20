@@ -76,7 +76,7 @@ const NickNameSetting = (props) => {
           <p className='textLog' ref={nicknameCheckRef} />
         </div>
       </div>
-      <button type={"button"} className={`submitBtn`} onClick={nextStep}>다음</button>
+      <button type={"button"} className={`submitBtn ${checkNickNameValue.check ? "" : "disabled"}`} onClick={nextStep}>다음</button>
     </section>
   );
 };

@@ -1,5 +1,43 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+    .totalWrap {
+        #invite {
+            .tabImgText {
+                &.fixed {
+                    top: 120px;
+                }
+                .tabMenu {
+                    position: relative;
+                    flex: 1;
+                    @include flex(center, center);
+                    height: 50px;
+                    background-color: #543100;
+                    cursor: pointer;             
+                    img {
+                        display: inline-block;
+                        height: 18px;
+                    }
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        top: 4px; right: 0;
+                        display: inline-block;
+                        width: 1px; height: 42px;
+                        background-color: #7e5858;
+                    }
+                    &:last-child::after {
+                        content: none;
+                    }
+                    &.active {
+                        background-color: #FF3C7B;
+                    }
+                }
+            }
+        }
+    }
+}
+
 #invite {
     .fullImage {
         width: 100%;
@@ -42,7 +80,7 @@
                     top: 4px; right: 0;
                     display: inline-block;
                     width: 1px; height: 42px;
-                    background-color: #fff;
+                    background-color: #7e5858;
                 }
                 &:last-child::after {
                     content: none;
@@ -174,6 +212,7 @@
                 padding: 5px 8px 14px;
             }
             .listNone {
+                @include flex(center, center);
                 border-radius: 15px;
                 background: #fff;
             }
@@ -313,6 +352,7 @@
                     .questionMark {
                         display: inline-block;
                         width: 22px; height: 22px;
+                        margin-top: -6px;
                         background-image: url("https://image.dalbitlive.com/common/icon/questionMark.png");
                         background-position: center;
                         background-repeat: no-repeat;
@@ -415,6 +455,7 @@
                 @include flex(center, center, column);
                 width: 100%;
                 margin: 16px auto 8px;
+                padding: 0;
                 span {
                     margin-bottom: 16px;
                     text-align: center;

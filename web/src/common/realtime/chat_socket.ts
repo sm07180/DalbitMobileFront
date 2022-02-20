@@ -477,7 +477,7 @@ export class ChatSocketHandler {
               this.setSplashData(resolve.data);
             });
           }
-          //우체통 :우체통방에 룸넘버는 1로시작 그외 방송방은 9
+          //메시지 :메시지방에 룸넘버는 1로시작 그외 방송방은 9
           if (channelName.startsWith("1")) {
             if (this.mailMsgListWrapRef !== null) {
               const { cmd, mailBoxChat, reqMailBoxImageChatDelete } = data;
@@ -1006,6 +1006,9 @@ export class ChatSocketHandler {
                     const enterInfo = commonBadgeList[0];
                     const { startColor, endColor } = enterInfo;
                     const { enterAni, enterBgImg } = enterAniInfo;
+                    if(enterAni.indexOf('NULL') > -1){
+                      return null;
+                    }
                     if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
                       this.broadcastAction.dispatchChatAnimation({
                         type: "start",
@@ -1729,7 +1732,7 @@ export class ChatSocketHandler {
                     const closeImg = document.createElement("img");
                     const player = document.getElementById("local-player");
                     let msgYn = false; // 메시지 표출 여부 값;
-                    
+
                     if (!noticeDisplay) return null;
                     noticeDisplay.innerHTML = ''; // 기존 알림 삭제
 
@@ -1752,7 +1755,7 @@ export class ChatSocketHandler {
 
                     // 영상 OFF일때 메시지 삭제
                     if (reqRoomState.mediaOn) return null;
-                    
+
                     // 새로운 알림 DOM 생성 및 이벤트 부여
                     elem.id = "isMediaNotice";
                     elem.textContent = data.recvMsg.msg;
@@ -2116,7 +2119,7 @@ export class ChatSocketHandler {
       }
     });
   }
-  //우체통 메세지 전송
+  //메시지 메세지 전송
   sendSocketMessageMail(
     channelName: string,
     command: string,

@@ -471,7 +471,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                 <div className="rightButton">
                   <button onClick={() => join(profileData.memNo)} className="mailIcon">
                     <em className={`icon_wrap  ${profileData.isMailboxOn ? "icon_mail" : "icon_mail_off"}`}>
-                      <span className="blind">우체통</span>
+                      <span className="blind">메시지</span>
                     </em>
                   </button>
                 </div>
@@ -597,7 +597,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   {globalState.baseData.memNo !== profileData.memNo && (
                     <button
                       className="rankingList__goFanboardBtn"
-                      onClick={() => history.push(`/mypage/${profileData.memNo}/fanboard`)}
+                      onClick={() => history.push(`/profile/${profileData.memNo}?tab=1`)}
                     />
                   )}
                 </div>

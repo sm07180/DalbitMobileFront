@@ -5,16 +5,8 @@ import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import {useSelector} from "react-redux";
 
-import rankingIcon from "./static/ranking.svg"
-import MessageIcon from "./static/message.svg"
-import alarmIcon from "./static/alarm.svg"
-
 export const RankingButton = ({history}) => {
-  return (
-    <button className='ranking' onClick={() => history.push('/rank')}>
-      <img src={rankingIcon} alt="랭킹페이지 이동"/>
-    </button>
-  )    
+  return <button className='ranking' onClick={() => history.push('/rank')} />
 }
 
 export const RankingRewardButton = ({history}) => {
@@ -22,7 +14,7 @@ export const RankingRewardButton = ({history}) => {
 }
 
 export const MessageButton = ({history, context, mailboxAction}) => {
-  /* 우체통 이동 */
+  /* 메시지 이동 */
   const goMailAction = () => {
     const goMailParams = {
       context,
@@ -34,19 +26,11 @@ export const MessageButton = ({history, context, mailboxAction}) => {
     goMail(goMailParams);
   }
   // 레벨 체크(1레벨 이상),
-  return (    
-    <button className='message' onClick={goMailAction}>
-      <img src={MessageIcon} alt="랭킹페이지 이동"/>
-    </button>
-  )
+  return <button className='message' onClick={goMailAction} />
 }
 
 export const AlarmButton = ({history, newAlarmCnt=0}) => {
-  return (
-    <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')}>
-      <img src={alarmIcon} alt="랭킹페이지 이동"/>
-    </button>
-  )
+  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')} />
 }
 
 export const StoreButton = ({history}) => {
@@ -54,7 +38,7 @@ export const StoreButton = ({history}) => {
 }
 
 export const SearchButton = ({history}) => {
-  return <button className='search' onClick={() => history.push('/menu/search')} />
+  return <button className='search' onClick={() => history.push('/search')} />
 }
 
 const TitleButton = (props) => {
@@ -85,6 +69,13 @@ const TitleButton = (props) => {
           <RankingRewardButton history={history} />
         </div>
       )
+    case '검색':
+      return (
+        <div className="buttonGroup">
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
+          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+        </div>
+      )
     case '랭킹':
       return (        
         <div className='buttonGroup'>
@@ -93,12 +84,11 @@ const TitleButton = (props) => {
       )
     case 'MY':
       return (
-        <></>
-        /*<div className="buttonGroup">
+        <div className="buttonGroup">
           <StoreButton history={history} />
-          <SearchButton history={history} />
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
-        </div>*/
+        </div>
       )
     default :
       return (

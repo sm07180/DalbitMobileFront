@@ -22,7 +22,7 @@ const AlarmArray = [
   {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림', msg: '마이스타가 방송 시작 시<br>'},
   {key: 'isStarClip', value: 0, text: '마이스타 클립 등록 알림', msg: '마이스타가 클립 업로드 시<br>'},
   {key: 'isGift', value: 0, text: '마이스타 방송공지 등록 알림', msg: '마이스타가 방송공지 등록 시<br>'},
-  {key: 'isMailbox', value: 0, text: '우체통 알림', msg: '우체통에 새로운 대회가 등록될 경우<br>'},
+  {key: 'isMailbox', value: 0, text: '메시지 알림', msg: '메시지에 새로운 대회가 등록될 경우<br>'},
   {key: 'isMyClip', value: 0, text: '내 클립 알림', msg: '내 클립에 댓글, 좋아요, 선물 등록 시<br>'},
   {key: 'isFan', value: 0, text: '신규 팬 추가 알림', msg: '신규 팬이 추가되면 알림<br>'},
   {key: 'isComment', value: 0, text: '팬보드 신규 글 등록 알림', msg: '팬보드에 새로운 글이 등록되면 알림<br>'},
@@ -315,10 +315,10 @@ const Content = styled.div`
         border-bottom-right-radius: 12px;
       }
       &.active {
-        border-color: #632beb;
+        border-color: #FF3C7B;
         z-index: 5;
         font-weight: 800;
-        color: #632beb;
+        color: #FF3C7B;
         background-color: #fff;
       }
     }

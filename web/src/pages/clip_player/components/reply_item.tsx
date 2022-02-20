@@ -126,7 +126,7 @@ export default ({ replyValue, fetchReplyList, replyEdit }) => {
           <img
             src={replyValue.profImg.thumb62x62}
             alt="thumb"
-            onClick={() => history.push(`/mypage/${replyValue.writerMemNo}`)}
+            onClick={() => history.push(`/profile/${replyValue.writerMemNo}`)}
             style={{ cursor: "pointer" }}
           />
         </div>

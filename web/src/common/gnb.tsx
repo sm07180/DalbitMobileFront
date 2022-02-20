@@ -35,14 +35,14 @@ const gntSubTypes = [
   {url: '/mypage'},
   {url: '/mailbox'},
   {url: '/store'},
-  {url: '/notice'},
+  {url: '/alarm'},
 ]
 
 export default function GNB() {
   const context = useContext(GlobalContext);
   const { globalState, globalAction } = context;
   const { baseData, clipPlayer, chatInfo, rtcInfo } = globalState;
-  const { mailboxAction } = useContext(MailboxContext);
+  const { mailboxState, mailboxAction } = useContext(MailboxContext);
 
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -410,7 +410,7 @@ export default function GNB() {
               {gnbTypes.map((item, index) => {
                 return (
                   <li key={index} data-url={item.url}
-                      className={`${activeType === item.url ? 'active' : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
+                      className={`${activeType === item.url ? 'active' : activeType === "/rankDetail/DJ" && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
                       onClick={() => {
                         history.push(item.url);
                         if(item.isUpdate && activeType === item.url) {
@@ -433,7 +433,9 @@ export default function GNB() {
                       <li key={index} data-url={item.url}
                           className={`${activeType === item.url ? 'active' : ''} ${activeType !== item.url ? 'cursorPointer' : ''}`}
                           onClick={() => history.push(item.url)}
-                      />
+                      >
+                        {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
+                      </li>
                     )
                   })}
                 </ul>

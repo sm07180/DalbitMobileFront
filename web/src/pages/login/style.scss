@@ -3,6 +3,16 @@
 $btnActive : #FF3C7B;
 $btnDisable : #FFD8E4;
 
+.container {
+  .totalWrap {
+    #loginPage {
+      .loginMain {
+        height: calc(100vh - 89px);
+      }
+    }
+  }
+}
+
 #loginPage {
   .loginMain {
     position: relative;
@@ -30,7 +40,7 @@ $btnDisable : #FFD8E4;
           margin-bottom: 0;
         }
       }
-      .mainText {@include font(24px, 400, #202328);}
+      .mainText {@include font(24px, 500, #202328);}
       .subText {@include font(14px, 400, #999999);}
     }
     .loginBtn {

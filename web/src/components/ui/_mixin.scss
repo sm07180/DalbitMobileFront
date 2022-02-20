@@ -5,9 +5,14 @@ $MAINCOLOR: #FF3C7B;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
 // height 값 관리
-$HEADER-HEIGHT: 48px;
+$HEADER-HEIGHT: 52px;
 $NAVIGATION-HEIGHT: 50px;
 $GNB-HEIGHT: 68px;
+
+//scroll 시 tab 고정 TOP값 (PC)
+$PC-TABTOP : 120px;
+$MOBILE-TABTOP : 52px;
+$TAB-ZINDEX : 15;
 
 // z-inde 관리
 $ALERT-ZINDEX: 100;
@@ -113,6 +118,20 @@ $ExtraBold: 800;
   background-color:$MAINCOLOR;
   @include border($MAINCOLOR,$radius);
   @include font($font,500,white);
+}
+
+@mixin photoStyle($width, $height, $radius) {
+  position: relative;
+  width: $width; height: $height;
+  box-sizing: border-box;
+  &::before {
+    content: "";
+    @include position-top-left;
+    width: 100%; height: 100%;
+    border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+    border-radius:$radius;
+    box-sizing: border-box;
+  }
 }
 
 // 스토어 구매, 달교환
@@ -316,7 +335,7 @@ $ExtraBold: 800;
   @include flex(center);
   li {
     flex:1;
-    line-height:40px;
+    line-height:44px;
     text-align: center;
     background-color: #ffffff;
     border-bottom:2px solid #f2f2f2;

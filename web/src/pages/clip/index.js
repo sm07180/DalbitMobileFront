@@ -158,6 +158,10 @@ const ClipPage = () => {
   const swiperParams = {
     slidesPerView: 'auto',
   };
+  const nowSwiperParams ={
+    slidesPerView: 'auto',
+    spaceBetween: 16,
+  }
 
   // 링크 다시 눌렀을때, 액션
   const refreshActions = () => {
@@ -213,7 +217,7 @@ const ClipPage = () => {
           }
         </section>
         <section className='bannerWrap'>
-          <BannerSlide />
+          <BannerSlide type={10}/>
         </section>
         <section className="clipDrawer">
           {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
@@ -221,30 +225,30 @@ const ClipPage = () => {
             <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
           </div>
           }
-          {listenClipInfo.list &&
+          {listenClipInfo.list.length > 0 &&
           <>
             <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
             <SwiperList data={listenClipInfo.list} playAction={playClip} />
           </>
           }
-          {likeClipInfo.list &&
-          <>
-            <ClipSubTitle title={'좋아요 한 클립'} more={'clip/like/list'}/>
+          {likeClipInfo.list.length > 0 &&
+          <div className="mgt24">
+            <ClipSubTitle title={'좋아요한 클립'} more={'clip/like/list'}/>
             <SwiperList data={likeClipInfo.list} playAction={playClip} />
-          </>
+          </div>
           }
         </section>
         <section className="nowClipWrap">
           <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
           {popularClipInfo.length > 0 ?
-            <Swiper {...swiperParams}>
+            <Swiper {...nowSwiperParams}>
               {popularClipInfo.map((row, index) => {
                 return (
                   <div key={index}>
                     <div>
                       {row.map((coreRow, coreIndex) => {
                         if (Object.keys(coreRow).length > 0) {
-                          return (<NowClip key={coreIndex} info={coreRow} playAction={playClip}/>)
+                          return (<NowClip key={coreIndex} info={coreRow} playAction={playClip} />)
                         } else {
                           return <></>;
                         }

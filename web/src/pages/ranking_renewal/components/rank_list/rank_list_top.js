@@ -139,11 +139,7 @@ function RankListTop({specialPop}) {
                     className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
                     onClick={() => {
                       if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${memNo}`)
-                        }
+                        history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)
                       }

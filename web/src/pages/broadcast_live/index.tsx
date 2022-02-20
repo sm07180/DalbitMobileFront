@@ -163,7 +163,7 @@ export default function BroadcastList() {
               <li
                 className="liveList"
                 onClick={() => {
-                  history.push(`/mypage/${v.bjMemNo}`);
+                  history.push(`/profile/${v.bjMemNo}`);
                 }}
               >
                 <div className="liveList__number">{idx + 1}</div>

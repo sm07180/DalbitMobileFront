@@ -57,11 +57,7 @@ function LevelList({empty}) {
                     className="thumbBox"
                     onClick={() => {
                       if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${memNo}`)
-                        }
+                        history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)
                       }
@@ -85,11 +81,7 @@ function LevelList({empty}) {
                         className="bestFanBox__nickname"
                         onClick={() => {
                           if (context.token.isLogin) {
-                            if (context.token.memNo === fanMemNo) {
-                              history.push(`/menu/profile`)
-                            } else {
-                              history.push(`/mypage/${fanMemNo}`)
-                            }
+                            history.push(`/profile/${fanMemNo}`)
                           } else {
                             history.push(`/login`)
                           }

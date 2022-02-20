@@ -132,7 +132,7 @@ export default () => {
                       <td
                         className="nick coupon"
                         onClick={() => {
-                          mem_nick && history.push(`/mypage/${mem_no}`)
+                          mem_nick && history.push(`/profile/${mem_no}`)
                         }}>
                         {mem_nick ? `${mem_nick}` : '-'}
                       </td>

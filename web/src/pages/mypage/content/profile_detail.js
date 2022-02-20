@@ -64,16 +64,7 @@ export default (props) => {
       if (profile.fanRank[index] == undefined) {
       } else {
         const {memNo, profImg, rank} = profile.fanRank[index]
-        let link = ''
-        if (memNo == myProfileNo) {
-          if (webview) {
-            link = `/mypage/${memNo}?webview=${webview}`
-          } else {
-            link = `/menu/profile`
-          }
-        } else {
-          link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-        }
+        let link = `/profile/${memNo}?webview=${webview}`
         result = result.concat(
           <div
             style={{backgroundImage: `url(${profImg.thumb88x88})`}}
@@ -481,13 +472,13 @@ export default (props) => {
               const myProfile = await Api.profile({ params: { memNo: token.memNo } })
               if(myProfile.data.level === 0) {
                 return context.action.alert({
-                  msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+                  msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
                 })
               }
             }
             if (!profile.level) {
               return context.action.alert({
-                msg: '0레벨 회원에게는 우체통 메시지를 \n 보낼 수 없습니다.'
+                msg: '0레벨 회원에게는 메시지를 \n 보낼 수 없습니다.'
               })
             }
 

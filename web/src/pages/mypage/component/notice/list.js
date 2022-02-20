@@ -177,7 +177,7 @@ const List = (props) => {
   //transfer memNo
   const historyMem = (yourMemNo) => {
     if (yourMemNo !== context.profile.memNo) {
-      history.push(`/mypage/${yourMemNo}`)
+      history.push(`/profile/${yourMemNo}`)
     } else if (yourMemNo !== context.profile.memNo) return false
   }
   //-------------------------------------------------------------------------
@@ -321,7 +321,7 @@ const TitleWrap = styled.div`
     display: none;
   }
   &.is-top {
-    color: #632beb;
+    color: #FF3C7B;
     font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.35px;

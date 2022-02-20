@@ -25,34 +25,23 @@
     position:fixed;
     z-index:$HEADER-ZINDEX;
     width:100%;
-    border-bottom:1px solid transparent;
-    background-color:transparent;
     header {
       text-indent:-99999px;
-      h1 {
-        width:71px;height:25px;
-        @include BGIMG("common/header/LOGO.png");
-        opacity: 0;
-      }
-      button {
-        display: inline-block;
-        width: 40px; height: 40px;
-        img {
-          width: 100%;
+      .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-w.png");}
+      .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-w.png");}
+      .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-w.png");}
+    }
+    &.isShow {
+      header {
+        border-bottom:1px solid #eee;
+        background-color:white;
+        h1 {
+          width:71px;height:25px;
+          @include BGIMG("common/header/LOGO.png");
         }
-      }
-    }
-    &.fadeIn {
-      animation: fadeIn 0.2s linear forwards;
-      h1 {
-        animation: show 0.2s linear forwards;
-      }
-
-    }
-    &.fadeOut {
-      animation: fadeOut 0.2s linear forwards; 
-      h1 {
-        animation: hide 0.2s linear forwards;
+        .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-b.png");}
+        .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-b.png");}
+        .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-b.png");}
       }
     }
   }
@@ -103,10 +92,8 @@
           // transition: transform .7s ease-out;
           .badgeGroup {
             @include flex(center);
+            margin-bottom: 8px;
             height:16px;
-          }
-          .badgeGroup {
-            @include flex(center);
           }
           .title {
             width:72%;
@@ -347,9 +334,6 @@
       @include font(15px,400,#999);
     }
   }
-  .bannerWrap {
-    margin-bottom:35px;
-  }
   .liveView {
     .cntTitle {
       margin-bottom:8px;
@@ -433,12 +417,14 @@
           @include flex($fd:column);
           min-width:0;
           height:100%;
+          padding: 8px 0;
           margin-left:16px;
+          box-sizing: border-box;
           .listItem {
             @include flex(center);
             min-height:2px;
             margin-bottom:2px;
-            &:last-child {
+            &:nth-child(3) {
               margin-top: auto;
             }
             .title {
@@ -457,7 +443,72 @@
         }
       }      
     }
-  }
+  } 
+}
+.floatingEvent {
+  position: fixed;
+  bottom: 15%;
+  width: 100%; max-width: 480px;
+  .floatingWrap {
+    position: relative;
+    .fixedButton {
+      position: absolute;
+      right: 10px;
+      z-index: 13;
+      width: 48px;
+      .attendStampActive {
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        margin: 5px 0 0;
+    
+        &.basic {
+          background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
+            center no-repeat;
+          background-size: 100%;
+        }
+    
+        &.motion {
+          width: 48px;
+          height: 48px;
+          position: relative;
+    
+          &::after {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            content: "";
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
+              center no-repeat;
+            background-size: 48px;
+            animation: rotate_image 1s linear infinite;
+            transform-origin: 50% 50%;
+            @keyframes rotate_image {
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+          }
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 48px;
+            height: 48px;
+            z-index: 1;
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
+              center no-repeat;
+            background-size: 60px;
+          }
+        }
+      }
+    }
+  }  
 }
 
 @keyframes fadeIn {

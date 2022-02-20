@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useMemo} from 'react'
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
@@ -11,15 +11,28 @@ import HistoryList from './contents/HistoryList'
 import Exchange from './contents/exchange/Exchange'
 // css
 import './style.scss'
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
-
-const walletTabMenu = ['달 내역', '별 내역', '환전'];
+import {OS_TYPE} from 'context/config.js';
+import {getDeviceOSTypeChk} from "common/DeviceCommon";
 
 const WalletPage = (props) => {
   const history = useHistory();
+  const location = useLocation();
   const context = useContext(Context);
-  const {walletData} = context;
+  const {walletData, token} = context;
+  
+  //아이폰 앱에서 달교환 버튼 클릭시 새창 띄움
+  const isIOS = useMemo(() => {
+    const agent = window.navigator.userAgent.match(/(ios webview)/gi);
+    return !agent? false : agent[0] === 'ios webview';
+    } ,[]);  //아이폰이면 환전 메뉴를 다르게 보여주는 정책!
+
+  //const search = location?.search || '';
+  //history.push(`/login?goBack=${location.pathname + search}`);
+  if(!token?.isLogin) history.push(`/login`);
+
+  const walletTabMenu = ['달 내역', '별 내역', isIOS? '달 교환' : '환전'];
   const {walletType, byeolTotCnt, dalTotCnt, popHistory, listHistory} = walletData;
   //선택 코드
   const [selectedCode, setSelectedCode] = useState('0');
@@ -62,12 +75,19 @@ const WalletPage = (props) => {
           const byeolAndDal = walletType === walletTabMenu[0]?
             {dalTotCnt : listRes.data?.dalTotCnt}: {byeolTotCnt : listRes.data?.byeolTotCnt};
           setLastPage(Math.ceil(listRes.data.paging.total / pagePerCnt));
+
+          let popHistoryCnt = 0;
+          popRes.data?.list.map((v) => {
+            popHistoryCnt += v?.cnt;
+          })
+
           context.globalAction.dispatchWalletData({
             type: 'ADD_DATA',
             data: {
               ...byeolAndDal,
               listHistory: pageNo === 1 ? listRes.data?.list : walletData.listHistory.concat(listRes.data?.list),
               popHistory: popRes.data?.list,
+              popHistoryCnt
             }
           });
           setIsLoading(false);
@@ -76,7 +96,8 @@ const WalletPage = (props) => {
             type: 'ADD_HISTORY',
             data: {
               listHistory: [],
-              popHistory: popRes.data?.list
+              popHistory: popRes.data?.list,
+              popHistoryCnt: 0
             }
           });
         }
@@ -85,17 +106,17 @@ const WalletPage = (props) => {
   }
 
   //별 수치가 안맞음.
-  const getNewWallet = async () => {
-    const {result, data, message} = await Api.getMyPageNewWallet();
-
-    if(result === 'success'){
-      context.globalAction.dispatchWalletData({type:'ADD_DATA',
-        data:{
-          byeolTotCnt : data?.byeol,
-          dalTotCnt : data?.dal,
-      }});
-    }
-  };
+  // const getNewWallet = async () => {
+  //   const {result, data, message} = await Api.getMyPageNewWallet();
+  //
+  //   if(result === 'success'){
+  //     context.globalAction.dispatchWalletData({type:'ADD_DATA',
+  //       data:{
+  //         byeolTotCnt : data?.byeol,
+  //         dalTotCnt : data?.dal,
+  //     }});
+  //   }
+  // };
 
   //tab 이동
   const setTabType = (walletType) => {
@@ -121,67 +142,44 @@ const WalletPage = (props) => {
     document.documentElement.scrollTop = 0;
   }, [selectedCode]);
 
+
+  useEffect(() => {
+    ///wallet?exchange로 주소로 들어올경우 기본탭을 환전탭으로 지정하기
+    const toExchangeTab = location?.search.indexOf('exchange') > -1;
+    if(toExchangeTab){
+      setTabType(walletTabMenu[2]);
+    }
+
+    return () => {
+      context.globalAction.dispatchWalletData({type:'INIT'});
+    };
+  },[]);
+
   // 환전취소
-  async function cancelExchangeFetch() {
-    const {result, data, message} = await Api.postExchangeCancel({
-      exchangeIdx: 0 // 환전취소 글번호
-    })
-    if (result === 'success') {
-      context.action.alert({
-        title: '환전 취소가 완료되었습니다.',
-        className: 'mobile',
-        msg: message,
-        callback: () => {
-        }
+  function cancelExchangeFetch(exchangeIdx) {
+    async function callback() {
+      const {result, data, message} = await Api.postExchangeCancel({
+        exchangeIdx, // 환전취소 글번호
       })
-    } else {
-      context.action.alert({
-        msg: message,
-        callback: () => {
-        }
-      })
-    }
-  }
-
-  //ios 본인인증 체크
-  const checkSelfAuth = async () => {
-    //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
-    let myBirth
-    const baseYear = new Date().getFullYear() - 11
-    const myInfoRes = await Api.mypage()
-    if (myInfoRes.result === 'success') {
-      myBirth = myInfoRes.data.birth.slice(0, 4)
-    }
-
-    async function fetchSelfAuth() {
-      const res = await Api.self_auth_check({})
-      if (res.result === 'success') {
-        if (res.data.company === '기타') {
-          return context.action.alert({
-            msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
-          })
-        }
-        const {parentsAgreeYn, adultYn} = res.data
-        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
-        if (myBirth > baseYear) {
-          return context.action.alert({
-            msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-          })
-        } else {
-          history.push('/money_exchange')
-        }
-      } else if (res.result === 'fail' && res.code === '0') {
-        history.push('/selfauth')
+      if (result === 'success') {
+        getWalletHistory(1, walletType === walletTabMenu[0] ? 1 : 0);
+        context.action.alert({
+          title: '환전 취소가 완료되었습니다.',
+          msg: message
+        });
       } else {
         context.action.alert({
-          msg: res.message
+          msg: message,
         })
       }
     }
-    fetchSelfAuth()
-    // history.push('/money_exchange')
-  }
 
+    context.action.confirm({
+      msg: '환전신청을 취소 하시겠습니까?',
+      callback
+    });
+  }
+  //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
       <Header type='back' title='내 지갑'>
@@ -207,8 +205,8 @@ const WalletPage = (props) => {
       {walletType !== walletTabMenu[2] ?
         <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode} setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading} getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch} walletType={walletType}/>
         :
-        /*환전*/
-        <Exchange />
+        /*환전 ( = ios : 달 교환)*/
+        <Exchange isIOS={isIOS}/>
       }
     </div>
   )

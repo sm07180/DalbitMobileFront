@@ -96,7 +96,7 @@ const BroadCastAudioPlayer = ()=>{
     <div id="player" style={{display: isShowPlayer ? "" : "none"}}>
       <div className="inner-player" onClick={playerBarClickEvent}>
         <div className="inner-player-bg"
-             style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`}} />
+             style={{background: `url("${rtcInfo?.roomInfo?.bgImg.thumb500x500}") center/contain no-repeat`}} />
         <div className="info-wrap">
           <div className="equalizer broadcast" />
           <div className="thumb"
@@ -108,9 +108,12 @@ const BroadCastAudioPlayer = ()=>{
           </div>
           <div className="counting"/>
         </div>
-        <div className="buttonGroup">
-          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-        </div>
+        {
+          rtcInfo?.userType !== UserType.HOST &&
+          <div className="buttonGroup">
+            <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          </div>
+        }
       </div>
     </div>
   )

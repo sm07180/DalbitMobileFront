@@ -15,6 +15,7 @@ import './profileEdit.scss'
 import PasswordChange from "pages/password";
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {authReq} from "pages/self_auth";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -24,7 +25,6 @@ const ProfileEdit = () => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    spaceBetween: 8,
   }
 
   //이미지 크로퍼
@@ -38,6 +38,8 @@ const ProfileEdit = () => {
 
   //프로필 정보
   const initProfileInfo = useRef(null);
+  const nickNameRef = useRef(null);
+  const focusClearRef = useRef(null);
   const [profileInfo, setProfileInfo] = useState({
     birth: null, nickNm: null, gender: null, profImg: null, profMsg: null, memId: null, profImgList: []
   })
@@ -50,13 +52,17 @@ const ProfileEdit = () => {
   //비밀번호 페이지(컴포넌트) 표시 여부
   const [passwordPageView, setPasswordPageView] = useState(false);
 
+  // 본인인증 여부
+  const [authState, setAuthState] = useState(false);
+  const [phone, setPhone] = useState('');
+
   //profile state 갱신시 state 갱신
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
+      //const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
       initProfileInfo.current = {nickNm, profImg, profMsg, gender};
-      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList: sortImgList});
+      setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList});
       setCurrentAvatar(profImg);
       setHasGender(gender !== 'n');
 
@@ -104,15 +110,32 @@ const ProfileEdit = () => {
       context.action.updateProfile({...profile, ...data});
       context.action.alert({
         msg: `저장되었습니다.`,
-        callback: finished ? ()=>history.goBack() : ()=>{}
+        callback: finished ? ()=> history.push('/myProfile') : ()=>{}
       });
     } else {
       context.action.alert({title: 'Error', msg: message});
     }
   }
 
+  /* 본인인증 열기 */
+  const getAuth = () => {
+    authReq('5', context.authRef, context);
+  }
+
+  /* 본인인증 여부 */
+  const getAuthCheck = async () => {
+    const res = await Api.self_auth_check({})
+    if (res.result === 'success') {
+      setAuthState(true)
+      setPhone(res.data.phoneNo)
+    } else {
+      setAuthState(false)
+    }
+  }
+
   useEffect(() => {
     getMyInfo();
+    getAuthCheck();
   }, []);
 
   useEffect(() => {
@@ -150,32 +173,37 @@ const ProfileEdit = () => {
 
   //프로필 사진 업로드
   const photoUpload = async () => {
-    const {result, data, message} = await Api.image_upload({
-      data: {
-        dataURL: image.content,
-        uploadType: 'profile'
-      }
-    });
+    try {
+      const {result, data, message} = await Api.image_upload({
+        data: {
+          dataURL: image.content,
+          uploadType: 'profile'
+        }
+      });
 
-    if (result === 'success') {
-      if (inputRef.current) {
-        inputRef.current.value = ''
-      }
+      if (result === 'success') {
+        if (inputRef.current) {
+          inputRef.current.value = ''
+        }
 
-      //등록한 사진 리스트가 한장도 없을경우 사진 업로드후, 프로필 정보 수정처리! ( 기존정책 )
-      if (profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
-        profileEditConfirm({...profileInfo, profImg: data});
-        setImage(null);
-        setCurrentAvatar(data);
-      } else {  //기존 이미지가 1장 이상 있으면, 이미지 add Api만 호출, 프로필정보 갱신 API call
-        //이미지 추가등록 API - profImgList에 추가
-        addProfileImage(data.path);
-        setImage(null);
-      }
+        //등록한 사진 리스트가 한장도 없을경우 사진 업로드후, 프로필 정보 수정처리! ( 기존정책 )
+        if (profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
+          profileEditConfirm({...profileInfo, profImg: data});
+          setImage(null);
+          setCurrentAvatar(data);
+        } else {  //기존 이미지가 1장 이상 있으면, 이미지 add Api만 호출, 프로필정보 갱신 API call
+          //이미지 추가등록 API - profImgList에 추가
+          addProfileImage(data.path);
+          setImage(null);
+        }
 
-    } else {
-      context.action.toast({msg: message});
-    }
+      } else {
+        context.action.toast({msg: message});
+      }
+    } catch(e) { //image upload Error
+      context.action.toast({msg: '이미지 업로드 실패'});
+      setImage(null);
+    };
   };
 
   //이미지 팝업 띄우기
@@ -214,6 +242,14 @@ const ProfileEdit = () => {
   }, [image]);
 
   const emptySwiperItems = useMemo(() => Array(10 - (profileInfo?.profImgList?.length || 0)).fill(''), [profileInfo]);
+  const topSwiperList = useMemo(() => {
+    if (profile?.profImgList?.length > 0) {
+      return profile?.profImgList.concat([]).filter((data, index)=> !data.isLeader);
+    } else {
+      return [];
+    }
+  },[profile?.profImgList]);
+
   return (
       <>{
           !passwordPageView ?
@@ -223,9 +259,9 @@ const ProfileEdit = () => {
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='topSwiper' onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}>
-              {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profile}/>
+            <section className='topSwiper' onClick={()=> showImagePopUp(topSwiperList, 'profileList')}>
+              {profileInfo?.profImgList?.length > 1 ?
+                <TopSwiper data={{...profile, profImgList: topSwiperList}}/>
                 :
                 <div className="nonePhoto"
                      onClick={(e) => {
@@ -250,7 +286,7 @@ const ProfileEdit = () => {
               </div>
 
               <div className="coverPhoto">
-                <div className="title">커버사진 <small>(최대 10장)</small></div>
+                <div className="title">프로필사진<small>(최대 10장)</small></div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
@@ -279,18 +315,38 @@ const ProfileEdit = () => {
               </div>
             </section>
             <section className="editInfo">
-              <InputItems title={'닉네임'}>
-                <input type="text" maxLength="15" placeholder={profile.nickNm}
+              <InputItems title="닉네임">
+                <input type="text" maxLength="15" defaultValue={profile.nickNm} ref={nickNameRef}
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         if(!focusClearRef.current && e.target.value === '') {  //입력 폼에 한번 포커싱 되면 한번더 클릭해도 내용 초기화 안되게하기.
+                           focusClearRef.current = true;
+                           e.target.value = profile?.nickNm || '';
+                         }
+                       }}
+                       onBlur={() => {
+                         if(focusClearRef.current === true){
+                           focusClearRef.current = false;
+                         }
+                       }}
                        onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
-                <button className='inputDel'></button>
+                <button className='inputDel'
+                        onClick={() => {
+                          //닉네임 초기화
+                          if (nickNameRef.current) nickNameRef.current.value = '';
+                          setProfileInfo({...profileInfo, nickNm: ''})
+
+                          if(!focusClearRef.current) {  // 닉네임 초기화 방지
+                            focusClearRef.current = true;
+                          }
+                          nickNameRef.current.focus();
+                        }}/>
               </InputItems>
-              <InputItems title={'UID'}>
-                <input type="text" placeholder={profile.memId} disabled/>
+              <InputItems title="휴대폰번호" button="인증하기" onClick={getAuth}>
+                <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
               </InputItems>
-              <InputItems title={'비밀번호'}>
-                <input type="password" name={"password"} maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} placeholder=''
-                       onClick={() => setPasswordPageView(true)}/>
-                <button className='inputChange' onClick={() => setPasswordPageView(true)}>변경</button>
+              <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
+                <input type="password" name="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} disabled />
               </InputItems>
               <div className="inputItems">
                 <div className="title">성별</div>

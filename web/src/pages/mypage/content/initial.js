@@ -15,7 +15,7 @@ const Wrap = styled.div`
   background-color: red;
 `
 const CoinChargeBtn = styled.button`
-  background-color: #632beb;
+  background-color: #FF3C7B;
 `
 
 const CoinCurrentStatus = styled.div`
@@ -25,7 +25,7 @@ const CoinCurrentStatus = styled.div`
 `
 
 const CoinCountingView = styled.div`
-  border: 3px solid #632beb;
+  border: 3px solid #FF3C7B;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -42,8 +42,8 @@ const CoinTypeBtn = styled.button`
   border-radius: 24px;
 
   &.active {
-    color: #632beb;
-    border-color: #632beb;
+    color: #FF3C7B;
+    border-color: #FF3C7B;
   }
 `
 
@@ -58,6 +58,6 @@ const TitleWrap = styled.div`
   .text {
     font-size: 20px;
     letter-spacing: -0.5px;
-    color: #632beb;
+    color: #FF3C7B;
   }
 `

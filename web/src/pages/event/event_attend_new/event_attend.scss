@@ -1,4 +1,17 @@
 @import '../../../styles/global';
+@import 'components/ui/_mixin.scss';
+
+#root {
+  .container {
+    .totalWrap {
+      .content {
+        .tabWrap.fixed {
+          top: $GNB-HEIGHT;
+        }
+      }
+    }
+  }
+}
 
 #attendEventPage {
   margin: 0 auto;
@@ -34,6 +47,7 @@
     &.fixed {
       position: fixed;
       top: 0;
+      max-width:480px;
       z-index: 2;
       overflow: hidden;
     }
@@ -220,7 +234,7 @@
         width: 100%;
         height: 44px;
         border-radius: 12px;
-        background-color: #632beb;
+        background-color: #FF3C7B;
         color: #fff;
         font-size: 18px;
         font-weight: 800;
@@ -346,10 +360,10 @@
       table {
         th {
           padding: 5px 0;
-          border-top: 1px solid #632beb;
-          border-bottom: 1px solid #632beb;
+          border-top: 1px solid #FF3C7B;
+          border-bottom: 1px solid #FF3C7B;
           font-size: 12px;
-          color: #632beb;
+          color: #FF3C7B;
         }
 
         td {
@@ -469,7 +483,7 @@
       font-weight: 800;
 
       span {
-        color: #632beb;
+        color: #FF3C7B;
       }
     }
   }

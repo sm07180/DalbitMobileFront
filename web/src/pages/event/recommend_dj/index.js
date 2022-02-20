@@ -4,8 +4,8 @@ import _ from 'lodash'
 
 import {GENDER_TYPE, AGE_TYPE} from './constant'
 
-import NoResult from 'components/ui/noResult'
-import Header from 'components/ui/new_header.js'
+import NoResult from 'components/ui/noResult/NoResult'
+import Header from 'components/ui/header/Header'
 
 import {Context} from 'context'
 import {RoomJoin} from 'context/room'
@@ -92,14 +92,14 @@ export default function RecommendDj() {
   const addFanImageHandler = useCallback(
     async (memNo, nickNm, listIdx) => {
       if (fetchedList[listIdx].isFan) {
-        history.push(`/mypage/${memNo}`)
+        history.push(`/profile/${memNo}`)
       } else {
         const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
         if (result === 'success') {
           toggleFan(listIdx)
           context.action.alert_no_close({
             msg: `${nickNm} 님의 팬이 되셨습니다.`,
-            callback: () => history.push(`/mypage/${memNo}`)
+            callback: () => history.push(`/profile/${memNo}`)
           })
         } else {
           context.action.alert({
@@ -213,15 +213,16 @@ export default function RecommendDj() {
 
   return (
     <div id="recommendDj">
-      <Header goBack={() => history.push('/')}>
-        <h2>달빛 대표 DJ를 추천합니다</h2>
-        <button className="btn__refresh" onClick={onRefresh}>
-          <img
-            src={`${IMG_SERVER}/main/200714/ico-refresh-gray.png`}
-            alt="새로고침"
-            className={`refresh-img${refresh ? ' active' : ''}`}
-          />
-        </button>
+      <Header title="달빛 대표 DJ를 추천합니다" type="back">
+        <div className="buttonGroup">
+          <button className="btn__refresh" onClick={onRefresh}>
+            <img
+              src={`${IMG_SERVER}/main/200714/ico-refresh-gray.png`}
+              alt="새로고침"
+              className={`refresh-img${refresh ? ' active' : ''}`}
+            />
+          </button>
+        </div>
       </Header>
       <div className="subContent gray">
         <div className="btnBox">
