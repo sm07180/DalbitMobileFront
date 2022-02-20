@@ -74,6 +74,10 @@
           white-space: pre-line;
           word-break: keep-all;
         }
+        .subMsg {
+          @include font(12px, 400, #FF3C7B);
+          word-break: keep-all;
+        }
         .remsg {
           @include font(13px, 400, #666666);
           @include fontLineCut();
