@@ -331,7 +331,7 @@ const Router = () => {
         <Route exact path="/report" component={Report} />
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
-        <Route exact path="/alarm" component={Alarm} />
+        <Route exact path="/alarm" component={Notice} />
         <Route exact path="/post" component={Post} />
 
         {/* 임시 옛날 설정 페이지*/}
