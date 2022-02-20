@@ -34,13 +34,13 @@ export default function LayerPopupWrap({setEventPop, popupData}) {
       if (res.data.freeDal.dal === 5) {
         globalCtx.action.alert({
           title: '행복한 추석되세요',
-          msg: `<div style="text-align:center;padding:20px 0 6px 0;"><img src='${IMG_SERVER}/event/thxgiving/img_5moon.png'/><p style="font-size:22px;color:#FF3C7B;font-weight:bold;padding:15px 0 7px 0;">5달이 지급되었습니다</p><p>달빛라이브 많이 사랑해주세요~♥</p></div>`,
+          msg: `<div style="text-align:center;padding:20px 0 6px 0;"><img src='${IMG_SERVER}/event/thxgiving/img_5moon.png'/><p style="font-size:22px;color:#FF3C7B;font-weight:bold;padding:15px 0 7px 0;">5달이 지급되었습니다</p><p>달라 많이 사랑해주세요~♥</p></div>`,
           callback: handleDimClick
         })
       } else if (res.data.freeDal.dal === 10) {
         globalCtx.action.alert({
           title: '행복한 추석되세요',
-          msg: `<div style="text-align:center;padding:20px 0 6px 0;"><img src='${IMG_SERVER}/event/thxgiving/img_5moon.png'/><p style="font-size:22px;color:#FF3C7B;font-weight:bold;padding:15px 0 7px 0;">5달이 지급되었습니다</p><p>달빛라이브 많이 사랑해주세요~♥</p></div>`,
+          msg: `<div style="text-align:center;padding:20px 0 6px 0;"><img src='${IMG_SERVER}/event/thxgiving/img_5moon.png'/><p style="font-size:22px;color:#FF3C7B;font-weight:bold;padding:15px 0 7px 0;">5달이 지급되었습니다</p><p>달라 많이 사랑해주세요~♥</p></div>`,
           callback: handleDimClick
         })
       }

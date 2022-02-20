@@ -180,7 +180,7 @@ export default (props) => {
             </h4>
             <p>
               ※ 동의 철회를 원하시는 경우, <br />
-              달빛라디오 고객센터에서 철회 신청을 해주시기 바랍니다.
+              달라 고객센터에서 철회 신청을 해주시기 바랍니다.
             </p>
             <div className="btn-wrap">
               <button
