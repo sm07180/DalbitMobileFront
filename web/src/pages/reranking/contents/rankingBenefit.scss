@@ -4,10 +4,7 @@
  .totalWrap {
   #rankingBenefit {
     .tabmenu {
-      position: sticky;
-      top:116px;
-      background-color: #FFF;
-      z-index: 2;
+      top:$PC-TABTOP;
     }
   }
  } 
@@ -16,11 +13,11 @@
 #rankingBenefit {
   .tabmenu {
     position: sticky;
-    top:48px;
+    top: $MOBILE-TABTOP;
     @include flex(center);
     padding:0 16px;
     background-color: #FFF;
-    z-index: 2;
+    z-index: $TAB-ZINDEX;
     li {
       flex: 1;
       @include flex(center, center);

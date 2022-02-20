@@ -1,10 +1,15 @@
 @import "components/ui/_mixin.scss";
 
-.container{
-  #walletPage{
-    header{
-      .buttonGroup{
-        display: flex;
+.container {
+  .totalWrap {
+    #walletPage{
+      header{
+        .buttonGroup{
+          display: flex;
+        }
+      }
+      .tabmenu {
+        top: $PC-TABTOP;
       }
     }
   }
@@ -42,9 +47,13 @@
     }
   }
   > .tabmenu {
+    position:sticky;
+    top: $MOBILE-TABTOP;
     @include flex(center);
     margin-bottom: 16px;
     padding:0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
       flex:1;
       @include flex(center, center);

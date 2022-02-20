@@ -86,7 +86,7 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <StoreButton history={history} />
-          <SearchButton history={history} />
+          <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
           <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )

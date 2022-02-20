@@ -1,0 +1,14 @@
+@import '../../../styles/variables';
+
+#platformWar {
+    .content {
+        position: relative;
+        width: 100%;
+        img {            
+            width: 100%;
+            -webkit-user-drag: none;
+            vertical-align: middle;
+            image-rendering: -webkit-optimize-contrast;
+        }
+    }
+}
