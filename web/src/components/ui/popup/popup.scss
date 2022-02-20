@@ -13,7 +13,7 @@
     &#alertPop{
       position: relative;
       @include flex(flex-start, flex-start, column);
-      width: 328px;height: 200px;
+      width: 328px;min-height: 200px;
       padding: 16px;
       .popContent {
         flex: 1;
@@ -59,7 +59,7 @@
     &#confirmPop{
       position: relative;
       @include flex(flex-start, flex-start, column);
-      width: 328px;height: 200px;
+      width: 328px;min-height: 200px;
       padding: 16px;
       .popContent {
         flex: 1;
