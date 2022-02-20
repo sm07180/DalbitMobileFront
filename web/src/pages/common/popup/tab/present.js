@@ -36,6 +36,7 @@ export default (props) => {
         callback: () => {
           return
         },
+        // title: '달라',
         msg: '아이템을 선택해 주세요'
       })
     }

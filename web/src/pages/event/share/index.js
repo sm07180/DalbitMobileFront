@@ -2,10 +2,11 @@ import React, {useEffect, useState, useRef} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import Api from 'context/api'
 
+import Header from 'components/ui/header/Header'
+
 import LayerPopup from '../../../components/ui/layerPopup/LayerPopup'
 import PopSlide from "../../../components/ui/popSlide/PopSlide";
 
-import Header from 'components/ui/header/Header'
 import './share.scss'
 
 const Share = () => {
