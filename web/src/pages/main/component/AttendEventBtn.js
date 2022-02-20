@@ -75,8 +75,12 @@ const AttendEventBtn = (props) => {
   }
 
   return (
-    <div className={`fixedButton`}>
-      {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
+    <div className='floatingEvent'>
+      <div className='floatingWrap'>
+        <div className={`fixedButton`}>
+          {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
+        </div>
+      </div>
     </div>
   )
 
