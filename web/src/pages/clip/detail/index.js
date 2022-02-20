@@ -117,8 +117,7 @@ const ClipDetailPage = (props) => {
   return (
     <div id="clipDetail">
       <Header title={`${searchInfo.subjectType.cdNm}`} type={'back'} />
-      <section className="filterWrap">
-        <div className="tabmenu">
+      <div className="tabmenu">
           {subjectType.length > 0 &&
             <Swiper slidesPerView="auto" initialSlide={searchInfo.subjectType.sortNo}>
               {subjectType.map((data, index)=>{
@@ -130,7 +129,8 @@ const ClipDetailPage = (props) => {
               })}
             </Swiper>
           }
-        </div>
+      </div>
+      <section className="filterWrap">        
         <div className="filterGroup">
           <FilterBtn data={searchInfo.slctType} list={categoryType} handleSelect={handleCategorySelect}/>
           <FilterBtn data={searchInfo.dateType} list={termType} handleSelect={handleTermSelect}/>

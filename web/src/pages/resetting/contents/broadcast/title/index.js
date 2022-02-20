@@ -3,23 +3,17 @@ import React, {useState, useEffect, useContext} from 'react'
 // global components
 import Header from 'components/ui/header/Header'
 import RadioList from 'pages/resetting/components/radioList'
-import "./title.scss"
+import './title.scss'
 import API from "context/api";
 import TextArea from "pages/resetting/components/textArea";
 import Toast from "components/ui/toast/Toast";
 
 const BroadcastTitle = () => {
   const [titleList, setTitleList] = useState([])
-  const [titleSelect, setTitleSelect] = useState({
-    state: false,
-    val: "",
-    index: -1,
-  })
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
+  const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
+  const [toast, setToast] = useState({state : false, msg : ""});
 
+  //토스트 메시지 출력
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
     setTimeout(() => {
@@ -27,7 +21,7 @@ const BroadcastTitle = () => {
     }, 3000)
   }
 
-
+  //등록된 제목 버튼 클릭시 해당 정보 가져오기
   const selectTitle = (e) => {
     let selectVal = e.currentTarget.innerText;
     const {targetIndex} = e.currentTarget.dataset;
@@ -39,6 +33,7 @@ const BroadcastTitle = () => {
     });
   }
 
+  //방송 제목 등록
   const fetchAddData = async () => {
     const res = await API.insertBroadcastOption({
       optionType: 1,
@@ -48,39 +43,31 @@ const BroadcastTitle = () => {
       toastMessage("입력 된 방송제목이 없습니다. \n방송제목을 입력하세요.");
     } else {
       if (res.result === "success") {
-        console.log(res);
         toastMessage("방송제목이 등록 되었습니다.")
         setTitleList(res.data.list);
         setTitleSelect({...titleSelect, val: "", index: -1});
-      } else {
-        console.log(res);
       }
     }
   }
 
+  //방송 제목 삭제
   const fetchDeleteData = async () => {
     const res = await API.deleteBroadcastOption({
       optionType: 1,
       idx: titleSelect.index
     })
-    console.log(titleSelect.index);
     if(res.result === "success") {
-      console.log(res);
       toastMessage("방송제목이 삭제 되었습니다.")
       setTitleList(res.data.list);
       setTitleSelect({...titleSelect, val: "", index: -1});
-    } else {
-      console.log(res);
     }
   }
 
+  //방송 제목 정보 조회
   const fetchData = async () => {
     const res = await API.getBroadcastOption({optionType: 1});
     if(res.result === "success") {
-      console.log(res);
       setTitleList(res.data.list); //contents, idx
-    } else {
-      console.log(res);
     }
   }
 

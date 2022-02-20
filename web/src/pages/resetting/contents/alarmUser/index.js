@@ -14,7 +14,9 @@ import './alarmUser.scss'
 
 const SettingAlarm = () => {
   const [pushMembers, setPushMembers] = useState([])
+  const regData = moment(pushMembers.regDt).format('YYYY년 MM월 DD일')
 
+  //알림 회원 정보 조회
   const fetchData = () =>{
     Api.getPushMembers({}).then((res) =>{
       if (res.result === 'success'){
@@ -23,8 +25,7 @@ const SettingAlarm = () => {
       }
     })
   }
-  const regData = moment(pushMembers.regDt).format('YYYY년 MM월 DD일')
-  
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -67,4 +68,4 @@ const SettingAlarm = () => {
   )
 }
 
-export default SettingAlarm
+export default SettingAlarm;

@@ -10,6 +10,7 @@ import {Hybrid, isMobileWeb} from "context/hybrid";
 
 const Terms = (props) => {
   const history = useHistory();
+
   const backEvent = ()=>{
     if(props.type === 'termsT'){
       history.goBack();
@@ -21,7 +22,7 @@ const Terms = (props) => {
 
   return (
     <div id="terms">
-      <Header position={'sticky'} title={'서비스 이용약관'} type={'back'} backEvent={backEvent}/>
+      <Header position={'sticky'} title={'서비스 이용약관'} type={'back'}/>
       <div className="subContent">
         <div className='wrap'>
           <h3>제 1 조 (목적)</h3>
