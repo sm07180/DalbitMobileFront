@@ -83,13 +83,13 @@ const Faq = () => {
   return (
     <div id="faq">
       <Header position={'sticky'} title={'FAQ'} type={'back'}/>
-      <div className='subContent'>
-        <div className="searchWrap">
+      <div className="searchWrap">
           <div className='searchForm'>
             <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" value={searchText} onChange={searchChange}/>
             <button className="searchBtn" data-text={searchText} onClick={searchClick}/>
           </div>
         </div>
+      <div className='subContent'>        
         {currentSearch !== "" &&
         <>
           {totalList.cnt > 0 ?

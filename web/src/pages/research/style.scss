@@ -30,7 +30,7 @@ $SEARCH-HEADER: 112px;
     height: auto;
     padding: 0 16px;
     h1 {
-      height: 48px;
+      height: $HEADER-HEIGHT;
     }
     .searchForm {
       position: relative;
@@ -208,12 +208,12 @@ $SEARCH-HEADER: 112px;
   // searchResult page
   .tabmenu {
     position: sticky;
-    top: 112px;
+    top: 116px;
     @include flex(center);
     margin-bottom:18px;
     padding: 4px 16px;
     background-color: #FFF;
-    z-index: 2;
+    z-index: $TAB-ZINDEX;
     li {
       @include flex(center, center);
       height: 36px;

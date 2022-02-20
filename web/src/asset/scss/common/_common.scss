@@ -84,7 +84,7 @@ legend {
         background-color:$lightGray;
       }
       &.player {
-        padding-bottom: 80px;
+        padding-bottom: 54px;
       }
       .subContent {
         &.gray {
@@ -261,7 +261,7 @@ legend {
           @include BGIMG("common/gnb/gnbStore-off.png");
           &:hover::after {content:"스토어";}
         }
-        &[data-url="/notice"] {
+        &[data-url="/alarm"] {
           @include BGIMG("common/gnb/gnbAllim-off.png");
           &:hover::after {content:"알림";}
           .newDot {

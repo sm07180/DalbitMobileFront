@@ -156,25 +156,28 @@ const WalletPage = (props) => {
   },[]);
 
   // 환전취소
-  async function cancelExchangeFetch(exchangeIdx) {
-    const {result, data, message} = await Api.postExchangeCancel({
-      exchangeIdx, // 환전취소 글번호
-    })
-    if (result === 'success') {
-      context.action.confirm({
-        title: '환전 취소가 완료되었습니다.',
-        msg: message,
-        callback: () => {
-          getWalletHistory(1, walletType === walletTabMenu[0]? 1 : 0);
-        }
+  function cancelExchangeFetch(exchangeIdx) {
+    async function callback() {
+      const {result, data, message} = await Api.postExchangeCancel({
+        exchangeIdx, // 환전취소 글번호
       })
-    } else {
-      context.action.alert({
-        msg: message,
-        callback: () => {
-        }
-      })
+      if (result === 'success') {
+        getWalletHistory(1, walletType === walletTabMenu[0] ? 1 : 0);
+        context.action.alert({
+          title: '환전 취소가 완료되었습니다.',
+          msg: message
+        });
+      } else {
+        context.action.alert({
+          msg: message,
+        })
+      }
     }
+
+    context.action.confirm({
+      msg: '환전신청을 취소 하시겠습니까?',
+      callback
+    });
   }
   //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (

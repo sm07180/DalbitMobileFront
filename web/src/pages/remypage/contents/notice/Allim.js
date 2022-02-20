@@ -119,11 +119,12 @@ const Allim = () => {
 
   return (
     <div id="notice">
-      <Header type={context.customHeader.os !== 3 ? "back" : ""}/>
+      <Header type="back"/>
       <section className="noticeWrap">
         <ul className="tabmenu">
           <li className="active" onClick={() => history.push("/alarm")}>알림</li>
           <li onClick={() => history.push("/post")}>공지사항</li>
+          <div className='underline'></div>
         </ul>
         <div className="allim">
           {alarmList.list.length > 0 ?
