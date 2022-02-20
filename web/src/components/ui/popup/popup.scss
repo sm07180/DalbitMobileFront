@@ -76,8 +76,10 @@
         }
         .subMsg {
           @include font(12px, 400, #FF3C7B);
+          margin: 11px 0;
           word-break: keep-all;
           text-align: center;
+
         }
         .remsg {
           @include font(13px, 400, #666666);
