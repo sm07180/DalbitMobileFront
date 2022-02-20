@@ -522,23 +522,31 @@ export default function BroadcastSetting() {
     if (videoStream === null) {
       const result = await setStream();
       if(result === null){
+        let message
         //장치 연결 관련 팝업
-        let message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
-          " 다른 캡처 장치를 선택해주세요"
-
+        currentCam = cams[1];
+        if(currentCam === undefined){
+          message = "현재 해당 연결된 장치를 찾을수 없습니다.\n연결상태를 확인해주세요."
+        }else{
+          message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
+            " 다른 캡처 장치를 선택해주세요"
+        }
         context.action.alert({
           msg: message
         })
-        currentCam = cams[1];
-        sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
-        localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
-            width: 1280,
-            // Specify a value range and an ideal value
-            height: { ideal: 720, min: 720, max: 1280 },
-            frameRate: 24,
-            bitrateMin: 1130, bitrateMax: 2000,
-          },cameraId:currentCam.deviceId})
-        localTracks.videoTrack.play("pre-local-player",{mirror:false});
+        if(currentCam !== undefined){
+          sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
+          localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+              width: 1280,
+              // Specify a value range and an ideal value
+              height: { ideal: 720, min: 720, max: 1280 },
+              frameRate: 24,
+              bitrateMin: 1130, bitrateMax: 2000,
+            },cameraId:currentCam.deviceId})
+          localTracks.videoTrack.play("pre-local-player",{mirror:false});
+        }
+        setVideoStream(result);
+        setCamForm("장치를 연결 바랍니다.")
       }else{
         currentCam = cams[0];
         sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
@@ -550,9 +558,10 @@ export default function BroadcastSetting() {
             bitrateMin: 1130, bitrateMax: 2000,
           },cameraId:currentCam.deviceId})
         localTracks.videoTrack.play("pre-local-player",{mirror:false});
+        setVideoStream(result);
+        setCamForm(currentCam.label)
       }
-      setVideoStream(result);
-      setCamForm(currentCam.label)
+
       if(currentCam !==null){
         setVideoState(true)
       }
@@ -617,7 +626,7 @@ export default function BroadcastSetting() {
     sessionStorage.setItem("mic", JSON.stringify(optionalParams));
   }
   const clickEvent = (e) => {
-    e.preventDefault();
+    //e.preventDefault();
     if(camPop) setCamPop(false);
     if(micPop) setMicPop(false);
   }
@@ -978,7 +987,7 @@ export default function BroadcastSetting() {
             <label
               htmlFor="profileImg"
               className={broadBg !== "" ? "bgLabel bgLabel--active" : "bgLabel"}
-            ></label>
+            />
             <input
               type="file"
               id="profileImg"
