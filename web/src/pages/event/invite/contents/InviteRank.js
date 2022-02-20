@@ -130,7 +130,9 @@ const InviteRank = () => {
               </div>
             </>
             :
-            <NoResult text="랭킹 내역이 없어요." />
+            <div className='listNone'>
+              <NoResult ment="랭킹 내역이 없어요." />
+            </div>
           }        
         </div>
       </div>
@@ -148,7 +150,7 @@ const InviteRank = () => {
               조건 충족 못할 시 상금의 50%만 지급 합니다.
             </span>
             <span>
-              현금 경품 시 메일(help@dalbitlive.com)로<br/>
+              현금 경품 시 메일(help@dallalive.com)로<br/>
               당첨자 서류를 남겨주시면 이벤트 서류 확인 후<br/>
               제세공과금(22%)를 제외한 금액이 입금됩니다.
             </span>

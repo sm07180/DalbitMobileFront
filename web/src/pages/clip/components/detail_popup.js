@@ -183,8 +183,8 @@ const PopupWrap = styled.div`
           font-weight: bold;
           margin-top: 4px;
           &.active {
-            border-color: #632beb;
-            color: #632beb;
+            border-color: #FF3C7B;
+            color: #FF3C7B;
           }
         }
 
@@ -209,7 +209,7 @@ const PopupWrap = styled.div`
         display: block;
         width: 100%;
         border-radius: 12px;
-        background-color: #632beb;
+        background-color: #FF3C7B;
         color: #fff;
         font-size: 18px;
         font-weight: 600;

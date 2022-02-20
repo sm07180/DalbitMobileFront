@@ -7,7 +7,7 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 //layout
 import Layout2 from 'pages/common/layout2.5';
-import Header from 'components/ui/new_header';
+import Header from 'components/ui/header/Header';
 import BoardList from '../../pages/mypage/content/board_list';
 import WriteBoard from '../../pages/mypage/content/board_write';
 import NoResult from "components/ui/noResult/NoResult";
@@ -68,7 +68,7 @@ export default (props) => {
     <Layout2 {...props} webview={webview} status="no_gnb" type={'clipBack'}>
       <div id="clip_reply">
         <div className="fanboard">
-          {!props.type ? <Header title="클립 댓글" goBack={goBack} /> : <></>}
+          {!props.type ? <Header title="클립 댓글" type={'back'} /> : <></>}
           <WriteBoard {...props} type={'clip_board'} set={setAction} />
           {totalCount === -1 && (
             <div className="loading">

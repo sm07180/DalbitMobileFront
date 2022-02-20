@@ -53,7 +53,7 @@ const Wrap = styled.section`
   & .accordion-title {
     font-size: 17px;
     font-weight: 700;
-    color: #632beb;
+    color: #FF3C7B;
     letter-spacing: -0.5px;
   }
 

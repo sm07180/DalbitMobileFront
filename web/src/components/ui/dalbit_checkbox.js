@@ -15,7 +15,7 @@ export function DalbitCheckbox(props) {
 }
 
 DalbitCheckbox.defaultProps = {
-  bgColor: '#632beb',
+  bgColor: '#FF3C7B',
   size: 20
 }
 
@@ -72,9 +72,9 @@ const DalbitCheckboxWrap = styled.input`
 
   &.on {
     border-color: #fff;
-    background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
+    background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#FF3C7B')};
     transition: 0.2s all ease 0s;
-    border: 1px solid #632beb;
+    border: 1px solid #FF3C7B;
 
     &::before,
     &::after {

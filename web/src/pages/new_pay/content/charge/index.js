@@ -352,8 +352,8 @@ export default (props) => {
               <div style="font-size: 16px; text-align: left;">
             ★ 필수 : 인증 정보를 확인해 주세요.
             ---------------------------------------------
-            회원 이름 : <span style='color: #632beb; font-weight: bold;'>${res.data.memName}</span>
-            연락처 : <span style='color: #632beb; font-weight: bold;'>${res.data.phoneNo.replace(
+            회원 이름 : <span style='color: #FF3C7B; font-weight: bold;'>${res.data.memName}</span>
+            연락처 : <span style='color: #FF3C7B; font-weight: bold;'>${res.data.phoneNo.replace(
                   /(\d{3})(\d{4})(\d{4})/,
                   "$1-$2-$3"
                 )}</span>

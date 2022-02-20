@@ -190,7 +190,7 @@ const PlayBar = styled.div`
     position: absolute;
     height: 6px;
     top: 50%;
-    background: #632beb;
+    background: #FF3C7B;
     transform: translateY(-50%);
   }
   button {
@@ -200,7 +200,7 @@ const PlayBar = styled.div`
     width: 12px;
     height: 12px;
     border-radius: 10px;
-    background: #632beb;
+    background: #FF3C7B;
   }
 `;
 

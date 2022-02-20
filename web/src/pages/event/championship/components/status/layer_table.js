@@ -106,15 +106,15 @@ const PopupWrap = styled.div`
         border-collapse: collapse;
 
         thead {
-          border-top: 1px solid #632beb;
-          border-bottom: 1px solid #632beb;
+          border-top: 1px solid #FF3C7B;
+          border-bottom: 1px solid #FF3C7B;
 
           tr {
             height: 26px;
             font-size: 12px;
             font-weight: 500;
             letter-spacing: -0.3px;
-            color: #632beb;
+            color: #FF3C7B;
           }
         }
 
