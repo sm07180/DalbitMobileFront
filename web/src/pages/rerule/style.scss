@@ -14,6 +14,9 @@
         height: 55px;
         padding: 16px;
         cursor: pointer;
+        &.uid{
+          cursor: auto;
+        }
         .menuName {
           flex: 1;
           @include flex(center);

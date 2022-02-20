@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useMemo} from 'react'
+import React, {useContext, useEffect, useState, useMemo, useRef} from 'react'
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
@@ -21,16 +21,16 @@ const WalletPage = (props) => {
   const location = useLocation();
   const context = useContext(Context);
   const {walletData, token} = context;
-  
+  const tabMenuRef = useRef(null);  //우편번호 팝업 위치 설정용...
   //아이폰 앱에서 달교환 버튼 클릭시 새창 띄움
   const isIOS = useMemo(() => {
     const agent = window.navigator.userAgent.match(/(ios webview)/gi);
     return !agent? false : agent[0] === 'ios webview';
     } ,[]);  //아이폰이면 환전 메뉴를 다르게 보여주는 정책!
 
-  //const search = location?.search || '';
-  //history.push(`/login?goBack=${location.pathname + search}`);
-  if(!token?.isLogin) history.push(`/login`);
+  const search = location?.search || '';
+
+  if(!token?.isLogin) history.push(`/login?${location.pathname + search}`);
 
   const walletTabMenu = ['달 내역', '별 내역', isIOS? '달 교환' : '환전'];
   const {walletType, byeolTotCnt, dalTotCnt, popHistory, listHistory} = walletData;
@@ -182,7 +182,7 @@ const WalletPage = (props) => {
   //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
-      <Header type='back' title='내 지갑'>
+      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'>
         {walletType === walletTabMenu[1] ? (
           <div className="buttonGroup">
             <button className="payCount" onClick={() => {history.push('/store')}}>
@@ -199,14 +199,14 @@ const WalletPage = (props) => {
           </div>
         )}
       </Header>
-      <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} />
+      <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
       {walletType !== walletTabMenu[2] ?
         <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode} setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading} getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch} walletType={walletType}/>
         :
         /*환전 ( = ios : 달 교환)*/
-        <Exchange isIOS={isIOS}/>
+        <Exchange isIOS={isIOS} tabMenuRef={tabMenuRef}/>
       }
     </div>
   )

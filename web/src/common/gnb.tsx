@@ -53,6 +53,15 @@ export default function GNB() {
 
   const [activeType, setActiveType] = useState('');
 
+  //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
+  const gnbOtherPageCheck = useCallback((url) => {
+    return url === '/mypage' && (
+      activeType.indexOf('/wallet') > -1
+      || activeType.indexOf('/myProfile') > -1
+      || activeType.indexOf('/profile') > -1
+    );
+  },[activeType]);
+
   const scrollToTop = useCallback(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -431,7 +440,7 @@ export default function GNB() {
                   {gntSubTypes.map((item, index) => {
                     return (
                       <li key={index} data-url={item.url}
-                          className={`${activeType === item.url ? 'active' : ''} ${activeType !== item.url ? 'cursorPointer' : ''}`}
+                          className={`${activeType === item.url || gnbOtherPageCheck(item.url) ? 'active' : ''} ${activeType !== item.url || gnbOtherPageCheck(item.url) ? 'cursorPointer' : ''}`}
                           onClick={() => history.push(item.url)}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}

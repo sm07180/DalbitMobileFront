@@ -32,7 +32,7 @@ const NoticePage = ({location}) => {
     if(location.value) {
       setNoticeType(noticeTabmenu[1]);
     }
-  }, [])
+  }, []);
 
   return (
     <div id="notice">
