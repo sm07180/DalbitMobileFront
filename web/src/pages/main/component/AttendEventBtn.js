@@ -7,7 +7,7 @@ import {IMG_SERVER} from 'context/config'
 // static
 import stampActive from '../static/stamp_active.json'
 
-export default (props) => {
+const AttendEventBtn = (props) => {
   const history = useHistory()
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -75,9 +75,11 @@ export default (props) => {
   }
 
   return (
-    <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>
+    <div className={`fixedButton`}>
       {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
     </div>
   )
 
-}
+};
+
+export default AttendEventBtn;

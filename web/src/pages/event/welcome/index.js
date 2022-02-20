@@ -7,7 +7,7 @@ import moment from 'moment'
 
 import Api from 'context/api'
 
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header'
 import Tabmenu from '../components/tabmenu/Tabmenu'
 import TabmenuBtn from '../components/tabmenu/TabmenuBtn'
 import PopupChoice from './content/popupChoice'
@@ -171,7 +171,7 @@ const EventWelcome = () => {
 
   return (
     <div id="welcome">
-      <Header title="이벤트" />
+      <Header title="이벤트" type="back" />
       {nowTime >= eStartTime ?
       <img src={`${IMG_SERVER}/event/welcome/welcomeTop-2.png`} className="bgImg" />
       :

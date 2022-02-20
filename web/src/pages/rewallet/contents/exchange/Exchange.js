@@ -71,6 +71,7 @@ const Exchange = (props) => {
   //내 계좌 리스트
   const [accountList, setAccountList] = useState([]);
 
+  //환전 신청 메뉴 노출 (최근 환전내역이 없다면 신규메뉴만 이용가능 / 있으면 최근계좌, 내계좌 이용가능)
   const depositTabmenu = useMemo(() => {
     if(exchangeForm?.recent_exchangeIndex > 0){ // num > 0
       return origin_depositTabmenu;
@@ -252,7 +253,7 @@ const Exchange = (props) => {
       addFile1, addFile2, addFile3} = exchangeForm;
 
     if(!accountName || !bankCode || !accountNo || !fSocialNo || !bSocialNo || !phoneNo || !address1 || !address2
-      || !addFile1 || !addFile2 || (parentAgree && addFile3)){
+      || !addFile1 || !addFile2 || (parentAgree && !addFile3)){
       return;
     }
 
@@ -352,7 +353,7 @@ const Exchange = (props) => {
         <button className='noticeBtn' onClick={noticePop}>
           <span className="noticeIcon">?</span>환전이 궁금하시다면?
         </button>
-        <div className="amountBox">
+        <div className={`amountBox ${byeolTotCnt>569 ? 'apply' : ''}`}>
           <i className="iconStar"></i>
           <p>보유 별</p>
           <div className='counter active'>
@@ -446,7 +447,7 @@ const Exchange = (props) => {
         {depositType === depositTabmenu[0] ?
           /*신규 정보*/
           <DepositInfo exchangeSubmit={exchangeSubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
-                      uploadSingleFile={uploadSingleFile}
+                      uploadSingleFile={uploadSingleFile} parentAgree={parentAgree}
           />
           : depositType === depositTabmenu[1] ?
             /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
@@ -455,7 +456,7 @@ const Exchange = (props) => {
             /*내 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
           <MyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
                     accountList={accountList} setAccountList={setAccountList}
-                    getMyAccountData={getMyAccountData}
+                    getMyAccountData={getMyAccountData} recent_exchangeIndex={exchangeForm?.recent_exchangeIndex || 0}
           />
         }
       </section>

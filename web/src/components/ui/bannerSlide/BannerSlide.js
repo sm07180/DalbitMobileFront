@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 import {setHonorTab} from "redux/actions/honor";
 
 const BannerSlide = (props) => {
+  const { type } = props;
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const BannerSlide = (props) => {
   }
 
   useEffect(() => {
-    fetchBannerInfo(9)
+    fetchBannerInfo(type)
   },[])
 
   return (
@@ -83,4 +84,8 @@ const BannerSlide = (props) => {
   )
 }
 
-export default BannerSlide
+BannerSlide.defaultProps = {
+  type: 9, // main slide 기본값으로 설정함.
+};
+
+export default BannerSlide;

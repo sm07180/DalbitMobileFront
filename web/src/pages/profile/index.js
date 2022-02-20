@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useContext, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './style.scss'
@@ -65,6 +65,15 @@ const ProfilePage = () => {
   const feedData = useSelector(state => state.feed);
   const fanBoardData = useSelector(state => state.fanBoard);
   const clipData = useSelector(state => state.profileClip);
+
+  /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
+  const profileDataNoReader = useMemo(() => {
+    if (profileData?.profImgList?.length > 0) {
+      return {...profileData, profImgList: profileData?.profImgList.concat([]).filter((data, index)=> !data.isLeader)};
+    } else {
+      return profileData;
+    }
+  },[profileData]);
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
@@ -501,16 +510,16 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className='editBtn' onClick={()=>history.push('/myProfile/edit')}>수정</button>
+            <button className="editBtn" onClick={()=>history.push('/myProfile/edit')}>편집</button>
           </div>
           :
           <div className="buttonGroup">
-            <button className='moreBtn' onClick={openMoreList}>더보기</button>
+            <button className="moreBtn" onClick={openMoreList}>더보기</button>
           </div>
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
+        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}

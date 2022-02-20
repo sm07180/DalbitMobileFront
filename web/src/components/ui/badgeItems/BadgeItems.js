@@ -22,10 +22,6 @@ const BadgeItems = (props) => {
 
   return (
     <>
-      {
-        data?.level > 0 && type === 'grade' &&
-          <em className="badgeItem grade">{data.grade}</em>
-      }
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
@@ -71,9 +67,9 @@ const BadgeItems = (props) => {
       {type === 'isBadge' && (
         isBadge.badgeSpecial == 2 ? (
         <em className="badgeItem bestDj">베스트DJ</em>
-      ) : isBadge.badgeSpecial === 1 ? (
+      ) : isBadge.contents === true ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>
-      ) : isBadge.special === true && (
+      ) : isBadge.badgeSpecial === 1 && (
         <em className="badgeItem specialDj">스페셜DJ</em>
       ))}
       {type === 'isNew' && isNew.new ? 
