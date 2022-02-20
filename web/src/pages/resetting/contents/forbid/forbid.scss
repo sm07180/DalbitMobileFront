@@ -6,13 +6,16 @@
     .inputItems{
       margin-bottom: 8px;
       &:last-child{margin-bottom: 0;}
-      .inputBox{
-        .inputBtn{
-          @include flex(center, center);
-          width: 84px;
-          height: 42px;
-          @include border(#d9d9d9, 14px);
-          @include font(14px, 600, #666);
+      .inputBtn{
+        @include flex(center, center);
+        width: 84px;
+        height: 42px;
+        @include border(#d9d9d9, 14px);
+        @include font(14px, $SemiBold, #fff);
+        background: #202020;
+        &.delete{
+          background: #fff;
+          color: #666;
         }
       }
     }
