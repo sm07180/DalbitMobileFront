@@ -23,10 +23,6 @@ const Allim = () => {
   const { globalState, globalAction } = global;
   const history = useHistory();
 
-  useEffect(() => {
-    console.log(context)
-  })
-
   //회원 알림 db값 가져오기
   const fetchData = () => {
     let params = {page: 1, records: 1000};
@@ -114,6 +110,7 @@ const Allim = () => {
 
   useEffect(() => {
     fetchData();
+
   }, []);
 
   useEffect(() => {
