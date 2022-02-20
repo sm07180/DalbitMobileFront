@@ -9,7 +9,9 @@ import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 
 const TopSwiper = (props) => {
-  const {data, openShowSlide, webview, isMyProfile} = props
+  const {data, openShowSlide, webview, isMyProfile,
+    disabledBadge, swiperParam} = props;
+
   const context = useContext(Context);
   const history = useHistory();
   
@@ -24,6 +26,7 @@ const TopSwiper = (props) => {
       el: '.swiper-pagination',
       type: 'fraction'
     },
+    ...swiperParam
   }
 
   const roomJoinHandler = () => {
@@ -75,6 +78,7 @@ const TopSwiper = (props) => {
           }}
         />
       }
+      {disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 &&
           <div className="specialBdg">
@@ -88,10 +92,13 @@ const TopSwiper = (props) => {
           </div>
         }
       </div>
+      }
     </>
   )
 }
 TopSwiper.defaultProps = {
-  openShowSlide: () => {}
+  openShowSlide: () => {},
+  disabledBadge: false,  // 뱃지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
+  swiperParam: {} // 스와이퍼 추가옵션이 필요한 경우
 }
 export default TopSwiper
