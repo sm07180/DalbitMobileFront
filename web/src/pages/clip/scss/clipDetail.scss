@@ -22,7 +22,7 @@
     @include flex(center);
     padding-bottom:12px;
     background-color: #FFF;
-    z-index: 2;
+    z-index: $TAB-ZINDEX;
     cursor: pointer;
 
     .swiper-wrapper {

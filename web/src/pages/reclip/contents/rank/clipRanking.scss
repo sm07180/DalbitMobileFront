@@ -27,7 +27,7 @@
     @include tabmenuStyle-1;
     padding:0 16px;
     background-color: #FFF;
-    z-index: 2;
+    z-index: $TAB-ZINDEX;
   }
   .topRanker {
     @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');

@@ -18,7 +18,7 @@
         width: 100%;
         padding: 8px 16px 0;
         background-color: #FFF;
-        z-index: 2;
+        z-index: $TAB-ZINDEX;
         .searchForm {
             @include flex(center);
             width: 100%;
