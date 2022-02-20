@@ -7,12 +7,21 @@ import './totalInfo.scss'
 import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
-  const {data, goProfile} = props
+  const {data, goProfile, openPopLike, isMyProfile} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   // 
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
+  }
+
+  const openPopAction = (e) => {
+    const tabState = {
+      titleTab: 0,
+      subTab: 0,
+      subTabType: isMyProfile ? 'fanRank' : ''
+    }
+    openPopLike(e, tabState)
   }
 
   useEffect(() => {
@@ -38,7 +47,7 @@ const TotalInfo = (props) => {
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">뱃지</div>
         <div className="badgeGroup">
-          <span className="badgeItem grade">{data.grade}</span>
+          {/*<span className="badgeItem grade">{data.grade}</span>*/}
           <BadgeItems data={data} type="commonBadgeList" />
           <BadgeItems data={data} type="isBadge" />
         </div>
@@ -48,7 +57,8 @@ const TotalInfo = (props) => {
       </div>
       <div className="rankInfo">
         <div className="box">
-          <div className="title">
+          <div className="title" style={{cursor: 'pointer'}}
+               onClick={openPopAction}>
             <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
@@ -70,7 +80,7 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title">
+          <div className="title" style={{cursor: 'pointer'}} onClick={openPopLike}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
