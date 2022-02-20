@@ -1,3 +1,20 @@
+@import 'components/ui/_mixin.scss';
+
+#root {
+  .container {
+    .totalWrap {
+      .content {
+        #welcome {
+          .tabWrapper.fixed {
+            top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
+            padding-top: 4.972%;
+          }
+        }
+      }
+    }
+  }
+}
+
 #welcome {
   background-color: #4184ff;
 
@@ -47,9 +64,11 @@
       }
       &.fixed {
         position: fixed;
-        top: 50px;
+        top: $HEADER-HEIGHT;
+        left:50%;
+        transform:translateX(-50%);
         width: 100%;
-        max-width: 460px;
+        max-width: 480px;
         margin: 0;
       }
     }

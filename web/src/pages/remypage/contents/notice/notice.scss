@@ -1,50 +1,26 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+    #notice {
+      >header {
+        display:none;
+      }
+      .tabmenu {
+        top: $GNB-HEIGHT;
+      }
+    }
+  }
+}
+
 #notice {
   position:relative;
   .tabmenu {
-    position:relative;
-    @include flex;
-    margin:0 16px;
-    li {
-      flex:1;
-      @include flex(center,center);
-      height:48px;
-      border-bottom:2px solid #F2F2F2;
-      letter-spacing: -1px;
-      @include font(16px,600,#ACACAC);
-      box-sizing: border-box;
-      &.active {        
-        @include font(16px,700,#202020);
-      }
-      &:nth-child(1) {
-        &.active {
-          ~ .underline {
-            left:0;
-          }
-        }
-      }
-      &:nth-child(2) {
-        &.active {
-          ~ .underline {
-            left:50%;
-          }
-        }
-      }
-    }
-    .underline {
-      @include position-bottom-left;
-      width:50%;
-      height:2px;
-      background-color:black;
-      transition: all .1s ease-in-out;
-    }
+    @include tabmenuStyle-1;
+    padding: 0 16px;
   }
   .allim, .post {
     padding-top:15px;
-    >div {
-      border-bottom:1px solid #F2F2F2;
-    }
     .listRow {
       padding:15px 20px 12px 16px;
       cursor: pointer;
@@ -137,6 +113,9 @@
         padding:12px 16px 20px;
         p {
           font-size:14px;
+        }
+        img {
+          width: 100% !important;
         }
       }
     }

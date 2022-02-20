@@ -1,4 +1,17 @@
 @import '../../../styles/global';
+@import 'components/ui/_mixin.scss';
+
+#root {
+  .container {
+    .totalWrap {
+      .content {
+        .tabWrap.fixed {
+          top: $GNB-HEIGHT;
+        }
+      }
+    }
+  }
+}
 
 #attendEventPage {
   margin: 0 auto;
@@ -34,6 +47,7 @@
     &.fixed {
       position: fixed;
       top: 0;
+      max-width:480px;
       z-index: 2;
       overflow: hidden;
     }

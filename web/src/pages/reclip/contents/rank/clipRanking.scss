@@ -1,5 +1,15 @@
 @import "../../../../components/ui/mixin";
 
+.container {
+  .totalWrap {
+    #clipRanking{
+      .tabmenu {
+        top: $PC-TABTOP;
+      }
+    }
+  }
+}
+
 #clipRanking{
   header {
     .buttonGroup {
@@ -12,8 +22,12 @@
     }
   }
   .tabmenu {
+    position:sticky;
+    top: $MOBILE-TABTOP;
     @include tabmenuStyle-1;
     padding:0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
   }
   .topRanker {
     @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');

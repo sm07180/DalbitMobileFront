@@ -5,7 +5,6 @@ import Api from "context/api";
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
-import {IMG_SERVER} from 'context/config'
 import {Hybrid, isHybrid} from "context/hybrid";
 
 const InviteEvent = () => {  
@@ -57,23 +56,28 @@ const InviteEvent = () => {
         }
       });
     }
-  },[]);
+  },[submitCode]);
 
   const registerCode = (code) => {
-    Api.inviteRegister({
-      reqBody: true,
-      data:{
-        "memNo": context.token.memNo,
-        "invitationCode": code
+    selfAuthCheck().then((res) => {
+      if (res.result === 'success') {
+        Api.inviteRegister({
+          reqBody: true,
+          data:{
+            "memNo": context.token.memNo,
+            "invitationCode": code,
+            "memPhone": res.phoneNo
+          }
+        }).then((response)=>{
+          console.log(response);
+          if(response.code === "0000"){
+            setCode(code);
+            setCreatedCode(true);
+          }else{
+            context.action.alert({msg: "초대코드 발급에 실패했습니다. \n 잠시후 다시 시도해주세요."});
+          }
+        })
       }
-    }).then((response)=>{
-        console.log(response);
-        if(response.code === "0000"){
-          setCode(code);
-          setCreatedCode(true);
-        }else{
-          context.action.alert({msg: "초대코드 발급에 실패했습니다. \n 잠시후 다시 시도해주세요."});
-        }
     })
   }
 
@@ -158,7 +162,6 @@ const InviteEvent = () => {
       context.action.alert({msg: `초대코드가 복사되었습니다.`});
     }
   };
-
 
   return (
     <div className='inviteEvent'>

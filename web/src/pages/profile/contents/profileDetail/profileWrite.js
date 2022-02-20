@@ -278,26 +278,56 @@ const ProfileWrite = () => {
         {/*사진 리스트 스와이퍼*/}
         {type === 'feed' &&
         <div className="insertGroup">
+          {/* 피드로 바뀌면 이거 쓰면 됨
           <div className="title">사진 첨부<span>(최대 10장)</span></div>
-          <Swiper {...swiperParams} ref={photoListSwiperRef}>
-            {formState?.photoInfoList.map((data, index) =>
-              <label key={index} onClick={(e) => e.preventDefault()}>
-                <div className="insertPicture"
-                     onClick={() => setShowSlide({show: true, viewIndex: index})}>
-                  <img src={data?.thumb60x60 || data?.thumb50x50} alt=""/>
-                </div>
-                <button className="cancelBtn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          deleteThumbnailImageList(formState?.photoInfoList, index)
-                        }}/>
-              </label>)
-            }
-            {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>
-              <label key={i} onClick={() => inputRef?.current?.click()}>
-                <button className='insertBtn'>+</button>
-              </label>)}
-          </Swiper>
+            <Swiper {...swiperParams} ref={photoListSwiperRef}>
+              {formState?.photoInfoList.map((data, index) =>
+                <label key={index} onClick={(e) => e.preventDefault()}>
+                  <div className="insertPicture"
+                       onClick={() => setShowSlide({show: true, viewIndex: index})}>
+                    <img src={data?.thumb60x60 || data?.thumb50x50} alt=""/>
+                  </div>
+                  <button className="cancelBtn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteThumbnailImageList(formState?.photoInfoList, index)
+                          }}/>
+                </label>)
+              }
+              {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>
+                <label key={i} onClick={() => inputRef?.current?.click()}>
+                  <button className='insertBtn'>+</button>
+                </label>)}
+            </Swiper>
+          */}
+          <div className="title">사진 첨부</div>
+          <div className={"swiper-container"}>
+            <div className={"swiper-wrapper"}>
+              {formState?.photoInfoList[0] ?
+                <label className={"swiper-slide"} onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}>
+                  <div className="insertPicture"
+                       onClick={() => setShowSlide({show: true, viewIndex: 0})}>
+                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb50x50} alt=""/>
+                  </div>
+                  <button className="cancelBtn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            deleteThumbnailImageList([formState?.photoInfoList[0]], 0)
+                          }}/>
+                </label>
+                :
+                <label className={"swiper-slide"}
+                       onClick={(e) => {
+                         inputRef?.current?.click();
+                       }}>
+                  <button className='insertBtn'>+</button>
+                </label>
+              }
+            </div>
+          </div>
         </div>
         }
         <div className="insertButton">

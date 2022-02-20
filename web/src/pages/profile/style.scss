@@ -8,7 +8,8 @@
         width:40px;
         height:40px;
         text-indent: -99999px;
-        &.editBtn {@include BGIMG('common/header/icoEdit-b.png');}
+        @include font(16px,$SemiBold,#202020);
+        &.editBtn {text-indent: 0;}
         &.moreBtn {@include BGIMG('common/header/icoMore-b.png');}
       }
     }
@@ -247,10 +248,85 @@
         line-height:55px;
         text-align:center;
         @include font(16px,400,#202020);
+        cursor: pointer;
       }
     }
     .myLevelInfo {
       padding: 0 16px 32px;
+    }
+  }
+
+  #layerPop {
+    .popContainer {
+      padding:0;
+    }
+    .honorPopup {
+      width:100%;
+      height:440px;
+      padding: 20px 0 0;
+      .title {
+        @include flex(center,center,column);
+        height:72px;
+        @include font(16px,$Medium,#202020);
+        strong {
+          display: inline-block;
+          max-width: 200px;
+          @include font(16px,$Bold,$MAINCOLOR);
+          @include fontCut;
+        }
+        span {
+          @include flex(center);
+        }
+      }
+      .table {
+        width: 100%;
+        margin-top: 10px;
+        .summary {
+          @include flex(center, space-between);
+          margin-bottom: 8px;
+          padding: 0 22px;
+          @include font(12px,$Medium,$MAINCOLOR);
+        }
+        .tableInfo {
+          .thead {
+            @include flex(center);
+            line-height:26px;
+            margin: 0 22px;
+            border-top: 1px solid $MAINCOLOR;
+            border-bottom: 1px solid $MAINCOLOR;
+            @include font(12px,$Medium,$MAINCOLOR);
+          }
+          .tbody {
+            max-height: 280px;
+            @include font(13px,$Regular,#202020);
+            overflow-y: auto;
+            .tbodyList {
+              @include flex(center);
+              margin: 0 22px;
+              line-height:26px;
+              + .tbodyList {
+                border-top: 1px solid #F2F2F2;
+              }
+            }
+          }
+          span {
+            flex:1;
+            text-align:center;
+          }
+        }
+      }
+    }
+    .profileRankNotice {
+      height:280px;
+      text-align:center;
+      .title {
+        margin-bottom:6px;
+        @include font(16px,$SemiBold,$MAINCOLOR);
+      }
+      .text {
+        margin-bottom:22px;
+        @include font(12px,$Regular,#666);
+      }
     }
   }
 }
