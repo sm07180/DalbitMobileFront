@@ -7,7 +7,7 @@ import {IMG_SERVER} from 'context/config'
 import LevelListComponent from './levelListComponent'
 
 const InfoList = [
-  {val: 'DJ와 청취자는 달빛라이브의 다양한 컨텐츠를 이용하면서 Exp (경험치)를 획득할 수 있습니다.'},
+  {val: 'DJ와 청취자는 달라의 다양한 컨텐츠를 이용하면서 Exp (경험치)를 획득할 수 있습니다.'},
   {val: '레벨 업을 통하여 칭호, 프로필 프레임 효과, 보상혜택을 경험해 보세요.'},
   {val: '프로필 프레임 효과는 각 레벨마다 다르게 표현됩니다.'}
 ]

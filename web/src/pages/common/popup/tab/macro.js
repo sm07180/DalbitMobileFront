@@ -33,7 +33,6 @@ export default props => {
         callback: () => {
           console.log('callback처리')
         },
-        // title: '달빛라디오',
         msg: '빠른 말이 수정되었습니다.'
       })
       selectShortcut() // 빠른 말 수정 완료 후 조회
@@ -111,7 +110,6 @@ const MacroInput = props => {
         callback: () => {
           console.log()
         },
-        // title: '달빛라디오',
         msg: '입력 가능한 수를 초과했습니다.'
       })
     }
