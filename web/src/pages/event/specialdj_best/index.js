@@ -5,7 +5,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header/Header'
 import Layout from 'pages/common/layout/new_layout'
 import DjCheckBox from './component/dj_check_box'
 import PopupCondition from './component/popup_condition'
@@ -84,9 +84,9 @@ export default function SpecialDjBest() {
 
   return (
     <div id="speacial_dj_page">
-      <Header title={infoData && infoData.title} />
+      <Header title={infoData && infoData.title} type="back" />
       <img
-        src={`${IMG_SERVER}/event/specialdj/common/img_visual.png`}
+        src={`${IMG_SERVER}/event/specialdj/common/img_visual-1.png`}
         className="top_image"
         alt="우리모두 달빛하여 스페샬디제이 되세"
       />
@@ -104,7 +104,7 @@ export default function SpecialDjBest() {
       {tabState === 'support' && (
         <div className="tab_wrap support">
           <div className="support_box padding">
-            <img src={`${IMG_SERVER}/event/specialdj/common/img_cont01.png`} alt="스페셜 DJ 설명" />
+            <img src={`${IMG_SERVER}/event/specialdj/common/img_cont01-1.png`} alt="스페셜 DJ 설명" />
             {/* <button onClick={() => setConditionPop(true)} className="btn_pick_more">
               <img src={`${IMG_SERVER}/event/specialdj/common/btn_check.png`} alt="선발 요건 확인하기" />
             </button> */}
@@ -139,8 +139,8 @@ export default function SpecialDjBest() {
               <img src={`${IMG_SERVER}/event/specialdj/common/tit_notice.png`} alt="기억해 주세요" />
             </h4>
             <ul className="notice_list">
-              <li>달빛라이브의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
-              <li>달빛라이브의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
+              <li>달라의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
+              <li>달라의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
               <li>스페셜 DJ 유지 기간은 정책에 의거, 유지 기간의 변경이 있을 수 있습니다.</li>
               <li>스페셜 DJ 선발 후 운영원칙을 상습/의도적으로 위반하는 경우 자격이 박탈 될 수 있습니다.</li>
               <li>지원 요건을 충족해도 스페셜 DJ에 미지원한 DJ들은 스페셜 DJ에 선정되지 않습니다.</li>
@@ -173,7 +173,7 @@ export default function SpecialDjBest() {
       {tabState === 'best' && (
         <div className="tab_wrap best">
           <img
-            src={`${IMG_SERVER}/event/specialdj/common/img_bestdj_1005.png`}
+            src={`${IMG_SERVER}/event/specialdj/common/img_bestdj_1005-1.png`}
             alt="베스트 스페셜 DJ 이미지"
             className="top_image"
           />
