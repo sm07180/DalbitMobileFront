@@ -12,26 +12,18 @@ import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
 import './notice.scss'
 import Header from "components/ui/header/Header";
-import TabBtn from "components/ui/tabBtn/TabBtn";
 
 const Allim = () => {
-  const noticeTabmenu = ['알림','공지사항']
-  const [noticeType, setNoticeType] = useState(noticeTabmenu[0])
   const [alarmList, setAlarmList] = useState({list : [], cnt : 0});
   const context = useContext(Context);
   const global = useContext(GlobalContext);
   const { globalState, globalAction } = global;
   const history = useHistory();
 
-  useEffect(() => {
-    console.log(context)
-  })
-
   //회원 알림 db값 가져오기
   const fetchData = () => {
     let params = {page: 1, records: 1000};
     Api.my_notification(params).then((res) => {
-      console.log(res.data.newCnt);
       if(res.result === "success") {
         if(res.data.list.length > 0) {
           setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt});
@@ -114,6 +106,7 @@ const Allim = () => {
 
   useEffect(() => {
     fetchData();
+
   }, []);
 
   useEffect(() => {
@@ -122,13 +115,7 @@ const Allim = () => {
 
   return (
     <div id="notice">
-      <Header type="back"/>
       <section className="noticeWrap">
-        <ul className="tabmenu">
-          <li className="active" onClick={() => history.push("/alarm")}>알림</li>
-          <li onClick={() => history.push("/post")}>공지사항</li>
-          <div className='underline'></div>
-        </ul>
         <div className="allim">
           {alarmList.list.length > 0 ?
             <>

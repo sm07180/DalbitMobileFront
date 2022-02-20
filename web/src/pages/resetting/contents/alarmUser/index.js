@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import moment from 'moment'
 
@@ -11,10 +11,12 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 
 import '../../style.scss'
 import './alarmUser.scss'
+import {Context} from "context";
 
 const SettingAlarm = () => {
   const [pushMembers, setPushMembers] = useState([])
   const regData = moment(pushMembers.regDt).format('YYYY년 MM월 DD일')
+  const context = useContext(Context);
 
   //알림 회원 정보 조회
   const fetchData = () =>{
@@ -25,6 +27,24 @@ const SettingAlarm = () => {
       }
     })
   }
+
+  const fetchDeleteData = async (memNo) => {
+    const res = await Api.deletePushMembers({memNo})
+    if(res.result === "success") {
+      context.action.alert({msg: "삭제가 완료되었습니다."})
+      fetchData();
+    }
+  }
+
+  const callDeleteConfirm = useCallback((memNo) => {
+    context.action.confirm({
+      msg: "선택한 회원을 삭제하면 방송시작에 대한 알림을 받을 수 없습니다.",
+      remsg: "삭제하시겠습니까?",
+      callback: () => {
+        fetchDeleteData(memNo)
+      }
+    })
+  })
 
   useEffect(() => {
     fetchData()
@@ -48,7 +68,7 @@ const SettingAlarm = () => {
                     <span className="regDt">설정일 : {regData}</span>
                   </div>
                 </div>
-                <button className="delete">해제</button>
+                <button className="delete" onClick={() => callDeleteConfirm(memNo)}>해제</button>
               </ListRow>
             )
           })

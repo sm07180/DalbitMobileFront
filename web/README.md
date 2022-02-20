@@ -1,4 +1,4 @@
-### 달빛라이브
+### 달라
 
 - 개발페이지 : <https://devwww2.dalbitcast.com/>
 - gitrepo@devj.dalbitcast.com:radio_front.git

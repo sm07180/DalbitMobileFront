@@ -95,7 +95,7 @@ export default function VideoEventList({djRankList, eventSubType}) {
                         }
                       }}>
                       <img src={qupidProfImg.thumb120x120} alt={nickNm} />
-                      <em className="cupid">왕큐피트</em>
+                      <em className="cupid">CUPID</em>
                     </div>
                     <div className="nick_box">
                       <p
