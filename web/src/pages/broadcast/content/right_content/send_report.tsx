@@ -183,11 +183,10 @@ export default function Report(props: { roomNo: string; profile: any }) {
                 className="reportWrap__textarea"
                 placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
               />
-              <span className="reportWrap__textareaCount">
+            </div>
+            <span className="reportWrap__textareaCount">
                 <b>{reportReason.length}</b> / 100
               </span>
-            </div>
-
             <div className="btnWrap">
               {active === true && reportReason.length > 9 ? (
                 <button

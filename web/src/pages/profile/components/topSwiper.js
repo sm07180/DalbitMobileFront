@@ -75,7 +75,7 @@ const TopSwiper = (props) => {
           }}
         />
       }
-      <div className="swiperBottom">
+      <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 &&
           <div className="specialBdg">
             <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
