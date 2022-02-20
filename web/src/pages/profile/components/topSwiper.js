@@ -67,13 +67,11 @@ const TopSwiper = (props) => {
           </div>
         </div>
         :
-        <div
-          className='swiper-slide'
-          style={{
-            backgroundImage: `url("${IMG_SERVER}/profile/photoNone.png")`,
-            backgroundSize: 'cover'
-          }}
-        />
+        <div className="swiper-slide">
+          <div className="photo">
+            <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
+          </div>
+        </div>
       }
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 &&
@@ -82,9 +80,14 @@ const TopSwiper = (props) => {
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {!isMyProfile && webview === '' && (data.roomNo !== "" || data.listenRoomNo !== "") &&
+        {!isMyProfile && webview === '' && data.roomNo !== "" &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
+          </div>
+        }
+        {!isMyProfile && webview === '' && data.listenRoomNo !== "" &&
+          <div className="liveBdg">
+            <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
         }
       </div>
