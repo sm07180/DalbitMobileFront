@@ -74,11 +74,11 @@ const Layout = (props) => {
       {/* IP노출 */}
       <Ip {...props} />
 
-      {appPopupState === true && noAppCheck && (
-        <>
-          <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />
-        </>
-      )}
+      {/*{appPopupState === true && noAppCheck && (*/}
+      {/*  <>*/}
+      {/*    <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />*/}
+      {/*  </>*/}
+      {/*)}*/}
 
       {context.multiViewer.show && <MultiImageViewer />}
     </>
