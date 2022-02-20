@@ -12,7 +12,6 @@ import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
 import './notice.scss'
 import Header from "components/ui/header/Header";
-import TabBtn from "components/ui/tabBtn/TabBtn";
 
 const Allim = () => {
   const noticeTabmenu = ['알림','공지사항']
@@ -22,10 +21,6 @@ const Allim = () => {
   const global = useContext(GlobalContext);
   const { globalState, globalAction } = global;
   const history = useHistory();
-
-  useEffect(() => {
-    console.log(context)
-  })
 
   //회원 알림 db값 가져오기
   const fetchData = () => {
@@ -114,6 +109,7 @@ const Allim = () => {
 
   useEffect(() => {
     fetchData();
+
   }, []);
 
   useEffect(() => {

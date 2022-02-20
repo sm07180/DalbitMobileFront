@@ -26,7 +26,7 @@ const SettingBroadcast = () => {
     {text:'DJ 인사말', path: '/setting/streaming/greeting'},
     {text:'퀵 메시지', path: '/setting/streaming/message'},
     {text:'방송 청취 정보 공개', path: '/setting/streaming/infoOpen'},
-    {text:'선물 시 자동 스타 추가', path: "", value: false},
+    {text:'선물 시 자동 스타 추가', value: false},
     {text:'배지 / 입·퇴장 메시지', path: '/setting/streaming/inOutMessage'},
   ]);
   const [toast, setToast] = useState({state : false, msg : ""});
@@ -38,7 +38,7 @@ const SettingBroadcast = () => {
     }, 3000)
   }
 
-  //방송 설정 정보 조회
+  //선물 시 자동 스타 추가 정보 수정
   const fetchData = async (value, index) => {
     const res = await API.modifyBroadcastSetting({giftFanReg: !value})
     if(res.result === "success") {
@@ -50,7 +50,7 @@ const SettingBroadcast = () => {
     }
   }
 
-  //선물 시 자동 스타 추가 정보 수정
+  //방송 설정 정보 조회
   const fetchSetting = async () => {
     const res = await API.getBroadcastSetting();
     if(res.result === "success") {
@@ -75,21 +75,17 @@ const SettingBroadcast = () => {
           <div className='menuWrap'>
             {menuListInfo.map((list,index) => {
               return (
-                <>
-                  {index !== 4 ?
-                    <MenuList text={list.text} path={list.path} key={index}>
-                      {index < 2 && <small>최대 3개</small>}
-                      {index === 2 && <small>최대 6개</small>}
-                    </MenuList>
-                    :
-                    <MenuList text={list.text} key={index}>
-                      <label className="inputLabel">
-                        <input type="checkbox" className={`blind`} name={"autoAddStar"} defaultChecked={list.value} onClick={() => fetchData(list.value, index)}/>
-                        <span className={`switchBtn`}/>
-                      </label>
-                    </MenuList>
+                <MenuList text={list.text} path={list.path} key={index}>
+                  {index < 2 && <small>최대 3개</small>}
+                  {index === 2 && <small>최대 6개</small>}
+                  {index === 4 &&
+                  <label className="inputLabel">
+                        <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
+                               onChange={() => fetchData(list.value, index)}/>
+                    <span className={`switchBtn`}/>
+                  </label>
                   }
-                </>
+                </MenuList>
               )
             })}
           </div>
