@@ -30,7 +30,7 @@ $SEARCH-HEADER: 112px;
     height: auto;
     padding: 0 16px;
     h1 {
-      height: 48px;
+      height: $HEADER-HEIGHT;
     }
     .searchForm {
       position: relative;

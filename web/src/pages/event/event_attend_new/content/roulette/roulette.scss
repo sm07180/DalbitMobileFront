@@ -19,7 +19,7 @@
       }
 
       &__count {
-        @include flex('', '', flex-end);
+        @include flex(center, center);
         position: absolute;
         left: 18%;
         bottom: 18%;
@@ -29,21 +29,16 @@
         .number {
           font-weight: $bold;
           font-size: 26px;
-          margin-right: 2px;
+          margin-right: 4px;
           @media (min-width: 560px) {
             font-size: 32px;
           }
         }
         .text {
-          margin-bottom: 2px;
+          margin-top: 6px;
           @media (min-width: 560px) {
             font-size: 16px;
-            margin-bottom: 6px;
           }
-        }
-
-        @media (min-width: 460px) {
-          bottom: 22%;
         }
       }
     }

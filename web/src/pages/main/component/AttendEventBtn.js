@@ -75,7 +75,7 @@ const AttendEventBtn = (props) => {
   }
 
   return (
-    <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>
+    <div className={`fixedButton`}>
       {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
     </div>
   )

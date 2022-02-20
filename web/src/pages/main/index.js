@@ -51,6 +51,8 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [reloadInit, setReloadInit] = useState(false)
 
+  const [scrollOn, setScrollOn] = useState(false)
+
   const [payOrderId, setPayOrderId] = useState("")
   const [receiptPop, setReceiptPop] = useState(false)
 
@@ -117,6 +119,12 @@ const MainPage = () => {
     const overTabNode = overTabRef.current
     const overNode = overRef.current
     const headerNode = headerRef.current
+    
+    if (window.scrollY >= 1) {
+      setScrollOn(true)
+    } else {
+      setScrollOn(false)
+    }
 
     if (overNode && headerNode) {
       const overTop = overNode.offsetTop - headerNode.clientHeight
@@ -374,7 +382,7 @@ const MainPage = () => {
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
-    <AttendEventBtn scrollOn={""}/>
+    <AttendEventBtn scrollOn={scrollOn}/>
 
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;
