@@ -203,7 +203,7 @@ export default (props) => {
                   <b>{reportReason.length}</b> / 100
                 </span>
 
-                <div className="btnWrap">
+                <div className="buttonWrap">
                   <button className="SubmitReport SubmitReport__cancel" onClick={closePopup}>
                     취소
                   </button>
