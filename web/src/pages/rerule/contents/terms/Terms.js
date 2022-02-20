@@ -12,7 +12,7 @@ const Terms = (props) => {
   const history = useHistory();
 
   const backEvent = ()=>{
-    if(!isMobileWeb() && props.type === 'termsT'){
+    if(props.type === 'termsT'){
       history.goBack();
     }else if(props.type === 'terms'){
       Hybrid('CloseLayerPopup')

@@ -1,10 +1,13 @@
 import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
+// import Header from 'components/ui/new_header.js'
 import Header from 'components/ui/header/Header'
+import {Hybrid, isMobileWeb} from "context/hybrid";
+import {useHistory} from "react-router-dom";
 
-export default () => {
+export default (props) => {
   const [noticeView, setNoticeView] = useState(false)
-
+  const history = useHistory();
   const noticeList = useRef()
   const topPoint = useRef()
 
@@ -24,11 +27,19 @@ export default () => {
   const bottomGo = () => {
     window.scrollTo(0, topPoint.current.offsetTop)
   }
+  const backEvent = ()=>{
+    // Hybrid('CloseLayerPopup')
+    if(props.title === 'guest_guideT'){
+      history.goBack();
+    }else if(props.title === 'guest_guide'){
+      Hybrid('CloseLayerPopup')
+    }
+  }
 
   return (
     <Content>
       <div id="guestGuide">
-        <Header title="게스트 가이드" type="back"/>
+        <Header title={"게스트 가이드"} type={'back'} backEvent={backEvent} />
         <div className="event-content">
           <button onClick={bottomGo}>버튼</button>
           <div className="topPoint"></div>

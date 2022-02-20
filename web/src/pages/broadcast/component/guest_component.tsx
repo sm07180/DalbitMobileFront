@@ -749,7 +749,7 @@ function GuestComponent(props) {
                         src={HintIcon}
                         className="hintIcon"
                         onClick={() => {
-                          history.push("/event/guest_guide");
+                          history.push("/event/guest_guideT");
                         }}
                       />
                       {roomOwner === true ? (
@@ -844,7 +844,7 @@ function GuestComponent(props) {
                   src={HintIcon}
                   className="hintIcon"
                   onClick={() => {
-                    history.push("/event/guest_guide");
+                    history.push("/event/guest_guideT");
                   }}
                 />
                 {roomOwner === true ? (
