@@ -13,10 +13,13 @@ import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
 
+import AttendEventBtn from './component/AttendEventBtn'
+
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {IMG_SERVER} from "context/config";
+
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
@@ -370,6 +373,8 @@ const MainPage = () => {
     </div>
     {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
+
+    {/* <AttendEventBtn scrollOn={scrollOn}/> */}
 
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
   </>;

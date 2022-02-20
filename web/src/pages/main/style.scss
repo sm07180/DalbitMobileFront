@@ -422,12 +422,14 @@
           @include flex($fd:column);
           min-width:0;
           height:100%;
+          padding: 8px 0;
           margin-left:16px;
+          box-sizing: border-box;
           .listItem {
             @include flex(center);
             min-height:2px;
             margin-bottom:2px;
-            &:last-child {
+            &:nth-child(3) {
               margin-top: auto;
             }
             .title {
