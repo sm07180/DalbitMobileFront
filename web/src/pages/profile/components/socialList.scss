@@ -58,6 +58,14 @@
     }
     .swiperPhoto {
       margin-bottom:16px;
+      .photo {
+        @include flex(center,flex-start);
+        img {
+          max-height:225px;
+          border-radius:8px;
+          object-fit: contain;
+        }
+      }
     }
     .swiper-slide {
       width:100%;

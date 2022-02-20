@@ -77,7 +77,7 @@ export default () => {
         <button className="btnBack" onClick={() => clickCloseBtn()}>
           <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
         </button>
-        {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
+        {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top-1.png`} />}
       </div>
 
       <div className={`tabWrap ${tabFixed ? 'fixed' : ''} ${tab === 'attend' ? 'attend' : 'roulette'}`} ref={tabRef}>
