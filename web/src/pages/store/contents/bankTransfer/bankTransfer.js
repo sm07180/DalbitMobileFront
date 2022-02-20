@@ -19,8 +19,8 @@ const BankTransfer = () => {
 
   const context = useContext(Context)
   const [userInfo, setUserInfo] = useState({
-    name: "김현진",
-    phone: "01083490706",
+    name: "",
+    phone: "",
     receiptCode: "n",
     receiptPhone: "",
     receiptSocial: "",

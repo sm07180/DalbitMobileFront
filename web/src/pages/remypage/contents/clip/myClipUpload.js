@@ -31,10 +31,16 @@ const MyClipUpload = (props) => {
     slidesPerView: 'auto',
   }
 
-  const playClip = (clipNo) => {
-    if (!clipNo) return;
-    const clipParam = {clipNo: clipNo, gtx: context, history};
-    NewClipPlayerJoin(clipParam);
+  const playClip = (clipNo, memNo) => {
+    if (searchInfo.myClipType === 0) {
+      if (!clipNo) return;
+      const clipParam = {clipNo: clipNo, gtx: context, history};
+      NewClipPlayerJoin(clipParam);
+    } else {
+      if (!memNo) return;
+      history.push(`/profile/${memNo}`);
+    }
+
   };
 
   // 내클립업로드 목록
@@ -189,20 +195,29 @@ const MyClipUpload = (props) => {
       <section className="listWrap">
         {myClipInfo.list.map((item, index) => {
           return (
-            <ListRow photo={item.bgImg.thumb80x80} key={index} photoClick={() => { playClip(item.clipNo, index) }}>
+            <ListRow photo={searchInfo.myClipType === 0 ? item.bgImg.thumb80x80 : item.profImg.url} key={index} photoClick={() => { playClip(item.clipNo, item.memNo) }}>
               <div className="listInfo">
                 <div className="listItem">
                   <span className="title">{item.title}</span>
                 </div>
                 <div className="listItem">
-                  <GenderItems data={item.gender}/>
-                  <span className="nickNm">{item.nickName}</span>
+                  {searchInfo.myClipType === 0 ?
+                    <>
+                      <GenderItems data={item.gender}/>
+                      <span className="nickNm">{item.nickName}</span>
+                    </>
+                  :
+                    <>
+                      <span className="nickNm">{item.nickName}</span>
+                      <GenderItems data={item.gender}/>
+                    </>
+                  }
                 </div>
                 <div className="listItem">
-                  <DataCnt type={"listenerCnt"} value={item.countPlay}/>
-                  <DataCnt type={"presentCnt"} value={item.countByeol}/>
-                  <DataCnt type={"goodCnt"} value={item.countGood}/>
-                  <DataCnt type={"replyCnt"} value={item.countReply}/>
+                  {(searchInfo.myClipType === 0 || searchInfo.myClipType === 1) && <DataCnt type={"listenerCnt"} value={item.countPlay}/>}
+                  {(searchInfo.myClipType === 0 || searchInfo.myClipType === 3) && <DataCnt type={"presentCnt"} value={item.countByeol}/>}
+                  {(searchInfo.myClipType === 0 || searchInfo.myClipType === 2) && <DataCnt type={"goodCnt"} value={item.countGood}/>}
+                  {searchInfo.myClipType === 0 && <DataCnt type={"replyCnt"} value={item.countReply}/>}
                 </div>
               </div>
               {searchInfo.myClipType === 0 &&
