@@ -66,7 +66,7 @@ const ProfilePage = () => {
   const [noticePop, setNoticePop] = useState(false); // 좋아요 랭킹기준 안내팝업
 
   const [webview, setWebview] = useState('');
-  const [likePopTabState, setLikePopTabState] = useState('');
+  const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -550,7 +550,8 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} setPopHistory={setPopHistory} />
+        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile}
+                   setPopHistory={setPopHistory} type="profile" />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -558,7 +559,7 @@ const ProfilePage = () => {
         />
       </section>
       <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} setLikePopTabState={setLikePopTabState} />
+        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap" ref={tabmenuRef}>

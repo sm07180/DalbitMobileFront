@@ -47,7 +47,7 @@ const LikePopup = (props) => {
   const [titleTabInfoList, setTitleTabInfoList] = useState(
     isMyProfile ? myProfileTabInfos.titleTab : notMyProfileTabInfos.titleTab
   );
-  const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0]);
+  const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState({});
 
   // 서브 탭
   const [currentSubTabInfo, setCurrentSubTabInfo] = useState(
@@ -181,6 +181,23 @@ const LikePopup = (props) => {
     setPopLike(false);
   }
 
+  const tabSetting = () => {
+    if(likePopTabState) { // 열고싶은 탭
+      /* 제목 */
+      setCurrentTitleTabInfo(isMyProfile ? myProfileTabInfos.titleTab[likePopTabState.titleTab]
+        : notMyProfileTabInfos.titleTab[0])
+
+      /* 서브 탭 */
+      setCurrentSubTabInfo(
+        isMyProfile ? myProfileTabInfos.subTab[likePopTabState.subTabType][likePopTabState.subTab]
+          : notMyProfileTabInfos.subTab.rank[likePopTabState.subTab]
+      );
+    }else { // 디폴트 탭
+      setCurrentTitleTabInfo(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0])
+      setCurrentSubTabInfo(isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]);
+    }
+  }
+
   useEffect(() => {
     if(!isLastPage && currentSubTabInfo.key) {
       if(currentSubTabInfo.key === 'totalRankLike' || currentSubTabInfo.key === 'like') {
@@ -199,13 +216,7 @@ const LikePopup = (props) => {
 
   useEffect(() => {
     addScrollEvent()
-    if(typeof likePopTabState === 'number') {
-      setCurrentSubTabInfo(
-        isMyProfile ? myProfileTabInfos.subTab.totalRank[likePopTabState] : notMyProfileTabInfos.subTab.rank[likePopTabState]
-      );
-    }else {
-      setCurrentSubTabInfo(isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]);
-    }
+    tabSetting()
     return () => removeScrollEvent();
   },[])
 
@@ -216,7 +227,7 @@ const LikePopup = (props) => {
           {titleTabInfoList.map((data,index) => {
             return (
               <li key={index}
-                  className={currentTitleTabInfo.key === data.key ? 'active' : ''}
+                  className={currentTitleTabInfo?.key === data.key ? 'active' : ''}
                   onClick={() => titleTabClick(data)}
               >{data.value}</li>
             )
@@ -227,10 +238,10 @@ const LikePopup = (props) => {
       <div className="listContainer" ref={likeContainerRef}>
         {isMyProfile ?
           <ul className="tabmenu">
-            {myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
+            {currentTitleTabInfo?.key && myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
                 <div className="likeTab" key={index}>
-                  <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
+                  <li className={currentSubTabInfo?.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
                 </div>
@@ -239,10 +250,10 @@ const LikePopup = (props) => {
           </ul>
           :
           <ul className="tabmenu">
-            {notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
+            {currentTitleTabInfo?.key && notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
                 <div className="likeTab" key={index}>
-                  <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
+                  <li className={currentSubTabInfo?.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
                 </div>
