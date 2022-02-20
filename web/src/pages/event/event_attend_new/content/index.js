@@ -10,6 +10,8 @@ import RoulettePage from './roulette'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
+import Header from 'components/ui/header/Header'
+
 export default () => {
   const history = useHistory()
   const params = useParams()
@@ -73,10 +75,8 @@ export default () => {
 
   return (
     <div id="attendEventPage">
+      <Header title='이벤트' type='back' />
       <div className="commonTopWrap" ref={commonTopRef}>
-        <button className="btnBack" onClick={() => clickCloseBtn()}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
-        </button>
         {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
       </div>
 

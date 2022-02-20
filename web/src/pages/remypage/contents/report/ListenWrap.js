@@ -159,7 +159,7 @@ const ListenWrap = () =>{
                 <span className="date">{changeDay(v.startDt)}</span>
                 <span className="light"><span>{changeMin(v.startDt)}</span> ~ <span>{changeMin(v.endDt)}</span>({decodeMin(v.listenTime)}분)</span>
               </div>
-              <div className="contentBOx">
+              <div className="contentBox">
                 <div className="amount">{v.giftDalCnt.toLocaleString("ko-KR")}</div>
                 <div className="light">선물 준 달</div>
               </div>

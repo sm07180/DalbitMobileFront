@@ -37,8 +37,8 @@ export default (props) => {
       <Header title="장기 미접속 회원 탈퇴 안내" type="back" />
       <div id="customerNotice">
         <p className="text">
-          안녕하세요. 달빛라이브입니다.
-          <br /> 달빛라이브는 개인정보 보호에 대한 강화 정책을 시행하기
+          안녕하세요. 달라입니다.
+          <br /> 달라는 개인정보 보호에 대한 강화 정책을 시행하기
           <br />
           위해 「 정보통신망 이용 촉진 및 개인 정보 보호 등에 관한
           <br /> 법률 제 29조」 에 의거하여,
@@ -74,7 +74,7 @@ export default (props) => {
         <strong className="notice">자동 탈퇴를 원하지 않는 경우</strong>
 
         <div className="subNotice">
-          <strong className="color_red">{dueDate} 00시 이전</strong>까지 달빛라이브 앱/웹에
+          <strong className="color_red">{dueDate} 00시 이전</strong>까지 달라 앱/웹에
           <strong> 1회 이상 로그인하시면 자동 탈퇴 회원 대상에서 제외</strong>됩니다.
         </div>
 
@@ -84,7 +84,7 @@ export default (props) => {
         </p>
 
         <button className="button" onClick={() => history.push('/login')}>
-          달빛라이브 로그인하기
+          달라 로그인하기
         </button>
       </div>
     </>

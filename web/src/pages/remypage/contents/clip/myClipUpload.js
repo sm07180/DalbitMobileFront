@@ -20,8 +20,6 @@ const MyClipUpload = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const uploadTab = ['마이 클립', '청취 회원', '좋아요 회원', '선물한 회원'];
-  const [uploadType, setUploadType] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
   const [myClipInfo, setMyClipInfo] = useState({total: 0, totalPage: 1, list: []});
   const [morePop, setMorePop] = useState(-1);
   const [searchInfo, setSearchInfo] = useState({myClipType: 0, page: 1, records: 10});

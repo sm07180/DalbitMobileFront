@@ -103,7 +103,6 @@ const DalCharge = () => {
   }
 
   const callPGForm = (payment, ciData) => {
-    console.log(isDesktop);
     Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,

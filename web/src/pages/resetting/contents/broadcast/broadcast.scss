@@ -15,7 +15,7 @@
       box-sizing: border-box;
       cursor: pointer;
       .menuName {
-        flex: 1;
+        flex: none;
         @include flex(center);
         @include font(15px, 500, #303030);
         span {

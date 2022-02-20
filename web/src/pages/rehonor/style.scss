@@ -65,6 +65,9 @@
   .infomation {
     margin: 8px 16px;
     @include font(14px,$Medium,$MAINCOLOR);
+    strong {
+      font-weight: 600;
+    }
   }
   .myHonorSection {
     .myHonorBox {
@@ -145,7 +148,7 @@
       }
       .listColumn {
         @include flex(center,center,column);
-        padding: 5px;
+        padding: 6px;
         border: 1px solid #E3E3E3;
         border-radius: 16px;
         overflow-x: hidden;
@@ -157,8 +160,13 @@
         .listItem {
           @include flex(center,center);
           width:100%;
+          margin-bottom: 6px;
           &:first-child {
             justify-content: space-between;
+            margin-bottom: 5px;
+          }
+          .gender {
+            margin-right:2px; 
           }
           .nickNm {
             @include font(14px,$Medium,#202020);
