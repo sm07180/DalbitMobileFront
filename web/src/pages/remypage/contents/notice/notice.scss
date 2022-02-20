@@ -42,8 +42,12 @@
   }
   .allim, .post {
     padding-top:15px;
+    >div {
+      border-bottom:1px solid #F2F2F2;
+    }
     .listRow {
       padding:15px 20px 12px 16px;
+      cursor: pointer;
       .photo {
         width:50px;
         height:50px;
@@ -92,7 +96,8 @@
       min-width:0;
       .title {
         margin-bottom:2px;
-        letter-spacing: -1px;
+        letter-spacing: -0.5px;
+        line-height: 18px;
         @include font(15px,500,#303030);
         @include fontCut;
       }

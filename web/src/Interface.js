@@ -244,7 +244,6 @@ export default () => {
   }
 
   const newSocialLogin = async (inputData) => {
-    alert(JSON.stringify(inputData));
 
     const {webview, redirect} = qs.parse(location.search)
     let social_result = await Api.new_social_login(inputData);

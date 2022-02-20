@@ -13,7 +13,7 @@ const RadioList = (props) => {
       </div>
       <div className="radioBox">
         <input type="radio" className={`blind`} name="radioBox"/>
-        <span className={`radioBtn`}></span>
+        <span className={`radioBtn`}/>
       </div>
     </label>
   )

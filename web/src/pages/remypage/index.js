@@ -24,7 +24,7 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
   {menuNm: '클립', path:'myclip'},
-  {menuNm: '설정', path:'oldsetting'},
+  {menuNm: '설정', path:'setting'},
   {menuNm: '공지사항', path:'notice'},
   {menuNm: '고객센터', path:'customer'},
 ]
@@ -112,7 +112,7 @@ const Remypage = () => {
       return(<Report />)
     case 'myclip' :
       return(<Clip />)
-    case 'oldsetting' :
+    case 'setting' :
       return(<Setting />)
     case 'notice' :
       return(<Allim />)

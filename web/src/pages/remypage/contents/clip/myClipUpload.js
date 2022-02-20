@@ -128,17 +128,6 @@ const MyClipUpload = (props) => {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvent);
-    return () => {
-      window.removeEventListener('scroll', scrollEvent);
-    }
-  }, [myClipInfo]);
-
-  useEffect(async () => {
-    fetchMyClipUploadList();
-  }, [searchInfo]);
-
   const handleTabClick = (value) => {
     const target = uploadTab.findIndex(row => row === value);
 
@@ -167,6 +156,18 @@ const MyClipUpload = (props) => {
       }
     })
   };
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvent);
+    return () => {
+      window.removeEventListener('scroll', scrollEvent);
+    }
+  }, [myClipInfo]);
+
+  useEffect(async () => {
+    fetchMyClipUploadList();
+  }, [searchInfo]);
+
 
   return (
     <>
@@ -216,11 +217,9 @@ const MyClipUpload = (props) => {
         <>
           <div className="empty">
             <p>등록된 클립이 없어요<br/>클립을 업로드 해보세요!</p>
-            <button onClick={goClipPage}>클립 업로드</button>
           </div>
         </>
         }
-        <div className="test"></div>
       </section>
     </>
   )

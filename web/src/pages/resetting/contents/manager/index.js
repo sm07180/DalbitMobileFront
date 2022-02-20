@@ -13,13 +13,19 @@ import SettingList from '../../components/SettingList'
 
 import '../../style.scss'
 import './manager.scss'
-
-const tabmenu = ['관리', '등록']
-const filter = ['전체','닉네임','ID']
+import useChange from "components/hooks/useChange";
+import _ from "lodash";
+import {Context} from "context";
 
 const SettingManager = () => {
+  const tabmenu = ['관리', '등록']
+  const filter = ['전체','닉네임','ID']
   const [tabType, setTabType] = useState(tabmenu[0])
   const [managerList, setManagerList] = useState([])
+  const {changes, setChanges, onChange} = useChange({onChange: -1})
+  const [userList, setUserList] = useState([]);
+  const context = useContext(Context);
+  let userTypeSetting = 0;
 
   const getManagerList = () =>{
     Api.mypage_manager_list({}).then((res) =>{
@@ -28,7 +34,49 @@ const SettingManager = () => {
       }
     })
   }
-  
+
+  const fetchAddData = async (memNo) => {
+    let params = {
+      memNo: memNo
+    }
+    const res = await Api.mypage_manager_add({params})
+    if(res.result === "success") {
+      getManagerList();
+      fetchListData();
+      context.action.alert({msg: res.message});
+    }
+  }
+
+  const fetchDeleteData = async (memNo) => {
+    let params = {
+      memNo: memNo
+    }
+    const res = await Api.mypage_manager_delete({params})
+    if(res.result === "success") {
+      getManagerList();
+      context.action.alert({msg: res.message});
+    }
+  }
+
+  const fetchListData = async (type) => {
+    if (!_.hasIn(changes, 'search') || changes.search.length === 0)
+      return context.action.alert({
+        msg: `검색어를 입력해주세요.`
+      })
+    userTypeSetting = type === "search" ? Number(_.hasIn(changes, "searchType") ? changes.searchType : 0) : userTypeSetting
+    const params = {
+      userType: userTypeSetting,
+      search: changes.search,
+      searchType: "maneger",
+      page: 1,
+      records: 30
+    }
+    const res = await Api.mypage_user_search({params})
+    if(res.result === "success") {
+      setUserList(res.data.list);
+    }
+  }
+
   useEffect(() => {
     getManagerList()
   }, [])
@@ -49,14 +97,14 @@ const SettingManager = () => {
                   {managerList.map((item, index)=>{
                     return(
                       <SettingList data={item} key={index}>
-                        <button className="delete">해제</button>
+                        <button className="delete" onClick={() => fetchDeleteData(item.memNo)}>해제</button>
                       </SettingList>
-                      )
+                    )
                   })}
                 </>
               ) : (
                 <>
-                  <div className="noResult">등록된 고정 매니저가 없습니다.</div> 
+                  <div className="noResult">등록된 고정 매니저가 없습니다.</div>
                 </>
               )}
             </section>
@@ -66,33 +114,33 @@ const SettingManager = () => {
             <section className="inputWrap">
               <div className="inputBox">
                 <FilterBtn data={filter} />
-                <input type="text" placeholder='검색어를 입력해 보세요'/>
-                <span className="icon"></span>
+                <input type="text" placeholder='검색어를 입력해 보세요' name="search" onChange={onChange}/>
+                <span className="icon" onClick={() => fetchListData("search")}/>
               </div>
             </section>
             <section className="counterWrap">
-              <div>검색 결과<span>1</span></div>
+              <div>검색 결과<span>{userList.length}</span></div>
             </section>
             <section className="listWrap">
-              {managerList.length > 0 ? (
+              {userList.length > 0 ? (
                 <>
-                  {managerList.map((list, index)=>{
+                  {userList.map((list, index)=>{
                     return(
                       <SettingList data={list} key={index}>
-                        <button className="add">등록</button>
+                        <button className="add" onClick={() => fetchAddData(list.memNo)}>등록</button>
                       </SettingList>
-                      )
+                    )
                   })}
                 </>
               ) : (
                 <>
-                  <div className="noResult">검색된 결과가 없습니다.</div> 
+                  <div className="noResult">검색된 결과가 없습니다.</div>
                 </>
               )}
             </section>
           </>
         )}
-        
+
       </div>
     </div>
   )
