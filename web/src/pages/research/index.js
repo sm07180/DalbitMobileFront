@@ -50,7 +50,7 @@ const SearchPage = (props) => {
 
   // 지금 핫한 라이브 정보 리스트 가져오기
   const getLiveListInfo = useCallback(async() => {
-    const {result, data} = await API.getSearchRecomend({ page: 1, records: 10 });
+    const {result, data} = await API.getSearchRecomend({ page: 1, listCnt: 10 });
     if (result === 'success') {
       setLiveListInfo({...data});
     }
@@ -58,7 +58,7 @@ const SearchPage = (props) => {
 
   // 오늘 인기 있는 클립 정보 리스트 가져오기
   const getHopClipListInfo = useCallback(async() => {
-    const {result, data} = await API.getPopularList({ page: 1, records: 10 });
+    const {result, data} = await API.getPopularList({ page: 1, listCnt: 10 });
     if (result === 'success') {
       setHotClipListInfo({...data});
     }
@@ -118,6 +118,8 @@ const SearchPage = (props) => {
       handleHistory(searchVal);
 
       handleSearch(searchVal);
+
+      e.currentTarget.blur();
     }
   }
 
