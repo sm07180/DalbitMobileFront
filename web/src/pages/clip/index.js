@@ -213,7 +213,7 @@ const ClipPage = () => {
           }
         </section>
         <section className='bannerWrap'>
-          <BannerSlide />
+          <BannerSlide type={10}/>
         </section>
         <section className="clipDrawer">
           {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
