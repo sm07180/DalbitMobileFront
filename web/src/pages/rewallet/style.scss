@@ -704,20 +704,24 @@
     .listWrap {
       width:100%;
       .listAll {
-        .infoCheckList {
+        >.infoCheckList {
           margin:0 28px;
           padding: 12px 0;
           border-bottom:1px solid #F2F2F2;
-          @include font(16px,$SemiBold,#212429);
+          .inputLabel{
+            p{@include font(16px,$SemiBold,#212429);}
+          }
         }
       }
       .historyScroll {
         height:370px;
         padding:12px 28px;
         overflow-y:auto;
-        .infoCheckList {
+        >.infoCheckList {
           height:40px;
-          @include font(14px,$Regular,#666);
+          .inputLabel{
+            p{@include font(14px,$Regular,#666);}
+          }
         }
       }
     }

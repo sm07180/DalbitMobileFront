@@ -158,6 +158,10 @@ const ClipPage = () => {
   const swiperParams = {
     slidesPerView: 'auto',
   };
+  const nowSwiperParams ={
+    slidesPerView: 'auto',
+    spaceBetween: 16,
+  }
 
   // 링크 다시 눌렀을때, 액션
   const refreshActions = () => {
@@ -237,7 +241,7 @@ const ClipPage = () => {
         <section className="nowClipWrap">
           <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
           {popularClipInfo.length > 0 ?
-            <Swiper {...swiperParams}>
+            <Swiper {...nowSwiperParams}>
               {popularClipInfo.map((row, index) => {
                 return (
                   <div key={index}>
