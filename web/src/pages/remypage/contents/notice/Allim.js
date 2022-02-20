@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
+import {GlobalContext} from "context";
 
 import Api from 'context/api'
 // global components
@@ -9,52 +10,39 @@ import moment from "moment";
 import {RoomJoin} from "context/room";
 import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
+import './notice.scss'
+import Header from "components/ui/header/Header";
+import TabBtn from "components/ui/tabBtn/TabBtn";
 
 const Allim = () => {
+  const noticeTabmenu = ['알림','공지사항']
+  const [noticeType, setNoticeType] = useState(noticeTabmenu[0])
   const [alarmList, setAlarmList] = useState({list : [], cnt : 0});
   const context = useContext(Context);
+  const global = useContext(GlobalContext);
+  const { globalState, globalAction } = global;
   const history = useHistory();
+
+  useEffect(() => {
+    console.log(context)
+  })
 
   //회원 알림 db값 가져오기
   const fetchData = () => {
-    let params = {
-      page: 1,
-      records: 1000
-    };
+    let params = {page: 1, records: 1000};
     Api.my_notification(params).then((res) => {
+      console.log(res.data.newCnt);
       if(res.result === "success") {
         if(res.data.list.length > 0) {
-          setAlarmList({
-            ...alarmList,
-            list: res.data.list,
-            cnt : res.data.cnt
-          });
+          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt});
+          if(res.data.newCnt === 1) {
+            globalState.alarmStatus = true;
+          } else {
+            globalState.alarmStatus = false;
+          }
         } else {
-          setAlarmList({
-            ...alarmList
-          });
+          setAlarmList({...alarmList});
         }
-      }
-    }).catch((e) => {console.log(e)});
-  };
-
-  //클립 알림 플레이
-  const fetchDataPlay = (clipNum) => {
-    let params = {
-      clipNo: clipNum
-    };
-    Api.postClipPlay(params).then((res) => {
-      if(res.result === "success") {
-        localStorage.removeItem('clipPlayListInfo') //한곡만 재생일 경우 클립 플레이리스트 아이콘제거
-        /**
-         * playCnt: 조회수, clipNo: 클립 번호, gender: 성별, nickName: 클립 유저 ID, bgImg: 클립 이미지, isNew: 신규, title: 클립 제목, badgeSpecial: 뱃지 유무,
-         * subjectType: 클립 타입, isSpecial: 스페셜DJ 유무, goodCnt: 좋아요수, filePlayTime: 클립 재생 시간, replyCnt: 댓글수
-         **/
-        const oneClipPlayList = {
-          ...res.data
-        }
-        localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-        clipJoin(oneClipPlayList, context, 'none', 'push') //해당 데이터의 클립창 열기
       }
     }).catch((e) => {console.log(e)});
   };
@@ -62,7 +50,7 @@ const Allim = () => {
   //알림 클릭시 해당 페이지로 이동 -> 리브랜딩 주소로 다시 바꿔야함....
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
-    const { type, memNo, roomNo, link } = e.currentTarget.dataset;
+    const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
     switch (type) {
       case "1":                                                                             //마이스타 방송 알림
         try {if(roomNo !== "") {RoomJoin({roomNo: roomNo});}}
@@ -75,8 +63,8 @@ const Allim = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if (context.profile.memNo === roomNo) {history.push(`myProfile`)}
-        else {history.push(`/profile/${roomNo}?tab=1`)}
+        if (context.profile.memNo === roomNo) {history.push(`/myProfile`)}
+        else {history.push(`/profile/${memNo}`)}
         break;
       case "32":                                                                            //내 지갑
         try {history.push(`/wallet`);}
@@ -84,12 +72,12 @@ const Allim = () => {
         break;
       case "35": history.push('/myProfile'); break;                                 //레벨업 알림
       case "36":                                                                           //팬 등록 알림
-        try {if(memNo !== "") {history.push(`myProfile`);}}
+        try {if(memNo !== "") {history.push(`/profile/${memNo}`);}}
         catch (e) {console.log(e);}
         break;
       case "37": history.push('/customer/inquire'); break;                          //1:1문의 답변 알림
       case "38":                                                                            //마이 스타 방송 공지 알림
-        try {if(memNo !== "") { history.push(`/profile/${memNo}?tab=0`);}}
+        try {if(memNo !== "") { history.push(`/profile/${memNo}`);}}
         catch (e) {console.log(e);}
         break;
       case "39": history.push(`/rank`); break;                                      //좋아요 랭킹 주간 알림
@@ -98,11 +86,11 @@ const Allim = () => {
       case "42": history.push(`/rank`); break;                                      //DJ 랭킹 주간 알림
       case "43": history.push(`/rank`); break;                                      //FAN 랭킹 일간 알림
       case "44": history.push(`/rank`); break;                                      //FAN 랭킹 주간 알림
-      case "45": fetchDataPlay(roomNo);break;                                               //마이 스타 클립 알림, 내 클립 선물 알림, 3 = pc 클립을 틀 수 있는 새로운 방법이 필요함
-      case "46": fetchDataPlay(roomNo); break;                                              //내 클립 댓글 알림
-      case "47": fetchDataPlay(roomNo); break;                                              //클립 알림
+      case "45": history.push(`/clip/${roomNo}`); break;                            //마이 스타 클립 알림, 내 클립 선물 알림, 3 = pc 클립을 틀 수 있는 새로운 방법이 필요함
+      case "46": history.push(`/clip/${roomNo}`); break;                            //내 클립 댓글 알림
+      case "47": history.push(`/clip/${roomNo}`); break;                            //클립 알림
       case "48":                                                                            //마이페이지 클립 업로드/청취내역 알림
-        try {history.push(`/profile/${context.profile.memNo}?tab=2`);}
+        try {history.push(`/myclip`);}
         catch (e) {console.log(e);}
         break;
       case "53": history.push(`/event/attend_event`); break;                        //출석체크 알림
@@ -121,38 +109,49 @@ const Allim = () => {
 
   //푸시 설정하기로 이동(알림 없을때 출력)
   const onClick = () => {
-    history.push(`/profile/${context.myInfo.memNo}`);
+    history.push(`/setting/push`);
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if(!(context.token.isLogin)) {history.push("/login")}
+  }, []);
+
   return (
-    <>
-      <div className="allim">
-        {alarmList.list.length > 0 ?
-          <>
-            {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
-              return (
-                <ListRow key={idx} photo={v.profImg.thumb88x88}>
-                  <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
-                       data-link={v.link} onClick={handleClick}>
-                    <div className="title">{v.contents}</div>
-                    <div className="date">{changeDay(v.regDt)}</div>
-                  </div>
-                </ListRow>
-              )
-            })}
-          </>
-          :
-          <div className="allimNone">
-            <p>새로운 소식이 없어요<br/>오늘의 소식이 생기면 알려드릴께요!</p>
-            <button onClick={onClick}>푸시 설정하기</button>
-          </div>
-        }
-      </div>
-    </>
+    <div id="notice">
+      <Header type={context.customHeader.os !== 3 ? "back" : ""}/>
+      <section className="noticeWrap">
+        <ul className="tabmenu">
+          <li className="active" onClick={() => history.push("/alarm")}>알림</li>
+          <li onClick={() => history.push("/post")}>공지사항</li>
+        </ul>
+        <div className="allim">
+          {alarmList.list.length > 0 ?
+            <>
+              {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
+                return (
+                  <ListRow key={idx} photo={v.profImg.thumb88x88}>
+                    <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
+                         data-link={v.link} onClick={handleClick}>
+                      <div className="title">{v.contents}</div>
+                      <div className="date">{changeDay(v.regDt)}</div>
+                    </div>
+                  </ListRow>
+                )
+              })}
+            </>
+            :
+            <div className="allimNone">
+              <p>새로운 소식이 없어요<br/>오늘의 소식이 생기면 알려드릴께요!</p>
+              <button onClick={onClick}>푸시 설정하기</button>
+            </div>
+          }
+        </div>
+      </section>
+    </div>
   )
 };
 
