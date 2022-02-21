@@ -11,6 +11,10 @@
       }
       #mainPage {
         header {display:none;}
+        .tabmenuWrap.isFixed {
+          top: $GNB-HEIGHT;
+          max-width:480px;
+        }
       }
     }
   }
@@ -29,7 +33,6 @@
     }
     &.isShow {
       header {
-        border-bottom:1px solid #eee;
         background-color:white;
         h1 {
           width:71px;height:25px;
@@ -54,58 +57,91 @@
       &:active {
         cursor:grab;
       }
-      .photo {
-        position:relative;
+      .listColumn {
         width:100%;
-        height:360px;
-        @mixin whiteScreen {
-          position:absolute;
-          left:0;
-          display:block;
-          content:'';
+        .photo {
+          position:relative;
           width:100%;
-          height:150px;
+          height:360px;
+          @mixin whiteScreen {
+            position:absolute;
+            left:0;
+            display:block;
+            content:'';
+            width:100%;
+            height:150px;
+          }
+          &::after {
+            @include whiteScreen;
+            bottom:0;
+            background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 40%, rgba(255,255,255,0));
+          }
+          &::before{display:none;}
+          img {
+            width:100%;
+            height:100%;
+            object-fit: cover;
+          }
         }
-        &:after {
-          @include whiteScreen;
-          bottom:0;
-          background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 20%, transparent);
-        }
-        img {
+        .info {
+          @include position-bottom-left;
+          @include flex(flex-start,center,column);
           width:100%;
-          height:100%;
-          object-fit: cover;
+          padding: 25px 16px 12px;
+          // transform:translateX(30%);
+          // transition: transform .7s ease-out;
+          .badgeGroup {
+            @include flex(center);
+            margin-bottom: 8px;
+            height:16px;
+          }
+          .title {
+            width:72%;
+            line-height:30px;
+            margin-bottom:6px;
+            @include font(22px,$SemiBold,#202020);
+            @include fontLineCut;
+          }
+          .nick {
+            width:72%;
+            line-height:24px;
+            opacity:.7;
+            @include font(15px,$Regular,#202020);
+            @include fontCut;
+          }
         }
       }
-      .info {
-        position:absolute;
-        bottom:0;
-        left:0;
-        @include flex(flex-start,center,column);
-        width:100%;
-        padding: 25px 16px 12px;
-        .badgeGroup {
-          @include flex(center);
-          height:16px;
-        }
-        .badgeGroup {
-          @include flex(center);
-        }
-        .title {
-          width:72%;
-          line-height:30px;
-          margin-bottom:6px;
-          @include font(22px,$SemiBold,#202020);
-          @include fontLineCut;
-        }
-        .nick {
-          width:72%;
-          line-height:24px;
-          opacity:.7;
-          @include font(15px,$Regular,#202020);
-          @include fontCut;
-        }
-      }
+      // main slide 애니메이션 지우지 마시오!! 후반에 추가
+      // &-active {
+      //   .listColumn {
+      //     .info {
+      //       transform:translateX(0);
+      //     }
+      //   }
+      // }
+      // &-duplicate-active {
+      //   .listColumn {
+      //     .info {
+      //       transform:translateX(0);
+      //     }
+      //   }
+      // }
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      left: auto;
+      right: 0;
+      width: auto;
+      height: 20px;
+      line-height: 20px;
+      padding: 0 8px 0 10px;
+      border-radius: 100px 0 0 100px;
+      font-size: 12px;
+      font-weight: 400;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
     }
     .empty {
       width:100%;
@@ -126,15 +162,22 @@
         }
         .listColumn {
           width:68px;
+          cursor: pointer;
           .photo {
+            @include flex(center,center);
+            height:68px;
             margin-bottom:2px;
-            background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom,#B620FF,#FF41EC) !important;
+            background-image: linear-gradient(to bottom,#FF3C7B,#FF8565) !important;
             background-origin: border-box;
-            background-clip: content-box, border-box;
+            background-clip: border-box;
             overflow:hidden;
             @include border(transparent,50%,2px);
             img {
-              @include border(#fff,50%,3px);
+              width:58px;
+              height:58px;
+              object-fit: cover;
+              background-color: white;
+              @include border(white,50%,3px);
             }
           }
           p {
@@ -189,13 +232,22 @@
             margin-right:28px;
           }
           .listColumn {
-            width:102px;
+            width:113px;
+            cursor: pointer;
             .photo {
               position:relative;
-              height:136px;
+              height:149px;
               margin-bottom:6px;
               border-radius:16px;
               overflow:hidden;
+              &::before {
+                content: "";
+                @include position-top-left;
+                width: 100%; height: 100%;
+                border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+                border-radius:16px;
+                box-sizing: border-box;
+              }
               &::after {
                 content:"";
                 @include position-bottom-left;
@@ -225,6 +277,7 @@
               }
             }
             p {
+              line-height:20px;
               @include font(15px,400,#303030);
               @include fontCut;
             }
@@ -252,11 +305,20 @@
           margin-right:28px;
         }
         .listColumn {
-          width:102px;
+          width:113px;
           border-radius:16px;
           overflow:hidden;
+          cursor: pointer;
           .photo {
-            height:150px;
+            height:149px;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:16px;
+              box-sizing: border-box;
+            }
             img {
               height:100%;
               object-fit: cover;
@@ -288,9 +350,6 @@
       @include font(15px,400,#999);
     }
   }
-  .bannerWrap {
-    margin-bottom:35px;
-  }
   .liveView {
     .cntTitle {
       margin-bottom:8px;
@@ -321,9 +380,9 @@
             &::after {
               content:"";
               @include position-horizon;
-              bottom:0;
-              width:15px;
-              height:5px;
+              bottom:6px;
+              width:30px;
+              height:4px;
               border-radius:100px;
               background-color:$MAINCOLOR;
             }
@@ -337,14 +396,23 @@
         @include flex(center);
         height:110px;
         margin-bottom:12px;
+        cursor: pointer;
         .photo {
           position:relative;
+          flex-shrink: 0;
           width:110px;
           height:110px;
-          border-radius:8px;
-          overflow:hidden;
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:16px;
+            box-sizing: border-box;
+          }
           img {
             width:100%;
+            border-radius:16px;
           }
           .guest {
             @include position-bottom-right;
@@ -360,33 +428,141 @@
             @include BGIMG("common/icon/ico_video.png");
           }
         }
-      }
-      .listContent {
-        @include flex($fd:column);
-        min-width:0;
-        height:100%;
-        margin-left:16px;
-        .listItem {
-          @include flex(center);
-          min-height:2px;
-          margin-bottom:2px;
-          &:last-child {
-            margin-top: auto;
+        .listContent {
+          flex: 1;
+          @include flex($fd:column);
+          min-width:0;
+          height:100%;
+          padding: 8px 0;
+          margin-left:16px;
+          box-sizing: border-box;
+          .listItem {
+            @include flex(center);
+            min-height:2px;
+            margin-bottom:2px;
+            &:nth-child(3) {
+              margin-top: auto;
+            }
+            .title {
+              @include font(15px,700,#303030);
+              @include fontCut;
+            }
+            .nickNm {
+              margin-left:4px;
+              @include font(13px,400,#666);
+              @include fontCut;
+            }
+            .state {
+              @include font(13px,400,#999);
+            }
           }
-          .title {
-            @include font(15px,700,#303030);
-            @include fontCut;
+        }
+      }      
+    }
+  } 
+}
+.floatingEvent {
+  position: fixed;
+  bottom: 15%;
+  width: 100%; max-width: 480px;
+  z-index: 20;
+  .floatingWrap {
+    position: relative;
+    .fixedButton {
+      position: absolute;
+      right: 10px;
+      z-index: 13;
+      width: 48px;
+      .attendStampActive {
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        margin: 5px 0 0;
+    
+        &.basic {
+          background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
+            center no-repeat;
+          background-size: 100%;
+        }
+    
+        &.motion {
+          width: 48px;
+          height: 48px;
+          position: relative;
+    
+          &::after {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            content: "";
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
+              center no-repeat;
+            background-size: 48px;
+            animation: rotate_image 1s linear infinite;
+            transform-origin: 50% 50%;
+            @keyframes rotate_image {
+              100% {
+                transform: rotate(360deg);
+              }
+            }
           }
-          .nickNm {
-            margin-left:4px;
-            @include font(13px,400,#666);
-            @include fontCut;
-          }
-          .state {
-            @include font(13px,400,#999);
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 48px;
+            height: 48px;
+            z-index: 1;
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
+              center no-repeat;
+            background-size: 60px;
           }
         }
       }
     }
+  }  
+}
+
+@keyframes fadeIn {
+  0% {
+    border-bottom:1px solid transparent;
+    background-color:transparent;
+  }
+  100% {
+    border-bottom:1px solid #eee;
+    background-color:white;
+  }
+}
+@keyframes fadeOut {
+  0% {
+    border-bottom:1px solid #eee;
+    background-color:white;
+
+  }
+  100% {
+    border-bottom:1px solid transparent;
+    background-color:transparent;
+
+  }
+}
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes show {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

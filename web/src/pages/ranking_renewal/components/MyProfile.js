@@ -132,7 +132,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
           onClick={() => {
             context.action.alert({
               type: 'confirm',
-              msg: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #632beb;">반영하시겠습니까?</span>`,
+              msg: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #FF3C7B;">반영하시겠습니까?</span>`,
               callback: () => {
                 context.action.alert({
                   msg: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
@@ -248,7 +248,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                 <div
                   className="thumbBox"
                   onClick={() => {
-                    history.push(`/menu/profile`)
+                    history.push(`/myProfile`)
                   }}>
                   <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
@@ -278,7 +278,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                                 className="bestFanBox__nickname"
                                 onClick={() => {
                                   if (context.token.isLogin) {
-                                    history.push(`/mypage/${myInfo.myDjMemNo}`)
+                                    history.push(`/profile/${myInfo.myDjMemNo}`)
                                   } else {
                                     history.push('/modal/login')
                                   }

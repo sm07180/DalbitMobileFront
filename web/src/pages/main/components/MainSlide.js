@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
@@ -9,7 +9,7 @@ import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";
 
 const MainSlide = (props) => {
-  const {data} = props
+  const {data, common, pullToRefreshPause} = props
   const context = useContext(Context);
   const history = useHistory();
 
@@ -20,26 +20,27 @@ const MainSlide = (props) => {
       disableOnInteraction: false
     },
     on:{
-      click: (swiper, event) => {
-        if(event.type === 'touchend' || event.type === 'pointerup') {
-          const paths = event.path || event.composedPath();
-          let swiperIndex = "";
-          paths.forEach(dom => {
-            if(dom.dataset && dom.dataset.swiperIndex) {
-              swiperIndex = dom.dataset.swiperIndex;
-              const target = data[parseInt(swiperIndex)];
-              if(target.nickNm === 'banner' && target.roomType === 'link') {
-                history.push(target.roomNo);
-              }else {
-                // 방송방으로 이동
-                RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
-              }
-            }
-          })
+      click: function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        const target = data[parseInt(this.realIndex)];
+        if(target.nickNm === 'banner' && target.roomType === 'link') {
+          history.push(target.roomNo);
+        }else {
+          RoomValidateFromClip(target.roomNo, context, history, target.nickNm); // 방송방으로 이동
         }
       },
     }
   }
+
+  useEffect(() => {
+    if((common.isRefresh || !pullToRefreshPause) && data.length > 0) { // refresh 될때 슬라이드 1번으로
+      const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
+      swiper?.update();
+      swiper?.slideTo(0);
+    }
+  }, [common.isRefresh, pullToRefreshPause]);
 
   return (
     <>
@@ -51,10 +52,10 @@ const MainSlide = (props) => {
                 {list.bannerUrl && list.nickNm === "banner" && list.roomType === 'link' ?
                   <ListColumn photo={list.bannerUrl} index={index} />
                   :
-                  <ListColumn photo={list.profImg.thumb500x500} index={index}>
+                  <ListColumn photo={list.bannerUrl} index={index}>
                     <div className='info'>
                       <div className="badgeGroup">
-                        <BadgeItems data={list} type='liveBadgeList' />
+                        <BadgeItems data={list} type='isBadge' />
                       </div>
                       <span className="title">{list.title}</span>
                       <span className="nick">{list.nickNm}</span>
@@ -65,8 +66,7 @@ const MainSlide = (props) => {
             )
           })}
         </Swiper>
-        : data.length === 0 &&
-        <div className="empty"></div>
+        : <div className="empty" />
       }
     </>
   )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -8,10 +8,14 @@ import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 import {useHistory} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {Context} from "context";
+import Utility from "components/lib/utility";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
   const history = useHistory();
+  const context = useContext(Context);
+  const {profile} = context;
 
   // 스와이퍼
   const swiperFeeds = {
@@ -23,27 +27,40 @@ const SocialList = (props) => {
     }
   }
 
+  const photoClickEvent = (memNo) => {
+    if(type === 'fanBoard') {
+      history.push(`/profile/${memNo}`)
+    }
+  }
+
   return (
-    <div className="socialList">
+    <div className="socialListWrap">
       {socialList.map((item, index) => {
-        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
-        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo };
+        if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== profileData.memNo)) {
+          return <React.Fragment key={item.replyIdx} />
+        }
+
+        const memNo = type==='feed'? profileData.memNo : item?.writerMemNo; //글 작성자
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
         return (
-          <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop}
-                              modifyEvent={() => goProfileDetailPage(modifyParam)}
+          <div className='socialList' key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} openBlockReportPop={openBlockReportPop}
+                              modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
+                              photoClick={() => {photoClickEvent(item.mem_no)}}
             />
             <div className="socialContent">
-              <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>
-                {item.contents}
-              </div>
+              <div className="text"
+                   onClick={() => goProfileDetailPage(detailPageParam)}
+                   dangerouslySetInnerHTML={{__html: Utility.nl2br(item.contents)}}
+              />
               {type === 'feed' && (item.photoInfoList.length > 1 ?
                 <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
                   <Swiper {...swiperFeeds}>
-                    {item.photoInfoList.map((photo) => {
+                    {item.photoInfoList.map((photo, index) => {
                       return (
-                        <div>
+                        <div key={index}>
                           <div className="photo">
                             <img src={photo?.imgObj?.thumb500x500} alt="" />
                           </div>
@@ -64,7 +81,7 @@ const SocialList = (props) => {
                 <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
               </div>
             </div>
-          </React.Fragment>
+          </div>
         )
       })}
     </div>

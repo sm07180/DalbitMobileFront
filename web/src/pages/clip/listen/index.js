@@ -1,36 +1,57 @@
 import React, {useEffect, useState, useContext} from 'react';
-import ClipDetail from "pages/clip/components/ClipDetail";
-import Header from "components/ui/header/Header";
-import Swiper from "react-id-swiper";
-import TabBtn from "components/ui/tabBtn/TabBtn";
-import FilterBtn from "pages/clip/components/FilterBtn";
 
-import '../scss/clipDetail.scss';
-import Api from "context/api";
-import {Context} from "context";
-import ClipLikeCore from "pages/clip/components/ClipLikeCore";
+import Header from "components/ui/header/Header";
 import ClipListenCore from "pages/clip/components/ClipListenCore";
 
-const ClipDetailPage = (props) => {
+import Api from "context/api";
+import {Context} from "context";
+
+import '../scss/clipDetail.scss';
+import '../../../components/ui/listRow/listRow.scss';
+import Utility from "components/lib/utility";
+
+const ClipListenPage = (props) => {
   const context = useContext(Context);
 
-  const clipTabmenu = ['ALL','커버/노래','작사/작곡','힐링','수다/대화','ASMR','고민/사연','성우','더빙'];
-  const filterAlignList = ['인기순','최신순','좋아요 많은 순','재생 많은 순','받은 선물 순',];
-  const filterDateList = ['전체기간','최근 7일','오늘'];
   const [searchInfo, setSearchInfo] = useState({type: 'ALL', page: 1, records: 50 });
-  const [clipListenInfo, setClipListenInfo] = useState({list: [], paging: {}}); // 좋아요 리스트 정보
+  const [clipListenInfo, setClipListenInfo] = useState({list: [], paging: {}, cnt: 0}); // 좋아요 리스트 정보
 
   // 좋아요한 클립 리스트 가져오기
   const getListData = () => {
     if (context.token.memNo === undefined) return;
 
-    Api.getHistoryList({  memNo: context.token.memNo, slctType: 0, page: searchInfo.page, records: searchInfo.records, }).then(res => {
-      if (res.code === 'C001') {
-        setClipListenInfo(res.data);
+    Api.getHistoryList({ ...searchInfo, memNo: context.token.memNo, slctType: 0 }).then(res => {
+      if (res.code === 'C001' && res.data.list.length > 0) {
+        if (searchInfo.page !== 1) {
+          let temp =  [];
+          res.data.list.forEach(value => {
+            if (clipListenInfo.list.findIndex(target => target.clipNo === value.clipNo) === -1) {
+              temp.push(value);
+            }
+          })
+          setClipListenInfo({...res.data, list: clipListenInfo.list.concat(temp)});
+        } else {
+          setClipListenInfo({...res.data, cnt: res.data.paging.total});
+        }
       }
     })
   };
 
+  const scrollEvent = () => {
+    if (clipListenInfo.cnt > searchInfo.page && Utility.isHitBottom()) {
+      setSearchInfo({...searchInfo, page: searchInfo.page + 1});
+      window.removeEventListener('scroll', scrollEvent);
+    } else if (clipListenInfo.cnt === searchInfo.page) {
+      window.removeEventListener('scroll', scrollEvent);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvent);
+    return () => {
+      window.removeEventListener('scroll', scrollEvent);
+    }
+  }, [clipListenInfo]);
 
   useEffect(() => {
     getListData();
@@ -50,4 +71,4 @@ const ClipDetailPage = (props) => {
   );
 };
 
-export default ClipDetailPage;
+export default ClipListenPage;

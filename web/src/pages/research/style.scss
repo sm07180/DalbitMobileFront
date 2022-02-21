@@ -1,20 +1,43 @@
 @import '../../styles/global.scss';
 @import "components/ui/_mixin.scss";
 
+$SEARCH-HEADER: 112px;
+
+.container .totalWrap #searchPage .tabmenu {
+  top: $GNB-HEIGHT + $SEARCH-HEADER !important;
+}
+
+/*
+  피씨일때 헤더 없애기
+*/
+#root {
+  .container {
+    .totalWrap {
+      #searchPage {
+        header {
+          .buttonGroup {
+            display:none;
+          }
+        }
+      }
+    }
+  }
+}
+
 #searchPage {
   header {
-    align-items: flex-start;
-    flex-direction: column;
+    flex-wrap:wrap;
     height: auto;
-    padding: 0 16px;
     h1 {
-      height: 48px;
+      height: $HEADER-HEIGHT;
     }
     .searchForm {
       position: relative;
       @include flex(center);
       width:100%;
       height:64px;
+      padding-right: 10px;
+      box-sizing: border-box;
       .inputItems {
         flex:1;
         margin-bottom:0;
@@ -45,34 +68,45 @@
   section {
     position:relative;
     width:100%;
-    margin-bottom: 26px;
-    &:last-child {
-      margin-bottom: 0;
-      padding-bottom:40px;
-    }
+    margin-bottom: 44px;
   }
   .cntTitle {
     margin-bottom:12px;
   }
   .djSection {
     padding-top:10px;
-    .listColumn {
-      width: 87px;
-      .photo {
-        height:87px;
-        img {
-          border-radius:50%;
+    .listWrap {
+      @include flex(center, center, column);
+      .listColumn {
+        width: 87px;
+        /*cursor: pointer;*/
+        .photo {
+          position: relative;
+          height:87px;          
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:50%;
+            box-sizing: border-box;
+          }
+          img {
+            border-radius:50%;
+          }
         }
-      }
-      .listItem {
-        @include flex(center,center);
-        width:100%;
-        margin: 6px 0;
-        .nick {
-          margin-left:4px;
-          @include font(12px, 400, #666666);
-          @include fontCut;
-        }
+        .listItem {
+          @include flex(center,center);
+          width: 100%;
+          height: 17px;
+          margin: 6px 0;
+          .nick {
+            margin-left:4px;
+            @include font(12px, 400, #666666);
+            @include fontCut;
+            line-height: 26px;
+          }
+        }      
       }
       button {
         width: 62px;
@@ -86,15 +120,17 @@
           @include font(12px, 500, #303030);
         }
       }
-    }
+    }    
   }
   .liveSection {
     .listColumn {
       width: 113px;
-      height: 150px;
+      height: 149px;
       border-radius: 16px;
       overflow: hidden;
+      cursor: pointer;
       .photo {
+        @include photoStyle(113px, 149px, 16px);
         img {
           width:auto;
         }
@@ -105,6 +141,7 @@
         padding:24px 8px 8px;
         background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0));
         @include font(13px, 500, #fff);
+        @include fontCut;
       }
       .badgeVideo {
         @include position-top-right(6px,6px);
@@ -116,22 +153,33 @@
   .clipSection {
     .listColumn {
       width: 113px;
+      cursor: pointer;
       .photo {
+        position: relative;
         height:113px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:16px;
+          box-sizing: border-box;
+        }
         img {
           border-radius:16px;
         }
+      }
+      .title {
+        width:100%;
+        margin-top: 8px;
+        line-height:22px;
+        @include font(14px, 500, #202020);
+        @include fontCut;
       }
       .nick {
         width:100%;
         line-height:20px;
         @include font(12px, 400, #666666);
-        @include fontCut;
-      }
-      .title {
-        width:100%;
-        line-height:22px;
-        @include font(14px, 700, #202020);
         @include fontCut;
       }
     }
@@ -157,15 +205,20 @@
 
   // searchResult page
   .tabmenu {
+    position: sticky;
+    top: 116px;
     @include flex(center);
     margin-bottom:18px;
     padding: 4px 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
       @include flex(center, center);
       height: 36px;
       padding: 0 15px;
       border-radius: 100px;
       margin-right: 4px;
+      margin-bottom: 5px;
       background-color: #F6F6F6;
       @include font(13px, 400, #ACACAC);
       &:last-child {
@@ -180,9 +233,19 @@
   .djResult {
     .listRow {
       margin-bottom:16px;
+      cursor: pointer;
       .photo {
+        position: relative;
         width:64px;
         height:64px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:50%;
+          box-sizing: border-box;
+        }
         img {
           border-radius:50%;
         }
@@ -196,6 +259,7 @@
     .listRow {
       align-items: normal;
       margin-bottom:12px;
+      cursor: pointer;
       .listItem:nth-child(3) {
         margin-top: auto;
       }
@@ -204,8 +268,17 @@
         overflow: hidden;
       }
       .photo {
+        position: relative;
         width:112px;
         height:112px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:16px;
+          box-sizing: border-box;
+        }
         img {
           border-radius:16px;
         }
@@ -219,9 +292,19 @@
   .clipResult {
     .listRow {
       margin-bottom:12px;
+      cursor: pointer;
       .photo {
+        position: relative;
         width:72px;
         height:72px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:16px;
+          box-sizing: border-box;
+        }
         img {
           border-radius:16px;
         }

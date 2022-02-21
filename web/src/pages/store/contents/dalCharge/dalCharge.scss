@@ -35,6 +35,10 @@
         p {
           margin-left: auto;
           @include font(15px,500,#202020);
+          .totalCnt {
+            margin-right: 3px;
+            @include font(23px,500,#202020);
+          }
           &.quantity {
             @include flex(center);
             span {
@@ -75,6 +79,7 @@
         border-radius: 16px;
         border: 1px solid #e0e0e0;
         @include font(15px,500,#303030);
+        cursor: pointer;
         &.active {
           border-color: #FF3C7B;
           color: #FF3C7B;

@@ -1,4 +1,6 @@
 @import '../../../../styles/variables';
+@import "components/ui/_mixin.scss";
+
 input[type='file'] {
   display: none;
 }
@@ -12,7 +14,7 @@ input[type='file'] {
   line-height: 32px;
   font-size: 14px;
   font-weight: $bold;
-  background: $primary;
+  background: $MAINCOLOR;
   color: $white;
   border-radius: 16px;
   display: flex;
@@ -47,7 +49,7 @@ input[type='file'] {
 
     & button.on {
       color: white;
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
 }
@@ -196,7 +198,7 @@ input[type='file'] {
       margin-right: 4px;
     }
     & button:last-child {
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
   &__button {
@@ -356,7 +358,7 @@ input[type='file'] {
     border-radius: 12px;
 
     &.on {
-      background-color: #632beb;
+      background-color: #FF3C7B;
     }
   }
   .callBoxWrap {
@@ -499,7 +501,7 @@ input[type='file'] {
     background-color: $lighterGray;
     font-size: 18px;
     font-weight: $bold;
-    color: $primary;
+    color: $MAINCOLOR;
     text-align: center;
 
     img {
@@ -555,7 +557,7 @@ input[type='file'] {
         dl {
           font-size: 14px;
           dt {
-            color: $primary;
+            color: $MAINCOLOR;
           }
 
           dd {

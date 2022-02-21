@@ -427,7 +427,7 @@ export default (props) => {
                 ) : (
                   <CoinChargeBtn
                     onClick={() => {
-                      history.push('/pay/store')
+                      history.push('/store')
                     }}>
                     충전하기
                   </CoinChargeBtn>
@@ -501,7 +501,7 @@ export default (props) => {
 //styled-------------------------------------------------------------------------------
 const CoinChargeBtn = styled.button`
   color: #fff;
-  background-color: #632beb;
+  background-color: #FF3C7B;
   box-sizing: border-box;
   font-size: 16px;
   width: auto;
@@ -514,9 +514,9 @@ const CoinChargeBtn = styled.button`
   text-align: center;
   color: #ffffff;
   &.white-btn {
-    border: 1px solid #632beb;
+    border: 1px solid #FF3C7B;
     background-color: #fff;
-    color: #632beb;
+    color: #FF3C7B;
     margin-right: 12px;
   }
   &.exchange {
@@ -524,7 +524,7 @@ const CoinChargeBtn = styled.button`
     flex-direction: inherit;
     margin-top: 0 !important;
     margin-left: 4px;
-    background: #632beb;
+    background: #FF3C7B;
   }
   &.gray {
     background-color: #757575;
@@ -603,8 +603,8 @@ const CoinTypeBtn = styled.button`
   border: solid 1px #e0e0e0;
   background-color: #ffffff;
   &.active {
-    border: solid 1px #632beb;
-    background-color: #632beb;
+    border: solid 1px #FF3C7B;
+    background-color: #FF3C7B;
     color: #ffffff;
   }
 `
@@ -618,7 +618,7 @@ const TitleWrap = styled.div`
   .text {
     font-size: 20px;
     letter-spacing: -0.5px;
-    color: #632beb;
+    color: #FF3C7B;
   }
 `
 // 탑 공통 타이틀 스타일

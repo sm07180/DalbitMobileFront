@@ -1,19 +1,33 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+ .totalWrap {
+  #rankingBenefit {
+    .tabmenu {
+      top:$PC-TABTOP;
+    }
+  }
+ } 
+}
+
 #rankingBenefit {
   .tabmenu {
-    position:relative;
+    position: sticky;
+    top: $MOBILE-TABTOP;
     @include flex(center);
     padding:0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
       flex: 1;
       @include flex(center, center);
-      padding: 10px 0;
-      border-bottom: 2px solid #ccc;
-      @include font(16px,500,#ccc);
+      height: 48px;
+      border-bottom: 2px solid #F2F2F2;
+      @include font(16px,600,#ACACAC);
+      box-sizing: border-box;
       &.active {
-        @include font(16px,700,#333);
-        border-bottom: 2px solid #333;
+        @include font(16px,700,#202020);
+        border-bottom: 2px solid #202020;
       }
     }
   }

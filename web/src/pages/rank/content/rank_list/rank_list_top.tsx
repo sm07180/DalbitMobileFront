@@ -165,7 +165,7 @@ function RankListTop() {
                   className={`TopBoxThumb ${formState[formState.pageType].rankType === RANK_TYPE.DJ ? "dj" : "fan"}`}
                   onClick={() => {
                     if (globalState.baseData.isLogin) {
-                      history.push(`/mypage/${memNo}`);
+                      history.push(`/profile/${memNo}`);
                     } else {
                       history.push("/login");
                     }

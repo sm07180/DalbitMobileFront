@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const PlayerAudioStyled = styled.div`
   position: fixed;
   left: 50%;
-  margin-left: -220px;
   bottom: 20px;
   width: 440px;
   height: 64px;

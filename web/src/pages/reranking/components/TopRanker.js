@@ -84,12 +84,12 @@ const TopRanker = (props) => {
               <div className='rankingTop3' key={index}>
                 <div className='topHeader'>{
                 index === 0 ?
-                  rankType === 0 ? `${data.length}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
                   :
                 index === 1 ?
-                  rankType === 0 ? `${data.length - index}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
                   :
-                  `${data.length - index}회차`
+                  `${index + 1}회차`
                 } TOP3
                   <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>
@@ -104,9 +104,9 @@ const TopRanker = (props) => {
                             </div>
                             <div className='rankerNick'>-</div>
                           </div>
-                          {rankSlct === "LOVER" &&
+                          {rankSlct === "CUPID" &&
                             <div className='cupidWrap'>
-                              <div className='cupidHeader'>CUPID</div>
+                              <div className='cupidHeader'>Honey</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
                                   <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} />
@@ -127,9 +127,9 @@ const TopRanker = (props) => {
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
-                          {rankSlct === "LOVER" ?
+                          {rankSlct === "CUPID" ?
                             <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
-                              <div className='cupidHeader'>CUPID</div>
+                              <div className='cupidHeader'>Honey</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
                                   <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
@@ -142,7 +142,7 @@ const TopRanker = (props) => {
                               {data.roomNo && <div className='badgeLive' onClick={(e) => {
                                 e.stopPropagation();
                                 goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                              }}>LIVE</div>}
+                              }}></div>}
                             </>
                           }
                         </div>
@@ -179,14 +179,14 @@ const TopRanker = (props) => {
 
           }
           {
-            rankSlct === "LOVER" &&
+            rankSlct === "CUPID" &&
             <>
-              <div className='popTitle'>LOVER 랭킹이란?</div>
+              <div className='popTitle'>CUPID 랭킹이란?</div>
               <div className='popSubTitle'>
               보낸 좋아요 개수 (부스터 포함)<br/>1~200위의 순위입니다.
               </div>
               <div className='popText'>
-                <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
+                <span>Honey</span>(허니)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
               </div>
             </>
 

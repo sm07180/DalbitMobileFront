@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 import CntTitle from '../../../components/ui/cntTitle/CntTitle';
 
 const SearchHistory = (props) => {
-  const { onInputClick } = props;
-  const [historyData, setHistoryData] = useState(localStorage.getItem('searchList') ? localStorage.getItem('searchList').split('|') : []);
+  const { onInputClick, handleHistory } = props;
+  const [historyData, setHistoryData] = useState(localStorage.getItem('searchList') ? localStorage.getItem('searchList').split('|').reverse() : []);
 
   const delHistory = (e) => {
     localStorage.setItem('searchList', '');
@@ -15,13 +15,15 @@ const SearchHistory = (props) => {
   const handleClick = (e) => {
     const { value } = e.currentTarget.dataset;
 
+    handleHistory(value);
+
     onInputClick(value);
   }
 
   return (
     <div className='searchHistory'>
       <CntTitle title="최근 검색어">
-        <button className='removeAll' onClick={delHistory}>모두삭제</button>
+        {historyData.length > 0 && <button className='removeAll' onClick={delHistory}>모두삭제</button>}
       </CntTitle>
       <div className='historyWrap'>
         {historyData.map((list,index) => {

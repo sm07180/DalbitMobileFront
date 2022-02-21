@@ -1,30 +1,38 @@
 import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
+import { deleteFan, postAddFan} from "common/api";
+import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+
 //context
-import API from 'context/api'
+import API from 'context/api';
+
 // global component
-import Header from 'components/ui/header/Header.js'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import InputItems from 'components/ui/inputItems/InputItems'
+import Header from 'components/ui/header/Header.js';
+import CntTitle from 'components/ui/cntTitle/CntTitle';
+import InputItems from 'components/ui/inputItems/InputItems';
+
 // component
-import SwiperList from './components/SwiperList'
-// contents
-import SearchHistory from './components/SearchHistory'
-import SearchResult from './components/SearchResult'
-// scss
-import './style.scss'
+import ClipList from "./components/ClipList";
 import DjList from "pages/research/components/DjList";
 import HotLiveList from "pages/research/components/HotLiveList";
-import {broadcastList, deleteFan, getClipList, postAddFan} from "common/api";
-import {Context} from "context";
+
+// contents
+import SearchHistory from './components/SearchHistory';
+import SearchResult from './components/SearchResult';
+
+// scss
+import './style.scss';
+import {setIsRefresh} from "redux/actions/common";
 
 const SearchPage = (props) => {
-  const inputRef = useRef(); // 검색 input 관리용 ref
   const context = useContext(Context); //context
+  const dispatch = useDispatch();
+  const common = useSelector(state => state.common);
   const [searchVal, setSearchVal] = useState(''); // 검색 value 값
   const [searchParam, setSearchParam] = useState(''); // child로 넘길 검색 값
 
-  const [searching, setSearching] = useState(false);
-  
+  const [searching, setSearching] = useState(false); // 검색 결과창 접근 여부
+  const [ focusYn, setFocusYn ] = useState(false); // 인풋박스 포커스 여부
   const [djListInfo, setDjListInfo] = useState({list: []}); // 믿고 보는 DJ 정보
   const [liveListInfo, setLiveListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 지금 핫한 라이브 정보
   const [hotClipListInfo, setHotClipListInfo] = useState({ checkDate: '', list: [], totalCnt: 0, type: 0}); // 오늘 인기 있는 클립 정보
@@ -38,32 +46,36 @@ const SearchPage = (props) => {
     if (result === 'success') {
       setDjListInfo({...data});
     }
-  });
+  }, []);
 
   // 지금 핫한 라이브 정보 리스트 가져오기
   const getLiveListInfo = useCallback(async() => {
-    const {result, data} = await API.getSearchRecomend({ page: 1, records: 20 });
+    const {result, data} = await API.getSearchRecomend({ page: 1, listCnt: 10 });
     if (result === 'success') {
       setLiveListInfo({...data});
     }
-  });
+  }, []);
 
   // 오늘 인기 있는 클립 정보 리스트 가져오기
   const getHopClipListInfo = useCallback(async() => {
-    const {result, data} = await API.getPopularList({ page: 1, records: 20 });
+    const {result, data} = await API.getPopularList({ page: 1, listCnt: 10 });
     if (result === 'success') {
       setHotClipListInfo({...data});
     }
-  });
+  }, []);
 
   // 검색창 state 관리
   const onChange = (e) => {
     setSearchVal(e.target.value);
-  }
+  };
 
-  // 검색창 초기화 처리
+  // 취소 버튼 이벤트
   const removeValue = () => {
-    setSearchVal("");
+    if (setSearching) {
+      setSearching(false);
+      setSearchVal('');
+      setFocusYn(false);
+    }
   }
 
   // 히스토리 클릭 이벤트
@@ -71,28 +83,43 @@ const SearchPage = (props) => {
     // 최초 검색시에만 state 변경
     if (!searching) setSearching(true);
 
-    if (value !== searchVal) setSearchVal(value);
+    if (value !== searchVal) setSearchVal(value.trim());
 
     // 검색 파라미터 SET
-    setSearchParam(value);
+    setSearchParam(value.trim());
+  }
+
+  // 검색 히스토리 관리
+  const handleHistory = (value) => {
+    // 로컬 스토리지 데이터 가져오기
+    let temp = localStorage.getItem('searchList') ? localStorage.getItem('searchList').split('|') : [];
+
+    // 중복 데이터 삭제
+    const findIdx = temp.findIndex(item => item === value);
+    if (findIdx > -1) temp.splice(findIdx, 1);
+
+    // 최근 5개만 가져오도록 데이터 가공
+    if (temp.length > 4) temp = temp.slice(1);
+    temp.push(value);
+
+    // 로컬 스토리지 데이터 SET
+    localStorage.setItem('searchList', temp.join('|'));
   }
 
   // 검색창 enter 눌렀을 때,
   const handleSubmit = (e) => {
+
     if (e.keyCode === 13) {
-      // 로컬 스토리지 데이터 가져오기
-      let temp = localStorage.getItem('searchList') ? localStorage.getItem('searchList').split('|') : [];
-
-      // 최근 5개만 가져오도록 데이터 가공
-      if (temp.length > 4) {
-        temp = temp.slice(1);
+      if (searchVal.trim().length < 2) {
+        context.action.alert({ msg: '검색어를 최소 두 글자 이상 입력해주세요.'});
+        return;
       }
-      temp.push(searchVal);
 
-      // 로컬 스토리지 데이터 SET
-      localStorage.setItem('searchList', temp.join('|'));
+      handleHistory(searchVal);
 
       handleSearch(searchVal);
+
+      e.currentTarget.blur();
     }
   }
 
@@ -132,11 +159,37 @@ const SearchPage = (props) => {
     }
   };
 
+  const handleFocus = () => {
+    setFocusYn(true);
+  };
+
+  const handleBlur = () => {
+    if (searchVal.trim().length === 0) {
+      setFocusYn(false);
+    }
+  };
+
+  const refreshActions = () => {
+    getDjListInfo().then(r => {});
+    getLiveListInfo().then(r => {});
+    getHopClipListInfo().then(r => {});
+    setSearchVal('');
+    setSearching(false);
+    window.scrollTo(0, 0);
+    dispatch(setIsRefresh(false));
+  };
+
   useEffect(() => {
     getDjListInfo().then(r => {});
     getLiveListInfo().then(r => {});
     getHopClipListInfo().then(r => {});
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if(common.isRefresh) {
+      refreshActions();
+    }
+  }, [common.isRefresh]);
 
   return (
     <div id="searchPage">
@@ -144,35 +197,38 @@ const SearchPage = (props) => {
         <div className='searchForm'>
           <InputItems>
             <input type="text" placeholder="닉네임, 방송, 클립을 입력해주세요." value={searchVal} onChange={onChange} onKeyDown={handleSubmit}/>
-            {searchVal.length > 0 && <button className='inputDel' onClick={removeValue}/>}
           </InputItems>
-          {searchVal.length > 0 && <button className='searchCancel' onClick={removeValue}>취소</button>}
+          {(searchVal.length > 0 || searching) && <button className='searchCancel' onClick={removeValue}>취소</button>}
         </div>
       </Header>
-      {!searching && ( searchVal.length === 0 ?
+      {!searching && (searchVal.length === 0 ?
         <>
+          {djListInfo.list.length > 0 &&
           <section className='djSection'>
             <CntTitle title="믿고 보는 DJ" />
             <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
           </section>
+          }
+          {liveListInfo.list.length > 0 &&
           <section className='liveSection'>
-            <CntTitle title="🔥 지금 핫한 라이브" />
-            <HotLiveList data={liveListInfo.list} />
+            <CntTitle title="🔥 지금 핫한 라이브"/>
+            <HotLiveList data={liveListInfo.list}/>
           </section>
+          }
+          {hotClipListInfo.list.length > 0 &&
           <section className='clipSection'>
-            <CntTitle title="오늘 인기 있는 클립" />
-            <SwiperList data={hotClipListInfo.list} type="clip" />
+            <CntTitle title="오늘 인기 있는 클립"/>
+            <ClipList data={hotClipListInfo.list}/>
           </section>
-        </>            
+          }
+        </>
         :
-        <SearchHistory onInputClick={handleSearch}/>)
+        <SearchHistory onInputClick={handleSearch} handleHistory={handleHistory}/>)
       }
 
-
       {searching && <SearchResult searchVal={searchParam}/>}
-
     </div>
-  )
-}
+  );
+};
 
-export default SearchPage
+export default SearchPage;

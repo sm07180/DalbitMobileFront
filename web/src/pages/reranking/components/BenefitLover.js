@@ -8,12 +8,12 @@ export default () => {
   return (
     <>
       <div className="benefitTop">
-        <p className="mainText">TOP LOVER에 도전해보세요!</p>
-        <p className="subText">심쿵유발자의 든든한 사랑꾼이 될 수 있습니다.</p>
+        <p className="mainText">TOP CUPID에 도전해보세요!</p>
+        <p className="subText">Honey의 든든한 사랑꾼이 될 수 있습니다.</p>
       </div>
 
       <div className="tableBox">
-        <p className="title">일간 좋아요 랭킹 TOP3</p>
+        <p className="title">일간 CUPID 랭킹 TOP3</p>
         <p className='subText'>달 보상 지급</p>
         <table>
           <colgroup>
@@ -50,7 +50,7 @@ export default () => {
       </div>
 
       <div className="tableBox">
-        <p className="title">주간 좋아요 랭킹 TOP3</p>
+        <p className="title">주간 CUPID 랭킹 TOP3</p>
         <table>
           <colgroup>
             <col width="*" />

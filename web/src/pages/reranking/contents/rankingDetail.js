@@ -19,7 +19,7 @@ const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
   const rankingListType = params.type
-  //Ranking 종류(DJ, FAN, LOVER)
+  //Ranking 종류(DJ, FAN, CUPID)
   const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
   //Ranking 기간(타임, 일간 등등)
   const [rankType, setRankType] = useState(1);
@@ -48,15 +48,12 @@ const RankDetailPage = () => {
     if (rankingListType === 'DJ') {
       setTabList(['타임','오늘','이번주', '이번달', '올해']);
       setTabName('오늘')
-      fetchRankData(rankSlct, rankType, 1);
     } else if (rankingListType === 'FAN') {
       setTabList(['오늘','이번주', '이번달']);
       setTabName('오늘')
-      fetchRankData(rankSlct, rankType, 1);
-    } else if (rankingListType === 'LOVER') {
+    } else if (rankingListType === 'CUPID') {
       setTabList(['오늘','이번주']);
       setTabName('오늘')
-      fetchRankData(rankSlct, rankType, 1);
     }
     setSelect(rankingListType);
   }, []);
@@ -93,9 +90,9 @@ const RankDetailPage = () => {
             if (prevTwo.result === "success" && prevOne.result === "success"){
               if (data.list.length > 3){
                 setRankList(data.list.slice(3));
-                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)]);
+                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)].reverse());
               } else {
-                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)]);
+                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(prevTwo.data.list), addEmptyRanker(prevOne.data.list)].reverse());
                 setRankList([]);
               }
             }
@@ -105,9 +102,9 @@ const RankDetailPage = () => {
             if (res.result === "success"){
               if (data.list.length > 3){
                 setRankList(data.list.slice(3));
-                setTopRankList([data.list.slice(0, 3), addEmptyRanker(res.data.list)]);
+                setTopRankList([data.list.slice(0, 3), addEmptyRanker(res.data.list)].reverse());
               } else {
-                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(res.data.list)]);
+                setTopRankList([addEmptyRanker(data.list), addEmptyRanker(res.data.list)].reverse());
                 setRankList([]);
               }
             }
@@ -115,9 +112,9 @@ const RankDetailPage = () => {
         } else{
           if (data.list.length > 3){
             setRankList(data.list.slice(3));
-            setTopRankList([data.list.slice(0, 3)]);
+            setTopRankList([data.list.slice(0, 3)].reverse());
           } else {
-            setTopRankList([addEmptyRanker(data.list)]);
+            setTopRankList([addEmptyRanker(data.list)].reverse());
             setRankList([]);
           }
         }
@@ -152,11 +149,11 @@ const RankDetailPage = () => {
             if (prevData.result === "success"){
               if (data.list.length > 3){
                 setRankList(data.list.slice(3));
-                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevData.data.list)]);
+                setTopRankList([data.list.slice(0, 3), addEmptyRanker(prevData.data.list)].reverse());
               } else {
                 let todayList = addEmptyRanker(data.list);
                 let prevList = addEmptyRanker(prevData.data.list);
-                setTopRankList([todayList, prevList]);
+                setTopRankList([todayList, prevList].reverse());
                 setRankList([]);
               }
             }
@@ -235,7 +232,7 @@ const RankDetailPage = () => {
       setRankSlct(2);
       setRankType(1);
     } else {      
-      setSelect("LOVER")
+      setSelect("CUPID")
       setTabName('오늘');
       setTabList(['오늘','이번주']);
       setRankSlct(3);
@@ -314,14 +311,14 @@ const RankDetailPage = () => {
   return (
     <div id="rankingList">
       <Header position={'sticky'} type={'back'}>
-        <h1 className='title'>{select.toUpperCase()}<span className='optionSelect' onClick={bottomSlide}></span></h1>
+        <h1 className='title' onClick={bottomSlide}>{select.toUpperCase()}<span className='optionSelect'></span></h1>
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rank/benefit")}>혜택</button>
+          <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>
       </Header>
       <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
       <div className="rankingContent">
-        <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "LOVER"} rankType={rankType}/>
+        <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
         <div className='listWrap'>
           <RankingList data={rankList} tab={select}>
           </RankingList>
@@ -333,7 +330,7 @@ const RankDetailPage = () => {
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
             <div className={`selectOption ${select === "FAN" ? "active" : ""}`} onClick={optionSelect}>FAN</div>
-            <div className={`selectOption ${select === "LOVER" ? "active" : ""}`} onClick={optionSelect}>LOVER</div>
+            <div className={`selectOption ${select === "CUPID" ? "active" : ""}`} onClick={optionSelect}>CUPID</div>
           </div>
         </PopSlide>
       }

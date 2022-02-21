@@ -48,9 +48,9 @@ export default function VideoEventList({djRankList, eventSubType}) {
                       onClick={() => {
                         if (context.token.isLogin) {
                           if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
+                            history.push(`/mypage`)
                           } else {
-                            history.push(`/mypage/${memNo}`)
+                            history.push(`/profile/${memNo}`)
                           }
                         } else {
                           history.push(`/login`)
@@ -68,9 +68,9 @@ export default function VideoEventList({djRankList, eventSubType}) {
                         onClick={() => {
                           if (context.token.isLogin) {
                             if (context.token.memNo === memNo) {
-                              history.push(`/menu/profile`)
+                              history.push(`/mypage`)
                             } else {
-                              history.push(`/mypage/${memNo}`)
+                              history.push(`/profile/${memNo}`)
                             }
                           } else {
                             history.push(`/login`)
@@ -86,16 +86,16 @@ export default function VideoEventList({djRankList, eventSubType}) {
                       onClick={() => {
                         if (context.token.isLogin) {
                           if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
+                            history.push(`/mypage`)
                           } else {
-                            history.push(`/mypage/${qupidMemNo}`)
+                            history.push(`/profile/${qupidMemNo}`)
                           }
                         } else {
                           history.push(`/login`)
                         }
                       }}>
                       <img src={qupidProfImg.thumb120x120} alt={nickNm} />
-                      <em className="cupid">왕큐피트</em>
+                      <em className="cupid">CUPID</em>
                     </div>
                     <div className="nick_box">
                       <p
@@ -103,9 +103,9 @@ export default function VideoEventList({djRankList, eventSubType}) {
                         onClick={() => {
                           if (context.token.isLogin) {
                             if (context.token.memNo === memNo) {
-                              history.push(`/menu/profile`)
+                              history.push(`/mypage`)
                             } else {
-                              history.push(`/mypage/${qupidMemNo}`)
+                              history.push(`/profile/${qupidMemNo}`)
                             }
                           } else {
                             history.push(`/login`)
@@ -135,9 +135,9 @@ export default function VideoEventList({djRankList, eventSubType}) {
                       onClick={() => {
                         if (context.token.isLogin) {
                           if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
+                            history.push(`/myProfile`)
                           } else {
-                            history.push(`/mypage/${memNo}`)
+                            history.push(`/profile/${memNo}`)
                           }
                         } else {
                           history.push(`/login`)
@@ -154,11 +154,7 @@ export default function VideoEventList({djRankList, eventSubType}) {
                         className="nick"
                         onClick={() => {
                           if (context.token.isLogin) {
-                            if (context.token.memNo === memNo) {
-                              history.push(`/menu/profile`)
-                            } else {
-                              history.push(`/mypage/${memNo}`)
-                            }
+                            history.push(`/profile/${memNo}`)
                           } else {
                             history.push(`/login`)
                           }

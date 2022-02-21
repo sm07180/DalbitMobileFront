@@ -133,7 +133,7 @@ export const RoomJoin = async (obj) => {
             cancelCallback: () => {
               sessionStorage.removeItem('room_active')
             },
-            msg: '현재 청취 중인 방송방이 있습니다.\n방송에 재생하시겠습니까?',
+            msg: '현재 청취 중인 방송방이 있습니다.\n방송에 입장하시겠습니까?',
           })
         }else {
           sessionStorage.removeItem('room_active')
@@ -332,40 +332,8 @@ export const RoomJoin = async (obj) => {
       // RoomJoin 이벤트 (회원 비회원 분리)
       const newRoomJoinCmd = Room.context.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
       const oldRoomJoinCmd = 'RoomJoin';
-      const successCallback = () => { // 새 버전에서는 'Room_Join_regit' : 'Room_Join_unregit'으로 나뉘고 RoomJoin도 보내준다
-        Utility.addAdsData(newRoomJoinCmd);
-        Utility.addAdsData(oldRoomJoinCmd);
-      };
-
-      const failCallback = async () => { // appVer 미만
-        try {
-          const succCallback2 = () => { // appVer 이상
-            Utility.oldAddAdsData(oldRoomJoinCmd);
-          };
-
-          const failCallback2 = () => {
-            try {
-              firebase.analytics().logEvent(oldRoomJoinCmd)
-              Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
-              fbq('track', oldRoomJoinCmd)
-            } catch (e) {}
-          }
-
-          if(isHybrid()) {
-            const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
-            await Utility.compareAppVersion(targetVersion, succCallback2, failCallback2);
-          }else {
-            failCallback2();
-          }
-        } catch (e) {}
-      }
-
-      if(isHybrid()) {
-        const targetVersion = isAndroid() ? '1.8.2' : '1.6.6';
-        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
-      }else {
-        failCallback();
-      }
+      Utility.addAdsData(newRoomJoinCmd);
+      Utility.addAdsData(oldRoomJoinCmd);
 
       return true
     }
@@ -446,7 +414,7 @@ export const RoomMake = async (context) => {
         context.action.confirm({
           //msg: res.message,
           msg: '2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
-          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.',
+          subMsg: '※ 이어서 하면 모든 방송데이터 (방송시간, 청취자, 좋아요, 부스터, 선물)를 유지한 상태로 만들어집니다.',
           //새로 방송하기_클릭
           callback: () => {
             ;(async function () {
@@ -486,7 +454,7 @@ export const RoomMake = async (context) => {
         //방송 이어하기 가능
         context.action.confirm({
           msg: '2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
-          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.',
+          subMsg: '※ 이어서 하면 모든 방송데이터 (방송시간, 청취자, 좋아요, 부스터, 선물)를 유지한 상태로 만들어집니다.',
           callback: () => {
             goRoomMake()
           },

@@ -138,7 +138,7 @@ const Content = styled.div`
     font-weight: bold;
     span {
       display: inline-block;
-      color: #632beb;
+      color: #FF3C7B;
     }
     p {
       margin-left: auto;
@@ -162,7 +162,7 @@ const Content = styled.div`
       color: #fff;
       font-size: 18px;
       font-weight: bold;
-      background: #632beb;
+      background: #FF3C7B;
     }
     button:disabled {
       background: #757575;

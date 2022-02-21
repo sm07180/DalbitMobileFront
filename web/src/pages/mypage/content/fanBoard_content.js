@@ -209,13 +209,7 @@ export default (props) => {
             TotalList.map((item, index) => {
               const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx, viewOn} = item
               const Link = () => {
-                if (webview) {
-                  context.token.memNo !== writerNo
-                    ? history.push(`/mypage/${writerNo}?webview=${webview}`)
-                    : history.push(`/menu/profile`)
-                } else {
-                  context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
-                }
+                history.push(`/profile/${writerNo}?webview=${webview}`)
               }
               return (
                 <>

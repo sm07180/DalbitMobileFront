@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {
   broadcastCheck,
   broadcastContinue,
@@ -13,36 +13,57 @@ import {
 // context
 import {GlobalContext} from "context";
 import {MailboxContext} from "context/mailbox_ctx";
-import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-// static
-import broadText from "./static/bc_t.png";
-import searchIcon from "./static/ico_search_g.svg";
-import storeIcon from "./static/ic_store_g.svg";
-import alarmIcon from "./static/alarm_g.svg";
 import LayerPopupCommon from "../common/layerpopup/index";
 import {MediaType} from "pages/broadcast/constant";
-// import {authReq} from "../pages/self_auth/content/self_auth";
 import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
-import {openMailboxBanAlert} from "./mailbox/mail_func";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setIsRefresh} from "../redux/actions/common";
+import {setNoticeTab} from "../redux/actions/notice";
+
+const gnbTypes = [
+  {url: '/', isUpdate: true},
+  {url: '/clip', isUpdate: true},
+  {url: '/search', isUpdate: true},
+  {url: '/rank', isUpdate: false},
+  // {url: '/mypage', isUpdate: false},
+  // {url: '/notice', isUpdate: false},
+];
+
+const gntSubTypes = [
+  {url: '/mypage'},
+  {url: '/mailbox'},
+  {url: '/store'},
+  {url: '/alarm'},
+]
 
 export default function GNB() {
   const context = useContext(GlobalContext);
   const { globalState, globalAction } = context;
-  const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
-  const { isMailboxNew } = mailboxState;
+  const { baseData, clipPlayer, chatInfo, rtcInfo } = globalState;
+  const { mailboxState, mailboxAction } = useContext(MailboxContext);
 
-  const { rankState, rankAction } = useContext(RankContext);
-  const { formState } = rankState;
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const dispatch = useDispatch();
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
+
+  const [activeType, setActiveType] = useState('');
+
+  const [isGnb, setIsGnb] = useState(true);
+
+  //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
+  const gnbOtherPageCheck = useCallback((url) => {
+    return url === '/mypage' && (
+      activeType.indexOf('/wallet') > -1
+      || activeType.indexOf('/myProfile') > -1
+      || activeType.indexOf('/profile') > -1
+    );
+  },[activeType]);
 
   const scrollToTop = useCallback(() => {
     window.scrollTo(0, 0);
@@ -231,7 +252,7 @@ export default function GNB() {
           status: true,
           type: "confirm",
           content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
-          subcont: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
+          subcont: "※ 이어서 하면 모든 방송데이터 (방송시간, 청취자, 좋아요, 부스터, 선물)를 유지한 상태로 만들어집니다.",
           subcontStyle: { color: `#e84d70` },
           confirmCancelText: "이어서 방송하기",
           confirmText: "새로 방송하기",
@@ -266,7 +287,7 @@ export default function GNB() {
           status: true,
           type: "confirm",
           content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
-          subcont: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
+          subcont: "※ 이어서 하면 모든 방송데이터 (방송시간, 청취자, 좋아요, 부스터, 선물)를 유지한 상태로 만들어집니다.",
           subcontStyle: { color: `#e84d70` },
           confirmCancelText: "이어서 방송하기",
           confirmText: "새로 방송하기",
@@ -370,6 +391,13 @@ export default function GNB() {
   }, [globalState.baseData.isLogin]);
 
   useEffect(() => {
+    setActiveType(location.pathname);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if(location?.pathname.includes('selfauth_result')) {
+      setIsGnb(false);
+    }
     document.addEventListener("self-auth", updateDispatch);
     return () => {
       document.removeEventListener("self-auth", updateDispatch);
@@ -378,32 +406,70 @@ export default function GNB() {
 
   return (
     <>
-      {isDesktop &&
+      {isDesktop && isGnb &&
       <aside id="GNB">
         <div className="gnbContainer">
           <div className="gnbHeader">
-            <h1 onClick={() => history.push('/')}><img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" /></h1>
-            <button onClick={()=>{
-              if (baseData.isLogin === true) {
-                scrollToTop();
-                return globalAction.setBroadClipDim!(true);
-              } else {
-                return history.push("/login");
+            <h1 onClick={() => {
+              if(location.pathname === '/') {
+                dispatch(setIsRefresh(true))
+              }else {
+                history.push('/')
               }
-            }}>방송하기</button>
+            }}>
+              <img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" />
+            </h1>
           </div>
           <nav className="gnbNavigation">
             <ul>
-              <li className="active" onClick={() => history.push('/')} />
-              <li onClick={() => history.push('/clip')}/>
-              <li onClick={() => history.push('/search')}/>
-              <li onClick={() => history.push('/rank')}/>
-              <li onClick={() => history.push('/mypage')}/>
-              <li className="new" onClick={() => history.push('/')}>
-                <span className="newDot"></span>
-              </li>
+              {gnbTypes.map((item, index) => {
+                return (
+                  <li key={index} data-url={item.url}
+                      className={`${activeType === item.url ? 'active' : activeType === "/rankDetail/DJ" && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
+                      onClick={() => {
+                        history.push(item.url);
+                        if(item.isUpdate && activeType === item.url) {
+                          dispatch(setIsRefresh(true))
+                        }
+                      }}
+                  >
+                    {item.url === '/notice' && globalState.alarmStatus && <span className="newDot"/>}
+                  </li>
+                )
+              })}
             </ul>
           </nav>
+          <div className="subGnbNavigation">
+            {baseData.isLogin ?
+              <>
+                <ul>
+                  {gntSubTypes.map((item, index) => {
+                    return (
+                      <li key={index} data-url={item.url}
+                          className={`${activeType === item.url || gnbOtherPageCheck(item.url) ? 'active' : ''} ${activeType !== item.url || gnbOtherPageCheck(item.url) ? 'cursorPointer' : ''}`}
+                          onClick={() => {
+                            if(item.url === "/alarm") {
+                              dispatch(setNoticeTab("알림"));
+                            }
+                            history.push(item.url)
+                          }}
+                      >
+                        {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
+                      </li>
+                    )
+                  })}
+                </ul>
+                <button className="plusButton" onClick={()=>{
+                  if (baseData.isLogin === true) {
+                    scrollToTop();
+                    return globalAction.setBroadClipDim!(true);
+                  }
+                }}>만들기</button>
+              </>
+              :
+              <button onClick={()=> history.push("/login")}>로그인</button>
+            }
+          </div>
         </div>
       </aside>
       }

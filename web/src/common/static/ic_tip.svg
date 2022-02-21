@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_tip" width="26" height="16" viewBox="0 0 26 16">
     <rect id="prefix__사각형_1053" width="26" height="16" fill="#fff" data-name="사각형 1053" rx="8"/>
-    <text id="prefix__TIP" fill="#632beb" font-family="NanumSquareB, NanumSquare" font-size="10px" letter-spacing="-0.025em" transform="translate(6 11)">
+    <text id="prefix__TIP" fill="#FF3C7B" font-family="NanumSquareB, NanumSquare" font-size="10px" letter-spacing="-0.025em" transform="translate(6 11)">
         <tspan x="0" y="0">TIP</tspan>
     </text>
 </svg>

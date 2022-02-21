@@ -1,19 +1,33 @@
 @import "components/ui/_mixin.scss";
 
+/*
+  피씨일때 헤더 없애기
+*/
+#root {
+  .container {
+    .totalWrap {
+      #clipPage {
+        .buttonGroup {
+          display:none;
+        }
+      }
+    }
+  }
+}
+
 #clipPage{
-  position:relative;
-  padding-bottom:80px;
-  font-family: 'Noto Sans KR', sans-serif;
   section {
     position: relative;
-    margin-bottom: 35px;
+    margin-bottom: 44px;
   }
   .cntTitle {
     margin-bottom: 15px;
     .nickName {
+      max-width: 200px;
       font-weight: bold;
       color: #FF3C7B;
-      letter-spacing: -2px;
+      letter-spacing: -0.5px;
+      @include fontCut;
     }
   }
   .subTitle{
@@ -34,11 +48,9 @@
     padding-top:18px;
     .swiper-slide{
       @include flex($fd:column);
-      transition:all .1s ease-out;
-      &.swiper-slide-active {
-        width:calc(100% - 28px);
-      }
-      &:last-child{
+      width: calc(100% - 28px);
+      &:active {cursor: grabbing;}
+      &:last-child {
         width:100%;
       }
     }
@@ -101,11 +113,21 @@
     }
   }
   .clipDrawer, .clipList {
+    .cntTitle {
+      h2 {
+        @include flex(center);
+        >img {
+          width: 28px;
+        }
+      }
+    }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {
         width:100px;
         margin-right: 12px;
+        cursor:pointer;
+        &:active {cursor:grabbing;}
         &:last-child {
           margin-right: 32px;
         }
@@ -113,21 +135,37 @@
     }
     .listColumn{
       .photo{
+        position: relative;
+        width: 100px; height: 100px;
+        border-radius:16px;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: 100%; height: 100%;
+          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+          border-radius:16px;
+          box-sizing: border-box;
+        }
         img {
           border-radius: 16px
         }
       }
       .title{
         width:100%;
-        margin-top: 2px;
+        line-height: 19px;
+        margin-top: 6px;
         @include font(14px,500,#202020);
         @include fontCut;
       }
       .nick{
         width:100%;
+        line-height: 16px;
         @include font(12px,400,#666);
         @include fontCut;
       }
+    }
+    .mgt24{
+      .subTitle{margin-top: 24px;}
     }
   }
   .likeSubWrap{
@@ -136,6 +174,8 @@
       .swiper-slide {
         width:auto;
         margin-right: 4px;
+        cursor:pointer;
+        &:active {cursor:grabbing;}
         &:last-child {
           margin-right: 32px;
         }
@@ -158,23 +198,25 @@
       }
       img {
         width: 24px;
+        margin-bottom: 2px;
+      }
+      p {
+        margin-top: 2px;
       }
     }
   }
   .nowClipWrap{
+    .swiper-container{
+      padding-left: 15px;
+    }
     .swiper-slide {
       @include flex($fd:column);
-      transition:all .1s ease-out;
-      >div{
-        padding-left:16px;
-      }
-      &.swiper-slide-active {
-        width:calc(100% - 28px);
-      }
-      &:last-child{
+      width: calc(100% - 80px);
+      &:active {cursor: grabbing;}
+      &:last-child {
         width:100%;
         >div{
-          padding-right:16px;
+          width: calc(100% - 16px);
         }
       }
     }
@@ -186,13 +228,23 @@
       margin-bottom:8px;
       padding:8px;
       border-radius:8px;
+      cursor:pointer;
       &:last-child{
         margin-bottom: 0;
       }
       .listRow {
         .photo {
+          position: relative;
           width:50px;
           height:50px;
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:16px;
+            box-sizing: border-box;
+          }
           img {
             border-radius:16px;
           }
@@ -213,5 +265,74 @@
         }
       }
     }
+  }
+  // .nowClipWrap{
+  //   .swiper-slide {
+  //     @include flex($fd:column);
+  //     width: calc(100% - 28px);
+  //     &:active {cursor: grabbing;}
+  //     &:last-child {
+  //       width:100%;
+  //       >div{
+  //         padding-right: 16px;
+  //       }
+  //     }
+  //     >div {
+  //       padding-left: 16px;
+  //     }
+  //   }
+  //   .listWrap {
+  //     background-color:#666;
+  //     background-size:cover;
+  //     background-position:center;
+  //     background-blend-mode:screen;
+  //     margin-bottom:8px;
+  //     padding:8px;
+  //     border-radius:8px;
+  //     cursor:pointer;
+  //     &:last-child{
+  //       margin-bottom: 0;
+  //     }
+  //     .listRow {
+  //       .photo {
+  //         position: relative;
+  //         width:50px;
+  //         height:50px;
+  //         &::before {
+  //           content: "";
+  //           @include position-top-left;
+  //           width: 100%; height: 100%;
+  //           border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+  //           border-radius:16px;
+  //           box-sizing: border-box;
+  //         }
+  //         img {
+  //           border-radius:16px;
+  //         }
+  //       }
+  //       .listContent{
+  //         flex:1;
+  //         @include flex($fd:column);
+  //         min-width:0;
+  //         margin-left:12px;
+  //         .title{
+  //           @include font(16px,500,#202020);
+  //           @include fontCut;
+  //         }
+  //         .nick{
+  //           @include font(12px,400,#666);
+  //           @include fontCut;
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+  .empty {
+    width: 100%;
+    height: 60px;
+    text-indent: 20px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #999;
   }
 }

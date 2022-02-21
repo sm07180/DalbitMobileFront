@@ -67,7 +67,7 @@ export default function Guidance({state, dispatch}) {
                   <div className="guidance__list--spacing">-</div>
                   <div>단, 토요일/일요일/공휴일인 경우 다음날 환전이 됩니다.</div>
                 </div>
-                ※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 달빛 라이브 알림을 통해 확인이 가능합니다.
+                ※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 달라 알림을 통해 확인이 가능합니다.
                 <br />
               </div>
             </div>

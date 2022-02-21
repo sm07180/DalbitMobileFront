@@ -7,7 +7,7 @@ i.dataCnt {
   margin-right: 8px;
   padding-left: 16px;
   font-style: normal;
-  @include font(12px,$Regular,#8B8B8B);
+  @include font(12px,500,#8B8B8B);
   line-height: 16px;  
   background-position: left center;
   background-repeat: no-repeat;
@@ -39,6 +39,7 @@ i.dataCnt {
                 &.active {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-likeCntOn.png");}
               }
   &.tailCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-tailCnt.png");}
+  &.giftDal {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-giftDal.png");}
 }
 
 .cupid {

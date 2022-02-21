@@ -286,15 +286,7 @@ export default (props) => {
           list.map((item, index) => {
             const {nickNm, writeDt, profImg, contents, boardIdx, writerNo, viewOn} = item
             const Link = () => {
-              let link = ''
-              if (webview) {
-                link =
-                  context.token.memNo !== writerNo
-                    ? history.push(`/mypage/${writerNo}?webview=${webview}`)
-                    : history.push(`/menu/profile`)
-              } else {
-                link = context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
-              }
+              history.push(`/profile/${writerNo}?webview=${webview}`)
             }
             return (
               <div key={index} className="reply_Wrap">

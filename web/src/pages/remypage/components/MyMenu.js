@@ -1,11 +1,18 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
+import {useDispatch} from "react-redux";
+import {setNoticeTab} from "redux/actions/notice";
 
-const MyInfo = (props) => {
-  const {data, memNo} = props
+const MyMenu = (props) => {
+  const {data} = props
   const history = useHistory()
+  const dispatch = useDispatch();
+
   const golink = (path) => {
-    history.push("/mypage/" + memNo + '/' + path);
+    if(path.includes('notice')) {
+      dispatch(setNoticeTab("공지사항"));
+    }
+    history.push(path);
   }
 
   return (
@@ -21,4 +28,4 @@ const MyInfo = (props) => {
   )
 }
 
-export default MyInfo
+export default MyMenu

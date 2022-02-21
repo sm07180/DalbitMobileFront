@@ -66,7 +66,7 @@ const FullMoon = styled.div`
       width: 100%;
       margin: 24px 0 12px 0;
       padding: 12px 0;
-      background-color: #632beb;
+      background-color: #FF3C7B;
       border-radius: 12px;
       color: #fff;
       font-size: 18px;

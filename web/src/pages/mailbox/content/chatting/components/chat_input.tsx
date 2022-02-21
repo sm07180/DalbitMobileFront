@@ -24,10 +24,14 @@ export default function chatInput(props) {
 
   //function
   const handleChangeInput = (e) => {
+    
     textareaRef.current.style.height = "auto";
     textareaRef.current.style.height = textareaRef.current.scrollHeight - 24 + "px";
     const { value } = e.target;
     let space = /\s/;
+    
+    console.log(textareaRef.current.scrollHeight,value);
+    
     if (space.exec(value) && value.length === 1) {
       return false;
     } else {
@@ -51,7 +55,7 @@ export default function chatInput(props) {
   const chatNoUseToast = () => {
     globalAction.callSetToastStatus!({
       status: true,
-      message: "우체통 기능을 사용하지 않는 상태이므로 사용할 수 없습니다.",
+      message: "메시지 기능을 사용하지 않는 상태이므로 사용할 수 없습니다.",
     });
   };
   const openGiftPop = () => {

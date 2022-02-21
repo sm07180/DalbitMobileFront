@@ -26,7 +26,7 @@ export default function anniversaryEventPresentPop({setPresentPop, rcvDalCnt}) {
         <div className="layerContent">
           <img src={`${IMG_SERVER}/event/anniversary/moonBox.png`} className="layerContent__img" />
           <div className="layerContent__subTitle">{rcvDalCnt}달이 지급되었습니다.</div>
-          <div className="layerContent__text">달빛라이브 많이 사랑해주세요~♥</div>
+          <div className="layerContent__text">달라 많이 사랑해주세요~♥</div>
         </div>
         <button className="bottomClose" onClick={closePopup}>
           확인
@@ -64,7 +64,7 @@ const LayerPopup = styled.div`
     width:100%; height:44px;
     margin-bottom:16px;
     border-radius:12px;
-    background:#632BEB;
+    background:#FF3C7B;
     font-size:18px font-weight:700; color:#fff;
   }
 

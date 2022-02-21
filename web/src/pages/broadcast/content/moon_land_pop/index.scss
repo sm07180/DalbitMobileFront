@@ -277,7 +277,7 @@
           transition: .2s cubic-bezier(.5,0,.5,1);
           cursor: pointer;
           &.on {
-            background: #632BEB;
+            background: #FF3C7B;
             &::after {
               transform: translate(20px);
             }

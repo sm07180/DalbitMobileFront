@@ -134,9 +134,9 @@ export default (props) => {
 
   const Link = (memNo) => {
     if (webview && webview === 'new') {
-      history.push(`/mypage/${memNo}?webview=new`)
+      history.push(`/profile/${memNo}?webview=new`)
     } else {
-      history.push(`/mypage/${memNo}`)
+      history.push(`/profile/${memNo}`)
     }
   }
 
@@ -385,8 +385,8 @@ const HoleWrap = styled.div`
       font-weight: 700;
 
       &--active {
-        color: #632beb;
-        border-bottom: 1px solid #632beb;
+        color: #FF3C7B;
+        border-bottom: 1px solid #FF3C7B;
         font-weight: bold;
       }
     }
@@ -412,9 +412,9 @@ const HoleWrap = styled.div`
       font-size: 16px;
 
       &--active {
-        color: #632beb;
+        color: #FF3C7B;
         font-weight: bold;
-        border-bottom: 1px solid #632beb;
+        border-bottom: 1px solid #FF3C7B;
       }
     }
   }
@@ -486,14 +486,14 @@ const HoleWrap = styled.div`
     button {
       width: 56px;
       height: 26px;
-      border: 1px solid #632beb;
+      border: 1px solid #FF3C7B;
       font-size: 12px;
       letter-spacing: -0.3px;
       border-radius: 13px;
-      color: #632beb;
+      color: #FF3C7B;
     }
     .plusFan {
-      background-color: #632beb;
+      background-color: #FF3C7B;
       color: #fff;
     }
   }

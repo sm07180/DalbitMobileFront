@@ -1,6 +1,6 @@
 /**
  * @brief : mailbox/chatting/index.tsx
- * @role : 우체통채팅 ui 및 기능 index role
+ * @role : 메시지채팅 ui 및 기능 index role
  */
 import React, { useContext, useEffect, useState, useRef, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,13 +12,16 @@ import { usePrevious } from "lib/hooks";
 import { GlobalContext } from "context";
 import { MailboxContext } from "context/mailbox_ctx";
 //component
-import Header from "common/ui/header";
+import Header from "components/ui/header/Header";
 import ChatInput from "./components/chat_input";
 import GiftPop from "./components/gift_pop";
 import ReportPop from "./components/report_pop";
 import ChatListComponent from "./components/chat_list_render";
 import AnimationViewer from "./components/animation_viewer";
 import ImgSlidePopup from "./components/img_pop";
+
+import '../../mailbox.scss';
+import {CustomHeader} from "../chat_list";
 
 // global var
 let lastPrevIdx: string | number = "0";
@@ -457,19 +460,20 @@ export default function chatting() {
   // ---------------------------------------------------------------------------------------------
   return (
     <>
-      <Header>
-        <h2 className="header-title">{mailboxState.mailboxInfo?.title}</h2>
-        <button className="btnMore" onClick={() => setMore(!more)}>
-          <img src="https://image.dalbitlive.com/mailbox/ico_more_vertical_g.svg" alt="더보기" />
-        </button>
-        <ul className={`moreList ${more ? "on" : ""}`}>
-          {/* 1:신고하기 0:차단하기 */}
-          <li onClick={() => moreBtnDetail(1)}>신고하기</li>
-          <li onClick={() => moreBtnDetail(0)}>차단하기</li>
-          <li onClick={exitMail}>나가기</li>
-        </ul>
-      </Header>
-      <div className="chatBoxPage subContent">
+      <CustomHeader title={mailboxState.mailboxInfo?.title} type="back">
+        <div className="buttonGroup">
+          <button className="btnMore" onClick={() => setMore(!more)}>
+            <img src="https://image.dalbitlive.com/mailbox/ico_more_vertical_g.svg" alt="더보기" />
+          </button>
+          <ul className={`moreList ${more ? "on" : ""}`}>
+            {/* 1:신고하기 0:차단하기 */}
+            <li onClick={() => moreBtnDetail(1)}>신고하기</li>
+            <li onClick={() => moreBtnDetail(0)}>차단하기</li>
+            <li onClick={exitMail}>나가기</li>
+          </ul>
+        </div>
+      </CustomHeader>
+      <div className="chatBoxPage">
         {/* list view */}
         <div className="chatPrevWrapper" ref={PrevRef}>
           {/* animationviewer */}

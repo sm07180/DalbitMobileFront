@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {Context} from "context";
-
+import {useHistory} from "react-router-dom";
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
@@ -11,29 +11,87 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // contents
 // css
 import './exchangeDal.scss'
-
-const dalPrice = [
-  {dal: 30,price:50},
-  {dal: 120,price:200},
-  {dal: 180,price:300},
-  {dal: 300,price:500},
-  {dal: 600,price:1000},
-  {dal: 3000,price:5000},
-]
+import _ from "lodash";
 
 const ExchangeDal = () => {
+  const history = useHistory();
   const context = useContext(Context);
-  const [select, setSelect] = useState(3);
+  const {profile, token} = context;
 
-  const [orderPage, setOrderPage] = useState(true);
+  if(!token?.isLogin) history.push('/login');
 
+  //에러페이지 노출용
+  const [error, setError] = useState(false);
+  const [dalList, setDalList] = useState([]);
+  const [select, setSelect] = useState({
+    num:-1,
+    dal:0,
+    byeol:0,
+    itemCode:''
+  });
+
+  //현재 보유한 별 갯수
+  const [myByeol, setMyByeol] = useState(profile?.byeolCnt);
+
+  useEffect(()=>{
+    getStoreList();
+  },[]);
   // 조회 Api
 
-  // 결재단위 셀렉트
-  const onSelectDal = (e) => {
-    const {targetIndex} = e.currentTarget.dataset
-    
-    setSelect(targetIndex)
+  //달 리스트 조회
+  async function getStoreList() {
+    const {data, result, message} = await Api.getChangeItem({})
+    if (result === 'success' && data) {
+      setError(false);
+      setDalList(data.list);
+      setSelect({
+        num: 1,
+        dal: data.list[1].dalCnt,
+        byeol: data.list[1].byeolCnt,
+        itemCode: data.list[1].itemCode
+      });
+      if (data?.byeolCnt) setMyByeol(data.byeolCnt);
+    } else {
+      setError(true);
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
+  //달 교환하기
+  function chargeClick() {
+    async function postChange() {
+      const res = await Api.postChangeItem({
+        data: {
+          itemCode: select.itemCode
+        }
+      })
+      if (res.result === 'success' && _.hasIn(res, 'data')) {
+        setMyByeol(res.data.byeolCnt);
+        context.action.toast({
+          msg: res.message
+        })
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    }
+
+    //별 부족
+    if (select.byeol > myByeol) {
+      return context.action.confirm({
+        msg: `달 교환은 50별부터 가능합니다.`
+      })
+    }
+
+    context.action.confirm({
+      msg: `별 ${select.byeol}을 달 ${select.dal}으로 \n 교환하시겠습니까?`,
+      callback: () => {
+        postChange();
+      }
+    })
   }
 
   return (
@@ -42,19 +100,27 @@ const ExchangeDal = () => {
         <Header title="달 교환" position="sticky" type="back" />
         <section className="myhaveDal">
           <div className="title">내가 보유한 별</div>
-          <span className="byeol">{Utility.addComma(12345)}</span>
+          <span className="byeol">{Utility.addComma(myByeol)}</span>
         </section>
         <section className="storeDalList">
-          {dalPrice && dalPrice.map((data,index) => {
+          {dalList.map((data,index) => {
             return (
-              <div className={`item ${Number(select) === index && 'active'}`} data-target-index={index} onClick={onSelectDal} key={index}>
+              <div  key={index} className={`item ${Number(select.num) === index && 'active'}`}
+                    onClick={() => {
+                      setSelect({
+                        num: index,
+                        dal: data?.dalCnt,
+                        byeol: data?.byeolCnt,
+                        itemCode: data?.itemCode
+                      });
+                    }}>
                 <div className="itemIcon"></div>
-                <div className="dal">{Utility.addComma(data.dal)}</div>
-                <div className="price">{`${Utility.addComma(data.price)} 별`}</div>
+                <div className="dal">{Utility.addComma(data.dalCnt)}</div>
+                <div className="price">{`${Utility.addComma(data.byeolCnt)} 별`}</div>
               </div>
             )
           })}
-          <SubmitBtn text="결제하기" />
+          <SubmitBtn text="교환하기" onClick={chargeClick}/>
         </section>
         <section className="noticeInfo">
           <h3>유의사항</h3>
@@ -68,3 +134,29 @@ const ExchangeDal = () => {
 }
 
 export default ExchangeDal
+
+//깐부 구슬 지급
+// async function fetchPayComplete() {
+//   console.log(select.byeol);
+//   if(select.byeol >= 300){
+//     marbleTotleCtn = Math.floor((Number(select.byeol) / 100));
+//     const param = {
+//       insSlct: "e",
+//       marbleCnt : marbleTotleCtn,
+//     };
+//     const {data} = await Api.getGganbuObtainMarble(param)
+//     if (data.s_return === 1) {
+//       setChargeContent(`별 ${select.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+//       setRewardPop(true);
+//       setGetMarble({
+//         rmarbleCnt : data.rmarbleCnt,
+//         ymarbleCnt : data.ymarbleCnt,
+//         bmarbleCnt : data.bmarbleCnt,
+//         vmarbleCnt : data.vmarbleCnt,
+//         totalmarbleCnt : data.marbleCnt,
+//       })
+//     }
+//   } else {
+//
+//   }
+// }

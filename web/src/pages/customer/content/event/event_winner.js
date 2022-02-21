@@ -45,7 +45,7 @@ export default function EventWinner() {
         '바로 받으실 경우 추가 입력절차 없이  <br/>' +
         utility.addComma(receiveDal) +
         '달이 즉시 지급됩니다. <br/>' +
-        '<p style="margin-top: 16px; font-size:22px; font-weight: bold; color: #632beb;">바로 받으시겠습니까?</p>'
+        '<p style="margin-top: 16px; font-size:22px; font-weight: bold; color: #FF3C7B;">바로 받으시겠습니까?</p>'
     })
   }
 

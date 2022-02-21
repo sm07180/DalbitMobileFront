@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, {useContext, useRef, useState, useMemo} from 'react'
 
 import Header from 'components/ui/header/Header'
 import InputItems from '../../../components/ui/inputItems/InputItems'
@@ -29,6 +29,20 @@ const DidLogin = (props) => {
   const [loginInfo, setLoginInfo] = useState({ phoneNum : '', password : '', })
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
+
+  const getSessionRedirectURL = useMemo(() => {
+    try {
+      const item = JSON.parse(sessionStorage.getItem('_loginRedirect__'));
+      if(item) {
+        sessionStorage.removeItem('_loginRedirect__');
+        return item;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  },[])
 
   //회원가입 팝업 클릭 처리
   const signPop = () => {
@@ -78,11 +92,11 @@ const DidLogin = (props) => {
     if (fetching) return;
 
     if (loginInfo.phoneNum === '' && loginInfo.password === '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)와 비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(휴대폰 번호)와 비밀번호를\n 입력하고 다시 로그인 해주세요.`, callback: () => {inputPhoneRef.current.focus()}})
     } else if (loginInfo.phoneNum === '' && loginInfo.password !== '') {
-      globalCtx.action.alert({msg: `아이디(핸드폰 번호)를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
+      globalCtx.action.alert({msg: `아이디(휴대폰 번호)를 입력하고\n 다시 로그인 해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else if (loginInfo.password === '' && loginInfo.phoneNum !== '') {
-      globalCtx.action.alert({msg: `비밀번호를 입력하고 다시 로그인해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
+      globalCtx.action.alert({msg: `비밀번호를 입력하고 다시 로그인 해주세요.`, callback: () => {inputPasswordRef.current.focus()}})
     } else {
       fetchPhoneLogin(loginInfo.phoneNum, loginInfo.password).then()
     }
@@ -101,16 +115,19 @@ const DidLogin = (props) => {
         room_no: sessionRoomNo
       }
     })
-    console.log(loginInfo);
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
 
       let mypageURL = ''
+      let walletURL = ''
       const _parse = qs.parse(location.search)
       if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
-        mypageURL = `/mypage/${memNo}`
-        if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
+        mypageURL = `/profile/${memNo}`
+        if (_parse.mypage !== '/') mypageURL = `/profile/${memNo}${_parse.mypage}`
+      }
+      if(getSessionRedirectURL && getSessionRedirectURL.indexOf('/wallet')>-1){
+        walletURL = '/wallet?exchange=1';
       }
 
       globalCtx.action.updateToken(loginInfo.data)
@@ -140,22 +157,24 @@ const DidLogin = (props) => {
 
         if (mypageURL !== '') {
           return (window.location.href = mypageURL)
+        } else if (walletURL !== '') {  // 내지갑 > 환전 탭 으로 이동
+          return (window.location.href = walletURL)
         }
 
         if (props.location.state) {
           return (window.location.href = `/${props.location.state.state}`)
         }
-        return props.history.push('/')
+        return window.location.href = "/"
       }
     } else if (loginInfo.result === 'fail') {
       if (loginInfo.code === '-1') {
-        globalCtx.action.alert({msg: `아이디(전화번호)와 비밀번호를 확인하고 다시 로그인해주세요.`})
+        globalCtx.action.alert({msg: `아이디(전화번호)와 비밀번호를\n 확인하고 다시 로그인해주세요.`})
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
         if (msg === undefined || msg === null || msg === '') {
           msg = loginInfo.message
         }
-        globalCtx.action.alert({title: '달빛라이브 사용 제한', msg: `${msg}`,
+        globalCtx.action.alert({title: '달라 사용 제한', msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
               Hybrid('CloseLayerPopUp')
@@ -180,6 +199,8 @@ const DidLogin = (props) => {
             callResetListen(loginInfo.data.memNo)
           }
         })
+      } else if(loginInfo.code === '-8') {
+        return props.history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         globalCtx.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})}
     }
@@ -209,20 +230,26 @@ const DidLogin = (props) => {
     setPopupVal(val)
   }
 
+  const onKeyPress = e =>{
+    if(e.key ==='Enter' || e.key === 13){
+      loginClick()
+    }
+  }
+
   return (
     <div id='loginPage'>
       <Header title="로그인" type="back"/>
       <section className="loginForm">
         <InputItems>
-          <input ref={inputPhoneRef} type="number" placeholder="핸드폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} onChange={onChange}/>
+          <input ref={inputPhoneRef} type="number" pattern="\d*" placeholder="휴대폰 번호" name={"phoneNum"} value={loginInfo.phoneNum} autoFocus onChange={onChange}/>
         </InputItems>
         <InputItems>
-          <input ref={inputPasswordRef} type="password" placeholder="비밀번호" name={"password"} value={loginInfo.password} onChange={onChange}/>
+          <input ref={inputPasswordRef} type="password" placeholder="비밀번호" name={"password"} value={loginInfo.password} onChange={onChange} onKeyPress={onKeyPress}/>
         </InputItems>
         <SubmitBtn text="로그인" onClick={loginClick}/>
         <div className="linkWrap">
           <div className="linkText" onClick={signPop}>회원가입</div>
-          <div className="linkText">비밀번호 찾기</div>
+          <div className="linkText" onClick={()=>props.history.push("/password")}>비밀번호 찾기</div>
         </div>
       </section>
       {slidePop &&

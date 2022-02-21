@@ -8,18 +8,26 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
-import Allim from "pages/remypage/contents/notice/Allim";
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
+import Setting from "pages/resetting";
+import Customer from "pages/recustomer";
 
 import {Hybrid, isHybrid} from "context/hybrid";
+import Utility from "components/lib/utility";
+import {OS_TYPE} from "context/config";
+import PopSlide from "components/ui/popSlide/PopSlide";
+import LevelItems from "components/ui/levelItems/LevelItems";
+import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
+import Post from "pages/remypage/contents/notice/Post";
+import Notice from "pages/remypage/contents/notice/Notice";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:'clip'},
-  {menuNm: '설정'},
+  {menuNm: '클립', path:'myclip'},
+  {menuNm: '설정', path:'setting'},
   {menuNm: '공지사항', path:'notice'},
-  {menuNm: '고객센터'},
+  {menuNm: '고객센터', path:'customer'},
 ]
 
 const Remypage = () => {
@@ -29,6 +37,8 @@ const Remypage = () => {
   //context
   const context = useContext(Context)
   const {splash, token, profile} = context;
+  const customHeader = JSON.parse(Api.customHeader)
+  const [popSlide, setPopSlide] = useState(false);
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -82,27 +92,46 @@ const Remypage = () => {
     }
   }, [])
 
+  //충전하기 버튼
+  const storeAndCharge = () => {
+    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+      return webkit.messageHandlers.openInApp.postMessage('')
+    } else {
+      history.push('/store')
+    }
+  }
+
+  const closeLevelPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPopSlide(false);
+  }
+
   // 페이지 시작
   switch (settingCategory) {
     case 'report' :
       return(<Report />)
-    case 'clip' :
+    case 'myclip' :
       return(<Clip />)
+    case 'setting' :
+      return(<Setting />)
     case 'notice' :
-      return(<Allim />)
+      return(<Notice />)
+    case 'customer' :
+      return(<Customer />)
     default :
       return(
         <>
         <div id="remypage">
           <Header title={'MY'} />
           <section className="myInfo" onClick={goProfile}>
-            <MyInfo data={profile} />
+            <MyInfo data={profile} setPopSlide={setPopSlide} />
           </section>
           <section className='mydalDetail'>
-            <div className="dalCount">{profile?.dalCnt}달</div>
+            <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
             <div className="buttonGroup">
-              <button>내 지갑</button>
-              <button className='charge'>충전하기</button>
+              <button onClick={() => history.push('/wallet')}>내 지갑</button>
+              <button className='charge' onClick={storeAndCharge}>충전하기</button>
             </div>
           </section>
           <section className="myMenu">
@@ -110,13 +139,30 @@ const Remypage = () => {
             {isHybrid() &&
             <div className="versionInfo">
               <span className="title">버전정보</span>
-              <span className="version">현재 버전 {splash?.version}</span>
+              <span className="version">현재 버전 {customHeader.appVer}</span>
             </div>
             }
           </section>
           <section className="buttonWrap">
             <button className='logout' onClick={logout}>로그아웃</button>
           </section>
+
+          {popSlide &&
+            <PopSlide title="내 레벨" setPopSlide={setPopSlide}>
+              <section className="myLevelInfo">
+                <div className="infoItem">
+                  <LevelItems data={profile?.level} />
+                  <span>{profile?.grade}</span>
+                  <p>{profile?.expRate}%</p>
+                </div>
+                <div className="levelGauge">
+                  <span className="gaugeBar" style={{width:`${profile?.expRate}%`}}></span>
+                </div>
+                <div className="exp">다음 레벨까지 {profile?.expNext} EXP 남음</div>
+                <SubmitBtn text="확인" onClick={closeLevelPop} />
+              </section>
+            </PopSlide>
+          }
         </div>
       </>
       )

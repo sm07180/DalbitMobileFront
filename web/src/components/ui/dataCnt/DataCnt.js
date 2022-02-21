@@ -23,3 +23,7 @@ const DataCnt = (props) => {
 }
 
 export default DataCnt
+
+DataCnt.defaultProps = {
+  clickEvent: () => {}
+}

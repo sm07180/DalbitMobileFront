@@ -35,6 +35,7 @@ import Common from "common";
 import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
+import {useHistory} from "react-router-dom";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -100,13 +101,28 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 
 
 let alarmCheckIntervalId = 0;
+
+const setServerDataJson = () =>{
+  const serverData = document?.getElementById('__SERVER_DATA__')?.innerHTML;
+  if (serverData && serverData !== '' && serverData !== 'null') {
+    try {
+      return JSON.parse(serverData);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
+}
+
 const App = () => {
+  let serverDataJson = setServerDataJson();
   const { mailboxAction } = useContext(MailboxContext);
   const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
   const authRef = useRef()
+  const history = useHistory()
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
@@ -235,13 +251,7 @@ const App = () => {
   }
   async function fetchData() {
     // Renew token
-    let tokenInfo = {};
-    let elementById = document.getElementById('serverToken');
-    if(elementById && elementById.value && elementById.value !== ''){
-      tokenInfo = JSON.parse(elementById.value);
-    }else{
-      tokenInfo = await Api.getToken()
-    }
+    let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
@@ -415,9 +425,17 @@ const App = () => {
 
   //SPLASH Room
   async function fetchSplash() {
-    const res = await Api.splash({})
-    if (res.result === 'success') {
-      const {data} = res
+    let splashData = null;
+    if(serverDataJson){
+      splashData = {
+        result : 'success',
+        data : serverDataJson.splash
+      };
+    }else {
+      splashData = await Api.splash({})
+    }
+    if (splashData.result === 'success') {
+      const {data} = splashData
       const {roomType, useMailBox} = data
       if (roomType) {
         globalCtx.action.updateRoomType(roomType)
@@ -475,7 +493,7 @@ const App = () => {
   const isFooter = () => {
     if(!isDesktop && !isHybrid()) {
       const pages = ['/', '/clip', '/search', '/mypage', '/login'];
-      const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
+      const isFooterPage = pages.findIndex(item => item === location.pathname.toLowerCase()) > -1;
 
       setIsFooterPage(isFooterPage);
     }
@@ -484,7 +502,7 @@ const App = () => {
   /* 네이티브용 푸터 관리 */
   const nativeFooterManager = () => {
     if(isHybrid()) {
-      const currentPath = location.pathname;
+      const currentPath = location.pathname.toLowerCase();
       const visible = !!FOOTER_VIEW_PAGES[currentPath];
       const stateFooterParam = {
         tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
@@ -567,11 +585,6 @@ const App = () => {
     }
   }, [globalCtx.profile, globalCtx.token, location.pathname])
 
-  useEffect(() => {
-    isFooter();
-    nativeFooterManager();
-  }, [location.pathname]);
-
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
     if (ready && cookieAuthToken !== Api.authToken) {
@@ -586,7 +599,17 @@ const App = () => {
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
+
   }, [])
+
+  useEffect(()=>{
+    let historyListener = () => {
+      isFooter();
+      nativeFooterManager();
+    };
+    historyListener();
+    history.listen(historyListener);
+  },[])
 
   function ErrorFallback({error, resetErrorBoundary}) {
     if ('ChunkLoadError' === error.name) {
@@ -602,7 +625,9 @@ const App = () => {
         }
       })
 
-      return (
+      window.location.href = '/error';
+
+      /*return (
         <section id="error">
           <button
             className="closeButon"
@@ -629,7 +654,7 @@ const App = () => {
             </button>
           </div>
         </section>
-      )
+      )*/
     }
   }
 

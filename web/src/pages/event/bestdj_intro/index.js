@@ -12,7 +12,7 @@ export default function bestdjIntro() {
       </button>
 
       <div className="bestdj_intro">
-        <img src={`${IMG_SERVER}/event/best_dj/211005/content_img.png`} alt="베스디" />
+        <img src={`${IMG_SERVER}/event/best_dj/211005/content_img-1.png`} alt="베스디" />
         <div className="notice_wrap">
           <div className="notice_title">
             <img src={`${IMG_SERVER}/event/best_dj/210618/notice_title.png`} alt="기억해 주세요" />

@@ -37,7 +37,7 @@
       height: 100%;
     }
     .scroll-box {
-      width: 345px;
+      width: 344px;
     }
 
     // 게스트
@@ -76,7 +76,7 @@
         }
         // .user__dj__badge {
         //   margin-left: 10px;
-        //   color: #632beb;
+        //   color: #FF3C7B;
         //   font-size: 12px;
         //   border-radius: 10px;
         //   padding: 1px 4px;
@@ -203,7 +203,7 @@
             line-height: 14px;
             text-align: center;
             color: $white;
-            background: $primary;
+            background: $MAINCOLOR;
             border-radius: 50%;
           }
         }
@@ -214,7 +214,7 @@
         flex: 1;
         margin-left: 10px;
         font-weight: $bold;
-        color: $primary;
+        color: $MAINCOLOR;
       }
       &__badge {
         height: 20px;
@@ -236,7 +236,7 @@
         &.dj {
           min-width: 26px;
           margin-left: 10px;
-          color: $primary;
+          color: $MAINCOLOR;
           background-color: $white;
           border-radius: 10px;
           &.new {

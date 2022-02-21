@@ -1,22 +1,31 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import Header from 'components/ui/header/Header'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import './style.scss'
 import _ from "lodash";
+import {useSelector} from "react-redux";
+import {OS_TYPE} from "context/config";
 
 const StorePage = () => {
   const history = useHistory()
   const context = useContext(Context);
-  const [select, setSelect] = useState(-1);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const [select, setSelect] = useState(1);
   const [storeInfo, setStoreInfo] = useState({
     myDal: 0,
     dalPrice: []
+  })
+  const [payInfo, setPayInfo] = useState({
+    itemNm: "달 100",
+    dal: "100",
+    price: "11000",
+    itemNo: "A1335"
   })
 
   useEffect(() => {
@@ -41,16 +50,21 @@ const StorePage = () => {
 
   const onSelectDal = (index, itemNm, givenDal, price, itemNo) => {
     setSelect(index);
+    setPayInfo({
+      ...payInfo,
+      itemNm: itemNm,
+      dal: givenDal,
+      price: price,
+      itemNo: itemNo
+    })
+  }
+
+  const movePayment = () => {
     if (context.token.isLogin) {
-        history.push({
-          pathname: '/store/dalcharge',
-          state: {
-            itemNm: itemNm,
-            dal: givenDal,
-            price: price,
-            itemNo: itemNo
-          }
-        })
+      history.push({
+        pathname: '/store/dalcharge',
+        search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
+      })
     } else {
       history.push('/login')
     }
@@ -58,13 +72,10 @@ const StorePage = () => {
 
   return (
     <div id="storePage">
-      <Header title={'스토어'} position="sticky" type="back"/>
+      <Header title={'스토어'} position="sticky" type="back" backEvent={()=>history.push("/myPage")}/>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(storeInfo.myDal)}</span>
-      </section>
-      <section className="bannerWrap">
-        <BannerSlide/>
       </section>
       <section className="storeDalList">
         {storeInfo.dalPrice && storeInfo.dalPrice.map((item, index) => {
@@ -78,6 +89,7 @@ const StorePage = () => {
             </div>
           )
         })}
+        <SubmitBtn onClick={movePayment} text="결제하기" />
       </section>
     </div>
   )

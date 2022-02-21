@@ -9,7 +9,7 @@ import {Context} from "context";
 import {clipJoin} from "pages/common/clipPlayer/clip_func";
 
 const HotClip = (props) => {
-  const { info } = props;
+  const { info, playAction } = props;
   const globalCtx = useContext(Context);
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop); //
@@ -32,7 +32,7 @@ const HotClip = (props) => {
 
   return (
     <div>
-      <div className="hotClip" data-clip-no={info.clipNo} onClick={playClip}>
+      <div className="hotClip" data-clip-no={info.clipNo} onClick={playAction}>
         <div className="photo">
           <img src={`${info.bgImg.url}`} alt={`${info.nickName}의 클립`} onError={handleImgError}/>
         </div>
@@ -41,7 +41,7 @@ const HotClip = (props) => {
           <div className="textArea">
             <div>
               <span className="type">{info.subjectName}</span>
-              <span className="title">{info.fileName}</span>
+              <span className="title">{info.title}</span>
             </div>
             <span className="nickName">{info.nickName}</span>
           </div>

@@ -17,7 +17,7 @@ import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle"
 const ClipAudioPlayer = ()=>{
   const history = useHistory();
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { clipPlayer, clipPlayList, clipInfo, baseData } = globalState;
+  const { clipPlayer, clipPlayList, clipInfo, baseData, userProfile } = globalState;
 
   useEffect(() => {
     if (baseData.isLogin) {
@@ -57,12 +57,22 @@ const ClipAudioPlayer = ()=>{
     sessionStorage.removeItem("clipPlayListInfo");
   };
 
-  const playerBarClickEvent = () => {
+  const playerBarClickEvent = (e) => {
+    e.preventDefault();
     if (clipInfo !== undefined && clipInfo !== null) {
       const { clipNo } = clipInfo;
       history.push(`/clip/${clipNo}`);
     }
   };
+
+  const playIconClick = (e) => {
+    e.stopPropagation();
+    if (clipInfo!.isPaused) {
+      clipPlayer!.start();
+    } else {
+      clipPlayer!.stop();
+    }
+  }
 
   const playToggle = (e)=>{
     e.stopPropagation()
@@ -81,25 +91,26 @@ const ClipAudioPlayer = ()=>{
       , alt:isPaused? "start":"stop"
     }
     return(
-      <PlayerAudioStyled>
+      <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
+          <div className="inner-player-bg"
+               style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
-            <div className="equalizer">
-              {!isPaused && <ul>{[1,2,3,4,5].map((value,index) => <li key={index}><span/></li>)}</ul>}
-              <p>CLIP</p>
-            </div>
-            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle}>
-              <img src={toggleInfo.src} className={toggleInfo.className} alt={toggleInfo.alt}/>
-            </div>
+            <div className="equalizer clip" />
+            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
             <div className="room-info">
               <p className="title">{`${clipInfo.nickName}`}</p>
               <p>{clipInfo.title}</p>
             </div>
             <div className="counting"/>
           </div>
-          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          <div className="buttonGroup">
+            <img onClick={playIconClick} src={clipInfo!.isPaused ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
+            <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          </div>
+          
         </div>
-      </PlayerAudioStyled>
+      </div>
     )
   }else{
     return (<></>)

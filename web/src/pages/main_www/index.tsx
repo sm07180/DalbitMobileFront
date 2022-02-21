@@ -484,7 +484,7 @@ export default function Main() {
             <button
               onClick={() => {
                 if (baseData.isLogin === true) {
-                  return history.push("/pay/store");
+                  return history.push("/store");
                 } else {
                   return history.push("/login");
                 }
@@ -498,7 +498,7 @@ export default function Main() {
             </button>
           </div>
           <h1 className="gnb-logo" onClick={reLoad}>
-            <img src={Logo} alt="달빛라이브" />
+            <img src={Logo} alt="달라" />
           </h1>
           <div className="icon-wrap">
             {mailboxState.useMailbox &&
@@ -510,7 +510,7 @@ export default function Main() {
                   <img
                     className="icon mailbox"
                     src="https://image.dalbitlive.com/svg/postbox_w_on.svg"
-                    alt="우체통"
+                    alt="메시지"
                   />
                 </div>
               ) : (
@@ -522,13 +522,13 @@ export default function Main() {
                     <img
                       className="icon mailbox"
                       src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg"
-                      alt="우체통"
+                      alt="메시지"
                     />
                   ) : (
                     <img
                       className="icon mailbox"
                       src="https://image.dalbitlive.com/svg/postbox_w.svg"
-                      alt="우체통"
+                      alt="메시지"
                     />
                   )}
                 </div>
@@ -719,7 +719,7 @@ export default function Main() {
             <div className="titleBox">
               <h2>
                 <Link
-                  to={`/mypage/${globalState.baseData.memNo}/edit_star/gift_send`}
+                  to={`/profile/${globalState.baseData.memNo}`}
                   title="나의스타 더보기"
                   className="text isArrow"
                 >

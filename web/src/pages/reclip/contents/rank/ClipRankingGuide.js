@@ -40,7 +40,7 @@ const ClipRankingGuide = () =>{
   const tempTableData = [{
       name: '점수 집계 방법',
       thData:['기준','청취 1분 이상','선물 1달','좋아요 1번'],
-      tdData:['점수','1점','1점','1점'],
+      tdData:['점수','1점','2점','3점'],
     },
   ];
 

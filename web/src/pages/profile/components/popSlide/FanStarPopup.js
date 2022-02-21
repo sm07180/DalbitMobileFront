@@ -147,6 +147,10 @@ const FanStarPopup = (props) => {
     fanStarContainerRef.current.addEventListener('scroll', popScrollEvent);
   }
 
+  const closePop = () => {
+    setPopFanStar(false);
+  }
+
   const removeScrollEvent = useCallback(() => {
     const scrollTarget = fanStarContainerRef.current;
     if(scrollTarget) {
@@ -244,6 +248,7 @@ const FanStarPopup = (props) => {
         <NoResult />
         }
       </div>
+      <button className="popClose" onClick={closePop}></button>
     </section>
   )
 }

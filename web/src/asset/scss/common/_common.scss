@@ -22,13 +22,12 @@ legend {
 
 .content-article {
   @include flex($fd: column);
-  min-height:100vh !important;
+  min-height:100vh;
 }
 
 .refresh-wrap {
   @include position-horizon;
   top:0;
-  height: 48px;
   margin-top:-48px;
   z-index: 10;
   // background-color: rgba(127, 127, 127, 0.3);
@@ -53,20 +52,18 @@ legend {
 .container {
   @include flex(center,center,column);
   min-height: calc(100vh - #{$GNB-HEIGHT});
-  padding-top:20px;
   background-color: #fbfbfb;
   .totalWrap {
     flex:1;
     @include flex($fd:column);
     max-width:800px;
     height:100%;
-    .content {
+    > .content {
       flex:1;
       position:relative;
       @include flex($fd:column);
       width: 480px;
       height:100%;
-      border-top:1px solid $lightGray;
       background: $white;
       &::before {
         content:"";
@@ -85,14 +82,15 @@ legend {
         background-color:$lightGray;
       }
       &.player {
-        padding-bottom: 80px;
+        padding-bottom: 54px;
       }
       .subContent {
-        min-height: calc(100vh - 50px);
-        box-sizing: border-box;
         &.gray {
           background: $lighterGray;
         }
+      }
+      header {
+        top:$GNB-HEIGHT !important;
       }
     }
     .rightContent {
@@ -111,30 +109,66 @@ legend {
   }
 }
 #GNB {
+  position:-webkit-sticky;
   position:sticky;
   top:0;
-  z-index: 50;
   width:100%;min-width:480px;
   height: $GNB-HEIGHT;
   background-color: white;
-  border-bottom:1px solid #E0E0E0;
+  border-bottom:2px solid #E0E0E0;
+  z-index: $GNB-ZINDEX;
   .gnbContainer {
     position: relative;
     @include flex(center);
-    max-width:800px;
     height:100%;
     margin: 0 auto;
     .gnbHeader {
-      @include flex(center);
+      flex:1;
+      @include flex(center,center);
       width:100%;
-      max-width:480px;
       h1 {
-        height:25px;
-        max-width:480px;
+        height:30px;
+        width:200px;
         cursor: pointer;
         img {
-          width:71px;
+          width:86px;
           height:100%;
+        }
+      }
+    }
+    .gnbNavigation {
+      flex:1;
+      @include flex(center,center);
+      width:480px;
+      ul {
+        @include flex(center,space-between);
+        width:328px;
+        li {
+          width:52px;height:52px;
+        }
+      }
+    }
+    .subGnbNavigation {
+      flex:1;
+      @include flex(center,center);
+      ul {
+        @include flex(center);
+        li {
+          width:44px;height:44px;
+          background-color:#ddd;
+          + li {
+            margin-left:6px;
+          }
+          &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-off.png");}
+          &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-off.png");}
+          &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-off.png");}
+          &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-off.png");}
+          &.active {
+            &:nth-child(1) {@include BGIMG("common/gnb/gnbMy-on.png");}
+            &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-on.png");}
+            &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-on.png");}
+            &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-on.png");}
+          }
         }
       }
       button {
@@ -142,8 +176,16 @@ legend {
         @include flex(center,center);
         width:114px;
         line-height:34px;
-        margin-left:auto;
+        margin-left:11px;
         @include border(#D9D9D8,2px);
+        @include font(14px,SemiBold,#161616);
+        &:hover {
+          border-color:$MAINCOLOR;
+          background-color:$MAINCOLOR;
+          color:white;
+        }
+      }
+      .plusButton {
         &::before {
           content:"+";
           display:inline-block;
@@ -151,85 +193,91 @@ legend {
           height:10px;
           line-height:10px;
           margin-right:4px;
-          font-size:20px;
-        }
-        &:hover {
-          border-color:$MAINCOLOR;
-          background-color:$MAINCOLOR;
-          color:white;
+          font-size:18px;
         }
       }
     }
-    .gnbNavigation {
-      margin-left:auto;
-      ul {
-        @include flex(center);
-        li {
-          position:relative;
-          width:44px;height:44px;
-          border-radius:50%;
-          &:hover {
-            background-color:#F2F2F2 !important;
+    ul {
+      li {
+        position:relative;
+        // width:44px;height:44px;
+        border-radius:50%;
+        &:hover {
+          background-color:#F2F2F2 !important;
+        }
+        &:hover::before {
+          content:"";
+          @include position-horizon;
+          top:100%;
+          width:13px;height:12px;
+          @include BGIMG("common/gnb/gnb-dot.png");
+        }
+        &:hover::after {
+          @include position-horizon;
+          top:calc(100% + 8px);
+          padding:0 7px 0 7px;
+          height:24px;
+          line-height:22px;
+          border-radius:4px;
+          background-color:#424242;
+          white-space: nowrap;
+          @include font(14px,normal,white);
+        }
+        &[data-url="/"] {
+          @include BGIMG("common/gnb/gnbLive-off.png");
+          &:hover::after {content:"라이브";}
+        }
+        &[data-url="/clip"] {
+          @include BGIMG("common/gnb/gnbClip-off.png");
+          &:hover::after {content:"클립";}
+        }
+        &[data-url="/search"] {
+          @include BGIMG("common/gnb/gnbSearch-off.png");
+          &:hover::after {content:"검색";}
+        }
+        &[data-url="/rank"] {
+          @include BGIMG("common/gnb/gnbRank-off.png");
+          &:hover::after {content:"랭킹";}
+        }
+        &[data-url="/mypage"] {
+          @include BGIMG("common/gnb/gnbMy-off.png");
+          &:hover::after {content:"마이";}
+        }
+        &[data-url="/mailbox"] {
+          @include BGIMG("common/gnb/gnbMail-off.png");
+          &:hover::after {content:"메시지";}
+          .newDot {
+            @include position-top-right(4px,4px);
+            display:inline-block;
+            width:8px;height:8px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
           }
-          &:hover::before {
-            content:"";
-            @include position-horizon;
-            top:100%;
-            width:13px;height:12px;
-            @include BGIMG("common/gnb/gnb-dot.png");
+        }
+        &[data-url="/store"] {
+          @include BGIMG("common/gnb/gnbStore-off.png");
+          &:hover::after {content:"스토어";}
+        }
+        &[data-url="/alarm"] {
+          @include BGIMG("common/gnb/gnbAllim-off.png");
+          &:hover::after {content:"알림";}
+          .newDot {
+            @include position-top-right(4px,4px);
+            display:inline-block;
+            width:8px;height:8px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
           }
-          &:hover::after {
-            @include position-horizon;
-            top:calc(100% + 8px);
-            padding:0 7px 0 7px;
-            height:24px;
-            line-height:22px;
-            border-radius:4px;
-            background-color:#424242;
-            white-space: nowrap;
-            @include font(14px,normal,white);
-          }
-          &:nth-child(1) {
-            @include BGIMG("common/gnb/gnbLive-off.png");
-            &:hover::after {content:"라이브";}
-          }
-          &:nth-child(2) {
-            @include BGIMG("common/gnb/gnbClip-off.png");
-            &:hover::after {content:"클립";}
-          }
-          &:nth-child(3) {
-            @include BGIMG("common/gnb/gnbSearch-off.png");
-            &:hover::after {content:"검색";}
-          }
-          &:nth-child(4) {
-            @include BGIMG("common/gnb/gnbRank-off.png");
-            &:hover::after {content:"랭킹";}
-          }
-          &:nth-child(5) {
-            @include BGIMG("common/gnb/gnbMy-off.png");
-            &:hover::after {content:"마이";}
-          }
-          &:nth-child(6) {
-            @include BGIMG("common/gnb/gnbAllim-off.png");
-            &:hover::after {content:"알람";}
-          }
-          &.active {
-            &:nth-child(1) {@include BGIMG("common/gnb/gnbLive-on.png");}
-            &:nth-child(2) {@include BGIMG("common/gnb/gnbClip-on.png");}
-            &:nth-child(3) {@include BGIMG("common/gnb/gnbSearch-on.png");}
-            &:nth-child(4) {@include BGIMG("common/gnb/gnbRank-on.png");}
-            &:nth-child(5) {@include BGIMG("common/gnb/gnbMy-on.png");}
-            &:nth-child(6) {@include BGIMG("common/gnb/gnbAllim-on.png");}
-          }
-          &.new {
-            .newDot {
-              @include position-top-right(4px,4px);
-              display:inline-block;
-              width:8px;height:8px;
-              border-radius:50%;
-              background-color:$MAINCOLOR;
-            }
-          }
+        }
+        &.active {
+          &[data-url="/"] {@include BGIMG("common/gnb/gnbLive-on.png");}
+          &[data-url="/clip"] {@include BGIMG("common/gnb/gnbClip-on.png");}
+          &[data-url="/search"] {@include BGIMG("common/gnb/gnbSearch-on.png");}
+          &[data-url="/rank"] {@include BGIMG("common/gnb/gnbRank-on.png");}
+          &[data-url="/mypage"] {@include BGIMG("common/gnb/gnbMy-on.png");}
+          &[data-url="/mail"] {@include BGIMG("common/gnb/gnbMail-on.png");}
+          &[data-url="/store"] {@include BGIMG("common/gnb/gnbStore-on.png");}
+          &[data-url="/notice"] {@include BGIMG("common/gnb/gnbAllim-on.png");}
         }
       }
     }
@@ -331,6 +379,123 @@ legend {
     color: #999;
   }
 }
+#player {
+  position: fixed;bottom:0;left:50%;
+  transform:translateX(-50%);z-index: 50;
+  width: 100%;max-width:480px;
+  height: 70px;
+  border-radius: 16px 16px 0 0;
+  overflow:hidden;
+  color: white;
+  cursor: pointer;
+  .inner-player {
+    position: relative;
+    @include flex(center,space-between);
+    width: 100%;
+    height: 100%;
+    padding: 0px 12px;
+    .inner-player-bg {
+      @include position-center;
+      width:110%;
+      height:120%;
+      padding: 50% 0;
+      filter: blur(10px);
+      box-sizing: content-box;
+      &::after {
+        content:"";
+        @include position-center;
+        width:100%;
+        height:100%;
+        background-color:rgba(black,.4);
+      }
+    }
+    .info-wrap {
+      position:relative;
+      z-index: 1;
+      @include flex(center);
+      .equalizer {
+        width: 22px;
+        height: 27px;
+        margin-right: 8px;
+        &.broadcast {@include BGIMG("common/playerbar_live.png");}
+        &.clip {@include BGIMG("common/playerbar_clip.png");}
+      }
+      .thumb {
+        position: relative;
+        @include flex(center,center);
+        width: 55px;
+        height: 55px;
+        margin-right: 12px;
+        border-radius: 50%;
+        background: #ccc;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        &::before {
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          border-radius:50%;
+          border:2px solid rgba(white,.3);
+          box-sizing: border-box;
+          z-index: 4;
+        }
+      }
+      .room-info {
+        width: 256px;
+        font-size: 13px;
+
+        .title {
+          width: 100%;
+          margin-bottom: 3px;
+          font-size: 16px;
+          font-weight: 300;
+          @include fontCut;
+        }
+        p {
+          font-weight: 300;
+        }
+      }
+      .counting {
+        span {
+          display: inline-block;
+          margin-right: 18px;
+
+          img {
+            vertical-align: middle;
+            display: inline-block;
+            margin-right: 5px;
+          }
+        }
+      }
+    }
+    .buttonGroup {
+      @include flex(center,center);
+      .playToggle__play,
+      .playToggle__stop {
+        position: relative;
+        width:28px;
+        height:28px;
+        z-index: 5;
+        &.video {
+          background: rgba(0, 0, 0, 0.1);
+        }
+      }
+      .playToggle__play{
+        margin-right: 12px;
+      }
+      .close-btn {
+        position: relative;z-index: 4;
+        display: block;
+        width:28px;
+        height:28px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 // mobile
 .mobile-app {
   #GNB {
@@ -348,36 +513,13 @@ legend {
   #footerWrap {
     display: none;
   }
+  #player {
+    bottom: $NAVIGATION-HEIGHT;
+  }
 }
 
-.noResultWrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  span {
-    font-size: 14px;
-    line-height: 1.25;
-    color: $greishGray;
-    &.noResult {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      font-size: 14px;
-      line-height: 1.4;
-      text-align: center;
-      &::before {
-        display: inline-block;
-        content: "";
-        width: 82px;
-        height: 68px;
-        margin-bottom: 16px;
-        background: url("#{$IMG_SERVER}/images/api/pc_img_noresult.svg") no-repeat center;
-      }
-    }
-  }
+.cursorPointer {
+  cursor: pointer;
 }
 
 .broadcast-menu {
@@ -435,26 +577,24 @@ legend {
   margin-top: 16px;
 
   .btn {
-    width: 100%;
-    height: 44px;
-    font-size: 16px;
-    border-radius: 12px;
-    color: $white;
-    font-weight: $bold;
-    text-align: center;
+    flex:1;
+    line-height:48px;
     background-color: $MAINCOLOR;
-    &.isDisable {
-      background: $mediumGray;
-    }
+    @include border($MAINCOLOR,16px);
+    @include font(16px,$Bold,white);
+    text-align: center;
     &.btn_cancel {
-      width: 49%;
-      background-color: $greishGray;
+      margin-right:4px;
+      background-color:white;
+      @include border(#d5d5d5,16px);
+      @include font(16px,$SemiBold,#666);
     }
     &.btn_ok {
-      width: 49%;
-      &.isDisable {
-        background: $mediumGray;
-      }
+      border-color:$MAINCOLOR;
+    }
+    &.isDisable {
+      border: 1px solid $mediumGray;
+      background: $mediumGray;
     }
   }
 }
@@ -514,9 +654,6 @@ legend {
 }
 
 @media (max-width: 800px) {
-  .gnbContainer {
-    width:480px;
-  }
   .totalWrap {
     width:480px;
   }

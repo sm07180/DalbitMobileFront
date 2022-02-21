@@ -89,7 +89,7 @@ const Exit = (props) => {
         <p>* 단, 타 법령에 의해 수집 및 이용한 회원정보는 법령 준수기간 동안 보관됩니다.</p>
       </div>
       <Checkbox
-        title="탈퇴 후 회원이 기존에 보유한 달빛라이브 아이템은 모두 삭제됩니다."
+        title="탈퇴 후 회원이 기존에 보유한 달라 아이템은 모두 삭제됩니다."
         fnChange={(v) => setState({click2: v})}
         checked={state.click2}
       />
@@ -218,7 +218,7 @@ const Wrap = styled.div`
     width: 100%;
     margin: 20px auto 186px auto;
     padding: 16px 135px;
-    background-color: #632beb;
+    background-color: #FF3C7B;
     color: #fff;
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {

@@ -56,13 +56,14 @@
   
   .bottomInfo{
     border-top:1px solid #f5f5f5;
-    padding-top:15px;
+    padding:15px 0;
     .inspectionTime{
       display: flex;
       justify-content:center;
       align-items:center;
       height: 30px;
       margin-left: auto;
+      margin-right: 16px;
       @include font(13px,500,#666);
       font-size: 13px;
       font-weight:500;

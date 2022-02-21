@@ -148,7 +148,7 @@ const PopupWrap = styled.div`
             .rewardTitle {                
                 font-size: 16px;
                 font-weight: 700;
-                color: #632BEB;
+                color: #FF3C7B;
                 margin-bottom: 3px;
             }
             .rewardContent {                
@@ -219,7 +219,7 @@ const PopupWrap = styled.div`
             color: #fff;
             font-weight: 500;
             text-align: center;
-            background-color: #632beb;
+            background-color: #FF3C7B;
         }
     }
   }

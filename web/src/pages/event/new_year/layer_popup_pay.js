@@ -190,7 +190,7 @@ const PopupWrap = styled.div`
 
           &.active {
             border-color: transparent;
-            background-color: #632beb;
+            background-color: #FF3C7B;
             color: #fff;
           }
 
@@ -213,7 +213,7 @@ const PopupWrap = styled.div`
         /* margin-left: -6px;
         margin-bottom: -6px; */
         border-radius: 12px;
-        background-color: #632beb;
+        background-color: #FF3C7B;
         color: #fff;
         font-size: 16px;
         font-weight: 400;
@@ -238,7 +238,7 @@ const PopupWrap = styled.div`
       &--purple {
         display: flex;
         margin-right: 2px;
-        color: #632beb;
+        color: #FF3C7B;
         font-size: 20px;
       }
     }
@@ -261,14 +261,14 @@ const PopupWrap = styled.div`
     color: #fff;
 
     &--active {
-      background: #632beb;
+      background: #FF3C7B;
     }
   }
 
   .charge__title {
     padding: 20px 0 14px 0;
-    border-bottom: 1px solid #632beb;
-    color: #632beb;
+    border-bottom: 1px solid #FF3C7B;
+    color: #FF3C7B;
     font-size: 16px;
     font-weight: 600;
   }

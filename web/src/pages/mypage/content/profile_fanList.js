@@ -279,12 +279,7 @@ export default (props) => {
                           name === '팬 랭킹' &&
                           rankInfo.map((item, index) => {
                             const {title, id, profImg, nickNm, isFan, memNo} = item
-                            let link = ''
-                            if (webview) {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                            } else {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                            }
+                            let link = `/profile/${memNo}?webview=${webview}`;
                             return (
                               <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
                                 <div onClick={() => ClickUrl(link)}>
@@ -309,12 +304,7 @@ export default (props) => {
                           name === '스타' &&
                           starInfo.map((item, index) => {
                             const {title, id, profImg, nickNm, isFan, memNo} = item
-                            let link = ''
-                            if (webview) {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                            } else {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                            }
+                            let link = `/profile/${memNo}?webview=${webview}`;
                             return (
                               <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
                                 <div onClick={() => ClickUrl(link)}>
@@ -339,12 +329,7 @@ export default (props) => {
                           name === '팬' &&
                           fanInfo.map((item, index) => {
                             const {title, id, profImg, nickNm, isFan, memNo} = item
-                            let link = ''
-                            if (webview) {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                            } else {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                            }
+                            let link = `/profile/${memNo}?webview=${webview}`;
                             return (
                               <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
                                 <div onClick={() => ClickUrl(link)}>
@@ -369,12 +354,7 @@ export default (props) => {
                           name === '좋아요' &&
                           goodInfo.map((item, index) => {
                             const {title, id, profImg, nickNm, isFan, memNo} = item
-                            let link = ''
-                            if (webview) {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                            } else {
-                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                            }
+                            let link = `/profile/${memNo}?webview=${webview}`;
                             return (
                               <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
                                 <div onClick={() => ClickUrl(link)}>

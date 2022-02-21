@@ -1,16 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // css
 import './bannerSlide.scss'
+import {useDispatch} from "react-redux";
+import {setHonorTab} from "redux/actions/honor";
 
 const BannerSlide = (props) => {
-  const {data} = props
+  const { type } = props;
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
-  const [bannerShow, setBannerShow] = useState(false)
+  const dispatch = useDispatch();
 
   const fetchBannerInfo = (arg) => {
     Api.getBanner({
@@ -30,7 +32,7 @@ const BannerSlide = (props) => {
     slideClass: 'bannerSlide',
     slideActiveClass: 'bannerSlide-active',
     autoplay: {
-      delay: 10000,
+      delay: 3000,
       disableOnInteraction: false
     },
     pagination: {
@@ -39,63 +41,50 @@ const BannerSlide = (props) => {
       clickable: true
     },
     on: {
-      click: (e) => {
-        const {targetUrl} = e.target.dataset
+      click: (evt) => {
+        const {targetUrl} = evt.target.dataset
+        if (targetUrl.indexOf("/honor") > -1){
+          dispatch(setHonorTab("스페셜DJ"));
+        }
         openBannerUrl(targetUrl)
       }
     }
   }
-  
-  // bannerOpen
-  const bannerOpen = () => {
-    if (bannerShow === false) {
-      setBannerShow(true)
-    } else {
-      setBannerShow(false)
+
+  const openBannerUrl = (value) => {
+    if(value.includes('notice')) {
+      history.push({
+        pathname: value,
+        state: value.split('/')[2]
+      })
+    }else {
+      history.push(value)
     }
   }
 
-  const openBannerUrl = (value) => {
-    history.push(value)
-  }
-
   useEffect(() => {
-    fetchBannerInfo(9)
+    fetchBannerInfo(type)
   },[])
 
   return (
     <div id="banner">
-      {bannerShow === false ?
-        <>
-          {bannerList && bannerList.length > 0 &&
-            <Swiper {...swiperBanner}>
-              {bannerList.map((list,index) => {
-                return (
-                  <div key={index}>
-                    <img src={list.bannerUrl} data-target-url={list.linkUrl} alt={list.title} />
-                  </div>
-                )
-              })}
-            </Swiper>
-          }
-          <button className="bannerMore" onClick={bannerOpen}></button>
-        </>
-        :
-        <>
+      {bannerList && bannerList.length > 0 &&
+        <Swiper {...swiperBanner}>
           {bannerList.map((list,index) => {
             return (
-              <div className='bannerList' key={index}>
+              <div key={index}>
                 <img src={list.bannerUrl} data-target-url={list.linkUrl} alt={list.title} />
-                {index === 0 && 
-                  <button className={`bannerMore ${bannerShow === true ? 'isShow': ''}`} onClick={bannerOpen}></button>
-                }
               </div>
             )
           })}
-        </>
+        </Swiper>
       }
     </div>
   )
 }
 
-export default BannerSlide
+BannerSlide.defaultProps = {
+  type: 9, // main slide 기본값으로 설정함.
+};
+
+export default BannerSlide;

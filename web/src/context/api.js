@@ -690,6 +690,7 @@ export default class API {
       params: params
     })
   }
+
   /**
    * @brief 마이페이지 리포트 청취내역 조회
    * @method "GET""
@@ -1819,6 +1820,14 @@ export default class API {
     return await ajax({
       method: 'GET',
       url: '/time/rank',
+      params: data
+    })
+  }
+
+  static getMyRank = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/rank/myRank',
       params: data
     })
   }
@@ -3778,6 +3787,74 @@ export default class API {
       params: data,
     })
   }
+
+  //추천코드 및 회원 등록
+  static inviteRegister = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/register',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //추천코드 보상 지급
+  static inviteReward = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/reward',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //초대페이지 회원 정보
+  static inviteMy = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/my',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //친구초대 회원 리스트
+  static inviteList = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/list',
+      method: 'GET',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //친구초대 내정보
+  static inviteMyRank = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/my-rank',
+      method: 'GET',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+  //친구초대 회원 리스트
+  static inviteMyList = async (obj) => {
+    const {reqBody, data} = obj || {}
+    return await ajax({
+      url: '/event/invite/my-list',
+      method: 'POST',
+      reqBody: reqBody,
+      data: data,
+    })
+  }
+
+
 }
 
 API.customHeader = null

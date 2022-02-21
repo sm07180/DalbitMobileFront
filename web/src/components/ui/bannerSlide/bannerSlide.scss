@@ -3,9 +3,11 @@
 #banner {
   position:relative;
   .swiper-container {
+    cursor: pointer;
+    &:active {cursor: pointer;}
     .bannerSlide {
       position:relative;
-      flex:none;
+      flex-shrink:0;
       width:100%;
       height:0;
       padding-top:30.558%;
@@ -22,43 +24,8 @@
       @include swiperPagination;
       cursor:pointer;
       &:after {
-        content:"모두보기";
         margin-left:4px;
       }
-    }
-  }
-  .bannerList {
-    position:relative;
-    flex:none;
-    width:100%;
-    height:0;
-    padding-top:20.002%;
-    border-radius:8px;
-    overflow:hidden;
-    + .bannerList {
-      margin-top:10px;
-    }
-    img {
-      @include position-top-left;
-      width:100%;
-      height:100%;
-      vertical-align: bottom;
-      object-fit: cover;
-    }
-  }
-  .bannerMore {
-    @include position-bottom-right(10px,0);
-    z-index: 1;
-    width:54px;
-    height:20px;
-    margin-left:4px;
-    padding:0;
-    padding-right:8px;
-    border-radius:0;
-    @include font(12px,400,white);
-    &.isShow {
-      right:0;
-      background-color:black;
     }
   }
 }

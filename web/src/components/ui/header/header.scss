@@ -47,11 +47,26 @@ header {
   .buttonGroup {
     @include flex(center);
     margin-left:auto;
+    & > button {
+      margin-left: 8px;
+    }
   }
   button {
     position:relative;
     &.ranking {@include headerBtn(icoRank-b);}
-    &.message {@include headerBtn(icoMessage-b);}
+    &.message {
+      @include headerBtn(icoMessage-b);
+      &.new {
+        &::after {
+          @include position-top-right(3px,3px);
+          content:"";
+          width:10px;
+          height:10px;
+          border-radius:50%;
+          background-color:$MAINCOLOR;
+        }
+      }
+    }
     &.alarm {
       @include headerBtn(icoAlarm-b);
       &.new {

@@ -14,7 +14,7 @@ import DatePicker from "./DatePicker";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import PopSlide from "components/ui/popSlide/PopSlide";
 
-const listenWrap = () =>{
+const ListenWrap = () =>{
   const history = useHistory();
   const context = useContext(Context);
   //조회 기간설정
@@ -33,9 +33,8 @@ const listenWrap = () =>{
   const [listenListInfo, setListenListInfo] = useState([]);
   //총 선물한 달, 청취시간
   const [listenTotalInfo, setListenTotalInfo] = useState({giftDalTotCnt: 0, listeningTime: 0});
+  //Popup Open/Close용
   const [bottomSlide, setBottomSlide] = useState(false);
-  //방송요약 아이콘
-  const imgTag = {listenIcon: 'ico_timeListen', dalIcon: 'ico_dal'}
 
 
   //청취내역 조회
@@ -45,7 +44,7 @@ const listenWrap = () =>{
       startDt: dt.pickdataPrev,
       endDt: dt.pickdataNext,
       page: 1,
-      records: 100
+      records: 999
     }
     API.report_listen({params}).then((res) => {
       if(res.result === "success") {
@@ -160,7 +159,7 @@ const listenWrap = () =>{
                 <span className="date">{changeDay(v.startDt)}</span>
                 <span className="light"><span>{changeMin(v.startDt)}</span> ~ <span>{changeMin(v.endDt)}</span>({decodeMin(v.listenTime)}분)</span>
               </div>
-              <div className="contentBOx">
+              <div className="contentBox">
                 <div className="amount">{v.giftDalCnt.toLocaleString("ko-KR")}</div>
                 <div className="light">선물 준 달</div>
               </div>
@@ -170,7 +169,7 @@ const listenWrap = () =>{
       </section>
 
       {bottomSlide &&
-      <PopSlide title="기간 설절" setPopSlide={setBottomSlide}>
+      <PopSlide title="기간 설정" setPopSlide={setBottomSlide}>
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
           <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>
@@ -187,4 +186,4 @@ const listenWrap = () =>{
   )
 }
 
-export default listenWrap;
+export default ListenWrap;

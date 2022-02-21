@@ -27,7 +27,7 @@ const ToggleStyled = styled.div`
   transition: background-color 0.1s linear;
 
   &.active {
-    background-color: #632beb;
+    background-color: #ff3c7b;
   }
 
   .circle {

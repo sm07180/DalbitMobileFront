@@ -810,7 +810,7 @@ const SectionIcon = styled.div`
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  background-color: #632beb;
+  background-color: #FF3C7B;
   background-repeat: no-repeat;
   background-position: center;
 `
@@ -871,7 +871,7 @@ const ShortSection = styled.div`
         :after {
           background: url(${PurplePlayIcon}) no-repeat center center/cover;
         }
-        color: #632beb;
+        color: #FF3C7B;
       }
     }
     :nth-child(2) {
@@ -907,7 +907,7 @@ const ShortSection = styled.div`
     width: 100%;
     font-size: 12px;
     font-weight: 800;
-    color: #632beb;
+    color: #FF3C7B;
     transform: skew(-0.03deg);
     letter-spacing: -0.3px;
 
@@ -943,7 +943,7 @@ const TypeBtn = styled.button`
   width: 86px;
 
   &.active {
-    border-color: #632beb;
+    border-color: #FF3C7B;
   }
 `
 const TitleSubMsg = styled.div`
@@ -1032,8 +1032,8 @@ const Report = styled.div`
       text-align: center;
       color: #000000;
       &.on {
-        border: solid 1px #632beb;
-        background-color: #632beb;
+        border: solid 1px #FF3C7B;
+        background-color: #FF3C7B;
         color: #ffffff;
       }
     }

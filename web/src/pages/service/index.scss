@@ -1,4 +1,5 @@
 @import '../../styles/variables';
+@import "components/ui/_mixin.scss";
 #serviceWrap {
   .serviceWrap {
     &__contents {
@@ -17,7 +18,7 @@
       &--os {
         padding: 15px 0;
         border-radius: 24px;
-        background-color: rgba(99, 43, 235, 0.05);
+        background-color: rgba(255, 60, 123, 0.05);
         font-size: 16px;
         text-align: center;
       }
@@ -46,7 +47,7 @@
 
       &--point {
         font-weight: bold;
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
     &__caption {
@@ -68,7 +69,7 @@
       &--question {
         color: $greishGray;
         &--point {
-          color: $primary;
+          color: $MAINCOLOR;
           cursor: pointer;
         }
       }
@@ -117,7 +118,7 @@
 
       &--button {
         padding: 13px 42px;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         border-radius: 22px;
         color: #fff;
       }

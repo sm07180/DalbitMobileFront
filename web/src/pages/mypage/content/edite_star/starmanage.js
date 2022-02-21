@@ -292,9 +292,9 @@ export default (props) => {
   }
   const Link = (memNo) => {
     if (webview && webview === 'new') {
-      history.push(`/mypage/${memNo}?webview=new`)
+      history.push(`/profile/${memNo}?webview=new`)
     } else {
-      history.push(`/mypage/${memNo}`)
+      history.push(`/profile/${memNo}`)
     }
   }
   return (
@@ -446,7 +446,7 @@ const Wrap = styled.div`
       text-align: left;
 
       &--active {
-        color: #632beb;
+        color: #FF3C7B;
         font-weight: 600;
       }
     }
@@ -478,7 +478,7 @@ const Wrap = styled.div`
         }
         &--active {
           font-weight: 600;
-          color: #632beb;
+          color: #FF3C7B;
           &:before {
             background: url(${PtimeIconP});
           }
@@ -498,7 +498,7 @@ const Wrap = styled.div`
         }
         &--active {
           font-weight: 600;
-          color: #632beb;
+          color: #FF3C7B;
           &:before {
             background: url(${PstarIconP});
           }
@@ -519,7 +519,7 @@ const Wrap = styled.div`
         }
         &--active {
           font-weight: 600;
-          color: #632beb;
+          color: #FF3C7B;
           &:before {
             background: url(${PlastTimeIconP});
           }
@@ -539,10 +539,10 @@ const Wrap = styled.div`
         color: #fff;
         font-size: 14px;
         text-align: center;
-        border: solid 1px #632beb;
-        background-color: #632beb;
+        border: solid 1px #FF3C7B;
+        background-color: #FF3C7B;
         &--active {
-          color: #632beb;
+          color: #FF3C7B;
           background-color: #fff;
           border: solid 1px #5f29e2;
         }

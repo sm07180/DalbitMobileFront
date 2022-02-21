@@ -8,6 +8,8 @@ import feed from './profile/feed';
 import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
 import clip from './clip/clip';
+import honor from './honor/index';
+import notice from './notice/index';
 
 const rootReducer = combineReducers({
   common
@@ -18,7 +20,9 @@ const rootReducer = combineReducers({
   , feed
   , fanBoard
   , profileClip
-   ,clip
+  , clip
+  , honor
+  , notice
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

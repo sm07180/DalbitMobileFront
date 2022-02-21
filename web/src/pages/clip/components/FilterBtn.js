@@ -13,7 +13,6 @@ const FilterBtn = (props) => {
 
   // 필터 닫기
   const closeFilterGroup = () => {
-    console.log('aaa');
     setFilterOpen(false);
   };
 

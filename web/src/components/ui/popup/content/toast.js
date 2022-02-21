@@ -78,18 +78,16 @@ export default () => {
 
   return (
     <>
-      {
-        msgData.length > 0 &&
-          msgData.map((v, i) => {
-            return (
-              <React.Fragment key={i}>
-                <Toast>
-                  <div dangerouslySetInnerHTML={{__html: Utility.nl2br(v.text)}}></div>
-                </Toast>
-              </React.Fragment>
-            )
-          })
-        // Memozized(msgData)
+      {msgData.length > 0 &&
+        msgData.map((v, i) => {
+          return (
+            <React.Fragment key={i}>
+              <Toast>
+                <div dangerouslySetInnerHTML={{__html: Utility.nl2br(v.text)}}></div>
+              </Toast>
+            </React.Fragment>
+          )
+        })
       }
     </>
   )
@@ -98,7 +96,8 @@ export default () => {
 const Toast = styled.div`
   position: fixed;
   bottom: 32px;
-  left: 16px;
+  left: 50%;
+  transform:translateX(-50%);
   opacity: 0;
 
   animation-name: toastFadeInOut;
@@ -106,11 +105,12 @@ const Toast = styled.div`
   animation-timing-function: ease-in-out;
 
   width: calc(100% - 32px);
+  max-width:460px;
   height: auto;
   padding: 10px;
   font-size: 16px;
   text-align: center;
-  background-color: rgba(99, 43, 235, 0.9);
+  background-color: rgba(255,60,123, 0.9);
   color: #fff;
   border-radius: 12px;
   z-index: 120;

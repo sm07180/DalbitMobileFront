@@ -47,6 +47,8 @@
   }
   @include noticeInfo;
   .noResult{
-    @include font(14px,400,#999);
+    @include flex(center, center);
+    @include font(15px, $SemiBold, #202020);
+    margin-top: 150px;
   }
 }

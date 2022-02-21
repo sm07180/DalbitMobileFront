@@ -64,49 +64,49 @@
 
   @keyframes volumeAni2-1 {
     0% {
-      background-color: #fcfbff;
+      background-color: #fffbfc;
       opacity: 0.8;
     }
 
     50% {
-      background-color: #ebe3ff;
+      background-color: #ffe3e9;
       opacity: 0.8;
     }
 
     100% {
-      background-color: #fcfbff;
+      background-color: #fffbfc;
       opacity: 0.8;
     }
   }
   @keyframes volumeAni2-2 {
     0% {
-      background-color: #fcfbff;
+      background-color: #fffbfc;
       opacity: 0.5;
     }
 
     50% {
-      background-color: #ebe3ff;
+      background-color: #ffe3e9;
       opacity: 0.5;
     }
 
     100% {
-      background-color: #fcfbff;
+      background-color: #fffbfc;
       opacity: 0.5;
     }
   }
   @keyframes volumeAni2-3 {
     0% {
-      background-color: #fcfbff;
+      background-color: #fffbfc;
       opacity: 0.2;
     }
 
     50% {
-      background-color: #ebe3ff;
+      background-color: #ffe3e9;
       opacity: 0.2;
     }
 
     100% {
-      background-color: #fcfbff;
+      background-color: #fffbfc;
       opacity: 0.2;
     }
   }
@@ -131,8 +131,7 @@
   .streamBtn {
     width: 120px;
     height: 120px;
-    margin-top: 60px;
-    margin-bottom: 120px;
+    margin: 60px 0;
     background: url("./static/record_stream.svg");
     background-size: 100%;
     z-index: 1;

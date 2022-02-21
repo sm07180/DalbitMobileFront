@@ -1,7 +1,9 @@
 @import "components/ui/_mixin.scss";
 
 #profileDetail {
-  height:100vh;
+  flex:1;
+  @include flex($fd: column);
+  height:100%;
   header {
     .buttonGroup {
       div.moreBtn {
@@ -67,6 +69,9 @@
         word-wrap: break-word; 
         white-space: pre-line;
         @include font(14px,400,black);
+      }
+      .swiperPhoto{
+        margin-bottom: 16px;
       }
       .info {
         @include flex(center);
@@ -135,12 +140,14 @@
             }
           }
         }
-        button.more {
-          flex-shrink: 0;
-          width:30px;
-          height:30px;
+        .listBack {
+          @include flex;
+          margin-left:auto;
           margin-bottom:auto;
-          background-color:#ddd;
+          div.moreBtn {
+            @include moreBtnStyle-1;
+            margin-left:8px;
+          }
         }
       }
     }

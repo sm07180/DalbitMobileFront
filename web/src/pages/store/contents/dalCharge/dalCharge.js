@@ -11,19 +11,20 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'
 import {useSelector} from "react-redux";
+import qs from 'query-string'
 
 let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
   {type: '무통장(계좌이체)', code: 'coocon'},
   {type: '신용/체크카드', fetch: 'pay_card'},
-  {type: '핸드폰', fetch: 'pay_phone'},
+  {type: '휴대폰', fetch: 'pay_phone'},
   {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
   {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
   {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-  {type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-  {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
   {type: '문화상품권', fetch: 'pay_gm'},
   {type: '해피머니상품권', fetch: 'pay_hm'}
+  // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
   // {type: "스마트문상(게임문화상품권)", fetch: 'pay_gg'},
   // {type: "도서문화상품권", fetch: 'pay_gc'},
 ]
@@ -36,7 +37,7 @@ const DalCharge = () => {
   const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
-  const { itemNm, dal, price, itemNo, webview} =location.state
+  const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search);
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
@@ -103,7 +104,6 @@ const DalCharge = () => {
   }
 
   const callPGForm = (payment, ciData) => {
-    console.log(isDesktop);
     Api[payment.fetch]({
       data: {
         Prdtnm: itemNm,
@@ -193,7 +193,7 @@ const DalCharge = () => {
       case "티머니/캐시비":
         if (price * buyItemInfo.itemAmount > 500000) return true;
         break;
-      case "핸드폰":
+      case "휴대폰":
         if (price * buyItemInfo.itemAmount > 1000000) return true;
         break;
       default:
@@ -227,7 +227,7 @@ const DalCharge = () => {
           </div>
           <div className="infoList">
             <div className="title">총</div>
-            <p>{Utility.addComma(dal * buyItemInfo.itemAmount)} <strong>개</strong></p>
+            <p><span className='totalCnt'>{Utility.addComma((dal * buyItemInfo.itemAmount) + bonusDal)}</span><strong>개</strong></p>
           </div>
         </div>
         <div className="infoBox" style={{marginTop:'10px'}}>
@@ -262,10 +262,6 @@ const DalCharge = () => {
       {popSlide === true &&
       <PopSlide setPopSlide={setPopSlide}>
         <div className='title'>인증 정보를 확인해주세요!</div>
-        <div className="infoBox">
-          <p className='name'>홍길동</p>
-          <p className='phoneNum'>010-111-2222</p>
-        </div>
         <p className='text'>
           안전한 계좌 정보 등록을 위해 한번 더<br/>
           본인인증을 해주셔야 합니다.<br/>

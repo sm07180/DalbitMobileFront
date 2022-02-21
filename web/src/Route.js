@@ -47,8 +47,9 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 고객센터
-const ReCustomer = React.lazy(() => import('pages/recustomer/Customer'))
-
+const ReCustomer = React.lazy(() => import('pages/recustomer'))
+// 운영정책
+const ReRule = React.lazy(() => import('pages/rerule'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
@@ -135,6 +136,12 @@ const Mailbox = React.lazy(() => import("pages/mailbox"));
 const Notice = React.lazy(() => import("pages/remypage/contents/notice/Notice"));
 const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/PostDetail"));
 const Report = React.lazy(() => import("pages/remypage/contents/report/Report"));
+const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
+
+const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
+
+//임시 옛날 설정 페이지
+const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -156,10 +163,13 @@ const Router = () => {
 
         <Route exact path="/eventzip" component={EventZip} />
 
+        <Route exact path="/rule/" component={ReRule} />
+        <Route exact path="/rule/:category" component={ReRule} />
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rankDetail/:type" component={RankingDetail} />
-        <Route exact path="/rank/benefit" component={RankingBenefit} />
-        {/* <Route exact path="/rank/:type" component={RankingGuide} /> */}
+        <Route exact path="/rankBenefit" component={RankingBenefit} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
@@ -179,7 +189,7 @@ const Router = () => {
         <Route exact path="/pay/receipt" component={Receipt}/>
 
         <Route exact path="/wallet" component={Wallet} />
-        <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
+        <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
 
         <Route exact path="/pay" component={Pay} />
@@ -233,7 +243,7 @@ const Router = () => {
                  const {memNo, type, action} = match.params;
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
-                 } else if(myMemNo !== memNo || action === 'write'){
+                 } else if(action === 'write'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
                  }
                    return <Route component={ProfileContentsWrite} />
@@ -309,7 +319,7 @@ const Router = () => {
         <Route exact path="/broadcast/:roomNo" component={Broadcast} />
         <Route exact path="/broadcast_setting" component={BroadcastSetting} />
 
-        {/*  www 우체통관련  */}
+        {/*  www 메시지관련  */}
         <Route exact path="/mailbox" component={Mailbox} />
         <Route exact path="/mailbox/:category" component={Mailbox} />
         <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
@@ -317,6 +327,12 @@ const Router = () => {
         <Route exact path="/notice" component={Notice} />
         <Route exact path="/notice/:num" component={PostDetail} />
         <Route exact path="/report" component={Report} />
+        <Route exact path="/myclip" component={MyClip} />
+        <Route exact path="/invite/:code" component={InviteSns} />
+        <Route exact path="/alarm" component={Notice} />
+
+        {/* 임시 옛날 설정 페이지*/}
+        <Route exact path="/oldsetting" component={OldSetting} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

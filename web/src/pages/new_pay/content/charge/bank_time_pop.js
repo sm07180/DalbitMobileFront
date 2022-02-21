@@ -108,7 +108,7 @@ const PopupWrap = styled.div`
         font-weight: 600;
         text-align: center;
         span {
-          color: #632beb;
+          color: #FF3C7B;
           letter-spacing: -1.8px;
         }
       }
@@ -158,7 +158,7 @@ const PopupWrap = styled.div`
           font-size: 18px;
 
           &:last-child {
-            background-color: #632beb;
+            background-color: #FF3C7B;
           }
         }
       }

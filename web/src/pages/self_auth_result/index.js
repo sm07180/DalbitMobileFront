@@ -10,9 +10,12 @@ import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
 
 //layout
-import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header'
 import {IMG_SERVER} from 'context/config'
+
+//
+import './selfAuthResult.scss'
+import {isDesktop} from "lib/agent";
 
 //
 export default (props) => {
@@ -94,7 +97,7 @@ export default (props) => {
   }, [])
 
   const goWallet = () => {
-    props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    props.history.push(`/wallet`)
     context.action.updateWalletIdx(1)
   }
 
@@ -119,6 +122,14 @@ export default (props) => {
     history.push(`/legalauth`)
   }
 
+  const phoneAuthAction = () => {
+    if(isDesktop()) {
+      window.close();
+    }else {
+      history.replace('/');
+    }
+  }
+
   const createResult = () => {
     switch (authState) {
       case 0: //초기상태
@@ -134,7 +145,7 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/money_exchange')
+                  history.push('/wallet?exchange');
                 }}>
                 확인
               </button>
@@ -178,12 +189,12 @@ export default (props) => {
             </h4>
             <p>
               ※ 동의 철회를 원하시는 경우, <br />
-              달빛라디오 고객센터에서 철회 신청을 해주시기 바랍니다.
+              달라 고객센터에서 철회 신청을 해주시기 바랍니다.
             </p>
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/money_exchange')
+                  history.push('/wallet?exchange')
                 }}>
                 확인
               </button>
@@ -201,7 +212,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/private')
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/myProfile/edit')
+                  }
                 }}>
                 확인
               </button>
@@ -280,90 +295,25 @@ export default (props) => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout {...props} status="no_gnb">
+    <div id="selfAuthResult">
       {authState === 0 ? (
         <></>
-      ) : (
-        <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
-      )}
-      {authState !== 0 && (
-        <Content>
-          <div className="img_wrap">
-            <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
-          </div>
-          <h2>본인 인증 완료</h2>
-          {createResult()}
-        </Content>
-      )}
-    </Layout>
+      ) :
+        authState === 4 ?
+          <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
+        : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+      }
+      <section className="resultWrap">
+        {authState !== 0 && (
+          <>
+            <div className="img_wrap">
+              <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
+            </div>
+            <h2>본인 인증 완료</h2>
+            {createResult()}
+          </>
+        )}
+      </section>
+    </div>
   )
 }
-//---------------------------------------------------------------------
-
-const Content = styled.div`
-  padding: 30px 16px;
-  .img_wrap {
-    text-align: center;
-  }
-  h2 {
-    padding: 30px 0 22px 0;
-    color: #000;
-    font-size: 24px;
-    line-height: 24px;
-    text-align: center;
-  }
-  .auth-wrap {
-    h4 {
-      text-align: center;
-      color: #000;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 20px;
-      strong {
-        font-weight: 600;
-      }
-      span {
-        color: ${COLOR_MAIN};
-      }
-    }
-    h5 {
-      text-align: center;
-      font-size: 14px;
-      line-height: 20px;
-      font-weight: 400;
-      span {
-        color: ${COLOR_MAIN};
-      }
-    }
-    h4 + h5 {
-      padding-top: 10px;
-    }
-    p {
-      padding-top: 35px;
-      color: #757575;
-      font-size: 12px;
-      line-height: 18px;
-    }
-    .btn-wrap {
-      display: flex;
-      padding-top: 30px;
-      button {
-        flex: 1;
-        height: 44px;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 600;
-        background: ${COLOR_MAIN};
-        border: 1px solid ${COLOR_MAIN};
-        line-height: 44px;
-        &.cancel {
-          color: ${COLOR_MAIN};
-          background: #fff;
-        }
-      }
-      button + button {
-        margin-left: 8px;
-      }
-    }
-  }
-`

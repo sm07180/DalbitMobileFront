@@ -11,9 +11,6 @@ const FanboardSection = (props) => {
 
   return (
     <div className="fanboardSection">
-      <div className="subArea">
-        <div className="title">전체 {Utility.addComma(fanBoardData.paging.total)}</div>
-      </div>
       {fanBoardData.list.length > 0 ?
         <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard"
                     deleteContents={deleteContents} profileData={profileData} openBlockReportPop={openBlockReportPop} />

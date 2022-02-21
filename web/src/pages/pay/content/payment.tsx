@@ -294,10 +294,10 @@ export default function Payment() {
         status: true,
         content: message,
         callback: () => {
-          history.push("/pay/store");
+          history.push("/store");
         },
         cancelCallback: () => {
-          history.push("/pay/store");
+          history.push("/store");
         },
       });
     }
@@ -352,7 +352,7 @@ export default function Payment() {
           ciValue === "admin" ||
           ciValue.length < 10
         ) {
-          history.push("/self_auth/self?event=/pay/store");
+          history.push("/self_auth/self?event=/store");
         } else {
           if (getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
             fetchPay(res.data.ci);
@@ -371,12 +371,12 @@ export default function Payment() {
           <br />
           -----------------------------------------------
           <br />
-          회원 이름 : <span style='color: #632beb; font-weight: bold;'>${
+          회원 이름 : <span style='color: #FF3C7B; font-weight: bold;'>${
             res.data.memName
           }</span>
           <br />
           연락처 : 
-          <span style='color: #632beb; font-weight: bold;'>
+          <span style='color: #FF3C7B; font-weight: bold;'>
           ${res.data.phoneNo.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
           </span>
           <br />
@@ -400,7 +400,7 @@ export default function Payment() {
           }
         }
       } else {
-        history.push("/self_auth/self?event=/pay/store");
+        history.push("/self_auth/self?event=/store");
       }
     }
     fetchSelfAuth();

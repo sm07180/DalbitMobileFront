@@ -3,7 +3,7 @@ import React from 'react'
 import './inputItems.scss'
 
 const InputItems = (props) => {
-  const {title,type,button,onClick,children,logYn} = props
+  const {title,type,button,onClick,children,logYn,focusDisable} = props
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode
@@ -20,7 +20,9 @@ const InputItems = (props) => {
         {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>
-            <label className="inputBox" onFocus={onFocus} onBlur={onBlur}>
+            <label className="inputBox"
+                   onFocus={(e) => {!focusDisable && onFocus(e)}}
+                   onBlur={(e) => {!focusDisable && onBlur(e)}}>
               {children}
             </label>
             {button &&
@@ -41,6 +43,7 @@ const InputItems = (props) => {
 
 InputItems.defaultProps = {
   type: 'text',
+  focusDisable: false  //포커스 이벤트 막기
 }
 
 export default InputItems

@@ -1,34 +1,35 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+    #inquire {
+      .tabmenu {
+        top: $PC-TABTOP;
+      }
+    }
+  }
+}
+
 #inquire {
   .subContent {
     .tabmenu {
-        position:relative;
+        position:sticky;
+        top: $MOBILE-TABTOP;
         @include flex(center);
         margin:0 16px;
+        background-color: #FFF;
+        z-index: $TAB-ZINDEX;
         li {
           flex:1;
           @include flex(center,center);
-          height:42px;
+          height:48px;
           border-bottom:2px solid #F2F2F2;
           letter-spacing: -1px;
-          @include font(16px,500,#ACACAC);
-          &:nth-child(1) {
-            &.active ~ .underline {left:0;}            
-          }
-          &:nth-child(2) {
-            &.active ~ .underline {left:50%;}
-          }
+          @include font(16px,600,#ACACAC);
           &.active {              
             @include font(16px,700,#202020);
+            border-bottom:2px solid #202020;
           }
-        }
-        .underline {
-          @include position-bottom-left;
-          width:50%;
-          height:2px;
-          background-color:black;
-          transition: all .1s ease-in-out;
         }
     }    
   }

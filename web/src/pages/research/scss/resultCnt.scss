@@ -10,6 +10,7 @@
     }
     .photo {
       flex: none;
+      position: relative;
       @include flex(center,center);
       img {
         width:100%;
@@ -22,6 +23,7 @@
       .listItem {
         @include flex(center);
         .subject {
+          flex: none;
           @include font(12px, 400, #999999);
           margin-right: 6px;
         }

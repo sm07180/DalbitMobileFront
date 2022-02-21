@@ -30,7 +30,7 @@ export default function AwardsScore(props) {
         <p className="scoreTotal__title">
           <span>{djNickNm}</span> 님과
           <br />
-          2020년 달빛라이브에서
+          2020년 달라에서
         </p>
 
         <ul className="scoreTotal__infoBox">

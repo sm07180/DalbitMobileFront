@@ -143,7 +143,7 @@ export default (props) => {
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/mypage/${myMemNo}/wallet`)
+                      props.history.push(`/wallet`)
                     }}>
                     <figure>
                       <img src={moonIco} />
@@ -157,7 +157,7 @@ export default (props) => {
                   <li
                     key={index}
                     onClick={() => {
-                      props.history.push(`/menu/profile`)
+                      props.history.push(`/myProfile`)
                     }}>
                     <figure>
                       <img src={alarmIco} />
@@ -340,11 +340,11 @@ const TitleWrap = styled.div`
   justify-content: space-between;
   justify-items: center;
   align-items: center;
-  border-bottom: 1px solid #632beb;
+  border-bottom: 1px solid #FF3C7B;
   padding-bottom: 25px;
 `
 const TitleText = styled.div`
-  color: #632beb;
+  color: #FF3C7B;
   font-size: 20px;
   letter-spacing: -0.5px;
   font-weight: 600;

@@ -76,7 +76,7 @@ export default (props) => {
                 <div
                   className="thumbBox"
                   onClick={() => {
-                    history.push(`/mypage/${memNo}`)
+                    history.push(`/profile/${memNo}`)
                   }}>
                   <img src={holder} className="thumbBox__frame" />
                   <img src={profImg.thumb120x120} className="thumbBox__pic" />
@@ -90,11 +90,11 @@ export default (props) => {
                   {/* <div className="countBox">
                   </div> */}
                   <div className="bestFanBox">
-                    <span className="bestFanBox__label">왕큐피트</span>
+                    <span className="bestFanBox__label">CUPID</span>
                     <span
                       className="bestFanBox__nickNm"
                       onClick={() => {
-                        history.push(`/mypage/${fanMemNo}`)
+                        history.push(`/profile/${fanMemNo}`)
                       }}>
                       {fanNickNm}
                     </span>

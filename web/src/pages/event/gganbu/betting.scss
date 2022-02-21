@@ -385,13 +385,13 @@
         border-collapse: collapse;
         tHead {
           tr {
-            border-top: 1px solid #632beb;
-            border-bottom: 1px solid #632beb;
+            border-top: 1px solid #FF3C7B;
+            border-bottom: 1px solid #FF3C7B;
           }
           th {
             padding: 5px 0;
             font-size: 12px;
-            color: #632beb;
+            color: #FF3C7B;
           }  
         }
         tr{
@@ -584,7 +584,7 @@
         pointer-events: none;
         &.active {
           pointer-events: auto;
-          background-color: #632beb;
+          background-color: #FF3C7B;
         }
       }
 
@@ -613,21 +613,21 @@
           font-size: 14px;
           font-weight: 700;
           color: #fff;
-          background-color: #632BEB;
-          border: 1px solid #632BEB;
+          background-color: #FF3C7B;
+          border: 1px solid #FF3C7B;
         }
       }
       table {
         border-collapse: collapse;
         tHead {
           tr {
-            border-top: 1px solid #632beb;
-            border-bottom: 1px solid #632beb;
+            border-top: 1px solid #FF3C7B;
+            border-bottom: 1px solid #FF3C7B;
           }
           th {
             padding: 5px 0;
             font-size: 12px;
-            color: #632beb;
+            color: #FF3C7B;
           }  
         }
         tr{

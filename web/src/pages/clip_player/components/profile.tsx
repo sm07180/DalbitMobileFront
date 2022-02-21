@@ -348,7 +348,12 @@ let Profile = () => {
                     )}
                     <div className="profile__nameWrap">
                       <strong>
-                        {profileData.nickNm}
+                        <span style={{cursor:"pointer"}} onClick={()=>{
+                          history.push(`/profile/${profileData.memNo}`)
+                        }}>
+                          {profileData.nickNm}
+                        </span>
+
                         <span className="subIconWrap">
                       {profileData.gender !== "" && (
                           <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
@@ -402,7 +407,7 @@ let Profile = () => {
                           {globalState.baseData.memNo !== profileData.memNo && (
                               <button
                                   className="rankingList__goFanboardBtn"
-                                  onClick={() => history.push(`/mypage/${profileData.memNo}/fanboard`)}
+                                  onClick={() => history.push(`/profile/${profileData.memNo}?tab=1`)}
                               />
                           )}
                         </div>
@@ -453,7 +458,7 @@ let Profile = () => {
                                 }
                               }}
                           >
-                            왕큐피트
+                            CUPID
                           </button>
                           <div className={`rankingList__item `}>
                             <img
@@ -477,7 +482,7 @@ let Profile = () => {
                                 }
                               }}
                           >
-                            왕큐피트
+                            CUPID
                           </button>
                           <div
                               className={`rankingList__item`}

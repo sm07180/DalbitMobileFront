@@ -1,4 +1,5 @@
 @import '../../../../../styles/variables';
+@import "components/ui/_mixin.scss";
 
 #bc_setting_title {
   padding: 0 16px;
@@ -57,7 +58,7 @@
     &__add {
       width: 60px;
       height: 32px;
-      background-color: $primary;
+      background-color: $MAINCOLOR;
       border-radius: 8px;
       color: #fff;
       float: right;
@@ -78,7 +79,7 @@
       & > span {
         margin-left: 8px;
         font-weight: normal;
-        color: $primary;
+        color: $MAINCOLOR;
       }
     }
 
@@ -141,11 +142,11 @@
       font-weight: bold;
       margin-bottom: 4px;
       span {
-        color: $primary;
+        color: $MAINCOLOR;
       }
       button {
         padding: 8px 17px;
-        background-color: $primary;
+        background-color: $MAINCOLOR;
         border-radius: 8px;
         color: #fff;
         font-size: 14px;
@@ -223,8 +224,8 @@
     .radio_btn {
       &.active {
         & ~ .check_circle {
-          background-color: $primary;
-          border-color: $primary;
+          background-color: $MAINCOLOR;
+          border-color: $MAINCOLOR;
           &::after {
             transform: scale(1);
             transition: all 0.1s ease;

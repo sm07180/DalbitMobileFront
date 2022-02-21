@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="ic_fan" width="12" height="12" viewBox="0 0 12 12">
-    <circle id="타원_81" cx="6" cy="6" r="6" fill="#632beb" data-name="타원 81"/>
+    <circle id="타원_81" cx="6" cy="6" r="6" fill="#FF3C7B" data-name="타원 81"/>
     <text id="F" fill="#fff" font-family="NanumSquareR, NanumSquare" font-size="8px" letter-spacing="-0.025em" transform="translate(4 9)">
         <tspan x="0" y="0">F</tspan>
     </text>

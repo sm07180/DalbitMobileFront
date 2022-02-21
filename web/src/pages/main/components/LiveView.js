@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
-import NoResult from 'components/ui/new_noResult'
+import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";
@@ -24,13 +24,13 @@ const LiveView = (props) => {
                 RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
               }}>
                 <div className="photo">
-                  <img src={list.bjProfImg.thumb100x100} alt="" />
-                  { list.gstMemNo && <img src={list.gstProfImg.thumb100x100} className="guest" alt="" /> }
-                  { list.isVideo && <div className="video" /> }
+                  <img src={list.bjProfImg.thumb120x120} alt="" />
+                  { list.gstMemNo && <img src={list.gstProfImg.thumb120x120} className="guest" alt="" /> }
+                  { list.mediaType === 'v' && <div className="video" /> }
                 </div>
                 <div className='listContent'>
                   <div className="listItem">
-                    <BadgeItems data={list} type={'liveBadgeList'} />
+                    <BadgeItems data={list} type={'isBadge'} />
                   </div>
                   <div className="listItem">
                     <span className='title'>{list.title}</span>
@@ -43,8 +43,7 @@ const LiveView = (props) => {
                     <span className="state">
                       <DataCnt type={"totalCnt"} value={list?.totalCnt} />
                       <DataCnt type={"entryCnt"} value={list?.entryCnt} />
-                      <DataCnt type={"likeCnt"} value={list.likeCnt + list.boostCnt} />
-                      {list.boostCnt > 0 && <DataCnt type={"boostCnt"} value="" />}
+                      <DataCnt type={`${list.boostCnt > 0 ? "boostCnt" : "likeCnt"}`} value={list.likeCnt} />
                     </span>
                   </div>
                 </div>

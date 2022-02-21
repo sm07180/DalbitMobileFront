@@ -8,60 +8,69 @@ import Swiper from 'react-id-swiper'
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
+import {useSelector} from "react-redux";
 
 const SwiperList = (props) => {
-  const {data, profImgName, type} = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const {data, profImgName, type, pullToRefreshPause} = props;
+  const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
+  const common = useSelector(state => state.common);
 
   const swiperParams = {
     slidesPerView: 'auto',
   }
 
   const onClickAction = (item) => {
-    if(type === 'top10' || type === 'myStar') {
+    if(type === 'top10') {
       if (!globalState.baseData.isLogin) {
-        history.push("/login");
+        history.push("/login")
       }else{
-        history.push(`/profile/${memNo}`);
+        history.push(`/profile/${item.memNo}`);
       }
-    }else if(type === 'daldungs') {
+    }else if(type === 'daldungs' || type === 'favorites') {
       RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
     }
   }
 
+  const swiperRefresh = () => {
+    const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
+    swiper?.update();
+    swiper?.slideTo(0);
+  }
+
   useEffect(() => {
-    if (data.length > 0) {
-      const swiper = document.querySelector('.top10 .swiper-container').swiper;
-      swiper.update();
-      swiper.slideTo(0);
+    if (data.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
+      swiperRefresh();
     }
-  }, [data]);
+  }, [data, pullToRefreshPause]);
+
+  useEffect(() => {
+    if(common.isRefresh && data.length > 0) { // refresh 될때
+      swiperRefresh();
+    }
+  }, [common.isRefresh]);
 
   return (
     <>
-    {data.length > 0 ?
-      <Swiper {...swiperParams}>
-        {data.map((item,index) => {
-          return (
-            <div key={index}>
-              <div className="listColumn" onClick={() => onClickAction(item)}>
-                <div className="photo">
-                  <img src={item[profImgName].thumb150x150} />
-                  {item.rank && <div className={`rank-${item.rank}`}></div>}
-                  {true && <div className="video"></div>}
-                </div>
-                <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
+    {data && data.length > 0 &&
+    <Swiper {...swiperParams}>
+      {data.map((item,index) => {
+        return (
+          <div key={index}>
+            <div className="listColumn" onClick={() => onClickAction(item)}>
+              <div className="photo">
+                <img src={item[profImgName].thumb150x150 ? item[profImgName].thumb150x150
+                  : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
+                {item.rank && <div className={`rank-${item.rank}`}></div>}
+                {item.type_media === 'v' && <div className="video" />}
               </div>
+              <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
             </div>
-          )
-        })}
-      </Swiper>
-      : data.length === 0 &&
-      <div className="empty">
-        데이터가 없습니다.
-      </div>
+          </div>
+        )
+      })}
+    </Swiper>
     }
     </>
   )

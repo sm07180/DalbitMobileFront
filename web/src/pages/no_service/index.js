@@ -60,11 +60,11 @@ export default function Service() {
     <Layout status="no_gnb">
       <div id="noServiceWrap">
         <div className="infoWrap">
-          <img src={NoServiceIcon} alt="달빛이미지" />
+          <img src={NoServiceIcon} alt="달라이미지" />
           <div className="text">
             서비스 이용 가능 연령(만 14세 이상) 미달로
             <br />
-            달빛라이브를 이용하실 수 없습니다.
+            달라를 이용하실 수 없습니다.
           </div>
         </div>
         <div className="buttonWrap">

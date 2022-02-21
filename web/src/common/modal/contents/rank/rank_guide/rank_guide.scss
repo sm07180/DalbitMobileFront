@@ -1,4 +1,6 @@
 @import "../../../../../asset/scss/common/variables";
+@import "components/ui/_mixin.scss";
+
 #ranking-pageModal {
   background-color: $white;
   .rankGuideWrap {
@@ -16,7 +18,7 @@
   .benefitTop {
     padding: 16px 0;
     text-align: center;
-    background-color: $primary;
+    background-color: $MAINCOLOR;
     color: $white;
     letter-spacing: -0.35px;
     font-size: 14px;
@@ -80,11 +82,11 @@
     table {
       th {
         padding: 6px 0;
-        border-top: 1px solid $primary;
-        border-bottom: 1px solid $primary;
+        border-top: 1px solid $MAINCOLOR;
+        border-bottom: 1px solid $MAINCOLOR;
         font-size: 12px;
         font-weight: $regular;
-        color: $primary;
+        color: $MAINCOLOR;
         letter-spacing: -0.3px;
       }
 
@@ -136,7 +138,7 @@
       .conditionItem {
         overflow: hidden;
         width: 30%;
-        border: 1px solid $primary;
+        border: 1px solid $MAINCOLOR;
         text-align: center;
         border-radius: 12px;
 
@@ -146,7 +148,7 @@
           line-height: 28px;
           letter-spacing: -0.3px;
           color: $white;
-          background-color: $primary;
+          background-color: $MAINCOLOR;
         }
         &__content {
           width: 50%;
@@ -233,7 +235,7 @@
     width: 100%;
     margin-top: 20px;
     padding: 10px 0;
-    background-color: $primary;
+    background-color: $MAINCOLOR;
     color: white;
     border-radius: 12px;
   }

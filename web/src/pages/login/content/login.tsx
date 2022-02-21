@@ -89,7 +89,7 @@ export default function login() {
             msg = message;
           }
           globalAction.setAlertStatus!({
-            title: "달빛라이브 사용 제한",
+            title: "달라 사용 제한",
             type: "html",
             status: true,
             content: `${msg}`,

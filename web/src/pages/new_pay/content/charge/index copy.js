@@ -348,7 +348,7 @@ export default (props) => {
       if (res.result === 'success') {
         const ciValue = res.data.ci;
         if (ciValue === null || ciValue === false || ciValue === "testuser" || ciValue === "admin" || ciValue.length < 10) {
-          history.push(`/selfauth?event=/pay/store`)
+          history.push(`/selfauth?event=/store`)
         } else {
           if (Utility.getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
             payFetch(res.data.ci);
@@ -359,8 +359,8 @@ export default (props) => {
               <div style="font-size: 16px; text-align: left;">
             ★ 필수 : 인증 정보를 확인해 주세요.
             ---------------------------------------------
-            회원 이름 : <span style='color: #632beb; font-weight: bold;'>${res.data.memName}</span>
-            연락처 : <span style='color: #632beb; font-weight: bold;'>${res.data.phoneNo.replace(
+            회원 이름 : <span style='color: #FF3C7B; font-weight: bold;'>${res.data.memName}</span>
+            연락처 : <span style='color: #FF3C7B; font-weight: bold;'>${res.data.phoneNo.replace(
                   /(\d{3})(\d{4})(\d{4})/,
                   "$1-$2-$3"
                 )}</span>
@@ -381,7 +381,7 @@ export default (props) => {
           }
         }
       } else {
-        history.push(`/selfauth?event=/pay/store`)
+        history.push(`/selfauth?event=/store`)
       }
     }
     fetchSelfAuth()
@@ -534,7 +534,7 @@ const Content = styled.div`
     }
     p {
       display: flex;
-      color: #632beb;
+      color: #FF3C7B;
       margin-left: auto;
       font-size: 18px;
       font-weight: bold;
@@ -561,10 +561,10 @@ const Content = styled.div`
         text-indent: -9999px;
         border-radius: 3px;
         &.plus {
-          background: #632beb url(${icoPlus}) no-repeat center;
+          background: #FF3C7B url(${icoPlus}) no-repeat center;
         }
         &.minus {
-          background: #632beb url(${icoMinus}) no-repeat center;
+          background: #FF3C7B url(${icoMinus}) no-repeat center;
         }
       }
     }

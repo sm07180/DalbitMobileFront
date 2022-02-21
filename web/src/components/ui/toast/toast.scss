@@ -6,6 +6,7 @@
   transform: translateX(-50%);
   @include flex(center, center);
   width: 90%;
+  max-width: 400px;
   padding: 8px; 
   border-radius: 16px;
   background-color: #202020;
@@ -18,7 +19,7 @@
   p {
     text-align: center;
     @include font(16px, 400, #fff);
-    white-space: pre;
+    word-break: keep-all;
   }  
 }
 @keyframes toastUp {

@@ -47,11 +47,7 @@ export default function LayerWinner({setLayerWinner, list, popupType, setPopupTy
                       className="thumbnail_box"
                       onClick={() => {
                         if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
-                          } else {
-                            history.push(`/mypage/${memNo}`)
-                          }
+                          history.push(`/profile/${memNo}`)
                         } else {
                           history.push(`/login`)
                         }
@@ -71,11 +67,7 @@ export default function LayerWinner({setLayerWinner, list, popupType, setPopupTy
                         className="nickname"
                         onClick={() => {
                           if (context.token.isLogin) {
-                            if (context.token.memNo === memNo) {
-                              history.push(`/menu/profile`)
-                            } else {
-                              history.push(`/mypage/${memNo}`)
-                            }
+                            history.push(`/profile/${memNo}`)
                           } else {
                             history.push(`/login`)
                           }
@@ -201,7 +193,7 @@ const PopupWrap = styled.div`
 
         &.active {
           position: relative;
-          color: #632beb;
+          color: #FF3C7B;
           font-weight: 600;
 
           &:after {
@@ -211,7 +203,7 @@ const PopupWrap = styled.div`
             left: 0;
             width: 100%;
             height: 1px;
-            background-color: #632beb;
+            background-color: #FF3C7B;
           }
         }
       }

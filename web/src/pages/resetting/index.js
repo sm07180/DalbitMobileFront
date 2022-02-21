@@ -4,77 +4,77 @@ import {useHistory, useParams} from 'react-router-dom'
 // global components
 import Header from 'components/ui/header/Header'
 
-import Push from './contents/push'
-import Broadcast from './contents/broadcast'
-
+import Push from "pages/resetting/contents/push";
+import Broadcast from "pages/resetting/contents/broadcast";
+import Forbid from 'pages/resetting/contents/forbid'
+import Manager from 'pages/resetting/contents/manager'
+import BlackList from 'pages/resetting/contents/blackList'
+import AlarmUser from 'pages/resetting/contents/alarmUser'
 
 import './style.scss'
+import {Context} from "context";
 
 const SettingPage = () => {
   const params = useParams();
   const settingType = params.type;
-  let history = useHistory()
+  const context = useContext(Context);
+  const history = useHistory()
+  const [setting, setSetting] = useState([{name: "Push알림 설정", path: "push"}, {name: "방송/청취 설정", path: "streaming"}, {name: "금지어 관리", path: "forbid"},
+    {name: "매니저 관리", path: "manager"}, {name: "차단회원 관리", path: "blockList"}, {name: "알림받기 설정 회원 관리", path: "alarmUser"}
+  ]);
 
-  const golink = (path) => {
+  const onClick = (e) => {
+    e.stopPropagation();
+    const path = e.currentTarget.dataset.idx
     history.push("/setting/" + path);
   }
 
+  useEffect(() => {
+    if(!(context.token.isLogin)) {
+      history.push("/login");
+    }
+  }, []);
+
+
   // 페이지 시작
   return (
-   <div id='setting'>     
-      {
-        !settingType ?
-          <>
-            <Header position={'sticky'} title={'설정'} type={'back'}/>
-            <div className='content'>
-              <div className='menuWrap'>
-                <div className='menuList' onClick={() => {golink("push")}}>
-                  <div className='menuName'>Push알림 설정</div>
-                  <span className='arrow'></span>                  
-                </div>
-                <div className='menuList' onClick={() => {golink("broadcast")}}>
-                  <div className='menuName'>방송/청취 설정</div>
-                  <span className='arrow'></span>                  
-                </div>
-                <div className='menuList' onClick={() => {golink("forbid")}}>
-                  <div className='menuName'>금지어 관리</div>
-                  <span className='arrow'></span>                  
-                </div>
-                <div className='menuList' onClick={() => {golink("manager")}}>
-                  <div className='menuName'>매니저 관리</div>
-                  <span className='arrow'></span>                  
-                </div>
-                <div className='menuList' onClick={() => {golink("blockList")}}>
-                  <div className='menuName'>차단회원 관리</div>
-                  <span className='arrow'></span>                  
-                </div>
-                <div className='menuList' onClick={() => {golink("alarmUser")}}>
-                  <div className='menuName'>알림받기 설정 회원 관리</div>
-                  <span className='arrow'></span>                  
-                </div>
-              </div>
+    <div id='setting'>
+      {!settingType ?
+        <>
+          <Header position={'sticky'} title={'설정'} type={'back'}/>
+          <div className='content'>
+            <div className='menuWrap'>
+              {setting.map((v, idx) => {
+                return (
+                  <div className="menuList" key={idx} data-idx={v.path} onClick={onClick}>
+                    <div className="menuName">{v.name}</div>
+                    <span className="arrow"/>
+                  </div>
+                )
+              })}
             </div>
-          </>
+          </div>
+        </>
         :
         settingType === "push" ?
           <Push/>
-        :
-        settingType === "broadcast" ?
-          <Broadcast/>
-        :
-        settingType === "forbid" ?
-          <>금지어 관리</>
-        :
-        settingType === "manager" ?
-          <>매니저 관리</>
-        :
-        settingType === "blockList" ?
-          <>차단회원 관리</>
-        :
-          <>알림받기 설정 회원 관리</>
+          :
+          settingType === "streaming" ?
+            <Broadcast/>
+            :
+            settingType === "forbid" ?
+              <Forbid/>
+              :
+              settingType === "manager" ?
+                <Manager/>
+                :
+                settingType === "blockList" ?
+                  <BlackList/>
+                  :
+                  <AlarmUser/>
       }
-   </div>
+    </div>
   )
 }
 
-export default SettingPage
+export default SettingPage;

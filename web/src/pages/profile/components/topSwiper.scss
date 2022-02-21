@@ -1,16 +1,9 @@
 @import "components/ui/_mixin.scss";
 
-#myprofile {
-  .swiper-slide {
-    height:268px;
-  }
-}
-
 .topSwiper {
   position: relative;
   .swiper-slide {
     @include flex(center,center);
-    background-color:#ddd;
     .photo {
       width:100%;
       height:100%;
@@ -26,15 +19,20 @@
     bottom:31px;
   }
   .swiperBottom {
-    @include position-bottom-right(30px,0);z-index: 1;
+    @include position-bottom-right(26px,0);z-index: 1;
     @include flex(center);
+    &.pagenation {
+      right: 40px;
+    }
     .specialBdg {
       @include flex(center,center,column);
       width:57px;
       height:28px;
       line-height:12px;
+      margin-right:6px;
       border-radius:100px;
       background-color: $MAINCOLOR;
+      cursor: pointer;
       img {
         height:12px;
       }
@@ -45,7 +43,8 @@
     .liveBdg {
       width:60px;
       height:28px;
-      margin-left:6px;
+      margin-right:8px;
+      cursor: pointer;
       img {
         width:100%;
       }

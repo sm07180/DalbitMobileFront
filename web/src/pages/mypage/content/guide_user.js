@@ -78,7 +78,7 @@ const PopupWrap = styled.div`
         padding-bottom: 8px;
         font-size: 18px;
         line-height: 1.11;
-        color: #632beb;
+        color: #FF3C7B;
         font-weight: 800;
       }
 
