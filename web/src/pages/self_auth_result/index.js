@@ -15,6 +15,7 @@ import {IMG_SERVER} from 'context/config'
 
 //
 import './selfAuthResult.scss'
+import {isDesktop} from "lib/agent";
 
 //
 export default (props) => {
@@ -119,6 +120,14 @@ export default (props) => {
     }
 
     history.push(`/legalauth`)
+  }
+
+  const phoneAuthAction = () => {
+    if(isDesktop()) {
+      window.close();
+    }else {
+      history.replace('/');
+    }
   }
 
   const createResult = () => {
@@ -285,9 +294,11 @@ export default (props) => {
     <div id="selfAuthResult">
       {authState === 0 ? (
         <></>
-      ) : (
-        <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
-      )}
+      ) :
+        authState === 4 ?
+          <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
+        : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+      }
       <section className="resultWrap">
         {authState !== 0 && (
           <>

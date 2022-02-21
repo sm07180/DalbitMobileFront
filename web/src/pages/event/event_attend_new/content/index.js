@@ -77,7 +77,7 @@ export default () => {
     <div id="attendEventPage">
       <Header title='이벤트' type='back' />
       <div className="commonTopWrap" ref={commonTopRef}>
-        {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
+        {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top-1.png`} />}
       </div>
 
       <div className={`tabWrap ${tabFixed ? 'fixed' : ''} ${tab === 'attend' ? 'attend' : 'roulette'}`} ref={tabRef}>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from "context";
 
 import Api from 'context/api'
@@ -63,12 +63,7 @@ const StorePage = () => {
     if (context.token.isLogin) {
       history.push({
         pathname: '/store/dalcharge',
-        state: {
-          itemNm: payInfo.itemNm,
-          dal: payInfo.dal,
-          price: payInfo.price,
-          itemNo: payInfo.itemNo
-        }
+        search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
       })
     } else {
       history.push('/login')

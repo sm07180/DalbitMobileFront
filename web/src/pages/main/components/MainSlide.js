@@ -19,11 +19,6 @@ const MainSlide = (props) => {
       delay: 10000,
       disableOnInteraction: false
     },
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction',
-      clickable: true
-    },
     on:{
       click: function(evt) {
         evt.preventDefault();
