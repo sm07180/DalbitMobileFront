@@ -19,11 +19,6 @@ const MainSlide = (props) => {
       delay: 10000,
       disableOnInteraction: false
     },
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction',
-      clickable: true
-    },
     on:{
       click: (s, e) => {
         let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
