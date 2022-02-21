@@ -4,8 +4,8 @@
   .container {
     .totalWrap {
       .content {
-        #welcome {
-          .tabWrapper.fixed {
+        #rebranding {
+          .tabmenuWrap.fixed {
             top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
             padding-top: 4.972%;
           }
@@ -30,16 +30,28 @@
       }
     }
     .stoneWrap {
-      @include position-horizon;bottom:10%;
+      @include position-bottom-left;
+      bottom:8.815%;
       @include flex(center,center);
       width:calc(100% - 13.89%);
       margin:0 6.945%;
+      padding: 3.335% 0;
       border-radius:100px;
       background-color:#F2F2F2;
       button {
         >img {
           width:100%;
         }
+        &:nth-child(1), &:nth-child(2) {
+          width:17.425%;
+          margin-right:12px;
+        }
+        &:last-child {
+          width:24.84%;
+        }
+      }
+      .sign {
+        width:4.52%;
       }
     }
   }
@@ -66,6 +78,29 @@
         &.active {
           background-color:$MAINCOLOR;
         }
+      }
+    }
+  }
+  .date {
+    @include flex(center,center);
+    height:50px;
+    background-color: #F2F2F2;
+    @include font(16px,$SemiBold,#202020);
+  }
+  .listWrap {
+    padding:0 2.5% 20px;
+    background-color:#F2F2F2;
+    .noList {
+      @include flex(center,center,column);
+      height:300px;
+      border-radius: 15px;
+      background-color:white;
+      img {
+        width:120px;
+      }
+      span {
+        margin-top:16px;
+        @include font(15px,$Medium,#5E5E5E);
       }
     }
   }

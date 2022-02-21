@@ -41,7 +41,7 @@ const Rebranding = (props) => {
           <button>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="이벤트 이미지" />
           </button>
-          <img src={`${IMG_SERVER}/event/rebranding/sign.png`} />
+          <img src={`${IMG_SERVER}/event/rebranding/sign.png`} className="sign" />
           <button>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-2.png`} alt="이벤트 이미지" />
           </button>
@@ -60,9 +60,6 @@ const Rebranding = (props) => {
           </li>
         </div>
       </div>
-      <section>
-        
-      </section>
       <Round_1 />
       {/* <Round_2 />
       <Round_3 /> */}
