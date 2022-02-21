@@ -93,6 +93,7 @@
             .nick {
               @include font(13px,500,#303030);
               @include fontCut;
+              margin-bottom: 6px;
             }
             .date {
               @include font(11px,400,#999);
