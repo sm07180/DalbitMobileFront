@@ -40,7 +40,7 @@ const ClipDetailCore = (props) => {
           <span className="nickNm">{item.nickName}</span>
         </div>
         <div className="listItem">
-          <DataCnt type={"replyCnt"} value={item.playCnt}/>
+          <DataCnt type={"replyCnt"} value={item.replyCnt}/>
           <DataCnt type={"goodCnt"} value={item.goodCnt}/>
         </div>
       </div>

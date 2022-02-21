@@ -585,11 +585,6 @@ const App = () => {
     }
   }, [globalCtx.profile, globalCtx.token, location.pathname])
 
-  useEffect(() => {
-    isFooter();
-    nativeFooterManager();
-  }, [history]);
-
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
     if (ready && cookieAuthToken !== Api.authToken) {
@@ -604,6 +599,13 @@ const App = () => {
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
+
+    let historyListener = () => {
+      isFooter();
+      nativeFooterManager();
+    };
+    historyListener();
+    history.listen(historyListener);
   }, [])
 
   function ErrorFallback({error, resetErrorBoundary}) {
