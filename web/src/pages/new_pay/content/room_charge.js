@@ -80,22 +80,21 @@ export default (props) => {
   }
 
   //---------------------------------------------------------------------
-  //map
   const creatList = () => {
     if (chargeList) {
       return chargeList.map((item, index) => {
         return (
           <div
-            className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
+            className={[`wrap ${selected.num === index ? 'on' : 'off'}`]}
             key={index}
             applestoreid={item.appleStoreId}
             onClick={() => {
-              console.log(item)
-              if (selected.num == index) {
+              if (selected.num === index) {
                 setSelected(-1)
               } else {
                 setSelected({
                   num: index,
+                  dal : item.givenDal,
                   name: item.itemNm,
                   price: item.salePrice,
                   itemNo: item.itemNo
@@ -120,10 +119,10 @@ export default (props) => {
       return exchangeList.map((item, index) => {
         return (
           <div
-            className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
+            className={[`wrap ${selected.num === index ? 'on' : 'off'}`]}
             key={index}
             onClick={() => {
-              if (selected.num == index) {
+              if (selected.num === index) {
                 setSelected(-1)
               } else {
                 setSelected({
@@ -136,7 +135,7 @@ export default (props) => {
             }}>
             <div className="item-wrap">
               <div className="img-wrap">
-                <img src={item.itemThumbnail}></img>
+                <img src={item.itemThumbnail}/>
               </div>
               <p>달 {item.dalCnt}</p>
               <p className="item-name dal">{Utility.addComma(item.byeolCnt)}</p>
@@ -148,28 +147,19 @@ export default (props) => {
   }
 
   function chargeClick() {
-    // let url = `https://${location.host}/store/dalcharge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${selected.dal}&webview=new`
-    let url = `https://${location.host}/store/dalcharge?itemNm=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${myDal}&webview=new`
-    let urlObj = {
-      url: url,
-      title: '달 충전하기'
-    }
-    console.log('urlObj', urlObj)
+    let url = `https://${location.host}/store/dalcharge?itemNm=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${selected.dal}&webview=new`
+    let urlObj = {url: url, title: '달 충전하기'}
     Hybrid('OpenPayPopup', urlObj)
   }
 
   function changeClick() {
     async function postChange() {
       const res = await Api.postChangeItem({
-        data: {
-          itemCode: selected.itemCode
-        }
+        data: {itemCode: selected.itemCode}
       })
       if (res.result === 'success' && _.hasIn(res, 'data')) {
         setMyByeol(Utility.addComma(res.data.byeolCnt))
         setMyDal(Utility.addComma(res.data.dalCnt))
-        // fetchPayComplete()
-
 
         let gganbuData;
         let marbleTotleCtn;
@@ -217,29 +207,6 @@ export default (props) => {
       }
     }
 
-    // async function fetchPayComplete() {
-    //   console.log(selected.byeol);
-    //   if(selected.byeol >= 300){
-    //     marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
-    //     const param = {
-    //       insSlct: "e",
-    //       marbleCnt : marbleTotleCtn,
-    //     };
-    //     const {data} = await Api.getGganbuObtainMarble(param)
-    //     if (data.s_return === 1) {
-    //       setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-    //       setRewardPop(true);
-    //       setGetMarble({
-    //         rmarbleCnt : data.rmarbleCnt,
-    //         ymarbleCnt : data.ymarbleCnt,
-    //         bmarbleCnt : data.bmarbleCnt,
-    //         vmarbleCnt : data.vmarbleCnt,
-    //         totalmarbleCnt : data.marbleCnt,
-    //       })
-    //     } 
-    //   }
-    // }
-
     context.action.confirm({
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
@@ -270,20 +237,8 @@ export default (props) => {
   return (
     <Content>
       <TabItem>
-        <button
-          className={`${selectedItem === 'charge' && 'true'}`}
-          onClick={() => {
-            tabClick('charge')
-          }}>
-          달 충전
-        </button>
-        <button
-          className={`${selectedItem === 'change' && 'true'}`}
-          onClick={() => {
-            tabClick('change')
-          }}>
-          달 교환
-        </button>
+        <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
+        <button className={`${selectedItem === 'change' && 'true'}`} onClick={() => {tabClick('change')}}>달 교환</button>
       </TabItem>
       <div className="cnt-wrap">
         <p className={`my-cnt-text dal ${selectedItem === 'charge' && 'on'}`}>{myDal}</p>
@@ -295,19 +250,11 @@ export default (props) => {
             <>
               <List className={`${selectedItem}`}>{creatList()}</List>
               <div className="btn-wrap">
-                <button onClick={goBackClick} className="charge-btn close">
-                  취소하기
-                </button>
-                <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-                  결제하기
-                </button>
+                <button onClick={goBackClick} className="charge-btn close">취소하기</button>
+                <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>결제하기</button>
               </div>
             </>
           ) : (
-            // <NoResult>
-            //   <NoImg />
-            //   <span>조회된 결과가 없습니다.</span>
-            // </NoResult>
             <></>
           )}
         </>
@@ -323,12 +270,8 @@ export default (props) => {
                 <p>교환 된 달은 선물하기가 가능합니다.</p>
               </InfoList>
               <div className="btn-wrap">
-                <button onClick={goBackClick} className="charge-btn close">
-                  취소하기
-                </button>
-                <button onClick={changeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-                  교환하기
-                </button>
+                <button onClick={goBackClick} className="charge-btn close">취소하기</button>
+                <button onClick={changeClick} className="charge-btn" disabled={selected == -1 ? true : false}>교환하기</button>
               </div>
             </>
           ) : (
@@ -336,8 +279,7 @@ export default (props) => {
           )}
         </>
       )}
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
-       />}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}/>}
     </Content>
   )
 }
