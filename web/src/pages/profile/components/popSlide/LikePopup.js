@@ -5,6 +5,7 @@ import moment from 'moment'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import NoResult from 'components/ui/noResult/NoResult'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 
@@ -274,7 +275,8 @@ const LikePopup = (props) => {
                       <div className="nick">{list.nickNm}</div>
                       {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
                       <div className="listItem">
-                        <div className="like">{list.listenTime}</div>
+                        {list.good && <DataCnt type={"goodCnt"} value={list.good}/>}
+                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}                        
                       </div>
                     </div>
                     <div className="back">
