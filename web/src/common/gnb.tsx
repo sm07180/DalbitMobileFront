@@ -21,6 +21,7 @@ import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
+import {setNoticeTab} from "../redux/actions/notice";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -446,7 +447,12 @@ export default function GNB() {
                     return (
                       <li key={index} data-url={item.url}
                           className={`${activeType === item.url || gnbOtherPageCheck(item.url) ? 'active' : ''} ${activeType !== item.url || gnbOtherPageCheck(item.url) ? 'cursorPointer' : ''}`}
-                          onClick={() => history.push(item.url)}
+                          onClick={() => {
+                            if(item.url === "/alarm") {
+                              dispatch(setNoticeTab("알림"));
+                            }
+                            history.push(item.url)
+                          }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
                       </li>
