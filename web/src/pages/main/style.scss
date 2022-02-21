@@ -33,7 +33,6 @@
     }
     &.isShow {
       header {
-        border-bottom:1px solid #eee;
         background-color:white;
         h1 {
           width:71px;height:25px;
@@ -380,9 +379,9 @@
             &::after {
               content:"";
               @include position-horizon;
-              bottom:0;
-              width:15px;
-              height:5px;
+              bottom:6px;
+              width:30px;
+              height:4px;
               border-radius:100px;
               background-color:$MAINCOLOR;
             }
