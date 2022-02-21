@@ -45,7 +45,7 @@ const Greeting = () => {
       if(res.result === "success") {
         toastMessage("DJ 인사말이 등록 되었습니다.");
         setTitleList(res.data.list);
-        setTitleSelect({...titleSelect, val: "", index: -1});
+        setTitleSelect({...titleSelect, val: ""});
       }
     }
   }
@@ -59,7 +59,7 @@ const Greeting = () => {
     if(res.result === "success") {
       toastMessage("DJ 인사말이 삭제 되었습니다.");
       setTitleList(res.data.list);
-      setTitleSelect({...titleSelect, val: "", index: -1});
+      setTitleSelect({state: false, val: "", index: -1});
     }
   }
 
@@ -67,6 +67,19 @@ const Greeting = () => {
   const fetchData = async () => {
     const res = await API.getBroadcastOption({optionType: 2});
     if(res.result === "success") {setTitleList(res.data.list);}
+  }
+
+  const fetchModifyData = async () => {
+    const res = await API.modifyBroadcastOption({
+      optionType: 2,
+      idx: titleSelect.index,
+      contents: titleSelect.val
+    })
+    if(res.result === "success") {
+      toastMessage("DJ 인사말이 수정 되었습니다.");
+      setTitleList(res.data.list);
+      setTitleSelect({...titleSelect, val: "", index: -1});
+    }
   }
 
   useEffect(() => {
@@ -81,7 +94,7 @@ const Greeting = () => {
         <div className='section'>
           <p className='topText'>최대 3개까지 저장 가능</p>
           <TextArea max={20} list={titleList} setList={setTitleList} select={titleSelect} setSelect={setTitleSelect}
-                    fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData}/>
+                    fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
         </div>
         {titleList.length > 0 &&
         <div className='section'>
@@ -89,7 +102,7 @@ const Greeting = () => {
           <div className='radioWrap'>
             {titleList.map((item, index) => {
               return (
-                <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectGreeting}/>
+                <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectGreeting} titleSelect={titleSelect} setTitleSelect={setTitleSelect}/>
               )
             })}
           </div>
