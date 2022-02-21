@@ -25,6 +25,16 @@
       .listContent {
         letter-spacing: -.5px;
         margin-left:6px;
+        .listItem {
+          @include flex(center);
+          width: 100%;
+        }
+        .lock {
+          display: inline-block;
+          width: 12px; height: 15px;
+          margin-right: 8px;
+          @include BGIMG("common/icon/icon-lock.png");
+        }
         .nick {
           @include font(13px,500,#202020);
           @include fontCut;
