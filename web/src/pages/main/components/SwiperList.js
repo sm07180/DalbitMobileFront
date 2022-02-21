@@ -22,7 +22,7 @@ const SwiperList = (props) => {
   const onClickAction = (item) => {
     if(type === 'top10') {
       if (!globalState.baseData.isLogin) {
-        history.push("/login");
+        history.push("/login")
       }else{
         history.push(`/profile/${item.memNo}`);
       }
