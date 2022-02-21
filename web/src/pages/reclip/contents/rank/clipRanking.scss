@@ -74,7 +74,7 @@
                   border-radius:16px;
                 }
                 .rank {
-                  @include position-top-left;
+                  @include position-top-left(-4px, -8px);
                   @include flex(center, center);
                   width: 32px;
                   line-height: 32px;
