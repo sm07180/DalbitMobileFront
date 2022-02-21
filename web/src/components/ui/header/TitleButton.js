@@ -32,8 +32,8 @@ export const MessageButton = ({history, context, mailboxAction, mailboxState}) =
   return <button className={`message ${mailboxState.isMailboxNew ? 'new' : ''}`} onClick={goMailAction} />
 }
 
-export const AlarmButton = ({history, dispatch, newAlarmCnt=0}) => {
-  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => {
+export const AlarmButton = ({history, dispatch, newAlarmCnt=0, isLogin}) => {
+  return <button className={`alarm ${isLogin && newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => {
     dispatch(setNoticeTab("알림"));
     history.push('/notice');
   }} />
@@ -53,21 +53,21 @@ const TitleButton = (props) => {
   const context = useContext(Context);
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
   const mainState = useSelector((state) => state.main);
-
+console.log(context.profile);
   switch (props.title) {
     case '메인':
       return (
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
         </div>
       )
     case '클립 랭킹':
@@ -80,7 +80,7 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
         </div>
       )
     case '랭킹':
@@ -94,7 +94,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <StoreButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
         </div>
       )
     default :
