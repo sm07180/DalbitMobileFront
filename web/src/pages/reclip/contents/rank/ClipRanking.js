@@ -25,7 +25,7 @@ const ClipRanking = () => {
   const context = useContext(Context);
   const history = useHistory();
   const [ rankClipInfo, setRankClipInfo ] = useState({ list: [], paging: {}, topInfo: [] });
-  const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100});
+  const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: '2022-01-24', page: 1, records: 100});
   const [ breakNo, setBreakNo ] = useState(47);
 
   const getRankInfo = async () => {
@@ -54,10 +54,14 @@ const ClipRanking = () => {
 
   const playList = (e) => {
     e.preventDefault();
+    const { clipNo, type } = e.currentTarget.dataset;
+    let tempType = type;
+    if (type === undefined) tempType = 1;
     if (rankClipInfo.list.length > 0) {
-      const clipParam = { clipNo: rankClipInfo.topInfo[0].list[0].clipNo, gtx: context, history, type: 'all' };
+      const clipParam = { clipNo: clipNo, gtx: context, history, type: 'all' };
       let playListInfoData = {
         ...searchInfo,
+        rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate)
       }
       sessionStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
       NewClipPlayerJoin(clipParam);
@@ -72,15 +76,15 @@ const ClipRanking = () => {
     <div id="clipRanking">
       <Header title='클립 랭킹' type='back' />
       <Tabmenu tabList={tabmenu} targetIndex={searchInfo.rankType - 1} changeAction={handleTabmenu}/>
-      {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} />}
+      {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} playAction={playList}/>}
       {rankClipInfo.paging.total > 3 ?
         <>
           <section className="listWrap">
             <div className="listAll">
               <span>지금 가장 인기있는 클립을 들어보세요!</span>
-              <button onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
+              <button data-clip-no={rankClipInfo.topInfo[1].list[0].clipNo} onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
             </div>
-            <RankingList data={rankClipInfo.list} />
+            <RankingList data={rankClipInfo.list} playAction={playList}/>
           </section>
         </>
         :

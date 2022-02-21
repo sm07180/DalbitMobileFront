@@ -409,7 +409,7 @@ const ProfileEdit = () => {
                         readerButtonAction={readerImageEdit}
                         deleteButtonAction={(idx) =>
                           context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
-                        initialSlide={showSlide?.initialSlide || 0}
+                        swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
             }
           </div>
