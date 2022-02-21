@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer id="footerWrap">
       <ul className="infoList">
-        <li className="infoItem" onClick={() => history.push("/rule/termsT")}>
+        <li className="infoItem" onClick={() => history.push("/rule/terms")}>
           이용약관
         </li>
         <li className="infoItem" onClick={() => history.push("/rule/privacy")}>
