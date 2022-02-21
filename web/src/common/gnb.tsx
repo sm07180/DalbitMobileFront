@@ -21,6 +21,7 @@ import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
+import API from "../context/api";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -45,6 +46,7 @@ export default function GNB() {
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
 
   const history = useHistory();
+  const member = useSelector((state)=> state.member)
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const dispatch = useDispatch();
 
@@ -407,6 +409,31 @@ export default function GNB() {
           </div>
           <nav className="gnbNavigation">
             <ul>
+              <li onClick={()=>{
+                const sel = API.getVoteSel({
+                  memNo:member.memNo
+                  , roomNo: 91645348125218
+                  , voteNo: 4
+                })
+                sel.then(res=>{
+                  console.log(res)
+                })
+
+              }}>
+                aa
+              </li>
+              <li onClick={()=>{
+                const detailList = API.getVoteDetailList({
+                  memNo:member.memNo
+                  , roomNo: 91645348125218
+                  , voteNo: 4
+                })
+                detailList.then((res)=>{
+                  console.log(res)
+                })
+              }}>
+                getVoteSel
+              </li>
               {gnbTypes.map((item, index) => {
                 return (
                   <li key={index} data-url={item.url}

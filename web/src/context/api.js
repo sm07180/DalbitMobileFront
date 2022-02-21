@@ -3858,10 +3858,6 @@ export default class API {
   static insVote = async (data) => {
     return await ajax({url: '/broad/vote/insVote', method: 'POST', reqBody: true, data: data})
   }
-  // 투표 항목 등록
-  static insVoteItem = async (data) => {
-    return await ajax({url: '/broad/vote/insVoteItem', method: 'POST', reqBody: true, data: data})
-  }
   // 투표 삭제
   static delVote = async (data) => {
     return await ajax({url: '/broad/vote/delVote', method: 'POST', reqBody: true, data: data})
@@ -3870,10 +3866,17 @@ export default class API {
   static getVoteList = async (data) => {
     return await ajax({url: '/broad/vote/getVoteList', method: 'POST', reqBody: true, data: data})
   }
-  // 투표 정보, 투표 항목정보
+  // 투표 정보
   static getVoteSel = async (data) => {
-    return await ajax({url: '/broad/vote/getVoteSel', method: 'POST', reqBody: true, data: data})
+    return ajax({url: '/broad/vote/getVoteSel', method: 'POST', reqBody: true, data: data})
   }
+
+  // 투표 아이템 리스트
+  static getVoteDetailList = async (data) => {
+    return ajax({url: '/broad/vote/getVoteDetailList', method: 'POST', reqBody: true, data: data})
+  }
+
+
 
 }
 
