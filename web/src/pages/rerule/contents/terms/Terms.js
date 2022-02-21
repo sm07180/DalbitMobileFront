@@ -7,14 +7,13 @@ import Header from 'components/ui/header/Header'
 // components
 import './terms.scss'
 import {Hybrid, isMobileWeb} from "context/hybrid";
-import * as queryString from "querystring";
 import qs from 'query-string'
 
 const Terms = (props) => {
   const history = useHistory();
   const {webview} = qs.parse(location.search)
   const backEvent = ()=>{
-    if(webview === 'new'){
+    if(props.type === 'terms' || webview === 'new'){
       Hybrid('CloseLayerPopup')
     }else{
       history.goBack();

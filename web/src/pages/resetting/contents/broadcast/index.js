@@ -67,10 +67,6 @@ const SettingBroadcast = () => {
     fetchSetting();
   }, []);
 
-  useEffect(() => {
-    console.log(history);
-  })
-
   // 페이지 시작
   return (
     <>
@@ -80,7 +76,7 @@ const SettingBroadcast = () => {
           <div className='menuWrap'>
             {menuListInfo.map((list,index) => {
               return (
-                <MenuList text={list.text} path={list.path} key={index} disabledClick={true}>
+                <MenuList text={list.text} path={list.path} key={index} disabledClick={index === 4 ? true : false}>
                   {index < 2 && <small>최대 3개</small>}
                   {index === 2 && <small>최대 6개</small>}
                   {index === 4 &&
