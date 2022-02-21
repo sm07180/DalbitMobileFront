@@ -35,6 +35,9 @@
                 }
             }
         }
+        #snsPromotion {
+            height: calc(100vh - 89px);
+        }
     }
 }
 
@@ -518,6 +521,16 @@
             .btnName {
                 @include font(16px, 700, #FFFFFF);
 
+            }
+        }
+        .signBtn {
+            @include flex(center, center, column);
+            width: 80%; height: 48px;
+            border-radius: 16px;
+            background-color: #202020;
+            margin-top: 12px;
+            .btnName {
+                @include font(16px, 700, #FFFFFF);
             }
         }
     }
