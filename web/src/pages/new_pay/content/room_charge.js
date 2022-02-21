@@ -149,7 +149,7 @@ export default (props) => {
 
   function chargeClick() {
     // let url = `https://${location.host}/store/dalcharge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${selected.dal}&webview=new`
-    let url = `https://${location.host}/store/dalcharge?itemNm=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${selected.dal}&webview=new`
+    let url = `https://${location.host}/store/dalcharge?itemNm=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${myDal}&webview=new`
     let urlObj = {
       url: url,
       title: '달 충전하기'
