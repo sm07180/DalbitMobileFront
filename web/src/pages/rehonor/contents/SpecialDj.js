@@ -118,7 +118,7 @@ const SpecialDj = (props) => {
                     }}>LIVE</span>}
                   </div>
                   <div className="photo" onClick={() => goProfile(list.memNo)}>
-                    <img src={profile.profImg.thumb120x120} alt="" />
+                    <img src={list.profImg.thumb120x120} alt="" />
                     <FrameItems content={profile} />
                   </div>
                   <div className='listItem'>
