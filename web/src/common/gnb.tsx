@@ -53,6 +53,8 @@ export default function GNB() {
 
   const [activeType, setActiveType] = useState('');
 
+  const [isGnb, setIsGnb] = useState(true);
+
   //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
   const gnbOtherPageCheck = useCallback((url) => {
     return url === '/mypage' && (
@@ -392,6 +394,9 @@ export default function GNB() {
   }, [location.pathname]);
 
   useEffect(() => {
+    if(location?.pathname.includes('selfauth_result')) {
+      setIsGnb(false);
+    }
     document.addEventListener("self-auth", updateDispatch);
     return () => {
       document.removeEventListener("self-auth", updateDispatch);
@@ -400,7 +405,7 @@ export default function GNB() {
 
   return (
     <>
-      {isDesktop &&
+      {isDesktop && isGnb &&
       <aside id="GNB">
         <div className="gnbContainer">
           <div className="gnbHeader">
