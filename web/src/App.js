@@ -35,6 +35,7 @@ import Common from "common";
 import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
+import {useHistory} from "react-router-dom";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -121,6 +122,7 @@ const App = () => {
   App.context = () => context
   //본인인증
   const authRef = useRef()
+  const history = useHistory()
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
@@ -586,7 +588,7 @@ const App = () => {
   useEffect(() => {
     isFooter();
     nativeFooterManager();
-  }, [location.pathname]);
+  }, [history]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
