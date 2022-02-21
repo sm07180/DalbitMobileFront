@@ -83,7 +83,7 @@
             height:18px;
             border-radius:50%;
             background-image:linear-gradient(to bottom,#FF3C7B,#FF8565);
-            @include font(11px,500,white);
+            @include font(11px,$SemiBold,white);
           }
           .listContent {
             min-width:0;

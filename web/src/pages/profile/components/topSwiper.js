@@ -9,9 +9,9 @@ import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 
 const TopSwiper = (props) => {
-  const {data, openShowSlide, webview, isMyProfile, setPopHistory,
-    disabledBadge, swiperParam
-  } = props
+  const {data, openShowSlide, webview, isMyProfile,
+    disabledBadge, swiperParam, setPopHistory, type} = props;
+
   const context = useContext(Context);
   const history = useHistory();
   
@@ -45,7 +45,6 @@ const TopSwiper = (props) => {
   /* 스페셜DJ 약력 팝업 생성 */
   const popupOpen = () => {
     setPopHistory(true);
-    console.log(1);
   }
 
   useEffect(() => {
@@ -85,8 +84,8 @@ const TopSwiper = (props) => {
       }
       {disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
-        {data.specialDjCnt > 0 &&
-          <div className="specialBdg" onClick={() => {popupOpen()}}>
+        {data.specialDjCnt > 0 && type === 'profile' &&
+          <div className="specialBdg" onClick={popupOpen}>
             <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
             <span>{data.specialDjCnt}회</span>
           </div>

@@ -97,7 +97,7 @@ const ClipAudioPlayer = ()=>{
                style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
             <div className="equalizer clip" />
-            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
+            <div className="thumb" style={thumbInlineStyle(userProfile && userProfile.profImg)} onClick={playToggle} />
             <div className="room-info">
               <p className="title">{`${clipInfo.nickName}`}</p>
               <p>{clipInfo.title}</p>

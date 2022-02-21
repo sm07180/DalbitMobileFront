@@ -85,7 +85,7 @@ const MyClipListen =()=>{
                   </div>
                   <div className="listItem">
                     <GenderItems data={row.gender}/>
-                    <span className="nickNm">{row.title}</span>
+                    <span className="nickNm">{row.nickName}</span>
                   </div>
                   <div className="listItem">
                     <DataCnt type={"listenerCnt"} value={row.playCnt}/>

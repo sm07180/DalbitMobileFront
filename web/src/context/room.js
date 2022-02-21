@@ -414,7 +414,7 @@ export const RoomMake = async (context) => {
         context.action.confirm({
           //msg: res.message,
           msg: '2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
-          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.',
+          subMsg: '※ 이어서 하면 모든 방송데이터 (방송시간, 청취자, 좋아요, 부스터, 선물)를 유지한 상태로 만들어집니다.',
           //새로 방송하기_클릭
           callback: () => {
             ;(async function () {
@@ -454,7 +454,7 @@ export const RoomMake = async (context) => {
         //방송 이어하기 가능
         context.action.confirm({
           msg: '2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
-          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.',
+          subMsg: '※ 이어서 하면 모든 방송데이터 (방송시간, 청취자, 좋아요, 부스터, 선물)를 유지한 상태로 만들어집니다.',
           callback: () => {
             goRoomMake()
           },

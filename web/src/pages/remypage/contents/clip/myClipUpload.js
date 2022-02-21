@@ -14,6 +14,7 @@ import Api from "common/api";
 import API from "context/api";
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import TabButton from "components/ui/tabBtn/TabButton";
+import errorImg from "pages/broadcast/static/img_originalbox.svg";
 
 
 const MyClipUpload = (props) => {
@@ -141,9 +142,9 @@ const MyClipUpload = (props) => {
 
   };
 
-  const goClipPage = () => {
-    history.push('/clip');
-  };
+  const closeMoreButton = (e) => {
+    setMorePop(-1);
+  }
 
   const updUloadClip = (e) => {
     const { clipNo } = e.currentTarget.dataset;
@@ -157,8 +158,15 @@ const MyClipUpload = (props) => {
       if (res.code === '0') {
         tempList[target].openType = (tempList[target].openType ? 0 : 1);
         setMyClipInfo({...myClipInfo, list: tempList});
+        setMorePop(-1);
+
+        context.action.alert({msg: `클립을 ${tempList[target].openType ? '공개' : '비공개'}하였습니다.`});
       }
     })
+  };
+
+  const handleImgError = (e) => {
+    e.currentTarget.src = errorImg;
   };
 
   useEffect(() => {
@@ -193,7 +201,11 @@ const MyClipUpload = (props) => {
       <section className="listWrap">
         {myClipInfo.list.map((item, index) => {
           return (
-            <ListRow photo={searchInfo.myClipType === 0 ? item.bgImg.thumb80x80 : item.profImg.url} key={index} photoClick={() => { playClip(item.clipNo, item.memNo) }}>
+            <div className="listRow">
+              <div className="photo" onClick={() => { playClip(item.clipNo, item.memNo) }}>
+                {(searchInfo.myClipType === 0 && item.openType === 0) && <div className="photoLock"/>}
+                <img src={searchInfo.myClipType === 0 ? item.bgImg.thumb80x80 : item.profImg.url} alt="" onError={handleImgError}/>
+              </div>
               <div className="listInfo">
                 <div className="listItem">
                   <span className="title">{item.title}</span>
@@ -223,7 +235,7 @@ const MyClipUpload = (props) => {
                 {morePop === index && <div className="moreBtnType" data-clip-no={item.clipNo} onClick={updUloadClip}>{item.openType === 1 ? '비공개' : '공개'}</div>}{/* 1이면 공개를 해야함, 0이면 비공개를 해야함. 즉, 반대로 해야함*/}
               </div>
               }
-            </ListRow>
+            </div>
           )
         })}
         {myClipInfo.list.length === 0 &&
@@ -233,9 +245,10 @@ const MyClipUpload = (props) => {
           </div>
         </>
         }
+        {morePop !== -1 && <div className="closeArea" onClick={closeMoreButton}/>}
       </section>
     </>
   )
 };
 
-export default MyClipUpload
+export default MyClipUpload;
