@@ -36,7 +36,10 @@ const DalCharge = () => {
   const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
-  const { itemNm, dal, price, itemNo, webview} =location.state
+  const { itemNm, dal, price, itemNo, webview} =location.state;
+
+  alert(JSON.stringify(location));
+
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),

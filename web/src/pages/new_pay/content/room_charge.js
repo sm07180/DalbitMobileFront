@@ -35,10 +35,10 @@ export default (props) => {
   const [chargeList, setChargeList] = useState(false)
   const [exchangeList, setExchangeList] = useState(false)
   const [selected, setSelected] = useState({
-    num: 3,
-    name: '달 300',
-    price: 33000,
-    itemNo: 'A1555'
+    num: 1,
+    name: '달 100',
+    price: 11000,
+    itemNo: 'A1335',
   })
   const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
@@ -148,9 +148,7 @@ export default (props) => {
   }
 
   function chargeClick() {
-    let url = `https://${location.host}/pay/charge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${
-      selected.itemNo
-    }&webview=new`
+    let url = `https://${location.host}/pay/charge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${selected.dal}&webview=new`
     let urlObj = {
       url: url,
       title: '달 충전하기'

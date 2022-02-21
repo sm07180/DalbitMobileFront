@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from "context";
 
 import Api from 'context/api'
