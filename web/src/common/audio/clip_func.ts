@@ -66,7 +66,7 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
       ClipPlayFn(clipNo, type, gtx, history);
     }
   }else {
-    gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+    gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
   }
 }
 
