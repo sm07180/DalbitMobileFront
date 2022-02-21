@@ -50,6 +50,7 @@ import LottieFreeze from "../static/lottie_freeze.json";
 import {ttsAlarmDuration} from "../../../constant";
 import {BroadcastLayerContext} from "../../../context/broadcast_layer_ctx";
 import {TransitionPromptHook} from "history";
+import API from "../../../context/api";
 
 type ComboType = {
   status: boolean;
@@ -1258,6 +1259,60 @@ export default function LeftSideAgora(props: {
       "video"} ${broadcastState.isWide && "wide"}`}
       id="display"
     >
+      <ul style={{backgroundColor:'tomato', cursor:'pointer'}}>
+        <li style={{padding:'10px'}} onClick={()=>{
+          const detailList = API.getVoteDetailList({
+            memNo: roomInfo.bjMemNo
+            , pmemNo: roomInfo.bjMemNo
+            , roomNo: roomNo
+            , voteNo: 5
+          })
+          detailList.then((res)=>{
+            // setLi(res.list)
+            console.log(res)
+          })
+        }}>detailList</li>
+        <li style={{padding:'10px'}} onClick={()=>{
+          const sel = API.getVoteSel({
+            memNo: roomInfo.bjMemNo
+            , roomNo: roomNo
+            , voteNo: 5
+          })
+          sel.then(res=>{
+            console.log(res)
+          })
+        }}>getVoteSel</li>
+        <li style={{padding:'10px'}} onClick={()=>{
+          // #{memNo},#{roomNo},#{voteTitle},#{voteAnonyYn},#{voteDupliYn},#{voteItemCnt},#{endTime}
+          API.insVote({
+            memNo: roomInfo.bjMemNo
+            , roomNo: roomNo
+            , voteTitle: '투ㅡ표 제목'
+            , voteAnonyYn: 'y'
+            , voteDupliYn: 'n'
+            , voteItemCnt: 5
+            , endTime: 3600
+            , voteItemNames: [
+              'a1','a2','a3','a4','a5'
+            ]
+          })
+        }}>insVote</li>
+        <li style={{padding:'10px'}} onClick={()=>{
+          //#{memNo},#{pmemNo},#{roomNo},#{voteNo},#{itemNo},#{voteItemName}
+          API.insMemVote({
+            memNo: roomInfo.bjMemNo
+            , pmemNo: roomInfo.bjMemNo
+            , roomNo: roomNo
+            , voteNo: 5
+            , itemNo: 11
+            , voteItemName: 'a2'
+          })
+        }}>insMemVote</li>
+        <li style={{padding:'10px'}} onClick={()=>{
+
+        }}>ee</li>
+
+      </ul>
       <div id="local-player" className="player"/>
       <div
         className="chat-display"

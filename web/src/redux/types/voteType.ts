@@ -1,7 +1,9 @@
 export type VoteRequestType ={
-  memNo ?: string 		 		 		 		// 회원번호
+  memNo ?: string 		 		 		 		// 회원번호(개설자)
+  pmemNo ?: string 		 		 		 		// 회원번호(투표자)
   roomNo ?: string 		 		 		 	  // 방번호
   voteNo ?: string 		 		 		 	  // 투표번호
+  itemNo ?: string 		 		 		 	  // 투표 아이템 번호
   voteTitle ?: string 		 		 		// 투표제목
   voteItemNames ?: Array<string>  // 투표 아이템 제목
   voteSlct ?: 's' | 'e' 		 		 	// 투표리스트 구분 [s:투표중, e:마감]
@@ -19,6 +21,7 @@ export type VoteResultType ={
   voteEndSlct : 's' | 'e' | 'd' 		// 투표종료구분[s:투표중, e:마감, d:투표삭제]
   voteAnonyYn : 'y' | 'n' 		 		 	// 익명투표 여부
   voteDupliYn : 'y' | 'n' 		 		 	// 중복투표 여부
+  memVoteYn : 'y' | 'n' 		 		 	  // 투표 여부
   voteMemCnt : number 		 		 		 	// 투표참여회원수
   voteItemCnt : number 		 		 		 	// 투표항목수
   endTime : number 		 		 		 		  // 마감설정시간(초)

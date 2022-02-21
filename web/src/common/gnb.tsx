@@ -21,8 +21,7 @@ import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
-import API from "../context/api";
-
+import API from "context/api";
 const gnbTypes = [
   {url: '/', isUpdate: true},
   {url: '/clip', isUpdate: true},
