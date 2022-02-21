@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
@@ -9,7 +9,7 @@ import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";
 
 const MainSlide = (props) => {
-  const {data} = props
+  const {data, common} = props
   const context = useContext(Context);
   const history = useHistory();
 
@@ -28,14 +28,19 @@ const MainSlide = (props) => {
         if(target.nickNm === 'banner' && target.roomType === 'link') {
           history.push(target.roomNo);
         }else {
-          // 방송방으로 이동
-          // setTimeout(() => {
-            RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
-          // }, 0)
+          RoomValidateFromClip(target.roomNo, context, history, target.nickNm); // 방송방으로 이동
         }
       },
     }
   }
+
+  useEffect(() => {
+    if(common.isRefresh && data.length > 0) { // refresh 될때 슬라이드 1번으로
+      const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
+      swiper?.update();
+      swiper?.slideTo(0);
+    }
+  }, [common.isRefresh]);
 
   return (
     <>

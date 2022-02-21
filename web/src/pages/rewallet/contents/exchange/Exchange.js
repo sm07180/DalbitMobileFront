@@ -332,8 +332,16 @@ const Exchange = (props) => {
       context.action.alert({msg: message});
     }
   }
+  const getByeolCnt = async () => {
+    const {result, message, data} = await Api.profile({memNo: profile?.memNo});
 
-  useEffect(()=>{
+    if(result ==='success') {
+      context.action.updateProfile(data);
+    }
+  }
+
+  useEffect(() => {
+    getByeolCnt();  //profile Api에서 별 갯수 가져옴;
     getMyAccountData(); //내 계좌 정보 조회
     recentExchangeData(); //최근 환전신청 내역 조회
   },[]);
