@@ -38,10 +38,10 @@ export default () => {
   const [chargeContent, setChargeContent] = useState("");
 
   const [selected, setSelected] = useState({
-    num: 3,
-    name: '달 300',
-    price: 33000,
-    itemNo: 'A1555',
+    num: 1,
+    name: '달 100',
+    price: 11000,
+    itemNo: 'A1335',
     event: 0
   })
   

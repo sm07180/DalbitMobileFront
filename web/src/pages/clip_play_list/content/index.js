@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header/Header';
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -69,7 +69,7 @@ export default () => {
   return (
     <Layout status="no_gnb">
       <div id="clipPlayList">
-        <Header title="재생목록" type="fixed" goBack={goBack} />
+        <Header title="재생목록" type="back"/>
 
         {/* <button
           className={`playlistEdit__headerBtn ${!isEdit ? '' : 'playlistEdit__headerBtn--edit'}`}
