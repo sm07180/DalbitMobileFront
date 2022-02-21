@@ -51,7 +51,7 @@ const Allim = () => {
       case "2": history.push("/");                                                  //달 알림
       case "5": history.push("/");                                                  //공지 알림
       case "7":                                                                             //공지사항 알림
-        try {if(roomNo !== "") {history.push(`/customer/notice/${roomNo}`);}}
+        try {if(roomNo !== "") {history.push(`/notice/${roomNo}`);}}
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
