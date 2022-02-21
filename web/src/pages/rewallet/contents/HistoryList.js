@@ -98,7 +98,7 @@ const HistoryList = (props) => {
             <div className='title'>달 사용/획득</div>
             <div className="listWrap">
               <div className="listAll">
-                <CheckList text="전체내역">
+                <CheckList text="전체내역" code={`0`} beforeCode={beforeCode} setBeforeCode={setBeforeCode}>
                   <input type="checkbox" className="blind" name="checkListAll" />&nbsp;
                   ({Utility.addComma(popHistoryCnt)}건)
                 </CheckList>
