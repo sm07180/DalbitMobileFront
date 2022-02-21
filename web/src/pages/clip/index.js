@@ -46,7 +46,8 @@ const ClipPage = () => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
-        for (let i = 0; i < res.data.paging.total; i++) {
+        let maxCnt = res.data.paging.total < 9 ? res.data.paging.total : 9;
+        for (let i = 0; i < maxCnt; i++) {
           if (res.data.list.length > i) {
             temp.push(res.data.list[i]);
           } else {

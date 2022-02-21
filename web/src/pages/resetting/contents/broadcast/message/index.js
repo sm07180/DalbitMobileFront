@@ -31,7 +31,7 @@ const Message = () => {
   const fetchEditData = async (e) => {
     const idx = e.currentTarget.dataset.idx;
     const res = await Api.member_broadcast_shortcut({method: "POST", data: {...messageList[idx]}})
-    if(res.result === "success") {toastMessage("퀵 메시지를 저장하였습니다.")}
+    if(res.result === "success") {toastMessage("퀵 메시지를 저장하였습니다."); setBtnActive(false);}
     else {toastMessage(res.message);
     }
   }

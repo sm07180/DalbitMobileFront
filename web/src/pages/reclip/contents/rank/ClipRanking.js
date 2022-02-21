@@ -56,8 +56,12 @@ const ClipRanking = () => {
     e.preventDefault();
     if (rankClipInfo.list.length > 0) {
       const clipParam = { clipNo: rankClipInfo.list[0].clipNo, gtx: context, history, type: 'all' };
-      NewClipPlayerJoin(clipParam);
+      let playListInfoData = {
+        ...searchInfo,
+      }
+      sessionStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
       context.action.updateDateState(searchInfo.rankingDate);
+      NewClipPlayerJoin(clipParam);
     }
   };
 
