@@ -34,7 +34,7 @@ const ClipRanking = () => {
     }
 
     const todayInfo = await Api.getClipRankingList({ ...searchInfo, })
-    const yesterdayInfo = await Api.getClipRankingList({ ...searchInfo, rankingDate: moment(searchInfo.rankingDate).subtract(1, 'days').format('YYYY-MM-DD'), records: 3 });
+    const yesterdayInfo = await Api.getClipRankingList({ ...searchInfo, rankingDate: moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD'), records: 3 });
     let topInfo = [];
 
     if ( yesterdayInfo.code === 'C001' && yesterdayInfo.data.paging.total > 0 ) {
@@ -56,8 +56,11 @@ const ClipRanking = () => {
     e.preventDefault();
     if (rankClipInfo.list.length > 0) {
       const clipParam = { clipNo: rankClipInfo.list[0].clipNo, gtx: context, history, type: 'all' };
+      let playListInfoData = {
+        ...searchInfo,
+      }
+      sessionStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
       NewClipPlayerJoin(clipParam);
-      context.action.updateDateState(searchInfo.rankingDate);
     }
   };
 
