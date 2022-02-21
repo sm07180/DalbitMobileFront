@@ -31,7 +31,7 @@ const SocialList = (props) => {
     <div className="socialListWrap">
       {socialList.map((item, index) => {
         if(type === 'fanboard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== profileData.memNo)) {
-          return <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx} />
+          return <React.Fragment key={item.replyIdx} />
         }
 
         const memNo = type==='feed'? profileData.memNo : item?.writerMemNo; //글 작성자
