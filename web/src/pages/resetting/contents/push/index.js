@@ -148,9 +148,9 @@ const SettingPush = () => {
 
   useEffect(() => {
     if(!first) {
-      if(myAlimType === "n") {toastMessage("알림 모드가 무음으로 변경되었습니다.")}
-      else if(myAlimType === "s") {toastMessage("알림 모드가 소리로 변경되었습니다.")}
-      else if(myAlimType === "v") {toastMessage("알림 모드가 진동으로 변경되었습니다.")}
+      if(myAlimType === "n") {toastMessage("알림 모드가 무음으로 변경되었습니다."); first = !first;}
+      else if(myAlimType === "s") {toastMessage("알림 모드가 소리로 변경되었습니다."); first = !first;}
+      else if(myAlimType === "v") {toastMessage("알림 모드가 진동으로 변경되었습니다."); first = !first;}
     }
   }, [myAlimType]);
 
