@@ -1,15 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 // global components
 import InputItems from '../../../components/ui/inputItems/InputItems';
 // css
 import './textArea.scss'
+import {Context} from "context";
 
 const TextArea = (props) => {
-  const { list, setList, select, setSelect, fetchAddData, fetchDeleteData } = props;
+  const { list, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("");
+  const context = useContext(Context);
 
   let max = 20
   const textChange = (e) => {
@@ -34,14 +36,18 @@ const TextArea = (props) => {
       setValueCount(0);
       fetchAddData();
     } else {
-      disable();
+      context.action.alert({msg: "더 이상 추가하실 수 없습니다."})
     }
   }
 
+  const submitEdit = () => {
+      fetchModifyData();
+  }
+
   const removeList = () => {
+    fetchDeleteData();
     setSelect({state: false, val: "", index: -1,});
     setList(list.splice(select.index));
-    fetchDeleteData();
   }
 
   const resetList = () => {
@@ -51,7 +57,7 @@ const TextArea = (props) => {
   return (
     <div className={`inputTextArea ${textareaState}`}>
       <InputItems type="textarea">
-        <input type="text" placeholder='내용을 입력해주세요.' onChange={textChange} value={textvalue}/>
+        <input type="text" placeholder={list.length === 3 ? "더 이상 추가하실 수 없습니다." : '내용을 입력해주세요.'} onChange={textChange} value={select.val === "" ? "" : select.val}/>
         <div className='textCount'>
           <span>{valueCount}</span>
           <span>/{max}</span>
@@ -63,7 +69,9 @@ const TextArea = (props) => {
         </div>
         <div className='rightBtn'>
           {select.state && <button className='cancelBtn' onClick={resetList}>취소</button>}
-          <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
+          {select.index === -1 ? <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
+          : <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>
+          }
         </div>
       </div>
     </div>
