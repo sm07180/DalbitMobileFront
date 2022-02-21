@@ -137,8 +137,6 @@ const Notice = React.lazy(() => import("pages/remypage/contents/notice/Notice"))
 const PostDetail = React.lazy(() => import("pages/remypage/contents/notice/PostDetail"));
 const Report = React.lazy(() => import("pages/remypage/contents/report/Report"));
 const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
-const Alarm = React.lazy(() => import("pages/remypage/contents/notice/Allim"))
-const Post = React.lazy(() => import("pages/remypage/contents/notice/Post"))
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 
@@ -332,7 +330,6 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
-        <Route exact path="/post" component={Post} />
 
         {/* 임시 옛날 설정 페이지*/}
         <Route exact path="/oldsetting" component={OldSetting} />

@@ -4,9 +4,11 @@ import '../invite.scss'
 import {Context} from "context";
 import {OS_TYPE} from "context/config";
 import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 
 const SnsPromotion = () => {
   const context = useContext(Context)
+  const history = useHistory();
   const code = location.pathname.split('/')[2]
   const [osCheck, setOsCheck] = useState(-1)
   const isDesktop = useSelector((state) => state.common.isDesktop)
@@ -79,7 +81,7 @@ const SnsPromotion = () => {
           <span className='btnName' onClick={() => doCopy(code)}>초대코드 복사하기</span>
         </button>
         {
-          !context.token.isLogin &&
+          (!context.token.isLogin && isDesktop) &&
             <button className={`signBtn`}>
               <span className='btnName' onClick={() => golink("/login/start")}>1분 뚝딱 가입하기</span>
             </button>

@@ -59,7 +59,7 @@ const ListRowComponent = (props) => {
     <ListRow photo={item.profImg?.thumb50x50} photoClick={photoClick}>
       <div className="listContent">
         <div className='listItem'>
-          {item.viewOn === 0 && <div className="lock"></div>}
+          {item.viewOn === 0 && <div className="lock" />}
           <div className="nick">{item.nickName}</div>
         </div>
         <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>
