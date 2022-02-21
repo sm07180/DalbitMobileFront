@@ -82,7 +82,7 @@ const TopSwiper = (props) => {
           </div>
         </div>
       }
-      {disabledBadge &&
+      {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 && type === 'profile' &&
           <div className="specialBdg" onClick={popupOpen}>
