@@ -38,6 +38,7 @@ import {Hybrid, isHybrid} from "context/hybrid";
 
 const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
+let scrollApiCall = false;
 
 const ProfilePage = () => {
   const history = useHistory()
@@ -114,12 +115,13 @@ const ProfilePage = () => {
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
           ...feedData,
-          feedList: data.paging.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
+          feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
           // fixedFeedList: data.fixList, // 고정 피드
           // fixCnt: data.fixList.length, // 고정 피드 개수
-          paging: data.paging, // 호출한 페이지 정보
+          paging: data.paging ? data.paging : feedData.paging, // 호출한 페이지 정보
           isLastPage,
         }));
+        scrollApiCall = true;
       } else {
         context.action.alert({
           msg: res.message
@@ -142,11 +144,12 @@ const ProfilePage = () => {
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
           ...fanBoardData,
-          list: data.paging.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
-          listCnt: data.paging.total,
-          paging: data.paging,
+          list: data.paging?.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
+          listCnt: data.length > 0 ? data.paging : 0,
+          paging: data.paging ? data.paging : fanBoardData.paging,
           isLastPage,
         }));
+        scrollApiCall = true;
       } else {
         context.action.alert({
           msg: res.message
@@ -166,13 +169,14 @@ const ProfilePage = () => {
       if (res.result === 'success') {
         const data= res.data;
         const callPageNo = data.paging?.page;
-        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        const isLastPage = data.list.length > 0 ? data.paging?.totalPage === callPageNo : true;
         dispatch(setProfileClipData({
           ...clipData,
-          list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
-          paging: data.paging,
+          list: data.paging?.page > 1 ? clipData.list.concat(data.list) : data.list,
+          paging: data.paging ? data.paging : clipData.paging,
           isLastPage,
         }));
+        scrollApiCall = true;
       } else {
         context.action.alert({ msg: res.message })
       }
@@ -363,7 +367,8 @@ const ProfilePage = () => {
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
-    if(popHeight === targetHeight + scrollTop) {
+    if(scrollApiCall && popHeight - 50 < targetHeight + scrollTop) {
+      scrollApiCall = false;
       callback()
     }
   }, []);
