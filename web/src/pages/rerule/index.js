@@ -37,7 +37,7 @@ const Rule = () => {
           <Header position={'sticky'} title="운영 정책 / 회원탈퇴" type={'back'}/>
           <div className='content'>
             <div className='menuWrap'>
-              <div className='menuList' onClick={() => {golink("terms")}}>
+              <div className='menuList' onClick={() => {golink("termsT")}}>
                 <div className='menuName'>서비스 이용약관</div>
                 <span className='arrow'></span>
               </div>
@@ -77,7 +77,7 @@ const Rule = () => {
         category === "secession" ?
           <Secession/>
         :
-          category === "terms" &&
+          (category === "terms" || category === "termsT") &&
           <Terms type={category}/>
       }
     </div>
