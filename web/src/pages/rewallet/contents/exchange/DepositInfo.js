@@ -8,7 +8,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import CheckList from '../../components/CheckList'
 
 const DepositInfo = (props) => {
-  const {exchangeForm, setExchangeForm, exchangeSubmit, uploadSingleFile, parentAgree} = props;
+  const {exchangeForm, setExchangeForm, exchangeSubmit, uploadSingleFile, parentAgree, tabMenuRef} = props;
   //context
   const context = useContext(Context);
   const {profile, splash} = context;
@@ -51,10 +51,17 @@ const DepositInfo = (props) => {
     element_layer.style.border = borderWidth + 'px solid';
     // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
     element_layer.style.left = ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth + 'px';
-    element_layer.style.top =
-      ((window.screen.height || document.documentElement.clientHeight) - height) / 2 - borderWidth - 50 + 'px';
     closeBtn.style.right = ((window.innerWidth || document.documentElement.clientWidth) - width) / 2 - borderWidth - 20 + 'px';
-    closeBtn.style.top = ((window.screen.height || document.documentElement.clientHeight) - height) / 2 - borderWidth - 50 + 'px';
+    // 사파리 버그 (getBoundingClientRect)
+    setTimeout(() => {
+      if(element_layer && closeBtn && tabMenuRef.current) {
+        element_layer.style.top = tabMenuRef.current?.getBoundingClientRect()?.bottom + 20 + 'px';
+        //((window.screen.height || document.documentElement.clientHeight) - height) / 2 - borderWidth - 50 + 'px';
+        closeBtn.style.top = tabMenuRef.current?.getBoundingClientRect()?.bottom + 20 + 'px';
+        //((window.screen.height || document.documentElement.clientHeight) - height) / 2 - borderWidth - 50 + 'px';
+
+      }
+    },500);
   }
 
   const closeDaumPostCode = () => {

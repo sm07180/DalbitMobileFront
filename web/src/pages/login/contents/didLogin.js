@@ -1,4 +1,4 @@
-import React, {useContext, useRef, useState} from 'react'
+import React, {useContext, useRef, useState, useMemo} from 'react'
 
 import Header from 'components/ui/header/Header'
 import InputItems from '../../../components/ui/inputItems/InputItems'
@@ -29,6 +29,20 @@ const DidLogin = (props) => {
   const [loginInfo, setLoginInfo] = useState({ phoneNum : '', password : '', })
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
+
+  const getSessionRedirectURL = useMemo(() => {
+    try {
+      const item = JSON.parse(sessionStorage.getItem('_loginRedirect__'));
+      if(item) {
+        sessionStorage.removeItem('_loginRedirect__');
+        return item;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  },[])
 
   //회원가입 팝업 클릭 처리
   const signPop = () => {
@@ -106,10 +120,14 @@ const DidLogin = (props) => {
       const {memNo} = loginInfo.data
 
       let mypageURL = ''
+      let walletURL = ''
       const _parse = qs.parse(location.search)
       if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
         mypageURL = `/profile/${memNo}`
         if (_parse.mypage !== '/') mypageURL = `/profile/${memNo}${_parse.mypage}`
+      }
+      if(getSessionRedirectURL && getSessionRedirectURL.indexOf('/wallet')>-1){
+        walletURL = '/wallet?exchange=1';
       }
 
       globalCtx.action.updateToken(loginInfo.data)
@@ -139,6 +157,8 @@ const DidLogin = (props) => {
 
         if (mypageURL !== '') {
           return (window.location.href = mypageURL)
+        } else if (walletURL !== '') {  // 내지갑 > 환전 탭 으로 이동
+          return (window.location.href = walletURL)
         }
 
         if (props.location.state) {
