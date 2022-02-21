@@ -259,7 +259,7 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'}>
+            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
               <button className='saveBtn'
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
