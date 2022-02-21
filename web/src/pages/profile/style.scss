@@ -3,6 +3,14 @@
 #myprofile {
   position:relative;
   header {
+    .title {
+      @include position-horizon;
+      display: block;
+      max-width:50%;
+      line-height:$HEADER-HEIGHT;
+      text-align: center;
+      @include fontCut;
+    }
     .buttonGroup {
       button {
         width:40px;
