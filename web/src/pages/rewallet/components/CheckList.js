@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 
 // global components
 // components
@@ -35,6 +35,11 @@ const CheckList = (props) => {
       <div className="infoCheckList">
         <label className="inputLabel">
           <input type="checkbox" className="blind" checked={beforeCode && getChecked(beforeCode, code)} onChange={(e) => {
+            if (code === '0'){
+              setBeforeCode('0');
+              return;
+            }
+
             if(beforeCode){
 
             let curCode = beforeCode;
