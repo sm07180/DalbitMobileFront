@@ -5,7 +5,7 @@ import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // css
 import './bannerSlide.scss'
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {setHonorTab} from "redux/actions/honor";
 
 const BannerSlide = (props) => {
@@ -13,7 +13,6 @@ const BannerSlide = (props) => {
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
   const dispatch = useDispatch();
-  const common = useSelector(state => state.common);
 
   const fetchBannerInfo = (arg) => {
     Api.getBanner({
@@ -62,14 +61,6 @@ const BannerSlide = (props) => {
       history.push(value)
     }
   }
-
-  useEffect(() => {
-    if(common.isRefresh && bannerList.length > 0) { // refresh 될때
-      const swiper = document.querySelector(`.bannerWrap .swiper-container`)?.swiper;
-      swiper?.update();
-      swiper?.slideTo(0);
-    }
-  }, [common.isRefresh]);
 
   useEffect(() => {
     fetchBannerInfo(type)
