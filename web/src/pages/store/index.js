@@ -61,14 +61,11 @@ const StorePage = () => {
 
   const movePayment = () => {
     if (context.token.isLogin) {
+      // let url = `https://${location.host}/store/dalcharge?name=${encodeURIComponent(selected.name)}&price=${selected.price}&itemNo=${selected.itemNo}&dal=${selected.dal}&webview=new`
+      // history.push(`/store/dalcharge?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`)
       history.push({
         pathname: '/store/dalcharge',
-        state: {
-          itemNm: payInfo.itemNm,
-          dal: payInfo.dal,
-          price: payInfo.price,
-          itemNo: payInfo.itemNo
-        }
+        search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
       })
     } else {
       history.push('/login')
