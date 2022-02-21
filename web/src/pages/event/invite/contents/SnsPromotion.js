@@ -55,6 +55,9 @@ const SnsPromotion = () => {
     }
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
 
   return (
     <div id="snsPromotion">
@@ -67,14 +70,20 @@ const SnsPromotion = () => {
           <strong>최대 100만원</strong> 받아가세요!
         </div>
         <div className='method'>
-          <span>① 달라를 연다</span>
-          <span>② 초대인의 초대코드를 입력한다</span>
+          <span>① 달라에 가입한다.</span>
+          <span>② 복사한 초대코드를 입력한다.</span>
           <span>③ 더 많은 혜택을 누린다!</span>
         </div>
         <button className={`copyBtn`}>
           <span className='codeText'>{code}</span>
           <span className='btnName' onClick={() => doCopy(code)}>초대코드 복사하기</span>
         </button>
+        {
+          !context.token.isLogin &&
+            <button className={`signBtn`}>
+              <span className='btnName' onClick={() => golink("/login/start")}>1분 뚝딱 가입하기</span>
+            </button>
+        }
       </div>
       {!isDesktop &&
       <button className='appDownload' onClick={appDownload}>
