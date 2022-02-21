@@ -53,7 +53,7 @@ const TitleButton = (props) => {
   const context = useContext(Context);
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
   const mainState = useSelector((state) => state.main);
-console.log(context.profile);
+
   switch (props.title) {
     case '메인':
       return (
