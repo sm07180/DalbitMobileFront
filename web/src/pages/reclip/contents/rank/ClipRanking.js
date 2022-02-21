@@ -34,7 +34,7 @@ const ClipRanking = () => {
     }
 
     const todayInfo = await Api.getClipRankingList({ ...searchInfo, })
-    const yesterdayInfo = await Api.getClipRankingList({ ...searchInfo, rankingDate: moment(searchInfo.rankingDate).subtract(1, 'days').format('YYYY-MM-DD'), records: 3 });
+    const yesterdayInfo = await Api.getClipRankingList({ ...searchInfo, rankingDate: moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD'), records: 3 });
     let topInfo = [];
 
     if ( yesterdayInfo.code === 'C001' && yesterdayInfo.data.paging.total > 0 ) {
