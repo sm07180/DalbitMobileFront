@@ -783,8 +783,8 @@ export default () => {
         break
 
       case 'native-footer': // native footer 이동
-        const type = event.detail.type;
-        const prevPath = location.pathname;
+        const type = event.detail.type.toLowerCase();
+        const prevPath = location.pathname.toLowerCase();
         const prevType = FOOTER_VIEW_PAGES[prevPath];
 
         if(type === prevType) {
