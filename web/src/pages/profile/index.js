@@ -401,6 +401,7 @@ const ProfilePage = () => {
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
     if(location.search) {
+      let tabDefault = '';
       const searchParams = location.search.split('?')[1];
       searchParams.split('&').forEach(item => {
         const itemSplit = item.split('=');
@@ -409,12 +410,17 @@ const ProfilePage = () => {
           setWebview(itemSplit[1]);
         }else if(paramType === 'tab') {
           if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) {
+            tabDefault = parseInt(itemSplit[1])
             setSocialType(socialTabmenu[itemSplit[1]]);
           }else {
+            tabDefault = socialDefault;
             setSocialType(socialDefault); // default
           }
         }
       });
+      if(tabDefault === '') {
+        setSocialType(socialDefault); // default
+      }
     }else {
       setSocialType(socialDefault); // default
     }
