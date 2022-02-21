@@ -46,7 +46,6 @@
         width: 100%;
         -webkit-user-drag: none;
         vertical-align: middle;
-        image-rendering: -webkit-optimize-contrast;
     }
     .imageBox {
         position: relative;
@@ -463,7 +462,6 @@
                     margin-bottom: 16px;
                     text-align: center;
                     @include font(12px, 400, #666666);
-                    letter-spacing: -1px;
                     &:last-child {
                         margin-bottom: 0px;
                     }
