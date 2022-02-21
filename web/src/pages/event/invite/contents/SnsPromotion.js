@@ -4,9 +4,11 @@ import '../invite.scss'
 import {Context} from "context";
 import {OS_TYPE} from "context/config";
 import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 
 const SnsPromotion = () => {
   const context = useContext(Context)
+  const history = useHistory();
   const code = location.pathname.split('/')[2]
   const [osCheck, setOsCheck] = useState(-1)
   const isDesktop = useSelector((state) => state.common.isDesktop)
