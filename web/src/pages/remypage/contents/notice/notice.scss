@@ -16,8 +16,11 @@
 #notice {
   position:relative;
   .tabmenu {
+    position: sticky;
     @include tabmenuStyle-1;
     padding: 0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
   }
   .allim, .post {
     padding-top:15px;
