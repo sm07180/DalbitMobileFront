@@ -60,7 +60,6 @@ const ClipRanking = () => {
         ...searchInfo,
       }
       sessionStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
-      context.action.updateDateState(searchInfo.rankingDate);
       NewClipPlayerJoin(clipParam);
     }
   };
