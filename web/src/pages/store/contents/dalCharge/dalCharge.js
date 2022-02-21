@@ -11,6 +11,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'
 import {useSelector} from "react-redux";
+import qs from 'query-string'
 
 let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
@@ -36,10 +37,8 @@ const DalCharge = () => {
   const [selectPayment, setSelectPayment] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
-  const { itemNm, dal, price, itemNo, webview} =location.state;
-
-  alert(JSON.stringify(location));
-
+  console.log( qs.parse(location.search));
+  const { itemNm, dal, price, itemNo} = qs.parse(location.search);
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
