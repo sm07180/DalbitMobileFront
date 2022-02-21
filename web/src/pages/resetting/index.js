@@ -24,6 +24,7 @@ const SettingPage = () => {
   ]);
 
   const onClick = (e) => {
+    e.stopPropagation();
     const path = e.currentTarget.dataset.idx
     history.push("/setting/" + path);
   }

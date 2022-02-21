@@ -4,9 +4,11 @@ import styled from 'styled-components'
 import Header from 'components/ui/header/Header'
 import {Hybrid, isMobileWeb} from "context/hybrid";
 import {useHistory} from "react-router-dom";
+import qs from 'query-string'
 
 export default (props) => {
   const [noticeView, setNoticeView] = useState(false)
+  const {webview} = qs.parse(location.search)
   const history = useHistory();
   const noticeList = useRef()
   const topPoint = useRef()
@@ -29,10 +31,10 @@ export default (props) => {
   }
   const backEvent = ()=>{
     // Hybrid('CloseLayerPopup')
-    if(props.title === 'guest_guideT'){
-      history.goBack();
-    }else if(props.title === 'guest_guide'){
+    if(webview === 'new'){
       Hybrid('CloseLayerPopup')
+    }else{
+      history.goBack();
     }
   }
 
