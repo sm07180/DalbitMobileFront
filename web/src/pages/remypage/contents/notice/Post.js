@@ -74,10 +74,6 @@ const Post = () => {
     return regTag;
   };
 
-  const tabClick = () => {
-
-  }
-
   useEffect(() => {
     fetchData();
   }, [postPageInfo]);
