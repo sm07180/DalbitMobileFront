@@ -49,6 +49,7 @@ const ClipRanking = () => {
   }
 
   const handleTabmenu = (value) => {
+    window.scrollTo(0, 0);
     setSearchInfo({ ...searchInfo, rankType: (parseInt(value) + 1) });
   };
 
