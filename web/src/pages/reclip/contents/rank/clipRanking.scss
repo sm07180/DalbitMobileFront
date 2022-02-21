@@ -53,6 +53,7 @@
               @include flex(center,center,column);
               width:94px;
               margin: 0 auto;
+              cursor: pointer;
               .photo {
                 position:relative;
                 width: 84px;
@@ -74,7 +75,7 @@
                   border-radius:16px;
                 }
                 .rank {
-                  @include position-top-left;
+                  @include position-top-left(-4px, -8px);
                   @include flex(center, center);
                   width: 32px;
                   line-height: 32px;
@@ -170,6 +171,7 @@
       width: 100%;
       margin-bottom:15px;
       min-width: 0;
+      cursor: pointer;
       &:last-child {
         margin-bottom:0px;
       }

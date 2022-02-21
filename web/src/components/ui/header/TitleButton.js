@@ -4,6 +4,8 @@ import {Context} from "context";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
 import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {setNoticeTab} from "../../../redux/actions/notice";
 
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
@@ -29,8 +31,11 @@ export const MessageButton = ({history, context, mailboxAction}) => {
   return <button className='message' onClick={goMailAction} />
 }
 
-export const AlarmButton = ({history, newAlarmCnt=0}) => {
-  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => history.push('/notice')} />
+export const AlarmButton = ({history, dispatch, newAlarmCnt=0}) => {
+  return <button className={`alarm ${newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => {
+    dispatch(setNoticeTab("알림"));
+    history.push('/notice');
+  }} />
 }
 
 export const StoreButton = ({history}) => {
@@ -43,6 +48,7 @@ export const SearchButton = ({history}) => {
 
 const TitleButton = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   const context = useContext(Context);
   const { mailboxAction } = useContext(MailboxContext);
   const mainState = useSelector((state) => state.main);
@@ -53,14 +59,14 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
     case '클립 랭킹':
@@ -73,7 +79,7 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
     case '랭킹':
@@ -87,7 +93,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <StoreButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} />
-          <AlarmButton history={history} alarmCnt={mainState.newAlarmCnt} />
+          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} />
         </div>
       )
     default :

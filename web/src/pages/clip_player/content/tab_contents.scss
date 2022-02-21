@@ -700,6 +700,17 @@ $bar-color: white;
 
   .tabPlayList {
     height: 100%;
+
+    .tabContent__title {
+      display: block;
+      width: 100%;
+      font-size: 16px;
+      line-height: 52px;
+      font-weight: 500;
+      color: #303030;
+      text-align: center;
+    }
+
     .playListBox {
       .playListItem:first-child {
         margin-top: 0;
@@ -709,7 +720,7 @@ $bar-color: white;
     .playListTotal {
       font-size: 16px;
       margin-top: 3px;
-      line-height: 38px;
+      line-height: 208px;
       font-weight: $bold;
       span {
         color: $MAINCOLOR;
@@ -720,6 +731,7 @@ $bar-color: white;
       display: flex;
       flex-direction: column;
       height: calc(100% - 95px);
+      margin-top: 0px;
       &--edit {
         height: calc(100% - 109px);
       }

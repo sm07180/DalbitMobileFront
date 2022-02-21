@@ -23,9 +23,11 @@
   .cntTitle {
     margin-bottom: 15px;
     .nickName {
+      max-width: 200px;
       font-weight: bold;
       color: #FF3C7B;
       letter-spacing: -0.5px;
+      @include fontCut;
     }
   }
   .subTitle{
@@ -113,6 +115,7 @@
   .clipDrawer, .clipList {
     .cntTitle {
       h2 {
+        @include flex(center);
         >img {
           width: 28px;
         }

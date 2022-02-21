@@ -63,12 +63,7 @@ const StorePage = () => {
     if (context.token.isLogin) {
       history.push({
         pathname: '/store/dalcharge',
-        state: {
-          itemNm: payInfo.itemNm,
-          dal: payInfo.dal,
-          price: payInfo.price,
-          itemNo: payInfo.itemNo
-        }
+        search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
       })
     } else {
       history.push('/login')
