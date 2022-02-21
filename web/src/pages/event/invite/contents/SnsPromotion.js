@@ -79,7 +79,7 @@ const SnsPromotion = () => {
           <span className='btnName' onClick={() => doCopy(code)}>초대코드 복사하기</span>
         </button>
         {
-          !context.token.isLogin &&
+          (!context.token.isLogin && isDesktop) &&
             <button className={`signBtn`}>
               <span className='btnName' onClick={() => golink("/login/start")}>1분 뚝딱 가입하기</span>
             </button>
