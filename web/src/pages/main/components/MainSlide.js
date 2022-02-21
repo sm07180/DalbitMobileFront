@@ -25,25 +25,18 @@ const MainSlide = (props) => {
       clickable: true
     },
     on:{
-      click: (s, e) => {
-        let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
-        if(evt.type === 'touchend' || evt.type === 'pointerup') {
-          evt.preventDefault();
-          evt.stopPropagation();
-          const paths = evt.path || evt.composedPath();
-          let swiperIndex = "";
-          paths.forEach(dom => {
-            if(dom.dataset && dom.dataset.swiperIndex) {
-              swiperIndex = dom.dataset.swiperIndex;
-              const target = data[parseInt(swiperIndex)];
-              if(target.nickNm === 'banner' && target.roomType === 'link') {
-                history.push(target.roomNo);
-              }else {
-                // 방송방으로 이동
-                RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
-              }
-            }
-          })
+      click: function(evt) {
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        const target = data[parseInt(this.realIndex)];
+        if(target.nickNm === 'banner' && target.roomType === 'link') {
+          history.push(target.roomNo);
+        }else {
+          // 방송방으로 이동
+          // setTimeout(() => {
+            RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
+          // }, 0)
         }
       },
     }
@@ -73,8 +66,7 @@ const MainSlide = (props) => {
             )
           })}
         </Swiper>
-        : data.length === 0 &&
-        <div className="empty"></div>
+        : <div className="empty" />
       }
     </>
   )
