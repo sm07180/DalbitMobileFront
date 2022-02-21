@@ -106,7 +106,6 @@ const Allim = () => {
 
   useEffect(() => {
     fetchData();
-
   }, []);
 
   useEffect(() => {
