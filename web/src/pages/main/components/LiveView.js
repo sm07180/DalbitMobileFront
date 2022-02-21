@@ -24,7 +24,7 @@ const LiveView = (props) => {
                 RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
               }}>
                 <div className="photo">
-                  <img src={list.bgImg.thumb120x120} alt="" />
+                  <img src={list.bjProfImg.thumb120x120} alt="" />
                   { list.gstMemNo && <img src={list.gstProfImg.thumb120x120} className="guest" alt="" /> }
                   { list.mediaType === 'v' && <div className="video" /> }
                 </div>

@@ -7,22 +7,22 @@ import Header from 'components/ui/header/Header'
 // components
 import './terms.scss'
 import {Hybrid, isMobileWeb} from "context/hybrid";
+import qs from 'query-string'
 
 const Terms = (props) => {
   const history = useHistory();
-
+  const {webview} = qs.parse(location.search)
   const backEvent = ()=>{
-    if(props.type === 'termsT'){
-      history.goBack();
-    }else if(props.type === 'terms'){
+    if(props.type === 'terms' || webview === 'new'){
       Hybrid('CloseLayerPopup')
+    }else{
+      history.goBack();
     }
   }
 
-
   return (
     <div id="terms">
-      <Header position={'sticky'} title={'서비스 이용약관'} type={'back'}/>
+      <Header position={'sticky'} title={'서비스 이용약관'} type={'back'} backEvent={backEvent}/>
       <div className="subContent">
         <div className='wrap'>
           <h3>제 1 조 (목적)</h3>

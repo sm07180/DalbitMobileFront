@@ -41,7 +41,7 @@ const HotClip = (props) => {
           <div className="textArea">
             <div>
               <span className="type">{info.subjectName}</span>
-              <span className="title">{info.fileName}</span>
+              <span className="title">{info.title}</span>
             </div>
             <span className="nickName">{info.nickName}</span>
           </div>

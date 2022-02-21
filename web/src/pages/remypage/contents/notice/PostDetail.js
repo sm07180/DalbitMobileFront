@@ -31,6 +31,10 @@ const PostDetail = () => {
     return moment(date, "YYYYMMDDhhmmss").format("YY.MM.DD");
   };
 
+  const backEvent = () => {
+    history.push({pathname: "/notice", value: true})
+  }
+
   useEffect(() => {
     fetchPostDetailInfo();
   }, []);
