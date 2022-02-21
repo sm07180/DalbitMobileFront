@@ -1,0 +1,72 @@
+@import 'components/ui/_mixin.scss';
+
+#root {
+  .container {
+    .totalWrap {
+      .content {
+        #welcome {
+          .tabWrapper.fixed {
+            top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
+            padding-top: 4.972%;
+          }
+        }
+      }
+    }
+  }
+}
+
+#rebranding {
+  section {
+    position:relative;
+    >img {
+      width:100%;
+    }
+    >button {
+      @include position-horizon;
+      bottom:15%;
+      width:24.445%;
+      >img {
+        width:100%;
+      }
+    }
+    .stoneWrap {
+      @include position-horizon;bottom:10%;
+      @include flex(center,center);
+      width:calc(100% - 13.89%);
+      margin:0 6.945%;
+      border-radius:100px;
+      background-color:#F2F2F2;
+      button {
+        >img {
+          width:100%;
+        }
+      }
+    }
+  }
+  .tabmenuWrap {
+    position:relative;
+    width:100%;
+    height:0;
+    padding-top:13.89%;
+    .tabmenu {
+      @include position-top-left;
+      @include flex;
+      width:100%;
+      height:100%;
+      li {
+        flex:1;
+        @include flex(center,center);
+        height:100%;
+        list-style-type: none;
+        background-color: #11193C;
+        img {
+          height:16px;
+          object-fit: contain;
+        }
+        &.active {
+          background-color:$MAINCOLOR;
+        }
+      }
+    }
+  }
+}
