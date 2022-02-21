@@ -38,7 +38,7 @@ const DalCharge = () => {
   const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
   console.log( qs.parse(location.search));
-  const { itemNm, dal, price, itemNo} = qs.parse(location.search);
+  const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search);
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
