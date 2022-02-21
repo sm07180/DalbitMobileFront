@@ -36,6 +36,7 @@ export default (props) => {
   const [exchangeList, setExchangeList] = useState(false)
   const [selected, setSelected] = useState({
     num: 1,
+    dal: "100",
     name: '달 100',
     price: "11000",
     itemNo: 'A1335',
@@ -233,6 +234,7 @@ export default (props) => {
     getStoreList()
     getChangeList()
   }, [])
+
   //---------------------------------------------------------------------
   return (
     <Content>

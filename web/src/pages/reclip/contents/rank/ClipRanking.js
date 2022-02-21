@@ -55,7 +55,7 @@ const ClipRanking = () => {
   const playList = (e) => {
     e.preventDefault();
     if (rankClipInfo.list.length > 0) {
-      const clipParam = { clipNo: rankClipInfo.list[0].clipNo, gtx: context, history, type: 'all' };
+      const clipParam = { clipNo: rankClipInfo.topInfo[0].list[0].clipNo, gtx: context, history, type: 'all' };
       let playListInfoData = {
         ...searchInfo,
       }

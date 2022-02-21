@@ -212,7 +212,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/myProfile/edit')
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/myProfile/edit')
+                  }
                 }}>
                 확인
               </button>
