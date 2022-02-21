@@ -59,7 +59,7 @@ export default (props) => {
           <strong className="title">회원님께서는 현재 휴면 상태입니다.</strong>
 
           <p className="text">
-            저희 달빛라이브에서는 개인 정보 보호에 대한 강화 정책
+            저희 달라에서는 개인 정보 보호에 대한 강화 정책
             <br />을 시행하기 위해 「 정보통신망 이용 촉진 및 개인 정보 보호
             <br /> 등에 관한 법률 제 29조」에 의거하여,
             <b>

@@ -168,6 +168,7 @@
         .inputBox{
           padding: 0 8px 0 20px;
           @include font(16px, 500);
+          cursor: pointer;
           .iconCalendar{
             width: 40px;
             height: 40px;

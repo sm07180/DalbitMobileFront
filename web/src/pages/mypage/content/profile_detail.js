@@ -766,7 +766,7 @@ export default (props) => {
                   setRankTabType('tabGood')
                 }
               }}>
-              왕큐피트
+              CUPID
             </button>
           ) : (
             <button
@@ -775,7 +775,7 @@ export default (props) => {
                 profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
                 setRankTabType('tabGood')
               }}>
-              왕큐피트
+              CUPID
             </button>
           )}
           {profile.likeTotCnt > 0 && profile.cupidMemNo !== '' && profile.cupidNickNm !== '' ? (

@@ -88,7 +88,7 @@ export default function SpecialDjBest() {
       <img
         src={`${IMG_SERVER}/event/specialdj/common/img_visual-1.png`}
         className="top_image"
-        alt="우리모두 달빛하여 스페샬디제이 되세"
+        alt="우리모두 달라하여 스페샬디제이 되세"
       />
       <div className="tab_box">
         <button onClick={() => setTabState('support')}>

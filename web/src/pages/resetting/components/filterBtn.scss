@@ -1,6 +1,7 @@
 @import 'components/ui/_mixin.scss';
 
 .filterBtn {
+  flex: none;
   position:relative;
   @include flex(center, space-between);
   @include font(13px,400,#202020);

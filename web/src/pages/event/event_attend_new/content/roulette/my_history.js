@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header'
 import API from 'context/api'
 //components
 import {useHistory} from 'react-router-dom'
@@ -91,8 +91,7 @@ export default () => {
   return (
     <div id="attendEventPage">
       <div className="win-list-box">
-        <Header title="나의 당첨 이력" />
-
+        <Header position={'sticky'} title={'나의 당첨 이력'} type={'back'}/>
         <div className="content">
           {/* <p className="note">
               기프티콘 당첨 시 출석체크 페이지 중간에 생성된

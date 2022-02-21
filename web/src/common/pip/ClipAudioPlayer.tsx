@@ -97,7 +97,7 @@ const ClipAudioPlayer = ()=>{
                style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
             <div className="equalizer clip" />
-            <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
+            <div className="thumb" style={thumbInlineStyle(userProfile && userProfile.profImg)} onClick={playToggle} />
             <div className="room-info">
               <p className="title">{`${clipInfo.nickName}`}</p>
               <p>{clipInfo.title}</p>
@@ -105,7 +105,7 @@ const ClipAudioPlayer = ()=>{
             <div className="counting"/>
           </div>
           <div className="buttonGroup">
-            <img onClick={playIconClick} src={clipInfo!.isPaused ? PauseIcon : PlayIcon} className="playToggle__play" alt={"thumb img"}/>
+            <img onClick={playIconClick} src={clipInfo!.isPaused ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
           

@@ -26,6 +26,7 @@ import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {isHybrid} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
+import {useHistory} from "react-router-dom";
 
 const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -43,6 +44,7 @@ const MainPage = () => {
   const iconWrapRef = useRef()
   const MainRef = useRef()
   const arrowRefreshRef = useRef()
+  const history = useHistory();
 
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
@@ -288,6 +290,19 @@ const MainPage = () => {
     }
   }
 
+  const redirectPage = useCallback(() => {
+    try {
+      const item = JSON.parse(sessionStorage.getItem('_loginRedirect__'));
+      if (item) {
+        sessionStorage.removeItem('_loginRedirect__');
+        if (item.indexOf('/wallet') > -1) {
+          history.replace('/wallet?exchange=1');
+        }
+      }
+    } catch (e) {
+    }
+  },[]);
+
   useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
@@ -308,6 +323,8 @@ const MainPage = () => {
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
     document.addEventListener('scroll', scrollEvent);
+    redirectPage();
+
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')

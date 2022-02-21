@@ -24,7 +24,7 @@ function SpecialList({empty}) {
   return (
     <>
       <div className="specialPage">
-        <p className="specialText">달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
+        <p className="specialText">달라의 스타 스페셜 DJ를 소개합니다.</p>
         <ul className="levelListWrap">
           {empty === true ? (
             <NoResult />

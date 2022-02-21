@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from "context";
 import {isMobileWeb} from "../../context/hybrid";
 // global components
@@ -11,6 +11,7 @@ import Start from "pages/login/contents/start";
 
 const LoginPage = () => {
   const history = useHistory()
+  const location = useLocation();
   const context = useContext(Context)
   const {token} = context
 
@@ -23,6 +24,9 @@ const LoginPage = () => {
   useEffect(() => {
     if (token.isLogin) {
       history.push('/')
+    }
+    if(typeof window !== 'undefined' && location.search) {
+      sessionStorage.setItem('_loginRedirect__', JSON.stringify(location.search));
     }
   },[]);
 
