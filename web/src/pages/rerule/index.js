@@ -77,8 +77,8 @@ const Rule = () => {
         category === "secession" ?
           <Secession/>
         :
-          (category === "terms" ||  category === "termsT") &&
-          <Terms type={category}/>
+          (category === "terms" || category === "termsT") &&
+          <Terms/>
       }
     </div>
   )

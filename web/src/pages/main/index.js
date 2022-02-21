@@ -313,6 +313,10 @@ const MainPage = () => {
 
   useEffect(() => {
     fetchLiveInfo()
+    document.addEventListener('scroll', scrollEvent);
+    return () => {
+      document.removeEventListener('scroll', scrollEvent)
+    }
   }, [currentPage, liveListType])
 
   // 페이지 셋팅
@@ -322,13 +326,11 @@ const MainPage = () => {
     getReceipt();
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
-    document.addEventListener('scroll', scrollEvent);
     redirectPage();
 
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
-      document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
  

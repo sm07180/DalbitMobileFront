@@ -7,25 +7,25 @@ import Header from 'components/ui/header/Header'
 // components
 import './terms.scss'
 import {Hybrid, isMobileWeb} from "context/hybrid";
+import qs from 'query-string'
 
 const Terms = (props) => {
   const history = useHistory();
-
+  const {webview} = qs.parse(location.search);
   const backEvent = ()=>{
-    if(props.type === 'termsT'){
-      history.goBack();
-    }else if(props.type === 'terms'){
+    if(history.location.pathname === '/rule/terms' || webview === 'new'){
       Hybrid('CloseLayerPopup')
+    }else{
+      history.goBack();
     }
   }
 
-
   return (
     <div id="terms">
-      <Header position={'sticky'} title={'서비스 이용약관'} type={'back'}/>
+      <Header position={'sticky'} title={'서비스 이용약관'} type={'back'} backEvent={backEvent}/>
       <div className="subContent">
         <div className='wrap'>
-          <h3>제 1 조 (목적)</h3>
+          <h3>제 1 조 (목적){props.type}</h3>
           <p>본 약관은 주식회사 여보야(이하 “회사”라고 함)가 제공하는 달라 서비스의 이용과 관련하여 “회사”와 “회원” 간의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.</p>
         </div>
         <div className='wrap'>

@@ -20,19 +20,18 @@ const MainSlide = (props) => {
       disableOnInteraction: false
     },
     on:{
-      click: (s, e) => {
-        let evt = e; // 스와이프 버전에 따라 달라서 임시 처리
+      click: function(evt) {
         evt.preventDefault();
         evt.stopPropagation();
 
-        const target = data[parseInt(s.realIndex)];
+        const target = data[parseInt(this.realIndex)];
         if(target.nickNm === 'banner' && target.roomType === 'link') {
           history.push(target.roomNo);
         }else {
           // 방송방으로 이동
-          setTimeout(() => {
+          // setTimeout(() => {
             RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
-          }, 0)
+          // }, 0)
         }
       },
     }
