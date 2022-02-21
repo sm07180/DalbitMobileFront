@@ -31,6 +31,10 @@ const PostDetail = () => {
     return moment(date, "YYYYMMDDhhmmss").format("YY.MM.DD");
   };
 
+  const backEvent = () => {
+    history.push({pathname: "/notice", value: true})
+  }
+
   useEffect(() => {
     fetchPostDetailInfo();
   }, []);
@@ -43,7 +47,7 @@ const PostDetail = () => {
     <>
       <div id="notice">
         <div className="postDetail">
-          <Header title={'공지사항'} type={'back'} />
+          <Header title={'공지사항'} type={'back'} backEvent={backEvent} />
           <section className="detailView">
             <div className="titleWrap">
               <div className="title">{postDetailInfo.title}</div>
