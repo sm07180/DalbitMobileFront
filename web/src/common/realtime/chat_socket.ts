@@ -1897,6 +1897,9 @@ export class ChatSocketHandler {
                       ],
                     });
                   }
+                  case "reqPopVote": {
+                    console.log('reqPopVote ... ', data)
+                  }
 
                   case "reqMiniGameEnd": {
                     const { reqMiniGameEnd } = data;
@@ -1979,28 +1982,6 @@ export class ChatSocketHandler {
                     return null;
                   }
 
-                  case "reqPopVote": { // 투표 등록
-                    console.log(`@socket receive, `, data)
-                    // const {dj_normal_sound, dj_tts_sound, text} = data?.reqDjSetting?.inOut;
-
-                    // if (dj_normal_sound !== 'undefined' && dj_tts_sound !== 'undefined') {
-                    //   //방장 설정 정보 세팅
-                    //   const djSetting = {djNormalSound: dj_normal_sound, djTtsSound: dj_tts_sound};
-                    //   if(this.broadcastAction?.dispatchRoomInfo){
-                    //     this.setRoomInfo({...this.roomInfo, ...djSetting});
-                    //     this.broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data: djSetting});
-                    //
-                    //     this.globalAction && text && !this.roomOwner &&
-                    //     this.globalAction.callSetToastStatus({
-                    //       status: true,
-                    //       message: text,
-                    //     });
-                    //   } else {
-                    //     console.error('reqDjSetting => this.broadcastAction.dispatchRoomInfo : null');
-                    //   }
-                    // }
-                    return null;
-                  }
                   default:
                     return null;
                 }
