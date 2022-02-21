@@ -361,7 +361,7 @@ const MainPage = () => {
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
       </div>
       <section className='topSwiper'>
-        <MainSlide data={mainState.topBanner}/>
+        <MainSlide data={mainState.topBanner} common={common} />
       </section>
       <section className='favorites' ref={overRef}>
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
