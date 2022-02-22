@@ -1,14 +1,15 @@
 @import '../../../../styles/variables';
+@import "components/ui/_mixin.scss";
 
 .commentEventWrap {
+  background: #fff;
   position: relative;
+  padding-top: 15px;
   .addInputBox {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 8px;
-    padding: 5px;
-    border: 1px solid;
+    padding: 0 16px;
     border-radius: 6px;
     .userBox {
       display: flex;
@@ -31,27 +32,30 @@
         font-weight: 700;
       }
     }
-    textarea {
+    .textareaWrap{
+      display: flex;
+      flex-direction: column;
       width: 100%;
-      height: 70px;
-      padding: 0 10px;
-      font-size: 15px;
-      box-sizing: border-box;
-      letter-spacing: -0.5px;
-      font-size: 15px;
+      height: 130px;
+      padding: 16px 16px 12px 16px;
+      margin-bottom: 16px;
+      @include border(#e2e2e2, 16px);
+      textarea {
+        width: 100%;
+        height: 100%;
+        font-size: 15px;
+        letter-spacing: -0.5px;
+        font-size: 15px;
+        &::placeholder{
+          color: #999;
+        }
+      }
     }
     .textCount {
       width: 100%;
-      height: 18px;
-      line-height: 18px;
       text-align: right;
-      font-size: 13px;
-    }
-    .textCount {
-      width: 100%;
-      text-align: right;
-      font-size: 13px;
-      color: #444;
+      font-size: 14px;
+      color: #b1b1b1;
       strong {
         color: black;
       }
@@ -60,10 +64,10 @@
       width: 100%;
       height: 43px;
       border-radius: 10px;
-      background-color: $gray;
+      background-color: #FFD4E1;
       color: $white;
       &.on {
-        background-color: $primary;
+        background-color: $MAINCOLOR;
       }
     }
   }
@@ -72,15 +76,19 @@
     .totalBox {
       display: flex;
       align-items: center;
-      padding-bottom: 10px;
+      padding: 15px;
       font-size: 14px;
       font-weight: $bold;
+      @include font(16px, 500, #2d2d2d);
 
       span {
-        color: $primary;
+        color: $MAINCOLOR;
+        margin-left: 4px;
       }
 
       .refreshBtn {
+        width: 28px;
+        height: 28px;
         margin-left: 8px;
 
         &.on {
@@ -90,13 +98,19 @@
     }
 
     .listBox {
+      @include flex($fd:column);
+      position: relative;
       border-top: 1px solid $lightestGray;
+      padding: 10px 16px 16px;
+      border: 1px solid #f2f2f2;
 
       .listItem {
-        display: flex;
+        @include flex;
         position: relative;
-        padding: 10px 0;
-
+        width: calc(100% - 60px);
+        & + .listItem{
+          padding-top: 15px;
+        }
         .thumb {
           overflow: hidden;
           width: 40px;
@@ -109,68 +123,44 @@
             width: 100%;
           }
         }
-
-        .textBox {
+        .user {
+          width: calc(100% - 50px);
           .nick {
-            font-size: 14px;
-            font-weight: $bold;
-            padding-right: 32px;
-
-            .date {
-              margin-left: 4px;
-              letter-spacing: -1.5px;
-              font-size: 12px;
-              color: $gray;
-              font-weight: $regular;
-            }
+            @include font(13px, $SemiBold, #202020);
+            @include fontCut;
           }
-
-          .msg {
-            margin-top: 6px;
-            font-size: 14px;
-            line-height: 20px;
-            word-break: break-word;
-            color: $greishGray;
+          .date {
+            @include font(12px, $Medium, #707070);
+            margin-top: 4px
           }
         }
-
-        & + .listItem {
-          border-top: 1px solid $lightestGray;
+        .msg {
+          @include font(13px, $Medium, #202020);
+          word-break: break-word;
         }
-
-        .btnDelete {
-          position: absolute;
-          top: 0;
-          right: 0;
-        }
-        // 210603 추가
-        .btnMore {
-          position: absolute;
-          top: 8px;
-          right: 0;
-          width: 24px;
-          height: 24px;
-          background: url('data:image/svg+xml;base64,DQo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgaWQ9InByZWZpeF9fbW9yZWxpc3RfZyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiPg0KICAgIDxkZWZzPg0KICAgICAgICA8c3R5bGU+DQogICAgICAgICAgICAucHJlZml4X19jbHMtMntmaWxsOiNiZGJkYmR9DQogICAgICAgIDwvc3R5bGU+DQogICAgPC9kZWZzPg0KICAgIDxjaXJjbGUgaWQ9InByZWZpeF9f7YOA7JuQXzI0OCIgY3g9IjIiIGN5PSIyIiByPSIyIiBjbGFzcz0icHJlZml4X19jbHMtMiIgZGF0YS1uYW1lPSLtg4Dsm5AgMjQ4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCA0KSIvPg0KICAgIDxjaXJjbGUgaWQ9InByZWZpeF9f7YOA7JuQXzI0OSIgY3g9IjIiIGN5PSIyIiByPSIyIiBjbGFzcz0icHJlZml4X19jbHMtMiIgZGF0YS1uYW1lPSLtg4Dsm5AgMjQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCAxMCkiLz4NCiAgICA8Y2lyY2xlIGlkPSJwcmVmaXhfX+2DgOybkF8yNTAiIGN4PSIyIiBjeT0iMiIgcj0iMiIgY2xhc3M9InByZWZpeF9fY2xzLTIiIGRhdGEtbmFtZT0i7YOA7JuQIDI1MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAgMTYpIi8+DQo8L3N2Zz4NCg==')
-            no-repeat center center/cover;
-        }
+      }
+      .btnMore {
+        @include position-top-right(15px, 15px);
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+        background: url('data:image/svg+xml;base64,DQo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgaWQ9InByZWZpeF9fbW9yZWxpc3RfZyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiPg0KICAgIDxkZWZzPg0KICAgICAgICA8c3R5bGU+DQogICAgICAgICAgICAucHJlZml4X19jbHMtMntmaWxsOiNiZGJkYmR9DQogICAgICAgIDwvc3R5bGU+DQogICAgPC9kZWZzPg0KICAgIDxjaXJjbGUgaWQ9InByZWZpeF9f7YOA7JuQXzI0OCIgY3g9IjIiIGN5PSIyIiByPSIyIiBjbGFzcz0icHJlZml4X19jbHMtMiIgZGF0YS1uYW1lPSLtg4Dsm5AgMjQ4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCA0KSIvPg0KICAgIDxjaXJjbGUgaWQ9InByZWZpeF9f7YOA7JuQXzI0OSIgY3g9IjIiIGN5PSIyIiByPSIyIiBjbGFzcz0icHJlZml4X19jbHMtMiIgZGF0YS1uYW1lPSLtg4Dsm5AgMjQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCAxMCkiLz4NCiAgICA8Y2lyY2xlIGlkPSJwcmVmaXhfX+2DgOybkF8yNTAiIGN4PSIyIiBjeT0iMiIgcj0iMiIgY2xhc3M9InByZWZpeF9fY2xzLTIiIGRhdGEtbmFtZT0i7YOA7JuQIDI1MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAgMTYpIi8+DQo8L3N2Zz4NCg==')
+          no-repeat center center/cover;
         .moreList {
-          position: absolute;
-          right: 10px;
-          top: 34px;
-          display: flex;
-          flex-direction: column;
-          border: 1px solid #e0e0e0;
+          @include position-top-right(34px,10px);
+          @include flex($fd:column);
+          width: 124px;
           background-color: #fff;
-          padding: 8px 0;
+          @include border(#f2f2f2, 8px);
           z-index: 50;
+          box-shadow: 0 1px 8px rgba(0,0,0,0.16);
           button {
-            width: 78px;
-            height: 26px;
-            font-size: 14px;
-            line-height: 2.14;
-            letter-spacing: -0.35px;
-            text-align: center;
-            color: #757575;
+            @include font(13px,$Medium, #303030);
+            padding: 12px;
+            text-align: left;
+            & + button{
+              border-top: 1px solid #f2f2f2;
+            }
           }
         }
       }

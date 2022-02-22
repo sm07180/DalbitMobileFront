@@ -19,13 +19,13 @@ const Invite = () => {
       dufaultSrc : "https://image.dalbitlive.com/event/invite/tab01.png",
       activeSrc : "https://image.dalbitlive.com/event/invite/tabActive01.png",
       alt : "초대 이벤트",
-      active : true
+      active : false
     },
     {
       dufaultSrc : "https://image.dalbitlive.com/event/invite/tab02.png",
       activeSrc : "https://image.dalbitlive.com/event/invite/tabActive02.png",
       alt : "초대왕 현황",
-      active : false
+      active : true
     },
     {
       dufaultSrc : "https://image.dalbitlive.com/event/invite/tab03.png",
