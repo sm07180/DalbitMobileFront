@@ -20,8 +20,9 @@ const Navigation = (props) => {
         <div className="navi" onClick={() => {
           if(location.pathname === '/') {
             dispatch(setIsRefresh(true))
+          }else {
+            history.push('/')
           }
-          history.push('/')
         }} />
         <div className="navi" onClick={() => history.push('/clip')} />
         <div className="navi" onClick={() => {

@@ -25,7 +25,7 @@ const ClipRanking = () => {
   const context = useContext(Context);
   const history = useHistory();
   const [ rankClipInfo, setRankClipInfo ] = useState({ list: [], paging: {}, topInfo: [] });
-  const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: '2022-01-24', page: 1, records: 100});
+  const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100});
   const [ breakNo, setBreakNo ] = useState(47);
 
   const getRankInfo = async () => {
@@ -49,6 +49,7 @@ const ClipRanking = () => {
   }
 
   const handleTabmenu = (value) => {
+    window.scrollTo(0, 0);
     setSearchInfo({ ...searchInfo, rankType: (parseInt(value) + 1) });
   };
 

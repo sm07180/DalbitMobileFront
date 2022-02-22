@@ -38,7 +38,7 @@ import {Hybrid, isHybrid} from "context/hybrid";
 
 const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
-let scrollApiCall = false;
+window.scrollApiCall = true;
 
 const ProfilePage = () => {
   const history = useHistory()
@@ -121,7 +121,7 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : feedData.paging, // 호출한 페이지 정보
           isLastPage,
         }));
-        scrollApiCall = true;
+        window.scrollApiCall = true;
       } else {
         context.action.alert({
           msg: res.message
@@ -149,7 +149,7 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : fanBoardData.paging,
           isLastPage,
         }));
-        scrollApiCall = true;
+        window.scrollApiCall = true;
       } else {
         context.action.alert({
           msg: res.message
@@ -176,7 +176,7 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : clipData.paging,
           isLastPage,
         }));
-        scrollApiCall = true;
+        window.scrollApiCall = true;
       } else {
         context.action.alert({ msg: res.message })
       }
@@ -367,8 +367,8 @@ const ProfilePage = () => {
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
-    if(scrollApiCall && popHeight - 50 < targetHeight + scrollTop) {
-      scrollApiCall = false;
+    if(window.scrollApiCall && popHeight - 50 < targetHeight + scrollTop) {
+      window.scrollApiCall = false;
       callback()
     }
   }, []);

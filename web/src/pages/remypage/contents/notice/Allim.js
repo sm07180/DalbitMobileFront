@@ -43,6 +43,7 @@ const Allim = () => {
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
     const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
+    console.log(type, roomNo);
     switch (type) {
       case "1":                                                                             //마이스타 방송 알림
         try {if(roomNo !== "") {RoomJoin({roomNo: roomNo});}}
@@ -51,7 +52,9 @@ const Allim = () => {
       case "2": history.push("/");                                                  //달 알림
       case "5": history.push("/");                                                  //공지 알림
       case "7":                                                                             //공지사항 알림
-        try {if(roomNo !== "") {history.push(`/customer/notice/${roomNo}`);}}
+        try {
+          history.push({pathname: `/notice/${roomNo}`, state: roomNo});
+        }
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
