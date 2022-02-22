@@ -7,6 +7,7 @@ import {PlayListStore} from '../store'
 
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import {OS_TYPE} from 'context/config.js'
+import {DalbitScroll} from "common/ui/dalbit_scroll";
 
 export default () => {
   const globalCtx = useContext(Context)
@@ -231,12 +232,10 @@ export default () => {
 
   return (
     <>
-      <div className={`playListWrap ${isEdit ? 'off' : 'on'}`}>
-        <p className="totalListItem">
-          총 목록 수 <span>{totalList}</span>
-        </p>
-        <ul className="playListBox">{createList()}</ul>
-      </div>
+      <p className="playListTotal">
+        총 목록 수 <span>{totalList}</span>
+      </p>
+      <ul className="playListBox" style={{marginTop: '5px'}}>{createList()}</ul>
     </>
   )
 }
