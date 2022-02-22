@@ -36,7 +36,7 @@ const SocialList = (props) => {
   return (
     <div className="socialListWrap">
       {socialList.map((item, index) => {
-        if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== profileData.memNo)) {
+        if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== context.profile.memNo)) {
           return <React.Fragment key={item.replyIdx} />
         }
 
