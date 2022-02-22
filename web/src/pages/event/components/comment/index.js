@@ -12,8 +12,7 @@ import './comment.scss'
 import moment from 'moment'
 
 const EventComment = (props) => {
-  const {
-    commentList,
+  const {commentList,
     totalCommentCnt,
     commentAdd,
     commentRpt,
@@ -225,7 +224,7 @@ const EventComment = (props) => {
 
               return (
                 <div className="listBox" key={`comment-${idx}`}>
-                  <div className="listItem" >
+                  <div className="listItem">
                     <div className="thumb" onClick={goProfile} data-target-mem-no={tail_mem_no}>
                       <img
                         src={`${
@@ -244,31 +243,26 @@ const EventComment = (props) => {
                   <div className="listItem">
                     <p className="msg">{tail_conts}</p>
                   </div>
-                  <div className="btnMore" onClick={() => {
-                      moreToggle(idx)
-                    }}
-                  >
-                    {moreState === idx && (
-                      <div className="moreList">
-                        {parseInt(token.memNo) == tail_mem_no ? (
-                          <button data-target-num={tail_no} onClick={contDelEvent}>
-                            삭제하기
-                          </button>
-                        ) : (
-                          <button data-target-num={tail_no} onClick={contRptEvent}>
-                            신고하기
-                          </button>
-                        )}
-                      </div>
-                    )}
+
+                  {parseInt(token.memNo) == tail_mem_no &&
+                  <div className="btnMore" onClick={() => {moreToggle(idx)}}>
+                    {moreState === idx &&
+                    <div className="moreList">
+                      {parseInt(token.memNo) == tail_mem_no ?
+                          <button data-target-num={tail_no} onClick={contDelEvent}>삭제하기</button> :
+                          <button data-target-num={tail_no} onClick={contRptEvent}>신고하기</button>
+                      }
+                    </div>
+                    }
                   </div>
+                  }
                 </div>
               )
             })}
           </>
-          ) : (
-            <NoResult ment={noResultMsg}/>
-          )
+        ) : (
+          <NoResult ment={noResultMsg}/>
+        )
         }
       </div>
     </div>
