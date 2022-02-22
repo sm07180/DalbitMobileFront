@@ -259,7 +259,7 @@ const RankDetailPage = () => {
   }, [tabName]);
 
   const getTopRankDate = (dateType, currentDate) => {
-    let day1 = new Date(currentDate);
+    let day1 = new Date(moment(currentDate));
     let year = day1.getFullYear();
     let month = day1.getMonth() + 1;
     let date = day1.getDate();

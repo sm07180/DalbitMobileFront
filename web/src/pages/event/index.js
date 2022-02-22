@@ -45,6 +45,7 @@ import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
+import Acrostic from './acrostic'
 import PlayMaker from './playMaker'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
@@ -139,6 +140,8 @@ export default (props) => {
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
+      case 'acrostic':
+        return <Acrostic />
       case 'playmaker':
         return <PlayMaker />
       // case 'gganbu':
