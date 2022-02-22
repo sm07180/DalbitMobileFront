@@ -19,16 +19,8 @@ const LiveView = (props) => {
       {data && data.length > 0 ?
         <>
           {data.map((list,index) => {
-            let timeRank = []
-            
-            for(let i = 0; i < list.liveBadgeList; i++) {
-              console.log(list.liveBadgeList[i].text);
-              if(list.liveBadgeList[i].text.includes('타임 2위')) {
-                timeRank.concat(list.liveBadgeList[i])
-              }
-            }
-
-            console.log(timeRank);
+            //타임뱃지만 출력
+            const timeBadge = list.liveBadgeList.filter((data)=> data?.text.indexOf('타임')>-1 );
 
             return (
               <div className="listRow" key={index} onClick={() => {
@@ -42,7 +34,19 @@ const LiveView = (props) => {
                 <div className='listContent'>
                   <div className="listItem">
                     <BadgeItems data={list} type={'isBadge'} />
-                    <BadgeItems data={list} type={'liveBadgeList'} />
+                    {/* <BadgeItems data={timeBadge} type={'liveBadgeList'} /> */}
+                    {
+                      //타임뱃지만 출력
+                      timeBadge.length > 0 &&
+                      <em
+                        className={`badgeItem`}
+                        style={{
+                          background: `linear-gradient(to right, ${timeBadge[0].startColor}, ${timeBadge[0].endColor}`
+                        }}>
+                        {timeBadge[0].icon !== '' && <img src={timeBadge[0].icon} alt="뱃지아이콘" />}
+                        <span>{timeBadge[0].text}</span>
+                      </em>
+                    }
                   </div>
                   <div className="listItem">
                     <span className='title'>{list.title}</span>
