@@ -6,7 +6,7 @@
     .totalWrap {
       .content {
         .tabWrap.fixed {
-          top: $GNB-HEIGHT;
+          top: calc(#{$GNB-HEIGHT} + #{$HEADER-HEIGHT});
         }
       }
     }

@@ -23,7 +23,7 @@ export default function awardEventVoteThx({setVoteThxPop}) {
           <img src="https://image.dalbitlive.com/event/award/201214/img_dalbit_awards.png" alt="감사합니다" />
           <p className="title">2달이 지급되었습니다.</p>
           <p>
-            2020년 달빛라이브를
+            2020년 달라를
             <br />
             이용해주셔서 감사합니다.
             <br />

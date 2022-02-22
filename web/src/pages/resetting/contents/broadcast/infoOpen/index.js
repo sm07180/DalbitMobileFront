@@ -10,12 +10,11 @@ import Toast from "components/ui/toast/Toast";
 
 const InfoOpen = (props) => {
   const [checkState, setCheckState] = useState(false);
-  const localOpen = [{path: 0, name: "방송 청취 정보 공개"}, {path: 1, name: "공개"}, {path: 2, name: "비공개"}]
+  const localOpen = [{path: 0, name: "방송 청취 정보 공개", value: 0}, {path: 1, name: "공개", value: 0}, {path: 2, name: "비공개", value: 0}]
   const {settingData, setSettingData} = props;
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
+  const [toast, setToast] = useState({state : false, msg : ""});
+
+  //토스트 메시지 출력
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
     setTimeout(() => {
@@ -23,6 +22,7 @@ const InfoOpen = (props) => {
     }, 3000)
   }
 
+  //토글 클릭시
   const switchAction = (e) => {
     const checking = e.target.checked;
     const value = parseInt(e.target.value);
@@ -33,23 +33,18 @@ const InfoOpen = (props) => {
       setCheckState(false)
       let radioEle = document.getElementsByName("broadcastLocation");
       for(let i = 0; i < radioEle.length; i++) {
-        if(radioEle[i].getAttribute('type') === "radio") {
-          radioEle[i].checked = false;
-        }
+        if(radioEle[i].getAttribute('type') === "radio") {radioEle[i].checked = false;}
       }
+      fetchData(2)
     }
   }
 
+  //방송 정보 공개 데이터 조회
   const fetchData = async (slctedVal) => {
     if(settingData !== null) {
       const res = await API.modifyBroadcastSetting({listenOpen: slctedVal})
       if(res.result === "success") {
-        setSettingData({
-          ...settingData,
-          listenOpen: slctedVal
-        })
-        toastMessage(res.message);
-      } else {
+        setSettingData({...settingData, listenOpen: slctedVal})
         toastMessage(res.message);
       }
     }
@@ -65,31 +60,29 @@ const InfoOpen = (props) => {
             <span className="title">{localOpen[0].name}</span>
           </div>
           <label className="inputLabel">
-            <input type="checkbox" className={`blind`} name="switch" defaultChecked={settingData.listenOpen === 0} value={localOpen[0].path} onChange={switchAction} />
+            <input type="checkbox" className={`blind`} name="switch" data-index={0} defaultChecked={true} value={localOpen[0].path} onChange={switchAction} />
             <span className="switchBtn"/>
           </label>
         </div>
-        <div className={`locationState ${checkState ? "active" : ""}`}>
+        <div className={`locationState ${checkState || settingData.listenOpen >= 0 ? "active" : ""}`}>
           <div className='title'>방송 위치 상태</div>
           <div className='radioWrap'>
             <label className='radioLabel'>
-              <input type="radio" name="broadcastLocation" className='blind' defaultChecked={settingData.listenOpen === 1} value={localOpen[1].path} onChange={switchAction}/>
+              <input type="radio" name="broadcastLocation" className='blind' data-index={1} defaultChecked={settingData.listenOpen === 1} value={localOpen[1].path} onChange={switchAction}/>
               <span className='radioBtn'/>
               <span className='radioCategoty'>{localOpen[1].name}</span>
             </label>
             <label className='radioLabel'>
-              <input type="radio" name="broadcastLocation" className='blind' defaultChecked={settingData.listenOpen === 2} value={localOpen[2].path} onChange={switchAction}/>
+              <input type="radio" name="broadcastLocation" className='blind' data-index={2} defaultChecked={settingData.listenOpen === 2} value={localOpen[2].path} onChange={switchAction}/>
               <span className='radioBtn'/>
               <span className='radioCategoty'>{localOpen[2].name}</span>
             </label>
           </div>
         </div>
       </div>
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
+      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }
 
-export default InfoOpen
+export default InfoOpen;

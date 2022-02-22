@@ -70,11 +70,7 @@ const NewlyAccount = (props) => {
           </InputItems>
         </div>
         }
-
-        {/*disabled*/}
-        {/*todo submit -> validation*/}
-
-        <SubmitBtn text="환전 신청하기" state=""
+        <SubmitBtn text="환전 신청하기" state={exchangeForm?.recent_exchangeIndex > 0 ? "" : "disabled"}
                    onClick={()=>{repplySubmit()}}/>
       </form>
     </>

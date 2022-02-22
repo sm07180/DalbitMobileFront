@@ -57,14 +57,16 @@ const ClipAudioPlayer = ()=>{
     sessionStorage.removeItem("clipPlayListInfo");
   };
 
-  const playerBarClickEvent = () => {
+  const playerBarClickEvent = (e) => {
+    e.preventDefault();
     if (clipInfo !== undefined && clipInfo !== null) {
       const { clipNo } = clipInfo;
       history.push(`/clip/${clipNo}`);
     }
   };
 
-  const playIconClick = () => {
+  const playIconClick = (e) => {
+    e.stopPropagation();
     if (clipInfo!.isPaused) {
       clipPlayer!.start();
     } else {
@@ -92,7 +94,7 @@ const ClipAudioPlayer = ()=>{
       <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
           <div className="inner-player-bg"
-               style={{background: `url("${userProfile.profImg.thumb500x500}") center/contain no-repeat`,}} />
+               style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
             <div className="equalizer clip" />
             <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
@@ -103,7 +105,7 @@ const ClipAudioPlayer = ()=>{
             <div className="counting"/>
           </div>
           <div className="buttonGroup">
-             <img onClick={playIconClick} src={clipInfo!.isPaused ? PauseIcon : PlayIcon} className="playToggle__play" alt={"thumb img"}/>
+            <img onClick={playIconClick} src={clipInfo!.isPaused ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
           

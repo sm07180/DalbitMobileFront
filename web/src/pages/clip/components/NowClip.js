@@ -96,7 +96,7 @@ const NowClip = (props) => {
       <div className='listWrap' ref={bgRef} style={{background: `${bgInfo}`}} data-clip-no={info.clipNo} onClick={playAction}>
         <div className="listRow">
           <div className="photo">
-            <img crossOrigin="use-credentials" src={info.bgImg.url} alt="" onLoad={extractColor} onError={handleImgError}/>
+            <img crossOrigin="use-credentials" src={info.bgImg.thumb292x292} alt="" onLoad={extractColor} onError={handleImgError}/>
           </div>
           <div className='listContent'>
             <span className='title'>{info.title}</span>

@@ -458,7 +458,7 @@ let Profile = () => {
                                 }
                               }}
                           >
-                            왕큐피트
+                            CUPID
                           </button>
                           <div className={`rankingList__item `}>
                             <img
@@ -482,7 +482,7 @@ let Profile = () => {
                                 }
                               }}
                           >
-                            왕큐피트
+                            CUPID
                           </button>
                           <div
                               className={`rankingList__item`}

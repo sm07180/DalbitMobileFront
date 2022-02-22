@@ -8,12 +8,14 @@ import Swiper from 'react-id-swiper'
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
+import {useSelector} from "react-redux";
 
 const SwiperList = (props) => {
-  const {data, profImgName, type} = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const {data, profImgName, type, pullToRefreshPause} = props;
+  const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
+  const common = useSelector(state => state.common);
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -22,7 +24,7 @@ const SwiperList = (props) => {
   const onClickAction = (item) => {
     if(type === 'top10') {
       if (!globalState.baseData.isLogin) {
-        history.push("/login");
+        history.push("/login")
       }else{
         history.push(`/profile/${item.memNo}`);
       }
@@ -31,13 +33,23 @@ const SwiperList = (props) => {
     }
   }
 
+  const swiperRefresh = () => {
+    const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
+    swiper?.update();
+    swiper?.slideTo(0);
+  }
+
   useEffect(() => {
-    if (data.length > 0) {
-      const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
-      swiper?.update();
-      swiper?.slideTo(0);
+    if (data.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
+      swiperRefresh();
     }
-  }, [data]);
+  }, [data, pullToRefreshPause]);
+
+  useEffect(() => {
+    if(common.isRefresh && data.length > 0) { // refresh 될때
+      swiperRefresh();
+    }
+  }, [common.isRefresh]);
 
   return (
     <>

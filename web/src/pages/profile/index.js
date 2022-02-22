@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useContext, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './style.scss'
@@ -6,6 +6,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import TopSwiper from './components/topSwiper'
 import ProfileCard from './components/profileCard'
@@ -15,6 +16,7 @@ import FanStarLike from './components/popSlide/FanStarPopup'
 import BlockReport from './components/popSlide/BlockReport'
 import Present from './components/popSlide/Present'
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import SpecialHistoryList from './components/SpecialHistoryPop';
 // contents
 import FeedSection from './contents/profileDetail/FeedSection'
 import FanboardSection from './contents/profileDetail/FanboardSection'
@@ -23,7 +25,7 @@ import ClipSection from './contents/profileDetail/ClipSection'
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
 import {
-  profileClipDefault,
+  profileClipPagingDefault,
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
@@ -34,6 +36,7 @@ import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
+import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
 
 const socialTabmenu = ['방송공지','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -57,14 +60,29 @@ const ProfilePage = () => {
   const [popPresent, setPopPresent] = useState(false); // 선물 팝업
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
   const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
+  const [popHistory, setPopHistory] = useState(false); // 스페셜DJ 약력 팝업 생성
+
+  const [noticePop, setNoticePop] = useState(false); // 좋아요 랭킹기준 안내팝업
 
   const [webview, setWebview] = useState('');
+  const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
+  const [callProfileData, setCallProfileData] = useState(false); // 프로필 이동시 데이터 콜할건지
+  const [profileReady, setProfileReady] = useState(false); // 프로필 mount 후 ready
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
   const feedData = useSelector(state => state.feed);
   const fanBoardData = useSelector(state => state.fanBoard);
   const clipData = useSelector(state => state.profileClip);
+
+  /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
+  const profileDataNoReader = useMemo(() => {
+    if (profileData?.profImgList?.length > 0) {
+      return {...profileData, profImgList: profileData?.profImgList.concat([]).filter((data, index)=> !data.isLeader)};
+    } else {
+      return profileData;
+    }
+  },[profileData]);
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
@@ -97,10 +115,10 @@ const ProfilePage = () => {
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFeedData({
           ...feedData,
-          feedList: data.paging.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
+          feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
           // fixedFeedList: data.fixList, // 고정 피드
           // fixCnt: data.fixList.length, // 고정 피드 개수
-          paging: data.paging, // 호출한 페이지 정보
+          paging: data.paging ? data.paging : profilePagingDefault, // 호출한 페이지 정보
           isLastPage,
         }));
       } else {
@@ -125,9 +143,9 @@ const ProfilePage = () => {
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
         dispatch(setProfileFanBoardData({
           ...fanBoardData,
-          list: data.paging.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
-          listCnt: data.paging.total,
-          paging: data.paging,
+          list: data.paging?.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
+          listCnt: data.length > 0 ? data.paging : 0,
+          paging: data.paging ? data.paging : profilePagingDefault,
           isLastPage,
         }));
       } else {
@@ -149,11 +167,11 @@ const ProfilePage = () => {
       if (res.result === 'success') {
         const data= res.data;
         const callPageNo = data.paging?.page;
-        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        const isLastPage = data.list.length > 0 ? data.paging?.totalPage === callPageNo : true;
         dispatch(setProfileClipData({
           ...clipData,
-          list: data.paging.page > 1 ? clipData.list.concat(data.list) : data.list,
-          paging: data.paging,
+          list: data.paging?.page > 1 ? clipData.list.concat(data.list) : data.list,
+          paging: data.paging ? data.paging : profileClipPagingDefault,
           isLastPage,
         }));
       } else {
@@ -299,9 +317,11 @@ const ProfilePage = () => {
     setPopFanStar(true)
   }
 
-  /* 좋아요 슬라이드 팝업 열기/닫기 */
-  const openPopLike = (e) => {
-    const {targetType} = e.currentTarget.dataset
+  /* 좋아요 슬라이드 팝업 열기/닫기 (tabState는 열고싶은 탭 있을때 파라미터를 넘긴다 탭 순서대로 0부터) */
+  const openPopLike = (e, tabState) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikePopTabState(tabState)
     setPopLike(true)
   }
 
@@ -323,7 +343,7 @@ const ProfilePage = () => {
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
-    if(popHeight === targetHeight + scrollTop) {
+    if(popHeight - 1 < targetHeight + scrollTop) {
       callback()
     }
   }, []);
@@ -352,7 +372,7 @@ const ProfilePage = () => {
       removeScrollEvent();
       document.addEventListener('scroll', profileScrollEvent);
     }else if(item === socialTabmenu[2]) {
-      dispatch(setProfileClipData({...clipData, paging: profileClipDefault, isLastPage: false}));
+      dispatch(setProfileClipData({...clipData, paging: profileClipPagingDefault, isLastPage: false}));
       removeScrollEvent();
       document.addEventListener('scroll', profileScrollEvent);
     }
@@ -361,6 +381,7 @@ const ProfilePage = () => {
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
     if(location.search) {
+      let tabDefault = '';
       const searchParams = location.search.split('?')[1];
       searchParams.split('&').forEach(item => {
         const itemSplit = item.split('=');
@@ -369,12 +390,17 @@ const ProfilePage = () => {
           setWebview(itemSplit[1]);
         }else if(paramType === 'tab') {
           if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) {
+            tabDefault = parseInt(itemSplit[1])
             setSocialType(socialTabmenu[itemSplit[1]]);
           }else {
+            tabDefault = socialDefault;
             setSocialType(socialDefault); // default
           }
         }
       });
+      if(tabDefault === '') {
+        setSocialType(socialDefault); // default
+      }
     }else {
       setSocialType(socialDefault); // default
     }
@@ -429,6 +455,19 @@ const ProfilePage = () => {
     }
   }
 
+  const profileTabCheck = () => {
+    if(socialType === socialTabmenu[0]) {
+      getFeedData();
+      setScrollPagingCnt(1);
+    }else if(socialType === socialTabmenu[1]) {
+      getFanBoardData();
+      setScrollPagingCnt(1);
+    }else if(socialType === socialTabmenu[2]) {
+      getClipData();
+      setScrollPagingCnt(1);
+    }
+  }
+
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
@@ -464,21 +503,25 @@ const ProfilePage = () => {
   /* 프로필 상단 데이터 */
   useEffect(() => {
     if(context.token.isLogin) {
-      getProfileData();
+      resetProfileData();
+      setCallProfileData(true);
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    if(callProfileData) {
+      getProfileData();
+      profileTabCheck();
+      setCallProfileData(false);
+      setProfileReady(true);
+      document.addEventListener('scroll', profileScrollEvent);
+    }
+  }, [callProfileData]);
+
   /* 피드 / 팬보드 / 클립 */
   useEffect(() => {
-    if(socialType === socialTabmenu[0]) {
-      getFeedData();
-      setScrollPagingCnt(1);
-    }else if(socialType === socialTabmenu[1]) {
-      getFanBoardData();
-      setScrollPagingCnt(1);
-    }else if(socialType === socialTabmenu[2]) {
-      getClipData();
-      setScrollPagingCnt(1);
+    if(profileReady) {
+      profileTabCheck();
     }
   }, [socialType])
 
@@ -488,9 +531,8 @@ const ProfilePage = () => {
     }
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     parameterManager(); // 주소 뒤에 파라미터 체크
-    document.addEventListener('scroll', profileScrollEvent);
     return () => {
-      resetProfileData();
+      // resetProfileData();
       removeScrollEvent();
     }
   }, []);
@@ -501,7 +543,7 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className="editBtn" onClick={()=>history.push('/myProfile/edit')}>편집</button>
+            <button className="editBtn" onClick={()=>history.replace('/myProfile/edit')}>편집</button>
           </div>
           :
           <div className="buttonGroup">
@@ -510,7 +552,8 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='topSwiper'>
-        <TopSwiper data={profileData} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile} />
+        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile}
+                   setPopHistory={setPopHistory} type="profile" />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -518,7 +561,7 @@ const ProfilePage = () => {
         />
       </section>
       <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} />
+        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap" ref={tabmenuRef}>
@@ -570,7 +613,6 @@ const ProfilePage = () => {
         <PopSlide setPopSlide={setPopFanStar}>
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
                        goProfile={goProfile} setPopFanStar={setPopFanStar} myMemNo={context.profile.memNo}
-                       scrollEvent={scrollEvent}
           />
         </PopSlide>
       }
@@ -579,7 +621,8 @@ const ProfilePage = () => {
       {popLike &&
         <PopSlide setPopSlide={setPopLike}>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     setPopLike={setPopLike} myMemNo={context.profile.memNo} scrollEvent={scrollEvent}
+                     setPopLike={setPopLike} myMemNo={context.profile.memNo} setNoticePop={setNoticePop}
+                     likePopTabState={likePopTabState}
           />
         </PopSlide>
       }
@@ -597,6 +640,12 @@ const ProfilePage = () => {
           <Present profileData={profileData} setPopPresent={setPopPresent} />
         </PopSlide>
       }
+
+      {/* 선물하기 */}
+      {noticePop && <ProfileNoticePop setNoticePop={setNoticePop} />}
+
+      {/* 스페셜DJ 약력 팝업 */}
+      {popHistory && <SpecialHistoryList profileData={profileData} setPopHistory={setPopHistory} />}
     </div>
   )
 }

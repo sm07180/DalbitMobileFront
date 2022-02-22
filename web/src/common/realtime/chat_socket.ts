@@ -275,7 +275,7 @@ export class ChatSocketHandler {
         });
       }
 
-      //this.reConnect.reConnect();
+      this.reConnect.reConnect();
       if(!this.postErrorState){
         this.postErrorState = true;
         (window as any).postErrorState = true;
@@ -288,10 +288,10 @@ export class ChatSocketHandler {
         });
       }
     });
-    this.socket.on(CHAT_CONFIG.event.socket.CLOSE, (errorCode: number) => {
+    /*this.socket.on(CHAT_CONFIG.event.socket.CLOSE, (errorCode: number) => {
       this.disconnected(true);
       // this.reConnect.reConnect();
-    });
+    });*/
     this.socket.on(CHAT_CONFIG.event.socket.DISCONNECT, (errorCode: number) => {
       this.disconnected(true);
       // this.reConnect.reConnect();

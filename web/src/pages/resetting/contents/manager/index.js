@@ -27,18 +27,16 @@ const SettingManager = () => {
   const context = useContext(Context);
   let userTypeSetting = 0;
 
+  //매니저 리스트 조회
   const getManagerList = () =>{
     Api.mypage_manager_list({}).then((res) =>{
-      if (res.result === 'success'){
-        setManagerList(res.data.list)
-      }
+      if (res.result === 'success'){setManagerList(res.data.list)}
     })
   }
 
+  //매니저 등록
   const fetchAddData = async (memNo) => {
-    let params = {
-      memNo: memNo
-    }
+    let params = {memNo: memNo}
     const res = await Api.mypage_manager_add({params})
     if(res.result === "success") {
       getManagerList();
@@ -47,10 +45,9 @@ const SettingManager = () => {
     }
   }
 
+  //매니저 해제
   const fetchDeleteData = async (memNo) => {
-    let params = {
-      memNo: memNo
-    }
+    let params = {memNo: memNo}
     const res = await Api.mypage_manager_delete({params})
     if(res.result === "success") {
       getManagerList();
@@ -58,11 +55,10 @@ const SettingManager = () => {
     }
   }
 
+  //검색시 회원 리스트 조회
   const fetchListData = async (type) => {
     if (!_.hasIn(changes, 'search') || changes.search.length === 0)
-      return context.action.alert({
-        msg: `검색어를 입력해주세요.`
-      })
+      return context.action.alert({msg: `검색어를 입력해주세요.`})
     userTypeSetting = type === "search" ? Number(_.hasIn(changes, "searchType") ? changes.searchType : 0) : userTypeSetting
     const params = {
       userType: userTypeSetting,
@@ -72,8 +68,13 @@ const SettingManager = () => {
       records: 30
     }
     const res = await Api.mypage_user_search({params})
-    if(res.result === "success") {
-      setUserList(res.data.list);
+    if(res.result === "success") {setUserList(res.data.list);}
+  }
+
+  //엔터 시 검색
+  const onKeyUp = (e) => {
+    if(e.keyCode=== 13) {
+      fetchListData("search");
     }
   }
 
@@ -114,7 +115,7 @@ const SettingManager = () => {
             <section className="inputWrap">
               <div className="inputBox">
                 <FilterBtn data={filter} />
-                <input type="text" placeholder='검색어를 입력해 보세요' name="search" onChange={onChange}/>
+                <input type="text" placeholder='검색어를 입력해 보세요' name="search" onChange={onChange} onKeyUp={onKeyUp} />
                 <span className="icon" onClick={() => fetchListData("search")}/>
               </div>
             </section>
@@ -146,4 +147,4 @@ const SettingManager = () => {
   )
 }
 
-export default SettingManager
+export default SettingManager;

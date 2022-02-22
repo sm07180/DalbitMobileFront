@@ -52,7 +52,6 @@ legend {
 .container {
   @include flex(center,center,column);
   min-height: calc(100vh - #{$GNB-HEIGHT});
-  padding-top:20px;
   background-color: #fbfbfb;
   .totalWrap {
     flex:1;
@@ -65,7 +64,6 @@ legend {
       @include flex($fd:column);
       width: 480px;
       height:100%;
-      border-top:1px solid $lightGray;
       background: $white;
       &::before {
         content:"";
@@ -84,7 +82,7 @@ legend {
         background-color:$lightGray;
       }
       &.player {
-        padding-bottom: 80px;
+        padding-bottom: 54px;
       }
       .subContent {
         &.gray {
@@ -117,7 +115,7 @@ legend {
   width:100%;min-width:480px;
   height: $GNB-HEIGHT;
   background-color: white;
-  border-bottom:1px solid #E0E0E0;
+  border-bottom:2px solid #E0E0E0;
   z-index: $GNB-ZINDEX;
   .gnbContainer {
     position: relative;
@@ -129,11 +127,11 @@ legend {
       @include flex(center,center);
       width:100%;
       h1 {
-        height:25px;
+        height:30px;
         width:200px;
         cursor: pointer;
         img {
-          width:71px;
+          width:86px;
           height:100%;
         }
       }
@@ -146,8 +144,7 @@ legend {
         @include flex(center,space-between);
         width:328px;
         li {
-          width:56px;height:56px;
-
+          width:52px;height:52px;
         }
       }
     }
@@ -261,7 +258,7 @@ legend {
           @include BGIMG("common/gnb/gnbStore-off.png");
           &:hover::after {content:"스토어";}
         }
-        &[data-url="/notice"] {
+        &[data-url="/alarm"] {
           @include BGIMG("common/gnb/gnbAllim-off.png");
           &:hover::after {content:"알림";}
           .newDot {
@@ -484,6 +481,9 @@ legend {
         &.video {
           background: rgba(0, 0, 0, 0.1);
         }
+      }
+      .playToggle__play{
+        margin-right: 12px;
       }
       .close-btn {
         position: relative;z-index: 4;

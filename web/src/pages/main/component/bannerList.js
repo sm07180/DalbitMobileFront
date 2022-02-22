@@ -151,7 +151,7 @@ export default React.forwardRef((props, ref) => {
       clickable: true
     },
     on: {
-      click: (e) => {
+      click: (s, e) => {
         const {linkurl, linktype} = e.target.attributes
         goEvent(linkurl.value, linktype.value)
       }

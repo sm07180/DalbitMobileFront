@@ -27,7 +27,7 @@
       }
     }
     .swiper-container {
-      overflow:hidden;
+      padding-bottom: 35px;
     }
     .swiper-slide {}
     .photo {
@@ -43,7 +43,7 @@
     }
     .showSwiper-pagination {
       @include position-horizon;
-      bottom: -32px;
+      bottom: 0px;
       width:auto;
       line-height:26px;
       padding: 0 12px;

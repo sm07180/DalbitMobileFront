@@ -11,10 +11,9 @@ import Toast from "components/ui/toast/Toast";
 const Message = () => {
   const [messageList, setMessageList] = useState([]);
   const [btnActive, setBtnActive] = useState(false);
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
+  const [toast, setToast] = useState({state : false, msg : ""});
+  
+  //토스트 메시지 출력
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
     setTimeout(() => {
@@ -24,44 +23,32 @@ const Message = () => {
 
   //퀵 메시지 조회
   const fetchData = async () => {
-    const res = await Api.member_broadcast_shortcut({
-      method: 'GET'
-    })
-    if (res.result === 'success') {
-      console.log(res);
-      setMessageList(res.data.list);
-    }
+    const res = await Api.member_broadcast_shortcut({method: 'GET'})
+    if (res.result === 'success') {setMessageList(res.data.list);}
   }
 
   //퀵 메시지 수정
   const fetchEditData = async (e) => {
     const idx = e.currentTarget.dataset.idx;
-    const res = await Api.member_broadcast_shortcut({
-      method: "POST",
-      data: {...messageList[idx]}
-    })
-    if(res.result === "success") {
-      toastMessage("퀵 메시지를 저장하였습니다.")
-    } else {
-      toastMessage(res.message);
+    const res = await Api.member_broadcast_shortcut({method: "POST", data: {...messageList[idx]}})
+    if(res.result === "success") {toastMessage("퀵 메시지를 저장하였습니다."); setBtnActive(false);}
+    else {toastMessage(res.message);
     }
   }
 
   //내용값 가져오기
   const valueChange = (e) => {
     let val = e.target.value;
-    if(val !== "") {
-      setBtnActive(true)
-    }
+    let index = parseInt(e.currentTarget.dataset.idx)
+    if(val !== "") {setBtnActive(index)}
     setMessageList(messageList.map((v) => {v.text = e.target.value; return v;}));
   }
 
   //명령값 가져오기
   const titleChange = (e) => {
     let val = e.target.value;
-    if(val !== "") {
-      setBtnActive(true)
-    }
+    let index = parseInt(e.currentTarget.dataset.idx)
+    if(val !== "") {setBtnActive(index);}
     setMessageList(messageList.map((v) => {v.order = e.target.value; return v;}));
   }
 
@@ -84,16 +71,16 @@ const Message = () => {
                     <span className='listIndex'>{item.orderNo}</span>
                     <span className='listTitle'>퀵 메시지</span>
                   </div>
-                  <button className={`saveBtn ${btnActive && 'active'}`} data-idx={index} onClick={fetchEditData}>저장</button>
+                  <button className={`saveBtn ${btnActive === index && 'active'}`} data-idx={index} onClick={fetchEditData}>저장</button>
                 </div>
                 <div className='listContent'>
                   <div className='listRow'>
                     <div className='category'>명령어</div>
-                    <input type="text" className='inputText' name="order" onChange={titleChange} defaultValue={item.order}/>
+                    <input type="text" className='inputText' name="order" data-idx={index} onChange={titleChange} defaultValue={item.order}/>
                   </div>
                   <div className='listRow'>
                     <div className='category'>내용</div>
-                    <input type="text" className='inputText' name="text" onChange={valueChange} defaultValue={item.text}/>
+                    <input type="text" className='inputText' name="text" data-idx={index} onChange={valueChange} defaultValue={item.text}/>
                   </div>
                 </div>
               </div>
@@ -102,11 +89,9 @@ const Message = () => {
           }
         </div>
       </div>
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
+      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }
 
-export default Message
+export default Message;

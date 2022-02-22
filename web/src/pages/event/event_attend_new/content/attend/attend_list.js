@@ -15,19 +15,19 @@ export default (props) => {
     if (check_ok === 1) {
       return (
         <>
-          <img src={`${IMG_SERVER}/event/attend/201019/stamp_success_img@2x.png`} />
+          <img src={`${IMG_SERVER}/event/attend/220221/stamp_success.png`} />
         </>
       )
     } else if (check_ok === 2) {
       return (
         <>
-          <img src={`${IMG_SERVER}/event/attend/201019/stamp_today@2x.png`} />
+          <img src={`${IMG_SERVER}/event/attend/220221/stamp_today.png`} />
         </>
       )
     } else {
       return (
         <>
-          <img src={`${IMG_SERVER}/event/attend/201019/stamp_fail_img@2x.png`} />
+          <img src={`${IMG_SERVER}/event/attend/220221/stamp_default.png`} />
         </>
       )
     }

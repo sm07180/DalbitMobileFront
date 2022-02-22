@@ -6,7 +6,7 @@ import './showSwiper.scss'
 
 const ShowSwiper = (props) => {
   const {imageList, popClose, imageKeyName, imageParam, initialSlide,
-    showTopOptionSection, readerButtonAction, deleteButtonAction} = props
+    showTopOptionSection, readerButtonAction, deleteButtonAction, swiperParam} = props
 
   const [swiper, setSwiper] = useState();
 
@@ -18,8 +18,11 @@ const ShowSwiper = (props) => {
       type: 'fraction'
     },
     on: {
-      init: (a) => setSwiper(a)
-    }
+      init: function(){
+        setSwiper(this);
+      }
+    },
+    ...swiperParam
   }
 
   const clickPopClose = (e) => {
@@ -33,7 +36,9 @@ const ShowSwiper = (props) => {
     if (imageList.length > 1) {
       const swiper = document.querySelector('#popShowSwiper .swiper-container')?.swiper;
       swiper?.update();
-      swiper?.slideTo(initialSlide);
+      if(!swiperParam?.initialSlide) {  //initSlide 옵션이 있으면 슬라이드 이동 안함
+        swiper?.slideTo(initialSlide);
+      }
     }
   }, [imageList]);
 
@@ -83,4 +88,5 @@ ShowSwiper.defaultProps = {
   showTopOptionSection: false, // 대표 이미지버튼, 삭제 버튼 노출 여부
   readerButtonAction: ()=>{}, // 대표 이미지 버튼 클릭이벤트
   deleteButtonAction: ()=>{}, // 삭제 이미지 버튼 클릭이벤트
+  swiperParam: {}
 }

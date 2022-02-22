@@ -19,63 +19,36 @@ const SettingForbid = () => {
   const [focus, setFocus] = useState(false);
   const [buttonState, setButtonState] = useState(false)
   const {changes, setChanges, onChange} = useChange({onChange: -1})
-  const [toast, setToast] = useState({state : false, msg : ""});
 
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
-
+  //저장, 삭제 클릭시 금지어 리스트 수정
   async function fetchWrite(type) {
     let words = []
     word.forEach((item, index) => {
-      if (_.hasIn(changes, `word${index}`)) {
-        words = words.concat(changes[`word${index}`])
-      } else {
-        words = words.concat([item])
-      }
+      if (_.hasIn(changes, `word${index}`)) {words = words.concat(changes[`word${index}`])}
+      else {words = words.concat([item])}
     })
     let banWords = ''
     let wordIndex = 0
     words.forEach((item, index) => {
       if (item == false) return
-      if (!wordIndex) {
-        banWords = `${item}`
-      } else {
-        banWords = `${banWords}|${item}`
-      }
+      if (!wordIndex) {banWords = `${item}`}
+      else {banWords = `${banWords}|${item}`}
       wordIndex++
     })
     if (banWords == '' && type != 'remove')
-      return context.action.alert({
-        msg: `금지어를 입력해주세요.`
-      })
-    const res = await Api.mypage_banword_write({
-      data: {
-        banWord: banWords
-      }
-    })
+      return context.action.alert({msg: `금지어를 입력해주세요.`})
+    const res = await Api.mypage_banword_write({data: {banWord: banWords}})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      if (res.data.banWordCnt) {
-        setWord(res.data.banWord.split('|'))
-      } else {
-        setWord(false)
-      }
+      if (res.data.banWordCnt) {setWord(res.data.banWord.split('|'))}
+      else {setWord(false)}
       setChanges([''])
-      if (!(type == 'remove')) {
-        context.action.alert({
-          msg: res.message
-        })
-      }
+      if (!(type == 'remove')) {context.action.alert({msg: res.message})}
     } else {
-      context.action.alert({
-        msg: res.message
-      })
+      context.action.alert({msg: res.message})
     }
   }
 
+  //금지어 리스트 출력
   async function fetchList() {
     const res = await Api.mypage_banword_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
@@ -86,23 +59,24 @@ const SettingForbid = () => {
         setChanges([''])
       }
     } else {
-      context.action.alert({
-        msg: res.message
-      })
+      context.action.alert({msg: res.message})
     }
   }
 
+  //저장 클릭시
   const writeValidate = () => {
     fetchWrite()
     setButtonState(false)
   }
 
+  //input 값 입력시 button이름 변경
   const focusState = (e) => {
     const index = parseInt(e.currentTarget.dataset.value);
     setButtonState(index);
     setButton("저장");
   }
 
+  //삭제 클릭시
   const removeInput = (index) => {
     context.action.confirm({
       msg: `금지어를 삭제하시겠습니까?`,
@@ -119,14 +93,17 @@ const SettingForbid = () => {
     })
   }
 
+  //input 태그 클릭시 포커스처리
   const focusChange = () => {
     setFocus(!focus);
   }
 
+  //input 태그 클릭 해제시 포커스 해제
   const blurChange = () => {
     setFocus(!focus);
   }
 
+  //금지어 추가시 금지어 작성 리스트 출력
   const createList = () => {
     return word.map((item, index) => {
       return(
@@ -136,7 +113,7 @@ const SettingForbid = () => {
                    onClick={focusState} data-value={index} onChange={onChange}
             />
           </label>
-          {(buttonState !== index && word[index] !== "") ? (<button type="button" className="inputBtn" onClick={() => removeInput(index)}>삭제</button>)
+          {(buttonState !== index && word[index] !== "") ? (<button type="button" className="inputBtn delete" onClick={() => removeInput(index)}>삭제</button>)
             : (buttonState === index || word[index] === "") && (<button type="button" className="inputBtn" onClick={writeValidate}>저장</button>)
           }
         </div>
@@ -144,6 +121,7 @@ const SettingForbid = () => {
     })
   }
 
+  //금지어 추가시
   const addInput = () => {
     setWord(word.concat(""));
     setButtonState(false);
@@ -172,11 +150,8 @@ const SettingForbid = () => {
           <p>최대 100개까지 설정 가능</p>
         </section>
       </div>
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
     </div>
   )
 }
 
-export default SettingForbid
+export default SettingForbid;

@@ -12,7 +12,7 @@ import Popup from 'pages/common/popup'
 import Sticker from 'pages/common/sticker'
 
 import React, {useContext, useMemo, useEffect, useState, useRef} from 'react'
-import {useLocation} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
@@ -26,6 +26,7 @@ const Layout = (props) => {
 
   const context = useContext(Context)
   const location = useLocation()
+  const history = useHistory();
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
   })
@@ -35,6 +36,9 @@ const Layout = (props) => {
 
   const customHeader = JSON.parse(Api.customHeader)
   const noAppCheck = customHeader['os'] === OS_TYPE['Desktop']
+
+  const isLoginPage = location.pathname === '/login'
+  const isRulePage = history.location.pathname.startsWith("/rule")
 
   useEffect(() => {
     if (noAppCheck) {
@@ -64,9 +68,16 @@ const Layout = (props) => {
         {children}
       </Article>
       {/* (방송방)Player */}
-      <NewPlayer {...props} />
+      {
+        !isLoginPage && !isRulePage &&
+        <NewPlayer {...props} />
+      }
       {/* (클립)Player */}
-      <ClipPlayer {...props} />
+      {
+        !isLoginPage && !isRulePage &&
+        <ClipPlayer {...props} />
+      }
+
       {/* 레이어팝업 */}
       <Popup {...props} />
       {/* 메시지팝업 */}
@@ -74,11 +85,11 @@ const Layout = (props) => {
       {/* IP노출 */}
       <Ip {...props} />
 
-      {appPopupState === true && noAppCheck && (
-        <>
-          <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />
-        </>
-      )}
+      {/*{appPopupState === true && noAppCheck && (*/}
+      {/*  <>*/}
+      {/*    <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />*/}
+      {/*  </>*/}
+      {/*)}*/}
 
       {context.multiViewer.show && <MultiImageViewer />}
     </>

@@ -163,6 +163,15 @@ const InviteEvent = () => {
     }
   };
 
+  const goSendProfile = () =>{
+    if(myInfo.sendExitYn === "n"){
+      history.push(`/profile/${myInfo.send_mem_no}`)
+    }else{
+      context.action.alert({msg: `탈퇴한 회원입니다.`});
+    }
+  }
+
+
   return (
     <div className='inviteEvent'>
       <div className='imageBox'>
@@ -196,7 +205,7 @@ const InviteEvent = () => {
         :
           <div className='imageBox'>
             <img src="https://image.dalbitlive.com/event/invite/eventPage_event-friend.png" alt="나를 초대한 친구" className='fullImage'/>
-            <div className='friendWrap' onClick={() => history.push(`/profile/${myInfo.mem_no}`)}>
+            <div className='friendWrap' onClick={goSendProfile}>
               <div className="photo">
                 <img src={myInfo.profImg.thumb88x88} alt="프로필이미지" />
               </div>

@@ -85,11 +85,13 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
       });
     }
   }, [broadcastState.roomInfo]);
+
+  console.log(managerList);
   return (
     <>
       <h3 className="blind">청취자 리스트</h3>
       <div className="userListWrap">
-        <DalbitScroll width={354} onHoverBarVisible={true}>
+        <DalbitScroll width={342} onHoverBarVisible={true}>
           <div className="scroll-box">
             <h4 className="subTitle">방송 DJ</h4>
             <div className="userBox">
@@ -128,13 +130,17 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
                 </div>
               </>
             )}
-            <h4 className="subTitle">방송 매니저</h4>
-            <div className="userBox">
-              {isLogin === true && Array.isArray(managerList) && (
-                <ListenerListItem roomOwner={roomOwner} roomNo={roomNo} profile={profile} data={managerList} classNm="manager" />
-              )}
-            </div>
-
+            {
+              managerList.length > 0 && 
+              <>              
+                <h4 className="subTitle">방송 매니저</h4>
+                <div className="userBox">
+                  {isLogin === true && Array.isArray(managerList) && (
+                    <ListenerListItem roomOwner={roomOwner} roomNo={roomNo} profile={profile} data={managerList} classNm="manager" />
+                  )}
+                </div>
+              </>
+            }
             <h4 className="subTitle">청취자</h4>
             <div className="userBox">
               {isLogin === true && Array.isArray(listenersList) && (

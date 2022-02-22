@@ -9,7 +9,9 @@ import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 
 const TopSwiper = (props) => {
-  const {data, openShowSlide, webview, isMyProfile} = props
+  const {data, openShowSlide, webview, isMyProfile,
+    disabledBadge, swiperParam, setPopHistory, type} = props;
+
   const context = useContext(Context);
   const history = useHistory();
   
@@ -24,6 +26,7 @@ const TopSwiper = (props) => {
       el: '.swiper-pagination',
       type: 'fraction'
     },
+    ...swiperParam
   }
 
   const roomJoinHandler = () => {
@@ -36,6 +39,12 @@ const TopSwiper = (props) => {
       webview
     }
     RoomValidateFromProfile(params);
+  }
+
+
+  /* 스페셜DJ 약력 팝업 생성 */
+  const popupOpen = () => {
+    setPopHistory(true);
   }
 
   useEffect(() => {
@@ -67,31 +76,38 @@ const TopSwiper = (props) => {
           </div>
         </div>
         :
-        <div
-          className='swiper-slide'
-          style={{
-            backgroundImage: `url("${IMG_SERVER}/profile/photoNone.png")`,
-            backgroundSize: 'cover'
-          }}
-        />
+        <div className="swiper-slide">
+          <div className="photo">
+            <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
+          </div>
+        </div>
       }
-      <div className="swiperBottom">
-        {data.specialDjCnt > 0 &&
-          <div className="specialBdg">
+      {!disabledBadge &&
+      <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
+        {data.specialDjCnt > 0 && type === 'profile' &&
+          <div className="specialBdg" onClick={popupOpen}>
             <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {!isMyProfile && webview === '' && (data.roomNo !== "" || data.listenRoomNo !== "") &&
+        {!isMyProfile && webview === '' && data.roomNo !== "" &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
         }
+        {!isMyProfile && webview === '' && data.listenRoomNo !== "" &&
+          <div className="liveBdg">
+            <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
+          </div>
+        }
       </div>
+      }
     </>
   )
 }
 TopSwiper.defaultProps = {
-  openShowSlide: () => {}
+  openShowSlide: () => {},
+  disabledBadge: false,  // 뱃지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
+  swiperParam: {} // 스와이퍼 추가옵션이 필요한 경우
 }
 export default TopSwiper

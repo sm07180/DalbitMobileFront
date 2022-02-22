@@ -90,7 +90,7 @@ export default (props) => {
                   {/* <div className="countBox">
                   </div> */}
                   <div className="bestFanBox">
-                    <span className="bestFanBox__label">왕큐피트</span>
+                    <span className="bestFanBox__label">CUPID</span>
                     <span
                       className="bestFanBox__nickNm"
                       onClick={() => {

@@ -1,10 +1,10 @@
 import React, {useState, useContext, useEffect} from 'react'
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header/Header';
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 import {Context} from 'context'
 import {PlayListStore} from '../store'
 import PlayList from './list'
@@ -23,6 +23,7 @@ export default () => {
   }, [token])
 
   const {isEdit, sortType, deleteList, sortList} = playListCtx
+/*
 
   const goBack = () => {
     if (isEdit) {
@@ -38,6 +39,7 @@ export default () => {
       Hybrid('CloseLayerPopup')
     }
   }
+*/
 
   const fetchEdit = async () => {
     const {result, message} = await Api.postPlayListEdit({
@@ -66,18 +68,20 @@ export default () => {
     }
   }
 
-  return (
-    <Layout status="no_gnb">
-      <div id="clipPlayList">
-        <Header title="재생목록" type="fixed" goBack={goBack} />
+  const goBack = () => {
+    if(isHybrid()) {
+      sessionStorage.removeItem('webview')
+      Hybrid('CloseLayerPopup')
+    } else {
+      history.goBack();
+    }
+  };
 
-        {/* <button
-          className={`playlistEdit__headerBtn ${!isEdit ? '' : 'playlistEdit__headerBtn--edit'}`}
-          onClick={() => handleBtnClick()}>
-          {isEdit ? '완료' : '편집'}
-        </button> */}
+  return (
+    <Layout status="no_gnb" >
+      <div id="clipPlayList">
+        <Header title="재생목록" type="back" backEvent={goBack}/>
         <PlayList />
-        {/* <PlayListEdit /> */}
       </div>
     </Layout>
   )

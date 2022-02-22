@@ -19,25 +19,18 @@ import Toast from "components/ui/toast/Toast";
 
 const SettingBroadcast = () => {
   const params = useParams();
+  const history = useHistory();
   const settingCategory = params.category;
-  const context = useContext(Context);
   const [settingData, setSettingData] = useState({});
   const [menuListInfo, setMenuListInfo] = useState([
     {text:'방송 제목', path: '/setting/streaming/title'},
     {text:'DJ 인사말', path: '/setting/streaming/greeting'},
     {text:'퀵 메시지', path: '/setting/streaming/message'},
     {text:'방송 청취 정보 공개', path: '/setting/streaming/infoOpen'},
-    {text:'선물 시 자동 스타 추가', path: "", value: false},
+    {text:'선물 시 자동 스타 추가', value: false},
     {text:'배지 / 입·퇴장 메시지', path: '/setting/streaming/inOutMessage'},
   ]);
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
-
-  const golink = (path) => {
-    history.push("/setting/broadcast/" + path);
-  }
+  const [toast, setToast] = useState({state : false, msg : ""});
 
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
@@ -46,28 +39,24 @@ const SettingBroadcast = () => {
     }, 3000)
   }
 
+  //선물 시 자동 스타 추가 정보 수정
   const fetchData = async (value, index) => {
     const res = await API.modifyBroadcastSetting({giftFanReg: !value})
     if(res.result === "success") {
-      console.log(res);
       toastMessage(res.message);
       setMenuListInfo(menuListInfo.map((v, idx) => {
-        if(idx === index) {
-          v.value = !value
-        }
+        if(idx === index) {v.value = !value}
         return v
       }))
     }
   }
 
+  //방송 설정 정보 조회
   const fetchSetting = async () => {
     const res = await API.getBroadcastSetting();
     if(res.result === "success") {
-      console.log(res);
       setMenuListInfo(menuListInfo.map((v,idx) => {
-        if(idx === 4) {
-          v.value = res.data.giftFanReg
-        }
+        if(idx === 4) {v.value = res.data.giftFanReg}
         return v
       }))
       setSettingData(res.data);
@@ -87,21 +76,17 @@ const SettingBroadcast = () => {
           <div className='menuWrap'>
             {menuListInfo.map((list,index) => {
               return (
-                <div key={index}>
-                  {index !== 4 ?
-                    <MenuList text={list.text} path={list.path} key={index}>
-                      {index < 2 && <small>최대 3개</small>}
-                      {index === 2 && <small>최대 6개</small>}
-                    </MenuList>
-                    :
-                    <MenuList text={list.text} key={index}>
-                      <label className="inputLabel">
-                        <input type="checkbox" className={`blind`} name={"autoAddStar"} defaultChecked={list.value} onClick={() => fetchData(list.value, index)}/>
-                        <span className={`switchBtn`}/>
-                      </label>
-                    </MenuList>
+                <MenuList text={list.text} path={list.path} key={index} disabledClick={index === 4 ? true : false}>
+                  {index < 2 && <small>최대 3개</small>}
+                  {index === 2 && <small>최대 6개</small>}
+                  {index === 4 &&
+                  <label className="inputLabel" >
+                        <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
+                               onChange={() => fetchData(list.value, index)}/>
+                    <span className={`switchBtn`}/>
+                  </label>
                   }
-                </div>
+                </MenuList>
               )
             })}
           </div>
@@ -122,11 +107,9 @@ const SettingBroadcast = () => {
                 settingCategory === "inOutMessage" &&
                 <InOutMessage settingData={settingData} setSettingData={setSettingData}/>
       }
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
+      {toast.state && <Toast msg={toast.msg}/>}
     </>
   )
 }
 
-export default SettingBroadcast
+export default SettingBroadcast;

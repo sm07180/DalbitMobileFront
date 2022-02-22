@@ -45,12 +45,14 @@ import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
+import Acrostic from './acrostic'
 import PlayMaker from './playMaker'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
 import Invite from './invite'
 import Share from './share'
+import PlatformWar from './platformWar'
 
 export default (props) => {
   const params = useParams()
@@ -73,7 +75,6 @@ export default (props) => {
       case 'my_history':
         return <AttendHistory />
       case 'guest_guide':
-      case 'guest_guideT':
         return <GuestGuide title={title}/>
       case 'image_guide':
         return <ImageGuide />
@@ -139,6 +140,8 @@ export default (props) => {
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
+      case 'acrostic':
+        return <Acrostic />
       case 'playmaker':
         return <PlayMaker />
       // case 'gganbu':
@@ -152,6 +155,8 @@ export default (props) => {
         return <Invite />
       case 'share':
         return <Share />
+      case 'platformWar':
+        return <PlatformWar />
       default:
         return <></>
         break

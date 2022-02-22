@@ -7,7 +7,7 @@ import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 // static
-import NoResult from 'components/ui/new_noResult'
+import NoResult from 'components/ui/noResult/NoResult'
 import './comment.scss'
 import moment from 'moment'
 
@@ -148,37 +148,38 @@ const EventComment = (props) => {
     <div className="commentEventWrap">
       {globalCtx.token.isLogin && (
         <div className="addInputBox">
-          <div className="userBox">
+          {/* <div className="userBox">
             <div className="photo">
               <img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm} />
             </div>
             <div className="userNick">{globalCtx.profile.nickNm}</div>
-          </div>
-          <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100} />
-          <div className="textCount">
-            <strong ref={lengthRef}>0</strong>/100
+          </div> */}
+          <div className="textareaWrap">
+            <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={maxLength} />
+            <div className="textCount">
+              <strong ref={lengthRef}>0</strong>/{maxLength}
+            </div>
           </div>
           <button className={`writeBtn ${writeState ? 'on' : ''}`} onClick={contAddEvent}>
-            등록하기
+            등록
           </button>
         </div>
       )}
       <div className="commentBox">
         <div className="totalBox">
-          {contTitle}<span>{`${Utility.addComma(totalCommentCnt)}`}</span>개
+          {contTitle}<span>{`${Utility.addComma(totalCommentCnt)}`}개</span>
           <button className="refreshBtn" onClick={refreshList}>
-            <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
+            <img src={`${IMG_SERVER}/main/ico_event_refresh.png`} alt="새로고침" />
           </button>
         </div>
+        {commentList.length > 0 ? (
+          <>
+            {commentList.map((value, idx) => {
+              const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value
 
-        <div className="listBox">
-          {commentList.length > 0 ? (
-            <>
-              {commentList.map((value, idx) => {
-                const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value
-
-                return (
-                  <div className="listItem" key={`comment-${idx}`}>
+              return (
+                <div className="listBox" key={`comment-${idx}`}>
+                  <div className="listItem" >
                     <div className="thumb" onClick={goProfile} data-target-mem-no={tail_mem_no}>
                       <img
                         src={`${
@@ -187,19 +188,20 @@ const EventComment = (props) => {
                         alt={mem_nick}
                       />
                     </div>
-                    <div className="textBox">
+                    <div className="user">
                       <div className="nick">
                         {mem_nick}
                         <span className="date"> {getFormatting(ins_date)}</span>
                       </div>
-                      <p className="msg">{tail_conts}</p>
                     </div>
-                    <button
-                      className="btnMore"
-                      onClick={() => {
-                        moreToggle(idx)
-                      }}
-                    />
+                  </div>
+                  <div className="listItem">
+                    <p className="msg">{tail_conts}</p>
+                  </div>
+                  <div className="btnMore" onClick={() => {
+                      moreToggle(idx)
+                    }}
+                  >
                     {moreState === idx && (
                       <div className="moreList">
                         {parseInt(token.memNo) == tail_mem_no ? (
@@ -214,13 +216,14 @@ const EventComment = (props) => {
                       </div>
                     )}
                   </div>
-                )
-              })}
-            </>
+                </div>
+              )
+            })}
+          </>
           ) : (
-            <NoResult type="default" text={noResultMsg} />
-          )}
-        </div>
+            <NoResult ment={noResultMsg}/>
+          )
+        }
       </div>
     </div>
   )

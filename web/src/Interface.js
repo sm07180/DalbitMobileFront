@@ -201,7 +201,7 @@ export default () => {
           msg = loginInfo.message
         }
         context.action.alert({
-          title: '달빛라이브 사용 제한',
+          title: '달라 사용 제한',
           msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
@@ -309,7 +309,7 @@ export default () => {
           msg = loginInfo.message
         }
         context.action.alert({
-          title: '달빛라이브 사용 제한',
+          title: '달라 사용 제한',
           msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
@@ -783,8 +783,8 @@ export default () => {
         break
 
       case 'native-footer': // native footer 이동
-        const type = event.detail.type;
-        const prevPath = location.pathname;
+        const type = event.detail.type.toLowerCase();
+        const prevPath = location.pathname.toLowerCase();
         const prevType = FOOTER_VIEW_PAGES[prevPath];
 
         if(type === prevType) {

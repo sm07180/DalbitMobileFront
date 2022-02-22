@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from "context";
 
 import Api from 'context/api'
@@ -63,12 +63,7 @@ const StorePage = () => {
     if (context.token.isLogin) {
       history.push({
         pathname: '/store/dalcharge',
-        state: {
-          itemNm: payInfo.itemNm,
-          dal: payInfo.dal,
-          price: payInfo.price,
-          itemNo: payInfo.itemNo
-        }
+        search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
       })
     } else {
       history.push('/login')
@@ -77,7 +72,7 @@ const StorePage = () => {
 
   return (
     <div id="storePage">
-      <Header title={'스토어'} position="sticky" type="back"/>
+      <Header title={'스토어'} position="sticky" type="back" backEvent={()=>history.push("/myPage")}/>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(storeInfo.myDal)}</span>

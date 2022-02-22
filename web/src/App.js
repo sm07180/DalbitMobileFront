@@ -35,6 +35,7 @@ import Common from "common";
 import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
+import {useHistory} from "react-router-dom";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -121,6 +122,7 @@ const App = () => {
   App.context = () => context
   //본인인증
   const authRef = useRef()
+  const history = useHistory()
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
@@ -491,7 +493,7 @@ const App = () => {
   const isFooter = () => {
     if(!isDesktop && !isHybrid()) {
       const pages = ['/', '/clip', '/search', '/mypage', '/login'];
-      const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
+      const isFooterPage = pages.findIndex(item => item === location.pathname.toLowerCase()) > -1;
 
       setIsFooterPage(isFooterPage);
     }
@@ -500,7 +502,7 @@ const App = () => {
   /* 네이티브용 푸터 관리 */
   const nativeFooterManager = () => {
     if(isHybrid()) {
-      const currentPath = location.pathname;
+      const currentPath = location.pathname.toLowerCase();
       const visible = !!FOOTER_VIEW_PAGES[currentPath];
       const stateFooterParam = {
         tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
@@ -583,11 +585,6 @@ const App = () => {
     }
   }, [globalCtx.profile, globalCtx.token, location.pathname])
 
-  useEffect(() => {
-    isFooter();
-    nativeFooterManager();
-  }, [location.pathname]);
-
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
     if (ready && cookieAuthToken !== Api.authToken) {
@@ -602,7 +599,17 @@ const App = () => {
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
+
   }, [])
+
+  useEffect(()=>{
+    let historyListener = () => {
+      isFooter();
+      nativeFooterManager();
+    };
+    historyListener();
+    history.listen(historyListener);
+  },[])
 
   function ErrorFallback({error, resetErrorBoundary}) {
     if ('ChunkLoadError' === error.name) {

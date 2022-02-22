@@ -1,5 +1,15 @@
 @import "../../../../components/ui/mixin";
 
+.container {
+  .totalWrap {
+    #report{
+      .tabmenu {
+        top: $PC-TABTOP;
+      }
+    }
+  }
+}
+
 #report{
   @include flex($fd:column);
   height:100%;
@@ -103,9 +113,13 @@
     }
   }
   .tabmenu {
+    position: sticky;
+    top: $MOBILE-TABTOP;
     @include flex(center);
     margin-bottom: 16px;
     padding: 0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
       flex:1;
       @include flex(center, center);
@@ -154,6 +168,7 @@
         .inputBox{
           padding: 0 8px 0 20px;
           @include font(16px, 500);
+          cursor: pointer;
           .iconCalendar{
             width: 40px;
             height: 40px;

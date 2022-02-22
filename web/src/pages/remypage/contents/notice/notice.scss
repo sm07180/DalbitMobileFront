@@ -1,63 +1,61 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+    #notice {
+      >header {
+        display:none;
+      }
+      .tabmenu {
+        top: $GNB-HEIGHT;
+      }
+    }
+  }
+}
+
 #notice {
   position:relative;
   .tabmenu {
-    position:relative;
-    @include flex;
-    margin:0 16px;
+    position: sticky;
+    @include tabmenuStyle-1;
+    padding: 0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
-      flex:1;
-      @include flex(center,center);
-      height:48px;
-      border-bottom:2px solid #F2F2F2;
-      letter-spacing: -1px;
-      @include font(16px,600,#ACACAC);
-      box-sizing: border-box;
-      &.active {        
-        @include font(16px,700,#202020);
-      }
-      &:nth-child(1) {
-        &.active {
-          ~ .underline {
-            left:0;
+      position:relative;
+      cursor:pointer;
+      &.new {
+        span {
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 0px; right: -8px;
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background-color: #FF3C7B;
           }
-        }
+        }        
       }
-      &:nth-child(2) {
-        &.active {
-          ~ .underline {
-            left:50%;
-          }
-        }
-      }
-    }
-    .underline {
-      @include position-bottom-left;
-      width:50%;
-      height:2px;
-      background-color:black;
-      transition: all .1s ease-in-out;
     }
   }
+
   .allim, .post {
     padding-top:15px;
-    >div {
-      border-bottom:1px solid #F2F2F2;
-    }
     .listRow {
       padding:15px 20px 12px 16px;
       cursor: pointer;
       .photo {
+        position: relative;
         width:50px;
         height:50px;
         margin-bottom:auto;
         margin-right:12px;
-        border-radius: 12px / 50%;
-        overflow:hidden;
+        border-radius: 50%;
         img {
           width:100%;
-          border-radius: 50% / 12px;
+          border-radius: 50%;
         }
       }
     }
@@ -92,8 +90,22 @@
     }
   }
   .post {
+    .photo {
+      .newBadge {
+        position: absolute;
+        top: 0; right: 0;
+        @include flex(center, center);
+        width: 15px; height: 15px;
+        border-radius: 50%;
+        background-color: #FF3C7B;
+        @include font(10px, 700, #FFF);
+        border: 1px solid #FFF;
+        box-sizing: border-box;
+      }
+    }
     .listContent {
       min-width:0;
+      flex: 1;
       .title {
         margin-bottom:2px;
         letter-spacing: -0.5px;
@@ -137,6 +149,9 @@
         padding:12px 16px 20px;
         p {
           font-size:14px;
+        }
+        img {
+          width: 100% !important;
         }
       }
     }

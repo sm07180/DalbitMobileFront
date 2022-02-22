@@ -11,15 +11,10 @@ import Toast from "components/ui/toast/Toast";
 
 const Greeting = () => {
   const [titleList, setTitleList] = useState([])
-  const [titleSelect, setTitleSelect] = useState({
-    state: false,
-    val: "",
-    index: -1
-  })
-  const [toast, setToast] = useState({
-    state : false,
-    msg : ""
-  });
+  const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
+  const [toast, setToast] = useState({state : false, msg : ""});
+
+  //토스트 메시지 출력
   const toastMessage = (text) => {
     setToast({state: true, msg : text})
     setTimeout(() => {
@@ -27,6 +22,7 @@ const Greeting = () => {
     }, 3000)
   }
 
+  //등록된 인사말 버튼 클릭시 정보 조회
   const selectGreeting = (e) => {
     let selectVal = e.currentTarget.childNodes[0].childNodes[0].innerText;
     const {targetIndex} = e.currentTarget.dataset;
@@ -37,6 +33,7 @@ const Greeting = () => {
     });
   }
 
+  //인사말 등록
   const fetchAddData = async () => {
     const res = await API.insertBroadcastOption({
       optionType: 2,
@@ -48,11 +45,12 @@ const Greeting = () => {
       if(res.result === "success") {
         toastMessage("DJ 인사말이 등록 되었습니다.");
         setTitleList(res.data.list);
-        setTitleSelect({...titleSelect, val: "", index: -1});
+        setTitleSelect({...titleSelect, val: ""});
       }
     }
   }
 
+  //인사말 삭제
   const fetchDeleteData = async () => {
     const res = await API.deleteBroadcastOption({
       optionType: 2,
@@ -61,14 +59,26 @@ const Greeting = () => {
     if(res.result === "success") {
       toastMessage("DJ 인사말이 삭제 되었습니다.");
       setTitleList(res.data.list);
-      setTitleSelect({...titleSelect, val: "", index: -1});
+      setTitleSelect({state: false, val: "", index: -1});
     }
   }
 
+  //인사말 데이터 정보 조회
   const fetchData = async () => {
     const res = await API.getBroadcastOption({optionType: 2});
+    if(res.result === "success") {setTitleList(res.data.list);}
+  }
+
+  const fetchModifyData = async () => {
+    const res = await API.modifyBroadcastOption({
+      optionType: 2,
+      idx: titleSelect.index,
+      contents: titleSelect.val
+    })
     if(res.result === "success") {
+      toastMessage("DJ 인사말이 수정 되었습니다.");
       setTitleList(res.data.list);
+      setTitleSelect({...titleSelect, val: "", index: -1});
     }
   }
 
@@ -84,7 +94,7 @@ const Greeting = () => {
         <div className='section'>
           <p className='topText'>최대 3개까지 저장 가능</p>
           <TextArea max={20} list={titleList} setList={setTitleList} select={titleSelect} setSelect={setTitleSelect}
-                    fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData}/>
+                    fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
         </div>
         {titleList.length > 0 &&
         <div className='section'>
@@ -92,16 +102,14 @@ const Greeting = () => {
           <div className='radioWrap'>
             {titleList.map((item, index) => {
               return (
-                <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectGreeting}/>
+                <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectGreeting} titleSelect={titleSelect} setTitleSelect={setTitleSelect}/>
               )
             })}
           </div>
         </div>
         }
       </div>
-      {toast.state &&
-      <Toast msg={toast.msg}/>
-      }
+      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }

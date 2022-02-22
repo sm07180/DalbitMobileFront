@@ -72,11 +72,13 @@ const ClipDetailPage = (props) => {
 
   const handleTermSelect = (value) => {
     const targetData = termType.find(row => row.index == value);
+    window.scrollTo(0, 0);
     setSearchInfo({...searchInfo, dateType: targetData, page: 1});
   };
 
   const handleCategorySelect = (value) => {
     const targetData = categoryType.find(row => row.index == value);
+    window.scrollTo(0, 0);
     setSearchInfo({...searchInfo, slctType: targetData, page: 1});
   };
 
@@ -85,6 +87,7 @@ const ClipDetailPage = (props) => {
     const targetData = subjectType.find(row => row.value === targetValue);
 
     if (targetData !== undefined) {
+      window.scrollTo(0, 0);
       setSearchInfo({...searchInfo, subjectType: targetData, page: 1});
     }
   };
@@ -117,8 +120,7 @@ const ClipDetailPage = (props) => {
   return (
     <div id="clipDetail">
       <Header title={`${searchInfo.subjectType.cdNm}`} type={'back'} />
-      <section className="filterWrap">
-        <div className="tabmenu">
+      <div className="tabmenu">
           {subjectType.length > 0 &&
             <Swiper slidesPerView="auto" initialSlide={searchInfo.subjectType.sortNo}>
               {subjectType.map((data, index)=>{
@@ -130,7 +132,8 @@ const ClipDetailPage = (props) => {
               })}
             </Swiper>
           }
-        </div>
+      </div>
+      <section className="filterWrap">        
         <div className="filterGroup">
           <FilterBtn data={searchInfo.slctType} list={categoryType} handleSelect={handleCategorySelect}/>
           <FilterBtn data={searchInfo.dateType} list={termType} handleSelect={handleTermSelect}/>

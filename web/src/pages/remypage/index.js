@@ -8,7 +8,6 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
-import Allim from "pages/remypage/contents/notice/Allim";
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
@@ -20,6 +19,8 @@ import {OS_TYPE} from "context/config";
 import PopSlide from "components/ui/popSlide/PopSlide";
 import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
+import Post from "pages/remypage/contents/notice/Post";
+import Notice from "pages/remypage/contents/notice/Notice";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -115,7 +116,7 @@ const Remypage = () => {
     case 'setting' :
       return(<Setting />)
     case 'notice' :
-      return(<Allim />)
+      return(<Notice />)
     case 'customer' :
       return(<Customer />)
     default :
