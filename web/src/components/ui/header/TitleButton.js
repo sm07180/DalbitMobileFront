@@ -94,7 +94,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <StoreButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} alarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
         </div>
       )
     default :
