@@ -4,8 +4,9 @@
 // 청취자
 #broadcast-page {
   .userListWrap {
-    padding: 0 8px;
+    padding: 0 10px;
     height: 100%;
+    box-sizing: border-box;
 
     &--like {
       border-top: 1px solid $lightGray;
@@ -56,7 +57,7 @@
     // 청취자 리스트
     .user {
       position: relative;
-      padding: 5px 5px;
+      padding: 3px 5px;
       margin-top: 4px;
       font-size: 14px;
       border-radius: 24px;
@@ -69,7 +70,6 @@
       }
 
       &--dj {
-        background: $MAINCOLOR;
         .user__id {
           font-weight: $bold;
           color: $white;
@@ -90,19 +90,13 @@
         //   }
         // }
         .user__nickNm {
-          color: $white;
+          color: #303030;
         }
         .user__btn {
           &--close {
             background: url(../static/ic_close_round_ing.svg) no-repeat 0 0;
           }
         }
-      }
-      &--manager {
-        border: 1px solid $MAINCOLOR;
-      }
-      &--listeners {
-        border: 1px solid $lightGray;
       }
       &--fan {
         margin-top: 20px;
@@ -236,8 +230,8 @@
         &.dj {
           min-width: 26px;
           margin-left: 10px;
-          color: $MAINCOLOR;
-          background-color: $white;
+          color: #FFF;
+          background-color: #FF3C7B;
           border-radius: 10px;
           &.new {
             color: $blue;
