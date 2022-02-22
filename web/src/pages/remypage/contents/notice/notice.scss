@@ -21,7 +21,12 @@
     padding: 0 16px;
     background-color: #FFF;
     z-index: $TAB-ZINDEX;
+    li {
+      position:relative;
+      cursor:pointer;
+    }
   }
+
   .allim, .post {
     padding-top:15px;
     .listRow {
@@ -32,7 +37,7 @@
         height:50px;
         margin-bottom:auto;
         margin-right:12px;
-        border-radius: 12px / 50%;
+        border-radius: 50%;
         overflow:hidden;
         img {
           width:100%;
