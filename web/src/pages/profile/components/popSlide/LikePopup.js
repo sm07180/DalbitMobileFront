@@ -38,7 +38,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, scrollEvent, setNoticePop, likePopTabState} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, setNoticePop, likePopTabState} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
 
@@ -157,24 +157,41 @@ const LikePopup = (props) => {
     }/*else if(currentTitleTabInfo.key === 'rank') { // 타회원 프로필에서는 타이틀 탭이 없어서 기억할 필요 없어서 주석
       setRankSubTabInfo(data);
     }*/
+
+    /* 탭 상태 변경 */
     setCurrentSubTabInfo(data);
 
+    /* 스크롤 맨위로 */
+    if(likeContainerRef.current) {
+      likeContainerRef.current.scrollTo(0, 0);
+    }
+
+    /* 페이징 데이터 초기화 */
     pagingReset();
   }
 
-  /* 스크롤 페이징 이벤트 */
-  const popScrollEvent = () => {
-    scrollEvent(likeContainerRef.current, () => setPageNo(pageNo => pageNo +1));
-  }
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback(() => {
+    const scrollTarget = likeContainerRef.current;
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight - 1 < targetHeight + scrollTop) {
+      setPageNo(pageNo => pageNo +1)
+    }
+  }, []);
 
   const addScrollEvent = () => {
-    likeContainerRef.current.addEventListener('scroll', popScrollEvent);
+    const target = likeContainerRef.current;
+    if(target) {
+      target.addEventListener('scroll', scrollEvent);
+    }
   }
 
   const removeScrollEvent = useCallback(() => {
     const scrollTarget = likeContainerRef.current;
     if(scrollTarget) {
-      scrollTarget.removeEventListener('scroll', popScrollEvent);
+      scrollTarget.removeEventListener('scroll', scrollEvent);
     }
   }, []);
 
@@ -200,6 +217,13 @@ const LikePopup = (props) => {
   }
 
   useEffect(() => {
+    if(!isLastPage && showList.length > 0) {
+      removeScrollEvent();
+      addScrollEvent();
+    }
+  }, [showList])
+
+  useEffect(() => {
     if(!isLastPage && currentSubTabInfo.key) {
       if(currentSubTabInfo.key === 'totalRankLike' || currentSubTabInfo.key === 'like') {
         totalRankLikeApi();
@@ -216,7 +240,6 @@ const LikePopup = (props) => {
   }, [isLastPage])
 
   useEffect(() => {
-    addScrollEvent()
     tabSetting()
     return () => removeScrollEvent();
   },[])
@@ -236,7 +259,7 @@ const LikePopup = (props) => {
         </ul>
         : <h2>{titleTabInfoList.length > 0 && titleTabInfoList[0].value}</h2>
       }
-      <div className="listContainer" ref={likeContainerRef}>
+      <div className="listContainer">
         {isMyProfile ?
           <ul className="tabmenu">
             {currentTitleTabInfo?.key && myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
@@ -264,7 +287,7 @@ const LikePopup = (props) => {
           </ul>
         }
         {showList.length > 0 ?
-        <div className="listWrap">
+        <div className="listWrap" ref={likeContainerRef}>
           {showList.map((list,index) => {
             return (
               <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => goProfileAction(list.memNo)}>
