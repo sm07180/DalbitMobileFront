@@ -52,7 +52,6 @@ const ClipReply = (props) => {
   }
 
   const goBack = () => {
-    console.log(isHybrid());
     if(isHybrid()) {
       sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
