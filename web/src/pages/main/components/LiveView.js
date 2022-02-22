@@ -19,6 +19,17 @@ const LiveView = (props) => {
       {data && data.length > 0 ?
         <>
           {data.map((list,index) => {
+            let timeRank = []
+            
+            for(let i = 0; i < list.liveBadgeList; i++) {
+              console.log(list.liveBadgeList[i].text);
+              if(list.liveBadgeList[i].text.includes('타임 2위')) {
+                timeRank.concat(list.liveBadgeList[i])
+              }
+            }
+
+            console.log(timeRank);
+
             return (
               <div className="listRow" key={index} onClick={() => {
                 RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
@@ -31,6 +42,7 @@ const LiveView = (props) => {
                 <div className='listContent'>
                   <div className="listItem">
                     <BadgeItems data={list} type={'isBadge'} />
+                    <BadgeItems data={list} type={'liveBadgeList'} />
                   </div>
                   <div className="listItem">
                     <span className='title'>{list.title}</span>
