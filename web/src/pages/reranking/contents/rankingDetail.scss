@@ -15,6 +15,7 @@
     .benefits {
       display: inline-block;
       width: 40px; height: 40px;
+      @include font(14px, 400, #666666);
     }
     .title {
       pointer-events: auto;

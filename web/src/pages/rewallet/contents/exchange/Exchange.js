@@ -165,7 +165,7 @@ const Exchange = (props) => {
   //환전 계산하기
   const exchangeCalc = async (sendByeolCnt = 0) => {
     if (sendByeolCnt < 570) {
-      context.action.alert({msg: '환전 신청별은\n570개 이상이어야 합니다.'});
+      context.action.alert({msg: '환전 신청 별을\n570개 이상 입력해야 합니다.'});
     } else if (sendByeolCnt > byeolTotCnt) {
       context.action.alert({msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'})
       return;
