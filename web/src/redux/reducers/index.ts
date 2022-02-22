@@ -9,7 +9,7 @@ import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
 import clip from './clip/clip';
 import honor from './honor/index';
-
+import vote from './vote';
 const rootReducer = combineReducers({
   common
   ,member
@@ -21,6 +21,7 @@ const rootReducer = combineReducers({
   , profileClip
   , clip
   , honor
+  , vote
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

@@ -1,23 +1,15 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useContext,
-  useCallback,
-  useMemo,
-  useLayoutEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import { useLastLocation } from "react-router-last-location";
+import {useLastLocation} from "react-router-last-location";
 
 // context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GuestContext } from "context/guest_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GuestContext} from "context/guest_ctx";
 
 // constant
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 
 // component
 import ChatHeaderWrap from "../component/chat_header_wrap";
@@ -28,20 +20,19 @@ import RandomMsgWrap from "../component/random_msg_wrap";
 // others
 import LottiePlayer from "lottie-web";
 import {
-  UserType,
-  ListenerRtc,
-  HostRtc,
   AgoraHostRtc,
   AgoraListenerRtc,
-  getArgoraRtc,
-  rtcSessionClear
+  HostRtc,
+  ListenerRtc,
+  rtcSessionClear,
+  UserType
 } from "common/realtime/rtc_socket";
-import { createElement } from "lib/create_element";
+import {createElement} from "lib/create_element";
 import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import { broadcastExit } from "common/api";
+import {broadcastExit} from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -49,8 +40,10 @@ import LottieFreeze from "../static/lottie_freeze.json";
 
 import {ttsAlarmDuration} from "../../../constant";
 import {BroadcastLayerContext} from "../../../context/broadcast_layer_ctx";
-import {TransitionPromptHook} from "history";
-import API from "../../../context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {getVoteDetailList, getVoteList, getVoteSel, insMemVote, insVote} from "../../../redux/actions/vote";
+
+import _ from 'lodash'
 
 type ComboType = {
   status: boolean;
@@ -160,7 +153,8 @@ export default function LeftSideAgora(props: {
   } = props;
 
   const lastLocation = useLastLocation();
-
+  const dispatch = useDispatch();
+  const voteRdx = useSelector(({vote}) => vote);
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
@@ -1261,30 +1255,30 @@ export default function LeftSideAgora(props: {
     >
       <ul style={{backgroundColor:'tomato', cursor:'pointer'}}>
         <li style={{padding:'10px'}} onClick={()=>{
-          const detailList = API.getVoteDetailList({
+          dispatch(getVoteList({
+            memNo: roomInfo.bjMemNo
+            , roomNo: roomNo
+            , voteSlct: 's'
+          }))
+        }}>getVoteList</li>
+        <li style={{padding:'10px'}} onClick={()=>{
+          dispatch(getVoteSel({
+            memNo: roomInfo.bjMemNo
+            , roomNo: roomNo
+            , voteNo: _.first(voteRdx?.voteList?.list)?.voteNo
+          }))
+        }}>getVoteSel</li>
+        <li style={{padding:'10px'}} onClick={()=>{
+          dispatch(getVoteDetailList({
             memNo: roomInfo.bjMemNo
             , pmemNo: roomInfo.bjMemNo
             , roomNo: roomNo
-            , voteNo: 5
-          })
-          detailList.then((res)=>{
-            // setLi(res.list)
-            console.log(res)
-          })
-        }}>detailList</li>
-        <li style={{padding:'10px'}} onClick={()=>{
-          const sel = API.getVoteSel({
-            memNo: roomInfo.bjMemNo
-            , roomNo: roomNo
-            , voteNo: 5
-          })
-          sel.then(res=>{
-            console.log(res)
-          })
-        }}>getVoteSel</li>
+            , voteNo: _.first(voteRdx?.voteList?.list)?.voteNo
+          }))
+        }}>getVoteDetailList</li>
         <li style={{padding:'10px'}} onClick={()=>{
           // #{memNo},#{roomNo},#{voteTitle},#{voteAnonyYn},#{voteDupliYn},#{voteItemCnt},#{endTime}
-          API.insVote({
+          dispatch(insVote({
             memNo: roomInfo.bjMemNo
             , roomNo: roomNo
             , voteTitle: '투ㅡ표 제목'
@@ -1295,23 +1289,23 @@ export default function LeftSideAgora(props: {
             , voteItemNames: [
               'a1','a2','a3','a4','a5'
             ]
-          })
+          }))
         }}>insVote</li>
         <li style={{padding:'10px'}} onClick={()=>{
-          //#{memNo},#{pmemNo},#{roomNo},#{voteNo},#{itemNo},#{voteItemName}
-          API.insMemVote({
+          if(!voteRdx.voteDetailList || voteRdx.voteDetailList.length < 1){
+            return
+          }
+          const random = voteRdx.voteDetailList[_.random(0, voteRdx?.voteDetailList.length-1)]
+          dispatch(insMemVote({
             memNo: roomInfo.bjMemNo
             , pmemNo: roomInfo.bjMemNo
             , roomNo: roomNo
-            , voteNo: 5
-            , itemNo: 11
-            , voteItemName: 'a2'
-          })
+            , voteNo: _.first(voteRdx?.voteList?.list)?.voteNo
+            , itemNo: random.itemNo
+            , voteItemName: random.voteItemName
+          }))
+
         }}>insMemVote</li>
-        <li style={{padding:'10px'}} onClick={()=>{
-
-        }}>ee</li>
-
       </ul>
       <div id="local-player" className="player"/>
       <div

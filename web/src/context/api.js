@@ -3873,8 +3873,7 @@ export default class API {
   static getVoteSel = async (data) => {
     return await ajax({url: '/broad/vote/getVoteSel', method: 'POST', reqBody: true, data: data})
   }
-
-  // 투표 아이템 리스트
+  // 투표 항목 리스트
   static getVoteDetailList = async (data) => {
     return ajax({url: '/broad/vote/getVoteDetailList', method: 'POST', reqBody: true, data: data})
   }
