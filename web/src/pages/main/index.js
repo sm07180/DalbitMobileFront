@@ -65,7 +65,7 @@ const MainPage = () => {
     storeUrl: '',
   });
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
-
+  const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false);
 
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
@@ -211,8 +211,10 @@ const MainPage = () => {
         //   // refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         // }, 17)
 
-        mainDataReset();
+        /* 스크롤 top에 도착하면 reload 아이콘 보이게 + 중복 호출 막음 */
+        setDataRefreshPrevent(true);
         showPullToRefreshIcon({duration: 300});
+        mainDataReset();
 
         await new Promise((resolve, _) => setTimeout(() => {
           resolve();
@@ -309,30 +311,41 @@ const MainPage = () => {
 
   /* pullToRefresh 아이콘 보기 */
   const showPullToRefreshIcon = ({duration = 300}) => {
-    const refreshWrap = iconWrapRef.current;
-    refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
-    setPullToRefreshPause(false);
-    setTimeout(() => {
-      refreshWrap.style.height = `${refreshDefaultHeight}px`;
-      setPullToRefreshPause(true);
-    }, duration);
+    if(!dataRefreshPrevent) {
+      const refreshWrap = iconWrapRef.current;
+      refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+      setPullToRefreshPause(false);
+      setTimeout(() => {
+        refreshWrap.style.height = `${refreshDefaultHeight}px`;
+        setPullToRefreshPause(true);
+      }, duration);
+    }
   }
 
   const pullToRefreshAction = () => {
-    const scrollToEvent = () => {
-      if(window.scrollY === 0) {
-        window.removeEventListener('scroll', scrollToEvent);
-        showPullToRefreshIcon({duration: 500});
+    if(window.scrollY !== 0) {
+      const scrollToEvent = () => {
+        if(window.scrollY === 0) {
+          window.removeEventListener('scroll', scrollToEvent);
+          showPullToRefreshIcon({duration: 500});
+          mainDataReset();
+        }
       }
+      window.addEventListener('scroll', scrollToEvent)
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    }else {
+      showPullToRefreshIcon({duration: 500});
+      mainDataReset();
     }
-    window.addEventListener('scroll', scrollToEvent)
-    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     dispatch(setIsRefresh(false));
+    setTimeout(() => {
+      setDataRefreshPrevent(false);
+    }, 1000);
   }
 
   useEffect(() => {
-    if(common.isRefresh && pullToRefreshPause) {
-      mainDataReset();
+    if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
+      setDataRefreshPrevent(true);
       pullToRefreshAction();
     }else {
       dispatch(setIsRefresh(false));
