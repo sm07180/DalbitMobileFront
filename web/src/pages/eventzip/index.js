@@ -25,6 +25,14 @@ const EventZip = () => {
             <div className='eventDate'>02.21 - 03.07</div>
           </div>
         </div>
+
+        <div className='eventList' onClick={() => {golink("acrostic")}}>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7649/event7649_zip.png)`}}/>
+          <div className='eventInfo'>
+            <div className='eventTitle'>달라를 축하해 달라</div>
+            <div className='eventDate'>02.28 - 03.09</div>
+          </div>
+        </div>
         
         <div className='eventList comingSoon'>
           <div className='thumbNail'/>
