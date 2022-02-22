@@ -12,9 +12,10 @@ import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
 import './notice.scss'
 import Header from "components/ui/header/Header";
+import API from "context/api";
 
 const Allim = () => {
-  const [alarmList, setAlarmList] = useState({list : [], cnt : 0});
+  const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
   const context = useContext(Context);
   const global = useContext(GlobalContext);
   const { globalState, globalAction } = global;
@@ -25,13 +26,9 @@ const Allim = () => {
     let params = {page: 1, records: 1000};
     Api.my_notification(params).then((res) => {
       if(res.result === "success") {
+        console.log(res);
         if(res.data.list.length > 0) {
-          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt});
-          if(res.data.newCnt === 1) {
-            globalState.alarmStatus = true;
-          } else {
-            globalState.alarmStatus = false;
-          }
+          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt, newCnt: res.data.newCnt});
         } else {
           setAlarmList({...alarmList});
         }
@@ -43,7 +40,6 @@ const Allim = () => {
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
     const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
-    console.log(type, roomNo);
     switch (type) {
       case "1":                                                                             //마이스타 방송 알림
         try {if(roomNo !== "") {RoomJoin({roomNo: roomNo});}}
@@ -124,6 +120,7 @@ const Allim = () => {
               {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
                 return (
                   <ListRow key={idx} photo={v.profImg.thumb88x88}>
+                    {v.newCnt === 1 && <span className="newDot"/>}
                     <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
                          data-link={v.link} onClick={handleClick}>
                       <div className="title">{v.contents}</div>

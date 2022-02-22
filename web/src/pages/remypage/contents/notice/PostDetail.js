@@ -31,8 +31,8 @@ const PostDetail = () => {
     return moment(date, "YYYYMMDDhhmmss").format("YY.MM.DD");
   };
 
-  const backEvent = () => {
-    history.push({pathname: "/notice", value: true})
+  const contentsClicked = (event) => {
+    Utility.contentClickEvent(event, context)
   }
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const PostDetail = () => {
               <div className="title">{postDetailInfo.title}</div>
               <div className="date">{changeDay(postDetailInfo.writeDt)}</div>
             </div>
-            <div className="detailContent">
+            <div className="detailContent" onClick={contentsClicked} >
               {/*<>태그값 정상적으로 출력해주기 위해 사용*/}
               <p dangerouslySetInnerHTML={{__html: postDetailInfo.contents}}/>
             </div>

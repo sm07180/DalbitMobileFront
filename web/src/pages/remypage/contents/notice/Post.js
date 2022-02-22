@@ -22,6 +22,7 @@ const Post = () => {
   const fetchData = () => {
     Api.noticeList(postPageInfo).then((res) => {
       if(res.result === "success") {
+        console.log(res);
         if(postPageInfo.page !== 1) {
           let temp = []
           res.data.list.forEach((value) => {
