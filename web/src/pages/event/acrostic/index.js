@@ -9,11 +9,11 @@ import './acrostic.scss'
 import Api from "context/api";
 import {Context} from "context";
 import {useSelector} from "react-redux";
+import _ from "lodash";
 
 const Acrostic = () => {
   const context = useContext(Context)
   const [popup, setPopup] = useState(false);
-
   const [poem, setPoem] = useState({
     tailMemNo: context.profile && context.profile.memNo,
     tailMemId: context.profile && context.profile.memId,
@@ -21,9 +21,10 @@ const Acrostic = () => {
     tailMemIp: "",
     tailConts: "",
     tailLoginMedia: useSelector((state) => state.common.isDesktop) ? "w" : "s",
-  })
+  });
+  const [pageNo, setPageNo] = useState(1);
 
-  const [poemInfo, setPoemInfo] = useState({listCnt: 0, list: []})
+  const [poemInfo, setPoemInfo] = useState({listCnt: 0, list: [], myPoem:{}})
 
   useEffect(() => {
     getPoemList()
@@ -46,8 +47,10 @@ const Acrostic = () => {
     });
   }
 
+  let list = !_.isEmpty(poemInfo.list) && poemInfo.list.slice(0, (pageNo * 30) - 1);
+
   //글 작성
-  const savePoem = () => {
+  const savePoem = (value) => {
     Api.poem({
       reqBody: true,
       data: {
@@ -55,7 +58,7 @@ const Acrostic = () => {
         tailMemId: poem.tailMemId,
         tailMemSex: "",
         tailMemIp: "",
-        tailConts: poem.tailConts,
+        tailConts: value,
         tailLoginMedia: poem.tailLoginMedia,
       },
       method: 'POST'
@@ -87,7 +90,27 @@ const Acrostic = () => {
   // 사연 리셋 함수
   const resetStoryList = () => {
     getPoemList();
+    setPageNo(1);
   }
+
+  // 사연 스크롤 이벤트
+  const scrollAddList = () => {
+    const SCROLLED_HEIGHT = window.scrollY;
+    const WINDOW_HEIGHT = window.innerHeight;
+    const DOC_TOTAL_HEIGHT = document.body.offsetHeight;
+
+    if (WINDOW_HEIGHT + SCROLLED_HEIGHT + 50 >= DOC_TOTAL_HEIGHT) {
+      setPageNo(pageNo + 1);
+      list = !_.isEmpty(poemInfo.list) && poemInfo.list.slice(0, (pageNo * 30) - 1);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollAddList)
+    return () => {
+      window.removeEventListener('scroll', scrollAddList)
+    }
+  })
 
 
   return (
@@ -97,7 +120,7 @@ const Acrostic = () => {
         <img src="https://image.dalbitlive.com/event/acrostic/main.png" alt="달라를 축하해 달라"/>
         <button className="noticeBtn" onClick={noticePop}>유의사항</button>
         <EventComment contPlaceHolder={'내용을 입력해주세요.'}
-                      commentList={poemInfo.list}
+                      commentList={list}
                       totalCommentCnt={poemInfo.listCnt}
                       resetStoryList={resetStoryList}
                       commentAdd={savePoem}
