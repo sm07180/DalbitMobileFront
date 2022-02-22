@@ -20,7 +20,8 @@ import {setNoticeTab} from "redux/actions/notice";
 
 const NoticePage = () => {
   const noticeTabmenu = ['알림','공지사항'];
-  const [allimNew, setAllimNew] = useState(0);
+  const [allimNew, setAllimNew] = useState(false);
+  const [postNew, setPostNew] = useState(false);
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
@@ -30,33 +31,27 @@ const NoticePage = () => {
     let params = {page: 1, records: 1000};
     Api.my_notification(params).then((res) => {
       if(res.result === "success") {
-        setAllimNew(res.data.newCnt);
+        if(res.data.newCnt !== 0){
+          setAllimNew(true);
+        } else {
+          setAllimNew(false);
+        }
       }
     });
   };
 
-  // const fetchPostData = () => {
-  //   let params = {page: 1, records: 1000};
-  //   Api.noticeList(params).then((res) => {
-  //     if(res.result === "success") {
-  //       if(postPageInfo.page !== 1) {
-  //         let temp = []
-  //         res.data.list.forEach((value) => {
-  //           if(postListInfo.list.findIndex((target) => target.noticeIdx == value.noticeIdx) === -1) { //list의 인덱스가 현재 noticeIdx-1일경우 그 값을 temp에 담아줌
-  //             temp.push(value);
-  //           }
-  //         })
-  //         //cnt: noticeIdx, list: 스크롤시 출력되는 list, totalPage: 전체 페이지
-  //         setPostListInfo({cnt: res.data.list.noticeIdx, list: postListInfo.list.concat(temp), totalPage: res.data.paging.totalPage});
-  //       } else {
-  //         setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
-  //       }
-  //     } else {
-  //       setPostListInfo({cnt: 0, list: [], totalPage: 0});
-  //       context.action.alert({msg: res.message});
-  //     }
-  //   }).catch((e) => console.log(e));
-  // };
+  const fetchPostData = () => {
+    let params = {noticeType: 0, page: 1, records: 1000};
+    Api.noticeList(params).then((res) => {
+      if(res.result === "success") {
+        if(res.data.list[0].isNew){
+          setPostNew(true);
+        } else {
+          setPostNew(false);
+        }
+      }
+    })
+  };
 
   // 로그인 토큰값 확인
   useEffect(() => {
@@ -64,6 +59,7 @@ const NoticePage = () => {
       history.push("/login")
     }
     fetchAllimData();
+    fetchPostData();
   }, []);
 
   return (
@@ -77,8 +73,16 @@ const NoticePage = () => {
               tab: tab,
               setTab: (val) => dispatch(setNoticeTab(val))
             }
+            let newTag = false;
+
+            if(data === "알림") {
+              newTag = allimNew
+            } else {
+              newTag = postNew
+            }
+
             return (
-              <TabBtn param={param} key={index} />
+              <TabBtn param={param} key={index} newTag={newTag}/>
             )
           })}
           <div className="underline"/>
