@@ -7,7 +7,7 @@ import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 // static
-import NoResult from 'components/ui/new_noResult'
+import NoResult from 'components/ui/noResult/NoResult'
 import './comment.scss'
 import moment from 'moment'
 
@@ -172,15 +172,14 @@ const EventComment = (props) => {
             <img src={`${IMG_SERVER}/main/ico_event_refresh.png`} alt="새로고침" />
           </button>
         </div>
+        {commentList.length > 0 ? (
+          <>
+            {commentList.map((value, idx) => {
+              const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value
 
-        <div className="listBox">
-          {commentList.length > 0 ? (
-            <>
-              {commentList.map((value, idx) => {
-                const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value
-
-                return (
-                  <div className="listItem" key={`comment-${idx}`}>
+              return (
+                <div className="listBox" key={`comment-${idx}`}>
+                  <div className="listItem" >
                     <div className="thumb" onClick={goProfile} data-target-mem-no={tail_mem_no}>
                       <img
                         src={`${
@@ -189,19 +188,20 @@ const EventComment = (props) => {
                         alt={mem_nick}
                       />
                     </div>
-                    <div className="textBox">
+                    <div className="user">
                       <div className="nick">
                         {mem_nick}
                         <span className="date"> {getFormatting(ins_date)}</span>
                       </div>
-                      <p className="msg">{tail_conts}</p>
                     </div>
-                    <button
-                      className="btnMore"
-                      onClick={() => {
-                        moreToggle(idx)
-                      }}
-                    />
+                  </div>
+                  <div className="listItem">
+                    <p className="msg">{tail_conts}</p>
+                  </div>
+                  <div className="btnMore" onClick={() => {
+                      moreToggle(idx)
+                    }}
+                  >
                     {moreState === idx && (
                       <div className="moreList">
                         {parseInt(token.memNo) == tail_mem_no ? (
@@ -216,13 +216,14 @@ const EventComment = (props) => {
                       </div>
                     )}
                   </div>
-                )
-              })}
-            </>
+                </div>
+              )
+            })}
+          </>
           ) : (
-            <NoResult type="default" text={noResultMsg} />
-          )}
-        </div>
+            <NoResult ment={noResultMsg}/>
+          )
+        }
       </div>
     </div>
   )

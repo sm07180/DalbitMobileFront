@@ -19,4 +19,28 @@
       border-top-right-radius: 15px;
     }
   }
+  #layerPop{
+    .popContainer{
+      padding: 0;
+      .subContent{
+        padding: 0 20px 20px;
+        p{
+          position: relative;
+          padding-left: 12px;
+          margin-bottom: 8px;
+          @include font(13px, $Regular,#202020);
+          &::before{
+            @include position-top-left;
+            content:"·";
+          }
+        }
+      }
+    }
+  }
+  #noResult{
+    img{
+      width: 80px;
+      margin-bottom: 24px;
+    }
+  }
 }
