@@ -20,6 +20,7 @@ export const SET_VOTE_LIST = 'vote/SET_VOTE_LIST';
 export const SET_VOTE_SEL = 'vote/SET_VOTE_SEL';
 export const SET_VOTE_DETAIL_LIST = 'vote/SET_VOTE_DETAIL_LIST';
 
+export const SET_TEMP_INS_VOTE = 'vote/SET_TEMP_INS_VOTE';
 
 export const insVote = createAction(INS_VOTE)<InsVoteRequestType>();
 export const insMemVote = createAction(INS_MEM_VOTE)<InsMemVoteRequestType>();
@@ -32,3 +33,5 @@ export const setVoteApiResult = createAction(SET_VOTE_API_RESULT)<ApiResultType>
 export const setVoteList = createAction(SET_VOTE_LIST)<VoteListResultType>();
 export const setVoteSel = createAction(SET_VOTE_SEL)<VoteResultType>();
 export const setVoteDetailList = createAction(SET_VOTE_DETAIL_LIST)<Array<VoteResultType>>();
+
+export const setTempInsVote = createAction(SET_TEMP_INS_VOTE)<InsVoteRequestType>();

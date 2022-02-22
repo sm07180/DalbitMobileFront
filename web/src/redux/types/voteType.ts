@@ -55,6 +55,7 @@ export type ApiResultType = {
 }
 
 export type VoteStateType = ApiResultType & {
+  tempInsVote?:InsVoteRequestType
   voteList?:VoteListResultType
   voteSel?:VoteResultType
   voteDetailList?:Array<VoteResultType>

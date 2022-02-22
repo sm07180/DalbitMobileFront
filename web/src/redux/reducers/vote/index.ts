@@ -24,6 +24,9 @@ const member = createReducer<VoteStateType, VoteActions>(initialState,{
   "vote/SET_VOTE_DETAIL_LIST" : (state, {payload})=>{
     return {...state, voteDetailList:payload}
   },
+  "vote/SET_TEMP_INS_VOTE" : (state, {payload})=>{
+    return {...state, tempInsVote:payload}
+  },
 });
 
 
