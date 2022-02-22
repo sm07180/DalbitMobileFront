@@ -72,11 +72,13 @@ const ClipDetailPage = (props) => {
 
   const handleTermSelect = (value) => {
     const targetData = termType.find(row => row.index == value);
+    window.scrollTo(0, 0);
     setSearchInfo({...searchInfo, dateType: targetData, page: 1});
   };
 
   const handleCategorySelect = (value) => {
     const targetData = categoryType.find(row => row.index == value);
+    window.scrollTo(0, 0);
     setSearchInfo({...searchInfo, slctType: targetData, page: 1});
   };
 
@@ -85,6 +87,7 @@ const ClipDetailPage = (props) => {
     const targetData = subjectType.find(row => row.value === targetValue);
 
     if (targetData !== undefined) {
+      window.scrollTo(0, 0);
       setSearchInfo({...searchInfo, subjectType: targetData, page: 1});
     }
   };

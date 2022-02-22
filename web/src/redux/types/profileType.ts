@@ -13,7 +13,7 @@ export const profilePagingDefault = {
   totalPage: 0
 }
 
-export const profileClipDefault = {
+export const profileClipPagingDefault = {
   next: 1,
   page: 0,
   prev: 0,
@@ -96,7 +96,7 @@ export const profileFanBoardDefaultState = {
 /* 클립 default */
 export const profileClipDefaultState = {
   list: [],
-  paging: profileClipDefault,
+  paging: profileClipPagingDefault,
   isLastPage: false,
 }
 

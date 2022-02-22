@@ -3,8 +3,6 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
 import Api from 'context/api'
-// global components
-import ListRow from 'components/ui/listRow/ListRow'
 // components
 import moment from "moment";
 import './notice.scss'
@@ -96,18 +94,20 @@ const Post = () => {
         <div className="post">
           {postListInfo.list.map((list,index) => {
             return (
-              <div key={index}>
+              <div className="listRow" key={index}>
                 {/* noticeType 1 = 공지사항, 2 = 이벤트, 3 = 정기정검, 4 = 업데이트, 5 = 언론보도 */}
-                <ListRow photo={list.noticeType === 1 || list.noticeType === 5 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.noticeImg}.png`
-                  : list.noticeType === 2 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
-                    : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""}>
-                  <div className="listContent" data-num={list.noticeIdx} onClick={onClick}>
-                    <div className="title">{list.title}</div>
-                    <div className="text">{deleteTag(list.contents)}</div>
-                    <div className="date">{changeDay(list.writeDt)}</div>
-                  </div>
-                  <button className='listViewBtn'/>
-                </ListRow>
+                <div className="photo">
+                  <img src={list.noticeType === 1 || list.noticeType === 5 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.noticeImg}.png`
+                : list.noticeType === 2 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
+                  : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""} alt=""/>
+                  {list.isNew && <span className='newBadge'>N</span>}                    
+                </div>
+                <div className="listContent" data-num={list.noticeIdx} onClick={onClick}>
+                  <div className="title">{list.title}</div>
+                  <div className="text">{deleteTag(list.contents)}</div>
+                  <div className="date">{changeDay(list.writeDt)}</div>
+                </div>
+                <button className='listViewBtn'/>
               </div>
             )
           })}

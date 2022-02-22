@@ -165,7 +165,7 @@ const MainPage = () => {
     if (reloadInit === true || window.scrollY !== 0) return
 
     const iconWrapNode = iconWrapRef.current
-    const refreshIconNode = arrowRefreshRef.current
+    // const refreshIconNode = arrowRefreshRef.current
 
     touchEndY = e.touches[0].clientY
     const ratio = 3
@@ -175,7 +175,7 @@ const MainPage = () => {
     if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
       if (heightDiff <= heightDiffFixed) {
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-        refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+        // refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
       }
     }
   }, [reloadInit])
@@ -203,22 +203,21 @@ const MainPage = () => {
         iconWrapNode.style.transitionDuration = `${transitionTime}ms`
         iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
 
-        const loadIntervalId = setInterval(() => {
-          if (Math.abs(current_angle) === 360) {
-            current_angle = 0
-          }
-          current_angle += 10
-          refreshIconNode.style.transform = `rotate(${current_angle}deg)`
-        }, 17)
+        // const loadIntervalId = setInterval(() => {
+        //   if (Math.abs(current_angle) === 360) {
+        //     current_angle = 0
+        //   }
+        //   current_angle += 10
+        //   // refreshIconNode.style.transform = `rotate(${current_angle}deg)`
+        // }, 17)
 
-        setPullToRefreshPause(false);
         mainDataReset();
+        showPullToRefreshIcon({duration: 300});
 
         await new Promise((resolve, _) => setTimeout(() => {
           resolve();
-          setPullToRefreshPause(true);
         }, 300))
-        clearInterval(loadIntervalId)
+        // clearInterval(loadIntervalId)
 
         setReloadInit(false)
       }
@@ -233,7 +232,7 @@ const MainPage = () => {
 
     await promiseSync()
     iconWrapNode.style.transitionDuration = '0ms'
-    refreshIconNode.style.transform = 'rotate(0)'
+    // refreshIconNode.style.transform = 'rotate(0)'
     touchStartY = null
     touchEndY = null
   }, [reloadInit])
@@ -303,10 +302,39 @@ const MainPage = () => {
     }
   },[]);
 
+  /* 고정 헤더 로고 클릭 */
+  const fixedHeaderLogoClick = () => {
+    dispatch(setIsRefresh(true));
+  }
+
+  /* pullToRefresh 아이콘 보기 */
+  const showPullToRefreshIcon = ({duration = 300}) => {
+    const refreshWrap = iconWrapRef.current;
+    refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+    setPullToRefreshPause(false);
+    setTimeout(() => {
+      refreshWrap.style.height = `${refreshDefaultHeight}px`;
+      setPullToRefreshPause(true);
+    }, duration);
+  }
+
+  const pullToRefreshAction = () => {
+    const scrollToEvent = () => {
+      if(window.scrollY === 0) {
+        window.removeEventListener('scroll', scrollToEvent);
+        showPullToRefreshIcon({duration: 500});
+      }
+    }
+    window.addEventListener('scroll', scrollToEvent)
+    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    dispatch(setIsRefresh(false));
+  }
+
   useEffect(() => {
-    if(common.isRefresh) {
+    if(common.isRefresh && pullToRefreshPause) {
       mainDataReset();
-      window.scrollTo(0, 0);
+      pullToRefreshAction();
+    }else {
       dispatch(setIsRefresh(false));
     }
   }, [common.isRefresh]);
@@ -337,7 +365,7 @@ const MainPage = () => {
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
-         style={{height: '48px'}}
+         style={{height: `${refreshDefaultHeight}px`}}
          ref={iconWrapRef}>
       <div className="icon-wrap">
         {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
@@ -358,13 +386,13 @@ const MainPage = () => {
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} />
+        <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
       <section className='topSwiper'>
-        <MainSlide data={mainState.topBanner} common={common} />
+        <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" />
+        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='top10'>
         <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>

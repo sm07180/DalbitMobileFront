@@ -11,7 +11,7 @@ import {Context, GlobalContext} from "context";
 import {useSelector} from "react-redux";
 
 const SwiperList = (props) => {
-  const {data, profImgName, type} = props;
+  const {data, profImgName, type, pullToRefreshPause} = props;
   const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
@@ -40,10 +40,10 @@ const SwiperList = (props) => {
   }
 
   useEffect(() => {
-    if (data.length > 0) { // 데이터 변경될때(탭 이동)
+    if (data.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
       swiperRefresh();
     }
-  }, [data]);
+  }, [data, pullToRefreshPause]);
 
   useEffect(() => {
     if(common.isRefresh && data.length > 0) { // refresh 될때

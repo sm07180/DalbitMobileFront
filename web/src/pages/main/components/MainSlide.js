@@ -9,7 +9,7 @@ import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context} from "context";
 
 const MainSlide = (props) => {
-  const {data, common} = props
+  const {data, common, pullToRefreshPause} = props
   const context = useContext(Context);
   const history = useHistory();
 
@@ -35,12 +35,12 @@ const MainSlide = (props) => {
   }
 
   useEffect(() => {
-    if(common.isRefresh && data.length > 0) { // refresh 될때 슬라이드 1번으로
+    if((common.isRefresh || !pullToRefreshPause) && data.length > 0) { // refresh 될때 슬라이드 1번으로
       const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
       swiper?.update();
       swiper?.slideTo(0);
     }
-  }, [common.isRefresh]);
+  }, [common.isRefresh, pullToRefreshPause]);
 
   return (
     <>
