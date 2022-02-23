@@ -361,7 +361,7 @@ $errorMsg : #FF1919;
             .nick {
               line-height:20px;
               margin-left:4px;
-              @include font(16px,500,#202020);
+              @include font(14px,500,#202020);
               @include fontCut;
             }            
           }

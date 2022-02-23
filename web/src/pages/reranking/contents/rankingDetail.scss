@@ -155,11 +155,15 @@
             .rankerRank {
               @include position-top-left;
               @include flex(center, center);
-              width: 32px; height: 32px;
-              line-height: 32px;
+              width: 28px; height: 28px;
+              line-height: 28px;
               border-radius: 50%;
               background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
               @include font(20px, 700, #fff);
+              &.first {
+                width: 32px; height: 32px;
+                line-height: 32px;
+              }
             }
           }
           .rankerNick {
