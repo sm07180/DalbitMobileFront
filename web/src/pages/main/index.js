@@ -404,7 +404,7 @@ const MainPage = () => {
     fetchMainPopupData('6');
     redirectPage();
     if(isIos()) {
-      smoothscroll.polyfill();
+      smoothscroll?.polyfill();
     }
     return () => {
       sessionStorage.removeItem('orderId')
