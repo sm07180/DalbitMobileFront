@@ -253,9 +253,11 @@ $errorMsg : #FF1919;
     .rankBox {
       @include flex(center, space-between);
       width: 100%;
+      height: 87px;
       padding: 20px;
       border-radius: 16px;
       background-color: #F6F6F6;
+      box-sizing: border-box;
       li {
         position: relative;
         flex: 1;
@@ -275,7 +277,25 @@ $errorMsg : #FF1919;
         .rankData {
           margin-top: 10px;
           @include font(16px,900,#333);
+          &::after {
+            content: "위";
+            @include font(13px,500,#666666);
+            margin-left: 2px;
+          }
         }
+      }
+      .loginText {
+        flex: 1;
+        @include font(13px, 500, #303030);
+        letter-spacing: -1px;
+      }
+      .loginBtn {
+        flex: none;
+        @include flex(center, center);
+        width: 76px; height: 36px;
+        border-radius: 100px;
+        background-color: $DOWNCOLOR;
+        @include font(14px, 600, #FFFFFF);
       }
     }    
   }
@@ -425,7 +445,7 @@ $errorMsg : #FF1919;
 
   #layerPop {
     .popContainer {
-      padding: 20px 0 40px;      
+      padding: 20px 0 60px;      
       .popTitle {
         width: 100%;
         line-height: 48px;
@@ -437,17 +457,18 @@ $errorMsg : #FF1919;
         width: 100%;
         margin-top: 12px;
         .standardList {
-          margin-bottom: 20px;
+          margin-bottom: 16px;
           &:last-child {
             margin-bottom: 0px;
           }        
           .popSubTitle {
             @include font(16px, 600, #FF3C7B);
             text-align: center;
+            margin-bottom: 4px;
             letter-spacing: -1px;
           }
           .popText {
-            @include font(12px, 400, #666666);
+            @include font(13px, 400, #666666);
             text-align: center;
             letter-spacing: -1px;
             overflow: hidden;
@@ -463,12 +484,12 @@ $errorMsg : #FF1919;
         }
       }
       .popInfo {
-        @include font(12px, 400, #ACACAC);
+        @include font(13px, 400, #ACACAC);
         margin-top: 20px;
         text-align: center;
         letter-spacing: -1px;
         span {
-          @include font(12px, 400, #FF6B4B);
+          @include font(13px, 600, #FF6B4B);
           padding-left: 16px;
           background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
           background-position: left center;
