@@ -60,7 +60,7 @@ const SwiperList = (props) => {
           <div key={index}>
             <div className="listColumn" onClick={() => onClickAction(item)}>
               <div className="photo">
-                <img src={item[profImgName].thumb150x150 ? item[profImgName].thumb150x150
+                <img src={item[profImgName].thumb190x190 ? item[profImgName].thumb190x190
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 {item.rank && <div className={`rank-${item.rank}`}></div>}
                 {item.type_media === 'v' && <div className="video" />}
