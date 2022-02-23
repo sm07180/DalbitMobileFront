@@ -10,6 +10,7 @@ import profileClip from './profile/clip';
 import clip from './clip/clip';
 import honor from './honor/index';
 import notice from './notice/index';
+import profilePopup from './profile/popup';
 
 const rootReducer = combineReducers({
   common
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   , clip
   , honor
   , notice
+  , profilePopup
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

@@ -218,10 +218,11 @@ const MainPage = () => {
         //   // refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         // }, 17)
 
-        /* 스크롤 top에 도착하면 reload 아이콘 보이게 + 중복 호출 막음 */
-        setDataRefreshPrevent(true);
-        showPullToRefreshIcon({duration: 300});
-        mainDataReset();
+        /* reload 아이콘 + 데이터 리프레시 */
+        if(pullToRefreshPause) {
+          showPullToRefreshIcon({duration: 300});
+          mainDataReset();
+        }
 
         await new Promise((resolve, _) => setTimeout(() => {
           resolve();
@@ -322,16 +323,14 @@ const MainPage = () => {
 
   /* pullToRefresh 아이콘 보기 */
   const showPullToRefreshIcon = ({duration = 300}) => {
-    if(!dataRefreshPrevent) {
-      const refreshWrap = iconWrapRef.current;
-      if(refreshWrap) {
-        refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
-        setPullToRefreshPause(false);
-        setTimeout(() => {
-          refreshWrap.style.height = `${refreshDefaultHeight}px`;
-          setPullToRefreshPause(true);
-        }, duration);
-      }
+    const refreshWrap = iconWrapRef.current;
+    if(refreshWrap) {
+      refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+      setPullToRefreshPause(false);
+      setTimeout(() => {
+        refreshWrap.style.height = `${refreshDefaultHeight}px`;
+        setPullToRefreshPause(true);
+      }, duration);
     }
   }
 
@@ -339,9 +338,8 @@ const MainPage = () => {
   const scrollToEvent = () => {
     if(window.scrollY === 0) {
       if(location?.pathname === '/') {
-        window.removeEventListener('scroll', scrollToEvent);
         showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
-        mainDataReset();
+        window.removeEventListener('scroll', scrollToEvent);
       }else {
         window.removeEventListener('scroll', scrollToEvent);
       }
@@ -351,29 +349,35 @@ const MainPage = () => {
   /* 로고, 헤더, 푸터 등 클릭해서 페이지 리프레시할때 액션 */
   const pullToRefreshAction = () => {
     if(window.scrollY !== 0) {
-      window.addEventListener('scroll', scrollToEvent)
+      mainDataReset();
       window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     }else {
       showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
       mainDataReset();
     }
-
-    /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
-    dataRefreshTimeout = setTimeout(() => {
-      setDataRefreshPrevent(false);
-    }, 1000);
   }
 
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
-      dispatch(setIsRefresh(false));
       setDataRefreshPrevent(true);
-      pullToRefreshAction();
     }else {
       dispatch(setIsRefresh(false));
     }
   }, [common.isRefresh]);
+
+  useEffect(() => {
+    if(dataRefreshPrevent) {
+      dispatch(setIsRefresh(false));
+      window.addEventListener('scroll', scrollToEvent)
+      pullToRefreshAction();
+      /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
+      dataRefreshTimeout = setTimeout(() => {
+        window.removeEventListener('scroll', scrollToEvent);
+        setDataRefreshPrevent(false);
+      }, 1000);
+    }
+  }, [dataRefreshPrevent]);
 
   /* 라이브 리스트 페이징, 탭 변경 */
   useEffect(() => {
