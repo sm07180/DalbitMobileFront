@@ -116,8 +116,7 @@
       }
     }
     .text {
-      letter-spacing: -1px;
-      @include font(13px,400,black);
+      @include font(15px,$Medium,black);
     }
   }
 }

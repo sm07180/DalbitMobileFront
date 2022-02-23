@@ -275,11 +275,11 @@
         height: 48px;
         margin-right: 8px;
         letter-spacing: -0.5px;
-        @include font(16px, 500 , #FF3C7B);
-        @include border(#FF3C7B, 16px);
+        @include font(16px, 500 , $DOWNCOLOR);
+        @include border($DOWNCOLOR, 16px);
         &:last-child{margin-right: 0;}
         &.exchange{
-          background: #FF3C7B;
+          background: $DOWNCOLOR;
           color:#fff;
         }
       }
@@ -748,8 +748,8 @@
           @include font(16px,500,#666);
         }
         &.apply {
-          background-color:#FF3C7B;
-          @include border(#FF3C7B);
+          background-color:$DOWNCOLOR;
+          @include border($DOWNCOLOR);
           @include font(16px,500,white);
         }
       }
@@ -780,8 +780,8 @@
           @include font(16px,500,#666);
         }
         &.apply {
-          background-color:#FF3C7B;
-          @include border(#FF3C7B);
+          background-color: $DOWNCOLOR;
+          @include border($DOWNCOLOR);
           @include font(16px,500,white);
         }
       }

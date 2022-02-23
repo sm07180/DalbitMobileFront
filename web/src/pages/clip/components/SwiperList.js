@@ -18,7 +18,7 @@ const SwiperList = (props) => {
           {data.map((list, index)=>{
             return(
               <div key={index} data-clip-no={list.clipNo} onClick={playAction}>
-                <ListColumn photo={list.bgImg.thumb100x100}>
+                <ListColumn photo={list.bgImg.thumb150x150}>
                   <div className="title">{list.title}</div>
                   <div className="nick">{list.nickName}</div>
                 </ListColumn>
