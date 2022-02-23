@@ -123,7 +123,7 @@ const Allim = () => {
             <>
               {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
                 return (
-                  <ListRow key={idx} photo={v.profImg.thumb88x88}>
+                  <ListRow key={idx} photo={v.profImg.thumb100x100}>
                     <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
                          data-link={v.link} onClick={handleClick}>
                       <div className="title">{v.contents}</div>

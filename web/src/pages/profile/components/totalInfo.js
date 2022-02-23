@@ -44,17 +44,18 @@ const TotalInfo = (props) => {
 
   return (
     <>
-      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
-        <div className="title">뱃지</div>
-        <div className="badgeGroup">
-          <span className="badgeItem grade">{data.grade}</span> {/* 무조건 출력되어야함 */}
-          <BadgeItems data={data} type="commonBadgeList" />
-          <BadgeItems data={data} type="isBadge" />
+      {badgeTotalCnt !== 0 &&
+        <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+          <div className="title">뱃지</div>
+          <div className="badgeGroup">
+            <BadgeItems data={data} type="commonBadgeList" />
+            <BadgeItems data={data} type="isBadge" />
+          </div>
+          {badgeTotalCnt > 3 &&
+            <button onClick={onOpenBdage}>열기/닫기</button>
+          }
         </div>
-        {badgeTotalCnt > 3 &&
-          <button onClick={onOpenBdage}>열기/닫기</button>
-        }
-      </div>
+      }
       <div className="rankInfo">
         <div className="box">
           <div className="title" style={{cursor: 'pointer'}}

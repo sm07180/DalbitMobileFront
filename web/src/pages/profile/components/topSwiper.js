@@ -62,7 +62,7 @@ const TopSwiper = (props) => {
           {data.profImgList.map((item, index) => {
             return (
               <div key={index} onClick={() => {openShowSlide(data.profImgList)}}>
-                <div className="photo">
+                <div className="photo" style={{cursor:"pointer"}}>
                   <img src={item.profImg.thumb500x500} alt="" />
                 </div>
               </div>
