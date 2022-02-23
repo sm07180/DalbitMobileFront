@@ -24,9 +24,11 @@ import {IMG_SERVER} from "context/config";
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
-import {isHybrid} from "context/hybrid";
+import {isHybrid, isIos} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 import {useHistory} from "react-router-dom";
+
+import smoothscroll from 'smoothscroll-polyfill';
 
 const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -401,7 +403,9 @@ const MainPage = () => {
     updatePopFetch(); // 업데이트 팝업
     fetchMainPopupData('6');
     redirectPage();
-
+    if(isIos()) {
+      smoothscroll.polyfill();
+    }
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
