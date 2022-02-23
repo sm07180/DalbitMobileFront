@@ -74,7 +74,7 @@ const TotalInfo = (props) => {
             {[...Array(3 - data.fanRank.length)].map((item, index) => {
               return (
                 <div className="photo" key={index}>
-                  <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+                  <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
                 </div>
               )
             })}
@@ -90,7 +90,7 @@ const TotalInfo = (props) => {
             </div>
             :
             <div className="photo">
-              <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+              <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
             </div>
           }
         </div>

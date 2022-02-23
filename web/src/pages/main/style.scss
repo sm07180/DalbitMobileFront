@@ -371,9 +371,10 @@
     }
     .tabmenuWrap {
       position:relative;
+      top:0;
       height:48px;
       &.isFixed {
-        position:fixed;
+        position:sticky;
         top:$HEADER-HEIGHT;
         width:100%;
         z-index: 10;
