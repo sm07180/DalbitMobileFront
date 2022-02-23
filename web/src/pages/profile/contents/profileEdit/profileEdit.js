@@ -378,8 +378,10 @@ const ProfileEdit = () => {
               </div>
               <InputItems title={'프로필 메시지'} type={'textarea'}>
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
-                          defaultValue={profileInfo?.profMsg || ''}
-                          onChange={(e) => setProfileInfo({...profileInfo, profMsg: e.target.value}) }/>
+                          value={profileInfo?.profMsg || ''}
+                          onChange={(e) => {
+                            setProfileInfo({...profileInfo, profMsg: e.target.value});
+                          }}/>
                 <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
               </InputItems>
             </section>
