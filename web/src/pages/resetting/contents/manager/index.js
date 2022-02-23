@@ -28,10 +28,13 @@ const SettingManager = () => {
   let userTypeSetting = 0;
 
   //매니저 리스트 조회
-  const getManagerList = () =>{
-    Api.mypage_manager_list({}).then((res) =>{
-      if (res.result === 'success'){setManagerList(res.data.list)}
+  const getManagerList = async () => {
+    const res = await Api.mypage_manager_list({
+      params: {page: 1, records: 999}
     })
+    if(res.result === "success") {
+      setManagerList(res.data.list);
+    }
   }
 
   //매니저 등록
@@ -65,7 +68,7 @@ const SettingManager = () => {
       search: changes.search,
       searchType: "maneger",
       page: 1,
-      records: 30
+      records: 999
     }
     const res = await Api.mypage_user_search({params})
     if(res.result === "success") {setUserList(res.data.list);}
