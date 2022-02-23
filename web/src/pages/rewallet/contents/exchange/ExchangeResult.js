@@ -74,7 +74,7 @@ const ExchangeResult = () => {
           </div>
           <div className="receiptList">
             <span>계좌번호</span>
-            <p>{`${accountNo?.concat([]).slice(0, 3)}-${accountNo?.concat([]).slice(4, 6)}-${accountNo?.concat([]).slice(6, accountNo.length)}`}</p>
+            <p>{`${accountNo?.concat([]).slice(0, 3)}-${accountNo?.concat([]).slice(3, 7)}-${accountNo?.concat([]).slice(7, 11)}-${accountNo?.concat([]).slice(11, accountNo.length)}`}</p>
           </div>
         </div>
 
