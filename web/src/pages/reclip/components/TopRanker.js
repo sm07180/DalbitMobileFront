@@ -7,7 +7,6 @@ import NoResult from "components/ui/noResult/NoResult";
 const TopRanker = (props) => {
   const {data, playAction} = props
 
-  console.log(data);
   const [targetPage, setTargetPage] = useState(1);
 
   // 스와이퍼

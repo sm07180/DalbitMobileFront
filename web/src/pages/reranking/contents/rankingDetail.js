@@ -128,7 +128,7 @@ const RankDetailPage = () => {
 
   // 나머지
   const fetchRankData = async (rankSlct, rankType, pageNo) => {
-    let curDate = new Date()
+    let curDate = new Date();
     const {result, data} = await Api.get_ranking({
       param: {
         rankSlct: rankSlct,
@@ -279,7 +279,7 @@ const RankDetailPage = () => {
         } else {
           month -= 1;
           if (month < 10) {
-            month = 0 + month;
+            month = `0${month}`;
           }
           handle = new Date(`${year}-${month}-01`);
         }
