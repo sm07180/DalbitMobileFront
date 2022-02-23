@@ -446,9 +446,10 @@ export default function GNB() {
                   <li key={index} data-url={item.url}
                       className={`${activeType === item.url ? 'active' : activeType === "/rankDetail/DJ" && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
                       onClick={() => {
-                        history.push(item.url);
                         if(item.isUpdate && activeType === item.url) {
                           dispatch(setIsRefresh(true))
+                        }else {
+                          history.push(item.url);
                         }
                       }}
                   >
