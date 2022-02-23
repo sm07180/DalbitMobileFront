@@ -10,17 +10,17 @@
     top: 0;
     right: 0;
 
-    // &.windows {
-    //   overflow: auto;
-    //   margin-bottom: -17px;
+    &.windows {
+      overflow: auto;
+      margin-bottom: -17px;
 
-    //   -ms-overflow-style: none; /* IE and Edge */
-    //   scrollbar-width: none; /* Firefox */
-    // }
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
 
-    // &.windows::-webkit-scrollbar {
-    //   display: none; /* Chrome, Safari, Opera*/
-    // }
+    &.windows::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera*/
+    }
 
     &.windows {
       // 스크롤 잠시 확인

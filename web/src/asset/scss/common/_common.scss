@@ -29,7 +29,7 @@ legend {
   @include position-horizon;
   top:0;
   margin-top:-48px;
-  z-index: 10;
+  z-index: 100;
   // background-color: rgba(127, 127, 127, 0.3);
   // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   &.rank {

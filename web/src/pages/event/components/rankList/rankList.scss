@@ -67,7 +67,7 @@
 		position: relative;
 		flex: none;
 		margin-left: 10px;
-		$size: (50, 60);
+		$size: (50, 55, 60);
 		@each $i in $size {
 			&.size#{$i} {
 				width: #{$i}px;

@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import Lottie from "react-lottie";
 import styled from "styled-components";
 
 // Api
@@ -598,7 +599,20 @@ export default function ChatHeaderWrap(prop: any) {
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
       </div>
-
+      <div className="dallagurs-section">
+        <div className="icon-lottie">
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: `https://image.dalbitlive.com/event/rebranding/icon_dalla.json`,
+            }}
+            width={"100%"}
+            height={"100%"}
+          />
+        </div>
+        <img src="https://image.dalbitlive.com/event/rebranding/root_d.webp" alt="" className="webp-img" />
+      </div>
       {/* 달나라 갈꺼야 버튼 */}
       {moonLandEventBool &&
         <div className="moon-land-button">
