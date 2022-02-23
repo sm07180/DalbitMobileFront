@@ -29,7 +29,8 @@ const SwiperList = (props) => {
         history.push(`/profile/${item.memNo}`);
       }
     }else if(type === 'daldungs' || type === 'favorites') {
-      RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
+      const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
+      RoomValidateFromClip(item.roomNo, context, history, memNick);
     }
   }
 
