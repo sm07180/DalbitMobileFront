@@ -29,7 +29,7 @@ const ClipReply = (props) => {
   //list fetch
   async function fetchReplyList() {
     const {result, data, code, message} = await Api.getClipReplyList({ clipNo: LocationClip, records: 999 });
-    if (result === 'success' && code === '0') {
+    if (result === 'success' && code === 'C001') {
       setBoardList(data.list)
       if (data.paging) {
         setTotalCount(data.paging.total)
