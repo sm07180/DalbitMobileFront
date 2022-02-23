@@ -38,6 +38,7 @@ let touchEndY = null
 const refreshDefaultHeight = 48 // pullToRefresh 높이
 let dataRefreshTimeout;
 const SCROLL_TO_DURATION = 500;
+let canHit = true // scroll 안에서는 상태값 갱신 안돼서 추가
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -79,9 +80,10 @@ const MainPage = () => {
   const fetchMainInfo = () => dispatch(setMainData());
 
   /* 라이브 리스트 */
-  const fetchLiveInfo = useCallback(() => {
+  const fetchLiveInfo = useCallback((pageNo) => {
+    const callPageNo = pageNo ? pageNo : currentPage
     const params = {
-      page: currentPage,
+      page: callPageNo,
       mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
       records: pagePerCnt,
       roomType: '',
@@ -99,7 +101,7 @@ const MainPage = () => {
           paging = liveList.paging;
         }
 
-        if (currentPage > 1) {
+        if (callPageNo > 1) {
           const listConcat = liveList.list.concat(data.list);
           dispatch(setMainLiveList({list: listConcat, paging}));
         } else {
@@ -112,7 +114,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    fetchLiveInfo();
+    fetchLiveInfo(1);
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -151,7 +153,7 @@ const MainPage = () => {
     }
 
     // 스크롤시 추가 리스트
-    if (totalPage > currentPage && Utility.isHitBottom()) {
+    if (totalPage > currentPage && canHit && Utility.isHitBottom()) {
       setCurrentPage(currentPage => currentPage + 1)
     }
   })
@@ -218,10 +220,11 @@ const MainPage = () => {
         //   // refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         // }, 17)
 
-        /* 스크롤 top에 도착하면 reload 아이콘 보이게 + 중복 호출 막음 */
-        setDataRefreshPrevent(true);
-        showPullToRefreshIcon({duration: 300});
-        mainDataReset();
+        /* reload 아이콘 + 데이터 리프레시 */
+        if(pullToRefreshPause) {
+          showPullToRefreshIcon({duration: 300});
+          mainDataReset();
+        }
 
         await new Promise((resolve, _) => setTimeout(() => {
           resolve();
@@ -322,16 +325,14 @@ const MainPage = () => {
 
   /* pullToRefresh 아이콘 보기 */
   const showPullToRefreshIcon = ({duration = 300}) => {
-    if(!dataRefreshPrevent) {
-      const refreshWrap = iconWrapRef.current;
-      if(refreshWrap) {
-        refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
-        setPullToRefreshPause(false);
-        setTimeout(() => {
-          refreshWrap.style.height = `${refreshDefaultHeight}px`;
-          setPullToRefreshPause(true);
-        }, duration);
-      }
+    const refreshWrap = iconWrapRef.current;
+    if(refreshWrap) {
+      refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+      setPullToRefreshPause(false);
+      setTimeout(() => {
+        refreshWrap.style.height = `${refreshDefaultHeight}px`;
+        setPullToRefreshPause(true);
+      }, duration);
     }
   }
 
@@ -339,9 +340,8 @@ const MainPage = () => {
   const scrollToEvent = () => {
     if(window.scrollY === 0) {
       if(location?.pathname === '/') {
-        window.removeEventListener('scroll', scrollToEvent);
         showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
-        mainDataReset();
+        window.removeEventListener('scroll', scrollToEvent);
       }else {
         window.removeEventListener('scroll', scrollToEvent);
       }
@@ -351,34 +351,42 @@ const MainPage = () => {
   /* 로고, 헤더, 푸터 등 클릭해서 페이지 리프레시할때 액션 */
   const pullToRefreshAction = () => {
     if(window.scrollY !== 0) {
-      window.addEventListener('scroll', scrollToEvent)
+      mainDataReset();
       window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     }else {
       showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
       mainDataReset();
     }
-
-    /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
-    dataRefreshTimeout = setTimeout(() => {
-      setDataRefreshPrevent(false);
-    }, 1000);
   }
 
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
-      dispatch(setIsRefresh(false));
       setDataRefreshPrevent(true);
-      pullToRefreshAction();
+      canHit = false;
     }else {
       dispatch(setIsRefresh(false));
     }
   }, [common.isRefresh]);
 
+  useEffect(() => {
+    if(dataRefreshPrevent) {
+      dispatch(setIsRefresh(false));
+      window.addEventListener('scroll', scrollToEvent)
+      pullToRefreshAction();
+      /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
+      dataRefreshTimeout = setTimeout(() => {
+        window.removeEventListener('scroll', scrollToEvent);
+        setDataRefreshPrevent(false);
+        canHit = true;
+      }, 1000);
+    }
+  }, [dataRefreshPrevent]);
+
   /* 라이브 리스트 페이징, 탭 변경 */
   useEffect(() => {
     if(!dataRefreshPrevent) {
-      fetchLiveInfo()
+      fetchLiveInfo(currentPage)
     }
     document.addEventListener('scroll', scrollEvent);
     return () => {

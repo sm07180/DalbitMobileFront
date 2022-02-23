@@ -551,7 +551,7 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      <section className='topSwiper'>
+      <section className='profileTopSwiper'>
         <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile}
                    setPopHistory={setPopHistory} type="profile" />
       </section>
@@ -641,7 +641,7 @@ const ProfilePage = () => {
         </PopSlide>
       }
 
-      {/* 선물하기 */}
+      {/* 좋아요 -> ? 아이콘 */}
       {noticePop && <ProfileNoticePop setNoticePop={setNoticePop} />}
 
       {/* 스페셜DJ 약력 팝업 */}

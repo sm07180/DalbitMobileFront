@@ -18,15 +18,15 @@
       &:first-child{width: 36px;}
       width: 100%;
       line-height: 32px;
-      border-top: 1px solid #ff3c7b;
-      border-bottom: 1px solid #ff3c7b;
-      @include font(12px, 500, #FF3C7B);
+      border-top: 1px solid $DOWNCOLOR;
+      border-bottom: 1px solid $DOWNCOLOR;
+      @include font(12px, 500, $DOWNCOLOR);
     }
     td{
       &:first-child{width: 36px;}
       width: 100%;
       line-height: 48px;
-      border-bottom: 1px solid #ff3c7b;
+      border-bottom: 1px solid $DOWNCOLOR;
       @include font(12px, 500, #666);
       text-align: center;
     }
