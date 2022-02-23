@@ -38,6 +38,7 @@ let touchEndY = null
 const refreshDefaultHeight = 48 // pullToRefresh 높이
 let dataRefreshTimeout;
 const SCROLL_TO_DURATION = 500;
+let canHit = true // scroll 안에서는 상태값 갱신 안돼서 추가
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -79,9 +80,10 @@ const MainPage = () => {
   const fetchMainInfo = () => dispatch(setMainData());
 
   /* 라이브 리스트 */
-  const fetchLiveInfo = useCallback(() => {
+  const fetchLiveInfo = useCallback((pageNo) => {
+    const callPageNo = pageNo ? pageNo : currentPage
     const params = {
-      page: currentPage,
+      page: callPageNo,
       mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
       records: pagePerCnt,
       roomType: '',
@@ -99,7 +101,7 @@ const MainPage = () => {
           paging = liveList.paging;
         }
 
-        if (currentPage > 1) {
+        if (callPageNo > 1) {
           const listConcat = liveList.list.concat(data.list);
           dispatch(setMainLiveList({list: listConcat, paging}));
         } else {
@@ -112,7 +114,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    fetchLiveInfo();
+    fetchLiveInfo(1);
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -151,7 +153,7 @@ const MainPage = () => {
     }
 
     // 스크롤시 추가 리스트
-    if (totalPage > currentPage && Utility.isHitBottom()) {
+    if (totalPage > currentPage && canHit && Utility.isHitBottom()) {
       setCurrentPage(currentPage => currentPage + 1)
     }
   })
@@ -361,6 +363,7 @@ const MainPage = () => {
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
       setDataRefreshPrevent(true);
+      canHit = false;
     }else {
       dispatch(setIsRefresh(false));
     }
@@ -375,6 +378,7 @@ const MainPage = () => {
       dataRefreshTimeout = setTimeout(() => {
         window.removeEventListener('scroll', scrollToEvent);
         setDataRefreshPrevent(false);
+        canHit = true;
       }, 1000);
     }
   }, [dataRefreshPrevent]);
@@ -382,7 +386,7 @@ const MainPage = () => {
   /* 라이브 리스트 페이징, 탭 변경 */
   useEffect(() => {
     if(!dataRefreshPrevent) {
-      fetchLiveInfo()
+      fetchLiveInfo(currentPage)
     }
     document.addEventListener('scroll', scrollEvent);
     return () => {
