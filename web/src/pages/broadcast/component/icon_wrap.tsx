@@ -787,6 +787,17 @@ export const IconWrap = (props: {
             )}
           </button>
 
+          {roomOwner === true && (
+            <button
+              className="icon"
+              onClick={() => {
+                broadcastAction.setRightTabType(tabType.VOTE);
+              }}
+            >
+              <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon.png' alt="투표" />
+            </button>
+          )}
+          
           {roomOwner === true && roomInfo.isMinigame && (
             <button
               className="icon"
