@@ -280,7 +280,7 @@ const ClipPage = () => {
         </section>
         <section className="clipList">
           <div className="cntTitle">
-            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}는(은) 어떠세요?`}</h2>
+            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}은(는) 어떠세요?`}</h2>
             <button onClick={changeList}>새로고침</button>
           </div>
           <SwiperList data={subClipInfo.list} playAction={playClip}/>
