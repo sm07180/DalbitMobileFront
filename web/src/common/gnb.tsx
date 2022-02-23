@@ -369,7 +369,7 @@ export default function GNB() {
 
   useEffect(() => {
     fetchMypageNewCntData(context.profile.memNo);
-  }, [fetchMypageNewCntData]);
+  }, [localStorage.getItem("mypageNew")]);
 
   useEffect(() => {
     if (globalState.broadClipDim) {
