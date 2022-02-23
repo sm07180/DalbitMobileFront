@@ -13,7 +13,7 @@ import "./index.scss";
 
 const tabmenu = ['진행중인 투표', '마감된 투표']
 
-const Vote = () => {
+const Vote = ({ roomNo }) => {
   const [tabType, setTabType] = useState(tabmenu[0])
 
   return (
