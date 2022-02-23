@@ -106,7 +106,7 @@ const ProfileEdit = () => {
     const param = {
       gender :gender || initProfileInfo.current.gender,
       nickNm : nickNm || initProfileInfo.current.nickNm,
-      profMsg: profMsg || initProfileInfo.current.profMsg,
+      profMsg: profMsg,
       birth: birth || initProfileInfo.current.birth,
       profImg: (_profileInfo? profImg.path : currentAvatar.path) || initProfileInfo.current.profImg.path,
     }
