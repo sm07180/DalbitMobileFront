@@ -16,6 +16,21 @@ const Post = () => {
   const [postPageInfo, setPostPageInfo] = useState({noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
 
+  //공지사항 신규 알림 안보이게 하기
+  let mypageNewStg = localStorage.getItem("mypageNew")
+  if(mypageNewStg !== undefined && mypageNewStg !== null && mypageNewStg !== "") {
+    mypageNewStg = JSON.parse(mypageNewStg);
+  } else {
+    mypageNewStg = {}
+  }
+
+  const getNewIcon = (noticeIdx, isNew) => {
+    if(isNew && mypageNewStg.notice !== undefined && mypageNewStg.notice !== null && mypageNewStg.notice !== "") {
+      return mypageNewStg.notice.find((e) => e === parseInt(noticeIdx)) === undefined
+    }
+    return isNew
+  }
+
   // 조회 API
   const fetchData = () => {
     Api.noticeList(postPageInfo).then((res) => {
@@ -99,7 +114,7 @@ const Post = () => {
                   <img src={list.noticeType === 1 || list.noticeType === 5 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.noticeImg}.png`
                 : list.noticeType === 2 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
                   : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""} alt=""/>
-                  {list.isNew && <span className='newBadge'>N</span>}                    
+                  {getNewIcon(list.noticeIdx, list.isNew) && <span className='newBadge'>N</span>}
                 </div>
                 <div className="listContent" data-num={list.noticeIdx} onClick={onClick}>
                   <div className="title">{list.title}</div>

@@ -1,12 +1,14 @@
 @import "components/ui/_mixin.scss";
 
-.topSwiper {
+// 메인페이지 topSwiper 와 구분하기 위해 profileTopSwiper로 수정
+.profileTopSwiper {
   position: relative;
   .swiper-slide {
     @include flex(center,center);
     .photo {
       width:100%;
       height:100%;
+      cursor:pointer;
       img {
         width:100%;
         height:100%;

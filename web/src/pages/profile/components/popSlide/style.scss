@@ -104,8 +104,8 @@
             button {
               width:76px;
               line-height: 34px;
-              background-color: $MAINCOLOR;
-              @include border($MAINCOLOR,100px);
+              background-color: $BLACKBTNCOLOR;
+              @include border($BLACKBTNCOLOR,100px);
               @include font(14px,500,white);
               &.isFan {
                 background-color: white;
@@ -211,8 +211,8 @@
         button {
           flex:1;
           line-height:46px;
-          background-color:$MAINCOLOR;
-          @include border($MAINCOLOR,16px);
+          background-color:$DOWNCOLOR;
+          @include border($DOWNCOLOR,16px);
           @include font(16px,500,white);
           &.cancel {
             margin-right:8px;
@@ -299,8 +299,8 @@
       button {
         flex:1;
         line-height:46px;
-        background-color:$MAINCOLOR;
-        @include border($MAINCOLOR,16px);
+        background-color:$DOWNCOLOR;
+        @include border($DOWNCOLOR,16px);
         @include font(16px,500,white);
         &.cancel {
           margin-right:8px;

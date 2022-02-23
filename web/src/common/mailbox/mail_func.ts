@@ -27,7 +27,7 @@ export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, his
       const myLevel = context.profile.level;
       if(myLevel === 0) {
         return context.action.alert({
-          msg: '메시지은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+          msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
         })
       }
 

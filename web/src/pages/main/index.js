@@ -35,7 +35,10 @@ const pagePerCnt = 20
 
 let touchStartY = null
 let touchEndY = null
-const refreshDefaultHeight = 48
+const refreshDefaultHeight = 48 // pullToRefresh 높이
+let dataRefreshTimeout;
+const SCROLL_TO_DURATION = 500;
+let canHit = true // scroll 안에서는 상태값 갱신 안돼서 추가
 
 const MainPage = () => {
   const headerRef = useRef()
@@ -46,38 +49,41 @@ const MainPage = () => {
   const arrowRefreshRef = useRef()
   const history = useHistory();
 
-  const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
-  const [liveListType, setLiveListType] = useState(liveTabMenu[0])
-  const [headerFixed, setHeaderFixed] = useState(false)
-  const [tabFixed, setTabFixed] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [reloadInit, setReloadInit] = useState(false)
+  const [topRankType, setTopRankType] = useState(topTenTabMenu[0]) // 일간 top10 탭 타입
+  const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
+  const [headerFixed, setHeaderFixed] = useState(false) // 헤더 fixed
+  const [tabFixed, setTabFixed] = useState(false)   // 방송 리스트 탭 fixed
+  const [currentPage, setCurrentPage] = useState(1) // 메인 데이터 현재 호출 페이지
+  const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
 
-  const [scrollOn, setScrollOn] = useState(false)
+  const [scrollOn, setScrollOn] = useState(false) // 스크롤
 
-  const [payOrderId, setPayOrderId] = useState("")
-  const [receiptPop, setReceiptPop] = useState(false)
+  const [payOrderId, setPayOrderId] = useState("") // 결제 관련
+  const [receiptPop, setReceiptPop] = useState(false) // 결제 관련
 
-  const [popupData, setPopupData] = useState([]);
+  const [popupData, setPopupData] = useState([]); // 이벤트, 공지 등 메인 팝업
 
-  const [updatePopInfo, setUpdatePopInfo] = useState({
+  const [updatePopInfo, setUpdatePopInfo] = useState({ // 업데이트 가능한 버전이 출시됐는지
     showPop: false,
     storeUrl: '',
   });
-  const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
+  const [pullToRefreshPause, setPullToRefreshPause] = useState(true);  // pullToRefresh 할때 (모바일)
+  const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false); // 로고, 헤더, 푸터 등 메인 페이지 리로드할때
 
-
+  /* redux */
   const dispatch = useDispatch();
   const mainState = useSelector((state) => state.main);
   const liveList = useSelector(state => state.live);
   const common = useSelector(state => state.common);
 
-  // 조회 API
+  // page 조회 API
   const fetchMainInfo = () => dispatch(setMainData());
 
-  const fetchLiveInfo = useCallback(() => {
+  /* 라이브 리스트 */
+  const fetchLiveInfo = useCallback((pageNo) => {
+    const callPageNo = pageNo ? pageNo : currentPage
     const params = {
-      page: currentPage,
+      page: callPageNo,
       mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
       records: pagePerCnt,
       roomType: '',
@@ -95,7 +101,7 @@ const MainPage = () => {
           paging = liveList.paging;
         }
 
-        if (currentPage > 1) {
+        if (callPageNo > 1) {
           const listConcat = liveList.list.concat(data.list);
           dispatch(setMainLiveList({list: listConcat, paging}));
         } else {
@@ -108,7 +114,7 @@ const MainPage = () => {
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
     fetchMainInfo();
-    fetchLiveInfo();
+    fetchLiveInfo(1);
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -147,11 +153,12 @@ const MainPage = () => {
     }
 
     // 스크롤시 추가 리스트
-    if (totalPage > currentPage && Utility.isHitBottom()) {
+    if (totalPage > currentPage && canHit && Utility.isHitBottom()) {
       setCurrentPage(currentPage => currentPage + 1)
     }
   })
 
+  /* pullToRefresh */
   const mainTouchStart = useCallback(
     (e) => {
       if (reloadInit === true || window.scrollY !== 0) return
@@ -161,6 +168,7 @@ const MainPage = () => {
     [reloadInit]
   )
 
+  /* pullToRefresh */
   const mainTouchMove = useCallback((e) => {
     if (reloadInit === true || window.scrollY !== 0) return
 
@@ -180,6 +188,7 @@ const MainPage = () => {
     }
   }, [reloadInit])
 
+  /* pullToRefresh */
   const mainTouchEnd = useCallback(async (e) => {
     if (reloadInit === true) return
 
@@ -211,8 +220,11 @@ const MainPage = () => {
         //   // refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         // }, 17)
 
-        mainDataReset();
-        showPullToRefreshIcon({duration: 300});
+        /* reload 아이콘 + 데이터 리프레시 */
+        if(pullToRefreshPause) {
+          showPullToRefreshIcon({duration: 300});
+          mainDataReset();
+        }
 
         await new Promise((resolve, _) => setTimeout(() => {
           resolve();
@@ -237,11 +249,13 @@ const MainPage = () => {
     touchEndY = null
   }, [reloadInit])
 
+  /* 결제 */
   const clearReceipt = () => {
     setReceiptPop(false)
     sessionStorage.removeItem('orderId')
   }
 
+  /* 결제 */
   const getReceipt = () => {
     if (sessionStorage.getItem('orderId') !== null) {
       const orderId = sessionStorage.getItem('orderId')
@@ -267,6 +281,7 @@ const MainPage = () => {
     }
   }
 
+  /* 메인 팝업 */
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
       params: {
@@ -289,6 +304,7 @@ const MainPage = () => {
     }
   }
 
+  /* 리다이렉트할 페이지 있는지 체크 */
   const redirectPage = useCallback(() => {
     try {
       const item = JSON.parse(sessionStorage.getItem('_loginRedirect__'));
@@ -310,44 +326,74 @@ const MainPage = () => {
   /* pullToRefresh 아이콘 보기 */
   const showPullToRefreshIcon = ({duration = 300}) => {
     const refreshWrap = iconWrapRef.current;
-    refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
-    setPullToRefreshPause(false);
-    setTimeout(() => {
-      refreshWrap.style.height = `${refreshDefaultHeight}px`;
-      setPullToRefreshPause(true);
-    }, duration);
+    if(refreshWrap) {
+      refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+      setPullToRefreshPause(false);
+      setTimeout(() => {
+        refreshWrap.style.height = `${refreshDefaultHeight}px`;
+        setPullToRefreshPause(true);
+      }, duration);
+    }
   }
 
-  const pullToRefreshAction = () => {
-    const scrollToEvent = () => {
-      if(window.scrollY === 0) {
+  /* scrollTo action */
+  const scrollToEvent = () => {
+    if(window.scrollY === 0) {
+      if(location?.pathname === '/') {
+        showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
         window.removeEventListener('scroll', scrollToEvent);
-        showPullToRefreshIcon({duration: 500});
+      }else {
+        window.removeEventListener('scroll', scrollToEvent);
       }
     }
-    window.addEventListener('scroll', scrollToEvent)
-    window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-    dispatch(setIsRefresh(false));
   }
 
-  useEffect(() => {
-    if(common.isRefresh && pullToRefreshPause) {
+  /* 로고, 헤더, 푸터 등 클릭해서 페이지 리프레시할때 액션 */
+  const pullToRefreshAction = () => {
+    if(window.scrollY !== 0) {
       mainDataReset();
-      pullToRefreshAction();
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    }else {
+      showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
+      mainDataReset();
+    }
+  }
+
+  /* 로고, 푸터 클릭했을때 */
+  useEffect(() => {
+    if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
+      setDataRefreshPrevent(true);
+      canHit = false;
     }else {
       dispatch(setIsRefresh(false));
     }
   }, [common.isRefresh]);
 
   useEffect(() => {
-    fetchLiveInfo()
+    if(dataRefreshPrevent) {
+      dispatch(setIsRefresh(false));
+      window.addEventListener('scroll', scrollToEvent)
+      pullToRefreshAction();
+      /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
+      dataRefreshTimeout = setTimeout(() => {
+        window.removeEventListener('scroll', scrollToEvent);
+        setDataRefreshPrevent(false);
+        canHit = true;
+      }, 1000);
+    }
+  }, [dataRefreshPrevent]);
+
+  /* 라이브 리스트 페이징, 탭 변경 */
+  useEffect(() => {
+    if(!dataRefreshPrevent) {
+      fetchLiveInfo(currentPage)
+    }
     document.addEventListener('scroll', scrollEvent);
     return () => {
       document.removeEventListener('scroll', scrollEvent)
     }
   }, [currentPage, liveListType])
 
-  // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
     // fetchLiveInfo();
@@ -359,6 +405,8 @@ const MainPage = () => {
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+      clearTimeout(dataRefreshTimeout);
+      window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
  

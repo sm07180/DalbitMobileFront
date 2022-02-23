@@ -41,7 +41,12 @@ export default function Broadcast() {
       }
     });
   }, [baseData]);
-
+  useEffect(()=>{
+    if(!roomInfo){
+      return
+    }
+    broadcastAction.setUserMemNo(roomInfo.bjMemNo);
+  },[roomInfo]);
   return (
     <BroadcastLayerProvider>
       <GuestProvider>

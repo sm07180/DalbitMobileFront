@@ -45,7 +45,7 @@
       &.active {
         border-color: #FF3C7B;
         .price {
-          background:#FF3C7B;
+          background:$DOWNCOLOR;
         }
         &::after{
           content:"";
