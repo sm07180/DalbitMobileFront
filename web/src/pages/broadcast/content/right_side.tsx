@@ -189,6 +189,13 @@ export default function RightSide(props: {
           { type: tabType.PROFILE, value: "프로필" },
           { type: tabType.ROULETTE, value: "룰렛" },
         ];
+      } else if (rightTabType === tabType.VOTE) {
+        return [
+          { type: tabType.LISTENER, value: "청취자" },
+          { type: tabType.LIVE, value: "라이브" },
+          { type: tabType.PROFILE, value: "프로필" },
+          { type: tabType.VOTE, value: "투표" },
+        ];
       } else {
         return [
           { type: tabType.LISTENER, value: "청취자" },
@@ -418,6 +425,9 @@ export default function RightSide(props: {
       }
       case tabType.ROULETTE: {
         return <Roulette roomNo={roomNo} />;
+      }
+      case tabType.VOTE: {
+        return <>$VOTE$</>;
       }
     }
   }

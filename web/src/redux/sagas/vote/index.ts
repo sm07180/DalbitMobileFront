@@ -12,34 +12,69 @@ import {
 	SET_VOTE_LIST,
 	SET_VOTE_SEL
 } from "../../actions/vote";
+
 // 투표 등록
 function* insVote(param) {
 	try {
 		const res = yield call(Api.insVote, param.payload);
+		if(res.data > 0){
+			const getVoteList = yield call(Api.getVoteList, {
+				...param.payload
+				, voteSlct: 's'
+			});
+			yield put({type: SET_VOTE_LIST, payload: getVoteList.data})
+		}
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
-		console.log(e)
+		console.error(`insVote saga e=>`, e)
 	}
 }
 // 투표
 function* insMemVote(param) {
 	try {
 		const res = yield call(Api.insMemVote, param.payload);
+
+		// 'memNo' | 'pmemNo' | 'roomNo' | 'voteNo' | 'itemNo' | 'voteItemName'
+		if(res.data > 0){
+			const reSelectParam = {
+				...param.payload
+				, voteSlct: 's'
+			}
+			// memNo roomNo voteSlct
+			const getVoteList = yield call(Api.getVoteList, reSelectParam);
+			yield put({type: SET_VOTE_LIST, payload: getVoteList.data})
+			// memNo roomNo voteNo
+			const getVoteSel = yield call(Api.getVoteSel, reSelectParam);
+			yield put({type: SET_VOTE_SEL, payload: getVoteSel.data})
+			// memNo pmemNo roomNo voteNo
+			const getVoteDetailList = yield call(Api.getVoteDetailList, reSelectParam);
+			yield put({type: SET_VOTE_DETAIL_LIST, payload: getVoteDetailList.data})
+		}
+
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
-		console.log(e)
+		console.error(`insMemVote saga e=>`, e)
 	}
 }
 // 투표 삭제
 function* delVote(param) {
 	try {
+		// memNo roomNo voteNo
 		const res = yield call(Api.delVote, param.payload);
+		if(res.data > 0){
+			// memNo roomNo voteSlct
+			const getVoteList = yield call(Api.getVoteList, {
+				...param.payload
+				, voteSlct: 's'
+			});
+			yield put({type: SET_VOTE_LIST, payload: getVoteList.data})
+		}
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
-		console.log(e)
+		console.error(`delVote saga e=>`, e)
 	}
 }
 // 투표 리스트
@@ -50,7 +85,7 @@ function* getVoteList(param) {
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
-		console.log(e)
+		console.error(`getVoteList saga e=>`, e)
 	}
 }
 // 투표 정보
@@ -61,7 +96,7 @@ function* getVoteSel(param) {
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
-		console.log(e)
+		console.error(`getVoteSel saga e=>`, e)
 	}
 }
 // 투표 항목 리스트
@@ -72,7 +107,7 @@ function* getVoteDetailList(param) {
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
-		console.log(e)
+		console.error(`getVoteDetailList saga e=>`, e)
 	}
 }
 

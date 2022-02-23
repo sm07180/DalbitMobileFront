@@ -1897,10 +1897,21 @@ export class ChatSocketHandler {
                       ],
                     });
                   }
-                  case "reqPopVote": {
-                    console.log('reqPopVote ... ', data)
+                  case "reqInsVote": {
+                    // 투표 생성
+                    console.log('reqInsVote ... ', data)
+                    return null;
                   }
-
+                  case "reqInsMemVote": {
+                    // 투표
+                    console.log('reqInsMemVote ... ', data)
+                    return null;
+                  }
+                  case "reqDelVote": {
+                    // 투표 삭제
+                    console.log('reqDelVote ... ', data)
+                    return null;
+                  }
                   case "reqMiniGameEnd": {
                     const { reqMiniGameEnd } = data;
 
