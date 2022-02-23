@@ -1,24 +1,18 @@
 import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {GlobalContext} from "context";
 
 import Api from 'context/api'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import moment from "moment";
 import {RoomJoin} from "context/room";
-import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
 import './notice.scss'
-import Header from "components/ui/header/Header";
-import API from "context/api";
 
 const Allim = () => {
   const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
   const context = useContext(Context);
-  const global = useContext(GlobalContext);
-  const { globalState, globalAction } = global;
   const history = useHistory();
 
   //회원 알림 db값 가져오기
@@ -26,7 +20,6 @@ const Allim = () => {
     let params = {page: 1, records: 1000};
     Api.my_notification(params).then((res) => {
       if(res.result === "success") {
-        console.log(res);
         if(res.data.list.length > 0) {
           setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt, newCnt: res.data.newCnt});
         } else {

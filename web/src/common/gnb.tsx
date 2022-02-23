@@ -22,6 +22,7 @@ import {IMG_SERVER} from "../constant/define";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
 import {setNoticeTab} from "../redux/actions/notice";
+import API from "../context/api";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -51,6 +52,7 @@ export default function GNB() {
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
+  const [newCnt, setNewCnt] = useState(0);
 
   const [activeType, setActiveType] = useState('');
 
@@ -351,9 +353,22 @@ export default function GNB() {
     }
   };
 
+  const fetchMypageNewCntData = async (memNo) => {
+    const res = await API.getMyPageNew(memNo);
+    if(res.result === "success") {
+      if(res.data) {
+        setNewCnt(res.data.newCnt);
+      }}
+  }
+
   useEffect(() => {
     return () => globalAction.setBroadClipDim!(false);
   }, []);
+
+  useEffect(() => {
+    fetchMypageNewCntData(context.profile.memNo);
+  }, [newCnt]);
+
   useEffect(() => {
     if (globalState.broadClipDim) {
       document.body.style.overflow = "hidden";
@@ -455,6 +470,7 @@ export default function GNB() {
                           }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
+                        {newCnt > 0 && <span className="newDot"/>}
                       </li>
                     )
                   })}

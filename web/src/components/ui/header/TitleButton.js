@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {Context} from "context";
 import {goMail} from "common/mailbox/mail_func";
@@ -6,6 +6,7 @@ import {MailboxContext} from "context/mailbox_ctx";
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {setNoticeTab} from "../../../redux/actions/notice";
+import API from "../../../context/api";
 
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
@@ -32,7 +33,7 @@ export const MessageButton = ({history, context, mailboxAction, mailboxState}) =
   return <button className={`message ${mailboxState.isMailboxNew ? 'new' : ''}`} onClick={goMailAction} />
 }
 
-export const AlarmButton = ({history, dispatch, newAlarmCnt=0, isLogin}) => {
+export const AlarmButton = ({history, dispatch, newAlarmCnt, isLogin}) => {
   return <button className={`alarm ${isLogin && newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => {
     dispatch(setNoticeTab("알림"));
     history.push('/notice');
@@ -53,6 +54,19 @@ const TitleButton = (props) => {
   const context = useContext(Context);
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
   const mainState = useSelector((state) => state.main);
+  const [newCnt, setNewCnt] = useState(0);
+
+  //알림/공지사항 신규 알림 있는지 조회
+  const fetchMypageNewCntData = async (memNo) => {
+    const res = await API.getMyPageNew(memNo);
+    if(res.result === "success") {
+      if(res.data) {setNewCnt(res.data.newCnt);
+      }}
+  }
+
+  useEffect(() => {
+    fetchMypageNewCntData(context.profile.memNo);
+  }, [newCnt]);
 
   switch (props.title) {
     case '메인':
@@ -60,14 +74,14 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={newCnt} isLogin={context.profile} />
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={newCnt} isLogin={context.profile} />
         </div>
       )
     case '클립 랭킹':
@@ -80,7 +94,7 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={newCnt} isLogin={context.profile} />
         </div>
       )
     case '랭킹':
@@ -94,7 +108,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <StoreButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={mainState.newAlarmCnt} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={newCnt} isLogin={context.profile} />
         </div>
       )
     default :

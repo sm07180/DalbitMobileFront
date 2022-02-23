@@ -22,7 +22,7 @@ const PostDetail = () => {
   //공지사항 상제 정보 조회
   const fetchPostDetailInfo = () => {
     Api.notice_list_detail({params: {noticeIdx: noticeIdx}}).then((res) => {
-      if (res.result === 'success') {setPostDetailInfo(res.data)};
+      if (res.result === 'success') {setPostDetailInfo(res.data);};
     }).catch((e) => console.log(e));
   };
 
@@ -33,6 +33,24 @@ const PostDetail = () => {
 
   const contentsClicked = (event) => {
     Utility.contentClickEvent(event, context)
+  }
+
+  //해당 공지사항 내용 조회시 공지사항 idx를 로컬에 저장 -> post에서 불어옴
+  if (new Date().getMilliseconds() / 1000 - postDetailInfo.writeTs < 7 * 24 * 3600) {
+    let mypageNewStg = localStorage.getItem('mypageNew')
+    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
+      mypageNewStg = {}
+    } else {
+      mypageNewStg = JSON.parse(mypageNewStg)
+    }
+  if (mypageNewStg.notice === undefined || mypageNewStg.notice === null || mypageNewStg.notice === '') {
+    mypageNewStg.notice = [parseInt(noticeIdx)]
+  } else {
+    if (mypageNewStg.notice.find((e) => e === noticeIdx) === undefined) {
+      mypageNewStg.notice.push(parseInt(noticeIdx))
+    }
+  }
+  localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
 
   useEffect(() => {
