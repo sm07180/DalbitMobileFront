@@ -551,7 +551,7 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      <section className='topSwiper'>
+      <section className='profileTopSwiper'>
         <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} webview={webview} isMyProfile={isMyProfile}
                    setPopHistory={setPopHistory} type="profile" />
       </section>
