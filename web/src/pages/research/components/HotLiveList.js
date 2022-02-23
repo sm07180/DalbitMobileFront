@@ -39,7 +39,7 @@ const HotLiveList = (props) => {
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.bgImg.thumb150x150} />
-                  {list.roomType === '03' && <div className="badgeVideo"></div>}
+                  {/*{list.roomType === '03' && <div className="badgeVideo"></div>}*/}
                 </div>
                 <p className='nick'>{list.nickNm}</p>
               </div>
