@@ -169,7 +169,7 @@
             width:4px;height:4px;
             margin-top:4px;
             border-radius:50%;
-            background-color:$MAINCOLOR;
+            background-color:$DOWNCOLOR;
           }
         }
         .inputBox {
@@ -211,8 +211,8 @@
         button {
           flex:1;
           line-height:46px;
-          background-color:$MAINCOLOR;
-          @include border($MAINCOLOR,16px);
+          background-color:$DOWNCOLOR;
+          @include border($DOWNCOLOR,16px);
           @include font(16px,500,white);
           &.cancel {
             margin-right:8px;
