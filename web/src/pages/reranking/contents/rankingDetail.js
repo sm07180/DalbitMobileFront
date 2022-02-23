@@ -285,7 +285,7 @@ const RankDetailPage = () => {
         }
         break;
       case 4:
-        handle = new Date(day1.setFullYear(day1.getFullYear() - 1));
+        handle = new Date(`${year - 1}-01-01`);
         break;
       case 5:
         if (hours < 10) {
