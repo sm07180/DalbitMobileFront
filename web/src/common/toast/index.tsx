@@ -104,11 +104,7 @@ const Toast = styled.div`
   padding: 10px;
   font-size: 16px;
   text-align: center;
-<<<<<<< HEAD
-  background-color: rgba(255, 60, 123, 0.9);
-=======
-  background-color: rgba(255,60,123, 0.9);
->>>>>>> origin/br_renewal
+  background-color: rgba(32, 32, 32, 0.87);
   color: #fff;
   border-radius: 12px;
   z-index: 120;
