@@ -355,7 +355,7 @@ const ProfileEdit = () => {
                           nickNameRef.current.focus();
                         }}/>
               </InputItems>
-              <InputItems title="휴대폰번호" button="인증하기" onClick={getAuth}>
+              <InputItems title="휴대폰번호" button="인증하기" buttonClass={"point"} onClick={getAuth}>
                 <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
               </InputItems>
               <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>

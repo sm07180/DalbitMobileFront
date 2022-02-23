@@ -69,7 +69,7 @@
             display:block;
             content:'';
             width:100%;
-            height:50%;
+            height:30%;
           }
           &::after {
             @include whiteScreen;
@@ -427,10 +427,10 @@
           }
           .video {
             @include position-top-right;
-            width:20px;
-            height:20px;
+            width:23px;
+            height:23px;
             margin:6px;
-            @include BGIMG("common/icon/ico_video.png");
+            @include BGIMG("common/icon/icon-video.png");
           }
         }
         .listContent {

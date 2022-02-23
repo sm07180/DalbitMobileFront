@@ -104,8 +104,8 @@
             button {
               width:76px;
               line-height: 34px;
-              background-color: $MAINCOLOR;
-              @include border($MAINCOLOR,100px);
+              background-color: $BLACKBTNCOLOR;
+              @include border($BLACKBTNCOLOR,100px);
               @include font(14px,500,white);
               &.isFan {
                 background-color: white;
