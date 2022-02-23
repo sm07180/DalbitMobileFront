@@ -531,69 +531,73 @@ export default function ChatHeaderWrap(prop: any) {
           displayWrapRef={displayWrapRef}
         />
       </div>
-      {broadcastState.miniGameInfo.status === true &&
-        ((roomOwner === false &&
-          broadcastState.miniGameInfo.isFree === false) ||
-          roomOwner === true) && (
-          <div className={`mini_game_section`}>
-            <button
-              className="icon"
-              onClick={(e) => {
-                e.stopPropagation();
+      <div className="mini_game_wrap">
+        {broadcastState.miniGameInfo.status === true &&
+          ((roomOwner === false &&
+            broadcastState.miniGameInfo.isFree === false) ||
+            roomOwner === true) && (
+            <div className={`mini_game_section`}>
+              <button
+                className="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
 
-                dispatchDimLayer({
-                  type: "ROULETTE",
-                  others: {
-                    roomOwner,
-                  },
-                });
-              }}
-            >
-              <img src={RouletteIcon} alt="미니게임" />
-            </button>
-            {roomOwner === true && (
-              <div className={`mini_game_slide`}>
-                <button
-                  onClick={() => {
-                    broadcastAction.setRightTabType &&
-                      broadcastAction.setRightTabType(tabType.ROULETTE);
-                  }}
-                >
-                  <img src={SettingIcon} alt="미니게임 세팅" />
-                </button>
-                <button
-                  onClick={() => {
-                    globalAction.setAlertStatus &&
-                      globalAction.setAlertStatus({
-                        status: true,
-                        type: "confirm",
-                        title: "종료하기",
-                        content:
-                          "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
-                        callback: async () => {
-                          const { result, data, message } = await miniGameEnd({
-                            roomNo: roomNo,
-                            gameNo: MiniGameType.ROLUTTE,
-                            rouletteNo: broadcastState.miniGameInfo.rouletteNo,
-                            versionIdx: broadcastState.miniGameInfo.versionIdx,
-                          });
+                  dispatchDimLayer({
+                    type: "ROULETTE",
+                    others: {
+                      roomOwner,
+                    },
+                  });
+                }}
+              >
+                <img src={RouletteIcon} alt="미니게임" />
+              </button>
+              {roomOwner === true && (
+                <div className={`mini_game_slide`}>
+                  <button
+                    onClick={() => {
+                      broadcastAction.setRightTabType &&
+                        broadcastAction.setRightTabType(tabType.ROULETTE);
+                    }}
+                  >
+                    <img src={SettingIcon} alt="미니게임 세팅" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      globalAction.setAlertStatus &&
+                        globalAction.setAlertStatus({
+                          status: true,
+                          type: "confirm",
+                          title: "종료하기",
+                          content:
+                            "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
+                          callback: async () => {
+                            const { result, data, message } = await miniGameEnd({
+                              roomNo: roomNo,
+                              gameNo: MiniGameType.ROLUTTE,
+                              rouletteNo: broadcastState.miniGameInfo.rouletteNo,
+                              versionIdx: broadcastState.miniGameInfo.versionIdx,
+                            });
 
-                          if (result === "success") {
-                            broadcastAction.setMiniGameInfo &&
-                              broadcastAction.setMiniGameInfo({
-                                status: false,
-                              });
-                          }
-                        },
-                      });
-                  }}
-                >
-                  <img src={CloseIcon} alt="미니게임 삭제" />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+                            if (result === "success") {
+                              broadcastAction.setMiniGameInfo &&
+                                broadcastAction.setMiniGameInfo({
+                                  status: false,
+                                });
+                            }
+                          },
+                        });
+                    }}
+                  >
+                    <img src={CloseIcon} alt="미니게임 삭제" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        }
+      </div>
+      
       <div className="gotomoon-section"/>
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
