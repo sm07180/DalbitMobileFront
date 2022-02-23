@@ -16,7 +16,7 @@ const MainSlide = (props) => {
   const swiperParams = {
     loop: true,
     autoplay: {
-      delay: 10000,
+      delay: 7000,
       disableOnInteraction: false
     },
     on:{
@@ -38,7 +38,7 @@ const MainSlide = (props) => {
     if((common.isRefresh || !pullToRefreshPause) && data.length > 0) { // refresh 될때 슬라이드 1번으로
       const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
       swiper?.update();
-      swiper?.slideTo(0);
+      swiper?.slideTo(1);
     }
   }, [common.isRefresh, pullToRefreshPause]);
 

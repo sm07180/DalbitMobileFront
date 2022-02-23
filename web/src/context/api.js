@@ -3854,6 +3854,49 @@ export default class API {
     })
   }
 
+  // 공유 이벤트 댓글 목록
+  static shareTailList = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({
+      url: '/event/share/tail/list',
+      method: 'GET',
+      reqBody: true,
+      data: data,
+    })
+  }
+
+  // 공유 이벤트 댓글 삭제
+  static shareTailDel = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({
+      url: '/event/share/tail/del',
+      method: 'DELETE',
+      reqBody: true,
+      data: data,
+    })
+  }
+
+  // 공유 이벤트 댓글 등록
+  static shareTailIns = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({
+      url: '/event/share/tail/ins',
+      method: 'POST',
+      reqBody: true,
+      data: data,
+    })
+  }
+
+  // 공유 이벤트 댓글 수정
+  static shareTailUpd = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({
+      url: '/event/share/tail/upd',
+      method: 'POST',
+      reqBody: true,
+      data: data,
+    })
+  }
 
 }
 
