@@ -44,11 +44,6 @@ const NoticePage = () => {
 
   useEffect(() => {
     fetchNewData(context.profile.memNo);
-    if(alarmCount > 0) {
-      dispatch(setNoticeTab("알림"));
-    } else if(noticeCount > 0) {
-      dispatch(setNoticeTab("공지사항"))
-    }
   }, [alarmCount]);
 
   return (

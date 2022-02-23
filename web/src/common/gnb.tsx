@@ -53,6 +53,7 @@ export default function GNB() {
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
   const [newCnt, setNewCnt] = useState(0);
+  const [noticeCount, setNoticeCount] = useState(0);
 
   const [activeType, setActiveType] = useState('');
 
@@ -358,6 +359,7 @@ export default function GNB() {
     if(res.result === "success") {
       if(res.data) {
         setNewCnt(res.data.newCnt);
+        setNoticeCount(res.data.notice);
       }}
   }
 
@@ -367,7 +369,7 @@ export default function GNB() {
 
   useEffect(() => {
     fetchMypageNewCntData(context.profile.memNo);
-  }, [newCnt]);
+  }, [fetchMypageNewCntData]);
 
   useEffect(() => {
     if (globalState.broadClipDim) {
@@ -377,6 +379,7 @@ export default function GNB() {
       };
     }
   }, [globalState.broadClipDim]);
+
   useEffect(() => {
     if (popupState === false) {
       if (showLayer) {
@@ -384,6 +387,7 @@ export default function GNB() {
       }
     }
   }, [popupState]);
+
   useEffect(() => {
     const mailboxNewCheck = async () => {
       const { result, data, message } = await checkIsMailboxNew({});
@@ -463,8 +467,10 @@ export default function GNB() {
                       <li key={index} data-url={item.url}
                           className={`${activeType === item.url || gnbOtherPageCheck(item.url) ? 'active' : ''} ${activeType !== item.url || gnbOtherPageCheck(item.url) ? 'cursorPointer' : ''}`}
                           onClick={() => {
-                            if(item.url === "/alarm") {
+                            if(item.url === "/alarm" && noticeCount === 0) {
                               dispatch(setNoticeTab("알림"));
+                            } else if(item.url === "/alarm" && noticeCount > 0) {
+                              dispatch(setNoticeTab("공지사항"));
                             }
                             history.push(item.url)
                           }}
