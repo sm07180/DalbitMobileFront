@@ -27,7 +27,6 @@ const Secession = (props) => {
     const res = await Api.info_secsseion({
       data: {uid: registMemId}
     })
-    console.log(res);
     if (res.result === 'success') {
       fetchSecData();
     } else {
@@ -39,7 +38,6 @@ const Secession = (props) => {
 
   const fetchSecData = async () => {
     const res = await Api.member_logout({data: context.token.authToken});
-    console.log(res);
     if(res.result === "success") {
       Utility.setCookie("custom-header", "", -1);
       Hybrid("GetLogoutToken", res.data);
