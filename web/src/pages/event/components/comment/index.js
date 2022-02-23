@@ -14,6 +14,8 @@ import moment from 'moment'
 const EventComment = (props) => {
   const {commentList,
     totalCommentCnt,
+    myCommentView,
+    setMyCommentView,
     commentAdd,
     commentRpt,
     commentDel,
@@ -31,7 +33,6 @@ const EventComment = (props) => {
 
   const [moreState, setMoreState] = useState(-1)
   const [writeState, setWriteState] = useState(false)
-  const [myComment, setMyComment] = useState(false)
 
   const moreToggle = (boardIdx) => {
     if (boardIdx !== moreState) {
@@ -39,9 +40,6 @@ const EventComment = (props) => {
     } else {
       setMoreState(-1)
     }
-  }
-  const showMyComment = () =>{
-    setMyComment(true)
   }
 
   // 사연 내용 validation
@@ -151,12 +149,6 @@ const EventComment = (props) => {
     <div className="commentEventWrap">
       {globalCtx.token.isLogin && (
         <div className="addInputBox">
-          {/* <div className="userBox">
-            <div className="photo">
-              <img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm} />
-            </div>
-            <div className="userNick">{globalCtx.profile.nickNm}</div>
-          </div> */}
           <div className="textareaWrap">
             <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={maxLength} />
             <div className="textCount">
@@ -174,49 +166,8 @@ const EventComment = (props) => {
           <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_event_refresh.png`} alt="새로고침" />
           </button>
-          <button className="myCommentBtn" onClick={showMyComment}>내 댓글 보기</button>
+          {globalCtx.token.isLogin && <button className="myCommentBtn" onClick={()=>setMyCommentView(!myCommentView)}>{myCommentView ? "전체 댓글 보기" : "내 댓글 보기"}</button>}
         </div>
-        {myComment &&
-          <div className="listBox">
-            <div className="listItem" >
-              <div className="thumb" onClick={goProfile} data-target-mem-no={tail_mem_no}>
-                <img
-                  src={`${
-                    PHOTO_SERVER + (image_profile !== '' ? `${image_profile}?120x120` : '/profile_3/profile_m_200327.jpg')
-                  }`}
-                  alt={mem_nick}
-                />
-              </div>
-              <div className="user">
-                <div className="nick">
-                  {mem_nick}
-                  <span className="date"> {getFormatting(ins_date)}</span>
-                </div>
-              </div>
-            </div>
-            <div className="listItem">
-              <p className="msg">{tail_conts}</p>
-            </div>
-            <div className="btnMore" onClick={() => {
-                moreToggle(idx)
-              }}
-            >
-              {moreState === idx && (
-                <div className="moreList">
-                  {parseInt(token.memNo) == tail_mem_no ? (
-                    <button data-target-num={tail_no} onClick={contDelEvent}>
-                      삭제하기
-                    </button>
-                  ) : (
-                    <button data-target-num={tail_no} onClick={contRptEvent}>
-                      신고하기
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        }
         {commentList.length > 0 ? (
           <>
             {commentList.map((value, idx) => {

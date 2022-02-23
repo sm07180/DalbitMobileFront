@@ -23,12 +23,13 @@ const Acrostic = () => {
     tailLoginMedia: useSelector((state) => state.common.isDesktop) ? "w" : "s",
   });
   const [pageNo, setPageNo] = useState(1);
-
-  const [poemInfo, setPoemInfo] = useState({listCnt: 0, list: [], myPoem:{}})
+  const [myCommentView, setMyCommentView] = useState(false);
+  const [poemInfo, setPoemInfo] = useState({listCnt: 0, list: []})
 
   useEffect(() => {
+    setPageNo(1);
     getPoemList()
-  }, [])
+  }, [myCommentView])
 
   const noticePop = () => setPopup(true);
 
@@ -36,10 +37,9 @@ const Acrostic = () => {
   const getPoemList = () => {
     Api.poem({
       reqBody: false,
-      params: {memNo: context.profile && context.profile.memNo, pageNo: 1, pagePerCnt: 1000},
+      params: {memNo: myCommentView ? context.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
       method: 'GET'
     }).then((response) => {
-      console.log(response);
       setPoemInfo({
         listCnt: response.data.listCnt,
         list: response.data.list
@@ -90,7 +90,6 @@ const Acrostic = () => {
   // 사연 리셋 함수
   const resetStoryList = () => {
     getPoemList();
-    setPageNo(1);
   }
 
   // 사연 스크롤 이벤트
@@ -122,6 +121,8 @@ const Acrostic = () => {
         <EventComment contPlaceHolder={'내용을 입력해주세요.'}
                       commentList={list}
                       totalCommentCnt={poemInfo.listCnt}
+                      myCommentView={myCommentView}
+                      setMyCommentView={setMyCommentView}
                       resetStoryList={resetStoryList}
                       commentAdd={savePoem}
                       commentDel={deletePoem}
