@@ -55,6 +55,7 @@
       div {
         @include flex(center);
         height: 20px;
+        line-height: 24px;
       }
       .type {
         flex-shrink: 0;
@@ -62,13 +63,8 @@
         @include font(12px,$Regular,#666);
       }
       .title {
-        line-height: 24px;
-        font-size: 15px;
-        font-weight: 700;
-        color: #202020;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
+        @include font(16px,$Medium,#202020);
+        @include fontCut;
       }
       .nickName {
         line-height: 18px;

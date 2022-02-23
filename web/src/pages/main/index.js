@@ -54,7 +54,6 @@ const MainPage = () => {
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0]) // 일간 top10 탭 타입
   const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
   const [headerFixed, setHeaderFixed] = useState(false) // 헤더 fixed
-  const [tabFixed, setTabFixed] = useState(false)   // 방송 리스트 탭 fixed
   const [currentPage, setCurrentPage] = useState(1) // 메인 데이터 현재 호출 페이지
   const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
 
@@ -126,7 +125,6 @@ const MainPage = () => {
   // scroll
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
-    const overTabNode = overTabRef.current
     const overNode = overRef.current
     const headerNode = headerRef.current
     
@@ -142,15 +140,6 @@ const MainPage = () => {
         setHeaderFixed(true)
       } else {
         setHeaderFixed(false)
-      }
-    }
-
-    if (overTabNode) {
-      const overTabTop = overTabNode.getBoundingClientRect().top
-      if (0 > overTabTop) {
-        setTabFixed(true)
-      } else {
-        setTabFixed(false)
       }
     }
 
@@ -469,9 +458,9 @@ const MainPage = () => {
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView' ref={overTabRef}>
+      <section className="liveView">
         <CntTitle title={'🚀 지금 라이브 중!'}/>
-        <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
+        <div className={`tabmenuWrap isFixed`}>
           <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
                    defaultTab={1} />
         </div>
