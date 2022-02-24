@@ -7,12 +7,21 @@ import './totalInfo.scss'
 import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
-  const {data, goProfile} = props
+  const {data, goProfile, openPopLike, isMyProfile} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   // 
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
+  }
+
+  const openPopAction = (e) => {
+    const tabState = {
+      titleTab: 0,
+      subTab: 0,
+      subTabType: isMyProfile ? 'fanRank' : ''
+    }
+    openPopLike(e, tabState)
   }
 
   useEffect(() => {
@@ -35,20 +44,22 @@ const TotalInfo = (props) => {
 
   return (
     <>
-      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
-        <div className="title">뱃지</div>
-        <div className="badgeGroup">
-          <span className="badgeItem grade">{data.grade}</span>
-          <BadgeItems data={data} type="commonBadgeList" />
-          <BadgeItems data={data} type="isBadge" />
+      {badgeTotalCnt !== 0 &&
+        <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+          <div className="title">뱃지</div>
+          <div className="badgeGroup">
+            <BadgeItems data={data} type="commonBadgeList" />
+            <BadgeItems data={data} type="isBadge" />
+          </div>
+          {badgeTotalCnt > 3 &&
+            <button onClick={onOpenBdage}>열기/닫기</button>
+          }
         </div>
-        {badgeTotalCnt > 3 &&
-          <button onClick={onOpenBdage}>열기/닫기</button>
-        }
-      </div>
+      }
       <div className="rankInfo">
         <div className="box">
-          <div className="title">
+          <div className="title" style={{cursor: 'pointer'}}
+               onClick={openPopAction}>
             <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
@@ -63,14 +74,14 @@ const TotalInfo = (props) => {
             {[...Array(3 - data.fanRank.length)].map((item, index) => {
               return (
                 <div className="photo" key={index}>
-                  <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+                  <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
                 </div>
               )
             })}
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title">
+          <div className="title" style={{cursor: 'pointer'}} onClick={openPopLike}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
@@ -79,7 +90,7 @@ const TotalInfo = (props) => {
             </div>
             :
             <div className="photo">
-              <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+              <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
             </div>
           }
         </div>

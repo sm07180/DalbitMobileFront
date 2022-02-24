@@ -2,6 +2,8 @@
   @color
 */
 $MAINCOLOR: #FF3C7B;
+$DOWNCOLOR: #FF6999;
+$BLACKBTNCOLOR: #202020;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
 // height 값 관리
@@ -115,8 +117,8 @@ $ExtraBold: 800;
 
 @mixin btnMainStyle($height,$radius,$font) {
   line-height: $height;
-  background-color:$MAINCOLOR;
-  @include border($MAINCOLOR,$radius);
+  background-color:$DOWNCOLOR;
+  @include border($DOWNCOLOR,$radius);
   @include font($font,500,white);
 }
 
@@ -178,13 +180,14 @@ $ExtraBold: 800;
       padding: 0 10px 0 5px;
       border: 1px solid #e3e3e3;
       border-radius: 16px;
+      cursor: pointer;
       + .item {
         margin-top:10px;
       }
       &.active {
         border-color: #FF3C7B;
         .price {
-          background:#FF3C7B;
+          background:$DOWNCOLOR;
         }
         &::after{
           content:"";
@@ -241,7 +244,7 @@ $ExtraBold: 800;
       text-align: center;
       .title {
         line-height:30px;
-        @include font(22px,400,black);
+        @include font(22px,600,black);
         span {
           color: #FF3C7B;
         }

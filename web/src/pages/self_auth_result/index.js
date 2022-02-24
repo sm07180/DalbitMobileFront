@@ -15,6 +15,7 @@ import {IMG_SERVER} from 'context/config'
 
 //
 import './selfAuthResult.scss'
+import {isDesktop} from "lib/agent";
 
 //
 export default (props) => {
@@ -121,6 +122,14 @@ export default (props) => {
     history.push(`/legalauth`)
   }
 
+  const phoneAuthAction = () => {
+    if(isDesktop()) {
+      window.close();
+    }else {
+      history.replace('/');
+    }
+  }
+
   const createResult = () => {
     switch (authState) {
       case 0: //초기상태
@@ -180,7 +189,7 @@ export default (props) => {
             </h4>
             <p>
               ※ 동의 철회를 원하시는 경우, <br />
-              달빛라디오 고객센터에서 철회 신청을 해주시기 바랍니다.
+              달라 고객센터에서 철회 신청을 해주시기 바랍니다.
             </p>
             <div className="btn-wrap">
               <button
@@ -203,7 +212,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/myProfile/edit')
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/myProfile/edit')
+                  }
                 }}>
                 확인
               </button>
@@ -241,7 +254,13 @@ export default (props) => {
             </h5>
             <div className="btn-wrap">
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => {
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    window.location.href = '/'
+                  }
+                }}
               >확인
               </button>
             </div>
@@ -285,9 +304,11 @@ export default (props) => {
     <div id="selfAuthResult">
       {authState === 0 ? (
         <></>
-      ) : (
-        <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
-      )}
+      ) :
+        authState === 4 ?
+          <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
+        : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+      }
       <section className="resultWrap">
         {authState !== 0 && (
           <>

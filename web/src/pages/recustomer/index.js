@@ -15,11 +15,14 @@ import './style.scss'
 import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
 import Faq from "pages/recustomer/contents/faq/Faq";
 import Inquire from "pages/recustomer/contents/inquire/Inquire";
+import {useDispatch} from "react-redux";
+import {setInquireTab} from "redux/actions/inquire";
 
 const Customer = () => {
   const history = useHistory()
   const params = useParams();
   const context = useContext(Context);
+  const dispatch = useDispatch();
   const [categoryList, setCategory] = useState([
     {name : "FAQ", file : "customerMainList-faq", path : "/customer/faq"},
     {name : "운영정책", file : "customerMainList-policy", path : "/rule"},
@@ -28,6 +31,9 @@ const Customer = () => {
 
   const onClick = (e) => {
     const path = e.currentTarget.dataset.idx
+    if(path === categoryList[2].path) {
+      dispatch(setInquireTab("1:1문의"));
+    }
     history.push(path);
   }
 

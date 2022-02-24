@@ -46,7 +46,8 @@ const ClipPage = () => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
-        for (let i = 0; i < res.data.paging.total; i++) {
+        let maxCnt = res.data.paging.total < 9 ? res.data.paging.total : 9;
+        for (let i = 0; i < maxCnt; i++) {
           if (res.data.list.length > i) {
             temp.push(res.data.list[i]);
           } else {
@@ -219,6 +220,21 @@ const ClipPage = () => {
         <section className='bannerWrap'>
           <BannerSlide type={10}/>
         </section>
+        <section className='likeSubWrap'>
+          <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
+          <Swiper {...swiperParams}>
+            {subjectType.map((list, index)=>{
+              return (
+                <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
+                  <div className="likeSub">
+                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
+                    <p>{list.cdNm}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </Swiper>
+        </section>
         <section className="clipDrawer">
           {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
           <div className="cntTitle">
@@ -262,24 +278,9 @@ const ClipPage = () => {
             <div className="empty">데이터가 없습니다.</div>
           }
         </section>
-        <section className='likeSubWrap'>
-          <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
-          <Swiper {...swiperParams}>
-            {subjectType.map((list, index)=>{
-              return (
-                <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
-                  <div className="likeSub">
-                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
-                    <p>{list.cdNm}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </Swiper>
-        </section>
         <section className="clipList">
           <div className="cntTitle">
-            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}는(은) 어떠세요?`}</h2>
+            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}은(는) 어떠세요?`}</h2>
             <button onClick={changeList}>새로고침</button>
           </div>
           <SwiperList data={subClipInfo.list} playAction={playClip}/>

@@ -5,6 +5,7 @@ import moment from 'moment'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import NoResult from 'components/ui/noResult/NoResult'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 
@@ -37,7 +38,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, scrollEvent, setNoticePop} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, setNoticePop, likePopTabState} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
 
@@ -47,11 +48,11 @@ const LikePopup = (props) => {
   const [titleTabInfoList, setTitleTabInfoList] = useState(
     isMyProfile ? myProfileTabInfos.titleTab : notMyProfileTabInfos.titleTab
   );
-  const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0]);
+  const [currentTitleTabInfo, setCurrentTitleTabInfo] = useState({});
 
   // 서브 탭
   const [currentSubTabInfo, setCurrentSubTabInfo] = useState(
-    isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]
+    {key: '', value:'', rankType: 0, rankSlct: 0}
   ); // 현재 선택된 서브탭
   const [fanRankSubTabInfo, setFanRankSubTabInfo] = useState(myProfileTabInfos.subTab.fanRank[0]); // 팬랭킹 탭에서의 서브탭
   const [totalRankSubTabInfo, setTotalRankSubTabInfo] = useState(myProfileTabInfos.subTab.totalRank[1]); // 전체랭킹 탭에서의 서브탭
@@ -156,30 +157,71 @@ const LikePopup = (props) => {
     }/*else if(currentTitleTabInfo.key === 'rank') { // 타회원 프로필에서는 타이틀 탭이 없어서 기억할 필요 없어서 주석
       setRankSubTabInfo(data);
     }*/
+
+    /* 탭 상태 변경 */
     setCurrentSubTabInfo(data);
 
+    /* 스크롤 맨위로 */
+    if(likeContainerRef.current) {
+      likeContainerRef.current.scrollTo(0, 0);
+    }
+
+    /* 페이징 데이터 초기화 */
     pagingReset();
   }
 
-  /* 스크롤 페이징 이벤트 */
-  const popScrollEvent = () => {
-    scrollEvent(likeContainerRef.current, () => setPageNo(pageNo => pageNo +1));
-  }
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback(() => {
+    const scrollTarget = likeContainerRef.current;
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight - 1 < targetHeight + scrollTop) {
+      setPageNo(pageNo => pageNo +1)
+    }
+  }, []);
 
   const addScrollEvent = () => {
-    likeContainerRef.current.addEventListener('scroll', popScrollEvent);
+    const target = likeContainerRef.current;
+    if(target) {
+      target.addEventListener('scroll', scrollEvent);
+    }
   }
 
   const removeScrollEvent = useCallback(() => {
     const scrollTarget = likeContainerRef.current;
     if(scrollTarget) {
-      scrollTarget.removeEventListener('scroll', popScrollEvent);
+      scrollTarget.removeEventListener('scroll', scrollEvent);
     }
   }, []);
-  
+
   const closePop = () => {
     setPopLike(false);
   }
+
+  const tabSetting = () => {
+    if(likePopTabState) { // 열고싶은 탭
+      /* 제목 */
+      setCurrentTitleTabInfo(isMyProfile ? myProfileTabInfos.titleTab[likePopTabState.titleTab]
+        : notMyProfileTabInfos.titleTab[0])
+
+      /* 서브 탭 */
+      setCurrentSubTabInfo(
+        isMyProfile ? myProfileTabInfos.subTab[likePopTabState.subTabType][likePopTabState.subTab]
+          : notMyProfileTabInfos.subTab.rank[likePopTabState.subTab]
+      );
+    }else { // 디폴트 탭
+      setCurrentTitleTabInfo(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0])
+      setCurrentSubTabInfo(isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]);
+    }
+  }
+
+  useEffect(() => {
+    if(!isLastPage && showList.length > 0) {
+      removeScrollEvent();
+      addScrollEvent();
+    }
+  }, [showList])
 
   useEffect(() => {
     if(!isLastPage && currentSubTabInfo.key) {
@@ -198,7 +240,7 @@ const LikePopup = (props) => {
   }, [isLastPage])
 
   useEffect(() => {
-    addScrollEvent()
+    tabSetting()
     return () => removeScrollEvent();
   },[])
 
@@ -209,7 +251,7 @@ const LikePopup = (props) => {
           {titleTabInfoList.map((data,index) => {
             return (
               <li key={index}
-                  className={currentTitleTabInfo.key === data.key ? 'active' : ''}
+                  className={currentTitleTabInfo?.key === data.key ? 'active' : ''}
                   onClick={() => titleTabClick(data)}
               >{data.value}</li>
             )
@@ -217,13 +259,13 @@ const LikePopup = (props) => {
         </ul>
         : <h2>{titleTabInfoList.length > 0 && titleTabInfoList[0].value}</h2>
       }
-      <div className="listContainer" ref={likeContainerRef}>
+      <div className="listContainer">
         {isMyProfile ?
           <ul className="tabmenu">
-            {myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
+            {currentTitleTabInfo?.key && myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
                 <div className="likeTab" key={index}>
-                  <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
+                  <li className={currentSubTabInfo?.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
                 </div>
@@ -232,10 +274,10 @@ const LikePopup = (props) => {
           </ul>
           :
           <ul className="tabmenu">
-            {notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
+            {currentTitleTabInfo?.key && notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
               return (
                 <div className="likeTab" key={index}>
-                  <li className={currentSubTabInfo.key === data.key ? 'active' : ''}
+                  <li className={currentSubTabInfo?.key === data.key ? 'active' : ''}
                       onClick={() => subTabClick(data)}
                   >{data.value}</li>
                 </div>
@@ -245,7 +287,7 @@ const LikePopup = (props) => {
           </ul>
         }
         {showList.length > 0 ?
-        <div className="listWrap">
+        <div className="listWrap" ref={likeContainerRef}>
           {showList.map((list,index) => {
             return (
               <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => goProfileAction(list.memNo)}>
@@ -256,7 +298,8 @@ const LikePopup = (props) => {
                       <div className="nick">{list.nickNm}</div>
                       {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
                       <div className="listItem">
-                        <div className="like">{list.listenTime}</div>
+                        {list.good && <DataCnt type={"goodCnt"} value={list.good}/>}
+                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}                        
                       </div>
                     </div>
                     <div className="back">
@@ -290,7 +333,7 @@ const LikePopup = (props) => {
         <NoResult />
         }
       </div>
-      <button className="popClose" onClick={closePop}></button>      
+      <button className="popClose" onClick={closePop}></button>
     </section>
   )
 }

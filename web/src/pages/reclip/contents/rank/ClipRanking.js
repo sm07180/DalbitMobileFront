@@ -34,7 +34,7 @@ const ClipRanking = () => {
     }
 
     const todayInfo = await Api.getClipRankingList({ ...searchInfo, })
-    const yesterdayInfo = await Api.getClipRankingList({ ...searchInfo, rankingDate: moment(searchInfo.rankingDate).subtract(1, 'days').format('YYYY-MM-DD'), records: 3 });
+    const yesterdayInfo = await Api.getClipRankingList({ ...searchInfo, rankingDate: moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD'), records: 3 });
     let topInfo = [];
 
     if ( yesterdayInfo.code === 'C001' && yesterdayInfo.data.paging.total > 0 ) {
@@ -49,15 +49,25 @@ const ClipRanking = () => {
   }
 
   const handleTabmenu = (value) => {
-    setSearchInfo({ ...searchInfo, rankType: (parseInt(value) + 1) });
+    const targetType = parseInt(value) + 1;
+    let targetDate = targetType !== 1 ? moment().day(1).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
+    window.scrollTo(0, 0);
+    setSearchInfo({ ...searchInfo, rankType: targetType, rankingDate: targetDate });
   };
 
   const playList = (e) => {
     e.preventDefault();
+    const { clipNo, type } = e.currentTarget.dataset;
+    let tempType = type;
+    if (type === undefined) tempType = 1;
     if (rankClipInfo.list.length > 0) {
-      const clipParam = { clipNo: rankClipInfo.list[0].clipNo, gtx: context, history, type: 'all' };
+      const clipParam = { clipNo: clipNo, gtx: context, history, type: 'all' };
+      let playListInfoData = {
+        ...searchInfo,
+        rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate)
+      }
+      sessionStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
       NewClipPlayerJoin(clipParam);
-      context.action.updateDateState(searchInfo.rankingDate);
     }
   };
 
@@ -69,15 +79,15 @@ const ClipRanking = () => {
     <div id="clipRanking">
       <Header title='클립 랭킹' type='back' />
       <Tabmenu tabList={tabmenu} targetIndex={searchInfo.rankType - 1} changeAction={handleTabmenu}/>
-      {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} />}
+      {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} playAction={playList}/>}
       {rankClipInfo.paging.total > 3 ?
         <>
           <section className="listWrap">
             <div className="listAll">
               <span>지금 가장 인기있는 클립을 들어보세요!</span>
-              <button onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
+              <button data-clip-no={rankClipInfo.topInfo[1].list[0].clipNo} onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
             </div>
-            <RankingList data={rankClipInfo.list} />
+            <RankingList data={rankClipInfo.list} playAction={playList}/>
           </section>
         </>
         :

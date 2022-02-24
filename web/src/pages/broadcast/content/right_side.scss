@@ -56,9 +56,9 @@
     .subTitle {
       position: relative;
       margin: 20px 0 10px;
-      font-size: 14px;
-      font-weight: $bold;
-      color: $darkGray;
+      font-size: 16px;
+      font-weight: 600;
+      color: #202020;
     }
     .tabTitle {
       position: relative;
@@ -349,6 +349,7 @@
     border-radius: 10px;
     box-sizing: border-box;
     box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.2);
+    z-index: 3;
 
     //방송방 받은 선물내역 별도 스타일 적용
     .tabTitle {

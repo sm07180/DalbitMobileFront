@@ -17,7 +17,7 @@ import {Context} from "context";
 import {Hybrid} from "context/hybrid";
 
 const Exchange = (props) => {
-  const {isIOS} = props;
+  const {isIOS, tabMenuRef} = props;
 
   const origin_depositTabmenu = ['신규 정보','최근 계좌','내 계좌'];
 
@@ -165,7 +165,7 @@ const Exchange = (props) => {
   //환전 계산하기
   const exchangeCalc = async (sendByeolCnt = 0) => {
     if (sendByeolCnt < 570) {
-      context.action.alert({msg: '환전 신청별은\n570개 이상이어야 합니다.'});
+      context.action.alert({msg: '환전 신청 별을\n570개 이상 입력해야 합니다.'});
     } else if (sendByeolCnt > byeolTotCnt) {
       context.action.alert({msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'})
       return;
@@ -332,8 +332,16 @@ const Exchange = (props) => {
       context.action.alert({msg: message});
     }
   }
+  const getByeolCnt = async () => {
+    const {result, message, data} = await Api.profile({memNo: profile?.memNo});
 
-  useEffect(()=>{
+    if(result ==='success') {
+      context.action.updateProfile(data);
+    }
+  }
+
+  useEffect(() => {
+    getByeolCnt();  //profile Api에서 별 갯수 가져옴;
     getMyAccountData(); //내 계좌 정보 조회
     recentExchangeData(); //최근 환전신청 내역 조회
   },[]);
@@ -410,7 +418,7 @@ const Exchange = (props) => {
           <button className='exchange'
                   onClick={() =>
                     isIOS ?
-                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange`) :
+                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange=1`) :
                       history.push('/wallet/exchange')}>
             달 교환
           </button>
@@ -447,7 +455,7 @@ const Exchange = (props) => {
         {depositType === depositTabmenu[0] ?
           /*신규 정보*/
           <DepositInfo exchangeSubmit={exchangeSubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}
-                      uploadSingleFile={uploadSingleFile} parentAgree={parentAgree}
+                      uploadSingleFile={uploadSingleFile} parentAgree={parentAgree} tabMenuRef={tabMenuRef}
           />
           : depositType === depositTabmenu[1] ?
             /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/

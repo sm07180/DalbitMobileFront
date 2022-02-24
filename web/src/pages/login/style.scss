@@ -71,6 +71,7 @@ $btnDisable : #FFD8E4;
       padding: 0 7%;
       text-align: center;
       button {
+        position: relative;
         @include flex(center, center);
         width: 100%;
         height: 48px;
@@ -81,6 +82,8 @@ $btnDisable : #FFD8E4;
         @include font(15px, 400, #202020);
         box-sizing: border-box;
         img {
+          @include position-top-left(50%, 16px);
+          transform: translateY(-50%);
           display: inline-block;
           width: 30px; height: 30px;
         }

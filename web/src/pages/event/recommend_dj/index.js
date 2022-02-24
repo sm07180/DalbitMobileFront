@@ -213,7 +213,7 @@ export default function RecommendDj() {
 
   return (
     <div id="recommendDj">
-      <Header title="달빛 대표 DJ를 추천합니다" type="back">
+      <Header title="달라 대표 DJ를 추천합니다" type="back">
         <div className="buttonGroup">
           <button className="btn__refresh" onClick={onRefresh}>
             <img

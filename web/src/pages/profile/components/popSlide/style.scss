@@ -83,7 +83,7 @@
             height:18px;
             border-radius:50%;
             background-image:linear-gradient(to bottom,#FF3C7B,#FF8565);
-            @include font(11px,500,white);
+            @include font(11px,$SemiBold,white);
           }
           .listContent {
             min-width:0;
@@ -93,6 +93,7 @@
             .nick {
               @include font(13px,500,#303030);
               @include fontCut;
+              margin-bottom: 6px;
             }
             .date {
               @include font(11px,400,#999);
@@ -101,15 +102,15 @@
           .back {
             margin-left:auto;
             button {
-              width:76px;
-              line-height: 34px;
-              background-color: $MAINCOLOR;
-              @include border($MAINCOLOR,100px);
-              @include font(14px,500,white);
+              width:62px;
+              line-height: 30px;
+              background-color: $BLACKBTNCOLOR;
+              @include border($BLACKBTNCOLOR,100px);
+              @include font(12px,500,white);
               &.isFan {
                 background-color: white;
                 @include border(#E3E3E3,100px);
-                @include font(14px,500,#303030);
+                @include font(12px,500,#303030);
               }
             }
           }
@@ -210,8 +211,8 @@
         button {
           flex:1;
           line-height:46px;
-          background-color:$MAINCOLOR;
-          @include border($MAINCOLOR,16px);
+          background-color:$DOWNCOLOR;
+          @include border($DOWNCOLOR,16px);
           @include font(16px,500,white);
           &.cancel {
             margin-right:8px;
@@ -298,8 +299,8 @@
       button {
         flex:1;
         line-height:46px;
-        background-color:$MAINCOLOR;
-        @include border($MAINCOLOR,16px);
+        background-color:$DOWNCOLOR;
+        @include border($DOWNCOLOR,16px);
         @include font(16px,500,white);
         &.cancel {
           margin-right:8px;

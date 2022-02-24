@@ -132,7 +132,7 @@
                 width: 100%; height: 48px;
                 border-radius: 16px;
                 @include font(16px, 500, #FFFFFF);
-                background-color: #FF3C7B;
+                background-color: $DOWNCOLOR;
                 box-sizing: border-box;
             }
         }

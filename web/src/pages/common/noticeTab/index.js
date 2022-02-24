@@ -21,7 +21,7 @@ export default function noticeTab() {
     if (type === 'alarm') {
       history.push('/menu/alarm')
     } else if (type === 'notice') {
-      history.push('/customer/notice')
+      history.push('/oldnotice')
     } else if (type === 'personal') {
       if (personalCount > 0) {
         history.push('/customer/qnaList')

@@ -113,7 +113,7 @@ const SettingForbid = () => {
                    onClick={focusState} data-value={index} onChange={onChange}
             />
           </label>
-          {(buttonState !== index && word[index] !== "") ? (<button type="button" className="inputBtn" onClick={() => removeInput(index)}>삭제</button>)
+          {(buttonState !== index && word[index] !== "") ? (<button type="button" className="inputBtn delete" onClick={() => removeInput(index)}>삭제</button>)
             : (buttonState === index || word[index] === "") && (<button type="button" className="inputBtn" onClick={writeValidate}>저장</button>)
           }
         </div>

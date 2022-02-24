@@ -11,6 +11,7 @@
 }
 
 #rankingBenefit {
+  @include flex($fd:column);
   .tabmenu {
     position: sticky;
     top: $MOBILE-TABTOP;

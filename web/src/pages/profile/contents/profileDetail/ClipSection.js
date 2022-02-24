@@ -34,7 +34,10 @@ const ClipSection = (props) => {
         <div className="clipContent">
           {clipData.list.map((item, index) => {
             return (
-              <ListColumn photo={item.bgImg.thumb336x336} key={index} onClick={() => listenClip(item.clipNo)}>
+              <ListColumn photo={item.bgImg.thumb500x500} key={index}
+                          onClick={() => listenClip(item.clipNo)}
+                          style={{cursor: 'pointer'}}
+              >
                 <div className="title">{item.title}</div>
                 <div className="info">
                   <DataCnt type={`goodCnt`} value={item.goodCnt}/>

@@ -25,7 +25,6 @@ const BroadcastTitle = () => {
   const selectTitle = (e) => {
     let selectVal = e.currentTarget.innerText;
     const {targetIndex} = e.currentTarget.dataset;
-    console.log(targetIndex);
     setTitleSelect({
       state: true,
       val: selectVal,
@@ -45,7 +44,7 @@ const BroadcastTitle = () => {
       if (res.result === "success") {
         toastMessage("방송제목이 등록 되었습니다.")
         setTitleList(res.data.list);
-        setTitleSelect({...titleSelect, val: "", index: -1});
+        setTitleSelect({...titleSelect, val: ""});
       }
     }
   }
@@ -59,7 +58,7 @@ const BroadcastTitle = () => {
     if(res.result === "success") {
       toastMessage("방송제목이 삭제 되었습니다.")
       setTitleList(res.data.list);
-      setTitleSelect({...titleSelect, val: "", index: -1});
+      setTitleSelect({state: false, val: "", index: -1});
     }
   }
 
@@ -68,6 +67,20 @@ const BroadcastTitle = () => {
     const res = await API.getBroadcastOption({optionType: 1});
     if(res.result === "success") {
       setTitleList(res.data.list); //contents, idx
+    }
+  }
+
+  //방송 제목 수정
+  const fetchModifyData = async () => {
+    const res = await API.modifyBroadcastOption({
+      optionType: 1,
+      idx: titleSelect.index,
+      contents: titleSelect.val
+    })
+    if(res.result === "success") {
+      toastMessage("방송제목이 수정 되었습니다.")
+      setTitleList(res.data.list);
+      setTitleSelect({...titleSelect, val: "", index: -1});
     }
   }
 
@@ -82,7 +95,7 @@ const BroadcastTitle = () => {
       <section className='titleInpuBox'>
         <p className='topText'>최대 3개까지 저장 가능</p>
         <TextArea max={20} list={titleList} setList={setTitleList} select={titleSelect} setSelect={setTitleSelect}
-                  fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData}/>
+                  fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
       </section>
       {titleList.length > 0 &&
       <section className='titleListBox'>
@@ -90,7 +103,7 @@ const BroadcastTitle = () => {
         <div className='radioWrap'>
           {titleList.map((item, index) => {
             return (
-              <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectTitle}/>
+              <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectTitle} titleSelect={titleSelect} setTitleSelect={setTitleSelect}/>
             )
           })}
         </div>

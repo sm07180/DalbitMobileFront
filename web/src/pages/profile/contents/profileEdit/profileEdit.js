@@ -34,7 +34,10 @@ const ProfileEdit = () => {
   const [cropOpen, setCropOpen] = useState(false);
 
   //이미지 팝업
-  const [showSlide, setShowSlide] = useState({visible: false, imgList:[]});
+  const [showSlide, setShowSlide] = useState({visible: false, imgList:[], initialSlide : 0});
+
+  //상단 스와이퍼 객체 가져오기 (TowSwiper)
+  const topSwiperRef = useRef(null);
 
   //프로필 정보
   const initProfileInfo = useRef(null);
@@ -69,11 +72,15 @@ const ProfileEdit = () => {
     }
   }, [profile])
 
+  const showSlideClear = useCallback((p)=>{
+    setShowSlide({visible: false, imgList: [], initialSlide: 0});
+  },[]);
+
   const getMyInfo = async () => {
     const {result, data, message} = await Api.profile({
       params: {memNo: context.token.memNo}
     })
-    setShowSlide({visible: false, imgList: []});
+    showSlideClear();
     if (result === 'success') {
       context.action.updateProfile(data);
     }
@@ -84,7 +91,7 @@ const ProfileEdit = () => {
     const {result, data, message} = await Api.postSetLeaderProfileImg({idx});
 
     if (result === 'success') {
-      setShowSlide({visible: false, imgList: []});
+      showSlideClear();
       getMyInfo();
       context.action.toast({msg: '선택 이미지로 대표 이미지가 변경되었습니다.'});
     } else {
@@ -110,7 +117,7 @@ const ProfileEdit = () => {
       context.action.updateProfile({...profile, ...data});
       context.action.alert({
         msg: `저장되었습니다.`,
-        callback: finished ? ()=> history.push('/myProfile') : ()=>{}
+        callback: finished ? () => history.replace('/myProfile') : () => {}
       });
     } else {
       context.action.alert({title: 'Error', msg: message});
@@ -162,7 +169,7 @@ const ProfileEdit = () => {
         const {result, message} = res;
         context.action.toast({msg: message});
 
-        setShowSlide({visible: false, imgList: []});
+        showSlideClear();
         if (result === 'success') {
           getMyInfo(); //프로필 정보 갱신
         } else {
@@ -207,7 +214,7 @@ const ProfileEdit = () => {
   };
 
   //이미지 팝업 띄우기
-  const showImagePopUp = (data = null, type='')=> {
+  const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
     if(!data) return;
 
     let resultMap = [];
@@ -221,7 +228,7 @@ const ProfileEdit = () => {
       resultMap.push({idx: data.idx, ...data.profImg});
     }
 
-    setShowSlide({visible:true, imgList: resultMap });
+    setShowSlide({visible:true, imgList: resultMap, initialSlide });
   };
 
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
@@ -229,11 +236,7 @@ const ProfileEdit = () => {
     if (image) {
       if (image.status === false) {
         context.action.alert({
-          status: true,
-          type: 'alert',
-          content: image.content,
-          callback: () => {
-          }
+          msg: '지원하지 않는 파일입니다.'
         })
       } else {
         photoUpload();// 사진 업로드
@@ -242,26 +245,36 @@ const ProfileEdit = () => {
   }, [image]);
 
   const emptySwiperItems = useMemo(() => Array(10 - (profileInfo?.profImgList?.length || 0)).fill(''), [profileInfo]);
-  const topSwiperList = useMemo(() => {
-    if (profile?.profImgList?.length > 0) {
-      return profile?.profImgList.concat([]).filter((data, index)=> !data.isLeader);
+
+  /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
+  const profileDataNoReader = useMemo(() => {
+    if (profile?.profImgList?.length > 1) {
+      return {...profile, profImgList: profile?.profImgList.concat([]).filter((data, index)=> !data.isLeader)};
     } else {
-      return [];
+      return profile;
     }
-  },[profile?.profImgList]);
+  },[profile]);
 
   return (
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'}>
+            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
               <button className='saveBtn'
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='topSwiper' onClick={()=> showImagePopUp(topSwiperList, 'profileList')}>
+            <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
               {profileInfo?.profImgList?.length > 1 ?
-                <TopSwiper data={{...profile, profImgList: topSwiperList}}/>
+                <TopSwiper data={profileDataNoReader} disabledBadge={true}
+                           swiperParam={{
+                             on: {
+                               init: function () {
+                                 topSwiperRef.current = this;
+                               }
+                             }
+                           }}
+                />
                 :
                 <div className="nonePhoto"
                      onClick={(e) => {
@@ -292,7 +305,7 @@ const ProfileEdit = () => {
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
                         <img src={data?.profImg?.thumb100x100} alt=""
-                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList')}/>
+                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
                         <button className="cancelBtn"
                                 onClick={() => {
                                   context.action.confirm({
@@ -342,7 +355,7 @@ const ProfileEdit = () => {
                           nickNameRef.current.focus();
                         }}/>
               </InputItems>
-              <InputItems title="휴대폰번호" button="인증하기" onClick={getAuth}>
+              <InputItems title="휴대폰번호" button="인증하기" buttonClass={"point"} onClick={getAuth}>
                 <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
               </InputItems>
               <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
@@ -372,7 +385,7 @@ const ProfileEdit = () => {
             </section>
 
             <input ref={inputRef} type="file" className='blind'
-                   accept="image/jpg, image/jpeg, image/png, image/gif"
+                   accept="image/jpg, image/jpeg, image/png"
                    onChange={(e) => {
                      e.persist();
                      setEventObj(e);
@@ -392,10 +405,11 @@ const ProfileEdit = () => {
             )}
 
             {showSlide?.visible &&
-            <ShowSwiper imageList={showSlide?.imgList || []} popClose={setShowSlide} showTopOptionSection={true}
+            <ShowSwiper imageList={showSlide?.imgList || []} popClose={showSlideClear} showTopOptionSection={true}
                         readerButtonAction={readerImageEdit}
                         deleteButtonAction={(idx) =>
                           context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
+                        swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
             }
           </div>

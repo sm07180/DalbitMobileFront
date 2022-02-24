@@ -34,7 +34,7 @@ export default function broadRouletteEvent() {
 
         <img
           src={`${IMG_SERVER}/event/broad_roulette/210308/content_img05.png`}
-          alt=" 콘텐츠에 힘이 되기를! 앞으로 유익하고 재밌게 이용해주셨으면 좋겠습니다! 오늘도 달빛라이브! 감사합니다."
+          alt=" 콘텐츠에 힘이 되기를! 앞으로 유익하고 재밌게 이용해주셨으면 좋겠습니다! 오늘도 달라! 감사합니다."
         />
       </Content>
     </Content>

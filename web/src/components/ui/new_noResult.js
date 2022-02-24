@@ -9,7 +9,7 @@ export default function NoResult(props) {
   return (
     <ResultWrap>
       <div className="noResultWrap" style={height ? {minHeight: `${height}px`} : {minHeight: '300px'}}>
-        <img src={NoResultIcon} alt="" />
+        {/* <img src={NoResultIcon} alt="" /> */}
         <span
           className={`${type === 'default' ? 'noResult' : ''}`}
           dangerouslySetInnerHTML={{__html: Utility.nl2br(text)}}></span>

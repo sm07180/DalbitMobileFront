@@ -256,7 +256,7 @@ const ProfileWrite = () => {
           {type === 'feed' ?
             <CheckList text="상단고정" checkStatus={formState.others===1}
                        onClick={()=>{setFormState({...formState, others:formState.others === 1? 0: 1})}}/>
-            : ( (action==='write' && !isMyProfile || action==='modify') &&
+            : ( action==='write' && (!isMyProfile || action==='modify') &&
               <CheckList text="비밀글" checkStatus={formState.others===0}
                          onClick={() => {
                            action !== 'modify' &&
@@ -269,7 +269,7 @@ const ProfileWrite = () => {
 
         {/*파일 등록*/}
         <input ref={inputRef} type="file" className='blind'
-               accept="image/jpg, image/jpeg, image/png, image/gif"
+               accept="image/jpg, image/jpeg, image/png"
                onChange={(e) => {
                  e.persist();
                  setEventObj(e);

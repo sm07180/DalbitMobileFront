@@ -17,7 +17,7 @@ const ClipList = (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    spaceBetween: 12,
+    spaceBetween: 8,
   }
 
   // 클립 듣기
@@ -40,7 +40,7 @@ const ClipList = (props) => {
             <div key={index} data-clip-no={list.clipNo} onClick={playClip}>
               <div className="listColumn">
                 <div className="photo">
-                  <img src={list.bgImg.thumb150x150} />
+                  <img src={list.bgImg.thumb190x190} />
                 </div>
                   <p className='title'>{list.title}</p>
                   <p className='nick'>{list.nickName}</p>
