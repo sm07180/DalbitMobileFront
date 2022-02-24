@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useContext} from 'react'
+import React, {useEffect, useState, useRef, useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import {authReq} from 'pages/self_auth'
@@ -27,8 +27,43 @@ const EventWelcome = () => {
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
   const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
   
-  const nowTime = moment().format('YYMMDD')
-  const eStartTime = '220201'
+  const colorInfo = useMemo(() => {
+    let bgColor = '';
+    let btnColor = '';
+    const currentMonth = parseInt(moment().format('MM'));
+    switch (currentMonth) {
+      case 12:
+      case 1:
+      case 2:
+        bgColor = '#4184FF';
+        btnColor = '#14389D';
+        break;
+      case 3:
+      case 4:
+      case 5:
+        bgColor = '#FF7F97';
+        btnColor = '#E93667';
+        break;
+      case 6:
+      case 7:
+      case 8:
+        bgColor = '#25A5FF';
+        btnColor = '#005088';
+        break;
+      case 9:
+      case 10:
+      case 11:
+        bgColor = '#FF9A38';
+        btnColor = '#FF6600';
+        break;
+    }
+
+    return {
+      bgUrl: currentMonth,
+      bgColor,
+      btnColor
+    }
+  }, []);
 
   // 조회 API
   // 0. 이벤트 자격 여부
@@ -170,15 +205,11 @@ const EventWelcome = () => {
   }, [tabContent.name])
 
   return (
-    <div id="welcome">
+    <div id="welcome" style={{background: `${colorInfo.bgColor}`}}>
       <Header title="이벤트" type="back" />
-      {nowTime >= eStartTime ?
-      <img src={`${IMG_SERVER}/event/welcome/welcomeTop-2.png`} className="bgImg" />
-      :
-      <img src={`${IMG_SERVER}/event/welcome/welcomeTop.png`} className="bgImg" />
-      }
+      <img src={`${IMG_SERVER}/event/welcome/welcomeTop-${colorInfo.bgUrl}.png`} className="bgImg" />
       <Tabmenu tab={tabContent.name}>
-        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} />
+        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} btnColor={colorInfo.btnColor}/>
       </Tabmenu>
       <div className="step">
         {stepItemInfo.length > 0 &&

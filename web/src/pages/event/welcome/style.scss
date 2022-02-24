@@ -61,6 +61,21 @@
             height: 21px;
           }
         }
+        button[data-btn="#E93667"] {
+          &.active {
+            background-color: #E93667;
+          }
+        }
+        button[data-btn="#005088"] {
+          &.active {
+            background-color: #005088;
+          }
+        }
+        button[data-btn="#FF6600"] {
+          &.active {
+            background-color: #FF6600;
+          }
+        }
       }
       &.fixed {
         position: fixed;
