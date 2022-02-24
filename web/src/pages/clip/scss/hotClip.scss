@@ -25,7 +25,7 @@
     display: inline-block;
     width: 112px;
     height: 112px;
-    margin-right: 8px;
+    margin-right: 16px;
     &::before {
       content: "";
       @include position-top-left;
