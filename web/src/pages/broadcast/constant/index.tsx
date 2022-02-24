@@ -24,7 +24,7 @@ export enum tabType {
   FILTER,
   MINI_GAME,
   ROULETTE,
-  VOTE
+  VOTE,
 }
 
 export const CHAT_MAX_COUNT = 500;

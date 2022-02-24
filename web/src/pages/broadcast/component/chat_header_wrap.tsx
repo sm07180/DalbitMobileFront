@@ -531,69 +531,101 @@ export default function ChatHeaderWrap(prop: any) {
           displayWrapRef={displayWrapRef}
         />
       </div>
-      {broadcastState.miniGameInfo.status === true &&
-        ((roomOwner === false &&
-          broadcastState.miniGameInfo.isFree === false) ||
-          roomOwner === true) && (
-          <div className={`mini_game_section`}>
-            <button
-              className="icon"
-              onClick={(e) => {
-                e.stopPropagation();
+      <div className="mini_game_section">
+        {broadcastState.miniGameInfo.status === true &&
+          ((roomOwner === false &&
+            broadcastState.miniGameInfo.isFree === false) ||
+            roomOwner === true) && (
+            <div className={`mini_game_wrap`}>
+              <button
+                className="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
 
-                dispatchDimLayer({
-                  type: "ROULETTE",
-                  others: {
-                    roomOwner,
-                  },
-                });
-              }}
-            >
-              <img src={RouletteIcon} alt="미니게임" />
-            </button>
-            {roomOwner === true && (
-              <div className={`mini_game_slide`}>
-                <button
-                  onClick={() => {
-                    broadcastAction.setRightTabType &&
-                      broadcastAction.setRightTabType(tabType.ROULETTE);
-                  }}
-                >
-                  <img src={SettingIcon} alt="미니게임 세팅" />
-                </button>
-                <button
-                  onClick={() => {
-                    globalAction.setAlertStatus &&
-                      globalAction.setAlertStatus({
-                        status: true,
-                        type: "confirm",
-                        title: "종료하기",
-                        content:
-                          "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
-                        callback: async () => {
-                          const { result, data, message } = await miniGameEnd({
-                            roomNo: roomNo,
-                            gameNo: MiniGameType.ROLUTTE,
-                            rouletteNo: broadcastState.miniGameInfo.rouletteNo,
-                            versionIdx: broadcastState.miniGameInfo.versionIdx,
-                          });
+                  dispatchDimLayer({
+                    type: "ROULETTE",
+                    others: {
+                      roomOwner,
+                    },
+                  });
+                }}
+              >
+                <img src={RouletteIcon} alt="미니게임 룰렛" />
+              </button>
+              {roomOwner === true && (
+                <div className={`mini_game_slide`}>
+                  <button
+                    onClick={() => {
+                      broadcastAction.setRightTabType &&
+                        broadcastAction.setRightTabType(tabType.ROULETTE);
+                    }}
+                  >
+                    <img src={SettingIcon} alt="미니게임 세팅" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      globalAction.setAlertStatus &&
+                        globalAction.setAlertStatus({
+                          status: true,
+                          type: "confirm",
+                          title: "종료하기",
+                          content:
+                            "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
+                          callback: async () => {
+                            const { result, data, message } = await miniGameEnd({
+                              roomNo: roomNo,
+                              gameNo: MiniGameType.ROLUTTE,
+                              rouletteNo: broadcastState.miniGameInfo.rouletteNo,
+                              versionIdx: broadcastState.miniGameInfo.versionIdx,
+                            });
 
-                          if (result === "success") {
-                            broadcastAction.setMiniGameInfo &&
-                              broadcastAction.setMiniGameInfo({
-                                status: false,
-                              });
-                          }
-                        },
-                      });
-                  }}
-                >
-                  <img src={CloseIcon} alt="미니게임 삭제" />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+                            if (result === "success") {
+                              broadcastAction.setMiniGameInfo &&
+                                broadcastAction.setMiniGameInfo({
+                                  status: false,
+                                });
+                            }
+                          },
+                        });
+                    }}
+                  >
+                    <img src={CloseIcon} alt="미니게임 삭제" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        }
+        <div className="mini_game_wrap">
+          <button 
+            onClick={() => {
+              broadcastAction.setRightTabType &&
+                broadcastAction.setRightTabType(tabType.VOTE);
+            }}
+          >
+            <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
+          </button>
+          {roomOwner === true && (
+            <div className={`mini_game_slide`}>
+              <button
+                onClick={() => {
+                  globalAction.setAlertStatus &&
+                    globalAction.setAlertStatus({
+                      status: true,
+                      type: "confirm",
+                      title: "종료하기",
+                      content:
+                        "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다."
+                    });
+                }}
+              >
+                <img src={CloseIcon} alt="미니게임 삭제" />
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      
       <div className="gotomoon-section"/>
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
@@ -887,66 +919,73 @@ const ChatHeaderWrapStyled = styled.div`
     display: flex;
     padding-top: 5px;
   }
-
-  .mini_game_section {
-    display: flex;
+  .mini_game_section{
+    display:flex;
+    flex-direction: column;
+    align-items:flex-start;
     position: absolute;
     left: 16px;
     top: 190px;
-    background-color: black;
-    border-radius: 32px;
-    z-index: 1;
-
-    & > .icon {
-      & > img {
-        width: 62px;
-        height: 62px;
-      }
-    }
-
-    & > .mini_game_slide {
+    .mini_game_wrap {
       display: flex;
-      overflow-x: hidden;
-
-      & > button:first-child {
-        margin-left: 6px;
+      background-color: black;
+      border-radius: 32px;
+      z-index: 1;
+      & + .mini_game_wrap{
+        margin-top: 8px;
       }
-
-      & > button:last-child {
-        margin-right: 6px;
-      }
-
-      &.in {
-        width: 80px;
-        animation: fadeIn 0.4s;
-      }
-
-      &.out {
-        width: 0px;
-        animation: fadeOut 0.4s;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          width: 0px;
+      & > .icon {
+        & > img {
+          width: 62px;
+          height: 62px;
         }
-
-        100% {
+      }
+  
+      & > .mini_game_slide {
+        display: flex;
+        overflow-x: hidden;
+  
+        & > button:first-child {
+          margin-left: 6px;
+        }
+  
+        & > button:last-child {
+          margin-right: 6px;
+        }
+  
+        &.in {
           width: 80px;
+          animation: fadeIn 0.4s;
         }
-      }
-
-      @keyframes fadeOut {
-        0% {
-          width: 80px;
-        }
-
-        100% {
+  
+        &.out {
           width: 0px;
+          animation: fadeOut 0.4s;
+        }
+  
+        @keyframes fadeIn {
+          0% {
+            width: 0px;
+          }
+  
+          100% {
+            width: 80px;
+          }
+        }
+  
+        @keyframes fadeOut {
+          0% {
+            width: 80px;
+          }
+  
+          100% {
+            width: 0px;
+          }
         }
       }
     }
   }
+  
 
   .moon-section {
     position: absolute;
