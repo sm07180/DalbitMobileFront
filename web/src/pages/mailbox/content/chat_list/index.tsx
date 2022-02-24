@@ -1,12 +1,10 @@
-import React, {ReactNode, useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 //util
 import {debounceFn, getWindowBottom, makeHourMinute} from "lib/common_fn";
 import Toggle from "common/toggle";
 
 //Context
-import {GlobalContext} from "context";
-import {MailboxContext} from "context/mailbox_ctx";
 import {mailBoxJoin} from "common/mailbox/mail_func";
 //api
 import {getMailboxChatList, PostMailboxChatUse} from "common/api";
@@ -14,15 +12,23 @@ import {getMailboxChatList, PostMailboxChatUse} from "common/api";
 import '../../mailbox.scss';
 import TitleButton from "../../../../components/ui/header/TitleButton";
 import {isMobileWeb} from "../../../../context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxIsMailboxOn,
+  setGlobalCtxSetToastStatus
+} from "../../../../redux/actions/globalCtx";
+import {setMailBoxChatListInit} from "../../../../redux/actions/mailBox";
 
 let totalPage = 1;
 
 export default function chatListPage() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const history = useHistory();
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
-  const { chatList } = mailboxState;
-  const { isMailboxOn } = globalState;
+  const {chatList} = mailboxState;
+  const {isMailboxOn} = globalState;
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   const makeMonthDay = (date) => {
@@ -52,7 +58,7 @@ export default function chatListPage() {
         <li
           className="chatListItem"
           onClick={() => {
-            mailBoxJoin(memNo, mailboxAction, globalAction, history);
+            mailBoxJoin(memNo, dispatch, history);
           }}
           key={idx}
         >
@@ -77,13 +83,13 @@ export default function chatListPage() {
       records: 20,
     });
     if (result === "success") {
-      const { list, paging, isMailboxOn } = data;
-      globalAction.setIsMailboxOn!(isMailboxOn);
-      mailboxAction.dispathChatList!({ type: "init", data: data.list });
+      const {list, paging, isMailboxOn} = data;
+      dispatch(setGlobalCtxIsMailboxOn(isMailboxOn));
+      dispatch(setMailBoxChatListInit(data.list));
       if (currentPage > 1) {
-        mailboxAction.dispathChatList!({ type: "init", data: mailboxState.chatList.concat(list) });
+        dispatch(setMailBoxChatListInit(mailboxState.chatList.concat(list)));
       } else {
-        mailboxAction.dispathChatList!({ type: "init", data: data.list });
+        dispatch(setMailBoxChatListInit(data.list));
       }
 
       if (paging) {
@@ -91,11 +97,10 @@ export default function chatListPage() {
       }
     } else {
       //실패
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
 
@@ -104,17 +109,16 @@ export default function chatListPage() {
       isMailboxOn: !isMailboxOn,
     });
     if (result === "success") {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
-      globalAction.setIsMailboxOn!(!isMailboxOn);
+      }));
+      dispatch(setGlobalCtxIsMailboxOn(!isMailboxOn));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   };
 
@@ -122,10 +126,10 @@ export default function chatListPage() {
     if (isMailboxOn) {
       history.push(`/mailbox/chat_new`);
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "메시지 기능을 사용하지 않는 상태이므로 새로운 메세지 기능을 사용할 수 없습니다.",
-      });
+      }));
     }
   };
 

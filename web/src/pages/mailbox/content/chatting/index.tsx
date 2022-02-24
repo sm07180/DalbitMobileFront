@@ -457,7 +457,7 @@ export default function chatting() {
     const info = JSON.parse(sessionStorage.getItem("chattingInfo")!);
     const { memNo } = info;
     if (history.action === "POP" && history.location.pathname.includes("/chatting/")) {
-      mailBoxJoin(memNo, dispatch, history, mailboxState.mailboxInfo?.memNo);
+      mailBoxJoin(memNo, dispatch, history);
     }
   }, [history.action]);
   // ---------------------------------------------------------------------------------------------

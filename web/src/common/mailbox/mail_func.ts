@@ -6,7 +6,8 @@ import {setGlobalCtxAlertStatus, setGlobalCtxMessage, setGlobalCtxUpdatePopup} f
 import {setMailBoxInfo} from "../../redux/actions/mailBox";
 
 /* 우체통 */
-export const goMail = ({dispatch, globalState, targetMemNo, targetMemLevel, history, isChatListPage=false}) => {
+export const goMail = ({dispatch, globalState, targetMemNo, targetMemLevel, history, isChatListPage=false}
+:{dispatch?:any, globalState?:any, targetMemNo?:any, targetMemLevel?:any, history?:any, isChatListPage?:boolean}) => {
 
   if(isDesktop()) {
     const socketUser = {
@@ -112,25 +113,3 @@ export function openMailboxBanAlert(helper: any) {
     history.push("/mailbox");
   }
 }
-
-// export function updateMailboxList(mailboxAction: any, globalAction: any) {
-//   const getMailboxList = async () => {
-//     const { result, data, message } = await getMailboxChatList({
-//       page: 1,
-//       records: 20,
-//     });
-//     if (result === "success") {
-//       if (location.pathname === "/mailbox") {
-//         mailboxAction.dispathChatList!({ type: "init", data: data.list });
-//       }
-//     } else {
-//       globalAction.setAlertStatus &&
-//         globalAction.setAlertStatus({
-//           status: true,
-//           type: "alert",
-//           content: message,
-//         });
-//     }
-//   };
-//   getMailboxList();
-// }
