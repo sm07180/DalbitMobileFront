@@ -111,15 +111,16 @@ const InviteEvent = () => {
             if (response.code === "0000") {
               context.action.alert({msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "});
               setSubmitCode(true);
-              // history.push("/event/invite")
             } else if (response.code === "C001") {
               context.action.alert({msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"});
             } else if (response.code === "C003") {
               context.action.alert({msg: "이미 초대코드를 등록 했습니다."});
             } else if (response.code === "C005") {
+              context.action.alert({msg: "가입 내역이 있습니다."});
+            } else if (response.code === "C006"){
               context.action.alert({msg: "이벤트 참여 대상자가 \n아닙니다."});
             } else {
-              context.action.alert({msg: response.message});
+              context.action.alert({msg: response.msg});
             }
           })
         }
