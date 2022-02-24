@@ -436,7 +436,7 @@ const MainPage = () => {
     fetchRankDataTop10(topRankType)
   },[topRankType])
 
-
+  console.log(mainState.myStar);
 
   // 페이지 시작
   let MainLayout = <>
@@ -464,7 +464,7 @@ const MainPage = () => {
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className='topSwiper'>
+      <section className={`topSwiper ${mainState.myStar.length > 0 ? "" : "nonfavorites"}`}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='favorites' ref={overRef}>
