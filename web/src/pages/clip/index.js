@@ -21,6 +21,7 @@ import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 
 import './scss/clipPage.scss';
+import {broadcastList} from "common/api";
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -36,7 +37,6 @@ const ClipPage = () => {
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
-
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
@@ -200,7 +200,7 @@ const ClipPage = () => {
       <div id="clipPage" >
         <Header title={'클립'} />
         <section className='hotClipWrap'>
-          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
+          <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.list.length > 0 ?
             <Swiper {...swiperParams}>
               {hotClipInfo.list.map((row, index) => {
@@ -219,6 +219,21 @@ const ClipPage = () => {
         </section>
         <section className='bannerWrap'>
           <BannerSlide type={10}/>
+        </section>
+        <section className='likeSubWrap'>
+          <CntTitle title={'🌟 좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
+          <Swiper {...swiperParams}>
+            {subjectType.map((list, index)=>{
+              return (
+                <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
+                  <div className="likeSub">
+                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
+                    <p>{list.cdNm}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </Swiper>
         </section>
         <section className="clipDrawer">
           {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
@@ -240,7 +255,7 @@ const ClipPage = () => {
           }
         </section>
         <section className="nowClipWrap">
-          <CntTitle title={'방금 떠오른 클립'} more={'/clip/detail/00'} />
+          <CntTitle title={'🌟 방금 떠오른 클립'} more={'/clip/detail/00'} />
           {popularClipInfo.length > 0 ?
             <Swiper {...nowSwiperParams}>
               {popularClipInfo.map((row, index) => {
@@ -262,21 +277,6 @@ const ClipPage = () => {
             :
             <div className="empty">데이터가 없습니다.</div>
           }
-        </section>
-        <section className='likeSubWrap'>
-          <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
-          <Swiper {...swiperParams}>
-            {subjectType.map((list, index)=>{
-              return (
-                <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
-                  <div className="likeSub">
-                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
-                    <p>{list.cdNm}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </Swiper>
         </section>
         <section className="clipList">
           <div className="cntTitle">
