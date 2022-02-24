@@ -43,8 +43,8 @@ const NoticePage = () => {
   }
 
   useEffect(() => {
-    fetchNewData(context.profile.memNo);
-  }, [alarmCount]);
+    // fetchNewData(context.profile.memNo);
+  }, []);
 
   return (
     <div id="notice">

@@ -73,7 +73,7 @@ const TitleButton = (props) => {
 
   useEffect(() => {
     fetchMypageNewCntData(context.profile.memNo);
-  }, [newCnt]);
+  }, []);
 
   switch (props.title) {
     case '메인':
