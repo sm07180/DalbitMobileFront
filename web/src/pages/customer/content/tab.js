@@ -4,7 +4,6 @@
  *
  */
 import React, {useState, useRef, useEffect, useContext} from 'react'
-import {Context} from 'context'
 //styled-component
 import styled from 'styled-components'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
@@ -12,11 +11,13 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 //context
 import {Store} from './index'
 import {useHistory} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
 
 export default props => {
   //----------------------------------------------------------------------------
   let history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const typeTab = history.location.pathname.split('/')[2]
 
@@ -45,7 +46,7 @@ export default props => {
   ]
 
   //makeContents
-  const {customHeader, token} = context || Room.context
+  const {customHeader, token} = globalState
   const makeContents = () => {
     if (tabInfo === null) return
     return tabInfo.map((list, index) => {

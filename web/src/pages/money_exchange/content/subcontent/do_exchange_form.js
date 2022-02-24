@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 
 // import {postImage} from 'common/api'
 import Api from 'context/api'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 // import DalbitSelectBox from 'common/ui/dalbit_selectbox'
 
@@ -25,9 +26,10 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //   }
 // }
 
-export default function MakeFormWrap({state, dispatch, inspection, bank}) {
+export default function MakeFormWrap({state, formDispatch, inspection, bank}) {
   // const [selectState, selectDispatch] = useReducer(selectReducer, initVal)
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [open, setOpen] = useState(false)
 
   const closeDaumPostCode = () => {
@@ -40,8 +42,8 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
 
     new window['daum'].Postcode({
       oncomplete: (data) => {
-        dispatch({type: 'fAddress', val: data.address})
-        dispatch({type: 'zoneCode', val: data.zonecode})
+        formDispatch({type: 'fAddress', val: data.address})
+        formDispatch({type: 'zoneCode', val: data.zonecode})
         element_layer.setAttribute('style', 'display: none;')
       },
       width: '100%',
@@ -86,12 +88,10 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
+      }))
       return
     }
     reader.readAsDataURL(target.files[0])
@@ -108,14 +108,12 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
               return v
             }
           })
-          dispatch({type: 'file', val: arr})
+          formDispatch({type: 'file', val: arr})
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
-            callback: () => {
-              context.action.alert({visible: false})
-            }
-          })
+          }))
         }
       }
     }
@@ -124,7 +122,7 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
     if (e.target.value.length > 20) {
       return false
     } else {
-      dispatch(obj)
+      formDispatch(obj)
     }
   }
   useEffect(() => {
@@ -158,7 +156,7 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
             {bank !== null && (
               <select
                 onChange={(e) => {
-                  dispatch({type: 'bank', val: e.target.value})
+                  formDispatch({type: 'bank', val: e.target.value})
                 }}>
                 {bank.map((v, idx) => {
                   return (
@@ -184,7 +182,7 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
               type="tel"
               value={state.account}
               className="formData__input--text"
-              onChange={(e) => dispatch({type: 'account', val: e.target.value})}
+              onChange={(e) => formDispatch({type: 'account', val: e.target.value})}
               placeholder="계좌번호를 입력해주세요 (숫자)"
             />
           </div>
@@ -196,7 +194,7 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
               type="tel"
               value={state.fSocialNo}
               className="formData__input--text"
-              onChange={(e) => dispatch({type: 'fSocial', val: e.target.value})}
+              onChange={(e) => formDispatch({type: 'fSocial', val: e.target.value})}
               placeholder="앞 6자리"
             />
             <span className="formData__input--line">-</span>
@@ -205,7 +203,7 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
               value={state.bSocialNo}
               id="bsocialNo"
               className="formData__input--text"
-              onChange={(e) => dispatch({type: 'bSocial', val: e.target.value})}
+              onChange={(e) => formDispatch({type: 'bSocial', val: e.target.value})}
               placeholder="뒤 7자리"
             />
           </div>
@@ -217,7 +215,7 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
               type="tel"
               value={state.phone}
               className="formData__input--text"
-              onChange={(e) => dispatch({type: 'phone', val: e.target.value})}
+              onChange={(e) => formDispatch({type: 'phone', val: e.target.value})}
               placeholder="숫자만 입력해주세요"
             />
           </div>

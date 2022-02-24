@@ -1,15 +1,17 @@
 /**
  * @title footer
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import ToggleBtn from './toggle-footer'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 //pages
 //---------------------------------------------------------------------
 export default props => {
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [show, setShow] = useState(false)
   //console.log(props.Ftype)
   const showing = () => {
@@ -25,7 +27,7 @@ export default props => {
   }, [])
 
   return (
-    <Footer className={context.state.isOnCast ? 'on-cast' : 'off-cast'}>
+    <Footer className={globalState.state.isOnCast ? 'on-cast' : 'off-cast'}>
       {show && (
         <Menu>
           {/* <button
@@ -38,25 +40,25 @@ export default props => {
           </button> */}
           <button
             onClick={() => {
-              context.action.updatePopup('TERMS', 'service')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'service']}));
             }}>
             서비스 이용약관
           </button>
           <button
             onClick={() => {
-              context.action.updatePopup('TERMS', 'privacy')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'privacy']}));
             }}>
             개인정보 취급방침
           </button>
           <button
             onClick={() => {
-              context.action.updatePopup('TERMS', 'youthProtect')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'youthProtect']}));
             }}>
             청소년 보호정책
           </button>
           <button
             onClick={() => {
-              context.action.updatePopup('TERMS', 'operating')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'operating']}));
             }}>
             운영정책
           </button>

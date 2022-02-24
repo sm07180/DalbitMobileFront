@@ -1,12 +1,15 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 import CloseBtn from '../../static/close_w_l.svg'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function detailPopup(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {setSettingPopup, modifyInfo} = props
-  const context = useContext(Context)
   const [addName, setAddName] = useState('')
   const [addBank, setAddBank] = useState('')
   const [addAccountNumber, setAccountNumber] = useState('')
@@ -17,7 +20,8 @@ export default function detailPopup(props) {
     setSettingPopup(false)
   }
   const deletePopup = () => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       //콜백처리
       callback: () => {
         setSettingPopup(false)
@@ -29,23 +33,27 @@ export default function detailPopup(props) {
         props.setModiBool(true)
       },
       //캔슬콜백처리
-      cancelCallback: () => {},
+      cancelCallback: () => {
+      },
       msg: '선택하신 환전 계좌정보를 삭제하시겠습니까?'
-    })
+    }))
   }
   const applyClick = () => {
     if (addName === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '예금주명을 입력해주세요'
-      })
+      }))
     } else if (addBank === '' || addBank.split(',')[0] == 0) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '은행을 선택해주세요'
-      })
+      }))
     } else if (addAccountNumber === '' || addAccountNumber.length < 9) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '계좌번호를 확인해주세요'
-      })
+      }))
     } else {
       setSettingPopup(false)
       props.setModiInfo({

@@ -3,13 +3,11 @@
  * @brief 공통 팝업
  * @use context.action.updatePopup('CHARGE')
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
 //components
-
 //contents
 import Terms from 'pages/common/terms'
 import Guidance from 'pages/common/guidance'
@@ -25,23 +23,25 @@ import AppDownAlrt from 'pages/common/appDownAlrt'
 
 import SpecialdjGoodsDetail from 'pages/common/specialdjGoodsDetail'
 import SpecialdjStarting from 'pages/common/specialdjStarting'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 //
 let popup = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //state
   const [layout, setLayout] = useState('')
-  //context
-  const context = useContext(Context)
 
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
-    switch (context.popup_code[0]) {
+    switch (globalState.popup_code[0]) {
       case 'TERMS': //---------------------------------------이용약관
         return (
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -53,7 +53,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -65,7 +65,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -77,7 +77,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -89,7 +89,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -101,7 +101,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -114,7 +114,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -127,7 +127,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -159,7 +159,7 @@ let popup = (props) => {
           <>
             <button
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false))
               }}>
               팝업닫기
             </button>
@@ -172,42 +172,42 @@ let popup = (props) => {
   }
   //useEffect
   useEffect(() => {
-    context.popup_visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
-  }, [context.popup_visible])
+    globalState.popup_visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
+  }, [globalState.popup_visible])
 
   useEffect(() => {
-    if (context.popup_code[0] == 'TERMS') {
+    if (globalState.popup_code[0] == 'TERMS') {
       setLayout('round terms')
-    } else if (context.popup_code[0] == 'CHARGE') {
+    } else if (globalState.popup_code[0] == 'CHARGE') {
       setLayout('round charge')
-    } else if (context.popup_code[0] === 'GUIDANCE') {
+    } else if (globalState.popup_code[0] === 'GUIDANCE') {
       setLayout('guidance')
-    } else if (context.popup_code[0] === 'AGREEDETAIL') {
+    } else if (globalState.popup_code[0] === 'AGREEDETAIL') {
       setLayout('agreeDetail')
-    } else if (context.popup_code[0] == 'RANK_POP' || context.popup_code[0] == 'ALARM') {
+    } else if (globalState.popup_code[0] == 'RANK_POP' || globalState.popup_code[0] == 'ALARM') {
       setLayout('rankPopup')
-    } else if (context.popup_code[0] == 'PROOF_SHOT') {
+    } else if (globalState.popup_code[0] == 'PROOF_SHOT') {
       setLayout('clipOpen')
-    } else if (context.popup_code[0] == 'SPECIAL_DJ_GOODS_DETAIL') {
+    } else if (globalState.popup_code[0] == 'SPECIAL_DJ_GOODS_DETAIL') {
       setLayout('clipOpen')
-    } else if (context.popup_code[0] == 'SPECIAL_DJ_STARTING') {
+    } else if (globalState.popup_code[0] == 'SPECIAL_DJ_STARTING') {
       setLayout('clipOpen')
-    } else if (context.popup_code[0] == 'CLIP_OPEN') {
+    } else if (globalState.popup_code[0] == 'CLIP_OPEN') {
       setLayout('clipOpen')
     } else {
       setLayout('square')
     }
-  }, [context.popup_code])
+  }, [globalState.popup_code])
 
   //---------------------------------------------------------------------
   return (
     <Popup>
-      {context.popup_visible && (
+      {globalState.popup_visible && (
         <Container>
           <Wrap className={layout}>{makePopupContents()}</Wrap>
           <Background
             onClick={() => {
-              context.action.updatePopupVisible(false)
+              dispatch(setGlobalCtxVisible(false))
             }}
           />
         </Container>

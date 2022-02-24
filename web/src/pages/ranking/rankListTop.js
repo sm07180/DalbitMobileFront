@@ -1,13 +1,10 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {Context} from 'context'
 import {RoomJoin} from 'context/room'
 import Util from 'components/lib/utility.js'
 
 //static
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
 import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
@@ -15,11 +12,10 @@ import time from './static/time_g_s.svg'
 import StarCountIcon from './static/circle_star_s.png'
 
 // constant
-import {RANK_TYPE, DATE_TYPE} from './constant'
+import {RANK_TYPE} from './constant'
 
 export default (props) => {
   const history = useHistory()
-  const context = useContext(Context)
 
   const {list, myMemNo, rankType, dateType} = props
 

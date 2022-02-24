@@ -1,6 +1,5 @@
-import React, {useState, useEffect, useCallback, useContext} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 import {PAGE_TYPE} from './constant'
@@ -8,12 +7,15 @@ import API from 'context/api'
 
 import Write from './content/write'
 import './package.scss'
-import message from 'pages/common/message'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
-  const global_ctx = useContext(Context)
   // 페이징 체크
   const [viewType, setViewType] = useState(0)
   const [timeCheck, setTimeCheck] = useState(true)
@@ -25,39 +27,40 @@ export default (props) => {
   const [eventCheck, setEventCheck] = useState(0)
 
   const handleStatus = () => {
-    if (global_ctx.token.isLogin !== true)
-      global_ctx.action.alert({
+    if (globalState.token.isLogin !== true)
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
-          global_ctx.action.alert(
-            history.push({
-              pathname: '/login',
-              state: {
-                state: 'event_package'
-              }
-            })
-          )
+          history.push({
+            pathname: '/login',
+            state: {
+              state: 'event_package'
+            }
+          })
         }
-      })
+      }))
   }
 
   const writeCheck = () => {
     if (timeCheck === true) {
       setViewType(PAGE_TYPE.WRITE)
     } else if (code === '1') {
-      global_ctx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: alertMessage,
         callback: () => {
           return
         }
-      })
+      }))
     } else if (code === '2') {
-      global_ctx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `${alertMessage}\n (누적 방송 시간 : ${time.airHour}시간)`,
         callback: () => {
           return
         }
-      })
+      }))
     }
   }
 
@@ -72,11 +75,11 @@ export default (props) => {
       setTime(data)
       setCode(code)
     }
-  }, [global_ctx])
+  }, [globalState])
 
   useEffect(() => {
     packageEventCheck()
-  }, [viewType, global_ctx.token.isLogin])
+  }, [viewType, globalState.token.isLogin])
 
   return (
     <Layout status="no_gnb">
@@ -94,12 +97,12 @@ export default (props) => {
               <img src="https://image.dalbitlive.com/event/package/20200904/new_img04.jpg" />
               <img src="https://image.dalbitlive.com/event/package/20200904/new_img05.jpg" />
 
-              {viewType === PAGE_TYPE.MAIN && global_ctx.token.isLogin === true ? (
+              {viewType === PAGE_TYPE.MAIN && globalState.token.isLogin === true ? (
                 <>
                   {(viewType === PAGE_TYPE.MAIN && code === '1') || code === '2' ? (
                     <>
                       <button onClick={() => writeCheck()}>
-                        <img src="https://image.dalbitlive.com/event/package/20200831/button_off.jpg" />
+                        <img src="https://image.dalbitlive.com/event/package/20200831/button_off.jpg"/>
                       </button>
                     </>
                   ) : (

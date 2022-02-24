@@ -1,10 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Context } from "context";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { NewClipPlayerJoin } from "common/audio/clip_func";
-import { IMG_SERVER } from "context/config";
-import { setIsRefresh } from "redux/actions/common";
+import React, {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
+import {IMG_SERVER} from "context/config";
+import {setIsRefresh} from "redux/actions/common";
 import Api from 'context/api';
 import moment from 'moment';
 import Swiper from 'react-id-swiper';
@@ -23,7 +22,7 @@ import NowClip from "pages/clip/components/NowClip";
 import './scss/clipPage.scss';
 
 const ClipPage = () => {
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const dispatch = useDispatch();
   const common = useSelector(state => state.common);
@@ -68,9 +67,9 @@ const ClipPage = () => {
 
   // 좋아요 누른 클립 리스트 가져오기
   const getClipLikeList = () => {
-    if (context.token.memNo === undefined) return;
+    if (globalState.token.memNo === undefined) return;
 
-    Api.getHistoryList({ memNo: context.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({memNo: globalState.token.memNo, slctType: 1, page: 1, records: 100,}).then(res => {
       if (res.code === 'C001') {
         setLikeClipInfo(res.data);
       }
@@ -80,9 +79,9 @@ const ClipPage = () => {
 
   // 최근들은 클립 리스트 가져오기
   const getClipListenList = () => {
-    if (context.token.memNo === undefined) return;
+    if (globalState.token.memNo === undefined) return;
 
-    Api.getHistoryList({ memNo: context.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({memNo: globalState.token.memNo, slctType: 0, page: 1, records: 100,}).then(res => {
       if (res.code === 'C001') {
         setListenClipInfo(res.data);
       }
@@ -149,7 +148,7 @@ const ClipPage = () => {
     const { clipNo } = e.currentTarget.dataset;
 
     if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, gtx: context, history };
+      const clipParam = {clipNo: clipNo, globalState, dispatch, history};
 
       NewClipPlayerJoin(clipParam);
     }
@@ -238,7 +237,7 @@ const ClipPage = () => {
         <section className="clipDrawer">
           {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
           <div className="cntTitle">
-            <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
+            <h2><span className="nickName">{globalState.profile.nickNm}</span>님의 클립서랍</h2>
           </div>
           }
           {listenClipInfo.list.length > 0 &&

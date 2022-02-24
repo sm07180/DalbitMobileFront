@@ -1,19 +1,21 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useContext, useState} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Navi from './navibar'
 import Api from 'context/api'
-import {Context} from 'context'
 import useChange from 'components/hooks/useChange'
 import {BroadCastStore} from 'pages/broadcast/store'
 import qs from 'query-string'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default props => {
   //context------------------------------------------------------------
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const store = useContext(BroadCastStore)
-  const {broadcastTotalInfo} = context
+  const {broadcastTotalInfo} = globalState
   const roomInfo = broadcastTotalInfo
   const {roomNo} = qs.parse(location.search)
   const {changes, setChanges, onChange} = useChange(update, {
@@ -71,20 +73,24 @@ export default props => {
       if (idx == 1 || idx == 2) {
         setShow(true)
         store.action.updateNoticeMsg(changes.notice)
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           //콜백처리
-          Callback: () => {},
+          Callback: () => {
+          },
           msg: '공지사항이 등록되었습니다.'
-        })
+        }))
       } else if (idx == 3) {
         setShow(false)
         store.action.updateNoticeMsg(changes.notice)
         setTyping('')
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           //콜백처리
-          Callback: () => {},
+          Callback: () => {
+          },
           msg: '공지사항이 삭제되었습니다.'
-        })
+        }))
       }
     } else {
       //Error발생시
@@ -107,30 +113,30 @@ export default props => {
   }
   //리스너뷰
   const listenerNotice = () => {
-    console.log('listenerNotice = ' + context.broadcastTotalInfo.hasNotice)
-    if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === false) {
+    console.log('listenerNotice = ' + globalState.broadcastTotalInfo.hasNotice)
+    if (globalState.broadcastTotalInfo.auth !== 3 && globalState.broadcastTotalInfo.hasNotice === false) {
       return (
         <div className="noresultWrap">
           <img src={`${IMG_SERVER}/images/api/img_noresult.png`}></img>
           <p>등록된 공지사항이 없습니다.</p>
         </div>
       )
-    } else if (context.broadcastTotalInfo.auth !== 3 && context.broadcastTotalInfo.hasNotice === true) {
+    } else if (globalState.broadcastTotalInfo.auth !== 3 && globalState.broadcastTotalInfo.hasNotice === true) {
       return <div className="noticeInput">{store.noticeMsg}</div>
     }
   }
   //버튼
   const buttonfunc = () => {
-    if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg === '')
+    if (show === false && globalState.broadcastTotalInfo.auth == 3 && store.noticeMsg === '')
       return <RegistBTN onClick={() => NoticeChange(1)}>등록하기</RegistBTN>
-    if (show === false && context.broadcastTotalInfo.auth == 3 && store.noticeMsg !== '')
+    if (show === false && globalState.broadcastTotalInfo.auth == 3 && store.noticeMsg !== '')
       return (
         <div className="modifyWrap">
           <DeleteBTN onClick={() => NoticeChange(3)}>삭제하기</DeleteBTN>
           <ModifyBTN onClick={() => NoticeChange(2)}>수정하기</ModifyBTN>
         </div>
       )
-    if (show === true && context.broadcastTotalInfo.auth == 3)
+    if (show === true && globalState.broadcastTotalInfo.auth == 3)
       return (
         <div className="modifyWrap">
           <DeleteBTN onClick={() => NoticeChange(3)}>삭제하기</DeleteBTN>
@@ -141,8 +147,8 @@ export default props => {
   //텍스트아리아
   const textareafunc = () => {
     if (
-      (context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === false) ||
-      (context.broadcastTotalInfo.auth == 3 && context.broadcastTotalInfo.hasNotice === true)
+      (globalState.broadcastTotalInfo.auth == 3 && globalState.broadcastTotalInfo.hasNotice === false) ||
+      (globalState.broadcastTotalInfo.auth == 3 && globalState.broadcastTotalInfo.hasNotice === true)
     )
       return (
         <div className="noticeInput">
@@ -159,14 +165,14 @@ export default props => {
   return (
     <Container>
       <Navi title={'공지사항'} prev={props.prev} _changeItem={props._changeItem} />
-      {context.broadcastTotalInfo.auth == 3 ? (
+      {globalState.broadcastTotalInfo.auth == 3 ? (
         <h5>* 현재 방송방에서 공지할 내용을 입력하세요.</h5>
       ) : (
         <h5>* 현재 방송방의 공지 사항 입니다.</h5>
       )}
       {textareafunc()}
       {listenerNotice()}
-      {context.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
+      {globalState.broadcastTotalInfo.auth == 3 && <h4>방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</h4>}
       {buttonfunc()}
     </Container>
   )

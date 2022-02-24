@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "context";
 import { getChargeItem, postChargeItem, postDalAutoExchange, getDalAutoExchange } from "common/api";
 import "./index.scss";
 
@@ -10,10 +9,17 @@ import ic_guide from "../static/guide_s.svg";
 import ic_toggle_off from "../static/toggle_off_s.svg";
 import ic_toggle_on from "../static/toggle_on_s.svg";
 import ic_close from "../static/ic_close_round_g.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../../redux/actions/globalCtx";
 
 export default function DalExchange() {
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [userProfile, setUserProfile] = useState(globalState.userProfile);
   const [list, setList] = useState<Array<any>>([]);
   const [selected, setSelected] = useState({
@@ -35,34 +41,30 @@ export default function DalExchange() {
       });
       // console.log(res);
       if (res.result === "success") {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: res.message,
-          });
-        globalAction.setUserProfile &&
-          globalAction.setUserProfile({ ...globalState.userProfile, ...{ byeolCnt: res.data.byeolCnt } });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: res.message,
+        }));
+        dispatch(setGlobalCtxUserProfile({ ...globalState.userProfile, ...{ byeolCnt: res.data.byeolCnt } }));
         setUserProfile({ ...globalState.userProfile, ...{ byeolCnt: res.data.byeolCnt } });
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: res.message,
-            callback: () => {
-              window.location.href = `/mypage/${userProfile && userProfile.memNo}/wallet`;
-            },
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: res.message,
+          callback: () => {
+            window.location.href = `/mypage/${userProfile && userProfile.memNo}/wallet`;
+          },
+        }));
       }
     }
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
-        callback: () => {
-          postChange();
-        },
-      });
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
+      callback: () => {
+        postChange();
+      },
+    }));
   };
 
   const toggleHandler = useCallback(async () => {
@@ -72,15 +74,15 @@ export default function DalExchange() {
     if (result === "success") {
       setAutoState(data.autoChange);
       if (data.autoChange === 0) {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "자동교환을 설정(OFF) 하였습니다",
-        });
+        }));
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "자동교환을 설정(ON) 하였습니다",
-        });
+        }));
       }
     }
   }, [autoState]);

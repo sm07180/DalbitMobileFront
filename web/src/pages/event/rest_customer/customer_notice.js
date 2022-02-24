@@ -1,15 +1,17 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 import Header from 'components/ui/new_header'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
   const {memNo} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
   const [dueDate, setDueDate] = useState('') // 자동 탈퇴 일자
   const [longTermDate, setLongTermDate] = useState('') // 휴면 정책 시행 일자
 
@@ -22,12 +24,13 @@ export default (props) => {
           setLongTermDate(data.longTermDate)
         }
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       }
     }
     fetchData()

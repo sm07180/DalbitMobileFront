@@ -1,18 +1,18 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
 // global components
 import Swiper from 'react-id-swiper'
-import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipList = (props) => {
-  const { data } = props;
-  const context = useContext(Context); //context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {data} = props;
   const history = useHistory();
 
   const swiperParams = {
@@ -22,10 +22,10 @@ const ClipList = (props) => {
 
   // 클립 듣기
   const playClip = (e) => {
-    const { clipNo } = e.currentTarget.dataset;
+    const {clipNo} = e.currentTarget.dataset;
 
     if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, gtx: context, history };
+      const clipParam = {clipNo: clipNo, globalState, dispatch, history};
 
       NewClipPlayerJoin(clipParam);
     }

@@ -1,22 +1,23 @@
-import React, {useState, useEffect, useCallback, useContext, useRef} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import API from 'context/api'
 import Layout from 'pages/common/layout'
-import Message from 'pages/common/message'
-import Popup from 'pages/common/popup'
 
-import {TAB_TYPE, STATUS_TYPE, VIEW_TYPE} from './constant'
+import {STATUS_TYPE, TAB_TYPE, VIEW_TYPE} from './constant'
 
 import AllList from './content/alllist'
 import Mylist from './content/mylist'
 import Write from './content/write'
 
 import './static/proofStyle.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const global_ctx = useContext(Context)
 
   const [tab, setTab] = useState(0)
   const [statusObj, setStatusObj] = useState({
@@ -94,7 +95,7 @@ export default () => {
   }, [])
 
   async function handleStatus(check) {
-    if (check === 'check' && !global_ctx.token.isLogin) {
+    if (check === 'check' && !globalState.token.isLogin) {
       history.push('/login')
       return
     }
@@ -102,14 +103,10 @@ export default () => {
     const {eventCheck, status, pcCheck} = await eventStatusCheck()
 
     if (pcCheck === STATUS_TYPE.IMPOSSIBLE) {
-      global_ctx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'PC로 10분 이상 방송을\n진행 후 참여해주세요.',
-        callback: () => {
-          global_ctx.action.alert({
-            visible: false
-          })
-        }
-      })
+      }))
       return
     }
 
@@ -159,7 +156,7 @@ export default () => {
                 <button
                   className="visualWrap__ButtonWrap--giftButton"
                   onClick={() => {
-                    global_ctx.action.updatePopup('PROOF_SHOT')
+                    dispatch(setGlobalCtxUpdatePopup({popup: ['PROOF_SHOT']}));
                   }}></button>
 
                 {statusObj.status === STATUS_TYPE.IMPOSSIBLE ? (
@@ -186,7 +183,7 @@ export default () => {
                   }}>
                   전체
                 </button>
-                {statusObj.status === STATUS_TYPE.IMPOSSIBLE && global_ctx.token.isLogin && (
+                {statusObj.status === STATUS_TYPE.IMPOSSIBLE && globalState.token.isLogin && (
                   <button
                     className={`${tab === TAB_TYPE.MINE && 'active'} `}
                     onClick={() => {

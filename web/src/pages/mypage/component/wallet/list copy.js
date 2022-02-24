@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import {WIDTH_MOBILE} from 'context/config'
@@ -6,15 +6,18 @@ import {WIDTH_MOBILE} from 'context/config'
 import NoResult from 'components/ui/noResult'
 // svg
 // context
-import {Context} from 'context'
 import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
 import GiftPinkIcon from '../../static/ic_gift_pink.svg'
 import ExchangeIcon from '../../static/ic_exchange_purple.svg'
 import ArrowDownIcon from '../../static/ic_arrow_down_gray.svg'
 import MoneyIcon from '../../static/money_blue.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {formState, walletData, returnCoinText, totalCnt, isFiltering, setShowFilter, setCancelExchange} = props
 
   const timeFormat = (strFormatFromServer) => {
@@ -24,12 +27,13 @@ export default (props) => {
   }
 
   const exchangeCancel = (exchangeIdx) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '환전신청을 취소하시겠습니까?',
       callback: () => {
         setCancelExchange(exchangeIdx)
       }
-    })
+    }))
   }
   return (
     <ListContainer>

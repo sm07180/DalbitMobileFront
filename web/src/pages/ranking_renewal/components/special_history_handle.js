@@ -1,26 +1,21 @@
 import React, {useContext, useEffect, useState, useCallback} from 'react'
 
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
-
 import {liveBoxchangeDate} from 'pages/common/rank/rank_fn'
+import {useDispatch, useSelector} from "react-redux";
+import {setRankFormDate} from "redux/actions/rank";
 
 export default function SpecialHistoryHandle({fetching}) {
-  const {rankState, rankAction} = useContext(RankContext)
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rank}) => rank);
 
   const {formState} = rankState
 
-  const formDispatch = rankAction.formDispatch
 
   const [dateTitle, setDateTitle] = useState('이번달')
 
   const handleDate = (type) => {
     const handle = liveBoxchangeDate(type, 3, formState[formState.pageType].currentDate)
-
-    formDispatch({
-      type: 'DATE',
-      val: handle
-    })
+    dispatch(setRankFormDate(handle));
   }
 
   const formatDate = useCallback(() => {

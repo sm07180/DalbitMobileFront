@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
@@ -8,21 +8,22 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import '../scss/resultCnt.scss'
 import {RoomValidateFromClip} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const SearchLiveList = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {data, pagingInfo} = props;
-  const context = useContext(Context); //context
   const history = useHistory();
 
 
   const RoomEnter = (e) => {
     e.preventDefault();
-    const { roomNo, bjNickNm } = e.currentTarget.dataset;
+    const {roomNo, bjNickNm} = e.currentTarget.dataset;
 
     if (roomNo !== undefined && bjNickNm !== undefined) {
-      RoomValidateFromClip(roomNo, context, history, bjNickNm)
+      RoomValidateFromClip(roomNo, dispatch, globalState, history, bjNickNm)
     }
   };
 

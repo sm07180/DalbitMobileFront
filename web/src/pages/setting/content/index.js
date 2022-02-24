@@ -1,32 +1,29 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 //context
 import {SettingStore} from '../store'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import Api from 'context/api'
-import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
-import Utility from 'components/lib/utility'
+import {COLOR_MAIN} from 'context/color'
+import {WIDTH_MOBILE} from 'context/config'
 import {useHistory} from 'react-router-dom'
 //ui
 import Accordion from './accordian'
 import Use from './use'
 import Header from 'components/ui/new_header'
+import {useDispatch, useSelector} from "react-redux";
 //
 const Index = (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
   const store = useContext(SettingStore)
   Index.store = store
 
   const checklogin = () => {
-    if (context.token.isLogin === true) {
+    if (globalState.token.isLogin === true) {
       history.push(`/secession`)
-    } else if (context.token.isLogin === false) {
+    } else if (globalState.token.isLogin === false) {
       history.push('/login')
     }
   }

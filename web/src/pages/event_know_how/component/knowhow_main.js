@@ -1,15 +1,16 @@
-import React, {useContext, useCallback, useEffect} from 'react'
-import {Switch, Route} from 'react-router-dom'
-import {Context} from 'context'
+import React, {useCallback, useContext, useEffect} from 'react'
+import {Route, Switch} from 'react-router-dom'
 import {KnowHowContext} from '../store'
 import Api from 'context/api'
 
 import Attend from './attend'
 import AttendAdd from './attend_add'
 import AttendDetail from './attend_detail'
+import {useDispatch, useSelector} from "react-redux";
 
 const KnowHowMain = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {KnowHowState, KnowHowAction} = useContext(KnowHowContext)
   const {condition, order, mine} = KnowHowState
 
@@ -28,11 +29,11 @@ const KnowHowMain = () => {
       setList(res.data.list)
       setMyCnt(res.data.myCnt)
     }
-  }, [condition, order, mine, context.token])
+  }, [condition, order, mine, globalState.token])
 
   useEffect(() => {
     fetchData()
-  }, [condition, order, mine, context.token])
+  }, [condition, order, mine, globalState.token])
 
   return (
     <>

@@ -1,19 +1,21 @@
-import React, {useState, useContext, useEffect, KeyboardEvent} from 'react'
-import {Context} from 'context/index.js'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
-import Utility from 'components/lib/utility'
 
 import './search.scss'
 import NoResult from 'components/ui/new_noResult'
 import Accept from './accept'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let btnAccess = false
 
 export default (props) => {
-  const {setPopupSearch, gganbuNumber} = props
-  const context = useContext(Context)
-  const myProfileNo = context.profile.memNo
-  const myProfileLevel = context.profile.level
+  const {setPopupSearch, gganbuNumber} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const myProfileNo = globalState.profile.memNo
+  const myProfileLevel = globalState.profile.level
 
   const [result, setResult] = useState('')
   const [fanList, setFanList] = useState([])
@@ -68,9 +70,10 @@ export default (props) => {
         setMemberList(data.list)
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const onChange = (e) => {
@@ -84,12 +87,13 @@ export default (props) => {
     e.preventDefault()
     btnAccess = true
     if (result.length < 2) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `두 글자 이상 입력해 주세요.`,
         callback: () => {
           btnAccess = false
         }
-      })
+      }))
     } else {
       setSearchState(true)
       fetchGganbuSearch()
@@ -119,16 +123,18 @@ export default (props) => {
     if (message === 'SUCCESS') {
       setFanList(data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
     return
   }
 
   // 취소 버튼
   const cancelBtn = (mem_no) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '정말 신청 취소하시겠습니까?',
       cancelCallback: () => {
         closeAlert()
@@ -151,7 +157,7 @@ export default (props) => {
         }
         goCancelBtn()
       }
-    })
+    }))
   }
 
   useEffect(() => {
@@ -214,7 +220,7 @@ export default (props) => {
                             {sendYn === 'n' ? (
                               <button
                                 className="submit"
-                                onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm)}>
+                                onClick={(e) => acceptBtn(mem_no, 'application', globalState.profile.nickNm)}>
                                 신청
                               </button>
                             ) : (
@@ -226,7 +232,7 @@ export default (props) => {
                         ) : (
                           <button
                             className="accept"
-                            onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm, nickName)}>
+                            onClick={(e) => acceptBtn(mem_no, 'acceptance', globalState.profile.nickNm, nickName)}>
                             수락
                           </button>
                         )}
@@ -268,7 +274,7 @@ export default (props) => {
                           {sendYn === 'n' ? (
                             <button
                               className="submit"
-                              onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm, mem_nick)}>
+                              onClick={(e) => acceptBtn(mem_no, 'application', globalState.profile.nickNm, mem_nick)}>
                               신청
                             </button>
                           ) : (
@@ -278,7 +284,8 @@ export default (props) => {
                           )}
                         </>
                       ) : (
-                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm)}>
+                        <button className="accept"
+                                onClick={(e) => acceptBtn(mem_no, 'acceptance', globalState.profile.nickNm)}>
                           수락
                         </button>
                       )}

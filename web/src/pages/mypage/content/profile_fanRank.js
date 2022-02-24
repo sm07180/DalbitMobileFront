@@ -1,15 +1,13 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import qs from 'query-string'
 //styled
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 //scroll
-import {Scrollbars} from 'react-custom-scrollbars'
 import NoResult from 'components/ui/new_noResult'
 import GuidePopup from './guide_user.js'
 
@@ -17,18 +15,19 @@ import goldMedal from '../static/profile/medal_gold_m@2x.png'
 import silverMedal from '../static/profile/medal_silver_m@2x.png'
 import bronzeMedal from '../static/profile/medal_bronze_m@2x.png'
 import hintIcon from '../static/hint.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxCloseFanRank, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {webview} = qs.parse(location.search)
   const {type} = props
-  //context------------------------------------------
-  const context = useContext(Context)
-  const ctx = useContext(Context)
   let history = useHistory()
   //pathname
   const {profile} = props
-  const myProfileNo = ctx.profile.memNo
-  const MyMemNo = context.profile && context.profile.memNo
+  const myProfileNo = globalState.profile.memNo
+  const MyMemNo = globalState.profile && globalState.profile.memNo
   //state
   const [rankInfo, setRankInfo] = useState('')
   const [goodInfo, setGoodInfo] = useState('')
@@ -64,10 +63,12 @@ export default (props) => {
     if (res.result === 'success') {
       setGoodInfo(res.data.list)
     } else {
-      context.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: res.message
-      })
+      }))
     }
     return
   }
@@ -81,9 +82,10 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: `${nickNm}님의 팬이 되었습니다`
-        })
+        }))
         setSelect(memNo)
         if (tabType === 'good') {
           fetchDataGoodRank()
@@ -91,17 +93,20 @@ export default (props) => {
           fetchData()
         }
       } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataFanRegist(memNo)
   }
 
   const Cancel = (memNo, nickNm) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         async function fetchDataFanCancel(memNo) {
@@ -111,9 +116,10 @@ export default (props) => {
             }
           })
           if (res.result === 'success') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: res.message
-            })
+            }))
             setSelect(memNo + 1)
             if (tabType === 'good') {
               fetchDataGoodRank()
@@ -121,15 +127,18 @@ export default (props) => {
               fetchData()
             }
           } else if (res.result === 'fail') {
-            context.action.alert({
-              callback: () => {},
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
+              callback: () => {
+              },
               msg: res.message
-            })
+            }))
           }
         }
+
         fetchDataFanCancel(memNo)
       }
-    })
+    }))
   }
 
   const Link = (memNo) => {
@@ -182,11 +191,12 @@ export default (props) => {
     }
   }, [])
 
+
   return (
     <>
       <HoleWrap>
         <div className="wrapper">
-          <button className="close" onClick={() => context.action.updateCloseFanRank(false)}></button>
+          <button className="close" onClick={() => dispatch(setGlobalCtxCloseFanRank(false))}></button>
           <h2 className="title">랭킹</h2>
 
           <div className="innerTabWrap">
@@ -228,7 +238,8 @@ export default (props) => {
                           <div
                             className="thumbBox"
                             onClick={() => {
-                              Link(memNo), context.action.updateCloseFanRank(false)
+                              dispatch(setGlobalCtxCloseFanRank(false));
+                              Link(memNo);
                             }}>
                             <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                             {idx < 5 && (
@@ -249,12 +260,12 @@ export default (props) => {
                           </div>
                         </div>
 
-                        {isFan === false && memNo !== context.token.memNo && (
+                        {isFan === false && memNo !== globalState.token.memNo && (
                           <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                             +팬등록
                           </button>
                         )}
-                        {isFan === true && memNo !== context.token.memNo && (
+                        {isFan === true && memNo !== globalState.token.memNo && (
                           <button onClick={() => Cancel(memNo, nickNm)}>팬</button>
                         )}
                       </li>
@@ -280,7 +291,8 @@ export default (props) => {
                           <div
                             className="thumbBox"
                             onClick={() => {
-                              Link(memNo), context.action.updateCloseFanRank(false)
+                              dispatch(setGlobalCtxCloseFanRank(false))
+                              Link(memNo);
                             }}>
                             <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                             {idx < 5 && (
@@ -305,12 +317,12 @@ export default (props) => {
                           </div>
                         </div>
 
-                        {isFan === false && memNo !== context.token.memNo && (
+                        {isFan === false && memNo !== globalState.token.memNo && (
                           <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                             +팬등록
                           </button>
                         )}
-                        {isFan === true && memNo !== context.token.memNo && (
+                        {isFan === true && memNo !== globalState.token.memNo && (
                           <button onClick={() => Cancel(memNo, nickNm)}>팬</button>
                         )}
                       </li>

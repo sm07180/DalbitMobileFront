@@ -1,23 +1,25 @@
-import React, {useState, useContext, useEffect} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import {TAB} from './constant/tab'
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header.js'
 import Sent from './component/sent'
 import Received from './component/received'
 import Detail from './component/detail'
-import {Context} from 'context'
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {roomNo} = useParams()
   const history = useHistory()
-  const globalCtx = useContext(Context)
   const [tab, setTab] = useState(TAB.sent)
 
   const renderContent = () => {
     if (roomNo) {
-      return <Detail />
+      return <Detail/>
     } else {
       if (tab === TAB.sent) {
         return <Sent />
@@ -28,10 +30,10 @@ export default () => {
   }
 
   useEffect(() => {
-    if (!globalCtx.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login')
     }
-  }, [globalCtx.token.isLogin])
+  }, [globalState.token.isLogin])
 
   return (
     <Layout status={'no_gnb'}>
@@ -48,7 +50,7 @@ export default () => {
           </ul>
         )}
 
-        {globalCtx.token.isLogin && renderContent()}
+        {globalState.token.isLogin && renderContent()}
       </div>
     </Layout>
   )

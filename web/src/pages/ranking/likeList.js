@@ -1,23 +1,23 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
-import styled, {css} from 'styled-components'
-
-import Room, {RoomJoin} from 'context/room'
 import NoResult from 'components/ui/noResult'
 // context
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 //static
 import guideIcon from './static/guide_s.png'
 import goodIcon from './static/like_w_m.svg'
-import likeIcon from './static/like_g_s.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
+
 const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const {likeList} = props
   return (
@@ -28,7 +28,7 @@ export default (props) => {
           <img
             src={guideIcon}
             onClick={() => {
-              context.action.updatePopup('RANK_POP', 'like')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['RANK_POP', 'like']}));
             }}
           />
         </li>

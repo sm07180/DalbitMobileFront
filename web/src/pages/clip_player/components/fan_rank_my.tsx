@@ -4,7 +4,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { GlobalContext } from "context";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 import React, { useContext, useEffect, useState } from "react";
 // constant
@@ -19,12 +18,15 @@ import bronzeMedal from "../../../common/modal/contents/mypage/static/medal_bron
 import dalIcon from "../../../common/modal/contents/mypage/static/ic_moon_s@2x.png";
 import goodIcon from "../../../common/modal/contents/mypage/static/like_red_m@2x.png";
 import hintIcon from "../../../common/modal/contents/mypage/static/hint.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 export default function FanList() {
   // ctx
   const history = useHistory();
   const { clipState, clipAction } = useContext(ClipContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { setRightTabType, setUserMemNo } = clipAction;
   const { userMemNo } = clipState;
   const [popupState, setPopupState] = useState(false);
@@ -80,11 +82,11 @@ export default function FanList() {
             fetchFanGood();
           }
         }
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     AddFanFunc();
@@ -105,11 +107,11 @@ export default function FanList() {
           }
         }
 
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     DeleteFanFunc();

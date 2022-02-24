@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { useHistory } from "react-router-dom";
 
 // components
@@ -7,10 +6,11 @@ import Header from "common/ui/header";
 import Layout from "common/layout";
 
 import "./pay.scss";
+import {useSelector} from "react-redux";
 
 export default function Payment() {
   const history = useHistory();
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modal}) => modal);
   const { payInfo } = modalState;
   const { itemName, itemPrice, payMethod, phone, orderId, cardName, itemCnt, returntype } = payInfo;
 

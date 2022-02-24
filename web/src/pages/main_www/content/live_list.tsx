@@ -2,13 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { printNumber } from "lib/common_fn";
 import { RoomValidateFromClip } from "common/audio/clip_func";
-import { GlobalContext } from "context";
 import BadgeList from "../../../common/badge_list";
+import {useDispatch, useSelector} from "react-redux";
 
 function RealTimeLive(props: any) {
   const { list, liveListType, categoryList } = props;
   const history = useHistory();
-  const gtx = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   return (
     <>
@@ -47,7 +48,7 @@ function RealTimeLive(props: any) {
             }`}
             key={`live-${idx}`}
             onClick={() => {
-              RoomValidateFromClip(roomNo, gtx, history, bjNickNm);
+              RoomValidateFromClip(roomNo, globalState, dispatch, history, bjNickNm);
             }}
           >
             <div

@@ -1,16 +1,15 @@
 // 메인팝업 - 이벤트 - 추석
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
-import {IMG_SERVER, OS_TYPE} from '../../../context/config'
-import {Hybrid} from 'context/hybrid'
-import Utility from 'components/lib/utility'
-import {Context} from 'context'
+import {IMG_SERVER} from '../../../context/config'
 // style
 import 'styles/layerpopup.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function LayerPopupWrap({setEventPop, popupData}) {
-  //context
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [existOtherPopup, setExistOtherPopup] = useState(false)
 
   const [checked, setChecked] = useState({
@@ -32,25 +31,27 @@ export default function LayerPopupWrap({setEventPop, popupData}) {
     const res = await Api.getChooseokDalCheck()
     if (res.result === 'success') {
       if (res.data.freeDal.dal === 5) {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           title: '행복한 추석되세요',
           msg: `<div style="text-align:center;padding:20px 0 6px 0;"><img src='${IMG_SERVER}/event/thxgiving/img_5moon.png'/><p style="font-size:22px;color:#FF3C7B;font-weight:bold;padding:15px 0 7px 0;">5달이 지급되었습니다</p><p>달라 많이 사랑해주세요~♥</p></div>`,
           callback: handleDimClick
-        })
+        }))
       } else if (res.data.freeDal.dal === 10) {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           title: '행복한 추석되세요',
           msg: `<div style="text-align:center;padding:20px 0 6px 0;"><img src='${IMG_SERVER}/event/thxgiving/img_5moon.png'/><p style="font-size:22px;color:#FF3C7B;font-weight:bold;padding:15px 0 7px 0;">5달이 지급되었습니다</p><p>달라 많이 사랑해주세요~♥</p></div>`,
           callback: handleDimClick
-        })
+        }))
       }
     } else {
-      globalCtx.action.alert({msg: res.message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
     }
   }
 
   const setPopupStorage = (c_name, value) => {
-    const {memNo} = globalCtx.token
+    const {memNo} = globalState.token
     localStorage.setItem(`${c_name}${memNo}`, memNo)
   }
 

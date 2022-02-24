@@ -1,9 +1,12 @@
-import React, {useContext} from 'react'
+import React from 'react'
 
 import Api from 'context/api'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
 function BC_SettingJoinClose({settingData, setSettingData}) {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const modifyBroadcastSetting = async (type) => {
     const res = await Api.modifyBroadcastSetting({
       [type]: !settingData[type]
@@ -27,9 +30,10 @@ function BC_SettingJoinClose({settingData, setSettingData}) {
         message = res.message
       }
 
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: message
-      })
+      }))
     }
   }
 

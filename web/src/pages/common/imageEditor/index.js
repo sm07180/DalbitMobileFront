@@ -1,17 +1,20 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import styled from 'styled-components'
 import Header from 'components/ui/new_header'
 import Cropper from 'react-cropper'
 import '../../mypage/setting.scss'
 import ImageRotation from './static/ico-rotation.png'
 import ImageCrop from './static/ico-crop.png'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxEditImage} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let history = useHistory()
   const {location} = history
-  const context = useContext(Context)
   const defaultSrc = location.state['src'] || ''
   const mimeType = location.state.mimeType || 'jpeg'
   const isQualityDown = location.state.isQualityDown || false
@@ -49,9 +52,9 @@ export default () => {
       // console.log('size', cropper.getCroppedCanvas().toDataURL())
       // console.log('len', cropper.getCroppedCanvas().toDataURL().length)
       if (isQualityDown) {
-        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`, 20 / 100))
+        dispatch(setGlobalCtxEditImage(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`, 20 / 100)));
       } else {
-        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`))
+        dispatch(setGlobalCtxEditImage(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`)));
       }
 
       history.goBack()
@@ -85,7 +88,7 @@ export default () => {
             setCropper(instance)
           }}
         />
-        {/* result view 
+        {/* result view
         <div className="box" style={{width: '50%', margin: '0 auto', height: '300px'}}>
           <img style={{width: '100%'}} src={cropData} alt="cropped" />
         </div>

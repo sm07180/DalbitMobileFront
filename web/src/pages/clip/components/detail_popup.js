@@ -1,21 +1,25 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import CloseBtn from '../static/close_w_l.svg'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxClipMainDate, setGlobalCtxClipMainSort} from "redux/actions/globalCtx";
 
 export default function detailPopup(props) {
-  const {setDetailPopup} = props
-  const context = useContext(Context)
-  const [sortState, setSortState] = useState(context.clipMainSort)
-  const [sortDate, setSortDate] = useState(context.clipMainDate)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {setDetailPopup} = props;
+
+  const [sortState, setSortState] = useState(globalState.clipMainSort)
+  const [sortDate, setSortDate] = useState(globalState.clipMainDate)
   const closePopup = () => {
     setDetailPopup(false)
   }
 
   const applyClick = () => {
-    context.action.updateClipSort(sortState)
-    context.action.updateClipDate(sortDate)
+    dispatch(setGlobalCtxClipMainSort(sortState))
+    dispatch(setGlobalCtxClipMainDate(sortDate))
     setDetailPopup(false)
   }
   const sortFunc = (type) => {

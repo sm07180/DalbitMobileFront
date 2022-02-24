@@ -2,36 +2,38 @@
  * @file /mypage/component/blacklist.js
  * @brief 마이페이지 방송설정 - 매니저 설정
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import useChange from 'components/hooks/useChange'
 import qs from 'query-string'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 //component
-import Paging from 'components/ui/paging.js'
 import NoResult from 'components/ui/new_noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import SearchIconGray from '../../static/ic_search_g.svg'
 import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
 let currentPage = 1
 let timer
 let moreState = false
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
   let history = useHistory()
-  //contenxt
-  const context = useContext(Context)
 
   //hooks
   const {changes, setChanges, onChange} = useChange({onChange: -1})
@@ -61,9 +63,10 @@ export default (props) => {
         setManagerList([])
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
   async function addManager(memNum) {
@@ -73,14 +76,16 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
       getSearchList('search')
     } else {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     }
   }
   async function deleteManager(memNum) {
@@ -91,22 +96,25 @@ export default (props) => {
     })
     if (res.result == 'success') {
       getManagerList()
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     } else {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     }
   }
   async function getSearchList(type, next) {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
     if (!_.hasIn(changes, 'search') || changes.search.length == 0)
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `검색어를 입력해주세요.`
-      })
+      }))
     userTypeSetting = type == 'search' ? Number(_.hasIn(changes, 'searchType') ? changes.searchType : 0) : userTypeSetting
     const params = {
       userType: userTypeSetting,
@@ -137,9 +145,10 @@ export default (props) => {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -168,12 +177,13 @@ export default (props) => {
                   </a>
                   <button
                     onClick={() => {
-                      context.action.confirm({
+                      dispatch(setGlobalCtxMessage({
+                        type: "confirm",
                         msg: `${nickNm} 님을 매니저로 등록 하시겠습니까?`,
                         callback: () => {
                           addManager(memNo)
                         }
-                      })
+                      }))
                     }}>
                     등록
                   </button>
@@ -213,12 +223,13 @@ export default (props) => {
                   </a>
                   <button
                     onClick={() => {
-                      context.action.confirm({
+                      dispatch(setGlobalCtxMessage({
+                        type: "confirm",
                         msg: `고정 매니저 권한을 해제하시겠습니까?`,
                         callback: () => {
                           deleteManager(memNo)
                         }
-                      })
+                      }))
                     }}
                     className="grayBtn">
                     해제
@@ -259,12 +270,13 @@ export default (props) => {
                   </a>
                   <button
                     onClick={() => {
-                      context.action.confirm({
+                      dispatch(setGlobalCtxMessage({
+                        type: "confirm",
                         msg: `고정 매니저 권한을 해제하시겠습니까?`,
                         callback: () => {
                           deleteManager(memNo)
                         }
-                      })
+                      }))
                     }}
                     className="grayBtn">
                     해제

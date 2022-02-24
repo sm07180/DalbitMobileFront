@@ -1,23 +1,24 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
-import {Context} from 'context'
 import {StoreLink} from 'context/link'
 import styled from 'styled-components'
+import {useSelector} from "react-redux";
 // 이벤트 적용후 모바일에서 테스트! (방송방,클립 플레이어 적용 꼭확인)
 export default () => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let history = useHistory()
-  const context = useContext(Context)
 
   const customHeader = JSON.parse(Api.customHeader)
 
   const linkMove = () => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login?redirect=/event/purchaseBenefit')
     } else {
       if (customHeader['os'] === OS_TYPE['IOS']) {
-        StoreLink(context, history)
+        StoreLink()
       } else {
         history.push(`/store`)
       }

@@ -1,13 +1,11 @@
 /**
  * @title 사이드 컨텐츠(탭)
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import {BroadCastStore} from '../../store'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 import Live from './live'
 import LiveListener from './listen'
 import LiveGuest from './guest'
@@ -21,6 +19,8 @@ import Story from './story'
 import Macro from './macro'
 import BroadModify from './broad-setting-modify'
 import PresentGiven from './present-given'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default props => {
   //RoomInfomation(context)
@@ -28,11 +28,11 @@ export default props => {
     prev: '청취자',
     next: '청취자'
   })
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const store = useContext(BroadCastStore)
-  const {broadcastTotalInfo} = context
+  const {broadcastTotalInfo} = globalState
   //---------------------------------------------------------------------
   //tab:탭클릭 index정의 state
   const {currentItem, changeItem} = useTabs(0, store.currentTab)
@@ -44,8 +44,8 @@ export default props => {
         next: index
       })
     }
-    if (!context.token.isLogin) {
-      context.action.updatePopup('LOGIN')
+    if (!globalState.token.isLogin) {
+      dispatch(setGlobalCtxUpdatePopup({popup: ['LOGIN']}));
     } else {
       changeItem(index)
     }

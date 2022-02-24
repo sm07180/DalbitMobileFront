@@ -6,12 +6,17 @@ import { useHistory } from "react-router-dom";
 import { postAddFan, broadcastLike } from "common/api";
 
 // Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // Constant
 import { RandomMsgType, tabType } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxIsFan,
+  setBroadcastCtxLikeClicked,
+  setBroadcastCtxRightTabType
+} from "../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 let liked = false;
 
@@ -25,9 +30,8 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
 
   const history = useHistory();
 
-  const { globalAction } = useContext(GlobalContext);
-
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   const { dispatchLayer } = useContext(BroadcastLayerContext);
 
@@ -62,20 +66,18 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
             break;
           case RandomMsgType.STORY:
             callback = () => {
-              broadcastAction.setRightTabType!(tabType.STORY);
+              dispatch(setBroadcastCtxRightTabType(tabType.STORY));
             };
             break;
           case RandomMsgType.FAN:
             callback = async () => {
               const { result } = await postAddFan({ memNo: roomInfo.bjMemNo });
               if (result === "success") {
-                if (globalAction.callSetToastStatus) {
-                  globalAction.callSetToastStatus({
-                    status: true,
-                    message: `${roomInfo.bjNickNm}님의 팬이 되었습니다`,
-                  });
-                }
-                broadcastAction.setIsFan && broadcastAction.setIsFan(true);
+                dispatch(setGlobalCtxSetToastStatus({
+                  status: true,
+                  message: `${roomInfo.bjNickNm}님의 팬이 되었습니다`,
+                }));
+                dispatch(setBroadcastCtxIsFan(true));
                 faned = true;
               }
             };
@@ -85,12 +87,12 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
               const { result, message } = await broadcastLike({ roomNo, memNo: roomInfo.bjMemNo });
 
               if (result === "fail") {
-                globalAction.setAlertStatus!({
+                dispatch(setGlobalCtxAlertStatus({
                   status: true,
                   content: message,
-                });
+                }));
               } else if (result === "success") {
-                broadcastAction.setLikeClicked!(false);
+                dispatch(setBroadcastCtxLikeClicked(false));
                 liked = true;
               }
             };

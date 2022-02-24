@@ -1,9 +1,7 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
-import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React, {useEffect, useRef, useState} from 'react'
+import {Redirect, Route, Switch, useHistory, useLocation, useParams} from 'react-router-dom'
 import Api from 'context/api'
-import {isHybrid, Hybrid} from 'context/hybrid'
-import Utility from 'components/lib/utility'
+import {Hybrid, isHybrid} from 'context/hybrid'
 import qs from 'query-string'
 // components
 import Layout2 from 'pages/common/layout2.5'
@@ -26,14 +24,17 @@ import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 import ClipIcon from './static/menu_cast.svg'
 import './index.scss'
 import {OS_TYPE} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxNoticeIndexNum, setGlobalCtxUrlStr} from "redux/actions/globalCtx";
 // header scroll flag
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation()
   const {webview, tab} = qs.parse(location.search)
   let history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const {token, profile} = globalState
 
   let {memNo, category, addpage} = useParams()
 
@@ -90,7 +91,7 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (sessionStorage.getItem('webview') === 'new') {
-    if (context.customHeader['os'] === OS_TYPE['IOS'] || context.customHeader['appBuild'] >= 35) {
+    if (globalState.customHeader['os'] === OS_TYPE['IOS'] || globalState.customHeader['appBuild'] >= 35) {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
         {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
@@ -152,7 +153,7 @@ export default (props) => {
     if (isHybrid()) {
       sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
-      context.action.updatenoticeIndexNum('')
+      dispatch(setGlobalCtxNoticeIndexNum(''));
     } else {
       window.history.go(-1)
     }
@@ -179,28 +180,31 @@ export default (props) => {
       if (result === 'success') {
         setProfileInfo(data)
         if (code === '-2') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             callback: () => {
               window.history.back()
             },
             msg: '회원정보를 찾을 수 없습니다.'
-          })
+          }))
         }
       } else {
         if (code === '-5') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             callback: () => {
               window.history.back()
             },
             msg: message
-          })
+          }))
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             callback: () => {
               window.history.back()
             },
             msg: '회원정보를 찾을 수 없습니다.'
-          })
+          }))
         }
       }
     }
@@ -208,15 +212,15 @@ export default (props) => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [memNo, context.mypageFanCnt])
+  }, [memNo, globalState.mypageFanCnt])
 
   useEffect(() => {
-    context.action.updateUrlStr(memNo)
+    dispatch(setGlobalCtxUrlStr(memNo));
   }, [memNo])
   // check 탈퇴회원
   // useEffect(() => {
   //   if (codes === '-2') {
-  //     context.action.alert({
+  //     dispatch(setGlobalCtxMessage({type:"alert",
   //       callback: () => {
   //         window.history.back()
   //       },

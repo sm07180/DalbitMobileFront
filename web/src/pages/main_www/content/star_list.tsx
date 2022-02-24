@@ -4,14 +4,9 @@ import { useHistory } from "react-router-dom";
 // component
 import Swiper from "react-id-swiper";
 
-import RankArrow from "../static/arrow_right_w.svg";
-import LiveIcon from "../static/ic_live.svg";
-import { GlobalContext } from "context";
-
 export default function MyStar(props: any) {
   const history = useHistory();
   const { list } = props;
-  const { globalState } = useContext(GlobalContext);
 
   const swiperParams: any = {
     slidesPerView: "auto",

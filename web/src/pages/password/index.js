@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 
 //components
 import Header from 'components/ui/header/Header'
@@ -8,22 +8,24 @@ import './style.scss'
 import Api from "context/api";
 import useDidMountEffect from "common/hook/useDidMountEffect";
 import {useHistory} from "react-router-dom";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 
 const PasswordChange = (props) => {
   const history = useHistory();
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [phoneAuthRequest, setPhoneAuthRequest] = useState(false);
   const [authCheck, setAuthCheck] = useState(false);
   const [passwordInfo, setPasswordInfo] = useState({
-    phoneNum:"",
-    authNum:"",
-    password:"",
-    passwordCheck:"",
-    CMID:""
+    phoneNum: "",
+    authNum: "",
+    password: "",
+    passwordCheck: "",
+    CMID: ""
   })
-  const [authBtnValue,setAuthBtnValue] = useState("인증요청")
+  const [authBtnValue, setAuthBtnValue] = useState("인증요청")
   const phoneNumRef = useRef(null);
   const requestNumRef = useRef(null);
   const phoneCheckRef = useRef(null);
@@ -80,7 +82,7 @@ const PasswordChange = (props) => {
           requestNumRef.current.disabled = false;
           setAuthBtnValue("재발송");
         }else{
-          context.action.alert({msg: res.message});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
         }
       });
     }
@@ -124,7 +126,7 @@ const PasswordChange = (props) => {
         }else{
           setCheckAuthValue({check: false, message: "인증실패"})
           authCheckRef.current.innerHTML = "";
-          context.action.alert({msg: res.message});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
         }
       });
     }
@@ -206,9 +208,13 @@ const PasswordChange = (props) => {
     if (checkPasswordValue.check && checkAuthValue.check) {
       passwordFetch().then((res)=>{
         if (res.result === 'success') {
-          context.action.alert({callback: () => {!props?.backEvent? history.push('/login/didLogin') : props.backEvent()}, msg: '비밀번호가 변경되었습니다.'})
+          dispatch(setGlobalCtxMessage({
+            type: "alert", callback: () => {
+              !props?.backEvent ? history.push('/login/didLogin') : props.backEvent()
+            }, msg: '비밀번호가 변경되었습니다.'
+          }))
         } else {
-          context.action.alert({msg: res.message})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
         }
       })
     } else if(passwordInfo.password !== passwordInfo.passwordCheck) {
@@ -225,7 +231,7 @@ const PasswordChange = (props) => {
         document.getElementById('passwordCheckInputItem').classList.remove("success");
         passwordCheckRef.current.innerHTML = "비밀번호를 다시 확인해주세요.";
       } else if (!checkAuthValue.check){
-        context.action.alert({msg: "휴대폰 인증을 해주세요"});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: "휴대폰 인증을 해주세요"}));
       }
     }
   }

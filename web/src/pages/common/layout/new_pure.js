@@ -1,18 +1,15 @@
 /**
  *
  */
-import React, {useMemo, useEffect, useContext, useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import {NavLink} from 'react-router-dom'
 
 //context
-import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
-import {Context} from 'context'
-import Footer from 'pages/common/footer'
+import {WIDTH_MOBILE} from 'context/config'
 
 //layout
 import Popup from 'pages/common/popup'
-import Message from 'pages/common/message'
 import qs from 'query-string'
 
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -21,8 +18,6 @@ import closeBtn from 'pages/menu/static/ic_close.svg'
 const Layout = (props) => {
   const {logo_status} = props
 
-  //context
-  const context = useContext(Context)
   //initalize
   const {children} = props
   const {webview} = qs.parse(location.search)

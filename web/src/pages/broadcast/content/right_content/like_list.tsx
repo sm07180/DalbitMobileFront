@@ -5,9 +5,10 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 // constant
 import { tabType } from "../../constant";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GlobalContext } from "context";
 import NoResult from "common/ui/no_result";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 // flag
 let currentPage = 1;
@@ -16,9 +17,8 @@ let timer;
 export default function LikeList(props: { profile: any; roomNo: string }) {
   const { profile, roomNo } = props;
   // ctx
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { setRightTabType, setUserMemNo } = broadcastAction;
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { userMemNo } = broadcastState;
   // state
   const [likelist, setLikelist] = useState<any>([]);
@@ -26,9 +26,9 @@ export default function LikeList(props: { profile: any; roomNo: string }) {
   const [totalPage, setTotalPage] = useState<number>(1);
   const scrollContentRef = useRef<any>();
   const viewProfile = (memNo?: any) => {
-    setRightTabType && setRightTabType(tabType.PROFILE);
+    dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
     if (memNo) {
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     }
   };
   async function fetchData(next?) {
@@ -56,12 +56,11 @@ export default function LikeList(props: { profile: any; roomNo: string }) {
         }
       }
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+      }));
     }
   }
   const showMoreList = () => {

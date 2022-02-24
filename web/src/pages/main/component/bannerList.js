@@ -1,17 +1,19 @@
-import React, {useEffect, useContext, useState} from 'react'
-import styled from 'styled-components'
+import React, {useEffect, useState} from 'react'
 
 // components
 import Swiper from 'react-id-swiper'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 import {RoomJoin} from "context/room";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default React.forwardRef((props, ref) => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const [bannerView, setBannerView] = useState(false)
 
@@ -25,9 +27,9 @@ export default React.forwardRef((props, ref) => {
       if (clipUrl.test(linkUrl)) {
         if (isHybrid()) {
           const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
-          clipJoinApi(clip_no, globalCtx)
+          clipJoinApi(clip_no)
         } else {
-          globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+          dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
         }
       } else if (broadUrl.test(linkUrl)) {
         if (isHybrid()) {
@@ -55,9 +57,9 @@ export default React.forwardRef((props, ref) => {
         if (clipUrl.test(linkUrl)) {
           if (isHybrid()) {
             const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
-            clipJoinApi(clip_no, globalCtx)
+            clipJoinApi(clip_no)
           } else {
-            globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
           }
         } else if (broadUrl.test(linkUrl)) {
           if (isHybrid()) {

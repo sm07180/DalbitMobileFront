@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-// ctx
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GlobalContext } from "context";
 // constant
 import { tabType } from "../../constant";
 // Api
 import { getProfile, postGiftDal } from "common/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 let preventClick = false;
 
 export default function GiftDal(props: { common: any; profile: any }) {
   const { profile, common } = props;
-  // ctx
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { setRightTabType } = broadcastAction;
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { userMemNo, userNickNm } = broadcastState;
   const history = useHistory();
   const { splashData } = globalState;
@@ -68,28 +67,26 @@ export default function GiftDal(props: { common: any; profile: any }) {
           dal: dal,
         });
         if (result === "success") {
-          globalAction.callSetToastStatus &&
-            globalAction.callSetToastStatus({
-              status: true,
-              message: message,
-            });
+          dispatch(setGlobalCtxSetToastStatus({
+            status: true,
+            message: message,
+          }));
 
           fetchData();
           setText("");
         } else if (result === "fail") {
-          globalAction.callSetToastStatus &&
-            globalAction.callSetToastStatus({
-              status: true,
-              message: message,
-            });
+          dispatch(setGlobalCtxSetToastStatus({
+            status: true,
+            message: message,
+          }));
         }
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: `직접입력 선물은 최소 ${common.giftDalMin}달 부터 선물이 가능합니다.`,
           callback: () => {},
-        });
+        }));
       }
 
       preventClick = false;
@@ -115,7 +112,7 @@ export default function GiftDal(props: { common: any; profile: any }) {
       <h3
         className="tabTitle tabTitle__back"
         onClick={() => {
-          setRightTabType && setRightTabType(tabType.PROFILE);
+          dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
         }}
       >
         선물
@@ -160,7 +157,7 @@ export default function GiftDal(props: { common: any; profile: any }) {
         )}
         <p className="giftBox__warnnigMsg">* 달 선물하기는 100% 전달됩니다.</p>
         <div className="btnWrap">
-          <button className="btn btn_cancel" onClick={() => setRightTabType && setRightTabType(tabType.PROFILE)}>
+          <button className="btn btn_cancel" onClick={() => dispatch(setBroadcastCtxRightTabType(tabType.PROFILE))}>
             취소
           </button>
 

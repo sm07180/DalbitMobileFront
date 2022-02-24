@@ -1,15 +1,16 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
-import {Context} from 'context'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility from 'components/lib/utility'
 import {BroadCastStore} from 'pages/broadcast/store'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup, setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //-------------------------------------------------- declare start
-  const context = useContext(Context)
-
   const [bWidth, setWidth] = useState()
   const [tData, setTData] = useState([])
   const [item, setItem] = useState(-1)
@@ -43,8 +44,8 @@ export default (props) => {
   }
 
   useEffect(() => {
-    context.action.updatePopup('CHARGE')
-    context.action.updatePopupVisible(false)
+    dispatch(setGlobalCtxUpdatePopup({popup: ['CHARGE']}));
+    dispatch(setGlobalCtxVisible(false));
   }, [])
 
   useEffect(() => {

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { GlobalContext } from "context";
 import { getClipGiftRank, postAddFan, deleteFan } from "common/api";
 import { useHistory } from "react-router-dom";
 
@@ -10,10 +9,11 @@ import NoResult from "common/ui/no_result";
 
 import fanIcon from "../static/ic_fan.svg";
 import moonIcon from "../static/ic_moon_s.svg";
+import {useDispatch, useSelector} from "react-redux";
 
 export default (props) => {
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [giftRank, setGiftRank] = useState<any>({});
   const [giftRankList, setGiftRankList] = useState<any>({});

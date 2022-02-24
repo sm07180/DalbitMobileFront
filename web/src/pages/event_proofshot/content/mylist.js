@@ -1,5 +1,4 @@
-import React, {useState, useContext} from 'react'
-import {Context} from 'context'
+import React, {useState} from 'react'
 import Api from 'context/api'
 
 import {convertContents} from './common_fn'
@@ -9,10 +8,14 @@ import {TAB_TYPE, VIEW_TYPE} from '../constant'
 import iconDown from '../static/arrow_down.svg'
 import iconUp from '../static/arrow_up.svg'
 import '../static/proofStyle.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function Mylist(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {item, setTab, setViewType, eventStatusCheck} = props
-  const global_ctx = useContext(Context)
 
   const [detail, setDetail] = useState(-1)
 
@@ -21,7 +24,8 @@ function Mylist(props) {
   }
 
   const deleteFn = () => {
-    global_ctx.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '삭제하시겠습니까?',
       callback: async () => {
         const res = await Api.event_proofshot_dellete({
@@ -39,7 +43,7 @@ function Mylist(props) {
           setTab(TAB_TYPE.ALL)
         }
       }
-    })
+    }))
   }
   return (
     <ul className="list">

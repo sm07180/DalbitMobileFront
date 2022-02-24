@@ -1,19 +1,19 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 //styled
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxMyPageReport} from "redux/actions/globalCtx";
+
 export default (props) => {
-  //context------------------------------------------
-  const context = useContext(Context)
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  const myProfileNo = ctx.profile.memNo
+  const myProfileNo = globalState.profile.memNo
   //state
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
@@ -28,19 +28,21 @@ export default (props) => {
     })
     if (res.result === 'success') {
       //console.log(res)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: profile.nickNm + '님을 신고 하였습니다.'
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: '이미 신고한 회원 입니다.'
-      })
+      }))
     }
 
     return
@@ -99,7 +101,7 @@ export default (props) => {
   })
   //리포트클로즈
   const ClearReport = () => {
-    context.action.updateMypageReport(false)
+    dispatch(setGlobalCtxMyPageReport(false));
   }
   //버튼map
   const Reportmap = BTNInfo.map((live, index) => {

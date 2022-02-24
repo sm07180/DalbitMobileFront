@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 //global components
 import Header from 'components/ui/header/Header'
@@ -8,18 +8,19 @@ import BroadcastWrap from 'pages/remypage/contents/report/BroadCastWrap'
 import ListenWrap from 'pages/remypage/contents/report/ListenWrap'
 
 import './report.scss'
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import Tabmenu from "pages/remypage/components/tabmenu";
+import {useDispatch, useSelector} from "react-redux";
 
 const Report = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const submenu = ['방송', '청취']
   const [tabType, setTabType] = useState(submenu[0])
-  const context = useContext(Context);
   const history = useHistory();
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {
+    if (!(globalState.token.isLogin)) {
       history.push("/login");
     }
   }, []);

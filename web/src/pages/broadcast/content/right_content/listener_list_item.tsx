@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GlobalContext } from "context";
 import { settingAlarmTime } from "lib/common_fn";
 // api
 import { broadManagerSet, broadManagerDelete, broadKickOut, MypageBlackListAdd } from "common/api";
@@ -10,6 +8,13 @@ import { broadManagerSet, broadManagerDelete, broadKickOut, MypageBlackListAdd }
 import { tabType } from "pages/broadcast/constant";
 import { AuthType } from "constant";
 import { MANAGER_TYPE } from "./constant";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxUserMemNo,
+  setBroadcastCtxUserNickName
+} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 export default function ListenerListItem(props: {
   roomNo: string;
@@ -21,12 +26,11 @@ export default function ListenerListItem(props: {
   const { roomNo, roomOwner, profile, data, classNm } = props;
   const history = useHistory();
 
-  // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const { isLogin } = globalState.baseData;
-  const { setRightTabType, setUserMemNo, setUserNickNm } = broadcastAction;
 
   // state
   const [focusIdx, setFocusIdx] = useState(-1);
@@ -43,8 +47,8 @@ export default function ListenerListItem(props: {
   // 프로필 보기
   const viewProfile = (memNo: string) => {
     if (isLogin === true) {
-      setRightTabType && setRightTabType(tabType.PROFILE);
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     } else {
       return history.push("/login");
     }
@@ -52,9 +56,9 @@ export default function ListenerListItem(props: {
 
   // 신고 하기
   const pushReport = (data: any) => {
-    setRightTabType && setRightTabType(tabType.REPORT);
-    setUserNickNm && setUserNickNm(data.nickNm);
-    setUserMemNo && setUserMemNo(data.memNo);
+    dispatch(setBroadcastCtxRightTabType(tabType.REPORT));
+    dispatch(setBroadcastCtxUserNickName(data.nickNm));
+    dispatch(setBroadcastCtxUserMemNo(data.memNo));
     setFocusIdx(-1);
   };
 
@@ -84,95 +88,87 @@ export default function ListenerListItem(props: {
       }
     })();
 
-    if (globalAction.setAlertStatus) {
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "알림",
-        content: data.nickNm + msg,
-        callback: async () => {
-          const res = await managerApi({ roomNo: roomNo, memNo: data.memNo, managerType: managerType });
-          if (res.result === "success") {
-            toggleFocus(-1);
-            globalAction.callSetToastStatus!({
-              status: true,
-              message: res.message,
-            });
-          } else {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                content: res.message,
-                callback: () => {
-                  return;
-                },
-              });
-          }
-        },
-      });
-    }
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      title: "알림",
+      content: data.nickNm + msg,
+      callback: async () => {
+        const res = await managerApi({ roomNo: roomNo, memNo: data.memNo, managerType: managerType });
+        if (res.result === "success") {
+          toggleFocus(-1);
+          dispatch(setGlobalCtxSetToastStatus({
+            status: true,
+            message: res.message,
+          }));
+        } else {
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: res.message,
+            callback: () => {
+              return;
+            },
+          }));
+        }
+      },
+    }));
   };
 
   // 강퇴 하기
   const outUser = (data: any) => {
-    if (globalAction.setAlertStatus) {
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "강제 퇴장",
-        content: data.nickNm + " 님을 강제퇴장 하시겠습니까?",
-        subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
-        subcontStyle: {
-          color: "gray",
-          lineHeight: "16px",
-          margin: "10px 0 0 0",
-        },
-        callback: async () => {
-          const res = await broadKickOut({ roomNo: roomNo, blockNo: data.memNo });
-          if (res.result === "success") {
-            KickAfterBan(data);
-          } else {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                content: res.message,
-              });
-          }
-        },
-      });
-    }
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      title: "강제 퇴장",
+      content: data.nickNm + " 님을 강제퇴장 하시겠습니까?",
+      subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
+      subcontStyle: {
+        color: "gray",
+        lineHeight: "16px",
+        margin: "10px 0 0 0",
+      },
+      callback: async () => {
+        const res = await broadKickOut({ roomNo: roomNo, blockNo: data.memNo });
+        if (res.result === "success") {
+          KickAfterBan(data);
+        } else {
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: res.message,
+          }));
+        }
+      },
+    }));
   };
   const KickAfterBan = (data) => {
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `강제퇴장이 완료되었습니다. 
-         ${data.nickNm}님을 
-         차단하시겠습니까?`,
-        callback: () => fetchDataBlock(data),
-        cancelCallback: () => toggleFocus(-1),
-      });
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: `강제퇴장이 완료되었습니다. 
+       ${data.nickNm}님을 
+       차단하시겠습니까?`,
+      callback: () => fetchDataBlock(data),
+      cancelCallback: () => toggleFocus(-1),
+    }));
   };
   async function fetchDataBlock(data) {
     const { message, result, code } = await MypageBlackListAdd({
       memNo: data.memNo,
     });
     if (result === "success") {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
+      }));
       toggleFocus(-1);
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+      }));
     }
   }
 

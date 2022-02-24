@@ -1,13 +1,16 @@
-import React, {useState, useEffect, useContext, useCallback, useRef} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import './level_achieve.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let timer
 
 export default () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [count, setCount] = useState(null)
   const previousDt = usePrevious(count)
   const history = useHistory()
@@ -50,8 +53,9 @@ export default () => {
       setViewLevel(code)
       DetailCheck(code)
     } else {
-      if (context.token.isLogin === false) {
-        context.action.alert({
+      if (globalState.token.isLogin === false) {
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
           callback: () => {
             history.push({
@@ -61,14 +65,15 @@ export default () => {
               }
             })
           }
-        })
-      } else if (context.token.isLogin === true) {
-        context.action.alert({
+        }))
+      } else if (globalState.token.isLogin === true) {
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/')
           }
-        })
+        }))
       }
     }
   }
@@ -87,12 +92,13 @@ export default () => {
       })
       setStartDt(data.startDt)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
           history.push('/')
         }
-      })
+      }))
     }
   }
 
@@ -103,21 +109,24 @@ export default () => {
     })
 
     if (result === 'success') {
-      context.action.alert_no_close({
+      dispatch(setGlobalCtxMessage({
+        type: "alert_no_close",
         msg: `${
           viewLevel === '5' ? `선물로 달 20개가 지급되었습니다.` : viewLevel === '10' ? `선물로 달 50개가 지급되었습니다.` : ''
         }`,
         callback: () => {
           history.push('/')
         }
-      })
+      }))
     } else {
       if (code === '-1') {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({
+          type: "alert_no_close",
           msg: '보상받는 대상이 아닙니다.'
-        })
+        }))
       } else if (code === '-2') {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({
+          type: "alert_no_close",
           msg: `${
             viewLevel === '5'
               ? `5레벨을 달성 후 선물받기를 눌러주세요.`
@@ -125,13 +134,15 @@ export default () => {
               ? `10레벨을 달성 후 선물받기를 눌러주세요.`
               : ''
           }`
-        })
+        }))
       } else if (code === '-3') {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({
+          type: "alert_no_close",
           msg: '이벤트 기간이 종료되어 선물을 받을 수 없습니다.'
-        })
+        }))
       } else if (code === '-4') {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({
+          type: "alert_no_close",
           msg: `${
             viewLevel === '5'
               ? `이미 선물을 받은 계정입니다. 5레벨 달성 선물은 1인1번만 지급하고 있습니다. `
@@ -139,16 +150,18 @@ export default () => {
               ? `이미 선물을 받은 계정입니다. 10레벨 달성선물은 1인1번만 지급하고 있습니다. `
               : ''
           }`
-        })
+        }))
       } else if (code === '-5') {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({
+          type: "alert_no_close",
           msg: '본인인증 후 선물을 받을 수 있습니다.',
           callback: () => {
             history.push('/self_auth/self?event=/event/level_achieve')
           }
-        })
+        }))
       } else if (code === '-6') {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({
+          type: "alert_no_close",
           msg: `${
             viewLevel === '5'
               ? `이미 선물을 받은 계정입니다. 5레벨 달성선물은 1인1번만 지급하고 있습니다. `
@@ -156,14 +169,15 @@ export default () => {
               ? `이미 선물을 받은 계정입니다. 10레벨 달성선물은 1인1번만 지급하고 있습니다. `
               : ''
           }`
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/')
           }
-        })
+        }))
       }
     }
   }, [viewLevel])

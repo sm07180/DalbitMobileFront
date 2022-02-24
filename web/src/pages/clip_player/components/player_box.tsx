@@ -9,10 +9,10 @@ import ClipPlayerBar from "./player_bar";
 import ClipPlayerBarBtn from "./player_bar_btn";
 import ClipPlayerBanner from "./player_banner";
 
-import { GlobalContext } from "context";
+import {useSelector} from "react-redux";
 
 export default () => {
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { clipInfo, clipPlayMode } = globalState;
   const { clipPlayer } = globalState;
   const { clipAudioTag } = clipPlayer!;
@@ -71,7 +71,7 @@ export default () => {
 
 export const audioEndHandler = async () => {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { clipPlayer, clipPlayMode } = globalState;
 
   if (globalState.clipPlayList?.length === 0) return null;

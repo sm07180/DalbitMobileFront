@@ -1,17 +1,13 @@
-import React, {useEffect, useState, useContext, useCallback} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import React, {useCallback} from 'react'
+import {useHistory} from 'react-router-dom'
 //context
-import {Context} from 'context/index.js'
-import Room, {RoomJoin} from 'context/room'
+import {RoomJoin} from 'context/room'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
 import API from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 //static
-import FemaleIcon from '../static/female.svg'
-import MaleIcon from '../static/male.svg'
-import SpecialLong from '../static/special_long.svg'
 import PersonIcon from '../static/person.svg'
 import heartIcon from '../static/like_g_s.svg'
 import TotalIcon from '../static/total.svg'
@@ -19,17 +15,19 @@ import LiveIcon from '../static/live.svg'
 import SimpleMessageIcon from '../static/message.svg'
 import ClipPlayerIcon from '../static/clip_player.svg'
 import ArrowIcon from '../static/arrow.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default (props) => {
   //props
-  const {memberList, clipList, liveList, total, clipType, CategoryType, filterType, searchText} = props
-  // ctx && path
-  const context = useContext(Context)
+  const {memberList, clipList, liveList, total, clipType, CategoryType, filterType, searchText} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const customHeader = JSON.parse(API.customHeader)
   const history = useHistory()
   // link & join & clip play
   const Link = (memNo) => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push(`/login`)
     } else {
       history.push(`/profile/${memNo}`)
@@ -64,19 +62,21 @@ export default (props) => {
         search: searchText
       }
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      clipJoin(data, context)
+      clipJoin(data, dispatch, globalState)
     } else {
       if (code === '-99') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
   }
@@ -109,15 +109,16 @@ export default (props) => {
                       <button
                         onClick={() => {
                           if (customHeader['os'] === OS_TYPE['Desktop']) {
-                            if (context.token.isLogin === false) {
-                              context.action.alert({
+                            if (globalState.token.isLogin === false) {
+                              dispatch(setGlobalCtxMessage({
+                                type: "alert",
                                 msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                                 callback: () => {
                                   history.push('/login')
                                 }
-                              })
+                              }))
                             } else {
-                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                              dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 1]}));
                             }
                           } else {
                             Join(roomNo, memNo)
@@ -195,15 +196,16 @@ export default (props) => {
                       key={idx + 'list'}
                       onClick={() => {
                         if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (context.token.isLogin === false) {
-                            context.action.alert({
+                          if (globalState.token.isLogin === false) {
+                            dispatch(setGlobalCtxMessage({
+                              type: "alert",
                               msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                               callback: () => {
                                 history.push('/login')
                               }
-                            })
+                            }))
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                           }
                         } else {
                           Join(roomNo, memNo)
@@ -301,15 +303,16 @@ export default (props) => {
                       key={idx + 'list'}
                       onClick={() => {
                         if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (context.token.isLogin === false) {
-                            context.action.alert({
+                          if (globalState.token.isLogin === false) {
+                            dispatch(setGlobalCtxMessage({
+                              type: "alert",
                               msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                               callback: () => {
                                 history.push('/login')
                               }
-                            })
+                            }))
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                           }
                         } else {
                           fetchDataPlay(clipNo, idx)
@@ -331,15 +334,16 @@ export default (props) => {
                           alt={title}
                           onClick={() => {
                             if (customHeader['os'] === OS_TYPE['Desktop']) {
-                              if (context.token.isLogin === false) {
-                                context.action.alert({
+                              if (globalState.token.isLogin === false) {
+                                dispatch(setGlobalCtxMessage({
+                                  type: "alert",
                                   msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                                   callback: () => {
                                     history.push('/login')
                                   }
-                                })
+                                }))
                               } else {
-                                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                                dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                               }
                             } else {
                               fetchDataPlay(clipNo, idx)

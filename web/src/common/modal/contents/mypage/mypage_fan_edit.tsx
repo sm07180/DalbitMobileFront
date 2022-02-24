@@ -1,6 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
-import { GlobalContext } from "context";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import { printNumber, addComma } from "lib/common_fn";
@@ -9,6 +7,8 @@ import { IMG_SERVER } from "constant/define";
 import { getFanRankList, postAddFan, deleteFan, getLikeRank } from "common/api";
 // scss
 import "./mypage_modal.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 let tabFlag;
 
@@ -16,8 +16,8 @@ export default (props) => {
   let location = useLocation();
   let checkSearch = location.search.split("?")[1];
   // ctx && commons
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const dispatch = useDispatch();
+  const modalState = useSelector(({modal}) => modal);
   const history = useHistory();
   // state
   const [controlTab, setConTrolTab] = useState({
@@ -159,53 +159,48 @@ export default (props) => {
         memNo: memNo,
       });
       if (result === "success") {
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({
-            status: true,
-            message: `${nickNm}님의 팬이 되었습니다`,
-          });
-        }
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: `${nickNm}님의 팬이 되었습니다`,
+        }));
         GetList();
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     AddFanFunc();
   };
   const cancelFan = (memNo: string, nickNm: string) => {
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
-        callback: () => {
-          async function DeleteFanFunc() {
-            const { result, data, message } = await deleteFan({
-              memNo: memNo,
-            });
-            if (result === "success") {
-              if (globalAction.callSetToastStatus) {
-                globalAction.callSetToastStatus({
-                  status: true,
-                  message: message,
-                });
-              }
-              GetList();
-            } else {
-              globalAction.setAlertStatus!({
-                status: true,
-                type: "alert",
-                content: message,
-              });
-            }
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function DeleteFanFunc() {
+          const { result, data, message } = await deleteFan({
+            memNo: memNo,
+          });
+          if (result === "success") {
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: message,
+            }));
+            GetList();
+          } else {
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: message,
+            }));
           }
-          DeleteFanFunc();
-        },
-      });
+        }
+        DeleteFanFunc();
+      },
+    }));
   };
   // async function ToggleFan(obj: any) {
   //   const { isFan, memNo } = obj;

@@ -1,13 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-
-// context
-import {Context} from 'context'
 
 // static
 
 export default props => {
-  const ctx = useContext(Context)
   return <Wrap></Wrap>
 }
 const Wrap = styled.div`

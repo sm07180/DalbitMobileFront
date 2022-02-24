@@ -1,21 +1,20 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState} from 'react'
 
 // global components
 // components
 import API from "context/api";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import Swiper from "react-id-swiper";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import ImageUpload from "pages/recustomer/components/ImageUpload";
-import CheckList from "pages/recustomer/components/CheckList";
-import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Write = (props) => {
-  const {setInquire} = props
-  const context = useContext(Context);
+  const {setInquire} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [inputData, setInputData] = useState({
     title: "",
     faqType: 0,
@@ -54,14 +53,14 @@ const Write = (props) => {
       questionFileName3: imageFileName[2],
       phone: "",
       email: "",
-      nickName: context.profile.nickName
+      nickName: globalState.profile.nickName
     }
     API.center_qna_add({params}).then((res) => {
       if(res.result === "success") {
-        context.action.alert({msg: "1:1문의가 등록되었습니다."})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: "1:1문의가 등록되었습니다."}))
         setInquire("나의 문의내역");
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -115,7 +114,7 @@ const Write = (props) => {
       return list.includes(ext);
     };
     if (!extValidator(fileExtension)) {
-      context.action.alert({msg: "jpg, png 이미지만 사용 가능합니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "jpg, png 이미지만 사용 가능합니다."}))
     }
     reader.readAsDataURL(target.files[0]);
     reader.onload = async () => {
@@ -130,7 +129,7 @@ const Write = (props) => {
           setImgFile(imgFile.concat(res.data.url));
           setImageFileName(imageFileName.concat(fileName));
         } else {
-          context.action.alert({msg: res.message});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
         }
       }
     }
@@ -152,7 +151,7 @@ const Write = (props) => {
     if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
       fetchData();
     } else {
-      context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "필수 항목을 모두 입력해주세요"}))
     }
   }
 

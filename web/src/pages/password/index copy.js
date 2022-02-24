@@ -1,27 +1,26 @@
-import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
+import React, {useEffect, useReducer, useRef, useState} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
-import {PHOTO_SERVER} from 'context/config'
-import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
-import Layout from 'pages/common/layout/new_layout'
 import SignField from './components/signField'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let intervalId = null
 let setTime = 300
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
 
   const memIdRef = useRef(null)
@@ -76,7 +75,7 @@ export default (props) => {
     }
   }
 
-  const [changes, dispatch] = useReducer(reducer, {
+  const [changes, dispatchWithoutAction] = useReducer(reducer, {
     memId: '',
     loginPwd: '',
     loginPwdCheck: '',
@@ -151,7 +150,7 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      dispatch({name: 'CMID', value: data.CMID})
+      dispatchWithoutAction({name: 'CMID', value: data.CMID})
       setValidate({
         name: 'memId',
         check: true,
@@ -162,9 +161,10 @@ export default (props) => {
       startAuthTimer()
     } else {
       setValidate({name: 'memId', check: false, text: message})
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const fetchSmsCheck = async () => {
@@ -175,7 +175,7 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      dispatch({name: 'CMID', value: true})
+      dispatchWithoutAction({name: 'CMID', value: true})
       setValidate({name: 'auth', check: true, text: message})
       setValidate({name: 'memId', check: true})
       clearInterval(intervalId)
@@ -246,25 +246,28 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           history.push('/')
         },
         msg: '비밀번호 변경(을) 성공하였습니다.'
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
   //회원가입 완료 버튼
   const passwordModify = () => {
     if (CMID !== true) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '휴대폰 본인인증을 진행해주세요.'
-      })
+      }))
     }
     validatePwd()
     validatePwdCheck()
@@ -273,22 +276,23 @@ export default (props) => {
     const validateKey = Object.keys(validate)
     for (let index = 0; index < validateKey.length; index++) {
       if (validate[validateKey[index]].check === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: validate[validateKey[index]].text
-        })
+        }))
         break
       }
     }
   }, [validate.loginPwdCheck])
 
-  
+
   const phoneCertification = () => {
     setStep(step + 1);
   }
 
   return (
     <div id='passwordSetting'>
-      
+
       <SignField title={"새로운 비밀번호를\n설정해주세요."} btnFunction={phoneCertification}>
         <InputItem button={false} validate={validate.loginPwd.check}>
           {validate.loginPwd.text && <p className="helpText">{validate.loginPwd.text}</p>}
@@ -302,7 +306,7 @@ export default (props) => {
               autoComplete="off"
               maxLength={20}
               value={loginPwd}
-              onChange={(e) => dispatch(e.target)}
+              onChange={(e) => dispatchWithoutAction(e.target)}
             />
           </div>
         </InputItem>
@@ -318,7 +322,7 @@ export default (props) => {
               autoComplete="off"
               maxLength={20}
               value={loginPwdCheck}
-              onChange={(e) => dispatch(e.target)}
+              onChange={(e) => dispatchWithoutAction(e.target)}
             />
           </div>
         </InputItem>

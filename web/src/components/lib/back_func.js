@@ -3,15 +3,15 @@ import React from 'react'
 import {Hybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
+import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
 
-export const backFunc = (context) => {
-  const {backFunction} = context
-  switch (backFunction.name) {
+export const backFunc = (dispatch, globalState) => {
+  switch (globalState.backFunction.name) {
     case 'booleanType':
-      context.action.updateBackFunction({name: 'booleanType', value: false})
+      dispatch(setGlobalCtxBackFunction({name: 'booleanType', value: false}));
       break
     case 'multiViewer':
-      context.action.updateMultiViewer({show: false})
+      dispatch(setGlobalCtxMultiViewer({show: false}));
       break
     case 'event':
     case 'selfauth':
@@ -22,6 +22,6 @@ export const backFunc = (context) => {
       break
   }
   setTimeout(() => {
-    context.action.updateSetBack(null)
+    dispatch(setGlobalCtxBackState(null));
   }, 100)
 }

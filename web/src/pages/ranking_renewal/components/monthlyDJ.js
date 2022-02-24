@@ -1,12 +1,9 @@
-import React, {useState,useEffect, useContext} from 'react'
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 export default () => {
   const history = useHistory()
-  const context = useContext(Context)
-  
+
   const [tooltipPop, setTooltipPop] = useState(false);
 
   const togglePopup = () =>{

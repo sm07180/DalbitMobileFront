@@ -1,23 +1,25 @@
-import React, {useState, useContext, useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
 
 import CloseBtn from '../static/close_w_l.svg'
-import {Context} from 'context'
 // import FanIcon from '../static/fan.svg'
 // import MoonIcon from '../static/ic_moon.svg'
 import 'styles/layerpopup.scss'
 
 import NoResult from 'components/ui/noResult'
 import {Scrollbars} from 'react-custom-scrollbars'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function RankPopup(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {setPopupState} = props
 
   const history = useHistory()
-  const context = useContext(Context)
 
   const [rankList, setRankList] = useState([])
 
@@ -51,10 +53,10 @@ export default function RankPopup(props) {
         }
       })
       if (result === 'success') {
-        context.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
         feachCilpGiftRankList()
       } else {
-        context.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
       }
     }
     AddFanFunc(memNo)
@@ -68,10 +70,10 @@ export default function RankPopup(props) {
         }
       })
       if (result === 'success') {
-        context.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
         feachCilpGiftRankList()
       } else {
-        context.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
       }
     }
     DeleteFanFunc(memNo)
@@ -121,12 +123,12 @@ export default function RankPopup(props) {
                                     <span className="thumb" style={{backgroundImage: `url(${item.profImg.thumb62x62})`}}></span>
                                     <span className="nickNm">{item.nickName}</span>
                                   </div>
-                                  {item.isFan === false && item.memNo !== context.token.memNo && (
+                                  {item.isFan === false && item.memNo !== globalState.token.memNo && (
                                     <button onClick={() => AddFan(item.memNo)} className="plusFan">
                                       +팬등록
                                     </button>
                                   )}
-                                  {item.isFan === true && item.memNo !== context.token.memNo && (
+                                  {item.isFan === true && item.memNo !== globalState.token.memNo && (
                                     <button onClick={() => DeleteFan(item.memNo)}>팬</button>
                                   )}
                                 </li>

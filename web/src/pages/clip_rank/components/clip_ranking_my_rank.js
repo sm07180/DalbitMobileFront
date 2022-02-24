@@ -1,26 +1,27 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
-import {ClipRankContext} from 'context/clip_rank_ctx'
 import {DATE_TYPE} from '../constant'
-import {Context} from 'context'
 import {ClipPlay} from 'pages/clip_rank/components/clip_play_fn'
+import {useDispatch, useSelector} from "react-redux";
 
 export default function ClipRankingMyRank() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const {clipRankState} = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRank}) => clipRank);
   const {formState, myInfo} = clipRankState
   const [myProfile, setMyProfile] = useState(false)
 
   useEffect(() => {
     const createMyRank = async () => {
-      if (context.profile !== null) {
-        setMyProfile({...context.profile})
+      if (globalState.profile !== null) {
+        setMyProfile({...globalState.profile})
       } else {
         const profileInfo = await Api.profile({
-          params: {memNo: context.token.memNo}
+          params: {memNo: globalState.token.memNo}
         })
         if (profileInfo.result === 'success') {
           setMyProfile(profileInfo.data)
@@ -28,7 +29,7 @@ export default function ClipRankingMyRank() {
       }
     }
     createMyRank()
-  }, [context.profile])
+  }, [globalState.profile])
 
   return (
     <>
@@ -68,12 +69,12 @@ export default function ClipRankingMyRank() {
         <>
           {Object.keys(myInfo).length > 0 && myInfo.myRank != 0 && (
             /* 최상위 순위 반영이므로 map(x)*/
-            <div className="myRanking" onClick={() => ClipPlay(myInfo.myClipNo, context, history)}>
+            <div className="myRanking" onClick={() => ClipPlay(myInfo.myClipNo, dispatch, globalState, history)}>
               <div className="rankingList">
                 <div className="rankingList__item">
                   <p className="rankingList__item--title">
                     {formState.dateType === DATE_TYPE.DAY ? '일간' : '주간'}
-                    <br />
+                    <br/>
                     클립랭킹
                   </p>
 

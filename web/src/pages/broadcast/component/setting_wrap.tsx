@@ -4,15 +4,13 @@ import React, {useCallback, useContext} from "react";
 // Api
 import { modifyBroadcastSetting } from "common/api";
 
-// Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-
 import { MediaType } from "../constant";
 
 // Static
 import ArrowBlackImg from "../static/img_arrow_b.svg";
 import {userBroadcastSettingType} from "../../../common/realtime/chat_socket";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 /** 목소리 아이템, 사운드 아이템 설정 추가
  *
@@ -27,10 +25,9 @@ const SettingRenderComponent = (props: {
   setSettingObj: any
 }) => {
   const { roomOwner, settingObj, setSettingObj} = props;
+  const dispatch = useDispatch();
 
-  const { globalAction } = useContext(GlobalContext);
-
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   const { roomInfo } = broadcastState;
 
@@ -52,8 +49,7 @@ const SettingRenderComponent = (props: {
           setSettingObj({djTtsSound, djNormalSound, djListenerIn, djListenerOut, listenerIn, listenerOut, liveBadgeView, ttsSound, normalSound});
 
           //설정후 결과 토스트 메시지
-          globalAction.callSetToastStatus &&
-            globalAction.callSetToastStatus({status: true, message: message});
+          dispatch(setGlobalCtxSetToastStatus({status: true, message: message}));
         }
       }
     }, [settingObj, setSettingObj, roomInfo]);
@@ -123,7 +119,7 @@ const SettingRenderComponent = (props: {
             />
           </div>
         }
-        
+
         {roomOwner === true ? (
           <>
             <div>

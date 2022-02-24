@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useContext ,useLayoutEffect, useCallback} from 'react'
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react'
 
 import Api from 'context/api'
-import {Context} from 'context'
-import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 
 //components
@@ -10,13 +8,11 @@ import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import Lottie from 'react-lottie'
 import moment from 'moment'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 
 //staic
-import newIcon from '../static/new_circle_m.svg'
 
 export default () => {
-  const context = useContext(Context)
   const history = useHistory()
   const [gganbuNumber, setGganbuNumber] = useState(0)
   const [totalCommentCnt, setTotalCommentCnt] = useState(0)
@@ -43,7 +39,7 @@ export default () => {
 
   const fetchGganbuPocketPage = async () => {
     const {data, message} = await Api.gganbuPocketPage();
-    if(message === "SUCCESS") { 
+    if(message === "SUCCESS") {
       setGganbuNumber(data.gganbuNo);
       setMyPoint(data.gganbuMemSel.marble_pocket_pt);
       setPocketCtn(data.gganbuMemSel.marble_pocket);
@@ -118,67 +114,67 @@ export default () => {
     if(gganbuNumber === "4"){
       let point = (Math.ceil(Math.random() * 5) + 5) * 10;
       setRandomPoint(point);
-  
+
       if(point === 60) {
         setAniLevel("ani1");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 8000);
       } else if(point === 70) {
         setAniLevel("ani1");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 8000);
       } else if(point === 80) {
         setAniLevel("ani2");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 8000);
       } else if(point === 90) {
         setAniLevel("ani3");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 9000);
       } else if(point === 100) {
         setAniLevel("ani4");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 10000);
-      }  
-      fetchGganbuPocketOpen(point); 
+      }
+      fetchGganbuPocketOpen(point);
     } else {
       let point = 0;
       const modular = 10;
-      
+
       if(averageLevel < 30) {
         point = Math.floor(Math.random() * 39) + 70; // 70 ~ 109
         point = Math.floor(point / modular) * modular;
         setRandomPoint(point);
         setAniLevel("ani4");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 10000);
@@ -187,10 +183,10 @@ export default () => {
         point = Math.floor(point / modular) * modular;
         setRandomPoint(point);
         setAniLevel("ani3");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 9000);
@@ -199,10 +195,10 @@ export default () => {
         point = Math.floor(point / modular) * modular;
         setRandomPoint(point);
         setAniLevel("ani2");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 8000);
@@ -211,16 +207,16 @@ export default () => {
         point = Math.floor(point / modular) * modular;
         setRandomPoint(point);
         setAniLevel("ani1");
-        setTimeout(() => {      
-          setOpenPocket(false); 
+        setTimeout(() => {
+          setOpenPocket(false);
           fetchGganbuPocketPage();
-          setCurrentPage(1);    
+          setCurrentPage(1);
           fetchGganbuPocketReport();
           fetchGganbuPocketPage();
         }, 8000);
       }
-      fetchGganbuPocketOpen(point); 
-    }    
+      fetchGganbuPocketOpen(point);
+    }
   }
 
   useEffect(() => {
@@ -249,7 +245,7 @@ export default () => {
             <div className="title">구슬 주머니 보유 개수</div>
             <div className="shadowBox">
               <div className="pocketWrap">
-                {pocketCtn > 0 ? 
+                {pocketCtn > 0 ?
                     <span id="pocketAni" className="pocket">
                       <Lottie
                         options={{
@@ -259,10 +255,10 @@ export default () => {
                         }}
                       />
                     </span>
-                  : 
+                  :
                     <img src="https://image.dalbitlive.com/event/gganbu/marblePocket.png"/>
-                }      
-                <span className="pocketCount">{pocketCtn}</span>          
+                }
+                <span className="pocketCount">{pocketCtn}</span>
               </div>
               <button className={`pocketBtn ${pocketCtn > 0 ? "active" : ""}`} onClick={pocketOpen}>구슬 주머니 열기</button>
             </div>
@@ -323,7 +319,7 @@ export default () => {
                 )}
               </tbody>
             </table>
-           : 
+           :
            <table>
               <colgroup>
                 <col width="30%" />
@@ -364,7 +360,7 @@ export default () => {
                 )}
               </tbody>
             </table>
-          }          
+          }
         </div>
       </div>
 
@@ -375,9 +371,9 @@ export default () => {
         ani3 = 6초
         ani4 = 7초
       */}
-      {openPocket &&      
+      {openPocket &&
         <div className="openPocket">
-          <div className={`openPocketAni`} 
+          <div className={`openPocketAni`}
                style={{backgroundImage: `url(https://image.dalbitlive.com/event/gganbu/ani/special_marble_0${aniLevel === "ani1" ? 1 : aniLevel === "ani2" ? 2 : aniLevel === "ani3" ? 3 : 4}.webp?timestamp=${Math.random()})` }}
           >
             <div className="openPocketNum" style={{animationDelay: `${aniLevel === "ani1" ? "3.5s" : aniLevel === "ani2" ? "3.5s" : aniLevel === "ani3" ? "4.5s" : "5.5s"}`}}>{randomPoint}</div>

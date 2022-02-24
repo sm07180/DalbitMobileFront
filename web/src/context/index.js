@@ -1,6 +1,5 @@
 /*
 import React, {useContext, useState} from 'react'
-import {Context} from 'context'
 
 const store = useContext(Context)
 

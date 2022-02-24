@@ -8,9 +8,6 @@ import React, {
 } from "react";
 import { Link, useHistory } from "react-router-dom";
 import {getMain, getBanner, broadcastList, getInnerServerList} from "common/api";
-import { RankContext } from "context/rank_ctx";
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 import { getCookie } from "common/utility/cookie";
 import { PAGE_TYPE } from "pages/rank/constant";
 import moment from "moment";
@@ -34,6 +31,12 @@ import "./main.scss";
 import { openMailboxBanAlert } from "common/mailbox/mail_func";
 import { contactRemoveUnique } from "lib/common_fn";
 import {resolveAny} from "dns";
+import {useDispatch, useSelector} from "react-redux";
+
+import {
+  setRankFormRankType, setRankFormPageType
+} from "redux/actions/rank";
+import {setGlobalCtxBroadClipDim} from "../../redux/actions/globalCtx";
 
 // live list reducer
 let timer;
@@ -77,9 +80,9 @@ const round = [
 
 export default function Main() {
   const history = useHistory();
-  const { rankAction } = useContext(RankContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const dispatch = useDispatch()
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
   const {
     baseData,
     userProfile,
@@ -99,7 +102,7 @@ export default function Main() {
   const [liveList, setLiveList] = useState<Array<any>>([]);
   const [liveAlign, setLiveAlign] = useState(1);
   const [liveTotalPage, setLiveTotalPage] = useState(99);
-  const [state, dispatch] = useReducer(reducer, initial);
+  const [state, stateDispatch] = useReducer(reducer, initial);
   const [scrollOn, setScrollOn] = useState(false);
   const [inputState, setInputState] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -269,7 +272,7 @@ export default function Main() {
     window.location.href = "/";
   };
   const changeLiveType = (arg) => {
-    dispatch({
+    stateDispatch({
       type: "CATEGORY",
       pageIdx: 1,
       categoryVal: arg,
@@ -286,7 +289,7 @@ export default function Main() {
     //   type: "PAGE",
     //   pageIdx: state.page + 1,
     // });
-    dispatch({
+    stateDispatch({
       type: "INIT",
     });
 
@@ -384,7 +387,7 @@ export default function Main() {
             if ((state.page - 1) * 10 > liveList.length) {
               return;
             }
-            dispatch({
+            stateDispatch({
               type: "PAGE",
               pageIdx: state.page + 1,
             });
@@ -430,7 +433,7 @@ export default function Main() {
           }
           break;
         case "mailbox":
-          openMailboxBanAlert({ userProfile, globalAction, history });
+          openMailboxBanAlert({ userProfile, dispatch, history });
           break;
         default:
           break;
@@ -581,7 +584,7 @@ export default function Main() {
             className="gnbButton gnbButton--liveIcon"
             onClick={() => {
               if (baseData.isLogin === true) {
-                return globalAction.setBroadClipDim!(true);
+                return dispatch(setGlobalCtxBroadClipDim(true));
               } else {
                 return history.push("/login");
               }
@@ -638,10 +641,7 @@ export default function Main() {
                 title="실시간 랭킹 더보기"
                 className="text isArrow"
                 onClick={() => {
-                  rankAction.formDispatch!({
-                    type: "PAGE_TYPE",
-                    val: PAGE_TYPE.RANKING,
-                  });
+                  dispatch(setRankFormPageType(PAGE_TYPE.RANKING));
                 }}
               >
                 <img
@@ -663,11 +663,7 @@ export default function Main() {
                 }`}
                 onClick={() => {
                   setRankType("dj");
-                  rankAction.formDispatch &&
-                    rankAction.formDispatch({
-                      type: "RANK_TYPE",
-                      val: 1,
-                    });
+                  dispatch(setRankFormRankType(1));
                 }}
               >
                 DJ
@@ -680,11 +676,7 @@ export default function Main() {
                 }`}
                 onClick={() => {
                   setRankType("fan");
-                  rankAction.formDispatch &&
-                    rankAction.formDispatch({
-                      type: "RANK_TYPE",
-                      val: 2,
-                    });
+                  dispatch(setRankFormRankType(2));
                 }}
               >
                 팬
@@ -785,7 +777,7 @@ export default function Main() {
                     state.mediaType === "" ? "on" : ""
                   }`}
                   onClick={() => {
-                    dispatch({
+                    stateDispatch({
                       type: "MEDIA_TYPE",
                       mediaType: "",
                     });
@@ -799,7 +791,7 @@ export default function Main() {
                     state.mediaType === "v" ? "on" : ""
                   }`}
                   onClick={() =>
-                    dispatch({
+                    stateDispatch({
                       type: "MEDIA_TYPE",
                       mediaType: "v",
                     })
@@ -813,7 +805,7 @@ export default function Main() {
                     state.mediaType === "a" ? "on" : ""
                   }`}
                   onClick={() =>
-                    dispatch({
+                    stateDispatch({
                       type: "MEDIA_TYPE",
                       mediaType: "a",
                     })
@@ -827,7 +819,7 @@ export default function Main() {
                     state.mediaType === "new" ? "on" : ""
                   }`}
                   onClick={() =>
-                    dispatch({
+                    stateDispatch({
                       type: "MEDIA_TYPE",
                       mediaType: "new",
                     })
@@ -902,7 +894,7 @@ export default function Main() {
               <option key={idx} value={v.host}>{v.name}</option>
           )}
         </select>}
-
+        </div>
       </div>
     </>
   );

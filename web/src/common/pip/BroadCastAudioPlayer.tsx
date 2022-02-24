@@ -1,23 +1,28 @@
 // others
-import React, {useContext, useState,} from "react";
+import React, {useState,} from "react";
 import {useHistory} from "react-router-dom";
 
 // others
-import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
+import {rtcSessionClear} from "common/realtime/rtc_socket";
 
 // static
-import {GlobalContext} from "context";
 
 import {broadcastExit,} from "common/api";
 import CloseBtn from "../images/ic_player_close_btn.svg";
-import PlayIcon from "../static/ic_play.svg";
-import PauseIcon from "../static/ic_pause.svg";
 import {thumbInlineStyle} from "./PlayerStyle";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxExitMarbleInfo,
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxIsShowPlayer,
+  setGlobalCtxRtcInfoEmpty
+} from "../../redux/actions/globalCtx";
 
 
-const BroadCastAudioPlayer = ()=>{
+const BroadCastAudioPlayer = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
   const {
     chatInfo,
     rtcInfo,
@@ -36,9 +41,7 @@ const BroadCastAudioPlayer = ()=>{
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          globalAction.dispatchGuestInfo!({
-            type: "EMPTY",
-          });
+          dispatch(setGlobalCtxGuestInfoEmpty());
         });
       }
     }
@@ -57,11 +60,11 @@ const BroadCastAudioPlayer = ()=>{
     }
 
     if (exitMarbleInfo.marbleCnt > 0 || exitMarbleInfo.pocketCnt > 0) {
-      globalAction.setExitMarbleInfo({...exitMarbleInfo, showState: true});
+      dispatch(setGlobalCtxExitMarbleInfo({...exitMarbleInfo, showState: true}));
     }
     if (guestInfo !== null) {
       guestInfo[Object.keys(guestInfo)[0]].stop?.();
-      globalAction.dispatchGuestInfo({ type: "EMPTY" });
+      dispatch(setGlobalCtxGuestInfoEmpty());
     }
     if (chatInfo && chatInfo.privateChannelHandle !== null) {
       chatInfo.privateChannelDisconnect();
@@ -71,8 +74,8 @@ const BroadCastAudioPlayer = ()=>{
     rtcInfo.socketDisconnect();
     rtcInfo.stop();
     disconnectGuest();
-    globalAction.dispatchRtcInfo({ type: "empty" });
-    globalAction.setIsShowPlayer(false);
+    dispatch(setGlobalCtxRtcInfoEmpty());
+    dispatch(setGlobalCtxIsShowPlayer(false));
   };
 
   const playerBarClickEvent = () => {

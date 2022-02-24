@@ -1,12 +1,15 @@
-import React, {useState, useContext, useMemo, useEffect} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import Swiper from 'react-id-swiper'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
 
 const IMAGE_THUMB_L = 'thumb700x700'
 
 const MultiImageViewer = () => {
-  const globalCtx = useContext(Context)
-  const {multiViewer} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {multiViewer} = globalState
   const [currentSlide, setCurrentSlide] = useState(multiViewer.initSlide === undefined ? 0 : multiViewer.initSlide)
   const totalSlidesCnt = useMemo(() => multiViewer.list.length, [multiViewer])
 
@@ -22,7 +25,7 @@ const MultiImageViewer = () => {
   }
 
   const handleClose = () => {
-    globalCtx.action.updateMultiViewer({show: false})
+    dispatch(setGlobalCtxMultiViewer({show: false}));
   }
 
   useEffect(() => {

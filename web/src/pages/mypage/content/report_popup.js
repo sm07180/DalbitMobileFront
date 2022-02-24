@@ -14,10 +14,11 @@ import closeIco from '../static/close_w_l.svg'
 
 //component
 import DatePicker from './datepicker'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxReportDate} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
   const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
@@ -40,11 +41,11 @@ export default (props) => {
   const clickConfirm = () => {
     fetchData()
     closePopup()
-    ctx.action.updateReportDate({
+    dispatch(setGlobalCtxReportDate({
       type: active,
       prev: pickdataPrev,
       next: pickdataNext
-    })
+    }));
   }
 
   const closePopup = () => {

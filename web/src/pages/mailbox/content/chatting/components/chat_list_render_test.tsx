@@ -1,18 +1,17 @@
 import React, { useContext, useEffect } from "react";
 import { dateFormatterKorDay, makeHourMinute } from "lib/common_fn";
 
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
+import {useSelector} from "react-redux";
 
 function timeCheck(time: Date) {
   return time.getMinutes() + "분" + time.getSeconds() + "초" + time.getMilliseconds() + "밀리초";
 }
 
 function ChatList({ prevObj }) {
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { baseData } = globalState;
 
-  const { mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBox}) => mailBox);
 
   useEffect(() => {
     if (prevObj !== null) {

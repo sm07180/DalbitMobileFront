@@ -51,12 +51,12 @@ export const clipJoin = (data, context, webview) => {
       return context.action.confirm({
         msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
         callback: () => {
-          clipExit(context)
+          clipExit()
           sessionStorage.removeItem('room_no')
           Utility.setCookie('listen_room_no', null)
           Hybrid('ExitRoom', '')
           context.action.updatePlayer(false)
-          clipJoin(data, context)
+          clipJoin(data, dispatch, globalState)
         }
       })
     }

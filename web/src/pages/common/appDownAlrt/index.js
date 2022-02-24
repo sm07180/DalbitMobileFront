@@ -1,21 +1,23 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 //context
-import Api from 'context/api'
-import {Context} from 'context'
 import {OS_TYPE} from 'context/config'
 
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 const appDownAlrt = (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [osCheck, setOsCheck] = useState(-1)
 
   useEffect(() => {
     setOsCheck(navigator.userAgent.match(/Android/i) != null ? 1 : navigator.userAgent.match(/iPhone|iPad|iPod/i) != null ? 2 : 3)
   }, [])
 
-  const pageName = context.popup_code[2]
+  const pageName = globalState.popup_code[2]
 
   const appCheckDwon = () => {
     window.location.href = 'https://inforexseoul.page.link/Ws4t'
@@ -74,7 +76,7 @@ const appDownAlrt = (props) => {
                   className="androidIcon"
                   onClick={() => {
                     appCheckDwon()
-                    context.action.updatePopupVisible(false)
+                    dispatch(setGlobalCtxVisible(false));
                   }}>
                 달라 어플 설치하기
               </button>
@@ -83,7 +85,7 @@ const appDownAlrt = (props) => {
                   className="iosIcon"
                   onClick={() => {
                     iosbutton()
-                    context.action.updatePopupVisible(false)
+                    dispatch(setGlobalCtxVisible(false));
                   }}>
                 달라 어플 설치하기
               </button>

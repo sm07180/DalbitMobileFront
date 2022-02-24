@@ -1,16 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
 
 import { postClipReplyDelete } from "common/api";
-import { GlobalContext } from "context";
 import { ClipProvider, ClipContext } from "context/clip_ctx";
 import { useHistory } from "react-router-dom";
 import optionIcon from "../static/morelist_g.svg";
 import reportIcon from "../static/ic_report_g.svg";
 
 import { tabType } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 export default ({ replyValue, fetchReplyList, replyEdit }) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const { clipState, clipAction } = useContext(ClipContext);
   const history = useHistory();
 
@@ -27,12 +29,10 @@ export default ({ replyValue, fetchReplyList, replyEdit }) => {
         replyIdx: replyValue.replyIdx,
       });
       if (result === "success") {
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({
-            status: true,
-            message: message,
-          });
-        }
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: message,
+        }));
         clipAction.setClipReplyIdx!(0);
         fetchReplyList();
       }
@@ -82,12 +82,12 @@ export default ({ replyValue, fetchReplyList, replyEdit }) => {
               <span
                 className="optionBox__list"
                 onClick={() =>
-                  globalAction.setAlertStatus!({
+                  dispatch(setGlobalCtxAlertStatus({
                     status: true,
                     type: "confirm",
                     content: `정말 삭제하시겠습니까?`,
                     callback: () => replyDelete(),
-                  })
+                  }))
                 }
               >
                 삭제
@@ -98,12 +98,12 @@ export default ({ replyValue, fetchReplyList, replyEdit }) => {
               <span
                 className="optionBox__list"
                 onClick={() =>
-                  globalAction.setAlertStatus!({
+                  dispatch(setGlobalCtxAlertStatus({
                     status: true,
                     type: "confirm",
                     content: `정말 삭제하시겠습니까?`,
                     callback: () => replyDelete(),
-                  })
+                  }))
                 }
               >
                 삭제

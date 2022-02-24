@@ -1,10 +1,6 @@
 import React, { useContext, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
-// context
-import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
-
 import NoResult from "common/ui/no_result";
 import MyProfile from "./myProfile";
 import LikeListTop from "./like_list_top";
@@ -20,11 +16,12 @@ import bronzeMedalIcon from "../static/medal_bronze_m.svg";
 import likeRedIcon from "../static/like_red_m.svg";
 
 import { RANK_TYPE } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
 
 function LikeList({ empty }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
-  const { rankState } = useContext(RankContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const rankState = useSelector(({rank}) => rank);
 
   const { formState, likeList, rankList } = rankState;
 
@@ -128,7 +125,7 @@ function LikeList({ empty }) {
                       </div>
 
                       {/* <div className="countBox">
-                      
+
                     </div> */}
                       <div className="bestFanBox">
                         <span className="bestFanBox__label">심쿵유발자</span>

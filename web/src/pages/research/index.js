@@ -1,6 +1,5 @@
-import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
-import { deleteFan, postAddFan} from "common/api";
-import {Context} from "context";
+import React, {useCallback, useEffect, useState} from 'react'
+import {deleteFan, postAddFan} from "common/api";
 import {useDispatch, useSelector} from "react-redux";
 
 //context
@@ -23,9 +22,11 @@ import SearchResult from './components/SearchResult';
 // scss
 import './style.scss';
 import {setIsRefresh} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SearchPage = (props) => {
-  const context = useContext(Context); //context
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const dispatch = useDispatch();
   const common = useSelector(state => state.common);
   const [searchVal, setSearchVal] = useState(''); // 검색 value 값
@@ -111,7 +112,7 @@ const SearchPage = (props) => {
 
     if (e.keyCode === 13) {
       if (searchVal.trim().length < 2) {
-        context.action.alert({ msg: '검색어를 최소 두 글자 이상 입력해주세요.'});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: '검색어를 최소 두 글자 이상 입력해주세요.'}));
         return;
       }
 
@@ -137,7 +138,7 @@ const SearchPage = (props) => {
       temp[targetInd].isFan = true;
 
       setDjListInfo({...djListInfo, list: temp});
-      context.action.alert({ msg: '팬 등록되었습니다.'});
+      dispatch(setGlobalCtxMessage({type: "alert", msg: '팬 등록되었습니다.'}));
     }
   };
 
@@ -155,7 +156,7 @@ const SearchPage = (props) => {
       temp[targetInd].isFan = false;
 
       setDjListInfo({...djListInfo, list: temp});
-      context.action.alert({ msg: '팬 해제되었습니다.'});
+      dispatch(setGlobalCtxMessage({type: "alert", msg: '팬 해제되었습니다.'}));
     }
   };
 
