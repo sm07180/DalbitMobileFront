@@ -12,7 +12,6 @@ import {
 
 // context
 import {GlobalContext} from "context";
-import {MailboxContext} from "context/mailbox_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import LayerPopupCommon from "../common/layerpopup/index";
@@ -46,7 +45,6 @@ export default function GNB() {
   const { globalState, globalAction } = context;
   const { baseData, clipPlayer, chatInfo, rtcInfo } = globalState;
   const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
-  const { mailboxAction } = useContext(MailboxContext);
 
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -407,7 +405,7 @@ export default function GNB() {
     if (globalState.baseData.isLogin) {
       mailboxNewCheck();
     } else {
-      mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(false);
+      dispatch(setMailBoxIsMailBoxNew(false))
     }
   }, [globalState.baseData.isLogin]);
 
