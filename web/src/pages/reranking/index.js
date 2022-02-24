@@ -298,7 +298,7 @@ const RankPage = () => {
       <section className='rankingTop'>
         <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
         <div className='title' onClick={selectChart}>
-          <div>DJ 실시간</div>
+          <div>DJ {select === "time" && "실시간"}</div>
           <div>
             <strong>
               {select === "time" && "타임"}

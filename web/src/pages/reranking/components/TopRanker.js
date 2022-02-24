@@ -77,6 +77,7 @@ const TopRanker = (props) => {
 
   return (
     <React.Fragment>
+      <span className='questionMark' onClick={() => setPopup(true)}></span>
       {data && data.length > 0 &&    
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
@@ -91,7 +92,6 @@ const TopRanker = (props) => {
                   :
                   `${index + 1}회차`
                 } TOP3
-                  <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
