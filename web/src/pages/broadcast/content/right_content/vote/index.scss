@@ -178,49 +178,62 @@
     }
   }
   .voteTitleWrap{
-    @include flex;
     position: relative;
-    margin-top: 20px;
-    .titleBox{
-      width: 100%;
-      margin-bottom: 16px;
-      h2{
-        width: 100%;
-        @include font(20px, $SemiBold, #333);
-        @include fontCut;
-      }
-      .countBox{
+    margin: 20px 0 15px 0;
+    h2{
+      width: calc(100% - 40px);
+      @include font(20px, $SemiBold, #333);
+      @include fontCut;
+    }
+    .countBox{
+      @include flex(center);
+      margin-top: 6px;
+      .num{
         @include flex(center);
-        margin-top: 6px;
-        .num{
-          @include flex(center);
-          @include font(14px, $Medium, #666);
-          >.icon{
-            width: 20px;
-            height: 19px;
-            @include BGIMG('common/icon/icoPersonDouble-g.png');
-            margin-right: 3px;
-          }
+        @include font(14px, $Medium, #666);
+        >.icon{
+          width: 20px;
+          height: 19px;
+          @include BGIMG('common/icon/icoPersonDouble-g.png');
+          margin-right: 3px;
         }
-        .due{
-          @include font(14px, $Medium, #a4a4a4);
-          &::before{
-            display: inline-block;
-            content:"";
-            width: 1px;
-            height: 10px;
-            background: #a4a4a4;
-            margin: 0 8px 0 12px;
-          }
+      }
+      .due{
+        @include font(14px, $Medium, #a4a4a4);
+        &::before{
+          display: inline-block;
+          content:"";
+          width: 1px;
+          height: 10px;
+          background: #a4a4a4;
+          margin: 0 8px 0 12px;
         }
       }
     }
-    .iconMore{
-    display: inline-block;
-    flex: none;
-    width: 40px;
-    height: 40px;
-    @include BGIMG('common/list_more-b.png');
+    .moreBtn{
+      @include position-top-right(0, -10px);
+      width: 40px;
+      height: 40px;
+      @include BGIMG('common/list_more-b.png');
+      cursor: pointer;
+      .isMore {
+        @include position-top-right(100%,15px);
+        z-index: $MORE-ZINDEX;
+        @include flex($fd:column);
+        width:124px;
+        border-radius:8px;
+        background-color:white;
+        box-shadow: 0 1px 8px rgba(black,.16);
+        button {
+          line-height:40px;
+          text-indent:12px;
+          text-align:left;
+          @include font(13px,$Medium,#303030);
+          + button {
+            border-top:1px solid #F2F2F2;;
+          }
+        }
+      }
     }
     
   }
@@ -233,7 +246,7 @@
       background: #f6f6f6;
       overflow: hidden;
       cursor: pointer;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       &.active{
         border: 1px solid $MAINCOLOR;
         background: #fff;

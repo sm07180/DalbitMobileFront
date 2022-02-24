@@ -922,6 +922,7 @@ const ChatHeaderWrapStyled = styled.div`
   .mini_game_section{
     display:flex;
     flex-direction: column;
+    align-items:flex-start;
     position: absolute;
     left: 16px;
     top: 190px;
