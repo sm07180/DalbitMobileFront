@@ -18,6 +18,14 @@
       }
     }
   }
+  // 방송방 들어갔다 뒤로가기 하면 Swiper 에서 slide를 화면 100%잡아서 max-width:480px 을 주고, 모바일은 태블릿에서 볼때를 대비해 max-width:100%를 따로 줌
+  .content-article {
+    #mainPage {
+      .topSwiper {
+        max-width:100%;
+      }
+    }
+  }
 }
 
 #mainPage {
@@ -49,7 +57,7 @@
     margin-bottom:44px;
   }
   .topSwiper {
-    width:100%;
+    max-width:480px;
     height:360px;
     margin-bottom:28px;
     .swiper-slide {
@@ -58,9 +66,11 @@
         cursor:grab;
       }
       .listColumn {
+        @include flex(center,center);
         width:100%;
         .photo {
           position:relative;
+          @include flex(center,center);
           width:100%;
           height:360px;
           @mixin whiteScreen {
@@ -69,7 +79,7 @@
             display:block;
             content:'';
             width:100%;
-            height:50%;
+            height:30%;
           }
           &::after {
             @include whiteScreen;
@@ -361,9 +371,10 @@
     }
     .tabmenuWrap {
       position:relative;
+      top:0;
       height:48px;
       &.isFixed {
-        position:fixed;
+        position:sticky;
         top:$HEADER-HEIGHT;
         width:100%;
         z-index: 10;
@@ -427,10 +438,10 @@
           }
           .video {
             @include position-top-right;
-            width:20px;
-            height:20px;
+            width:23px;
+            height:23px;
             margin:6px;
-            @include BGIMG("common/icon/ico_video.png");
+            @include BGIMG("common/icon/icon-video.png");
           }
         }
         .listContent {

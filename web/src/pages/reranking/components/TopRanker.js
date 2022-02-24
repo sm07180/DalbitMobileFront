@@ -123,7 +123,7 @@ const TopRanker = (props) => {
                           <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
                             <div className="photo">
                               <img src={data.profImg.thumb190x190} alt="" />
-                              <div className='rankerRank'>{data.rank}</div>
+                              <div className={`rankerRank ${data.rank === 1 ? "first" : ""}`}>{data.rank}</div>
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
@@ -186,7 +186,7 @@ const TopRanker = (props) => {
               보낸 좋아요 개수 (부스터 포함)<br/>1~200위의 순위입니다.
               </div>
               <div className='popText'>
-                <span>Honey</span>(허니)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
+                <span>HONEY</span>(허니)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
               </div>
             </>
 
