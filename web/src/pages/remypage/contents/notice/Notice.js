@@ -22,8 +22,7 @@ const NoticePage = () => {
   const dispatch = useDispatch();
   const history = useHistory()
   const context = useContext(Context)
-  const [alarmCount, setAlarmCount] = useState({num: 0, active: false});
-  const [noticeCount, setNoticeCount] = useState({num: 0, active: false});
+  const alarmData = useSelector(state => state.newAlarm);
 
   // 로그인 토큰값 확인
   useEffect(() => {
@@ -32,19 +31,13 @@ const NoticePage = () => {
     }
   }, []);
 
-  const fetchNewData = async (memNo) => {
-    const res = await API.getMyPageNew(memNo);
-    if(res.result === "success") {
-      if(res.data) {
-        setAlarmCount({num: res.data.alarm, active: res.data.alarm > 0 ? true : false}); //새로운 알림
-        setNoticeCount({num: res.data.notice, active: res.data.notice > 0 ? true : false});
-      }
-    }
-  }
-
   useEffect(() => {
-    // fetchNewData(context.profile.memNo);
-  }, []);
+    if(alarmData.alarm > 0) {
+      dispatch(setNoticeTab("알림"))
+    } else if(alarmData.notice > 0) {
+      dispatch(setNoticeTab("공지사항"))
+    }
+  }, [])
 
   return (
     <div id="notice">
@@ -54,8 +47,8 @@ const NoticePage = () => {
           {noticeTabmenu.map((data,index) => {
             const param = {item: data, tab: tab, setTab: (val) => dispatch(setNoticeTab(val))}
             let newTage = false;
-            if(data === "알림") {newTage = alarmCount.active}
-            else {newTage = noticeCount.active}
+            if(data === "알림") {alarmData.alarm > 0 ? newTage = true : false}
+            else {alarmData.notice > 0 ? newTage = true : false}
             return (
               <TabBtn param={param} key={index} newTage={newTage}/>
             )
