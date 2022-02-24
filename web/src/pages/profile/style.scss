@@ -25,7 +25,12 @@
   .socialWrap {
     padding-bottom:40px;
     .tabmenuWrap {
+      position:-webkit-sticky;
+      position:sticky;
+      top: $HEADER-HEIGHT;
+      z-index: 1;
       @include flex(center);
+      background-color:white;
       .tabmenu {
         @include flex(center);
         padding: 0 8px;
