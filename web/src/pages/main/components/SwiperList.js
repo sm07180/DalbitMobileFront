@@ -58,7 +58,6 @@ const SwiperList = (props) => {
     {data && data.length > 0 &&
     <Swiper {...swiperParams}>
       {data.map((item,index) => {
-        console.log(item)
         return (
           <div key={index}>
             <div className="listColumn" onClick={() => onClickAction(item)}>

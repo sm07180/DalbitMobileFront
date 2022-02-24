@@ -51,18 +51,24 @@
             display:block;
             content:'';
             width:100%;
-            height:30%;
+            height:100%;
           }
           &::after {
             @include whiteScreen;
             bottom:0;
             background-image:linear-gradient(to top,
              rgba(255,255,255,1) 0%,
-             rgba(255,255,255,0.9) 20%,
-             rgba(255,255,255,0.7) 40%,
-             rgba(255,255,255,0.4) 60%,
+             rgba(255,255,255,0.95) 5%,
+             rgba(255,255,255,0.9) 10%,
+             rgba(255,255,255,0.8) 15%,
+             rgba(255,255,255,0.7) 20%,
+             rgba(255,255,255,0.5) 25%,
+             rgba(255,255,255,0.3) 30%,
+             rgba(255,255,255,0.2) 35%,
               rgba(255,255,255,0) 100%);
           }
+         
+          
           &::before{display:none;}
           img {
             width:100%;
@@ -75,6 +81,9 @@
           @include flex(flex-start,center,column);
           width:100%;
           padding: 25px 16px 12px;
+          background: linear-gradient(to top,
+             rgba(255,255,255,1) 0%,
+              rgba(255,255,255,0) 100%);
           // transform:translateX(30%);
           // transition: transform .7s ease-out;
           .badgeGroup {
@@ -86,7 +95,8 @@
             width:72%;
             line-height:30px;
             margin-bottom:6px;
-            @include font(22px,$SemiBold,#202020);
+            word-break: keep-all;
+            @include font(24px,$SemiBold,#202020);
             @include fontLineCut;
           }
           .nick {
@@ -185,13 +195,10 @@
   .top10 {
     .cntTitle {
       margin-bottom:12px;
-      h2 {
-        cursor: pointer;
-      }
       .tabmenu {
         @include flex(center);
         height:20px;
-        margin-left: auto;
+        margin-left:12px;
         li {
           position:relative;
           padding: 0 8px;
@@ -297,13 +304,16 @@
   }
   .daldungs {
     .cntTitle {
-      margin-bottom:8px;
+      margin-bottom:12px;
     }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {
         width:auto;
-        margin-right:8px;
+        margin-right:12px;
+        &:last-child {
+          margin-right:28px;
+        }
         .listColumn {
           width:116px;
           border-radius:8px;
