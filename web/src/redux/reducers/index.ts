@@ -12,6 +12,7 @@ import honor from './honor/index';
 import notice from './notice/index';
 import inquire from "./inquire";
 import profilePopup from './profile/popup';
+import newAlarm from "./notice/newAlarm";
 
 const rootReducer = combineReducers({
   common
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   , notice
   , inquire
   , profilePopup
+  , newAlarm
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

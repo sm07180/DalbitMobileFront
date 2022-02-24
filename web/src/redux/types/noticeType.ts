@@ -6,3 +6,7 @@ export type NoticeActions = ActionType<typeof actions>;
 export interface NoticeState {
     tab: string;
 }
+
+export interface NoticeNewAlarmState {
+    newCnt: number;
+}

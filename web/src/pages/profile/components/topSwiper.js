@@ -48,6 +48,10 @@ const TopSwiper = (props) => {
   }
 
   useEffect(() => {
+    console.log(listenOpen);
+  })
+
+  useEffect(() => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.profileTopSwiper>.swiper-container')?.swiper;
       swiper?.update();
@@ -95,7 +99,7 @@ const TopSwiper = (props) => {
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
         }
-        {!isMyProfile && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+        {!isMyProfile && webview === '' && data.listenRoomNo !== "" &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
