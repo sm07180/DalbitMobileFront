@@ -349,10 +349,8 @@ const RankPage = () => {
           }
         </div>
       </section>
-      <section className='rankingBottom' onClick={() => history.push('/rankDetail/DJ')}>
-        <p>오늘의 랭킹 순위는?</p>
-        <p>혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!</p>
-        <button>랭킹순위 전체보기 &gt;</button>
+      <section className='rankingBottom' onClick={() => history.push('/honor')}>
+        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
       </section>
       {popSlide &&
       <PopSlide setPopSlide={setPopSlide}>

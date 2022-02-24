@@ -16,7 +16,7 @@ const MainSlide = (props) => {
   const swiperParams = {
     loop: true,
     autoplay: {
-      delay: 7000,
+      delay: 70000,
       disableOnInteraction: false
     },
     on:{
@@ -54,11 +54,13 @@ const MainSlide = (props) => {
                   :
                   <ListColumn photo={list.bannerUrl} index={index}>
                     <div className='info'>
-                      <div className="badgeGroup">
-                        <BadgeItems data={list} type='isBadge' />
+                      <div >
+                        <div className="badgeGroup">
+                          <BadgeItems data={list} type='isBadge' />
+                        </div>
+                        <span className="title">{list.title}</span>
+                        <span className="nick">{list.nickNm}</span>
                       </div>
-                      <span className="title">{list.title}</span>
-                      <span className="nick">{list.nickNm}</span>
                     </div>
                   </ListColumn>
                 }

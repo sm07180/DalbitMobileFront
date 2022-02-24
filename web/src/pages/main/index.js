@@ -354,6 +354,9 @@ const MainPage = () => {
     }
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
 
   //메인 랭킹 10위 목록
   const fetchRankDataTop10 = async (type) => {
@@ -468,24 +471,17 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='top10'>
-        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
+        <div className="cntTitle">
+          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
-        </CntTitle>
-{/*        <SwiperList
-          data={topRankType === 'DJ' ? mainState.dayRanking.djRank
-            : topRankType === 'FAN' ? mainState.dayRanking.fanRank
-              : mainState.dayRanking.loverRank}
-          profImgName="profImg"
-          type="top10"
-        />*/}
+        </div>
         {rankingList.length>0 &&
-        <SwiperList
-          data={rankingList}
-          profImgName="profImg"
-          type="top10"
-        />
+          <SwiperList
+            data={rankingList}
+            profImgName="profImg"
+            type="top10"
+          />
         }
-
       </section>
       <section className='daldungs'>
         {mainState.newBjList.length > 0 &&
