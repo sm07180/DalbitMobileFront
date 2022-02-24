@@ -31,9 +31,12 @@
   .topSwiper {
     max-width:480px;
     height:360px;
-    margin-bottom:8px;
-    &.nonfavorites {
-      margin-bottom: 24px;
+    margin-bottom:0px;
+    + .favorites {
+      margin-top: 8px;
+    }
+    + .top10 {
+      margin-top: 24px;
     }
     .swiper-slide {
       cursor:pointer;
@@ -200,7 +203,7 @@
       .tabmenu {
         @include flex(center);
         height:20px;
-        margin-left:12px;
+        margin-left:auto;
         li {
           position:relative;
           padding: 0 8px;
@@ -312,7 +315,7 @@
       padding-left:16px;
       .swiper-slide {
         width:auto;
-        margin-right:12px;
+        margin-right:8px;
         &:last-child {
           margin-right:28px;
         }
