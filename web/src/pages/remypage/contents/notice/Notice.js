@@ -12,7 +12,7 @@ import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeTab} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab} from "redux/actions/notice";
 import API from "context/api";
 
 
@@ -44,7 +44,7 @@ const NoticePage = () => {
 
   useEffect(() => {
     fetchNewData(context.profile.memNo);
-  }, [alarmCount]);
+  }, []);
 
   return (
     <div id="notice">
