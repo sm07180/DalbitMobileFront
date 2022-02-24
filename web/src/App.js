@@ -460,12 +460,8 @@ const App = () => {
     const pathname = location.pathname
     const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth)
     const ageCheckFunc = () => {
-      if (
-        americanAge < AGE_LIMIT && // 나이 14세 미만
-        !pathname.includes('/customer/personal') &&
-        !pathname.includes('/customer/qnaList')
-      ) {
-        // 1:1문의, 문의내역은 보임
+      if (americanAge < AGE_LIMIT && !pathname.includes('/customer/inquire')) {
+        // 1:1문의는 보임
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: 'y'})
       } else {
         let passed = false

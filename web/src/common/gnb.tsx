@@ -368,8 +368,10 @@ export default function GNB() {
   }, []);
 
   useEffect(() => {
-    fetchMypageNewCntData(context.profile.memNo);
-  }, [localStorage.getItem("mypageNew")]);
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
+  }, []);
 
   useEffect(() => {
     if (globalState.broadClipDim) {
