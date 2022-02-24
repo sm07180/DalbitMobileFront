@@ -1,33 +1,5 @@
 @import "components/ui/_mixin.scss";
 
-/*
-  피씨일때 헤더 없애기
-*/
-#root {
-  .container {
-    .totalWrap {
-      .refresh-wrap {
-        display:none;
-      }
-      #mainPage {
-        header {display:none;}
-        .tabmenuWrap.isFixed {
-          top: $GNB-HEIGHT;
-          max-width:480px;
-        }
-      }
-    }
-  }
-  // 방송방 들어갔다 뒤로가기 하면 Swiper 에서 slide를 화면 100%잡아서 max-width:480px 을 주고, 모바일은 태블릿에서 볼때를 대비해 max-width:100%를 따로 줌
-  .content-article {
-    #mainPage {
-      .topSwiper {
-        max-width:100%;
-      }
-    }
-  }
-}
-
 #mainPage {
   .headerWrap {
     position:fixed;
@@ -580,5 +552,28 @@
   }
   100% {
     opacity: 1;
+  }
+}
+
+// 반응형 스타일
+/* 피씨일때 헤더 없애기 */
+.pcType {
+  .refresh-wrap {
+    display:none;
+  }
+  #mainPage {
+    header {display:none;}
+    .tabmenuWrap.isFixed {
+      top: $GNB-HEIGHT;
+      max-width:480px;
+    }
+  }
+}
+// 방송방 들어갔다 뒤로가기 하면 Swiper 에서 slide를 화면 100%잡아서 max-width:480px 을 주고, 모바일은 태블릿에서 볼때를 대비해 max-width:100%를 따로 줌
+.mobileType {
+  #mainPage {
+    .topSwiper {
+      max-width:100%;
+    }
   }
 }

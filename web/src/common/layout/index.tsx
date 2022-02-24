@@ -32,9 +32,19 @@ const Layout = (props) => {
   return (
     <div className={container}>
       <div className="totalWrap">
-        <div className={`content ${playerState}`}>
+        <div className={`content pcType ${playerState}`}>
           {children}
           {makeFooter}
+        </div>
+        <div className="rightContent">
+          <div className="loginBefore">
+            <div className="mainText">
+              <span>누구나 친구가 되는</span>
+              <span>나만의 세상</span>
+            </div>
+            <p>로그인하고 새로운 친구들을 만나세요.</p>
+            <button onClick={() => locationStateHistory.push('/login')}>로그인</button>
+          </div>
         </div>
       </div>
     </div>
