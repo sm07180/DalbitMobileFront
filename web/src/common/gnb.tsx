@@ -60,10 +60,6 @@ export default function GNB() {
   const [isGnb, setIsGnb] = useState(true);
   const alarmData = useSelector(state => state.newAlarm);
 
-  useEffect(() => {
-    console.log(alarmData.newAlarmList.newCnt);
-  })
-
   //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
   const gnbOtherPageCheck = useCallback((url) => {
     return url === '/mypage' && (
@@ -363,7 +359,7 @@ export default function GNB() {
     const res = await API.getMyPageNew(memNo);
     if(res.result === "success") {
       if(res.data) {
-        dispatch(setNoticeData({newAlarmList: res.data}));
+        dispatch(setNoticeData(res.data));
       }}
   }
 
@@ -483,7 +479,7 @@ export default function GNB() {
                           }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
-                        {/*{item.url === '/alarm' && alarmData.nst > 0 && <span className="newDot"/>}*/}
+                        {item.url === '/alarm' && alarmData.newCnt > 0 && <span className="newDot"/>}
                       </li>
                     )
                   })}
