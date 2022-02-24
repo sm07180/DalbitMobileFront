@@ -1748,6 +1748,7 @@ export class ChatSocketHandler {
                       }
 
                       if (reqRoomState.mediaState === 'video') {
+                        player.style.display = reqRoomState.mediaOn ? '' : 'none';
                         this.rtcInfo?.videoMute(!reqRoomState.mediaOn); // 영상 OFF 할지 말지 정하는 변수, true 면 영상 틀고, false이면 영상 꺼야한다.
                       }
 
