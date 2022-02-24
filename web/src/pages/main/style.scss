@@ -31,9 +31,12 @@
   .topSwiper {
     max-width:480px;
     height:360px;
-    margin-bottom:8px;
-    &.nonfavorites {
-      margin-bottom: 24px;
+    margin-bottom: 0px;
+    + .favorites {
+      margin-top: 8px;
+    }
+    + .top10 {
+      margin-top: 24px;
     }
     .swiper-slide {
       cursor:pointer;

@@ -464,12 +464,15 @@ const MainPage = () => {
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className={`topSwiper ${mainState.myStar.length > 0 ? "" : "nonfavorites"}`}>
+      <section className={`topSwiper`}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
-      <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
-      </section>
+      {
+        mainState.myStar.length > 0 &&
+        <section className='favorites' ref={overRef}>
+          <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
+        </section>
+      }
       <section className='top10'>
         <div className="cntTitle">
           <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
