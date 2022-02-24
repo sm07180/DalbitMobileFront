@@ -10,12 +10,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 // static image
 //import Logo from './static/logo@2x.png'
 import Logo from './static/logo_w_no_symbol.svg'
-import Search from './static/search_w.svg'
 import Alarm from './static/alarm_w.svg'
-import Store from './static/store_w.svg'
-import My from './static/ic_my.svg'
-import Menu from './static/ic_menu.svg'
-import Mic from './static/ic_broadcastng_p.svg'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 // style
