@@ -50,7 +50,7 @@ export default function ClipRankingList() {
 
             <div className="rankingList__content">
               <div className="thumbBox" onClick={() => ClipPlay(v.clipNo, context, history)}>
-                <img src={v.bgImg.thumb120x120} className="thumbBox__pic" />
+                <img src={v.bgImg.thumb292x292} className="thumbBox__pic" />
               </div>
 
               <div className="textBox">

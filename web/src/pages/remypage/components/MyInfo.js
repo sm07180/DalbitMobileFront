@@ -74,7 +74,7 @@ const MyInfo = (props) => {
       </div>
       <div className="photoWrap">
         <div className="photo">
-          {data && <img src={data.profImg?.thumb150x150} alt="" />}
+          {data && <img src={data.profImg?.thumb292x292} alt="" />}
         </div>
         <button>프로필 보기</button>
       </div>

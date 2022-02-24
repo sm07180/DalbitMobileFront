@@ -56,7 +56,7 @@ export default function VideoEventList({djRankList, eventSubType}) {
                           history.push(`/login`)
                         }
                       }}>
-                      <img src={profImg.thumb120x120} alt={nickNm} />
+                      <img src={profImg.thumb292x292} alt={nickNm} />
                     </div>
                     <div className="nick_box">
                       <div className="level">
@@ -94,7 +94,7 @@ export default function VideoEventList({djRankList, eventSubType}) {
                           history.push(`/login`)
                         }
                       }}>
-                      <img src={qupidProfImg.thumb120x120} alt={nickNm} />
+                      <img src={qupidProfImg.thumb292x292} alt={nickNm} />
                       <em className="cupid">CUPID</em>
                     </div>
                     <div className="nick_box">
@@ -143,7 +143,7 @@ export default function VideoEventList({djRankList, eventSubType}) {
                           history.push(`/login`)
                         }
                       }}>
-                      <img src={profImg.thumb120x120} alt={nickNm} />
+                      <img src={profImg.thumb292x292} alt={nickNm} />
                     </div>
                     <div className="nick_box">
                       <div className="level">

@@ -57,7 +57,7 @@ export default function chatListPage() {
           key={idx}
         >
           <div className="thumb">
-            <img src={profImg.thumb120x120} />
+            <img src={profImg.thumb292x292} />
           </div>
           <div className="info">
             <p className="info__nick">{nickNm}</p>

@@ -56,7 +56,7 @@ const ListRowComponent = (props) => {
   }, []);
 
   return (
-    <ListRow photo={item.profImg?.thumb50x50} photoClick={photoClick}>
+    <ListRow photo={item.profImg?.thumb292x292} photoClick={photoClick}>
       <div className="listContent">
         <div className='listItem'>
           {item.viewOn === 0 && <div className="lock" />}
