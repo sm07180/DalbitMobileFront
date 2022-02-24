@@ -185,10 +185,13 @@
   .top10 {
     .cntTitle {
       margin-bottom:12px;
+      h2 {
+        cursor: pointer;
+      }
       .tabmenu {
         @include flex(center);
         height:20px;
-        margin-left:12px;
+        margin-left: auto;
         li {
           position:relative;
           padding: 0 8px;
@@ -300,10 +303,7 @@
       padding-left:16px;
       .swiper-slide {
         width:auto;
-        margin-right:12px;
-        &:last-child {
-          margin-right:28px;
-        }
+        margin-right:8px;
         .listColumn {
           width:116px;
           border-radius:8px;

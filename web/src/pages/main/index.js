@@ -350,6 +350,10 @@ const MainPage = () => {
     }
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
+
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
@@ -436,9 +440,10 @@ const MainPage = () => {
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='top10'>
-        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
+        <div className="cntTitle">
+          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
-        </CntTitle>
+        </div>
         <SwiperList
           data={topRankType === 'DJ' ? mainState.dayRanking.djRank
             : topRankType === 'FAN' ? mainState.dayRanking.fanRank

@@ -409,26 +409,10 @@ $errorMsg : #FF1919;
   }
   .rankingBottom {
     position: relative;
-    @include flex(flex-start, center, column);
     width: 100%;
-    padding: 23px 16px;
-    box-sizing: border-box;
-    background: url("https://image.dalbitlive.com/dalla/character/character_rankingBottom.png") #1a1a1a no-repeat;
-    background-position: right bottom;
-    background-size: contain;
     cursor: pointer;
-    p:nth-child(1) {
-      @include font(18px, 600, #FFFFFF);
-      letter-spacing: -1px;
-    }
-    p:nth-child(2) {
-      @include font(13px, 400, #FFFFFF);
-      letter-spacing: -1px;
-    }
-    button {
-      margin-top: 10px;
-      @include font(13px, 600, #FF8E3E);
-      letter-spacing: -1px;
+    img {
+      width: 100%;
     }
   }
   
