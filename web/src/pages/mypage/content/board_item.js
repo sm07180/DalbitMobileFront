@@ -44,20 +44,19 @@ export default (props) => {
   }
   //수정하기 토글
   const editToggle = (contents, boardIdx) => {
+    setModifyState(true)
     context.action.updateBoardModifyInfo({
       clipNo: LocationClip,
       contents: contents,
       replyIdx: boardIdx
     })
     if (writeState === false) {
-      setModifyState(true)
       setModifyMsg(contents)
-    } else {
-      setModifyState(false)
     }
   }
   //삭제하기 fetch
   const deleteBoard = (boardIdx, clipMemNo) => {
+    setModifyState(true)
     if (props.type === 'clip_board') {
       async function fetchDataDelete() {
         const res = await Api.postClipReplyDelete({
