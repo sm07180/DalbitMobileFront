@@ -531,12 +531,12 @@ export default function ChatHeaderWrap(prop: any) {
           displayWrapRef={displayWrapRef}
         />
       </div>
-      <div className="mini_game_wrap">
+      <div className="mini_game_section">
         {broadcastState.miniGameInfo.status === true &&
           ((roomOwner === false &&
             broadcastState.miniGameInfo.isFree === false) ||
             roomOwner === true) && (
-            <div className={`mini_game_section`}>
+            <div className={`mini_game_wrap`}>
               <button
                 className="icon"
                 onClick={(e) => {
@@ -550,7 +550,7 @@ export default function ChatHeaderWrap(prop: any) {
                   });
                 }}
               >
-                <img src={RouletteIcon} alt="미니게임" />
+                <img src={RouletteIcon} alt="미니게임 룰렛" />
               </button>
               {roomOwner === true && (
                 <div className={`mini_game_slide`}>
@@ -596,6 +596,34 @@ export default function ChatHeaderWrap(prop: any) {
             </div>
           )
         }
+        <div className="mini_game_wrap">
+          <button 
+            onClick={() => {
+              broadcastAction.setRightTabType &&
+                broadcastAction.setRightTabType(tabType.VOTE);
+            }}
+          >
+            <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
+          </button>
+          {roomOwner === true && (
+            <div className={`mini_game_slide`}>
+              <button
+                onClick={() => {
+                  globalAction.setAlertStatus &&
+                    globalAction.setAlertStatus({
+                      status: true,
+                      type: "confirm",
+                      title: "종료하기",
+                      content:
+                        "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다."
+                    });
+                }}
+              >
+                <img src={CloseIcon} alt="미니게임 삭제" />
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       
       <div className="gotomoon-section"/>
@@ -891,66 +919,72 @@ const ChatHeaderWrapStyled = styled.div`
     display: flex;
     padding-top: 5px;
   }
-
-  .mini_game_section {
-    display: flex;
+  .mini_game_section{
+    display:flex;
+    flex-direction: column;
     position: absolute;
     left: 16px;
     top: 190px;
-    background-color: black;
-    border-radius: 32px;
-    z-index: 1;
-
-    & > .icon {
-      & > img {
-        width: 62px;
-        height: 62px;
-      }
-    }
-
-    & > .mini_game_slide {
+    .mini_game_wrap {
       display: flex;
-      overflow-x: hidden;
-
-      & > button:first-child {
-        margin-left: 6px;
+      background-color: black;
+      border-radius: 32px;
+      z-index: 1;
+      & + .mini_game_wrap{
+        margin-top: 8px;
       }
-
-      & > button:last-child {
-        margin-right: 6px;
-      }
-
-      &.in {
-        width: 80px;
-        animation: fadeIn 0.4s;
-      }
-
-      &.out {
-        width: 0px;
-        animation: fadeOut 0.4s;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          width: 0px;
+      & > .icon {
+        & > img {
+          width: 62px;
+          height: 62px;
         }
-
-        100% {
+      }
+  
+      & > .mini_game_slide {
+        display: flex;
+        overflow-x: hidden;
+  
+        & > button:first-child {
+          margin-left: 6px;
+        }
+  
+        & > button:last-child {
+          margin-right: 6px;
+        }
+  
+        &.in {
           width: 80px;
+          animation: fadeIn 0.4s;
         }
-      }
-
-      @keyframes fadeOut {
-        0% {
-          width: 80px;
-        }
-
-        100% {
+  
+        &.out {
           width: 0px;
+          animation: fadeOut 0.4s;
+        }
+  
+        @keyframes fadeIn {
+          0% {
+            width: 0px;
+          }
+  
+          100% {
+            width: 80px;
+          }
+        }
+  
+        @keyframes fadeOut {
+          0% {
+            width: 80px;
+          }
+  
+          100% {
+            width: 0px;
+          }
         }
       }
     }
   }
+  
 
   .moon-section {
     position: absolute;

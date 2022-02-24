@@ -178,37 +178,51 @@
     }
   }
   .voteTitleWrap{
+    @include flex;
+    position: relative;
     margin-top: 20px;
-    >h2{
+    .titleBox{
       width: 100%;
-      @include font(20px, $SemiBold, #333);
-      @include fontCut;
-    }
-    .countBox{
-      @include flex(center);
-      margin-top: 6px;
-      .num{
+      margin-bottom: 16px;
+      h2{
+        width: 100%;
+        @include font(20px, $SemiBold, #333);
+        @include fontCut;
+      }
+      .countBox{
         @include flex(center);
-        @include font(14px, $Medium, #666);
-        >.icon{
-          width: 20px;
-          height: 19px;
-          @include BGIMG('common/icon/icoPersonDouble-g.png');
-          margin-right: 3px;
+        margin-top: 6px;
+        .num{
+          @include flex(center);
+          @include font(14px, $Medium, #666);
+          >.icon{
+            width: 20px;
+            height: 19px;
+            @include BGIMG('common/icon/icoPersonDouble-g.png');
+            margin-right: 3px;
+          }
         }
-      }
-      .due{
-        @include font(14px, $Medium, #a4a4a4);
-        &::before{
-          display: inline-block;
-          content:"";
-          width: 1px;
-          height: 10px;
-          background: #a4a4a4;
-          margin: 0 8px 0 12px;
+        .due{
+          @include font(14px, $Medium, #a4a4a4);
+          &::before{
+            display: inline-block;
+            content:"";
+            width: 1px;
+            height: 10px;
+            background: #a4a4a4;
+            margin: 0 8px 0 12px;
+          }
         }
       }
     }
+    .iconMore{
+    display: inline-block;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    @include BGIMG('common/list_more-b.png');
+    }
+    
   }
   .optionWrap{
     .optionBox{
