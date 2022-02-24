@@ -275,8 +275,3 @@ export interface IProfileClipState {
   paging: IPaging;
   isLastPage: boolean;
 }
-
-/* 팝업 */
-export interface IProfilePopupState {
-
-}

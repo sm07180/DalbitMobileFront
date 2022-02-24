@@ -5,17 +5,20 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 
 import LayerPopup from '../../../components/ui/layerPopup/LayerPopup'
-import PopSlide from "../../../components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "../../../components/ui/popSlide/PopSlide";
 
 import './share.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const Share = () => {
     const [popup, setPopup] = useState(false);
-    const [popSlide, setPopSlide] = useState(false);
     const [certification, setCertification] = useState(false);
     const [urlInfo, setUrlInfo] = useState({
         url: "",
     })
+  const commonPopup = useSelector(state => state.popup);
+  const dispatch = useDispatch();
 
     async function imageDownload() {
         // blob 형태로 들고 있어야 함.
@@ -46,20 +49,19 @@ const Share = () => {
     }
 
     const popupOpen = () => {
-        setPopup(true);
+      setPopup(true);
     }
 
     const popSlideOpen = () => {
-        setPopSlide(true);
+      dispatch(setSlidePopupOpen());
     }
 
     const popSlideClose = () => {
-        setPopSlide(false);
+      closePopup(dispatch);
     }
 
     const submitAction = () => {
-
-        setPopSlide(false);
+      popSlideClose();
     }
 
     return (
@@ -133,8 +135,8 @@ const Share = () => {
                     </div>
                 </LayerPopup>
             }
-            {popSlide &&
-                <PopSlide title="인증하기" setPopSlide={setPopSlide}>
+            {commonPopup.commonPopup &&
+                <PopSlide title="인증하기">
                     <div className='shareUrl'>
                         <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
                             <input type="text" name={"url"} onChange={onChange} placeholder="게시글의 URL을 입력해주세요." autoComplete="off"/>

@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import common from './common';
+import common from './common/index';
 import member from './member';
 import main from './main/index';
 import live from './main/live';
@@ -11,7 +11,7 @@ import clip from './clip/clip';
 import honor from './honor/index';
 import notice from './notice/index';
 import inquire from "./inquire";
-import profilePopup from './profile/popup';
+import popup from "./common/popup";
 
 const rootReducer = combineReducers({
   common
@@ -26,7 +26,7 @@ const rootReducer = combineReducers({
   , honor
   , notice
   , inquire
-  , profilePopup
+  , popup
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

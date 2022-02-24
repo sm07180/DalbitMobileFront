@@ -5,8 +5,10 @@ import {Context} from 'context'
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 import Api from "context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 // components
 
 const MyAccount = (props) => {
@@ -17,9 +19,12 @@ const MyAccount = (props) => {
   const context = useContext(Context);
   const {profile, splash} = context;
 
-  const [slidePop, setSlidePop] = useState({visible:false, data:{}});
+  const [slideData, setSlideData] = useState({});
   const [listShow, setListShow] = useState(false);
   const [modifySlidePop, setModifySlidePop] = useState(true);
+
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   const formInit = {
     recent_accountName: '' //예금주 (계좌추가탭에서 추가한 리스트 눌렀을때)
@@ -46,7 +51,8 @@ const MyAccount = (props) => {
 
   // 계좌 추가
   const onClickAddAcount = () => {
-    setSlidePop({data:{}, visible:true,});
+    dispatch(setSlidePopupOpen());
+    setSlideData({})
     setExchangeForm(formInit);          // 추가시 디폴트 폼으로 세팅
     prevState.current = exchangeForm;   //이전 state 유지용
     setModifySlidePop(false); //추가
@@ -54,7 +60,7 @@ const MyAccount = (props) => {
 
   // 계좌 수정
   const onClickModifyAcount = (exchangeForm) => {
-    setSlidePop({...slidePop, data: exchangeForm, visible:true,});
+    setSlideData(exchangeForm);
     setExchangeForm(exchangeForm);    //계좌목록중에서 선택한 값 세팅  
     prevState.current = exchangeForm; //이전 state 유지용
     setModifySlidePop(true);  //등록
@@ -76,6 +82,11 @@ const MyAccount = (props) => {
     };
   },[]);
 
+  const closePop = () => {
+    setSlideData({})
+    closePopup(dispatch);
+  }
+
   //등록
   async function fetchAddAccount() {
     const res = await Api.exchangeAddAccount({
@@ -89,7 +100,7 @@ const MyAccount = (props) => {
     const {result, data, message} = res;
 
     //팝업 닫기
-    setSlidePop({data:{}, visible:false,});
+    closePop();
     setExchangeForm(formInit);
     if (result === 'success') {
       getMyAccountData();
@@ -114,7 +125,7 @@ const MyAccount = (props) => {
     const {result, data, message} = res;
 
     //팝업 닫기
-    setSlidePop({data:{}, visible:false,});
+    closePop();
     if (result === 'success') {
       getMyAccountData();
       context.action.alert({
@@ -148,7 +159,7 @@ const MyAccount = (props) => {
     const {result, data, message, messageKey} = res;
     
     //팝업 닫기
-    setSlidePop({data:{}, visible:false});
+    closePop();
     setExchangeForm(formInit);
     if (result === 'success') {
       getMyAccountData();
@@ -221,8 +232,8 @@ const MyAccount = (props) => {
       }
 
       {/* 수정, 추가시 팝업*/}
-      {slidePop.visible &&
-        <PopSlide setPopSlide={(v)=>{setSlidePop({data:{}, visible:v}); setExchangeForm(prevState.current)}}>
+      {popup.commonPopup &&
+        <PopSlide setPopSlide={()=>{setExchangeForm(prevState.current)}}>
           <section className="addAcount">
             {modifySlidePop === true ?
             <>
@@ -230,7 +241,7 @@ const MyAccount = (props) => {
               <div className="formBox">
                 <div className="listRow">
                   <InputItems title="예금주">
-                    <input type="text" placeholder="" defaultValue={slidePop?.data?.recent_accountName}
+                    <input type="text" placeholder="" defaultValue={slideData?.recent_accountName}
                            onChange={(e) => {
                              setExchangeForm({...exchangeForm, recent_accountName: e.target.value});
                            }}/>
@@ -239,13 +250,13 @@ const MyAccount = (props) => {
                 <div className="listRow">
                   <InputItems title="은행">
                     <div className="select" ref={selectBoxRef}
-                         onClick={()=> setListShow(true)}>{exchangeForm?.bankName || slidePop?.data?.bankName}</div>
+                         onClick={()=> setListShow(true)}>{exchangeForm?.bankName || slideData?.bankName}</div>
                     {slideOptionListView}
                   </InputItems>
                 </div>
                 <div className="listRow">
                   <InputItems title="계좌번호">
-                    <input type="number" placeholder="" defaultValue={slidePop?.data?.recent_accountNo}
+                    <input type="number" placeholder="" defaultValue={slideData?.recent_accountNo}
                            onChange={(e) => {
                              const num = e.target.value;
                              if(!Number.isNaN(Number(num))) {
@@ -263,13 +274,13 @@ const MyAccount = (props) => {
               </div>
               <div className="buttonGroup">
                 <button className="cancel"
-                        onClick={() => fetchDeleteAccount({deleteIdx: slidePop?.data.idx,})}
+                        onClick={() => fetchDeleteAccount({deleteIdx: slideData?.idx,})}
                 >삭제</button>
                 <button className="apply"
                         onClick={() =>
                           fetchModiAccount({
-                            modifyIdx: slidePop?.data.idx,
-                            prevAccountNo: slidePop?.data.recent_accountNo
+                            modifyIdx: slideData?.idx,
+                            prevAccountNo: slideData?.recent_accountNo
                           })}
                 >수정
                 </button>
@@ -318,7 +329,7 @@ const MyAccount = (props) => {
               <div className="buttonGroup">
                 <button className="cancel"
                         onClick={() => {
-                          setSlidePop({data:{}, visible:false});
+                          closePop();
                           setExchangeForm(prevState.current);
                         }}
                 >취소

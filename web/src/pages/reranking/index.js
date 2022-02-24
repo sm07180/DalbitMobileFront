@@ -7,7 +7,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
@@ -17,6 +17,8 @@ import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/r
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankPage = () => {
   const history = useHistory();
@@ -25,11 +27,11 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
+  const dispatch = useDispatch();
+  const commonPopup = useSelector(state => state.popup);
+
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
-
-  //DJ List 기간 선택 pop flag
-  const [popSlide, setPopSlide] = useState(false)
 
   //선정기준 pop
   const [popup, setPopup] = useState(false)
@@ -215,7 +217,11 @@ const RankPage = () => {
 
   //DJ 랭킹 List 기간 pop
   const selectChart = () => {
-    setPopSlide(true);
+    dispatch(setSlidePopupOpen());
+  }
+
+  const slidePopClose = () => {
+    closePopup(dispatch);
   }
 
   //DJ 랭킹 List 기간 선택
@@ -232,7 +238,7 @@ const RankPage = () => {
     } else if(text === "올해") {
       setSelect("thisyear")
     }
-    setPopSlide(false);
+    slidePopClose();
   }
 
   //DJ 랭킹 시간별 List호출
@@ -345,8 +351,8 @@ const RankPage = () => {
         <p>혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!</p>
         <button>랭킹순위 전체보기 &gt;</button>
       </section>
-      {popSlide &&
-      <PopSlide setPopSlide={setPopSlide}>
+      {commonPopup.commonPopup &&
+      <PopSlide>
         <div className='selectWrap'>
           <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
           <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
