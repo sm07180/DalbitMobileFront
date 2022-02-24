@@ -2,10 +2,11 @@ import { mailChatEnter } from "common/api";
 import {CHAT_CONFIG} from "../../constant/define";
 import {isDesktop} from "../../lib/agent";
 import {Hybrid, isHybrid} from "../../context/hybrid";
+import {setGlobalCtxAlertStatus, setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "../../redux/actions/globalCtx";
+import {setMailBoxInfo} from "../../redux/actions/mailBox";
 
-/* 메시지 */
-export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, history, isChatListPage=false}) => {
-  const { globalState, globalAction } = context;
+/* 우체통 */
+export const goMail = ({dispatch, globalState, targetMemNo, targetMemLevel, history, isChatListPage=false}) => {
 
   if(isDesktop()) {
     const socketUser = {
@@ -16,19 +17,19 @@ export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, his
     };
 
     if(isChatListPage) {
-      openMailboxBanAlert({ userProfile: globalState.userProfile, globalAction, history });
+      openMailboxBanAlert({ userProfile: globalState.userProfile, dispatch, history });
     }else {
       globalState.mailChatInfo?.setUserInfo(socketUser);
       globalState.mailChatInfo?.privateChannelDisconnect();
-      mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
+      mailBoxJoin(targetMemNo, dispatch, history);
     }
   }else if (isHybrid()) {
-    if(context.token.isLogin) {
-      const myLevel = context.profile.level;
+    if(globalState.token.isLogin) {
+      const myLevel = globalState.profile.level;
       if(myLevel === 0) {
-        return context.action.alert({
-          msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-        })
+        return dispatch(setGlobalCtxMessage({type:"alert",
+          msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+        }))
       }
 
       if(isChatListPage) {
@@ -37,20 +38,20 @@ export const goMail = ({context, mailboxAction, targetMemNo, targetMemLevel, his
         if(targetMemLevel > 0) {
           Hybrid('JoinMailBox', targetMemNo); // 채팅 페이지
         }else {
-          return context.action.alert({
+          return dispatch(setGlobalCtxMessage({type:"alert",
             msg: '0레벨 회원에게는 메시지를<br /> 보낼 수 없습니다.'
-          })
+          }))
         }
       }
     }else {
       history.push('/login');
     }
   } else {
-    context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+    dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 5]}));
   }
 }
 
-export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any, history: any, prevMemNo?: any) {
+export function mailBoxJoin(memNo: string, dispatch: any, history: any, prevMemNo?: any) {
   const mailBoxEnter = async () => {
     const { result, data, message, code } = await mailChatEnter({
       memNo: memNo,
@@ -59,7 +60,7 @@ export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any
       if (prevMemNo === memNo) {
         return false;
       } else {
-        mailboxAction.setMailboxInfo({ memNo: memNo, ...data });
+        dispatch(setMailBoxInfo({ memNo: memNo, ...data }));
       }
       sessionStorage.setItem("chattingInfo", JSON.stringify({ memNo: memNo, chatNo: data.chatNo }));
       if (window.location.pathname.indexOf("chatting") !== 9) {
@@ -67,26 +68,26 @@ export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any
       }
     } else {
       if (code === "-5") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
-          content: "<p style='letter-spacing:-0.8px;'>메시지은 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
-        });
+          content: "<p style='letter-spacing:-0.8px;'>메시지는 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
+        }));
       } else if (code === "-6") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "<p style='letter-spacing:-0.8px;'>0레벨 회원에게는 메시지를<br /> 보낼 수 없습니다.</p>",
-        });
+        }));
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
           callback: () => {
             history.goBack();
           },
-        });
+        }));
       }
     }
   };
@@ -94,19 +95,18 @@ export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any
 }
 
 export function openMailboxBanAlert(helper: any) {
-  const { userProfile, globalAction, history } = helper;
+  const { userProfile, dispatch, history } = helper;
   if (userProfile === null) {
     history.push("/login");
     return;
   }
   if (userProfile && !userProfile.level) {
     return (
-      globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "<p style='letter-spacing:-0.8px;'>메시지는 1레벨부터 이용 가능합니다. <br /> 레벨업 후 이용해주세요.</p>",
-      })
+      }))
     );
   } else {
     history.push("/mailbox");
