@@ -255,7 +255,7 @@
           min-width:0;
           margin-left:12px;
           .title{
-            @include font(16px,500,#202020);
+            @include font(14px,500,#202020);
             @include fontCut;
           }
           .nick{

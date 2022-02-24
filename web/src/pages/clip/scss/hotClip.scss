@@ -63,7 +63,7 @@
         @include font(12px,$Regular,#666);
       }
       .title {
-        @include font(16px,$Medium,#202020);
+        @include font(15px,$Medium,#202020);
         @include fontCut;
       }
       .nickName {
