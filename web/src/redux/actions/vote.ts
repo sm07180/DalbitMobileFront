@@ -5,7 +5,7 @@ import {
   GetVoteListRequestType,
   GetVoteSelRequestType,
   InsMemVoteRequestType,
-  InsVoteRequestType, VoteListResultType, VoteResultType,
+  InsVoteRequestType, VoteInteractionType, VoteListResultType, VoteResultType,
 } from "../types/voteType";
 
 export const INS_VOTE = 'vote/INS_VOTE';
@@ -22,6 +22,9 @@ export const SET_VOTE_DETAIL_LIST = 'vote/SET_VOTE_DETAIL_LIST';
 
 export const SET_TEMP_INS_VOTE = 'vote/SET_TEMP_INS_VOTE';
 
+export const INTERACTION_VOTE = 'vote/INTERACTION_VOTE';
+export const SET_VOTE_INTERACTION = 'vote/SET_VOTE_INTERACTION';
+
 export const insVote = createAction(INS_VOTE)<InsVoteRequestType>();
 export const insMemVote = createAction(INS_MEM_VOTE)<InsMemVoteRequestType>();
 export const delVote = createAction(DEL_VOTE)<DelVoteRequestType>();
@@ -35,3 +38,6 @@ export const setVoteSel = createAction(SET_VOTE_SEL)<VoteResultType>();
 export const setVoteDetailList = createAction(SET_VOTE_DETAIL_LIST)<Array<VoteResultType>>();
 
 export const setTempInsVote = createAction(SET_TEMP_INS_VOTE)<InsVoteRequestType>();
+
+export const interactionVote = createAction(INTERACTION_VOTE)<VoteInteractionType>();
+export const setVoteInteraction = createAction(SET_VOTE_INTERACTION)<VoteInteractionType>();

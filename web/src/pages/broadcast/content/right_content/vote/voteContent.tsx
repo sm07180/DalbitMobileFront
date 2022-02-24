@@ -1,16 +1,26 @@
 import React, {useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import Utility from "../../../../../components/lib/utility";
 
 const VoteContent = () => {
+  const dispatch = useDispatch();
+
+  const memberRdx = useSelector((state) => state.member);
+  const voteRdx = useSelector(({vote})=> vote);
+
   const [more, setMore] = useState(false);
 
+  if(!voteRdx.voteSel){
+    return <></>
+  }
   return (
     <>
       <section className="voteTitleWrap">
-        <h2>일이삼사오육칠팔구십일이삼사오육칠팔구십</h2>
+        <h2>{voteRdx.voteSel.voteTitle}</h2>
         <div className="countBox">
           <div className="num">
-            <span className="icon"></span>
-            <p><span>4</span>명 참여</p>
+            <span className="icon"/>
+            <p><span>{Utility.addComma(voteRdx.voteSel.voteMemCnt)}</span>명 참여</p>
           </div>
           <div className="due">
             <span>20:04</span> 마감예정

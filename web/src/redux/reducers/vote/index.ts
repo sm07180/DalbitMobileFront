@@ -1,6 +1,10 @@
 import { createReducer } from "typesafe-actions";
 import {VoteActions, VoteStateType} from "../../types/voteType";
+import {SET_VOTE_INTERACTION} from "../../actions/vote";
 
+// const [tabType, setTabType] = useState(tabMenu[0])
+// const [makeVote, setMakeVote] = useState<boolean>(false);
+// const [temp, setTemp] = useState("list");
 export const initialState:VoteStateType = {
   result: '',
   code: '',
@@ -8,7 +12,11 @@ export const initialState:VoteStateType = {
   message: '',
   timestamp: '',
   validationMessageDetail: [],
-  methodName:''
+  methodName:'',
+  interaction:{
+    tab : 's',
+    step : 'list'
+  }
 }
 
 const member = createReducer<VoteStateType, VoteActions>(initialState,{
@@ -27,6 +35,10 @@ const member = createReducer<VoteStateType, VoteActions>(initialState,{
   "vote/SET_TEMP_INS_VOTE" : (state, {payload})=>{
     return {...state, tempInsVote:payload}
   },
+  "vote/SET_VOTE_INTERACTION" : (state, {payload})=>{
+    return {...state, interaction:{...state.interaction, ...payload}}
+  },
+
 });
 
 

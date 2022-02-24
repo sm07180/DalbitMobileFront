@@ -44,6 +44,14 @@ export type VoteResultType = {
   itemNo: string 		 		 		 		  // 투표항목번호
   voteItemName: string 		 		 		// 투표 항목 이름
 }
+// const [tabType, setTabType] = useState(tabMenu[0])
+// const [makeVote, setMakeVote] = useState<boolean>(false);
+// const [temp, setTemp] = useState("list");
+export type VoteInteractionType = {
+  tab ?: 's' | 'e'
+  step ?: 'list' | 'vote' | 'ins'
+}
+
 export type ApiResultType = {
   result: string
   code: string
@@ -59,6 +67,7 @@ export type VoteStateType = ApiResultType & {
   voteList?:VoteListResultType
   voteSel?:VoteResultType
   voteDetailList?:Array<VoteResultType>
+  interaction?:VoteInteractionType
 }
 
 export type DateType = {
@@ -82,3 +91,4 @@ export type VoteListResultType = {
   cnt: number,
   list: Array<VoteResultType>
 }
+

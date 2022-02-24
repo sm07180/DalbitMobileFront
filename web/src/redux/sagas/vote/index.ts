@@ -1,4 +1,4 @@
-import {call, put, takeLatest} from "redux-saga/effects";
+import {call, put, takeEvery, takeLatest} from "redux-saga/effects";
 import Api from "../../../context/api";
 import {
 	DEL_VOTE,
@@ -6,9 +6,9 @@ import {
 	GET_VOTE_LIST,
 	GET_VOTE_SEL,
 	INS_MEM_VOTE,
-	INS_VOTE,
+	INS_VOTE, INTERACTION_VOTE,
 	SET_VOTE_API_RESULT,
-	SET_VOTE_DETAIL_LIST,
+	SET_VOTE_DETAIL_LIST, SET_VOTE_INTERACTION,
 	SET_VOTE_LIST,
 	SET_VOTE_SEL
 } from "../../actions/vote";
@@ -110,7 +110,18 @@ function* getVoteDetailList(param) {
 		console.error(`getVoteDetailList saga e=>`, e)
 	}
 }
-
+// 투표 화면 제어
+function* interactionVote(param) {
+	try {
+		// const res = yield call(Api.getVoteDetailList, param.payload);
+		// yield put({type: SET_VOTE_DETAIL_LIST, payload: res.data})
+		// delete res.data
+		// yield put({type: SET_VOTE_API_RESULT, payload: res})
+		yield put({type: SET_VOTE_INTERACTION, payload: param.payload})
+	} catch (e) {
+		console.error(`getVoteDetailList saga e=>`, e)
+	}
+}
 function* VoteSagas() {
 	yield takeLatest(INS_VOTE, insVote)
 	yield takeLatest(INS_MEM_VOTE, insMemVote)
@@ -118,6 +129,7 @@ function* VoteSagas() {
 	yield takeLatest(GET_VOTE_LIST, getVoteList)
 	yield takeLatest(GET_VOTE_SEL, getVoteSel)
 	yield takeLatest(GET_VOTE_DETAIL_LIST, getVoteDetailList)
+	yield takeEvery(INTERACTION_VOTE, interactionVote)
 }
 
 const vote = [
