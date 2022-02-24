@@ -133,7 +133,7 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
       if(isNaN(listenRoomNo)) {
         return context.action.alert({
           type: 'alert',
-          msg: `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
+          msg: `${nickNm} 님이 어딘가에서 청취중입니다. \n위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
         })
       }else {
         context.action.confirm({
@@ -152,7 +152,7 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
       }else {
         let alertMsg
         if (isNaN(listenRoomNo)) {
-          alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
+          alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. \n위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
           context.action.alert({
             type: 'alert',
             msg: alertMsg
