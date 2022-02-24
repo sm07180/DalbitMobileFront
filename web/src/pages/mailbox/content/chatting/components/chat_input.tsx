@@ -30,8 +30,6 @@ export default function chatInput(props) {
     const { value } = e.target;
     let space = /\s/;
     
-    console.log(textareaRef.current.scrollHeight,value);
-    
     if (space.exec(value) && value.length === 1) {
       return false;
     } else {

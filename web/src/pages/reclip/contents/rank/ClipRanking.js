@@ -49,8 +49,10 @@ const ClipRanking = () => {
   }
 
   const handleTabmenu = (value) => {
+    const targetType = parseInt(value) + 1;
+    let targetDate = targetType !== 1 ? moment().day(1).format('YYYY-MM-DD') : moment().format('YYYY-MM-DD');
     window.scrollTo(0, 0);
-    setSearchInfo({ ...searchInfo, rankType: (parseInt(value) + 1) });
+    setSearchInfo({ ...searchInfo, rankType: targetType, rankingDate: targetDate });
   };
 
   const playList = (e) => {

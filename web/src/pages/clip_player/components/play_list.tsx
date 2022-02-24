@@ -110,7 +110,9 @@ export default () => {
 
   return (
     <div className="tabPlayList">
-      <Header title="재생목록" type={'back'} />
+      <h2 className="tabContent__title">
+        <span>재생목록</span>
+      </h2>
       <p className="playListTotal">
         총 목록 수 <span>{globalState.clipPlayListTab?.length}</span>
       </p>

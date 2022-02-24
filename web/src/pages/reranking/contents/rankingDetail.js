@@ -128,7 +128,7 @@ const RankDetailPage = () => {
 
   // 나머지
   const fetchRankData = async (rankSlct, rankType, pageNo) => {
-    let curDate = new Date()
+    let curDate = new Date();
     const {result, data} = await Api.get_ranking({
       param: {
         rankSlct: rankSlct,
@@ -259,7 +259,7 @@ const RankDetailPage = () => {
   }, [tabName]);
 
   const getTopRankDate = (dateType, currentDate) => {
-    let day1 = new Date(currentDate);
+    let day1 = new Date(moment(currentDate));
     let year = day1.getFullYear();
     let month = day1.getMonth() + 1;
     let date = day1.getDate();
@@ -279,13 +279,13 @@ const RankDetailPage = () => {
         } else {
           month -= 1;
           if (month < 10) {
-            month = 0 + month;
+            month = `0${month}`;
           }
           handle = new Date(`${year}-${month}-01`);
         }
         break;
       case 4:
-        handle = new Date(day1.setFullYear(day1.getFullYear() - 1));
+        handle = new Date(`${year - 1}-01-01`);
         break;
       case 5:
         if (hours < 10) {

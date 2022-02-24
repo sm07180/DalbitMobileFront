@@ -142,6 +142,7 @@ const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromot
 
 //임시 옛날 설정 페이지
 const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
+const OldNotice = React.lazy(() => import("pages/customer/content/notice/list"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -333,6 +334,7 @@ const Router = () => {
 
         {/* 임시 옛날 설정 페이지*/}
         <Route exact path="/oldsetting" component={OldSetting} />
+        <Route exact path="/oldnotice" component={OldNotice} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
