@@ -45,7 +45,7 @@ const TopRanker = (props) => {
                           <div className="listColumn">
                             <div className="photo">
                               <img src={row.bgImg.thumb292x292} alt="" />
-                              <div className='rank'>{row.rank}</div>
+                              <div className={`rank  ${row.rank === 1 ? "first" : ""}`}>{row.rank}</div>
                               <span className="play"/>
                             </div>
                             <div className='title'>{row.title}</div>

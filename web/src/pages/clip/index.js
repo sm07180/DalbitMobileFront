@@ -200,7 +200,7 @@ const ClipPage = () => {
       <div id="clipPage" >
         <Header title={'클립'} />
         <section className='hotClipWrap'>
-          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
+          <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.list.length > 0 ?
             <Swiper {...swiperParams}>
               {hotClipInfo.list.map((row, index) => {
@@ -227,7 +227,8 @@ const ClipPage = () => {
               return (
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
-                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
+                    <span>{list.icon}</span>
+                    {/* <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/> */}
                     <p>{list.cdNm}</p>
                   </div>
                 </div>
@@ -280,7 +281,11 @@ const ClipPage = () => {
         </section>
         <section className="clipList">
           <div className="cntTitle">
-            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}은(는) 어떠세요?`}</h2>
+            <h2>
+              {/* <img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/> */}
+              <span>{subSearchInfo.icon}</span>
+              {`${subSearchInfo.cdNm}은(는) 어떠세요?`}
+            </h2>
             <button onClick={changeList}>새로고침</button>
           </div>
           <SwiperList data={subClipInfo.list} playAction={playClip}/>

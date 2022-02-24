@@ -16,6 +16,7 @@ const SwiperList = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
+  let locationStateHistory = useHistory();
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -64,7 +65,10 @@ const SwiperList = (props) => {
                 <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 {item.rank && <div className={`rank-${item.rank}`}></div>}                
-                {item.roomNo && <div className='livetag'></div>}
+                {item.roomNo && <div className='livetag' onClick={(e) => {
+                  e.stopPropagation();
+                  RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
+                }}></div>}
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
