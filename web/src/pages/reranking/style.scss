@@ -200,6 +200,12 @@ $errorMsg : #FF1919;
                 line-height: 34px;
               }
             }
+            .livetag {
+              @include position-top-right();
+              display: inline-block;
+              width: 40px; height: 40px;
+              @include BGIMG("/common/icon/icon-liveTag.png");
+            }
             .infoWrap {
               position: absolute;
               bottom: 0; left: 0; right: 0;
@@ -208,10 +214,6 @@ $errorMsg : #FF1919;
               padding: 10px;
               box-sizing: border-box;
               z-index: 1;
-              .livetag {
-                @include font(12px,700,#FE3C7B);
-                margin-bottom: 2px;
-              }
               .userNick {
                 width: 100%;
                 @include font(14px,500,#fff);

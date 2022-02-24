@@ -59,7 +59,7 @@
   .topSwiper {
     max-width:480px;
     height:360px;
-    margin-bottom:28px;
+    margin-bottom:24px;
     .swiper-slide {
       cursor:pointer;
       &:active {
@@ -168,7 +168,8 @@
     margin-bottom:0;
     .swiper-wrapper {
       padding-left:16px;
-      margin-bottom:35px;
+      margin-bottom:28px;
+      box-sizing: border-box;
       .swiper-slide {
         width:auto;
         margin-right:10px;
@@ -292,6 +293,12 @@
                 .rank-#{$i} {
                   @include RANKIMG('main/dalla/number_W-#{$i}.png');
                 }
+              }
+              .livetag {
+                @include position-top-left();
+                display: inline-block;
+                width: 40px; height: 40px;
+                @include BGIMG("/common/icon/icon-liveTag.png");
               }
             }
             p {
