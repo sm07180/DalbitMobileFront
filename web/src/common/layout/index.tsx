@@ -36,7 +36,7 @@ const Layout = (props) => {
           {children}
           {makeFooter}
         </div>
-        <div className="rightContent">
+        {/* <div className="rightContent">
           <div className="loginBefore">
             <div className="mainText">
               <span>누구나 친구가 되는</span>
@@ -45,7 +45,7 @@ const Layout = (props) => {
             <p>로그인하고 새로운 친구들을 만나세요.</p>
             <button onClick={() => locationStateHistory.push('/login')}>로그인</button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
