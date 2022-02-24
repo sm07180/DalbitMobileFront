@@ -55,7 +55,7 @@ export default function chatting() {
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const { baseData, mailChatInfo, mailBlockUser } = globalState;
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   // ref
   const mailMsgListWrapRef = useRef<HTMLDivElement>(null);
   const msgWrapRef = useRef<any>(null);

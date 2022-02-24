@@ -76,7 +76,7 @@ function Ranking() {
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory()
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {
     formState,

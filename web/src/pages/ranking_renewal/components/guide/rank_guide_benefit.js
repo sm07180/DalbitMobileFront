@@ -8,7 +8,7 @@ import BenefitLike from './benefit_like'
 import {useSelector} from "react-redux";
 
 export default (props) => {
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const {formState} = rankState
   const [tab, setTab] = useState(formState[PAGE_TYPE.RANKING].rankType)
 

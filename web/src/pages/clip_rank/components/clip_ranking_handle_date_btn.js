@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 export default function ClipRankHandleDateBtn() {
   const dispatch = useDispatch();
-  const clipRankState = useSelector(({clipRank}) => clipRank);
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const { formState } = clipRankState
 
   const isEqualDateFormat = useMemo(() => {

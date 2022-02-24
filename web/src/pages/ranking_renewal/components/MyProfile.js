@@ -1,14 +1,13 @@
-import React, {useEffect, useState, useCallback, useContext} from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
 
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
-import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth, dateTimeConvert} from 'pages/common/rank/rank_fn'
+import {convertDateToText} from 'pages/common/rank/rank_fn'
 
-import {RANK_TYPE, DATE_TYPE} from '../constant'
+import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 import PopupSuccess from '../reward/reward_success_pop'
 
@@ -17,23 +16,24 @@ import BadgeList from 'common/badge_list'
 import point from '../static/ico-point.png'
 import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_g_s.svg'
+import likeIcon from '../static/like_g_s.svg'
 import peopleWhite from '../static/people_g_s.svg'
 import timeWhite from '../static/time_g_s.svg'
 import trophyImg from '../static/rankingtop_back@2x.png'
-import likeIcon from '../static/like_g_s.svg'
 import likeRedIcon from '../static/like_red_m.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setRankData, setRankMyInfo} from "redux/actions/rank";
 
 export default function MyProfile({rankSettingBtn, setRankSetting, setResetPointPop}) {
   const history = useHistory()
+  const dispatch = useDispatch()
   const global_ctx = useContext(Context)
   const context = useContext(Context)
 
   const {token} = global_ctx
-
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {formState, myInfo, rankTimeData, rankData} = rankState
-  const setMyInfo = rankAction.setMyInfo
 
   const [isFixed, setIsFixed] = useState(false)
   const [popup, setPopup] = useState(false)
@@ -60,7 +60,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
         setPopup(true)
         setRewardPop(data)
       } else {
-        setMyInfo({...myInfo, isReward: false})
+        dispatch(setRankMyInfo({...myInfo, isReward: false}))
         return globalCtx.action.alert({
           msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
         })
@@ -139,11 +139,10 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                   callback: () => {
                     rankSettingBtn(true)
                     setRankSetting(true)
-                    rankAction.setRankData &&
-                      rankAction.setRankData({
-                        ...rankState.rankData,
-                        isRankData: true
-                      })
+                    dispatch(setRankData({
+                      ...rankState.rankData,
+                      isRankData: true
+                    }))
                   }
                 })
               }
@@ -266,7 +265,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                         </div>
 
                         {/* <div className="countBox">
-                      
+
                     </div> */}
                         <div className="bestFanBox">
                           <span className="bestFanBox__label">심쿵유발자</span>

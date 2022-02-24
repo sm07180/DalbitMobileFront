@@ -17,7 +17,7 @@ export default (props) => {
   const history = useHistory();
   const { setReportPop, setPageType, pageType } = props;
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { mailNo } = useParams<{ mailNo: string }>();
   //state
   const [select, setSelect] = useState<number>(0);

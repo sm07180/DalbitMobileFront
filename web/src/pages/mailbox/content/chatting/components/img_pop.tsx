@@ -16,7 +16,7 @@ export default (props) => {
   const { startMemNo } = props;
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   const [sliderState, setSliderState] = useState(false);
   const [imgList, setImgList] = useState([]);

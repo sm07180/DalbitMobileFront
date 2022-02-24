@@ -11,7 +11,7 @@ export default function ClipRankingListTop3() {
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory()
-  const clipRankState = useSelector(({clipRank}) => clipRank);
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {formState, clipRankList} = clipRankState
 
   // function validation(data) {

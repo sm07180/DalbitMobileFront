@@ -61,7 +61,7 @@ const records = 50;
 const Ranking = function() {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx})=> globalCtx);
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   let location = useLocation();
   const initialRank = location.state;

@@ -19,7 +19,7 @@ import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 export default (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   const [detailPopup, setDetailPopup] = useState(false);
   const [tabType, setTabType] = useState("recent"); //recent, accrue, good

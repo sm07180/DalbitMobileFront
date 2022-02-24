@@ -11,7 +11,7 @@ export default function ClipRankingMyRank() {
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory()
-  const clipRankState = useSelector(({clipRank}) => clipRank);
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {formState, myInfo} = clipRankState
   const [myProfile, setMyProfile] = useState(false)
 

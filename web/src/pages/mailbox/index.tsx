@@ -21,7 +21,7 @@ export default function mailBoxContent() {
   const params = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const globalState = useSelector(({globalCtx}) => globalCtx);
   // param
   const category = params instanceof Object ? params["category"] : "";

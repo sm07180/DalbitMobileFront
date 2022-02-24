@@ -22,7 +22,7 @@ function RankList() {
   //context
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState, rankList } = rankState;
 

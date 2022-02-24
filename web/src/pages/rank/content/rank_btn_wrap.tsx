@@ -26,7 +26,7 @@ const fameArray = [
 
 function RankBtnWrap() {
   const dispatch = useDispatch();
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState } = rankState;
 

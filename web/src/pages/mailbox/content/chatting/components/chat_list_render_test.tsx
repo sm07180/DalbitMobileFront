@@ -11,7 +11,7 @@ function ChatList({ prevObj }) {
   const globalState = useSelector(({globalCtx})=> globalCtx);
   const { baseData } = globalState;
 
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   useEffect(() => {
     if (prevObj !== null) {

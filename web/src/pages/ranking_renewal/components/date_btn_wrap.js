@@ -20,7 +20,7 @@ const btnArray = [
 function DateBtnWrap({fetching}) {
 
   const dispatch = useDispatch();
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {formState} = rankState
 

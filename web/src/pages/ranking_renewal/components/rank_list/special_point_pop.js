@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 
 
 export default ({setPopState}) => {
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const closePopup = () => {
     setPopState(false)

@@ -16,7 +16,7 @@ let animationCount = 0;
 export default function() {
   //ctx
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   //ref
   const lottieDisplayRef = useRef<any>(null);
   const lottieDisplayWrapRef = useRef<any>(null);

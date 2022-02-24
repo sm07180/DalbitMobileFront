@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState, useRef, useCallback, useLayoutEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {useHistory} from "react-router-dom";
 //api
-import { postChatImage, getProfile } from "common/api";
+import {getProfile, postChatImage} from "common/api";
 // context
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
+import {GlobalContext} from "context";
 import DalbitCropper from "common/ui/dalbit_cropper";
+import {useSelector} from "react-redux";
 
 export default function chatInput(props) {
   const { setChatText, sendMessage, chatText, setGiftPop, targetIsMailboxOn } = props;
   const history = useHistory();
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxState } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { chatInfo, isMailboxOn } = globalState;
   const textareaRef = useRef<any>(null);
   //크롭퍼 state
@@ -24,12 +24,12 @@ export default function chatInput(props) {
 
   //function
   const handleChangeInput = (e) => {
-    
+
     textareaRef.current.style.height = "auto";
     textareaRef.current.style.height = textareaRef.current.scrollHeight - 24 + "px";
     const { value } = e.target;
     let space = /\s/;
-    
+
     if (space.exec(value) && value.length === 1) {
       return false;
     } else {

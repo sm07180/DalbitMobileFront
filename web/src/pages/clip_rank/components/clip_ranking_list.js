@@ -11,7 +11,7 @@ export default function ClipRankingList() {
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory()
-  const clipRankState = useSelector(({clipRank}) => clipRank);
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {clipRankList} = clipRankState
 
   function loginCheck(memNo) {

@@ -14,7 +14,7 @@ function SpecialList({ empty }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const { specialList } = rankState;
 
   return (

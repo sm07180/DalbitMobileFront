@@ -20,11 +20,9 @@ import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {CHAT_CONFIG} from "constant/define";
 import {ChatSocketHandler} from "common/realtime/chat_socket";
-import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
 import {getMemberProfile} from "redux/actions/member";
 import {getArgoraRtc, getWowzaRtc, rtcSessionClear} from "common/realtime/rtc_socket";
-import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew} from "common/api";
 import Navigation from "components/ui/navigation/Navigation";
@@ -36,6 +34,7 @@ import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
 import {useHistory} from "react-router-dom";
+import {setBroadcastCtxRoomInfoReset} from "redux/actions/broadcastCtx";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -63,7 +62,7 @@ function setNativePlayInfo(isJsonString, globalCtx) {
 }
 
 
-const baseSetting = async (globalCtx, broadcastAction) => {
+const baseSetting = async (globalCtx, dispatch) => {
   const globalAction = globalCtx.globalAction;
   const globalState = globalCtx.globalState;
 
@@ -95,7 +94,7 @@ const baseSetting = async (globalCtx, broadcastAction) => {
   const broadcastData = sessionStorage.getItem("broadcast_data");
   if (broadcastData !== null) {
     const data = JSON.parse(broadcastData);
-    broadcastAction.dispatchRoomInfo({type: "reset", data: data});
+    dispatch(setBroadcastCtxRoomInfoReset(data));
   }
 }
 
@@ -116,8 +115,6 @@ const setServerDataJson = () =>{
 
 const App = () => {
   let serverDataJson = setServerDataJson();
-  const { mailboxAction } = useContext(MailboxContext);
-  const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
@@ -342,7 +339,7 @@ const App = () => {
         globalCtx.action.updateAdminChecker(false)
       }
       if(isDesktop){
-        baseSetting(globalCtx, broadcastAction);
+        baseSetting(globalCtx, dispatch);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
       //모든 처리 완료
@@ -657,17 +654,6 @@ const App = () => {
       )*/
     }
   }
-
-  useEffect(() => {
-    if (chatInfo !== null) {
-      chatInfo.setGlobalAction(globalCtx.globalAction);
-      chatInfo.setMailboxAction(mailboxAction);
-    }
-    if (mailChatInfo !== null) {
-      mailChatInfo.setGlobalAction(globalCtx.globalAction);
-      mailChatInfo.setMailboxAction(mailboxAction);
-    }
-  }, [chatInfo, mailChatInfo]);
 
   useEffect(() => {
     if (chatInfo !== null && globalCtx.globalState.splashData !== null) {

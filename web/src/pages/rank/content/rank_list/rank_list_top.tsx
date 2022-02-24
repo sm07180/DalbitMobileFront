@@ -31,7 +31,7 @@ function RankListTop() {
   const history = useHistory();
   //context
   const globalState = useSelector(({globalCtx})=> globalCtx);
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState, rankList, rankTimeData } = rankState;
   const TopBoxRef = useRef<any>(null);

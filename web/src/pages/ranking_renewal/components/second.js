@@ -9,7 +9,7 @@ import {useSelector} from "react-redux";
 
 function Second({empty}) {
   const history = useHistory()
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const {secondList} = rankState
 
   return (

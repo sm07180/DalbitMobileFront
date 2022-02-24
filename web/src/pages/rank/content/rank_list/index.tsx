@@ -10,7 +10,7 @@ import MyProfile from "../myProfile";
 import {useSelector} from "react-redux";
 
 export default function RankListWrap({ empty }) {
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState } = rankState;
 

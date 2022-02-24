@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
-import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
+import {GlobalContext} from "context";
 
-import { useHistory } from "react-router-dom";
-import { printNumber } from "lib/common_fn";
+import {useHistory} from "react-router-dom";
+import {printNumber} from "lib/common_fn";
 
-import { getRankReward, postRankSetting } from "common/api";
-import { convertMonday, convertMonth, convertDateToText, convertSetSpecialDate } from "lib/rank_fn";
+import {getRankReward, postRankSetting} from "common/api";
+import {convertDateToText} from "lib/rank_fn";
 
-import { DATE_TYPE, RANK_TYPE } from "../constant";
+import {DATE_TYPE, RANK_TYPE} from "../constant";
 
 import trophyImg from "../static/rankingtop_back@2x.png";
 import likeIcon from "../static/like_g_s.svg";
@@ -18,12 +17,14 @@ import likeRedIcon from "../static/like_red_m.svg";
 import RewardPop from "./reward";
 import ResetPointPop from "./reset_point_pop";
 import BadgeList from "../../../common/badge_list";
-import { Stats } from "fs";
+import {useDispatch, useSelector} from "react-redux";
+import {setRankData} from "../../../redux/actions/rank";
 
 export default function MyProfile() {
   const history = useHistory();
+  const dispatch = useDispatch()
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const { formState, myInfo, rankTimeData, rankData } = rankState;
   const [myProfile, setMyProfile] = useState<any>(false);
   const [rewardProfile, setRewardProfile] = useState({
@@ -164,12 +165,10 @@ export default function MyProfile() {
                       callback: () => {
                         rankSettingBtn(true);
                         setRankSetting(true);
-
-                        rankAction.setRankData &&
-                          rankAction.setRankData({
-                            ...rankState.rankData,
-                            isRankData: true,
-                          });
+                        dispatch(setRankData({
+                          ...rankState.rankData,
+                          isRankData: true,
+                        }))
                       },
                     });
                 },
@@ -284,7 +283,7 @@ export default function MyProfile() {
                         </div>
 
                         {/* <div className="countBox">
-                      
+
                     </div> */}
                         <div className="bestFanBox">
                           <span className="bestFanBox__label">심쿵유발자</span>

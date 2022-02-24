@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 
 export default function Payment() {
   const history = useHistory();
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const { payInfo } = modalState;
   const { itemName, itemPrice, payMethod, phone, orderId, cardName, itemCnt, returntype } = payInfo;
 

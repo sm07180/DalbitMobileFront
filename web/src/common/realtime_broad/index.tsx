@@ -24,7 +24,7 @@ export default function RealTimeBroadUI() {
   const checkChatting = pathname.split("/")[2];
   const checkBroad = pathname.split("/")[1];
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   const { type } = globalState.realtimeBroadStatus;
 

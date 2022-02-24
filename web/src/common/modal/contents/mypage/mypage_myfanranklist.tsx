@@ -14,7 +14,7 @@ export default (props) => {
   let checkSearch = location.search.split("?")[1];
   // ctx && commons
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   // state
   const [controlTab, setConTrolTab] = useState({

@@ -38,11 +38,11 @@ import {
 const Navigation = () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
   const { isMailboxNew } = mailboxState;
 
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const { formState } = rankState;
   const history = useHistory();
 

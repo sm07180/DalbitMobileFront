@@ -1,37 +1,29 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-  useRef,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useReducer, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 
 // static
 import {
+  broadcastAllExit,
   broadcastCheck,
   broadcastCreate,
   broadcastExit,
-  getRoomType,
+  getBroadcastSetting,
   postImage,
-  getBroadcastSetting, broadcastInfoNew, broadcastAllExit,
 } from "common/api";
 // others
-import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
+import {AgoraHostRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
-import { Context } from "context";
-import { ModalContext } from "context/modal_ctx";
+import {Context} from "context";
 import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
-import { BroadcastContext } from "../../context/broadcast_ctx";
 import LayerCopyright from "../../common/layerpopup/contents/copyright";
 import LayerTitle from "./content/title";
 import LayerWelcome from "./content/welcome";
-import Layout from "common/layout";
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxExtendTime} from "../../redux/actions/broadcastCtx";
 
 declare global {
   interface Window {
@@ -151,13 +143,13 @@ let constraint = {
 
 export default function BroadcastSetting() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const titleInputRef = useRef<any>();
   const context = useContext(Context)
   const { globalState, globalAction } = useContext(Context);
   const { chatInfo, rtcInfo } = globalState;
-  const { modalState } = useContext(ModalContext);
-  const { broadcastAction } = useContext(BroadcastContext);
-  const [state, dispatch] = useReducer(reducer, {
+  const modalState = useSelector(({modalCtx}) => modalCtx);
+  const [state, dispatchWithoutAction] = useReducer(reducer, {
     micState: false,
     videoState: false,
     entryType: 0,
@@ -193,44 +185,44 @@ export default function BroadcastSetting() {
 
   // dispatch function
   const setMicState = (status: boolean) =>
-    dispatch({ type: "SET_MICSTATE", micState: status });
+    dispatchWithoutAction({ type: "SET_MICSTATE", micState: status });
   const setVideoState = (status: boolean) =>
-    dispatch({ type: "SET_VIDEOSTATE", videoState: status });
+    dispatchWithoutAction({ type: "SET_VIDEOSTATE", videoState: status });
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
-    dispatch({ type: "SET_ENTRY", entryType: access_type });
+    dispatchWithoutAction({ type: "SET_ENTRY", entryType: access_type });
   }, []);
 
   const setMicForm = useCallback((micFormType: string) => {
-    dispatch({ type: "SET_MICFORM", micFormType: micFormType });
+    dispatchWithoutAction({ type: "SET_MICFORM", micFormType: micFormType });
   }, []);
 
   const setCamForm = useCallback((camFormType: string) => {
-    dispatch({ type: "SET_CAMFORM", camFormType: camFormType });
+    dispatchWithoutAction({ type: "SET_CAMFORM", camFormType: camFormType });
   }, []);
 
   const setRoomType = useCallback(
     (value) =>
-      dispatch({
+      dispatchWithoutAction({
         type: "SET_ROOMTYPE",
         roomType: value,
       }),
     []
   );
   const setBgChange = (value) =>
-    dispatch({
+    dispatchWithoutAction({
       type: "SET_BGCHANGE",
       bgChange: value,
     });
   const setTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (value.length > 20) return;
-    dispatch({ type: "SET_TITLECHANGE", titleChange: value });
+    dispatchWithoutAction({ type: "SET_TITLECHANGE", titleChange: value });
   };
   const setWelcomeMsg = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (value.length > 100) return;
-    dispatch({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
+    dispatchWithoutAction({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
   };
 
   //배경 사진 업로드 관련
@@ -373,7 +365,7 @@ export default function BroadcastSetting() {
           globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
           sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:newRtcInfo.roomInfo, userType:newRtcInfo.userType}));
           sessionStorage.setItem("room_no", data.roomNo);
-          broadcastAction.setExtendTime!(false);
+          dispatch(setBroadcastCtxExtendTime(false));
           try {
             if (window.fbq) window.fbq("track", "RoomMake");
             if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
@@ -754,7 +746,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.title !== "" &&
       modalState.broadcastOption.title
     ) {
-      dispatch({
+      dispatchWithoutAction({
         type: "SET_TITLECHANGE",
         titleChange: modalState.broadcastOption.title,
       });
@@ -763,7 +755,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.welcome !== "" &&
       modalState.broadcastOption.welcome
     ) {
-      dispatch({
+      dispatchWithoutAction({
         type: "SET_WELCOMEMSG",
         welcomeMsgChange: modalState.broadcastOption.welcome,
       });
@@ -787,7 +779,7 @@ export default function BroadcastSetting() {
   }, [popupState]);
 
   const setMediaType = (mediaType:BROAD_TYPE)=>{
-    dispatch({type: "SET_MEDIATYPE", mediaType: mediaType});
+    dispatchWithoutAction({type: "SET_MEDIATYPE", mediaType: mediaType});
     //broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data:{platform:mediaType === BROAD_TYPE.AUDIO ? 'wowza' : 'agora'}})
   }
 
@@ -1009,7 +1001,7 @@ export default function BroadcastSetting() {
                       <li
                         key={item.id}
                         onClick={() => {
-                          dispatch({
+                          dispatchWithoutAction({
                             type: "SET_IMAGETYPE",
                             imageType: item.id,
                           });

@@ -21,7 +21,7 @@ import {useDispatch, useSelector} from "react-redux";
 function LikeList({ empty }) {
   const history = useHistory();
   const globalState = useSelector(({globalCtx})=> globalCtx);
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState, likeList, rankList } = rankState;
 

@@ -15,7 +15,7 @@ import {setRankMyInfo} from "redux/actions/rank";
 
 export default (props) => {
   const dispatch = useDispatch();
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {formState, myInfo} = rankState
 

@@ -4,22 +4,21 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {RoomJoin} from 'context/room'
 import {OS_TYPE} from 'context/config.js'
-import {IMG_SERVER} from 'context/config'
 
-import {printNumber, convertDateToText} from 'pages/common/rank/rank_fn'
+import {convertDateToText, printNumber} from 'pages/common/rank/rank_fn'
 
 // context
 import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import {DATE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 import BadgeList from 'common/badge_list'
+import {useSelector} from "react-redux";
 
 function RankList() {
   //context
   const history = useHistory()
   const context = useContext(Context)
-  const {rankState} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const customHeader = JSON.parse(Api.customHeader)
 
   const {rankList, formState} = rankState

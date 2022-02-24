@@ -9,7 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 export default (props) => {
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();

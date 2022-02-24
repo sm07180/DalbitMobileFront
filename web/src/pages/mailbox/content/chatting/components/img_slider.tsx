@@ -7,7 +7,7 @@ export default (props) => {
   let { imgList, setSlider } = props;
 
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { imgSliderInfo } = mailboxState;
   const { deletedImgArray } = mailboxState.imgSliderInfo;
   const initialImgIdx = imgList.findIndex((item) => item.msgIdx === imgSliderInfo.startImgIdx);

@@ -8,7 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setRankFormDate, setRankFormPageType} from "../../../redux/actions/rank";
 
 export default function TimeBtnWrap() {
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState, myInfo, rankTimeData } = rankState;
 

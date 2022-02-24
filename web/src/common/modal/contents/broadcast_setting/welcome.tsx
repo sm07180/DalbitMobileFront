@@ -11,7 +11,7 @@ function BroadcastSettingWelcome() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
 
   const [title, setTitle] = useState("");
   const [list, setList] = useState<Array<any>>([]);

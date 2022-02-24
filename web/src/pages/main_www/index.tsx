@@ -82,7 +82,7 @@ export default function Main() {
   const history = useHistory();
   const dispatch = useDispatch()
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const {
     baseData,
     userProfile,

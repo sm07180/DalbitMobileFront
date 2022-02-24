@@ -12,6 +12,11 @@ import honor from './honor/index';
 import notice from './notice/index';
 import inquire from "./inquire";
 import profilePopup from './profile/popup';
+import modalCtx from './modal';
+import clipRankCtx from './clipRank';
+import rankCtx from './rank';
+import broadcastCtx from './broadcastCtx';
+import mailBoxCtx from './mailBox';
 
 const rootReducer = combineReducers({
   common
@@ -27,6 +32,11 @@ const rootReducer = combineReducers({
   , notice
   , inquire
   , profilePopup
+  , modalCtx
+  , clipRankCtx
+  , rankCtx
+  , broadcastCtx
+  , mailBoxCtx
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

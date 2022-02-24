@@ -5,7 +5,7 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 import {useSelector} from "react-redux";
 
 export default ({ setPopState }) => {
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const closePopupDim = (e) => {
     const target = e.target;
     if (target.id === "layerPopup") {

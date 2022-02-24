@@ -9,7 +9,7 @@ import { setRankFormDate } from "redux/actions/rank";
 
 function RankHandleDateBtn({fetching}) {
   const history = useHistory()
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const dispatch = useDispatch();
 
   const {formState, myInfo, rankTimeData} = rankState

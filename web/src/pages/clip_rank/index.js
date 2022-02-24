@@ -20,7 +20,7 @@ let topBoxHeight
 function CilpRank() {
   const history = useHistory()
   const dispatch = useDispatch()
-  const clipRankState = useSelector(({clipRank}) => clipRank);
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {formState, clipRankList} = clipRankState
   const [loading, setLoading] = useState(false)
   const [empty, setEmpty] = useState(false)

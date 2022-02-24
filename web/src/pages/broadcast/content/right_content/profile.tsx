@@ -45,7 +45,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   const { baseData } = globalState;
   const { isLogin } = baseData;

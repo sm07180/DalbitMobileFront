@@ -8,7 +8,7 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 import {useSelector} from "react-redux";
 
 export default (props) => {
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   const [list, setList] = useState([
     {

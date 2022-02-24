@@ -8,7 +8,7 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
   const history = useHistory()
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const dispatch = useDispatch()
 
   const closePopup = () => {

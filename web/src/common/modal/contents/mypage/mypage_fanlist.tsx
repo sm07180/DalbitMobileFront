@@ -10,7 +10,7 @@ import {useSelector} from "react-redux";
 export default (props) => {
   // ctx && commons
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   // state
   const [list, setList] = useState([

@@ -17,7 +17,7 @@ const fameArray = [
   {val: RANK_TYPE.SECOND, text: '15초'}
 ]
 export default function RankBtnWrap({fetching}) {
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const dispatch = useDispatch();
 
   const {formState} = rankState

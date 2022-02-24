@@ -13,7 +13,7 @@ function ChatList({ msgGroup }) {
   const globalState = useSelector(({globalCtx})=> globalCtx);
   const { baseData } = globalState;
   const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBox}) => mailBox);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { deletedImgArray } = mailboxState.imgSliderInfo;
 
   const giftAction = (itemInfo, nickNm, imageInfo, myChat) => {

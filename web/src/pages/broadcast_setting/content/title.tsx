@@ -24,7 +24,7 @@ function BroadcastSettingTitle(props: any) {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
 
   const [list, setList] = useState<Array<any>>([]);
   const [title, setTitle] = useState<string>("");

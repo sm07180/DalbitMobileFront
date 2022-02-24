@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 
 function WeeklyPick({empty}) {
   const history = useHistory()
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const {weeklyList} = rankState
 
   return (

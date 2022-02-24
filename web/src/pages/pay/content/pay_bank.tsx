@@ -12,7 +12,7 @@ import {setPayInfo} from "../../../redux/actions/modal";
 export default function Payment() {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const modalState = useSelector(({modal}) => modal);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   const {payInfo} = modalState;
   const {itemName, itemPrice, itemNo, itemCnt} = payInfo;

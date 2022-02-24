@@ -11,7 +11,7 @@ const Receive = () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const clipRankState = useSelector(({clipRank}) => clipRank);
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {formState} = clipRankState
   const [rankingList, setRankingList] = useState([])
   const [myProfile, setMyProfile] = useState([])

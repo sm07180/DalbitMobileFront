@@ -17,7 +17,7 @@ export default function MyProfile(props) {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const {rankType, dateType, setMyInfo} = props
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const history = useHistory()
 
   const {formState, myInfo} = rankState

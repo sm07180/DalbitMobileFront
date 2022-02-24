@@ -6,7 +6,7 @@ import {setRankFormDate} from "../../../redux/actions/rank";
 
 export default function SpecialHistoryHandle() {
   const dispatch = useDispatch();
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState } = rankState;
 

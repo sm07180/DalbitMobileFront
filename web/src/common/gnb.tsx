@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
 import {setNoticeTab} from "../redux/actions/notice";
 import API from "../context/api";
+import {setMailBoxIsMailBoxNew} from "../redux/actions/mailBox";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -44,7 +45,8 @@ export default function GNB() {
   const context = useContext(GlobalContext);
   const { globalState, globalAction } = context;
   const { baseData, clipPlayer, chatInfo, rtcInfo } = globalState;
-  const { mailboxState, mailboxAction } = useContext(MailboxContext);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+  const { mailboxAction } = useContext(MailboxContext);
 
   const history = useHistory();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -392,7 +394,7 @@ export default function GNB() {
     const mailboxNewCheck = async () => {
       const { result, data, message } = await checkIsMailboxNew({});
       if (result === "success") {
-        mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(data.isNew);
+        dispatch(setMailBoxIsMailBoxNew(data.isNew));
       } else {
         globalAction.setAlertStatus &&
         globalAction.setAlertStatus({

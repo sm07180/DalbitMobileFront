@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 function LevelList({ empty }) {
   const history = useHistory();
   const globalState = useSelector(({globalCtx})=> globalCtx);
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { levelList } = rankState;
 

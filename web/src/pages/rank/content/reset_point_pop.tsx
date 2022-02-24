@@ -6,7 +6,7 @@ import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 export default function RankGuide({ setResetPointPop, rankSettingBtn, setRankSetting }) {
   const dispatch = useDispatch();
-  const rankState = useSelector(({rank}) => rank);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const history = useHistory();
 
   const closePopup = () => {
