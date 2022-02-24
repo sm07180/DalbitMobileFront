@@ -19,6 +19,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {IMG_SERVER} from "context/config";
+import moment from "moment";
 
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
@@ -63,6 +64,7 @@ const MainPage = () => {
     storeUrl: '',
   });
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);
+  const [rankingList , setRankingList]=useState([]);
 
 
   const dispatch = useDispatch();
@@ -107,6 +109,7 @@ const MainPage = () => {
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo();
+    fetchRankDataTop10(topTenTabMenu[0])
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -288,6 +291,28 @@ const MainPage = () => {
     }
   }
 
+  //메인 랭킹 10위 목록
+  const fetchRankDataTop10 = async (type) => {
+    if(type !=="" || type!==null){
+    let rankSlct = type === "DJ" ? 1: type === "FAN"? 2 : 3
+      Api.get_ranking({
+      param: {
+        rankSlct: rankSlct,
+        rankType: 1,
+        rankingDate: moment().format("YYYY-MM-DD"),
+        page: 1,
+        records: 10,
+      }
+    }).then(res=> {
+      if(res.result === "success"){
+        setRankingList(res.data.list);
+      }else{
+        setRankingList([]);
+      }
+      });
+    }
+  };
+
   useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
@@ -314,6 +339,12 @@ const MainPage = () => {
       document.removeEventListener('scroll', scrollEvent)
     }
   }, [])
+
+  useEffect(()=>{
+    fetchRankDataTop10(topRankType)
+  },[topRankType])
+
+
  
   // 페이지 시작
   let MainLayout = <>
@@ -351,13 +382,21 @@ const MainPage = () => {
         <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
-        <SwiperList
+{/*        <SwiperList
           data={topRankType === 'DJ' ? mainState.dayRanking.djRank
             : topRankType === 'FAN' ? mainState.dayRanking.fanRank
               : mainState.dayRanking.loverRank}
           profImgName="profImg"
           type="top10"
+        />*/}
+        {rankingList.length>0 &&
+        <SwiperList
+          data={rankingList}
+          profImgName="profImg"
+          type="top10"
         />
+        }
+
       </section>
       <section className='daldungs'>
         {mainState.newBjList.length > 0 &&
