@@ -31,12 +31,9 @@
   .topSwiper {
     max-width:480px;
     height:360px;
-    margin-bottom: 0px;
-    + .favorites {
-      margin-top: 8px;
-    }
-    + .top10 {
-      margin-top: 24px;
+    margin-bottom:8px;
+    &.nonfavorites {
+      margin-bottom: 24px;
     }
     .swiper-slide {
       cursor:pointer;
@@ -375,7 +372,7 @@
       height:48px;
       &.isFixed {
         position:sticky;
-        top: $HEADER-HEIGHT;
+        top: calc(#{$HEADER-HEIGHT} - 1px);
         width:100%;
         z-index: 10;
       }
