@@ -139,7 +139,7 @@ const MainPage = () => {
     }
 
     if (overNode && headerNode) {
-      const overTop = overNode.offsetTop - headerNode.clientHeight
+      const overTop = overNode.clientHeight - headerNode.clientHeight
       if (window.scrollY >= overTop) {
         setHeaderFixed(true)
       } else {
@@ -436,8 +436,6 @@ const MainPage = () => {
     fetchRankDataTop10(topRankType)
   },[topRankType])
 
-  console.log(mainState.myStar);
-
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
@@ -464,12 +462,12 @@ const MainPage = () => {
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className={`topSwiper`}>
+      <section className={`topSwiper`} ref={overRef}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
       {
         mainState.myStar.length > 0 &&
-        <section className='favorites' ref={overRef}>
+        <section className='favorites'>
           <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
         </section>
       }
