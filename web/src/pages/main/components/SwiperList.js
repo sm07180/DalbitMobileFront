@@ -66,8 +66,9 @@ const SwiperList = (props) => {
                 <img src={item[profImgName].thumb190x190 ? item[profImgName].thumb190x190
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 {item.rank && <div className={`rank-${item.rank}`}></div>}                
-                {item.roomNo && <div className='livetag' onClick={() => {
-                  RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.bj_nickName);
+                {item.roomNo && <div className='livetag' onClick={(e) => {
+                  e.stopPropagation();
+                  RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
                 }}></div>}
                 {item.type_media === 'v' && <div className="video" />}
               </div>
