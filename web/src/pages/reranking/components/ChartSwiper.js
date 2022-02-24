@@ -28,8 +28,8 @@ const CardList = (props) => {
                     <div className='rankWrap'>
                       <div className='rank'>{list.rank}</div>
                     </div>
+                    {list.roomNo && <div className='livetag'></div>}
                     <div className='infoWrap'>
-                      {list.roomNo && <div className='livetag'>LIVE</div>}
                       <div className='userNick'>{list.nickNm}</div>
                     </div>
                   </ListRow>

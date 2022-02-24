@@ -10,7 +10,7 @@ import {useHistory} from "react-router-dom";
 
 const TopSwiper = (props) => {
   const {data, openShowSlide, webview, isMyProfile,
-    disabledBadge, swiperParam, setPopHistory, type} = props;
+    disabledBadge, swiperParam, setPopHistory, type, listenOpen} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0,1 = 공개, 2 = 비공개) -> liveBag 보여주는 여부
 
   const context = useContext(Context);
   const history = useHistory();
@@ -48,6 +48,10 @@ const TopSwiper = (props) => {
   }
 
   useEffect(() => {
+    console.log(listenOpen);
+  })
+
+  useEffect(() => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.profileTopSwiper>.swiper-container')?.swiper;
       swiper?.update();
@@ -62,7 +66,7 @@ const TopSwiper = (props) => {
           {data.profImgList.map((item, index) => {
             return (
               <div key={index} onClick={() => {openShowSlide(data.profImgList)}}>
-                <div className="photo">
+                <div className="photo" style={{cursor:"pointer"}}>
                   <img src={item.profImg.thumb500x500} alt="" />
                 </div>
               </div>
@@ -77,7 +81,7 @@ const TopSwiper = (props) => {
         </div>
         :
         <div className="swiper-slide">
-          <div className="photo">
+          <div className="photo" style={{backgroundColor:"#eee"}}>
             <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
           </div>
         </div>
@@ -90,7 +94,7 @@ const TopSwiper = (props) => {
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {!isMyProfile && webview === '' && data.roomNo !== "" &&
+        {!isMyProfile && webview === '' && data.roomNo !== "" && listenOpen !== 2 &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>

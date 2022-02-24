@@ -19,6 +19,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {IMG_SERVER} from "context/config";
+import moment from "moment";
 
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
@@ -54,7 +55,6 @@ const MainPage = () => {
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0]) // 일간 top10 탭 타입
   const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
   const [headerFixed, setHeaderFixed] = useState(false) // 헤더 fixed
-  const [tabFixed, setTabFixed] = useState(false)   // 방송 리스트 탭 fixed
   const [currentPage, setCurrentPage] = useState(1) // 메인 데이터 현재 호출 페이지
   const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
 
@@ -69,6 +69,8 @@ const MainPage = () => {
     showPop: false,
     storeUrl: '',
   });
+
+  const [rankingList , setRankingList]=useState([]);
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);  // pullToRefresh 할때 (모바일)
   const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false); // 로고, 헤더, 푸터 등 메인 페이지 리로드할때
 
@@ -117,6 +119,7 @@ const MainPage = () => {
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo(1);
+    fetchRankDataTop10(topTenTabMenu[0])
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -126,7 +129,6 @@ const MainPage = () => {
   // scroll
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
-    const overTabNode = overTabRef.current
     const overNode = overRef.current
     const headerNode = headerRef.current
     
@@ -142,15 +144,6 @@ const MainPage = () => {
         setHeaderFixed(true)
       } else {
         setHeaderFixed(false)
-      }
-    }
-
-    if (overTabNode) {
-      const overTabTop = overTabNode.getBoundingClientRect().top
-      if (0 > overTabTop) {
-        setTabFixed(true)
-      } else {
-        setTabFixed(false)
       }
     }
 
@@ -361,6 +354,28 @@ const MainPage = () => {
     }
   }
 
+
+  //메인 랭킹 10위 목록
+  const fetchRankDataTop10 = async (type) => {
+    if(type !=="" || type!==null){
+    let rankSlct = type === "DJ" ? 1: type === "FAN"? 2 : 3
+      Api.get_ranking({
+      param: {
+        rankSlct: rankSlct,
+        rankType: 1,
+        rankingDate: moment().format("YYYY-MM-DD"),
+        page: 1,
+        records: 10,
+      }
+    }).then(res=> {
+      if(res.result === "success"){
+        setRankingList(res.data.list);
+      }else{
+        setRankingList([]);
+      }
+      });
+    }
+  };
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
@@ -413,7 +428,13 @@ const MainPage = () => {
       window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
- 
+
+  useEffect(()=>{
+    fetchRankDataTop10(topRankType)
+  },[topRankType])
+
+
+
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
@@ -450,13 +471,21 @@ const MainPage = () => {
         <CntTitle title={'🏆 NOW TOP 10'} more={'rank'}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </CntTitle>
-        <SwiperList
+{/*        <SwiperList
           data={topRankType === 'DJ' ? mainState.dayRanking.djRank
             : topRankType === 'FAN' ? mainState.dayRanking.fanRank
               : mainState.dayRanking.loverRank}
           profImgName="profImg"
           type="top10"
+        />*/}
+        {rankingList.length>0 &&
+        <SwiperList
+          data={rankingList}
+          profImgName="profImg"
+          type="top10"
         />
+        }
+
       </section>
       <section className='daldungs'>
         {mainState.newBjList.length > 0 &&
@@ -469,9 +498,9 @@ const MainPage = () => {
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView' ref={overTabRef}>
+      <section className="liveView">
         <CntTitle title={'🚀 지금 라이브 중!'}/>
-        <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
+        <div className={`tabmenuWrap isFixed`}>
           <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
                    defaultTab={1} />
         </div>

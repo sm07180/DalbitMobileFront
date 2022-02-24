@@ -11,6 +11,7 @@ import clip from './clip/clip';
 import honor from './honor/index';
 import notice from './notice/index';
 import inquire from "./inquire";
+import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
 
 const rootReducer = combineReducers({
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   , notice
   , inquire
   , popup
+  , newAlarm
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
