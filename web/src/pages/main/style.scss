@@ -375,7 +375,7 @@
       height:48px;
       &.isFixed {
         position:sticky;
-        top: calc($HEADER-HEIGHT - 1px);
+        top: $HEADER-HEIGHT;
         width:100%;
         z-index: 10;
       }
