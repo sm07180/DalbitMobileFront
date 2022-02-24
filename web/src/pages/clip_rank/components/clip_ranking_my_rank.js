@@ -36,7 +36,7 @@ export default function ClipRankingMyRank() {
       {/*{myInfo.isReward && formState.dateType === 2 ? (*/}
       {/*  <div className="receiveContent">*/}
       {/*    <div className="thumbnail">*/}
-      {/*      <img src={myInfo.rewardImage.thumb120x120} alt="유저 이미지" />*/}
+      {/*      <img src={myInfo.rewardImage.thumb292x292} alt="유저 이미지" />*/}
       {/*    </div>*/}
 
       {/*    <div className="textBox">*/}
@@ -96,7 +96,7 @@ export default function ClipRankingMyRank() {
 
                 <div className="rankingList__content">
                   <div className="thumbBox">
-                    <img src={myInfo.bgImg.thumb120x120} className="thumbBox__pic " alt="프로필 사진" />
+                    <img src={myInfo.bgImg.thumb292x292} className="thumbBox__pic " alt="프로필 사진" />
                   </div>
 
                   <div className="textBox">

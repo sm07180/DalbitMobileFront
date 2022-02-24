@@ -19,6 +19,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {IMG_SERVER} from "context/config";
+import moment from "moment";
 
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
@@ -68,6 +69,8 @@ const MainPage = () => {
     showPop: false,
     storeUrl: '',
   });
+
+  const [rankingList , setRankingList]=useState([]);
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);  // pullToRefresh 할때 (모바일)
   const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false); // 로고, 헤더, 푸터 등 메인 페이지 리로드할때
 
@@ -116,6 +119,7 @@ const MainPage = () => {
   const mainDataReset = () => {
     fetchMainInfo();
     fetchLiveInfo(1);
+    fetchRankDataTop10(topTenTabMenu[0])
     setTopRankType(topTenTabMenu[0])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -350,6 +354,31 @@ const MainPage = () => {
     }
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
+
+  //메인 랭킹 10위 목록
+  const fetchRankDataTop10 = async (type) => {
+    if(type !=="" || type!==null){
+    let rankSlct = type === "DJ" ? 1: type === "FAN"? 2 : 3
+      Api.get_ranking({
+      param: {
+        rankSlct: rankSlct,
+        rankType: 1,
+        rankingDate: moment().format("YYYY-MM-DD"),
+        page: 1,
+        records: 10,
+      }
+    }).then(res=> {
+      if(res.result === "success"){
+        setRankingList(res.data.list);
+      }else{
+        setRankingList([]);
+      }
+      });
+    }
+  };
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
@@ -402,7 +431,13 @@ const MainPage = () => {
       window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
- 
+
+  useEffect(()=>{
+    fetchRankDataTop10(topRankType)
+  },[topRankType])
+
+  console.log(mainState.myStar);
+
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
@@ -429,23 +464,24 @@ const MainPage = () => {
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className='topSwiper'>
+      <section className={`topSwiper ${mainState.myStar.length > 0 ? "" : "nonfavorites"}`}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='favorites' ref={overRef}>
         <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='top10'>
-        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
+        <div className="cntTitle">
+          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
-        </CntTitle>
-        <SwiperList
-          data={topRankType === 'DJ' ? mainState.dayRanking.djRank
-            : topRankType === 'FAN' ? mainState.dayRanking.fanRank
-              : mainState.dayRanking.loverRank}
-          profImgName="profImg"
-          type="top10"
-        />
+        </div>
+        {rankingList.length>0 &&
+          <SwiperList
+            data={rankingList}
+            profImgName="profImg"
+            type="top10"
+          />
+        }
       </section>
       <section className='daldungs'>
         {mainState.newBjList.length > 0 &&

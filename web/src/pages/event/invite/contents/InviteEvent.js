@@ -208,7 +208,7 @@ const InviteEvent = () => {
             <img src="https://image.dalbitlive.com/event/invite/eventPage_event-friend.png" alt="나를 초대한 친구" className='fullImage'/>
             <div className='friendWrap' onClick={goSendProfile}>
               <div className="photo">
-                <img src={myInfo.profImg.thumb88x88} alt="프로필이미지" />
+                <img src={myInfo.profImg.thumb292x292} alt="프로필이미지" />
               </div>
               <div className='listContent'>
                 <div className='listItem'>

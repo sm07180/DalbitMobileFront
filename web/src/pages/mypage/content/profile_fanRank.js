@@ -230,7 +230,7 @@ export default (props) => {
                             onClick={() => {
                               Link(memNo), context.action.updateCloseFanRank(false)
                             }}>
-                            <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
+                            <img src={profImg.thumb292x292} className="thumbBox__thumb" alt="thumb" />
                             {idx < 5 && (
                               <>
                                 {idx < 3 ? (
@@ -282,7 +282,7 @@ export default (props) => {
                             onClick={() => {
                               Link(memNo), context.action.updateCloseFanRank(false)
                             }}>
-                            <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
+                            <img src={profImg.thumb292x292} className="thumbBox__thumb" alt="thumb" />
                             {idx < 5 && (
                               <>
                                 {idx < 3 ? (

@@ -293,7 +293,7 @@ export default function ClipRecommend() {
                             ClipPlayFn(v.clipNo, 'dal', context, history)
                             context.action.updateDateState(marketingClipObj.recDate)
                           }}>
-                          <img src={v.bgImg.thumb150x150} alt="썸네일" className="thumbnail__img" />
+                          <img src={v.bgImg.thumb292x292} alt="썸네일" className="thumbnail__img" />
 
                           {/*<span className="thumbnail__specialDj">스페셜Dj</span>*/}
                           <span className="thumbnail__playTime">{v.filePlayTime}</span>

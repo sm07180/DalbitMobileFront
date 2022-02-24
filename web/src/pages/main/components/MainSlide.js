@@ -16,7 +16,7 @@ const MainSlide = (props) => {
   const swiperParams = {
     loop: true,
     autoplay: {
-      delay: 7000,
+      delay: 70000,
       disableOnInteraction: false
     },
     on:{

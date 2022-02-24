@@ -20,7 +20,7 @@ function ChatList({ msgGroup }) {
     if (myChat) {
       mailboxAction.setOtherInfo!({
         nick: globalState.userProfile!.nickNm,
-        profImg: globalState.userProfile!.profImg.thumb80x80,
+        profImg: globalState.userProfile!.profImg.thumb292x292,
       });
     } else {
       mailboxAction.setOtherInfo!({ nick: nickNm, profImg: imageInfo });
@@ -71,7 +71,7 @@ function ChatList({ msgGroup }) {
                 }}
               >
                 <span className="imgBox">
-                  <img src={imageInfo.thumb120x120} />
+                  <img src={imageInfo.thumb292x292} />
                 </span>
                 <span className="textBox__msg--time">{makeHourMinute(sendDt)}</span>
               </p>
@@ -83,7 +83,7 @@ function ChatList({ msgGroup }) {
         return (
           <div
             className="textBox"
-            onClick={() => giftAction(itemInfo, nickNm, profImg.thumb80x80, myChat)}
+            onClick={() => giftAction(itemInfo, nickNm, profImg.thumb292x292, myChat)}
             style={{ cursor: "pointer" }}
           >
             {myChat !== true && <p className="textBox__nick">{nickNm}</p>}
@@ -149,7 +149,7 @@ function ChatList({ msgGroup }) {
                                   history.push(`/profile/${memNo}`);
                                 }}
                               >
-                                <img src={profImg.thumb80x80} />
+                                <img src={profImg.thumb292x292} />
                               </div>
                               {createMsgByChatType(msgItem, isRead)}
                             </div>
