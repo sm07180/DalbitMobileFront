@@ -100,6 +100,7 @@
             word-break: keep-all;
             @include font(24px,$SemiBold,#202020);
             @include fontLineCut;
+            word-break: keep-all;
           }
           .nick {
             width:72%;
@@ -126,7 +127,6 @@
       //   }
       // }
     }
-
     .swiper-pagination {
       position: absolute;
       left: auto;
@@ -372,7 +372,7 @@
       height:48px;
       &.isFixed {
         position:sticky;
-        top:$HEADER-HEIGHT;
+        top: calc($HEADER-HEIGHT - 1px);
         width:100%;
         z-index: 10;
       }

@@ -47,7 +47,7 @@ export default function ClipRankingListTop3() {
                   ClipPlay(v.clipNo, context, history)
                 }}
               >
-                <img src={v.bgImg.thumb120x120} alt="프로필 사진" />
+                <img src={v.bgImg.thumb292x292} alt="프로필 사진" />
               </div>
               }
 
@@ -57,7 +57,7 @@ export default function ClipRankingListTop3() {
                   className="TopBoxThumb__user"
                   onClick={() => loginCheck(v.memNo)}
                 >
-                  <img src={v.profImg.thumb190x190} alt="유저이미지" />
+                  <img src={v.profImg.thumb292x292} alt="유저이미지" />
 
                   <p>{v.nickName}</p>
                 </div>
@@ -68,7 +68,7 @@ export default function ClipRankingListTop3() {
                     ClipPlay(v.clipNo, context, history);
                   }}
                 >
-                  <img src={v.bgImg.thumb190x190} alt="플레이어 썸네일" />
+                  <img src={v.bgImg.thumb292x292} alt="플레이어 썸네일" />
                 </div>
               </>
               }

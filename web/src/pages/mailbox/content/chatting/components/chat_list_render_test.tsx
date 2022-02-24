@@ -58,7 +58,7 @@ function ChatList({ prevObj }) {
                           key={`chatPrevIdx-${msgIdx}`}
                         >
                           <div className="thumb">
-                            <img src={mailboxState.mailboxInfo?.targetProfImg.thumb80x80} />
+                            <img src={mailboxState.mailboxInfo?.targetProfImg.thumb292x292} />
                           </div>
                           <div className="textBox">
                             {myChat !== true && <p className="textBox__nick">{nickNm}</p>}

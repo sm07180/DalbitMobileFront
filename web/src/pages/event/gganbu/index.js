@@ -107,7 +107,7 @@ export default () => {
                 ? () => history.push(`/mypage/${gganbuInfo.mem_no}`)
                 : () => history.push(`/mypage/${gganbuInfo.ptr_mem_no}`)
             }>
-            <img src={metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
+            <img src={metchState ? gganbuInfo.mem_profile.thumb292x292 : gganbuInfo.ptr_mem_profile.thumb292x292} alt="유저이미지" />
           </div>
           <LevelBox className="badge" levelColor={metchState ? gganbuInfo.mem_level_color : gganbuInfo.ptr_mem_level_color}>
             Lv {metchState ? gganbuInfo.mem_level : gganbuInfo.ptr_mem_level}
@@ -129,7 +129,7 @@ export default () => {
                 ? () => history.push(`/mypage/${gganbuInfo.mem_no}`)
                 : () => history.push(`/mypage/${gganbuInfo.ptr_mem_no}`)
             }>
-            <img src={!metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
+            <img src={!metchState ? gganbuInfo.mem_profile.thumb292x292 : gganbuInfo.ptr_mem_profile.thumb292x292} alt="유저이미지" />
           </div>
           <PtrLevelBox
             className="badge"
@@ -209,7 +209,7 @@ export default () => {
                   <div className="userUl">
                     <div className="userList">
                       <div className="photo" onClick={() => history.push(`/mypage/${globalCtx.profile.memNo}`)}>
-                        <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
+                        <img src={globalCtx.profile.profImg.thumb292x292} alt="유저이미지" />
                       </div>
                       <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
                         Lv {globalCtx.profile.level}

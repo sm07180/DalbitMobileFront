@@ -118,7 +118,7 @@ export default function CommentEvent() {
               <div className="each" key={`comment-${idx}`}>
                 <div
                   className="profile-img"
-                  style={{backgroundImage: `url(${profImg.thumb120x120})`}}
+                  style={{backgroundImage: `url(${profImg.thumb292x292})`}}
                   onClick={() => {
                     history.push(`/profile/${writerNo}`)
                   }}></div>

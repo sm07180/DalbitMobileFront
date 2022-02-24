@@ -92,7 +92,7 @@ export default (props) => {
               return (
                 <div className="list" style={{height: '72px'}} key={index}>
                   <div className="photo">
-                    <img src={mem_profile.thumb50x50} alt="유저이미지" />
+                    <img src={mem_profile.thumb292x292} alt="유저이미지" />
                   </div>
                   <div className="listBox">
                     <div className="nick">{mem_nick}</div>
