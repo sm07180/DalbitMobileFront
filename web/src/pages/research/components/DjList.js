@@ -35,7 +35,7 @@ const DjList = (props) => {
             <div className='listWrap' key={index}>
               <div className="listColumn">
                 <div className="photo" data-mem-no={list.memNo} onClick={goProfile}>
-                  <img src={list.profImg.thumb150x150} />
+                  <img src={list.profImg.thumb292x292} />
                 </div>
                 <div className="listItem">
                   <GenderItems data={list.gender} />

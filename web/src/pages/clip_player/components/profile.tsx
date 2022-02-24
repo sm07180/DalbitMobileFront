@@ -296,7 +296,7 @@ let Profile = () => {
 
                     <div className="profile__imgWrap">
                       {/* 프로필 사진 영역 */}
-                      <img src={profileData.profImg.thumb150x150} className="thumb" />
+                      <img src={profileData.profImg.thumb292x292} className="thumb" />
                       {/* 홀더 사진 영역 */}
                       <img
                           src={profileData.holder}

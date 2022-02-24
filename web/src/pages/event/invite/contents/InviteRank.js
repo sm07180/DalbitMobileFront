@@ -60,7 +60,7 @@ const InviteRank = () => {
         mem_sex: response.data.mem_sex,
         mem_nick: response.data.mem_nick,
         invitation_cnt:response.data.invitation_cnt,
-        thumb88x88:response.data.profImg.thumb88x88
+        thumb88x88:response.data.profImg.thumb292x292
       })
     })
   }
@@ -90,7 +90,7 @@ const InviteRank = () => {
                   <span className='rankingBadge'>{myData.rankNo === 0 ? "-" : myData.rankNo}</span>
                 </div>
                 <div className="photo">
-                  <img src={myData.thumb88x88} alt="프로필이미지"/>
+                  <img src={myData.thumb292x292} alt="프로필이미지"/>
                 </div>
                 <div className='listContent'>
                   <div className='listItem'>
@@ -112,7 +112,7 @@ const InviteRank = () => {
                         <span className={`rankingBadge`}>{index+1}</span>
                       </div>
                       <div className="photo">
-                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
+                        <img src={member.profImg.thumb292x292} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>

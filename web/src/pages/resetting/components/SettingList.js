@@ -12,7 +12,7 @@ const RadioList = (props) => {
   const {data,children} = props
 
   return (
-    <ListRow photo={data.profImg.thumb80x80}>
+    <ListRow photo={data.profImg.thumb292x292}>
       <div className="listInfo">
         <div className="listItem">
           <GenderItems/>

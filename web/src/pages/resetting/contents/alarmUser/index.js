@@ -58,7 +58,7 @@ const SettingAlarm = () => {
           pushMembers.map((data, index)=>{
             const {nickNm, profImg, regDt, memNo} = data
             return(
-              <ListRow photo={profImg.thumb80x80} key={index}>
+              <ListRow photo={profImg.thumb292x292} key={index}>
                 <div className="listInfo">
                   <div className="listItem">
                     <GenderItems/>

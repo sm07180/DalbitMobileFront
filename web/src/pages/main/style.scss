@@ -88,6 +88,7 @@
             margin-bottom:6px;
             @include font(22px,$SemiBold,#202020);
             @include fontLineCut;
+            word-break: keep-all;
           }
           .nick {
             width:72%;
