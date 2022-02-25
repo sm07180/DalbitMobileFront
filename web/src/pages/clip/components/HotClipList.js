@@ -17,7 +17,7 @@ const HotClipList = (props) => {
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <ListRow photo={list.bgImg.thumb120x120}>
+              <ListRow photo={list.bgImg.thumb292x292}>
                 <div className='listContent'>
                   <div className="listItem">
                     <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />
@@ -31,7 +31,7 @@ const HotClipList = (props) => {
                   </div>
                 </div>
               </ListRow>
-              <ListRow photo={list.bgImg.thumb120x120}>
+              <ListRow photo={list.bgImg.thumb292x292}>
                 <div className='listContent'>
                   <div className="listItem">
                     <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />
@@ -45,7 +45,7 @@ const HotClipList = (props) => {
                   </div>
                 </div>
               </ListRow>
-              <ListRow photo={list.bgImg.thumb120x120}>
+              <ListRow photo={list.bgImg.thumb292x292}>
                 <div className='listContent'>
                   <div className="listItem">
                     <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />

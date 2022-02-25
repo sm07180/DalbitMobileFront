@@ -133,7 +133,7 @@ const Lover = (props) => {
               <span className="num">{myRankInfo.rankNo == 0 ? '-' : myRankInfo.rankNo}</span>
             </div>
             <div className="photo">
-              <img src={context.profile.profImg.thumb50x50} />
+              <img src={context.profile.profImg.thumb292x292} />
             </div>
             <div className="listBox">
               <span className="level">Lv {context.profile.level}</span>

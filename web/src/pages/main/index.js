@@ -140,7 +140,7 @@ const MainPage = () => {
     }
 
     if (overNode && headerNode) {
-      const overTop = overNode.offsetTop - headerNode.clientHeight
+      const overTop = overNode.clientHeight - headerNode.clientHeight
       if (window.scrollY >= overTop) {
         setHeaderFixed(true)
       } else {
@@ -355,6 +355,9 @@ const MainPage = () => {
     }
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
 
   //메인 랭킹 10위 목록
   const fetchRankDataTop10 = async (type) => {
@@ -458,8 +461,6 @@ const MainPage = () => {
     fetchRankDataTop10(topRankType)
   },[topRankType])
 
-
-
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
@@ -486,24 +487,29 @@ const MainPage = () => {
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className='topSwiper'>
+      <section className={`topSwiper`} ref={overRef}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
-      <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
-      </section>
+      {
+        mainState.myStar.length > 0 &&
+        <section className='favorites'>
+          <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
+        </section>
+      }
       <section className='top10'>
+        <div className="cntTitle">
+          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
         <CntTitle title={'🏆 NOW TOP 10'} more={'rank'} moreClickAction={moreClickAction}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
+        </div>
         </CntTitle>
         {rankingList.length>0 &&
-        <SwiperList
-          data={rankingList}
-          profImgName="profImg"
-          type="top10"
-        />
+          <SwiperList
+            data={rankingList}
+            profImgName="profImg"
+            type="top10"
+          />
         }
-
       </section>
       <section className='daldungs'>
         {mainState.newBjList.length > 0 &&

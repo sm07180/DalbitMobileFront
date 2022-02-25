@@ -285,7 +285,7 @@ const ProfileWrite = () => {
                 <label key={index} onClick={(e) => e.preventDefault()}>
                   <div className="insertPicture"
                        onClick={() => setShowSlide({show: true, viewIndex: index})}>
-                    <img src={data?.thumb60x60 || data?.thumb50x50} alt=""/>
+                    <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
                   </div>
                   <button className="cancelBtn"
                           onClick={(e) => {
@@ -310,7 +310,7 @@ const ProfileWrite = () => {
                 }}>
                   <div className="insertPicture"
                        onClick={() => setShowSlide({show: true, viewIndex: 0})}>
-                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb50x50} alt=""/>
+                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>
                   </div>
                   <button className="cancelBtn"
                           onClick={(e) => {

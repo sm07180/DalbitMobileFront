@@ -328,9 +328,9 @@ export default function Detail(props) {
                   dangerouslySetInnerHTML={{__html: Utility.nl2br(contents)}}></div>
               </div>
               <div className="personalDetailWrap__addFile">
-                {addFile1.url !== '' && <img src={addFile1.thumb88x88} onClick={() => setZoom(addFile1.url)} />}
-                {addFile2.url !== '' && <img src={addFile2.thumb88x88} onClick={() => setZoom(addFile2.url)} />}
-                {addFile3.url !== '' && <img src={addFile3.thumb88x88} onClick={() => setZoom(addFile3.url)} />}
+                {addFile1.url !== '' && <img src={addFile1.thumb292x292} onClick={() => setZoom(addFile1.url)} />}
+                {addFile2.url !== '' && <img src={addFile2.thumb292x292} onClick={() => setZoom(addFile2.url)} />}
+                {addFile3.url !== '' && <img src={addFile3.thumb292x292} onClick={() => setZoom(addFile3.url)} />}
               </div>
               {zoom && (
                 <div className="personalDetailWrap__zoom" onClick={() => setZoom(false)}>

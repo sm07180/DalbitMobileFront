@@ -119,6 +119,7 @@
         >img {
           width: 28px;
         }
+        >span{margin-right: 4px;}
       }
     }
     .swiper-wrapper {
@@ -204,8 +205,12 @@
         width: 24px;
         margin-bottom: 2px;
       }
+      span{
+        @include font(16px, $Medium);
+        margin-bottom: 6px;
+      }
       p {
-        margin-top: 2px;
+        @include font(14px, $Medium, #202020);
       }
     }
   }

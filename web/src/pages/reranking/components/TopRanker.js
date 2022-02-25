@@ -122,7 +122,7 @@ const TopRanker = (props) => {
                         <div className="ranker" key={index}>
                           <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
                             <div className="photo">
-                              <img src={data.profImg.thumb190x190} alt="" />
+                              <img src={data.profImg.thumb292x292} alt="" />
                               <div className={`rankerRank ${data.rank === 1 ? "first" : ""}`}>{data.rank}</div>
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
@@ -132,7 +132,7 @@ const TopRanker = (props) => {
                               <div className='cupidHeader'>Honey</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
-                                  <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
+                                  <img src={data.djProfImg.thumb292x292} alt={data.nickNm} />
                                 </div>
                                 <div className='cupidNick'>{data.djNickNm}</div>
                               </div>

@@ -38,7 +38,7 @@ const HotLiveList = (props) => {
             <div key={index} data-room-no={list.roomNo}  data-bj-nick-nm={list.nickNm} onClick={RoomEnter}>
               <div className="listColumn">
                 <div className="photo">
-                  <img src={list.bgImg.thumb190x190} />
+                  <img src={list.bgImg.thumb292x292} />
                   {/* {list.roomType === '03' && <div className="badgeVideo"></div>} */}
                 </div>
                 <p className='nick'>{list.nickNm}</p>

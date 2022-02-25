@@ -64,7 +64,7 @@ const ClipDetail = (props) => {
       <section className="detailList">
         {data.map((list,index) => {
           return (
-            <ListRow photo={list.bgImg.thumb80x80} key={index}>
+            <ListRow photo={list.bgImg.thumb292x292} key={index}>
               <div className="listInfo">
                 <div className="listItem">
                   <span className="title">{list.title}</span>

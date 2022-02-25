@@ -40,7 +40,7 @@ const ProfileCard = (props) => {
              onClick={() => {
                if(!data.profImg?.isDefaultImg) openShowSlide(data.profImgList)
              }}>
-          <img src={data.profImg?.thumb190x190} alt="" />
+          <img src={data.profImg?.thumb292x292} alt="" />
           <FrameItems content={data} />
         </div>
         <div className="info">

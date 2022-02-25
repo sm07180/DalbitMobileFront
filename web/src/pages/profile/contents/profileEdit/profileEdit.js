@@ -293,7 +293,7 @@ const ProfileEdit = () => {
                          showImagePopUp(profileInfo?.profImgList, 'profileList') :
                          inputRef.current.click();
                      }}>
-                  <img src={profile && profile.profImg && profile.profImg.thumb100x100} alt=""/>
+                  <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
                   <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
                 </div>
               </div>
@@ -304,7 +304,7 @@ const ProfileEdit = () => {
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
-                        <img src={data?.profImg?.thumb100x100} alt=""
+                        <img src={data?.profImg?.thumb292x292} alt=""
                              onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
                         <button className="cancelBtn"
                                 onClick={() => {

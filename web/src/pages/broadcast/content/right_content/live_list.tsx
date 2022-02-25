@@ -241,7 +241,7 @@ export default function LiveList(props: {
                   >
                     <span className="thumb">
                       <img
-                        src={bjProfImg.thumb190x190}
+                        src={bjProfImg.thumb292x292}
                         className="thumb_dj"
                         alt={bjNickNm}
                       />

@@ -44,8 +44,8 @@ const TopRanker = (props) => {
                         <div className="ranker" key={`list-${index2}`} data-clip-no={row.clipNo} data-type={index} onClick={playAction}>
                           <div className="listColumn">
                             <div className="photo">
-                              <img src={row.bgImg.thumb100x100} alt="" />
-                              <div className='rank'>{row.rank}</div>
+                              <img src={row.bgImg.thumb292x292} alt="" />
+                              <div className={`rank  ${row.rank === 1 ? "first" : ""}`}>{row.rank}</div>
                               <span className="play"/>
                             </div>
                             <div className='title'>{row.title}</div>

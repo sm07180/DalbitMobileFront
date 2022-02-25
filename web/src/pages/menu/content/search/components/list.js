@@ -128,7 +128,7 @@ export default (props) => {
                         LIVE
                       </button>
                     )}
-                    <img src={profImg.thumb190x190} className="memberItem__profImg" />
+                    <img src={profImg.thumb292x292} className="memberItem__profImg" />
                     <div className="memberItem__info">
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
@@ -220,9 +220,9 @@ export default (props) => {
                           <></>
                         )}
                         <img src={bjProfImg[`thumb190x190`]} className="thumb-dj" alt={title} />
-                        {gstProfImg.thumb120x120 && (
+                        {gstProfImg.thumb292x292 && (
                           <span className="thumb-guest">
-                            <img src={gstProfImg.thumb120x120} alt="게스트" />
+                            <img src={gstProfImg.thumb292x292} alt="게스트" />
                           </span>
                         )}
                       </div>

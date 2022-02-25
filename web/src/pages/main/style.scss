@@ -31,7 +31,13 @@
   .topSwiper {
     max-width:480px;
     height:360px;
-    margin-bottom:24px;
+    margin-bottom:0px;
+    + .favorites {
+      margin-top: 8px;
+    }
+    + .top10 {
+      margin-top: 24px;
+    }
     .swiper-slide {
       cursor:pointer;
       &:active {
@@ -51,16 +57,22 @@
             display:block;
             content:'';
             width:100%;
-            height:30%;
+            height:100%;
           }
           &::after {
             @include whiteScreen;
             bottom:0;
             background-image:linear-gradient(to top,
              rgba(255,255,255,1) 0%,
-             rgba(255,255,255,0.9) 20%,
-             rgba(255,255,255,0.7) 40%,
-             rgba(255,255,255,0.4) 60%,
+             rgba(255,255,255,0.98) 5%,
+             rgba(255,255,255,0.92) 10%,
+             rgba(255,255,255,0.85) 15%,
+             rgba(255,255,255,0.75) 20%,
+             rgba(255,255,255,0.65) 25%,
+             rgba(255,255,255,0.5) 30%,
+             rgba(255,255,255,0.35) 35%,
+             rgba(255,255,255,0.2) 40%,
+             rgba(255,255,255,0.14) 43%,
               rgba(255,255,255,0) 100%);
           }
           &::before{display:none;}
@@ -72,9 +84,11 @@
         }
         .info {
           @include position-bottom-left;
-          @include flex(flex-start,center,column);
+          @include flex(flex-start,flex-end,column);
           width:100%;
-          padding: 25px 16px 12px;
+          height: 50%;
+          padding: 0px 16px 12px;
+          background-image:url("#{$IMGSERVER}/images/mainmask.png");
           // transform:translateX(30%);
           // transition: transform .7s ease-out;
           .badgeGroup {
@@ -86,8 +100,10 @@
             width:72%;
             line-height:30px;
             margin-bottom:6px;
-            @include font(22px,$SemiBold,#202020);
+            word-break: keep-all;
+            @include font(24px,$SemiBold,#202020);
             @include fontLineCut;
+            word-break: keep-all;
           }
           .nick {
             width:72%;
@@ -102,7 +118,7 @@
       // &-active {
       //   .listColumn {
       //     .info {
-      //       transform:translateX(0);
+      //       animation: show 0.4s linear forwards;
       //     }
       //   }
       // }
@@ -114,7 +130,6 @@
       //   }
       // }
     }
-
     .swiper-pagination {
       position: absolute;
       left: auto;
@@ -188,7 +203,7 @@
       .tabmenu {
         @include flex(center);
         height:20px;
-        margin-left:12px;
+        margin-left:auto;
         li {
           position:relative;
           padding: 0 8px;
@@ -300,7 +315,7 @@
       padding-left:16px;
       .swiper-slide {
         width:auto;
-        margin-right:12px;
+        margin-right:8px;
         &:last-child {
           margin-right:28px;
         }
@@ -360,7 +375,7 @@
       height:48px;
       &.isFixed {
         position:sticky;
-        top:$HEADER-HEIGHT;
+        top: calc(#{$HEADER-HEIGHT} - 1px);
         width:100%;
         z-index: 10;
       }
@@ -554,20 +569,12 @@
 
   }
 }
-@keyframes hide {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 @keyframes show {
   0% {
-    opacity: 0;
+    transform: translateX(50px);
   }
   100% {
-    opacity: 1;
+    transform: translateX(0px);    
   }
 }
 
