@@ -106,7 +106,7 @@ const ProfileEdit = () => {
     const param = {
       gender :gender || initProfileInfo.current.gender,
       nickNm : nickNm || initProfileInfo.current.nickNm,
-      profMsg: profMsg || initProfileInfo.current.profMsg,
+      profMsg: profMsg,
       birth: birth || initProfileInfo.current.birth,
       profImg: (_profileInfo? profImg.path : currentAvatar.path) || initProfileInfo.current.profImg.path,
     }
@@ -293,7 +293,7 @@ const ProfileEdit = () => {
                          showImagePopUp(profileInfo?.profImgList, 'profileList') :
                          inputRef.current.click();
                      }}>
-                  <img src={profile && profile.profImg && profile.profImg.thumb100x100} alt=""/>
+                  <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
                   <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
                 </div>
               </div>
@@ -304,7 +304,7 @@ const ProfileEdit = () => {
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
-                        <img src={data?.profImg?.thumb100x100} alt=""
+                        <img src={data?.profImg?.thumb292x292} alt=""
                              onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
                         <button className="cancelBtn"
                                 onClick={() => {
@@ -378,8 +378,10 @@ const ProfileEdit = () => {
               </div>
               <InputItems title={'프로필 메시지'} type={'textarea'}>
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
-                          defaultValue={profileInfo?.profMsg || ''}
-                          onChange={(e) => setProfileInfo({...profileInfo, profMsg: e.target.value}) }/>
+                          value={profileInfo?.profMsg || ''}
+                          onChange={(e) => {
+                            setProfileInfo({...profileInfo, profMsg: e.target.value});
+                          }}/>
                 <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
               </InputItems>
             </section>

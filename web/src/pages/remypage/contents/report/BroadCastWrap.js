@@ -9,10 +9,12 @@ import API from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
-import PopSlide from "components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import ReportTabMenu from "pages/remypage/components/ReportTabMenu";
 import DatePickerPage from "pages/remypage/contents/report/DatePicker";
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const BroadCastWrap = () => {
   const context = useContext(Context);
@@ -34,8 +36,9 @@ const BroadCastWrap = () => {
   const [broadListInfo, setBroadListInfo] = useState([]);
   //총 방송시간, 달, 좋아요, 청취자 수
   const [broadTotalInfo, setBroadTotalInfo] = useState({broadcastTime: 0, byeolTotCnt: 0, goodTotCnt: 0, listenerTotCnt: 0});
-  //Popup Open/Close용
-  const [bottomSlide, setBottomSlide] = useState(false);
+
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   // 방송내역 조회
   const fetchData = () => {
@@ -115,17 +118,17 @@ const BroadCastWrap = () => {
   //기간 적용시 해당 요일로 방송,청취 내역 조회
   const clickConfirm = () => {
     fetchData();
-    closePopup();
+    closePop();
   }
 
   //조회시 팝업 open
   const openPopup = () => {
-    setBottomSlide(true);
+    dispatch(setSlidePopupOpen());
   }
 
   //조회시 팝업 close
-  const closePopup = () => {
-    setBottomSlide(false);
+  const closePop = () => {
+    closePopup(dispatch);
   }
 
   useEffect(() => {
@@ -199,8 +202,8 @@ const BroadCastWrap = () => {
         })}
       </section>
 
-      {bottomSlide &&
-      <PopSlide title="기간 설정" setPopSlide={setBottomSlide}>
+      {popup.commonPopup &&
+      <PopSlide title="기간 설정">
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
           <DatePickerPage name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>

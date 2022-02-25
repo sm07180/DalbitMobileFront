@@ -81,7 +81,7 @@ const ProfileWrite = () => {
     const {title, contents, others, photoInfoList} = formState;
 
     if (type === 'feed') {
-      const {data, message, result } = await Api.mypage_notice_upload({
+      Api.mypage_notice_upload({
         reqBody: true,
         data: {
           title,
@@ -89,11 +89,14 @@ const ProfileWrite = () => {
           topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
+      }).then((res) => {
+        const {data, message, result } = res;
+        context.action.toast({msg: message});
+
+        if (result === 'success') {
+          history.goBack();
+        }
       });
-      context.action.toast({msg: message});
-      if (result === 'success') {
-        history.goBack();
-      }
     } else if (type === 'fanBoard') {
       const {data, result, message} = await Api.member_fanboard_add({
         data: {
@@ -285,7 +288,7 @@ const ProfileWrite = () => {
                 <label key={index} onClick={(e) => e.preventDefault()}>
                   <div className="insertPicture"
                        onClick={() => setShowSlide({show: true, viewIndex: index})}>
-                    <img src={data?.thumb60x60 || data?.thumb50x50} alt=""/>
+                    <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
                   </div>
                   <button className="cancelBtn"
                           onClick={(e) => {
@@ -310,7 +313,7 @@ const ProfileWrite = () => {
                 }}>
                   <div className="insertPicture"
                        onClick={() => setShowSlide({show: true, viewIndex: 0})}>
-                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb50x50} alt=""/>
+                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>
                   </div>
                   <button className="cancelBtn"
                           onClick={(e) => {

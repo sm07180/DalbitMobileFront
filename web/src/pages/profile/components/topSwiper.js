@@ -48,10 +48,6 @@ const TopSwiper = (props) => {
   }
 
   useEffect(() => {
-    console.log(listenOpen);
-  })
-
-  useEffect(() => {
     if (data.profImgList.length > 1) {
       const swiper = document.querySelector('.profileTopSwiper>.swiper-container')?.swiper;
       swiper?.update();

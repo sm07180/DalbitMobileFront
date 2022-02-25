@@ -67,7 +67,7 @@ export default (props) => {
         let link = `/profile/${memNo}?webview=${webview}`
         result = result.concat(
           <div
-            style={{backgroundImage: `url(${profImg.thumb88x88})`}}
+            style={{backgroundImage: `url(${profImg.thumb292x292})`}}
             className={`fanItem rank${rank}`}
             onClick={() => history.push(link)}
             key={index}></div>
@@ -687,7 +687,7 @@ export default (props) => {
                 list: profile.profImgList.length ? profile.profImgList : [{profImg: profile.profImg}]
               })
             }}
-            style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
+            style={{backgroundImage: `url(${profile.profImg.thumb292x292})`}}>
             <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
             {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
             {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}

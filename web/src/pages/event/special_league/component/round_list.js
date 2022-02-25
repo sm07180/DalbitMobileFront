@@ -35,7 +35,7 @@ export default function RoundList({rankList}) {
                   )}
                 </div>
                 <div className="thumb_box" onClick={() => history.push(`/profile/${memNo}`)}>
-                  <img src={profImg.thumb120x120} alt={nickName} />
+                  <img src={profImg.thumb292x292} alt={nickName} />
                   <span className="nick"> {nickName}</span>
                 </div>
 
@@ -82,7 +82,7 @@ export default function RoundList({rankList}) {
                   )}
                 </div>
                 <div className="thumb_box" onClick={() => history.push(`/profile/${memNo}`)}>
-                  <img src={profImg.thumb120x120} alt={nickName} />
+                  <img src={profImg.thumb292x292} alt={nickName} />
                   <span className="nick">{nickName}</span>
                 </div>
 

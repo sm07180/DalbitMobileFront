@@ -36,7 +36,7 @@ const starSubTabMenu = [
 const pagePerCnt = 20;
 
 const FanStarPopup = (props) => {
-  const {type, isMyProfile, fanToggle, profileData, goProfile, setPopFanStar, myMemNo} = props
+  const {type, isMyProfile, fanToggle, profileData, goProfile, myMemNo, closePopupAction} = props
   const dispatch = useDispatch();
   const fanStarContainerRef = useRef();
   const [showList, setShowList] = useState([]);
@@ -156,10 +156,6 @@ const FanStarPopup = (props) => {
     }
   }
 
-  const closePop = () => {
-    setPopFanStar(false);
-  }
-
   const removeScrollEvent = useCallback(() => {
     const scrollTarget = fanStarContainerRef.current;
     if(scrollTarget) {
@@ -219,7 +215,7 @@ const FanStarPopup = (props) => {
             return (
               <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => {
                 goProfile(list.memNo)
-                setPopFanStar(false);
+                closePopupAction();
               }}>
                 {isMyProfile ?
                   <>
@@ -265,7 +261,7 @@ const FanStarPopup = (props) => {
         <NoResult />
         }
       </div>
-      <button className="popClose" onClick={closePop}></button>
+      <button className="popClose" onClick={closePopupAction} />
     </section>
   )
 }

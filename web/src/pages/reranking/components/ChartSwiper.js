@@ -1,14 +1,18 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
+import {Context, GlobalContext} from "context";
 import {useHistory} from "react-router-dom";
-
+import {RoomValidateFromClip} from "common/audio/clip_func";
 const CardList = (props) => {
   const {data} = props
 
   const history = useHistory();
+  const context = useContext(Context);
+
+  let locationStateHistory = useHistory();
 
   // 스와이퍼
   const swiperParams = {
@@ -28,7 +32,10 @@ const CardList = (props) => {
                     <div className='rankWrap'>
                       <div className='rank'>{list.rank}</div>
                     </div>
-                    {list.roomNo && <div className='livetag'></div>}
+                    {list.roomNo && <div className='livetag' onClick={(e) => {
+                      e.stopPropagation();
+                      RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.nickNm);
+                    }}></div>}
                     <div className='infoWrap'>
                       <div className='userNick'>{list.nickNm}</div>
                     </div>
