@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, useMemo} from 'react'
 
 import Swiper from 'react-id-swiper'
 import Lottie from 'react-lottie'
@@ -22,13 +22,16 @@ const SwiperList = (props) => {
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   let locationStateHistory = useHistory();
 
-  const swiperParams = {
-    slidesPerView: 'auto',
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-  }
+  const swiperParams = useMemo(() => {
+    let tempResult = { slidesPerView: 'auto' }
+    if (isDesktop) {
+      tempResult.navigation = {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      };
+    }
+    return tempResult;
+  }, []);
 
   const onClickAction = (item) => {
     if(type === 'top10') {
