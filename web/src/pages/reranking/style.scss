@@ -116,24 +116,30 @@ $errorMsg : #FF1919;
       }
     }
     .countDown {
-      @include flex(center, center);
-      width: 103px;
+      position: relative;
+      @include flex(center);
+      width: 80px;
       margin-top: 8px;
-      background-color: #1A1A1A;
-      letter-spacing: 2px;
+      padding-left: 4px;
       line-height: 25px;
-      @include font(17px,600,#fff);
+      @include font(17px,600,#202020);
+      &.text{
+        &::after {
+          content: "남음";
+          @include font(12px,500,#999999);
+        }
+      }
     }
     .criteria {
-      @include position-top-right(40%, 0px);
+      @include position-top-right(35%, 0px);
       transform: translateY(-55%);
-      width: 183px; height: 174px;
-      @include BGIMG('dalla/character/character_ranking.png');
+      width: 184px; height: 170px;
+      @include BGIMG('dalla/character/character_criteria.png');
       .relative {
         position: relative;
         .clickArea {
-          @include position-top-left;
-          width: 45%;
+          @include position-top-left(8px);
+          width: 38%;
           padding-bottom: 20%;
           cursor: pointer;
         }
@@ -148,10 +154,7 @@ $errorMsg : #FF1919;
         padding-left: 60px;
         .swiper-slide {
           width:auto;
-          margin-right:10px;
-          &:last-child {
-            margin-right:16px;
-          }
+          margin-right:12px;
           .listRow {
             position: relative;
             flex:none;
@@ -222,6 +225,22 @@ $errorMsg : #FF1919;
                 @include fontCut;
               }
             } 
+          }
+        }
+        .nextRanking {
+          @include flex(center, center, column);
+          width: 100px; height: 200px;
+          cursor: pointer;
+          p {
+            @include font(12px, 500, #FF3C7B);
+            margin-bottom: 8px;
+          }
+          span {
+            display: inline-block;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: url("https://image.dalbitlive.com/ranking/dalla/ranking_nextRank.png") center no-repeat;
+            background-size: cover;
           }
         }
       }

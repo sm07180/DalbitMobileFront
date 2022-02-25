@@ -7,6 +7,7 @@
     width:100%;
     header {
       text-indent:-99999px;
+      .store {background-image:url("#{$IMGSERVER}/common/header/icoStore-w.png");}
       .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-w.png");}
       .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-w.png");}
       .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-w.png");}
@@ -18,6 +19,7 @@
           width:71px;height:25px;
           @include BGIMG("common/header/LOGO.png");
         }
+        .store {background-image:url("#{$IMGSERVER}/common/header/icoStore-b.png");}
         .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-b.png");}
         .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-b.png");}
         .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-b.png");}
@@ -365,10 +367,9 @@
             }
             .video {
               @include position-top-right;
-              width:20px;
-              height:20px;
-              margin:6px;
-              @include BGIMG("common/icon/ico_video.png");
+              width:40px;
+              height:40px;
+              @include BGIMG("common/icon/icon_video.png");
             }
           }
           p {
@@ -463,10 +464,9 @@
           }
           .video {
             @include position-top-right;
-            width:23px;
-            height:23px;
-            margin:6px;
-            @include BGIMG("common/icon/icon-video.png");
+            width:40px;
+            height:40px;
+            @include BGIMG("common/icon/icon_video.png");
           }
         }
         .listContent {

@@ -43,6 +43,10 @@ const CardList = (props) => {
                 </div>
               )
             })}
+            <div className='nextRanking' onClick={() => history.push(`/rankDetail/DJ`)}>
+              <p>그 다음은 누구일까?</p>
+              <span></span>
+            </div>
         </Swiper>
       }
     </div>

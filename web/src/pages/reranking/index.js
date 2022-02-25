@@ -93,7 +93,7 @@ const RankPage = () => {
     week.setHours(0);
     week.setMinutes(0);
     week.setSeconds(0);
-    let reMainTime = select === "time" ? counting(time, now) : select === "today" ? counting(day, now) : select === "thisweek" ? `${moment(now).format('M')}월 ${chngNumberToString(weekNumberByThurFnc(now))}째 주` : select === "thismonth" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
+    let reMainTime = select === "time" ? counting(time, now) : select === "today" ? counting(day, now) : select === "thisweek" ? `${moment(now).format('M')}월 ${chngNumberToString(weekNumberByThurFnc(now))}째주` : select === "thismonth" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
     setDaySetting(reMainTime);
   }
 
@@ -310,7 +310,7 @@ const RankPage = () => {
             차트<span className='optionSelect'></span>
           </div>
         </div>
-        <div className='countDown'>{daySetting}</div>
+        <span className={`countDown ${(select === "time" || select === "today") ? "text" : "" }`}>{daySetting}</span>
         <div className='criteria'>
           <div className='relative'>
             <div className='clickArea' onClick={criteriaPop}/>
