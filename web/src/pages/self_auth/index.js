@@ -50,12 +50,12 @@ export const openAuthPage = (formTagRef, context) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef, context) => {
+export const authReq = async (code, formTagRef, context, pushLink) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
       authType: '0',
-      pushLink: '',
+      pushLink: pushLink ? pushLink : '',
     }
   })
   if (res.result == 'success' && res.code == 0) {
