@@ -38,6 +38,7 @@ const Write = (props) => {
   ])
   const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
+  let isDisabled = true;
 
   //문의하기 등록
   const fetchData = () => {
@@ -150,7 +151,7 @@ const Write = (props) => {
   //등록시 예외 조건 확인
   const validator = () => {
     if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
-      fetchData();
+      if(isDisabled) {fetchData();} else {isDisabled = false;}
     } else {
       context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
     }
