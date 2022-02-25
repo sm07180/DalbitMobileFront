@@ -77,6 +77,7 @@ const TitleButton = (props) => {
     case '메인':
       return (
         <div className="buttonGroup">
+          <StoreButton history={history} />
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
