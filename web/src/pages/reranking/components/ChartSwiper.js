@@ -7,6 +7,7 @@ import ListRow from 'components/ui/listRow/ListRow'
 import {Context, GlobalContext} from "context";
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
+import {IMG_SERVER} from 'context/config'
 const CardList = (props) => {
   const {data} = props
 

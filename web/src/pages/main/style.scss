@@ -249,6 +249,9 @@
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
+        &.swiper-button-disabled {
+          pointer-events: auto;
+        }
       }
       .swiper-button-prev {
         background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-prev.png");
@@ -312,7 +315,7 @@
                 @include position-top-left();
                 display: inline-block;
                 width: 40px; height: 40px;
-                @include BGIMG("/common/icon/icon-liveTag.png");
+                z-index: 2;
               }
             }
             p {

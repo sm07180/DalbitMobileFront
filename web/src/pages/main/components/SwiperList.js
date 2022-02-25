@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 import Lottie from 'react-lottie'
@@ -10,13 +10,16 @@ import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
 import {useSelector} from "react-redux";
+import {IMG_SERVER} from 'context/config'
 
 const SwiperList = (props) => {
+
   const {data, profImgName, type, pullToRefreshPause} = props;
   const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   let locationStateHistory = useHistory();
 
   const swiperParams = {
@@ -56,7 +59,7 @@ const SwiperList = (props) => {
     if(common.isRefresh && data.length > 0) { // refresh 될때
       swiperRefresh();
     }
-  }, [common.isRefresh]);
+  }, [common.isRefresh]);    
 
   return (
     <>
@@ -76,13 +79,13 @@ const SwiperList = (props) => {
                       e.stopPropagation();
                       RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
                     }}>
-                       {/* <Lottie
+                       <Lottie
                           options={{
                             loop: true,
                             autoPlay: true,
                             path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
                           }}
-                        /> */}
+                        />
                     </div>
                 }
                 {item.type_media === 'v' && <div className="video" />}

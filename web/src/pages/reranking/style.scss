@@ -210,7 +210,6 @@ $errorMsg : #FF1919;
               @include position-top-right();
               display: inline-block;
               width: 40px; height: 40px;
-              @include BGIMG("/common/icon/icon-liveTag.png");
               z-index: 2;
             }
             .infoWrap {
