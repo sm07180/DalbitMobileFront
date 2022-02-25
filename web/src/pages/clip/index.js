@@ -228,7 +228,6 @@ const ClipPage = () => {
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
                     <span>{list.icon}</span>
-                    {/* <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/> */}
                     <p>{list.cdNm}</p>
                   </div>
                 </div>
