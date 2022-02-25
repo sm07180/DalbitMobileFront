@@ -32,7 +32,7 @@ export type userBroadcastSettingType = {
 import { MediaType } from "pages/broadcast/constant";
 import { getCookie } from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
-import {setVoteActive} from "../../redux/actions/vote";
+import {moveVoteListStep, setVoteActive} from "../../redux/actions/vote";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -75,7 +75,6 @@ export class ChatSocketHandler {
   // set 하는 곳 : /mypage/broadcast/setting, /mypage/broadcast/setting/edit
   // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
   public userSettingObj: userBroadcastSettingType | null = null;
-
   constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?: any) {
     this.dispatch = dispatch;
     this.postErrorState =  (window as any)?.postErrorState;
@@ -89,7 +88,7 @@ export class ChatSocketHandler {
     this.broadcastAction = null;
 
     this.reConnect =
-      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo) : reConnectHandler;
+      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo, this.dispatch) : reConnectHandler;
 
     this.publicChannelNo = "";
     this.publicChannelHandle = null;
@@ -1930,6 +1929,22 @@ export class ChatSocketHandler {
                   }
                   case "reqEndVote": {
                     // 투표 마감
+                    // endSlct: "a"
+                    // memNo: "41642143336123"
+                    // roomNo: "91645762266164"
+                    // voteNo: "310"
+                    if(data.reqEndVote.endSlct === 'a'){
+                      this.broadcastAction?.setRightTabType(tabType.LISTENER);
+                      this.dispatch(setVoteActive(false))
+                    }
+                    if(data.reqEndVote.endSlct === 'o'){
+                      this.dispatch(moveVoteListStep({
+                        memNo: data.reqEndVote.memNo,
+                        roomNo: data.reqEndVote.roomNo,
+                        voteSlct: 's'
+                      }))
+                    }
+
                     console.log('reqEndVote ... ', data)
                     return null;
                   }
@@ -2504,7 +2519,11 @@ export class ReConnectChat {
   public roomOwner: boolean;
   public broadcastAction: any | null;
 
-  constructor(userInfo: chatUserInfoType) {
+  public dispatch: any;
+
+  constructor(userInfo: chatUserInfoType, dispatch?: any) {
+    this.dispatch = dispatch;
+
     this.chatUserInfo = userInfo;
     this.reTryCnt = 0;
     this.isRetry = false;

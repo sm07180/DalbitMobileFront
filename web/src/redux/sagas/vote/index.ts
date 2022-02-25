@@ -17,7 +17,7 @@ import {
 	SET_VOTE_STEP
 } from "../../actions/vote";
 import {GetVoteSelRequestType, VoteResultType, VoteStepType} from "../../types/voteType";
-import {initTempInsVote} from "../../reducers/vote";
+import {initTempInsVote, initVoteSel} from "../../reducers/vote";
 
 // 투표 등록
 function* insVote(param) {
@@ -148,6 +148,8 @@ function* moveVoteStep(param) {
 			const sel = data.find(f=>f.memVoteYn === 'y');
 			if(sel){
 				yield put({type: SET_SEL_VOTE_ITEM, payload: sel})
+			}else{
+				yield put({type: SET_SEL_VOTE_ITEM, payload: initVoteSel})
 			}
 		}
 		yield put({type: SET_VOTE_STEP, payload: 'vote'})

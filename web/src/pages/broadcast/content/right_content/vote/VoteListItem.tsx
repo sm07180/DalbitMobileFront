@@ -13,7 +13,7 @@ const VoteListItem = (props: VoteResultType) => {
     dispatch(moveVoteStep(props));
   }
 
-  const {hour, minute, time, unitKor, isDone} = Timer({endDate:props.endDate});
+  const {hour, minute, time, unitKor, isTimeOver} = Timer({endDate:props.endDate});
 
   return (
     <div className="voteList" onClick={listClick}>
@@ -31,12 +31,12 @@ const VoteListItem = (props: VoteResultType) => {
             <p><span>{Utility.addComma(props.voteMemCnt)}</span>명 참여</p>
           </div>
           <div className="due">
-            <span>{hour}:{minute}</span> {isDone ? '마감' : '마감예정'}
+            <span>{hour}:{minute}</span> {isTimeOver ? '마감' : '마감예정'}
           </div>
         </div>
       </div>
       {
-        !isDone &&
+        !isTimeOver &&
         <div className={`time ${props.voteEndSlct === 'e' ? 'end' : ''}`}>
           <span className="icon"/>
           {time}{unitKor}

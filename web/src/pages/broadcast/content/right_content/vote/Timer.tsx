@@ -3,7 +3,7 @@ import {VoteResultType} from "../../../../../redux/types/voteType";
 import moment from "moment";
 
 type ReturnType = {
-  hour: string, min: string, minute: string, sec: string, unitKor: '분'|'초', time: string, isDone: boolean
+  hour: string, min: string, minute: string, sec: string, unitKor: '분'|'초', time: string, isTimeOver: boolean
 }
 export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
   const endDateMomentProps = {...props.endDate.date, month:props.endDate.date.month-1, ...props.endDate.time};
@@ -44,12 +44,12 @@ export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
   // const unitKor = min !== '00' ? '분' : '초';
   const time = min;
   const unitKor = '분';
-  const isDone = moment(endDateMomentProps).isSameOrBefore(moment.now());
+  const isTimeOver = moment(endDateMomentProps).isSameOrBefore(moment.now());
 
-  // return {hour, minute, min, sec, time, unitKor, isDone};
-  const dummy:ReturnType = {hour: '00', min: '00', minute: '00', sec: '00', unitKor: '분', time: '00', isDone: true};
+  // return {hour, minute, min, sec, time, unitKor, isTimeOver};
+  const dummy:ReturnType = {hour: '00', min: '00', minute: '00', sec: '00', unitKor: '분', time: '00', isTimeOver: true};
   if(props.endDate.date.year > 0){
-    return {hour, minute, min, sec, time, unitKor, isDone};
+    return {hour, minute, min, sec, time, unitKor, isTimeOver};
   }else{
     return dummy;
   }

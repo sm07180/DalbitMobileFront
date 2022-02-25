@@ -24,6 +24,8 @@ import LevelUpLayerComponent from "./content/level_up_layer";
 import DirectGiftLayerComponent from "./content/direct_gift_layer";
 import "./index.scss";
 import { MediaType, MiniGameType, tabType } from "./constant";
+import {useDispatch} from "react-redux";
+import {moveVoteStep, setVoteActive} from "../../redux/actions/vote";
 
 export default function SideWrapper() {
   const [splashData, setSplashData] = useState<any>(null);
@@ -40,6 +42,7 @@ export default function SideWrapper() {
   const [fetching, setFetching] = useState<boolean>(false);
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const disconnectGuest = () => {
     if (guestInfo !== null) {
@@ -185,6 +188,9 @@ export default function SideWrapper() {
             status: false,
           });
         }
+        if(data.isVote){
+          dispatch(setVoteActive(true));
+        }
 
         setFetching(true);
         //Facebook,Firebase 이벤트 호출
@@ -291,6 +297,9 @@ export default function SideWrapper() {
         chatInfo?.setRoomInfo(roomInfo);
         chatInfo?.setBroadcastLayerAction({ dispatchLayer, dispatchDimLayer });
         broadcastAction.setLikeClicked!(isLike);
+        if(newRoomInfo.data.isVote){
+          dispatch(setVoteActive(true));
+        }
         sessionStorage.setItem("room_no", roomNo);
         if (roomInfo.useFilter === false) {
           sessionStorage.removeItem("videoEffect");

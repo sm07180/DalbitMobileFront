@@ -13,7 +13,7 @@ const VoteClosed =(props: VoteResultType)=>{
     dispatch(moveVoteStep(props));
   }
 
-  const {hour, minute, time, unitKor, isDone} = Timer({endDate:props.endDate});
+  const {hour, minute, time, unitKor} = Timer({endDate:props.endDate});
 
   return(
     <div className="voteList" onClick={listClick}>

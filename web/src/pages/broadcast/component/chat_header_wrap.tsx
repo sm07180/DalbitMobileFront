@@ -1,27 +1,19 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 
 // Api
-import {
-  postBroadcastRoomExtend,
-  getBroadcastBoost,
-  miniGameEnd, getMoonLandInfoData, getMoonLandMyRank, getMoonLandRankList, getMoonLandMissionSel
-} from "common/api";
+import {getBroadcastBoost, getMoonLandMissionSel, miniGameEnd, postBroadcastRoomExtend} from "common/api";
 
 // ctx
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // lib
-import {
-  stringTimeFormatConvertor,
-  secToDateConvertor,
-  secToDateConvertorMinute,
-} from "lib/common_fn";
+import {secToDateConvertor, secToDateConvertorMinute, stringTimeFormatConvertor,} from "lib/common_fn";
 // constant
-import { tabType, MediaType, MiniGameType } from "../constant";
+import {MediaType, MiniGameType, tabType} from "../constant";
 
 // static
 import fanIcon from "../static/ic_fan.png";
@@ -36,7 +28,7 @@ import CloseIcon from "../static/ic_close_m.svg";
 import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
 import {useDispatch, useSelector} from "react-redux";
-import {getVoteList, moveVoteListStep, moveVoteStep, setVoteStep} from "../../../redux/actions/vote";
+import {endVote, moveVoteListStep} from "../../../redux/actions/vote";
 
 let boostInterval;
 
@@ -52,6 +44,7 @@ export default function ChatHeaderWrap(prop: any) {
 
 
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
+  const memberRdx = useSelector((state) => state.member);
   const voteRdx = useSelector(({vote})=> vote);
 
   const [broadcastTime, setBroadcastTime] = useState<number | null>(null);
@@ -628,6 +621,12 @@ export default function ChatHeaderWrap(prop: any) {
                       title: "종료하기",
                       content: "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다.",
                       callback: async () => {
+                        dispatch(endVote({
+                          memNo: memberRdx.memNo
+                          , roomNo: roomNo
+                          , voteNo: '0'
+                          , endSlct: 'a'
+                        }))
                         console.log('투표 종료')
                       },
                     });

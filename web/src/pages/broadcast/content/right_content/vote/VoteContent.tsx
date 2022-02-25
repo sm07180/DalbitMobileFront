@@ -13,7 +13,7 @@ const VoteContent = () => {
   const voteRdx = useSelector(({vote})=> vote);
 
   const [more, setMore] = useState(false);
-  const {hour, minute, isDone} = Timer({endDate:voteRdx.voteSel.endDate});
+  const {hour, minute, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
 
   return (
     <>
@@ -27,12 +27,12 @@ const VoteContent = () => {
                 <p><span>{Utility.addComma(voteRdx.voteSel.voteMemCnt)}</span>명 참여</p>
               </div>
               <div className="due">
-                <span>{hour}:{minute}</span> {isDone ? '마감' : '마감예정'}
+                <span>{hour}:{minute}</span> {isTimeOver ? '마감' : '마감예정'}
               </div>
             </div>
             {
               memberRdx.memNo === voteRdx.voteSel.memNo &&
-              !isDone && voteRdx.voteSel.voteEndSlct === 's' &&
+              !isTimeOver && voteRdx.voteSel.voteEndSlct === 's' &&
               <div className="moreBtn" onClick={()=>{
                 setMore(!more)
               }}>
@@ -60,7 +60,7 @@ const VoteContent = () => {
               {
                 voteRdx.voteDetailList.map((item, index)=>
                   <div className={`optionBox ${voteRdx.selVoteItem.itemNo === item.itemNo ? 'active' : ''}`} key={index} onClick={()=>{
-                    if(isDone && voteRdx.voteSel.voteEndSlct !== 's'){
+                    if(isTimeOver || voteRdx.voteSel.voteEndSlct !== 's'){
                       return;
                     }
                     dispatch(setSelVoteItem(item));
@@ -76,41 +76,39 @@ const VoteContent = () => {
       </DalbitScroll>
 
       {
-        !isDone && voteRdx.voteSel.voteEndSlct === 's' &&
-        <>
-          <TimeSection/>
-          <SubmitBtn text='투표하기' onClick={()=>{
-            if(isDone){
-              console.log('진행중 아님, done')
-              return;
-            }
-            if(voteRdx.voteSel.voteEndSlct !== 's'){
-              console.log('진행중 아님')
-              return;
-            }
-            if(!voteRdx.selVoteItem.itemNo){
-              console.log('선택한거없음')
-              return;
-            }
-            dispatch(insMemVote({
-              voteNo: voteRdx.voteSel.voteNo
-              , roomNo: voteRdx.voteSel.roomNo
-              , memNo: voteRdx.voteSel.memNo
-              , pmemNo: memberRdx.memNo
-              , itemNo: voteRdx.selVoteItem.itemNo
-              , voteItemName: voteRdx.selVoteItem.voteItemName
-            }));
-          }}/>
-        </>
+        !isTimeOver && voteRdx.voteSel.voteEndSlct === 's' &&
+        <TimeSection/>
       }
+      <SubmitBtn text='투표하기' state={isTimeOver? 'disabled' : ''} onClick={()=>{
+        if(isTimeOver){
+          console.log('진행중 아님, done')
+          return;
+        }
+        if(voteRdx.voteSel.voteEndSlct !== 's'){
+          console.log('진행중 아님')
+          return;
+        }
+        if(!voteRdx.selVoteItem.itemNo){
+          console.log('선택한거없음')
+          return;
+        }
+        dispatch(insMemVote({
+          voteNo: voteRdx.voteSel.voteNo
+          , roomNo: voteRdx.voteSel.roomNo
+          , memNo: voteRdx.voteSel.memNo
+          , pmemNo: memberRdx.memNo
+          , itemNo: voteRdx.selVoteItem.itemNo
+          , voteItemName: voteRdx.selVoteItem.voteItemName
+        }));
+      }}/>
     </>
   );
 };
 const TimeSection = ()=>{
   const voteRdx = useSelector(({vote})=> vote);
-  const {hour, minute, time, unitKor, isDone} = Timer({endDate:voteRdx.voteSel.endDate});
+  const {hour, minute, time, unitKor, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
 
-  if(isDone){
+  if(isTimeOver){
     return <></>
   }
   return(
