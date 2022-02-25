@@ -338,6 +338,20 @@
     .cntTitle {
       margin-bottom:12px;
     }
+    .swiper-button-next, .swiper-button-prev {
+      display: inline-block;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .swiper-button-prev {
+      background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-prev.png");
+    }
+    .swiper-button-next {
+      background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-next.png");
+    }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {

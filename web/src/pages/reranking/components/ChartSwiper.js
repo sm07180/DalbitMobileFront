@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 
+import Lottie from 'react-lottie'
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
@@ -32,10 +33,21 @@ const CardList = (props) => {
                     <div className='rankWrap'>
                       <div className='rank'>{list.rank}</div>
                     </div>
-                    {list.roomNo && <div className='livetag' onClick={(e) => {
-                      e.stopPropagation();
-                      RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.nickNm);
-                    }}></div>}
+                    {
+                      list.roomNo &&
+                        <div className='livetag' onClick={(e) => {
+                          e.stopPropagation();
+                          RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.nickNm);
+                        }}>
+                          <Lottie
+                            options={{
+                              loop: true,
+                              autoPlay: true,
+                              path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
+                            }}
+                          />
+                        </div>
+                    }
                     <div className='infoWrap'>
                       <div className='userNick'>{list.nickNm}</div>
                     </div>

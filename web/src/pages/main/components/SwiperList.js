@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
+import Lottie from 'react-lottie'
 
 // global components
 // components
@@ -69,10 +70,21 @@ const SwiperList = (props) => {
                 <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 {item.rank && <div className={`rank-${item.rank}`}></div>}                
-                {item.roomNo && <div className='livetag' onClick={(e) => {
-                  e.stopPropagation();
-                  RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
-                }}></div>}
+                {
+                  item.roomNo &&
+                    <div className='livetag' onClick={(e) => {
+                      e.stopPropagation();
+                      RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
+                    }}>
+                       {/* <Lottie
+                          options={{
+                            loop: true,
+                            autoPlay: true,
+                            path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
+                          }}
+                        /> */}
+                    </div>
+                }
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>

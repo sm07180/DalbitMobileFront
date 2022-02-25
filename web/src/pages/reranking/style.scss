@@ -124,7 +124,9 @@ $errorMsg : #FF1919;
       line-height: 25px;
       @include font(17px,600,#202020);
       &.text{
+        width: 70px;
         &::after {
+          @include position-top-right(0px, -24px);
           content: "남음";
           @include font(12px,500,#999999);
         }
