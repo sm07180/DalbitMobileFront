@@ -1,7 +1,7 @@
 import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
 import Api from "../../../context/api";
 import {
-	DEL_VOTE,
+	DEL_VOTE, END_VOTE,
 	GET_VOTE_DETAIL_LIST,
 	GET_VOTE_LIST,
 	GET_VOTE_SEL,
@@ -81,6 +81,23 @@ function* delVote(param) {
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
 		console.error(`delVote saga e=>`, e)
+	}
+}
+// 투표 마감
+function* endVote(param) {
+	try {
+		// memNo roomNo voteNo endSlct
+		const res = yield call(Api.endVote, param.payload);
+		if(param.payload.endSlct === 'o'){
+
+		}
+		if(res.data > 0){
+			yield put({type: MOVE_VOTE_LIST_STEP, payload: {...param.payload, voteSlct: 's'}});
+		}
+		delete res.data
+		yield put({type: SET_VOTE_API_RESULT, payload: res})
+	} catch (e) {
+		console.error(`endVote saga e=>`, e)
 	}
 }
 // 투표 리스트
@@ -169,6 +186,7 @@ function* VoteSagas() {
 	yield takeLatest(INS_VOTE, insVote)
 	yield takeLatest(INS_MEM_VOTE, insMemVote)
 	yield takeLatest(DEL_VOTE, delVote)
+	yield takeLatest(END_VOTE, endVote)
 	yield takeLatest(GET_VOTE_LIST, getVoteList)
 	yield takeLatest(GET_VOTE_SEL, getVoteSel)
 	yield takeLatest(GET_VOTE_DETAIL_LIST, getVoteDetailList)

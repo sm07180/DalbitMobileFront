@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Utility from "../../../../../components/lib/utility";
-import {delVote, insMemVote, setSelVoteItem} from "../../../../../redux/actions/vote";
+import {delVote, endVote, insMemVote, setSelVoteItem} from "../../../../../redux/actions/vote";
 import {Timer} from "./Timer";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import SubmitBtn from "../../../../../components/ui/submitBtn/SubmitBtn";
@@ -32,18 +32,20 @@ const VoteContent = () => {
             </div>
             {
               memberRdx.memNo === voteRdx.voteSel.memNo &&
+              !isDone && voteRdx.voteSel.voteEndSlct === 's' &&
               <div className="moreBtn" onClick={()=>{
                 setMore(!more)
               }}>
                 {
                   more &&
                   <div className="isMore">
-                    {
-                      !isDone && voteRdx.voteSel.voteEndSlct === 's' &&
-                      <button onClick={()=>{
-                        console.log('마감하기')
-                      }}>마감하기</button>
-                    }
+                    <button onClick={()=>{
+                      dispatch(endVote({
+                        ...voteRdx.voteSel
+                        , endSlct: 'o'
+                      }))
+                      console.log('마감하기')
+                    }}>마감하기</button>
                     <button onClick={()=>{
                       dispatch(delVote(voteRdx.voteSel))
                     }}>삭제하기</button>
@@ -72,31 +74,35 @@ const VoteContent = () => {
           }
         </>
       </DalbitScroll>
-      <TimeSection/>
-      <SubmitBtn text='투표하기' onClick={()=>{
-        if(isDone){
-          console.log('진행중 아님, done')
-          return;
-        }
-        if(voteRdx.voteSel.voteEndSlct !== 's'){
-          console.log('진행중 아님')
-          return;
-        }
-        if(!voteRdx.selVoteItem.itemNo){
-          console.log('선택한거없음')
-          return;
-        }
-        dispatch(insMemVote({
-          voteNo: voteRdx.voteSel.voteNo
-          , roomNo: voteRdx.voteSel.roomNo
-          , memNo: voteRdx.voteSel.memNo
-          , pmemNo: memberRdx.memNo
-          , itemNo: voteRdx.selVoteItem.itemNo
-          , voteItemName: voteRdx.selVoteItem.voteItemName
-        }));
-      }}/>
 
-
+      {
+        !isDone && voteRdx.voteSel.voteEndSlct === 's' &&
+        <>
+          <TimeSection/>
+          <SubmitBtn text='투표하기' onClick={()=>{
+            if(isDone){
+              console.log('진행중 아님, done')
+              return;
+            }
+            if(voteRdx.voteSel.voteEndSlct !== 's'){
+              console.log('진행중 아님')
+              return;
+            }
+            if(!voteRdx.selVoteItem.itemNo){
+              console.log('선택한거없음')
+              return;
+            }
+            dispatch(insMemVote({
+              voteNo: voteRdx.voteSel.voteNo
+              , roomNo: voteRdx.voteSel.roomNo
+              , memNo: voteRdx.voteSel.memNo
+              , pmemNo: memberRdx.memNo
+              , itemNo: voteRdx.selVoteItem.itemNo
+              , voteItemName: voteRdx.selVoteItem.voteItemName
+            }));
+          }}/>
+        </>
+      }
     </>
   );
 };

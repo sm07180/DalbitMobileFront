@@ -35,7 +35,7 @@ import CloseIcon from "../static/ic_close_m.svg";
 // component
 import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getVoteList, moveVoteListStep, moveVoteStep, setVoteStep} from "../../../redux/actions/vote";
 
 let boostInterval;
@@ -52,6 +52,7 @@ export default function ChatHeaderWrap(prop: any) {
 
 
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
+  const voteRdx = useSelector(({vote})=> vote);
 
   const [broadcastTime, setBroadcastTime] = useState<number | null>(null);
   const [boostInfo, setBoostInfo] = useState<any>(null);
@@ -600,27 +601,27 @@ export default function ChatHeaderWrap(prop: any) {
             </div>
           )
         }
-        <div className="mini_game_wrap">
-          <button
-            onClick={() => {
-              if(broadcastState.roomInfo && broadcastState.roomInfo.bjMemNo){
-                dispatch(moveVoteListStep({
-                  roomNo: roomNo
-                  , memNo: broadcastState.roomInfo.bjMemNo
-                  , voteSlct: 's'
-                }))
-                broadcastAction.setRightTabType &&
-                broadcastAction.setRightTabType(tabType.VOTE);
-              }
-            }}
-          >
-            <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
-          </button>
-          {roomOwner === true && (
-            <div className={`mini_game_slide`}>
-              <button
-                onClick={() => {
-                  globalAction.setAlertStatus &&
+        {
+          voteRdx.active &&
+          <div className="mini_game_wrap">
+            <button
+              onClick={() => {
+                if(broadcastState.roomInfo && broadcastState.roomInfo.bjMemNo){
+                  dispatch(moveVoteListStep({
+                    roomNo: roomNo
+                    , memNo: broadcastState.roomInfo.bjMemNo
+                    , voteSlct: 's'
+                  }))
+                  broadcastAction.setRightTabType(tabType.VOTE);
+                }
+              }}
+            >
+              <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
+            </button>
+            {roomOwner === true && (
+              <div className={`mini_game_slide`}>
+                <button
+                  onClick={() => {
                     globalAction.setAlertStatus({
                       status: true,
                       type: "confirm",
@@ -630,13 +631,15 @@ export default function ChatHeaderWrap(prop: any) {
                         console.log('투표 종료')
                       },
                     });
-                }}
-              >
-                <img src={CloseIcon} alt="미니게임 삭제" />
-              </button>
-            </div>
-          )}
-        </div>
+                  }}
+                >
+                  <img src={CloseIcon} alt="투표 마감" />
+                </button>
+              </div>
+            )}
+          </div>
+        }
+
       </div>
 
       <div className="gotomoon-section"/>

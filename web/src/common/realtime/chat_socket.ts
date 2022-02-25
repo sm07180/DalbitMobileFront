@@ -32,6 +32,7 @@ export type userBroadcastSettingType = {
 import { MediaType } from "pages/broadcast/constant";
 import { getCookie } from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
+import {setVoteActive} from "../../redux/actions/vote";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -1914,6 +1915,7 @@ export class ChatSocketHandler {
                   case "reqInsVote": {
                     // 투표 생성
                     console.log('reqInsVote ... ', data)
+                    this.dispatch(setVoteActive(true))
                     return null;
                   }
                   case "reqInsMemVote": {
@@ -1924,6 +1926,11 @@ export class ChatSocketHandler {
                   case "reqDelVote": {
                     // 투표 삭제
                     console.log('reqDelVote ... ', data)
+                    return null;
+                  }
+                  case "reqEndVote": {
+                    // 투표 마감
+                    console.log('reqEndVote ... ', data)
                     return null;
                   }
 

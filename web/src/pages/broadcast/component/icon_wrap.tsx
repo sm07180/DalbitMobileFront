@@ -58,6 +58,8 @@ import VideoSettingOffIcon from "../static/ic_videosetting_m.svg";
 import VideoFlipIcon from "../static/ic_mirrormode_m.svg";
 import VideoEffectIcon from "../static/ic_videoeffect_m.svg";
 import MiniGameIcon from "../static/ic_roulette_g.svg";
+import {moveVoteListStep} from "../../../redux/actions/vote";
+import {useDispatch} from "react-redux";
 
 export const IconWrap = (props: {
   roomOwner: boolean | null;
@@ -69,6 +71,7 @@ export const IconWrap = (props: {
   const { useBoost } = roomInfo;
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { rtcInfo, baseData, guestInfo, chatInfo } = globalState;
@@ -791,13 +794,18 @@ export const IconWrap = (props: {
             <button
               className="icon"
               onClick={() => {
+                dispatch(moveVoteListStep({
+                  roomNo: roomNo
+                  , memNo: roomInfo.bjMemNo
+                  , voteSlct: 's'
+                }))
                 broadcastAction.setRightTabType(tabType.VOTE);
               }}
             >
               <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon.png' alt="투표" />
             </button>
           )}
-          
+
           {roomOwner === true && roomInfo.isMinigame && (
             <button
               className="icon"

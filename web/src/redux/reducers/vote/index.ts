@@ -45,6 +45,8 @@ export const initTempInsVote:InsVoteRequestType = {
   voteTitle:''
 }
 export const initialState:VoteStateType = {
+  active: false,
+
   result: '',
   code: '',
   messageKey: '',
@@ -65,6 +67,9 @@ export const initialState:VoteStateType = {
 }
 
 const member = createReducer<VoteStateType, VoteActions>(initialState,{
+  "vote/SET_VOTE_ACTIVE" : (state, {payload})=>{
+    return {...state, active:payload}
+  },
   "vote/SET_VOTE_API_RESULT" : (state, {payload})=>{
     return {...state, ...payload}
   },

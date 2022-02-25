@@ -17,10 +17,12 @@ export type VoteRequestType ={
   voteDupliYn: 'y' | 'n' 		 	  // 중복투표 여부 [y:익명, n:일반]
   voteItemCnt: number 		 		 	// 투표항목수
   endTime: number 		 		 		 	// 마감설정시간 (초)
+  endSlct: 'a'|'o'              //a:전체마감, o:단일마감
 }
 export type InsVoteRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteTitle' | 'voteAnonyYn' | 'voteDupliYn' | 'voteItemCnt' | 'endTime' | 'voteItemNames'>
 export type InsMemVoteRequestType = Pick<VoteRequestType, 'memNo' | 'pmemNo' | 'roomNo' | 'voteNo' | 'itemNo' | 'voteItemName'>
 export type DelVoteRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteNo'>
+export type EndVoteRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteNo' | 'endSlct'>
 export type GetVoteListRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteSlct'>
 export type GetVoteSelRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteNo'>
 export type GetVoteDetailListRequestType = Pick<VoteRequestType, 'memNo' | 'pmemNo' | 'roomNo' | 'voteNo'>
@@ -66,6 +68,7 @@ export type VoteStateType = ApiResultType & {
   voteDetailList: Array<VoteResultType>
   selVoteItem: VoteResultType
   step : VoteStepType
+  active : boolean
 }
 
 export type DateType = {

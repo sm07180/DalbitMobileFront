@@ -3909,6 +3909,10 @@ export default class API {
   static delVote = async (data) => {
     return await ajax({url: '/broad/vote/delVote', method: 'POST', reqBody: true, data: data})
   }
+  // 투표 마감
+  static endVote = async (data) => {
+    return await ajax({url: '/broad/vote/endVote', method: 'POST', reqBody: true, data: data})
+  }
   // 투표 리스트
   static getVoteList = async (data) => {
     return await ajax({url: '/broad/vote/getVoteList', method: 'POST', reqBody: true, data: data})
