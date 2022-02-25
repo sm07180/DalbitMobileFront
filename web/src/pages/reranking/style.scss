@@ -126,16 +126,16 @@ $errorMsg : #FF1919;
       &.text{
         width: 70px;
         &::after {
-          @include position-top-right(0px, -24px);
+          @include position-top-right(0px, -28px);
           content: "남음";
           @include font(12px,500,#999999);
         }
       }
     }
     .criteria {
-      @include position-top-right(35%, 0px);
+      @include position-top-right(37%, 0px);
       transform: translateY(-55%);
-      width: 184px; height: 170px;
+      width: 184px; height: 175px;
       @include BGIMG('dalla/character/character_criteria.png');
       .relative {
         position: relative;
@@ -231,6 +231,8 @@ $errorMsg : #FF1919;
         .nextRanking {
           @include flex(center, center, column);
           width: 100px; height: 200px;
+          padding-top: 8px;
+          box-sizing: border-box;
           cursor: pointer;
           p {
             @include font(12px, 500, #FF3C7B);
@@ -417,11 +419,20 @@ $errorMsg : #FF1919;
         .listBack {
           flex: none;
           @include flex(center, center);
-          width:60px;
           .badgeLive {
-            width:60px;height:28px;
-            @include BGIMG('ranking/dalla/badgeLive.png');
+            @include flex(center, center);
+            width:62px;height:28px;
+            background-color: #FFE9E9;
+            border-radius: 100px;
             cursor: pointer;
+            .equalizer {
+              display: inline-block;
+              width: 12px;
+              margin-right: 4px;
+            }
+            .liveText {
+              @include font(12px, 400, #FF3C7B);
+            }
           }
         }
       }

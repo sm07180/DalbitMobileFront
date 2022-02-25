@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
@@ -10,15 +10,18 @@ import {Context} from "context";
 
 const MainSlide = (props) => {
   const {data, common, pullToRefreshPause} = props
+
   const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
     loop: true,
+    speed: 1500,
     autoplay: {
       delay: 7000,
       disableOnInteraction: false
     },
+    parallax: true,
     on:{
       click: function(evt) {
         evt.preventDefault();
@@ -42,6 +45,7 @@ const MainSlide = (props) => {
     }
   }, [common.isRefresh, pullToRefreshPause]);
 
+
   return (
     <>
       {data.length > 0 ?
@@ -54,7 +58,7 @@ const MainSlide = (props) => {
                   :
                   <ListColumn photo={list.bannerUrl} index={index}>
                     <div className='info'>
-                      <div className='animation'>
+                      <div className='animation' data-swiper-parallax="-100" >
                         <div className="badgeGroup">
                           <BadgeItems data={list} type='isBadge' />
                         </div>

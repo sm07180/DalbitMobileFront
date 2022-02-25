@@ -120,22 +120,16 @@
         }
       }
       // main slide 애니메이션 지우지 마시오!! 후반에 추가
-      &-active {
-        .listColumn {
-          .info {
-            .animation {
-              animation: show 0.4s linear forwards;
-            }
-          }
-        }
-      }
-      &-duplicate-active {
-        .listColumn {
-          .info {
-            transform:translateX(0);
-          }
-        }
-      }
+      // &-active {
+      //   .listColumn {
+      //     .info {
+      //       .animation {
+      //         transition-duration: 0ms;
+      //         transform: translate3d(0px, 0px, 0px);
+      //       }
+      //     }
+      //   }
+      // }
     }
     .swiper-pagination {
       position: absolute;

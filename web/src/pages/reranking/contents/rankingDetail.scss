@@ -177,10 +177,20 @@
           }
         }
         .badgeLive {
+          @include flex(center, center);
           width:100px;height:28px;
-          @include BGIMG('ranking/dalla/badgeLiveTop.png');
           margin: 12px auto 0px;
+          background-color: #FFE9E9;
+          border-radius: 100px;
           cursor: pointer;
+          .equalizer {
+            display: inline-block;
+            width: 12px;
+            margin-right: 4px;
+          }
+          .liveText {
+            @include font(12px, 400, #FF3C7B);
+          }
         }
       }
       .cupidWrap {
@@ -322,10 +332,21 @@
         .listBack {
           flex: none;
           @include flex(center, center);
-          width:60px;
           .badgeLive {
+            @include flex(center, center);
             width:60px;height:28px;
-            @include BGIMG('ranking/dalla/badgeLive.png');
+            margin: 12px auto 0px;
+            background-color: #FFE9E9;
+            border-radius: 100px;
+            cursor: pointer;
+            .equalizer {
+              display: inline-block;
+              width: 12px;
+              margin-right: 4px;
+            }
+            .liveText {
+              @include font(12px, 400, #FF3C7B);
+            }
           }
         }
       }
