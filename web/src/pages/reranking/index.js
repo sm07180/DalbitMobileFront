@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from 'context'
 import moment from 'moment'
 
@@ -27,6 +27,7 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
+  const location = useLocation();
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
@@ -264,6 +265,12 @@ const RankPage = () => {
       clearInterval(interval);
     }
   }, [select]);
+
+  useEffect(() => {
+    if(location.state) {
+      setSelect(location.state.tabState);
+    }
+  }, []);
 
   const criteriaPop = () => {
     setPopup(true);

@@ -17,7 +17,7 @@ export const closePopup = (dispatch) => {
 }
 
 const PopSlide = (props) => {
-  const {title, setPopSlide, children} = props
+  const {title, setPopSlide, children, popHidden} = props
   const context = useContext(Context);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
@@ -40,13 +40,13 @@ const PopSlide = (props) => {
     context.action.updateBackFunction({name: 'popClose'})
     return () => {
       document.body.style.overflow = ''
-      closePopup(dispatch);
+      dispatch(setCommonPopupClose());
       clearTimeout(slidePopTimeout);
     }
   }, [])
 
   return (
-    <div id="popSlide" onClick={closePopupDim}>
+    <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>
       <div className={`slideLayer ${popupState.slidePopup ? "slideUp" : "slideDown"}`}>
         {title && <h3>{title}</h3>}
         {children}

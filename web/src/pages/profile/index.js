@@ -70,6 +70,8 @@ const ProfilePage = () => {
   const [callProfileData, setCallProfileData] = useState(false); // 프로필 이동시 데이터 콜할건지
   const [profileReady, setProfileReady] = useState(false); // 프로필 mount 후 ready
 
+  const [morePopHidden, setMorePopHidden] = useState(false); // slidePop이 unmount 될때 꼬여서 임시로 처방
+
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
   const feedData = useSelector(state => state.feed);
@@ -292,12 +294,13 @@ const ProfilePage = () => {
 
   /* 헤더 더보기 버튼 클릭 */
   const openMoreList = () => {
-    dispatch(setCommonPopupOpenData({...popup, slidePopup: true, headerPopup: true}))
+    setMorePopHidden(false);
+    dispatch(setCommonPopupOpenData({...popup, headerPopup: true}))
   }
 
   /* 차단/신고 팝업 열기 (param: {memNo: '', memNick: ''}) */
   const openBlockReportPop = (blockReportInfo) => {
-    dispatch(setCommonPopupOpenData({...popup, headerPopup: false, blockReportPopup: true}))
+    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
     setBlockReportInfo(blockReportInfo);
   }
 
@@ -604,12 +607,13 @@ const ProfilePage = () => {
 
       {/* 더보기 */}
       {popup.headerPopup &&
-        <PopSlide>
+        <PopSlide popHidden={morePopHidden}>
           <section className='profileMore'>
             <div className="moreList" onClick={goMailAction}>메세지</div>
             {!profileData.isFan && <div className="moreList" onClick={editAlarm}>방송 알림 {profileData.isReceive ? 'OFF' : 'ON'}</div>}
             <div className="moreList"
                  onClick={() => {
+                   setMorePopHidden(true);
                    openBlockReportPop({memNo: profileData.memNo, memNick: profileData.nickNm});
                  }}>차단/신고</div>
           </section>
