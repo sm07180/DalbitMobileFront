@@ -220,10 +220,10 @@
         li {
           position:relative;
           padding: 0 8px;
-          @include font(14px,$Medium,#666);
+          @include font(14px,600,#ACACAC);
           &.active {
-            font-weight:500;
-            color:$MAINCOLOR;
+            font-weight:700;
+            color:#202020;
           }
           &:after {
             position:absolute;
@@ -250,7 +250,7 @@
         background-repeat: no-repeat;
         background-size: contain;
         &.swiper-button-disabled {
-          pointer-events: auto;
+          display: none;
         }
       }
       .swiper-button-prev {
@@ -348,6 +348,9 @@
       background-position: center;
       background-repeat: no-repeat;
       background-size: contain;
+      &.swiper-button-disabled {
+        display: none;
+      }
     }
     .swiper-button-prev {
       background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-prev.png");
