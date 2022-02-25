@@ -214,7 +214,7 @@
         margin-left:auto;
         li {
           position:relative;
-          padding: 0 8px;
+          padding: 0 10px;
           @include font(14px,600,#ACACAC);
           &.active {
             font-weight:700;
