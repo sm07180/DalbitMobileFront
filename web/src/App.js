@@ -223,7 +223,7 @@ const App = () => {
     return Utility.getCookie('authToken')
   }, [])
 
-  function initChantInfo(authToken, memNo) {
+  function initChantInfo(authToken, memNo, dispatch) {
     const socketUser = {
       authToken,
       memNo,
@@ -234,7 +234,7 @@ const App = () => {
         globalCtx.globalAction.dispatchChatInfo &&
         globalCtx.globalAction.dispatchMailChatInfo
     ) {
-      const chatInfo = new ChatSocketHandler(socketUser);
+      const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
       // chatInfo.setSplashData(globalState.splashData);
       //deep copy chatInfo
       let cloneMailInfo = Object.assign(
@@ -249,13 +249,13 @@ const App = () => {
       });
     }
   }
-  async function fetchData() {
+  async function fetchData(dispatch) {
     // Renew token
     let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
+      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo, dispatch);
       if (isHybrid()) {
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
@@ -530,7 +530,7 @@ const App = () => {
     Api.setAuthToken(authToken)
 
     // Renew all initial data
-    fetchData()
+    fetchData(dispatch)
   }, [])
 
 

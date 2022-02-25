@@ -35,6 +35,8 @@ import CloseIcon from "../static/ic_close_m.svg";
 // component
 import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
+import {useDispatch} from "react-redux";
+import {getVoteList, moveVoteListStep, moveVoteStep, setVoteStep} from "../../../redux/actions/vote";
 
 let boostInterval;
 
@@ -48,6 +50,7 @@ export default function ChatHeaderWrap(prop: any) {
   const { realTimeValue, useBoost, commonBadgeList } = broadcastState;
   const { setRightTabType, setUserMemNo, setCommonBadgeList } = broadcastAction;
 
+
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
 
   const [broadcastTime, setBroadcastTime] = useState<number | null>(null);
@@ -57,6 +60,7 @@ export default function ChatHeaderWrap(prop: any) {
   const [moonLandEventBool, setMoonLandEventBool] = useState<boolean>(false);
 
   const history = useHistory();
+  const dispatch = useDispatch();
   useEffect(() => {
     const timeIntervalId = (() => {
       if (startDt) {
@@ -464,7 +468,7 @@ export default function ChatHeaderWrap(prop: any) {
                       <span
                       className="fan-badge"
                       style={{
-                        backgroundImage: 
+                        backgroundImage:
                         `linear-gradient(to right, ${startColor} ${bgAlpha * 100}%, ${endColor} ${bgAlpha * 100}%)`,
                         border: borderColor
                           ? `1px solid ${borderColor}`
@@ -597,10 +601,17 @@ export default function ChatHeaderWrap(prop: any) {
           )
         }
         <div className="mini_game_wrap">
-          <button 
+          <button
             onClick={() => {
-              broadcastAction.setRightTabType &&
+              if(broadcastState.roomInfo && broadcastState.roomInfo.bjMemNo){
+                dispatch(moveVoteListStep({
+                  roomNo: roomNo
+                  , memNo: broadcastState.roomInfo.bjMemNo
+                  , voteSlct: 's'
+                }))
+                broadcastAction.setRightTabType &&
                 broadcastAction.setRightTabType(tabType.VOTE);
+              }
             }}
           >
             <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
@@ -614,8 +625,10 @@ export default function ChatHeaderWrap(prop: any) {
                       status: true,
                       type: "confirm",
                       title: "종료하기",
-                      content:
-                        "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다."
+                      content: "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다.",
+                      callback: async () => {
+                        console.log('투표 종료')
+                      },
                     });
                 }}
               >
@@ -625,7 +638,7 @@ export default function ChatHeaderWrap(prop: any) {
           )}
         </div>
       </div>
-      
+
       <div className="gotomoon-section"/>
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />

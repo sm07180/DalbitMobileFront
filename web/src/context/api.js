@@ -3901,6 +3901,7 @@ export default class API {
   static insVote = async (data) => {
     return await ajax({url: '/broad/vote/insVote', method: 'POST', reqBody: true, data: data})
   }
+  // 투표
   static insMemVote = async (data) => {
     return await ajax({url: '/broad/vote/insMemVote', method: 'POST', reqBody: true, data: data})
   }

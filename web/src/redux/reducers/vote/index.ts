@@ -1,10 +1,49 @@
 import { createReducer } from "typesafe-actions";
-import {VoteActions, VoteStateType} from "../../types/voteType";
-import {SET_VOTE_INTERACTION} from "../../actions/vote";
+import {DateType, InsVoteRequestType, VoteActions, VoteResultType, VoteStateType} from "../../types/voteType";
 
-// const [tabType, setTabType] = useState(tabMenu[0])
-// const [makeVote, setMakeVote] = useState<boolean>(false);
-// const [temp, setTemp] = useState("list");
+const initDate ={
+  date: {
+    day: 0,
+    month: 0,
+    year: 0,
+  },
+  time: {
+    minute: 0,
+    hour: 0,
+    nano: 0,
+    second: 0
+  }
+}
+export const MAX_END_TIME = 60
+export const initVoteSel: VoteResultType = {
+  voteNo: '',
+  memNo: '',
+  roomNo: '',
+  voteTitle: '',
+  voteEndSlct:'s',
+  voteAnonyYn: 'y',
+  voteDupliYn: 'n',
+  voteMemCnt:0,
+  voteItemCnt: 0,
+  endTime: 0,
+  startDate:initDate,
+  endDate : initDate,
+  insDate:initDate,
+  updDate:initDate,
+  itemNo: '',
+  voteItemName: '',
+  memVoteYn : 'n',
+}
+export const initTempInsVote:InsVoteRequestType = {
+  memNo:'',
+  roomNo:'',
+  voteItemNames:['',''],
+  endTime:10,
+  voteItemCnt:['',''].length,
+  voteDupliYn:'n',
+  voteAnonyYn:'y',
+  voteTitle:''
+}
 export const initialState:VoteStateType = {
   result: '',
   code: '',
@@ -13,10 +52,16 @@ export const initialState:VoteStateType = {
   timestamp: '',
   validationMessageDetail: [],
   methodName:'',
-  interaction:{
-    tab : 's',
-    step : 'list'
-  }
+
+  voteSel:initVoteSel,
+  voteList: {
+    cnt: 0,
+    list: []
+  },
+  voteDetailList:[],
+  tempInsVote: initTempInsVote,
+  selVoteItem: initVoteSel,
+  step: 'list',
 }
 
 const member = createReducer<VoteStateType, VoteActions>(initialState,{
@@ -35,10 +80,12 @@ const member = createReducer<VoteStateType, VoteActions>(initialState,{
   "vote/SET_TEMP_INS_VOTE" : (state, {payload})=>{
     return {...state, tempInsVote:payload}
   },
-  "vote/SET_VOTE_INTERACTION" : (state, {payload})=>{
-    return {...state, interaction:{...state.interaction, ...payload}}
+  "vote/SET_SEL_VOTE_ITEM" : (state, {payload})=>{
+    return {...state, selVoteItem:payload}
   },
-
+  "vote/SET_VOTE_STEP" : (state, {payload})=>{
+    return {...state, step:payload}
+  },
 });
 
 

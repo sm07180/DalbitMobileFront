@@ -68,12 +68,15 @@ export class ChatSocketHandler {
   public broadcastStateChange: any;
   public postErrorState : boolean
 
+  public dispatch: any;
+
   // 로그인한 유저의 방송 설정 (패킷 받을때 설정에 맞게 대응하기 위함)
   // set 하는 곳 : /mypage/broadcast/setting, /mypage/broadcast/setting/edit
   // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
   public userSettingObj: userBroadcastSettingType | null = null;
 
-  constructor(userInfo: chatUserInfoType, reConnectHandler?: any) {
+  constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?: any) {
+    this.dispatch = dispatch;
     this.postErrorState =  (window as any)?.postErrorState;
     this.socket = null;
     this.chatUserInfo = userInfo;
@@ -1897,6 +1900,17 @@ export class ChatSocketHandler {
                       ],
                     });
                   }
+                  case "reqMiniGameEnd": {
+                    const { reqMiniGameEnd } = data;
+
+                    this.broadcastAction !== null &&
+                      this.broadcastAction.setMiniGameInfo &&
+                      this.broadcastAction.setMiniGameInfo({
+                        status: false,
+                      });
+
+                    return null;
+                  }
                   case "reqInsVote": {
                     // 투표 생성
                     console.log('reqInsVote ... ', data)
@@ -1910,17 +1924,6 @@ export class ChatSocketHandler {
                   case "reqDelVote": {
                     // 투표 삭제
                     console.log('reqDelVote ... ', data)
-                    return null;
-                  }
-                  case "reqMiniGameEnd": {
-                    const { reqMiniGameEnd } = data;
-
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: false,
-                      });
-
                     return null;
                   }
 

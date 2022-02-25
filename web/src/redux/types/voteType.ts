@@ -47,10 +47,6 @@ export type VoteResultType = {
 // const [tabType, setTabType] = useState(tabMenu[0])
 // const [makeVote, setMakeVote] = useState<boolean>(false);
 // const [temp, setTemp] = useState("list");
-export type VoteInteractionType = {
-  tab ?: 's' | 'e'
-  step ?: 'list' | 'vote' | 'ins'
-}
 
 export type ApiResultType = {
   result: string
@@ -62,12 +58,14 @@ export type ApiResultType = {
   methodName:string
 }
 
+export type VoteStepType = 'list' | 'vote' | 'ins';
 export type VoteStateType = ApiResultType & {
-  tempInsVote?:InsVoteRequestType
-  voteList?:VoteListResultType
-  voteSel?:VoteResultType
-  voteDetailList?:Array<VoteResultType>
-  interaction?:VoteInteractionType
+  tempInsVote: InsVoteRequestType
+  voteList: VoteListResultType
+  voteSel: VoteResultType
+  voteDetailList: Array<VoteResultType>
+  selVoteItem: VoteResultType
+  step : VoteStepType
 }
 
 export type DateType = {
