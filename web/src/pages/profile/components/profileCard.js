@@ -9,9 +9,10 @@ import './profileCard.scss'
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStar, openPopLike, fanToggle, setPopPresent} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStar, openPopLike, fanToggle, popup} = props
   const dispatch = useDispatch();
 
   /* fan toggle 데이터 변경 */
@@ -26,6 +27,10 @@ const ProfileCard = (props) => {
     }else {
       dispatch(setProfileData({...data, isFan: !data.isFan}))
     }
+  }
+
+  const openPresentPop = () => {
+    dispatch(setCommonPopupOpenData({...popup, presentPopup: true}));
   }
 
   return (
@@ -65,7 +70,7 @@ const ProfileCard = (props) => {
       </div>
       {!isMyProfile &&
         <div className="buttonWrap">
-          {!isIos() && <button onClick={() => setPopPresent(true)}>선물하기</button>}
+          {!isIos() && <button onClick={openPresentPop}>선물하기</button>}
           <button className={`${data.isFan ? 'isFan' : ''}`}
                   onClick={() => {
                     fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)

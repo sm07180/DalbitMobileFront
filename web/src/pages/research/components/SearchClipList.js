@@ -53,8 +53,8 @@ const SearchClipList = (props) => {
                       <span className="nickNm">{list.nickName}</span>
                     </div>
                     <div className="listItem dataCtn">
-                      <DataCnt type={"newFanCnt"} value={list.newFanCnt}/>
-                      <DataCnt type={"likeCnt"} value={list.likeCnt}/>
+                      <DataCnt type={"replyCnt"} value={list.replyCnt}/>
+                      <DataCnt type={"goodCnt"} value={list.goodCnt}/>
                     </div>
                   </div>
                 </div>

@@ -747,7 +747,7 @@ export default () => {
         if (context.backState === null) {
           Hybrid('goBack')
         } else {
-          backFunc(context)
+          backFunc(context, dispatch)
         }
         // break
         break

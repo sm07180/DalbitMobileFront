@@ -31,9 +31,12 @@
   .topSwiper {
     max-width:480px;
     height:360px;
-    margin-bottom:8px;
-    &.nonfavorites {
-      margin-bottom: 24px;
+    margin-bottom:0px;
+    + .favorites {
+      margin-top: 8px;
+    }
+    + .top10 {
+      margin-top: 24px;
     }
     .swiper-slide {
       cursor:pointer;
@@ -200,7 +203,7 @@
       .tabmenu {
         @include flex(center);
         height:20px;
-        margin-left:12px;
+        margin-left:auto;
         li {
           position:relative;
           padding: 0 8px;
@@ -303,65 +306,11 @@
       text-indent:20px;
       @include font(15px,400,#999);
     }
-  }
-  .daldungs {
-    .cntTitle {
-      margin-bottom:12px;
-    }
-    .swiper-wrapper {
-      padding-left:16px;
-      .swiper-slide {
-        width:auto;
-        margin-right:12px;
-        &:last-child {
-          margin-right:28px;
-        }
-        .listColumn {
-          width:116px;
-          border-radius:8px;
-          overflow:hidden;
-          cursor: pointer;
-          .photo {
-            height:154px;
-            &::before {
-              content: "";
-              @include position-top-left;
-              width: 100%; height: 100%;
-              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-              border-radius:8px;
-              box-sizing: border-box;
-            }
-            img {
-              height:100%;
-              object-fit: cover;
-            }
-            .video {
-              @include position-top-right;
-              width:20px;
-              height:20px;
-              margin:6px;
-              @include BGIMG("common/icon/ico_video.png");
-            }
-          }
-          p {
-            position:absolute;
-            bottom:0;
-            padding:24px 8px 8px;
-            background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
-            text-align:left;
-            @include font(13px,$Medium,white);
-            @include fontCut;
-          }
-        }
-      }
-    }
-    .empty {
-      width:100%;
-      height:60px;
-      text-indent:20px;
-      @include font(15px,400,#999);
+    .pointer {
+      cursor: pointer;
     }
   }
+
   .liveView {
     .cntTitle {
       margin-bottom:8px;
@@ -372,7 +321,7 @@
       height:48px;
       &.isFixed {
         position:sticky;
-        top: calc($HEADER-HEIGHT - 1px);
+        top: calc(#{$HEADER-HEIGHT} - 1px);
         width:100%;
         z-index: 10;
       }
@@ -571,7 +520,7 @@
     transform: translateX(50px);
   }
   100% {
-    transform: translateX(0px);    
+    transform: translateX(0px);
   }
 }
 
