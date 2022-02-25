@@ -133,8 +133,7 @@ const Write = (props) => {
         } else {
           context.action.alert({msg: res.message});
         }
-      }
-    }
+      }}
   };
 
   //이미지 삭제
