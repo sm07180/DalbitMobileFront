@@ -53,7 +53,7 @@ const MainPage = () => {
   const arrowRefreshRef = useRef()
   const history = useHistory();
 
-  const [topRankType, setTopRankType] = useState(topTenTabMenu[0]) // 일간 top10 탭 타입
+  const [topRankType, setTopRankType] = useState('') // 일간 top10 탭 타입
   const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
   const [headerFixed, setHeaderFixed] = useState(false) // 헤더 fixed
   const [currentPage, setCurrentPage] = useState(1) // 메인 데이터 현재 호출 페이지
@@ -118,10 +118,10 @@ const MainPage = () => {
 
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
+    const randomValue = getRandomIndex();
     fetchMainInfo();
     fetchLiveInfo(1);
-    fetchRankDataTop10(topTenTabMenu[0])
-    setTopRankType(topTenTabMenu[0])
+    setTopRankType(topTenTabMenu[randomValue])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
     setCurrentPage(1);
@@ -174,7 +174,7 @@ const MainPage = () => {
     touchEndY = e.touches[0].clientY
     const ratio = 3
     const heightDiff = (touchEndY - touchStartY) / ratio
-    const heightDiffFixed = 50
+    const heightDiffFixed = 80
 
     if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
       if (heightDiff <= heightDiffFixed) {
@@ -206,7 +206,7 @@ const MainPage = () => {
       if (typeof current_angle === 'number') {
         setReloadInit(true)
         iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-        iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+        iconWrapNode.style.height = `${refreshDefaultHeight + 80}px`
 
         // const loadIntervalId = setInterval(() => {
         //   if (Math.abs(current_angle) === 360) {
@@ -323,7 +323,7 @@ const MainPage = () => {
   const showPullToRefreshIcon = ({duration = 300}) => {
     const refreshWrap = iconWrapRef.current;
     if(refreshWrap) {
-      refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+      refreshWrap.style.height = `${refreshDefaultHeight + 80}px`;
       setPullToRefreshPause(false);
       setTimeout(() => {
         refreshWrap.style.height = `${refreshDefaultHeight}px`;
@@ -401,6 +401,11 @@ const MainPage = () => {
     }
   };
 
+  const getRandomIndex = () => {
+    const boundary = 3;
+    return Math.floor(Math.random() * boundary); // 0 ~ boundary
+  }
+
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
@@ -436,16 +441,36 @@ const MainPage = () => {
     }
   }, [currentPage, liveListType])
 
+  useEffect(()=>{
+    if(topRankType) {
+      fetchRankDataTop10(topRankType)
+    }
+  },[topRankType])
+
   useEffect(() => {
-    fetchMainInfo()
-    // fetchLiveInfo();
+    /* 메인 page api */
+    fetchMainInfo();
+
+    /* 결제 관련 */
     getReceipt();
-    updatePopFetch(); // 업데이트 팝업
+
+    /* 업데이트 팝업 */
+    updatePopFetch();
+
+    /* 메인 팝업 */
     fetchMainPopupData('6');
+
+    /* redirect 체크 */
     redirectPage();
+
+    /* ios scrollTo 대응 */
     if(isIos()) {
       smoothscroll?.polyfill();
     }
+
+    /* now top10 랜덤 */
+    setTopRankType(topTenTabMenu[getRandomIndex()]);
+
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
@@ -453,10 +478,6 @@ const MainPage = () => {
       window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
-
-  useEffect(()=>{
-    fetchRankDataTop10(topRankType)
-  },[topRankType])
 
   // 페이지 시작
   let MainLayout = <>
