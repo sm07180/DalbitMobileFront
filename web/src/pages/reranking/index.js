@@ -61,8 +61,13 @@ const RankPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     getMyRank();
-    fetchRankData(1, 1);
+    // fetchRankData(1, 1);
     fetchRankData(2, 1);
+    if(location.state) {
+      setSelect(location.state.tabState);
+    }else {
+      setSelect('today');
+    }
   }, []);
 
   //남은 시간 계산
@@ -174,6 +179,7 @@ const RankPage = () => {
 
   // 나머지 List
   const fetchRankData = async (rankSlct, rankType) => {
+    console.log('aaa')
     let rankingDate = moment(rankType === 1 ? new Date() : rankType === 2 ? convertMonday() : rankType === 3 ? convertMonth() : new Date()).format("YYYY-MM-DD");
     const {result, data} = await Api.get_ranking({
       param: {
@@ -186,7 +192,10 @@ const RankPage = () => {
     });
     if (result === "success") {
       if(rankSlct === 1){
-        setDjRank(data.list);
+        console.log(select);
+        if(select !== 'time') {
+          setDjRank(data.list);
+        }
       } else if(rankSlct === 2) {
         setFanRank(data.list)
       } else if(rankSlct === 3) {
@@ -267,14 +276,6 @@ const RankPage = () => {
       }
     }
   }, [select]);
-
-  useEffect(() => {
-    if(location.state) {
-      setSelect(location.state.tabState);
-    }else {
-      setSelect('today');
-    }
-  }, []);
 
   const criteriaPop = () => {
     setPopup(true);

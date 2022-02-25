@@ -138,8 +138,8 @@ const Present = (props) => {
         <UseInput forwardedRef={presentInputRef}
                   placeholder="직접입력"
                   validator={presentInputValidator}
-                  focus={focusAction}
-                  blur={blurAction}
+                  onFocus={focusAction}
+                  onBlur={blurAction}
                   value={inputValue}
                   setValue={setInputValue}
         />
