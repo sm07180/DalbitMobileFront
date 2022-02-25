@@ -27,12 +27,20 @@ const VoteContent = () => {
       </section>
       <section className='optionWrap'>
         <div className="optionBox">
-          <div>01</div>
+          <div className='number'>01</div>
           <span>일이삼사오육칠팔구십일이삼사오</span>
+          <div className="counterBox">
+            <span className="person"/>
+            2
+          </div>
         </div>
         <div className="optionBox active">
-          <div>01</div>
+          <div className="number">01</div>
           <span>일이삼사오육칠팔구십일이삼사오</span>
+          <div className="counterBox active">
+            <span className="person"/>
+            20
+          </div>
         </div>
       </section>
     </>
