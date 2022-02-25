@@ -355,8 +355,16 @@ const MainPage = () => {
     }
   }
 
-  const golink = (path) => {
-    history.push(path);
+  /* NOW TOP 10 */
+  const nowTopLink = () => {
+    if(topRankType === 'DJ') {
+      history.push({
+        pathname: '/rank',
+        state: {tabState: 'time'}
+      })
+    }else {
+      history.push('/rank')
+    }
   }
 
   //메인 랭킹 10위 목록
@@ -392,17 +400,6 @@ const MainPage = () => {
       }
     }
   };
-
-  const moreClickAction = () => {
-    if(topRankType === 'DJ') {
-      history.push({
-        pathname: '/rank',
-        state: {tabState: 'time'}
-      })
-    }else {
-      history.push('/rank')
-    }
-  }
 
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
@@ -498,11 +495,9 @@ const MainPage = () => {
       }
       <section className='top10'>
         <div className="cntTitle">
-          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
-        <CntTitle title={'🏆 NOW TOP 10'} more={'rank'} moreClickAction={moreClickAction}>
+          <h2 className="pointer" onClick={nowTopLink}>🏆 NOW TOP 10 ></h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </div>
-        </CntTitle>
         {rankingList.length>0 &&
           <SwiperList
             data={rankingList}
