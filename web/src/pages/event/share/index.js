@@ -89,11 +89,12 @@ const Share = () => {
         const code = res.code;
         if(code === '0') {
           context.action.alert({
-            msg: '인증을 성공하였습니다.'
+            msg: '등록이 완료되었습니다.'
           })
+          popSlideClose();
         }else if(code === '-2') { // 이미 등록
           context.action.alert({
-            msg: '이미 등록된 URL 입니다.'
+            msg: '이미 등록된 URL입니다.<br/>확인 후 다시 등록해주세요.'
           })
         }else { // 등록 실패
           context.action.alert({
@@ -106,7 +107,6 @@ const Share = () => {
     /* 등록 */
     const submitAction = () => {
       eventInsApi();
-      popSlideClose();
     }
 
     const urlInputValidator = (value) => {
