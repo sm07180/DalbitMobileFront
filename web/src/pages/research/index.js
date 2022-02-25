@@ -234,17 +234,15 @@ const SearchPage = (props) => {
           </section>
           }
           {newBjListInfo.list.length > 0 &&
-          <section className='daldungs'>
-            <>
-              <CntTitle title={'방금 착륙한 NEW 달린이'} />
-              <SwiperList data={newBjListInfo.list} profImgName="bjProfImg" type="daldungs" />
-            </>
+          <section className='liveSection'>
+            <CntTitle title={'방금 착륙한 NEW 달린이'} />
+            <HotLiveList data={newBjListInfo.list} nickNmKey={"bjNickNm"}/>
           </section>
           }
           {liveListInfo.list.length > 0 &&
           <section className='liveSection'>
             <CntTitle title="🔥 지금 핫한 라이브"/>
-            <HotLiveList data={liveListInfo.list}/>
+            <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"}/>
           </section>
           }
           {hotClipListInfo.list.length > 0 &&
