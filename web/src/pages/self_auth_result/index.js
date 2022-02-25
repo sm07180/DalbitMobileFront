@@ -306,6 +306,7 @@ export default (props) => {
               <button
                 onClick={() => {
                   console.log(pushLink);
+                  console.log(qs.parse(location.search));
                   history.push(pushLink)
                 }}
               >확인

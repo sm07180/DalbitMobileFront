@@ -17,7 +17,7 @@ export const closePopup = (dispatch) => {
 }
 
 const PopSlide = (props) => {
-  const {title, setPopSlide, children, popHidden} = props
+  const {title, setPopSlide, children, popHidden, closeCallback} = props
   const context = useContext(Context);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
@@ -29,6 +29,9 @@ const PopSlide = (props) => {
       e.stopPropagation();
       if(setPopSlide) {
         setPopSlide(false);
+      }
+      if(closeCallback) {
+        closeCallback();
       }
       closePopup(dispatch);
     }

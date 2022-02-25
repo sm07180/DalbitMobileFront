@@ -194,7 +194,7 @@ const Share = () => {
                 </LayerPopup>
             }
             {commonPopup.commonPopup &&
-                <PopSlide title="인증하기">
+                <PopSlide title="인증하기" closeCallback={() => {setUrlInfo('')}}>
                     <div className='shareUrl'>
                         <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
                           <UseInput name={"url"}
