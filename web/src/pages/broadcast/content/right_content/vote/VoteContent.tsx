@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Utility from "../../../../../components/lib/utility";
-import {delVote, endVote, insMemVote, setSelVoteItem} from "../../../../../redux/actions/vote";
+import {delVote, endVote, insMemVote} from "../../../../../redux/actions/vote";
 import {Timer} from "./Timer";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import SubmitBtn from "../../../../../components/ui/submitBtn/SubmitBtn";
+import {VoteResultType} from "../../../../../redux/types/voteType";
+import {initVoteSel} from "../../../../../redux/reducers/vote";
 
 const VoteContent = () => {
   const dispatch = useDispatch();
@@ -14,6 +16,13 @@ const VoteContent = () => {
 
   const [more, setMore] = useState(false);
   const {hour, minute, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
+
+  const [selVote, setSelVote] = useState<VoteResultType>({...initVoteSel, ...voteRdx.selVoteItem});
+  const submitButtonProps = {
+    text: voteRdx.voteSel.voteEndSlct === 'e' ? '투표마감' :
+      voteRdx.voteDetailList.filter(f=>f.voteNo === voteRdx.selVoteItem.voteNo).length > 0 ? '다시 투표하기' : '투표하기',
+    state: isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' ? 'disabled' : ''
+  }
 
   return (
     <>
@@ -59,11 +68,11 @@ const VoteContent = () => {
             <section className='optionWrap'>
               {
                 voteRdx.voteDetailList.map((item, index)=>
-                  <div className={`optionBox ${voteRdx.selVoteItem.itemNo === item.itemNo ? 'active' : ''}`} key={index} onClick={()=>{
+                  <div className={`optionBox ${selVote.itemNo === item.itemNo ? 'active' : ''}`} key={index} onClick={()=>{
                     if(isTimeOver || voteRdx.voteSel.voteEndSlct !== 's'){
                       return;
                     }
-                    dispatch(setSelVoteItem(item));
+                    setSelVote(item);
                   }}>
                     <div>{(index+1)<10 ? '0'+(index+1) : index+1}</div>
                     <span>{item.voteItemName}</span>
@@ -79,7 +88,7 @@ const VoteContent = () => {
         !isTimeOver && voteRdx.voteSel.voteEndSlct === 's' &&
         <TimeSection/>
       }
-      <SubmitBtn text='투표하기' state={isTimeOver? 'disabled' : ''} onClick={()=>{
+      <SubmitBtn {...submitButtonProps} onClick={()=>{
         if(isTimeOver){
           console.log('진행중 아님, done')
           return;
@@ -88,8 +97,12 @@ const VoteContent = () => {
           console.log('진행중 아님')
           return;
         }
-        if(!voteRdx.selVoteItem.itemNo){
+        if(!selVote.itemNo){
           console.log('선택한거없음')
+          return;
+        }
+        if(selVote.itemNo === voteRdx.selVoteItem.itemNo){
+          console.log('같은거 선택')
           return;
         }
         dispatch(insMemVote({
@@ -97,8 +110,8 @@ const VoteContent = () => {
           , roomNo: voteRdx.voteSel.roomNo
           , memNo: voteRdx.voteSel.memNo
           , pmemNo: memberRdx.memNo
-          , itemNo: voteRdx.selVoteItem.itemNo
-          , voteItemName: voteRdx.selVoteItem.voteItemName
+          , itemNo: selVote.itemNo
+          , voteItemName: selVote.voteItemName
         }));
       }}/>
     </>

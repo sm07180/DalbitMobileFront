@@ -11,6 +11,11 @@ const VoteList = ({roomInfo, roomNo, roomOwner}) => {
   const [tabType, setTabType] = useState(tabMenu[0])
   const dispatch = useDispatch();
   const voteRdx = useSelector(({vote})=> vote);
+  // voteRdx.voteList.list >= 5
+  const submitButtonProps = {
+    text: '투표 만들기',
+    state: voteRdx.voteList.list.length >= 5 ? 'disabled' : ''
+  }
 
   return (
     <>
@@ -40,7 +45,7 @@ const VoteList = ({roomInfo, roomNo, roomOwner}) => {
       </section>
       {
         roomOwner &&
-        <SubmitBtn text='투표 만들기' onClick={()=>{
+        <SubmitBtn {...submitButtonProps} onClick={()=>{
           dispatch(moveVoteInsStep());
         }}/>
       }

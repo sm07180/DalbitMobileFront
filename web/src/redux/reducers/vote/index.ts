@@ -34,12 +34,13 @@ export const initVoteSel: VoteResultType = {
   voteItemName: '',
   memVoteYn : 'n',
 }
+export const initTempInsVoteVoteItemNames = ['',''];
 export const initTempInsVote:InsVoteRequestType = {
   memNo:'',
   roomNo:'',
-  voteItemNames:['',''],
+  voteItemNames:initTempInsVoteVoteItemNames,
   endTime:10,
-  voteItemCnt:['',''].length,
+  voteItemCnt:initTempInsVoteVoteItemNames.length,
   voteDupliYn:'n',
   voteAnonyYn:'y',
   voteTitle:''

@@ -235,6 +235,7 @@ const App = () => {
         globalCtx.globalAction.dispatchMailChatInfo
     ) {
       const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
+      chatInfo.setMemNo(memNo);
       // chatInfo.setSplashData(globalState.splashData);
       //deep copy chatInfo
       let cloneMailInfo = Object.assign(

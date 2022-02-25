@@ -53,6 +53,7 @@ function* insMemVote(param) {
 			// memNo pmemNo roomNo voteNo
 			const getVoteDetailList = yield call(Api.getVoteDetailList, reSelectParam);
 			const data:Array<VoteResultType> = getVoteDetailList.data;
+
 			if(data){
 				yield put({type: SET_VOTE_DETAIL_LIST, payload: data})
 				const sel = data.find(f=>f.memVoteYn === 'y');
@@ -161,7 +162,6 @@ function* moveVoteListStep(param) {
 	try {
 		// debugger
 		const res = yield call(Api.getVoteList, param.payload);
-		console.log(`getVoteList`, res)
 		yield put({type: SET_VOTE_LIST, payload: res.data})
 		yield put({type: SET_VOTE_STEP, payload: 'list'})
 	} catch (e) {

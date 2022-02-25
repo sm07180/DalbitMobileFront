@@ -32,7 +32,7 @@ export type userBroadcastSettingType = {
 import { MediaType } from "pages/broadcast/constant";
 import { getCookie } from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
-import {moveVoteListStep, setVoteActive} from "../../redux/actions/vote";
+import {moveVoteListStep, moveVoteStep, setVoteActive, setVoteStep} from "../../redux/actions/vote";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -70,6 +70,7 @@ export class ChatSocketHandler {
   public postErrorState : boolean
 
   public dispatch: any;
+  public memNo: string = '';
 
   // 로그인한 유저의 방송 설정 (패킷 받을때 설정에 맞게 대응하기 위함)
   // set 하는 곳 : /mypage/broadcast/setting, /mypage/broadcast/setting/edit
@@ -88,7 +89,8 @@ export class ChatSocketHandler {
     this.broadcastAction = null;
 
     this.reConnect =
-      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo, this.dispatch) : reConnectHandler;
+      reConnectHandler === undefined || reConnectHandler == null ?
+        new ReConnectChat(this.chatUserInfo, this.dispatch) : reConnectHandler;
 
     this.publicChannelNo = "";
     this.publicChannelHandle = null;
@@ -104,6 +106,7 @@ export class ChatSocketHandler {
       this.setGlobalAction(this.reConnect.globalAction);
       this.setBroadcastAction(this.reConnect.broadcastAction);
       this.setRoomOwner(this.reConnect.roomOwner);
+      this.setMemNo(this.memNo);
     }
 
     this.connect((result: any) => {
@@ -124,6 +127,9 @@ export class ChatSocketHandler {
     this.broadcastStateChange = {};
   }
 
+  setMemNo(memNo){
+    this.memNo = memNo;
+  }
   setBroadcastStateChange(key: string, setStateFn: Function){
     this.broadcastStateChange = {...this.broadcastStateChange, [key] : setStateFn};
   }
@@ -1913,8 +1919,27 @@ export class ChatSocketHandler {
                   }
                   case "reqInsVote": {
                     // 투표 생성
-                    console.log('reqInsVote ... ', data)
-                    this.dispatch(setVoteActive(true))
+                    console.log('reqInsVote ... ', data.reqInsVote);
+                    if(this.memNo !== data.reqInsVote.memNo){
+                      this.dispatch(setVoteActive(true));
+                      this.globalAction.setAlertStatus({
+                        status: true,
+                        type: "confirm",
+                        content: `새로운 투표가 등록됐어요!<br/><br/>${data.reqInsVote.voteTitle}`,
+                        confirmCancelText: "닫기",
+                        confirmText: "참여하기",
+                        callback: () => {
+                          this.dispatch(moveVoteStep({
+                            // memNo: this.memNo
+                            memNo: data.reqInsVote.memNo
+                            , roomNo: data.reqInsVote.roomNo
+                            , voteNo: data.reqInsVote.voteNo
+                          }));
+                          this.broadcastAction.setRightTabType(tabType.VOTE);
+                        },
+                      });
+                    }
+
                     return null;
                   }
                   case "reqInsMemVote": {
@@ -1945,7 +1970,6 @@ export class ChatSocketHandler {
                       }))
                     }
 
-                    console.log('reqEndVote ... ', data)
                     return null;
                   }
 
@@ -2520,6 +2544,7 @@ export class ReConnectChat {
   public broadcastAction: any | null;
 
   public dispatch: any;
+  public memNo: string = '';
 
   constructor(userInfo: chatUserInfoType, dispatch?: any) {
     this.dispatch = dispatch;
@@ -2534,6 +2559,10 @@ export class ReConnectChat {
     this.msgListWrapRef = null;
     this.mailMsgListWrapRef = null;
     this.roomOwner = false;
+  }
+
+  setMemNo(memNo){
+    this.memNo = memNo
   }
 
   setUserInfo(userInfo: chatUserInfoType) {

@@ -5,12 +5,21 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import {useDispatch, useSelector} from "react-redux";
 import {insVote, setTempInsVote} from "../../../../../redux/actions/vote";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
-import {MAX_END_TIME} from "../../../../../redux/reducers/vote";
+import {initTempInsVoteVoteItemNames, MAX_END_TIME} from "../../../../../redux/reducers/vote";
 
 const MakeVote = ({roomNo}) => {
   const voteRdx = useSelector(({vote})=> vote);
   const dispatch = useDispatch();
   const memberRdx = useSelector((state) => state.member);
+
+  const submitButtonProps = {
+    text: '완료',
+    state:
+      voteRdx.tempInsVote.voteTitle.length < 1  ||
+      voteRdx.tempInsVote.voteItemNames.length < initTempInsVoteVoteItemNames.length ||
+      voteRdx.tempInsVote.voteItemNames.filter(f=>f.length<1).length > 0 ||
+      voteRdx.tempInsVote.endTime < 1 ? 'disabled' : ''
+  }
 
   return (
     <>
@@ -42,7 +51,7 @@ const MakeVote = ({roomNo}) => {
                       }))
                     }}/>
                     <button className="delete" onClick={()=>{
-                      if(voteRdx.tempInsVote.voteItemNames.length < 3){
+                      if(voteRdx.tempInsVote.voteItemNames.length < initTempInsVoteVoteItemNames.length+1){
                         console.log('최소개수.')
                       }else{
                         const copy = [...voteRdx.tempInsVote.voteItemNames];
@@ -83,7 +92,7 @@ const MakeVote = ({roomNo}) => {
             <span>분 뒤</span>
           </InputItems>
         </section>
-        <SubmitBtn text='완료' onClick={()=>{
+        <SubmitBtn {...submitButtonProps} onClick={()=>{
           dispatch(insVote({
             ...voteRdx.tempInsVote,
             memNo: memberRdx.memNo,
