@@ -32,6 +32,7 @@ export type userBroadcastSettingType = {
 import { MediaType } from "pages/broadcast/constant";
 import { getCookie } from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
+import {isDesktop} from "../../lib/agent";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -103,14 +104,17 @@ export class ChatSocketHandler {
       this.setRoomOwner(this.reConnect.roomOwner);
     }
 
-    this.connect((result: any) => {
-      const { error } = result;
-      if (error === false) {
-        if (this.socket.getState() === "open") {
-          this.connected();
+    // PC만 커넥트 연결
+    if (isDesktop()) {
+      this.connect((result: any) => {
+        const { error } = result;
+        if (error === false) {
+          if (this.socket.getState() === "open") {
+            this.connected();
+          }
         }
-      }
-    });
+      });
+    }
 
     // if (this.splashData === null) {
     //   splash().then((resolve) => {
