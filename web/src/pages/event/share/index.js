@@ -66,7 +66,12 @@ const Share = () => {
               setIsAuth(true);
               dispatch(setSlidePopupOpen());
             }else {
-              authReq('12', context.authRef, context) // 본인인증
+              context.action.confirm({
+                msg: `이벤트에 참여하기 위해 본인인증을 완료해 주세요.`,
+                callback: () => {
+                  authReq('12', context.authRef, context, '/event/share');
+                }
+              })
             }
           })
         }

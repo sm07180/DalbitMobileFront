@@ -307,7 +307,11 @@ export default (props) => {
                 onClick={() => {
                   console.log(pushLink);
                   console.log(qs.parse(location.search));
-                  history.push(pushLink)
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push(pushLink)
+                  }
                 }}
               >확인
               </button>
