@@ -255,7 +255,6 @@ const App = () => {
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       if (isHybrid()) {
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
@@ -299,6 +298,8 @@ const App = () => {
             window.location.href = '/login'
           }
         }
+      } else if (isDesktop) {
+        initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       }
       if (tokenInfo.data && tokenInfo.data.isLogin) {
         const fetchProfile = async () => {

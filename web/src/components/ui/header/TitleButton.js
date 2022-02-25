@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
 import API from "../../../context/api";
+import {isHybrid} from "../../../context/hybrid";
 
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
@@ -69,7 +70,9 @@ const TitleButton = (props) => {
   }
 
   useEffect(() => {
-    fetchMypageNewCntData(context.profile.memNo);
+    if(isHybrid()) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
   }, []);
 
 

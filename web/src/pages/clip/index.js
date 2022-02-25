@@ -21,6 +21,7 @@ import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 
 import './scss/clipPage.scss';
+import {broadcastList} from "common/api";
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -36,7 +37,6 @@ const ClipPage = () => {
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
-
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
@@ -228,7 +228,6 @@ const ClipPage = () => {
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
                     <span>{list.icon}</span>
-                    {/* <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/> */}
                     <p>{list.cdNm}</p>
                   </div>
                 </div>

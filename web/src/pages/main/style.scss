@@ -331,80 +331,7 @@
       @include font(15px,400,#999);
     }
   }
-  .daldungs {
-    .cntTitle {
-      margin-bottom:12px;
-    }
-    .swiper-button-next, .swiper-button-prev {
-      display: inline-block;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: contain;
-      &.swiper-button-disabled {
-        display: none;
-      }
-    }
-    .swiper-button-prev {
-      background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-prev.png");
-    }
-    .swiper-button-next {
-      background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-next.png");
-    }
-    .swiper-wrapper {
-      padding-left:16px;
-      .swiper-slide {
-        width:auto;
-        margin-right:8px;
-        &:last-child {
-          margin-right:28px;
-        }
-        .listColumn {
-          width:116px;
-          border-radius:8px;
-          overflow:hidden;
-          cursor: pointer;
-          .photo {
-            height:154px;
-            &::before {
-              content: "";
-              @include position-top-left;
-              width: 100%; height: 100%;
-              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-              border-radius:8px;
-              box-sizing: border-box;
-            }
-            img {
-              height:100%;
-              object-fit: cover;
-            }
-            .video {
-              @include position-top-right;
-              width:40px;
-              height:40px;
-              @include BGIMG("common/icon/icon_video.png");
-            }
-          }
-          p {
-            position:absolute;
-            bottom:0;
-            padding:24px 8px 8px;
-            background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
-            text-align:left;
-            @include font(13px,$Medium,white);
-            @include fontCut;
-          }
-        }
-      }
-    }
-    .empty {
-      width:100%;
-      height:60px;
-      text-indent:20px;
-      @include font(15px,400,#999);
-    }
-  }
+
   .liveView {
     .cntTitle {
       margin-bottom:8px;
@@ -613,7 +540,7 @@
     transform: translateX(50px);
   }
   100% {
-    transform: translateX(0px);    
+    transform: translateX(0px);
   }
 }
 
