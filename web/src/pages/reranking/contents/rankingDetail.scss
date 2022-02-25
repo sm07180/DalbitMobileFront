@@ -186,10 +186,11 @@
           .equalizer {
             display: inline-block;
             width: 12px;
+            margin-top: -2px;
             margin-right: 4px;
           }
           .liveText {
-            @include font(12px, 400, #FF3C7B);
+            @include font(12px, 900, #FF3C7B);
           }
         }
       }
@@ -334,7 +335,7 @@
           @include flex(center, center);
           .badgeLive {
             @include flex(center, center);
-            width:60px;height:28px;
+            width:62px;height:28px;
             margin: 12px auto 0px;
             background-color: #FFE9E9;
             border-radius: 100px;
@@ -342,10 +343,11 @@
             .equalizer {
               display: inline-block;
               width: 12px;
+              margin-top: -2px;
               margin-right: 4px;
             }
             .liveText {
-              @include font(12px, 400, #FF3C7B);
+              @include font(12px, 900, #FF3C7B);
             }
           }
         }

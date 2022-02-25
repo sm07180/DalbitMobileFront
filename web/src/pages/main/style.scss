@@ -28,7 +28,7 @@
   }
   section {
     position:relative;
-    margin-bottom:44px;
+    margin-bottom:32px;
   }
   .topSwiper {
     max-width:480px;
@@ -203,6 +203,7 @@
   }
   .top10 {
     .cntTitle {
+      padding: 0 8px 0 16px;
       margin-bottom:12px;
       h2 {
         cursor: pointer;
@@ -334,7 +335,7 @@
 
   .liveView {
     .cntTitle {
-      margin-bottom:8px;
+      margin-bottom:4px;
     }
     .tabmenuWrap {
       position:relative;
@@ -374,7 +375,7 @@
       }
     }
     .liveListWrap {
-      padding: 16px;
+      padding: 12px 16px 16px;
       .listRow {
         @include flex(center);
         height:110px;

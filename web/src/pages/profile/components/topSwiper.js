@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 
+import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
@@ -91,8 +92,17 @@ const TopSwiper = (props) => {
           </div>
         }
         {!isMyProfile && webview === '' && data.roomNo !== "" && listenOpen !== 2 &&
-          <div className="liveBdg">
-            <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
+          <div className='badgeLive' onClick={roomJoinHandler}>                                    
+            <span className='equalizer'>
+              <Lottie
+                options={{
+                  loop: true,
+                  autoPlay: true,
+                  path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                }}
+              />
+            </span>
+            <span className='liveText'>LIVE</span>
           </div>
         }
         {!isMyProfile && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&

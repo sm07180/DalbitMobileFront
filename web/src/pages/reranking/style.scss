@@ -428,10 +428,11 @@ $errorMsg : #FF1919;
             .equalizer {
               display: inline-block;
               width: 12px;
+              margin-top: -2px;
               margin-right: 4px;
             }
             .liveText {
-              @include font(12px, 400, #FF3C7B);
+              @include font(12px, 900, #FF3C7B);
             }
           }
         }
