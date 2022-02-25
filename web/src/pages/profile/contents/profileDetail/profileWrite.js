@@ -92,7 +92,7 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
-        setTimeout(() => {history.goBack();}, 300);
+        history.goBack();
       }
     } else if (type === 'fanBoard') {
       const {data, result, message} = await Api.member_fanboard_add({
