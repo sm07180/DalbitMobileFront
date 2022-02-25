@@ -60,6 +60,7 @@ const MyAccount = (props) => {
 
   // 계좌 수정
   const onClickModifyAcount = (exchangeForm) => {
+    dispatch(setSlidePopupOpen());
     setSlideData(exchangeForm);
     setExchangeForm(exchangeForm);    //계좌목록중에서 선택한 값 세팅  
     prevState.current = exchangeForm; //이전 state 유지용
@@ -122,7 +123,7 @@ const MyAccount = (props) => {
         beforeAccountNo: exchangeForm?.recent_accountNo
       }
     });
-    const {result, data, message} = res;
+    const {result, data, message, messageKey} = res;
 
     //팝업 닫기
     closePop();
@@ -218,7 +219,7 @@ const MyAccount = (props) => {
             <div className="content">
               <div className="name">{data?.accountName}</div>
               <div className="account">
-                {`${data?.bankName} ${data?.accountNo?.concat([]).slice(0, 3)}-${data?.accountNo?.concat([]).slice(3, 6)}-${data?.accountNo?.concat([]).slice(6, data?.accountNo.length)}`}
+                {`${data?.bankName} ${data?.accountNo?.concat([]).slice(0, 3)}-${data?.accountNo?.concat([]).slice(3, 7)}-${data?.accountNo?.concat([]).slice(7, 11)}-${data?.accountNo?.concat([]).slice(11, data?.accountNo.length)}`}
               </div>
             </div>
             <span className="iconEdit"
