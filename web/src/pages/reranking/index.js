@@ -38,7 +38,7 @@ const RankPage = () => {
   const [popup, setPopup] = useState(false)
 
   //현재 선택된 DJ List 기간
-  const [select , setSelect] = useState("today")
+  const [select , setSelect] = useState()
 
   //각 DJ 기간별 남은 시간
   const [daySetting , setDaySetting] = useState("")
@@ -244,31 +244,35 @@ const RankPage = () => {
 
   //DJ 랭킹 시간별 List호출
   useEffect(() => {
-    let interval = "";
-    timer();
-    if (select === "time"){
-      fetchTimeRank();
-      interval = setInterval(() => {
-        timer();
-      }, 1000);
-    } else {
-      if (select === "today"){
+    if(select) {
+      let interval = "";
+      timer();
+      if (select === "time"){
+        fetchTimeRank();
         interval = setInterval(() => {
           timer();
         }, 1000);
       } else {
-        timer();
+        if (select === "today"){
+          interval = setInterval(() => {
+            timer();
+          }, 1000);
+        } else {
+          timer();
+        }
+        fetchRankData(1, select === "today" ? 1 : select === "thisweek" ? 2 : select === "thismonth" ? 3 : 4);
       }
-      fetchRankData(1, select === "today" ? 1 : select === "thisweek" ? 2 : select === "thismonth" ? 3 : 4);
-    }
-    return () => {
-      clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+      }
     }
   }, [select]);
 
   useEffect(() => {
     if(location.state) {
       setSelect(location.state.tabState);
+    }else {
+      setSelect('today');
     }
   }, []);
 
