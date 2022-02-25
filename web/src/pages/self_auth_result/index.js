@@ -26,7 +26,7 @@ export default (props) => {
   const location = useLocation()
 
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-  const {result, code, message, returntype, url} = qs.parse(location.search)
+  const {result, code, message, returntype, url, pushLink} = qs.parse(location.search)
 
   /**
    * authState
@@ -85,6 +85,8 @@ export default (props) => {
       setAuthState(10)
     } else if(returntype === '' && url === '11') {
       setAuthState(11)
+    } else if(returntype === 'default') {
+      setAuthState(12)
     } else {
       checkAuth()
     }
@@ -294,6 +296,23 @@ export default (props) => {
               </div>
             </div>
           )
+      case 12:
+        return (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다.
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  console.log(pushLink);
+                  history.push(pushLink)
+                }}
+              >확인
+              </button>
+            </div>
+          </div>
+        )
       default:
         return <></>
     }

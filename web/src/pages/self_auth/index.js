@@ -54,7 +54,8 @@ export const authReq = async (code, formTagRef, context) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
-      authType: '0'
+      authType: '0',
+      pushLink: '',
     }
   })
   if (res.result == 'success' && res.code == 0) {
