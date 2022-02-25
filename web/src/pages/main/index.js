@@ -527,14 +527,6 @@ const MainPage = () => {
           />
         }
       </section>
-      <section className='daldungs'>
-        {mainState.newBjList.length > 0 &&
-        <>
-          <CntTitle title={'방금 착륙한 NEW 달린이'} />
-          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
-        </>
-        }
-      </section>
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
