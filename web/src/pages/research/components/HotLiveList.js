@@ -34,7 +34,7 @@ const HotLiveList = (props) => {
       {data.length > 0 &&
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
-          const targetNickName = list[nickNmKey] | '';
+          const targetNickName = list.hasOwnProperty(nickNmKey) === undefined ? '' : list[nickNmKey];
           return (
             <div key={index} data-room-no={list.roomNo}  data-bj-nick-nm={targetNickName} onClick={RoomEnter}>
               <div className="listColumn">
