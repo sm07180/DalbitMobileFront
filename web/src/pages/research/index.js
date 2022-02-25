@@ -2,6 +2,7 @@ import React, {useState, useCallback, useEffect, useRef, useContext} from 'react
 import {broadcastList, deleteFan, postAddFan} from "common/api";
 import {Context} from "context";
 import {useDispatch, useSelector} from "react-redux";
+import {setIsRefresh} from "redux/actions/common";
 
 //context
 import API from 'context/api';
@@ -22,8 +23,6 @@ import SearchResult from './components/SearchResult';
 
 // scss
 import './style.scss';
-import {setIsRefresh} from "redux/actions/common";
-import SwiperList from "pages/main/components/SwiperList";
 
 const SearchPage = (props) => {
   const context = useContext(Context); //context
@@ -234,17 +233,15 @@ const SearchPage = (props) => {
           </section>
           }
           {newBjListInfo.list.length > 0 &&
-          <section className='daldungs'>
-            <>
-              <CntTitle title={'방금 착륙한 NEW 달린이'} />
-              <SwiperList data={newBjListInfo.list} profImgName="bjProfImg" type="daldungs" />
-            </>
+          <section className='liveSection'>
+            <CntTitle title={'방금 착륙한 NEW 달린이'} />
+            <HotLiveList data={newBjListInfo.list} nickNmKey={"bjNickNm"}/>
           </section>
           }
           {liveListInfo.list.length > 0 &&
           <section className='liveSection'>
             <CntTitle title="🔥 지금 핫한 라이브"/>
-            <HotLiveList data={liveListInfo.list}/>
+            <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"}/>
           </section>
           }
           {hotClipListInfo.list.length > 0 &&
