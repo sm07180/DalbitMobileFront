@@ -68,7 +68,6 @@
         flex:1;
         @include flex(center,center,column);
         padding-top:7px;
-        letter-spacing: -1px;
         cursor: pointer;
         span {
           @include font(16px,$SemiBold,black);
@@ -107,7 +106,10 @@
     }
   }
 }
-.container{
+
+// 반응형 스타일
+
+.pcType {
   #myprofile{
     .profileCard{
       .info{

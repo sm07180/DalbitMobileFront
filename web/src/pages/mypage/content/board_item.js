@@ -159,7 +159,7 @@ export default (props) => {
                 <button onClick={userReport}>신고하기</button>
               }
             </div>
-            <span className="thumb" style={{backgroundImage: `url(${props.data.profImg.thumb190x190})`}} onClick={Link}></span>
+            <span className="thumb" style={{backgroundImage: `url(${props.data.profImg.thumb292x292})`}} onClick={Link}></span>
             <span className="info" onClick={Link}>
               <span className="info__name">
                 <em className={`${props.data.viewOn === 0 && 'info__lock'}`}></em>

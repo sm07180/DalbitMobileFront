@@ -23,19 +23,20 @@ const Settingblack = () => {
   const tabmenu = ['관리', '등록']
   const filter = ['전체','닉네임','ID']
   const [tabType, setTabType] = useState(tabmenu[0])
-  const [blackList, setblackList] = useState([])
+  const [blackList, setBlackList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
   const [userList, setUserList] = useState([]);
   const context = useContext(Context);
   let userTypeSetting = 0;
 
   //차단 회원 리스트 조회
-  const getblackList = () =>{
-    Api.mypage_black_list({}).then((res) =>{
-      if (res.result === 'success'){
-        setblackList(res.data.list)
-      }
+  const getblackList = async () => {
+    const res = await Api.mypage_black_list({
+      params: {page: 1, records: 999}
     })
+    if(res.result === "success") {
+      setBlackList(res.data.list);
+    }
   }
 
   //차단회원 등록
@@ -75,7 +76,7 @@ const Settingblack = () => {
       search: changes.search,
       searchType: "blackList",
       page: 1,
-      records: 30
+      records: 999
     }
     const res = await Api.mypage_user_search({params})
     if(res.result === "success") {

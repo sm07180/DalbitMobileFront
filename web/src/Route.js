@@ -140,9 +140,6 @@ const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 
-//임시 옛날 설정 페이지
-const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
-
 const Router = () => {
   const context = useContext(Context);
   return (
@@ -330,9 +327,6 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
-
-        {/* 임시 옛날 설정 페이지*/}
-        <Route exact path="/oldsetting" component={OldSetting} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

@@ -16,6 +16,7 @@ const SwiperList = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
+  let locationStateHistory = useHistory();
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -29,7 +30,8 @@ const SwiperList = (props) => {
         history.push(`/profile/${item.memNo}`);
       }
     }else if(type === 'daldungs' || type === 'favorites') {
-      RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
+      const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
+      RoomValidateFromClip(item.roomNo, context, history, memNick);
     }
   }
 
@@ -60,9 +62,13 @@ const SwiperList = (props) => {
           <div key={index}>
             <div className="listColumn" onClick={() => onClickAction(item)}>
               <div className="photo">
-                <img src={item[profImgName].thumb150x150 ? item[profImgName].thumb150x150
+                <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                {item.rank && <div className={`rank-${item.rank}`}></div>}
+                {item.rank && <div className={`rank-${item.rank}`}></div>}                
+                {item.roomNo && <div className='livetag' onClick={(e) => {
+                  e.stopPropagation();
+                  RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
+                }}></div>}
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
