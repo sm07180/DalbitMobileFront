@@ -30,6 +30,7 @@ import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 import {useHistory} from "react-router-dom";
 
 import smoothscroll from 'smoothscroll-polyfill';
+import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
 
 const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -354,31 +355,52 @@ const MainPage = () => {
     }
   }
 
-  const golink = (path) => {
-    history.push(path);
+  /* NOW TOP 10 */
+  const nowTopLink = () => {
+    if(topRankType === 'DJ') {
+      history.push({
+        pathname: '/rank',
+        state: {tabState: 'time'}
+      })
+    }else {
+      history.push('/rank')
+    }
   }
 
   //메인 랭킹 10위 목록
   const fetchRankDataTop10 = async (type) => {
     if(type !=="" || type!==null){
-    let rankSlct = type === "DJ" ? 1: type === "FAN"? 2 : 3
-      Api.get_ranking({
-      param: {
-        rankSlct: rankSlct,
-        rankType: 1,
-        rankingDate: moment().format("YYYY-MM-DD"),
-        page: 1,
-        records: 10,
+      if(type === 'DJ') {
+        Api.getRankTimeList({
+          rankSlct: 1,
+          page: 1,
+          records: 10,
+          rankingDate: convertDateTimeForamt(new Date() , "-")
+        }).then(res => {
+          if (res.result === "success") {;
+            setRankingList(res.data.list)
+          }
+        });
+      }else {
+        Api.get_ranking({
+          param: {
+            rankSlct: type === "FAN" ? 2 : 3,
+            rankType: 1,
+            rankingDate: moment().format("YYYY-MM-DD"),
+            page: 1,
+            records: 10,
+          }
+        }).then(res=> {
+          if(res.result === "success"){
+            setRankingList(res.data.list);
+          }else{
+            setRankingList([]);
+          }
+        });
       }
-    }).then(res=> {
-      if(res.result === "success"){
-        setRankingList(res.data.list);
-      }else{
-        setRankingList([]);
-      }
-      });
     }
   };
+
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
@@ -473,7 +495,7 @@ const MainPage = () => {
       }
       <section className='top10'>
         <div className="cntTitle">
-          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
+          <h2 className="pointer" onClick={nowTopLink}>🏆 NOW TOP 10 ></h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </div>
         {rankingList.length>0 &&

@@ -306,6 +306,9 @@
       text-indent:20px;
       @include font(15px,400,#999);
     }
+    .pointer {
+      cursor: pointer;
+    }
   }
 
   .liveView {

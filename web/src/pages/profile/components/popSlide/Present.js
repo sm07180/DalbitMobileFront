@@ -13,7 +13,7 @@ const dalList = [50, 100, 500, 1000, 2000, 3000, 5000, 10000];
 const MIN_DAL_CNT = 10;
 
 const Present = (props) => {
-  const { profileData, setPopPresent } = props
+  const { profileData, closePopupAction } = props
   const context = useContext(Context);
   const history = useHistory();
   const [selected, setSelected] = useState(0);
@@ -58,10 +58,10 @@ const Present = (props) => {
   const dalGiftAction = () => {
     if(selected > -1) {
       dalGiftApiAction(dalList[selected]);
-      setPopPresent(false);
+      closePopupAction();
     }else if(parseInt(inputValue) >= 10){
       dalGiftApiAction(inputValue);
-      setPopPresent(false);
+      closePopupAction();
     }else {
       context.action.alert({
         msg: `달은 ${MIN_DAL_CNT}개 이상부터 선물이 가능합니다.`
@@ -146,7 +146,7 @@ const Present = (props) => {
       </InputItems>
       <span className='log'>달은 {MIN_DAL_CNT}개 이상부터 선물이 가능합니다.</span>
       <div className="buttonGroup">
-        <button className='cancel' onClick={() => setPopPresent(false)}>취소</button>
+        <button className='cancel' onClick={closePopupAction}>취소</button>
         <button className={(selected > -1 || parseInt(inputValue) >= MIN_DAL_CNT) ? 'active' : 'disabled'}
                 onClick={dalGiftAction}
         >선물하기</button>

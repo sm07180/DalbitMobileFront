@@ -38,7 +38,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, setNoticePop, likePopTabState} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, myMemNo, setNoticePop, likePopTabState, closePopupAction} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
 
@@ -126,7 +126,7 @@ const LikePopup = (props) => {
   /* 프로필 이동 */
   const goProfileAction = (targetMemNo) => {
     goProfile(targetMemNo)
-    setPopLike(false);
+    closePopupAction();
   }
 
   const pagingReset = () => {
@@ -194,10 +194,6 @@ const LikePopup = (props) => {
       scrollTarget.removeEventListener('scroll', scrollEvent);
     }
   }, []);
-
-  const closePop = () => {
-    setPopLike(false);
-  }
 
   const tabSetting = () => {
     if(likePopTabState) { // 열고싶은 탭
@@ -333,7 +329,7 @@ const LikePopup = (props) => {
         <NoResult />
         }
       </div>
-      <button className="popClose" onClick={closePop}></button>
+      <button className="popClose" onClick={closePopupAction} />
     </section>
   )
 }
