@@ -19,7 +19,7 @@ const NowClipList = (props) => {
             return (
               <div key={index}>
                 <div className='listWrap' style={{backgroundImage:`url('${list.bgImg.thumb500x500}')`}}>
-                  <ListRow photo={list.bgImg.thumb50x50}>
+                  <ListRow photo={list.bgImg.thumb292x292}>
                     <div className='listContent'>
                       <span className='title'>{list.title}</span>
                       <span className='nick'>{list.nickName}</span>
@@ -27,7 +27,7 @@ const NowClipList = (props) => {
                   </ListRow>
                 </div>
                 <div className='listWrap' style={{backgroundImage:`url('${list.bgImg.thumb500x500}')`}}>
-                  <ListRow photo={list.bgImg.thumb50x50}>
+                  <ListRow photo={list.bgImg.thumb292x292}>
                     <div className='listContent'>
                       <span className='title'>{list.title}</span>
                       <span className='nick'>{list.nickName}</span>
@@ -35,7 +35,7 @@ const NowClipList = (props) => {
                   </ListRow>
                 </div>
                 <div className='listWrap' style={{backgroundImage:`url('${list.bgImg.thumb500x500}')`}}>
-                  <ListRow photo={list.bgImg.thumb50x50}>
+                  <ListRow photo={list.bgImg.thumb292x292}>
                     <div className='listContent'>
                       <span className='title'>{list.title}</span>
                       <span className='nick'>{list.nickName}</span>

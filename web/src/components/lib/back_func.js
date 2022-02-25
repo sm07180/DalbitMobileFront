@@ -1,10 +1,9 @@
 import React from 'react'
 //context
-import {Hybrid} from 'context/hybrid'
 // etc
-import Utility from 'components/lib/utility'
+import {closePopup} from "components/ui/popSlide/PopSlide";
 
-export const backFunc = (context) => {
+export const backFunc = (context, dispatch) => {
   const {backFunction} = context
   switch (backFunction.name) {
     case 'booleanType':
@@ -17,7 +16,9 @@ export const backFunc = (context) => {
     case 'selfauth':
       window.location.href = '/'
       break
-
+    case 'popClose':
+      closePopup(dispatch)
+      break;
     default:
       break
   }

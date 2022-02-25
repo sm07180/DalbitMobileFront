@@ -64,7 +64,7 @@ const InviteMydata = () => {
                   return (
                     <div className='inviteUserList' key={index} onClick={() => history.push(`/profile/${member.rcv_mem_no}`)}>
                       <div className="photo">
-                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
+                        <img src={member.profImg.thumb292x292} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>

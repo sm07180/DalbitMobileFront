@@ -291,7 +291,7 @@ export default (props) => {
               {nickNm !== '' && (
                 <div className="list">
                   <div className="list__imgBox" onClick={() => Link(memNo)}>
-                    <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
+                    <img src={profImg.thumb292x292} alt="팬 프로필 이미지" />
                   </div>
                   <div className="list__infoBox" onClick={() => Link(memNo)}>
                     <span className="list__nick">{nickNm}</span>

@@ -64,14 +64,14 @@ const InquireDetail = () => {
   useEffect(() => {
     if(qnaDetail && Object.keys(qnaDetail).length){
       const tempAddFile = []
-      if(qnaDetail.addFile1.thumb150x150){
-        tempAddFile[0] = qnaDetail.addFile1.thumb150x150
+      if(qnaDetail.addFile1.thumb292x292){
+        tempAddFile[0] = qnaDetail.addFile1.thumb292x292
       }
-      if(qnaDetail.addFile2.thumb150x150){
-        tempAddFile[1] = qnaDetail.addFile2.thumb150x150
+      if(qnaDetail.addFile2.thumb292x292){
+        tempAddFile[1] = qnaDetail.addFile2.thumb292x292
       }
-      if(qnaDetail.addFile3.thumb150x150){
-        tempAddFile[2] = qnaDetail.addFile3.thumb150x150
+      if(qnaDetail.addFile3.thumb292x292){
+        tempAddFile[2] = qnaDetail.addFile3.thumb292x292
       }
       setAddFile(tempAddFile);
     }

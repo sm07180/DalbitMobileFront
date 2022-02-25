@@ -21,6 +21,7 @@ import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 
 import './scss/clipPage.scss';
+import {broadcastList} from "common/api";
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -36,7 +37,6 @@ const ClipPage = () => {
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
-
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
@@ -200,7 +200,7 @@ const ClipPage = () => {
       <div id="clipPage" >
         <Header title={'클립'} />
         <section className='hotClipWrap'>
-          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
+          <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.list.length > 0 ?
             <Swiper {...swiperParams}>
               {hotClipInfo.list.map((row, index) => {
@@ -227,7 +227,7 @@ const ClipPage = () => {
               return (
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
-                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
+                    <span>{list.icon}</span>
                     <p>{list.cdNm}</p>
                   </div>
                 </div>
@@ -280,7 +280,11 @@ const ClipPage = () => {
         </section>
         <section className="clipList">
           <div className="cntTitle">
-            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}은(는) 어떠세요?`}</h2>
+            <h2>
+              {/* <img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/> */}
+              <span>{subSearchInfo.icon}</span>
+              {`${subSearchInfo.cdNm}은(는) 어떠세요?`}
+            </h2>
             <button onClick={changeList}>새로고침</button>
           </div>
           <SwiperList data={subClipInfo.list} playAction={playClip}/>
