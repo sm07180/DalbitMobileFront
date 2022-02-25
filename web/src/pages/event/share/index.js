@@ -61,7 +61,14 @@ const Share = () => {
         }else if(isAuth) {
           dispatch(setSlidePopupOpen());
         }else {
-          authReq('12', context.authRef, context) // 본인인증
+          Api.self_auth_check({}).then((res) => {
+            if (res.result === 'success') {
+              setIsAuth(true);
+              dispatch(setSlidePopupOpen());
+            }else {
+              authReq('12', context.authRef, context) // 본인인증
+            }
+          })
         }
       }
     }
