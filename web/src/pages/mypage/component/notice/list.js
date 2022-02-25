@@ -212,7 +212,7 @@ const List = (props) => {
             </div>
             <div className="detail_header_writerinfo">
               <div className="detail_info">
-                {profImg && <img src={profImg.thumb80x80} onClick={() => historyMem(yourMemNo)} />}
+                {profImg && <img src={profImg.thumb292x292} onClick={() => historyMem(yourMemNo)} />}
                 {nickNm && <span className="nick">{nickNm}</span>}
               </div>
             </div>

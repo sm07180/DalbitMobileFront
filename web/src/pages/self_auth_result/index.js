@@ -254,7 +254,13 @@ export default (props) => {
             </h5>
             <div className="btn-wrap">
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => {
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    window.location.href = '/'
+                  }
+                }}
               >확인
               </button>
             </div>

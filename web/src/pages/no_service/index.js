@@ -9,9 +9,11 @@ import {BeforeLogout} from 'common/logout_func'
 import NoServiceIcon from './static/ic_sorry.png'
 import './index.scss'
 import Message from 'pages/common/message'
+import {useHistory} from "react-router-dom";
 
 export default function Service() {
   const globalCtx = useContext(Context)
+  const history = useHistory();
   const [fetching, setFetching] = useState(false)
   const [authCheckYn, setAuthCheckYn] = useState('y') // y인 경우에 본인인증을 시도할 수 있다 (1일 1회)
 
@@ -68,7 +70,7 @@ export default function Service() {
           </div>
         </div>
         <div className="buttonWrap">
-          <button onClick={() => location.replace('/customer/personal')}>1:1 문의하기</button>
+          <button onClick={() => {history.push('/customer/inquire')}}>1:1 문의하기</button>
           {authCheckYn === 'y' ? (
             <button onClick={() => authReq('9', globalCtx.authRef, globalCtx)}>본인인증</button>
           ) : (

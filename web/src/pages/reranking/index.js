@@ -298,7 +298,7 @@ const RankPage = () => {
       <section className='rankingTop'>
         <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
         <div className='title' onClick={selectChart}>
-          <div>DJ 실시간</div>
+          <div>DJ {select === "time" && "실시간"}</div>
           <div>
             <strong>
               {select === "time" && "타임"}
@@ -318,13 +318,22 @@ const RankPage = () => {
         </div>
         <ChartSwiper data={djRank}/>
       </section>
-      {token.isLogin &&
-      <section className='myRanking'>
-        <CntTitle title={'님의 오늘 순위는?'}>
-          <div className="point">{profile.nickNm}</div>
-        </CntTitle>
-        <MyRanking data={myRank}/>
-      </section>
+      {token.isLogin ?
+        <section className='myRanking'>
+          <CntTitle title={'님의 오늘 순위는?'}>
+            <div className="point">{profile.nickNm}</div>
+          </CntTitle>
+          <MyRanking data={myRank}/>
+        </section>
+          :
+        <section className='myRanking'>
+          <CntTitle title={'나의 순위는?'}>
+          </CntTitle>
+          <div className='rankBox'>
+            <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
+            <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
+          </div>
+        </section>          
       }
       <section className='dailyRankList'>
         <CntTitle title={'일간 FAN / CUPID'} more={`${dayTabType === "FAN" ? "/rankDetail/FAN" : "/rankDetail/CUPID"}`}/>
@@ -340,10 +349,8 @@ const RankPage = () => {
           }
         </div>
       </section>
-      <section className='rankingBottom' onClick={() => history.push('/rankDetail/DJ')}>
-        <p>오늘의 랭킹 순위는?</p>
-        <p>혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!</p>
-        <button>랭킹순위 전체보기 &gt;</button>
+      <section className='rankingBottom' onClick={() => history.push('/honor')}>
+        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
       </section>
       {popSlide &&
       <PopSlide setPopSlide={setPopSlide}>
@@ -383,7 +390,7 @@ const RankPage = () => {
           </div>
         </div>
         <div className='popInfo'>
-          <span>Honey</span>(허니)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
+          <span>HONEY</span>(허니)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
         </div>
       </LayerPopup>
       }

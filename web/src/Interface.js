@@ -400,6 +400,7 @@ export default () => {
 
         switch (push_type + '') {
           case '1': //-----------------방송방 [room_no]
+            pushMsg.title = pushMsg.title.trim() ? pushMsg.title.trim() : pushMsg.contents;
             context.action.updateStickerMsg(pushMsg)
             context.action.updateSticker(true) //true,false
             break

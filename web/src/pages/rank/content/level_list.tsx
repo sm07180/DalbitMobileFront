@@ -68,7 +68,7 @@ function LevelList({ empty }) {
                     }}
                   >
                     <img src={holder} className="thumbBox__frame" />
-                    <img src={profImg.thumb120x120} className="thumbBox__pic" />
+                    <img src={profImg.thumb292x292} className="thumbBox__pic" />
                   </div>
                   <div>
                     <div className="nickNameBox">{nickNm}</div>

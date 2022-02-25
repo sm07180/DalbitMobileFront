@@ -21,7 +21,7 @@ import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
-import {setNoticeTab} from "../redux/actions/notice";
+import {setNoticeData, setNoticeTab} from "../redux/actions/notice";
 import API from "../context/api";
 
 const gnbTypes = [
@@ -52,12 +52,13 @@ export default function GNB() {
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
-  const [newCnt, setNewCnt] = useState(0);
+  // const [newCnt, setNewCnt] = useState(0);
   const [noticeCount, setNoticeCount] = useState(0);
 
   const [activeType, setActiveType] = useState('');
 
   const [isGnb, setIsGnb] = useState(true);
+  const alarmData = useSelector(state => state.newAlarm);
 
   //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
   const gnbOtherPageCheck = useCallback((url) => {
@@ -358,8 +359,7 @@ export default function GNB() {
     const res = await API.getMyPageNew(memNo);
     if(res.result === "success") {
       if(res.data) {
-        setNewCnt(res.data.newCnt);
-        setNoticeCount(res.data.notice);
+        dispatch(setNoticeData(res.data));
       }}
   }
 
@@ -368,8 +368,10 @@ export default function GNB() {
   }, []);
 
   useEffect(() => {
-    fetchMypageNewCntData(context.profile.memNo);
-  }, [localStorage.getItem("mypageNew")]);
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
+  }, []);
 
   useEffect(() => {
     if (globalState.broadClipDim) {
@@ -477,7 +479,7 @@ export default function GNB() {
                           }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
-                        {newCnt > 0 && <span className="newDot"/>}
+                        {item.url === '/alarm' && alarmData.newCnt > 0 && <span className="newDot"/>}
                       </li>
                     )
                   })}
