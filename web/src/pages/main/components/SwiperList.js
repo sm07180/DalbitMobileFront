@@ -20,6 +20,10 @@ const SwiperList = (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
   }
 
   const onClickAction = (item) => {
