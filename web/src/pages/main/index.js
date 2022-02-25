@@ -473,7 +473,7 @@ const MainPage = () => {
       }
       <section className='top10'>
         <div className="cntTitle">
-          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10</h2>
+          <h2 onClick={() => {golink("/rank")}}>🏆 일간 TOP 10 &gt;</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </div>
         {rankingList.length>0 &&

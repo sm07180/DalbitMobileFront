@@ -91,6 +91,9 @@
           background-image:url("#{$IMGSERVER}/images/mainmask.png");
           // transform:translateX(30%);
           // transition: transform .7s ease-out;
+          .animation {
+            width: 100%;
+          }
           .badgeGroup {
             @include flex(center);
             margin-bottom: 8px;
@@ -115,20 +118,22 @@
         }
       }
       // main slide 애니메이션 지우지 마시오!! 후반에 추가
-      // &-active {
-      //   .listColumn {
-      //     .info {
-      //       animation: show 0.4s linear forwards;
-      //     }
-      //   }
-      // }
-      // &-duplicate-active {
-      //   .listColumn {
-      //     .info {
-      //       transform:translateX(0);
-      //     }
-      //   }
-      // }
+      &-active {
+        .listColumn {
+          .info {
+            .animation {
+              animation: show 0.4s linear forwards;
+            }
+          }
+        }
+      }
+      &-duplicate-active {
+        .listColumn {
+          .info {
+            transform:translateX(0);
+          }
+        }
+      }
     }
     .swiper-pagination {
       position: absolute;
@@ -200,6 +205,9 @@
   .top10 {
     .cntTitle {
       margin-bottom:12px;
+      h2 {
+        cursor: pointer;
+      }
       .tabmenu {
         @include flex(center);
         height:20px;
