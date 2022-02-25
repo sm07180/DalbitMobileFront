@@ -227,10 +227,10 @@ const SearchPage = (props) => {
       <div className='subContent'>
         {!searching && (searchVal.length === 0 ?
           <>
-            {djListInfo.list.length > 0 &&
-            <section className='djSection'>
-              <CntTitle title="믿고 보는 DJ" />
-              <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
+            {liveListInfo.list.length > 0 &&
+            <section className='liveSection'>
+              <CntTitle title="🔥 지금 핫한 라이브"/>
+              <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"}/>
             </section>
             }
             {newBjListInfo.list.length > 0 &&
@@ -239,16 +239,16 @@ const SearchPage = (props) => {
               <HotLiveList data={newBjListInfo.list} nickNmKey={"bjNickNm"}/>
             </section>
             }
-            {liveListInfo.list.length > 0 &&
-            <section className='liveSection'>
-              <CntTitle title="🔥 지금 핫한 라이브"/>
-              <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"}/>
-            </section>
-            }
             {hotClipListInfo.list.length > 0 &&
             <section className='clipSection'>
               <CntTitle title="오늘 인기 있는 클립"/>
               <ClipList data={hotClipListInfo.list}/>
+            </section>
+            }
+            {djListInfo.list.length > 0 &&
+            <section className='djSection'>
+              <CntTitle title="믿고 보는 DJ" />
+              <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
             </section>
             }
           </>
