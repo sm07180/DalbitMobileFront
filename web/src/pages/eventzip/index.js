@@ -10,7 +10,7 @@ import {Context} from "context";
 const EventZip = () => {
   let history = useHistory()
   const context = useContext(Context)
-  const poemEventEnd = new moment().isAfter('20220310');
+  const poemEventEnd = new moment().isAfter('20220322');
   const inviteEventEnd = new moment().isAfter('20220308');
 
   const golink = (path, endDay) => {
@@ -32,7 +32,7 @@ const EventZip = () => {
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7649/event7649_zip.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라를 축하해 달라</div>
-            <div className='eventDate'>02.28 - 03.09</div>
+            <div className='eventDate'>02.28 - 03.21</div>
           </div>
         </div>
 

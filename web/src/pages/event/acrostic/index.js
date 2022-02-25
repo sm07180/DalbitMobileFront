@@ -130,7 +130,7 @@ const Acrostic = () => {
 
   return (
     <div id="acrosticEvent">
-      <Header title={'달라를 소개해 달라!'} type={'back'}/>
+      <Header title={'이벤트'} type={'back'}/>
       <div className="content">
         <img src="https://image.dalbitlive.com/event/acrostic/main.png" alt="달라를 축하해 달라"/>
         <button className="noticeBtn" onClick={noticePop}>유의사항</button>
