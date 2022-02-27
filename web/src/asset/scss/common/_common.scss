@@ -20,7 +20,7 @@ legend {
   width:100%;
 }
 
-.content-article {
+.mobileType {
   @include flex($fd: column);
   min-height:100vh;
 }
@@ -56,9 +56,12 @@ legend {
   .totalWrap {
     flex:1;
     @include flex($fd:column);
+    // display: grid;
+    // grid-template-columns: 480px 290px;
+    // grid-template-rows: 1fr;
     max-width:800px;
     height:100%;
-    > .content {
+    >.content {
       flex:1;
       position:relative;
       @include flex($fd:column);
@@ -94,16 +97,34 @@ legend {
       }
     }
     .rightContent {
-      float: right;
-      background: $white;
-      min-height: 100vh;
-      width: 280px;
-      .subContent {
-        border-left: 1px solid $lightGray;
-        border-right: 1px solid $lightGray;
-        padding: 40px 16px;
-        min-height: calc(100vh - 50px);
-        box-sizing: border-box;
+      @include flex(center,flex-start,column);
+      display:none;
+      width:290px;
+      height:calc(100vh - #{$GNB-HEIGHT});
+      margin-left:30px;
+      .loginBefore {
+        width:230px;
+        padding-top:46px;
+        letter-spacing: -.3px;
+        white-space: nowrap;
+        .mainText {
+          @include flex($fd: column);
+          @include font(32px,$Medium,#202020);
+          margin-bottom:42px;
+          span {
+            &:last-child {
+              font-weight:$ExtraBold;
+            }
+          }
+        }
+        button {
+          width:100%;
+          margin-top:15px;
+          line-height:46px;
+          border-radius:16px;
+          background-color:$MAINCOLOR;
+          @include font(14px,$Bold,white);
+        }
       }
     }
   }
@@ -417,8 +438,6 @@ legend {
         width: 22px;
         height: 27px;
         margin-right: 8px;
-        &.broadcast {@include BGIMG("common/playerbar_live.png");}
-        &.clip {@include BGIMG("common/playerbar_clip.png");}
       }
       .thumb {
         position: relative;

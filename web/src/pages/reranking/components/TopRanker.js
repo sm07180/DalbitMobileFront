@@ -1,10 +1,13 @@
 import React, {useContext, useState} from 'react'
 
+import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
+
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
+import {IMG_SERVER} from 'context/config'
 import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
@@ -77,6 +80,7 @@ const TopRanker = (props) => {
 
   return (
     <React.Fragment>
+      <span className='questionMark' onClick={() => setPopup(true)}></span>
       {data && data.length > 0 &&    
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
@@ -91,7 +95,6 @@ const TopRanker = (props) => {
                   :
                   `${index + 1}회차`
                 } TOP3
-                  <span className='questionMark' onClick={() => setPopup(true)}></span>
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
@@ -122,8 +125,8 @@ const TopRanker = (props) => {
                         <div className="ranker" key={index}>
                           <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
                             <div className="photo">
-                              <img src={data.profImg.thumb190x190} alt="" />
-                              <div className='rankerRank'>{data.rank}</div>
+                              <img src={data.profImg.thumb292x292} alt="" />
+                              <div className={`rankerRank ${data.rank === 1 ? "first" : ""}`}>{data.rank}</div>
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
@@ -132,17 +135,31 @@ const TopRanker = (props) => {
                               <div className='cupidHeader'>Honey</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
-                                  <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
+                                  <img src={data.djProfImg.thumb292x292} alt={data.nickNm} />
                                 </div>
                                 <div className='cupidNick'>{data.djNickNm}</div>
                               </div>
                             </div>
                             :
                             <>
-                              {data.roomNo && <div className='badgeLive' onClick={(e) => {
-                                e.stopPropagation();
-                                goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                              }}></div>}
+                              {
+                                data.roomNo &&
+                                  <div className='badgeLive' onClick={(e) => {
+                                    e.stopPropagation();
+                                    goLive(data.roomNo, data.nickNm, data.listenRoomNo);
+                                  }}>                                    
+                                    <span className='equalizer'>
+                                      <Lottie
+                                        options={{
+                                          loop: true,
+                                          autoPlay: true,
+                                          path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                                        }}
+                                      />
+                                    </span>
+                                    <span className='liveText'>LIVE</span>
+                                  </div>
+                                }
                             </>
                           }
                         </div>
@@ -186,7 +203,7 @@ const TopRanker = (props) => {
               보낸 좋아요 개수 (부스터 포함)<br/>1~200위의 순위입니다.
               </div>
               <div className='popText'>
-                <span>Honey</span>(허니)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
+                <span>HONEY</span>(허니)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
               </div>
             </>
 

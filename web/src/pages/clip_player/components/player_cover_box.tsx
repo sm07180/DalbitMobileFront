@@ -221,7 +221,7 @@ export default function ClipPlayerIconBox() {
               </p>
 
               <div className="profImg">
-                <img src={clipInfo.profImg.thumb120x120} alt="profImg" />
+                <img src={clipInfo.profImg.thumb292x292} alt="profImg" />
                 <img src={clipInfo.holder} alt="holder" />
               </div>
               <div className="tagWrap">

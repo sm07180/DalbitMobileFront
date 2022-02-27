@@ -1,6 +1,7 @@
 @import "components/ui/_mixin.scss";
 
-.topSwiper {
+// 메인페이지 topSwiper 와 구분하기 위해 profileTopSwiper로 수정
+.profileTopSwiper {
   position: relative;
   .swiper-slide {
     @include flex(center,center);
@@ -19,17 +20,19 @@
     bottom:31px;
   }
   .swiperBottom {
-    @include position-bottom-right(26px,0);z-index: 1;
+    @include position-bottom-right(26px,16px);z-index: 1;
     @include flex(center);
     &.pagenation {
-      right: 40px;
+      right: 48px;
+    }
+    > div {
+      margin-left: 8px;
     }
     .specialBdg {
       @include flex(center,center,column);
       width:57px;
       height:28px;
       line-height:12px;
-      margin-right:6px;
       border-radius:100px;
       background-color: $MAINCOLOR;
       cursor: pointer;
@@ -49,10 +52,21 @@
         width:100%;
       }
     }
-    .pagination {
-      @include swiperPagination;
-      position:static;
-      margin-left:8px;
+    .badgeLive {
+      @include flex(center, center);
+      width:62px;height:28px;
+      background-color: #FFE9E9;
+      border-radius: 100px;
+      cursor: pointer;
+      .equalizer {
+        display: inline-block;
+        width: 12px;
+        margin-top: -2px;
+        margin-right: 4px;
+      }
+      .liveText {
+        @include font(12px, 900, #FF3C7B);
+      }
     }
   }
 }

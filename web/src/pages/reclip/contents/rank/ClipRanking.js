@@ -79,20 +79,22 @@ const ClipRanking = () => {
     <div id="clipRanking">
       <Header title='클립 랭킹' type='back' />
       <Tabmenu tabList={tabmenu} targetIndex={searchInfo.rankType - 1} changeAction={handleTabmenu}/>
-      {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} playAction={playList}/>}
-      {rankClipInfo.paging.total > 3 ?
-        <>
-          <section className="listWrap">
-            <div className="listAll">
-              <span>지금 가장 인기있는 클립을 들어보세요!</span>
-              <button data-clip-no={rankClipInfo.topInfo[1].list[0].clipNo} onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
-            </div>
-            <RankingList data={rankClipInfo.list} playAction={playList}/>
-          </section>
-        </>
-        :
-        <NoResult/>
-      }
+      <div className='rankingContent'>
+        {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} playAction={playList}/>}
+        {rankClipInfo.paging.total > 3 ?
+          <>
+            <section className="listWrap">
+              <div className="listAll">
+                <span>지금 가장 인기있는 클립을 들어보세요!</span>
+                <button data-clip-no={rankClipInfo.topInfo[1].list[0].clipNo} onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
+              </div>
+              <RankingList data={rankClipInfo.list} playAction={playList}/>
+            </section>
+          </>
+          :
+          <NoResult/>
+        }
+      </div>      
     </div>
   );
 };

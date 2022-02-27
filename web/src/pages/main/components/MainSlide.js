@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
@@ -10,15 +10,18 @@ import {Context} from "context";
 
 const MainSlide = (props) => {
   const {data, common, pullToRefreshPause} = props
+
   const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
     loop: true,
+    speed: 700,
     autoplay: {
-      delay: 10000,
+      delay: 7000,
       disableOnInteraction: false
     },
+    parallax: true,
     on:{
       click: function(evt) {
         evt.preventDefault();
@@ -38,9 +41,10 @@ const MainSlide = (props) => {
     if((common.isRefresh || !pullToRefreshPause) && data.length > 0) { // refresh 될때 슬라이드 1번으로
       const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
       swiper?.update();
-      swiper?.slideTo(0);
+      swiper?.slideTo(1);
     }
   }, [common.isRefresh, pullToRefreshPause]);
+
 
   return (
     <>
@@ -54,11 +58,13 @@ const MainSlide = (props) => {
                   :
                   <ListColumn photo={list.bannerUrl} index={index}>
                     <div className='info'>
-                      <div className="badgeGroup">
-                        <BadgeItems data={list} type='isBadge' />
+                      <div className='animation' data-swiper-parallax="-100" >
+                        <div className="badgeGroup">
+                          <BadgeItems data={list} type='isBadge' />
+                        </div>
+                        <span className="title">{list.title}</span>
+                        <span className="nick">{list.nickNm}</span>
                       </div>
-                      <span className="title">{list.title}</span>
-                      <span className="nick">{list.nickNm}</span>
                     </div>
                   </ListColumn>
                 }

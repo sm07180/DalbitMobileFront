@@ -8,10 +8,11 @@ import Utility from 'components/lib/utility'
 import Header from 'components/ui/header/Header'
 import CntTitle from '../../../../components/ui/cntTitle/CntTitle';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 import './dalCharge.scss'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import qs from 'query-string'
+import {setSlidePopupOpen} from "redux/actions/common";
 
 let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
@@ -35,9 +36,10 @@ const DalCharge = () => {
   const location = useLocation();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [selectPayment, setSelectPayment] = useState(-1);
-  const [popSlide, setPopSlide] = useState(false);
   const formTag = useRef(null);
   const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search);
+  const dispatch = useDispatch();
+  const commonPopup = useSelector(state => state.popup);
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
@@ -76,6 +78,14 @@ const DalCharge = () => {
     };
   }, [selectPayment]);
 
+  const slidePopAction = () => {
+    if(commonPopup.commonPopup) {
+      closePopup(dispatch);
+    }else {
+      dispatch(setSlidePopupOpen());
+    }
+  }
+
   const onSelectMethod = (index, payment) => {
     setSelectPayment(index);
 
@@ -84,7 +94,7 @@ const DalCharge = () => {
         if(response.result === 'success'){
           callPGForm(payment)
         }else{
-          setPopSlide(!popSlide)
+          slidePopAction();
         }
       });
     }else if(payment.code === "coocon"){  // 무통장(계좌이체)
@@ -259,8 +269,8 @@ const DalCharge = () => {
         결제문의 <span>1522-0251</span>
       </section>
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"/>
-      {popSlide === true &&
-      <PopSlide setPopSlide={setPopSlide}>
+      {commonPopup.commonPopup &&
+      <PopSlide>
         <div className='title'>인증 정보를 확인해주세요!</div>
         <p className='text'>
           안전한 계좌 정보 등록을 위해 한번 더<br/>

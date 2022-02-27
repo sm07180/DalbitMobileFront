@@ -19,7 +19,7 @@ const ResultCnt = (props) => {
             return (
               <div className="listRow" key={index}>
                 <div className="photo">
-                  <img src={list.bgImg.thumb150x150} />
+                  <img src={list.bgImg.thumb292x292} />
                   {list.roomType === '03' && <div className="badgeVideo"></div>}
                 </div>
                 <div className='listContent'>

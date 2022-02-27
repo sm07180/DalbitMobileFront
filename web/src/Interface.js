@@ -22,6 +22,7 @@ import qs from 'query-string'
 import {authReq} from "pages/self_auth";
 import {useDispatch} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
+import {MailboxContext} from "context/mailbox_ctx";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -400,6 +401,7 @@ export default () => {
 
         switch (push_type + '') {
           case '1': //-----------------방송방 [room_no]
+            pushMsg.title = pushMsg.title.trim() ? pushMsg.title.trim() : pushMsg.contents;
             context.action.updateStickerMsg(pushMsg)
             context.action.updateSticker(true) //true,false
             break
@@ -746,7 +748,7 @@ export default () => {
         if (context.backState === null) {
           Hybrid('goBack')
         } else {
-          backFunc(context)
+          backFunc(context, dispatch)
         }
         // break
         break
@@ -773,7 +775,8 @@ export default () => {
         history.push(`/`)
         break
       case 'mailbox-state':
-        console.log(JSON.stringify(event.detail))
+        const { mailboxAction } = useContext(MailboxContext);
+        mailboxAction.setIsMailboxNew(event.detail.new)
         context.action.updateIsMailboxNew(event.detail.new)
         break
 

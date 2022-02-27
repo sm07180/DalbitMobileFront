@@ -70,11 +70,14 @@ $SEARCH-HEADER: 112px;
     width:100%;
     margin-bottom: 44px;
   }
+  .subContent {
+    padding-top:10px;
+
+  }
   .cntTitle {
     margin-bottom:12px;
   }
   .djSection {
-    padding-top:10px;
     .listWrap {
       @include flex(center, center, column);
       .listColumn {
@@ -122,15 +125,72 @@ $SEARCH-HEADER: 112px;
       }
     }    
   }
+  .daldungs {
+    .cntTitle {
+      margin-bottom:12px;
+    }
+    .swiper-wrapper {
+      .swiper-slide {
+        width:auto;
+        margin-right:12px;
+        &:last-child {
+          margin-right:28px;
+        }
+        .listColumn {
+          width:113px;
+          border-radius:16px;
+          overflow:hidden;
+          cursor: pointer;
+          .photo {
+            height:149px;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:16px;
+              box-sizing: border-box;
+            }
+            img {
+              height:100%;
+              object-fit: cover;
+            }
+            .video {
+              @include position-top-right;
+              width:20px;
+              height:20px;
+              margin:6px;
+              @include BGIMG("common/icon/ico_video.png");
+            }
+          }
+          p {
+            position:absolute;
+            bottom:0;
+            padding:24px 8px 8px;
+            background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
+            text-align:left;
+            @include font(13px,$Medium,white);
+            @include fontCut;
+          }
+        }
+      }
+    }
+    .empty {
+      width:100%;
+      height:60px;
+      text-indent:20px;
+      @include font(15px,400,#999);
+    }
+  }
   .liveSection {
     .listColumn {
-      width: 113px;
-      height: 149px;
-      border-radius: 16px;
+      width: 116px;
+      height: 154px;
+      border-radius: 8px;
       overflow: hidden;
       cursor: pointer;
       .photo {
-        @include photoStyle(113px, 149px, 16px);
+        @include photoStyle(116px, 154px, 8px);
         img {
           width:auto;
         }
@@ -152,21 +212,21 @@ $SEARCH-HEADER: 112px;
   }
   .clipSection {
     .listColumn {
-      width: 113px;
+      width: 116px;
       cursor: pointer;
       .photo {
         position: relative;
-        height:113px;
+        height:116px;
         &::before {
           content: "";
           @include position-top-left;
           width: 100%; height: 100%;
           border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-          border-radius:16px;
+          border-radius:8px;
           box-sizing: border-box;
         }
         img {
-          border-radius:16px;
+          border-radius:8px;
         }
       }
       .title {

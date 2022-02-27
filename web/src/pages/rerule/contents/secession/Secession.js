@@ -22,43 +22,37 @@ const Secession = (props) => {
   const [all, setAll] = useState(false)
   const [myMemId, setMyMemId] = useState('')
   const [registMemId, setRegistMemId] = useState('')
+
   const FethData = async () => {
     const res = await Api.info_secsseion({
-      data: {
-        uid: registMemId
-      }
+      data: {uid: registMemId}
     })
-
     if (res.result === 'success') {
-      async function secfun(obj) {
-        const res = await Api.member_logout({data: context.token.authToken})
-        if (res.result === 'success') {
-          Utility.setCookie('custom-header', '', -1)
-          Hybrid('GetLogoutToken', res.data)
-          context.action.updateToken(res.data)
-          context.action.updateGnbVisible(false)
-          context.action.updateProfile(null)
-          context.action.alert({
-            msg: '회원 탈퇴가 완료 되었습니다.',
-            callback: () => {
-              history.push(`/`)
-            }
-          })
-        }
-      }
-      secfun()
+      fetchSecData();
     } else {
       if (registMemId !== myMemId) {
-        context.action.alert({
-          msg: 'UID가 일치하지않습니다.'
-        })
-      } else {
-        context.action.alert({
-          msg: res.message
-        })
-      }
+        context.action.alert({msg: 'UID가 일치하지않습니다.'})
+      } else {context.action.alert({msg: res.message})
+      }}
+  }
+
+  const fetchSecData = async () => {
+    const res = await Api.member_logout({data: context.token.authToken});
+    if(res.result === "success") {
+      Utility.setCookie("custom-header", "", -1);
+      Hybrid("GetLogoutToken", res.data);
+      context.action.updateToken(res.data);
+      context.action.updateGnbVisible(false);
+      context.action.updateProfile(null);
+      context.action.alert({
+        msg: "회원 탈퇴가 완료 되었습니다.",
+        callback: () => {
+          location.reload();
+        }
+      })
     }
   }
+
   const Validate = () => {
     context.action.confirm({
       msg: '정말 회원탈퇴 하시겠습니까 ?',
@@ -75,6 +69,7 @@ const Secession = (props) => {
     if (context.profile.memId) {
       setMyMemId(context.profile.memId)
     }
+    if(!(context.token.isLogin)) {history.push("/login")}
   }, [])
 
   const RegistMem = (e) => {

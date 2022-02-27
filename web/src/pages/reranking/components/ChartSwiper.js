@@ -1,14 +1,20 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
+import Lottie from 'react-lottie'
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
+import {Context, GlobalContext} from "context";
 import {useHistory} from "react-router-dom";
-
+import {RoomValidateFromClip} from "common/audio/clip_func";
+import {IMG_SERVER} from 'context/config'
 const CardList = (props) => {
   const {data} = props
 
   const history = useHistory();
+  const context = useContext(Context);
+
+  let locationStateHistory = useHistory();
 
   // 스와이퍼
   const swiperParams = {
@@ -28,14 +34,32 @@ const CardList = (props) => {
                     <div className='rankWrap'>
                       <div className='rank'>{list.rank}</div>
                     </div>
+                    {
+                      list.roomNo &&
+                        <div className='livetag' onClick={(e) => {
+                          e.stopPropagation();
+                          RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.nickNm);
+                        }}>
+                          <Lottie
+                            options={{
+                              loop: true,
+                              autoPlay: true,
+                              path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
+                            }}
+                          />
+                        </div>
+                    }
                     <div className='infoWrap'>
-                      {list.roomNo && <div className='livetag'>LIVE</div>}
                       <div className='userNick'>{list.nickNm}</div>
                     </div>
                   </ListRow>
                 </div>
               )
             })}
+            <div className='nextRanking' onClick={() => history.push(`/rankDetail/DJ`)}>
+              <p>그 다음은 누구일까?</p>
+              <span></span>
+            </div>
         </Swiper>
       }
     </div>

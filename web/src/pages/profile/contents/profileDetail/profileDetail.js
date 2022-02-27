@@ -11,8 +11,10 @@ import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponen
 import Utility from "components/lib/utility";
 import Swiper from "react-id-swiper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import PopSlide from "components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
+import {useDispatch, useSelector} from "react-redux";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -47,8 +49,9 @@ const ProfileDetail = (props) => {
   const [text, setText] = useState('');
 
   //차단 / 신고하기
-  const [popBlockReport, setPopBlockReport] = useState(false);
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -353,13 +356,13 @@ const ProfileDetail = (props) => {
   /* 차단/신고 팝업 열기 */
   const openBlockReportPop = (blockReportInfo) => {
     console.log('report info',blockReportInfo);
-    setPopBlockReport(true);
+    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
     setBlockReportInfo(blockReportInfo);
   }
 
   /* 차단/신고 팝업 닫기 */
   const closeBlockReportPop = () => {
-    setPopBlockReport(false);
+    closePopup(dispatch);
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
@@ -406,7 +409,7 @@ const ProfileDetail = (props) => {
             : item?.photoInfoList?.length === 1 ?
               <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
                 <div className="photo">
-                  <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
+                  <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
                 </div>
               </div>
             : <></>
@@ -448,8 +451,8 @@ const ProfileDetail = (props) => {
       {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
 
       {/* 차단 / 신고하기 */}
-      {popBlockReport &&
-      <PopSlide setPopSlide={setPopBlockReport}>
+      {popup.blockReportPopup &&
+      <PopSlide>
         <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
       </PopSlide>
       }

@@ -15,6 +15,7 @@
     .benefits {
       display: inline-block;
       width: 40px; height: 40px;
+      margin-right: 12px;
       @include font(14px, 400, #666666);
     }
     .title {
@@ -53,24 +54,37 @@
     }
   }
   .rankingContent {
+    position: relative;
     box-sizing: border-box;
+    .questionMark {
+      position: absolute;
+      top: 34px; right: 16px;
+      transform: translateY(-50%);
+      width: 20px; height: 20px;
+      @include BGIMG('common/icon/ico_questionMark-bgGray.png');
+      cursor: pointer;
+      z-index: 2;
+    }
     .swiper-container {
       position: relative;
       @include flex(center);
       width: 100%;
-      padding: 0 16px 30px;
+      padding: 0 16px 21px;
       box-sizing: border-box;
+      @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: left top;
       .swiper-pagination {
         position: absolute;
         bottom:0px; left: 50%;
         transform: translateX(-50%);
         @include flex(center,center);
         width:auto;
-        padding:12px 0;
         .swiper-pagination-bullet {
           width: 8px; height: 5px;
           border-radius: 100px;
-          background-color:#D2D2D2;
+          background-color:#ACACAC;
           &.swiper-pagination-bullet-active {
             width: 15px; height: 5px;
             background-color: #202020;
@@ -81,10 +95,6 @@
     .rankingTop3 {
       @include flex(center, center, column);
       width: 100%;
-      @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: left top;
       .topHeader {
         position: relative;
         @include flex(center, center);
@@ -92,14 +102,6 @@
         padding: 14px 16px;
         @include font(18px, 600, #272727);
         line-height: 40px;
-        .questionMark {
-          position: absolute;
-          top: 50%; right: 16px;
-          transform: translateY(-50%);
-          width: 20px; height: 20px;
-          @include BGIMG('common/icon/ico_questionMark-bgGray.png');
-          cursor: pointer;
-        }
       }
       .topContent{
         @include flex(flex-start, space-between);
@@ -155,26 +157,41 @@
             .rankerRank {
               @include position-top-left;
               @include flex(center, center);
-              width: 32px; height: 32px;
-              line-height: 32px;
+              width: 28px; height: 28px;
+              line-height: 28px;
               border-radius: 50%;
               background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
               @include font(20px, 700, #fff);
+              &.first {
+                width: 32px; height: 32px;
+                line-height: 32px;
+              }
             }
           }
           .rankerNick {
             width: 100%;
             text-align: center;
-            @include font(14px, 700, #202020);
+            @include font(14px, 600, #202020);
             margin-top: 8px;
             @include fontCut;
           }
         }
         .badgeLive {
+          @include flex(center, center);
           width:100px;height:28px;
-          @include BGIMG('ranking/dalla/badgeLiveTop.png');
-          margin: 12px auto;
+          margin: 12px auto 0px;
+          background-color: #FFE9E9;
+          border-radius: 100px;
           cursor: pointer;
+          .equalizer {
+            display: inline-block;
+            width: 12px;
+            margin-top: -2px;
+            margin-right: 4px;
+          }
+          .liveText {
+            @include font(12px, 900, #FF3C7B);
+          }
         }
       }
       .cupidWrap {
@@ -226,8 +243,8 @@
       flex:1;
       @include flex(center, flex-start, column);
       height: 100%;
-      padding:15px 0;
-      margin: 20px 16px;
+      padding:12px 0;
+      margin: 12px 16px;
       border-top: 1px solid #F2F2F2;
       .listRow {
         flex:none;
@@ -267,14 +284,14 @@
         }
         .listContent {
           flex: 1;
-          padding: 0 16px;
+          padding: 0 12px;
           @include flex(center, center, column);
           overflow: hidden;
           .listItem {
             @include flex(center);
             width: 100%;
             + .listItem {
-              margin-top:4px;
+              margin-top:6px;
             }
             span {
               display: block;
@@ -283,7 +300,7 @@
             .nick {
               line-height:20px;
               margin-left:4px;
-              @include font(16px,500,#202020);
+              @include font(14px,500,#202020);
               @include fontCut;
             }
             i {
@@ -316,10 +333,22 @@
         .listBack {
           flex: none;
           @include flex(center, center);
-          width:60px;
           .badgeLive {
-            width:60px;height:28px;
-            @include BGIMG('ranking/dalla/badgeLive.png');
+            @include flex(center, center);
+            width:62px;height:28px;
+            margin: 12px auto 0px;
+            background-color: #FFE9E9;
+            border-radius: 100px;
+            cursor: pointer;
+            .equalizer {
+              display: inline-block;
+              width: 12px;
+              margin-top: -2px;
+              margin-right: 4px;
+            }
+            .liveText {
+              @include font(12px, 900, #FF3C7B);
+            }
           }
         }
       }
@@ -343,43 +372,47 @@
       }
     }
   }
+  #layerPop {
+    .popContainer {
+      padding: 20px 0 51px;
+      box-sizing: border-box;
+      .popTitle {
+        line-height: 48px;
+        text-align: center;
+        @include font(16px, 700, #202020);
+      }
+      .popSubTitle {
+        @include font(16px, 400, #202020);
+        @include fontLineCut();
+        text-align: center;
+        letter-spacing: -1px;
+        margin-top: 12px;
+        line-height: 26px;
+        white-space: pre;
+        overflow: hidden;
+        &.point {
+          color: #FF3C7B;
+        }
+      }
+      .popText {
+        @include font(13px, 400, #666666);
+        @include fontLineCut();
+        text-align: center;
+        letter-spacing: -1px;
+        margin-top: 20px;
+        line-height: 20px;
+        white-space: pre;
+        overflow: hidden;
+        span {
+          @include font(13px, 400, #FF6B4B);
+          padding-left: 16px;
+          background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+          background-position: left center;
+          background-repeat: no-repeat;
+          background-size: 16px 16px;
+        }
+      } 
+    }     
+  }
 }
 
-#layerPop {
-  .popTitle {
-    line-height: 48px;
-    text-align: center;
-    @include font(16px, 700, #202020);
-  }
-  .popSubTitle {
-    @include font(16px, 400, #202020);
-    @include fontLineCut();
-    text-align: center;
-    letter-spacing: -1px;
-    margin: 11px 0;
-    line-height: 26px;
-    white-space: pre;
-    overflow: hidden;
-    &.point {
-      color: #FF3C7B;
-    }
-  }
-  .popText {
-    @include font(13px, 400, #666666);
-    @include fontLineCut();
-    text-align: center;
-    letter-spacing: -1px;
-    margin: 11px 0;
-    line-height: 20px;
-    white-space: pre;
-    overflow: hidden;
-    span {
-      @include font(13px, 400, #FF6B4B);
-      padding-left: 16px;
-      background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
-      background-position: left center;
-      background-repeat: no-repeat;
-      background-size: 16px 16px;
-    }
-  }  
-}

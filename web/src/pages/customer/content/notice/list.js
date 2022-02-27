@@ -38,6 +38,10 @@ export default function List() {
     return isNew
   }
 
+  useEffect(() => {
+    console.log(mypageNewStg);
+  })
+
   const fetchData = async function (next) {
     // async - await을 쓸 수 있도록 하기 위해서
     currentPage = next ? ++currentPage : currentPage
@@ -105,14 +109,16 @@ export default function List() {
   }
   const routeHistory = (item) => {
     const {noticeIdx} = item
-
+    console.log(noticeIdx);
     history.push({
-      pathname: `/customer/notice/${noticeIdx}`,
-      state: {
-        noticeIdx: noticeIdx
-      }
+      pathname: `/notice/${noticeIdx}`,
+      state: noticeIdx
     })
   }
+
+  useEffect(() => {
+    console.log(listPage)
+  })
 
   useEffect(() => {
     // effect hook

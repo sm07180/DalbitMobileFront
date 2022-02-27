@@ -44,20 +44,19 @@ export default (props) => {
   }
   //수정하기 토글
   const editToggle = (contents, boardIdx) => {
+    setModifyState(true)
     context.action.updateBoardModifyInfo({
       clipNo: LocationClip,
       contents: contents,
       replyIdx: boardIdx
     })
     if (writeState === false) {
-      setModifyState(true)
       setModifyMsg(contents)
-    } else {
-      setModifyState(false)
     }
   }
   //삭제하기 fetch
   const deleteBoard = (boardIdx, clipMemNo) => {
+    setModifyState(true)
     if (props.type === 'clip_board') {
       async function fetchDataDelete() {
         const res = await Api.postClipReplyDelete({
@@ -160,7 +159,7 @@ export default (props) => {
                 <button onClick={userReport}>신고하기</button>
               }
             </div>
-            <span className="thumb" style={{backgroundImage: `url(${props.data.profImg.thumb190x190})`}} onClick={Link}></span>
+            <span className="thumb" style={{backgroundImage: `url(${props.data.profImg.thumb292x292})`}} onClick={Link}></span>
             <span className="info" onClick={Link}>
               <span className="info__name">
                 <em className={`${props.data.viewOn === 0 && 'info__lock'}`}></em>

@@ -3,7 +3,7 @@
 button.submitBtn {
   line-height: 48px;
   border-radius: 16px;
-  background: $MAINCOLOR;
+  background: $DOWNCOLOR;
   @include font(16px,bold,white);
   &.disabled {
     opacity: .2;

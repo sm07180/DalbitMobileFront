@@ -37,7 +37,7 @@ export default props => {
       onClick={() => {
         props.update({selectList: data})
       }}>
-      <Profile url={data.bjProfImg.thumb120x120} />
+      <Profile url={data.bjProfImg.thumb292x292} />
 
       <Info>
         <h1>{data.title}</h1>
