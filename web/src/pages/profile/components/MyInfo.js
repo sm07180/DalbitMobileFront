@@ -25,7 +25,7 @@ const MyInfo = (props) => {
         </div>
       </div>
       <div className="photo">
-        {data?.profImg && <img src={data.profImg.thumb150x150} alt="" />}
+        {data?.profImg && <img src={data.profImg.thumb292x292} alt="" />}
       </div>
     </>
   )

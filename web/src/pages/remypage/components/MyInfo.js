@@ -15,7 +15,7 @@ const greetingComment = [
 ]
 
 const MyInfo = (props) => {
-  const {data, setPopSlide} = props
+  const {data, openLevelPop} = props
   const [nowComment, setNowComment] = useState('');
 
   /* time: HH:mm:ss */
@@ -39,13 +39,6 @@ const MyInfo = (props) => {
         setNowComment(item.comment);
       }
     })
-  }
-
-  /* 레벨 클릭 */
-  const openLevelPop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setPopSlide(true)
   }
 
   useEffect(() => {
@@ -74,7 +67,7 @@ const MyInfo = (props) => {
       </div>
       <div className="photoWrap">
         <div className="photo">
-          {data && <img src={data.profImg?.thumb150x150} alt="" />}
+          {data && <img src={data.profImg?.thumb292x292} alt="" />}
         </div>
         <button>프로필 보기</button>
       </div>

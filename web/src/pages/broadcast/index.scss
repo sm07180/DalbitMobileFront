@@ -221,6 +221,9 @@
             margin: 0 auto;
             background-color: gray;
           }
+          &::-webkit-scrollbar-track {
+            background-color: transparent;
+          }
         }
 
         .chat-inner-wrap {

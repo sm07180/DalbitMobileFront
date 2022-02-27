@@ -60,7 +60,7 @@ const InviteRank = () => {
         mem_sex: response.data.mem_sex,
         mem_nick: response.data.mem_nick,
         invitation_cnt:response.data.invitation_cnt,
-        thumb88x88:response.data.profImg.thumb88x88
+        thumb88x88:response.data.profImg.thumb292x292
       })
     })
   }
@@ -90,7 +90,7 @@ const InviteRank = () => {
                   <span className='rankingBadge'>{myData.rankNo === 0 ? "-" : myData.rankNo}</span>
                 </div>
                 <div className="photo">
-                  <img src={myData.thumb88x88} alt="프로필이미지"/>
+                  <img src={myData.thumb292x292} alt="프로필이미지"/>
                 </div>
                 <div className='listContent'>
                   <div className='listItem'>
@@ -112,7 +112,7 @@ const InviteRank = () => {
                         <span className={`rankingBadge`}>{index+1}</span>
                       </div>
                       <div className="photo">
-                        <img src={member.profImg.thumb88x88} alt="프로필이미지" />
+                        <img src={member.profImg.thumb292x292} alt="프로필이미지" />
                       </div>
                       <div className='listContent'>
                         <div className='listItem'>
@@ -146,8 +146,12 @@ const InviteRank = () => {
               초대인의 레벨로 우선순위 측정 됩니다.
             </span>
             <span>
-              1등 ~ 5등일 경우 30명 이상 초대 시 순위 인정,<br/>
-              조건 충족 못할 시 상금의 50%만 지급 합니다.
+              1등, 2등일 경우 50 명 이상 초대 시 순위 인정,<br/>
+              조건 충족 못할 시 50만원 + 한정판 달비 캐릭터 1개 지급
+            </span>
+            <span>
+              3등 ~ 5등일 경우 30 명 이상 초대 시 순위 인정,<br/>
+              조건 충족 못할 시 1,000달 + 한정판 달비 캐릭터 1개 지급
             </span>
             <span>
               현금 경품 시 메일(help@dallalive.com)로<br/>

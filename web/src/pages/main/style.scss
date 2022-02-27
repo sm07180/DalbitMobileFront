@@ -1,25 +1,5 @@
 @import "components/ui/_mixin.scss";
 
-/*
-  피씨일때 헤더 없애기
-*/
-#root {
-  .container {
-    .totalWrap {
-      .refresh-wrap {
-        display:none;
-      }
-      #mainPage {
-        header {display:none;}
-        .tabmenuWrap.isFixed {
-          top: $GNB-HEIGHT;
-          max-width:480px;
-        }
-      }
-    }
-  }
-}
-
 #mainPage {
   .headerWrap {
     position:fixed;
@@ -33,7 +13,6 @@
     }
     &.isShow {
       header {
-        border-bottom:1px solid #eee;
         background-color:white;
         h1 {
           width:71px;height:25px;
@@ -50,18 +29,26 @@
     margin-bottom:44px;
   }
   .topSwiper {
-    width:100%;
+    max-width:480px;
     height:360px;
-    margin-bottom:28px;
+    margin-bottom:0px;
+    + .favorites {
+      margin-top: 8px;
+    }
+    + .top10 {
+      margin-top: 24px;
+    }
     .swiper-slide {
       cursor:pointer;
       &:active {
         cursor:grab;
       }
       .listColumn {
+        @include flex(center,center);
         width:100%;
         .photo {
           position:relative;
+          @include flex(center,center);
           width:100%;
           height:360px;
           @mixin whiteScreen {
@@ -70,16 +57,25 @@
             display:block;
             content:'';
             width:100%;
-            height:150px;
+            height:100%;
           }
-          &:before {
-            display:none;
-          }
-          &:after {
+          &::after {
             @include whiteScreen;
             bottom:0;
-            background-image:linear-gradient(to top, rgba(255,255,255,1) 0%,rgba(255,255,255,.8) 40%, rgba(255,255,255,0));
+            background-image:linear-gradient(to top,
+             rgba(255,255,255,1) 0%,
+             rgba(255,255,255,0.98) 5%,
+             rgba(255,255,255,0.92) 10%,
+             rgba(255,255,255,0.85) 15%,
+             rgba(255,255,255,0.75) 20%,
+             rgba(255,255,255,0.65) 25%,
+             rgba(255,255,255,0.5) 30%,
+             rgba(255,255,255,0.35) 35%,
+             rgba(255,255,255,0.2) 40%,
+             rgba(255,255,255,0.14) 43%,
+              rgba(255,255,255,0) 100%);
           }
+          &::before{display:none;}
           img {
             width:100%;
             height:100%;
@@ -88,9 +84,11 @@
         }
         .info {
           @include position-bottom-left;
-          @include flex(flex-start,center,column);
+          @include flex(flex-start,flex-end,column);
           width:100%;
-          padding: 25px 16px 12px;
+          height: 50%;
+          padding: 0px 16px 12px;
+          background-image:url("#{$IMGSERVER}/images/mainmask.png");
           // transform:translateX(30%);
           // transition: transform .7s ease-out;
           .badgeGroup {
@@ -102,8 +100,10 @@
             width:72%;
             line-height:30px;
             margin-bottom:6px;
-            @include font(22px,$SemiBold,#202020);
+            word-break: keep-all;
+            @include font(24px,$SemiBold,#202020);
             @include fontLineCut;
+            word-break: keep-all;
           }
           .nick {
             width:72%;
@@ -118,7 +118,7 @@
       // &-active {
       //   .listColumn {
       //     .info {
-      //       transform:translateX(0);
+      //       animation: show 0.4s linear forwards;
       //     }
       //   }
       // }
@@ -130,7 +130,6 @@
       //   }
       // }
     }
-
     .swiper-pagination {
       position: absolute;
       left: auto;
@@ -156,7 +155,8 @@
     margin-bottom:0;
     .swiper-wrapper {
       padding-left:16px;
-      margin-bottom:35px;
+      margin-bottom:28px;
+      box-sizing: border-box;
       .swiper-slide {
         width:auto;
         margin-right:10px;
@@ -164,28 +164,31 @@
           margin-right:28px;
         }
         .listColumn {
-          width:68px;
+          width:80px;
           cursor: pointer;
           .photo {
             @include flex(center,center);
-            height:68px;
-            margin-bottom:2px;
+            height:80px;
+            margin-bottom:4px;
             background-image: linear-gradient(to bottom,#FF3C7B,#FF8565) !important;
             background-origin: border-box;
             background-clip: border-box;
             overflow:hidden;
             @include border(transparent,50%,2px);
             img {
-              width:58px;
-              height:58px;
+              width:70px;
+              height:70px;
               object-fit: cover;
               background-color: white;
               @include border(white,50%,3px);
             }
           }
           p {
+            width: 100%;
+            padding: 0 4px;
             @include font(12px,$Regular,#303030);
             @include fontCut;
+            box-sizing: border-box;
           }
         }
       }
@@ -200,7 +203,7 @@
       .tabmenu {
         @include flex(center);
         height:20px;
-        margin-left:12px;
+        margin-left:auto;
         li {
           position:relative;
           padding: 0 8px;
@@ -230,25 +233,25 @@
         padding-left:16px;
         .swiper-slide {
           width:auto;
-          margin-right:12px;
+          margin-right:8px;
           &:last-child {
             margin-right:28px;
           }
           .listColumn {
-            width:113px;
+            width:116px;
             cursor: pointer;
             .photo {
               position:relative;
-              height:149px;
-              margin-bottom:6px;
-              border-radius:16px;
+              height:154px;
+              margin-bottom:8px;
+              border-radius:8px;
               overflow:hidden;
               &::before {
                 content: "";
                 @include position-top-left;
                 width: 100%; height: 100%;
                 border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-                border-radius:16px;
+                border-radius:8px;
                 box-sizing: border-box;
               }
               &::after {
@@ -278,70 +281,21 @@
                   @include RANKIMG('main/dalla/number_W-#{$i}.png');
                 }
               }
+              .livetag {
+                @include position-top-left();
+                display: inline-block;
+                width: 40px; height: 40px;
+                @include BGIMG("/common/icon/icon-liveTag.png");
+              }
             }
             p {
+              width: 100%;
               line-height:20px;
-              @include font(15px,400,#303030);
+              padding: 0 8px;
+              @include font(14px,500,#303030);
               @include fontCut;
-            }
-          }
-        }
-      }
-    }
-    .empty {
-      width:100%;
-      height:60px;
-      text-indent:20px;
-      @include font(15px,400,#999);
-    }
-  }
-  .daldungs {
-    .cntTitle {
-      margin-bottom:12px;
-    }
-    .swiper-wrapper {
-      padding-left:16px;
-      .swiper-slide {
-        width:auto;
-        margin-right:12px;
-        &:last-child {
-          margin-right:28px;
-        }
-        .listColumn {
-          width:113px;
-          border-radius:16px;
-          overflow:hidden;
-          cursor: pointer;
-          .photo {
-            height:149px;
-            &::before {
-              content: "";
-              @include position-top-left;
-              width: 100%; height: 100%;
-              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-              border-radius:16px;
               box-sizing: border-box;
             }
-            img {
-              height:100%;
-              object-fit: cover;
-            }
-            .video {
-              @include position-top-right;
-              width:20px;
-              height:20px;
-              margin:6px;
-              @include BGIMG("common/icon/ico_video.png");
-            }
-          }
-          p {
-            position:absolute;
-            bottom:0;
-            padding:24px 8px 8px;
-            background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
-            text-align:left;
-            @include font(13px,$Medium,white);
-            @include fontCut;
           }
         }
       }
@@ -352,17 +306,22 @@
       text-indent:20px;
       @include font(15px,400,#999);
     }
+    .pointer {
+      cursor: pointer;
+    }
   }
+
   .liveView {
     .cntTitle {
       margin-bottom:8px;
     }
     .tabmenuWrap {
       position:relative;
+      top:0;
       height:48px;
       &.isFixed {
-        position:fixed;
-        top:$HEADER-HEIGHT;
+        position:sticky;
+        top: calc(#{$HEADER-HEIGHT} - 1px);
         width:100%;
         z-index: 10;
       }
@@ -383,9 +342,9 @@
             &::after {
               content:"";
               @include position-horizon;
-              bottom:0;
-              width:15px;
-              height:5px;
+              bottom:6px;
+              width:30px;
+              height:4px;
               border-radius:100px;
               background-color:$MAINCOLOR;
             }
@@ -410,12 +369,12 @@
             @include position-top-left;
             width: 100%; height: 100%;
             border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-            border-radius:16px;
+            border-radius:8px;
             box-sizing: border-box;
           }
           img {
             width:100%;
-            border-radius:16px;
+            border-radius:8px;
           }
           .guest {
             @include position-bottom-right;
@@ -425,10 +384,10 @@
           }
           .video {
             @include position-top-right;
-            width:20px;
-            height:20px;
+            width:23px;
+            height:23px;
             margin:6px;
-            @include BGIMG("common/icon/ico_video.png");
+            @include BGIMG("common/icon/icon-video.png");
           }
         }
         .listContent {
@@ -437,12 +396,15 @@
           min-width:0;
           height:100%;
           padding: 8px 0;
-          margin-left:16px;
+          margin-left:12px;
           box-sizing: border-box;
           .listItem {
             @include flex(center);
             min-height:2px;
             margin-bottom:2px;
+            &:nth-child(1) {
+              margin-bottom:3px;
+            }
             &:nth-child(3) {
               margin-top: auto;
             }
@@ -553,19 +515,34 @@
 
   }
 }
-@keyframes hide {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 @keyframes show {
   0% {
-    opacity: 0;
+    transform: translateX(50px);
   }
   100% {
-    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+// 반응형 스타일
+/* 피씨일때 헤더 없애기 */
+.pcType {
+  .refresh-wrap {
+    display:none;
+  }
+  #mainPage {
+    header {display:none;}
+    .tabmenuWrap.isFixed {
+      top: $GNB-HEIGHT;
+      max-width:480px;
+    }
+  }
+}
+// 방송방 들어갔다 뒤로가기 하면 Swiper 에서 slide를 화면 100%잡아서 max-width:480px 을 주고, 모바일은 태블릿에서 볼때를 대비해 max-width:100%를 따로 줌
+.mobileType {
+  #mainPage {
+    .topSwiper {
+      max-width:100%;
+    }
   }
 }

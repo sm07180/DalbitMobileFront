@@ -201,10 +201,10 @@ const MyClipUpload = (props) => {
       <section className="listWrap">
         {myClipInfo.list.map((item, index) => {
           return (
-            <div className="listRow">
+            <div className="listRow" key={index}>
               <div className="photo" onClick={() => { playClip(item.clipNo, item.memNo) }}>
                 {(searchInfo.myClipType === 0 && item.openType === 0) && <div className="photoLock"/>}
-                <img src={searchInfo.myClipType === 0 ? item.bgImg.thumb80x80 : item.profImg.url} alt="" onError={handleImgError}/>
+                <img src={searchInfo.myClipType === 0 ? item.bgImg.thumb292x292 : item.profImg.url} alt="" onError={handleImgError}/>
               </div>
               <div className="listInfo">
                 <div className="listItem">

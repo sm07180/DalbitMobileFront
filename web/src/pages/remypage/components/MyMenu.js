@@ -1,11 +1,18 @@
 import React, {useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
+import {useDispatch} from "react-redux";
+import {setNoticeTab} from "redux/actions/notice";
 
 const MyMenu = (props) => {
   const {data} = props
   const history = useHistory()
-  const golink = (path, value) => {
-    history.push({pathname: path, value: value});
+  const dispatch = useDispatch();
+
+  const golink = (path) => {
+    if(path.includes('notice')) {
+      dispatch(setNoticeTab("공지사항"));
+    }
+    history.push(path);
   }
 
   return (
@@ -13,7 +20,7 @@ const MyMenu = (props) => {
       <div className="btnList">
         {data.map((list,index) => {
           return (
-            <button key={index} onClick={()=>{golink(list.path, true)}}>{list.menuNm}</button>
+            <button key={index} onClick={()=>{golink(list.path)}}>{list.menuNm}</button>
           )
         })}
       </div>

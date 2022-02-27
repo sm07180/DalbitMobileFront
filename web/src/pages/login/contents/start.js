@@ -42,10 +42,18 @@ const Start = (props) => {
     }
   }
 
+  const backButton = () => {
+    if(webview === 'new'){
+      Hybrid('CloseLayerPopUp')
+    }else{
+      history.push('/')
+    }
+  }
+
   return (
     <div id="loginPage">
       <Header>
-        <button className="back" onClick={() => history.push('/')} />
+        <button className="back" onClick={backButton} />
       </Header>
       <section className='loginSns'>
         <h2 className='title'>시작하기</h2>

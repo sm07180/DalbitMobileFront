@@ -44,17 +44,18 @@ const TotalInfo = (props) => {
 
   return (
     <>
-      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
-        <div className="title">뱃지</div>
-        <div className="badgeGroup">
-          {/*<span className="badgeItem grade">{data.grade}</span>*/}
-          <BadgeItems data={data} type="commonBadgeList" />
-          <BadgeItems data={data} type="isBadge" />
+      {badgeTotalCnt !== 0 &&
+        <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+          <div className="title">뱃지</div>
+          <div className="badgeGroup">
+            <BadgeItems data={data} type="commonBadgeList" />
+            <BadgeItems data={data} type="isBadge" />
+          </div>
+          {badgeTotalCnt > 3 &&
+            <button onClick={onOpenBdage}>열기/닫기</button>
+          }
         </div>
-        {badgeTotalCnt > 3 &&
-          <button onClick={onOpenBdage}>열기/닫기</button>
-        }
-      </div>
+      }
       <div className="rankInfo">
         <div className="box">
           <div className="title" style={{cursor: 'pointer'}}
@@ -73,7 +74,7 @@ const TotalInfo = (props) => {
             {[...Array(3 - data.fanRank.length)].map((item, index) => {
               return (
                 <div className="photo" key={index}>
-                  <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+                  <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
                 </div>
               )
             })}
@@ -89,7 +90,7 @@ const TotalInfo = (props) => {
             </div>
             :
             <div className="photo">
-              <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+              <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
             </div>
           }
         </div>

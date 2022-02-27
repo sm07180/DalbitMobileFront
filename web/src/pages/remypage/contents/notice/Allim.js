@@ -1,23 +1,18 @@
 import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {GlobalContext} from "context";
 
 import Api from 'context/api'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import moment from "moment";
 import {RoomJoin} from "context/room";
-import {clipJoin} from "pages/common/clipPlayer/clip_func";
 // components
 import './notice.scss'
-import Header from "components/ui/header/Header";
 
 const Allim = () => {
-  const [alarmList, setAlarmList] = useState({list : [], cnt : 0});
+  const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
   const context = useContext(Context);
-  const global = useContext(GlobalContext);
-  const { globalState, globalAction } = global;
   const history = useHistory();
 
   //회원 알림 db값 가져오기
@@ -26,12 +21,7 @@ const Allim = () => {
     Api.my_notification(params).then((res) => {
       if(res.result === "success") {
         if(res.data.list.length > 0) {
-          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt});
-          if(res.data.newCnt === 1) {
-            globalState.alarmStatus = true;
-          } else {
-            globalState.alarmStatus = false;
-          }
+          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt, newCnt: res.data.newCnt});
         } else {
           setAlarmList({...alarmList});
         }
@@ -51,7 +41,9 @@ const Allim = () => {
       case "2": history.push("/");                                                  //달 알림
       case "5": history.push("/");                                                  //공지 알림
       case "7":                                                                             //공지사항 알림
-        try {if(roomNo !== "") {history.push(`/customer/notice/${roomNo}`);}}
+        try {
+          history.push({pathname: `/notice/${roomNo}`, state: roomNo});
+        }
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
@@ -106,7 +98,6 @@ const Allim = () => {
 
   useEffect(() => {
     fetchData();
-
   }, []);
 
   useEffect(() => {
@@ -121,7 +112,8 @@ const Allim = () => {
             <>
               {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
                 return (
-                  <ListRow key={idx} photo={v.profImg.thumb88x88}>
+                  <ListRow key={idx} photo={v.profImg.thumb292x292}>
+                    {v.newCnt === 1 && <span className="newDot"/>}
                     <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
                          data-link={v.link} onClick={handleClick}>
                       <div className="title">{v.contents}</div>

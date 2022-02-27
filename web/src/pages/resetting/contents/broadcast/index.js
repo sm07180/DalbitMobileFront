@@ -19,6 +19,7 @@ import Toast from "components/ui/toast/Toast";
 
 const SettingBroadcast = () => {
   const params = useParams();
+  const history = useHistory();
   const settingCategory = params.category;
   const [settingData, setSettingData] = useState({});
   const [menuListInfo, setMenuListInfo] = useState([
@@ -75,11 +76,11 @@ const SettingBroadcast = () => {
           <div className='menuWrap'>
             {menuListInfo.map((list,index) => {
               return (
-                <MenuList text={list.text} path={list.path} key={index}>
+                <MenuList text={list.text} path={list.path} key={index} disabledClick={index === 4 ? true : false}>
                   {index < 2 && <small>최대 3개</small>}
                   {index === 2 && <small>최대 6개</small>}
                   {index === 4 &&
-                  <label className="inputLabel">
+                  <label className="inputLabel" >
                         <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
                                onChange={() => fetchData(list.value, index)}/>
                     <span className={`switchBtn`}/>

@@ -3,26 +3,33 @@ import Utility from 'components/lib/utility'
 import moment from 'moment';
 
 // global components
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import CheckList from '../components/CheckList'
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const HistoryList = (props) => {
   const {walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading, setIsLoading, getWalletHistory, lastPage, cancelExchangeFetch, walletType} = props;
-  const [slidePop, setSlidePop] = useState(false);
 
   const {popHistory, listHistory, popHistoryCnt} = walletData;
 
   const [beforeCode, setBeforeCode] = useState("0");
+  const commonPopup = useSelector(state => state.popup);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (slidePop){
+    if (commonPopup.commonPopup){
       setBeforeCode(selectedCode);
     }
-  }, [slidePop]);
+  }, [commonPopup.commonPopup]);
 
   const onClickPopSlide = () => {
-    setSlidePop(true)
+    dispatch(setSlidePopupOpen());
+  }
+
+  const popSlideClose = () => {
+    closePopup(dispatch);
   }
 
   useEffect(() => {
@@ -92,13 +99,13 @@ const HistoryList = (props) => {
       </section>
 
       {/* 상세내역 검색조건 팝업 */}
-      {slidePop &&
-        <PopSlide setPopSlide={setSlidePop}>
+      {commonPopup.commonPopup &&
+        <PopSlide>
           <section className='walletHistoryCheck'>
             <div className='title'>달 사용/획득</div>
             <div className="listWrap">
               <div className="listAll">
-                <CheckList text="전체내역">
+                <CheckList text="전체내역" code={`0`} beforeCode={beforeCode} setBeforeCode={setBeforeCode}>
                   <input type="checkbox" className="blind" name="checkListAll" />&nbsp;
                   ({Utility.addComma(popHistoryCnt)}건)
                 </CheckList>
@@ -114,11 +121,11 @@ const HistoryList = (props) => {
             </div>
             <div className="buttonGroup">
               <button className="cancel"
-                      onClick={() => setSlidePop(false)}
+                      onClick={popSlideClose}
               >취소</button>
               <button className="apply" onClick={() =>{
                 setSelectedCode(beforeCode);
-                setSlidePop(false);
+                popSlideClose();
               }}>적용</button>
             </div>
           </section>

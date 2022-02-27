@@ -56,9 +56,12 @@ const ListRowComponent = (props) => {
   }, []);
 
   return (
-    <ListRow photo={item.profImg?.thumb50x50} photoClick={photoClick}>
+    <ListRow photo={item.profImg?.thumb292x292} photoClick={photoClick}>
       <div className="listContent">
-        <div className="nick">{item.nickName}</div>
+        <div className='listItem'>
+          {item.viewOn === 0 && <div className="lock" />}
+          <div className="nick">{item.nickName}</div>
+        </div>
         <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
       <div className="listBack">

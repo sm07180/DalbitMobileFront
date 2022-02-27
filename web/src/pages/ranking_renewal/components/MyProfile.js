@@ -250,7 +250,7 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                   onClick={() => {
                     history.push(`/myProfile`)
                   }}>
-                  <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+                  <img src={myProfile.profImg.thumb292x292} className="thumbBox__pic" />
                 </div>
 
                 <div className="myRanking__content">

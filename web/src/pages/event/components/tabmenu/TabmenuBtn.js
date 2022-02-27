@@ -4,7 +4,7 @@ import {IMG_SERVER} from 'context/config'
 import './tabmenu.scss'
 
 const TabmenuBtn = (props) => {
-  const {tabBtn1, tabBtn2, tab, setTab, onOff, event, imgNam} = props
+  const {tabBtn1, tabBtn2, tab, setTab, onOff, event, imgNam, btnColor} = props
 	
   // 탭메뉴 이벤트
   const tabClick = (e) => {
@@ -17,10 +17,10 @@ const TabmenuBtn = (props) => {
   // 컴포넌트 시작
   return (
     <>
-      <button className={tab === tabBtn1 ? 'active' : ''} data-tab-target={tabBtn1} onClick={tabClick}>
+      <button className={tab === tabBtn1 ? 'active' : ''} data-tab-target={tabBtn1} data-btn={btnColor} onClick={tabClick}>
         <img src={`${IMG_SERVER}/event/${event}/${imgNam}-1${onOff === false ? '' : tab === tabBtn1 ? '-on' : '-off'}.png`} alt={tabBtn1} />
       </button>
-      <button className={tab === tabBtn2 ? 'active' : ''} data-tab-target={tabBtn2} onClick={tabClick}>
+      <button className={tab === tabBtn2 ? 'active' : ''} data-tab-target={tabBtn2} data-btn={btnColor} onClick={tabClick}>
         <img src={`${IMG_SERVER}/event/${event}/${imgNam}-2${onOff === false ? '' : tab === tabBtn2 ? '-on' : '-off'}.png`} alt={tabBtn2} />
       </button>
     </>
@@ -33,6 +33,7 @@ TabmenuBtn.defaultProps = {
   tab: '',
   onOff: false,
   imgNam: 'tabBtn',
+  btnColor: '',
 }
 
 export default TabmenuBtn

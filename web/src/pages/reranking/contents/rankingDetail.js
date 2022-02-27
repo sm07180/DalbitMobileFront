@@ -4,7 +4,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 
 // components
 import Tabmenu from '../components/Tabmenu'
@@ -14,17 +14,19 @@ import RankingList from '../components/rankingList'
 import './rankingDetail.scss'
 import {convertDateTimeForamt, convertMonday, convertMonth} from "pages/common/rank/rank_fn";
 import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
+  const dispatch = useDispatch();
+  const commonPopup = useSelector(state => state.popup);
   const rankingListType = params.type
   //Ranking 종류(DJ, FAN, CUPID)
   const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
   //Ranking 기간(타임, 일간 등등)
   const [rankType, setRankType] = useState(1);
-  //Ranking 종류 선택 팝업
-  const [slidePop, setSlidePop] = useState(false);
   //Ranking 종류 Title
   const [select, setSelect] = useState("");  
   //탭 목록
@@ -128,7 +130,7 @@ const RankDetailPage = () => {
 
   // 나머지
   const fetchRankData = async (rankSlct, rankType, pageNo) => {
-    let curDate = new Date()
+    let curDate = new Date();
     const {result, data} = await Api.get_ranking({
       param: {
         rankSlct: rankSlct,
@@ -214,7 +216,11 @@ const RankDetailPage = () => {
   }
 
   const bottomSlide = () => {
-    setSlidePop(true);
+    dispatch(setSlidePopupOpen());
+  }
+
+  const closeSlidePop = () => {
+    closePopup(dispatch);
   }
 
   const optionSelect = (e) => {
@@ -238,7 +244,7 @@ const RankDetailPage = () => {
       setRankSlct(3);
       setRankType(1);
     }
-    setSlidePop(false);
+    closeSlidePop();
   }
 
   useEffect(() => {
@@ -259,7 +265,7 @@ const RankDetailPage = () => {
   }, [tabName]);
 
   const getTopRankDate = (dateType, currentDate) => {
-    let day1 = new Date(currentDate);
+    let day1 = new Date(moment(currentDate));
     let year = day1.getFullYear();
     let month = day1.getMonth() + 1;
     let date = day1.getDate();
@@ -279,13 +285,13 @@ const RankDetailPage = () => {
         } else {
           month -= 1;
           if (month < 10) {
-            month = 0 + month;
+            month = `0${month}`;
           }
           handle = new Date(`${year}-${month}-01`);
         }
         break;
       case 4:
-        handle = new Date(day1.setFullYear(day1.getFullYear() - 1));
+        handle = new Date(`${year - 1}-01-01`);
         break;
       case 5:
         if (hours < 10) {
@@ -325,8 +331,8 @@ const RankDetailPage = () => {
         </div>
       </div>
 
-      {slidePop &&
-        <PopSlide setPopSlide={setSlidePop}>
+      {commonPopup.commonPopup &&
+        <PopSlide>
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
             <div className={`selectOption ${select === "FAN" ? "active" : ""}`} onClick={optionSelect}>FAN</div>

@@ -5,6 +5,7 @@ import moment from 'moment'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
 import NoResult from 'components/ui/noResult/NoResult'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 
@@ -37,7 +38,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, scrollEvent, setNoticePop, likePopTabState} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, myMemNo, setNoticePop, likePopTabState, closePopupAction} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
 
@@ -125,7 +126,7 @@ const LikePopup = (props) => {
   /* 프로필 이동 */
   const goProfileAction = (targetMemNo) => {
     goProfile(targetMemNo)
-    setPopLike(false);
+    closePopupAction();
   }
 
   const pagingReset = () => {
@@ -156,30 +157,43 @@ const LikePopup = (props) => {
     }/*else if(currentTitleTabInfo.key === 'rank') { // 타회원 프로필에서는 타이틀 탭이 없어서 기억할 필요 없어서 주석
       setRankSubTabInfo(data);
     }*/
+
+    /* 탭 상태 변경 */
     setCurrentSubTabInfo(data);
 
+    /* 스크롤 맨위로 */
+    if(likeContainerRef.current) {
+      likeContainerRef.current.scrollTo(0, 0);
+    }
+
+    /* 페이징 데이터 초기화 */
     pagingReset();
   }
 
-  /* 스크롤 페이징 이벤트 */
-  const popScrollEvent = () => {
-    scrollEvent(likeContainerRef.current, () => setPageNo(pageNo => pageNo +1));
-  }
+  /* 스크롤 이벤트 */
+  const scrollEvent = useCallback(() => {
+    const scrollTarget = likeContainerRef.current;
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight - 1 < targetHeight + scrollTop) {
+      setPageNo(pageNo => pageNo +1)
+    }
+  }, []);
 
   const addScrollEvent = () => {
-    likeContainerRef.current.addEventListener('scroll', popScrollEvent);
+    const target = likeContainerRef.current;
+    if(target) {
+      target.addEventListener('scroll', scrollEvent);
+    }
   }
 
   const removeScrollEvent = useCallback(() => {
     const scrollTarget = likeContainerRef.current;
     if(scrollTarget) {
-      scrollTarget.removeEventListener('scroll', popScrollEvent);
+      scrollTarget.removeEventListener('scroll', scrollEvent);
     }
   }, []);
-
-  const closePop = () => {
-    setPopLike(false);
-  }
 
   const tabSetting = () => {
     if(likePopTabState) { // 열고싶은 탭
@@ -199,6 +213,13 @@ const LikePopup = (props) => {
   }
 
   useEffect(() => {
+    if(!isLastPage && showList.length > 0) {
+      removeScrollEvent();
+      addScrollEvent();
+    }
+  }, [showList])
+
+  useEffect(() => {
     if(!isLastPage && currentSubTabInfo.key) {
       if(currentSubTabInfo.key === 'totalRankLike' || currentSubTabInfo.key === 'like') {
         totalRankLikeApi();
@@ -215,7 +236,6 @@ const LikePopup = (props) => {
   }, [isLastPage])
 
   useEffect(() => {
-    addScrollEvent()
     tabSetting()
     return () => removeScrollEvent();
   },[])
@@ -235,7 +255,7 @@ const LikePopup = (props) => {
         </ul>
         : <h2>{titleTabInfoList.length > 0 && titleTabInfoList[0].value}</h2>
       }
-      <div className="listContainer" ref={likeContainerRef}>
+      <div className="listContainer">
         {isMyProfile ?
           <ul className="tabmenu">
             {currentTitleTabInfo?.key && myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
@@ -263,7 +283,7 @@ const LikePopup = (props) => {
           </ul>
         }
         {showList.length > 0 ?
-        <div className="listWrap">
+        <div className="listWrap" ref={likeContainerRef}>
           {showList.map((list,index) => {
             return (
               <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => goProfileAction(list.memNo)}>
@@ -274,7 +294,8 @@ const LikePopup = (props) => {
                       <div className="nick">{list.nickNm}</div>
                       {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
                       <div className="listItem">
-                        <div className="like">{list.listenTime}</div>
+                        {list.good && <DataCnt type={"goodCnt"} value={list.good}/>}
+                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}                        
                       </div>
                     </div>
                     <div className="back">
@@ -308,7 +329,7 @@ const LikePopup = (props) => {
         <NoResult />
         }
       </div>
-      <button className="popClose" onClick={closePop}></button>
+      <button className="popClose" onClick={closePopupAction} />
     </section>
   )
 }

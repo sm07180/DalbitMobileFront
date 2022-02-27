@@ -4,6 +4,7 @@ import { GlobalContext } from "context";
 import { getPlayList, getClipType } from "common/api";
 import PlayListEdit from "./play_list_edit";
 import { useHistory } from "react-router-dom";
+import Header from "../../../components/ui/header/Header";
 
 export default () => {
   const history = useHistory();
@@ -111,25 +112,10 @@ export default () => {
     <div className="tabPlayList">
       <h2 className="tabContent__title">
         <span>재생목록</span>
-        {/* <button
-          className={`playlistEdit__headerBtn ${isEdit ? "" : "playlistEdit__headerBtn--edit"}`}
-          onClick={() => setIsEdit(!isEdit)}
-        >
-          {isEdit ? "완료" : "편집"}
-        </button> */}
       </h2>
       <p className="playListTotal">
         총 목록 수 <span>{globalState.clipPlayListTab?.length}</span>
       </p>
-      {/* {isEdit ? (
-        <PlayListEdit list={list} clipType={clipType} />
-      ) : (
-        <div className="playListWrap">
-          <DalbitScroll width={362}>
-            <ul className="playListBox">{createList()}</ul>
-          </DalbitScroll>
-        </div>
-      )} */}
       <div className="playListWrap">
         <DalbitScroll width={362}>
           <ul className="playListBox">{createList()}</ul>

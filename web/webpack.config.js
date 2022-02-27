@@ -110,7 +110,7 @@ module.exports = (_, options) => {
                     test: /\.(jpe?g|png|gif|svg|ico)$/,
                     loader: 'url-loader',
                     options: {
-                        publicPath: './dist',
+                        publicPath: '/dist',
                         name: 'images/[name].[ext]',
                         limit: 20000, // 10kb
                         fallback: 'file-loader' // 파일사이즈가 10k보다 큰 경우, file-loader 이용하여 파일 복사

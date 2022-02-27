@@ -37,7 +37,7 @@ export default function VideoEventList({videoRankList}) {
                       history.push(`/login`)
                     }
                   }}>
-                  <img src={profImg.thumb120x120} alt={nickNm} />
+                  <img src={profImg.thumb292x292} alt={nickNm} />
                 </div>
                 <div className="nick_box">
                   <div className="level">

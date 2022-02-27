@@ -517,6 +517,7 @@ export default function BroadcastSetting() {
   }, [videoStream]);
 
   const videoDevice = async () =>{
+    //setVideoStream(null);
     cams = await AgoraRTC.getCameras();
 
     if (videoStream === null) {
@@ -829,9 +830,11 @@ export default function BroadcastSetting() {
           <div className="access" style={{zIndex:3}}>
             <div
               onClick={() => {
-                setMicPop(!micPop);
+                if(state.mediaType == BROAD_TYPE.VIDEO){
+                  setMicPop(!micPop);
+                }
               }}
-              className={"access__list active"}
+              className={`access__list ${state.micState && "active"}`}
             >
               {state.micFormType}
             </div>

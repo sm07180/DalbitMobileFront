@@ -400,6 +400,7 @@ export default () => {
 
         switch (push_type + '') {
           case '1': //-----------------방송방 [room_no]
+            pushMsg.title = pushMsg.title.trim() ? pushMsg.title.trim() : pushMsg.contents;
             context.action.updateStickerMsg(pushMsg)
             context.action.updateSticker(true) //true,false
             break
@@ -746,7 +747,7 @@ export default () => {
         if (context.backState === null) {
           Hybrid('goBack')
         } else {
-          backFunc(context)
+          backFunc(context, dispatch)
         }
         // break
         break
@@ -783,8 +784,8 @@ export default () => {
         break
 
       case 'native-footer': // native footer 이동
-        const type = event.detail.type;
-        const prevPath = location.pathname;
+        const type = event.detail.type.toLowerCase();
+        const prevPath = location.pathname.toLowerCase();
         const prevType = FOOTER_VIEW_PAGES[prevPath];
 
         if(type === prevType) {

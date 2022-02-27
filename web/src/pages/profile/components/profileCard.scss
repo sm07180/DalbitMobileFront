@@ -49,6 +49,7 @@
           &:nth-child(1) {margin-bottom:4px;}
           &:nth-child(2) {margin-bottom:2px;}
           .nick {
+            max-width: 130px;
             margin-left:4px;
             @include font(17px,$Medium,black);
             @include fontCut;
@@ -67,7 +68,6 @@
         flex:1;
         @include flex(center,center,column);
         padding-top:7px;
-        letter-spacing: -1px;
         cursor: pointer;
         span {
           @include font(16px,$SemiBold,black);
@@ -101,6 +101,20 @@
             @include BGIMG("mypage/dalla/check_ico.png");
             vertical-align: bottom;
           }
+        }
+      }
+    }
+  }
+}
+
+// 반응형 스타일
+
+.pcType {
+  #myprofile{
+    .profileCard{
+      .info{
+        .nick{
+          max-width: 200px;
         }
       }
     }

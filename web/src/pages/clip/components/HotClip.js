@@ -34,14 +34,14 @@ const HotClip = (props) => {
     <div>
       <div className="hotClip" data-clip-no={info.clipNo} onClick={playAction}>
         <div className="photo">
-          <img src={`${info.bgImg.url}`} alt={`${info.nickName}의 클립`} onError={handleImgError}/>
+          <img src={`${info.bgImg.thumb292x292}`} alt={`${info.nickName}의 클립`} onError={handleImgError}/>
         </div>
         <div className="info">
           <img src={`https://image.dalbitlive.com/clip/dalla/number-${info.rank}.png`}/>
           <div className="textArea">
             <div>
               <span className="type">{info.subjectName}</span>
-              <span className="title">{info.fileName}</span>
+              <span className="title">{info.title}</span>
             </div>
             <span className="nickName">{info.nickName}</span>
           </div>

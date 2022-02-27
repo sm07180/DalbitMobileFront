@@ -29,23 +29,51 @@
     background-color: #FFF;
     z-index: $TAB-ZINDEX;
   }
-  .topRanker {
-    @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: left top;
-    h2 {
-      line-height: 40px;
-      margin-top: 2px;
-      text-align:center;
-      @include font(16px,$SemiBold,#272727);
-    }
-    .swiper-container {
+  .rankingContent {
+    position: relative;
+    box-sizing: border-box;
+    .topRanker {
+      .swiper-container {
+        position: relative;
+        @include flex(center);
+        width: 100%;
+        padding: 0 16px 21px;
+        box-sizing: border-box;
+        @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: left top;
+        .swiper-pagination {
+          position: absolute;
+          bottom:0px; left: 50%;
+          transform: translateX(-50%);
+          @include flex(center,center);
+          width:auto;
+          .swiper-pagination-bullet {
+            width: 8px; height: 5px;
+            border-radius: 100px;
+            background-color:#ACACAC;
+            &.swiper-pagination-bullet-active {
+              width: 15px; height: 5px;
+              background-color: #202020;
+            }
+          }
+        }
+      }  
       .swiper-slide {
+        @include flex(center,center,column);
+        width: 100%;    
+        h2 {
+          position: relative;
+          @include flex(center, center);
+          width: 100%;
+          padding: 14px 16px;
+          @include font(18px, 600, #272727);
+          line-height: 40px;
+        }
         .rankerWrap {
-          @include flex(center);
+          @include flex(flex-start, space-between);
           width:100%;
-          padding:0 8px;
           .ranker {
             flex:1;
             margin-top:auto;
@@ -53,34 +81,39 @@
               @include flex(center,center,column);
               width:94px;
               margin: 0 auto;
+              cursor: pointer;
               .photo {
                 position:relative;
                 width: 84px;
                 height: 84px;
                 margin-bottom:8px;
                 background-color: #acacac;
-                border-radius: 16px;
+                border-radius: 8px;
                 &::before {
                   content: "";
                   @include position-top-left;
                   width: 100%; height: 100%;
                   border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-                  border-radius:16px;
+                  border-radius:8px;
                   box-sizing: border-box;
                 }
 
                 img {
                   width:100%;
-                  border-radius:16px;
+                  border-radius:8px;
                 }
                 .rank {
-                  @include position-top-left;
+                  @include position-top-left(-4px, -8px);
                   @include flex(center, center);
-                  width: 32px;
-                  line-height: 32px;
+                  width: 28px; height: 28px;
+                  line-height: 28px;
                   border-radius: 50%;
                   background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
                   @include font(20px, 700, #fff);
+                  &.fisrt {
+                    width: 32px; height: 32px;
+                    line-height: 32px;
+                  }
                 }
                 .play {
                   @include position-top-right;
@@ -115,114 +148,98 @@
             }
           }
         }
-      }
+      }      
     }
-    .swiper-pagination {
-      position: relative;
-      bottom:0;
-      @include flex(center,center);
-      width:100%;
-      padding:16px 0 12px;
-      span {
-        width: 8px; height: 5px;
-        margin: 0 2px;
-        border-radius: 100px;
-        background-color:#D2D2D2;
-        &.active {
-          width: 15px; height: 5px;
-          background-color: #202020;
+    .listWrap {
+      @include flex(center, flex-start, column);
+      height: 100%;
+      margin: 0 16px;
+      padding: 12px 0 30px;
+      border-top:1px solid #F2F2F2;
+      .listAll{
+        @include flex(center, space-between);
+        width: 100%;
+        margin-bottom: 16px;
+        span {
+          @include font(12px,$Medium,#666);
         }
-      }
-    }
-  }
-  .listWrap {
-    @include flex(center, flex-start, column);
-    height: 100%;
-    margin: 0 16px;
-    padding: 12px 0 30px;
-    border-top:1px solid #F2F2F2;
-    .listAll{
-      @include flex(center, space-between);
-      width: 100%;
-      margin-bottom: 16px;
-      span {
-        @include font(12px,$Medium,#666);
-      }
-      button {
-        @include flex(center, center);
-        width: 84px;
-        line-height: 32px;
-        margin-left: auto;
-        @include font(13px,$Medium,white);
-        background: #202020;
-        border-radius: 100px;
-        .iconPlayAll{
-          display: inline-block;
-          width: 9px;
-          height: 9px;
-          margin-left:2px;
-          @include BGIMG('clip/dalla/ico_playAll.png');
-        }
-      }
-    }
-    .listRow {
-      @include flex(center);
-      width: 100%;
-      margin-bottom:15px;
-      min-width: 0;
-      &:last-child {
-        margin-bottom:0px;
-      }
-      .rank {
-        order:-1;
-        flex: none;
-        width: 30px;
-        margin-right:8px;
-        text-align:center;
-        @include font(16px,600,#333);
-      }
-      .photo {
-        position: relative;
-        flex: none;
-        width:72px;
-        height: 72px;
-        border-radius: 16px;
-        overflow: hidden;
-        background-color: #acacac;
-        img {
-          width:100%;
-        }
-        .play {
-          display: block;
-          @include position-top-right(0px, 0px);
-          width: 28px;
-          height: 28px;
-          @include BGIMG('clip/dalla/ico_playAll.png');
-          background-size:auto 14px;
-        }
-      }
-      .listContent {
-        flex: 1;
-        padding: 0 16px;
-        overflow: hidden;        
-        div {
-          + div {
-            margin-top:4px;
+        button {
+          @include flex(center, center);
+          width: 84px;
+          line-height: 32px;
+          margin-left: auto;
+          @include font(13px,$Medium,white);
+          background: #202020;
+          border-radius: 100px;
+          .iconPlayAll{
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            margin-left:2px;
+            @include BGIMG('clip/dalla/ico_playAll.png');
           }
-          &.type{
-            @include font(12px, 400, #999);
-            @include fontCut;
+        }
+      }
+      .listRow {
+        @include flex(center);
+        width: 100%;
+        margin-bottom:15px;
+        min-width: 0;
+        cursor: pointer;
+        &:last-child {
+          margin-bottom:0px;
+        }
+        .rank {
+          order:-1;
+          flex: none;
+          width: 30px;
+          margin-right:8px;
+          text-align:center;
+          @include font(16px,600,#333);
+        }
+        .photo {
+          position: relative;
+          flex: none;
+          width:72px;
+          height: 72px;
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: #acacac;
+          img {
+            width:100%;
           }
-          &.title{
-            @include font(14px, 500, #202020);
-            @include fontCut;
+          .play {
+            display: block;
+            @include position-top-right(0px, 0px);
+            width: 28px;
+            height: 28px;
+            @include BGIMG('clip/dalla/ico_playAll.png');
+            background-size:auto 14px;
           }
-          &.nick {
-            @include font(13px,400,#666);
-            @include fontCut;
+        }
+        .listContent {
+          flex: 1;
+          padding: 0 16px;
+          overflow: hidden;        
+          div {
+            + div {
+              margin-top:4px;
+            }
+            &.type{
+              @include font(12px, 400, #999);
+              @include fontCut;
+            }
+            &.title{
+              @include font(14px, 500, #202020);
+              @include fontCut;
+            }
+            &.nick {
+              @include font(13px,400,#666);
+              @include fontCut;
+            }
           }
         }
       }
     }
-  }
+  }    
 }

@@ -168,7 +168,7 @@ export default function BroadcastList() {
               >
                 <div className="liveList__number">{idx + 1}</div>
 
-                <img src={v.bjProfImg.thumb120x120} className="liveList__img" />
+                <img src={v.bjProfImg.thumb292x292} className="liveList__img" />
 
                 <div className="liveList__idBox">
                   <div className="liveList__title">{v.title}</div>

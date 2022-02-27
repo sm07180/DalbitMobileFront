@@ -106,7 +106,7 @@ const ProfileEdit = () => {
     const param = {
       gender :gender || initProfileInfo.current.gender,
       nickNm : nickNm || initProfileInfo.current.nickNm,
-      profMsg: profMsg || initProfileInfo.current.profMsg,
+      profMsg: profMsg,
       birth: birth || initProfileInfo.current.birth,
       profImg: (_profileInfo? profImg.path : currentAvatar.path) || initProfileInfo.current.profImg.path,
     }
@@ -259,12 +259,12 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'}>
+            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
               <button className='saveBtn'
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='topSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
+            <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
               {profileInfo?.profImgList?.length > 1 ?
                 <TopSwiper data={profileDataNoReader} disabledBadge={true}
                            swiperParam={{
@@ -293,7 +293,7 @@ const ProfileEdit = () => {
                          showImagePopUp(profileInfo?.profImgList, 'profileList') :
                          inputRef.current.click();
                      }}>
-                  <img src={profile && profile.profImg && profile.profImg.thumb100x100} alt=""/>
+                  <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
                   <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
                 </div>
               </div>
@@ -304,7 +304,7 @@ const ProfileEdit = () => {
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
-                        <img src={data?.profImg?.thumb100x100} alt=""
+                        <img src={data?.profImg?.thumb292x292} alt=""
                              onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
                         <button className="cancelBtn"
                                 onClick={() => {
@@ -355,7 +355,7 @@ const ProfileEdit = () => {
                           nickNameRef.current.focus();
                         }}/>
               </InputItems>
-              <InputItems title="휴대폰번호" button="인증하기" onClick={getAuth}>
+              <InputItems title="휴대폰번호" button="인증하기" buttonClass={"point"} onClick={getAuth}>
                 <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
               </InputItems>
               <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
@@ -378,8 +378,10 @@ const ProfileEdit = () => {
               </div>
               <InputItems title={'프로필 메시지'} type={'textarea'}>
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
-                          defaultValue={profileInfo?.profMsg || ''}
-                          onChange={(e) => setProfileInfo({...profileInfo, profMsg: e.target.value}) }/>
+                          value={profileInfo?.profMsg || ''}
+                          onChange={(e) => {
+                            setProfileInfo({...profileInfo, profMsg: e.target.value});
+                          }}/>
                 <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
               </InputItems>
             </section>
@@ -409,7 +411,7 @@ const ProfileEdit = () => {
                         readerButtonAction={readerImageEdit}
                         deleteButtonAction={(idx) =>
                           context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
-                        initialSlide={showSlide?.initialSlide || 0}
+                        swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
             }
           </div>

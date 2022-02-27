@@ -41,8 +41,7 @@ const BannerSlide = (props) => {
       clickable: true
     },
     on: {
-      click: (s,e) => {
-        let evt = e ? e : s; // 스와이프 버전에 따라 달라서 임시 처리
+      click: (evt) => {
         const {targetUrl} = evt.target.dataset
         if (targetUrl.indexOf("/honor") > -1){
           dispatch(setHonorTab("스페셜DJ"));

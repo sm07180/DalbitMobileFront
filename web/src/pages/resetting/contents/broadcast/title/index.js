@@ -44,7 +44,7 @@ const BroadcastTitle = () => {
       if (res.result === "success") {
         toastMessage("방송제목이 등록 되었습니다.")
         setTitleList(res.data.list);
-        setTitleSelect({...titleSelect, val: "", index: -1});
+        setTitleSelect({...titleSelect, val: ""});
       }
     }
   }
@@ -58,7 +58,7 @@ const BroadcastTitle = () => {
     if(res.result === "success") {
       toastMessage("방송제목이 삭제 되었습니다.")
       setTitleList(res.data.list);
-      setTitleSelect({...titleSelect, val: "", index: -1});
+      setTitleSelect({state: false, val: "", index: -1});
     }
   }
 
@@ -70,6 +70,7 @@ const BroadcastTitle = () => {
     }
   }
 
+  //방송 제목 수정
   const fetchModifyData = async () => {
     const res = await API.modifyBroadcastOption({
       optionType: 1,
@@ -102,7 +103,7 @@ const BroadcastTitle = () => {
         <div className='radioWrap'>
           {titleList.map((item, index) => {
             return (
-              <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectTitle}/>
+              <RadioList key={index} title={item.contents} listIndex={item.idx} clickEvent={selectTitle} titleSelect={titleSelect} setTitleSelect={setTitleSelect}/>
             )
           })}
         </div>

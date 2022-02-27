@@ -16,11 +16,12 @@ import Customer from "pages/recustomer";
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 import {OS_TYPE} from "context/config";
-import PopSlide from "components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
-import Post from "pages/remypage/contents/notice/Post";
 import Notice from "pages/remypage/contents/notice/Notice";
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const myMenuItem = [
   {menuNm: '리포트', path:'report'},
@@ -38,7 +39,8 @@ const Remypage = () => {
   const context = useContext(Context)
   const {splash, token, profile} = context;
   const customHeader = JSON.parse(Api.customHeader)
-  const [popSlide, setPopSlide] = useState(false);
+  const commonPopup = useSelector(state => state.popup);
+  const dispatch = useDispatch();
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -101,10 +103,16 @@ const Remypage = () => {
     }
   }
 
+  const openLevelPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setSlidePopupOpen());
+  }
+
   const closeLevelPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setPopSlide(false);
+    closePopup(dispatch);
   }
 
   // 페이지 시작
@@ -125,7 +133,7 @@ const Remypage = () => {
         <div id="remypage">
           <Header title={'MY'} />
           <section className="myInfo" onClick={goProfile}>
-            <MyInfo data={profile} setPopSlide={setPopSlide} />
+            <MyInfo data={profile} openLevelPop={openLevelPop} />
           </section>
           <section className='mydalDetail'>
             <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
@@ -147,8 +155,8 @@ const Remypage = () => {
             <button className='logout' onClick={logout}>로그아웃</button>
           </section>
 
-          {popSlide &&
-            <PopSlide title="내 레벨" setPopSlide={setPopSlide}>
+          {commonPopup.commonPopup &&
+            <PopSlide title="내 레벨">
               <section className="myLevelInfo">
                 <div className="infoItem">
                   <LevelItems data={profile?.level} />

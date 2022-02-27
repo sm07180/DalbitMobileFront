@@ -27,9 +27,19 @@ const SocialList = (props) => {
     }
   }
 
+  const photoClickEvent = (memNo) => {
+    if(type === 'fanBoard') {
+      history.push(`/profile/${memNo}`)
+    }
+  }
+
   return (
     <div className="socialListWrap">
       {socialList.map((item, index) => {
+        if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== context.profile.memNo)) {
+          return <React.Fragment key={item.replyIdx} />
+        }
+
         const memNo = type==='feed'? profileData.memNo : item?.writerMemNo; //글 작성자
         const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
         const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
@@ -38,6 +48,7 @@ const SocialList = (props) => {
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} openBlockReportPop={openBlockReportPop}
                               modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
                               deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
+                              photoClick={() => {photoClickEvent(item.mem_no)}}
             />
             <div className="socialContent">
               <div className="text"
@@ -61,7 +72,7 @@ const SocialList = (props) => {
                 : item.photoInfoList.length === 1 ?
                   <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
                     <div className="photo">
-                      <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
                     </div>
                   </div>
                     : <></>
