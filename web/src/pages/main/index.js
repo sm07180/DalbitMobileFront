@@ -19,14 +19,18 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {IMG_SERVER} from "context/config";
+import moment from "moment";
 
 // popup
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
-import {isHybrid} from "context/hybrid";
+import {isHybrid, isIos} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 import {useHistory} from "react-router-dom";
+
+import smoothscroll from 'smoothscroll-polyfill';
+import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
 
 const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -49,10 +53,9 @@ const MainPage = () => {
   const arrowRefreshRef = useRef()
   const history = useHistory();
 
-  const [topRankType, setTopRankType] = useState(topTenTabMenu[0]) // 일간 top10 탭 타입
+  const [topRankType, setTopRankType] = useState('') // 일간 top10 탭 타입
   const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
   const [headerFixed, setHeaderFixed] = useState(false) // 헤더 fixed
-  const [tabFixed, setTabFixed] = useState(false)   // 방송 리스트 탭 fixed
   const [currentPage, setCurrentPage] = useState(1) // 메인 데이터 현재 호출 페이지
   const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
 
@@ -67,6 +70,8 @@ const MainPage = () => {
     showPop: false,
     storeUrl: '',
   });
+
+  const [rankingList , setRankingList]=useState([]);
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);  // pullToRefresh 할때 (모바일)
   const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false); // 로고, 헤더, 푸터 등 메인 페이지 리로드할때
 
@@ -113,9 +118,10 @@ const MainPage = () => {
 
   /* pullToRefresh 후 데이터 셋 */
   const mainDataReset = () => {
+    const randomValue = getRandomIndex();
     fetchMainInfo();
     fetchLiveInfo(1);
-    setTopRankType(topTenTabMenu[0])
+    setTopRankType(topTenTabMenu[randomValue])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
     setCurrentPage(1);
@@ -124,7 +130,6 @@ const MainPage = () => {
   // scroll
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
-    const overTabNode = overTabRef.current
     const overNode = overRef.current
     const headerNode = headerRef.current
     
@@ -135,20 +140,11 @@ const MainPage = () => {
     }
 
     if (overNode && headerNode) {
-      const overTop = overNode.offsetTop - headerNode.clientHeight
+      const overTop = overNode.clientHeight - headerNode.clientHeight
       if (window.scrollY >= overTop) {
         setHeaderFixed(true)
       } else {
         setHeaderFixed(false)
-      }
-    }
-
-    if (overTabNode) {
-      const overTabTop = overTabNode.getBoundingClientRect().top
-      if (0 > overTabTop) {
-        setTabFixed(true)
-      } else {
-        setTabFixed(false)
       }
     }
 
@@ -178,7 +174,7 @@ const MainPage = () => {
     touchEndY = e.touches[0].clientY
     const ratio = 3
     const heightDiff = (touchEndY - touchStartY) / ratio
-    const heightDiffFixed = 50
+    const heightDiffFixed = 80
 
     if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
       if (heightDiff <= heightDiffFixed) {
@@ -210,7 +206,7 @@ const MainPage = () => {
       if (typeof current_angle === 'number') {
         setReloadInit(true)
         iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-        iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+        iconWrapNode.style.height = `${refreshDefaultHeight + 80}px`
 
         // const loadIntervalId = setInterval(() => {
         //   if (Math.abs(current_angle) === 360) {
@@ -327,7 +323,7 @@ const MainPage = () => {
   const showPullToRefreshIcon = ({duration = 300}) => {
     const refreshWrap = iconWrapRef.current;
     if(refreshWrap) {
-      refreshWrap.style.height = `${refreshDefaultHeight + 50}px`;
+      refreshWrap.style.height = `${refreshDefaultHeight + 80}px`;
       setPullToRefreshPause(false);
       setTimeout(() => {
         refreshWrap.style.height = `${refreshDefaultHeight}px`;
@@ -357,6 +353,57 @@ const MainPage = () => {
       showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
       mainDataReset();
     }
+  }
+
+  /* NOW TOP 10 */
+  const nowTopLink = () => {
+    if(topRankType === 'DJ') {
+      history.push({
+        pathname: '/rank',
+        state: {tabState: 'time'}
+      })
+    }else {
+      history.push('/rank')
+    }
+  }
+
+  //메인 랭킹 10위 목록
+  const fetchRankDataTop10 = async (type) => {
+    if(type !=="" || type!==null){
+      if(type === 'DJ') {
+        Api.getRankTimeList({
+          rankSlct: 1,
+          page: 1,
+          records: 10,
+          rankingDate: convertDateTimeForamt(new Date() , "-")
+        }).then(res => {
+          if (res.result === "success") {;
+            setRankingList(res.data.list)
+          }
+        });
+      }else {
+        Api.get_ranking({
+          param: {
+            rankSlct: type === "FAN" ? 2 : 3,
+            rankType: 1,
+            rankingDate: moment().format("YYYY-MM-DD"),
+            page: 1,
+            records: 10,
+          }
+        }).then(res=> {
+          if(res.result === "success"){
+            setRankingList(res.data.list);
+          }else{
+            setRankingList([]);
+          }
+        });
+      }
+    }
+  };
+
+  const getRandomIndex = () => {
+    const boundary = 3;
+    return Math.floor(Math.random() * boundary); // 0 ~ boundary
   }
 
   /* 로고, 푸터 클릭했을때 */
@@ -394,13 +441,35 @@ const MainPage = () => {
     }
   }, [currentPage, liveListType])
 
+  useEffect(()=>{
+    if(topRankType) {
+      fetchRankDataTop10(topRankType)
+    }
+  },[topRankType])
+
   useEffect(() => {
-    fetchMainInfo()
-    // fetchLiveInfo();
+    /* 메인 page api */
+    fetchMainInfo();
+
+    /* 결제 관련 */
     getReceipt();
-    updatePopFetch(); // 업데이트 팝업
+
+    /* 업데이트 팝업 */
+    updatePopFetch();
+
+    /* 메인 팝업 */
     fetchMainPopupData('6');
+
+    /* redirect 체크 */
     redirectPage();
+
+    /* ios scrollTo 대응 */
+    if(isIos()) {
+      smoothscroll?.polyfill();
+    }
+
+    /* now top10 랜덤 */
+    setTopRankType(topTenTabMenu[getRandomIndex()]);
 
     return () => {
       sessionStorage.removeItem('orderId')
@@ -409,7 +478,7 @@ const MainPage = () => {
       window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
- 
+
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
@@ -436,38 +505,34 @@ const MainPage = () => {
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className='topSwiper'>
+      <section className={`topSwiper`} ref={overRef}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
-      <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
-      </section>
+      {
+        mainState.myStar.length > 0 &&
+        <section className='favorites'>
+          <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
+        </section>
+      }
       <section className='top10'>
-        <CntTitle title={'🏆 일간 TOP 10'} more={'rank'}>
+        <div className="cntTitle">
+          <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
-        </CntTitle>
-        <SwiperList
-          data={topRankType === 'DJ' ? mainState.dayRanking.djRank
-            : topRankType === 'FAN' ? mainState.dayRanking.fanRank
-              : mainState.dayRanking.loverRank}
-          profImgName="profImg"
-          type="top10"
-        />
-      </section>
-      <section className='daldungs'>
-        {mainState.newBjList.length > 0 &&
-        <>
-          <CntTitle title={'방금 착륙한 NEW 달린이'} />
-          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
-        </>
+        </div>
+        {rankingList.length>0 &&
+          <SwiperList
+            data={rankingList}
+            profImgName="profImg"
+            type="top10"
+          />
         }
       </section>
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className='liveView' ref={overTabRef}>
+      <section className="liveView">
         <CntTitle title={'🚀 지금 라이브 중!'}/>
-        <div className={`tabmenuWrap ${tabFixed === true ? 'isFixed' : ''}`}>
+        <div className={`tabmenuWrap isFixed`}>
           <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
                    defaultTab={1} />
         </div>

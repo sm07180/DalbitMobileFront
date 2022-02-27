@@ -38,7 +38,7 @@ function Second({ empty }) {
                   memberList.map((v1: any, i1: number) => {
                     const imageData = {
                       originImg: v1.imageInfo,
-                      profImg: v1.imageInfo.thumb120x120,
+                      profImg: v1.imageInfo.thumb292x292,
                       holder: v1.holder,
                       level: v1.level,
                     };

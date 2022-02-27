@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import {Context} from 'context'
 import moment from 'moment'
 
@@ -7,7 +7,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
@@ -17,6 +17,8 @@ import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/r
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankPage = () => {
   const history = useHistory();
@@ -25,17 +27,18 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const commonPopup = useSelector(state => state.popup);
+
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
-
-  //DJ List 기간 선택 pop flag
-  const [popSlide, setPopSlide] = useState(false)
 
   //선정기준 pop
   const [popup, setPopup] = useState(false)
 
   //현재 선택된 DJ List 기간
-  const [select , setSelect] = useState("today")
+  const [select , setSelect] = useState()
 
   //각 DJ 기간별 남은 시간
   const [daySetting , setDaySetting] = useState("")
@@ -58,8 +61,13 @@ const RankPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     getMyRank();
-    fetchRankData(1, 1);
+    // fetchRankData(1, 1);
     fetchRankData(2, 1);
+    if(location.state) {
+      setSelect(location.state.tabState);
+    }else {
+      setSelect('today');
+    }
   }, []);
 
   //남은 시간 계산
@@ -93,7 +101,7 @@ const RankPage = () => {
     week.setHours(0);
     week.setMinutes(0);
     week.setSeconds(0);
-    let reMainTime = select === "time" ? counting(time, now) : select === "today" ? counting(day, now) : select === "thisweek" ? `${moment(now).format('M')}월 ${chngNumberToString(weekNumberByThurFnc(now))}째 주` : select === "thismonth" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
+    let reMainTime = select === "time" ? counting(time, now) : select === "today" ? counting(day, now) : select === "thisweek" ? `${moment(now).format('M')}월 ${chngNumberToString(weekNumberByThurFnc(now))}째주` : select === "thismonth" ? `${moment(now).format('YY')}년 ${moment(now).format('MM')}월` : `${moment(now).format('YYYY')}년`;
     setDaySetting(reMainTime);
   }
 
@@ -171,6 +179,7 @@ const RankPage = () => {
 
   // 나머지 List
   const fetchRankData = async (rankSlct, rankType) => {
+    console.log('aaa')
     let rankingDate = moment(rankType === 1 ? new Date() : rankType === 2 ? convertMonday() : rankType === 3 ? convertMonth() : new Date()).format("YYYY-MM-DD");
     const {result, data} = await Api.get_ranking({
       param: {
@@ -183,7 +192,10 @@ const RankPage = () => {
     });
     if (result === "success") {
       if(rankSlct === 1){
-        setDjRank(data.list);
+        console.log(select);
+        if(select !== 'time') {
+          setDjRank(data.list);
+        }
       } else if(rankSlct === 2) {
         setFanRank(data.list)
       } else if(rankSlct === 3) {
@@ -215,7 +227,11 @@ const RankPage = () => {
 
   //DJ 랭킹 List 기간 pop
   const selectChart = () => {
-    setPopSlide(true);
+    dispatch(setSlidePopupOpen());
+  }
+
+  const slidePopClose = () => {
+    closePopup(dispatch);
   }
 
   //DJ 랭킹 List 기간 선택
@@ -232,30 +248,32 @@ const RankPage = () => {
     } else if(text === "올해") {
       setSelect("thisyear")
     }
-    setPopSlide(false);
+    slidePopClose();
   }
 
   //DJ 랭킹 시간별 List호출
   useEffect(() => {
-    let interval = "";
-    timer();
-    if (select === "time"){
-      fetchTimeRank();
-      interval = setInterval(() => {
-        timer();
-      }, 1000);
-    } else {
-      if (select === "today"){
+    if(select) {
+      let interval = "";
+      timer();
+      if (select === "time"){
+        fetchTimeRank();
         interval = setInterval(() => {
           timer();
         }, 1000);
       } else {
-        timer();
+        if (select === "today"){
+          interval = setInterval(() => {
+            timer();
+          }, 1000);
+        } else {
+          timer();
+        }
+        fetchRankData(1, select === "today" ? 1 : select === "thisweek" ? 2 : select === "thismonth" ? 3 : 4);
       }
-      fetchRankData(1, select === "today" ? 1 : select === "thisweek" ? 2 : select === "thismonth" ? 3 : 4);
-    }
-    return () => {
-      clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+      }
     }
   }, [select]);
 
@@ -298,7 +316,7 @@ const RankPage = () => {
       <section className='rankingTop'>
         <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
         <div className='title' onClick={selectChart}>
-          <div>DJ 실시간</div>
+          <div>DJ {select === "time" && "실시간"}</div>
           <div>
             <strong>
               {select === "time" && "타임"}
@@ -310,7 +328,7 @@ const RankPage = () => {
             차트<span className='optionSelect'></span>
           </div>
         </div>
-        <div className='countDown'>{daySetting}</div>
+        <span className={`countDown ${(select === "time" || select === "today") ? "text" : "" }`}>{daySetting}</span>
         <div className='criteria'>
           <div className='relative'>
             <div className='clickArea' onClick={criteriaPop}/>
@@ -318,13 +336,22 @@ const RankPage = () => {
         </div>
         <ChartSwiper data={djRank}/>
       </section>
-      {token.isLogin &&
-      <section className='myRanking'>
-        <CntTitle title={'님의 오늘 순위는?'}>
-          <div className="point">{profile.nickNm}</div>
-        </CntTitle>
-        <MyRanking data={myRank}/>
-      </section>
+      {token.isLogin ?
+        <section className='myRanking'>
+          <CntTitle title={'님의 오늘 순위는?'}>
+            <div className="point">{profile.nickNm}</div>
+          </CntTitle>
+          <MyRanking data={myRank}/>
+        </section>
+          :
+        <section className='myRanking'>
+          <CntTitle title={'나의 순위는?'}>
+          </CntTitle>
+          <div className='rankBox'>
+            <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
+            <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
+          </div>
+        </section>          
       }
       <section className='dailyRankList'>
         <CntTitle title={'일간 FAN / CUPID'} more={`${dayTabType === "FAN" ? "/rankDetail/FAN" : "/rankDetail/CUPID"}`}/>
@@ -340,13 +367,11 @@ const RankPage = () => {
           }
         </div>
       </section>
-      <section className='rankingBottom' onClick={() => history.push('/rankDetail/DJ')}>
-        <p>오늘의 랭킹 순위는?</p>
-        <p>혜택이 쏟아지는 달라 랭킹에 지금 도전하세요!</p>
-        <button>랭킹순위 전체보기 &gt;</button>
+      <section className='rankingBottom' onClick={() => history.push('/honor')}>
+        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
       </section>
-      {popSlide &&
-      <PopSlide setPopSlide={setPopSlide}>
+      {commonPopup.commonPopup &&
+      <PopSlide>
         <div className='selectWrap'>
           <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
           <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
@@ -383,7 +408,7 @@ const RankPage = () => {
           </div>
         </div>
         <div className='popInfo'>
-          <span>Honey</span>(허니)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
+          <span>HONEY</span>(허니)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
         </div>
       </LayerPopup>
       }

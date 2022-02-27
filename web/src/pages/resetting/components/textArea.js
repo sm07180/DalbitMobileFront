@@ -7,13 +7,12 @@ import './textArea.scss'
 import {Context} from "context";
 
 const TextArea = (props) => {
-  const { list, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
+  const { max, list, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("");
   const context = useContext(Context);
 
-  let max = 20
   const textChange = (e) => {
     let textVal = e.target.value;
     if(textVal.length > max) {

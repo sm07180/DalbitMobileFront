@@ -37,7 +37,7 @@ const FeedSection = (props) => {
                     <span className="time">{item.writeDate}</span>
                     {item?.photoInfoList?.length > 0 &&
                       <div className="thumb">
-                        <img src={item?.photoInfoList[0]?.imgObj?.thumb50x50} alt="" />
+                        <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
                         {item.photoInfoList.length > 1 &&
                           <span className="count">{`+${item.photoInfoList.length -1}`}</span>
                         }

@@ -1,21 +1,22 @@
 import React, {useEffect, useState, useRef} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-import Api from 'context/api'
 
 import Header from 'components/ui/header/Header'
 
 import LayerPopup from '../../../components/ui/layerPopup/LayerPopup'
-import PopSlide from "../../../components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "../../../components/ui/popSlide/PopSlide";
 
 import './share.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
+import UseInput from "common/useInput/useInput";
 
 const Share = () => {
     const [popup, setPopup] = useState(false);
-    const [popSlide, setPopSlide] = useState(false);
     const [certification, setCertification] = useState(false);
-    const [urlInfo, setUrlInfo] = useState({
-        url: "",
-    })
+    const [urlInfo, setUrlInfo] = useState('')
+    const commonPopup = useSelector(state => state.popup);
+    const dispatch = useDispatch();
+    const urlInputRef = useRef();
 
     async function imageDownload() {
         // blob 형태로 들고 있어야 함.
@@ -31,11 +32,6 @@ const Share = () => {
         link.click();
     }
 
-    const onChange = (e) => {
-        const { value, name } = e.target;
-        setUrlInfo({[name]: value});
-    };
-
     const onFocus = (e) => {
         const targetClassName = e.target.parentNode;
         targetClassName.classList.add('focus');
@@ -46,20 +42,23 @@ const Share = () => {
     }
 
     const popupOpen = () => {
-        setPopup(true);
+      setPopup(true);
     }
 
     const popSlideOpen = () => {
-        setPopSlide(true);
+      dispatch(setSlidePopupOpen());
     }
 
     const popSlideClose = () => {
-        setPopSlide(false);
+      closePopup(dispatch);
     }
 
     const submitAction = () => {
+      popSlideClose();
+    }
 
-        setPopSlide(false);
+    const urlInputValidator = (value) => {
+      return value.length <= 300;
     }
 
     return (
@@ -112,7 +111,9 @@ const Share = () => {
                                     내 친구 초대 코드까지 남긴다면..?
                                 </p>
                             </div>
-                            <button className={`eventBtn ${certification ? "disable" : ""}`} onClick={popSlideOpen}>인증하기</button>
+                            <button className={`eventBtn ${certification ? "disable" : ""}`} onClick={popSlideOpen}>
+                              {certification ? '인증완료' : '인증하기'}
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -133,16 +134,24 @@ const Share = () => {
                     </div>
                 </LayerPopup>
             }
-            {popSlide &&
-                <PopSlide title="인증하기" setPopSlide={setPopSlide}>
+            {commonPopup.commonPopup &&
+                <PopSlide title="인증하기">
                     <div className='shareUrl'>
                         <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
-                            <input type="text" name={"url"} onChange={onChange} placeholder="게시글의 URL을 입력해주세요." autoComplete="off"/>
+                          <UseInput name={"url"}
+                                    placeholder="게시글의 URL을 입력해주세요."
+                                    forwardedRef={urlInputRef}
+                                    value={urlInfo}
+                                    setValue={setUrlInfo}
+                                    validator={urlInputValidator}
+                                    onFocus={onFocus}
+                                    onBlur={onBlur}
+                          />
                         </div>
                         <p className='caution'>한 번 입력하면 수정이 불가능하니<br/>주의해주세요.</p>
                         <div className='btnWrap'>
                             <button className='cancelBtn' onClick={popSlideClose}>취소</button>
-                            <button className={`submitBtn ${urlInfo.url === "" ? "disable" : ""}`} onClick={submitAction}>확인</button>
+                            <button className={`submitBtn ${urlInfo === "" ? "disable" : ""}`} onClick={submitAction}>확인</button>
                         </div>
                     </div>
                 </PopSlide>

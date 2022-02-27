@@ -32,7 +32,7 @@ function SpecialList({ empty }) {
             <>
               {specialList.map((v, idx) => {
                 const imageData = {
-                  profImg: v.profImg.thumb120x120,
+                  profImg: v.profImg.thumb292x292,
                   holder: v.holder,
                   level: v.level,
                 };

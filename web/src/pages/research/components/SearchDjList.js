@@ -30,7 +30,7 @@ const SearchDjList = (props) => {
               return (
                 <div className="listRow" key={index} data-mem-no={list.memNo} onClick={goProfile}>
                   <div className="photo">
-                    <img src={list.profImg.thumb150x150} />
+                    <img src={list.profImg.thumb292x292} />
                   </div>
                   <div className='listContent'>
                     <div className="listItem">

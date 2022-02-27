@@ -9,7 +9,7 @@ const ClipRankList = (props) => {
         return (
           <div key={index} className="listRow" data-clip-no={list.clipNo} onClick={playAction}>
             <div className="photo">
-              <img src={list.bgImg.thumb100x100} alt="유저이미지" />
+              <img src={list.bgImg.thumb292x292} alt="유저이미지" />
               <span className="play"/>
             </div>
             <div className="rank">{list.rank}</div>

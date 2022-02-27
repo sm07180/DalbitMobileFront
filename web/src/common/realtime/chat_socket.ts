@@ -22,6 +22,8 @@ import {
   VoteCallbackPromisePropsType,
 } from "../../redux/types/voteType";
 
+import {isDesktop} from "../../lib/agent";
+
 // lib
 const socketClusterClient = require("socketcluster-client");
 
@@ -115,14 +117,17 @@ export class ChatSocketHandler {
       this.setMemNo(this.memNo);
     }
 
-    this.connect((result: any) => {
-      const { error } = result;
-      if (error === false) {
-        if (this.socket.getState() === "open") {
-          this.connected();
+    // PC만 커넥트 연결
+    if (isDesktop()) {
+      this.connect((result: any) => {
+        const { error } = result;
+        if (error === false) {
+          if (this.socket.getState() === "open") {
+            this.connected();
+          }
         }
-      }
-    });
+      });
+    }
 
     // if (this.splashData === null) {
     //   splash().then((resolve) => {
@@ -1762,6 +1767,7 @@ export class ChatSocketHandler {
                       }
 
                       if (reqRoomState.mediaState === 'video') {
+                        player.style.display = reqRoomState.mediaOn ? '' : 'none';
                         this.rtcInfo?.videoMute(!reqRoomState.mediaOn); // 영상 OFF 할지 말지 정하는 변수, true 면 영상 틀고, false이면 영상 꺼야한다.
                       }
 

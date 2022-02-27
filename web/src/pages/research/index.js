@@ -1,7 +1,8 @@
 import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
-import { deleteFan, postAddFan} from "common/api";
+import {broadcastList, deleteFan, postAddFan} from "common/api";
 import {Context} from "context";
 import {useDispatch, useSelector} from "react-redux";
+import {setIsRefresh} from "redux/actions/common";
 
 //context
 import API from 'context/api';
@@ -22,12 +23,13 @@ import SearchResult from './components/SearchResult';
 
 // scss
 import './style.scss';
-import {setIsRefresh} from "redux/actions/common";
 
 const SearchPage = (props) => {
   const context = useContext(Context); //context
   const dispatch = useDispatch();
-  const common = useSelector(state => state.common);
+  const common = useSelector(state => state.common)
+  const mainState = useSelector((state) => state.main);
+
   const [searchVal, setSearchVal] = useState(''); // 검색 value 값
   const [searchParam, setSearchParam] = useState(''); // child로 넘길 검색 값
 
@@ -36,6 +38,7 @@ const SearchPage = (props) => {
   const [djListInfo, setDjListInfo] = useState({list: []}); // 믿고 보는 DJ 정보
   const [liveListInfo, setLiveListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 지금 핫한 라이브 정보
   const [hotClipListInfo, setHotClipListInfo] = useState({ checkDate: '', list: [], totalCnt: 0, type: 0}); // 오늘 인기 있는 클립 정보
+  const [newBjListInfo, setNewBjListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 방금 뭐시기 리스트
 
   // 믿고 보는 DJ 정보 리스트 가져오기
   const getDjListInfo = useCallback(async () => {
@@ -63,6 +66,24 @@ const SearchPage = (props) => {
       setHotClipListInfo({...data});
     }
   }, []);
+
+  // 방금 뭐시기 리스트 가져오기
+  const getNewBjList = () => {
+    const param = {
+      page: 1,
+      mediaType: '',
+      records: 10,
+      roomType: '',
+      searchType: 1,
+      djType: 3,
+      gender: ''
+    }
+    broadcastList(param).then(res => {
+      if (res.code === 'C001') {
+        setNewBjListInfo({...res.data, totalCnt: res.data.paging.total });
+      }
+    });
+  }
 
   // 검색창 state 관리
   const onChange = (e) => {
@@ -175,6 +196,7 @@ const SearchPage = (props) => {
     getHopClipListInfo().then(r => {});
     setSearchVal('');
     setSearching(false);
+    getNewBjList();
     window.scrollTo(0, 0);
     dispatch(setIsRefresh(false));
   };
@@ -183,6 +205,7 @@ const SearchPage = (props) => {
     getDjListInfo().then(r => {});
     getLiveListInfo().then(r => {});
     getHopClipListInfo().then(r => {});
+    getNewBjList();
   }, []);
 
   useEffect(() => {
@@ -201,30 +224,39 @@ const SearchPage = (props) => {
           {(searchVal.length > 0 || searching) && <button className='searchCancel' onClick={removeValue}>취소</button>}
         </div>
       </Header>
-      {!searching && (searchVal.length === 0 ?
-        <>
-          {djListInfo.list.length > 0 &&
-          <section className='djSection'>
-            <CntTitle title="믿고 보는 DJ" />
-            <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
-          </section>
-          }
-          {liveListInfo.list.length > 0 &&
-          <section className='liveSection'>
-            <CntTitle title="🔥 지금 핫한 라이브"/>
-            <HotLiveList data={liveListInfo.list}/>
-          </section>
-          }
-          {hotClipListInfo.list.length > 0 &&
-          <section className='clipSection'>
-            <CntTitle title="오늘 인기 있는 클립"/>
-            <ClipList data={hotClipListInfo.list}/>
-          </section>
-          }
-        </>
-        :
-        <SearchHistory onInputClick={handleSearch} handleHistory={handleHistory}/>)
-      }
+      <div className='subContent'>
+        {!searching && (searchVal.length === 0 ?
+          <>
+            {liveListInfo.list.length > 0 &&
+            <section className='liveSection'>
+              <CntTitle title="🔥 지금 핫한 라이브"/>
+              <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"}/>
+            </section>
+            }
+            {newBjListInfo.list.length > 0 &&
+            <section className='liveSection'>
+              <CntTitle title={'방금 착륙한 NEW 달린이'} />
+              <HotLiveList data={newBjListInfo.list} nickNmKey={"bjNickNm"}/>
+            </section>
+            }
+            {hotClipListInfo.list.length > 0 &&
+            <section className='clipSection'>
+              <CntTitle title="오늘 인기 있는 클립"/>
+              <ClipList data={hotClipListInfo.list}/>
+            </section>
+            }
+            {djListInfo.list.length > 0 &&
+            <section className='djSection'>
+              <CntTitle title="믿고 보는 DJ" />
+              <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
+            </section>
+            }
+          </>
+          :
+          <SearchHistory onInputClick={handleSearch} handleHistory={handleHistory}/>)
+        }
+      </div>
+      
 
       {searching && <SearchResult searchVal={searchParam}/>}
     </div>

@@ -41,7 +41,7 @@ const SearchClipList = (props) => {
               return (
                 <div className="listRow" key={index} data-clip-no={list.clipNo} onClick={playClip}>
                   <div className="photo">
-                    <img src={list.bgImg.thumb150x150} onError={hanldeImgError} />
+                    <img src={list.bgImg.thumb292x292} onError={hanldeImgError} />
                   </div>
                   <div className='listContent'>
                     <div className="listItem">
@@ -53,8 +53,8 @@ const SearchClipList = (props) => {
                       <span className="nickNm">{list.nickName}</span>
                     </div>
                     <div className="listItem dataCtn">
-                      <DataCnt type={"newFanCnt"} value={list.newFanCnt}/>
-                      <DataCnt type={"likeCnt"} value={list.likeCnt}/>
+                      <DataCnt type={"replyCnt"} value={list.replyCnt}/>
+                      <DataCnt type={"goodCnt"} value={list.goodCnt}/>
                     </div>
                   </div>
                 </div>
