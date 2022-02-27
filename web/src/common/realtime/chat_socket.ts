@@ -1,18 +1,29 @@
-import { CHAT_CONFIG, NODE_ENV } from "constant/define";
+import {CHAT_CONFIG, NODE_ENV} from "constant/define";
 
 // constant
-import { MiniGameType, tabType } from "pages/broadcast/constant";
-import { AuthType } from "constant";
+import {MediaType, MiniGameType, tabType} from "pages/broadcast/constant";
+import {AuthType} from "constant";
 
-import { postErrorSave, splash, getItems } from "common/api";
-
-// lib
-const socketClusterClient = require("socketcluster-client");
-
-import { NormalMsgFormat, GiftActionFormat, SystemStartMsg, ReqGood } from "pages/broadcast/lib/chat_msg_format";
+import {getItems, postErrorSave, splash} from "common/api";
+import {GiftActionFormat, NormalMsgFormat, ReqGood, SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
 
 // static
 import MicAlarmClose from "common/static/image/mic_alarm_close.png";
+import {getCookie} from "common/utility/cookie";
+import {rtcSessionClear} from "./rtc_socket";
+import {
+  getVoteDetailList,
+  moveVoteListStep,
+  moveVoteStep,
+  setVoteActive,
+  setVoteCallback,
+} from "../../redux/actions/vote";
+import {
+  VoteCallbackPromisePropsType,
+} from "../../redux/types/voteType";
+
+// lib
+const socketClusterClient = require("socketcluster-client");
 
 type chatUserInfoType = { authToken: string; memNo: string; locale: string; roomNo: string | null };
 
@@ -28,11 +39,6 @@ export type userBroadcastSettingType = {
   ttsSound?: boolean;
   normalSound?: boolean;
 };
-
-import { MediaType } from "pages/broadcast/constant";
-import { getCookie } from "common/utility/cookie";
-import {rtcSessionClear} from "./rtc_socket";
-import {moveVoteListStep, moveVoteStep, setVoteActive, setVoteStep} from "../../redux/actions/vote";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -479,7 +485,6 @@ export class ChatSocketHandler {
         this.privateChannelHandle = this.channelBinding(this.privateChannelHandle, channelName);
 
         // 나는 모르겠다. 이게 왜 undefined가 걸리는지.
-
         this.privateChannelHandle.watch((data: any) => {
           if (this.splashData === null) {
             splash().then((resolve) => {
@@ -1919,9 +1924,19 @@ export class ChatSocketHandler {
                   }
                   case "reqInsVote": {
                     // 투표 생성
-                    console.log('reqInsVote ... ', data.reqInsVote);
-                    if(this.memNo !== data.reqInsVote.memNo){
+                    if(this.memNo === data.reqInsVote.memNo){
+                      this.broadcastAction.setRightTabType(tabType.VOTE);
                       this.dispatch(setVoteActive(true));
+                    }else if(this.memNo !== data.reqInsVote.memNo){
+                      this.broadcastAction.setRightTabType(tabType.VOTE);
+                      this.dispatch(setVoteActive(true));
+                      this.dispatch(moveVoteListStep({
+                        memNo: data.reqInsVote.memNo
+                        , roomNo: data.reqInsVote.roomNo
+                        , voteSlct: "s"
+                      }));
+
+                      // this.dispatch(getVoteList(data.reqInsVote));
                       this.globalAction.setAlertStatus({
                         status: true,
                         type: "confirm",
@@ -1935,7 +1950,6 @@ export class ChatSocketHandler {
                             , roomNo: data.reqInsVote.roomNo
                             , voteNo: data.reqInsVote.voteNo
                           }));
-                          this.broadcastAction.setRightTabType(tabType.VOTE);
                         },
                       });
                     }
@@ -1944,32 +1958,104 @@ export class ChatSocketHandler {
                   }
                   case "reqInsMemVote": {
                     // 투표
-                    console.log('reqInsMemVote ... ', data)
+                    const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                      const voteResult:VoteCallbackPromisePropsType = [{
+                        step: 'vote',
+                        data: data.reqInsMemVote,
+                        callback: ()=>{
+                          this.dispatch(getVoteDetailList(data.reqInsMemVote));
+                        }
+                      }];
+                      resolve(voteResult)
+                    })
+                    this.dispatch(setVoteCallback(getCallback));
                     return null;
                   }
                   case "reqDelVote": {
                     // 투표 삭제
-                    console.log('reqDelVote ... ', data)
+                    if(this.memNo === data.reqDelVote.memNo){
+                      this.dispatch(moveVoteListStep({
+                        memNo: data.reqDelVote.memNo,
+                        roomNo: data.reqDelVote.roomNo,
+                        voteSlct: 's'
+                      }))
+                    }else{
+                      const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                        const voteResult:VoteCallbackPromisePropsType = [{
+                          step: 'vote',
+                          data: data.reqDelVote,
+                          callback: ()=>{
+                            this.globalAction.callSetToastStatus({
+                              status: true,
+                              message: `해당 투표가 삭제되어 투표 목록으로 이동합니다.`,
+                            });
+                            this.dispatch(moveVoteListStep({
+                              memNo: data.reqDelVote.memNo,
+                              roomNo: data.reqDelVote.roomNo,
+                              voteSlct: 's'
+                            }));
+                          }
+                        }, {
+                          step: 'list',
+                          data: data.reqDelVote,
+                          callback: ()=>{
+                            this.dispatch(moveVoteListStep({
+                              memNo: data.reqDelVote.memNo,
+                              roomNo: data.reqDelVote.roomNo,
+                              voteSlct: 's'
+                            }));
+                          }
+                        }];
+                        resolve(voteResult)
+                      })
+                      this.dispatch(setVoteCallback(getCallback));
+                    }
                     return null;
                   }
                   case "reqEndVote": {
                     // 투표 마감
-                    // endSlct: "a"
-                    // memNo: "41642143336123"
-                    // roomNo: "91645762266164"
-                    // voteNo: "310"
                     if(data.reqEndVote.endSlct === 'a'){
                       this.broadcastAction?.setRightTabType(tabType.LISTENER);
                       this.dispatch(setVoteActive(false))
+                    }else if(data.reqEndVote.endSlct === 'o'){
+                      if(this.memNo === data.reqEndVote.memNo){
+                        this.dispatch(moveVoteListStep({
+                          memNo: data.reqEndVote.memNo,
+                          roomNo: data.reqEndVote.roomNo,
+                          voteSlct: 's'
+                        }))
+                      }else{
+                        const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                          const voteResult:VoteCallbackPromisePropsType = [{
+                            step: 'vote',
+                            data: data.reqEndVote,
+                            callback: ()=>{
+                              this.globalAction.callSetToastStatus({
+                                status: true,
+                                message: `해당 투표가 마감되어 투표 목록으로 이동합니다.`,
+                              });
+                              this.dispatch(moveVoteListStep({
+                                memNo: data.reqEndVote.memNo,
+                                roomNo: data.reqEndVote.roomNo,
+                                voteSlct: 's'
+                              }));
+                            }
+                          }, {
+                            step: 'list',
+                            data: data.reqEndVote,
+                            callback: ()=>{
+                              this.dispatch(moveVoteListStep({
+                                memNo: data.reqEndVote.memNo,
+                                roomNo: data.reqEndVote.roomNo,
+                                voteSlct: 's'
+                              }));
+                            }
+                          }];
+                          resolve(voteResult)
+                        })
+                        this.dispatch(setVoteCallback(getCallback));
+                      }
                     }
-                    if(data.reqEndVote.endSlct === 'o'){
-                      this.dispatch(moveVoteListStep({
-                        memNo: data.reqEndVote.memNo,
-                        roomNo: data.reqEndVote.roomNo,
-                        voteSlct: 's'
-                      }))
-                    }
-
                     return null;
                   }
 

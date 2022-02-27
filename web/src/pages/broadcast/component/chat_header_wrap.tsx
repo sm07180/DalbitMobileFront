@@ -604,7 +604,7 @@ export default function ChatHeaderWrap(prop: any) {
                     roomNo: roomNo
                     , memNo: broadcastState.roomInfo.bjMemNo
                     , voteSlct: 's'
-                  }))
+                  }));
                   broadcastAction.setRightTabType(tabType.VOTE);
                 }
               }}

@@ -1253,60 +1253,6 @@ export default function LeftSideAgora(props: {
       "video"} ${broadcastState.isWide && "wide"}`}
       id="display"
     >
-      <ul style={{backgroundColor:'tomato', cursor:'pointer'}}>
-        <li style={{padding:'10px'}} onClick={()=>{
-          dispatch(getVoteList({
-            memNo: roomInfo.bjMemNo
-            , roomNo: roomNo
-            , voteSlct: 's'
-          }))
-        }}>getVoteList</li>
-        <li style={{padding:'10px'}} onClick={()=>{
-          dispatch(getVoteSel({
-            memNo: roomInfo.bjMemNo
-            , roomNo: roomNo
-            , voteNo: _.first(voteRdx?.voteList?.list)?.voteNo
-          }))
-        }}>getVoteSel</li>
-        <li style={{padding:'10px'}} onClick={()=>{
-          dispatch(getVoteDetailList({
-            memNo: roomInfo.bjMemNo
-            , pmemNo: roomInfo.bjMemNo
-            , roomNo: roomNo
-            , voteNo: _.first(voteRdx?.voteList?.list)?.voteNo
-          }))
-        }}>getVoteDetailList</li>
-        <li style={{padding:'10px'}} onClick={()=>{
-          // #{memNo},#{roomNo},#{voteTitle},#{voteAnonyYn},#{voteDupliYn},#{voteItemCnt},#{endTime}
-          dispatch(insVote({
-            memNo: roomInfo.bjMemNo
-            , roomNo: roomNo
-            , voteTitle: '투ㅡ표 제목'
-            , voteAnonyYn: 'y'
-            , voteDupliYn: 'n'
-            , voteItemCnt: 5
-            , endTime: 3600
-            , voteItemNames: [
-              'a1','a2','a3','a4','a5'
-            ]
-          }))
-        }}>insVote</li>
-        <li style={{padding:'10px'}} onClick={()=>{
-          if(!voteRdx.voteDetailList || voteRdx.voteDetailList.length < 1){
-            return
-          }
-          const random = voteRdx.voteDetailList[_.random(0, voteRdx?.voteDetailList.length-1)]
-          dispatch(insMemVote({
-            memNo: roomInfo.bjMemNo
-            , pmemNo: roomInfo.bjMemNo
-            , roomNo: roomNo
-            , voteNo: _.first(voteRdx?.voteList?.list)?.voteNo
-            , itemNo: random.itemNo
-            , voteItemName: random.voteItemName
-          }))
-
-        }}>insMemVote</li>
-      </ul>
       <div id="local-player" className="player"/>
       <div
         className="chat-display"

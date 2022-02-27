@@ -14,9 +14,9 @@ import {
 	SET_VOTE_DETAIL_LIST,
 	SET_VOTE_LIST,
 	SET_VOTE_SEL,
-	SET_VOTE_STEP
+	SET_VOTE_STEP, SET_VOTE_TAB
 } from "../../actions/vote";
-import {GetVoteSelRequestType, VoteResultType, VoteStepType} from "../../types/voteType";
+import {VoteResultType, VoteSlctKor} from "../../types/voteType";
 import {initTempInsVote, initVoteSel} from "../../reducers/vote";
 
 // 투표 등록
@@ -44,24 +44,15 @@ function* insMemVote(param) {
 				...param.payload
 				, voteSlct: 's'
 			}
-			// memNo roomNo voteSlct
-			const getVoteList = yield call(Api.getVoteList, reSelectParam);
-			yield put({type: SET_VOTE_LIST, payload: getVoteList.data})
-			// memNo roomNo voteNo
-			const getVoteSel = yield call(Api.getVoteSel, reSelectParam);
-			yield put({type: SET_VOTE_SEL, payload: getVoteSel.data})
-			// memNo pmemNo roomNo voteNo
 			const getVoteDetailList = yield call(Api.getVoteDetailList, reSelectParam);
 			const data:Array<VoteResultType> = getVoteDetailList.data;
 
 			if(data){
-				yield put({type: SET_VOTE_DETAIL_LIST, payload: data})
 				const sel = data.find(f=>f.memVoteYn === 'y');
 				if(sel){
 					yield put({type: SET_SEL_VOTE_ITEM, payload: sel})
 				}
 			}
-
 		}
 
 		delete res.data
@@ -164,6 +155,7 @@ function* moveVoteListStep(param) {
 		const res = yield call(Api.getVoteList, param.payload);
 		yield put({type: SET_VOTE_LIST, payload: res.data})
 		yield put({type: SET_VOTE_STEP, payload: 'list'})
+		yield put({type: SET_VOTE_TAB, payload: param.payload.voteSlct === 's' ? VoteSlctKor.S : VoteSlctKor.E})
 	} catch (e) {
 		console.error(`moveVoteListStep saga e=>`, e)
 	}

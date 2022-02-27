@@ -41,7 +41,7 @@ const SwiperList = (props) => {
   }
 
   useEffect(() => {
-    if (data.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
+    if (data?.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
       swiperRefresh();
     }
   }, [data, pullToRefreshPause]);

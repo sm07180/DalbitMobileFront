@@ -1,36 +1,32 @@
-import React, {useState} from 'react';
+import React from 'react';
 import Tabmenu from "../component/tabmenu";
-import {getVoteList, moveVoteInsStep} from "../../../../../redux/actions/vote";
+import {moveVoteInsStep, moveVoteListStep} from "../../../../../redux/actions/vote";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import VoteListItem from "./VoteListItem";
 import SubmitBtn from "../../../../../components/ui/submitBtn/SubmitBtn";
 import {useDispatch, useSelector} from "react-redux";
+import {VoteSlctKor} from "../../../../../redux/types/voteType";
 
-const tabMenu = ['진행중인 투표', '마감된 투표']
 const VoteList = ({roomInfo, roomNo, roomOwner}) => {
-  const [tabType, setTabType] = useState(tabMenu[0])
   const dispatch = useDispatch();
   const voteRdx = useSelector(({vote})=> vote);
-  // voteRdx.voteList.list >= 5
   const submitButtonProps = {
     text: '투표 만들기',
-    state: voteRdx.voteList.list.length >= 5 ? 'disabled' : ''
+    state: voteRdx.voteTab === VoteSlctKor.S && voteRdx.voteList.list.length >= 5 ? 'disabled' : ''
   }
 
   return (
     <>
       <section className="voteTab">
-        <Tabmenu data={tabMenu} tab={tabType} setTab={(target)=>{
-          if(target === tabType){
-            console.log('같은 탭 클릭')
-            return;
-          }
-          dispatch(getVoteList({
+        <Tabmenu data={[VoteSlctKor.S, VoteSlctKor.E]} tab={voteRdx.voteTab} setTab={(target)=>{
+          // 같은 탭 클릭
+          if(target === voteRdx.voteTab) return;
+
+          dispatch(moveVoteListStep({
             memNo: roomInfo.bjMemNo
             , roomNo: roomNo
-            , voteSlct: target === tabMenu[0] ? 's' : 'e'
+            , voteSlct: target === VoteSlctKor.S ? 's' : 'e'
           }));
-          setTabType(target);
         }} />
       </section>
       <section className="contentWrap">

@@ -5,7 +5,7 @@ import {
   GetVoteListRequestType,
   GetVoteSelRequestType,
   InsMemVoteRequestType,
-  InsVoteRequestType, VoteListResultType, VoteResultType, VoteStateType, VoteStepType,
+  InsVoteRequestType, VoteCallbackType, VoteListResultType, VoteResultType, VoteStepType, VoteTabType,
 } from "../types/voteType";
 
 export const SET_VOTE_ACTIVE = 'vote/SET_VOTE_ACTIVE';
@@ -30,6 +30,8 @@ export const MOVE_VOTE_LIST_STEP = 'vote/MOVE_VOTE_LIST_STEP';
 export const MOVE_VOTE_STEP = 'vote/MOVE_VOTE_STEP';
 export const MOVE_VOTE_INS_STEP = 'vote/MOVE_VOTE_INS_STEP';
 export const SET_VOTE_STEP = 'vote/SET_VOTE_STEP';
+export const SET_VOTE_TAB = 'vote/SET_VOTE_TAB';
+export const SET_VOTE_CALLBACK = 'vote/SET_VOTE_CALLBACK';
 
 export const setVoteActive = createAction(SET_VOTE_ACTIVE)<boolean>();
 export const insVote = createAction(INS_VOTE)<InsVoteRequestType>();
@@ -52,3 +54,5 @@ export const setVoteStep = createAction(SET_VOTE_STEP)<VoteStepType>();
 export const moveVoteListStep = createAction(MOVE_VOTE_LIST_STEP)<GetVoteListRequestType>();
 export const moveVoteStep = createAction(MOVE_VOTE_STEP)<GetVoteSelRequestType>();
 export const moveVoteInsStep = createAction(MOVE_VOTE_INS_STEP)();
+export const setVoteTab = createAction(SET_VOTE_TAB)<VoteTabType>();
+export const setVoteCallback = createAction(SET_VOTE_CALLBACK)<VoteCallbackType>();

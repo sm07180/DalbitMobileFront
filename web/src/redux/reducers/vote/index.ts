@@ -1,5 +1,5 @@
-import { createReducer } from "typesafe-actions";
-import {DateType, InsVoteRequestType, VoteActions, VoteResultType, VoteStateType} from "../../types/voteType";
+import {createReducer} from "typesafe-actions";
+import {InsVoteRequestType, VoteActions, VoteResultType, VoteSlctKor, VoteStateType} from "../../types/voteType";
 
 const initDate ={
   date: {
@@ -14,6 +14,7 @@ const initDate ={
     second: 0
   }
 }
+
 export const MAX_END_TIME = 60
 export const initVoteSel: VoteResultType = {
   voteNo: '',
@@ -33,6 +34,7 @@ export const initVoteSel: VoteResultType = {
   itemNo: '',
   voteItemName: '',
   memVoteYn : 'n',
+  rank:0,
 }
 export const initTempInsVoteVoteItemNames = ['',''];
 export const initTempInsVote:InsVoteRequestType = {
@@ -65,6 +67,9 @@ export const initialState:VoteStateType = {
   tempInsVote: initTempInsVote,
   selVoteItem: initVoteSel,
   step: 'list',
+
+  voteTab: VoteSlctKor.S,
+  callback: null
 }
 
 const member = createReducer<VoteStateType, VoteActions>(initialState,{
@@ -91,6 +96,12 @@ const member = createReducer<VoteStateType, VoteActions>(initialState,{
   },
   "vote/SET_VOTE_STEP" : (state, {payload})=>{
     return {...state, step:payload}
+  },
+  "vote/SET_VOTE_TAB" : (state, {payload})=>{
+    return {...state, voteTab:payload}
+  },
+  "vote/SET_VOTE_CALLBACK" : (state, {payload})=>{
+    return {...state, callback:payload}
   },
 });
 

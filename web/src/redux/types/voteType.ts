@@ -27,6 +27,7 @@ export type GetVoteListRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 
 export type GetVoteSelRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteNo'>
 export type GetVoteDetailListRequestType = Pick<VoteRequestType, 'memNo' | 'pmemNo' | 'roomNo' | 'voteNo'>
 
+
 export type VoteResultType = {
   voteNo: string 		 		 		 		  // 투표번호
   memNo: string 		 		 		 		    // 투표개설자 회원번호
@@ -45,6 +46,7 @@ export type VoteResultType = {
   updDate: DateType 		 		 		 		  // 변경일자
   itemNo: string 		 		 		 		  // 투표항목번호
   voteItemName: string 		 		 		// 투표 항목 이름
+  rank : number
 }
 // const [tabType, setTabType] = useState(tabMenu[0])
 // const [makeVote, setMakeVote] = useState<boolean>(false);
@@ -60,7 +62,9 @@ export type ApiResultType = {
   methodName:string
 }
 
+// list: 투표리스트, vote: 투표, ins: 투표등록
 export type VoteStepType = 'list' | 'vote' | 'ins';
+export type VoteTabType = VoteSlctKor.S | VoteSlctKor.E;
 export type VoteStateType = ApiResultType & {
   tempInsVote: InsVoteRequestType
   voteList: VoteListResultType
@@ -69,6 +73,8 @@ export type VoteStateType = ApiResultType & {
   selVoteItem: VoteResultType
   step : VoteStepType
   active : boolean
+  voteTab : VoteTabType
+  callback : VoteCallbackType
 }
 
 export type DateType = {
@@ -92,4 +98,10 @@ export type VoteListResultType = {
   cnt: number,
   list: Array<VoteResultType>
 }
-
+export enum VoteSlctKor {
+  S = '진행중인 투표',
+  E = '마감된 투표'
+}
+export type VoteCallbackPromisePropsType = Array<{ step: VoteStepType, data:VoteRequestType, callback:Function }>;
+export type VoteCallbackPromiseType = Promise<VoteCallbackPromisePropsType>
+export type VoteCallbackType = VoteCallbackPromiseType | null

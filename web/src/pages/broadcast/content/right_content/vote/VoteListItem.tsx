@@ -1,12 +1,11 @@
 import React from 'react'
 import {VoteResultType} from "../../../../../redux/types/voteType";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {moveVoteStep} from "../../../../../redux/actions/vote";
 import Utility from "../../../../../components/lib/utility";
 import {Timer} from "./Timer";
 
 const VoteListItem = (props: VoteResultType) => {
-  const memberRdx = useSelector((state) => state.member);
   const dispatch = useDispatch();
 
   const listClick = () => {
@@ -36,8 +35,8 @@ const VoteListItem = (props: VoteResultType) => {
         </div>
       </div>
       {
-        !isTimeOver &&
-        <div className={`time ${props.voteEndSlct === 'e' ? 'end' : ''}`}>
+        !isTimeOver && props.voteEndSlct === 's' &&
+        <div className={`time`}>
           <span className="icon"/>
           {time}{unitKor}
         </div>

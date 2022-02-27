@@ -1,35 +1,37 @@
 // React
 import React from "react";
-
-// global Component
+import {useSelector} from "react-redux";
+import vote from "../../../../../redux/sagas/vote";
 
 // component
 import MakeVote from "./MakeVote";
 import VoteContent from "./VoteContent";
+import VoteList from "./VoteList";
 
 // style
 import "./index.scss";
-import {useSelector} from "react-redux";
-import vote from "../../../../../redux/sagas/vote";
-import VoteList from "./VoteList";
+import VoteCallback from "./VoteCallback";
 
 
 const Vote = ({ roomInfo, roomOwner, roomNo }) => {
   const voteRdx = useSelector(({vote})=> vote);
-
   return (
     <div id="vote">
       {
-        voteRdx.step === 'list' &&
+        voteRdx.step === 'list' && voteRdx.voteList.list &&
         <VoteList roomInfo={roomInfo} roomNo={roomNo} roomOwner={roomOwner}/>
       }
       {
-        voteRdx.step === 'vote' &&
+        voteRdx.step === 'vote' && voteRdx.voteSel && voteRdx.voteDetailList &&
         <VoteContent />
       }
       {
         voteRdx.step === 'ins' &&
         <MakeVote roomNo={roomNo}/>
+      }
+      {
+        voteRdx.callback !== null &&
+        <VoteCallback/>
       }
     </div>
   )

@@ -1,29 +1,23 @@
 // React
-import React, {
-  useState,
-  useContext,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 
 // Api
 import {
-  modifyBroadcastState,
-  broadcastLike,
-  getBroadcastShortCut,
   broadcastExit,
-  getBroadcastSetting,
-  postFreezeRoom,
+  broadcastLike,
   broadcastShare,
+  getBroadcastSetting,
+  getBroadcastShortCut,
+  modifyBroadcastState,
+  postFreezeRoom,
 } from "common/api";
 
 // Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GuestContext } from "context/guest_ctx";
-import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GuestContext} from "context/guest_ctx";
+import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // Module
 import _ from "lodash";
@@ -34,8 +28,7 @@ import SettingWrap from "./setting_wrap";
 
 // Type
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-import { tabType, MediaType } from "pages/broadcast/constant";
-import { userBroadcastSettingType } from "common/realtime/chat_socket";
+import {MediaType, tabType} from "pages/broadcast/constant";
 
 // Static
 import MsgIcon from "../static/ic_message.svg";
