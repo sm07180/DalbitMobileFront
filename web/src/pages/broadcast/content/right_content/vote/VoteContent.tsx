@@ -126,7 +126,6 @@ const VoteContent = () => {
         if(selVote.itemNo === voteRdx.selVoteItem.itemNo) return;
         // 어드민 투표 안됨
         if(globalState.shadowAdmin) return;
-        console.log(`test`, globalState.shadowAdmin)
         dispatch(insMemVote({
           voteNo: voteRdx.voteSel.voteNo
           , roomNo: voteRdx.voteSel.roomNo
