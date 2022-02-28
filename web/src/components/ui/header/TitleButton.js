@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {useHistory} from "react-router-dom";
 import {Context} from "context";
 import {goMail} from "common/mailbox/mail_func";
@@ -8,6 +8,7 @@ import {useDispatch} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
 import API from "../../../context/api";
 import {isHybrid} from "../../../context/hybrid";
+import {OS_TYPE} from '../../../context/config'
 
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
@@ -45,8 +46,8 @@ export const AlarmButton = ({history, dispatch, newAlarmCnt, isLogin, noticeCoun
   }} />
 }
 
-export const StoreButton = ({history}) => {
-  return <button className='store' onClick={() => history.push('/store')} />
+export const StoreButton = ({event}) => {
+  return <button className='store' onClick={event} />
 }
 
 export const SearchButton = ({history}) => {
@@ -58,7 +59,6 @@ const TitleButton = (props) => {
   const dispatch = useDispatch();
   const context = useContext(Context);
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
-  const mainState = useSelector((state) => state.main);
   const alarmData = useSelector(state => state.newAlarm);
 
   const fetchMypageNewCntData = async (memNo) => {
@@ -75,12 +75,19 @@ const TitleButton = (props) => {
     }
   }, []);
 
+  const storeButtonEvent = () => {
+    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+      return webkit.messageHandlers.openInApp.postMessage('')
+    } else {
+      history.push('/store')
+    }
+  }
 
   switch (props.title) {
     case '메인':
       return (
         <div className="buttonGroup">
-          <StoreButton history={history} />
+          <StoreButton event={storeButtonEvent}/>
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
@@ -115,7 +122,7 @@ const TitleButton = (props) => {
     case 'MY':
       return (
         <div className="buttonGroup">
-          <StoreButton history={history} />
+          <StoreButton event={storeButtonEvent} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>
