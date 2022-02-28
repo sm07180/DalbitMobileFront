@@ -1302,7 +1302,6 @@ export class AgoraHostRtc extends RtcSocketHandler{
 
   }
   async join(roomInfo) {
-    console.log("@@@roomInfo==>",roomInfo)
       try {
         if(client.connectionState === 'CONNECTED'){
           client.remoteUsers.forEach(user=>{
