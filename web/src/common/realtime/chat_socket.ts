@@ -1983,6 +1983,12 @@ export class ChatSocketHandler {
                     }
                     return null;
                   }
+                  case "reqGetStoneByGift": {
+                    console.log("reqGetStoneByGift => ", data);
+                    this.broadcastStateChange['setStoneAniQueueState']({...data});
+                    return null;
+                  }
+
                   default:
                     return null;
                 }
