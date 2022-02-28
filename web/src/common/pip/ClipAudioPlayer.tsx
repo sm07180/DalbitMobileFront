@@ -2,6 +2,7 @@
 import React, {useContext, useEffect,} from "react";
 import {useHistory} from "react-router-dom";
 
+import Lottie from 'react-lottie'
 // static
 import {GlobalContext} from "context";
 
@@ -13,6 +14,8 @@ import PlayIcon from "../static/ic_play.svg";
 import {audioEndHandler} from "../../pages/clip_player/components/player_box";
 
 import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle"
+
+import equalizerClipAni from "./ani/equalizer_clip.json";
 
 const ClipAudioPlayer = ()=>{
   const history = useHistory();
@@ -96,7 +99,18 @@ const ClipAudioPlayer = ()=>{
           <div className="inner-player-bg"
                style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
-            <div className="equalizer clip" />
+            <div className="equalizer">
+              <Lottie
+                options={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: equalizerClipAni,
+                }}
+                isClickToPauseDisabled={true}
+                width={24}
+                height={27}
+              />
+            </div>
             <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
             <div className="room-info">
               <p className="title">{`${clipInfo.nickName}`}</p>
