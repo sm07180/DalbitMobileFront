@@ -63,6 +63,10 @@ const Vote = ({ roomNo }) => {
         </>
        :
         <>
+          <h3 className="tabTitle">
+            <button className="back"/>
+            투표 만들기
+            </h3>
           <section className="titleInput">
             <InputItems>
               <input type="text" maxLength={20} placeholder='투표의 제목을 입력해주세요.'/>

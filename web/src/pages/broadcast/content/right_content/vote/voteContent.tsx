@@ -5,6 +5,10 @@ const VoteContent = () => {
 
   return (
     <>
+      <h3 className="tabTitle">
+        투표
+        <button className="back"/>
+      </h3>
       <section className="voteTitleWrap">
         <h2>일이삼사오육칠팔구십일이삼사오육칠팔구십</h2>
         <div className="countBox">
