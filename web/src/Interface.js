@@ -35,6 +35,7 @@ export const FOOTER_VIEW_PAGES = {
 export default () => {
   //context
   const context = useContext(Context)
+  const { mailboxAction } = useContext(MailboxContext);
   //history
   let history = useHistory()
   const dispatch = useDispatch();
@@ -775,7 +776,6 @@ export default () => {
         history.push(`/`)
         break
       case 'mailbox-state':
-        const { mailboxAction } = useContext(MailboxContext);
         mailboxAction.setIsMailboxNew(event.detail.new)
         context.action.updateIsMailboxNew(event.detail.new)
         break
