@@ -76,10 +76,14 @@ const TitleButton = (props) => {
   }, []);
 
   const storeButtonEvent = () => {
-    if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    } else {
-      history.push('/store')
+    if(context.token.isLogin){
+      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+        return webkit.messageHandlers.openInApp.postMessage('')
+      } else {
+        history.push('/store')
+      }
+    }else{
+      history.push('/login')
     }
   }
 
