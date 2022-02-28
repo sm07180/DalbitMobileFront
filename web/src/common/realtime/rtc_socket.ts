@@ -1302,6 +1302,7 @@ export class AgoraHostRtc extends RtcSocketHandler{
 
   }
   async join(roomInfo) {
+    console.log("@@@roomInfo==>",roomInfo)
       try {
         if(client.connectionState === 'CONNECTED'){
           client.remoteUsers.forEach(user=>{
@@ -1332,7 +1333,7 @@ export class AgoraHostRtc extends RtcSocketHandler{
                 // Specify a value range and an ideal value
                 height: { ideal: 720, min: 720, max: 1280 },
                 frameRate: 24,
-                bitrateMin: 1130, bitrateMax: 2000,
+                bitrateMin: roomInfo.agoraOption.agoraMinVideoBitrate, bitrateMax: roomInfo.agoraOption.agoraMaxVideoBitrate,
               },cameraId:camId?.replaceAll("\"","")})
           ]);
           await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
