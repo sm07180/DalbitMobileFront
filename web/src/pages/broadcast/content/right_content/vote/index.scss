@@ -75,7 +75,7 @@
               }
             }
             .due{
-              @include font(11px, $Medium, #a4a4a4);
+              color:#a4a4a4;
               &::before{
                 display: inline-block;
                 content:"";
