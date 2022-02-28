@@ -27,7 +27,7 @@ const Vote = ({ roomInfo, roomOwner, roomNo }) => {
       }
       {
         voteRdx.step === 'ins' &&
-        <MakeVote roomNo={roomNo}/>
+        <MakeVote roomInfo={roomInfo} roomNo={roomNo}/>
       }
       {
         voteRdx.callback !== null &&

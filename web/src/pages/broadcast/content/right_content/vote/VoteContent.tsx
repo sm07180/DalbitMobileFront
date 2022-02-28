@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Utility from "../../../../../components/lib/utility";
-import {delVote, endVote, insMemVote} from "../../../../../redux/actions/vote";
+import {delVote, endVote, insMemVote, moveVoteListStep} from "../../../../../redux/actions/vote";
 import {Timer} from "./Timer";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import SubmitBtn from "../../../../../components/ui/submitBtn/SubmitBtn";
-import {VoteResultType} from "../../../../../redux/types/voteType";
+import {VoteResultType, VoteSlctKor} from "../../../../../redux/types/voteType";
 import {initVoteSel} from "../../../../../redux/reducers/vote";
 import { GlobalContext } from "context";
 
@@ -44,6 +44,16 @@ const VoteContent = () => {
     <>
       <DalbitScroll width={338}>
         <>
+          <h3 className="tabTitle">
+            <button className="back" onClick={()=>{
+              dispatch(moveVoteListStep({
+                memNo:voteRdx.voteSel.memNo,
+                roomNo: voteRdx.voteSel.roomNo,
+                voteSlct: voteRdx.voteTab === VoteSlctKor.S ? 's' : 'e'
+              }));
+            }}/>
+            투표
+          </h3>
           <section className="voteTitleWrap">
             <h2>{voteRdx.voteSel.voteTitle}</h2>
             <div className="countBox">

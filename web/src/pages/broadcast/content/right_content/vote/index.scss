@@ -11,6 +11,16 @@
   .scroll-wrap{
     height: 100%;
   }
+  .tabTitle{
+    @include flex(center,center);
+    .back {
+      @include position-top-left(50%,0);
+      transform: translateY(-50%);
+      width:40px;
+      height:40px;
+      @include BGIMG('common/header/icoBack-b.png');
+    }
+  }
   .voteTab{
     >.tabmenu {
       @include flex(center);
@@ -113,7 +123,7 @@
   }
   .titleInput{
     >.inputItems{
-      margin-top: 18px;
+      margin-top: 10px;
     }
   }
   .makeVoteWrap{
@@ -179,7 +189,7 @@
   }
   .voteTitleWrap{
     position: relative;
-    margin: 20px 0 15px 0;
+    margin: 10px 0 15px 0;
     h2{
       width: calc(100% - 40px);
       @include font(20px, $SemiBold, #333);
@@ -211,7 +221,7 @@
       }
     }
     .moreBtn{
-      @include position-top-right(0, -10px);
+      @include position-top-right(0, -5px);
       width: 40px;
       height: 40px;
       @include BGIMG('common/list_more-b.png');

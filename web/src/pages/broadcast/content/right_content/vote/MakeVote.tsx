@@ -3,11 +3,12 @@ import React from 'react';
 import InputItems from 'components/ui/inputItems/InputItems';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import {useDispatch, useSelector} from "react-redux";
-import {insVote, setTempInsVote} from "../../../../../redux/actions/vote";
+import {insVote, moveVoteListStep, setTempInsVote} from "../../../../../redux/actions/vote";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import {initTempInsVoteVoteItemNames, MAX_END_TIME, MAX_VOTE_ITEM} from "../../../../../redux/reducers/vote";
+import {VoteSlctKor} from "../../../../../redux/types/voteType";
 
-const MakeVote = ({roomNo}) => {
+const MakeVote = ({roomInfo, roomNo}) => {
   const voteRdx = useSelector(({vote})=> vote);
   const dispatch = useDispatch();
   const memberRdx = useSelector((state) => state.member);
@@ -24,6 +25,16 @@ const MakeVote = ({roomNo}) => {
   return (
     <>
       <>
+        <h3 className="tabTitle">
+          <button className="back" onClick={()=>{
+            dispatch(moveVoteListStep({
+              memNo:roomInfo.bjMemNo,
+              roomNo: roomNo,
+              voteSlct: voteRdx.voteTab === VoteSlctKor.S ? 's' : 'e'
+            }));
+          }}/>
+          투표 만들기
+        </h3>
         <section className="titleInput">
           <InputItems>
             <input type="text" maxLength={20} placeholder='투표의 제목을 입력해주세요.' value={voteRdx.tempInsVote.voteTitle} onChange={event=>{
