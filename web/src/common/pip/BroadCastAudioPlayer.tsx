@@ -2,6 +2,7 @@
 import React, {useContext, useState,} from "react";
 import {useHistory} from "react-router-dom";
 
+import Lottie from 'react-lottie'
 // others
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 
@@ -14,6 +15,7 @@ import PlayIcon from "../static/ic_play.svg";
 import PauseIcon from "../static/ic_pause.svg";
 import {thumbInlineStyle} from "./PlayerStyle";
 
+import equalizerLiveAni from "./ani/equalizer_live.json";
 
 const BroadCastAudioPlayer = ()=>{
   const history = useHistory();
@@ -98,7 +100,18 @@ const BroadCastAudioPlayer = ()=>{
         <div className="inner-player-bg"
              style={{background: `url("${rtcInfo?.roomInfo?.bgImg.thumb500x500}") center/contain no-repeat`}} />
         <div className="info-wrap">
-          <div className="equalizer broadcast" />
+          <div className="equalizer">
+            <Lottie
+              options={{
+                loop: true,
+                autoplay: true,
+                animationData: equalizerLiveAni,
+              }}
+              isClickToPauseDisabled={true}
+              width={24}
+              height={27}
+            />
+          </div>
           <div className="thumb"
                style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)}
                onClick={(e) => e.stopPropagation()} />
