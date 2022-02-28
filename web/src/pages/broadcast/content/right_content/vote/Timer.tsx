@@ -44,7 +44,7 @@ export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
   // 초 타이머 해달라는 요청 있을 때
   // const time = min !== '00' ? min : sec;
   // const unitKor = min !== '00' ? '분' : '초';
-  const time = min === '0' ? '1' : min;
+  const time = Number(min)+1+'';
   const unitKor = '분';
   const isTimeOver = moment(endDateMomentProps).isSameOrBefore(moment.now());
 
