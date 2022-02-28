@@ -12,7 +12,7 @@ const VoteList = ({roomInfo, roomNo, roomOwner}) => {
   const voteRdx = useSelector(({vote})=> vote);
   const submitButtonProps = {
     text: '투표 만들기',
-    state: voteRdx.voteTab === VoteSlctKor.S && voteRdx.voteList.list.length >= 5 ? 'disabled' : ''
+    state: voteRdx.voteList.list.length >= 5 ? 'disabled' : ''
   }
 
   return (
@@ -40,8 +40,9 @@ const VoteList = ({roomInfo, roomNo, roomOwner}) => {
         </DalbitScroll>
       </section>
       {
-        roomOwner &&
+        roomOwner && voteRdx.voteTab === VoteSlctKor.S  &&
         <SubmitBtn {...submitButtonProps} onClick={()=>{
+          // 투표는 동시에 5개까지 진행할 수 있어요.
           dispatch(moveVoteInsStep());
         }}/>
       }

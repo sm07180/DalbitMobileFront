@@ -627,7 +627,6 @@ export default function ChatHeaderWrap(prop: any) {
                           , voteNo: '0'
                           , endSlct: 'a'
                         }))
-                        console.log('투표 종료')
                       },
                     });
                   }}

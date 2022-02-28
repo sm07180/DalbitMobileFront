@@ -5,7 +5,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import {useDispatch, useSelector} from "react-redux";
 import {insVote, setTempInsVote} from "../../../../../redux/actions/vote";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
-import {initTempInsVoteVoteItemNames, MAX_END_TIME} from "../../../../../redux/reducers/vote";
+import {initTempInsVoteVoteItemNames, MAX_END_TIME, MAX_VOTE_ITEM} from "../../../../../redux/reducers/vote";
 
 const MakeVote = ({roomNo}) => {
   const voteRdx = useSelector(({vote})=> vote);
@@ -52,7 +52,7 @@ const MakeVote = ({roomNo}) => {
                     }}/>
                     <button className="delete" onClick={()=>{
                       if(voteRdx.tempInsVote.voteItemNames.length < initTempInsVoteVoteItemNames.length+1){
-                        console.log('최소개수.')
+                        // 항목 최소 개수 제한
                       }else{
                         const copy = [...voteRdx.tempInsVote.voteItemNames];
                         const voteItemNames = copy.filter((f,i)=>i!==index);
@@ -65,7 +65,7 @@ const MakeVote = ({roomNo}) => {
                 )
               }
               {
-                voteRdx.tempInsVote.voteItemNames.length < 21 &&
+                voteRdx.tempInsVote.voteItemNames.length < MAX_VOTE_ITEM &&
                 <SubmitBtn text='+ 항목추가' onClick={()=>{
                   const voteItemNames = voteRdx.tempInsVote.voteItemNames.concat('');
                   dispatch(setTempInsVote({

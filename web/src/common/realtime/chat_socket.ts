@@ -1964,17 +1964,19 @@ export class ChatSocketHandler {
                   }
                   case "reqInsMemVote": {
                     // 투표
-                    const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
-                      const voteResult:VoteCallbackPromisePropsType = [{
-                        step: 'vote',
-                        data: data.reqInsMemVote,
-                        callback: ()=>{
-                          this.dispatch(getVoteDetailList(data.reqInsMemVote));
-                        }
-                      }];
-                      resolve(voteResult)
-                    })
-                    this.dispatch(setVoteCallback(getCallback));
+                    if(this.memNo !== data.reqInsMemVote.pmemNo){
+                      const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                        const voteResult:VoteCallbackPromisePropsType = [{
+                          step: 'vote',
+                          data: data.reqInsMemVote,
+                          callback: ()=>{
+                            this.dispatch(getVoteDetailList(data.reqInsMemVote));
+                          }
+                        }];
+                        resolve(voteResult)
+                      })
+                      this.dispatch(setVoteCallback(getCallback));
+                    }
                     return null;
                   }
                   case "reqDelVote": {

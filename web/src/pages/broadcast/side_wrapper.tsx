@@ -188,9 +188,7 @@ export default function SideWrapper() {
             status: false,
           });
         }
-        if(data.isVote){
-          dispatch(setVoteActive(true));
-        }
+        dispatch(setVoteActive(data.isVote));
 
         setFetching(true);
         //Facebook,Firebase 이벤트 호출
@@ -297,9 +295,7 @@ export default function SideWrapper() {
         chatInfo?.setRoomInfo(roomInfo);
         chatInfo?.setBroadcastLayerAction({ dispatchLayer, dispatchDimLayer });
         broadcastAction.setLikeClicked!(isLike);
-        if(newRoomInfo.data.isVote){
-          dispatch(setVoteActive(true));
-        }
+        dispatch(setVoteActive(newRoomInfo.data.isVote));
         sessionStorage.setItem("room_no", roomNo);
         if (roomInfo.useFilter === false) {
           sessionStorage.removeItem("videoEffect");

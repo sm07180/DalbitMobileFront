@@ -27,11 +27,11 @@ const VoteContent = () => {
     state: isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' || !selVote.voteNo ? 'disabled' : ''
   }
 
-  const activeClassNames = (item:VoteResultType):string=> {
+  const optionBoxActiveClassNames = (item:VoteResultType):string=> {
     if (voteRdx.voteSel.voteEndSlct === 's') {
-      return `${selVote.itemNo === item.itemNo ? 'active' : ''}`
+      return `optionBox ${selVote.itemNo === item.itemNo ? 'active' : ''}`
     } else if (voteRdx.voteSel.voteEndSlct === 'e') {
-      return `${item.rank === 1 ? 'active' : ''}`
+      return `optionBox ${item.rank === 1 ? 'active' : ''}`
     } else {
       return ``;
     }
@@ -84,7 +84,7 @@ const VoteContent = () => {
               {
                 detailList.map((item, index)=>{
                   return (
-                    <div className={`optionBox ${activeClassNames(item)}`} key={index} onClick={()=>{
+                    <div className={`${optionBoxActiveClassNames(item)}`} key={index} onClick={()=>{
                       if(isTimeOver || voteRdx.voteSel.voteEndSlct !== 's'){
                         return;
                       }
@@ -98,7 +98,7 @@ const VoteContent = () => {
                         }
                       </div>
                       <span>{item.voteItemName}</span>
-                      <div className={`counterBox ${activeClassNames(item)}`}>
+                      <div className={`counterBox ${voteRdx.selVoteItem.itemNo === item.itemNo ? 'active' : ''}`}>
                         <span className="person"/>
                         {item.voteMemCnt}
                       </div>
