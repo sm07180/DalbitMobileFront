@@ -8,6 +8,7 @@ import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import {initTempInsVoteVoteItemNames, MAX_END_TIME, MAX_VOTE_ITEM} from "../../../../../redux/reducers/vote";
 import {VoteSlctKor} from "../../../../../redux/types/voteType";
 
+let clickCount = 0; //동시접근제한수, 리소스에따라 변경가능
 const MakeVote = ({roomInfo, roomNo}) => {
   const voteRdx = useSelector(({vote})=> vote);
   const dispatch = useDispatch();
@@ -17,7 +18,6 @@ const MakeVote = ({roomInfo, roomNo}) => {
     text: '완료',
     state:
       voteRdx.tempInsVote.voteTitle.length < 1  ||
-      voteRdx.tempInsVote.voteItemNames.length < initTempInsVoteVoteItemNames.length ||
       voteRdx.tempInsVote.voteItemNames.filter(f=>f.length<1).length > 0 ||
       voteRdx.tempInsVote.endTime < 1 ? 'disabled' : ''
   }
@@ -62,7 +62,7 @@ const MakeVote = ({roomInfo, roomNo}) => {
                       }))
                     }}/>
                     <button className="delete" onClick={()=>{
-                      if(voteRdx.tempInsVote.voteItemNames.length < initTempInsVoteVoteItemNames.length+1){
+                      if(voteRdx.tempInsVote.voteItemNames.length < initTempInsVoteVoteItemNames.length){
                         // 항목 최소 개수 제한
                       }else{
                         const copy = [...voteRdx.tempInsVote.voteItemNames];
@@ -104,6 +104,10 @@ const MakeVote = ({roomInfo, roomNo}) => {
           </InputItems>
         </section>
         <SubmitBtn {...submitButtonProps} onClick={()=>{
+          if (clickCount < 0 ) {
+            return;
+          }
+          clickCount--;
           dispatch(insVote({
             ...voteRdx.tempInsVote,
             memNo: memberRdx.memNo,
@@ -111,6 +115,7 @@ const MakeVote = ({roomInfo, roomNo}) => {
             // endTime: voteRdx.tempInsVote.endTime,
             roomNo: roomNo
           }));
+          clickCount++;
         }}/>
       </>
     </>

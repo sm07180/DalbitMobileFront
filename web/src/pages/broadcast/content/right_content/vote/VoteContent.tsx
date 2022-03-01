@@ -16,9 +16,9 @@ const VoteContent = () => {
   const voteRdx = useSelector(({vote})=> vote);
 
   const [more, setMore] = useState(false);
-  const {hour, minute, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
+  const {hour, min, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
 
-  const [selVote, setSelVote] = useState<VoteResultType>({...initVoteSel, ...voteRdx.selVoteItem});
+  const [selVote, setSelVote] = useState<VoteResultType>(initVoteSel);
   const submitButtonProps = {
     text: voteRdx.voteSel.voteEndSlct === 'e' ?
       '투표마감'
@@ -62,7 +62,7 @@ const VoteContent = () => {
                 <p><span>{Utility.addComma(voteRdx.voteSel.voteMemCnt)}</span>명 참여</p>
               </div>
               <div className="due">
-                <span>{hour}:{minute}</span> {isTimeOver ? '마감' : '마감예정'}
+                <span>{hour}:{min}</span> {isTimeOver ? '마감' : '마감예정'}
               </div>
             </div>
             {
