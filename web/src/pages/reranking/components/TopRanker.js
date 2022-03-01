@@ -1,10 +1,13 @@
 import React, {useContext, useState} from 'react'
 
+import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
+
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
+import {IMG_SERVER} from 'context/config'
 import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
@@ -139,10 +142,24 @@ const TopRanker = (props) => {
                             </div>
                             :
                             <>
-                              {data.roomNo && <div className='badgeLive' onClick={(e) => {
-                                e.stopPropagation();
-                                goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                              }}></div>}
+                              {
+                                data.roomNo &&
+                                  <div className='badgeLive' onClick={(e) => {
+                                    e.stopPropagation();
+                                    goLive(data.roomNo, data.nickNm, data.listenRoomNo);
+                                  }}>                                    
+                                    <span className='equalizer'>
+                                      <Lottie
+                                        options={{
+                                          loop: true,
+                                          autoPlay: true,
+                                          path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                                        }}
+                                      />
+                                    </span>
+                                    <span className='liveText'>LIVE</span>
+                                  </div>
+                                }
                             </>
                           }
                         </div>

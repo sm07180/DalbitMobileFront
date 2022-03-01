@@ -16,16 +16,16 @@ const StorePage = () => {
   const history = useHistory()
   const context = useContext(Context);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
-  const [select, setSelect] = useState(1);
+  const [select, setSelect] = useState(3);
   const [storeInfo, setStoreInfo] = useState({
     myDal: 0,
     dalPrice: []
   })
   const [payInfo, setPayInfo] = useState({
-    itemNm: "달 100",
-    dal: "100",
-    price: "11000",
-    itemNo: "A1335"
+    itemNm: "달 300",
+    dal: "300",
+    price: "33000",
+    itemNo: "A1555"
   })
 
   useEffect(() => {
@@ -72,7 +72,7 @@ const StorePage = () => {
 
   return (
     <div id="storePage">
-      <Header title={'스토어'} position="sticky" type="back" backEvent={()=>history.push("/myPage")}/>
+      <Header title={'스토어'} position="sticky" type="back" backEvent={()=>history.push("/")}/>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(storeInfo.myDal)}</span>
