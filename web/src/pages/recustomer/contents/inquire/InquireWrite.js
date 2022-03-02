@@ -13,6 +13,8 @@ import ImageUpload from "pages/recustomer/components/ImageUpload";
 import CheckList from "pages/recustomer/components/CheckList";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
+let isDisabled = true;
+let isFetchFalse = false;
 const Write = (props) => {
   const {setInquire} = props
   const context = useContext(Context);
@@ -24,21 +26,15 @@ const Write = (props) => {
   const [option, setOption] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [agree, setAgree] = useState(false);
-  const history = useHistory();
 
   const [imageFile, setImageFile] = useState([]);
   const [imgFile, setImgFile] = useState([]);
   const [imageFileName, setImageFileName] = useState([]);
-  const swiperParams = {
-    slidesPerView: "auto",
-    spaceBetween: 8
-  };
   const [writeInfo, setWriteInfo] = useState([
     {path: 1, name: "회원정보"}, {path: 2, name: "방송"}, {path: 3, name: "청취"}, {path: 4, name: "결제"}, {path: 5, name: "장애/버그"}
   ])
   const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
-  let isDisabled = true;
 
   //문의하기 등록
   const fetchData = () => {
@@ -57,7 +53,9 @@ const Write = (props) => {
       email: "",
       nickName: context.profile.nickName
     }
+    isFetchFalse = true;
     API.center_qna_add({params}).then((res) => {
+      isFetchFalse = false;
       if(res.result === "success") {
         context.action.alert({msg: "1:1문의가 등록되었습니다."})
         setInquire("나의 문의내역");
@@ -150,7 +148,13 @@ const Write = (props) => {
   //등록시 예외 조건 확인
   const validator = () => {
     if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
-      if(isDisabled) {fetchData();} else {isDisabled = false;}
+      if(isDisabled === true) {
+        if(isFetchFalse === false) {
+          fetchData();
+        }
+      } else {
+        isDisabled = false;
+      }
     } else {
       context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
     }
