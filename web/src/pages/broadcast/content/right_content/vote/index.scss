@@ -1,0 +1,313 @@
+@import 'components/ui/_mixin.scss';
+
+#vote{
+  @include flex($fd:column);
+  width: 100%;
+  height: 100%;
+  padding: 0 17px 20px;
+  >.submitBtn{
+    width: 100%;
+  }
+  .scroll-wrap{
+    height: 100%;
+  }
+  .tabTitle{
+    @include flex(center,center);
+    .back {
+      @include position-top-left(50%,0);
+      transform: translateY(-50%);
+      width:40px;
+      height:40px;
+      @include BGIMG('common/header/icoBack-b.png');
+    }
+  }
+  .voteTab{
+    >.tabmenu {
+      @include flex(center);
+      margin-bottom: 12px;
+      li {
+        flex:1;
+        @include flex(center, center);
+        height:48px;
+        text-align: center;
+        border-bottom:2px solid #F2F2F2;
+        @include font(16px,600,#acacac);
+        box-sizing: border-box;
+        &.active {
+          @include font(16px,bold,#202020);
+          border-bottom: solid 2px #202020;
+        }
+      }
+      .swiper-wrapper{
+        padding-left: 16px;
+        .swiper-slide{
+          width: auto;
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+  .contentWrap{
+    width: 100%;
+    height: 100%;
+    .voteList{
+      @include flex(center);
+      width: 100%;
+      height: 87px;
+      padding-right: 10px;
+      cursor: pointer;
+      .listInfo{
+        @include flex($fd:column);
+        width: calc(100% - 77px);
+        .listItem{
+          @include font(15px, $SemiBold, #333);
+          &.countBox{
+            @include flex(center);
+            margin-top: 8px;
+            .num{
+              @include flex(center);
+              @include font(13px, $Medium, #666);
+              >.icon{
+                width: 20px;
+                height: 19px;
+                @include BGIMG('common/icon/icoPersonDouble-g.png');
+                margin-right: 3px;
+              }
+            }
+            .due{
+              color:#a4a4a4;
+              &::before{
+                display: inline-block;
+                content:"";
+                width: 1px;
+                height: 9px;
+                background: #a4a4a4;
+                margin: 0 8px 0 12px;
+              }
+            }
+          }
+          .voteOn{
+            display: inline-block;
+            background:$MAINCOLOR;
+            width: 40px;
+            line-height: 18px;
+            text-align: center;
+            @include font(11px, $Medium, #fff);
+            margin-right: 8px;
+            margin-bottom: 4px;
+            border-radius: 16px;
+          }
+        }
+      }
+      .time{
+        @include flex(center);
+        margin-left: auto;
+        @include font(15px, $SemiBold, $MAINCOLOR);
+        >.icon{
+          width: 14px;
+          height: 14px;
+          @include BGIMG('common/icon/icoClock-p.png');
+          margin-right: 4px;
+        }
+        &.end{
+          @include font(16px, $SemiBold, #999);
+          >.icon{
+            width: 14px;
+            height: 14px;
+            @include BGIMG('common/icon/icoClock-g.png');
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+  }
+  .titleInput{
+    >.inputItems{
+      margin-top: 10px;
+    }
+  }
+  .makeVoteWrap{
+    height: 100%;
+    .inputItems{
+      margin-bottom: 8px;
+      .inputBox{
+        overflow: hidden;
+        &.focus{
+          .number{
+            background-color: $MAINCOLOR;
+          }
+        }
+      }
+    };
+    .number{
+      @include flex(center, center);
+      width: 53px;
+      height: 100%;
+      background: #DBDBDB;
+      @include font(16px, $Bold, #fff);
+    }
+    .delete{
+      width: 20px;
+      height: 20px;
+      @include BGIMG('broadcast/dalla/vote/voteBtnCancle.png');
+    }
+    .submitBtn{
+      width: 100%;
+      background: #fff;
+      border: 1px solid $MAINCOLOR;
+      color: $MAINCOLOR;
+    }
+  }
+  .deadlineWrap{
+    @include flex(center,space-between);
+    >div{
+      @include flex(center);
+      @include font(16px, $Medium, #333);
+      span{
+        @include font(12px, $Medium, #a4a4a4);
+        margin-left: 4px;
+      }
+    }
+    >.inputItems{
+      width: 127px;
+      margin-bottom: 12px;
+      .inputBox{
+        height: 46px;
+        justify-content: center;
+        input{
+          flex: none;
+          width: 60px;
+          text-align: center;
+          margin: 0;
+          @include font(16px, $SemiBold, $MAINCOLOR);
+        }
+        span{
+          @include font(16px, $Medium, #333);
+        }
+      }
+    }
+  }
+  .voteTitleWrap{
+    position: relative;
+    margin: 10px 0 15px 0;
+    h2{
+      width: calc(100% - 40px);
+      @include font(20px, $SemiBold, #333);
+      @include fontCut;
+    }
+    .countBox{
+      @include flex(center);
+      margin-top: 6px;
+      .num{
+        @include flex(center);
+        @include font(14px, $Medium, #666);
+        >.icon{
+          width: 20px;
+          height: 19px;
+          @include BGIMG('common/icon/icoPersonDouble-g.png');
+          margin-right: 3px;
+        }
+      }
+      .due{
+        @include font(14px, $Medium, #a4a4a4);
+        &::before{
+          display: inline-block;
+          content:"";
+          width: 1px;
+          height: 10px;
+          background: #a4a4a4;
+          margin: 0 8px 0 12px;
+        }
+      }
+    }
+    .moreBtn{
+      @include position-top-right(0, -5px);
+      width: 40px;
+      height: 40px;
+      @include BGIMG('common/list_more-b.png');
+      cursor: pointer;
+      .isMore {
+        @include position-top-right(100%,15px);
+        z-index: $MORE-ZINDEX;
+        @include flex($fd:column);
+        width:124px;
+        border-radius:8px;
+        background-color:white;
+        box-shadow: 0 1px 8px rgba(black,.16);
+        button {
+          line-height:40px;
+          text-indent:12px;
+          text-align:left;
+          @include font(13px,$Medium,#303030);
+          + button {
+            border-top:1px solid #F2F2F2;;
+          }
+        }
+      }
+    }
+
+  }
+  .optionWrap{
+    .optionBox{
+      @include flex(center);
+      width: 100%;
+      height: 50px;
+      border-radius: 16px;
+      background: #f6f6f6;
+      overflow: hidden;
+      cursor: pointer;
+      padding-right: 14px;
+      margin-bottom: 7px;
+      &.active{
+        border: 1px solid $MAINCOLOR;
+        background: #fff;
+        .number{
+          background: $MAINCOLOR;
+        }
+      }
+      .number{
+        @include flex(center, center);
+        flex: none;
+        width: 50px;
+        height: 50px;
+        background-color: #d8d8d8;
+        @include font(16px, $Bold, #fff);
+        margin-right: 14px;
+      }
+      >span{
+        width: 100%;
+        @include fontCut;
+      }
+      .counterBox{
+        @include flex;
+        @include font(16px, $Regular, #303030);
+        &.active{
+          color: $MAINCOLOR;
+          .person{
+            @include BGIMG('common/icon/icoPerson-p.png');
+          }
+        }
+        .person{
+          width: 20px;
+          height: 20px;
+          @include BGIMG('common/icon/icoperson.png');
+          margin-right: 4px;
+        }
+      }
+
+    }
+  }
+  .timeCheckWrap{
+    .timeCheck{
+      @include flex(center, center);
+      margin-bottom: 18px;
+      @include font(18px, $SemiBold, $MAINCOLOR);
+      .icon{
+        width: 17px;
+        height: 17px;
+        @include BGIMG('common/icon/icoClock-p.png');
+        margin-right: 4px;
+      }
+    }
+  }
+}

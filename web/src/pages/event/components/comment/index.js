@@ -12,9 +12,10 @@ import './comment.scss'
 import moment from 'moment'
 
 const EventComment = (props) => {
-  const {
-    commentList,
+  const {commentList,
     totalCommentCnt,
+    myCommentView,
+    setMyCommentView,
     commentAdd,
     commentRpt,
     commentDel,
@@ -148,12 +149,6 @@ const EventComment = (props) => {
     <div className="commentEventWrap">
       {globalCtx.token.isLogin && (
         <div className="addInputBox">
-          {/* <div className="userBox">
-            <div className="photo">
-              <img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm} />
-            </div>
-            <div className="userNick">{globalCtx.profile.nickNm}</div>
-          </div> */}
           <div className="textareaWrap">
             <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={maxLength} />
             <div className="textCount">
@@ -171,6 +166,7 @@ const EventComment = (props) => {
           <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_event_refresh.png`} alt="새로고침" />
           </button>
+          {globalCtx.token.isLogin && <button className="myCommentBtn" onClick={()=>setMyCommentView(!myCommentView)}>{myCommentView ? "전체 댓글 보기" : "내 댓글 보기"}</button>}
         </div>
         {commentList.length > 0 ? (
           <>
@@ -179,7 +175,7 @@ const EventComment = (props) => {
 
               return (
                 <div className="listBox" key={`comment-${idx}`}>
-                  <div className="listItem" >
+                  <div className="listItem">
                     <div className="thumb" onClick={goProfile} data-target-mem-no={tail_mem_no}>
                       <img
                         src={`${
@@ -198,31 +194,26 @@ const EventComment = (props) => {
                   <div className="listItem">
                     <p className="msg">{tail_conts}</p>
                   </div>
-                  <div className="btnMore" onClick={() => {
-                      moreToggle(idx)
-                    }}
-                  >
-                    {moreState === idx && (
-                      <div className="moreList">
-                        {parseInt(token.memNo) == tail_mem_no ? (
-                          <button data-target-num={tail_no} onClick={contDelEvent}>
-                            삭제하기
-                          </button>
-                        ) : (
-                          <button data-target-num={tail_no} onClick={contRptEvent}>
-                            신고하기
-                          </button>
-                        )}
-                      </div>
-                    )}
+
+                  {parseInt(token.memNo) == tail_mem_no &&
+                  <div className="btnMore" onClick={() => {moreToggle(idx)}}>
+                    {moreState === idx &&
+                    <div className="moreList">
+                      {parseInt(token.memNo) == tail_mem_no ?
+                          <button data-target-num={tail_no} onClick={contDelEvent}>삭제하기</button> :
+                          <button data-target-num={tail_no} onClick={contRptEvent}>신고하기</button>
+                      }
+                    </div>
+                    }
                   </div>
+                  }
                 </div>
               )
             })}
           </>
-          ) : (
-            <NoResult ment={noResultMsg}/>
-          )
+        ) : (
+          <NoResult ment={noResultMsg}/>
+        )
         }
       </div>
     </div>

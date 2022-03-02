@@ -1,29 +1,23 @@
 // React
-import React, {
-  useState,
-  useContext,
-  useCallback,
-  useRef,
-  useEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 
 // Api
 import {
-  modifyBroadcastState,
-  broadcastLike,
-  getBroadcastShortCut,
   broadcastExit,
-  getBroadcastSetting,
-  postFreezeRoom,
+  broadcastLike,
   broadcastShare,
+  getBroadcastSetting,
+  getBroadcastShortCut,
+  modifyBroadcastState,
+  postFreezeRoom,
 } from "common/api";
 
 // Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GuestContext } from "context/guest_ctx";
-import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GuestContext} from "context/guest_ctx";
+import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // Module
 import _ from "lodash";
@@ -34,8 +28,7 @@ import SettingWrap from "./setting_wrap";
 
 // Type
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-import { tabType, MediaType } from "pages/broadcast/constant";
-import { userBroadcastSettingType } from "common/realtime/chat_socket";
+import {MediaType, tabType} from "pages/broadcast/constant";
 
 // Static
 import MsgIcon from "../static/ic_message.svg";
@@ -58,6 +51,8 @@ import VideoSettingOffIcon from "../static/ic_videosetting_m.svg";
 import VideoFlipIcon from "../static/ic_mirrormode_m.svg";
 import VideoEffectIcon from "../static/ic_videoeffect_m.svg";
 import MiniGameIcon from "../static/ic_roulette_g.svg";
+import {moveVoteListStep} from "../../../redux/actions/vote";
+import {useDispatch} from "react-redux";
 
 export const IconWrap = (props: {
   roomOwner: boolean | null;
@@ -69,6 +64,7 @@ export const IconWrap = (props: {
   const { useBoost } = roomInfo;
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { rtcInfo, baseData, guestInfo, chatInfo } = globalState;
@@ -786,6 +782,22 @@ export const IconWrap = (props: {
               />
             )}
           </button>
+
+          {roomOwner === true && (
+            <button
+              className="icon"
+              onClick={() => {
+                dispatch(moveVoteListStep({
+                  roomNo: roomNo
+                  , memNo: roomInfo.bjMemNo
+                  , voteSlct: 's'
+                }))
+                broadcastAction.setRightTabType(tabType.VOTE);
+              }}
+            >
+              <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon.png' alt="투표" />
+            </button>
+          )}
 
           {roomOwner === true && roomInfo.isMinigame && (
             <button
