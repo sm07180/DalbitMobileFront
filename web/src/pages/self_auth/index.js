@@ -55,7 +55,7 @@ export const authReq = async (code, formTagRef, context, pushLink) => {
     params: {
       pageCode: code,
       authType: '0',
-      pushLink: pushLink ? pushLink : '',
+      pushLink: pushLink ? encodeURIComponent(pushLink) : '',
     }
   })
   if (res.result == 'success' && res.code == 0) {

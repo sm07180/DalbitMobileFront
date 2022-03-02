@@ -310,9 +310,8 @@ export default (props) => {
                   if(isDesktop()) {
                     window.close()
                   }else {
-                    if(pushLink === 'share') {
-                      history.push('/event/share')
-                    }
+                    const decodeLink = decodeURIComponent(pushLink);
+                    history.push(decodeLink)
                   }
                 }}
               >확인
