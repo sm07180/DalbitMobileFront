@@ -305,8 +305,6 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  console.log(pushLink);
-                  console.log(qs.parse(location.search));
                   if(isDesktop()) {
                     window.close()
                   }else {

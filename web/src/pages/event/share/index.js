@@ -97,7 +97,6 @@ const Share = () => {
         tailLoginMedia: loginMedia,
       }
       API.shareTailIns(insParam).then(res => {
-        console.log(res);
         const code = res.code;
         if(code === '0') {
           context.action.alert({
@@ -195,12 +194,11 @@ const Share = () => {
                     <div className='popTitle'>유의사항</div>
                     <div className='popContent'>
                         <ul className='noticeList'>
-                            <li>한 회원 당 한 계정으로 1회만 참여할 수 있습니다.</li>
-                            <li>비공개 계정으로는 참여할 수 없습니다.</li>
                             <li>상금은 제세공과금 없이 환전 가능한 “별”로 지급해드립니다.</li>
-                            <li>상품은 이벤트 종료 후 일주일 안에 본인인증에 사용 하신 번호로 발송해드립니다.</li>
-                            <li>상품이 품절될 경우 동일 가격대의 다른 상품으로 대체됩니다.</li>
+                            <li>기프티콘은 이벤트 종료 후 일주일 안에 본인인증에 사용 하신 번호로 발송해드립니다.</li>
+                            <li>기프티콘이 품절될 경우 동일 가격대의 다른 상품으로 대체됩니다.</li>
                             <li>게시글을 삭제하거나 비공개 처리할 경우 당첨 제외됩니다.</li>
+                            <li>비공개 계정으로는 참여할 수 없습니다.</li>
                             <li>게시글은 전체 공개로 게시해야 합니다.</li>
                             <li>본 이벤트는 사전 고지 없이 변경 및 종료 될 수 있습니다.</li>
                         </ul>
