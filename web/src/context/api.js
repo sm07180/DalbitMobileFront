@@ -783,6 +783,52 @@ export default class API {
       params: params
     })
   }
+
+
+  /**
+   * 설정 방송공지 조회
+   */
+  static  myPageBroadcastNoticeSel = async (params) => {
+    return await ajax({url: `/mypage/broad/sel`, method: 'GET', params});
+  }
+
+  /**
+   * 설정 방송공지 등록
+   */
+  static myPageBroadcastNoticeIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/add`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 수정
+   */
+  static myPageBroadcastNoticeUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/edit`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 삭제
+   */
+  static myPageBroadcastNoticeDel = async (params) => {
+    return await ajax({
+      url: `/mypage/broad`,
+      method: 'DELETE',
+      data: params
+    });
+  }
+
   /**
    * @brief 마이페이지 공지사항 등록
    * @method "POST""
