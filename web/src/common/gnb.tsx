@@ -53,8 +53,6 @@ export default function GNB() {
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
-  // const [newCnt, setNewCnt] = useState(0);
-  const [noticeCount, setNoticeCount] = useState(0);
 
   const [activeType, setActiveType] = useState('');
 
@@ -356,6 +354,7 @@ export default function GNB() {
     }
   };
 
+  //새 알림 조회
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
     if(res.result === "success") {
@@ -365,13 +364,10 @@ export default function GNB() {
   }
 
   useEffect(() => {
-    return () => globalAction.setBroadClipDim!(false);
-  }, []);
-
-  useEffect(() => {
     if(isDesktop) {
       fetchMypageNewCntData(context.profile.memNo);
     }
+    return () => globalAction.setBroadClipDim!(false);
   }, []);
 
   useEffect(() => {
@@ -471,9 +467,9 @@ export default function GNB() {
                       <li key={index} data-url={item.url}
                           className={`${activeType === item.url || gnbOtherPageCheck(item.url) ? 'active' : ''} ${activeType !== item.url || gnbOtherPageCheck(item.url) ? 'cursorPointer' : ''}`}
                           onClick={() => {
-                            if(item.url === "/alarm" && noticeCount === 0) {
+                            if(item.url === "/alarm" && alarmData.notice === 0) {
                               dispatch(setNoticeTab("알림"));
-                            } else if(item.url === "/alarm" && noticeCount > 0) {
+                            } else if(item.url === "/alarm" && alarmData.notice > 0) {
                               dispatch(setNoticeTab("공지사항"));
                             }
                             history.push(item.url)

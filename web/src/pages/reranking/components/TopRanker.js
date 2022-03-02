@@ -74,10 +74,6 @@ const TopRanker = (props) => {
     }
   }
 
-  const popOpen = () => {
-    setPopup(true);
-  }
-
   return (
     <React.Fragment>
       <span className='questionMark' onClick={() => setPopup(true)}></span>

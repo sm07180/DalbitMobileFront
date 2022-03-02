@@ -12,7 +12,7 @@ import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeTab} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab} from "redux/actions/notice";
 import API from "context/api";
 
 
@@ -23,6 +23,21 @@ const NoticePage = () => {
   const history = useHistory()
   const context = useContext(Context)
   const alarmData = useSelector(state => state.newAlarm);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
+
+  const fetchMypageNewCntData = async (memNo) => {
+    const res = await API.getMyPageNew(memNo);
+    if(res.result === "success") {
+      if(res.data) {
+        dispatch(setNoticeData(res.data));
+      }}
+  }
+
+  useEffect(() => {
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
+  }, [alarmData.newCnt]);
 
   // 로그인 토큰값 확인
   useEffect(() => {
