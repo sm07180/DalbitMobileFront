@@ -29,6 +29,14 @@ const EventZip = () => {
       <div className='eventWrap'>
 
         <div className={`eventList ${poemEventEnd ? 'end' : ''}`} onClick={() => {golink("acrostic", poemEventEnd)}}>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7650/event7650_zip.png)`}}/>
+          <div className='eventInfo'>
+            <div className='eventTitle'>달라를 소개해 달라</div>
+            <div className='eventDate'>03.03 - 03.12</div>
+          </div>
+        </div>
+
+        <div className={`eventList ${poemEventEnd ? 'end' : ''}`} onClick={() => {golink("acrostic", poemEventEnd)}}>
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7649/event7649_zip.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라를 축하해 달라</div>
