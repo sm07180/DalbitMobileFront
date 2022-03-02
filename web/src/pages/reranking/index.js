@@ -9,7 +9,6 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
-import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
 import RankingList from './components/rankingList'
@@ -19,6 +18,7 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setSubTab} from "redux/actions/rank";
 
 const RankPage = () => {
   const history = useHistory();
@@ -31,6 +31,7 @@ const RankPage = () => {
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
+  const rankState = useSelector(state => state.rank);
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
 
@@ -62,6 +63,12 @@ const RankPage = () => {
   useEffect(() => {
     getMyRank();
     // fetchRankData(1, 1);
+    if (rankState.subTab === "FAN") {
+      setDayTabType("FAN");
+    } else {
+      setDayTabType("CUPID");
+      dispatch(setSubTab("FAN"));
+    }
     fetchRankData(2, 1);
     if(location.state) {
       setSelect(location.state.tabState);
@@ -312,7 +319,12 @@ const RankPage = () => {
     <div id="renewalRanking">
       <Header title={'랭킹'} type={'back'}/>
       <section className='rankingTop'>
-        <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
+        <button className='rankingTopMore' onClick={() => {
+          history.push({
+            pathname: '/rankDetail/DJ',
+            state: select
+          });
+        }}>더보기</button>
         <div className='title' onClick={selectChart}>
           <div>DJ {select === "time" && "실시간"}</div>
           <div>
@@ -352,8 +364,27 @@ const RankPage = () => {
         </section>          
       }
       <section className='dailyRankList'>
-        <CntTitle title={'일간 FAN / CUPID'} more={`${dayTabType === "FAN" ? "/rankDetail/FAN" : "/rankDetail/CUPID"}`}/>
-        <Tabmenu data={dayTabmenu} tab={dayTabType} setTab={setDayTabType} />
+        <div className="cntTitle">
+          <h2>일간 FAN / CUPID</h2>
+          <button onClick={() => {
+            if (dayTabType === "FAN"){
+              history.push("/rankDetail/FAN");
+              dispatch(setSubTab("FAN"));
+            } else {
+              history.push("/rankDetail/CUPID");
+              dispatch(setSubTab("CUPID"));
+            }
+          }}>더보기</button>
+        </div>
+        <ul className="tabmenu">
+          <li className={dayTabType === "FAN" ? 'active' : ''} onClick={() => {
+            setDayTabType("FAN");
+          }}>FAN</li>
+          <li className={dayTabType === "CUPID" ? 'active' : ''} onClick={() => {
+            setDayTabType("CUPID");
+          }}>CUPID</li>
+          <div className="underline"></div>
+        </ul>
         <div className='listWrap'>
           {fanRank.length > 0 || cupidRank.length > 0 ?
             <RankingList data={dayTabType === "FAN" ? fanRank : cupidRank} tab={dayTabType}>
