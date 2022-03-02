@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 // Api
 import { getNoticeList, postNoticeWrite, deleteNoticeWrite } from "common/api";
+import API from "context/api";
 import { GlobalContext } from "context";
 import { BroadcastContext } from "context/broadcast_ctx";
 // component
@@ -9,23 +10,25 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 import {BROAD_NOTICE_LENGTH} from "../../constant";
 
+let isModify = false;
 export default function NoticeList(props: any) {
   //ctx
-  const { globalAction } = useContext(GlobalContext);
+  const { globalAction, globalState } = useContext(GlobalContext);
   const { broadcastState } = useContext(BroadcastContext);
   const { roomOwner, roomNo } = props;
   //state
   const [loadNoticeMsg, setLoadNoticeMsg] = useState<string>("");
+  const [noticeList, setNoticeList] = useState<any>([]);
   const [noticeMsg, setNoticeMsg] = useState<string>("");
 
   //공지사항 조회
   const searchNotice = useCallback((roomNo: string) => {
     async function searchNoticeFunc() {
-      const { result, data } = await getNoticeList({
-        roomNo: roomNo,
-      });
+      let params = {memNo: globalState.userProfile.memNo}
+      const { result, data } = await API.myPageBroadcastNoticeSel(params);
       if (result === "success") {
-        setLoadNoticeMsg(data.notice);
+        setLoadNoticeMsg(data.list[0].conts);
+        setNoticeList(data.list[0]);
       }
     }
     searchNoticeFunc();
@@ -34,9 +37,13 @@ export default function NoticeList(props: any) {
   //공지사항 작성
   const fetchNotice = useCallback((roomNo: string, noticeMsg: string) => {
     async function fetchNoticeFunc() {
-      const { result, data, message } = await postNoticeWrite({
-        roomNo: roomNo,
-        notice: noticeMsg,
+      const { result, message } = await API.myPageBroadcastNoticeIns({
+        reqBody: true,
+        data: {
+          memNo: globalState.userProfile.memNo,
+          roomNo: roomNo,
+          roomNoticeConts: noticeMsg
+        }
       });
       if (result === "success") {
         searchNotice(roomNo);
@@ -49,12 +56,14 @@ export default function NoticeList(props: any) {
   }, []);
 
   //공지사항 삭제
-  const fetchNoticeDelete = useCallback((roomNo: string, noticeMsg: string) => {
+  const fetchNoticeDelete = useCallback((roomNo: string, noticeIdx: number) => {
     async function fetchNoticeDeleteFunc() {
-      const { result, data } = await deleteNoticeWrite({
-        roomNo: roomNo,
-        notice: "",
-      });
+      let params = {
+        roomNoticeNo: noticeIdx,
+        memNo: globalState.userProfile.memNo,
+        roomNo: roomNo
+      }
+      const { result } = await API.myPageBroadcastNoticeDel(params);
       if (result === "success") {
         setNoticeMsg("");
         setLoadNoticeMsg("");
@@ -63,6 +72,27 @@ export default function NoticeList(props: any) {
     fetchNoticeDeleteFunc();
   }, []);
 
+  //공지사항 수정
+  const fetchNoticeModify = useCallback((roomNo: string, noticeIdx: number, noticeMsg: string) => {
+    async function fetchNoticeModifyFunc() {
+      const { result, message } = await API.myPageBroadcastNoticeUpd({
+        reqBody: true,
+        data: {
+          roomNoticeNo: noticeIdx,
+          memNo: globalState.userProfile.memNo,
+          roomNo: roomNo,
+          roomNoticeConts: noticeMsg
+        }
+      });
+      if(result === "success") {
+        searchNotice(roomNo);
+        if (globalAction.callSetToastStatus) {
+          globalAction.callSetToastStatus({ status: true, message: message });
+        }
+      }
+    }
+    fetchNoticeModifyFunc();
+  }, []);
   //----------------------------------------------------
 
   useEffect(() => {
@@ -81,15 +111,17 @@ export default function NoticeList(props: any) {
     setTimeout(() => {
       setNoticeMsg(loadNoticeMsg);
     }, 10);
+    isModify = true;
   };
 
-  const DeleteNotice = () => {
+  const DeleteNotice = (e) => {
+    const {noticeIdx} = e.currentTarget.dataset;
     globalAction.setAlertStatus!({
       status: true,
       type: "confirm",
       content: "공지사항을 삭제하시겠습니까?",
       callback: () => {
-        fetchNoticeDelete(roomNo, noticeMsg);
+        fetchNoticeDelete(roomNo, noticeIdx);
       },
     });
   };
@@ -111,9 +143,16 @@ export default function NoticeList(props: any) {
               />
               <p className="noticeForm__alarmMsg">방송 중 공지는 가장 최근 작성한 공지만 노출됩니다.</p>
               <span className="noticeForm__msgCount">{noticeMsg.length} / {BROAD_NOTICE_LENGTH}</span>
-              <button onClick={() => fetchNotice(roomNo, noticeMsg)} className="noticeForm__registBtn">
-                등록하기
-              </button>
+              {!isModify ?
+                  <button onClick={() => fetchNotice(roomNo, noticeMsg)} className="noticeForm__registBtn">
+                    등록하기
+                  </button>
+                  :
+                  <button onClick={() => fetchNoticeModify(roomNo, noticeList.auto_no, noticeMsg)} className="noticeForm__registBtn">
+                    수정하기
+                  </button>
+              }
+
             </div>
           </div>
         ) : (
@@ -125,7 +164,7 @@ export default function NoticeList(props: any) {
                 <pre className="noticeForm__textArea">{loadNoticeMsg}</pre>
               </DalbitScroll>
               <div className="noticeForm__btnWrap">
-                <button onClick={DeleteNotice} className="noticeForm__btnWrap__cancelBtn">
+                <button data-notice-idx={noticeList.auto_no} onClick={DeleteNotice} className="noticeForm__btnWrap__cancelBtn">
                   삭제하기
                 </button>
                 <button onClick={modifyNotice} className="noticeForm__btnWrap__modifyBtn">

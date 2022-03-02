@@ -1290,7 +1290,52 @@ export default class API {
   static mypage_notice_detail_sel = async (params) => {
     return await ajax({url: `/mypage/notice/detail`, method: 'GET', params});
   }
-  
+
+  /**
+   * 설정 방송공지 조회
+   */
+  static  myPageBroadcastNoticeSel = async (params) => {
+    return await ajax({url: `/mypage/broad/sel`, method: 'GET', params});
+  }
+
+  /**
+   * 설정 방송공지 등록
+   */
+  static myPageBroadcastNoticeIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/add`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 수정
+   */
+  static myPageBroadcastNoticeUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/edit`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 삭제
+   */
+  static myPageBroadcastNoticeDel = async (params) => {
+    return await ajax({
+      url: `/mypage/broad`,
+      method: 'DELETE',
+      data: params
+    });
+  }
+
+
   /**
    * @breif 마이페이지 지갑 내역 조회
    * @method "GET"

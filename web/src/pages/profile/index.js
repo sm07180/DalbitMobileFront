@@ -43,7 +43,7 @@ import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
 import {setCommonPopupOpenData} from "redux/actions/common";
 
-const socialTabmenu = ['방송공지','팬보드','클립']
+const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
 
 const ProfilePage = () => {
@@ -113,6 +113,7 @@ const ProfilePage = () => {
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
+      console.log(res);
       if (res.result === 'success') {
         const data = res.data;
         const callPageNo = data.paging?.page;
@@ -120,8 +121,8 @@ const ProfilePage = () => {
         dispatch(setProfileFeedData({
           ...feedData,
           feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
-          // fixedFeedList: data.fixList, // 고정 피드
-          // fixCnt: data.fixList.length, // 고정 피드 개수
+          fixedFeedList: data.fixList, // 고정 피드
+          fixCnt: data.fixList.length, // 고정 피드 개수
           paging: data.paging ? data.paging : profilePagingDefault, // 호출한 페이지 정보
           isLastPage,
         }));

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -12,7 +12,7 @@ import {Context} from "context";
 import Utility from "components/lib/utility";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
+  const {socialList, socialFixList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
   const history = useHistory();
   const context = useContext(Context);
   const {profile} = context;
@@ -33,8 +33,33 @@ const SocialList = (props) => {
     }
   }
 
+  useEffect(() => {
+    console.log(socialList);
+    console.log(socialFixList);
+  })
+
   return (
     <div className="socialListWrap">
+      {socialFixList.map((item, index) => {
+        const memNo = type === 'feed'? profileData.memNo : item?.writerMemNo; //글 작성자
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
+        return (
+          <div className="socialList" key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} openBlockReportPop={openBlockReportPop}
+                              modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
+                              deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
+                              photoClick={() => {photoClickEvent(item.mem_no)}}
+            />
+            <div className="socialContent">
+              <div className="text" onClick={() => goProfileDetailPage(detailPageParam)} dangerouslySetInnerHTML={{__html: Utility.nl2br(item.contents)}}/>
+              <div className="info">
+                <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
+              </div>
+            </div>
+          </div>
+        )
+      })}
       {socialList.map((item, index) => {
         if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== context.profile.memNo)) {
           return <React.Fragment key={item.replyIdx} />

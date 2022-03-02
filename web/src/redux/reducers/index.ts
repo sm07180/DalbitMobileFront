@@ -13,6 +13,7 @@ import notice from './notice/index';
 import inquire from "./inquire";
 import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
+import broadcastNotice from "./broadcastNotice";
 
 const rootReducer = combineReducers({
   common
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   , inquire
   , popup
   , newAlarm
+  , broadcastNotice
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

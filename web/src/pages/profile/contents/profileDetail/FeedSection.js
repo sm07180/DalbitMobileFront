@@ -12,7 +12,7 @@ const FeedSection = (props) => {
   const {memNo} = useParams();
   const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents } = props;
   //context
-  const { feedList, } = feedData;
+  const { feedList, fixedFeedList} = feedData;
 
   // 스와이퍼
   const swiperParams = {
@@ -52,7 +52,7 @@ const FeedSection = (props) => {
       </div>
       }*/}
       {feedList.length > 0 ?
-        <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
+        <SocialList socialList={feedList} socialFixList={fixedFeedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
                     openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData}
         />
         :

@@ -79,8 +79,8 @@ export const profileDefaultState = {
 /* 피드 default */
 export const profileFeedDefaultState = {
   feedList: [],
-  // fixedFeedList: [],
-  // fixCnt: 0,
+  fixedFeedList: [],
+  fixCnt: 0,
   paging: profilePagingDefault,
   isLastPage: false,
 }
@@ -255,8 +255,8 @@ export interface IProfileState {
 /* 피드 */
 export interface IProfileFeedState {
   feedList: Array<IFeedData>;
-  // fixedFeedList: Array<IFeedData>,
-  // fixCnt: number;
+  fixedFeedList: Array<IFeedData>,
+  fixCnt: number;
   paging: IPaging;
   isLastPage: boolean;
 }
