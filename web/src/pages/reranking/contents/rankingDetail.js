@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 
 import Api from 'context/api'
 // global components
@@ -20,6 +20,9 @@ import {setSlidePopupOpen} from "redux/actions/common";
 const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
+
+  let location = useLocation();
+
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
   const rankingListType = params.type
@@ -49,7 +52,8 @@ const RankDetailPage = () => {
   useEffect(() => {
     if (rankingListType === 'DJ') {
       setTabList(['타임','오늘','이번주', '이번달', '올해']);
-      setTabName('오늘')
+      setTabName(typeof location.state === "undefined" ? "오늘" : location.state === "time" ? "타임" : location.state === "today" ? "오늘"  : location.state === "thisweek" ? "이번주" : location.state === "thismonth" ? "이번달" : "올해");
+      setRankType(typeof location.state === "undefined" ? 1 : location.state === "time" ? 0 : location.state === "today" ? 1  : location.state === "thisweek" ? 2 : location.state === "thismonth" ? 3 : 4);
     } else if (rankingListType === 'FAN') {
       setTabList(['오늘','이번주', '이번달']);
       setTabName('오늘')
