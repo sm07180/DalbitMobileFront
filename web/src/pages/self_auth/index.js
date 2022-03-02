@@ -51,6 +51,7 @@ export const openAuthPage = (formTagRef, context) => {
 }
 
 export const authReq = async (code, formTagRef, context, pushLink) => {
+  console.log(pushLink, encodeURIComponent(pushLink), decodeURIComponent(encodeURIComponent(pushLink)))
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
