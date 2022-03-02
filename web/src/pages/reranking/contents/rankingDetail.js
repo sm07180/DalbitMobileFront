@@ -48,14 +48,14 @@ const RankDetailPage = () => {
 
   useEffect(() => {
     if (rankingListType === 'DJ') {
-      setTabList(['타임','오늘','이번주', '이번달', '올해']);
-      setTabName('오늘')
+      setTabList(['타임','일간','주간', '월간', '연간']);
+      setTabName('일간')
     } else if (rankingListType === 'FAN') {
-      setTabList(['오늘','이번주', '이번달']);
-      setTabName('오늘')
+      setTabList(['일간','주간', '월간']);
+      setTabName('일간')
     } else if (rankingListType === 'CUPID') {
-      setTabList(['오늘','이번주']);
-      setTabName('오늘')
+      setTabList(['일간','주간']);
+      setTabName('일간')
     }
     setSelect(rankingListType);
   }, []);
@@ -227,20 +227,20 @@ const RankDetailPage = () => {
     let text = e.currentTarget.innerText;
     if(text === "DJ"){
       setSelect("DJ");
-      setTabName('오늘');
-      setTabList(['타임','오늘','이번주', '이번달', '올해']);
+      setTabName('일간');
+      setTabList(['타임','일간','주간', '월간', '연간']);
       setRankSlct(1);
       setRankType(1);
     } else if(text === "FAN") {
       setSelect("FAN");
-      setTabName('오늘');
-      setTabList(['오늘','이번주', '이번달']);
+      setTabName('일간');
+      setTabList(['일간','주간', '월간']);
       setRankSlct(2);
       setRankType(1);
     } else {      
       setSelect("CUPID")
-      setTabName('오늘');
-      setTabList(['오늘','이번주']);
+      setTabName('일간');
+      setTabList(['일간','주간']);
       setRankSlct(3);
       setRankType(1);
     }
@@ -260,7 +260,7 @@ const RankDetailPage = () => {
       setRankType(0);
       fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
     } else {
-      setRankType(tabName === "올해" ? 4 : tabName === "이번주" ? 2 : tabName === "이번달" ? 3 : 1);
+      setRankType(tabName === "연간" ? 4 : tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
     }
   }, [tabName]);
 
