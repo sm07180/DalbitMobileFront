@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 
 import Header from 'components/ui/header/Header'
 
@@ -9,14 +9,23 @@ import './share.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 import UseInput from "common/useInput/useInput";
+import API from "context/api";
+import Api from "context/api";
+import {Context} from "context";
+import {useHistory} from "react-router-dom";
+import {isDesktop} from "lib/agent";
+import {isHybrid} from "context/hybrid";
+import {authReq} from "pages/self_auth";
 
 const Share = () => {
     const [popup, setPopup] = useState(false);
-    const [certification, setCertification] = useState(false);
     const [urlInfo, setUrlInfo] = useState('')
     const commonPopup = useSelector(state => state.popup);
     const dispatch = useDispatch();
     const urlInputRef = useRef();
+    const context = useContext(Context);
+    const history = useHistory();
+    const [isAuth, setIsAuth] = useState(false);
 
     async function imageDownload() {
         // blob 형태로 들고 있어야 함.
@@ -46,20 +55,83 @@ const Share = () => {
     }
 
     const popSlideOpen = () => {
-      dispatch(setSlidePopupOpen());
+      if (context?.token) {
+        if(!context.token.isLogin) {
+          history.push('/login')
+        }else if(isAuth) {
+          dispatch(setSlidePopupOpen());
+        }else {
+          Api.self_auth_check({}).then((res) => {
+            if (res.result === 'success') {
+              setIsAuth(true);
+              dispatch(setSlidePopupOpen());
+            }else {
+              context.action.confirm({
+                msg: `이벤트에 참여하기 위해 본인인증을 완료해 주세요.`,
+                callback: () => {
+                  authReq('12', context.authRef, context, '/event/share');
+                }
+              })
+            }
+          })
+        }
+      }
     }
 
     const popSlideClose = () => {
+      setUrlInfo('');
       closePopup(dispatch);
     }
 
+    /* 등록 api */
+    const eventInsApi = () => {
+      const {profile} = context;
+      const memNo = profile.memNo;
+      const loginMedia = isDesktop() ? 'w' : isHybrid() ? 's' : 'x'
+      const insParam = {
+        memNo,
+        tailMemNo: memNo,
+        tailMemId: profile.memId,
+        tailMemSex: profile.gender,
+        tailConts: urlInfo,
+        tailLoginMedia: loginMedia,
+      }
+      API.shareTailIns(insParam).then(res => {
+        const code = res.code;
+        if(code === '0') {
+          context.action.alert({
+            msg: '등록이 완료되었습니다.'
+          })
+          popSlideClose();
+        }else if(code === '-2') { // 이미 등록
+          context.action.alert({
+            msg: '이미 등록된 URL입니다.<br/>확인 후 다시 등록해주세요.'
+          })
+        }else { // 등록 실패
+          context.action.alert({
+            msg: res.message
+          })
+        }
+      });
+    }
+
+    /* 등록 */
     const submitAction = () => {
-      popSlideClose();
+      eventInsApi();
     }
 
     const urlInputValidator = (value) => {
-      return value.length <= 300;
+      const spacePattern = /\s/g;
+      return value.length <= 300 && !spacePattern.test(value);
     }
+
+    useEffect(() => {
+      Api.self_auth_check({}).then((res) => {
+        if (res.result === 'success') {
+          setIsAuth(true);
+        }
+      })
+    }, []);
 
     return (
         <>
@@ -111,9 +183,7 @@ const Share = () => {
                                     내 친구 초대 코드까지 남긴다면..?
                                 </p>
                             </div>
-                            <button className={`eventBtn ${certification ? "disable" : ""}`} onClick={popSlideOpen}>
-                              {certification ? '인증완료' : '인증하기'}
-                            </button>
+                            <button className="eventBtn" onClick={popSlideOpen}>인증하기</button>
                         </div>
                     </div>
                 </div>
@@ -124,18 +194,19 @@ const Share = () => {
                     <div className='popTitle'>유의사항</div>
                     <div className='popContent'>
                         <ul className='noticeList'>
-                            <li>한 회원 당 한 계정으로만 참여할 수 있습니다.</li>
-                            <li>다수의 계정으로 중복 참여는 불가하지만 한 계정으로 중복 참여는 가능합니다.</li>
-                            <li>상품은 이벤트 종료 후 일주일 안에 본인인증에 사용 하신 번호로 발송해드립니다.</li>
-                            <li>도배 등의 행위는 재제 사유입니다.</li>
-                            <li>상품이 품절될 경우 동일 가격대의 다른 상품으로 대체됩니다.</li>
+                            <li>상금은 제세공과금 없이 환전 가능한 “별”로 지급해드립니다.</li>
+                            <li>기프티콘은 이벤트 종료 후 일주일 안에 본인인증에 사용 하신 번호로 발송해드립니다.</li>
+                            <li>기프티콘이 품절될 경우 동일 가격대의 다른 상품으로 대체됩니다.</li>
+                            <li>게시글을 삭제하거나 비공개 처리할 경우 당첨 제외됩니다.</li>
+                            <li>비공개 계정으로는 참여할 수 없습니다.</li>
+                            <li>게시글은 전체 공개로 게시해야 합니다.</li>
                             <li>본 이벤트는 사전 고지 없이 변경 및 종료 될 수 있습니다.</li>
                         </ul>
                     </div>
                 </LayerPopup>
             }
             {commonPopup.commonPopup &&
-                <PopSlide title="인증하기">
+                <PopSlide title="인증하기" closeCallback={() => {setUrlInfo('')}}>
                     <div className='shareUrl'>
                         <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
                           <UseInput name={"url"}

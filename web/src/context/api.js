@@ -3877,8 +3877,7 @@ export default class API {
   }
 
   // 공유 이벤트 댓글 등록
-  static shareTailIns = async (obj) => {
-    const {data} = obj || {}
+  static shareTailIns = async (data) => {
     return await ajax({
       url: '/event/share/tail/ins',
       method: 'POST',
