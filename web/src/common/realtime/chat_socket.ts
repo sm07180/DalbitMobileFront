@@ -1984,8 +1984,21 @@ export class ChatSocketHandler {
                     return null;
                   }
                   case "reqGetStoneByGift": {
-                    console.log("reqGetStoneByGift => ", data);
-                    this.broadcastStateChange['setStoneAniQueueState']({...data});
+                    //타입 갯수에 따라서 다수개의 속성을 1개의 속성으로 쪼개서 배열로 만들어 전달 ex) {d: 1, a: 1, l: 1} => [{d: 1}, {a: 1}, {l: 1}]
+                    let dCnt = 0;
+                    let aCnt = 0;
+                    let lCnt = 0;
+                    const {dStone, aStone, lStone} = data?.reqGetStoneByGift;
+                    if(dStone > 0) dCnt++;
+                    if(aStone > 0) aCnt++;
+                    if(lStone > 0) lCnt++;
+
+                    let arr: any = [];
+                    if(dCnt> 0) arr.push({dStone});
+                    if(aCnt> 0) arr.push({aStone});
+                    if(lCnt> 0) arr.push({lStone});
+                    this.broadcastStateChange['setStoneAniQueueState'](arr);
+
                     return null;
                   }
 
