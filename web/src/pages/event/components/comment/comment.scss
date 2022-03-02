@@ -80,6 +80,7 @@
       font-size: 14px;
       font-weight: $bold;
       @include font(16px, 500, #2d2d2d);
+      border-bottom: 1px solid #f2f2f2;
 
       span {
         color: $MAINCOLOR;
@@ -95,12 +96,15 @@
           animation: event-spin 0.3s ease-in-out;
         }
       }
+      .myCommentBtn{
+        margin-left: auto;
+        @include font(13px, $Medium, #303030);
+      }
     }
 
     .listBox {
       @include flex($fd:column);
       position: relative;
-      border-top: 1px solid $lightestGray;
       padding: 10px 16px 16px;
       border: 1px solid #f2f2f2;
 

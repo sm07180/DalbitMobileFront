@@ -22,6 +22,7 @@ import qs from 'query-string'
 import {authReq} from "pages/self_auth";
 import {useDispatch} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
+import {MailboxContext} from "context/mailbox_ctx";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -34,6 +35,7 @@ export const FOOTER_VIEW_PAGES = {
 export default () => {
   //context
   const context = useContext(Context)
+  const { mailboxAction } = useContext(MailboxContext);
   //history
   let history = useHistory()
   const dispatch = useDispatch();
@@ -774,7 +776,7 @@ export default () => {
         history.push(`/`)
         break
       case 'mailbox-state':
-        console.log(JSON.stringify(event.detail))
+        mailboxAction.setIsMailboxNew(event.detail.new)
         context.action.updateIsMailboxNew(event.detail.new)
         break
 

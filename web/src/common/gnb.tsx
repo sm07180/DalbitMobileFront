@@ -47,6 +47,7 @@ export default function GNB() {
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
 
   const history = useHistory();
+  const member = useSelector((state)=> state.member)
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const dispatch = useDispatch();
 

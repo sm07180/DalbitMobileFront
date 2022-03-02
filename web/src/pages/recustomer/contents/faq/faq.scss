@@ -25,6 +25,7 @@
             height: 50px;
             padding: 0px 10px 0px 16px;
             border-radius: 16px;
+            border: 1px solid #F6F6F6;
             background-color: #F6F6F6;
             box-sizing: border-box;
             .searchInput {
@@ -32,6 +33,10 @@
                 &::placeholder {
                     @include font(15px, 400, #999999);
                 }
+            }
+            &.focus {
+                border: 1px solid $MAINCOLOR;
+                background-color: #FFF;
             }
             .searchBtn {
                 flex: none;
@@ -70,6 +75,7 @@
                 .faqList {
                     @include flex(flex-start, flex-start, column);
                     width: 100%;
+                    cursor: pointer;
                     .questionArea {
                         @include flex(flex-start);
                         width: 100%;

@@ -128,6 +128,7 @@ const Story = React.lazy(() => import('pages/story'))
 const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
 const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
 const ClipPlayer = React.lazy(() => import("pages/clip_player"));
+const ClipEdit = React.lazy(() => import("pages/clip_recoding/edit"));
 
 const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
@@ -311,6 +312,7 @@ const Router = () => {
         <Route exact path="/clip_recoding" component={ClipRecoding}  />
         <Route exact path="/clip_upload" component={ClipUpload} />
         <Route exact path="/clip/:clipNo" component={ClipPlayer} />
+        <Route exact path="/clip_edit/:clipNo" component={ClipEdit} />
 
         {/*  www 방송 청취 및 세팅  */}
         <Route exact path="/broadcast/:roomNo" component={Broadcast} />

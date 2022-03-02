@@ -70,11 +70,14 @@ $SEARCH-HEADER: 112px;
     width:100%;
     margin-bottom: 44px;
   }
+  .subContent {
+    padding-top:10px;
+
+  }
   .cntTitle {
     margin-bottom:12px;
   }
   .djSection {
-    padding-top:10px;
     .listWrap {
       @include flex(center, center, column);
       .listColumn {

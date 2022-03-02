@@ -7,6 +7,7 @@
     width:100%;
     header {
       text-indent:-99999px;
+      .store {background-image:url("#{$IMGSERVER}/common/header/icoStore-w.png");}
       .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-w.png");}
       .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-w.png");}
       .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-w.png");}
@@ -18,6 +19,7 @@
           width:71px;height:25px;
           @include BGIMG("common/header/LOGO.png");
         }
+        .store {background-image:url("#{$IMGSERVER}/common/header/icoStore-b.png");}
         .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-b.png");}
         .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-b.png");}
         .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-b.png");}
@@ -26,7 +28,7 @@
   }
   section {
     position:relative;
-    margin-bottom:44px;
+    margin-bottom:32px;
   }
   .topSwiper {
     max-width:480px;
@@ -91,6 +93,9 @@
           background-image:url("#{$IMGSERVER}/images/mainmask.png");
           // transform:translateX(30%);
           // transition: transform .7s ease-out;
+          .animation {
+            width: 100%;
+          }
           .badgeGroup {
             @include flex(center);
             margin-bottom: 8px;
@@ -118,14 +123,10 @@
       // &-active {
       //   .listColumn {
       //     .info {
-      //       animation: show 0.4s linear forwards;
-      //     }
-      //   }
-      // }
-      // &-duplicate-active {
-      //   .listColumn {
-      //     .info {
-      //       transform:translateX(0);
+      //       .animation {
+      //         transition-duration: 0ms;
+      //         transform: translate3d(0px, 0px, 0px);
+      //       }
       //     }
       //   }
       // }
@@ -153,10 +154,13 @@
   }
   .favorites {
     margin-bottom:0;
+    .swiper-button-next, .swiper-button-prev {
+      display: none;
+    }
     .swiper-wrapper {
       padding-left:16px;
       margin-bottom:28px;
-      box-sizing: border-box;
+      box-sizing: border-box;      
       .swiper-slide {
         width:auto;
         margin-right:10px;
@@ -199,18 +203,22 @@
   }
   .top10 {
     .cntTitle {
+      padding: 0 8px 0 16px;
       margin-bottom:12px;
+      h2 {
+        cursor: pointer;
+      }
       .tabmenu {
         @include flex(center);
         height:20px;
         margin-left:auto;
         li {
           position:relative;
-          padding: 0 8px;
-          @include font(14px,$Medium,#666);
+          padding: 0 10px;
+          @include font(14px,600,#ACACAC);
           &.active {
-            font-weight:500;
-            color:$MAINCOLOR;
+            font-weight:700;
+            color:#202020;
           }
           &:after {
             position:absolute;
@@ -229,6 +237,23 @@
       }
     }
     .swiper-container {
+      .swiper-button-next, .swiper-button-prev {
+        display: inline-block;
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        &.swiper-button-disabled {
+          display: none;
+        }
+      }
+      .swiper-button-prev {
+        background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-prev.png");
+      }
+      .swiper-button-next {
+        background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-next.png");
+      }
       .swiper-wrapper {
         padding-left:16px;
         .swiper-slide {
@@ -285,7 +310,7 @@
                 @include position-top-left();
                 display: inline-block;
                 width: 40px; height: 40px;
-                @include BGIMG("/common/icon/icon-liveTag.png");
+                z-index: 2;
               }
             }
             p {
@@ -306,14 +331,11 @@
       text-indent:20px;
       @include font(15px,400,#999);
     }
-    .pointer {
-      cursor: pointer;
-    }
   }
 
   .liveView {
     .cntTitle {
-      margin-bottom:8px;
+      margin-bottom:4px;
     }
     .tabmenuWrap {
       position:relative;
@@ -353,7 +375,7 @@
       }
     }
     .liveListWrap {
-      padding: 16px;
+      padding: 12px 16px 16px;
       .listRow {
         @include flex(center);
         height:110px;
@@ -384,10 +406,9 @@
           }
           .video {
             @include position-top-right;
-            width:23px;
-            height:23px;
-            margin:6px;
-            @include BGIMG("common/icon/icon-video.png");
+            width:40px;
+            height:40px;
+            @include BGIMG("common/icon/icon_videoTag.png");
           }
         }
         .listContent {
