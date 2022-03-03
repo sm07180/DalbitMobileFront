@@ -30,7 +30,14 @@ const EventRankList = (props) => {
 		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
-				{type === 'my' ? <span className="num">{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}</span> : <span className="num">{listNum + 1}</span>}
+				{type === 'my' ? 
+					<span className="num">
+						{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}
+						{rankList && rankList.rankNo != 0 ? rankList.rankNo : '-'}
+					</span> 
+					: 
+					<span className="num">{listNum + 1}</span>
+				}
 				{rankList && rankList.upDown && <p className="rankChange">
 					{rankList && rankList.upDown === 'new' ? (
 						<span className="new">NEW</span>
@@ -44,7 +51,9 @@ const EventRankList = (props) => {
 				</p>}
 			</div>
 			<div className={`photo size${photoSize}`} onClick={goProfile} data-target-mem-no={rankList && rankList.mem_no}>
-				<img src={rankList && rankList.profImg && rankList.profImg.thumb62x62} alt={rankList && rankList.mem_nick} />
+				{rankList.profImg &&
+					<img src={rankList && rankList.profImg && rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
+				}
 			</div>
 			{props.children}
 		</div>

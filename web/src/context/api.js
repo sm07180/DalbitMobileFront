@@ -3905,7 +3905,7 @@ export default class API {
 
   /* 이니셜 스톤 교환하기 */
   // useDallaGubunOne: 'd' (사용할 이니셜) , useDallaGubunTwo: 'a' (사용할 이니셜)
-  static getDallagersReqNo = async (obj) => {
+  static getDallagersStoneChange = async (obj) => {
     const {data} = obj || {};
     return await ajax({
       url: '/event/dallagers/stoneReplace',

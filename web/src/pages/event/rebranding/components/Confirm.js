@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import CheckList from './CheckList'
 
 import './confirm.scss'
 
 const Confirm = (props) => {
-  const {setPopLayer,setActionAni,setStoneValue1,setStoneValue2} = props
+  const {setPopLayer,setActionAni,stoneValue1,setStoneValue1,stoneValue2,setStoneValue2,fetchStoneChange} = props
+  const [stoneChangeInfo, setStoneChangeInfo] = useState()
   // 
   const cookieChecked = () => {
     console.log('cookie');
@@ -16,6 +17,7 @@ const Confirm = (props) => {
   }
   // 
   const btnConfirm = () => {
+    fetchStoneChange(stoneValue1.value,stoneValue2.value)
     setPopLayer(false)
     setActionAni(true)
     setStoneValue1({on: false, value: ''})

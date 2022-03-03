@@ -1,22 +1,48 @@
 import React, {useState, useEffect} from 'react'
 import {IMG_SERVER} from 'context/config'
+import Api from 'context/api'
 import Utility from "components/lib/utility";
-import moment from 'moment'
 // global components
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
-import RankList from '../../components/rankList/RankList'
+import RoundList from '../components/roundList'
 
 import '../style.scss'
 
 const Round_3 = (props) => {
+  const {eventInfo, tabmenuType} = props
+  const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
+  const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-07 02:00:00').format('MMDDHH')}
+  // 
+  const [myRankInfo, setMyRankInfo] = useState([])
+  const [rankInfo, setRankInfo] = useState([])
   const [popSpecial, setPopSpecial] = useState(false)
-  //
-  const eventDate = {start: '2022.03.18', end: '2022.03.27'}
-  const newDate = moment().format('YYMMDD');
-  const startDate = moment(eventDate.start).format('YYMMDD')
+  
+  /* 이벤트 랭킹 내정보 */
+  const fetchMyRankInfo = () => {
+    Api.getDallagersSpecialMyRankInfo({
+      seqNo: eventInfo.seq_no,
+      pageNo: 1,
+      pagePerCnt: 50,
+    }).then((res) => {
+      if (res.result === 'success') {
+        setMyRankInfo(res.data)
+      }
+    })
+  }
+  /* 이벤트 랭킹 정보 */
+  const fetchRankInfo = () => {
+    Api.getDallagersSpecialMyRankList({
+      seqNo: eventInfo.seq_no,
+      pageNo: 1,
+      pagePerCnt: 50,
+    }).then((res) => {
+      if (res.result === 'success') {
+        setRankInfo(res.data.list)
+      }
+    })
+  }
 
   // 스페셜 라운드 팝업
   const onPopSpecial = () => {
@@ -25,6 +51,14 @@ const Round_3 = (props) => {
   const closePopSpecial = () => {
     setPopSpecial(false)
   }
+  console.log(eventInfo);
+
+  useEffect(() => {
+    if (eventInfo.seq_no !== 0) {
+      fetchMyRankInfo()
+      fetchRankInfo()
+    }
+  },[eventInfo.seq_no])
 
   return (
     <>
@@ -32,79 +66,8 @@ const Round_3 = (props) => {
         라운드 1+2 종합순위
         <button className="question" onClick={onPopSpecial}></button>
       </section>
-      {startDate < newDate ? 
-        <section className="listWrap">
-          <div className="rankWrap">
-            <RankList photoSize={55} type="my">
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-                <div className="listItem">
-                  <i className="d">100</i>
-                  <i className="a">100</i>
-                  <i className="l">100</i>
-                </div>
-              </div>
-              <div className="listBack">
-                <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
-                <span>0</span>
-              </div>
-            </RankList>
-          </div>
-          <div className="rankWrap">
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <button className="moreBtn">더보기</button>
-          </div>
-          <div className="noList">
-            <img src={`${IMG_SERVER}/event/rebranding/listNone.png`} />
-            <span>참가자들이 dalla를 만들고 있어요!</span>
-          </div>
-        </section>
+      {eventInfo.seq_no === 2 ? 
+        <RoundList myRankInfo={myRankInfo} rankInfo={rankInfo} eventDate={eventDate} tabmenuType={tabmenuType} lodingTime={lodingTime} />
         :
         <section className="listWrap">
           <div className="specialRound">
@@ -115,9 +78,6 @@ const Round_3 = (props) => {
           </div>
         </section>
       }
-      <section>
-        <img src={`${IMG_SERVER}/event/rebranding/gift-1.png`} alt="이벤트 상품 이미지" />
-      </section>
       {popSpecial && 
         <LayerPopup title="스페셜 라운드" setPopup={setPopSpecial} close={false}>
           <section className="specialRound">
