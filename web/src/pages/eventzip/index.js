@@ -10,6 +10,7 @@ import {Context} from "context";
 const EventZip = () => {
   let history = useHistory()
   const context = useContext(Context)
+  const shareEventEnd = new moment().isAfter('20220324');
   const poemEventEnd = new moment().isAfter('20220322');
   const inviteEventEnd = new moment().isAfter('20220308');
 
@@ -28,11 +29,11 @@ const EventZip = () => {
     <div className='content'>
       <div className='eventWrap'>
 
-        <div className={`eventList ${poemEventEnd ? 'end' : ''}`} onClick={() => {golink("acrostic", poemEventEnd)}}>
+        <div className={`eventList ${shareEventEnd ? 'end' : ''}`} onClick={() => {golink("share", shareEventEnd)}}>
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7650/event7650_zip.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라를 소개해 달라</div>
-            <div className='eventDate'>03.03 - 03.12</div>
+            <div className='eventDate'>03.03 - 03.24</div>
           </div>
         </div>
 
