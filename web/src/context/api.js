@@ -3897,6 +3897,18 @@ export default class API {
       data: data,
     })
   }
+  //이행시 이벤트
+  static poem = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/poem',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
 
   // 달라져스 회차정보
   static getDallagersReqNo = async (obj) => {

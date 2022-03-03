@@ -70,7 +70,7 @@ const ProfileCard = (props) => {
       </div>
       {!isMyProfile &&
         <div className="buttonWrap">
-          {!isIos() && <button onClick={openPresentPop}>선물하기</button>}
+          {!isIos() && <button className='presentBtn' onClick={openPresentPop}>선물하기</button>}
           <button className={`${data.isFan ? 'isFan' : ''}`}
                   onClick={() => {
                     fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)

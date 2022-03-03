@@ -516,7 +516,7 @@ const MainPage = () => {
       }
       <section className='top10'>
         <div className="cntTitle">
-          <h2 className="pointer" onClick={nowTopLink}>🏆 NOW TOP 10 ></h2>
+          <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
         </div>
         {rankingList.length>0 &&
