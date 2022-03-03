@@ -18,20 +18,17 @@ export const backFunc = (context, dispatch) => {
       window.location.href = '/'
       break
     case 'popClose':
-      // alert('popClose~~')
       closePopup(dispatch)
       break;
     case 'alertClose':
-      // alert('alertClose~~')
       context.action.alert({visible: false})
       break;
     default:
       break
   }
   setTimeout(() => {
-    // alert(backFunction.name)
-    // if(backFunction.name.length === 0) {
+    if(nameLength === 1) {
       context.action.updateSetBack(null)
-    // }
+    }
   }, 100)
 }
