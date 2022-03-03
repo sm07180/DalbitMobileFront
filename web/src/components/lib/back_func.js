@@ -5,7 +5,8 @@ import {closePopup} from "components/ui/popSlide/PopSlide";
 
 export const backFunc = (context, dispatch) => {
   const {backFunction} = context
-  switch (backFunction.name) {
+  const nameLength = backFunction.name.length
+  switch (backFunction.name[nameLength-1]) {
     case 'booleanType':
       context.action.updateBackFunction({name: 'booleanType', value: false})
       break
@@ -17,15 +18,20 @@ export const backFunc = (context, dispatch) => {
       window.location.href = '/'
       break
     case 'popClose':
+      // alert('popClose~~')
       closePopup(dispatch)
       break;
     case 'alertClose':
+      // alert('alertClose~~')
       context.action.alert({visible: false})
       break;
     default:
       break
   }
   setTimeout(() => {
-    context.action.updateSetBack(null)
+    // alert(backFunction.name)
+    // if(backFunction.name.length === 0) {
+      context.action.updateSetBack(null)
+    // }
   }, 100)
 }

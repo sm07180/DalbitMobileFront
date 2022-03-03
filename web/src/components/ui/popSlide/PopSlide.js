@@ -48,6 +48,10 @@ const PopSlide = (props) => {
       document.body.style.overflow = ''
       dispatch(setCommonPopupClose());
       clearTimeout(slidePopTimeout);
+      if(isAndroid()) {
+        context.action.updateSetBack(null)
+        context.action.updateBackFunction({name: ''})
+      }
     }
   }, [])
 
