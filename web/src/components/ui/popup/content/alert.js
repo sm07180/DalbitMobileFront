@@ -65,7 +65,9 @@ const Alert = (props) => {
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        context.action.updateSetBack(null)
+        if(context.backFunction.name.length === 1) {
+          context.action.updateSetBack(null)
+        }
         context.action.updateBackFunction({name: ''})
       }
     }

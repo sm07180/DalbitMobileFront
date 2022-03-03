@@ -2,6 +2,7 @@ import React from 'react'
 //context
 // etc
 import {closePopup} from "components/ui/popSlide/PopSlide";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
 export const backFunc = (context, dispatch) => {
   const {backFunction} = context
@@ -18,20 +19,20 @@ export const backFunc = (context, dispatch) => {
       window.location.href = '/'
       break
     case 'popClose':
-      // alert('popClose~~')
       closePopup(dispatch)
       break;
     case 'alertClose':
-      // alert('alertClose~~')
       context.action.alert({visible: false})
+      break;
+    case 'questionPop':
+      dispatch(setCommonPopupOpenData({...backFunction.popupData, commonPopup: false}))
       break;
     default:
       break
   }
   setTimeout(() => {
-    // alert(backFunction.name)
-    // if(backFunction.name.length === 0) {
+    if(nameLength === 1) {
       context.action.updateSetBack(null)
-    // }
+    }
   }, 100)
 }
