@@ -28,7 +28,8 @@ let touchEndY = null
 const refreshDefaultHeight = 48
 
 const Rebranding = () => {
-  const {webview} = qs.parse(location.search);
+  const {webview} = qs.parse(location.search)
+
   const MainRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
@@ -262,6 +263,10 @@ const Rebranding = () => {
     setPopLayer(true)
     }
   }
+  // 모바일 뒤로가기 이벤트
+  const backEvent = () => {
+
+  };
 
   useEffect(() => {
     fetchEventInfo()
@@ -313,7 +318,7 @@ const Rebranding = () => {
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}
       >
-      <Header title="이벤트" type="back" />
+      <Header title="이벤트" type="back" backEvent={}/>
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/bg-1.png`} alt="이벤트 이미지" />
       </section>
