@@ -163,7 +163,6 @@ export default function SendGift(props: {
         const {djTtsSound, djNormalSound} = roomInfo;
         const {ttsSound, normalSound} = settingObj;
 
-        console.log('soundItemSettingMemo in declare', {djTtsSound, djNormalSound}, {ttsSound, normalSound});
         return {ttsItemBool: djTtsSound && ttsSound, soundItemBool: djNormalSound && normalSound };
       }
     } else {
