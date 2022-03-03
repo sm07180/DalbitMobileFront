@@ -47,7 +47,7 @@ const PopSlide = (props) => {
 
   return (
     <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>
-      <div className={`slideLayer ${popupState.slidePopup ? "slideUp" : "slideDown"}`}>
+      <div className={`slideLayer ${popupState.slidePopup ? "slideDown" : "slideUp"}`}>
         {title && <h3>{title}</h3>}
         {children}
       </div>

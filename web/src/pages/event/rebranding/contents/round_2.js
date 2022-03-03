@@ -1,103 +1,62 @@
 import React, {useState, useEffect} from 'react'
 import {IMG_SERVER} from 'context/config'
-import Utility from "components/lib/utility";
+import Api from 'context/api'
 import moment from 'moment'
 // global components
-import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
-import RankList from '../../components/rankList/RankList'
+import RoundList from '../components/roundList'
 
 import '../style.scss'
 
 const Round_2 = (props) => {
+  const {eventInfo, tabmenuType} = props
+  const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
+  const eventFixDate = {start: '2022-03-01', end: '2022-03-07'}
+  const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-07 02:00:00').format('MMDDHH')}
+  
   // 
-  const eventDate = {start: '2022.03.18', end: '2022.03.27'}
-  const newDate = moment().format('YYMMDD');
-  const startDate = moment(eventDate.start).format('YYMMDD')
+  const [myRankList, setMyRankList] = useState({})
+  const [rankInfo, setRankInfo] = useState([])
+
+  /* 이벤트 랭킹 내정보 */
+  const fetchMyRankInfo = () => {
+    const param = {
+      seqNo: 2,
+    }
+    Api.getDallagersMyRankInfo(param).then((res) => {
+      if (res.result === 'success') {
+        setMyRankList(res.data)
+      }
+    })
+  }
+  
+  /* 이벤트 랭킹 정보 */
+  const fetchRankInfo = () => {
+    Api.getDallagersRankList({
+      seqNo: 2,
+      pageNo: 1,
+      pagePerCnt: 50,
+    }).then((res) => {
+      if (res.result === 'success') {
+        setRankInfo(res.data)
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (eventInfo.seq_no !== 0) {
+      fetchMyRankInfo()
+      fetchRankInfo()
+    }
+  },[eventInfo.seq_no])
 
   return (
     <>
       <section className="date">
-        {`${moment(eventDate.start).format('YY.MM.DD')} - ${moment(eventDate.end).format('MM.DD')}`}
+        {`${moment(eventFixDate.start).format('YY.MM.DD')} - ${moment(eventFixDate.end).format('MM.DD')}`}
       </section>
-      {startDate < newDate ? 
-        <>
-        <section className="listWrap">
-          <div className="rankWrap">
-            <RankList photoSize={55} type="my">
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-                <div className="listItem">
-                  <i className="d">100</i>
-                  <i className="a">100</i>
-                  <i className="l">100</i>
-                </div>
-              </div>
-              <div className="listBack">
-                <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
-                <span>0</span>
-              </div>
-            </RankList>
-          </div>
-          <div className="rankWrap">
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <RankList photoSize={55}>
-              <div className="listContent">
-                <div className="listItem">
-                  <GenderItems />
-                  <div>adsdfasdf</div>
-                </div>
-              </div>
-              <div className="listBack">
-                <span>0</span>
-              </div>
-            </RankList>
-            <button className="moreBtn">더보기</button>
-          </div>
-          <div className="noList">
-            <img src={`${IMG_SERVER}/event/rebranding/listNone.png`} />
-            <span>참가자들이 dalla를 만들고 있어요!</span>
-          </div>
-        </section>
-        <section>
-          <img src={`${IMG_SERVER}/event/rebranding/gift-1.png`} alt="이벤트 상품 이미지" />
-        </section>
-        </>
+      {eventInfo.seq_no === 2 ? 
+        <RoundList myRankInfo={myRankList} rankInfo={rankInfo} eventDate={eventDate} tabmenuType={tabmenuType} lodingTime={lodingTime} />
         :
         <section className="listWrap">
           <div className="comingsoon">

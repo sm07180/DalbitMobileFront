@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react'
 import {IMG_SERVER} from 'context/config'
 
-const MarginPop = (props) => {
+const MergePop = (props) => {
+  const {result} = props
   
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -12,9 +13,9 @@ const MarginPop = (props) => {
 
   return (
     <div id="webp-ani">
-      <img src={`${IMG_SERVER}/event/rebranding/merge_a.webp?timestamp=${Math.random()}`} alt="" />
+      <img src={`${IMG_SERVER}/event/rebranding/merge_${result}.webp?timestamp=${Math.random()}`} alt="" />
     </div>
   )
 }
 
-export default MarginPop
+export default MergePop

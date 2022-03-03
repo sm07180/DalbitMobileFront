@@ -1,16 +1,19 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react'
-import {IMG_SERVER} from 'context/config'
-import Utility from "components/lib/utility";
-import Lottie from 'react-lottie'
+import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} from 'react'
+import {Context} from 'context'
 import {setIsRefresh} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
+import {IMG_SERVER} from 'context/config'
+import Api from 'context/api'
+import Utility from "components/lib/utility";
+import Lottie from 'react-lottie'
 // global components
 import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
+import Tabmenu from './components/tabmenu'
 import Confirm from './components/Confirm'
-import MarginPop from './components/MarginPop'
+import MergePop from './components/MergePop'
 // contents
 import Round_1 from './contents/Round_1'
 import Round_2 from './contents/Round_2'
@@ -18,37 +21,97 @@ import Round_3 from './contents/Round_3'
 
 import './style.scss'
 
-const stone = [
-  {data: 'd', value: 20},
-  {data: 'a', value: 10},
-  {data: 'l', value: 0},
-]
-const tabmenu = ['1','2','3']
+const tabmenu = ['1','2','스페셜']
 
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48
 
-const Rebranding = (props) => {
+const Rebranding = () => {
   const MainRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
 
   const dispatch = useDispatch()
   const common = useSelector(state => state.common)
+  const context = useContext(Context)
+  const {token} = context
 
   const [reloadInit, setReloadInit] = useState(false)
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true)
 
-  const [tabmenuType, setTabmenuType] =useState(tabmenu[0])
+  const [tabmenuType, setTabmenuType] = useState(tabmenu[0])
   const [stoneInfo, setStoneInfo] = useState('')
   const [stoneValue1, setStoneValue1] = useState({on: false, value: ''})
   const [stoneValue2, setStoneValue2] = useState({on: false, value: ''})
+  const [mergeResult, setMergeResult] = useState('')
   const [popSlide, setPopSlide] = useState(false)
   const [popLayer, setPopLayer] = useState(false)
   const [noticePop1, setNoticePop1] = useState(false)
   const [noticePop2, setNoticePop2] = useState(false)
   const [actionAni, setActionAni] = useState(false)
+  
+  const [eventInfo, setEventInfo] = useState({
+    cnt: 0,
+    end_date: "",
+    seq_no: 0,
+    start_date: "",
+  })
+  const [myRankInfo, setMyRankInfo] = useState({})
+  const stone = useMemo(() => {
+    let dCnt = 0;
+    let aCnt = 0;
+    let lCnt = 0;
+    if(stoneValue1.value === 'd') dCnt ++;
+    if(stoneValue1.value === 'a') aCnt ++;
+    if(stoneValue1.value === 'l') lCnt ++;
+    if(stoneValue2.value === 'd') dCnt ++;
+    if(stoneValue2.value === 'a') aCnt ++;
+    if(stoneValue2.value === 'l') lCnt ++;
+
+    return ([
+      {data: 'd', value: myRankInfo.ins_d_cnt - dCnt},
+      {data: 'a', value: myRankInfo.ins_a_cnt - aCnt},
+      {data: 'l', value: myRankInfo.ins_l_cnt - lCnt},
+    ]);
+  },[myRankInfo, stoneValue1, stoneValue2])
+  
+  // API 조회
+  /* 이벤트 회차 정보 */
+  const fetchEventInfo = () => {
+    Api.getDallagersReqNo().then((res) => {
+      if (res.result === 'success') {
+        setEventInfo(res.data)
+      }
+    })
+  }
+  /* 내 랭킹 정보 */
+  const fetchMyRankInfo = () => {
+    const param = {
+      seqNo: eventInfo.seq_no,
+    }
+    Api.getDallagersMyRankInfo(param).then((res) => {
+      if (res.result === 'success') {
+        setMyRankInfo(res.data)
+      }
+    })
+  }
+  /* 이니셜 스톤 교환 */
+  const fetchStoneChange = (v1, v2) => {
+    Api.getDallagersStoneChange({data:{
+      seqNo : eventInfo.seq_no, // 회차정보
+      useDallaGubunOne : v1,	//첫번째 선택 스톤
+      useDallaGubunTwo : v2, //두번째 선택 스톤
+    }}).then((res) => {
+      if (res.result === 'success') {
+        setMyRankInfo(res.data.myInfo)
+        setMergeResult(res.data.resultStone)
+        mainDataReset()
+      } else {
+        console.log(res.data);
+      }
+    })
+  }
 
   const mainDataReset = () => {
     setStoneValue1({...stoneValue1, on: false, value: ''});
@@ -60,8 +123,7 @@ const Rebranding = (props) => {
     (e) => {
       if (reloadInit === true || window.scrollY !== 0) return
       touchStartY = e.touches[0].clientY
-    },
-    [reloadInit]
+    },[reloadInit]
   )
 
   const mainTouchMove = useCallback((e) => {
@@ -141,29 +203,24 @@ const Rebranding = (props) => {
     touchEndY = null
   }, [reloadInit])
 
-  // 놀기만 해도 스톤이! 
+  // 팝업 on off
+  /* 놀기만 해도 스톤이! */
   const noticePopView1 = () => {
     setNoticePop1(true)
   }
-  // FEVER TIME! 
+  /* FEVER TIME! */
   const noticePopView2 = () => {
     setNoticePop2(true)
-  }
-  // 탭메뉴 액션
-  const tabActive = (index) => {
-    setTabmenuType(tabmenu[index])
   }
   // 스톤 버튼 선택
   const clickSelect = (e) => {
     const {targetValue} = e.currentTarget.dataset
-    
     setStoneInfo(targetValue)
     setPopSlide(true)
   }
   // 스톤 종류 선택
-  const choicePiece = (e, value) => {
+  const choicePiece = (e,value) => {
     const {choiceStone} = e.currentTarget.dataset
-
     if (value !== 0) {
       if (stoneInfo === '1' && stoneValue1.value === '') {
         setStoneValue1({...stoneValue1, on: true, value: choiceStone})
@@ -186,8 +243,13 @@ const Rebranding = (props) => {
   }
   // 스톤 조합
   const completeAction = () => {
+    // fetchStoneChange(stoneValue1.value,stoneValue2.value)
     setPopLayer(true)
   }
+
+  useEffect(() => {
+    fetchEventInfo()
+  },[])
   
   useEffect(() => {
     if(common.isRefresh) {
@@ -195,8 +257,16 @@ const Rebranding = (props) => {
       window.scrollTo(0, 0);
       dispatch(setIsRefresh(false));
     }
-  }, [common.isRefresh]);
+  }, [common.isRefresh, myRankInfo]);
 
+  useEffect(() => {
+    if (token.isLogin) {
+      if (eventInfo.seq_no !== 0) {
+        fetchMyRankInfo()
+      }
+    }
+  },[eventInfo.seq_no])
+  
   return (
     <>
     <div className="refresh-wrap"
@@ -240,23 +310,23 @@ const Rebranding = (props) => {
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/bg-4.png`} alt="이벤트 이미지" />
         <div className="stoneWrap">
-          <button data-target-value="1" onClick={stoneValue1.on !== true && clickSelect}>
+          <button data-target-value="1" onClick={stoneValue1.on !== true ? clickSelect : ''}>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 1" />
             {stoneValue1.value !== '' ? 
               <>
                 <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue1.value}.png`} className="stoneImg" />
-                <button className="close" onClick={stoneClose}>닫기</button>
+                <div className="close" onClick={stoneClose}>닫기</div>
               </>
               :
               <></>
             }
           </button>
-          <button data-target-value="2" onClick={stoneValue2.on !== true && clickSelect}>
+          <button data-target-value="2" onClick={stoneValue2.on !== true ? clickSelect : ''}>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 2" />
             {stoneValue2.value !== '' ? 
               <>
                 <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue2.value}.png`} className="stoneImg" />
-                <button className="close" onClick={stoneClose}>닫기</button>
+                <div className="close" onClick={stoneClose}>닫기</div>
               </>
               :
               <></>
@@ -274,23 +344,13 @@ const Rebranding = (props) => {
           }
         </div>
       </section>
-      <div className="tabmenuWrap">
-        <div className="tabmenu">
-          {tabmenu.map((data,index) => {
-            return (
-              <li className={`${tabmenuType === tabmenu[index] ? 'active' : ''}`} onClick={() => tabActive(index)} key={index}>
-                <img src={`${IMG_SERVER}/event/rebranding/tabmenu-${data}.png`} alt={data} />
-              </li>
-            )
-          })}
-        </div>
-      </div>
+      <Tabmenu tabmenu={tabmenu} tabmenuType={tabmenuType} setTabmenuType={setTabmenuType} />
       {tabmenuType === tabmenu[0] ?
-        <Round_1 />
+        <Round_1 eventInfo={eventInfo} tabmenuType={tabmenuType} />
         : tabmenuType === tabmenu[1] ?
-        <Round_2 />
+        <Round_2 eventInfo={eventInfo} myRankInfo={myRankInfo} tabmenuType={tabmenuType} />
         : tabmenuType === tabmenu[2] &&
-        <Round_3 />
+        <Round_3 eventInfo={eventInfo} myRankInfo={myRankInfo} tabmenuType={tabmenuType} />
       }
       <section className="notice">
         <div className="title"><img src={`${IMG_SERVER}/event/rebranding/noticeTitle.png`} alt="꼭 확인해주세요!" /></div>
@@ -303,10 +363,17 @@ const Rebranding = (props) => {
         </ul>
       </section>
       {popLayer &&
-        <Confirm setPopLayer={setPopLayer} setActionAni={setActionAni} setStoneValue1={setStoneValue1} setStoneValue2={setStoneValue2} />
+        <Confirm 
+          setPopLayer={setPopLayer} 
+          setActionAni={setActionAni} 
+          stoneValue1={stoneValue1} 
+          setStoneValue1={setStoneValue1} 
+          stoneValue2={stoneValue2} 
+          setStoneValue2={setStoneValue2} 
+          fetchStoneChange={fetchStoneChange} />
       }
       {actionAni &&
-        <MarginPop />
+        <MergePop result={mergeResult} />
       }
       {noticePop1 && 
         <LayerPopup title="놀다 보면 생기는 스톤들" setPopup={setNoticePop1}>
@@ -347,15 +414,16 @@ const Rebranding = (props) => {
               <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
               <span>{stone[0].value + stone[1].value + stone[2].value}개</span>
             </div>
-            {stone.map((v,index) => {
+            {stone.map((v,idx) => {
+              const stonCount = v.value;
               return (
                 <div 
-                  className={`label ${v.value === 0 ? 'disabled' : ''}`} 
+                  className={`label ${stonCount === 0 ? 'disabled' : ''}`} 
                   data-choice-stone={v.data} 
-                  onClick={(e) => choicePiece(e,v.value)} 
-                  key={index}>
+                  onClick={(e) => choicePiece(e,stonCount)} 
+                  key={idx}>
                   <img src={`${IMG_SERVER}/event/rebranding/ico-${v.data}.png`} alt={v.data} />
-                  <span>{v.value} 개 남음</span>
+                  <span>{stonCount} 개 남음</span>
                 </div>
               )
             })}

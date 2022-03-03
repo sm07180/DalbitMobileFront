@@ -1,23 +1,5 @@
 @import 'components/ui/_mixin.scss';
 
-#root {
-  .container {
-    .totalWrap {
-      .content {
-        .refresh-wrap {
-          display:none;
-        }
-        #rebranding {
-          .tabmenuWrap.fixed {
-            top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
-            padding-top: 4.972%;
-          }
-        }
-      }
-    }
-  }
-}
-
 #rebranding {
   section {
     position:relative;
@@ -150,6 +132,7 @@
           width:35px;
           .num {
             background-color: $MAINCOLOR;
+            color: white;
           }
         }
       }
@@ -164,13 +147,22 @@
         &::after {display:none;}
       }
     }
+    .rankNum {
+      .num {
+        display:block;
+        background-color: #eee;
+        color:black;
+      }
+    }
     .photo {
       margin-right:8px;
       border-radius:50%;
       background-color:#eee;
     }
     .listContent {
+      flex:1;
       @include flex($fd:column);
+      min-width: 0;
       .listItem {
         @include flex(center);
         .gender {
@@ -185,10 +177,20 @@
         .d {@include BGIMG("event/rebranding/data-d.png");background-position:left center;background-size:10px 12px;}
         .a {@include BGIMG("event/rebranding/data-a.png");background-position:left center;background-size:10px 12px;}
         .l {@include BGIMG("event/rebranding/data-l.png");background-position:left center;background-size:10px 12px;}
+        .nick {
+          flex:1;
+          @include font(16px,$Medium,#202020);
+          @include fontCut;
+        }
+      }
+      .text {
+        text-align: center;
+        @include font(13px,$Medium,#999);
       }
     }
     .listBack {
       @include flex(flex-end,center,column);
+      min-width:62px;
       margin-left:auto;
       padding-left:8px;
       img {
@@ -444,5 +446,20 @@
     width:100%;
     height:100%;
     color:white;
+  }
+}
+
+
+.pcType {
+  .refresh-wrap {
+    display:none;
+  }
+}
+.mobileType {
+  #rebranding {
+    .tabmenuWrap.fixed {
+      top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
+      padding-top: 4.972%;
+    }
   }
 }
