@@ -491,7 +491,7 @@ export default function SideWrapper() {
         //   setForceChatScrollDown={setForceChatScrollDown}
         // />
       ) : (
-        <div className="temp-left-side"></div>
+        <div className="temp-left-side"/>
       )}
 
       {broadcastState.roomInfo?.mediaType === MediaType.VIDEO && (
