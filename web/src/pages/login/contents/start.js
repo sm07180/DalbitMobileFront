@@ -45,13 +45,16 @@ const Start = (props) => {
   }
 
   const backButton = () => {
-    context.action.alert({
-      msg: webview
-    })
     if(webview === 'new'){
       Hybrid('CloseLayerPopUp')
+      context.action.alert({
+        msg: webview  + "," + webview === 'new'
+      })
     }else{
       history.push('/')
+      context.action.alert({
+        msg: "저거"
+      })
     }
   }
 
