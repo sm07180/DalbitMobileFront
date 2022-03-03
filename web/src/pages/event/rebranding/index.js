@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import Lottie from 'react-lottie'
+import qs from 'query-string'
 // global components
 import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
@@ -27,6 +28,7 @@ let touchEndY = null
 const refreshDefaultHeight = 48
 
 const Rebranding = () => {
+  const {webview} = qs.parse(location.search);
   const MainRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
