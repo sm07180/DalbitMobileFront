@@ -223,7 +223,7 @@ const App = () => {
     return Utility.getCookie('authToken')
   }, [])
 
-  function initChantInfo(authToken, memNo) {
+  function initChantInfo(authToken, memNo, dispatch) {
     const socketUser = {
       authToken,
       memNo,
@@ -234,7 +234,8 @@ const App = () => {
         globalCtx.globalAction.dispatchChatInfo &&
         globalCtx.globalAction.dispatchMailChatInfo
     ) {
-      const chatInfo = new ChatSocketHandler(socketUser);
+      const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
+      chatInfo.setMemNo(memNo);
       // chatInfo.setSplashData(globalState.splashData);
       //deep copy chatInfo
       let cloneMailInfo = Object.assign(
@@ -249,7 +250,7 @@ const App = () => {
       });
     }
   }
-  async function fetchData() {
+  async function fetchData(dispatch) {
     // Renew token
     let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
@@ -299,7 +300,7 @@ const App = () => {
           }
         }
       } else if (isDesktop) {
-        initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
+        initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo, dispatch);
       }
       if (tokenInfo.data && tokenInfo.data.isLogin) {
         const fetchProfile = async () => {
@@ -527,7 +528,7 @@ const App = () => {
     Api.setAuthToken(authToken)
 
     // Renew all initial data
-    fetchData()
+    fetchData(dispatch)
   }, [])
 
 

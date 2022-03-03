@@ -32,10 +32,11 @@
     width: auto; line-height: 16px;
     padding: 0px 4px;
     @include border(#ACACAC,100px);
-    @include font(12px,$Regular,#ACACAC);
+    @include font(12px,600,#ACACAC);
+    letter-spacing: -1px;
     &::before {
       content: "Lv";
-      margin-right: 2px;
+      margin-left: 1px;
     }
   }
 
