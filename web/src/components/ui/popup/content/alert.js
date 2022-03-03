@@ -18,6 +18,7 @@ import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
+import {isAndroid} from "context/hybrid";
 //
 const Alert = (props) => {
   //---------------------------------------------------------------------
@@ -57,8 +58,16 @@ const Alert = (props) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     refBtn.current.focus()
+    if(isAndroid()) {
+      context.action.updateSetBack(true)
+      context.action.updateBackFunction({name: 'alertClose'})
+    }
     return () => {
       document.body.style.overflow = ''
+      if(isAndroid()) {
+        context.action.updateSetBack(null)
+        context.action.updateBackFunction({name: ''})
+      }
     }
   }, [])
   //---------------------------------------------------------------------

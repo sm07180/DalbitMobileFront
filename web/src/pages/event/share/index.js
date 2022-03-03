@@ -14,8 +14,9 @@ import Api from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {isDesktop} from "lib/agent";
-import {isHybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from "context/hybrid";
 import {authReq} from "pages/self_auth";
+import axios from "axios";
 
 const Share = () => {
     const [popup, setPopup] = useState(false);
@@ -28,17 +29,22 @@ const Share = () => {
     const [isAuth, setIsAuth] = useState(false);
 
     async function imageDownload() {
-        // blob 형태로 들고 있어야 함.
-        const res = await fetch('https://image.dalbitlive.com/event/dalla/7650/event_downloadImg.png');
-        const blob = await res.blob();
-    
-        // anchor tag를 통해 다운 받는 방법
-        const link = document.createElement('a');
-        link.style.display = 'none';
-        link.href = URL.createObjectURL(blob);
-        link.download = 'dallaEvent.png';
-        link.innerHTML = 'download';
-        link.click();
+      if(!isHybrid()) {
+        axios.get(`https://photo.dalbitlive.com/fileDownload/event/202201011.png`, {responseType: 'arraybuffer'})
+          .then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}));
+            if(url) {
+              const link = document.createElement('a');
+              link.href = url;
+              link.setAttribute('download', 'https://photo.dalbitlive.com/fileDownload/event/202201011.png');
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+            }
+          })
+      }else {
+        Hybrid('openUrl', 'https://photo.dalbitlive.com/fileDownload/event/202201011.png')
+      }
     }
 
     const onFocus = (e) => {
@@ -117,7 +123,14 @@ const Share = () => {
 
     /* 등록 */
     const submitAction = () => {
-      eventInsApi();
+      let regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+      if(regex.test(urlInfo)) {
+        eventInsApi();
+      }else {
+        context.action.alert({
+          msg: '유효하지 않은 URL 입니다.'
+        })
+      }
     }
 
     const urlInputValidator = (value) => {
@@ -165,6 +178,7 @@ const Share = () => {
                                 <strong>#달라가달라졌다</strong> 해시태그와 함께글을 게시한다!<br/>
                                 악플은 노노노~ (스위트걸 st.)
                             </p>
+                            <img className='exampleImg' src="https://image.dalbitlive.com/event/dalla/7650/event_example.png" alt="예시 이미지"/>
                         </div>
                     </div>
                     <div className='step'>

@@ -460,7 +460,7 @@ const GlobalProvider = (props) => {
   const [roomType, setRoomType] = useState('')
   //back
   const [backState, setBackState] = useState(null)
-  const [backFunction, setBackFunction] = useState({name: ''})
+  const [backFunction, setBackFunction] = useState({name: []})
   //selfauth
   const [selfAuth, setSelfAuth] = useState(false)
   //splash
@@ -967,7 +967,9 @@ const GlobalProvider = (props) => {
       setBackState(boolean)
     },
     updateBackFunction: (obj) => {
-      setBackFunction(obj)
+      const nameArr = backFunction.name;
+      obj.name === '' ? nameArr.pop() : nameArr.push(obj.name);
+      setBackFunction({...obj, name: nameArr});
     },
     updateRoomType: (string) => {
       setRoomType(string)

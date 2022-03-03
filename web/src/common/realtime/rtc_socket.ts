@@ -442,7 +442,6 @@ export class HostRtc extends RtcSocketHandler {
   ) {
     super(type, socketUrl, appName, streamName, roomNo, isMono, videoConstraints);
     this.socketConnect();
-
     this.detectDevice = async () => {
       let videoDeviceExist;
       let micDeivceExist: boolean = false;
@@ -636,6 +635,7 @@ export class HostRtc extends RtcSocketHandler {
         let gainNode = this.audioCtx.createGain();
         const audioSource: MediaStreamAudioSourceNode = this.audioCtx.createMediaStreamSource(this.audioStream);
         const audioDestination: MediaStreamAudioDestinationNode = this.audioCtx.createMediaStreamDestination();
+
         audioSource.connect(gainNode);
         gainNode.connect(audioDestination);
         gainNode.gain.value = 1;
@@ -861,13 +861,16 @@ export class HostRtc extends RtcSocketHandler {
   private async setStream() {
     navigator.mediaDevices.removeEventListener("devicechange", this.detectDevice);
     navigator.mediaDevices.addEventListener("devicechange", this.detectDevice);
-
+    let micId:any = sessionStorage.getItem("mic");
     if (this.videoConstraints !== null) this.setVideoConstraints();
     else constraints.video = false;
     if (this.isMono) {
       constraints.audio.echoCancellation = true;
     } else {
       constraints.audio.echoCancellation = false;
+    }
+    if(micId !== "" || micId !== undefined){
+      constraints.audio.deviceId = {exact: micId?.replaceAll("\"","")};
     }
     await navigator.mediaDevices
       .getUserMedia(constraints)
