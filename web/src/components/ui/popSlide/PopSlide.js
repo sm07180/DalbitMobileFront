@@ -5,6 +5,7 @@ import './popslide.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setSlidePopupClose} from "redux/actions/common";
 import {Context} from "context";
+import {isAndroid} from "context/hybrid";
 
 let slidePopTimeout;
 
@@ -39,8 +40,10 @@ const PopSlide = (props) => {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    context.action.updateSetBack(true)
-    context.action.updateBackFunction({name: 'popClose'})
+    if(isAndroid()) {
+      context.action.updateSetBack(true)
+      context.action.updateBackFunction({name: 'popClose'})
+    }
     return () => {
       document.body.style.overflow = ''
       dispatch(setCommonPopupClose());

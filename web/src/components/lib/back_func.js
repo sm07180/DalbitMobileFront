@@ -19,6 +19,9 @@ export const backFunc = (context, dispatch) => {
     case 'popClose':
       closePopup(dispatch)
       break;
+    case 'alertClose':
+      context.action.alert({visible: false})
+      break;
     default:
       break
   }
