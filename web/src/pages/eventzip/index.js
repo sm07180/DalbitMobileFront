@@ -68,7 +68,7 @@ const EventZip = () => {
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7583/eventZip-7583.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라에 놀러온 핵인싸 주목!</div>
-            <div className='eventDate'>상시 이벤트</div>
+            <div className='eventDate'>상시 모집</div>
           </div>
         </div>
 
