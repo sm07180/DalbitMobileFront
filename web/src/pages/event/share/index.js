@@ -178,6 +178,7 @@ const Share = () => {
                                 <strong>#달라가달라졌다</strong> 해시태그와 함께글을 게시한다!<br/>
                                 악플은 노노노~ (스위트걸 st.)
                             </p>
+                            <img className='exampleImg' src="https://image.dalbitlive.com/event/dalla/7650/event_example.png" alt="예시 이미지"/>
                         </div>
                     </div>
                     <div className='step'>

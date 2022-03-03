@@ -830,9 +830,7 @@ export default function BroadcastSetting() {
           <div className="access" style={{zIndex:3}}>
             <div
               onClick={() => {
-                if(state.mediaType == BROAD_TYPE.VIDEO){
                   setMicPop(!micPop);
-                }
               }}
               className={`access__list ${state.micState && "active"}`}
             >
