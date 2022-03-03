@@ -32,7 +32,7 @@ const EventZip = () => {
     <div className='content'>
       <div className='eventWrap'>
 
-        <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice/612", platformWarEventEnd)}}>
+        <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/platformWar", platformWarEventEnd)}}>
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7677/eventZip-7677.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>3사 플랫폼 노래대전</div>
