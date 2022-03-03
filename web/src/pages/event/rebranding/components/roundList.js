@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
@@ -6,27 +6,19 @@ import moment from 'moment'
 
 // global components
 import GenderItems from 'components/ui/genderItems/GenderItems'
-import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import RankList from '../../components/rankList/RankList'
 // contents
 // css
 import '../style.scss'
 
-const DallaguersPopSlide = (props) => {
-  const {myRankInfo, rankInfo, eventDate, tabmenuType, lodingTime} = props
+const RoundList = (props) => {
+  const {myRankInfo, rankInfo, lodingTime, moreRank} = props
   const history = useHistory()
   const context = useContext(Context)
   const {token} = context
 
   const nowTime = moment().format('MMDDHH')
-
-  const [popRankSlide, setPopRankSlide] = useState(false)
-
-  // 랭킹 더보기
-  const moreRank = () => {
-    setPopRankSlide(true)
-  }
 
   return (
     <>
@@ -64,13 +56,13 @@ const DallaguersPopSlide = (props) => {
         </div>
       }
       </div>
-      {rankInfo.length > 0 || nowTime > lodingTime.end ?
+      {nowTime > lodingTime.end ?
         <div className="rankWrap">
           {rankInfo.map((data,index) => {
             return (
-              <>
+              <React.Fragment key={index}>
               {index < 20 &&
-                <RankList photoSize={55} listNum={index} rankList={data} key={index}>
+                <RankList photoSize={55} listNum={index} rankList={data}>
                   <div className="listContent">
                     <div className="listItem">
                       <GenderItems data={data.mem_sex} />
@@ -82,7 +74,7 @@ const DallaguersPopSlide = (props) => {
                   </div>
                 </RankList>
               }
-              </>
+              </React.Fragment>
             )
           })}
           <button className="moreBtn" onClick={moreRank}>더보기</button>
@@ -97,35 +89,11 @@ const DallaguersPopSlide = (props) => {
     <section>
       <img src={`${IMG_SERVER}/event/rebranding/gift-1.png`} alt="이벤트 상품 이미지" />
     </section>
-    {popRankSlide &&
-      <PopSlide setPopSlide={setPopRankSlide}>
-        <section className="rebrandingRank">
-          <h3>달라져스 : {tabmenuType} 라운드<span>{`${moment(eventDate.start).format('YY.MM.DD')} - ${moment(eventDate.end).format('MM.DD')}`}</span></h3>
-          <div className="rankWrap">
-            {rankInfo.map((data,index) => {
-              return (
-                <RankList photoSize={55} listNum={index} rankList={data} key={index}>
-                  <div className="listContent">
-                    <div className="listItem">
-                      <GenderItems data={data.mem_sex} />
-                      <div className="nick">{data.mem_nick}</div>
-                    </div>
-                  </div>
-                  <div className="listBack">
-                    <span>{data.dalla_cnt}</span>
-                  </div>
-                </RankList>
-              )
-            })}
-          </div>
-        </section>
-      </PopSlide>
-    }
     </>
   )
 }
-DallaguersPopSlide.defaultProps = {
+RoundList.defaultProps = {
   lodingTime: moment().format('MMDDHH'),
 }
 
-export default DallaguersPopSlide
+export default RoundList

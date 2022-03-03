@@ -6,10 +6,13 @@ import './confirm.scss'
 
 const Confirm = (props) => {
   const {setPopLayer,setActionAni,stoneValue1,setStoneValue1,stoneValue2,setStoneValue2,fetchStoneChange} = props
-  const [stoneChangeInfo, setStoneChangeInfo] = useState()
   // 
   const cookieChecked = () => {
-    console.log('cookie');
+    if(!localStorage.getItem('rebranding')){
+      localStorage.setItem('rebranding','true');
+    } else {
+      localStorage.removeItem('rebranding');
+    }
   }
   // 
   const btnCancel = () => {

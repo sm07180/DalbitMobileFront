@@ -1,42 +1,32 @@
 import React, {useState, useEffect} from 'react'
 import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
-import Utility from "components/lib/utility";
+import moment from 'moment'
 // global components
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import RoundList from '../components/roundList'
+import RankSlide from '../components/rankSlide'
 
 import '../style.scss'
 
 const Round_3 = (props) => {
-  const {eventInfo, tabmenuType} = props
+  const {myRankInfo, eventInfo, tabmenuType} = props
   const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
-  const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-07 02:00:00').format('MMDDHH')}
+  const eventFixDate = {start: '2022-03-01 00:00:00', end: '2022-03-07 00:00:00'}
+  const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-03 02:00:00').format('MMDDHH')}
   // 
-  const [myRankInfo, setMyRankInfo] = useState([])
   const [rankInfo, setRankInfo] = useState([])
   const [popSpecial, setPopSpecial] = useState(false)
-  
-  /* 이벤트 랭킹 내정보 */
-  const fetchMyRankInfo = () => {
-    Api.getDallagersSpecialMyRankInfo({
-      seqNo: eventInfo.seq_no,
-      pageNo: 1,
-      pagePerCnt: 50,
-    }).then((res) => {
-      if (res.result === 'success') {
-        setMyRankInfo(res.data)
-      }
-    })
-  }
+  const [popRankSlide, setPopRankSlide] = useState(false)
+
   /* 이벤트 랭킹 정보 */
   const fetchRankInfo = () => {
     Api.getDallagersSpecialMyRankList({
       seqNo: eventInfo.seq_no,
       pageNo: 1,
-      pagePerCnt: 50,
+      pagePerCnt: 9999,
     }).then((res) => {
       if (res.result === 'success') {
         setRankInfo(res.data.list)
@@ -51,11 +41,14 @@ const Round_3 = (props) => {
   const closePopSpecial = () => {
     setPopSpecial(false)
   }
-  console.log(eventInfo);
+  
+  // 랭킹 더보기
+  const moreRank = () => {
+    setPopRankSlide(true)
+  }
 
   useEffect(() => {
     if (eventInfo.seq_no !== 0) {
-      fetchMyRankInfo()
       fetchRankInfo()
     }
   },[eventInfo.seq_no])
@@ -67,7 +60,12 @@ const Round_3 = (props) => {
         <button className="question" onClick={onPopSpecial}></button>
       </section>
       {eventInfo.seq_no === 2 ? 
-        <RoundList myRankInfo={myRankInfo} rankInfo={rankInfo} eventDate={eventDate} tabmenuType={tabmenuType} lodingTime={lodingTime} />
+        <RoundList 
+          myRankInfo={myRankInfo} 
+          rankInfo={rankInfo}  
+          lodingTime={lodingTime} 
+          moreRank={moreRank}
+        />
         :
         <section className="listWrap">
           <div className="specialRound">
@@ -88,6 +86,14 @@ const Round_3 = (props) => {
             <SubmitBtn text="확인" onClick={closePopSpecial} />
           </section>
         </LayerPopup>
+      }
+      {popRankSlide &&
+        <RankSlide 
+          rankInfo={rankInfo} 
+          eventDate={eventDate} 
+          tabmenuType={tabmenuType} 
+          setPopRankSlide={setPopRankSlide}
+        />
       }
     </>
   )

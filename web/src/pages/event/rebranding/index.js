@@ -4,7 +4,6 @@ import {setIsRefresh} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
-import Utility from "components/lib/utility";
 import Lottie from 'react-lottie'
 // global components
 import Header from 'components/ui/header/Header'
@@ -21,7 +20,7 @@ import Round_3 from './contents/Round_3'
 
 import './style.scss'
 
-const tabmenu = ['1','2','스페셜']
+const tabmenu = [1,2,3]
 
 let touchStartY = null
 let touchEndY = null
@@ -58,6 +57,7 @@ const Rebranding = () => {
     start_date: "",
   })
   const [myRankInfo, setMyRankInfo] = useState({})
+  const [mySpecialRankInfo, setMySpecialRankInfo] = useState({})
   const stone = useMemo(() => {
     let dCnt = 0;
     let aCnt = 0;
@@ -86,15 +86,20 @@ const Rebranding = () => {
     })
   }
   /* 내 랭킹 정보 */
-  const fetchMyRankInfo = () => {
-    const param = {
-      seqNo: eventInfo.seq_no,
-    }
+  const fetchMyRankInfo = (seqNo) => {
+    const param = {seqNo: seqNo}
     Api.getDallagersMyRankInfo(param).then((res) => {
       if (res.result === 'success') {
         setMyRankInfo(res.data)
       }
     })
+    if (seqNo === 3) {
+      Api.getDallagersSpecialMyRankInfo(param).then((res) => {
+        if (res.result === 'success') {
+          setMySpecialRankInfo(res.data)
+        }
+      })
+    }
   }
   /* 이니셜 스톤 교환 */
   const fetchStoneChange = (v1, v2) => {
@@ -243,13 +248,28 @@ const Rebranding = () => {
   }
   // 스톤 조합
   const completeAction = () => {
-    // fetchStoneChange(stoneValue1.value,stoneValue2.value)
+    if(localStorage.getItem('rebranding')){
+      fetchStoneChange(stoneValue1.value,stoneValue2.value)
+      setActionAni(true)
+      setStoneValue1({on: false, value: ''})
+      setStoneValue2({on: false, value: ''})
+      setTimeout(() => {
+        setActionAni(false)
+      }, 6000);
+    } else {
     setPopLayer(true)
+    }
   }
 
   useEffect(() => {
     fetchEventInfo()
   },[])
+  
+  useEffect(() => {
+    if (actionAni === true) {
+      fetchMyRankInfo(tabmenuType)
+    }
+  },[actionAni])
   
   useEffect(() => {
     if(common.isRefresh) {
@@ -262,10 +282,10 @@ const Rebranding = () => {
   useEffect(() => {
     if (token.isLogin) {
       if (eventInfo.seq_no !== 0) {
-        fetchMyRankInfo()
+        fetchMyRankInfo(tabmenuType)
       }
     }
-  },[eventInfo.seq_no])
+  },[eventInfo.seq_no,tabmenuType])
   
   return (
     <>
@@ -346,11 +366,11 @@ const Rebranding = () => {
       </section>
       <Tabmenu tabmenu={tabmenu} tabmenuType={tabmenuType} setTabmenuType={setTabmenuType} />
       {tabmenuType === tabmenu[0] ?
-        <Round_1 eventInfo={eventInfo} tabmenuType={tabmenuType} />
+        <Round_1 myRankInfo={myRankInfo} eventInfo={eventInfo} tabmenuType={tabmenuType} />
         : tabmenuType === tabmenu[1] ?
-        <Round_2 eventInfo={eventInfo} myRankInfo={myRankInfo} tabmenuType={tabmenuType} />
+        <Round_2 myRankInfo={myRankInfo} eventInfo={eventInfo} tabmenuType={tabmenuType} />
         : tabmenuType === tabmenu[2] &&
-        <Round_3 eventInfo={eventInfo} myRankInfo={myRankInfo} tabmenuType={tabmenuType} />
+        <Round_3 myRankInfo={mySpecialRankInfo} eventInfo={eventInfo} actionAni={actionAni} tabmenuType={tabmenuType} />
       }
       <section className="notice">
         <div className="title"><img src={`${IMG_SERVER}/event/rebranding/noticeTitle.png`} alt="꼭 확인해주세요!" /></div>
@@ -420,7 +440,7 @@ const Rebranding = () => {
                 <div 
                   className={`label ${stonCount === 0 ? 'disabled' : ''}`} 
                   data-choice-stone={v.data} 
-                  onClick={(e) => choicePiece(e,stonCount)} 
+                  onClick={(e) => choicePiece(e,stonCount)}
                   key={idx}>
                   <img src={`${IMG_SERVER}/event/rebranding/ico-${v.data}.png`} alt={v.data} />
                   <span>{stonCount} 개 남음</span>

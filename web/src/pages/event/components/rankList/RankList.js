@@ -12,7 +12,7 @@ const EventRankList = (props) => {
 		type,
     rankList,
     photoSize,
-		listNum
+		listNum,
   } = props
   const globalCtx = useContext(Context)
   const history = useHistory()
@@ -27,7 +27,7 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
+		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={`key-${listNum}`}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
 				{type === 'my' ? 
@@ -51,7 +51,7 @@ const EventRankList = (props) => {
 				</p>}
 			</div>
 			<div className={`photo size${photoSize}`} onClick={goProfile} data-target-mem-no={rankList && rankList.mem_no}>
-				{rankList.profImg &&
+				{rankList && rankList.profImg &&
 					<img src={rankList && rankList.profImg && rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
 				}
 			</div>
