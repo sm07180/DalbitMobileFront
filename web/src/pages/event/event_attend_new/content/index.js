@@ -75,7 +75,7 @@ export default () => {
 
   return (
     <div id="attendEventPage">
-      <Header title={"이벤트"}>
+      <Header title={"출석체크 이벤트"}>
         <button className="back" onClick={backButton} />
       </Header>
       <div className="commonTopWrap" ref={commonTopRef}>
