@@ -33,7 +33,7 @@ const EventZip = () => {
     <div className='content'>
       <div className='eventWrap'>
 
-        <div className={`eventList ${dalragersEvenetEnd ? 'end' : ''}`} onClick={() => {golink("/event/rebarnding", dalragersEvenetEnd)}}>
+        <div className={`eventList ${dalragersEvenetEnd ? 'end' : ''}`} onClick={() => {golink("/event/rebranding", dalragersEvenetEnd)}}>
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7634.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라져스 : 달라 스톤 모으기</div>
