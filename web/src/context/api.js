@@ -3939,6 +3939,46 @@ export default class API {
 
 
 
+  // 달라져스 회차정보
+  static getDallagersReqNo = async (obj) => {
+    return await ajax({url: '/event/dallagers/reqNo', method: 'GET'})
+  }
+
+  /* 이니셜 스톤 교환하기 */
+  // useDallaGubunOne: 'd' (사용할 이니셜) , useDallaGubunTwo: 'a' (사용할 이니셜)
+  static getDallagersStoneChange = async (obj) => {
+    const {data} = obj || {};
+    return await ajax({
+      url: '/event/dallagers/stoneReplace',
+      method: 'POST',
+      reqBody: true,
+      data: data
+    })
+  }
+
+  // 달라져스 랭킹 내정보
+  static getDallagersMyRankInfo = async (obj) => {
+    const {seqNo} = obj || {};
+    return await ajax({url: `/event/dallagers/myInfo/${seqNo}`, method: 'GET'})
+  }
+
+  // 달라져스 랭킹 리스트
+  static getDallagersRankList = async (obj) => {
+    const {seqNo, pageNo, pagePerCnt} = obj || {};
+    return await ajax({url: `/event/dallagers/list/${seqNo}/${pageNo}/${pagePerCnt}`, method: 'GET'})
+  }
+
+  // 달라져스 스페셜 랭킹 내정보
+  static getDallagersSpecialMyRankInfo = async (obj) => {
+    return await ajax({url: `/event/dallagers/specialMyInfo`, method: 'GET'})
+  }
+
+  // 달라져스 스페셜 랭킹 리스트
+  static getDallagersSpecialMyRankList = async (obj) => {
+    const {pageNo, pagePerCnt} = obj || {};
+    return await ajax({url: `/event/dallagers/specialList/${pageNo}/${pagePerCnt}`, method: 'GET'})
+  }
+
 }
 
 API.customHeader = null

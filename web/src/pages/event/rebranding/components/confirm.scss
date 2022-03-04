@@ -1,0 +1,39 @@
+@import "components/ui/_mixin.scss";
+
+
+#layerPopup {
+  @include popupDefaultStyle(center,$POPUP-ZINDEX);
+  .popupLayer {
+    @include flex(center,center,column);
+    width: 328px;
+    padding: 42px 16px 16px;
+    border-radius:24px;
+    background-color:white;
+    text-align:center;
+    .msg {
+      @include flex(center,center);
+      height:72px;
+      margin-bottom:12px;
+      @include font(16px,$SemiBold,#202020);
+    }
+    .buttonGroup {
+      @include flex;
+      width:100%;
+      margin-top:32px;
+      button {
+        flex:1;
+        line-height:46px;
+        @include border(#D5D5D5,16px);
+        @include font(16px,$SemiBold,#666);
+        + button {
+          margin-left:4px;
+        }
+        &.confirm {
+          border-color: $MAINCOLOR;
+          background-color: $MAINCOLOR;
+          color: white;
+        }
+      }
+    }
+  }
+}

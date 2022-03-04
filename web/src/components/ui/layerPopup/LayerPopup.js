@@ -3,7 +3,7 @@ import React, { useEffect, useState} from 'react'
 import './layerPopup.scss'
 
 const LayerPop = (props) => {
-  const {setPopup, title, children, cookie } = props
+  const {setPopup, title, children, cookie, close } = props
 
   const dontShowAgain = (cookieName) => {
     setPopupCookie(cookieName, 'y')
@@ -47,18 +47,24 @@ const LayerPop = (props) => {
           {title && <h2>{title}</h2>}
           {children}
         </div>
+        {close && 
         <div className='closeWrap'>
           {cookie && 
             <label className='dontShowLabel' onClick={dontShowAgain(cookie)}>
               <input type='checkbox' className='dontShow'/>
               <span className='dontShowBtn'>다시보지않기</span>
             </label>
-          }          
+          }
           <button className='close'onClick={popupClose}>닫기</button>
         </div>
+        }
       </div>
     </div>
   )
+}
+
+LayerPop.defaultProps = {
+  close: true,
 }
 
 export default LayerPop

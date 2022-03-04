@@ -29,11 +29,10 @@ import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import GoodStart from './goodstart'
-import GganbuPocket from './gganbu/content/marblePocket'
+import Rebranding from './rebranding'
 import RecommendDj from './recommend_dj'
 import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
-import Tree from './tree'
 import Package from './package'
 import VideoOpen from './video_open'
 import VideoOpen2 from './video_open2'
@@ -47,9 +46,6 @@ import Welcome from './welcome'
 import Gotomoon from './gotomoon'
 import Acrostic from './acrostic'
 import PlayMaker from './playMaker'
-// import Gganbu from './gganbu'
-// import Participant from './gganbu/content/participant'
-// import MarblePocket from './gganbu/content/marblePocket'
 import Invite from './invite'
 import Share from './share'
 import PlatformWar from './platformWar'
@@ -106,16 +102,14 @@ export default (props) => {
         return <PostGuide />
       case 'goodstart':
         return <GoodStart />
-      case 'gganbuPocket':
-        return <GganbuPocket />
+      case 'rebranding':
+        return <Rebranding />
       case 'recommend_dj':
         return <RecommendDj />
       case 'recommend_dj2':
         return <RecommendDj2 />
       case 'new_year':
         return <NewYear />
-      case 'tree':
-        return <Tree />
       case 'package':
         return <Package />
       case 'video_open':
@@ -144,12 +138,6 @@ export default (props) => {
         return <Acrostic />
       case 'playmaker':
         return <PlayMaker />
-      // case 'gganbu':
-      //   return <Gganbu />
-      // case 'participant':
-      //   return <Participant />
-      // case 'marblePocket':
-      //   return <MarblePocket />
 
       case 'invite':
         return <Invite />
