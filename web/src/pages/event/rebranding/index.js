@@ -2,6 +2,8 @@ import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} fr
 import {Context} from 'context'
 import {setIsRefresh} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {Hybrid, isHybrid} from "context/hybrid";
 import {IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import Lottie from 'react-lottie'
@@ -28,6 +30,7 @@ let touchEndY = null
 const refreshDefaultHeight = 48
 
 const Rebranding = () => {
+  const history = useHistory()
   const {webview} = qs.parse(location.search)
 
   const MainRef = useRef()
@@ -265,7 +268,11 @@ const Rebranding = () => {
   }
   // 모바일 뒤로가기 이벤트
   const backEvent = () => {
-
+    if(isHybrid() && webview === 'new'){
+      Hybrid('CloseLayerPopup');
+    } else {
+      history.goBack();
+    }
   };
 
   useEffect(() => {
@@ -318,7 +325,7 @@ const Rebranding = () => {
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}
       >
-      <Header title="이벤트" type="back" backEvent={}/>
+      <Header title="이벤트" type="back" backEvent={backEvent}/>
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/bg-1.png`} alt="이벤트 이미지" />
       </section>
