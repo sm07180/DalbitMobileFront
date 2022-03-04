@@ -88,7 +88,7 @@
           }
           .voteOn{
             display: inline-block;
-            background:$MAINCOLOR;
+            background:$DOWNCOLOR;
             width: 40px;
             line-height: 18px;
             text-align: center;
@@ -154,8 +154,9 @@
     .submitBtn{
       width: 100%;
       background: #fff;
-      border: 1px solid $MAINCOLOR;
-      color: $MAINCOLOR;
+      border: 1px solid $DOWNCOLOR;
+      color: $DOWNCOLOR;
+      font-weight: $Medium;
     }
   }
   .deadlineWrap{
@@ -259,10 +260,10 @@
       padding-right: 14px;
       margin-bottom: 7px;
       &.active{
-        border: 1px solid $MAINCOLOR;
+        border: 1px solid $DOWNCOLOR;
         background: #fff;
         .number{
-          background: $MAINCOLOR;
+          background: $DOWNCOLOR;
         }
       }
       .number{
@@ -284,7 +285,7 @@
         &.active{
           color: $MAINCOLOR;
           .person{
-            @include BGIMG('common/icon/icoPerson-p.png');
+            @include BGIMG('common/icon/icoPerson-p-fix.png');
           }
         }
         .person{
@@ -293,6 +294,7 @@
           @include BGIMG('common/icon/icoperson.png');
           margin-right: 4px;
         }
+        p{min-width: 9px;}
       }
 
     }
@@ -300,7 +302,6 @@
   .timeCheckWrap{
     .timeCheck{
       @include flex(center, center);
-      margin-bottom: 18px;
       @include font(18px, $SemiBold, $MAINCOLOR);
       .icon{
         width: 17px;
@@ -308,6 +309,21 @@
         @include BGIMG('common/icon/icoClock-p.png');
         margin-right: 4px;
       }
+    }
+  }
+  .btnWrap{
+    @include flex;
+    .btnRefresh{
+      @include flex(center,center);
+      width: 50px;
+      height: 48px;
+      @include border($DOWNCOLOR, 16px);
+      margin-right: 8px;
+      @include BGIMG('common/icon/icoRefresh-p.png');
+      background-size: 20px 23px;
+    }
+    .submitBtn{
+      width: 100%;
     }
   }
 }
