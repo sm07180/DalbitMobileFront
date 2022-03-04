@@ -8,6 +8,7 @@ let intervalId = 0;
 
 //RAF
 let rafId = 0;  //requestAnimationFrame id 값
+let rafId2 = 0;  //requestAnimationFrame id 값
 let rafStoneAniTime = 0;  // 조각 애니메이션 시간 계산용
 
 let rafFeverTime = 0; // 피버타임 시간 계산용
@@ -72,6 +73,7 @@ const DallagersTopSection = (props) => {
     return () => {
       clearInterval(intervalId);
       cancelAnimationFrame(rafId);
+      cancelAnimationFrame(rafId2);
     }
   }, []);
 
@@ -100,12 +102,11 @@ const DallagersTopSection = (props) => {
   }, [chatInfo]);
 
   const reqCallback = (timestamp) => {
-
     /* 피버 타임 남은시간 */
     if(aniStatus.feverTimePlaying) {
       if(rafFeverTime === 0) rafFeverTime = timestamp;  // rafFeverTime : 0으로 초기화 하면 60초부터 재시작
       let _feverTime = timestamp - rafFeverTime;  // 진행된 누적 시간
-
+      let remainFeverTime;
       if(_feverTime - rafPrevFeverTime > 900){  // 1초 차이마다 60초 카운트 state 변화
         rafPrevFeverTime = _feverTime;  //1초 계산용
 
@@ -115,7 +116,7 @@ const DallagersTopSection = (props) => {
         const diffSeconds = moment.duration(nowTime.diff(prevDateTime)).asSeconds();
         const addRemainTime = Math.round(diffSeconds) - Math.round(_feverTime/1000);
 
-        let remainFeverTime;  //남은 시간 계산용 (ms)
+         //남은 시간 계산용 (ms)
         if(addRemainTime > 0){
           remainFeverTime = Math.floor((60000 - (_feverTime + addRemainTime * 1000 )));
 
@@ -125,23 +126,25 @@ const DallagersTopSection = (props) => {
         } else {
           remainFeverTime = Math.floor((60000 - _feverTime ));
 
-          if(feverLottieController.current) {
+          if(feverLottieController.current) { //로티 30프레임 단위로 옮기기
             feverLottieController.current.goToAndStop(Math.round(_feverTime/1000)*30, true);
           }
         }
-
-        //setFeverTimeText((prev)=> --prev);
       }
+
       // 피버타임 끝
-      if(_feverTime > 60000){
-        console.log("fever end");
+      if(remainFeverTime < 0){
         rafFeverTime = 0;
         rafPrevFeverTime = 0;
         aniStatus.feverTimePlaying = false; // 상태 체크용
         setFeverPlaying({playing: false, nothingVal: 0}); // dom 렌더링 용도
       }
-    }
 
+      rafId = requestAnimationFrame(reqCallback);
+    }
+  };
+
+  const reqCallback2 = (timestamp) => {
     /* 조각 애니메이션 타이밍 */
     if(aniStatus.stoneAniPlaying) {
       if(rafStoneAniTime === 0) rafStoneAniTime = timestamp;
@@ -166,11 +169,8 @@ const DallagersTopSection = (props) => {
         setStoneAni({playing: false, comboPlay: false, webpUrl: '', comboCnt: 0});
         setStoneAniQueue(stoneAniQueueRef.current); //다음 애니메이션 재생
       }
-    }
 
-    //  피버타임, 조각애니메이션 false 일때 까지 재귀호출
-    if(aniStatus.feverTimePlaying || aniStatus.stoneAniPlaying) {
-      rafId = requestAnimationFrame(reqCallback);
+      rafId2 = requestAnimationFrame(reqCallback2);
     }
   };
 
@@ -193,10 +193,11 @@ const DallagersTopSection = (props) => {
         console.log("feverTime start");
       }
       //setFeverTimeText(60);
-      if(rafFeverTime === 0 && !aniStatus.stoneAniPlaying){ //중복 카운팅 방지
+      if(rafFeverTime === 0){ //중복 카운팅 방지
         rafId = requestAnimationFrame(reqCallback);
       }
     } else {
+      console.log("feverTime end");
       aniStatus.feverTimePlaying = false;
     }
   },[feverPlaying]);
@@ -239,8 +240,8 @@ const DallagersTopSection = (props) => {
           });
           //애니메이션 실행
           aniStatus.stoneAniPlaying = true;
-          if(rafStoneAniTime === 0 && !aniStatus.feverTimePlaying) { //이미 실행중이면 중복 실행막기
-            rafId = requestAnimationFrame(reqCallback);
+          if(rafStoneAniTime === 0) { //이미 실행중이면 중복 실행막기
+            rafId2 = requestAnimationFrame(reqCallback2);
           }
         }
       } else {  // 조각 애니메이션이 실행중이면, 애니메이션 queue에 넣어둠
