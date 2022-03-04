@@ -13,7 +13,7 @@ import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
-import Tabmenu from './components/tabmenu'
+import Tabmenu from './components/Tabmenu'
 import Confirm from './components/Confirm'
 import MergePop from './components/MergePop'
 // contents
