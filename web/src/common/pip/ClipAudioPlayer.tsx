@@ -113,8 +113,8 @@ const ClipAudioPlayer = ()=>{
             </div>
             <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
             <div className="room-info">
-              <p className="title">{`${clipInfo.nickName}`}</p>
-              <p>{clipInfo.title}</p>
+              <p className="title">{clipInfo.title}</p>
+              <p>{`${clipInfo.nickName}`}</p>
             </div>
             <div className="counting"/>
           </div>
