@@ -34,10 +34,10 @@ const EventZip = () => {
       <div className='eventWrap'>
 
         <div className={`eventList ${dalragersEvenetEnd ? 'end' : ''}`} onClick={() => {golink("/event/rebarnding", dalragersEvenetEnd)}}>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7634/eventZip-7634.png)`}}/>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7634.png)`}}/>
           <div className='eventInfo'>
-            <div className='eventTitle'>3사 플랫폼 노래대전</div>
-            <div className='eventDate'>03.08 - 03.30</div>
+            <div className='eventTitle'>달라져스 : 달라 스톤 모으기</div>
+            <div className='eventDate'>03.08 - 03.27</div>,
           </div>
         </div>
 
