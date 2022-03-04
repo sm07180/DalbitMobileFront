@@ -14,8 +14,9 @@ const EventZip = () => {
   const shareEventEnd = new moment().isAfter('20220324');
   const poemEventEnd = new moment().isAfter('20220322');
   const inviteEventEnd = new moment().isAfter('20220308');
-
-  const playMakerEventEnd = new moment().isAfter('30001231');
+  const playMakerEventEnd = new moment().isAfter('20301231');
+  
+  const dalragersEvenetEnd = new moment().isAfter('20220327');
 
   const golink = (path, endDay, num) => {
     if(endDay){
@@ -36,6 +37,14 @@ const EventZip = () => {
     <Header position={'sticky'} title="리브랜딩 이벤트 모음.zip" type={'back'}/>
     <div className='content'>
       <div className='eventWrap'>
+
+        <div className={`eventList ${dalragersEvenetEnd ? 'end' : ''}`} onClick={() => {golink("/event/rebarnding", dalragersEvenetEnd)}}>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7634.png)`}}/>
+          <div className='eventInfo'>
+            <div className='eventTitle'>달라져스 흩어진 스톤을 찾아서</div>
+            <div className='eventDate'>03.08 - 03.27</div>
+          </div>
+        </div>
 
         <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/platformWar", platformWarEventEnd)}}>
         {/*  <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice", platformWarEventEnd, 612)}}>*/}
