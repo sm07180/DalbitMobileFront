@@ -110,7 +110,7 @@ const VoteContent = () => {
                       <span>{item.voteItemName}</span>
                       <div className={`counterBox ${voteRdx.selVoteItem.itemNo === item.itemNo ? 'active' : ''}`}>
                         <span className="person"/>
-                        {item.voteMemCnt}
+                        <p>{item.voteMemCnt}</p>
                       </div>
                     </div>
                   )
@@ -125,26 +125,29 @@ const VoteContent = () => {
         !isTimeOver && voteRdx.voteSel.voteEndSlct === 's' &&
         <TimeSection/>
       }
-      <SubmitBtn {...submitButtonProps} onClick={()=>{
-        // 시간초과
-        if(isTimeOver) return;
-        // 진행중 아님
-        if(voteRdx.voteSel.voteEndSlct !== 's') return;
-        // 선택한거없음
-        if(!selVote.itemNo) return;
-        // 같은거 선택
-        if(selVote.itemNo === voteRdx.selVoteItem.itemNo) return;
-        // 어드민 투표 안됨
-        if(globalState.shadowAdmin) return;
-        dispatch(insMemVote({
-          voteNo: voteRdx.voteSel.voteNo
-          , roomNo: voteRdx.voteSel.roomNo
-          , memNo: voteRdx.voteSel.memNo
-          , pmemNo: memberRdx.memNo
-          , itemNo: selVote.itemNo
-          , voteItemName: selVote.voteItemName
-        }));
-      }}/>
+      <section className="btnWrap">
+        <button className="btnRefresh"/>
+        <SubmitBtn {...submitButtonProps} onClick={()=>{
+          // 시간초과
+          if(isTimeOver) return;
+          // 진행중 아님
+          if(voteRdx.voteSel.voteEndSlct !== 's') return;
+          // 선택한거없음
+          if(!selVote.itemNo) return;
+          // 같은거 선택
+          if(selVote.itemNo === voteRdx.selVoteItem.itemNo) return;
+          // 어드민 투표 안됨
+          if(globalState.shadowAdmin) return;
+          dispatch(insMemVote({
+            voteNo: voteRdx.voteSel.voteNo
+            , roomNo: voteRdx.voteSel.roomNo
+            , memNo: voteRdx.voteSel.memNo
+            , pmemNo: memberRdx.memNo
+            , itemNo: selVote.itemNo
+            , voteItemName: selVote.voteItemName
+          }));
+        }}/>
+      </section>
     </>
   );
 };
