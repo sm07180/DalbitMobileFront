@@ -80,6 +80,7 @@ const DallagersTopSection = (props) => {
     if (chatInfo) {
       //애니메이션 붙이는 곳
       chatInfo.setBroadcastStateChange('setStoneAniQueueState', (state) => {
+        console.log("스톤 애니메이션 실행, 받은 돌: \n", state[0] || '','\n', state[1] || '','\n', state[2] || '');
         setStoneAniQueue(() => stoneAniQueueRef.current.concat(state));
       });
 
@@ -105,7 +106,7 @@ const DallagersTopSection = (props) => {
       if(rafFeverTime === 0) rafFeverTime = timestamp;  // rafFeverTime : 0으로 초기화 하면 60초부터 재시작
       let _feverTime = timestamp - rafFeverTime;  // 진행된 누적 시간
 
-      if(_feverTime - rafPrevFeverTime > 999){  // 1초 차이마다 60초 카운트 state 변화
+      if(_feverTime - rafPrevFeverTime > 900){  // 1초 차이마다 60초 카운트 state 변화
         rafPrevFeverTime = _feverTime;  //1초 계산용
 
         //백그라운드에 뒀을때 타이머가 늦게 시작한 경우 시간차를 계산, 남은시간 60초를 감산해서 계산하기
@@ -129,17 +130,15 @@ const DallagersTopSection = (props) => {
           }
         }
 
-        console.log("timer chk", Math.round(_feverTime/1000), remainFeverTime, addRemainTime);
         //setFeverTimeText((prev)=> --prev);
-        
-        // 피버타임 끝
-        if(Math.round(remainFeverTime/1000) < 1){
-          console.log("fever end");
-          rafFeverTime = 0;
-          rafPrevFeverTime = 0;
-          aniStatus.feverTimePlaying = false; // 상태 체크용
-          setFeverPlaying({playing: false, nothingVal: 0}); // dom 렌더링 용도
-        }
+      }
+      // 피버타임 끝
+      if(_feverTime > 60000){
+        console.log("fever end");
+        rafFeverTime = 0;
+        rafPrevFeverTime = 0;
+        aniStatus.feverTimePlaying = false; // 상태 체크용
+        setFeverPlaying({playing: false, nothingVal: 0}); // dom 렌더링 용도
       }
     }
 
@@ -148,21 +147,18 @@ const DallagersTopSection = (props) => {
       if(rafStoneAniTime === 0) rafStoneAniTime = timestamp;
       let progressTime = timestamp - rafStoneAniTime;
 
-      if (progressTime < 330) {
-      } else if (progressTime < 830) {
+      if (progressTime > 330) {
         if (!aniStatus.step1) { // 조각 콤보 출력
           aniStatus.step1 = true;
           setStoneAni((prev) => ({...prev, comboPlay: true}));
         }
-      } else if (progressTime < 1490) {
-      } else if (progressTime < 1990) {
+      }
+
+      if (progressTime >= 3000) {
         if (!aniStatus.step2) { // 조각 콤보 종료
           aniStatus.step2 = true;
           setStoneAni((prev) => ({...prev, comboPlay: false}));
         }
-      }
-
-      if (progressTime >= 3000) {
         //data reset
         rafStoneAniTime = 0;
         aniStatus = {...aniStatus, stoneAniPlaying: false, step1: false, step2: false}; // 조각 애니메이션 끝
@@ -178,7 +174,7 @@ const DallagersTopSection = (props) => {
     }
   };
 
-  /**
+  /** 피버타임 시작 / 종료
    * trigger 1 : 소켓패킷 ( 피버타임 시작 )
    * trigger 2 : 피버타임 종료 ( 60초 후 종료시 )
    */
@@ -248,7 +244,11 @@ const DallagersTopSection = (props) => {
           }
         }
       } else {  // 조각 애니메이션이 실행중이면, 애니메이션 queue에 넣어둠
+
+        const testCode1 = stoneAniQueueRef.current;
+        const testCode2 = stoneAniQueue;
         stoneAniQueueRef.current = stoneAniQueue.concat([]);
+        console.log("애니메이션 실행중 => 조각 push", testCode1, '=>', testCode2 );
       }
     }
   }, [stoneAniQueue]);
