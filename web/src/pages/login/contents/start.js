@@ -51,11 +51,7 @@ const Start = (props) => {
     })
     alert(webview)
     if(webview === 'new'){
-      alert(webview)
-      Hybrid('CloseLayerPopUp')
-      context.action.alert({
-        msg: webview  + "," + webview === 'new'
-      })
+      Hybrid('CloseLayerPopup');
     }else{
       history.push('/')
       context.action.alert({
