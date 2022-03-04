@@ -64,6 +64,7 @@ const Rebranding = () => {
   })
   const [myRankInfo, setMyRankInfo] = useState({})
   const [mySpecialRankInfo, setMySpecialRankInfo] = useState({})
+  const [myPieceInfo, setMyPieceInfo] = useState({})
   const stone = useMemo(() => {
     let dCnt = 0;
     let aCnt = 0;
@@ -76,11 +77,11 @@ const Rebranding = () => {
     if(stoneValue2.value === 'l') lCnt ++;
 
     return ([
-      {data: 'd', value: myRankInfo.ins_d_cnt - dCnt},
-      {data: 'a', value: myRankInfo.ins_a_cnt - aCnt},
-      {data: 'l', value: myRankInfo.ins_l_cnt - lCnt},
+      {data: 'd', value: myPieceInfo.ins_d_cnt - dCnt},
+      {data: 'a', value: myPieceInfo.ins_a_cnt - aCnt},
+      {data: 'l', value: myPieceInfo.ins_l_cnt - lCnt},
     ]);
-  },[myRankInfo, stoneValue1, stoneValue2])
+  },[myPieceInfo, stoneValue1, stoneValue2])
   
   // API 조회
   /* 이벤트 회차 정보 */
@@ -92,6 +93,7 @@ const Rebranding = () => {
     })
   }
   /* 내 랭킹 정보 */
+  // 조각 때문에 한번더 API 콜
   const fetchMyRankInfo = (seqNo) => {
     const param = {seqNo: seqNo}
     Api.getDallagersMyRankInfo(param).then((res) => {
@@ -106,6 +108,14 @@ const Rebranding = () => {
         }
       })
     }
+  }
+  const fetchMyPieceInfo = () => {
+    const param = {seqNo: eventInfo.seq_no}
+    Api.getDallagersMyRankInfo(param).then((res) => {
+      if (res.result === 'success') {
+        setMyPieceInfo(res.data)
+      }
+    })
   }
   /* 이니셜 스톤 교환 */
   const fetchStoneChange = (v1, v2) => {
@@ -225,7 +235,12 @@ const Rebranding = () => {
   }
   // 스톤 버튼 선택
   const clickSelect = (e) => {
-    const {targetValue} = e.currentTarget.dataset
+    const {targetValue} = e.currentTarget.dataset;
+
+    if (!token.isLogin) {
+      history.push('/login')
+      return
+    }
     setStoneInfo(targetValue)
     setPopSlide(true)
   }
@@ -280,8 +295,9 @@ const Rebranding = () => {
   },[])
   
   useEffect(() => {
-    if (actionAni === true) {
+    if (actionAni === false) {
       fetchMyRankInfo(tabmenuType)
+      fetchMyPieceInfo()
     }
   },[actionAni])
   
@@ -297,6 +313,7 @@ const Rebranding = () => {
     if (token.isLogin) {
       if (eventInfo.seq_no !== 0) {
         fetchMyRankInfo(tabmenuType)
+        fetchMyPieceInfo()
       }
     }
   },[eventInfo.seq_no,tabmenuType])
@@ -447,7 +464,7 @@ const Rebranding = () => {
             <div className="title">
               내
               <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
-              <span>{myRankInfo.dalla_cnt}개</span>
+              <span>{myPieceInfo.dalla_cnt}개</span>
             </div>
             {stone.map((v,idx) => {
               const stonCount = v.value;
