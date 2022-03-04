@@ -440,7 +440,7 @@ const Rebranding = () => {
                 <div 
                   className={`label ${stonCount === 0 ? 'disabled' : ''}`} 
                   data-choice-stone={v.data} 
-                  onClick={(e) => choicePiece(e,stonCount)}
+                  onClick={(e) => { choicePiece(e,stonCount) }}
                   key={idx}>
                   <img src={`${IMG_SERVER}/event/rebranding/ico-${v.data}.png`} alt={v.data} />
                   <span>{stonCount} 개 남음</span>

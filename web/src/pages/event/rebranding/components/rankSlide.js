@@ -1,26 +1,26 @@
-import React from 'react'
-import moment from 'moment'
+import React, {useState, useLayoutEffect, useEffect} from 'react';
+import moment from 'moment';
 
 // global components
-import GenderItems from 'components/ui/genderItems/GenderItems'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import GenderItems from 'components/ui/genderItems/GenderItems';
+import PopSlide from 'components/ui/popSlide/PopSlide';
 // components
-import RankList from '../../components/rankList/RankList'
+import RankList from '../../components/rankList/RankList';
 // contents
 // css
-import '../style.scss'
+import '../style.scss';
 
 const DallaguersPopSlide = (props) => {
-  const {setPopRankSlide,rankInfo,eventDate,tabmenuType} = props
+  const {setPopRankSlide,rankInfo,eventDate,tabmenuType} = props;
 
   return (
     <PopSlide setPopSlide={setPopRankSlide}>
       <section className="rebrandingRank">
         <h3>달라져스 : {tabmenuType !== 3 ? tabmenuType : '스페셜'} 라운드<span>{`${moment(eventDate.start).format('YY.MM.DD')} - ${moment(eventDate.end).format('MM.DD')}`}</span></h3>
-        <div className="rankWrap">
+        <div className="scrollRankWrap">
           {rankInfo.map((data,idx) => {
             return (
-              <RankList photoSize={55} listNum={idx} rankList={data}>
+              <RankList photoSize={55} listNum={idx} rankList={data} index={idx}>
                 <div className="listContent">
                   <div className="listItem">
                     <GenderItems data={data.mem_sex} />

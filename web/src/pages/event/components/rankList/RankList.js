@@ -13,6 +13,7 @@ const EventRankList = (props) => {
     rankList,
     photoSize,
 		listNum,
+		index
   } = props
   const globalCtx = useContext(Context)
   const history = useHistory()
@@ -27,7 +28,7 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={`key-${listNum}`}>
+		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={index}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
 				{type === 'my' ? 
