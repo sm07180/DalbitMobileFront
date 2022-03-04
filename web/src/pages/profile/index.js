@@ -563,8 +563,8 @@ const ProfilePage = () => {
         }
       </Header>
       <section className='profileTopSwiper'>
-        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} listenOpen={profileData.listenOpen} webview={webview} isMyProfile={isMyProfile}
-                   setPopHistory={setPopHistory} type="profile" />
+        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} listenOpen={profileData.listenOpen}
+                   webview={webview} type="profile" />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -654,10 +654,10 @@ const ProfilePage = () => {
       }
 
       {/* 좋아요 -> ? 아이콘 */}
-      {popup.commonPopup && <ProfileNoticePop />}
+      {popup.questionMarkPopup && <ProfileNoticePop />}
 
       {/* 스페셜DJ 약력 팝업 */}
-      {popHistory && <SpecialHistoryList profileData={profileData} setPopHistory={setPopHistory} />}
+      {popup.historyPopup && <SpecialHistoryList profileData={profileData} />}
     </div>
   )
 }
