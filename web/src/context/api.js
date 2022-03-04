@@ -823,10 +823,32 @@ export default class API {
    */
   static myPageBroadcastNoticeDel = async (params) => {
     return await ajax({
-      url: `/mypage/broad`,
+      url: `/mypage/broad/del`,
       method: 'DELETE',
       data: params
     });
+  }
+
+  /**
+   * 프로필 피드 좋아요
+   */
+  static profileFeedLike = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/like`,
+      method: 'POST',
+      data: params
+    })
+  }
+
+  /**
+   * 프로필 피드 좋아요 취소
+   */
+  static profileFeedLikeCancel = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/cancel`,
+      method: 'POST',
+      data: params
+    })
   }
 
   /**

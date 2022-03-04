@@ -370,13 +370,6 @@ export default function GNB() {
     return () => globalAction.setBroadClipDim!(false);
   }, []);
 
-  // useEffect(() => {
-  //   console.log("!!!");
-  //   if(isDesktop) {
-  //     fetchMypageNewCntData(context.profile.memNo);
-  //   }
-  // }, [alarmData.newCnt]);
-
   useEffect(() => {
     if (globalState.broadClipDim) {
       document.body.style.overflow = "hidden";

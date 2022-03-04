@@ -31,10 +31,6 @@ const Write = (props) => {
   const [imageFile, setImageFile] = useState([]);
   const [imgFile, setImgFile] = useState([]);
   const [imageFileName, setImageFileName] = useState([]);
-  const swiperParams = {
-    slidesPerView: "auto",
-    spaceBetween: 8
-  };
   const [writeInfo, setWriteInfo] = useState([
     {path: 1, name: "회원정보"}, {path: 2, name: "방송"}, {path: 3, name: "청취"}, {path: 4, name: "결제"}, {path: 5, name: "장애/버그"}
   ])

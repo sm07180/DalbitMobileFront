@@ -33,26 +33,19 @@ const NoticePage = () => {
       }}
   }
 
-  useEffect(() => {
-    if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
-    }
-  }, [alarmData.newCnt]);
-
   // 로그인 토큰값 확인
   useEffect(() => {
     if(!(context.token.isLogin)) {
       history.push("/login")
     }
-  }, []);
-
-  useEffect(() => {
-    if(alarmData.alarm > 0) {
-      dispatch(setNoticeTab("알림"))
-    } else if(alarmData.notice > 0) {
-      dispatch(setNoticeTab("공지사항"))
+    if(alarmData.newCnt > 0) {
+      if(alarmData.alarm > 0) {dispatch(setNoticeTab("알림"))}
+      else if(alarmData.notice > 0) {dispatch(setNoticeTab("공지사항"));}
     }
-  }, [])
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
+  }, []);
 
   return (
     <div id="notice">
@@ -71,7 +64,7 @@ const NoticePage = () => {
           <div className="underline"/>
         </ul>
         {tab === noticeTabmenu[0] ?
-          <Allim />
+          <Allim fetchMypageNewCntData={fetchMypageNewCntData}/>
           :
           <Post />
         }

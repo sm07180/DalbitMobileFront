@@ -10,7 +10,8 @@ import {RoomJoin} from "context/room";
 // components
 import './notice.scss'
 
-const Allim = () => {
+const Allim = (props) => {
+  const {fetchMypageNewCntData} = props;
   const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
   const context = useContext(Context);
   const history = useHistory();
@@ -97,11 +98,9 @@ const Allim = () => {
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     if(!(context.token.isLogin)) {history.push("/login")}
+    fetchData();
+    fetchMypageNewCntData(context.profile.memNo);
   }, []);
 
   return (
