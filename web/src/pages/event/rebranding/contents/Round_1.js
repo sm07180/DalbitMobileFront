@@ -11,7 +11,7 @@ import '../style.scss'
 const Round_1 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
   const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
-  const eventFixDate = {start: '2022-02-07 00:00:00', end: '2022-02-28 00:00:00'}
+  const eventFixDate = {start: '2022-02-07 00:00:00', end: '2022-03-08 00:00:00'}
   const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-03 02:00:00').format('MMDDHH')}
 
   const [rankInfo, setRankInfo] = useState([])
