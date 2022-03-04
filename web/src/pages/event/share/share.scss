@@ -65,6 +65,7 @@
                         font-weight: 700;
                     }
                 }
+                .exampleImg {width: 62%; margin-top: 10px;}
                 .stepTip {
                     position: relative;
                     @include flex(center, center, column);

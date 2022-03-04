@@ -9,7 +9,6 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
-import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
 import RankingList from './components/rankingList'
@@ -19,6 +18,7 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setSubTab} from "redux/actions/rank";
 
 const RankPage = () => {
   const history = useHistory();
@@ -31,6 +31,7 @@ const RankPage = () => {
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
+  const rankState = useSelector(state => state.rank);
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
 
@@ -62,6 +63,12 @@ const RankPage = () => {
   useEffect(() => {
     getMyRank();
     // fetchRankData(1, 1);
+    if (rankState.subTab === "FAN") {
+      setDayTabType("FAN");
+    } else {
+      setDayTabType("CUPID");
+      dispatch(setSubTab("FAN"));
+    }
     fetchRankData(2, 1);
     if(location.state) {
       setSelect(location.state.tabState);
@@ -179,7 +186,6 @@ const RankPage = () => {
 
   // 나머지 List
   const fetchRankData = async (rankSlct, rankType) => {
-    console.log('aaa')
     let rankingDate = moment(rankType === 1 ? new Date() : rankType === 2 ? convertMonday() : rankType === 3 ? convertMonth() : new Date()).format("YYYY-MM-DD");
     const {result, data} = await Api.get_ranking({
       param: {
@@ -192,7 +198,6 @@ const RankPage = () => {
     });
     if (result === "success") {
       if(rankSlct === 1){
-        console.log(select);
         if(select !== 'time') {
           setDjRank(data.list);
         }
@@ -239,13 +244,13 @@ const RankPage = () => {
     let text = e.currentTarget.innerText;
     if(text === "타임"){
       setSelect("time")
-    } else if(text === "오늘") {
+    } else if(text === "일간") {
       setSelect("today")
-    } else if(text === "이번주") {
+    } else if(text === "주간") {
       setSelect("thisweek")
-    } else if(text === "이번달") {
+    } else if(text === "월간") {
       setSelect("thismonth")
-    } else if(text === "올해") {
+    } else if(text === "연간") {
       setSelect("thisyear")
     }
     slidePopClose();
@@ -314,7 +319,12 @@ const RankPage = () => {
     <div id="renewalRanking">
       <Header title={'랭킹'} type={'back'}/>
       <section className='rankingTop'>
-        <button className='rankingTopMore' onClick={() => golink("/rankDetail/DJ")}>더보기</button>
+        <button className='rankingTopMore' onClick={() => {
+          history.push({
+            pathname: '/rankDetail/DJ',
+            state: select
+          });
+        }}>더보기</button>
         <div className='title' onClick={selectChart}>
           <div>DJ {select === "time" && "실시간"}</div>
           <div>
@@ -354,8 +364,27 @@ const RankPage = () => {
         </section>          
       }
       <section className='dailyRankList'>
-        <CntTitle title={'일간 FAN / CUPID'} more={`${dayTabType === "FAN" ? "/rankDetail/FAN" : "/rankDetail/CUPID"}`}/>
-        <Tabmenu data={dayTabmenu} tab={dayTabType} setTab={setDayTabType} />
+        <div className="cntTitle">
+          <h2>일간 FAN / CUPID</h2>
+          <button onClick={() => {
+            if (dayTabType === "FAN"){
+              history.push("/rankDetail/FAN");
+              dispatch(setSubTab("FAN"));
+            } else {
+              history.push("/rankDetail/CUPID");
+              dispatch(setSubTab("CUPID"));
+            }
+          }}>더보기</button>
+        </div>
+        <ul className="tabmenu">
+          <li className={dayTabType === "FAN" ? 'active' : ''} onClick={() => {
+            setDayTabType("FAN");
+          }}>FAN</li>
+          <li className={dayTabType === "CUPID" ? 'active' : ''} onClick={() => {
+            setDayTabType("CUPID");
+          }}>CUPID</li>
+          <div className="underline"></div>
+        </ul>
         <div className='listWrap'>
           {fanRank.length > 0 || cupidRank.length > 0 ?
             <RankingList data={dayTabType === "FAN" ? fanRank : cupidRank} tab={dayTabType}>
@@ -374,10 +403,10 @@ const RankPage = () => {
       <PopSlide>
         <div className='selectWrap'>
           <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
-          <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
-          <div className={`selectOption ${select === "thisweek" ? "active" : ""}`} onClick={chartSelect}>이번주</div>
-          <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>이번달</div>
-          <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
+          <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>일간</div>
+          <div className={`selectOption ${select === "thisweek" ? "active" : ""}`} onClick={chartSelect}>주간</div>
+          <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>월간</div>
+          <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>연간</div>
         </div>
       </PopSlide>
       }

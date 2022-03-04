@@ -542,7 +542,7 @@ export default function BroadcastSetting() {
               // Specify a value range and an ideal value
               height: { ideal: 720, min: 720, max: 1280 },
               frameRate: 24,
-              bitrateMin: 1130, bitrateMax: 2000,
+              bitrateMin: 500, bitrateMax: 1700,
             },cameraId:currentCam.deviceId})
           localTracks.videoTrack.play("pre-local-player",{mirror:false});
         }
@@ -556,7 +556,7 @@ export default function BroadcastSetting() {
             // Specify a value range and an ideal value
             height: { ideal: 720, min: 720, max: 1280 },
             frameRate: 24,
-            bitrateMin: 1130, bitrateMax: 2000,
+            bitrateMin: 500, bitrateMax: 1700,
           },cameraId:currentCam.deviceId})
         localTracks.videoTrack.play("pre-local-player",{mirror:false});
         setVideoStream(result);
@@ -830,9 +830,7 @@ export default function BroadcastSetting() {
           <div className="access" style={{zIndex:3}}>
             <div
               onClick={() => {
-                if(state.mediaType == BROAD_TYPE.VIDEO){
                   setMicPop(!micPop);
-                }
               }}
               className={`access__list ${state.micState && "active"}`}
             >

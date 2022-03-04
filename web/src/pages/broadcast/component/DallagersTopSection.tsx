@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState, useContext} from 'react';
 import Lottie from "lottie-web";
 import { Context } from 'context';
 import moment from "moment";
+import {useHistory} from "react-router-dom";
 
 let intervalId = 0;
 
@@ -21,6 +22,7 @@ let aniStatus = {
 };
 
 const DallagersTopSection = (props) => {
+  const history = useHistory();
   const {globalState} = useContext(Context);
   const {chatInfo} = globalState;
   const lottieRef = useRef(null);
@@ -254,10 +256,11 @@ const DallagersTopSection = (props) => {
   return (
     <div className="dallagurs-section">
       {/* 피버타임 60초 카운팅 */}
-      <div className={`icon-lottie ${feverPlaying.playing? '': 'none'}`} ref={feverLottieRef}>
-      </div>
+      <div className={`icon-lottie ${feverPlaying.playing? '': 'none'}`} ref={feverLottieRef}
+           onClick={()=>{history.push("/event/rebranding")}}/>
       {/* 스톤 dalla 버튼 로티 */}
-      <div className={`icon-lottie ${feverPlaying.playing? 'none': ''}`} ref={lottieRef}/>
+      <div className={`icon-lottie ${feverPlaying.playing? 'none': ''}`} ref={lottieRef}
+           onClick={()=>{history.push("/event/rebranding")}}/>
 
       {/* webp 조각 애니메이션 */}
       {stoneAni?.playing &&

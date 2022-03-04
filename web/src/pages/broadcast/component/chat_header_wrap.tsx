@@ -1,28 +1,19 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
 
 // Api
-import {
-  postBroadcastRoomExtend,
-  getBroadcastBoost,
-  miniGameEnd,
-  getMoonLandMissionSel
-} from "common/api";
+import {getBroadcastBoost, getMoonLandMissionSel, miniGameEnd, postBroadcastRoomExtend} from "common/api";
 
 // ctx
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // lib
-import {
-  stringTimeFormatConvertor,
-  secToDateConvertor,
-  secToDateConvertorMinute,
-} from "lib/common_fn";
+import {secToDateConvertor, secToDateConvertorMinute, stringTimeFormatConvertor,} from "lib/common_fn";
 // constant
-import { tabType, MediaType, MiniGameType } from "../constant";
+import {MediaType, MiniGameType, tabType} from "../constant";
 
 // static
 import fanIcon from "../static/ic_fan.png";
@@ -38,6 +29,9 @@ import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
 import DallagersTopSection from "./DallagersTopSection";
 
+import {useDispatch, useSelector} from "react-redux";
+import {endVote, moveVoteListStep} from "../../../redux/actions/vote";
+
 let boostInterval;
 
 export default function ChatHeaderWrap(prop: any) {
@@ -50,7 +44,10 @@ export default function ChatHeaderWrap(prop: any) {
   const { realTimeValue, useBoost, commonBadgeList } = broadcastState;
   const { setRightTabType, setUserMemNo, setCommonBadgeList } = broadcastAction;
 
+
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
+  const memberRdx = useSelector((state) => state.member);
+  const voteRdx = useSelector(({vote})=> vote);
 
   const [broadcastTime, setBroadcastTime] = useState<number | null>(null);
   const [boostInfo, setBoostInfo] = useState<any>(null);
@@ -59,6 +56,7 @@ export default function ChatHeaderWrap(prop: any) {
   const [moonLandEventBool, setMoonLandEventBool] = useState<boolean>(false);
 
   const history = useHistory();
+  const dispatch = useDispatch();
   useEffect(() => {
     const timeIntervalId = (() => {
       if (startDt) {
@@ -466,7 +464,7 @@ export default function ChatHeaderWrap(prop: any) {
                       <span
                       className="fan-badge"
                       style={{
-                        backgroundImage: 
+                        backgroundImage:
                         `linear-gradient(to right, ${startColor} ${bgAlpha * 100}%, ${endColor} ${bgAlpha * 100}%)`,
                         border: borderColor
                           ? `1px solid ${borderColor}`
@@ -533,75 +531,125 @@ export default function ChatHeaderWrap(prop: any) {
           displayWrapRef={displayWrapRef}
         />
       </div>
-      {broadcastState.miniGameInfo.status === true &&
-        ((roomOwner === false &&
-          broadcastState.miniGameInfo.isFree === false) ||
-          roomOwner === true) && (
-          <div className={`mini_game_section`}>
-            <button
-              className="icon"
-              onClick={(e) => {
-                e.stopPropagation();
+      <div className="mini_game_section">
+        {broadcastState.miniGameInfo.status === true &&
+          ((roomOwner === false &&
+            broadcastState.miniGameInfo.isFree === false) ||
+            roomOwner === true) && (
+            <div className={`mini_game_wrap`}>
+              <button
+                className="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
 
-                dispatchDimLayer({
-                  type: "ROULETTE",
-                  others: {
-                    roomOwner,
-                  },
-                });
+                  dispatchDimLayer({
+                    type: "ROULETTE",
+                    others: {
+                      roomOwner,
+                    },
+                  });
+                }}
+              >
+                <img src={RouletteIcon} alt="미니게임 룰렛" />
+              </button>
+              {roomOwner === true && (
+                <div className={`mini_game_slide`}>
+                  <button
+                    onClick={() => {
+                      broadcastAction.setRightTabType &&
+                        broadcastAction.setRightTabType(tabType.ROULETTE);
+                    }}
+                  >
+                    <img src={SettingIcon} alt="미니게임 세팅" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      globalAction.setAlertStatus &&
+                        globalAction.setAlertStatus({
+                          status: true,
+                          type: "confirm",
+                          title: "종료하기",
+                          content:
+                            "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
+                          callback: async () => {
+                            const { result, data, message } = await miniGameEnd({
+                              roomNo: roomNo,
+                              gameNo: MiniGameType.ROLUTTE,
+                              rouletteNo: broadcastState.miniGameInfo.rouletteNo,
+                              versionIdx: broadcastState.miniGameInfo.versionIdx,
+                            });
+
+                            if (result === "success") {
+                              broadcastAction.setMiniGameInfo &&
+                                broadcastAction.setMiniGameInfo({
+                                  status: false,
+                                });
+                            }
+                          },
+                        });
+                    }}
+                  >
+                    <img src={CloseIcon} alt="미니게임 삭제" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        }
+        {
+          voteRdx.active &&
+          <div className="mini_game_wrap">
+            <button
+              onClick={() => {
+                if(broadcastState.roomInfo && broadcastState.roomInfo.bjMemNo){
+                  dispatch(moveVoteListStep({
+                    roomNo: roomNo
+                    , memNo: broadcastState.roomInfo.bjMemNo
+                    , voteSlct: 's'
+                  }));
+                  broadcastAction.setRightTabType(tabType.VOTE);
+                }
               }}
             >
-              <img src={RouletteIcon} alt="미니게임" />
+              <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
             </button>
             {roomOwner === true && (
               <div className={`mini_game_slide`}>
                 <button
                   onClick={() => {
-                    broadcastAction.setRightTabType &&
-                      broadcastAction.setRightTabType(tabType.ROULETTE);
+                    globalAction.setAlertStatus({
+                      status: true,
+                      type: "confirm",
+                      title: "종료하기",
+                      content: "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다.",
+                      callback: async () => {
+                        dispatch(endVote({
+                          memNo: memberRdx.memNo
+                          , roomNo: roomNo
+                          , voteNo: '0'
+                          , endSlct: 'a'
+                        }))
+                      },
+                    });
                   }}
                 >
-                  <img src={SettingIcon} alt="미니게임 세팅" />
-                </button>
-                <button
-                  onClick={() => {
-                    globalAction.setAlertStatus &&
-                      globalAction.setAlertStatus({
-                        status: true,
-                        type: "confirm",
-                        title: "종료하기",
-                        content:
-                          "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
-                        callback: async () => {
-                          const { result, data, message } = await miniGameEnd({
-                            roomNo: roomNo,
-                            gameNo: MiniGameType.ROLUTTE,
-                            rouletteNo: broadcastState.miniGameInfo.rouletteNo,
-                            versionIdx: broadcastState.miniGameInfo.versionIdx,
-                          });
-
-                          if (result === "success") {
-                            broadcastAction.setMiniGameInfo &&
-                              broadcastAction.setMiniGameInfo({
-                                status: false,
-                              });
-                          }
-                        },
-                      });
-                  }}
-                >
-                  <img src={CloseIcon} alt="미니게임 삭제" />
+                  <img src={CloseIcon} alt="투표 마감" />
                 </button>
               </div>
             )}
           </div>
-        )}
+        }
+
+      </div>
+
       <div className="gotomoon-section"/>
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
       </div>
       {/* 달라져스 버튼 & 애니메이션 영역 */}
-      <DallagersTopSection/>
+      {roomInfo?.stoneEventInfo.visible &&
+        <DallagersTopSection/>
+      }
 
       {/* 달나라 갈꺼야 버튼 */}
       {moonLandEventBool &&
@@ -891,62 +939,68 @@ const ChatHeaderWrapStyled = styled.div`
     display: flex;
     padding-top: 5px;
   }
-
-  .mini_game_section {
-    display: flex;
+  .mini_game_section{
+    display:flex;
+    flex-direction: column;
+    align-items:flex-start;
     position: absolute;
     left: 16px;
     top: 190px;
-    background-color: black;
-    border-radius: 32px;
-    z-index: 1;
-
-    & > .icon {
-      & > img {
-        width: 62px;
-        height: 62px;
-      }
-    }
-
-    & > .mini_game_slide {
+    .mini_game_wrap {
       display: flex;
-      overflow-x: hidden;
-
-      & > button:first-child {
-        margin-left: 6px;
+      background-color: black;
+      border-radius: 32px;
+      z-index: 1;
+      & + .mini_game_wrap{
+        margin-top: 8px;
       }
-
-      & > button:last-child {
-        margin-right: 6px;
-      }
-
-      &.in {
-        width: 80px;
-        animation: fadeIn 0.4s;
-      }
-
-      &.out {
-        width: 0px;
-        animation: fadeOut 0.4s;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          width: 0px;
+      & > .icon {
+        & > img {
+          width: 62px;
+          height: 62px;
         }
-
-        100% {
+      }
+  
+      & > .mini_game_slide {
+        display: flex;
+        overflow-x: hidden;
+  
+        & > button:first-child {
+          margin-left: 6px;
+        }
+  
+        & > button:last-child {
+          margin-right: 6px;
+        }
+  
+        &.in {
           width: 80px;
+          animation: fadeIn 0.4s;
         }
-      }
-
-      @keyframes fadeOut {
-        0% {
-          width: 80px;
-        }
-
-        100% {
+  
+        &.out {
           width: 0px;
+          animation: fadeOut 0.4s;
+        }
+  
+        @keyframes fadeIn {
+          0% {
+            width: 0px;
+          }
+  
+          100% {
+            width: 80px;
+          }
+        }
+  
+        @keyframes fadeOut {
+          0% {
+            width: 80px;
+          }
+  
+          100% {
+            width: 0px;
+          }
         }
       }
     }

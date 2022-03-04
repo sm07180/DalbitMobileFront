@@ -197,13 +197,13 @@ $ExtraBold: 800;
           @include BGIMG("store/dalla/ico_check.png");
         }
       }
-      @for $i from 1 through 6 {
+      @for $i from 1 through 9 {
         &:nth-child(#{$i}) {
           .itemIcon {
             width: 51px;
             height: 51px;
             margin-right: 5px;
-            @include BGIMG("store/dalla/icoDal-#{$i}.png");
+            @include BGIMG("store/dalla/icoDal_#{$i}.png");
           }
         }
       }
