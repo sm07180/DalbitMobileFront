@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} from 'react'
 import {Context} from 'context'
-import {setIsRefresh} from "redux/actions/common";
+import {setIsRefresh, setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {Hybrid, isHybrid} from "context/hybrid";
@@ -11,7 +11,7 @@ import qs from 'query-string'
 // global components
 import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import Confirm from './components/Confirm'
@@ -38,7 +38,8 @@ const Rebranding = () => {
   const arrowRefreshRef = useRef()
 
   const dispatch = useDispatch()
-  const common = useSelector(state => state.common)
+  const common = useSelector(state => state.common);
+  const popup = useSelector(state => state.popup);
   const context = useContext(Context)
   const {token} = context
 
@@ -50,8 +51,6 @@ const Rebranding = () => {
   const [stoneValue1, setStoneValue1] = useState({on: false, value: ''})
   const [stoneValue2, setStoneValue2] = useState({on: false, value: ''})
   const [mergeResult, setMergeResult] = useState('')
-  const [popSlide, setPopSlide] = useState(false)
-  const [popLayer, setPopLayer] = useState(false)
   const [noticePop1, setNoticePop1] = useState(false)
   const [noticePop2, setNoticePop2] = useState(false)
   const [actionAni, setActionAni] = useState(false)
@@ -64,6 +63,7 @@ const Rebranding = () => {
   })
   const [myRankInfo, setMyRankInfo] = useState({})
   const [mySpecialRankInfo, setMySpecialRankInfo] = useState({})
+  const [myPieceInfo, setMyPieceInfo] = useState({})
   const stone = useMemo(() => {
     let dCnt = 0;
     let aCnt = 0;
@@ -76,11 +76,11 @@ const Rebranding = () => {
     if(stoneValue2.value === 'l') lCnt ++;
 
     return ([
-      {data: 'd', value: myRankInfo.ins_d_cnt - dCnt},
-      {data: 'a', value: myRankInfo.ins_a_cnt - aCnt},
-      {data: 'l', value: myRankInfo.ins_l_cnt - lCnt},
+      {data: 'd', value: myPieceInfo.ins_d_cnt - dCnt},
+      {data: 'a', value: myPieceInfo.ins_a_cnt - aCnt},
+      {data: 'l', value: myPieceInfo.ins_l_cnt - lCnt},
     ]);
-  },[myRankInfo, stoneValue1, stoneValue2])
+  },[myPieceInfo, stoneValue1, stoneValue2])
   
   // API 조회
   /* 이벤트 회차 정보 */
@@ -92,6 +92,7 @@ const Rebranding = () => {
     })
   }
   /* 내 랭킹 정보 */
+  // 조각 때문에 한번더 API 콜
   const fetchMyRankInfo = (seqNo) => {
     const param = {seqNo: seqNo}
     Api.getDallagersMyRankInfo(param).then((res) => {
@@ -107,6 +108,14 @@ const Rebranding = () => {
       })
     }
   }
+  const fetchMyPieceInfo = () => {
+    const param = {seqNo: eventInfo.seq_no}
+    Api.getDallagersMyRankInfo(param).then((res) => {
+      if (res.result === 'success') {
+        setMyPieceInfo(res.data)
+      }
+    })
+  }
   /* 이니셜 스톤 교환 */
   const fetchStoneChange = (v1, v2) => {
     Api.getDallagersStoneChange({data:{
@@ -115,7 +124,6 @@ const Rebranding = () => {
       useDallaGubunTwo : v2, //두번째 선택 스톤
     }}).then((res) => {
       if (res.result === 'success') {
-        setMyRankInfo(res.data.myInfo)
         setMergeResult(res.data.resultStone)
         mainDataReset()
       } else {
@@ -225,9 +233,15 @@ const Rebranding = () => {
   }
   // 스톤 버튼 선택
   const clickSelect = (e) => {
-    const {targetValue} = e.currentTarget.dataset
+    const {targetValue} = e.currentTarget.dataset;
+
+    if (!token.isLogin) {
+      history.push('/login')
+      return
+    }
     setStoneInfo(targetValue)
-    setPopSlide(true)
+    dispatch(setSlidePopupOpen());
+    // setPopSlide(true)
   }
   // 스톤 종류 선택
   const choicePiece = (e,value) => {
@@ -239,7 +253,8 @@ const Rebranding = () => {
       if (stoneInfo === '2' && stoneValue2.value === '') {
         setStoneValue2({...stoneValue2, on: true, value: choiceStone})
       }
-      setPopSlide(false)
+      closePopup(dispatch);
+      // setPopSlide(false)
     }
   }
   // 스톤 초기화
@@ -263,7 +278,7 @@ const Rebranding = () => {
         setActionAni(false)
       }, 6000);
     } else {
-    setPopLayer(true)
+      dispatch(setCommonPopupOpenData({...popup, confirmPopup: true}));
     }
   }
   // 모바일 뒤로가기 이벤트
@@ -280,10 +295,13 @@ const Rebranding = () => {
   },[])
   
   useEffect(() => {
-    if (actionAni === true) {
+    if (actionAni === false) {
       fetchMyRankInfo(tabmenuType)
+      fetchMyPieceInfo()
     }
+    console.log(actionAni);
   },[actionAni])
+
   
   useEffect(() => {
     if(common.isRefresh) {
@@ -297,6 +315,7 @@ const Rebranding = () => {
     if (token.isLogin) {
       if (eventInfo.seq_no !== 0) {
         fetchMyRankInfo(tabmenuType)
+        fetchMyPieceInfo()
       }
     }
   },[eventInfo.seq_no,tabmenuType])
@@ -390,11 +409,15 @@ const Rebranding = () => {
           <li>한 번 선물 할 때의 달 및 별 개수로 스톤을 받을 수 있습니다.</li>
           <li>높은 순위일 수록 스페셜라운드 당첨 확률이 높아집니다.</li>
           <li>경품 당첨자는 공지사항을 통해 발표됩니다.</li>
+          <li>부계정으로 이벤트에 중복 당첨될 경우 더 높은 순위로 선정됩니다.</li>
+          <li>경품의 재고 문제로 경품을 지급할 수 없게될 경우 현금으로 대체 지급됩니다.</li>
+          <li>5만원 이상 경품 수령시 22%의 제세공과금이 발생하며 이는 당첨자가 부담합니다.</li>
+          <li>경품 수령을 원치 않을 경우 1:1문의를 통해 현금으로 지급을 요청하실 수 있습니다.</li>
+          <li>더욱 자세한 사항은 이벤트 공지사항을 확인해주시기 바랍니다.</li>
         </ul>
       </section>
-      {popLayer &&
+      {popup.confirmPopup &&
         <Confirm 
-          setPopLayer={setPopLayer} 
           setActionAni={setActionAni} 
           stoneValue1={stoneValue1} 
           setStoneValue1={setStoneValue1} 
@@ -436,13 +459,13 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {popSlide &&
-        <PopSlide title="사용할 스톤을 선택하세요." setPopSlide={setPopSlide}>
+      {popup.commonPopup &&
+        <PopSlide title="사용할 스톤을 선택하세요.">
           <section className="eventRebranding">
             <div className="title">
               내
               <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
-              <span>{stone[0].value + stone[1].value + stone[2].value}개</span>
+              <span>{myPieceInfo.dalla_cnt}개</span>
             </div>
             {stone.map((v,idx) => {
               const stonCount = v.value;

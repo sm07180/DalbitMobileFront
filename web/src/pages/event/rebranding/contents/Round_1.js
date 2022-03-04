@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import Api from 'context/api'
+import {setCommonPopupOpenData} from "redux/actions/common";
+import {useDispatch, useSelector} from "react-redux";
 import moment from 'moment'
 // global components
 // components
@@ -10,12 +12,12 @@ import '../style.scss'
 
 const Round_1 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
-  const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
   const eventFixDate = {start: '2022-02-07 00:00:00', end: '2022-03-04 13:59:59'}
-  const lodingTime = moment('2022-03-03 02:00:00').format('MMDDHH')
+  const lodingTime = moment('2022-03-03 01:59:59').format('MMDDHH')
 
+  const popup = useSelector(state => state.popup)
+  const dispatch = useDispatch()
   const [rankInfo, setRankInfo] = useState([])
-  const [popRankSlide, setPopRankSlide] = useState(false)
   
   /* 이벤트 랭킹 정보 */
   const fetchRankInfo = () => {
@@ -32,7 +34,8 @@ const Round_1 = (props) => {
   
   // 랭킹 더보기
   const moreRank = () => {
-    setPopRankSlide(true)
+    dispatch(setCommonPopupOpenData({...popup, morePopup: true}));
+    // setPopRankSlide(true)
   }
 
   useEffect(() => {
@@ -52,12 +55,11 @@ const Round_1 = (props) => {
         lodingTime={lodingTime} 
         moreRank={moreRank}
       />
-      {popRankSlide &&
+      {popup.morePopup &&
         <RankSlide 
           rankInfo={rankInfo} 
           eventDate={eventFixDate} 
           tabmenuType={tabmenuType} 
-          setPopRankSlide={setPopRankSlide}
         />
       }
     </>

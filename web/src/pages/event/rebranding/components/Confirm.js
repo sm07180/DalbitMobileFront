@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from 'react'
 
+import {setCommonPopupClose} from "redux/actions/common";
+import {useDispatch, useSelector} from "react-redux";
+
 import CheckList from './CheckList'
 
 import './confirm.scss'
 
 const Confirm = (props) => {
-  const {setPopLayer,setActionAni,stoneValue1,setStoneValue1,stoneValue2,setStoneValue2,fetchStoneChange} = props
+  const {setActionAni,stoneValue1,setStoneValue1,stoneValue2,setStoneValue2,fetchStoneChange} = props;
+  
+  const dispatch = useDispatch();
   // 
   const cookieChecked = () => {
     if(!localStorage.getItem('rebranding')){
@@ -16,26 +21,26 @@ const Confirm = (props) => {
   }
   // 
   const btnCancel = () => {
-    setPopLayer(false)
+    dispatch(setCommonPopupClose());
   }
   // 
   const btnConfirm = () => {
-    fetchStoneChange(stoneValue1.value,stoneValue2.value)
-    setPopLayer(false)
-    setActionAni(true)
-    setStoneValue1({on: false, value: ''})
-    setStoneValue2({on: false, value: ''})
+    fetchStoneChange(stoneValue1.value,stoneValue2.value);
+    dispatch(setCommonPopupClose());
+    setActionAni(true);
+    setStoneValue1({on: false, value: ''});
+    setStoneValue2({on: false, value: ''});
     setTimeout(() => {
-      setActionAni(false)
+      setActionAni(false);
     }, 6000);
-  }
+  };
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = ''
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <>

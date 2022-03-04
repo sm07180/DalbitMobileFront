@@ -20,4 +20,4 @@ const MergePop = (props) => {
   )
 }
 
-export default MergePop
+export default React.memo(MergePop);

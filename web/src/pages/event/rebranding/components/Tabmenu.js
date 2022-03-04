@@ -15,7 +15,7 @@ const Tabmenu = (props) => {
         {tabmenu.map((data,index) => {
           return (
             <li className={`${tabmenuType === tabmenu[index] ? 'active' : ''}`} onClick={() => tabActive(index)} key={index}>
-              <img src={`${IMG_SERVER}/event/rebranding/tabmenu-${data !== '스페셜' ? data : 3}.png`} alt={data} />
+              <img src={`${IMG_SERVER}/event/rebranding/tabmenu-${data !== '스페셜' ? data : 3}${data === tabmenuType ? '-on' : ''}.png`} alt={data} />
             </li>
           )
         })}

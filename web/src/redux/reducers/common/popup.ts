@@ -9,6 +9,10 @@ const initialState: ICommonPopupState = {
   blockReportPopup: false, // 차단/신고
   presentPopup: false, // 선물하기
 
+  // 달라져스 이벤트
+  morePopup: false,
+  confirmPopup: false, 
+
   /* 공통 팝업 */
   commonPopup: false,
 

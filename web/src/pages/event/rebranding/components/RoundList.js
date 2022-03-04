@@ -43,7 +43,7 @@ const RoundList = (props) => {
           </div>
         </RankList>
         :
-        <div onClick={() => history.push('/login')}>
+        <div onClick={() => history.push('/login')} style={{cursor:'pointer'}}>
           <RankList photoSize={0} type="my">
             <div className="listContent">
               <div className="text">로그인하고 달라를 모아보세요!</div>
