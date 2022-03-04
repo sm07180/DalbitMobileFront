@@ -56,7 +56,7 @@ const RoundList = (props) => {
         </div>
       }
       </div>
-      {nowTime > lodingTime.end ?
+      {nowTime > lodingTime ?
         <div className="rankWrap">
           {rankInfo.map((data,index) => {
             return (
@@ -91,9 +91,6 @@ const RoundList = (props) => {
     </section>
     </>
   )
-}
-RoundList.defaultProps = {
-  lodingTime: moment().format('MMDDHH'),
 }
 
 export default RoundList
