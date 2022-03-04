@@ -108,12 +108,11 @@ const ProfilePage = () => {
   const getFeedData = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      pageNo: feedData.paging.next,
+      pageNo: 1, //임의로 일단 1로 고정
       pagePerCnt: feedData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
-      console.log(res);
       if (res.result === 'success') {
         const data = res.data;
         const callPageNo = data.paging?.page;
@@ -285,6 +284,32 @@ const ProfilePage = () => {
           history.push(`/profile/${memNo}`)
         }
       }
+    }
+  }
+
+  /* 피드 좋아요 */
+  const fetchLikeData = async (regNo, mMemNo) => {
+    const res = await Api.profileFeedLike({
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    });
+    if(res.result === "success") {
+      getFeedData();
+    } else if(res.message === "이미 좋아요를 보내셨습니다.") {
+      fetchLikeCancelData(regNo, mMemNo);
+    }
+  }
+
+  /* 피드 좋아요 취소 */
+  const fetchLikeCancelData = async (regNo, mMemNo) => {
+    const res = await Api.profileFeedLikeCancel({
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    });
+    if(res.result === "success") {
+      getFeedData();
     }
   }
 
@@ -587,7 +612,7 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchLikeData={fetchLikeData}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 

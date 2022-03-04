@@ -32,7 +32,6 @@ const Allim = (props) => {
     }).catch((e) => {console.log(e)});
   };
 
-  //알림 클릭시 해당 페이지로 이동 -> 리브랜딩 주소로 다시 바꿔야함....
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
     const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
@@ -115,7 +114,7 @@ const Allim = (props) => {
             <>
               {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
                 return (
-                  <ListRow key={idx} photo={v.profImg.thumb292x292}>
+                  <ListRow key={idx} photo={v.profImg.thumb292x292} photoClick={() => history.push(`/profile/${v.memNo}`)}>
                     <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
                          data-link={v.link} onClick={handleClick}>
                       <div className="title">{v.contents}</div>

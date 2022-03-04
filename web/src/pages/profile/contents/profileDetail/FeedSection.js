@@ -10,7 +10,7 @@ import {useHistory, useParams} from "react-router-dom";
 const FeedSection = (props) => {
   const history = useHistory();
   const {memNo} = useParams();
-  const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents } = props;
+  const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents, fetchLikeData } = props;
   //context
   const { feedList, fixedFeedList} = feedData;
 
@@ -53,7 +53,7 @@ const FeedSection = (props) => {
       }*/}
       {feedList.length > 0 ?
         <SocialList socialList={feedList} socialFixList={fixedFeedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
-                    openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData}
+                    openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData} fetchLikeData={fetchLikeData}
         />
         :
         <NoResult />
