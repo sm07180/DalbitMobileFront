@@ -87,7 +87,8 @@ const BroadcastNotice = () => {
     const res = await API.myPageBroadcastNoticeDel({
       roomNoticeNo: noticeSelect.index,
       memNo: context.profile.memNo,
-      roomNo: context.profile.roomNo === "" ? 0 : context.profile.roomNo
+      roomNo: context.profile.roomNo === "" ? 0 : context.profile.roomNo,
+      delChrgrName: ""
     })
     if(res.result === "success") {
       toastMessage("방송 공지가 삭제 되었습니다.");

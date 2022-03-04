@@ -61,7 +61,8 @@ export default function NoticeList(props: any) {
       let params = {
         roomNoticeNo: noticeIdx,
         memNo: globalState.userProfile.memNo,
-        roomNo: roomNo
+        roomNo: roomNo,
+        delChrgrName: ""
       }
       const { result } = await API.myPageBroadcastNoticeDel(params);
       if (result === "success") {

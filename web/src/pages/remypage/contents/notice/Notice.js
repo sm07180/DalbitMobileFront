@@ -23,7 +23,6 @@ const NoticePage = () => {
   const history = useHistory()
   const context = useContext(Context)
   const alarmData = useSelector(state => state.newAlarm);
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -41,9 +40,6 @@ const NoticePage = () => {
     if(alarmData.newCnt > 0) {
       if(alarmData.alarm > 0) {dispatch(setNoticeTab("알림"))}
       else if(alarmData.notice > 0) {dispatch(setNoticeTab("공지사항"));}
-    }
-    if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
     }
   }, []);
 
@@ -66,7 +62,7 @@ const NoticePage = () => {
         {tab === noticeTabmenu[0] ?
           <Allim fetchMypageNewCntData={fetchMypageNewCntData}/>
           :
-          <Post />
+          <Post fetchMypageNewCntData={fetchMypageNewCntData}/>
         }
       </section>
     </div>
