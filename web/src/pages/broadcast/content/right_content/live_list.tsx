@@ -7,7 +7,6 @@ import React, {
   useMemo,
 } from "react";
 import { useHistory } from "react-router-dom";
-import { RoomTypeConvertToText } from "pages/main/content/common_fn";
 import { printNumber } from "lib/common_fn";
 
 // ctx

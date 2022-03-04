@@ -1,23 +1,15 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useContext,
-  useCallback,
-  useMemo,
-  useLayoutEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import { useLastLocation } from "react-router-last-location";
+import {useLastLocation} from "react-router-last-location";
 
 // context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GuestContext } from "context/guest_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GuestContext} from "context/guest_ctx";
 
 // constant
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 
 // component
 import ChatHeaderWrap from "../component/chat_header_wrap";
@@ -28,20 +20,19 @@ import RandomMsgWrap from "../component/random_msg_wrap";
 // others
 import LottiePlayer from "lottie-web";
 import {
-  UserType,
-  ListenerRtc,
-  HostRtc,
   AgoraHostRtc,
   AgoraListenerRtc,
-  getArgoraRtc,
-  rtcSessionClear
+  HostRtc,
+  ListenerRtc,
+  rtcSessionClear,
+  UserType
 } from "common/realtime/rtc_socket";
-import { createElement } from "lib/create_element";
+import {createElement} from "lib/create_element";
 import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import { broadcastExit } from "common/api";
+import {broadcastExit} from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -49,7 +40,10 @@ import LottieFreeze from "../static/lottie_freeze.json";
 
 import {ttsAlarmDuration} from "../../../constant";
 import {BroadcastLayerContext} from "../../../context/broadcast_layer_ctx";
-import {TransitionPromptHook} from "history";
+import {useDispatch, useSelector} from "react-redux";
+import {getVoteDetailList, getVoteList, getVoteSel, insMemVote, insVote} from "../../../redux/actions/vote";
+
+import _ from 'lodash'
 
 type ComboType = {
   status: boolean;
@@ -159,7 +153,8 @@ export default function LeftSideAgora(props: {
   } = props;
 
   const lastLocation = useLastLocation();
-
+  const dispatch = useDispatch();
+  const voteRdx = useSelector(({vote}) => vote);
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);

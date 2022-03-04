@@ -91,7 +91,7 @@ const TopSwiper = (props) => {
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {!isMyProfile && webview === '' && data.roomNo !== "" && listenOpen !== 2 &&
+        {type === 'profile' && webview === '' && data.roomNo !== "" &&
           <div className='badgeLive' onClick={roomJoinHandler}>                                    
             <span className='equalizer'>
               <Lottie
@@ -105,7 +105,7 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {!isMyProfile && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>

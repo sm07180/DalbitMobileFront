@@ -63,13 +63,12 @@
       padding-top: 25px;
       button {
         flex: 1;
-        height: 44px;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 600;
+        height: 48px;
+        border-radius: 16px;
+        @include font(16px, 700, #FFFFFF);
         background: $DOWNCOLOR;
         border: 1px solid $DOWNCOLOR;
-        line-height: 44px;
+        line-height: 46px;
         &.cancel {
           color: #ff3c7b;
           background: #fff;

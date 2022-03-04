@@ -13,6 +13,7 @@ const Faq = () => {
   const [answer, setAnswer] = useState(0); //FAQ 답변
   const [searchText, setSearchText] = useState("") //검색에 입력한 text
   const [currentSearch, setCurrentSearch] = useState(""); //검색할 text
+  const [focus, setFocus] = useState(false);
   const context = useContext(Context);
 
   //FAQ 내역 조회
@@ -72,6 +73,16 @@ const Faq = () => {
     setSearchText(e.target.value)
   }
 
+  //input 태그 클릭시 포커스처리
+  const focusChange = () => {
+    setFocus(true);
+  }
+
+  //input 태그 클릭 해제시 포커스 해제
+  const blurChange = () => {
+    setFocus(false);
+  }
+
   useEffect(() => {
     fetchData()
   }, [currentSearch])
@@ -84,8 +95,8 @@ const Faq = () => {
     <div id="faq">
       <Header position={'sticky'} title={'FAQ'} type={'back'}/>
       <div className="searchWrap">
-          <div className='searchForm'>
-            <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" value={searchText} onChange={searchChange}/>
+          <div className={`searchForm ${focus ? "focus" : ""}`}>
+            <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" onFocus={focusChange} onBlur={blurChange} value={searchText} onChange={searchChange}/>
             <button className="searchBtn" data-text={searchText} onClick={searchClick}/>
           </div>
         </div>
