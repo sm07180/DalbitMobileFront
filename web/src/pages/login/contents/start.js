@@ -44,7 +44,7 @@ const Start = (props) => {
 
   const backButton = () => {
     if(webview === 'new'){
-      Hybrid('CloseLayerPopUp')
+      Hybrid('CloseLayerPopup');
     }else{
       history.push('/')
     }

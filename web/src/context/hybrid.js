@@ -45,24 +45,19 @@ export const Hybrid = (func, info) => {
   if (!isHybrid()) return
 
   const customHeader = JSON.parse(Api.customHeader)
-  console.log(customHeader['os'], OS_TYPE['Android']);
   switch (customHeader['os']) {
     // Android
     case OS_TYPE['Android']: {
       if (window.android[func] === null || window.android[func] === undefined || typeof window.android[func] !== 'function') {
-        console.log('aaa');
         return;
       }
 
       if (info === '' || info === null || info === undefined) {
-        console.log('bbb');
         window.android[func]()
       } else {
         try {
-          console.log('ccc');
           window.android[func](JSON.stringify(info))
         } catch (e) {
-          console.log('ddd');
           if (func === 'openUrl' || func === 'openCall') {
             window.android[func]('{"url":"' + info + '"}')
           }
