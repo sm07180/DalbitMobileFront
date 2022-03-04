@@ -13,9 +13,9 @@ import '../style.scss'
 
 const Round_3 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
-  const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
-  const eventFixDate = {start: '2022-03-01 00:00:00', end: '2022-03-07 00:00:00'}
-  const lodingTime = moment('2022-03-04 02:00:00').format('MMDDHH')
+  const eventFixDate = {start: '2022-03-08 00:00:00', end: '2022-04-05 00:00:00'}
+  const lodingTime = moment('2022-03-08 01:59:59').format('MMDDHH')
+  const nowTime = moment().format('MMDDHH')
   // 
   const [rankInfo, setRankInfo] = useState([])
   const [popSpecial, setPopSpecial] = useState(false)
@@ -59,7 +59,7 @@ const Round_3 = (props) => {
         라운드 1+2 종합순위
         <button className="question" onClick={onPopSpecial}></button>
       </section>
-      {eventInfo.seq_no === 2 ? 
+      {nowTime > lodingTime ?
         <RoundList 
           myRankInfo={myRankInfo} 
           rankInfo={rankInfo}  

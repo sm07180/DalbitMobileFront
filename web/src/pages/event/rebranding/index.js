@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} from 'react'
 import {Context} from 'context'
-import {setIsRefresh} from "redux/actions/common";
+import {setIsRefresh, setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {Hybrid, isHybrid} from "context/hybrid";
@@ -11,7 +11,7 @@ import qs from 'query-string'
 // global components
 import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import Confirm from './components/Confirm'
@@ -38,7 +38,8 @@ const Rebranding = () => {
   const arrowRefreshRef = useRef()
 
   const dispatch = useDispatch()
-  const common = useSelector(state => state.common)
+  const common = useSelector(state => state.common);
+  const popup = useSelector(state => state.popup);
   const context = useContext(Context)
   const {token} = context
 
@@ -50,8 +51,6 @@ const Rebranding = () => {
   const [stoneValue1, setStoneValue1] = useState({on: false, value: ''})
   const [stoneValue2, setStoneValue2] = useState({on: false, value: ''})
   const [mergeResult, setMergeResult] = useState('')
-  const [popSlide, setPopSlide] = useState(false)
-  const [popLayer, setPopLayer] = useState(false)
   const [noticePop1, setNoticePop1] = useState(false)
   const [noticePop2, setNoticePop2] = useState(false)
   const [actionAni, setActionAni] = useState(false)
@@ -125,7 +124,6 @@ const Rebranding = () => {
       useDallaGubunTwo : v2, //두번째 선택 스톤
     }}).then((res) => {
       if (res.result === 'success') {
-        setMyRankInfo(res.data.myInfo)
         setMergeResult(res.data.resultStone)
         mainDataReset()
       } else {
@@ -242,7 +240,8 @@ const Rebranding = () => {
       return
     }
     setStoneInfo(targetValue)
-    setPopSlide(true)
+    dispatch(setSlidePopupOpen());
+    // setPopSlide(true)
   }
   // 스톤 종류 선택
   const choicePiece = (e,value) => {
@@ -254,7 +253,8 @@ const Rebranding = () => {
       if (stoneInfo === '2' && stoneValue2.value === '') {
         setStoneValue2({...stoneValue2, on: true, value: choiceStone})
       }
-      setPopSlide(false)
+      closePopup(dispatch);
+      // setPopSlide(false)
     }
   }
   // 스톤 초기화
@@ -278,7 +278,7 @@ const Rebranding = () => {
         setActionAni(false)
       }, 6000);
     } else {
-    setPopLayer(true)
+      dispatch(setCommonPopupOpenData({...popup, confirmPopup: true}));
     }
   }
   // 모바일 뒤로가기 이벤트
@@ -299,7 +299,9 @@ const Rebranding = () => {
       fetchMyRankInfo(tabmenuType)
       fetchMyPieceInfo()
     }
+    console.log(actionAni);
   },[actionAni])
+
   
   useEffect(() => {
     if(common.isRefresh) {
@@ -414,9 +416,8 @@ const Rebranding = () => {
           <li>더욱 자세한 사항은 이벤트 공지사항을 확인해주시기 바랍니다.</li>
         </ul>
       </section>
-      {popLayer &&
+      {popup.confirmPopup &&
         <Confirm 
-          setPopLayer={setPopLayer} 
           setActionAni={setActionAni} 
           stoneValue1={stoneValue1} 
           setStoneValue1={setStoneValue1} 
@@ -458,8 +459,8 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {popSlide &&
-        <PopSlide title="사용할 스톤을 선택하세요." setPopSlide={setPopSlide}>
+      {popup.commonPopup &&
+        <PopSlide title="사용할 스톤을 선택하세요.">
           <section className="eventRebranding">
             <div className="title">
               내

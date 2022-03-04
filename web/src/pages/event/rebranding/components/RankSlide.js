@@ -1,4 +1,4 @@
-import React, {useState, useLayoutEffect, useEffect} from 'react';
+import React from 'react';
 import moment from 'moment';
 
 // global components
@@ -11,16 +11,16 @@ import RankList from '../../components/rankList/RankList';
 import '../style.scss';
 
 const DallaguersPopSlide = (props) => {
-  const {setPopRankSlide,rankInfo,eventDate,tabmenuType} = props;
+  const {rankInfo,eventDate,tabmenuType} = props;
 
   return (
-    <PopSlide setPopSlide={setPopRankSlide}>
+    <PopSlide>
       <section className="rebrandingRank">
         <h3>달라져스 : {tabmenuType !== 3 ? tabmenuType : '스페셜'} 라운드<span>{tabmenuType !== 3 && `${moment(eventDate.start).format('YY.MM.DD')} - ${moment(eventDate.end).format('MM.DD')}`}</span></h3>
         <div className="scrollRankWrap">
-          {rankInfo.map((data,idx) => {
+          {rankInfo.map((data,idex) => {
             return (
-              <RankList photoSize={55} listNum={idx} rankList={data} index={idx}>
+              <RankList photoSize={55} listNum={idex} rankList={data} index={idex}>
                 <div className="listContent">
                   <div className="listItem">
                     <GenderItems data={data.mem_sex} />
