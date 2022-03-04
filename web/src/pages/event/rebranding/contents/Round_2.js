@@ -4,16 +4,16 @@ import Api from 'context/api'
 import moment from 'moment'
 // global components
 // components
-import RoundList from '../components/roundList'
-import RankSlide from '../components/rankSlide'
+import RoundList from '../components/RoundList'
+import RankSlide from '../components/RankSlide'
 
 import '../style.scss'
 
 const Round_2 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
   const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
-  const eventFixDate = {start: '2022-03-01 00:00:00', end: '2022-03-07 00:00:00'}
-  const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-03 02:00:00').format('MMDDHH')}
+  const eventFixDate = {start: '2022-03-18 00:00:00', end: '2022-03-27 23:59:59'}
+  const lodingTime = moment('2022-03-18 02:00:00').format('MMDDHH')
 
   const [rankInfo, setRankInfo] = useState([])
   const [popRankSlide, setPopRankSlide] = useState(false)
@@ -66,7 +66,7 @@ const Round_2 = (props) => {
       {popRankSlide &&
         <RankSlide 
           rankInfo={rankInfo} 
-          eventDate={eventDate} 
+          eventDate={eventFixDate} 
           tabmenuType={tabmenuType} 
           setPopRankSlide={setPopRankSlide}
         />

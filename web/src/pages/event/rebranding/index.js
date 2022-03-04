@@ -13,7 +13,7 @@ import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
-import Tabmenu from './components/tabmenu'
+import Tabmenu from './components/Tabmenu'
 import Confirm from './components/Confirm'
 import MergePop from './components/MergePop'
 // contents
@@ -344,26 +344,22 @@ const Rebranding = () => {
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/bg-4.png`} alt="이벤트 이미지" />
         <div className="stoneWrap">
-          <button data-target-value="1" onClick={stoneValue1.on !== true ? clickSelect : ''}>
+          <button data-target-value="1" onClick={stoneValue1.on !== true ? clickSelect : null}>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 1" />
-            {stoneValue1.value !== '' ? 
+            {stoneValue1.value !== '' && 
               <>
                 <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue1.value}.png`} className="stoneImg" />
                 <div className="close" onClick={stoneClose}>닫기</div>
               </>
-              :
-              <></>
             }
           </button>
-          <button data-target-value="2" onClick={stoneValue2.on !== true ? clickSelect : ''}>
+          <button data-target-value="2" onClick={stoneValue2.on !== true ? clickSelect : null}>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 2" />
-            {stoneValue2.value !== '' ? 
+            {stoneValue2.value !== '' &&
               <>
                 <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue2.value}.png`} className="stoneImg" />
                 <div className="close" onClick={stoneClose}>닫기</div>
               </>
-              :
-              <></>
             }
           </button>
           <img src={`${IMG_SERVER}/event/rebranding/sign.png`} className="sign" />
