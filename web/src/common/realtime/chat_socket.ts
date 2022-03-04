@@ -1987,6 +1987,10 @@ export class ChatSocketHandler {
                         voteSlct: 's'
                       }))
                     }else{
+                      this.globalAction.setAlertStatus({
+                        status: false,
+                        type: "confirm",
+                      })
                       const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
                         const voteResult:VoteCallbackPromisePropsType = [{
                           step: 'vote',

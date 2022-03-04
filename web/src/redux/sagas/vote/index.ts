@@ -1,4 +1,4 @@
-import {call, put, select, takeEvery, takeLatest} from "redux-saga/effects";
+import {call, delay, put, race, select, takeEvery, takeLatest} from "redux-saga/effects";
 import Api from "../../../context/api";
 import {
 	DEL_VOTE, END_VOTE,
@@ -132,23 +132,24 @@ function* getVoteDetailList(param) {
 
 function* moveVoteStep(param) {
 	try {
-		// memNo roomNo voteNo
-		const getVoteSel = yield call(Api.getVoteSel, param.payload);
-		yield put({type: SET_VOTE_SEL, payload: getVoteSel.data})
-		// memNo pmemNo roomNo voteNo
 		const member = yield select((state)=>state.member);
-		const getVoteDetailList = yield call(Api.getVoteDetailList, {...param.payload, pmemNo:member.memNo});
-		const data:Array<VoteResultType> = getVoteDetailList.data;
-		if(data){
-			yield put({type: SET_VOTE_DETAIL_LIST, payload: data})
-			const sel = data.find(f=>f.memVoteYn === 'y');
-			if(sel){
-				yield put({type: SET_SEL_VOTE_ITEM, payload: sel})
-			}else{
-				yield put({type: SET_SEL_VOTE_ITEM, payload: initVoteSel})
+		const selAndDetailList = yield call(Api.getVoteSelAndDetailList, {...param.payload, pmemNo:member.memNo});
+		if(selAndDetailList){
+			yield put({type: SET_VOTE_SEL, payload: selAndDetailList.data.sel})
+			const data:Array<VoteResultType> = selAndDetailList.data.detailList;
+			if(data) {
+				yield put({type: SET_VOTE_DETAIL_LIST, payload: data})
+				const sel = data.find(f=>f.memVoteYn === 'y');
+				if(sel){
+					yield put({type: SET_SEL_VOTE_ITEM, payload: sel})
+				}else{
+					yield put({type: SET_SEL_VOTE_ITEM, payload: initVoteSel})
+				}
 			}
+			yield put({type: SET_VOTE_STEP, payload: 'vote'})
 		}
-		yield put({type: SET_VOTE_STEP, payload: 'vote'})
+		delete selAndDetailList.data
+		yield put({type: SET_VOTE_API_RESULT, payload: selAndDetailList})
 	} catch (e) {
 		console.error(`moveVoteStep saga e=>`, e)
 	}
