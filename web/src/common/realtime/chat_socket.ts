@@ -12,7 +12,6 @@ import MicAlarmClose from "common/static/image/mic_alarm_close.png";
 import {getCookie} from "common/utility/cookie";
 import {rtcSessionClear} from "./rtc_socket";
 import {
-  getVoteDetailList,
   moveVoteListStep,
   moveVoteStep,
   setVoteActive,
@@ -1964,19 +1963,19 @@ export class ChatSocketHandler {
                   }
                   case "reqInsMemVote": {
                     // 투표
-                    if(this.memNo !== data.reqInsMemVote.pmemNo){
-                      const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
-                        const voteResult:VoteCallbackPromisePropsType = [{
-                          step: 'vote',
-                          data: data.reqInsMemVote,
-                          callback: ()=>{
-                            this.dispatch(getVoteDetailList(data.reqInsMemVote));
-                          }
-                        }];
-                        resolve(voteResult)
-                      })
-                      this.dispatch(setVoteCallback(getCallback));
-                    }
+                    // if(this.memNo !== data.reqInsMemVote.pmemNo){
+                    //   const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                    //     const voteResult:VoteCallbackPromisePropsType = [{
+                    //       step: 'vote',
+                    //       data: data.reqInsMemVote,
+                    //       callback: ()=>{
+                    //         this.dispatch(getVoteDetailList(data.reqInsMemVote));
+                    //       }
+                    //     }];
+                    //     resolve(voteResult)
+                    //   })
+                    //   this.dispatch(setVoteCallback(getCallback));
+                    // }
                     return null;
                   }
                   case "reqDelVote": {
