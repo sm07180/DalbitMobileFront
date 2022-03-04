@@ -19,7 +19,8 @@ const VoteContentNone = ({roomInfo, roomNo}) => {
           투표
         </h3>
         <section className="voteTitleWrap">
-          해당 투표는 DJ에 의해 삭제되었습니다.
+          투표 정보를 불러 올 수 없습니다.<br/>
+          새로고침 후 이용 부탁드립니다.
         </section>
       </>
     </DalbitScroll>
