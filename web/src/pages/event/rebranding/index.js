@@ -447,7 +447,7 @@ const Rebranding = () => {
             <div className="title">
               내
               <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
-              <span>{stone[0].value + stone[1].value + stone[2].value}개</span>
+              <span>{myRankInfo.dalla_cnt}개</span>
             </div>
             {stone.map((v,idx) => {
               const stonCount = v.value;
