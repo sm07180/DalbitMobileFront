@@ -71,7 +71,8 @@
         background-color: #11193C;
         cursor: pointer;
         img {
-          height:16px;
+          width:fit-content;
+          height:32%;
           object-fit: contain;
         }
         &.active {

@@ -16,7 +16,7 @@ const DallaguersPopSlide = (props) => {
   return (
     <PopSlide setPopSlide={setPopRankSlide}>
       <section className="rebrandingRank">
-        <h3>달라져스 : {tabmenuType !== 3 ? tabmenuType : '스페셜'} 라운드<span>{`${moment(eventDate.start).format('YY.MM.DD')} - ${moment(eventDate.end).format('MM.DD')}`}</span></h3>
+        <h3>달라져스 : {tabmenuType !== 3 ? tabmenuType : '스페셜'} 라운드<span>{tabmenuType !== 3 && `${moment(eventDate.start).format('YY.MM.DD')} - ${moment(eventDate.end).format('MM.DD')}`}</span></h3>
         <div className="scrollRankWrap">
           {rankInfo.map((data,idx) => {
             return (

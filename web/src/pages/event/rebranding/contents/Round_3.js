@@ -6,8 +6,8 @@ import moment from 'moment'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
-import RoundList from '../components/roundList'
-import RankSlide from '../components/rankSlide'
+import RoundList from '../components/RoundList'
+import RankSlide from '../components/RankSlide'
 
 import '../style.scss'
 
@@ -15,7 +15,7 @@ const Round_3 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
   const eventDate = {start: eventInfo.start_date, end: eventInfo.end_date}
   const eventFixDate = {start: '2022-03-01 00:00:00', end: '2022-03-07 00:00:00'}
-  const lodingTime = {start: moment('2022-03-03 00:00:00').format('MMDDHH'), end: moment('2022-03-03 02:00:00').format('MMDDHH')}
+  const lodingTime = moment('2022-03-04 02:00:00').format('MMDDHH')
   // 
   const [rankInfo, setRankInfo] = useState([])
   const [popSpecial, setPopSpecial] = useState(false)
@@ -89,8 +89,7 @@ const Round_3 = (props) => {
       }
       {popRankSlide &&
         <RankSlide 
-          rankInfo={rankInfo} 
-          eventDate={eventDate} 
+          rankInfo={rankInfo}
           tabmenuType={tabmenuType} 
           setPopRankSlide={setPopRankSlide}
         />
