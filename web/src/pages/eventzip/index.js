@@ -17,11 +17,16 @@ const EventZip = () => {
 
   const playMakerEventEnd = new moment().isAfter('20301231');
 
-  const golink = (path, endDay) => {
+  const golink = (path, endDay, num) => {
     if(endDay){
       context.action.alert({msg: "해당 이벤트는 종료되었습니다."})
     }else{
-      history.push(path);
+      if(num !== null) {
+        //golink("path(/notice)", endDay, num(공지사항번호)) => 공지사항 번호를 state값으로 같이 넘겨줘야함
+        history.push({pathname: `${path}/${num}`, state: num});
+      } else {
+        history.push(path);
+      }
     }
   }
 
@@ -33,6 +38,7 @@ const EventZip = () => {
       <div className='eventWrap'>
 
         <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/platformWar", platformWarEventEnd)}}>
+        {/*  <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice", platformWarEventEnd, 612)}}>*/}
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7677/eventZip-7677.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>3사 플랫폼 노래대전</div>
