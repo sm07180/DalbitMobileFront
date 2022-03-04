@@ -15,13 +15,13 @@ const EventZip = () => {
   const poemEventEnd = new moment().isAfter('20220322');
   const inviteEventEnd = new moment().isAfter('20220308');
 
-  const playMakerEventEnd = new moment().isAfter('20301231');
+  const playMakerEventEnd = new moment().isAfter('30001231');
 
   const golink = (path, endDay, num) => {
     if(endDay){
       context.action.alert({msg: "해당 이벤트는 종료되었습니다."})
     }else{
-      if(num !== null) {
+      if(num !== undefined) {
         //golink("path(/notice)", endDay, num(공지사항번호)) => 공지사항 번호를 state값으로 같이 넘겨줘야함
         history.push({pathname: `${path}/${num}`, state: num});
       } else {
@@ -39,7 +39,7 @@ const EventZip = () => {
 
         <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/platformWar", platformWarEventEnd)}}>
         {/*  <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice", platformWarEventEnd, 612)}}>*/}
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7677/eventZip-7677.png)`}}/>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7677.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>3사 플랫폼 노래대전</div>
             <div className='eventDate'>03.03 - 03.11</div>
@@ -47,7 +47,7 @@ const EventZip = () => {
         </div>
 
         <div className={`eventList ${shareEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/share", shareEventEnd)}}>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7650/eventZip-7650.png)`}}/>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7650.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라를 소개해 달라</div>
             <div className='eventDate'>03.03 - 03.24</div>
@@ -55,7 +55,7 @@ const EventZip = () => {
         </div>
 
         <div className={`eventList ${poemEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/acrostic", poemEventEnd)}}>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7649/eventZip-7649.png)`}}/>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7649.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라를 축하해 달라</div>
             <div className='eventDate'>02.28 - 03.21</div>
@@ -63,7 +63,7 @@ const EventZip = () => {
         </div>
 
         <div className={`eventList ${inviteEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/invite", inviteEventEnd)}}>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/event7590.png)`}}/>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7590.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>친구 초대, 초대왕 도전!</div>
             <div className='eventDate'>02.21 - 03.07</div>
@@ -71,7 +71,7 @@ const EventZip = () => {
         </div>
 
         <div className={`eventList ${playMakerEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/playmaker", playMakerEventEnd)}}>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/event/dalla/7583/eventZip-7583.png)`}}/>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7583.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라에 놀러온 핵인싸 주목!</div>
             <div className='eventDate'>상시 모집</div>
@@ -81,10 +81,9 @@ const EventZip = () => {
         <div className='eventList comingSoon'>
           <div className='thumbNail'/>
           <div className='eventInfo'>
-            <div className='massege'>이벤트가 시작되면  배너를 통해 알려드려요.</div>
+            <div className='eventTitle'>이벤트가 시작되면 배너를 통해 알려드려요.</div>
           </div>
         </div>
-
       </div>
     </div>
    </div>
