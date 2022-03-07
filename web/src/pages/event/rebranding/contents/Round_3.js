@@ -57,7 +57,10 @@ const Round_3 = (props) => {
     <>
       <section className="date">
         라운드 1+2 종합순위
-        <button className="question" onClick={onPopSpecial}></button>
+        {
+          eventInfo.seq_no === 2 &&
+            <button className="question" onClick={onPopSpecial}></button>
+        }
       </section>
       {nowTime > lodingTime ?
         <RoundList 

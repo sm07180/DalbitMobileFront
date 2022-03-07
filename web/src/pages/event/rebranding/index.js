@@ -445,10 +445,10 @@ const Rebranding = () => {
       {noticePop2 && 
         <LayerPopup title="FEVER TIME!" setPopup={setNoticePop2}>
           <section className="dallagers">
-            <div className="pointText">· 한 방에 있는 시청자들이 DJ에게</div>
+            <div className="pointText">· 한 방에서 DJ에게</div>
             <div className="text">선물한 달이 5000개가 넘는 순간<br/>
             FEVER TIME(1분)이 시작됩니다.</div>
-            <div className="pointText">· 방송 선물 보내기 & 받기</div>
+            <div className="pointText">· 시청자 수가 적다면?</div>
             <div className="text">시청자 10명 이하인 방에는 랜덤으로
             FEVER TIME(1분)이 주어집니다.</div>
             <ul className="feverNotice">
