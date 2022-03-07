@@ -8,7 +8,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import AttendPage from './attend'
 import RoulettePage from './roulette'
 import qs from 'query-string'
-import {Hybrid, isHybrid} from 'context/hybrid'
+import {Hybrid} from 'context/hybrid'
 
 import Header from 'components/ui/header/Header'
 
@@ -75,7 +75,7 @@ export default () => {
 
   return (
     <div id="attendEventPage">
-      <Header title='이벤트' type='back' goBack={clickCloseBtn}/>
+      <Header title='이벤트' type='back' goBack={backButton}/>
       <div className="commonTopWrap" ref={commonTopRef}>
         {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top-1.png`} />}
       </div>
