@@ -503,7 +503,7 @@ const Rebranding = () => {
               </li>
               <li>
                 <span>스페셜 라운드</span>
-                <ul className='depth3'>
+                <ul className='depth2'>
                   <li>롤렉스 서브마리너 흨콤 : 2400만원</li>
                 </ul>
               </li>
