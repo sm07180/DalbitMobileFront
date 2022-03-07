@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import InputItems from 'components/ui/inputItems/InputItems';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
@@ -8,12 +8,11 @@ import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import {initTempInsVoteVoteItemNames, MAX_END_TIME, MAX_VOTE_ITEM} from "../../../../../redux/reducers/vote";
 import {VoteSlctKor} from "../../../../../redux/types/voteType";
 
-let clickCount = 0; //동시접근제한수, 리소스에따라 변경가능
 const MakeVote = ({roomInfo, roomNo}) => {
   const voteRdx = useSelector(({vote})=> vote);
   const dispatch = useDispatch();
   const memberRdx = useSelector((state) => state.member);
-
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const submitButtonProps = {
     text: '완료',
     state:
@@ -104,10 +103,10 @@ const MakeVote = ({roomInfo, roomNo}) => {
           </InputItems>
         </section>
         <SubmitBtn {...submitButtonProps} onClick={()=>{
-          if (clickCount < 0 ) {
+          if(isSubmit){
             return;
           }
-          clickCount--;
+          setIsSubmit(true);
           dispatch(insVote({
             ...voteRdx.tempInsVote,
             memNo: memberRdx.memNo,
@@ -115,7 +114,6 @@ const MakeVote = ({roomInfo, roomNo}) => {
             // endTime: voteRdx.tempInsVote.endTime,
             roomNo: roomNo
           }));
-          clickCount++;
         }}/>
       </>
     </>

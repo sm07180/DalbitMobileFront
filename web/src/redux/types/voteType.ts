@@ -27,7 +27,6 @@ export type GetVoteListRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 
 export type GetVoteSelRequestType = Pick<VoteRequestType, 'memNo' | 'roomNo' | 'voteNo'>
 export type GetVoteDetailListRequestType = Pick<VoteRequestType, 'memNo' | 'pmemNo' | 'roomNo' | 'voteNo'>
 
-
 export type VoteResultType = {
   voteNo: string 		 		 		 		  // 투표번호
   memNo: string 		 		 		 		    // 투표개설자 회원번호

@@ -490,7 +490,7 @@ export default function SendGift(props: {
                     <p>{profile.byeolCnt.toLocaleString()}</p>
                     <button
                       className="exchange"
-                      onClick={() => history.push("/dal_exchange")}
+                      onClick={() => history.push("/wallet/exchange")}
                     >
                       교환
                     </button>

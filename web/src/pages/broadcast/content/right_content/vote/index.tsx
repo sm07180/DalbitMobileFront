@@ -1,5 +1,5 @@
 // React
-import React from "react";
+import React, {useEffect} from "react";
 import {useSelector} from "react-redux";
 import vote from "../../../../../redux/sagas/vote";
 
@@ -11,10 +11,12 @@ import VoteList from "./VoteList";
 // style
 import "./index.scss";
 import VoteCallback from "./VoteCallback";
+import VoteContentNone from "./VoteContentNone";
 
 
 const Vote = ({ roomInfo, roomOwner, roomNo }) => {
   const voteRdx = useSelector(({vote})=> vote);
+
   return (
     <div id="vote">
       {
@@ -23,7 +25,11 @@ const Vote = ({ roomInfo, roomOwner, roomNo }) => {
       }
       {
         voteRdx.step === 'vote' && voteRdx.voteSel && voteRdx.voteDetailList &&
-        <VoteContent />
+        <VoteContent roomOwner={roomOwner}/>
+      }
+      {
+        voteRdx.step === 'vote' && !voteRdx.voteSel && voteRdx.result === 'fail' &&
+        <VoteContentNone roomInfo={roomInfo} roomNo={roomNo} />
       }
       {
         voteRdx.step === 'ins' &&
