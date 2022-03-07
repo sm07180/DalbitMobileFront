@@ -247,6 +247,7 @@
       margin: 12px 16px;
       border-top: 1px solid #F2F2F2;
       .listRow {
+        cursor: pointer;
         flex:none;
         @include flex(center);
         width: 100%;

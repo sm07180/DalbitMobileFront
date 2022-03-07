@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import moment from 'moment'
 
@@ -27,7 +27,6 @@ const RankPage = () => {
 
   const {token, profile} = context;
 
-  const location = useLocation();
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
@@ -39,7 +38,7 @@ const RankPage = () => {
   const [popup, setPopup] = useState(false)
 
   //현재 선택된 DJ List 기간
-  const [select , setSelect] = useState()
+  const [select , setSelect] = useState("time")
 
   //각 DJ 기간별 남은 시간
   const [daySetting , setDaySetting] = useState("")
@@ -70,11 +69,7 @@ const RankPage = () => {
       dispatch(setSubTab("FAN"));
     }
     fetchRankData(2, 1);
-    if(location.state) {
-      setSelect(location.state.tabState);
-    }else {
-      setSelect('today');
-    }
+    setSelect("time");
   }, []);
 
   //남은 시간 계산

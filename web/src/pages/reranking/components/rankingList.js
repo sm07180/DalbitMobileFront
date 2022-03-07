@@ -65,7 +65,7 @@ export default withRouter((props) => {
     <>
       {data.map((list, index) => {
         return (
-          <ListRow photo={list.profImg.thumb292x292} key={index} photoClick={() => history.push(`/profile/${list.memNo}`)}>
+          <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)}>
             <div className="rank">{list.rank}</div>
             <div className="listContent">
               <div className="listItem">
@@ -74,7 +74,8 @@ export default withRouter((props) => {
               </div>
               <div className='listItem'>
                 {tab === "DJ" && <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>}
-                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={() => {
+                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={(e) => {
+                  e.stopPropagation();
                   tab === "CUPID" && props.history.push(`/profile/${list.djMemNo}`);
                 }}/>
                 <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
