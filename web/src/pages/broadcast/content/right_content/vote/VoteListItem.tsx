@@ -12,15 +12,19 @@ const VoteListItem = (props: VoteResultType) => {
     dispatch(moveVoteStep(props));
   }
 
-  const {hour, min, time, unitKor, isTimeOver} = Timer({endDate:props.endDate});
-
+  const {hour, minute, time, unitKor, isTimeOver} = Timer({endDate:props.endDate});
   return (
     <div className="voteList" onClick={listClick}>
       <div className="listInfo">
         <div className="listItem">
           {
             props.voteEndSlct === 's' &&
-            <span className="voteOn">진행중</span>
+            <span className="voteOn">
+              {
+                isTimeOver ?
+                  '마감중' : '진행중'
+              }
+            </span>
           }
           {props.voteTitle}
         </div>
@@ -30,7 +34,7 @@ const VoteListItem = (props: VoteResultType) => {
             <p><span>{Utility.addComma(props.voteMemCnt)}</span>명 참여</p>
           </div>
           <div className="due">
-            <span>{hour}:{min}</span> {isTimeOver || props.voteEndSlct === 'e' ? '마감' : '마감예정'}
+            <span>{hour}:{minute}</span> {isTimeOver || props.voteEndSlct === 'e' ? '마감' : '마감예정'}
           </div>
         </div>
       </div>

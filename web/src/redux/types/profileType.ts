@@ -61,6 +61,7 @@ export const profileDefaultState = {
   liveBadgeList: [],
   liveDjRank: 0,
   liveFanRank: 0,
+  listenOpen: 0,
   memId: "",
   memJoinYn: "",
   memNo: "",
@@ -237,6 +238,7 @@ export interface IProfileState {
   liveBadgeList: Array<ILiveBadgeList>;
   liveDjRank: number;
   liveFanRank: number;
+  listenOpen: number;
   memId: string;
   memJoinYn: string;
   memNo: string;

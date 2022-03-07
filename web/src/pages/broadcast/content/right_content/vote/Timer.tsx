@@ -3,9 +3,10 @@ import {VoteResultType} from "../../../../../redux/types/voteType";
 import moment from "moment";
 
 type ReturnType = {
-  hour: string, min: string, minute: string, sec: string, unitKor: '분'|'초', time: string, isTimeOver: boolean
+  hour: string, minute: string, unitKor: '분'|'초', time: string, isTimeOver: boolean
 }
 export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
+
   const endDateMomentProps = {...props.endDate.date, month:props.endDate.date.month-1, ...props.endDate.time};
   const [remainTime, setRemainTime] = useState(Number(
     moment(endDateMomentProps)
@@ -33,9 +34,9 @@ export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
   }, []);
 
   // const hour = props.endDate.time.hour < 10 ? '0' + props.endDate.time.hour : props.endDate.time.hour+'';
-  const hour = props.endDate.time.hour+'';
+  const hour = moment(endDateMomentProps).format("HH");
   // const minute = props.endDate.time.minute < 10 ? '0' + props.endDate.time.minute : props.endDate.time.minute+'';
-  const minute = props.endDate.time.minute+'';
+  const minute = moment(endDateMomentProps).format("mm");
   const min = moment(remainTime).format('mm')
   const sec = moment(remainTime).format('ss')
   // 초 타이머 해달라는 요청 있을 때
@@ -44,11 +45,10 @@ export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
   const time = Number(min)+1+'';
   const unitKor = '분';
   const isTimeOver = moment(endDateMomentProps).isSameOrBefore(moment.now());
-
   // return {hour, minute, min, sec, time, unitKor, isTimeOver};
-  const dummy:ReturnType = {hour: '00', min: '00', minute: '00', sec: '00', unitKor: '분', time: '00', isTimeOver: true};
+  const dummy:ReturnType = {hour: '00', minute: '00', unitKor: '분', time: '00', isTimeOver: true};
   if(props.endDate.date.year > 0){
-    return {hour, minute, min, sec, time, unitKor, isTimeOver};
+    return {hour, minute, time, unitKor, isTimeOver};
   }else{
     return dummy;
   }

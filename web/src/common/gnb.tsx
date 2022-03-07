@@ -53,7 +53,6 @@ export default function GNB() {
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
-  // const [newCnt, setNewCnt] = useState(0);
 
   const [activeType, setActiveType] = useState('');
 
@@ -355,6 +354,7 @@ export default function GNB() {
     }
   };
 
+  //새 알림 조회
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
     if(res.result === "success") {

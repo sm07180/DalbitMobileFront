@@ -1,9 +1,37 @@
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
+import {useDispatch, useSelector} from "react-redux";
+import {setCommonPopupOpenData} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
+import {Context} from "context";
 
-const ProfileNoticePop = (props) => {
+const ProfileNoticePop = () => {
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
+  const context = useContext(Context);
+  const closePop = () => {
+    dispatch(setCommonPopupOpenData({...popup, commonPopup: false}))
+  }
+
+  useEffect(() => {
+    if(isAndroid()) {
+      context.action.updateSetBack(true)
+      context.action.updateBackFunction({name: 'questionPop', popupData: popup})
+    }
+
+    return () => {
+      closePop();
+      if(isAndroid()) {
+        if(context.backFunction.name.length === 1) {
+          context.action.updateSetBack(null)
+        }
+        context.action.updateBackFunction({name: ''})
+      }
+    }
+  }, []);
+
   return (
-    <LayerPopup title="랭킹 기준" setPopup={props.setNoticePop}>
+    <LayerPopup title="랭킹 기준" setPopup={closePop}>
       <section className="profileRankNotice">
         <div className="title">최근 팬 랭킹</div>
         <div className="text">최근 3개월 간 내 방송에서 선물을 많이<br/>

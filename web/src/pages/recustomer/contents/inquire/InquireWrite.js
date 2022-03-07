@@ -26,7 +26,6 @@ const Write = (props) => {
   const [option, setOption] = useState(false);
   const [textValue, setTextValue] = useState("");
   const [agree, setAgree] = useState(false);
-  const history = useHistory();
 
   const [imageFile, setImageFile] = useState([]);
   const [imgFile, setImgFile] = useState([]);

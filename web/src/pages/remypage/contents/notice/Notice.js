@@ -23,6 +23,21 @@ const NoticePage = () => {
   const history = useHistory()
   const context = useContext(Context)
   const alarmData = useSelector(state => state.newAlarm);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
+
+  const fetchMypageNewCntData = async (memNo) => {
+    const res = await API.getMyPageNew(memNo);
+    if(res.result === "success") {
+      if(res.data) {
+        dispatch(setNoticeData(res.data));
+      }}
+  }
+
+  useEffect(() => {
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
+  }, [alarmData.newCnt]);
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);

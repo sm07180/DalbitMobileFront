@@ -3945,8 +3945,7 @@ export default class API {
   }
 
   // 공유 이벤트 댓글 등록
-  static shareTailIns = async (obj) => {
-    const {data} = obj || {}
+  static shareTailIns = async (data) => {
     return await ajax({
       url: '/event/share/tail/ins',
       method: 'POST',
@@ -4004,6 +4003,10 @@ export default class API {
   // 투표 항목 리스트
   static getVoteDetailList = async (data) => {
     return ajax({url: '/broad/vote/getVoteDetailList', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표 정보, 항목 리스트
+  static getVoteSelAndDetailList = async (data) => {
+    return ajax({url: '/broad/vote/getVoteSelAndDetailList', method: 'POST', reqBody: true, data: data})
   }
 
 
