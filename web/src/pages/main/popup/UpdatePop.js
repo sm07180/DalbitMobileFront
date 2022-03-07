@@ -1,7 +1,6 @@
 import React from 'react';
 
 import './updatePop.scss'
-import {OS_TYPE} from "context/config";
 import {Hybrid, isAndroid, isIos} from "context/hybrid";
 
 const UpdatePopup = (props) => {
@@ -12,11 +11,12 @@ const UpdatePopup = (props) => {
 
   const updateLink = () => {
     if (isAndroid()) {
-      if (__NODE_ENV === 'dev') {
+      Hybrid('goToPlayStore')
+      /*if (__NODE_ENV === 'dev') {
         Hybrid('goToPlayStore')
       } else {
         Hybrid('openUrl', updatePopInfo.storeUrl)
-      }
+      }*/
     } else if (isIos()) {
       Hybrid('openUrl', updatePopInfo.storeUrl)
     }

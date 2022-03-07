@@ -795,7 +795,7 @@ export const IconWrap = (props: {
                 broadcastAction.setRightTabType(tabType.VOTE);
               }}
             >
-              <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon.png' alt="투표" />
+              <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon-fix.png' alt="투표" />
             </button>
           )}
 

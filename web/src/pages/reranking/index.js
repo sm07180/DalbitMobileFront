@@ -239,13 +239,13 @@ const RankPage = () => {
     let text = e.currentTarget.innerText;
     if(text === "타임"){
       setSelect("time")
-    } else if(text === "오늘") {
+    } else if(text === "일간") {
       setSelect("today")
-    } else if(text === "이번주") {
+    } else if(text === "주간") {
       setSelect("thisweek")
-    } else if(text === "이번달") {
+    } else if(text === "월간") {
       setSelect("thismonth")
-    } else if(text === "올해") {
+    } else if(text === "연간") {
       setSelect("thisyear")
     }
     slidePopClose();
@@ -398,10 +398,10 @@ const RankPage = () => {
       <PopSlide>
         <div className='selectWrap'>
           <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
-          <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
-          <div className={`selectOption ${select === "thisweek" ? "active" : ""}`} onClick={chartSelect}>이번주</div>
-          <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>이번달</div>
-          <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
+          <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>일간</div>
+          <div className={`selectOption ${select === "thisweek" ? "active" : ""}`} onClick={chartSelect}>주간</div>
+          <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>월간</div>
+          <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>연간</div>
         </div>
       </PopSlide>
       }
