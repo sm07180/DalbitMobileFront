@@ -6,7 +6,6 @@ import {PHOTO_SERVER} from "context/config";
 
 import Api from "context/api";
 import qs from "query-string";
-import Utility from "components/lib/utility";
 import useDidMountEffect from "common/hook/useDidMountEffect";
 
 import Header from "components/ui/header/Header";
@@ -272,7 +271,7 @@ const SocialSignUp = () => {
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        return history.push('/')
+        return history.push('/signup/recommendDj')
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})

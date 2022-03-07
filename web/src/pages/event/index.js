@@ -31,7 +31,6 @@ import PostGuide from './post_guide'
 import GoodStart from './goodstart'
 import Rebranding from './rebranding'
 import RecommendDj from './recommend_dj'
-import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
 import Package from './package'
 import VideoOpen from './video_open'
@@ -49,6 +48,7 @@ import PlayMaker from './playMaker'
 import Invite from './invite'
 import Share from './share'
 import PlatformWar from './platformWar'
+import moment from "moment";
 
 export default (props) => {
   const params = useParams()
@@ -106,8 +106,6 @@ export default (props) => {
         return <Rebranding />
       case 'recommend_dj':
         return <RecommendDj />
-      case 'recommend_dj2':
-        return <RecommendDj2 />
       case 'new_year':
         return <NewYear />
       case 'package':
@@ -138,9 +136,18 @@ export default (props) => {
         return <Acrostic />
       case 'playmaker':
         return <PlayMaker />
-
+      // case 'gganbu':
+      //   return <Gganbu />
+      // case 'participant':
+      //   return <Participant />
+      // case 'marblePocket':
+      //   return <MarblePocket />
       case 'invite':
-        return <Invite />
+        if(new moment().isAfter('20220308')){
+          return window.location.href = '/'
+        }else{
+          return  <Invite/>
+        }
       case 'share':
         return <Share />
       case 'platformWar':

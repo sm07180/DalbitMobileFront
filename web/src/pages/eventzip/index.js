@@ -14,15 +14,21 @@ const EventZip = () => {
   const shareEventEnd = new moment().isAfter('20220324');
   const poemEventEnd = new moment().isAfter('20220322');
   const inviteEventEnd = new moment().isAfter('20220308');
+  const wiseEventEnd = new moment().isAfter('20220327');
+
   const playMakerEventEnd = new moment().isAfter('20301231');
   
   const dalragersEvenetEnd = new moment().isAfter('20220330');
 
-  const golink = (path, endDay) => {
+  const golink = (path, endDay, num) => {
     if(endDay){
       context.action.alert({msg: "해당 이벤트는 종료되었습니다."})
     }else{
-      history.push(path);
+      if(num !== undefined) {
+        history.push({pathname: `${path}/${num}`, state: num});
+      } else {
+        history.push(path);
+      }
     }
   }
 
@@ -37,7 +43,15 @@ const EventZip = () => {
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7634.png)`}}/>
           <div className='eventInfo'>
             <div className='eventTitle'>달라져스 : 달라 스톤 모으기</div>
-            <div className='eventDate'>03.08 - 03.27</div>,
+            <div className='eventDate'>03.08 - 03.27</div>
+          </div>
+        </div>
+
+        <div className={`eventList ${wiseEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice", wiseEventEnd, 617)}}>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7733.png)`, backgroundSize:'cover'}}/>
+          <div className='eventInfo'>
+            <div className='eventTitle'>슬기로운 달라생활</div>
+            <div className='eventDate'>03.07 - 03.27</div>
           </div>
         </div>
 
