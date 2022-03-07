@@ -77,7 +77,7 @@ const LoginStart = React.lazy(() => import('pages/login/contents/start'))
 const DidLogin = React.lazy(() => import('pages/login/contents/didLogin'))
 // 회원가입
 const SignUp = React.lazy(() => import('pages/signup'))
-const SocialSignUp = React.lazy(() => import('pages/signup/contents/socialSignUp'))
+const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
 const RecommendDj = React.lazy(() => import('pages/signup/contents/RecommendDj'))
 //----- dalla -----//
 
@@ -199,7 +199,7 @@ const Router = () => {
         <Route exact path="/login/start" component={LoginStart} />
         <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
-        <Route exact path="/signup/socialSignUp" component={SocialSignUp} />
+        <Route exact path="/socialSignUp" component={SocialSignUp} />
         <Route exact path="/signup/recommendDj" component={RecommendDj} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />

@@ -108,7 +108,7 @@ const SignUpPage = () => {
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        return history.push('/')
+        return history.push('/signup/recommendDj')
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({
