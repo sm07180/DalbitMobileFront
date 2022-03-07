@@ -3936,6 +3936,10 @@ export default class API {
   static getVoteDetailList = async (data) => {
     return ajax({url: '/broad/vote/getVoteDetailList', method: 'POST', reqBody: true, data: data})
   }
+  // 투표 정보, 항목 리스트
+  static getVoteSelAndDetailList = async (data) => {
+    return ajax({url: '/broad/vote/getVoteSelAndDetailList', method: 'POST', reqBody: true, data: data})
+  }
 
 
 

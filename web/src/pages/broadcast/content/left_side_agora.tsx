@@ -41,7 +41,6 @@ import LottieFreeze from "../static/lottie_freeze.json";
 import {ttsAlarmDuration} from "../../../constant";
 import {BroadcastLayerContext} from "../../../context/broadcast_layer_ctx";
 import {useDispatch, useSelector} from "react-redux";
-import {getVoteDetailList, getVoteList, getVoteSel, insMemVote, insVote} from "../../../redux/actions/vote";
 
 import _ from 'lodash'
 

@@ -42,7 +42,7 @@ export const initTempInsVote:InsVoteRequestType = {
   memNo:'',
   roomNo:'',
   voteItemNames:initTempInsVoteVoteItemNames,
-  endTime:10,
+  endTime:0,
   voteItemCnt:initTempInsVoteVoteItemNames.length,
   voteDupliYn:'n',
   voteAnonyYn:'y',
