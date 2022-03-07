@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState, useContext} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Lottie from "lottie-web";
-import { Context } from 'context';
+import {Context} from 'context';
 import moment from "moment";
 import {useHistory} from "react-router-dom";
 
@@ -82,7 +82,7 @@ const DallagersTopSection = (props) => {
     if (chatInfo) {
       //애니메이션 붙이는 곳
       chatInfo.setBroadcastStateChange('setStoneAniQueueState', (state) => {
-        console.log("스톤 애니메이션 실행, 받은 돌: \n", state[0] || '','\n', state[1] || '','\n', state[2] || '');
+        //console.log("스톤 애니메이션 실행, 받은 돌: \n", state[0] || '','\n', state[1] || '','\n', state[2] || '');
         setStoneAniQueue(() => stoneAniQueueRef.current.concat(state));
       });
 
@@ -249,7 +249,7 @@ const DallagersTopSection = (props) => {
         const testCode1 = stoneAniQueueRef.current;
         const testCode2 = stoneAniQueue;
         stoneAniQueueRef.current = stoneAniQueue.concat([]);
-        console.log("애니메이션 실행중 => 조각 push", testCode1, '=>', testCode2 );
+        //console.log("애니메이션 실행중 => 조각 push", testCode1, '=>', testCode2 );
       }
     }
   }, [stoneAniQueue]);
