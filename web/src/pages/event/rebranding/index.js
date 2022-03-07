@@ -33,9 +33,11 @@ const Rebranding = () => {
   const history = useHistory()
   const {webview} = qs.parse(location.search)
 
-  const MainRef = useRef()
+  const mainRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
+
+  const tabMenuRef = useRef()
 
   const dispatch = useDispatch()
   const common = useSelector(state => state.common);
@@ -46,6 +48,7 @@ const Rebranding = () => {
   const [reloadInit, setReloadInit] = useState(false)
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true)
 
+  const [tabFixed, setTabFixed] = useState(false);
   const [tabmenuType, setTabmenuType] = useState(tabmenu[0])
   const [stoneInfo, setStoneInfo] = useState('')
   const [stoneValue1, setStoneValue1] = useState({on: false, value: ''})
@@ -108,6 +111,7 @@ const Rebranding = () => {
       })
     }
   }
+
   const fetchMyPieceInfo = () => {
     const param = {seqNo: eventInfo.seq_no}
     Api.getDallagersMyRankInfo(param).then((res) => {
@@ -116,6 +120,7 @@ const Rebranding = () => {
       }
     })
   }
+
   /* 이니셜 스톤 교환 */
   const fetchStoneChange = (v1, v2) => {
     Api.getDallagersStoneChange({data:{
@@ -297,8 +302,25 @@ const Rebranding = () => {
     }
   };
 
+  // 탭메뉴 액션
+  const tabActive = (index) => {
+    setTabmenuType(tabmenu[index])
+  }
+
+  const tabScrollEvent = () => {
+    const tabMenuNode = tabMenuRef.current
+    const tabMenuTop = tabMenuNode.getBoundingClientRect().top;
+    if (window.scrollY >= tabMenuTop) {
+      setTabFixed(true)
+    } else {
+      setTabFixed(false)      
+    }
+  }
+
   useEffect(() => {
     fetchEventInfo()
+    window.addEventListener('scroll', tabScrollEvent)
+    return () => window.removeEventListener('scroll', tabScrollEvent)
   },[])
   
   useEffect(() => {
@@ -346,7 +368,7 @@ const Rebranding = () => {
       </div>
     </div>
     <div id="rebranding"
-      ref={MainRef}
+      ref={mainRef}
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}
@@ -400,7 +422,17 @@ const Rebranding = () => {
           }
         </div>
       </section>
-      <Tabmenu tabmenu={tabmenu} tabmenuType={tabmenuType} setTabmenuType={setTabmenuType} />
+      <div className={`tabmenuWrap ${tabFixed ? 'fixed' : ''}`} ref={tabMenuRef}>
+        <div className="tabmenu">
+          {tabmenu.map((data,index) => {
+            return (
+              <li className={`${tabmenuType === tabmenu[index] ? 'active' : ''}`} onClick={() => tabActive(index)} key={index}>
+                <img src={`${IMG_SERVER}/event/rebranding/tabmenu-${data !== '스페셜' ? data : 3}${data === tabmenuType ? '-on' : ''}.png`} alt={data} />
+              </li>
+            )
+          })}
+        </div>
+      </div>
       {tabmenuType === tabmenu[0] ?
         <Round_1 myRankInfo={myRankInfo} eventInfo={eventInfo} tabmenuType={tabmenuType} />
         : tabmenuType === tabmenu[1] ?

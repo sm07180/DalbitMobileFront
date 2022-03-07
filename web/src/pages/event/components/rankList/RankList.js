@@ -19,16 +19,14 @@ const EventRankList = (props) => {
   const history = useHistory()
 
   // 프로필 이동 이벤트
-  const goProfile = (e) => {
-    const {targetMemNo} = e.currentTarget.dataset
-
-    if (targetMemNo !== undefined && targetMemNo > 0) {
-      history.push(`/profile/${targetMemNo}`)
+  const goProfile = (memNo) => {
+    if (memNo !== undefined && memNo > 0) {
+      history.push(`/profile/${memNo}`)
     }
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={index}>
+		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
 				{type === 'my' ? 
@@ -51,7 +49,7 @@ const EventRankList = (props) => {
 					)}
 				</p>}
 			</div>
-			<div className={`photo size${photoSize}`} onClick={goProfile} data-target-mem-no={rankList && rankList.mem_no}>
+			<div className={`photo size${photoSize}`}>
 				{rankList && rankList.profImg &&
 					<img src={rankList && rankList.profImg && rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
 				}

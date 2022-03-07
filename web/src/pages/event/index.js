@@ -152,7 +152,7 @@ export default (props) => {
   }
   return (
     <EventAttendProvider>
-      <Layout status="no_gnb">{createContent()}</Layout>
+      {createContent()}
     </EventAttendProvider>
   )
 }

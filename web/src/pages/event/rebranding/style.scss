@@ -111,6 +111,7 @@
     padding:0 16px 0 10px;
     height:74px;
     border-bottom:1px solid #EFEFEF;
+    cursor: pointer;
     @for $i from 1 through 3 {
       &:nth-child(#{$i}) {
         .rankNum {
@@ -160,7 +161,6 @@
       margin-right:8px;
       border-radius:50%;
       background-color:#eee;
-      cursor:pointer;
     }
     .listContent {
       flex:1;
@@ -457,12 +457,20 @@
   .refresh-wrap {
     display:none;
   }
+  #rebranding {
+    .tabmenuWrap.fixed {
+      position: sticky;
+      top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
+      z-index: 2;
+    }
+  }
 }
 .mobileType {
   #rebranding {
     .tabmenuWrap.fixed {
-      top: calc(#{$GNB-HEIGHT + #{$HEADER-HEIGHT}});
-      padding-top: 4.972%;
+      position: sticky;
+      top: #{$HEADER-HEIGHT};
+      z-index: 2;
     }
   }
 }
