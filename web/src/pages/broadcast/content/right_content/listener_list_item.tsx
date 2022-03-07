@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import LazyLoad from 'react-lazyload';
 // ctx
 import { BroadcastContext } from "context/broadcast_ctx";
 import { GlobalContext } from "context";
@@ -10,6 +11,7 @@ import { broadManagerSet, broadManagerDelete, broadKickOut, MypageBlackListAdd }
 import { tabType } from "pages/broadcast/constant";
 import { AuthType } from "constant";
 import { MANAGER_TYPE } from "./constant";
+import {thumbInlineStyle} from "../../../../common/pip/PlayerStyle";
 
 export default function ListenerListItem(props: {
   roomNo: string;
@@ -227,7 +229,6 @@ export default function ListenerListItem(props: {
       window.removeEventListener("click", sideEffect);
     };
   }, []);
-
   return (
     <>
       {data &&
@@ -241,33 +242,30 @@ export default function ListenerListItem(props: {
           })();
 
           return (
-            <div className={`user user--${classNm}`} key={`listeners-${i}`}>
-              <div
-                className="user__box"
-                onClick={() => {
-                  viewProfile(memNo);
-                }}
-              >
+            <LazyLoad height={46} key={i} once overflow throttle={100} >
+              <div className={`user user--${classNm}`} key={`listeners-${i}`}>
                 <div
-                  className={`user__thumb user__thumb${isFan ? "--fan" : ""}`}
-                  style={{ backgroundImage: `url(${profImg.url})` }}
+                  className="user__box"
+                  onClick={() => {
+                    viewProfile(memNo);
+                  }}
                 >
-                  <span className="blind">{nickNm}</span>
-                </div>
+                  <div className={`user__thumb user__thumb${isFan ? "--fan" : ""}`} style={thumbInlineStyle(profImg)}>
+                    <span className="blind">{nickNm}</span>
+                  </div>
+                  <div className="user__infoBox">
+                    <span className="user__infoBox--sub">
+                      {auth === 1 && <span className="user__badge manager">매니저</span>}
+                      {isNewListener === true && <span className="user__badge new">신입청취자</span>}
 
-                <div className="user__infoBox">
-                  <span className="user__infoBox--sub">
-                    {auth === 1 && <span className="user__badge manager">매니저</span>}
-                    {isNewListener === true && <span className="user__badge new">신입청취자</span>}
-
-                    {/* {badgeActive === true && (
-                      <div className={`user__badge ${isGuest === true ? "guest" : isNewListener === true ? "new" : "manager"}`}>
-                        {isGuest === true ? "게스트" : isNewListener === true ? "신입청취자" : "매니저"}
-                      </div>
-                    )} */}
-                    {commonBadgeList &&
+                      {/* {badgeActive === true && (
+                        <div className={`user__badge ${isGuest === true ? "guest" : isNewListener === true ? "new" : "manager"}`}>
+                          {isGuest === true ? "게스트" : isNewListener === true ? "신입청취자" : "매니저"}
+                        </div>
+                      )} */}
+                      {commonBadgeList &&
                       commonBadgeList.map((badge, badgeIdx) => {
-                        const { text, icon, startColor, endColor } = badge;
+                        const {text, icon, startColor, endColor} = badge;
                         if (icon && icon != null && icon != "") {
                           return (
                             <span
@@ -277,9 +275,9 @@ export default function ListenerListItem(props: {
                               }}
                               key={badgeIdx}
                             >
-                              <img src={icon} alt={text} />
-                              <span>{text}</span>
-                            </span>
+                                <img src={icon} alt={text}/>
+                                <span>{text}</span>
+                              </span>
                           );
                         } else {
                           return (
@@ -291,51 +289,52 @@ export default function ListenerListItem(props: {
                               }}
                               key={badgeIdx}
                             >
-                              {text}
-                            </span>
+                                {text}
+                              </span>
                           );
                         }
                       })}
 
-                    <span className="user__nickNm">{nickNm}</span>
-                  </span>
-                  {roomOwner && (
-                    <span className="user__infoBox--cnt">
-                      <span className="like">{goodCnt}</span>
-                      <span className="times">{settingAlarmTime(joinTs)}</span>
-                      <span className="stars">{byeolCnt}</span>
+                      <span className="user__nickNm">{nickNm}</span>
                     </span>
+                    {roomOwner && (
+                      <span className="user__infoBox--cnt">
+                        <span className="like">{goodCnt}</span>
+                        <span className="times">{settingAlarmTime(joinTs)}</span>
+                        <span className="stars">{byeolCnt}</span>
+                      </span>
+                    )}
+                  </div>
+                  {profile && profile.memNo !== memNo && (
+                    <button
+                      className="user__btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFocus(i);
+                      }}
+                    >
+                      <span className="blind">더보기</span>
+                    </button>
                   )}
                 </div>
-                {profile && profile.memNo !== memNo && (
-                  <button
-                    className="user__btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleFocus(i);
-                    }}
-                  >
-                    <span className="blind">더보기</span>
-                  </button>
-                )}
-              </div>
 
-              {/* modal */}
-              <div className={`modal ${focusIdx === i ? "modal--active" : ""}`}>
-                {((broadcastState.roomInfo!.auth === AuthType.MANAGER && auth === AuthType.LISTENER) || roomOwner) && (
-                  <button className="modal__item" onClick={() => outUser(v)}>
-                    강제퇴장
+                {/* modal */}
+                <div className={`modal ${focusIdx === i ? "modal--active" : ""}`}>
+                  {((broadcastState.roomInfo!.auth === AuthType.MANAGER && auth === AuthType.LISTENER) || roomOwner) && (
+                    <button className="modal__item" onClick={() => outUser(v)}>
+                      강제퇴장
+                    </button>
+                  )}
+                  {roomOwner && makeMoreContents(v)}
+                  <button className="modal__item" onClick={() => viewProfile(memNo)}>
+                    프로필 보기
                   </button>
-                )}
-                {roomOwner && makeMoreContents(v)}
-                <button className="modal__item" onClick={() => viewProfile(memNo)}>
-                  프로필 보기
-                </button>
-                <button className="modal__item" onClick={() => pushReport(v)}>
-                  신고하기
-                </button>
+                  <button className="modal__item" onClick={() => pushReport(v)}>
+                    신고하기
+                  </button>
+                </div>
               </div>
-            </div>
+            </LazyLoad>
           );
         })}
     </>
