@@ -13,8 +13,8 @@ import '../style.scss'
 
 const Round_1 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
-  const eventFixDate = {start: '2022-02-07 00:00:00', end: '2022-03-04 13:59:59'}
-  const lodingTime = moment('2022-03-03 01:59:59').format('MMDDHH')
+  const eventFixDate = {start: '2022-03-08 00:00:00', end: '2022-03-17 23:59:59'}
+  const lodingTime = moment('2022-03-08 01:59:59').format('MMDDHH')
 
   const popup = useSelector(state => state.popup)
   const dispatch = useDispatch()

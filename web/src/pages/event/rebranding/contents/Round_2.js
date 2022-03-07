@@ -11,8 +11,8 @@ import '../style.scss'
 
 const Round_2 = (props) => {
   const {myRankInfo, eventInfo, tabmenuType} = props
-  const eventFixDate = {start: '2022-03-04 14:00:00', end: '2022-03-27 23:59:59'}
-  const lodingTime = moment('2022-03-04 01:59:59').format('MMDDHH')
+  const eventFixDate = {start: '2022-03-18 00:00:00', end: '2022-03-27 23:59:59'}
+  const lodingTime = moment('2022-03-18 01:59:59').format('MMDDHH')
 
   const [rankInfo, setRankInfo] = useState([])
   const [popRankSlide, setPopRankSlide] = useState(false)
