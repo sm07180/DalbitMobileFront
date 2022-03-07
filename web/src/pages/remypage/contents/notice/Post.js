@@ -96,7 +96,7 @@ const Post = (props) => {
     if(isDesktop) {
       fetchMypageNewCntData(context.profile.memNo);
     }
-  }, [postPageInfo]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", scrollEvt);

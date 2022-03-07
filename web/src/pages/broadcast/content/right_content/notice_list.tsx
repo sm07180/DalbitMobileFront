@@ -87,6 +87,7 @@ export default function NoticeList(props: any) {
       });
       if(result === "success") {
         searchNotice(roomNo);
+        isModify = false;
         if (globalAction.callSetToastStatus) {
           globalAction.callSetToastStatus({ status: true, message: message });
         }

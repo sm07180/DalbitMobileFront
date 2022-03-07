@@ -6,16 +6,14 @@ import Toast from "components/ui/toast/Toast";
 import "../title/title.scss"
 import {Context} from "context";
 import API from "context/api";
-import {useDispatch, useSelector} from "react-redux";
-import {setBroadcastNoticeData} from "redux/actions/broadcastNotice";
 
 const BroadcastNotice = () => {
   const [noticeList, setNoticeList] = useState([]);
   const [noticeSelect, setNoticeSelect] = useState({state: false, val: "", index: -1});
   const [toast, setToast] = useState({state: false, msg: ""});
   const context = useContext(Context);
-  const dispatch = useDispatch();
 
+  /* 하단 토스트 메세지 */
   const toastMessage = (text) => {
     setToast({state: true, msg: text});
     setTimeout(() => {
@@ -23,6 +21,7 @@ const BroadcastNotice = () => {
     }, 3000);
   }
 
+  /* 등록된 방송공지 클릭시 */
   const selectNotice = (e) => {
     let selectVal = e.currentTarget.innerText;
     const {targetIndex} = e.currentTarget.dataset;
@@ -33,17 +32,18 @@ const BroadcastNotice = () => {
     });
   }
 
+  /* 방송공지 조회 */
   const fetchData = async () => {
     let apiParams = {
       memNo: context.profile.memNo
     }
     await API.myPageBroadcastNoticeSel(apiParams).then((res) => {
       setNoticeList(res.data.list);
-      dispatch(setBroadcastNoticeData(res.data.list));
     }).catch((e) => console.log(e));
   }
 
 
+  /* 방송공지 등록 */
   const fetchAddData = async () => {
     const res = await API.myPageBroadcastNoticeIns({ //공지글은 한명당 한개씩만 가능?
       reqBody: true,
@@ -66,6 +66,7 @@ const BroadcastNotice = () => {
     }
   }
 
+  /* 방송공지 수정 */
   const fetchModifyData = async () => {
     const res = await API.myPageBroadcastNoticeUpd({
       reqBody: true,
@@ -83,6 +84,7 @@ const BroadcastNotice = () => {
     }
   }
 
+  /* 방송공지 삭제 */
   const fetchDeleteData = async () => {
     const res = await API.myPageBroadcastNoticeDel({
       roomNoticeNo: noticeSelect.index,
@@ -112,11 +114,7 @@ const BroadcastNotice = () => {
       <section className="titleListBox">
         <div className="sectionTitle">등록된 공지<span className="point">{noticeList.length}</span></div>
         <div className="radioWrap">
-          {noticeList.map((item, index) => {
-            return (
-              <RadioList key={index} title={item.conts} listIndex={item.auto_no} clickEvent={selectNotice} titleSelect={noticeSelect} setTitleSelect={setNoticeSelect}/>
-            )
-          })}
+          <RadioList title={noticeList[0]?.conts} listIndex={noticeList[0]?.auto_no} clickEvent={selectNotice} titleSelect={noticeSelect} setTitleSelect={setNoticeSelect}/>
         </div>
       </section>
       }

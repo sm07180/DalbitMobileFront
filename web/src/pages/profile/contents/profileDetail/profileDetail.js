@@ -353,6 +353,33 @@ const ProfileDetail = (props) => {
     });
   };
 
+
+  /* 좋아요 */
+  const fetchLikeData = async (regNo, mMemNo) => {
+    const res = await Api.profileFeedLike({
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    });
+    if(res.result === "success") {
+      getDetailData()
+    } else if(res.message === "이미 좋아요를 보내셨습니다.") {
+      fetchLikeCancelData(regNo, mMemNo);
+    }
+  }
+
+  /* 좋아요 취소 */
+  const fetchLikeCancelData = async (regNo, mMemNo) => {
+    const res = await Api.profileFeedLikeCancel({
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    });
+    if(res.result === "success") {
+      getDetailData();
+    }
+  }
+
   /* 차단/신고 팝업 열기 */
   const openBlockReportPop = (blockReportInfo) => {
     console.log('report info',blockReportInfo);
@@ -395,9 +422,9 @@ const ProfileDetail = (props) => {
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
               <Swiper {...swiperFeeds}>
-                {item.photoInfoList.map((photo) => {
+                {item.photoInfoList.map((photo, idx) => {
                   return (
-                    <div>
+                    <div key={idx}>
                       <div className="photo">
                         <img src={photo?.imgObj?.thumb500x500} alt="" />
                       </div>
@@ -415,8 +442,8 @@ const ProfileDetail = (props) => {
             : <></>
           )}
           <div className="info">
-            {/*<i className='like'></i>
-            <span>{Utility.addComma(123)}</span>*/}
+            <i className='like' onClick={() => fetchLikeData(item?.noticeIdx, item?.mem_no)}/>
+            <span>{Utility.addComma(item?.rcv_like_cnt)}</span>
             <i className='comment'/>
             <span>{Utility.addComma(replyList.length)}</span>
           </div>

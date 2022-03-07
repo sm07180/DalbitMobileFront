@@ -37,15 +37,7 @@ const NoticePage = () => {
     if(isDesktop) {
       fetchMypageNewCntData(context.profile.memNo);
     }
-  }, [alarmData.newCnt]);
-
-  const fetchMypageNewCntData = async (memNo) => {
-    const res = await API.getMyPageNew(memNo);
-    if(res.result === "success") {
-      if(res.data) {
-        dispatch(setNoticeData(res.data));
-      }}
-  }
+  }, []);
 
   // 로그인 토큰값 확인
   useEffect(() => {

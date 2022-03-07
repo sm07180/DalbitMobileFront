@@ -28,6 +28,11 @@ const SocialList = (props) => {
     }
   }
 
+  const swiperFixFeeds = {
+    slidesPerView: 'auto',
+    spaceBetween: 8
+  }
+
   const photoClickEvent = (memNo) => {
     if(type === 'fanBoard') {
       history.push(`/profile/${memNo}`)
@@ -37,7 +42,7 @@ const SocialList = (props) => {
   return (
     <div className="socialListWrap">
       {socialFixList !== undefined &&
-      <Swiper {...swiperFeeds}>
+      <Swiper {...swiperFixFeeds}>
         {socialFixList.map((item, index) => {
           const memNo = type === 'feed'? profileData.memNo : item?.writerMemNo; //글 작성자
           const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
@@ -75,7 +80,7 @@ const SocialList = (props) => {
                 )}
                 <div className="info">
                   <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
-                  <DataCnt type={"cupid"} value={item.rcv_like_cnt} clickEvent={() => fetchLikeData(item.noticeIdx, item.mem_no)}/>
+                  <DataCnt type={"goodCnt"} value={item.rcv_like_cnt} clickEvent={() => fetchLikeData(item.noticeIdx, item.mem_no)}/>
                 </div>
               </div>
             </div>
@@ -127,7 +132,7 @@ const SocialList = (props) => {
               )}
               <div className="info">
                 <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
-                {type === 'feed' &&<DataCnt type={"cupid"} value={item.rcv_like_cnt} clickEvent={() => fetchLikeData(item.noticeIdx, item.mem_no)}/>}
+                {type === 'feed' &&<DataCnt type={"goodCnt"} value={item.rcv_like_cnt} clickEvent={() => fetchLikeData(item.noticeIdx, item.mem_no)}/>}
               </div>
             </div>
           </div>
