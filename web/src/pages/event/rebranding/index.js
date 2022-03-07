@@ -476,10 +476,10 @@ const Rebranding = () => {
       {giveawayPop && 
         <LayerPopup title="경품안내" setPopup={setGiveawayPop}>
           <section className="giveawayInfo">
-            <ul className=''>
+            <ul className='depth1'>
               <li>
                 <span>1라운드</span>
-                <ul>
+                <ul className='depth2'>
                   <li>맥북 프로  16형 : 336만원</li>
                   <li>생로랑 숄더백 : 210만원</li>
                   <li>갤럭시 22 울트라 512GB : 155만원</li>
@@ -491,7 +491,7 @@ const Rebranding = () => {
               </li>
               <li>
                 <span>2라운드</span>
-                <ul>
+                <ul className='depth2'>
                   <li>루이비통 삭 플라 BB : 320만원</li>
                   <li>삼성 갤럭시북 프로 360(윈도우 탑재) : 210만원</li>
                   <li>아이폰 13 프로 : 150만원</li>
@@ -503,7 +503,7 @@ const Rebranding = () => {
               </li>
               <li>
                 <span>스페셜 라운드</span>
-                <ul>
+                <ul className='depth3'>
                   <li>롤렉스 서브마리너 흨콤 : 2400만원</li>
                 </ul>
               </li>
