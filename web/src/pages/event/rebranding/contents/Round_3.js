@@ -58,7 +58,7 @@ const Round_3 = (props) => {
       <section className="date">
         라운드 1+2 종합순위
         {
-          eventInfo.seq_no === 2 &&
+          nowTime > eventFixDate.start &&
             <button className="question" onClick={onPopSpecial}></button>
         }
       </section>
