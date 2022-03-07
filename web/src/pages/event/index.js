@@ -52,6 +52,7 @@ import PlayMaker from './playMaker'
 import Invite from './invite'
 import Share from './share'
 import PlatformWar from './platformWar'
+import moment from "moment";
 
 export default (props) => {
   const params = useParams()
@@ -147,9 +148,12 @@ export default (props) => {
       //   return <Participant />
       // case 'marblePocket':
       //   return <MarblePocket />
-
       case 'invite':
-        return <Invite />
+        if(new moment().isAfter('20220308')){
+          return window.location.href = '/'
+        }else{
+          return  <Invite/>
+        }
       case 'share':
         return <Share />
       case 'platformWar':
