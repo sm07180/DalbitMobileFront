@@ -359,6 +359,7 @@ $errorMsg : #FF1919;
       @include flex(center, flex-start, column);
       overflow: auto;
       .listRow {
+        cursor:pointer;
         flex:none;
         @include flex(center);
         width: 100%;
