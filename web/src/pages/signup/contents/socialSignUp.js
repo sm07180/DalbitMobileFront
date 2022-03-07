@@ -13,10 +13,10 @@ import Header from "components/ui/header/Header";
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 
-import PopupPrivacy from './components/PopupPrivacy'
-import PopupTerms from './components/PopupTerms'
+import PopupPrivacy from '../components/PopupPrivacy'
+import PopupTerms from '../components/PopupTerms'
 
-import './style.scss'
+import '../style.scss'
 
 const SocialSignUp = () => {
   const context = useContext(Context)

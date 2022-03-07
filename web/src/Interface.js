@@ -193,9 +193,9 @@ export default () => {
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
           //TODO: 추후 웹브릿지 연결
-          window.location.replace('/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
+          window.location.replace('/signup/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
         } else {
-          window.location.replace('/socialSignup?' + qs.stringify(social_result.data))
+          window.location.replace('/signup/socialSignup?' + qs.stringify(social_result.data))
         }
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg
@@ -301,9 +301,9 @@ export default () => {
       } else if (loginInfo.code + '' == '1') {
         if (webview && webview === 'new') {
           //TODO: 추후 웹브릿지 연결
-          window.location.replace('/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
+          window.location.replace('/signup/socialSignup?' + qs.stringify(social_result.data) + '&webview=new')
         } else {
-          window.location.replace('/socialSignup?' + qs.stringify(social_result.data))
+          window.location.replace('/signup/socialSignup?' + qs.stringify(social_result.data))
         }
       } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
         let msg = loginInfo.data.opMsg

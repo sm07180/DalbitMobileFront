@@ -31,7 +31,6 @@ import PostGuide from './post_guide'
 import GoodStart from './goodstart'
 import GganbuPocket from './gganbu/content/marblePocket'
 import RecommendDj from './recommend_dj'
-import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
 import Tree from './tree'
 import Package from './package'
@@ -110,8 +109,6 @@ export default (props) => {
         return <GganbuPocket />
       case 'recommend_dj':
         return <RecommendDj />
-      case 'recommend_dj2':
-        return <RecommendDj2 />
       case 'new_year':
         return <NewYear />
       case 'tree':

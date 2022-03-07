@@ -29,6 +29,9 @@ $errorMsg : #FF1919;
         margin-bottom: 32px;
       }
       .inputItems {
+        position: relative;
+        @include flex(center);
+        width: 100%;
         .inputBox {
           position:relative;
           flex:1;
@@ -52,6 +55,13 @@ $errorMsg : #FF1919;
           }
         }
         .inputBtn {
+          flex: none;
+          width: 72px;
+          height: 36px;
+          margin-left: 8px;
+          border-radius: 16px;
+          letter-spacing: -1px;
+          @include font(14px, 500, #FFF);
           background-color: $DOWNCOLOR;
         }
         .textLog {
