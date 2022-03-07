@@ -1,6 +1,10 @@
 @import 'components/ui/_mixin.scss';
 
 #rebranding {
+  position: relative;
+  @include flex($fd: column);
+  width: 100%;
+  box-sizing: border-box;
   section {
     position:relative;
     >img {
@@ -57,23 +61,20 @@
   .tabmenuWrap {
     position:relative;
     width:100%;
-    height:0;
-    padding-top:13.89%;
     .tabmenu {
-      @include position-top-left;
+      position: relative;
       @include flex;
       width:100%;
       height:100%;
       li {
         flex:1;
         @include flex(center,center);
-        height:100%;
+        padding: 15px 0;
         list-style-type: none;
         background-color: #11193C;
         cursor: pointer;
         img {
-          width:fit-content;
-          height:32%;
+          height: 19px;
           object-fit: contain;
         }
         &.active {
