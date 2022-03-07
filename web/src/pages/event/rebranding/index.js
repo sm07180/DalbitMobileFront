@@ -281,6 +281,13 @@ const Rebranding = () => {
       dispatch(setCommonPopupOpenData({...popup, confirmPopup: true}));
     }
   }
+
+  const disabledAction = () => {
+    context.action.toast({
+      msg: `먼저 사용할 스톤을 넣어주세요.`
+    })
+  }
+
   // 모바일 뒤로가기 이벤트
   const backEvent = () => {
     if(isHybrid() && webview === 'new'){
@@ -387,7 +394,7 @@ const Rebranding = () => {
               <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-4.png`} alt="인피니티 스톤" />
             </button>
             :
-            <button style={{cursor:"initial"}}>
+            <button onClick={disabledAction}>
               <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-2.png`} alt="인피니티 스톤" />
             </button>
           }

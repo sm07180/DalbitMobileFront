@@ -34,6 +34,7 @@
         }
         &:last-child {
           width:24.84%;
+          cursor: pointer;
         }
         .stoneImg {
           @include position-center;
