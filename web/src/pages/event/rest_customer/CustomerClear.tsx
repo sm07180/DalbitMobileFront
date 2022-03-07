@@ -6,6 +6,7 @@ import {authReq} from 'pages/self_auth'
 import { setCookie } from "common/utility/cookie";
 import {Context} from 'context'
 import "./style.scss";
+import {postSleepMemUpd} from "../../../common/api";
 
 export default (props) => {
   const {memNo} = props;
@@ -16,18 +17,38 @@ export default (props) => {
   function updateDispatch(event) {
     if (event.detail.result == "success" && event.detail.code == "0") {
       console.log(event.detail);
-      const baseData = {
-        authToken: event.detail.authToken,
-        isLogin: true,
-        memNo: memNo,
-      };
-      context.action.alert({
-        msg: "본인인증 완료되었습니다.",
-        callback: () => {
-          setCookie("authToken", baseData.authToken, 3);
-          history.replace('/');
-        },
-      });
+
+      /* 휴면 해제 체크 */
+      postSleepMemUpd({memNo, memPhone: event.detail.phoneNum}).then(res => {
+        const resultCode = res.code;
+        if(resultCode === '0') {
+          const baseData = {
+            authToken: event.detail.authToken,
+            isLogin: true,
+            memNo: memNo,
+          };
+          context.action.alert({
+            title: '휴면상태가 해제되었습니다.',
+            msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
+            callback: () => {
+              setCookie("authToken", baseData.authToken, 3);
+              history.replace('/');
+            }
+          })
+        }else if(resultCode === '-1') {
+          context.action.alert({
+            title: '기존 정보와 일치하지 않습니다.',
+            msg: `연락처가 변경되어 휴면 해제가 불가능하시다면\n1:1문의로 신분증을 접수해주시기 바랍니다.`,
+            callback: () => {
+              // 비로그인 1:1문의 페이지로
+            }
+          })
+        }else {
+          context.action.alert!({
+            msg: res.message
+          });
+        }
+      })
     } else {
       context.action.alert!({
         msg: event.detail.message,
@@ -36,8 +57,6 @@ export default (props) => {
   }
 
   useEffect(() => {
-    console.log(memNo);
-    console.log(context.profile)
     //새로고침했을경우
     if (memNo.slice(0, 1) === "8") {
       history.goBack();
