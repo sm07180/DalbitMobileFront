@@ -32,7 +32,7 @@ export default () => {
     }
   }
 
-  const backButton = () => {
+  const clickCloseBtn = () => {
     if(webview === 'new'){
       Hybrid('CloseLayerPopup')
     }else{
