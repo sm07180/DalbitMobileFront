@@ -6,12 +6,12 @@ import {Context} from 'context'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
 
-import hitIcon from '../../menu/static/ico_hit_g.svg'
+import hitIcon from '../static/ico_hit_g.svg'
 
-import './recommend_dj2.scss'
+import './recommendDj.scss'
 import NoResult from "components/ui/noResult/NoResult";
 
-const RecommendDj2 = () => {
+const RecommendDj = () => {
   const history = useHistory()
 
   const context = useContext(Context)
@@ -92,7 +92,7 @@ const RecommendDj2 = () => {
       history.push({
         pathname: '/login',
         state: {
-          state: 'event/recommend_dj2'
+          state: 'signup/recommendDj'
         }
       })
     }
@@ -169,4 +169,4 @@ const RecommendDj2 = () => {
   )
 }
 
-export default RecommendDj2
+export default RecommendDj
