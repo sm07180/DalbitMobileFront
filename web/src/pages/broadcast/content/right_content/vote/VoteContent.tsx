@@ -29,24 +29,22 @@ const VoteContent = ({roomOwner}) => {
 
   useEffect(()=>{
     if(isTimeOver && voteRdx.voteSel.voteEndSlct === 's'){
-      dispatch(setVoteSel({
-        ...voteRdx.voteSel, voteEndSlct : 'e'
-      }));
+      setSelVote(initVoteSel);
     }
   }, [isTimeOver])
 
   const submitButtonProps = {
-    text: voteRdx.voteSel.voteEndSlct === 'e' ?
+    text: isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' ?
       '투표마감'
       : voteRdx.voteDetailList.filter(f=>f.voteNo === voteRdx.selVoteItem.voteNo).length > 0 ?
         '다시 투표하기' : '투표하기',
-    state: voteRdx.voteSel.voteEndSlct === 'e' || !selVote.voteNo ? 'disabled' : ''
+    state: isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' || !selVote.voteNo ? 'disabled' : ''
   }
 
   const optionBoxActiveClassNames = (item:VoteResultType):string=> {
     if (voteRdx.voteSel.voteEndSlct === 's') {
-      return `optionBox ${selVote.itemNo === item.itemNo ? 'active' : ''}`
-    } else if (voteRdx.voteSel.voteEndSlct === 'e') {
+      return isTimeOver ? `optionBox` : `optionBox ${selVote.itemNo === item.itemNo ? 'active' : ''}`
+    } else if (isTimeOver || voteRdx.voteSel.voteEndSlct === 'e') {
       return `optionBox ${item.rank === 1 ? 'active' : ''}`
     } else {
       return ``;
@@ -78,11 +76,12 @@ const VoteContent = ({roomOwner}) => {
                 <p><span>{Utility.addComma(voteRdx.voteSel.voteMemCnt)}</span>명 참여</p>
               </div>
               <div className="due">
-                <span>{hour}:{minute}</span> {voteRdx.voteSel.voteEndSlct === 'e' ? '마감' : '마감예정'}
+                <span>{hour}:{minute}</span> {isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' ? '마감' : '마감예정'}
               </div>
             </div>
             {
               memberRdx.memNo === voteRdx.voteSel.memNo &&
+              !isTimeOver &&
               voteRdx.voteSel.voteEndSlct === 's' &&
               <div className="moreBtn" onClick={()=>{
                 setMore(!more)
@@ -111,7 +110,7 @@ const VoteContent = ({roomOwner}) => {
                 detailList.map((item, index)=>{
                   return (
                     <div className={`${optionBoxActiveClassNames(item)}`} key={index} onClick={()=>{
-                      if(voteRdx.voteSel.voteEndSlct !== 's'){
+                      if(isTimeOver || voteRdx.voteSel.voteEndSlct !== 's'){
                         return;
                       }
                       setSelVote(item);
@@ -138,6 +137,7 @@ const VoteContent = ({roomOwner}) => {
       </DalbitScroll>
 
       {
+        !isTimeOver &&
         voteRdx.voteSel.voteEndSlct === 's' &&
         <section className="timeCheckWrap">
           <div className="timeCheck">
@@ -156,7 +156,7 @@ const VoteContent = ({roomOwner}) => {
 
         <SubmitBtn {...submitButtonProps} onClick={()=>{
           // 시간초과
-          // if(isTimeOver) return;
+          if(isTimeOver) return;
           // 진행중 아님
           if(voteRdx.voteSel.voteEndSlct !== 's') return;
           // 선택한거없음

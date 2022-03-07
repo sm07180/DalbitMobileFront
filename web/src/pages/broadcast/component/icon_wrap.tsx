@@ -88,8 +88,6 @@ export const IconWrap = (props: {
     video: false,
   });
   const [settingMore, setSettingMore] = useState<boolean>(false);
-
-  const [heartActive, setHeartActive] = useState<boolean>(false);
   const [micActive, setMicActive] = useState<boolean>(roomInfo.isMic);
   const [videoActive, setVideoActive] = useState<boolean>(roomInfo.isVideo);
   const [readyState, setReadyState] = useState<boolean>(false);
@@ -99,7 +97,7 @@ export const IconWrap = (props: {
 
   const heartIconClickHandler = async (e) => {
     if (baseData.isLogin === true) {
-      if (heartActive === true) {
+      if (broadcastState.heartActive) {
         const { result, message } = await broadcastLike({ roomNo, memNo: roomInfo.bjMemNo});
         if (result === "fail") {
           if (globalAction.setAlertStatus) {
@@ -108,7 +106,7 @@ export const IconWrap = (props: {
         } else if (result === "success") {
           broadcastAction.setLikeClicked!(false);
         }
-      } else if (heartActive === false) {
+      } else {
         if (globalAction.setAlertStatus) {
           globalAction.setAlertStatus({
             status: true,
@@ -433,7 +431,7 @@ export const IconWrap = (props: {
     let timeoutId: number | null = null;
     if (baseData.isLogin === true && likeClicked === true) {
       timeoutId = setTimeout(() => {
-        setHeartActive(true);
+        broadcastAction.setHeartActive(true);
       }, 1000 * 60);
     }
 
@@ -629,7 +627,7 @@ export const IconWrap = (props: {
         ) : likeClicked === true ? (
           <img
             className="icon"
-            src={heartActive ? HeartBigFillIcon : HeartBigIcon}
+            src={broadcastState.heartActive ? HeartBigFillIcon : HeartBigIcon}
             onClick={heartIconClickHandler}
           />
         ) : (
