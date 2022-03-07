@@ -15,6 +15,9 @@ const VoteCallback = () => {
           return;
         }
         if(result.step === 'vote'){
+          if(!result.data.voteNo){
+            return;
+          }
           if(result.data.voteNo !== voteRdx.voteSel.voteNo){
             return;
           }
