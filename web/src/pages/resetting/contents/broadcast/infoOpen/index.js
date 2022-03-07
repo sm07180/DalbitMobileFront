@@ -10,7 +10,7 @@ import Toast from "components/ui/toast/Toast";
 
 const InfoOpen = (props) => {
   const [checkState, setCheckState] = useState(false);
-  const localOpen = [{path: 0, name: "방송 청취 정보 공개", value: 0}, {path: 1, name: "공개", value: 0}, {path: 2, name: "비공개", value: 0}]
+  const localOpen = [{path: -1, name: "방송 청취 정보 공개", value: 0}, {path: 1, name: "공개", value: 0}, {path: 0, name: "비공개", value: 0}]
   const {settingData, setSettingData} = props;
   const [toast, setToast] = useState({state : false, msg : ""});
 
@@ -60,11 +60,11 @@ const InfoOpen = (props) => {
             <span className="title">{localOpen[0].name}</span>
           </div>
           <label className="inputLabel">
-            <input type="checkbox" className={`blind`} name="switch" data-index={0} defaultChecked={true} value={localOpen[0].path} onChange={switchAction} />
+            <input type="checkbox" className={`blind`} name="switch" data-index={0} defaultChecked={settingData.listenOpen === 1 || settingData.listenOpen === 0} value={localOpen[0].path} onChange={switchAction} />
             <span className="switchBtn"/>
           </label>
         </div>
-        <div className={`locationState ${checkState || settingData.listenOpen >= 0 ? "active" : ""}`}>
+        <div className={`locationState ${checkState || settingData.listenOpen !== 2 ? "active" : ""}`}>
           <div className='title'>방송 위치 상태</div>
           <div className='radioWrap'>
             <label className='radioLabel'>
@@ -73,7 +73,7 @@ const InfoOpen = (props) => {
               <span className='radioCategoty'>{localOpen[1].name}</span>
             </label>
             <label className='radioLabel'>
-              <input type="radio" name="broadcastLocation" className='blind' data-index={2} defaultChecked={settingData.listenOpen === 2} value={localOpen[2].path} onChange={switchAction}/>
+              <input type="radio" name="broadcastLocation" className='blind' data-index={2} defaultChecked={settingData.listenOpen === 0} value={localOpen[2].path} onChange={switchAction}/>
               <span className='radioBtn'/>
               <span className='radioCategoty'>{localOpen[2].name}</span>
             </label>

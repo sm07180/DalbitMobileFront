@@ -31,6 +31,12 @@ export const openAuthPage = (formTagRef, context) => {
     UserAgent.match(/LG|SAMSUNG|Samsung/) != null
   ) {
     document.authForm.target = ''
+    const stateFooterParam = {
+      tabName: '',
+      visible: false
+    };
+
+    Hybrid('stateFooter', stateFooterParam);
   } else {
     KMCIS_window = window.open(
       '',
