@@ -70,22 +70,22 @@ const Round_3 = (props) => {
           moreRank={moreRank}
         />
         :
-        <section className="listWrap">
-          <div className="specialRound">
-            <img src={`${IMG_SERVER}/event/rebranding/roulette.png`} alt="roulette" />
-            <p>종합순위 상위 50명에게<br/>주어지는 당첨 기회</p>
-            <span>· 당첨자는 라이브 방송에서 추첨합니다.</span>
-            <span>· 방송 일정은 추후 공지됩니다.</span>
-          </div>
-        </section>
+        <>
+          <section className="listWrap">
+            <div className="specialRound">
+              <img src={`${IMG_SERVER}/event/rebranding/specialRound_roulette.png`} alt="" />
+            </div>
+          </section>
+          <img src={`${IMG_SERVER}/event/rebranding/specialRound_giveaway.png`} alt="" />
+        </>
       }
       {popSpecial && 
-        <LayerPopup title="스페셜 라운드" setPopup={setPopSpecial} close={false}>
+        <LayerPopup setPopup={setPopSpecial} close={false}>
           <section className="specialRound">
-            <img src={`${IMG_SERVER}/event/rebranding/roulette.png`} alt="roulette" />
-            <p>종합순위 상위 50명에게<br/>주어지는 당첨 기회</p>
-            <span>· 당첨자는 라이브 방송에서 추첨합니다.</span>
-            <span>· 방송 일정은 추후 공지됩니다.</span>
+            <img src={`${IMG_SERVER}/event/rebranding/pop_specialRound.png`} alt="" />
+            <span>· 당첨자는 라이브 방송에서 추첨하며 룰렛을 이용합니다.</span>
+            <span>· DJ는 공정성을 위해 회원님들 중 선발합니다.</span>
+            <span>· 방송 일정은 추후에 공지됩니다.</span>
             <SubmitBtn text="확인" onClick={closePopSpecial} />
           </section>
         </LayerPopup>

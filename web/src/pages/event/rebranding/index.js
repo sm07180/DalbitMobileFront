@@ -56,6 +56,7 @@ const Rebranding = () => {
   const [mergeResult, setMergeResult] = useState('')
   const [noticePop1, setNoticePop1] = useState(false)
   const [noticePop2, setNoticePop2] = useState(false)
+  const [giveawayPop, setGiveawayPop] = useState(false)
   const [actionAni, setActionAni] = useState(false)
   
   const [eventInfo, setEventInfo] = useState({
@@ -236,6 +237,10 @@ const Rebranding = () => {
   const noticePopView2 = () => {
     setNoticePop2(true)
   }
+  /* 경품안내 */
+  const giveawayPopView = () => {
+    setGiveawayPop(true)
+  }
   // 스톤 버튼 선택
   const clickSelect = (e) => {
     const {targetValue} = e.currentTarget.dataset;
@@ -375,7 +380,7 @@ const Rebranding = () => {
       >
       <Header title="이벤트" type="back" backEvent={backEvent}/>
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/bg-1.png`} alt="이벤트 이미지" />
+        <img src={`${IMG_SERVER}/event/rebranding/mainVisual-1.png`} alt="이벤트 이미지" />
       </section>
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/bg-2.png`} alt="이벤트 이미지" />
@@ -454,6 +459,7 @@ const Rebranding = () => {
           <li>경품 수령을 원치 않을 경우 1:1문의를 통해 현금으로 지급을 요청하실 수 있습니다.</li>
           <li>더욱 자세한 사항은 이벤트 공지사항을 확인해주시기 바랍니다.</li>
         </ul>
+        <div className='giveawayBtn' onClick={giveawayPopView}>경품안내</div>
       </section>
       {popup.confirmPopup &&
         <Confirm 
@@ -466,6 +472,44 @@ const Rebranding = () => {
       }
       {actionAni &&
         <MergePop result={mergeResult} />
+      }
+      {giveawayPop && 
+        <LayerPopup title="경품안내" setPopup={setGiveawayPop}>
+          <section className="giveawayInfo">
+            <ul className=''>
+              <li>
+                <span>1라운드</span>
+                <ul>
+                  <li>맥북 프로  16형 : 336만원</li>
+                  <li>생로랑 숄더백 : 210만원</li>
+                  <li>갤럭시 22 울트라 512GB : 155만원</li>
+                  <li>플레이스테이션5 : 100만원</li>
+                  <li>아이패드 에어 4세대 : 75만원</li>
+                  <li>닌텐도스위치 OLED + 타이틀패키지 : 50만원</li>
+                  <li>소니 링크버즈 : 30만원</li>
+                </ul>
+              </li>
+              <li>
+                <span>2라운드</span>
+                <ul>
+                  <li>루이비통 삭 플라 BB : 320만원</li>
+                  <li>삼성 갤럭시북 프로 360(윈도우 탑재) : 210만원</li>
+                  <li>아이폰 13 프로 : 150만원</li>
+                  <li>고야드 세나 클러치 PM 블랙 : 110만원</li>
+                  <li>스팀덱 : 70만원(미출시 제품이므로 추후 변동 가능)</li>
+                  <li>마샬 엑톤2 블루투스 스피커 : 44만원</li>
+                  <li>마샬 모티프 ANC 블루투스 이어폰 : 27만원</li>
+                </ul>
+              </li>
+              <li>
+                <span>스페셜 라운드</span>
+                <ul>
+                  <li>롤렉스 서브마리너 흨콤 : 2400만원</li>
+                </ul>
+              </li>
+            </ul>
+          </section>
+        </LayerPopup>
       }
       {noticePop1 && 
         <LayerPopup title="놀다 보면 생기는 스톤들" setPopup={setNoticePop1}>

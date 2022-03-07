@@ -246,12 +246,12 @@
   }
   .specialRound {
     @include flex(center,center,column);
-    height:300px;
     border-radius: 15px;
     background-color:white;
     text-align: center;
+    overflow: hidden;
     img {
-      width:126px;
+      width:100%
     }
     p {
       margin: 8px 0;
@@ -287,9 +287,26 @@
       }
     }
   }
+  .giveawayBtn {
+    position: absolute;
+    top: 14px; right:20px;
+    @include flex(center, center);
+    width: 68px; height: 24px;
+    border-radius: 100px;
+    @include font(13px, 700, #323232);
+    background-color: #FDD600;
+    cursor: pointer;
+  }
   #layerPop {
     .popContainer {
+      width: 328px;
       padding:0;
+      .giveawayInfo {
+        width: 100%; height: 500px;
+        padding: 10px 24px 30px;
+        overflow: auto;
+        box-sizing: border-box;
+      }
       .dallagers {
         width:100%;
         padding:0 28px 32px;
@@ -346,12 +363,16 @@
         width:100%;
         height:auto;
         padding:0 16px 16px;
+        img {
+          width: 182px;
+          margin: 16px 0;
+        }
         .submitBtn {
           position:static;
           left:auto;
           bottom:auto;
           transform:translateX(0);
-          margin-top:35px;
+          margin-top:15px;
           width:100%;
         }
       }
