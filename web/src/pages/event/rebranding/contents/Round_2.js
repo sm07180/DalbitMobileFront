@@ -47,12 +47,17 @@ const Round_2 = (props) => {
         {`${moment(eventFixDate.start).format('YY.MM.DD')} - ${moment(eventFixDate.end).format('MM.DD')}`}
       </section>
       {eventInfo.seq_no === 2 ? 
-        <RoundList 
-          myRankInfo={myRankInfo} 
-          rankInfo={rankInfo}
-          lodingTime={lodingTime}
-          moreRank={moreRank}
-        />
+        <>
+          <RoundList 
+            myRankInfo={myRankInfo} 
+            rankInfo={rankInfo}
+            lodingTime={lodingTime}
+            moreRank={moreRank}
+          />
+          <section>
+            <img src={`${IMG_SERVER}/event/rebranding/giveaway_round1.png`} alt="이벤트 상품 이미지" />
+          </section>        
+        </>
         :
         <section className="listWrap">
           <div className="comingsoon">

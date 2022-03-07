@@ -86,9 +86,6 @@ const RoundList = (props) => {
         </div>
       }
     </section>
-    <section>
-      <img src={`${IMG_SERVER}/event/rebranding/gift-1.png`} alt="이벤트 상품 이미지" />
-    </section>
     </>
   )
 }

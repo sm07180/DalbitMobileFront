@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import Api from 'context/api'
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
+import {IMG_SERVER} from 'context/config'
 import moment from 'moment'
 // global components
 // components
@@ -55,6 +56,9 @@ const Round_1 = (props) => {
         lodingTime={lodingTime} 
         moreRank={moreRank}
       />
+      <section>
+        <img src={`${IMG_SERVER}/event/rebranding/giveaway_round1.png`} alt="이벤트 상품 이미지" />
+      </section>
       {popup.morePopup &&
         <RankSlide 
           rankInfo={rankInfo} 
