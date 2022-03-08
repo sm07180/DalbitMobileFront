@@ -371,23 +371,34 @@
         color: $white;
       }
     }
-    >.btnWrap{
-      justify-content: center;
-      .paginationBtn{
-        width: 120px;
-        height: 48px;
-        background: $DOWNCOLOR;
-        border-radius: 16px;
-        @include font(16px, $Bold, #fff);
-        &.disabled {
-          background-color: #e3e3e3;
-          cursor:not-allowed;
-          pointer-events: none;
-        }
+  }
+  .btnWrap{
+    margin: 5px 0 15px 0;
+    justify-content: center;
+    .paginationBtn{
+      width: 120px;
+      height: 48px;
+      background: $DOWNCOLOR;
+      border-radius: 16px;
+      @include font(16px, $Bold, #fff);
+      &.disabled {
+        background-color: #e3e3e3;
+        cursor:not-allowed;
+        pointer-events: none;
       }
-      .paginationBtn + .paginationBtn{
-        margin-left: 10px;
-      }
+    }
+    .paginationBtn + .paginationBtn{
+      margin-left: 10px;
+    }
+  }
+  .subTitle{
+    @include flex(center);
+    .refreshBtn{
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px;
+      @include BGIMG('broadcast/dalla/listenerList/buttonRefresh.png');
     }
   }
 }
