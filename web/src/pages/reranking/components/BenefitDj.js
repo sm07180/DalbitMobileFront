@@ -69,6 +69,10 @@ export default () => {
             </tr>
           </tbody>
         </table>
+        <div className='infoWrap'>
+          <p className='mainInfo'>획득한 가산점은 스페셜DJ 선발 점수 (일반 100점 만점)에 추가됩니다.</p>
+          <p className='subInfo'>예) 일반 점수 95점 + 가산점 10점 = 총 <span>105</span>점</p>
+        </div>
       </div>
 
       <div className="tableBox">

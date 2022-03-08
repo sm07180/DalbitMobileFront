@@ -634,8 +634,7 @@ const ProfilePage = () => {
       {popup.likePopup &&
         <PopSlide>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     myMemNo={context.profile.memNo} setNoticePop={setNoticePop}
-                     likePopTabState={likePopTabState} closePopupAction={closePopupAction}
+                     myMemNo={context.profile.memNo} likePopTabState={likePopTabState} closePopupAction={closePopupAction}
           />
         </PopSlide>
       }
@@ -655,7 +654,7 @@ const ProfilePage = () => {
       }
 
       {/* 좋아요 -> ? 아이콘 */}
-      {noticePop && <ProfileNoticePop setNoticePop={setNoticePop} />}
+      {popup.commonPopup && <ProfileNoticePop />}
 
       {/* 스페셜DJ 약력 팝업 */}
       {popHistory && <SpecialHistoryList profileData={profileData} setPopHistory={setPopHistory} />}

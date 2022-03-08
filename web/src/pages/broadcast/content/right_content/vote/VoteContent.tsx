@@ -1,26 +1,40 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Utility from "../../../../../components/lib/utility";
-import {delVote, endVote, insMemVote, moveVoteListStep} from "../../../../../redux/actions/vote";
+import {
+  delVote,
+  endVote,
+  insMemVote,
+  moveVoteListStep,
+  moveVoteStep,
+  setVoteSel
+} from "../../../../../redux/actions/vote";
 import {Timer} from "./Timer";
 import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import SubmitBtn from "../../../../../components/ui/submitBtn/SubmitBtn";
 import {VoteResultType, VoteSlctKor} from "../../../../../redux/types/voteType";
 import {initVoteSel} from "../../../../../redux/reducers/vote";
-import { GlobalContext } from "context";
+import {GlobalContext} from "context";
 
-const VoteContent = () => {
+const VoteContent = ({roomOwner}) => {
   const dispatch = useDispatch();
   const { globalState, globalAction } = useContext(GlobalContext);
   const memberRdx = useSelector((state) => state.member);
   const voteRdx = useSelector(({vote})=> vote);
 
   const [more, setMore] = useState(false);
-  const {hour, min, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
+  const {hour, minute, isTimeOver, time, unitKor} = Timer({endDate:voteRdx.voteSel.endDate});
 
   const [selVote, setSelVote] = useState<VoteResultType>(initVoteSel);
+
+  useEffect(()=>{
+    if(isTimeOver && voteRdx.voteSel.voteEndSlct === 's'){
+      setSelVote(initVoteSel);
+    }
+  }, [isTimeOver])
+
   const submitButtonProps = {
-    text: voteRdx.voteSel.voteEndSlct === 'e' ?
+    text: isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' ?
       '투표마감'
       : voteRdx.voteDetailList.filter(f=>f.voteNo === voteRdx.selVoteItem.voteNo).length > 0 ?
         '다시 투표하기' : '투표하기',
@@ -29,8 +43,8 @@ const VoteContent = () => {
 
   const optionBoxActiveClassNames = (item:VoteResultType):string=> {
     if (voteRdx.voteSel.voteEndSlct === 's') {
-      return `optionBox ${selVote.itemNo === item.itemNo ? 'active' : ''}`
-    } else if (voteRdx.voteSel.voteEndSlct === 'e') {
+      return isTimeOver ? `optionBox` : `optionBox ${selVote.itemNo === item.itemNo ? 'active' : ''}`
+    } else if (isTimeOver || voteRdx.voteSel.voteEndSlct === 'e') {
       return `optionBox ${item.rank === 1 ? 'active' : ''}`
     } else {
       return ``;
@@ -62,12 +76,13 @@ const VoteContent = () => {
                 <p><span>{Utility.addComma(voteRdx.voteSel.voteMemCnt)}</span>명 참여</p>
               </div>
               <div className="due">
-                <span>{hour}:{min}</span> {isTimeOver ? '마감' : '마감예정'}
+                <span>{hour}:{minute}</span> {isTimeOver || voteRdx.voteSel.voteEndSlct === 'e' ? '마감' : '마감예정'}
               </div>
             </div>
             {
               memberRdx.memNo === voteRdx.voteSel.memNo &&
-              !isTimeOver && voteRdx.voteSel.voteEndSlct === 's' &&
+              !isTimeOver &&
+              voteRdx.voteSel.voteEndSlct === 's' &&
               <div className="moreBtn" onClick={()=>{
                 setMore(!more)
               }}>
@@ -110,7 +125,7 @@ const VoteContent = () => {
                       <span>{item.voteItemName}</span>
                       <div className={`counterBox ${voteRdx.selVoteItem.itemNo === item.itemNo ? 'active' : ''}`}>
                         <span className="person"/>
-                        {item.voteMemCnt}
+                        <p>{item.voteMemCnt}</p>
                       </div>
                     </div>
                   )
@@ -122,47 +137,46 @@ const VoteContent = () => {
       </DalbitScroll>
 
       {
-        !isTimeOver && voteRdx.voteSel.voteEndSlct === 's' &&
-        <TimeSection/>
+        !isTimeOver &&
+        voteRdx.voteSel.voteEndSlct === 's' &&
+        <section className="timeCheckWrap">
+          <div className="timeCheck">
+            <span className="icon"/>
+            <span>{time}</span>{unitKor} 뒤 마감
+          </div>
+        </section>
       }
-      <SubmitBtn {...submitButtonProps} onClick={()=>{
-        // 시간초과
-        if(isTimeOver) return;
-        // 진행중 아님
-        if(voteRdx.voteSel.voteEndSlct !== 's') return;
-        // 선택한거없음
-        if(!selVote.itemNo) return;
-        // 같은거 선택
-        if(selVote.itemNo === voteRdx.selVoteItem.itemNo) return;
-        // 어드민 투표 안됨
-        if(globalState.shadowAdmin) return;
-        dispatch(insMemVote({
-          voteNo: voteRdx.voteSel.voteNo
-          , roomNo: voteRdx.voteSel.roomNo
-          , memNo: voteRdx.voteSel.memNo
-          , pmemNo: memberRdx.memNo
-          , itemNo: selVote.itemNo
-          , voteItemName: selVote.voteItemName
-        }));
-      }}/>
+      <section className="btnWrap">
+        {
+          roomOwner && voteRdx.voteSel.voteEndSlct === 's' &&
+          <button className="btnRefresh" onClick={()=>{
+            dispatch(moveVoteStep(voteRdx.voteSel));
+          }}/>
+        }
+
+        <SubmitBtn {...submitButtonProps} onClick={()=>{
+          // 시간초과
+          if(isTimeOver) return;
+          // 진행중 아님
+          if(voteRdx.voteSel.voteEndSlct !== 's') return;
+          // 선택한거없음
+          if(!selVote.itemNo) return;
+          // 같은거 선택
+          if(selVote.itemNo === voteRdx.selVoteItem.itemNo) return;
+          // 어드민 투표 안됨
+          if(globalState.shadowAdmin) return;
+          dispatch(insMemVote({
+            voteNo: voteRdx.voteSel.voteNo
+            , roomNo: voteRdx.voteSel.roomNo
+            , memNo: voteRdx.voteSel.memNo
+            , pmemNo: memberRdx.memNo
+            , itemNo: selVote.itemNo
+            , voteItemName: selVote.voteItemName
+          }));
+        }}/>
+      </section>
     </>
   );
 };
-const TimeSection = ()=>{
-  const voteRdx = useSelector(({vote})=> vote);
-  const {time, unitKor, isTimeOver} = Timer({endDate:voteRdx.voteSel.endDate});
-
-  if(isTimeOver){
-    return <></>
-  }
-  return(
-    <section className="timeCheckWrap">
-      <div className="timeCheck">
-        <span className="icon"/>
-        <span>{time}</span>{unitKor} 뒤 마감
-      </div>
-    </section>
-  )
-}
 
 export default VoteContent;

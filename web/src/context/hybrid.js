@@ -48,8 +48,10 @@ export const Hybrid = (func, info) => {
   switch (customHeader['os']) {
     // Android
     case OS_TYPE['Android']: {
-      if (window.android[func] === null || window.android[func] === undefined || typeof window.android[func] !== 'function')
-        return
+      if (window.android[func] === null || window.android[func] === undefined || typeof window.android[func] !== 'function') {
+        return;
+      }
+
       if (info === '' || info === null || info === undefined) {
         window.android[func]()
       } else {

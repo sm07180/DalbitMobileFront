@@ -16,7 +16,7 @@ const initDate ={
 }
 
 export const MAX_END_TIME = 60
-export const MAX_VOTE_ITEM = 20
+export const MAX_VOTE_ITEM = 10
 export const initVoteSel: VoteResultType = {
   voteNo: '',
   memNo: '',
@@ -42,7 +42,7 @@ export const initTempInsVote:InsVoteRequestType = {
   memNo:'',
   roomNo:'',
   voteItemNames:initTempInsVoteVoteItemNames,
-  endTime:10,
+  endTime:0,
   voteItemCnt:initTempInsVoteVoteItemNames.length,
   voteDupliYn:'n',
   voteAnonyYn:'y',
