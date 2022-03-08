@@ -70,7 +70,7 @@ const Round_2 = (props) => {
         </section>
       }
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/giveaway_round1.png`} alt="이벤트 상품 이미지" />
+        <img src={`${IMG_SERVER}/event/rebranding/giveaway_round2.png`} alt="이벤트 상품 이미지" />
       </section>
       {popup.morePopup &&
         <RankSlide 
