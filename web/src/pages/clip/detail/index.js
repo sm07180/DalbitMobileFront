@@ -142,7 +142,7 @@ const ClipDetailPage = (props) => {
       <section className="detailList">
         {clipLastInfo.list.map((row, index) => {
           return (
-            <ClipDetailCore item={row} key={index}/>
+            <ClipDetailCore item={row} key={index} subjectType={searchInfo.subjectType.value} slctType={searchInfo.slctType}/>
           );
         })}
       </section>

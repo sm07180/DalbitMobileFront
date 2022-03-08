@@ -457,6 +457,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   }, [globalState.clipPlayMode]);
 
   const audioEndHandler = async (clipNo) => {
+    console.log("@@@@@@---->>>>>")
     let setClipNo = "";
     if (globalState.clipPlayList?.length === 0) return null;
     if (
