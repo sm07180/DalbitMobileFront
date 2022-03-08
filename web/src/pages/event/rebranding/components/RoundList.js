@@ -20,6 +20,7 @@ const RoundList = (props) => {
 
   const nowTime = moment().format('MMDDHH')
   const roundEnd = moment(eventFixDate.end).format('MMDDHH')
+  const roundStart = moment(eventFixDate.start).format('MMDDHH')
 
   return (
     <section className="listWrap">
@@ -32,7 +33,7 @@ const RoundList = (props) => {
               <div className="nick">{myRankInfo.mem_nick}</div>
             </div>
             {
-              nowTime <= roundEnd &&
+              (nowTime <= roundEnd && nowTime > roundStart)&&
               <div className="listItem">
                 <i className="d">{myRankInfo.ins_d_cnt}</i>
                 <i className="a">{myRankInfo.ins_a_cnt}</i>
