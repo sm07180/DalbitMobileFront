@@ -322,7 +322,7 @@ const ClipPage = () => {
             <h2>
               {/* <img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/> */}
               <span>{subSearchInfo.icon}</span>
-              {`${subSearchInfo.cdNm}은(는) 어떠세요?111111111`}
+              {`${subSearchInfo.cdNm}은(는) 어떠세요?`}
             </h2>
             <button onClick={changeList}>새로고침</button>
           </div>
