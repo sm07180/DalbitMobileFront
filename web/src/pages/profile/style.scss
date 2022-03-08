@@ -215,7 +215,7 @@
         grid-gap:8px;
         padding:0 16px;
         .listColumn {
-          border-radius:8px;
+          border-radius:16px;
           overflow:hidden;
           &:before {
             @include position-center;
