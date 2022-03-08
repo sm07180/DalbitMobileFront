@@ -369,7 +369,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   }, [roomInfo, baseData.isLogin]);
 
   useEffect(() => {
-    console.log("broadcast====>",1)
     if (mode === "broadcast") {
       if (chatInfo !== null && rtcInfo !== undefined && rtcInfo !== null) {
         setBgImage(rtcInfo.roomInfo!.bjProfImg["thumb120x120"]);
@@ -381,7 +380,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         setRoomOwner(chatInfo.roomOwner);
       } else {
         if (roomNo !== "") {
-          console.log("broadcast====>",3)
           broadcastInit();
         } else {
           globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
@@ -457,7 +455,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   }, [globalState.clipPlayMode]);
 
   const audioEndHandler = async (clipNo) => {
-    console.log("@@@@@@---->>>>>")
     let setClipNo = "";
     if (globalState.clipPlayList?.length === 0) return null;
     if (

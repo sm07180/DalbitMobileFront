@@ -45,7 +45,6 @@ export default function ClipPlayerBarButton() {
   }, [clipPlayMode]);
 
   const playModeHandle = useCallback(() => {
-    console.log(clipPlayMode)
     switch (clipPlayMode) {
       case "normal":
         //normal 상태에서 클릭시 한곡 반복으로
