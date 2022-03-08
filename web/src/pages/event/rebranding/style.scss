@@ -173,18 +173,19 @@
       min-width: 0;
       .listItem {
         @include flex(center);
+        line-height: 22px;
         .gender {
           margin-right:4px;
         }
         i {
-          padding-left:12px;
+          padding-left:17px;
           margin-right:8px;
           font-style: normal;
           @include font(12px,$Medium,#6A6A6A);
         }
-        .d {@include BGIMG("event/rebranding/data-d.png");background-position:left center;background-size:10px 12px;}
-        .a {@include BGIMG("event/rebranding/data-a.png");background-position:left center;background-size:10px 12px;}
-        .l {@include BGIMG("event/rebranding/data-l.png");background-position:left center;background-size:10px 12px;}
+        .d {@include BGIMG("event/rebranding/stone-d.png");background-position:left center;background-size:14px 19px;}
+        .a {@include BGIMG("event/rebranding/stone-a.png");background-position:left center;background-size:14px 19px;}
+        .l {@include BGIMG("event/rebranding/stone-l.png");background-position:left center;background-size:14px 19px;}
         .nick {
           flex:1;
           @include font(16px,$Medium,#202020);
