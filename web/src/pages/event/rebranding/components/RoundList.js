@@ -85,7 +85,7 @@ const RoundList = (props) => {
         </div>
         :
         <div className="noList">
-          <img src={`${IMG_SERVER}/event/rebranding/listNone.png`} />
+          <img src={`${IMG_SERVER}/event/rebranding/list_none.png`} />
           <span>참가자들이 dalla를 만들고 있어요!</span>
         </div>
       }

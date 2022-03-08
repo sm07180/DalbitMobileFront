@@ -5,6 +5,10 @@
   @include flex($fd: column);
   width: 100%;
   box-sizing: border-box;
+  .fullImg {
+    width: 100%;
+    image-rendering: -webkit-optimize-contrast;
+  }
   section {
     position:relative;
     >img {
