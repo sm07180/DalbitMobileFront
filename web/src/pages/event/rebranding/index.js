@@ -504,7 +504,7 @@ const Rebranding = () => {
               <li>
                 <span>스페셜 라운드</span>
                 <ul className='depth2'>
-                  <li>롤렉스 서브마리너 흨콤 : 2400만원</li>
+                  <li>롤렉스 서브마리너 흑콤 : 2400만원</li>
                 </ul>
               </li>
             </ul>
@@ -521,7 +521,10 @@ const Rebranding = () => {
               <li>· 받은 별 100개당 1개</li>
               <li>· 부스터도 포함됩니다.</li>
             </ul>
-            <p>받는 스톤은 랜덤으로 지급 됩니다.</p>
+            <div className="infoWrap">
+              <p>받는 스톤은 랜덤으로 지급 됩니다.</p>
+              <p>누적 시간이 아닌 한 번 방송에 입장 후 나갈때 까지의 시간으로 방송 및 청취시간이 집계됩니다.</p>
+            </div>
           </section>
         </LayerPopup>
       }

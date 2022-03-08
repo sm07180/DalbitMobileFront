@@ -377,9 +377,12 @@
           background-color:#F6F6F6;
           @include font(16px,$Regular,#666);
         }
-        p {
+        .infoWrap {
           margin-top:16px;
-          @include font(16px,$Regular,#666);
+          p {
+            margin-bottom: 4px;
+            @include font(16px,$Regular,#666);
+          }
         }
         .feverNotice {
           margin-top:16px;

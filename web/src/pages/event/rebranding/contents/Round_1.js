@@ -55,6 +55,7 @@ const Round_1 = (props) => {
         rankInfo={rankInfo} 
         lodingTime={lodingTime} 
         moreRank={moreRank}
+        eventFixDate={eventFixDate}
       />
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/giveaway_round1.png`} alt="이벤트 상품 이미지" />

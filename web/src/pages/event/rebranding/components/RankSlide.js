@@ -20,7 +20,7 @@ const DallaguersPopSlide = (props) => {
         <div className="scrollRankWrap">
           {rankInfo.map((data,idex) => {
             return (
-              <RankList photoSize={55} listNum={idex} rankList={data} index={idex}>
+              <RankList key={idex} photoSize={55} listNum={idex} rankList={data} index={idex}>
                 <div className="listContent">
                   <div className="listItem">
                     <GenderItems data={data.mem_sex} />

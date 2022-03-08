@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {IMG_SERVER} from 'context/config'
+import {setCommonPopupOpenData} from "redux/actions/common";
+import {useDispatch, useSelector} from "react-redux";
 import Api from 'context/api'
 import moment from 'moment'
 // global components
@@ -16,6 +18,9 @@ const Round_3 = (props) => {
   const eventFixDate = {start: '2022-03-27 00:00:00', end: '2022-03-31 23:59:59'}
   const lodingTime = moment('2022-03-27 01:59:59').format('MMDDHH')
   const nowTime = moment().format('MMDDHH')
+
+  const dispatch = useDispatch()
+  const popup = useSelector(state => state.popup)
   // 
   const [rankInfo, setRankInfo] = useState([])
   const [popSpecial, setPopSpecial] = useState(false)
@@ -44,7 +49,7 @@ const Round_3 = (props) => {
   
   // 랭킹 더보기
   const moreRank = () => {
-    setPopRankSlide(true)
+    dispatch(setCommonPopupOpenData({...popup, morePopup: true}));
   }
 
   useEffect(() => {
@@ -56,7 +61,7 @@ const Round_3 = (props) => {
   return (
     <>
       <section className="date">
-        라운드 1+2 종합순위
+        1라운드 + 2라운드 종합순위
         {
           nowTime > eventFixDate.start &&
             <button className="question" onClick={onPopSpecial}></button>
@@ -68,6 +73,7 @@ const Round_3 = (props) => {
           rankInfo={rankInfo}  
           lodingTime={lodingTime} 
           moreRank={moreRank}
+          eventFixDate={eventFixDate}
         />
         :
         <>
@@ -90,11 +96,11 @@ const Round_3 = (props) => {
           </section>
         </LayerPopup>
       }
-      {popRankSlide &&
+      {popup.morePopup &&
         <RankSlide 
           rankInfo={rankInfo}
+          eventDate={eventFixDate} 
           tabmenuType={tabmenuType} 
-          setPopRankSlide={setPopRankSlide}
         />
       }
     </>

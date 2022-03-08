@@ -13,15 +13,15 @@ import RankList from '../../components/rankList/RankList'
 import '../style.scss'
 
 const RoundList = (props) => {
-  const {myRankInfo, rankInfo, lodingTime, moreRank} = props
+  const {myRankInfo, rankInfo, lodingTime, moreRank, eventFixDate} = props
   const history = useHistory()
   const context = useContext(Context)
   const {token} = context
 
   const nowTime = moment().format('MMDDHH')
+  const roundEnd = moment(eventFixDate.end).format('MMDDHH')
 
   return (
-    <>
     <section className="listWrap">
       <div className="rankWrap">
       {token.isLogin ?
@@ -31,11 +31,14 @@ const RoundList = (props) => {
               <GenderItems data={myRankInfo.mem_sex} />
               <div className="nick">{myRankInfo.mem_nick}</div>
             </div>
-            <div className="listItem">
-              <i className="d">{myRankInfo.ins_d_cnt}</i>
-              <i className="a">{myRankInfo.ins_a_cnt}</i>
-              <i className="l">{myRankInfo.ins_l_cnt}</i>
-            </div>
+            {
+              nowTime <= roundEnd &&
+              <div className="listItem">
+                <i className="d">{myRankInfo.ins_d_cnt}</i>
+                <i className="a">{myRankInfo.ins_a_cnt}</i>
+                <i className="l">{myRankInfo.ins_l_cnt}</i>
+              </div>
+            }            
           </div>
           <div className="listBack">
             <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="dalla" />
@@ -86,7 +89,6 @@ const RoundList = (props) => {
         </div>
       }
     </section>
-    </>
   )
 }
 
