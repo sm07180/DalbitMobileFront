@@ -181,7 +181,7 @@ const DidLogin = (props) => {
         globalCtx.action.alert({title: '달라 사용 제한', msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
-              Hybrid('CloseLayerPopUp')
+              Hybrid('CloseLayerPopup')
             }
           }
         })

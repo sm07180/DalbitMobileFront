@@ -1273,7 +1273,7 @@ export default function LeftSideAgora(props: {
         </div>
         }
 
-{/*        {roomInfo !== null &&
+        {/* {roomInfo !== null &&
         roomInfo.mediaType === MediaType.VIDEO &&
         roomOwner === true && (
           <canvas

@@ -116,8 +116,8 @@ const BroadCastAudioPlayer = ()=>{
                style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)}
                onClick={(e) => e.stopPropagation()} />
           <div className="room-info">
-            <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
-            <p>{rtcInfo?.roomInfo?.title}</p>
+            <p className="title">{rtcInfo?.roomInfo?.title}</p>
+            <p>{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
           </div>
           <div className="counting"/>
         </div>

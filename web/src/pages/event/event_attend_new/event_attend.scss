@@ -16,6 +16,17 @@
 #attendEventPage {
   margin: 0 auto;
 
+  header {
+    padding: 4px;
+    .title {
+      @include position-top-left();
+      width: 100%;
+      letter-spacing: -0.3;
+      pointer-events: none;
+      @include font(18px, 600, #202020);
+    }
+  }
+
   .commonTopWrap {
     position: relative;
 

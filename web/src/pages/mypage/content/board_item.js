@@ -169,7 +169,7 @@ export default (props) => {
             </span>
           </div>
           <div className="list-item__content">
-            <pre>{props.data.contents}</pre>
+            {props.data.contents}
           </div>
         </>
       )}

@@ -15,7 +15,7 @@
       .eventList {
         width: 100%;
         margin-bottom: 18px;
-        border: 2px solid #fff;
+        border: 3px solid #fff;
         border-radius: 16px;
         box-shadow: 0px 1px 2px rgba($color: #000000, $alpha: 0.2);
         overflow: hidden;
@@ -26,7 +26,15 @@
         }
         &.comingSoon {
           .thumbNail {
-            background-image: url("https://image.dalbitlive.com/event/dalla/comingSoon.png");
+            background-image: url("https://image.dalbitlive.com/eventzip/eventZip_comingSoon.png");
+          }
+          .eventInfo {
+            padding: 0;
+            text-align: center;
+            background-color: #FCFCFC;
+            .eventTitle {
+              @include font(13px, 400, #666666);
+            }
           }
         }
         &.end {
@@ -43,15 +51,15 @@
         .thumbNail {
           position: relative;
           width: 100%;
-          padding-bottom: 52.47%;
+          border-radius: 15px 15px 0 0;
+          padding-bottom: 50.31%;
           background-position: center;
           background-repeat: no-repeat;
           background-size: contain;
-          -webkit-mask: linear-gradient(to bottom, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
         }
         .eventInfo {
-          width: 100%; height: 62px;
-          padding: 4px 16px 16px;
+          width: 100%; height: 70px;
+          padding: 12px 16px 16px;
           box-sizing: border-box;
           .eventTitle {
             @include font(18px, 700, #202020);

@@ -87,6 +87,7 @@ export default function SendGift(props: {
   const categoryList = common.itemCategories;
 
   const [inputValue, setInputValue] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   // 아이템 선택하기
   const selectItem = (idx: number, selectItem: any) => {
@@ -163,7 +164,6 @@ export default function SendGift(props: {
         const {djTtsSound, djNormalSound} = roomInfo;
         const {ttsSound, normalSound} = settingObj;
 
-        console.log('soundItemSettingMemo in declare', {djTtsSound, djNormalSound}, {ttsSound, normalSound});
         return {ttsItemBool: djTtsSound && ttsSound, soundItemBool: djNormalSound && normalSound };
       }
     } else {
@@ -307,6 +307,7 @@ export default function SendGift(props: {
     if (preventClick === true) {
       return;
     }
+    setIsLoading(true);
 
     const ttsText = ttsInputRef.current ? ttsInputRef.current.value : "";
 
@@ -400,6 +401,7 @@ export default function SendGift(props: {
     dispatchLayer({
       type: "INIT",
     });
+    if(isLoading) setIsLoading(false);
 
     preventClick = false;
   }
@@ -515,6 +517,11 @@ export default function SendGift(props: {
                   );
                 })}
             </div>
+            {isLoading &&
+              <div className="loading" style={{position: 'absolute'}}>
+                <span/>
+              </div>
+            }
             <DalbitScroll preventAutoHidden={true} always={true}>
               <ul className="giftList">
                 {giftList &&

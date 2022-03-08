@@ -460,7 +460,7 @@ export default function chatting() {
   // ---------------------------------------------------------------------------------------------
   return (
     <>
-      <CustomHeader title={mailboxState.mailboxInfo?.title} type="back">
+      <Header title={mailboxState.mailboxInfo?.title} type="back">
         <div className="buttonGroup">
           <button className="btnMore" onClick={() => setMore(!more)}>
             <img src="https://image.dalbitlive.com/mailbox/ico_more_vertical_g.svg" alt="더보기" />
@@ -472,7 +472,7 @@ export default function chatting() {
             <li onClick={exitMail}>나가기</li>
           </ul>
         </div>
-      </CustomHeader>
+      </Header>
       <div className="chatBoxPage">
         {/* list view */}
         <div className="chatPrevWrapper" ref={PrevRef}>

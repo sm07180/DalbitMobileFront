@@ -83,6 +83,7 @@ export class ChatSocketHandler {
   // set 하는 곳 : /mypage/broadcast/setting, /mypage/broadcast/setting/edit
   // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
   public userSettingObj: userBroadcastSettingType | null = null;
+
   constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?: any) {
     this.dispatch = dispatch;
     this.postErrorState =  (window as any)?.postErrorState;
@@ -2136,6 +2137,39 @@ export class ChatSocketHandler {
                         console.error('reqDjSetting => this.broadcastAction.dispatchRoomInfo : null');
                       }
                     }
+                    return null;
+                  }
+                  case "reqGetStoneByBV" :  // 방송/청취 20분당: 소켓-> DB/프론트
+                  case "reqGetStoneByGift" :  // 선물보내기,받기시: api -> 소켓 -> 프론트
+                    //타입 갯수에 따라서 다수개의 속성을 1개의 속성으로 쪼개서 배열로 만들어 전달 ex) {d: 1, a: 1, l: 1} => [{d: 1}, {a: 1}, {l: 1}]
+                    let dCnt = 0;
+                    let aCnt = 0;
+                    let lCnt = 0;
+                    const {dStone, aStone, lStone} = data?.reqGetStoneByGift || data?.reqGetStoneByBV;
+                    if(dStone > 0) dCnt++;
+                    if(aStone > 0) aCnt++;
+                    if(lStone > 0) lCnt++;
+
+                    let arr: any = [];
+                    if(dCnt> 0) arr.push({dStone});
+                    if(aCnt> 0) arr.push({aStone});
+                    if(lCnt> 0) arr.push({lStone});
+                    this.broadcastStateChange['setStoneAniQueueState'](arr);
+
+                    return null;
+                  case "reqStartFeverTime": { // 피버타임 시작
+                    /*
+                    1. 달5000개: api -> 소켓 -> 프론트
+                    2. 10명 이하, 30분 이상, 선물시: api -> 소켓 -> 프론트
+                    */
+                    //reqStartFeverTime: {type 1: 선물, 2: 인원+방송시간+선물, time 진행시간}
+                    const {type, time} = data?.reqStartFeverTime;
+
+                    this.broadcastStateChange['setFeverTimeState'](true);
+                    return null;
+                  }
+                  case "reqStopFeverTime": { // 피버타임 종료
+                    //this.broadcastStateChange['setFeverTimeState'](false);
                     return null;
                   }
 
