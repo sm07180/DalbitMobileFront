@@ -58,10 +58,7 @@ const Round_2 = (props) => {
             lodingTime={lodingTime}
             moreRank={moreRank}
             eventFixDate={eventFixDate}
-          />
-          <section>
-            <img src={`${IMG_SERVER}/event/rebranding/giveaway_round1.png`} alt="이벤트 상품 이미지" />
-          </section>        
+          />        
         </>
         :
         <section className="listWrap">
@@ -72,6 +69,9 @@ const Round_2 = (props) => {
           </div>
         </section>
       }
+      <section>
+        <img src={`${IMG_SERVER}/event/rebranding/giveaway_round1.png`} alt="이벤트 상품 이미지" />
+      </section>
       {popup.morePopup &&
         <RankSlide 
           rankInfo={rankInfo} 

@@ -82,7 +82,7 @@ const Round_3 = (props) => {
               <img src={`${IMG_SERVER}/event/rebranding/specialRound_roulette.png`} alt="" />
             </div>
           </section>
-          <img src={`${IMG_SERVER}/event/rebranding/specialRound_giveaway.png`} alt="" />
+          <img src={`${IMG_SERVER}/event/rebranding/giveaway_specialRound.png`} alt="" />
         </>
       }
       {popSpecial && 
