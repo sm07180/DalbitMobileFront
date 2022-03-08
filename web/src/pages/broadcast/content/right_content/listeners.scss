@@ -371,5 +371,23 @@
         color: $white;
       }
     }
+    >.btnWrap{
+      justify-content: center;
+      .paginationBtn{
+        width: 120px;
+        height: 48px;
+        background: $DOWNCOLOR;
+        border-radius: 16px;
+        @include font(16px, $Bold, #fff);
+        &.disabled {
+          background-color: #e3e3e3;
+          cursor:not-allowed;
+          pointer-events: none;
+        }
+      }
+      .paginationBtn + .paginationBtn{
+        margin-left: 10px;
+      }
+    }
   }
 }

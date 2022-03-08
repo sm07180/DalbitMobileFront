@@ -89,7 +89,7 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
     <>
       <h3 className="blind">청취자 리스트</h3>
       <div className="userListWrap">
-        <DalbitScroll width={342} onHoverBarVisible={true}>
+        <DalbitScroll width={342} height={700} onHoverBarVisible={true}>
           <div className="scroll-box">
             <h4 className="subTitle">방송 DJ</h4>
             <div className="userBox">
@@ -139,7 +139,10 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
                 </div>
               </>
             }
-            <h4 className="subTitle">청취자</h4>
+            <h4 className="subTitle">
+              청취자
+              
+            </h4>
             <div className="userBox">
               {isLogin === true && Array.isArray(listenersList) && (
                 <ListenerListItem
@@ -153,6 +156,10 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
             </div>
           </div>
         </DalbitScroll>
+        <div className="btnWrap">
+          <button className="paginationBtn disabled">&lt;</button>
+          <button className="paginationBtn">&gt;</button>
+        </div>
       </div>
     </>
   );
