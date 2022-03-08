@@ -63,7 +63,7 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
     if(webview === 'new') {
       return gtx.action.alert({msg: '방송을 듣는 도중에 클립을 청취할 수 없습니다.'});
     }else {
-      ClipPlayFn(clipNo, type, gtx, history);
+        ClipPlayFn(clipNo, type, gtx, history);
     }
   }else {
     gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
