@@ -81,14 +81,6 @@ const EventZip = () => {
           </div>
         </div>
 
-        <div className={`eventList ${inviteEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/invite", inviteEventEnd)}}>
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7590.png)`}}/>
-          <div className='eventInfo'>
-            <div className='eventTitle'>친구 초대, 초대왕 도전!</div>
-            <div className='eventDate'>02.21 - 03.07</div>
-          </div>
-        </div>
-
         <div className={`eventList ${playMakerEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/playmaker", playMakerEventEnd)}}>
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7583.png)`}}/>
           <div className='eventInfo'>
@@ -101,6 +93,14 @@ const EventZip = () => {
           <div className='thumbNail'/>
           <div className='eventInfo'>
             <div className='eventTitle'>이벤트가 시작되면 배너를 통해 알려드려요.</div>
+          </div>
+        </div>
+
+        <div className={`eventList ${inviteEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/invite", inviteEventEnd)}}>
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7590.png)`}}/>
+          <div className='eventInfo'>
+            <div className='eventTitle'>친구 초대, 초대왕 도전!</div>
+            <div className='eventDate'>02.21 - 03.07</div>
           </div>
         </div>
       </div>
