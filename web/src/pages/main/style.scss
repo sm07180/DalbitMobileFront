@@ -189,6 +189,9 @@
               background-color: white;
               @include border(white,50%,3px);
             }
+            &.off{
+              background:#ccc !important;
+            }
           }
           p {
             width: 100%;
@@ -197,6 +200,15 @@
             @include fontCut;
             box-sizing: border-box;
           }
+        }
+        .listMore{
+          @include flex(center, center);
+          width: 70px;
+          height: 70px;
+          background-color: #f6f6f6;
+          border-radius: 100%;
+          @include font(20px, $Bold, #acacac);
+          cursor: pointer;
         }
       }
     }
