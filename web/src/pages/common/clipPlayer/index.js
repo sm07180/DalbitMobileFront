@@ -76,7 +76,7 @@ export default (props) => {
     <div id="player">
       <div className="inner-player">
         <div className="inner-player-bg"
-             style={{backgroundImage:`url(${clipPlayerInfo.bgImg})`}}
+             style={{background:`url(${clipPlayerInfo.bgImg}) center/contain no-repeat`}}
         />
         <div className="info-wrap">
           <div className="equalizer">
