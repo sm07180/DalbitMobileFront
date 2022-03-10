@@ -27,9 +27,9 @@ const DallaguersPopSlide = (props) => {
                     <div className="nick">{data.mem_nick}</div>
                   </div>
                 </div>
-                <div className="listBack">
+                {/* <div className="listBack">
                   <span>{data.dalla_cnt}</span>
-                </div>
+                </div> */}
               </RankList>
             )
           })}
