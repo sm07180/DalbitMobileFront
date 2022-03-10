@@ -8,7 +8,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import AttendPage from './attend'
 import RoulettePage from './roulette'
 import qs from 'query-string'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 import Header from 'components/ui/header/Header'
 
