@@ -14,11 +14,16 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {setProfileTabData} from "redux/actions/profile";
+import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
+
+  const dispatch = useDispatch();
+  const profileTab = useSelector(state => state.profileTab);
 
   //context
   const context = useContext(Context);
@@ -242,6 +247,7 @@ const ProfileWrite = () => {
 
   useEffect(() => {
     action === 'modify' && getDetailData();
+    dispatch(setProfileTabData({...profileTab, isRefresh: false}));
   }, []);
 
   return (

@@ -82,7 +82,7 @@ const TopSwiper = (props) => {
         </div>
         :
         <div className="swiper-slide">
-          <div className="photo" style={{backgroundColor:"#eee"}}>
+          <div className="photo" style={{backgroundColor:"#eee", height: '480px'}}>
             <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
           </div>
         </div>

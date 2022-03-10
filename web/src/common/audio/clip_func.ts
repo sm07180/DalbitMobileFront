@@ -4,8 +4,10 @@ import {ClipPlayFn} from 'pages/clip/components/clip_play_fn'
 // Server Api
 import {broadcastExit} from "common/api";
 import {isDesktop} from "../../lib/agent";
-import {isHybrid, isMobileWeb} from "../../context/hybrid";
+import {Hybrid, isAndroid, isHybrid, isMobileWeb} from "../../context/hybrid";
 import {RoomJoin} from 'context/room'
+import Utility from "../../components/lib/utility";
+import Api from "../../context/api";
 
 // clipNo: string, gtx, history, clipTable?: boolean, webview?: 'new' | '', isPush?: 'push' | '', type?: 'dal' | 'all'
 // pc: clipNo, gtx, history, clipTable
@@ -61,7 +63,74 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
     }
   }else if(isHybrid()) {
     if(webview === 'new') {
-      return gtx.action.alert({msg: '방송을 듣는 도중에 클립을 청취할 수 없습니다.'});
+      const successCallback = () => {
+        const isDj = Utility.getCookie('isDj');
+        if(isDj === 'true') {
+          return gtx.action.alert({msg: '방송 중에 클립을 재생할 수 없습니다.'});
+        }else {
+          const broadState = Utility.getCookie('listen_room_no')
+          const isBroadPlaying = broadState != 'undefined' && broadState != 'null';
+          const isClipPlaying = !!Utility.getCookie('clip-player-info');
+          const playClip = () => {
+            Api.postClipPlay({clipNo}).then(res => {
+              let totalData = {
+                playing: res.data,
+                playListData: {
+                  url: '',
+                  isPush: false
+                },
+                isPlaying: isClipPlaying,
+              }
+
+              Hybrid('ClipPlayerJoinFromWebViewPopup', totalData);
+            })
+          }
+
+          if(isBroadPlaying) { // 청취중인 방송방이 있다
+            gtx.action.alert({
+              type: 'confirm',
+              msg: '청취중인 방송방이 있습니다. 클립을 재생하시겠습니까?',
+              callback: () => {
+                Hybrid('ExitRoom', '');
+                playClip();
+              }
+            })
+            /*if(isAndroid()) {
+              gtx.action.alert({
+                type: 'confirm',
+                msg: '청취중인 방송방이 있습니다. 클립을 재생하시겠습니까?',
+                callback: () => {
+                  Hybrid('ExitRoom', '');
+                  playClip();
+                }
+              })
+            }else {
+
+            }*/
+          }else if(isClipPlaying) { // 청취중인 클립이 있다
+            gtx.action.alert({
+              type: 'confirm',
+              msg: '청취중인 클립이 있습니다. 클립을 재생하시겠습니까?',
+              callback: () => {
+                playClip();
+              }
+            })
+          }else {
+            playClip();
+          }
+        }
+      }
+
+      const failCallback = () => {
+        return gtx.action.alert({msg: '방송중 또는 방송 청취중에 클립을 재생할 수 없습니다.'});
+      }
+
+      const appVersionCheck = async () => {
+        const targetVersion = isAndroid() ? '1.9.3' : '1.7.6';
+        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+      }
+
+      appVersionCheck();
     }else {
       ClipPlayFn(clipNo, type, gtx, history);
     }
