@@ -33,9 +33,9 @@ export default () => {
   }
 
   const backButton = () => {
-    if(webview === 'new'){
+    if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
-    }else{
+    } else {
       return history.goBack()
     }
   }
@@ -75,7 +75,7 @@ export default () => {
 
   return (
     <div id="attendEventPage">
-      <Header title='이벤트' type='back' goBack={backButton}/>
+      <Header title='출석체크 이벤트' type='back' goBack={backButton}/>
       <div className="commonTopWrap" ref={commonTopRef}>
         {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top-1.png`} />}
       </div>
