@@ -27,6 +27,8 @@ import CloseIcon from "../static/ic_close_m.svg";
 // component
 import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
+import DallagersTopSection from "./DallagersTopSection";
+
 import {useDispatch, useSelector} from "react-redux";
 import {endVote, moveVoteListStep} from "../../../redux/actions/vote";
 
@@ -644,6 +646,10 @@ export default function ChatHeaderWrap(prop: any) {
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
       </div>
+      {/* 달라져스 버튼 & 애니메이션 영역 */}
+      {roomInfo?.stoneEventInfo.visible &&
+        <DallagersTopSection/>
+      }
 
       {/* 달나라 갈꺼야 버튼 */}
       {moonLandEventBool &&
@@ -999,7 +1005,6 @@ const ChatHeaderWrapStyled = styled.div`
       }
     }
   }
-  
 
   .moon-section {
     position: absolute;

@@ -29,6 +29,9 @@
   section {
     position:relative;
     margin-bottom:32px;
+    &:last-child {
+      margin-bottom:0px;
+    }
   }
   .topSwiper {
     max-width:480px;

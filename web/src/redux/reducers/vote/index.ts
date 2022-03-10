@@ -16,7 +16,7 @@ const initDate ={
 }
 
 export const MAX_END_TIME = 60
-export const MAX_VOTE_ITEM = 20
+export const MAX_VOTE_ITEM = 10
 export const initVoteSel: VoteResultType = {
   voteNo: '',
   memNo: '',

@@ -11,6 +11,10 @@ const initialState: ICommonPopupState = {
   questionMarkPopup: false, // 물음표 버튼
   historyPopup: false, //
 
+  // 달라져스 이벤트
+  morePopup: false,
+  confirmPopup: false, 
+
   /* 공통 팝업 */
   commonPopup: false,
 

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-
 // api
 import { getBroadcastListeners } from "common/api";
 
@@ -18,6 +17,7 @@ import { tabType } from "pages/broadcast/constant";
 // component
 import ListenerListItem from "./listener_list_item";
 import { AuthType } from "constant";
+import {thumbInlineStyle} from "../../../../common/pip/PlayerStyle";
 
 export default function ListenerList(props: { roomInfo: any; roomOwner: boolean; roomNo: string; profile: any }) {
   const { roomInfo, roomOwner, roomNo, profile } = props;
@@ -85,7 +85,6 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
       });
     }
   }, [broadcastState.roomInfo]);
-
   return (
     <>
       <h3 className="blind">청취자 리스트</h3>
@@ -102,7 +101,7 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
                       viewProfile(roomInfo.bjMemNo);
                     }}
                   >
-                    <span className="user__thumb" style={{ backgroundImage: `url(${roomInfo.bjProfImg.url})` }}>
+                    <span className="user__thumb" style={thumbInlineStyle(roomInfo.bjProfImg)}>
                       <span className="blind">{roomInfo.bjNickNm}</span>
                     </span>
                     <div className={`user__badge dj ${roomInfo.isNew === true ? "new" : ""}`}>

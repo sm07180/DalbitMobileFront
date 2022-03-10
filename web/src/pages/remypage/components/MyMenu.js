@@ -17,10 +17,13 @@ const MyMenu = (props) => {
 
   return (
     <>
-      <div className="btnList">
+      <div className="myMenuWrap">
         {data.map((list,index) => {
           return (
-            <button key={index} onClick={()=>{golink(list.path)}}>{list.menuNm}</button>
+            <div className={`myMenuList`} key={index} onClick={()=>{golink(list.path)}}>
+              <span className={`myMenuName ${list.isNew ? "new" : ""}`}>{list.menuNm}</span>
+              <span className='rightArrow'></span>
+            </div>
           )
         })}
       </div>

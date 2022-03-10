@@ -132,7 +132,7 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
 
       appVersionCheck();
     }else {
-      ClipPlayFn(clipNo, type, gtx, history);
+        ClipPlayFn(clipNo, type, gtx, history);
     }
   }else {
     gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)

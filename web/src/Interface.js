@@ -207,7 +207,7 @@ export default () => {
           msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
-              Hybrid('CloseLayerPopUp')
+              Hybrid('CloseLayerPopup')
             }
           }
         })
@@ -315,7 +315,7 @@ export default () => {
           msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
-              Hybrid('CloseLayerPopUp')
+              Hybrid('CloseLayerPopup')
             }
           }
         })
