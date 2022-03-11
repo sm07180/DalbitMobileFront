@@ -389,7 +389,7 @@
         &#timeRankwer1st {
           &::after {
             content: "";
-            @include position-top-left(-7px, -45px);
+            @include position-top-left(-7px, -200px);
             display: inline-block;
             width: 175px; height: 90px;
             @include BGIMG("main/dalla/broadcastList_timeRanker-1.png");
@@ -398,17 +398,17 @@
             &::after {
               animation: timeRankerShow 0.3s linear forwards;
             }
-          }
-          &.hide {
-            &::after {
-              animation: timeRankerHide 0.3s linear forwards;
+            &.hide {
+              &::after {
+                animation: timeRankerHide 0.3s linear forwards;
+              }
             }
           }
         }
         &#timeRankwer2nd {
           &::after {
             content: "";
-            @include position-top-left(-7px, -45px);
+            @include position-top-left(-7px, -200px);
             display: inline-block;
             width: 175px; height: 90px;
             @include BGIMG("main/dalla/broadcastList_timeRanker-2.png");
@@ -416,18 +416,18 @@
           &.show {
             &::after {
               animation: timeRankerShow 0.3s linear forwards;
-            }
-          }
-          &.hide {
-            &::after {
-              animation: timeRankerHide 0.3s linear forwards;
+            }            
+            &.hide {
+              &::after {
+                animation: timeRankerHide 0.3s linear forwards;
+              }
             }
           }
         }
         &#timeRankwer3rd {
           &::after {
             content: "";
-            @include position-top-left(-7px, -45px);
+            @include position-top-left(-7px, -200px);
             display: inline-block;
             width: 175px; height: 90px;
             @include BGIMG("main/dalla/broadcastList_timeRanker-3.png");
@@ -436,10 +436,10 @@
             &::after {
               animation: timeRankerShow 0.3s linear forwards;
             }
-          }
-          &.hide {
-            &::after {
-              animation: timeRankerHide 0.3s linear forwards;
+            &.hide {
+              &::after {
+                animation: timeRankerHide 0.3s linear forwards;
+              }
             }
           }
         }

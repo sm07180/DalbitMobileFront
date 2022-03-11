@@ -26,7 +26,6 @@ const LiveView = (props) => {
         timeRank1.classList.remove('hide');
       } else {
         timeRank1.classList.add('hide');
-        timeRank1.classList.remove('show');
       }
     }
 
@@ -37,7 +36,6 @@ const LiveView = (props) => {
         timeRank2.classList.remove('hide');
       } else {
         timeRank2.classList.add('hide');
-        timeRank2.classList.remove('show');
       }
     }
 
@@ -48,7 +46,6 @@ const LiveView = (props) => {
         timeRank3.classList.remove('hide');
       } else {
         timeRank3.classList.add('hide');
-        timeRank3.classList.remove('show');
       }
     }
   }
