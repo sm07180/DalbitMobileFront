@@ -73,7 +73,7 @@ export const initialState:VoteStateType = {
   callback: null
 }
 
-const member = createReducer<VoteStateType, VoteActions>(initialState,{
+const vote = createReducer<VoteStateType, VoteActions>(initialState,{
   "vote/SET_VOTE_ACTIVE" : (state, {payload})=>{
     return {...state, active:payload}
   },
@@ -107,5 +107,5 @@ const member = createReducer<VoteStateType, VoteActions>(initialState,{
 });
 
 
-export default member;
+export default vote;
 

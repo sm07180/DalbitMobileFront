@@ -443,7 +443,7 @@ export default function RightSide(props: {
 
   useEffect(() => {
     if (isLogin === false) {
-      setRightTabType && setRightTabType(tabType.LISTENER);
+      setRightTabType && setRightTabType(tabType.PROFILE);
     }
 
     if (isLogin === true) {
