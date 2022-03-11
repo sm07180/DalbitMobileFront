@@ -73,7 +73,7 @@ export const audioEndHandler = async () => {
   const history = useHistory();
   const { globalState } = useContext(GlobalContext);
   const { clipPlayer, clipPlayMode } = globalState;
-
+    console.log("audioEndHandler====>",clipPlayMode,clipPlayer)
   if (globalState.clipPlayList?.length === 0) return null;
   if (globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
     if (clipPlayMode === "allLoop") {

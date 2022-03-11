@@ -24,11 +24,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
 const myMenuItem = [
-  {menuNm: '리포트', path:'report'},
-  {menuNm: '클립', path:'myclip'},
-  {menuNm: '설정', path:'setting'},
-  {menuNm: '공지사항', path:'notice'},
-  {menuNm: '고객센터', path:'customer'},
+  {menuNm: '서비스 설정', path:'setting', isNew: false},
+  {menuNm: '공지사항', path:'notice', isNew: true},
+  {menuNm: '고객센터', path:'customer', isNew: false},
 ]
 
 const Remypage = () => {
@@ -40,7 +38,9 @@ const Remypage = () => {
   const {splash, token, profile} = context;
   const customHeader = JSON.parse(Api.customHeader)
   const commonPopup = useSelector(state => state.popup);
+  const alarmData = useSelector(state => state.newAlarm);
   const dispatch = useDispatch();
+  
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -115,6 +115,14 @@ const Remypage = () => {
     closePopup(dispatch);
   }
 
+  useEffect(() => {
+    if(alarmData.notice > 0){
+      myMenuItem[1].isNew = true;
+    } else {      
+      myMenuItem[1].isNew = false;
+    }
+  }, [alarmData.notice]);
+
   // 페이지 시작
   switch (settingCategory) {
     case 'report' :
@@ -136,10 +144,26 @@ const Remypage = () => {
             <MyInfo data={profile} openLevelPop={openLevelPop} />
           </section>
           <section className='mydalDetail'>
-            <div className="dalCount">{Utility.addComma(profile?.dalCnt)}달</div>
+            <div className="dalCount">
+              보유한 달
+              <span>{Utility.addComma(profile?.dalCnt)}개</span>
+            </div>
             <div className="buttonGroup">
-              <button onClick={() => history.push('/wallet')}>내 지갑</button>
               <button className='charge' onClick={storeAndCharge}>충전하기</button>
+            </div>
+          </section>
+          <section className='myData'>
+            <div className='myDataList' onClick={() => history.push('/wallet')}>
+              <span className='walletIcon'></span>
+              <span className="myDataType">내 지갑</span>
+            </div>
+            <div className='myDataList' onClick={() => history.push('/report')}>
+              <span className='reportIcon'></span>
+              <span className="myDataType">방송리포트</span>
+            </div>
+            <div className='myDataList' onClick={() => history.push('/myclip')}>
+              <span className='clipIcon'></span>
+              <span className="myDataType">클립 관리</span>
             </div>
           </section>
           <section className="myMenu">
@@ -150,8 +174,6 @@ const Remypage = () => {
               <span className="version">현재 버전 {customHeader.appVer}</span>
             </div>
             }
-          </section>
-          <section className="buttonWrap">
             <button className='logout' onClick={logout}>로그아웃</button>
           </section>
 

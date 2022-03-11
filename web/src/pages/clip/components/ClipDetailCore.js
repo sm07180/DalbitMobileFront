@@ -7,7 +7,7 @@ import {Context} from "context";
 import {useHistory} from "react-router-dom";
 
 const ClipDetailCore = (props) => {
-  const { item } = props;
+  const { item,subjectType,slctType } = props;
   const context = useContext(Context);
   const history = useHistory();
 
@@ -17,7 +17,17 @@ const ClipDetailCore = (props) => {
 
   const playClip = (e) => {
     const { clipNo } = e.currentTarget.dataset;
-
+    const playListInfoData = {
+      dateType: 0,
+      page: 1,
+      records: 100,
+      slctType: slctType.index,
+      subjectType:subjectType
+    }
+    sessionStorage.setItem(
+      "clipPlayListInfo",
+      JSON.stringify(playListInfoData)
+    );
     if (clipNo !== undefined) {
       const clipParam = { clipNo: clipNo, gtx: context, history };
 

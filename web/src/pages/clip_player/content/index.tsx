@@ -121,7 +121,6 @@ export default function ClipContent() {
         dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: globalState.clipPlayList });
       }
     }
-
     if (playListInfo.hasOwnProperty("listCnt")) {
       if (playListInfo.hasOwnProperty("subjectType")) {
         //메인 top3
