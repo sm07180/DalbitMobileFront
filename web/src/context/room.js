@@ -249,7 +249,7 @@ export const RoomJoin = async (obj) => {
         sessionStorage.removeItem('room_active')
         Room.context.action.alert({
           buttonMsg: '로그인',
-          msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          msg: `<div id="nonMemberPopup" style="border:1px solid red"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
           callback: () => {
             window.location.href = '/login'
           }

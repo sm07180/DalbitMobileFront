@@ -23,10 +23,18 @@ const ClipList = (props) => {
   // 클립 듣기
   const playClip = (e) => {
     const { clipNo } = e.currentTarget.dataset;
-
+    const playListInfoData = {
+      dateType: 0,
+      page: 1,
+      records: 10,
+      slctType: 0
+    }
+    sessionStorage.setItem(
+      "clipPlayListInfo",
+      JSON.stringify(playListInfoData)
+    );
     if (clipNo !== undefined) {
       const clipParam = { clipNo: clipNo, gtx: context, history };
-
       NewClipPlayerJoin(clipParam);
     }
   };

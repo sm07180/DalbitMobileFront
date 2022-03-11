@@ -32,7 +32,7 @@ import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import {broadcastExit} from "common/api";
+import {broadcastExit, welcomeEventDayCheckerUpdate} from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -1273,7 +1273,7 @@ export default function LeftSideAgora(props: {
         </div>
         }
 
-{/*        {roomInfo !== null &&
+        {/* {roomInfo !== null &&
         roomInfo.mediaType === MediaType.VIDEO &&
         roomOwner === true && (
           <canvas
@@ -1350,6 +1350,19 @@ export default function LeftSideAgora(props: {
             />
           </StampIconWrapStyled>
         )}
+        {/* 웰컴이벤트 버튼 */}
+        {roomInfo?.eventInfoMap?.visible &&
+        <FloatingIconWrapStyled
+          className="floating_icon_wrap"
+          onClick={async () => {
+            const {data, code, message} = await welcomeEventDayCheckerUpdate();
+            console.log('welcomeEventDayCheckerUpdate=>', data, code, message);
+            history.push("/event/welcome");
+          }}
+        >
+          <img src="https://image.dalbitlive.com/event/welcome/floatingBtn.png" alt="신입 WELCOME 이벤트" />
+        </FloatingIconWrapStyled>
+        }
         <RandomMsgWrap
           roomInfo={roomInfo}
           roomOwner={roomOwner}
@@ -1694,5 +1707,19 @@ const LottieDisplayStyled = styled.div`
     .content-wrap {
       margin: 0 auto;
     }
+  }
+`;
+const FloatingIconWrapStyled = styled.div`
+  position: absolute;
+  right: 13px;
+  bottom: 63px;
+  cursor: pointer;
+  z-index: 3;
+  width : 70px;
+  height : 70px;
+  
+  img{
+    width:100%;
+    height:100%;
   }
 `;

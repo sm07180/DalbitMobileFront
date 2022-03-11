@@ -7,7 +7,7 @@ import {Context} from "context";
 import {useHistory} from "react-router-dom";
 
 const ClipDetailCore = (props) => {
-  const { item } = props;
+  const { item,subjectType,slctType } = props;
   const context = useContext(Context);
   const history = useHistory();
 
@@ -17,7 +17,17 @@ const ClipDetailCore = (props) => {
 
   const playClip = (e) => {
     const { clipNo } = e.currentTarget.dataset;
-
+    const playListInfoData = {
+      dateType: 0,
+      page: 1,
+      records: 100,
+      slctType: slctType.index,
+      subjectType:subjectType
+    }
+    sessionStorage.setItem(
+      "clipPlayListInfo",
+      JSON.stringify(playListInfoData)
+    );
     if (clipNo !== undefined) {
       const clipParam = { clipNo: clipNo, gtx: context, history };
 
@@ -28,7 +38,7 @@ const ClipDetailCore = (props) => {
   return (
     <div className="listRow" data-clip-no={item.clipNo} onClick={playClip}>
       <div className="photo">
-        <img src={item.bgImg.url} alt={`${item.nickName}`} onError={handleImgError}/>
+        <img src={item.bgImg.thumb292x292} alt={`${item.nickName}`} onError={handleImgError}/>
       </div>
       <div className="listInfo">
         <div className="listItem">

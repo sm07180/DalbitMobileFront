@@ -98,7 +98,7 @@ const BroadCastAudioPlayer = ()=>{
     <div id="player" style={{display: isShowPlayer ? "" : "none"}}>
       <div className="inner-player" onClick={playerBarClickEvent}>
         <div className="inner-player-bg"
-             style={{background: `url("${rtcInfo?.roomInfo?.bgImg.thumb500x500}") center/contain no-repeat`}} />
+             style={{background: `url("${rtcInfo?.roomInfo?.bjProfImg.thumb500x500}") center/contain no-repeat`}} />
         <div className="info-wrap">
           <div className="equalizer">
             <Lottie
@@ -116,8 +116,8 @@ const BroadCastAudioPlayer = ()=>{
                style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)}
                onClick={(e) => e.stopPropagation()} />
           <div className="room-info">
-            <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
-            <p>{rtcInfo?.roomInfo?.title}</p>
+            <p className="title">{rtcInfo?.roomInfo?.title}</p>
+            <p>{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
           </div>
           <div className="counting"/>
         </div>

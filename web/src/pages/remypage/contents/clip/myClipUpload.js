@@ -33,6 +33,16 @@ const MyClipUpload = (props) => {
   const playClip = (clipNo, memNo) => {
     if (searchInfo.myClipType === 0) {
       if (!clipNo) return;
+      const playListInfoData = {
+        memNo: context.globalState.baseData.memNo,
+        page: 1,
+        records: 100
+      }
+
+      sessionStorage.setItem(
+        "clipPlayListInfo",
+        JSON.stringify(playListInfoData)
+      );
       const clipParam = {clipNo: clipNo, gtx: context, history};
       NewClipPlayerJoin(clipParam);
     } else {

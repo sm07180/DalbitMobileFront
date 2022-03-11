@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react'
 import {VoteResultType} from "../../../../../redux/types/voteType";
 import moment from "moment";
 
-type ReturnType = {
+type TimerReturnType = {
   hour: string, minute: string, unitKor: '분'|'초', time: string, isTimeOver: boolean
 }
-export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
+export const Timer = (props: Pick<VoteResultType, 'endDate'>):TimerReturnType => {
 
   const endDateMomentProps = {...props.endDate.date, month:props.endDate.date.month-1, ...props.endDate.time};
   const [remainTime, setRemainTime] = useState(Number(
@@ -23,8 +23,9 @@ export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
     const unit = 1000;
     const timer = setInterval(() => {
       setRemainTime(prevState => {
-        if(prevState < 1){
+        if(prevState - unit < 1){
           clearInterval(timer);
+          return 0
         }
         return prevState - unit
       })
@@ -46,7 +47,7 @@ export const Timer = (props: Pick<VoteResultType, 'endDate'>):ReturnType => {
   const unitKor = '분';
   const isTimeOver = moment(endDateMomentProps).isSameOrBefore(moment.now());
   // return {hour, minute, min, sec, time, unitKor, isTimeOver};
-  const dummy:ReturnType = {hour: '00', minute: '00', unitKor: '분', time: '00', isTimeOver: true};
+  const dummy:TimerReturnType = {hour: '00', minute: '00', unitKor: '분', time: '00', isTimeOver: true};
   if(props.endDate.date.year > 0){
     return {hour, minute, time, unitKor, isTimeOver};
   }else{

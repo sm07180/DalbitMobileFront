@@ -4,6 +4,7 @@ import {IMG_SERVER} from 'context/config'
 import {authReq} from 'pages/self_auth'
 import {Context} from 'context'
 import moment from 'moment'
+import qs from 'query-string'
 
 import Api from 'context/api'
 
@@ -14,10 +15,13 @@ import PopupChoice from './content/popupChoice'
 
 import './style.scss'
 import PopupItems from "pages/event/welcome/content/popupItems";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const EventWelcome = () => {
   const history = useHistory()
   const context = useContext(Context)
+  const {webview} = qs.parse(location.search)
+
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
@@ -26,7 +30,16 @@ const EventWelcome = () => {
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
   const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
-  
+
+  // 뒤로가기 이벤트
+  const backEvent = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      return history.goBack()
+    }
+  };
+
   const colorInfo = useMemo(() => {
     let bgColor = '';
     let btnColor = '';
@@ -206,7 +219,7 @@ const EventWelcome = () => {
 
   return (
     <div id="welcome" style={{background: `${colorInfo.bgColor}`}}>
-      <Header title="이벤트" type="back" />
+      <Header title="이벤트" type="back" backEvent={backEvent}/>
       <img src={`${IMG_SERVER}/event/welcome/welcomeTop-${colorInfo.bgUrl}.png`} className="bgImg" />
       <Tabmenu tab={tabContent.name}>
         <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} btnColor={colorInfo.btnColor}/>

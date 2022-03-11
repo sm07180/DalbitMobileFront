@@ -29,7 +29,7 @@ legend {
   @include position-horizon;
   top:0;
   margin-top:-48px;
-  z-index: 10;
+  z-index: 100;
   // background-color: rgba(127, 127, 127, 0.3);
   // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
   &.rank {
@@ -431,15 +431,19 @@ legend {
       }
     }
     .info-wrap {
+      flex: 1;
       position:relative;
-      z-index: 1;
       @include flex(center);
+      width: 100%;
+      z-index: 1;
+      overflow: hidden;
       .equalizer {
         width: 22px;
         height: 27px;
         margin-right: 8px;
       }
       .thumb {
+        flex: none;
         position: relative;
         @include flex(center,center);
         width: 55px;
@@ -462,14 +466,14 @@ legend {
         }
       }
       .room-info {
-        width: 256px;
+        width: 100%;
         font-size: 13px;
-
+        overflow: hidden;
         .title {
           width: 100%;
-          margin-bottom: 3px;
+          margin-bottom: 2px;
           font-size: 16px;
-          font-weight: 300;
+          font-weight: 500;
           @include fontCut;
         }
         p {
@@ -490,6 +494,8 @@ legend {
       }
     }
     .buttonGroup {
+      flex: none;
+      margin-left: 30px;
       @include flex(center,center);
       .playToggle__play,
       .playToggle__stop {
