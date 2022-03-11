@@ -133,6 +133,10 @@ export default function ListenerListItem(props: {
         callback: async () => {
           const res = await broadKickOut({ roomNo: roomNo, blockNo: data.memNo });
           if (res.result === "success") {
+            broadcastAction.dispatchRoomInfo({
+              type: "isListenerUpdate",
+              data: {},
+            });
             KickAfterBan(data);
           } else {
             globalAction.setAlertStatus &&
