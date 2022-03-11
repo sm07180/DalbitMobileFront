@@ -94,8 +94,8 @@ const ProfileWrite = () => {
         context.action.toast({msg: message});
 
         if (result === 'success') {
-          // history.goBack();
-          location.replace("/myProfile");
+          history.goBack();
+          // location.replace("/myProfile");
         }
       });
     } else if (type === 'fanBoard') {

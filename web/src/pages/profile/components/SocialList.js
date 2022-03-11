@@ -13,7 +13,7 @@ import Utility from "components/lib/utility";
 import API from "context/api";
 
 const SocialList = (props) => {
-  const {socialList, socialFixList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchLikeData} = props
+  const {socialList, socialFixList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, fetchLikeData, likeInfo } = props
   const history = useHistory();
   const context = useContext(Context);
   const {profile} = context;
@@ -89,7 +89,10 @@ const SocialList = (props) => {
                 )}
                 <div className="info">
                   <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
-                  <DataCnt type={"goodCnt"} value={item.rcv_like_cnt} clickEvent={() => fetchLikeData(item.noticeIdx, item.mem_no)}/>
+                  {likeInfo === "y" ?
+                    <i className={`dataCnt goodCnt`} onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "like")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                    : <i className={`dataCnt goodCnt`} onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "cancel")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  }
                 </div>
               </div>
             </div>
@@ -141,7 +144,12 @@ const SocialList = (props) => {
               )}
               <div className="info">
                 <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
-                {type === 'feed' &&<DataCnt type={"goodCnt"} value={item.rcv_like_cnt} clickEvent={() => fetchLikeData(item.noticeIdx, item.mem_no)}/>}
+                {type === 'feed' && likeInfo === "y" ?
+                  <i className={`dataCnt goodCnt`} //좋아요
+                     onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "like")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  : <i className={`dataCnt goodCnt`} //좋아요 취소
+                       onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "cancel")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                }
               </div>
             </div>
           </div>
