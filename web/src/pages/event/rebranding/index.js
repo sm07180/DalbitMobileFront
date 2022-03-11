@@ -380,7 +380,7 @@ const Rebranding = () => {
       >
       <Header title="이벤트" type="back" backEvent={backEvent}/>
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/mainVisual-1.png`} alt="이벤트 이미지" />
+        <img src={`${IMG_SERVER}/event/rebranding/mainVisual-1-fix.png`} alt="이벤트 이미지" />
       </section>
       <section>
         <img src={`${IMG_SERVER}/event/rebranding/bg-2.png`} alt="이벤트 이미지" />
