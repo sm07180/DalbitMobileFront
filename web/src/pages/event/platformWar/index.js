@@ -20,7 +20,7 @@ const PlatformWar = () => {
       <div className='content'>
         <div className='imageBox'>
           <img
-          src={`${IMG_SERVER}/event/dalla/7677/eventPage-7677.png`}
+          src={`${IMG_SERVER}/event/platformWar/eventPage_platformWar-finalRound.png`}
           alt="플랫폼의 자존심을 건 일천만원 노래대전"
           className="img__full"
           />
