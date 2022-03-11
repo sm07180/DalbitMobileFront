@@ -126,7 +126,7 @@ const TopRanker = (props) => {
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
-                          {rankSlct === "CUPID" ?
+                          {rankSlct === "CUPID" && data.djProfImg ?
                             <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
                               <div className='cupidHeader'>Honey</div>
                               <div className='cupidContent'>
