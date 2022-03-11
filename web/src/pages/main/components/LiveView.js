@@ -22,8 +22,10 @@ const LiveView = (props) => {
             //타임뱃지만 출력
             const timeBadge = list.liveBadgeList.filter((data)=> data?.text.indexOf('타임')>-1 );
 
+            console.log(timeBadge[0]?.text);
+
             return (
-              <div className="listRow" key={index} onClick={() => {
+              <div className={`listRow ${timeBadge.length > 0 ? "timeRankwer" : ""}`} key={index} onClick={() => {
                 RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
               }}>
                 <div className="photo">
@@ -36,18 +38,6 @@ const LiveView = (props) => {
                     <BadgeItems data={list} type={'isNew'} />
                     <BadgeItems data={list} type={'isBadge'} />
                     {/* <BadgeItems data={timeBadge} type={'liveBadgeList'} /> */}
-                    {
-                      //타임뱃지만 출력
-                      timeBadge.length > 0 &&
-                      <em
-                        className={`badgeItem`}
-                        style={{
-                          background: `linear-gradient(to right, ${timeBadge[0].startColor}, ${timeBadge[0].endColor}`
-                        }}>
-                        {timeBadge[0].icon !== '' && <img src={timeBadge[0].icon} alt="뱃지아이콘" />}
-                        <span>{timeBadge[0].text}</span>
-                      </em>
-                    }
                   </div>
                   <div className="listItem">
                     <span className='title'>{list.title}</span>
