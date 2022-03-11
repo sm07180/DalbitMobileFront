@@ -25,7 +25,7 @@ const Round_1 = (props) => {
     Api.getDallagersRankList({
       seqNo: 1,
       pageNo: 1,
-      pagePerCnt: 9999,
+      pagePerCnt: 100,
     }).then((res) => {
       if (res.result === 'success') {
         setRankInfo(res.data)

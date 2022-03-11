@@ -98,7 +98,7 @@ const BroadCastAudioPlayer = ()=>{
     <div id="player" style={{display: isShowPlayer ? "" : "none"}}>
       <div className="inner-player" onClick={playerBarClickEvent}>
         <div className="inner-player-bg"
-             style={{background: `url("${rtcInfo?.roomInfo?.bgImg.thumb500x500}") center/contain no-repeat`}} />
+             style={{background: `url("${rtcInfo?.roomInfo?.bjProfImg.thumb500x500}") center/contain no-repeat`}} />
         <div className="info-wrap">
           <div className="equalizer">
             <Lottie

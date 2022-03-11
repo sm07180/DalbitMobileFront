@@ -69,7 +69,7 @@ export default (props) => {
       >
         <div
           className="inner-player-bg"
-          style={{backgroundImage:`url(${info && info.bjProfImg})`}}
+          style={{background:`url(${info && info.bjProfImg}) center/contain no-repeat`}}
         />
         <div className="info-wrap">
           <div className="equalizer">
