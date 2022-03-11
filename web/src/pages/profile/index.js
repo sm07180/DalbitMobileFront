@@ -298,6 +298,8 @@ const ProfilePage = () => {
       getFeedData();
     } else if(res.message === "이미 좋아요를 보내셨습니다.") {
       fetchLikeCancelData(regNo, mMemNo);
+    } else {
+      context.action.alert({msg: res.message});
     }
   }
 
@@ -310,6 +312,8 @@ const ProfilePage = () => {
     });
     if(res.result === "success") {
       getFeedData();
+    } else {
+      context.action.alert({msg: res.message});
     }
   }
 
@@ -464,6 +468,7 @@ const ProfilePage = () => {
         if (result === 'success') {
           const feedList = feedData.feedList.concat([]).filter((feed, _index) => feed.noticeIdx !== index);
           dispatch(setProfileFeedData({...feedData, feedList}));
+          getFeedData();
         } else {
           context.action.toast({msg: message});
         }

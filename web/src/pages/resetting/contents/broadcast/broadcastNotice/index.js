@@ -21,7 +21,7 @@ const BroadcastNotice = () => {
     }, 3000);
   }
 
-  /* 등록된 방송공지 클릭시 */
+  /* 등록된 방송공지 클릭시 값 가져오기 */
   const selectNotice = (e) => {
     let selectVal = e.currentTarget.innerText;
     const {targetIndex} = e.currentTarget.dataset;
@@ -79,7 +79,7 @@ const BroadcastNotice = () => {
     })
     if(res.result === "success") {
       toastMessage("방송 공지가 수정 되었습니다.")
-      setNoticeSelect({...noticeSelect, val: "", index: -1});
+      setNoticeSelect({state: false, val: "", index: -1});
       fetchData();
     }
   }
@@ -107,7 +107,7 @@ const BroadcastNotice = () => {
     <div id="title">
       <Header position="sticky" title="방송 공지" type="back"/>
       <section className="titleInpuBox">
-        <TextArea max={1000} list={noticeList} setList={setNoticeList} select={noticeSelect} setSelect={setNoticeSelect}
+        <TextArea max={1000} type={"방송 공지"} list={noticeList} setList={setNoticeList} select={noticeSelect} setSelect={setNoticeSelect}
                   fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
       </section>
       {noticeList.length > 0 &&

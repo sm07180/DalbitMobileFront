@@ -50,6 +50,7 @@ const SettingPush = () => {
         if(v.value = res.data[v.key]) {v.path = true}
         return v;
       }))
+      console.log(res);
       setMyAlimType(res.data.alimType);
     } else {
       context.action.alert({msg: res.message});
@@ -75,7 +76,9 @@ const SettingPush = () => {
     const res = await API.appNotify_modify({
       data: {isAll: alarmArray[0].value, alimType: myAlimType, ...alarmObj}
     })
+    console.log(res);
     if(res.result === "success") {
+
       }
   }
 
@@ -143,7 +146,9 @@ const SettingPush = () => {
   }, []);
 
   useEffect(() => {
-    postAlarmData();
+    if(myAlimType !== -1) {
+      postAlarmData();
+    }
   }, [myAlimType]);
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import './textArea.scss'
 import {Context} from "context";
 
 const TextArea = (props) => {
-  const { max, list, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
+  const { max, list, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData, type } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("");
@@ -29,23 +29,37 @@ const TextArea = (props) => {
   }
 
   const submit = () => {
-    if(list.length < 3){
-      setList(list.concat(textvalue))
-      setTextValue("");
-      setValueCount(0);
-      fetchAddData();
+    if(type === "방송 공지") {
+      if(list.length < 2) {
+        setList(list.concat(textvalue));
+        setTextValue("");
+        setValueCount(0);
+        fetchAddData();
+      } else {
+        context.action.alert({msg: "더 이상 추가하실 수 없습니다."});
+      }
     } else {
-      context.action.alert({msg: "더 이상 추가하실 수 없습니다."})
+      if(list.length < 3){
+        setList(list.concat(textvalue))
+        setTextValue("");
+        setValueCount(0);
+        fetchAddData();
+      } else {
+        context.action.alert({msg: "더 이상 추가하실 수 없습니다."})
+      }
     }
   }
 
   const submitEdit = () => {
-      fetchModifyData();
+    fetchModifyData();
+    setSelect({state: false, val: "", index: -1});
+    setList(list.splice(select.index));
+
   }
 
   const removeList = () => {
     fetchDeleteData();
-    setSelect({state: false, val: "", index: -1,});
+    setSelect({state: false, val: "", index: -1});
     setList(list.splice(select.index));
   }
 

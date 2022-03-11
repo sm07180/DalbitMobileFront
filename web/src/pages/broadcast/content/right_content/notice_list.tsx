@@ -154,7 +154,6 @@ export default function NoticeList(props: any) {
                     수정하기
                   </button>
               }
-
             </div>
           </div>
         ) : (

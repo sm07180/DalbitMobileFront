@@ -92,6 +92,7 @@ const Post = (props) => {
   };
 
   useEffect(() => {
+    if(!(context.token.isLogin)) {history.push("/login")}
     fetchData();
     if(isDesktop) {
       fetchMypageNewCntData(context.profile.memNo);
@@ -104,10 +105,6 @@ const Post = (props) => {
       window.removeEventListener("scroll", scrollEvt);
     }
   }, [postListInfo]);
-
-  useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
-  }, []);
 
   return (
     <div id="notice">

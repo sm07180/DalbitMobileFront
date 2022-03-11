@@ -30,7 +30,7 @@ const SocialList = (props) => {
 
   const swiperFixFeeds = {
     slidesPerView: 'auto',
-    spaceBetween: 8
+    spaceBetween: 8,
   }
 
   const photoClickEvent = (memNo) => {
@@ -38,6 +38,15 @@ const SocialList = (props) => {
       history.push(`/profile/${memNo}`)
     }
   }
+
+  /* 피드 삭제시 스와이퍼 업데이트용 */
+  useEffect(() => {
+    if(socialFixList !== undefined) {
+      const swiper = document.querySelector('.swiper-container').swiper;
+      swiper.update();
+      // swiper.slideTo(0);
+    }
+  }, [socialFixList])
 
   return (
     <div className="socialListWrap">
