@@ -315,6 +315,7 @@
     @include flex;
     .btnRefresh{
       @include flex(center,center);
+      flex: none;
       width: 50px;
       height: 48px;
       @include border($DOWNCOLOR, 16px);
