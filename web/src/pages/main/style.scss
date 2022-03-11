@@ -446,6 +446,7 @@
         .cupidRanker {
           display: inline-block;
           width: 18px; height: 18px;
+          margin-right: 2px;
           &.cupidRanker-1 {
             @include BGIMG("main/dalla/broadcastList_cupid-1.png");
           }
