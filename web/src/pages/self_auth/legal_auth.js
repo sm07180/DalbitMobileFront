@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef} from 'react'
+import React, {useContext, useState, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
@@ -17,6 +17,8 @@ import icFemale from './static/ico_female.svg'
 import icMale from './static/ico_male.svg'
 import icCheckOff from './static/ico-checkbox-off.svg'
 import icCheckOn from './static/ico-checkbox-on.svg'
+import {isDesktop} from "lib/agent";
+import {useHistory} from "react-router-dom";
 
 //
 export default (props) => {
@@ -34,6 +36,8 @@ export default (props) => {
   const [nation, setNation] = useState('0')
   const [term1, setTerm1] = useState(false)
   const [term2, setTerm2] = useState(false)
+
+  const history = useHistory();
 
   //formData
   const [formState, setFormState] = useState({
@@ -170,6 +174,19 @@ export default (props) => {
     context.action.updateWalletIdx(1)
     window.history.back()
   }
+
+  const updateDispatch = () => {
+    if(isDesktop()) {
+      history.push('/wallet?exchange')
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("self-auth", updateDispatch);
+    return () => {
+      document.removeEventListener("self-auth", updateDispatch);
+    };
+  }, []);
 
   //---------------------------------------------------------------------
   return (

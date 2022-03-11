@@ -204,7 +204,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/wallet?exchange')
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/wallet?exchange')
+                  }
                 }}>
                 확인
               </button>
