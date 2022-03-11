@@ -19,7 +19,6 @@ const SettingPush = () => {
   const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
   const context = useContext(Context);
   const [toast, setToast] = useState({state : false, msg : ""});
-  const [value, setValue] = useState({});
   //푸쉬 알림 설정 리스트
   const [alarmArray, setAlarmArray] = useState([
     {key: 'isAll', value: 0, text: '전체 알림 수신', msg: '전체 알림 수신 시<br>', path: false},
@@ -50,7 +49,6 @@ const SettingPush = () => {
         if(v.value = res.data[v.key]) {v.path = true}
         return v;
       }))
-      console.log(res);
       setMyAlimType(res.data.alimType);
     } else {
       context.action.alert({msg: res.message});
@@ -76,9 +74,7 @@ const SettingPush = () => {
     const res = await API.appNotify_modify({
       data: {isAll: alarmArray[0].value, alimType: myAlimType, ...alarmObj}
     })
-    console.log(res);
     if(res.result === "success") {
-
       }
   }
 
@@ -149,9 +145,6 @@ const SettingPush = () => {
     if(myAlimType !== -1) {
       postAlarmData();
     }
-  }, [myAlimType]);
-
-  useEffect(() => {
     if(!first) {
       if(myAlimType === "n") {toastMessage("알림 모드가 무음으로 변경되었습니다."); first = !first;}
       else if(myAlimType === "s") {toastMessage("알림 모드가 소리로 변경되었습니다."); first = !first;}
