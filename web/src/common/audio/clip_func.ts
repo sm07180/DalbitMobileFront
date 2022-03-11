@@ -87,15 +87,7 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
           }
 
           if(isBroadPlaying) { // 청취중인 방송방이 있다
-            gtx.action.alert({
-              type: 'confirm',
-              msg: '청취중인 방송방이 있습니다. 클립을 재생하시겠습니까?',
-              callback: () => {
-                Hybrid('ExitRoom', '');
-                playClip();
-              }
-            })
-            /*if(isAndroid()) {
+            if(isAndroid()) {
               gtx.action.alert({
                 type: 'confirm',
                 msg: '청취중인 방송방이 있습니다. 클립을 재생하시겠습니까?',
@@ -105,8 +97,8 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
                 }
               })
             }else {
-
-            }*/
+              return gtx.action.alert({msg: '방송중 또는 방송 청취중에\n클립을 재생할 수 없습니다.'});
+            }
           }else if(isClipPlaying) { // 청취중인 클립이 있다
             gtx.action.alert({
               type: 'confirm',
@@ -122,11 +114,11 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
       }
 
       const failCallback = () => {
-        return gtx.action.alert({msg: '방송중 또는 방송 청취중에 클립을 재생할 수 없습니다.'});
+        return gtx.action.alert({msg: '방송중 또는 방송 청취중에\n클립을 재생할 수 없습니다.'});
       }
 
       const appVersionCheck = async () => {
-        const targetVersion = isAndroid() ? '1.9.3' : '1.7.6';
+        const targetVersion = isAndroid() ? '1.9.3' : '1.7.8';
         await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
       }
 

@@ -38,10 +38,7 @@ export default (props) => {
         }else if(resultCode === '-1') {
           context.action.alert({
             title: '기존 정보와 일치하지 않습니다.',
-            msg: `연락처가 변경되어 휴면 해제가 불가능하시다면\n1:1문의로 신분증을 접수해주시기 바랍니다.`,
-            callback: () => {
-              // 비로그인 1:1문의 페이지로
-            }
+            msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
           })
         }else {
           context.action.alert!({

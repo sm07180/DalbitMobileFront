@@ -247,7 +247,6 @@ const ProfileWrite = () => {
 
   useEffect(() => {
     action === 'modify' && getDetailData();
-    dispatch(setProfileTabData({...profileTab, isRefresh: false}));
   }, []);
 
   return (

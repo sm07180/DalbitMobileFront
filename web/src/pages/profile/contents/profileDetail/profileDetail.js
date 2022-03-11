@@ -172,7 +172,6 @@ const ProfileDetail = (props) => {
 
   useEffect(() => {
     getAllData(1, 9999);
-    dispatch(setProfileTabData({...profileTab, isRefresh: false}));
   }, []);
 
   useEffect(() => {
@@ -477,8 +476,7 @@ export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
   if(!history) return;
   if (type !== 'feed' && type !== 'fanBoard') return;
 
-  console.log('getProfileDetail');
-  dispatch(setProfileTabData({...profileTab, isRefresh: false}));
+  dispatch(setProfileTabData({...profileTab, isRefresh: false})); // 프로필 탭 초기화 여부
 
   if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
       history.push(`/profileDetail/${memNo}/${type}/${index}`);

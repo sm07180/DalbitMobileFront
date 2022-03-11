@@ -59,8 +59,7 @@ const ProfilePage = () => {
 
   const [webview, setWebview] = useState('');
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
-  const [callProfileData, setCallProfileData] = useState(false); // 프로필 이동시 데이터 콜할건지
-  const [profileReady, setProfileReady] = useState(false); // 프로필 mount 후 ready
+  const [profileReady, setProfileReady] = useState(false); // 페이지 mount 후 ready
 
   const [morePopHidden, setMorePopHidden] = useState(false); // slidePop이 unmount 될때 꼬여서 임시로 처방
 
@@ -98,10 +97,10 @@ const ProfilePage = () => {
   };
 
   /* 피드 데이터 호출 */
-  const getFeedData = () => {
+  const getFeedData = (isInit) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      pageNo: feedData.paging.next,
+      pageNo: isInit ? 1 : feedData.paging.next,
       pagePerCnt: feedData.paging.records,
       topFix: 0,
     }
@@ -127,10 +126,10 @@ const ProfilePage = () => {
   }
 
   /* 팬보드 데이터 */
-  const getFanBoardData = () => {
+  const getFanBoardData = (isInit) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      page: fanBoardData.paging.next,
+      page: isInit ? 1 : fanBoardData.paging.next,
       records: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
@@ -154,10 +153,10 @@ const ProfilePage = () => {
   }
 
   /* 클립 데이터 */
-  const getClipData = () => {
+  const getClipData = (isInit) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      page: clipData.paging.next,
+      page: isInit ? 1 : clipData.paging.next,
       records: clipData.paging.records
     }
     Api.getUploadList(apiParams).then(res => {
@@ -342,6 +341,7 @@ const ProfilePage = () => {
 
   /* 스크롤 이벤트 */
   const scrollEvent = useCallback((scrollTarget, callback) => {
+    console.log('scroll');
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
@@ -370,6 +370,8 @@ const ProfilePage = () => {
       document.addEventListener('scroll', profileScrollEvent);
     }
 
+    console.log(item, profileTab.tabList);
+
     if(item === profileTab.tabList[0]) {
       dispatch(setProfileFeedData({...feedData, paging: profilePagingDefault, isLastPage: false}));
       scrollEventHandler();
@@ -382,7 +384,7 @@ const ProfilePage = () => {
     }
   }
 
-  const setProfileTab = (param) => {
+  const setProfileTabName = (param) => {
     dispatch(setProfileTabData({
       ...profileTab,
       tabName: param
@@ -405,13 +407,7 @@ const ProfilePage = () => {
           }
         }
       });
-      setProfileTab(profileTab.tabList[tabState]);
-    }else {
-      if(profileTab.isRefresh) {
-        setProfileTab(profileTab.tabList[0]);
-      }else {
-        // dispatch(setProfileTabData({...profileTab, isRefresh: true}));
-      }
+      setProfileTabName(profileTab.tabList[tabState]);
     }
   }
 
@@ -468,24 +464,24 @@ const ProfilePage = () => {
     }
   }
 
-  const profileTabCheck = () => {
-    if(profileTab.tabName === profileTab.tabList[0]) {
-      console.log('tabCheck')
-      getFeedData();
-      setScrollPagingCnt(1);
-    }else if(profileTab.tabName === profileTab.tabList[1]) {
-      getFanBoardData();
-      setScrollPagingCnt(1);
-    }else if(profileTab.tabName === profileTab.tabList[2]) {
-      getClipData();
-      setScrollPagingCnt(1);
+  const profileTabCheck = (isInit) => {
+    if(profileTab.isRefresh) {
+      if(profileTab.tabName === profileTab.tabList[0]) {
+        getFeedData(isInit);
+        setScrollPagingCnt(1);
+      }else if(profileTab.tabName === profileTab.tabList[1]) {
+        getFanBoardData(isInit);
+        setScrollPagingCnt(1);
+      }else if(profileTab.tabName === profileTab.tabList[2]) {
+        getClipData(isInit);
+        setScrollPagingCnt(1);
+      }
     }
   }
 
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
-      console.log('scrollPagingCnt')
       getFeedData();
     }else if(profileTab.tabName === profileTab.tabList[1] && scrollPagingCnt > 1 && !fanBoardData.isLastPage) {
       getFanBoardData();
@@ -494,52 +490,46 @@ const ProfilePage = () => {
     }
   }, [scrollPagingCnt]);
 
-  /* 피드 마지막 페이지 호출 이펙트 */
+  /* 피드 마지막 페이지 호출 체크 */
   useEffect(() => {
     if(feedData.isLastPage){
       removeScrollEvent();
     }
   }, [feedData.isLastPage])
 
-  /* 팬보드 마지막 페이지 호출 이펙트 */
+  /* 팬보드 마지막 페이지 호출 체크 */
   useEffect(() => {
     if(fanBoardData.isLastPage){
       removeScrollEvent();
     }
   }, [fanBoardData.isLastPage])
 
-  /* 클립 마지막 페이지 호출 이펙트 */
+  /* 클립 마지막 페이지 호출 체크 */
   useEffect(() => {
     if(clipData.isLastPage){
       removeScrollEvent();
     }
   }, [clipData.isLastPage])
 
-  /* 프로필 상단 데이터 */
+  /* 페이지 이동할때 탭 초기화 상태인지 체크한다 */
   useEffect(() => {
-    if(context.token.isLogin) {
-      if(profileTab.isRefresh) {
-        console.log('useEffect Reset');
-        resetTabData();
-      }
-      setCallProfileData(true);
-    }
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if(callProfileData) {
-      getProfileData();
-      profileTabCheck();
-      setCallProfileData(false);
-      setProfileReady(true);
+    if(context.token.isLogin && profileReady) {
       document.addEventListener('scroll', profileScrollEvent);
+
+
+      /*setProfileTabName(profileTab.tabList[0]);
+      resetTabData();
+      getProfileData(); // 프로필 상단 데이터
+      profileTabCheck(); // 프로필 하단 탭 및 데이터
+      document.addEventListener('scroll', profileScrollEvent);*/
     }
-  }, [callProfileData]);
+  }, [location.pathname, profileReady]);
 
   /* 피드 / 팬보드 / 클립 */
   useEffect(() => {
     if(profileReady) {
-      profileTabCheck();
+      // getProfileData(); // 프로필 상단 데이터
+      // profileTabCheck();
     }
   }, [profileTab.tabName])
 
@@ -547,15 +537,53 @@ const ProfilePage = () => {
     if(!context.token.isLogin) {
       return history.replace('/login');
     }
+
+
+    console.log(profileTab.isRefresh, profileTab.tabName)
+    getProfileData(); // 프로필 상단 데이터
+
+
+    if(profileTab.isRefresh) { // 프로필 탭 초기화
+      setProfileTabName(profileTab.tabList[0]);
+      getFeedData(true);
+      // setScrollPagingCnt(1);
+    }else { // 초기화 안하는 경우
+      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }
+
+      dispatch(setProfileTabData({...profileTab, isRefresh: true}));
+    }
+
+
+    /*if(profileTab.isRefresh) {
+      setProfileTabName(profileTab.tabList[0]);
+      resetTabData();
+    }else {
+      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }
+
+      dispatch(setProfileTabData({...profileTab, isRefresh: true}));
+    }*/
+
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     parameterManager(); // 주소 뒤에 파라미터 체크
+
+    setProfileReady(true);
+
     return () => {
-      resetProfileData();
-      console.log('unmount', profileTab.isRefresh);
-      if(profileTab.isRefresh) {
-        console.log('unmount Reset')
-        // resetTabData();
-      }
+      // resetProfileData();
+      // resetTabData();
+
       removeScrollEvent();
     }
   }, []);
@@ -588,7 +616,7 @@ const ProfilePage = () => {
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap" ref={tabmenuRef}>
-          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTab} tabChangeAction={socialTabChangeAction} />
+          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction} />
           {(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])
             && <button onClick={() => {
             profileTab.tabName === profileTab.tabList[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo, dispatch, profileTab} );
