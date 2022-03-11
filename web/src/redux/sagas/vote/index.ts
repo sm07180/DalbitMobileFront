@@ -4,7 +4,6 @@ import {
 	DEL_VOTE, END_VOTE,
 	GET_VOTE_DETAIL_LIST,
 	GET_VOTE_LIST,
-	GET_VOTE_SEL,
 	INS_MEM_VOTE,
 	INS_VOTE, MOVE_VOTE_INS_STEP, MOVE_VOTE_LIST_STEP,
 	MOVE_VOTE_STEP,
@@ -44,21 +43,20 @@ function* insMemVote(param) {
 				...param.payload
 				, voteSlct: 's'
 			}
-			const getVoteSel = yield call(Api.getVoteSel, reSelectParam);
-			yield put({type: SET_VOTE_SEL, payload: getVoteSel.data})
-
-			const getVoteDetailList = yield call(Api.getVoteDetailList, reSelectParam);
-			const data:Array<VoteResultType> = getVoteDetailList.data;
-
-			if(data){
-				yield put({type: SET_VOTE_DETAIL_LIST, payload: data})
-				const sel = data.find(f=>f.memVoteYn === 'y');
-				if(sel){
-					yield put({type: SET_SEL_VOTE_ITEM, payload: sel})
+			// const selAndDetailList = yield call(reSelectParam);
+			const selAndDetailList = yield call(Api.getVoteSelAndDetailList, reSelectParam);
+			if(selAndDetailList){
+				yield put({type: SET_VOTE_SEL, payload: selAndDetailList.data.sel})
+				const data:Array<VoteResultType> = selAndDetailList.data.detailList;
+				if(data){
+					yield put({type: SET_VOTE_DETAIL_LIST, payload: data})
+					const sel = data.find(f=>f.memVoteYn === 'y');
+					if(sel){
+						yield put({type: SET_SEL_VOTE_ITEM, payload: sel})
+					}
 				}
 			}
 		}
-
 		delete res.data
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
@@ -105,17 +103,6 @@ function* getVoteList(param) {
 		yield put({type: SET_VOTE_API_RESULT, payload: res})
 	} catch (e) {
 		console.error(`getVoteList saga e=>`, e)
-	}
-}
-// 투표 정보
-function* getVoteSel(param) {
-	try {
-		const res = yield call(Api.getVoteSel, param.payload);
-		yield put({type: SET_VOTE_SEL, payload: res.data})
-		delete res.data
-		yield put({type: SET_VOTE_API_RESULT, payload: res})
-	} catch (e) {
-		console.error(`getVoteSel saga e=>`, e)
 	}
 }
 // 투표 항목 리스트
@@ -187,7 +174,6 @@ function* VoteSagas() {
 	yield takeLatest(DEL_VOTE, delVote)
 	yield takeLatest(END_VOTE, endVote)
 	yield takeLatest(GET_VOTE_LIST, getVoteList)
-	yield takeLatest(GET_VOTE_SEL, getVoteSel)
 	yield takeLatest(GET_VOTE_DETAIL_LIST, getVoteDetailList)
 	yield takeEvery(MOVE_VOTE_LIST_STEP, moveVoteListStep)
 	yield takeEvery(MOVE_VOTE_STEP, moveVoteStep)

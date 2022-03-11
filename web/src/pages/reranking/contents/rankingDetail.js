@@ -233,40 +233,39 @@ const RankDetailPage = () => {
       setSelect("DJ");
       setTabName('일간');
       setTabList(['타임','일간','주간', '월간', '연간']);
-      setRankSlct(1);
-      setRankType(1);
     } else if(text === "FAN") {
       setSelect("FAN");
       setTabName('일간');
       setTabList(['일간','주간', '월간']);
-      setRankSlct(2);
-      setRankType(1);
     } else {      
       setSelect("CUPID")
       setTabName('일간');
       setTabList(['일간','주간']);
-      setRankSlct(3);
-      setRankType(1);
     }
     closeSlidePop();
   }
 
   useEffect(() => {
-    if (rankType !== 0){
-      setPageNo(1);
+    if (tabName === "타임"){
+      fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
+    } else {
       fetchRankData(rankSlct, rankType, 1);
     }
   }, [rankSlct, rankType]);
 
   useEffect(() => {
     setPageNo(1);
-    if (tabName === "타임"){
-      setRankType(0);
-      fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
+    if (select === "DJ"){
+      setRankType(tabName === "타임" ? 0  : tabName === "주간" ? 2 : tabName === "월간" ? 3 : tabName === "연간" ? 4 : 1);
+      setRankSlct(1);
+    } else if (select === "FAN") {
+      setRankType(tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
+      setRankSlct(2);
     } else {
-      setRankType(tabName === "연간" ? 4 : tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
+      setRankType(tabName === "주간" ? 2 :  1);
+      setRankSlct(3);
     }
-  }, [tabName]);
+  }, [tabName, select]);
 
   const getTopRankDate = (dateType, currentDate) => {
     let day1 = new Date(moment(currentDate));

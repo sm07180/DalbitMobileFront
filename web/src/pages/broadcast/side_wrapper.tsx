@@ -405,7 +405,7 @@ export default function SideWrapper() {
     return () => {
       window.removeEventListener("click", LayerInit);
 
-      broadcastAction.setRightTabType!(tabType.LISTENER);
+      broadcastAction.setRightTabType!(tabType.PROFILE);
 
       broadcastAction.setIsWide!(true);
     };
