@@ -43,7 +43,8 @@ function* insMemVote(param) {
 				...param.payload
 				, voteSlct: 's'
 			}
-			const selAndDetailList = yield call(reSelectParam);
+			// const selAndDetailList = yield call(reSelectParam);
+			const selAndDetailList = yield call(Api.getVoteSelAndDetailList, reSelectParam);
 			if(selAndDetailList){
 				yield put({type: SET_VOTE_SEL, payload: selAndDetailList.data.sel})
 				const data:Array<VoteResultType> = selAndDetailList.data.detailList;
