@@ -8,6 +8,26 @@
   z-index: $POPUP-ZINDEX;
   .popLayer {
     position: relative;
+    .sanctionWrap {
+      @include flex(center, space-between);
+      width: 100%; height: 50px;
+      .sanctionBtn {
+        @include flex(center, center);
+        padding: 5px 10px;
+        border-radius: 100px;
+        background-color: #ed5553;
+        @include font(13px, 400, #fff);
+        cursor: pointer;
+      }
+      .destroyBtn {
+        @include flex(center, center);
+        padding: 5px 10px;
+        border-radius: 100px;
+        background-color: #4e7dff;
+        @include font(13px, 400, #fff);
+        cursor: pointer;
+      }
+    }
     .popContainer {
       @include flex(center, center, column);
       width: 312px; padding: 20px;

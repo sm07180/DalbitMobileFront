@@ -57,6 +57,10 @@ const AdminLayerPopup = (props: any)=> {
   return (
     <div id="layerPop" onClick={closePopupDim}>
       <div className="popLayer">
+        <div className="sanctionWrap">
+          <span className="sanctionBtn">제재하기</span>
+          <span className="destroyBtn">방송방 삭제하기</span>
+        </div>
         <div className="popContainer">
           <div className="adminContent">
             {globalState.broadcastAdminLayer.nickNm === "" ? (
