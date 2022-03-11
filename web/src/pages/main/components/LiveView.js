@@ -21,7 +21,7 @@ const LiveView = (props) => {
     
     if(timeRank1){
       const timeRank1Top = timeRank1?.getBoundingClientRect().top;
-      if(timeRank1Top < 700) {
+      if(timeRank1Top < 600 && timeRank1Top > 200) {
         timeRank1.classList.add('show');
         timeRank1.classList.remove('hide');
       } else {
@@ -31,7 +31,7 @@ const LiveView = (props) => {
 
     if(timeRank2){
       const timeRank2Top = timeRank2?.getBoundingClientRect().top;
-      if(timeRank2Top < 700) {
+      if(timeRank2Top < 600 && timeRank2Top > 200 ) {
         timeRank2.classList.add('show');
         timeRank2.classList.remove('hide');
       } else {
@@ -41,7 +41,7 @@ const LiveView = (props) => {
 
     if(timeRank3){
       const timeRank3Top = timeRank3?.getBoundingClientRect().top;
-      if(timeRank3Top < 700) {
+      if(timeRank3Top < 600 && timeRank3Top > 200 ) {
         timeRank3.classList.add('show');
         timeRank3.classList.remove('hide');
       } else {

@@ -396,11 +396,11 @@
           }
           &.show {
             &::after {
-              animation: timeRankerShow 0.3s linear forwards;
+              animation: timeRankerShow 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;
             }
             &.hide {
               &::after {
-                animation: timeRankerHide 0.3s linear forwards;
+                animation: timeRankerHide 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;
               }
             }
           }
@@ -415,11 +415,11 @@
           }
           &.show {
             &::after {
-              animation: timeRankerShow 0.3s linear forwards;
+              animation: timeRankerShow 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;
             }            
             &.hide {
               &::after {
-                animation: timeRankerHide 0.3s linear forwards;
+                animation: timeRankerHide 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;
               }
             }
           }
@@ -434,11 +434,11 @@
           }
           &.show {
             &::after {
-              animation: timeRankerShow 0.3s linear forwards;
+              animation: timeRankerShow 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;
             }
             &.hide {
               &::after {
-                animation: timeRankerHide 0.3s linear forwards;
+                animation: timeRankerHide 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;
               }
             }
           }
