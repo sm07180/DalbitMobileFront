@@ -201,7 +201,7 @@ const WalletPage = (props) => {
           </div>
         ) : (
           <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
+            <button className="payCount" onClick={goStoreHandler}>
               <i className='iconDal'/>
               <span>{Utility.addComma(dalTotCnt)}</span>
             </button>
