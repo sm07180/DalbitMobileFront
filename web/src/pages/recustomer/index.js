@@ -45,7 +45,7 @@ const Customer = () => {
           <div className='content'>
             <div className='mainText'>
               {!context.token.isLogin ?
-                <span>달라에게</span>
+                <span>안녕하세요!</span>
                 :
                 <span><strong>{context.profile.nickNm}</strong>님,</span>
               }
