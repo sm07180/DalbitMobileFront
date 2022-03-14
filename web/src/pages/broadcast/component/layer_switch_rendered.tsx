@@ -46,8 +46,7 @@ export default () => {
   }, [dimLayer]);
 
   return (
-    <div
-      id="modal"
+    <div id="modal"
       onClick={(e) => {
         e.stopPropagation();
         dispatchDimLayer({
