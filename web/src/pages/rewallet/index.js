@@ -182,23 +182,7 @@ const WalletPage = (props) => {
   //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
-      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'>
-        {walletType === walletTabMenu[1] ? (
-          <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
-              <i className='iconStar'/>
-              <span>{Utility.addComma(byeolTotCnt)}</span>
-            </button>
-          </div>
-        ) : (
-          <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
-              <i className='iconDal'/>
-              <span>{Utility.addComma(dalTotCnt)}</span>
-            </button>
-          </div>
-        )}
-      </Header>
+      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑' />
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
