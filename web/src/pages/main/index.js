@@ -11,6 +11,7 @@ import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import Tabmenu from './components/tabmenu'
 import MainSlide from './components/MainSlide'
 import SwiperList from './components/SwiperList'
+import FavoriteSwiper from './components/FavoriteSwiper'
 import LiveView from './components/LiveView'
 
 import AttendEventBtn from './component/AttendEventBtn'
@@ -508,12 +509,9 @@ const MainPage = () => {
       <section className={`topSwiper`} ref={overRef}>
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
-      {
-        mainState.myStar.length > 0 &&
-        <section className='favorites'>
-          <SwiperList data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
-        </section>
-      }
+      <section className='favorites'>
+        <FavoriteSwiper data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
+      </section>
       <section className='top10'>
         <div className="cntTitle">
           <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
