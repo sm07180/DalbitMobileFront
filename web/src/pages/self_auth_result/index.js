@@ -147,7 +147,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/wallet?exchange');
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/wallet?exchange');
+                  }
                 }}>
                 확인
               </button>
@@ -173,7 +177,11 @@ export default (props) => {
               <button
                 className="cancel"
                 onClick={() => {
-                  window.location.href = '/'
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/')
+                  }
                 }}>
                 취소
               </button>
@@ -196,7 +204,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/wallet?exchange')
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/wallet?exchange')
+                  }
                 }}>
                 확인
               </button>
