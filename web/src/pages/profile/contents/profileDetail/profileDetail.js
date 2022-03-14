@@ -159,10 +159,10 @@ const ProfileDetail = (props) => {
         if (inputMode.action === 'edit') {
           setInputModeAction('add');
         }
-        if (replyRef.current) {
-          replyRef.current.innerText = '';
-        }
-        setText('');
+        //if (replyRef.current) {
+        //  replyRef.current.innerText = '';
+        //}
+        //setText('');
       }
     }
     blurBlockStatus.current = false;
