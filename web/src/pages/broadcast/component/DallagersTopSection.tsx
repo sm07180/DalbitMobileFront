@@ -37,7 +37,6 @@ const DallagersTopSection = (props) => {
 
   //피버타임
   const [feverPlaying, setFeverPlaying] = useState({playing: false, nothingVal:0});
-  //const [feverTimeText, setFeverTimeText] = useState(0);
 
   useEffect(() => {
     //icon_fever.json
@@ -77,20 +76,30 @@ const DallagersTopSection = (props) => {
     }
   }, []);
 
+  const stopFeverTime = () => {
+    rafFeverTime = 0;
+    rafPrevFeverTime = 0;
+    aniStatus.feverTimePlaying = false; // 상태 체크용
+    setFeverPlaying({playing: false, nothingVal: 0}); // dom 렌더링 용도
+    cancelAnimationFrame(rafId);
+  };
+
   // chat_socket -> 소켓서버로부터 패킷을 받으면 setStoneAniQueue에 계속 push
   useEffect(() => {
     if (chatInfo) {
       //애니메이션 붙이는 곳
       chatInfo.setBroadcastStateChange('setStoneAniQueueState', (state) => {
-        //console.log("스톤 애니메이션 실행, 받은 돌: \n", state[0] || '','\n', state[1] || '','\n', state[2] || '');
         setStoneAniQueue(() => stoneAniQueueRef.current.concat(state));
       });
 
       //피버타임 시작해주세요
       chatInfo.setBroadcastStateChange('setFeverTimeState', (state) => {
-        console.log("socket -> fever start")
         feverStartedTime = moment();
-        setFeverPlaying({playing: state, nothingVal: Date.now()});
+        if(state === true) {  // 피버타임 시작
+          setFeverPlaying({playing: true, nothingVal: Date.now()});
+        } else {  // 피버타임 종료
+          stopFeverTime();
+        }
       });
     }
 
@@ -133,11 +142,8 @@ const DallagersTopSection = (props) => {
       }
 
       // 피버타임 끝
-      if(remainFeverTime < 0){
-        rafFeverTime = 0;
-        rafPrevFeverTime = 0;
-        aniStatus.feverTimePlaying = false; // 상태 체크용
-        setFeverPlaying({playing: false, nothingVal: 0}); // dom 렌더링 용도
+      if(remainFeverTime <= 0){
+        stopFeverTime();
       }
 
       rafId = requestAnimationFrame(reqCallback);
@@ -188,17 +194,11 @@ const DallagersTopSection = (props) => {
       if(rafFeverTime > 0){ //피버타임 진행중에 피버타임 재시작
         rafFeverTime = 0;
         rafPrevFeverTime = 0;
-        console.log("feverTime restart@@@");
-      } else{ //test
-        console.log("feverTime start");
       }
-      //setFeverTimeText(60);
+
       if(rafFeverTime === 0){ //중복 카운팅 방지
         rafId = requestAnimationFrame(reqCallback);
       }
-    } else {
-      console.log("feverTime end");
-      aniStatus.feverTimePlaying = false;
     }
   },[feverPlaying]);
 
@@ -245,9 +245,6 @@ const DallagersTopSection = (props) => {
           }
         }
       } else {  // 조각 애니메이션이 실행중이면, 애니메이션 queue에 넣어둠
-
-        const testCode1 = stoneAniQueueRef.current;
-        const testCode2 = stoneAniQueue;
         stoneAniQueueRef.current = stoneAniQueue.concat([]);
         //console.log("애니메이션 실행중 => 조각 push", testCode1, '=>', testCode2 );
       }
