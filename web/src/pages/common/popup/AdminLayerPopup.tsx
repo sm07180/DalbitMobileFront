@@ -84,9 +84,7 @@ const AdminLayerPopup = (props: any)=> {
             <div className="enterWrap">
               <button className="enterBtn normal" onClick={() => broadCastLink("normal")}>시청자 모드</button>
               <button className="enterBtn admin" onClick={() => broadCastLink("admin")}>관리자 모드</button>
-            </div>
-            <div className="adminWrap">
-              <button className="destroyBtn">방송방 삭제하기</button>
+              <button className="enterBtn destroy">방송방 삭제하기</button>
             </div>
           </div>
           <div className='closeWrap'>
