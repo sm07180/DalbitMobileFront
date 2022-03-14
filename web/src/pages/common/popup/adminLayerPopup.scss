@@ -1,6 +1,6 @@
 @import "components/ui/_mixin.scss";
 
-#layerPop {
+#layerAdminPop {
   position: fixed;
   top: 0;right: 0;bottom: 0;left: 0;
   @include flex(center, center, column);
@@ -8,7 +8,7 @@
   z-index: $POPUP-ZINDEX;
   .popLayer {
     position: relative;
-    .sanctionWrap {
+    .management {
       @include flex(center, space-between);
       width: 100%; height: 50px;
       .sanctionBtn {
@@ -79,6 +79,105 @@
         flex: 1;
         @include flex(center, center);
         @include font(16px, 500, #FFFFFF);        
+      }
+    }
+  }
+}
+
+#layerPop {
+  .popLayer {
+    .popContainer {
+      padding: 15px;
+      h2 {
+        padding: 0px;
+      }
+    }
+  }
+  .sanctionContent {
+    width: 100%; height: 400px;
+    overflow: auto;
+    .sanctionWrap {
+      @include flex(flex-start, center, column);
+      width: 100%;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      .sanctionTitle {
+        @include font(16px, 600, #333);
+        margin-bottom: 8px;
+      }
+      .sanctionListWrap {
+        @include flex(center);
+        flex-wrap: wrap;
+        width: 100%;
+        .sanctionlist {
+          @include flex(center);
+          min-width: 50%;
+          line-height: 28px;
+          word-break: keep-all;
+          .checkBoxLabel {
+            @include flex();
+            cursor: pointer;
+            .checkIcon {
+              flex: none;
+              display: inline-block;
+              width: 20px; height: 28px;
+              margin-right: 4px; border-radius: 50%;
+              background-image: url(https://image.dalbitlive.com/common/input/checkbox-default.png);
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: 16px 16px;
+            }     
+            .blind:checked + .checkIcon {
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E");
+            }
+            p {
+              @include font(14px, 400, #666666);
+            }
+          }
+          .radioLabel {
+            @include flex(center);
+            cursor: pointer;
+            .radioIcon {
+              flex: none;
+              display: inline-block;
+              width: 20px; height: 28px;
+              margin-right: 4px; border-radius: 50%;
+              background-image: url(https://image.dalbitlive.com/common/input/checkbox-default.png);
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: 16px 16px;
+            }     
+            .blind:checked + .radioIcon {
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E");
+            }
+            p {
+              @include font(14px, 400, #666666);
+            }
+          }
+        }
+      }
+    }
+  }
+  .btnWrap {
+    button {
+      flex: 1;
+      @include flex(center, center);
+      height: 40px;
+      margin-right: 8px;
+      border-radius: 16px;
+      &:last-child {
+        margin-right: 0px;
+      }
+      &.confirmBtn {
+        background-color: $DOWNCOLOR;
+        @include font(16px, 500, #fff);
+      }
+      &.messageBtn {
+        background-color: $MAINCOLOR;
+        @include font(16px, 500, #fff);
       }
     }
   }
