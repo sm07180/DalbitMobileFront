@@ -1,6 +1,8 @@
 #goToMoon {
   .img_full {
     width: 100%;
+    image-rendering: -webkit-optimize-contrast;
+    -webkit-user-drag: none;
   }
   .header-wrap {
     position: sticky;
@@ -20,7 +22,7 @@
         align-items: center;
         width: 100%;
         &.fixed {
-          position: fixed;
+          position: sticky;
           top: 50px;
           width: 100%;
           z-index: 100;
