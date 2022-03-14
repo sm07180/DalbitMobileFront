@@ -21,7 +21,6 @@ import Agora from "./content/left_side_agora"
 import LayerSwitchRendered from "./component/layer_switch_rendered";
 
 import LevelUpLayerComponent from "./content/level_up_layer";
-import DirectGiftLayerComponent from "./content/direct_gift_layer";
 import "./index.scss";
 import { MediaType, MiniGameType, tabType } from "./constant";
 import {useDispatch} from "react-redux";
