@@ -19,6 +19,7 @@ const Write = (props) => {
   const {setInquire} = props
   const context = useContext(Context);
   const [inputData, setInputData] = useState({
+    phone: "",
     title: "",
     faqType: 0,
     contents: "아래 내용을 함께 보내주시면 더욱 빠른 처리가 가능합니다. \n\nOS (ex-Window 버전10) : \n브라우저 : \n문제발생 일시 : \n문의내용 : "
@@ -49,7 +50,7 @@ const Write = (props) => {
       questionFileName1: imageFileName[0],
       questionFileName2: imageFileName[1],
       questionFileName3: imageFileName[2],
-      phone: "",
+      phone: inputData.phone,
       email: "",
       nickName: context.profile.nickName
     }
@@ -147,21 +148,40 @@ const Write = (props) => {
 
   //등록시 예외 조건 확인
   const validator = () => {
-    if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
-      if(isDisabled === true) {
-        if(isFetchFalse === false) {
-          fetchData();
+    if(!context.token.isLogin){
+      if(inputData.phone !== "" && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
+        if(isDisabled === true) {
+          if(isFetchFalse === false) {
+            fetchData();
+          }
+        } else {
+          isDisabled = false;
         }
       } else {
-        isDisabled = false;
+        context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
       }
     } else {
-      context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
-    }
+      if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
+        if(isDisabled === true) {
+          if(isFetchFalse === false) {
+            fetchData();
+          }
+        } else {
+          isDisabled = false;
+        }
+      } else {
+        context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
+      }
+    }    
   }
 
   return (
     <div id='inquireWrite'>
+      {!context.token.isLogin &&
+        <InputItems title="연락처">
+          <input type="text" placeholder="연락처를 입력해주세요." name="phone" onChange={onChange}/>
+        </InputItems>
+      }
       <InputItems title="문의 제목">
         <input type="text" placeholder="문의 제목을 입력해주세요." name="title" onChange={onChange}/>
       </InputItems>
