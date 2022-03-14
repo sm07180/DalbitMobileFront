@@ -14,7 +14,6 @@ export const INS_MEM_VOTE = 'vote/INS_MEM_VOTE';
 export const DEL_VOTE = 'vote/DEL_VOTE';
 export const END_VOTE = 'vote/END_VOTE';
 export const GET_VOTE_LIST = 'vote/GET_VOTE_LIST';
-export const GET_VOTE_SEL = 'vote/GET_VOTE_SEL';
 export const GET_VOTE_DETAIL_LIST = 'vote/GET_VOTE_DETAIL_LIST';
 
 export const SET_VOTE_API_RESULT = 'vote/SET_VOTE_API_RESULT';
@@ -39,7 +38,6 @@ export const insMemVote = createAction(INS_MEM_VOTE)<InsMemVoteRequestType>();
 export const delVote = createAction(DEL_VOTE)<DelVoteRequestType>();
 export const endVote = createAction(END_VOTE)<EndVoteRequestType>();
 export const getVoteList = createAction(GET_VOTE_LIST)<GetVoteListRequestType>();
-export const getVoteSel = createAction(GET_VOTE_SEL)<GetVoteSelRequestType>();
 export const getVoteDetailList = createAction(GET_VOTE_DETAIL_LIST)<GetVoteDetailListRequestType>();
 
 export const setVoteApiResult = createAction(SET_VOTE_API_RESULT)<ApiResultType>();

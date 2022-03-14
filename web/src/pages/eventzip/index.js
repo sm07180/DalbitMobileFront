@@ -10,15 +10,15 @@ import {Context} from "context";
 const EventZip = () => {
   let history = useHistory()
   const context = useContext(Context)
-  const platformWarEventEnd = new moment().isAfter('20220311');
-  const shareEventEnd = new moment().isAfter('20220324');
-  const poemEventEnd = new moment().isAfter('20220322');
-  const inviteEventEnd = new moment().isAfter('20220308');
-  const wiseEventEnd = new moment().isAfter('20220327');
+  const platformWarEventEnd = new moment().isAfter('20220312');
+  const shareEventEnd = new moment().isAfter('20220325');
+  const poemEventEnd = new moment().isAfter('20220323');
+  const inviteEventEnd = new moment().isAfter('20220309');
+  const wiseEventEnd = new moment().isAfter('20220328');
 
   const playMakerEventEnd = new moment().isAfter('20301231');
   
-  const dalragersEvenetEnd = new moment().isAfter('20220327');
+  const dalragersEvenetEnd = new moment().isAfter('20220328');
 
   const golink = (path, endDay, num) => {
     if(endDay){

@@ -1161,15 +1161,17 @@ export class ChatSocketHandler {
                   }
                   case "reqGrant": {
                     const { recvMsg } = data;
-                    this.broadcastAction.dispatchRoomInfo &&
-                      this.broadcastAction.dispatchRoomInfo({
-                        type: "grantRefresh",
-                        data: {
-                          auth: parseInt(recvMsg.msg),
-                          memNo: data.chat.memNo,
-                        },
-                      });
-
+                    this.broadcastAction.dispatchRoomInfo({
+                      type: "grantRefresh",
+                      data: {
+                        auth: parseInt(recvMsg.msg),
+                        memNo: data.chat.memNo,
+                      },
+                    });
+                    this.broadcastAction.dispatchRoomInfo({
+                      type: "isListenerUpdate",
+                      data: {},
+                    });
                     return null;
                   }
                   case "reqKickOut": {
@@ -2178,6 +2180,13 @@ export class ChatSocketHandler {
               };
               const msgElem = chatMsgElement(data);
               this.addMsgElement(msgElem);
+              if (this.msgListWrapRef !== null) {
+                const msgListWrapElem = this.msgListWrapRef.current;
+                if(msgListWrapElem.children.length >= 1000){
+                  msgListWrapElem.children[0].remove();
+                }
+              }
+
               // this.chatCnt = this.chatCnt + 1;
               // if (msgListWrapElem && msgElem !== null) {
               //   if (msgListWrapElem.children.length === 2000) {

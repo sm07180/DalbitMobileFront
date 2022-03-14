@@ -13,8 +13,7 @@ import Exchange from './contents/exchange/Exchange'
 import './style.scss'
 import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
-import {OS_TYPE} from 'context/config.js';
-import {getDeviceOSTypeChk} from "common/DeviceCommon";
+import {isIos} from "context/hybrid";
 
 const WalletPage = (props) => {
   const history = useHistory();
@@ -179,20 +178,30 @@ const WalletPage = (props) => {
       callback
     });
   }
+
+  // 스토어로 이동
+  const goStoreHandler = () => {
+    if(isIos()) {
+      return webkit.messageHandlers.openInApp.postMessage('')
+    }else {
+      history.push('/store')
+    }
+  }
+
   //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
       <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'>
         {walletType === walletTabMenu[1] ? (
           <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
+            <button className="payCount" onClick={goStoreHandler}>
               <i className='iconStar'/>
               <span>{Utility.addComma(byeolTotCnt)}</span>
             </button>
           </div>
         ) : (
           <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
+            <button className="payCount" onClick={goStoreHandler}>
               <i className='iconDal'/>
               <span>{Utility.addComma(dalTotCnt)}</span>
             </button>

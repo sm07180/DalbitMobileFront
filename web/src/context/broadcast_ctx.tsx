@@ -108,6 +108,13 @@ const roomInfoReducer = (state: roomInfoType, action: { type: string; data?: any
   const { type, data } = action;
 
   switch (type) {
+    case "isListenerUpdate": {
+      return {
+        ...state,
+        isListenerUpdate: !state.isListenerUpdate
+      };
+    }
+
     case "broadcastSettingUpdate": {
       console.log('@@ broadcastSettingUpdate', data)
       return {
@@ -242,7 +249,7 @@ const realTimeValueReducer = (state: any, action: { type: string; data: any }) =
 const initialData = {
   broadcastState: {
     roomInfo: null,
-    rightTabType: tabType.LISTENER,
+    rightTabType: tabType.PROFILE,
     chatAnimation: null,
     comboAnimation: null,
     heartActive: false,
