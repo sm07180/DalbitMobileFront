@@ -211,6 +211,8 @@ type roomInfoType = {
 
   // 웰컴 이벤트 객체
   eventInfoMap?: { imgURL ?: string; pageLink ?: string; positionX ?: number; positionY ?: number; visible : boolean;} | null;
+
+  isListenerUpdate: boolean
   // state: boolean;
 
   // bjMemNo: string;
