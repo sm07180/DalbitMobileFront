@@ -16,7 +16,6 @@ import popup from "./common/popup";
 import rank from "./rank/index"
 import vote from './vote';
 import broadcastNotice from "./broadcastNotice";
-import social from "./social";
 
 const rootReducer = combineReducers({
   common
@@ -36,7 +35,6 @@ const rootReducer = combineReducers({
   , vote
   , rank
   , broadcastNotice
-  , social
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

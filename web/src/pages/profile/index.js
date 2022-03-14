@@ -71,7 +71,6 @@ const ProfilePage = () => {
   const [profileReady, setProfileReady] = useState(false); // 프로필 mount 후 ready
 
   const [morePopHidden, setMorePopHidden] = useState(false); // slidePop이 unmount 될때 꼬여서 임시로 처방
-  const [likeInfo, setLikeInfo] = useState(""); //좋아요, 취소 상태
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -319,43 +318,29 @@ const ProfilePage = () => {
   }
 
   const fetchHandleLike = async (regNo, mMemNo, like) => {
-    console.log("현재 상태", like);
     const params = {
       regNo: regNo,
       mMemNo: mMemNo,
       vMemNo: context.profile.memNo
     };
-    if(like === "like") {
+    if(like === "n") {
       Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
           getFeedData();
-          setLikeInfo("n");
-        } else if(res.message === "이미 좋아요를 보내셨습니다.") {
-          // fetchLikeCancelData(regNo, mMemNo);
-          setLikeInfo("n");
         } else {
           context.action.alert({msg: res.message});
         }
       }).catch(e => console.log(e));
-    } else if(like === "cancel") {
+    } else if(like === "y") {
       Api.profileFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
           getFeedData();
-          setLikeInfo("y");
-        } else if(res.message === "좋아요 한 내역이 없습니다.") {
-          // fetchLikeData(regNo, mMemNo);
-          setLikeInfo("y");
         } else {
           context.action.alert({msg: res.message});
         }
       }).catch(e => console.log(e));
     }
   }
-
-  useEffect(() => {
-    console.log("체크 반대 여부", likeInfo);
-    console.log(context.profile);
-  }, [likeInfo]);
 
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
@@ -657,7 +642,7 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchLikeData={fetchLikeData} fetchHandleLike={fetchHandleLike} likeInfo={likeInfo}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchLikeData={fetchLikeData} fetchHandleLike={fetchHandleLike}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 

@@ -30,7 +30,7 @@ const TextArea = (props) => {
 
   const submit = () => {
     if(type === "방송 공지") {
-      if(list.length < 2) {
+      if(list.length < 1) {
         setList(list.concat(textvalue));
         setTextValue("");
         setValueCount(0);

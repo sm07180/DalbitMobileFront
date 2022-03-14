@@ -10,10 +10,9 @@ import {useHistory} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Context} from "context";
 import Utility from "components/lib/utility";
-import API from "context/api";
 
 const SocialList = (props) => {
-  const {socialList, socialFixList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, fetchLikeData, likeInfo } = props
+  const {socialList, socialFixList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike } = props
   const history = useHistory();
   const context = useContext(Context);
   const {profile} = context;
@@ -89,9 +88,9 @@ const SocialList = (props) => {
                 )}
                 <div className="info">
                   <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
-                  {likeInfo === "y" ?
-                    <i className={`dataCnt goodCnt`} onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "like")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
-                    : <i className={`dataCnt goodCnt`} onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "cancel")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  {item.like_yn === "n" ?
+                    <i className={`dataCnt goodCnt`} onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                    : <i className={`dataCnt goodCnt`} onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                   }
                 </div>
               </div>
@@ -144,11 +143,11 @@ const SocialList = (props) => {
               )}
               <div className="info">
                 <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
-                {type === 'feed' && likeInfo === "y" ?
+                {type === 'feed' && item.like_yn === "n" ?
                   <i className={`dataCnt goodCnt`} //좋아요
-                     onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "like")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                     onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                   : <i className={`dataCnt goodCnt`} //좋아요 취소
-                       onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, "cancel")}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                       onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                 }
               </div>
             </div>

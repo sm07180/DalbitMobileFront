@@ -105,7 +105,7 @@ const BroadcastNotice = () => {
 
   return (
     <div id="title">
-      <Header position="sticky" title="방송 공지" type="back"/>
+      <Header position="sticky" title="방송방 공지" type="back"/>
       <section className="titleInpuBox">
         <TextArea max={1000} type={"방송 공지"} list={noticeList} setList={setNoticeList} select={noticeSelect} setSelect={setNoticeSelect}
                   fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
