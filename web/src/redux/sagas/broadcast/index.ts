@@ -1,8 +1,7 @@
-import guest from "./guest";
-import rtc from "./rtc";
+import listenerSaga from "./listener";
 
 const broadcast = [
-	...rtc, ...guest
+  listenerSaga(),
 ]
 
 export default broadcast

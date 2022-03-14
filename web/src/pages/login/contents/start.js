@@ -52,6 +52,10 @@ const Start = (props) => {
     }
   }
 
+  const golink = (path) => {
+    history.push(path);
+  }
+
   return (
     <div id="loginPage">
       <Header>
@@ -85,6 +89,9 @@ const Start = (props) => {
             <span>페이스북으로 계속하기</span>
           </button>
         </div>
+        <p>
+          문의가 있을 경우 <span onClick={()=>{golink('/customer')}}>고객센터</span>로 연락주세요.
+        </p>
       </section>
     </div>
   )

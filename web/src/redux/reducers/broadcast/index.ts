@@ -1,43 +1,37 @@
 import {createReducer} from "typesafe-actions";
-import {BroadcastActionType, BroadcastStateType} from "../../types/broadcastType";
+import {BroadcastStateType, ListenerActions} from "../../types/broadcast/listenerType";
+import {GET_LIST_SUCCESS} from "../../actions/broadcast/listener";
 
-const initialState: BroadcastStateType = {
-  wowza: {},
-  agora: {},
-  status: {
-    clickMove: false
+export const initialState: BroadcastStateType = {
+  listener: {
+    list: {
+      param: {roomNo: '', page: 1, records: 1000},
+      data: {
+        paging: {page: 0, records: 0, next: 0, prev: 0, totalPage: 0, total: 0},
+        list: [],
+        noMemCnt: 0,
+        totalMemCnt: 0,
+      }
+    }
   }
 }
 
-const broadcast = createReducer<BroadcastStateType, BroadcastActionType>(initialState, {
-  "broadcast/SET_ROOM_INFO": (state, {payload}) => {
-    return {...state, roomInfo: payload}
+const vote = createReducer<BroadcastStateType, ListenerActions>(initialState,{
+  "broadcast/listener/SET_LIST_PARAM" : (state, {payload})=>{
+    return {...state, listener: {...state.listener, list:{...state.listener.list, param: payload}}}
   },
-  "broadcast/SET_RTC_INFO": (state, {payload}) => {
-    return {...state, rtcInfo: payload}
+  "broadcast/listener/GET_LIST_SUCCESS" : (state, {payload})=>{
+
+    return {...state, listener: {...state.listener, list:{...state.listener.list, data: {...payload, list:[...payload.list]}}}}
   },
-  "broadcast/SET_STATUS": (state, {payload}) => {
-    return {...state, status: {...state.status, ...payload}}
+  "broadcast/listener/NEXT_LIST_SUCCESS" : (state, {payload})=>{
+    return {...state, listener: {...state.listener, list:{...state.listener.list, data: payload}}}
   },
-  "broadcast/agora/SET_CLIENT": (state, {payload}) => {
-    return {...state, agora: {...state.agora, client: payload, state: 'created'}}
-  },
-  "broadcast/agora/SET_CLIENT_STATE": (state, {payload}) => {
-    return {...state, agora: {...state.agora, state: payload}}
-  },
-  "broadcast/agora/SET_LOCAL_TRACK": (state, {payload}) => {
-    return {...state, agora: {...state.agora, localTrack: payload}}
-  },
-  "broadcast/guest/SET_POST": (state, {payload}) => {
-    return {...state, guestPost: payload}
-  },
-  "broadcast/guest/SET": (state, {payload}) => {
-    return {...state, guest: payload}
-  },
-  "broadcast/guest/SET_MANAGEMENT": (state, {payload}) => {
-    return {...state, guestManagement: payload}
+  "broadcast/listener/PREV_LIST_SUCCESS" : (state, {payload})=>{
+    return {...state, listener: {...state.listener, list:{...state.listener.list, data: payload}}}
   },
 });
 
-export default broadcast;
+
+export default vote;
 

@@ -103,6 +103,15 @@ $btnDisable : #FFD8E4;
         border: none;
       }
     }
+    p {
+      margin-top: 20px;
+      text-align: center;
+      @include font(12px, 500, #666666);
+      span {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
   }
   .loginForm {
     position: relative;
