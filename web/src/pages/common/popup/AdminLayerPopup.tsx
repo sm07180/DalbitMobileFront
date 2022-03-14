@@ -59,7 +59,6 @@ const AdminLayerPopup = (props: any)=> {
       <div className="popLayer">
         <div className="sanctionWrap">
           <span className="sanctionBtn">제재하기</span>
-          <span className="destroyBtn">방송방 삭제하기</span>
         </div>
         <div className="popContainer">
           <div className="adminContent">
@@ -71,9 +70,12 @@ const AdminLayerPopup = (props: any)=> {
               </h3>
             )}
           </div>
-          <div className="btnWrap">
+          <div className="enterWrap">
             <button className="enterBtn normal" onClick={() => broadCastLink("normal")}>시청자 모드</button>
             <button className="enterBtn admin" onClick={() => broadCastLink("admin")}>관리자 모드</button>
+          </div>
+          <div className="adminWrap">
+            <button className="destroyBtn">방송방 삭제하기</button>
           </div>
         </div>
         <div className='closeWrap'>
