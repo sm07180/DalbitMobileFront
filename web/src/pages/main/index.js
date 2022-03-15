@@ -510,7 +510,7 @@ const MainPage = () => {
         <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='favorites'>
-        <FavoriteSwiper data={mainState.myStar} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
+        <FavoriteSwiper data={mainState.myStar} myStarCnt={mainState.myStarCnt} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
       </section>
       <section className='top10'>
         <div className="cntTitle">

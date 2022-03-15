@@ -1,7 +1,6 @@
-import React, {useContext, useState, useEffect, useMemo} from 'react'
+import React, {useContext, useEffect, useMemo} from 'react'
 
 import Swiper from 'react-id-swiper'
-import Lottie from 'react-lottie'
 
 // global components
 // components
@@ -10,11 +9,10 @@ import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
 import {useSelector} from "react-redux";
-import {IMG_SERVER} from 'context/config'
 
 const SwiperList = (props) => {
 
-  const {data, profImgName, type, pullToRefreshPause} = props;
+  const {data, profImgName, type, pullToRefreshPause, myStarCnt} = props;
   const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
@@ -23,7 +21,7 @@ const SwiperList = (props) => {
   let locationStateHistory = useHistory();
 
   const swiperParams = useMemo(() => {
-    let tempResult = { slidesPerView: 'auto' }
+    let tempResult = { slidesPerView: 'auto', rebuildOnUpdate: true }
     if (isDesktop) {
       tempResult.navigation = {
         nextEl: '.swiper-button-next',
@@ -33,7 +31,7 @@ const SwiperList = (props) => {
     return tempResult;
   }, []);
 
-  const onClickAction = (item) => {
+  const goLive = (item) => {
     const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
     RoomValidateFromClip(item.roomNo, context, history, memNick);
   }
@@ -54,7 +52,13 @@ const SwiperList = (props) => {
     if(common.isRefresh && data.length > 0) { // refresh 될때
       swiperRefresh();
     }
-  }, [common.isRefresh]);    
+  }, [common.isRefresh]);
+
+  const goProfile = (memNo) => {
+    if (memNo !== undefined && memNo > 0) {
+      history.push(`/profile/${memNo}`)
+    }
+  }
 
   return (
     <>
@@ -63,14 +67,14 @@ const SwiperList = (props) => {
       {data.map((item,index) => {
         return (
           <div key={index}>
-            <div className="listColumn" onClick={() => onClickAction(item)}>
-              {item.roomNo ?
-                <div className="photo">
+            <div className="listColumn">
+              {item.roomNo !== "0" ?
+                <div className="photo" onClick={() => {goLive(item)}}>
                   <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                     : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 </div>
                :
-                <div className="photo off">
+                <div className="photo off" onClick={() => {goProfile(item.memNo)}}>
                   <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                     : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 </div>
@@ -80,15 +84,19 @@ const SwiperList = (props) => {
           </div>
         )
       })}
-      <div className='listColumn' onClick={()=>{history.push('/recentstar')}}>
-        <div className="listMore">
-          +24
+      {myStarCnt > 10 &&
+        <div className='listColumn' onClick={() => {
+          history.push('/recentstar')
+        }}>
+          <div className="listMore">
+            +{myStarCnt - 10}
+          </div>
         </div>
-      </div>
+      }
     </Swiper>
     }
     </>
   )
 }
 
-export default SwiperList
+export default SwiperList;
