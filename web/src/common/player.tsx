@@ -358,7 +358,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   }, [roomInfo, baseData.isLogin]);
 
   useEffect(() => {
-    console.log("broadcast====>",1)
     if (mode === "broadcast") {
       if (chatInfo !== null && rtcInfo !== undefined && rtcInfo !== null) {
         setBgImage(rtcInfo.roomInfo!.bjProfImg["thumb120x120"]);
@@ -370,7 +369,6 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         setRoomOwner(chatInfo.roomOwner);
       } else {
         if (roomNo !== "") {
-          console.log("broadcast====>",3)
           broadcastInit();
         } else {
           dispatch(setGlobalCtxIsShowPlayer(false));

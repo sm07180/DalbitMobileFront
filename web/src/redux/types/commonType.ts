@@ -64,3 +64,23 @@ export interface IPaging {
   total: number;
   totalPage: number;
 }
+
+/* 팝업 */
+export interface ICommonPopupState {
+  /* 프로필 */
+  headerPopup: boolean;
+  fanStarPopup: boolean;
+  likePopup: boolean;
+  blockReportPopup: boolean;
+  presentPopup: boolean;
+
+  // 달라져스 이벤트
+  morePopup: boolean;
+  confirmPopup: boolean;
+
+  /* 공통 팝업 */
+  commonPopup: boolean;
+
+  /* 애니메이션 액션 팝업 */
+  slidePopup: boolean;
+}

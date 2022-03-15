@@ -1,8 +1,10 @@
 // others
-import React, {useEffect,} from "react";
+import React, {useContext, useEffect,} from "react";
 import {useHistory} from "react-router-dom";
 
+import Lottie from 'react-lottie'
 // static
+import {GlobalContext} from "context";
 
 import {clipPlayConfirm,} from "common/api";
 import CloseBtn from "../images/ic_player_close_btn.svg";
@@ -11,21 +13,20 @@ import PauseIcon from "../static/ic_pause.svg";
 import PlayIcon from "../static/ic_play.svg";
 import {audioEndHandler} from "../../pages/clip_player/components/player_box";
 
-import {thumbInlineStyle} from "./PlayerStyle"
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxIsShowPlayer} from "../../redux/actions/globalCtx";
+import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle"
 
-const ClipAudioPlayer = () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+import equalizerClipAni from "./ani/equalizer_clip.json";
+
+const ClipAudioPlayer = ()=>{
   const history = useHistory();
-  const {clipPlayer, clipPlayList, clipInfo, baseData, userProfile} = globalState;
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { clipPlayer, clipPlayList, clipInfo, baseData, userProfile } = globalState;
 
   useEffect(() => {
     if (baseData.isLogin) {
-      dispatch(setGlobalCtxIsShowPlayer(true));
+      globalAction.setIsShowPlayer(true);
     }
-  }, [baseData]);
+  },[baseData]);
 
   useEffect(() => {
     if(!clipInfo || !clipPlayer){
@@ -98,11 +99,22 @@ const ClipAudioPlayer = () => {
           <div className="inner-player-bg"
                style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
-            <div className="equalizer clip" />
+            <div className="equalizer">
+              <Lottie
+                options={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: equalizerClipAni,
+                }}
+                isClickToPauseDisabled={true}
+                width={24}
+                height={27}
+              />
+            </div>
             <div className="thumb" style={thumbInlineStyle(clipInfo.bgImg)} onClick={playToggle} />
             <div className="room-info">
-              <p className="title">{`${clipInfo.nickName}`}</p>
-              <p>{clipInfo.title}</p>
+              <p className="title">{clipInfo.title}</p>
+              <p>{`${clipInfo.nickName}`}</p>
             </div>
             <div className="counting"/>
           </div>
@@ -110,7 +122,7 @@ const ClipAudioPlayer = () => {
             <img onClick={playIconClick} src={clipInfo!.isPaused ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
-
+          
         </div>
       </div>
     )

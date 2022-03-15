@@ -197,13 +197,13 @@ $ExtraBold: 800;
           @include BGIMG("store/dalla/ico_check.png");
         }
       }
-      @for $i from 1 through 6 {
+      @for $i from 1 through 9 {
         &:nth-child(#{$i}) {
           .itemIcon {
             width: 51px;
             height: 51px;
             margin-right: 5px;
-            @include BGIMG("store/dalla/icoDal-#{$i}.png");
+            @include BGIMG("store/dalla/icoDal_#{$i}.png");
           }
         }
       }
@@ -435,4 +435,16 @@ $ExtraBold: 800;
       }
     }
   }
+}
+
+@mixin popupDefaultStyle($position,$index) {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  @if ($position == center) {
+    @include flex(center,center,column);
+  } @else if $position == bottom {
+    @include flex(flex-end);
+  }
+  background-color: rgba($color: #000, $alpha: 0.7);
+  z-index: $index;
 }

@@ -54,6 +54,26 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
+  /* 임시 업데이트 체크 --------------------- */
+  const res = await Api.verisionCheck();
+  if(res.data.isUpdate) {
+    return Room.context.action.confirm({
+      msg: '안정적인 서비스 제공을 위해 최신버전으로 업데이트가 필요합니다.',
+      buttonText: {right: '업데이트'},
+      callback: () => {
+        if(isAndroid()) {
+          Hybrid('goToPlayStore');
+        }else {
+          Hybrid('openUrl', res.data.storeUrl)
+        }
+      },
+      cancelCallback: () => {
+        return false;
+      }
+    })
+  }
+  /* -------------------------------------- */
+
   const {roomNo, callbackFunc, shadow, mode, nickNm, listener} = obj
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
@@ -258,7 +278,7 @@ export const RoomJoin = async (obj) => {
         Room.dispatch(setGlobalCtxMessage({
           type: "alert",
           buttonMsg: '로그인',
-          msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          msg: `<div id="nonMemberPopup" style="border:1px solid red"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
           callback: () => {
             window.location.href = '/login'
           }

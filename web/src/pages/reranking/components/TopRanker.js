@@ -1,21 +1,25 @@
-import React, {useState} from 'react'
+import React, {useContext, useState} from 'react'
 
+import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
+
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
+import {IMG_SERVER} from 'context/config'
+import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
-import {useDispatch, useSelector} from "react-redux";
 // global components
 
 const TopRanker = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {data, rankSlct, rankType} = props;
+  const {data, rankSlct, rankType} = props
+
+  const context = useContext(Context);
 
   const history = useHistory();
+
+  const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
 
@@ -34,18 +38,16 @@ const TopRanker = (props) => {
   }
 
   const goLive = (roomNo, nickNm, listenRoomNo) => {
-    if (globalState.token.isLogin === false) {
-
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+    if (context.token.isLogin === false) {
+      context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      }))
+      })
     } else {
-      if (getDeviceOSTypeChk() === 3) {
-        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
+      if (getDeviceOSTypeChk() === 3){
+        RoomValidateFromClip(roomNo, gtx, history, nickNm);
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, nickNm: nickNm})
@@ -53,47 +55,43 @@ const TopRanker = (props) => {
           let alertMsg
           if (isNaN(listenRoomNo)) {
             alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            dispatch(setGlobalCtxMessage({
+            context.action.alert({
               type: 'alert',
               msg: alertMsg
-            }))
+            })
           } else {
             alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            dispatch(setGlobalCtxMessage({
+            context.action.confirm({
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
                 return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
               }
-            }))
+            })
           }
         }
       }
     }
   }
 
-  const popOpen = () => {
-    setPopup(true);
-  }
-
   return (
     <React.Fragment>
-      {data && data.length > 0 &&
-      <Swiper {...swiperParams}>
-        {data.map((list, index) => {
-          return (
-            <div className='rankingTop3' key={index}>
-              <div className='topHeader'>{
+      <span className='questionMark' onClick={() => setPopup(true)}></span>
+      {data && data.length > 0 &&    
+        <Swiper {...swiperParams}>
+          {data.map((list, index) => {
+            return (
+              <div className='rankingTop3' key={index}>
+                <div className='topHeader'>{
                 index === 0 ?
                   rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
                   :
-                  index === 1 ?
-                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
-                    :
-                    `${index + 1}회차`
-              } TOP3
-                <span className='questionMark' onClick={() => setPopup(true)}></span>
-              </div>
+                index === 1 ?
+                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                  :
+                  `${index + 1}회차`
+                } TOP3
+                </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
                     if (data.isEmpty){
@@ -123,27 +121,41 @@ const TopRanker = (props) => {
                         <div className="ranker" key={index}>
                           <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
                             <div className="photo">
-                              <img src={data.profImg.thumb190x190} alt="" />
+                              <img src={data.profImg.thumb292x292} alt="" />
                               <div className={`rankerRank ${data.rank === 1 ? "first" : ""}`}>{data.rank}</div>
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
-                          {rankSlct === "CUPID" ?
+                          {rankSlct === "CUPID" && data.djProfImg ?
                             <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
                               <div className='cupidHeader'>Honey</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
-                                  <img src={data.djProfImg.thumb190x190} alt={data.nickNm} />
+                                  <img src={data.djProfImg.thumb292x292} alt={data.nickNm} />
                                 </div>
                                 <div className='cupidNick'>{data.djNickNm}</div>
                               </div>
                             </div>
                             :
                             <>
-                              {data.roomNo && <div className='badgeLive' onClick={(e) => {
-                                e.stopPropagation();
-                                goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                              }}></div>}
+                              {
+                                data.roomNo &&
+                                  <div className='badgeLive' onClick={(e) => {
+                                    e.stopPropagation();
+                                    goLive(data.roomNo, data.nickNm, data.listenRoomNo);
+                                  }}>                                    
+                                    <span className='equalizer'>
+                                      <Lottie
+                                        options={{
+                                          loop: true,
+                                          autoPlay: true,
+                                          path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                                        }}
+                                      />
+                                    </span>
+                                    <span className='liveText'>LIVE</span>
+                                  </div>
+                                }
                             </>
                           }
                         </div>

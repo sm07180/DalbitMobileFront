@@ -1,14 +1,24 @@
-@import '../../../styles/variables';
+@import "components/ui/_mixin.scss";
 
 #platformWar {
     .content {
         position: relative;
         width: 100%;
-        img {            
-            width: 100%;
-            -webkit-user-drag: none;
-            vertical-align: middle;
-            image-rendering: -webkit-optimize-contrast;
-        }
+        .imageBox {
+            position: relative;
+            img {            
+                width: 100%;
+                -webkit-user-drag: none;
+                vertical-align: middle;
+                image-rendering: -webkit-optimize-contrast;
+            }
+            .clickArea {
+                @include position-top-left(29%, 50%);
+                width: 50%;
+                padding-bottom: 67%;
+                transform: translateX(-50%);
+                cursor: pointer;
+            }
+        }        
     }
 }

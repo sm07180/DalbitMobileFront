@@ -10,6 +10,7 @@ import {mailBoxJoin} from "common/mailbox/mail_func";
 import {getMailboxChatList, PostMailboxChatUse} from "common/api";
 
 import '../../mailbox.scss';
+import Header from "components/ui/header/Header";
 import TitleButton from "../../../../components/ui/header/TitleButton";
 import {isMobileWeb} from "../../../../context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
@@ -63,7 +64,7 @@ export default function chatListPage() {
           key={idx}
         >
           <div className="thumb">
-            <img src={profImg.thumb120x120} />
+            <img src={profImg.thumb292x292} />
           </div>
           <div className="info">
             <p className="info__nick">{nickNm}</p>
@@ -152,13 +153,13 @@ export default function chatListPage() {
 
   return (
     <>
-      <CustomHeader title="메시지" type={'back'}>
+      <Header title="메시지" type={'back'}>
         <div className="buttonGroup">
           <button className="btnMassageAdd" onClick={handleNewMessageClick}>
             <img src="https://image.dalbitlive.com/mailbox/ico_user_b.svg" alt="추가"/>
           </button>
         </div>
-      </CustomHeader>
+      </Header>
 
       <div className="chatListPage">
         <div className="chatOnOffBox">

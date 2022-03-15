@@ -1,31 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
 import { dateFormatterKorDay, makeHourMinute } from "lib/common_fn";
 
+import { GlobalContext } from "context";
+import { MailboxContext } from "context/mailbox_ctx";
 import { useHistory, useParams } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {setMailBoxImgSliderInit, setMailBoxOtherInfo} from "../../../../../redux/actions/mailBox";
 function timeCheck(time: Date) {
   return time.getMinutes() + "분" + time.getSeconds() + "초" + time.getMilliseconds() + "밀리초";
 }
 
 function ChatList({ msgGroup }) {
   const history = useHistory();
-  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const { globalState } = useContext(GlobalContext);
   const { baseData } = globalState;
-  const dispatch = useDispatch();
-  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+
+  const { mailboxState, mailboxAction } = useContext(MailboxContext);
   const { deletedImgArray } = mailboxState.imgSliderInfo;
 
   const giftAction = (itemInfo, nickNm, imageInfo, myChat) => {
     if (myChat) {
-      dispatch(setMailBoxOtherInfo({
+      mailboxAction.setOtherInfo!({
         nick: globalState.userProfile!.nickNm,
-        profImg: globalState.userProfile!.profImg.thumb80x80,
-      }));
+        profImg: globalState.userProfile!.profImg.thumb292x292,
+      });
     } else {
-      dispatch(setMailBoxOtherInfo({ nick: nickNm, profImg: imageInfo }));
+      mailboxAction.setOtherInfo!({ nick: nickNm, profImg: imageInfo });
     }
-    dispatch(setMailBoxOtherInfo(itemInfo));
+
+    mailboxAction.setGiftItemInfo!(itemInfo);
   };
 
   const createMsgByChatType = (msgItem: any, isRead: boolean) => {
@@ -59,14 +60,18 @@ function ChatList({ msgGroup }) {
               <p
                 className={`textBox__msg textBox__msg--img`}
                 onClick={() => {
-                  dispatch(setMailBoxImgSliderInit({
-                    memNo: memNo,
-                    idx: msgIdx,
-                  }))
+                  mailboxAction.dispathImgSliderInfo &&
+                    mailboxAction.dispathImgSliderInfo({
+                      type: "init",
+                      data: {
+                        memNo: memNo,
+                        idx: msgIdx,
+                      },
+                    });
                 }}
               >
                 <span className="imgBox">
-                  <img src={imageInfo.thumb120x120} />
+                  <img src={imageInfo.thumb292x292} />
                 </span>
                 <span className="textBox__msg--time">{makeHourMinute(sendDt)}</span>
               </p>
@@ -78,7 +83,7 @@ function ChatList({ msgGroup }) {
         return (
           <div
             className="textBox"
-            onClick={() => giftAction(itemInfo, nickNm, profImg.thumb80x80, myChat)}
+            onClick={() => giftAction(itemInfo, nickNm, profImg.thumb292x292, myChat)}
             style={{ cursor: "pointer" }}
           >
             {myChat !== true && <p className="textBox__nick">{nickNm}</p>}
@@ -144,7 +149,7 @@ function ChatList({ msgGroup }) {
                                   history.push(`/profile/${memNo}`);
                                 }}
                               >
-                                <img src={profImg.thumb80x80} />
+                                <img src={profImg.thumb292x292} />
                               </div>
                               {createMsgByChatType(msgItem, isRead)}
                             </div>

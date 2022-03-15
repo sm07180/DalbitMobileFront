@@ -56,7 +56,7 @@ export default function MyStar(props: any) {
                 }}
               >
                 <div className="thumb">
-                  <img src={star.profImg.thumb150x150} className="thumbImg" alt="thumb" />
+                  <img src={star.profImg.thumb292x292} className="thumbImg" alt="thumb" />
 
                   {roomNo !== undefined && roomNo !== "" && <em className="icon_wrap icon_live icon_live_star">라이브중</em>}
                 </div>

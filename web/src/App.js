@@ -220,7 +220,7 @@ const App = () => {
     return Utility.getCookie('authToken')
   }, [])
 
-  function initChantInfo(authToken, memNo) {
+  function initChantInfo(authToken, memNo, dispatch) {
     const socketUser = {
       authToken,
       memNo,
@@ -231,7 +231,8 @@ const App = () => {
         globalCtx.globalAction.dispatchChatInfo &&
         globalCtx.globalAction.dispatchMailChatInfo
     ) {
-      const chatInfo = new ChatSocketHandler(socketUser);
+      const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
+      chatInfo.setMemNo(memNo);
       // chatInfo.setSplashData(globalState.splashData);
       //deep copy chatInfo
       let cloneMailInfo = Object.assign(
@@ -246,13 +247,12 @@ const App = () => {
       });
     }
   }
-  async function fetchData() {
+  async function fetchData(dispatch) {
     // Renew token
     let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       if (isHybrid()) {
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
@@ -296,6 +296,8 @@ const App = () => {
             window.location.href = '/login'
           }
         }
+      } else if (isDesktop) {
+        initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo, dispatch);
       }
       if (tokenInfo.data && tokenInfo.data.isLogin) {
         const fetchProfile = async () => {
@@ -457,12 +459,8 @@ const App = () => {
     const pathname = location.pathname
     const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth)
     const ageCheckFunc = () => {
-      if (
-        americanAge < AGE_LIMIT && // 나이 14세 미만
-        !pathname.includes('/customer/personal') &&
-        !pathname.includes('/customer/qnaList')
-      ) {
-        // 1:1문의, 문의내역은 보임
+      if (americanAge < AGE_LIMIT && !pathname.includes('/customer/inquire')) {
+        // 1:1문의는 보임
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: 'y'})
       } else {
         let passed = false
@@ -527,7 +525,7 @@ const App = () => {
     Api.setAuthToken(authToken)
 
     // Renew all initial data
-    fetchData()
+    fetchData(dispatch)
   }, [])
 
 
@@ -622,7 +620,7 @@ const App = () => {
         }
       })
 
-      window.location.href = '/error';
+      // window.location.href = '/error';
 
       /*return (
         <section id="error">

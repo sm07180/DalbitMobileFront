@@ -1,21 +1,15 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useContext,
-  useCallback,
-  useMemo,
-  useLayoutEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import { useLastLocation } from "react-router-last-location";
+import {useLastLocation} from "react-router-last-location";
 
 // context
-import { GuestContext } from "context/guest_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GuestContext} from "context/guest_ctx";
 
 // constant
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 
 // component
 import ChatHeaderWrap from "../component/chat_header_wrap";
@@ -26,20 +20,19 @@ import RandomMsgWrap from "../component/random_msg_wrap";
 // others
 import LottiePlayer from "lottie-web";
 import {
-  UserType,
-  ListenerRtc,
-  HostRtc,
   AgoraHostRtc,
   AgoraListenerRtc,
-  getArgoraRtc,
-  rtcSessionClear
+  HostRtc,
+  ListenerRtc,
+  rtcSessionClear,
+  UserType
 } from "common/realtime/rtc_socket";
-import { createElement } from "lib/create_element";
+import {createElement} from "lib/create_element";
 import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import { broadcastExit } from "common/api";
+import {broadcastExit, welcomeEventDayCheckerUpdate} from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -47,19 +40,9 @@ import LottieFreeze from "../static/lottie_freeze.json";
 
 import {ttsAlarmDuration} from "../../../constant";
 import {BroadcastLayerContext} from "../../../context/broadcast_layer_ctx";
-import {TransitionPromptHook} from "history";
 import {useDispatch, useSelector} from "react-redux";
-import {
-  setBroadcastCtxChatAnimationEnd, setBroadcastCtxChatAnimationStart,
-  setBroadcastCtxComboAnimationEnd,
-  setBroadcastCtxIsTtsPlaying, setBroadcastCtxTtsActionInfo
-} from "../../../redux/actions/broadcastCtx";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxGuestInfoEmpty,
-  setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxRtcInfoInit
-} from "../../../redux/actions/globalCtx";
+
+import _ from 'lodash'
 
 type ComboType = {
   status: boolean;
@@ -122,7 +105,7 @@ function audioTimeout(
   lottieAnimation,
   lottieDisplayElem,
   animationWrapElem,
-  dispatch
+  broadcastAction
 ) {
   setTimeout(() => {
     const audioInterval = setInterval(() => {
@@ -134,7 +117,7 @@ function audioTimeout(
         audio.currentTime = 0;
         soundAnimationQueue.shift();
         intervalCnt = 0;
-        dispatch(setBroadcastCtxIsTtsPlaying(false));
+        broadcastAction.setIsTTSPlaying!(false);
 
         if (lottieAnimation) {
           lottieAnimation.destroy();
@@ -143,7 +126,8 @@ function audioTimeout(
         lottieDisplayElem.removeChild(animationWrapElem);
 
         if (lottieDisplayElem.children.length === 0) {
-          dispatch(setBroadcastCtxChatAnimationEnd());
+          broadcastAction.dispatchChatAnimation &&
+          broadcastAction.dispatchChatAnimation({ type: "end" });
         }
       } else {
         audio.volume = volume / 10;
@@ -168,10 +152,11 @@ export default function LeftSideAgora(props: {
   } = props;
 
   const lastLocation = useLastLocation();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
   const dispatch = useDispatch();
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const voteRdx = useSelector(({vote}) => vote);
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const { chatAnimation, comboAnimation, chatFreeze } = broadcastState;
   const { guestState, guestAction } = useContext(GuestContext);
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
@@ -223,7 +208,7 @@ export default function LeftSideAgora(props: {
       );
       rtcInfo.setRoomInfo(roomInfo);
       rtcInfo.setDisplayWrapRef(displayWrapRef);
-      dispatch(setGlobalCtxRtcInfoInit(rtcInfo));
+      globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
       sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:rtcInfo.roomInfo, userType:rtcInfo.userType}));
     }
   }, [roomInfo]);
@@ -252,7 +237,7 @@ export default function LeftSideAgora(props: {
         videoConstraints
       );
       rtcInfo.setRoomInfo(roomInfo);
-      dispatch(setGlobalCtxRtcInfoInit(rtcInfo));
+      globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
       sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:rtcInfo.roomInfo, userType:rtcInfo.userType}));
       setPlayBtnStatus(false);
     }
@@ -265,7 +250,9 @@ export default function LeftSideAgora(props: {
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          dispatch(setGlobalCtxGuestInfoEmpty());
+          globalAction.dispatchGuestInfo!({
+            type: "EMPTY",
+          });
         });
       }
     }
@@ -278,7 +265,7 @@ export default function LeftSideAgora(props: {
       ttsAudio = null;
     }
 
-    dispatch(setBroadcastCtxIsTtsPlaying(false));
+    broadcastAction.setIsTTSPlaying!(false);
     setAudioPlayState(false);
   };
 
@@ -329,7 +316,8 @@ export default function LeftSideAgora(props: {
       }
 
       if (lottieDisplayElem && lottieDisplayElem.children.length === 0) {
-        dispatch(setBroadcastCtxChatAnimationEnd());
+        broadcastAction.dispatchChatAnimation &&
+        broadcastAction.dispatchChatAnimation({ type: "end" });
       }
 
       setAnimPlayState(false);
@@ -339,7 +327,7 @@ export default function LeftSideAgora(props: {
   const resetAnimation = () => {
     soundAnimationQueue = [];
     setTTSAnimationQueue([]);
-    dispatch(setBroadcastCtxChatAnimationEnd());
+    broadcastAction.dispatchChatAnimation!({ type: "end" });
     ttsAudio = null;
   };
 
@@ -347,7 +335,7 @@ export default function LeftSideAgora(props: {
   // 지우지 마세유
   useEffect(()=>{
     // const transitionPromptHook:TransitionPromptHook = (location, action)=>{
-    //   dispatch(setGlobalCtxAlertStatus({
+    //   globalAction.setAlertStatus({
     //     status: true,
     //     type: "confirm",
     //     title: "알림",
@@ -361,7 +349,7 @@ export default function LeftSideAgora(props: {
     //         if (rtcInfo !== null) {
     //           rtcInfo.socketDisconnect();
     //           rtcInfo.stop();
-    //           dispatch(setGlobalCtxRtcInfoEmpty());
+    //           globalAction.dispatchRtcInfo({ type: "empty" });
     //           disconnectGuest();
     //           await rtcInfo.stop();
     //           rtcSessionClear();
@@ -381,7 +369,7 @@ export default function LeftSideAgora(props: {
     //         }
     //       }
     //     },
-    //   }));
+    //   });
     //   return false;
     // }
 
@@ -399,7 +387,7 @@ export default function LeftSideAgora(props: {
       const animQueue = Object.assign([], ttsAnimationQueue);
       animQueue.shift();
       setTTSAnimationQueue(animQueue);
-      dispatch(setBroadcastCtxChatAnimationEnd());
+      broadcastAction.dispatchChatAnimation!({ type: "end" });
     }
   };
 
@@ -408,6 +396,8 @@ export default function LeftSideAgora(props: {
       // chat init logic
       chatInfo.setRoomNo(roomNo);
 
+      chatInfo.setGlobalAction(globalAction);
+      chatInfo.setBroadcastAction(broadcastAction);
       chatInfo.setGuestAction(guestAction);
 
       chatInfo.setRoomOwner(roomOwner);
@@ -436,11 +426,11 @@ export default function LeftSideAgora(props: {
         const roomExit = async () => {
           const { result } = await broadcastExit({ roomNo });
           if (result === "success") {
-            if (rtcInfo !== null) {
+            if (rtcInfo !== null && globalAction.dispatchRtcInfo) {
               chatInfo.privateChannelDisconnect();
               rtcInfo.stop();
               disconnectGuest();
-              dispatch(setGlobalCtxRtcInfoEmpty());
+              globalAction.dispatchRtcInfo({ type: "empty" });
               rtcSessionClear();
             }
           }
@@ -472,7 +462,7 @@ export default function LeftSideAgora(props: {
           const dispatchRtcInfo = new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
           dispatchRtcInfo.setRoomInfo(roomInfo);
           dispatchRtcInfo.join(roomInfo).then(()=>{
-            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
+            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
             sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
           });
           setAgoraRtc({...agoraRtc, ...dispatchRtcInfo});
@@ -523,7 +513,9 @@ export default function LeftSideAgora(props: {
           clearInterval(comboTimerGroup[`comboTimer_${i}`]);
       }
 
-      dispatch(setBroadcastCtxComboAnimationEnd());
+      broadcastAction.dispatchComboAnimation!({
+        type: "end",
+      });
 
       resetAnimation();
     };
@@ -633,7 +625,8 @@ export default function LeftSideAgora(props: {
         roomChanged === true
       ) {
         rtcInfo.socketDisconnect();
-        dispatch(setGlobalCtxRtcInfoEmpty());
+        globalAction.dispatchRtcInfo &&
+        globalAction.dispatchRtcInfo({ type: "empty" });
       }
     };
   }, [rtcInfo]);
@@ -706,8 +699,8 @@ export default function LeftSideAgora(props: {
       }
 
       const getTTSActionController = () => {
-        dispatch(setBroadcastCtxTtsActionInfo(ttsItemInfo));
-        dispatch(setBroadcastCtxIsTtsPlaying(true));
+        broadcastAction.setTtsActionInfo!(ttsItemInfo);
+        broadcastAction.setIsTTSPlaying!(true);
         setAnimPlayState(true);
         setAudioPlayState(true);
       };
@@ -798,7 +791,7 @@ export default function LeftSideAgora(props: {
               audio.src = soundFileUrl;
               audio.play();
               audio.loop = true;
-              dispatch(setBroadcastCtxIsTtsPlaying(true));
+              broadcastAction.setIsTTSPlaying!(true);
 
               if (webpUrl) {
                 const webpImg = document.createElement("img");
@@ -824,7 +817,7 @@ export default function LeftSideAgora(props: {
                 lottieAnimation,
                 lottieDisplayElem,
                 animationWrapElem,
-                dispatch
+                broadcastAction
               );
             } else {
               const AudioInterval = setInterval(() => {
@@ -859,7 +852,7 @@ export default function LeftSideAgora(props: {
                     lottieAnimation,
                     lottieDisplayElem,
                     animationWrapElem,
-                    dispatch
+                    broadcastAction
                   );
                 }
               }, 100);
@@ -906,13 +899,19 @@ export default function LeftSideAgora(props: {
               lottieDisplayElem.removeChild(animationWrapElem);
 
               if (lottieDisplayElem.children.length === 0) {
-                dispatch(setBroadcastCtxChatAnimationEnd());
+                broadcastAction.dispatchChatAnimation &&
+                broadcastAction.dispatchChatAnimation({ type: "end" });
               }
 
               animationCount -= 1;
               if (animationQueue.length > 0) {
                 const targetData = animationQueue.shift();
-                dispatch(setBroadcastCtxChatAnimationStart(targetData));
+                if (broadcastAction.dispatchChatAnimation) {
+                  broadcastAction.dispatchChatAnimation({
+                    type: "start",
+                    data: targetData,
+                  });
+                }
               }
             }, duration);
           }
@@ -996,7 +995,10 @@ export default function LeftSideAgora(props: {
   useEffect(() => {
     if (broadcastState.ttsActionInfo.showAlarm) {
       const closeTTSMsg = setTimeout(() => {
-        dispatch(setBroadcastCtxTtsActionInfo({...broadcastState.ttsActionInfo, showAlarm:false}));
+        broadcastAction.setTtsActionInfo!({
+          ...broadcastState.ttsActionInfo,
+          showAlarm: false,
+        });
       }, ttsAlarmDuration);
 
       return () => {
@@ -1083,7 +1085,9 @@ export default function LeftSideAgora(props: {
                           return !v.status;
                         })
                       ) {
-                        dispatch(setBroadcastCtxComboAnimationEnd());
+                        broadcastAction.dispatchComboAnimation!({
+                          type: "end",
+                        });
                       }
                     }
                   }, this.duration);
@@ -1177,7 +1181,9 @@ export default function LeftSideAgora(props: {
                               return !v.status;
                             })
                           ) {
-                            dispatch(setBroadcastCtxComboAnimationEnd());
+                            broadcastAction.dispatchComboAnimation!({
+                              type: "end",
+                            });
                           }
                         }
                       },
@@ -1267,7 +1273,7 @@ export default function LeftSideAgora(props: {
         </div>
         }
 
-{/*        {roomInfo !== null &&
+        {/* {roomInfo !== null &&
         roomInfo.mediaType === MediaType.VIDEO &&
         roomOwner === true && (
           <canvas
@@ -1344,6 +1350,19 @@ export default function LeftSideAgora(props: {
             />
           </StampIconWrapStyled>
         )}
+        {/* 웰컴이벤트 버튼 */}
+        {roomInfo?.eventInfoMap?.visible &&
+        <FloatingIconWrapStyled
+          className="floating_icon_wrap"
+          onClick={async () => {
+            const {data, code, message} = await welcomeEventDayCheckerUpdate();
+            console.log('welcomeEventDayCheckerUpdate=>', data, code, message);
+            history.push("/event/welcome");
+          }}
+        >
+          <img src="https://image.dalbitlive.com/event/welcome/floatingBtn.png" alt="신입 WELCOME 이벤트" />
+        </FloatingIconWrapStyled>
+        }
         <RandomMsgWrap
           roomInfo={roomInfo}
           roomOwner={roomOwner}
@@ -1688,5 +1707,19 @@ const LottieDisplayStyled = styled.div`
     .content-wrap {
       margin: 0 auto;
     }
+  }
+`;
+const FloatingIconWrapStyled = styled.div`
+  position: absolute;
+  right: 13px;
+  bottom: 63px;
+  cursor: pointer;
+  z-index: 3;
+  width : 70px;
+  height : 70px;
+  
+  img{
+    width:100%;
+    height:100%;
   }
 `;

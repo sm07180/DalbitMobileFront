@@ -86,6 +86,7 @@
       border-top:1px solid #F2F2F2;
       button {
         flex:1;
+        @include flex(center, center);
         height:45px;
         border-left:1px solid #F2F2F2;
         @include font(14px,500,black);
@@ -102,11 +103,24 @@
             vertical-align: bottom;
           }
         }
+        &.presentBtn {
+          &:before {
+            content:"";
+            display:inline-block;
+            width:15px;
+            height:15px;
+            margin-right: 4px;
+            @include BGIMG("common/icon/icon-present.png");
+          }
+        }
       }
     }
   }
 }
-.container{
+
+// 반응형 스타일
+
+.pcType {
   #myprofile{
     .profileCard{
       .info{

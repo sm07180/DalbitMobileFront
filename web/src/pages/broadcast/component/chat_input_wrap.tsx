@@ -32,8 +32,7 @@ export default function ChatInputWrap(props: {
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { chatFreeze } = broadcastState;
 
-  const { dimLayer } = useContext(BroadcastLayerContext);
-
+  const { dimLayer, layer, dispatchLayer } = useContext(BroadcastLayerContext);
   const [chatText, setChatText] = useState<string>("");
 
   const MsgRef = useRef<any>(null);
@@ -114,6 +113,11 @@ export default function ChatInputWrap(props: {
             e.stopPropagation();
             if (baseData.isLogin === false) {
               history.push("/login");
+            }
+            if(layer.status &&layer.type === 'GIFT'){
+              dispatchLayer({
+                type: "INIT",
+              });
             }
           }}
           ref={MsgRef}

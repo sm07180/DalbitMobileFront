@@ -74,6 +74,7 @@ const DidLogin = React.lazy(() => import('pages/login/contents/didLogin'))
 // 회원가입
 const SignUp = React.lazy(() => import('pages/signup'))
 const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
+const RecommendDj = React.lazy(() => import('pages/signup/contents/RecommendDj'))
 //----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
@@ -124,6 +125,7 @@ const Story = React.lazy(() => import('pages/story'))
 const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
 const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
 const ClipPlayer = React.lazy(() => import("pages/clip_player"));
+const ClipEdit = React.lazy(() => import("pages/clip_recoding/edit"));
 
 const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
@@ -135,10 +137,6 @@ const Report = React.lazy(() => import("pages/remypage/contents/report/Report"))
 const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
-
-//임시 옛날 설정 페이지
-const OldSetting = React.lazy(() => import("pages/mypage/content/broadcastSetting"));
-const OldNotice = React.lazy(() => import("pages/customer/content/notice/list"));
 
 const Router = () => {
   const dispatch = useDispatch();
@@ -199,6 +197,7 @@ const Router = () => {
         <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/socialSignUp" component={SocialSignUp} />
+        <Route exact path="/signup/recommendDj" component={RecommendDj} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
@@ -313,6 +312,7 @@ const Router = () => {
         <Route exact path="/clip_recoding" component={ClipRecoding}  />
         <Route exact path="/clip_upload" component={ClipUpload} />
         <Route exact path="/clip/:clipNo" component={ClipPlayer} />
+        <Route exact path="/clip_edit/:clipNo" component={ClipEdit} />
 
         {/*  www 방송 청취 및 세팅  */}
         <Route exact path="/broadcast/:roomNo" component={Broadcast} />
@@ -329,10 +329,6 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
-
-        {/* 임시 옛날 설정 페이지*/}
-        <Route exact path="/oldsetting" component={OldSetting} />
-        <Route exact path="/oldnotice" component={OldNotice} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

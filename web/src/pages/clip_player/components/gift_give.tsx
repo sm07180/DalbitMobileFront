@@ -120,7 +120,7 @@ export default (props) => {
           clipAction.setLottie({
             ...lottie,
             ...{
-              profImg: data.profImg.thumb120x120,
+              profImg: data.profImg.thumb292x292,
               nickName: data.nickNm,
               count: count,
               isCombo: lottie.category === "combo" ? true : count > 1 ? true : false,

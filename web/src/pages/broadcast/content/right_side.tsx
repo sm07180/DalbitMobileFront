@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useContext, useMemo } from "react";
 // context
+import { BroadcastContext } from "context/broadcast_ctx";
+import { GlobalContext } from "context";
 import { getProfile } from "common/api";
 // content
 import ListenerList from "./right_content/listener_list";
@@ -24,6 +26,7 @@ import SpecialDjList from "./right_content/special_list";
 import MakeUp from "./right_content/makeup";
 import MiniGame from "./right_content/mini_game";
 import Roulette from "./right_content/roulette";
+import Vote from "./right_content/vote";
 
 // constant
 import { tabType } from "../constant";
@@ -31,9 +34,6 @@ import { tabType } from "../constant";
 // static
 import "./right_side.scss";
 import VideoFilter from "./right_content/video_filter";
-import {useDispatch, useSelector} from "react-redux";
-import {setBroadcastCtxRightTabType} from "../../../redux/actions/broadcastCtx";
-import {setGlobalCtxUserProfile} from "../../../redux/actions/globalCtx";
 
 export default function RightSide(props: {
   splashData: any;
@@ -45,11 +45,11 @@ export default function RightSide(props: {
 }) {
   const { splashData, roomInfo, roomOwner, roomNo, forceChatScrollDown, setForceChatScrollDown } = props;
 
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const dispatch = useDispatch();
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const { globalState, globalAction } = useContext(GlobalContext);
 
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const { rightTabType } = broadcastState;
+  const { setRightTabType } = broadcastAction;
   // profile
   const profile: any = globalState.userProfile;
   const { isLogin, memNo } = globalState.baseData;
@@ -190,6 +190,13 @@ export default function RightSide(props: {
           { type: tabType.PROFILE, value: "프로필" },
           { type: tabType.ROULETTE, value: "룰렛" },
         ];
+      } else if (rightTabType === tabType.VOTE) {
+        return [
+          { type: tabType.LISTENER, value: "청취자" },
+          { type: tabType.LIVE, value: "라이브" },
+          { type: tabType.PROFILE, value: "프로필" },
+          { type: tabType.VOTE, value: "투표" },
+        ];
       } else {
         return [
           { type: tabType.LISTENER, value: "청취자" },
@@ -313,6 +320,13 @@ export default function RightSide(props: {
             { type: tabType.PROFILE, value: "프로필" },
             { type: tabType.ROULETTE, value: "룰렛" },
           ];
+        } else if (rightTabType === tabType.VOTE) {
+          return [
+            { type: tabType.LISTENER, value: "청취자" },
+            { type: tabType.LIVE, value: "라이브" },
+            { type: tabType.PROFILE, value: "프로필" },
+            { type: tabType.VOTE, value: "투표" },
+          ];
         } else {
           return [
             { type: tabType.LISTENER, value: "청취자" },
@@ -420,19 +434,25 @@ export default function RightSide(props: {
       case tabType.ROULETTE: {
         return <Roulette roomNo={roomNo} />;
       }
+      case tabType.VOTE: {
+
+        return <Vote {...{roomInfo, roomOwner, roomNo}} />;
+      }
     }
   }
 
   useEffect(() => {
     if (isLogin === false) {
-      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
+      setRightTabType && setRightTabType(tabType.PROFILE);
     }
 
     if (isLogin === true) {
       getProfile({ memNo }).then((res) => {
         const { result, data } = res;
         if (result === "success") {
-          dispatch(setGlobalCtxUserProfile(data));
+          if (globalAction.setUserProfile) {
+            globalAction.setUserProfile(data);
+          }
         }
       });
     }
@@ -450,7 +470,7 @@ export default function RightSide(props: {
                   className={`btnTab ${rightTabType === type ? "btnTab--active" : ""}`}
                   key={`tab-${idx}`}
                   onClick={() => {
-                    dispatch(setBroadcastCtxRightTabType(type));
+                    setRightTabType && setRightTabType(type);
                   }}
                 >
                   {value}

@@ -1,18 +1,30 @@
-import { CHAT_CONFIG, NODE_ENV } from "constant/define";
+import {CHAT_CONFIG, NODE_ENV} from "constant/define";
 
 // constant
-import { MiniGameType, tabType } from "pages/broadcast/constant";
-import { AuthType } from "constant";
+import {MediaType, MiniGameType, tabType} from "pages/broadcast/constant";
+import {AuthType} from "constant";
 
-import { postErrorSave, splash, getItems } from "common/api";
-
-// lib
-const socketClusterClient = require("socketcluster-client");
-
-import { NormalMsgFormat, GiftActionFormat, SystemStartMsg, ReqGood } from "pages/broadcast/lib/chat_msg_format";
+import {getItems, postErrorSave, splash} from "common/api";
+import {GiftActionFormat, NormalMsgFormat, ReqGood, SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
 
 // static
 import MicAlarmClose from "common/static/image/mic_alarm_close.png";
+import {getCookie} from "common/utility/cookie";
+import {rtcSessionClear} from "./rtc_socket";
+import {
+  moveVoteListStep,
+  moveVoteStep,
+  setVoteActive,
+  setVoteCallback,
+} from "../../redux/actions/vote";
+import {
+  VoteCallbackPromisePropsType,
+} from "../../redux/types/voteType";
+
+import {isDesktop} from "../../lib/agent";
+
+// lib
+const socketClusterClient = require("socketcluster-client");
 
 type chatUserInfoType = { authToken: string; memNo: string; locale: string; roomNo: string | null };
 
@@ -28,10 +40,6 @@ export type userBroadcastSettingType = {
   ttsSound?: boolean;
   normalSound?: boolean;
 };
-
-import { MediaType } from "pages/broadcast/constant";
-import { getCookie } from "common/utility/cookie";
-import {rtcSessionClear} from "./rtc_socket";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -68,12 +76,16 @@ export class ChatSocketHandler {
   public broadcastStateChange: any;
   public postErrorState : boolean
 
+  public dispatch: any;
+  public memNo: string = '';
+
   // 로그인한 유저의 방송 설정 (패킷 받을때 설정에 맞게 대응하기 위함)
   // set 하는 곳 : /mypage/broadcast/setting, /mypage/broadcast/setting/edit
   // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
   public userSettingObj: userBroadcastSettingType | null = null;
 
-  constructor(userInfo: chatUserInfoType, reConnectHandler?: any) {
+  constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?: any) {
+    this.dispatch = dispatch;
     this.postErrorState =  (window as any)?.postErrorState;
     this.socket = null;
     this.chatUserInfo = userInfo;
@@ -85,7 +97,8 @@ export class ChatSocketHandler {
     this.broadcastAction = null;
 
     this.reConnect =
-      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo) : reConnectHandler;
+      reConnectHandler === undefined || reConnectHandler == null ?
+        new ReConnectChat(this.chatUserInfo, this.dispatch) : reConnectHandler;
 
     this.publicChannelNo = "";
     this.publicChannelHandle = null;
@@ -101,16 +114,20 @@ export class ChatSocketHandler {
       this.setGlobalAction(this.reConnect.globalAction);
       this.setBroadcastAction(this.reConnect.broadcastAction);
       this.setRoomOwner(this.reConnect.roomOwner);
+      this.setMemNo(this.memNo);
     }
 
-    this.connect((result: any) => {
-      const { error } = result;
-      if (error === false) {
-        if (this.socket.getState() === "open") {
-          this.connected();
+    // PC만 커넥트 연결
+    if (isDesktop()) {
+      this.connect((result: any) => {
+        const { error } = result;
+        if (error === false) {
+          if (this.socket.getState() === "open") {
+            this.connected();
+          }
         }
-      }
-    });
+      });
+    }
 
     // if (this.splashData === null) {
     //   splash().then((resolve) => {
@@ -121,6 +138,9 @@ export class ChatSocketHandler {
     this.broadcastStateChange = {};
   }
 
+  setMemNo(memNo){
+    this.memNo = memNo;
+  }
   setBroadcastStateChange(key: string, setStateFn: Function){
     this.broadcastStateChange = {...this.broadcastStateChange, [key] : setStateFn};
   }
@@ -470,7 +490,6 @@ export class ChatSocketHandler {
         this.privateChannelHandle = this.channelBinding(this.privateChannelHandle, channelName);
 
         // 나는 모르겠다. 이게 왜 undefined가 걸리는지.
-
         this.privateChannelHandle.watch((data: any) => {
           if (this.splashData === null) {
             splash().then((resolve) => {
@@ -1142,15 +1161,17 @@ export class ChatSocketHandler {
                   }
                   case "reqGrant": {
                     const { recvMsg } = data;
-                    this.broadcastAction.dispatchRoomInfo &&
-                      this.broadcastAction.dispatchRoomInfo({
-                        type: "grantRefresh",
-                        data: {
-                          auth: parseInt(recvMsg.msg),
-                          memNo: data.chat.memNo,
-                        },
-                      });
-
+                    this.broadcastAction.dispatchRoomInfo({
+                      type: "grantRefresh",
+                      data: {
+                        auth: parseInt(recvMsg.msg),
+                        memNo: data.chat.memNo,
+                      },
+                    });
+                    this.broadcastAction.dispatchRoomInfo({
+                      type: "isListenerUpdate",
+                      data: {},
+                    });
                     return null;
                   }
                   case "reqKickOut": {
@@ -1748,6 +1769,7 @@ export class ChatSocketHandler {
                       }
 
                       if (reqRoomState.mediaState === 'video') {
+                        player.style.display = reqRoomState.mediaOn ? '' : 'none';
                         this.rtcInfo?.videoMute(!reqRoomState.mediaOn); // 영상 OFF 할지 말지 정하는 변수, true 면 영상 틀고, false이면 영상 꺼야한다.
                       }
 
@@ -1897,7 +1919,6 @@ export class ChatSocketHandler {
                       ],
                     });
                   }
-
                   case "reqMiniGameEnd": {
                     const { reqMiniGameEnd } = data;
 
@@ -1907,6 +1928,148 @@ export class ChatSocketHandler {
                         status: false,
                       });
 
+                    return null;
+                  }
+                  case "reqInsVote": {
+                    // 투표 생성
+                    if(this.memNo === data.reqInsVote.memNo){
+                      this.broadcastAction.setRightTabType(tabType.VOTE);
+                      this.dispatch(setVoteActive(true));
+                    }else if(this.memNo !== data.reqInsVote.memNo){
+                      this.broadcastAction.setRightTabType(tabType.VOTE);
+                      this.dispatch(setVoteActive(true));
+                      this.dispatch(moveVoteListStep({
+                        memNo: data.reqInsVote.memNo
+                        , roomNo: data.reqInsVote.roomNo
+                        , voteSlct: "s"
+                      }));
+
+                      // this.dispatch(getVoteList(data.reqInsVote));
+                      this.globalAction.setAlertStatus({
+                        status: true,
+                        type: "confirm",
+                        content: `새로운 투표가 등록됐어요!<br/><br/>${data.reqInsVote.voteTitle}`,
+                        confirmCancelText: "닫기",
+                        confirmText: "참여하기",
+                        callback: () => {
+                          this.dispatch(moveVoteStep({
+                            // memNo: this.memNo
+                            memNo: data.reqInsVote.memNo
+                            , roomNo: data.reqInsVote.roomNo
+                            , voteNo: data.reqInsVote.voteNo
+                          }));
+                        },
+                      });
+                    }
+
+                    return null;
+                  }
+                  case "reqInsMemVote": {
+                    // 투표
+                    // if(this.memNo !== data.reqInsMemVote.pmemNo){
+                    //   const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                    //     const voteResult:VoteCallbackPromisePropsType = [{
+                    //       step: 'vote',
+                    //       data: data.reqInsMemVote,
+                    //       callback: ()=>{
+                    //         this.dispatch(getVoteDetailList(data.reqInsMemVote));
+                    //       }
+                    //     }];
+                    //     resolve(voteResult)
+                    //   })
+                    //   this.dispatch(setVoteCallback(getCallback));
+                    // }
+                    return null;
+                  }
+                  case "reqDelVote": {
+                    // 투표 삭제
+                    if(this.memNo === data.reqDelVote.memNo){
+                      this.dispatch(moveVoteListStep({
+                        memNo: data.reqDelVote.memNo,
+                        roomNo: data.reqDelVote.roomNo,
+                        voteSlct: 's'
+                      }))
+                    }else{
+                      this.globalAction.setAlertStatus({
+                        status: false,
+                        type: "confirm",
+                      })
+                      const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                        const voteResult:VoteCallbackPromisePropsType = [{
+                          step: 'vote',
+                          data: data.reqDelVote,
+                          callback: ()=>{
+                            this.globalAction.callSetToastStatus({
+                              status: true,
+                              message: `해당 투표가 삭제되어 투표 목록으로 이동합니다.`,
+                            });
+                            this.dispatch(moveVoteListStep({
+                              memNo: data.reqDelVote.memNo,
+                              roomNo: data.reqDelVote.roomNo,
+                              voteSlct: 's'
+                            }));
+                          }
+                        }, {
+                          step: 'list',
+                          data: data.reqDelVote,
+                          callback: ()=>{
+                            this.dispatch(moveVoteListStep({
+                              memNo: data.reqDelVote.memNo,
+                              roomNo: data.reqDelVote.roomNo,
+                              voteSlct: 's'
+                            }));
+                          }
+                        }];
+                        resolve(voteResult)
+                      })
+                      this.dispatch(setVoteCallback(getCallback));
+                    }
+                    return null;
+                  }
+                  case "reqEndVote": {
+                    // 투표 마감
+                    if(data.reqEndVote.endSlct === 'a'){
+                      this.broadcastAction?.setRightTabType(tabType.LISTENER);
+                      this.dispatch(setVoteActive(false))
+                    }else if(data.reqEndVote.endSlct === 'o'){
+                      if(this.memNo === data.reqEndVote.memNo){
+                        this.dispatch(moveVoteListStep({
+                          memNo: data.reqEndVote.memNo,
+                          roomNo: data.reqEndVote.roomNo,
+                          voteSlct: 's'
+                        }))
+                      }else{
+                        const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
+                          const voteResult:VoteCallbackPromisePropsType = [{
+                            step: 'vote',
+                            data: data.reqEndVote,
+                            callback: ()=>{
+                              this.globalAction.callSetToastStatus({
+                                status: true,
+                                message: `해당 투표가 마감되어 투표 목록으로 이동합니다.`,
+                              });
+                              this.dispatch(moveVoteListStep({
+                                memNo: data.reqEndVote.memNo,
+                                roomNo: data.reqEndVote.roomNo,
+                                voteSlct: 's'
+                              }));
+                            }
+                          }, {
+                            step: 'list',
+                            data: data.reqEndVote,
+                            callback: ()=>{
+                              this.dispatch(moveVoteListStep({
+                                memNo: data.reqEndVote.memNo,
+                                roomNo: data.reqEndVote.roomNo,
+                                voteSlct: 's'
+                              }));
+                            }
+                          }];
+                          resolve(voteResult)
+                        })
+                        this.dispatch(setVoteCallback(getCallback));
+                      }
+                    }
                     return null;
                   }
 
@@ -1978,12 +2141,53 @@ export class ChatSocketHandler {
                     }
                     return null;
                   }
+                  case "reqGetStoneByBV" :  // 방송/청취 20분당: 소켓-> DB/프론트
+                  case "reqGetStoneByGift" :  // 선물보내기,받기시: api -> 소켓 -> 프론트
+                    //타입 갯수에 따라서 다수개의 속성을 1개의 속성으로 쪼개서 배열로 만들어 전달 ex) {d: 1, a: 1, l: 1} => [{d: 1}, {a: 1}, {l: 1}]
+                    let dCnt = 0;
+                    let aCnt = 0;
+                    let lCnt = 0;
+                    const {dStone, aStone, lStone} = data?.reqGetStoneByGift || data?.reqGetStoneByBV;
+                    if(dStone > 0) dCnt++;
+                    if(aStone > 0) aCnt++;
+                    if(lStone > 0) lCnt++;
+
+                    let arr: any = [];
+                    if(dCnt> 0) arr.push({dStone});
+                    if(aCnt> 0) arr.push({aStone});
+                    if(lCnt> 0) arr.push({lStone});
+                    this.broadcastStateChange['setStoneAniQueueState'](arr);
+
+                    return null;
+                  case "reqStartFeverTime": { // 피버타임 시작
+                    /*
+                    1. 달5000개: api -> 소켓 -> 프론트
+                    2. 10명 이하, 30분 이상, 선물시: api -> 소켓 -> 프론트
+                    */
+                    //reqStartFeverTime: {type 1: 선물, 2: 인원+방송시간+선물, time 진행시간}
+                    const {type, time} = data?.reqStartFeverTime;
+
+                    this.broadcastStateChange['setFeverTimeState'](true);
+                    return null;
+                  }
+                  case "reqStopFeverTime": { // 피버타임 종료
+                    //this.broadcastStateChange['setFeverTimeState'](false);
+                    return null;
+                  }
+
                   default:
                     return null;
                 }
               };
               const msgElem = chatMsgElement(data);
               this.addMsgElement(msgElem);
+              if (this.msgListWrapRef !== null) {
+                const msgListWrapElem = this.msgListWrapRef.current;
+                if(msgListWrapElem.children.length >= 1000){
+                  msgListWrapElem.children[0].remove();
+                }
+              }
+
               // this.chatCnt = this.chatCnt + 1;
               // if (msgListWrapElem && msgElem !== null) {
               //   if (msgListWrapElem.children.length === 2000) {
@@ -2479,7 +2683,12 @@ export class ReConnectChat {
   public roomOwner: boolean;
   public broadcastAction: any | null;
 
-  constructor(userInfo: chatUserInfoType) {
+  public dispatch: any;
+  public memNo: string = '';
+
+  constructor(userInfo: chatUserInfoType, dispatch?: any) {
+    this.dispatch = dispatch;
+
     this.chatUserInfo = userInfo;
     this.reTryCnt = 0;
     this.isRetry = false;
@@ -2490,6 +2699,10 @@ export class ReConnectChat {
     this.msgListWrapRef = null;
     this.mailMsgListWrapRef = null;
     this.roomOwner = false;
+  }
+
+  setMemNo(memNo){
+    this.memNo = memNo
   }
 
   setUserInfo(userInfo: chatUserInfoType) {

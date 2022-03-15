@@ -20,6 +20,7 @@ import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 
 import './scss/clipPage.scss';
+import {broadcastList} from "common/api";
 
 const ClipPage = () => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -35,7 +36,6 @@ const ClipPage = () => {
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
-
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
@@ -199,14 +199,23 @@ const ClipPage = () => {
       <div id="clipPage" >
         <Header title={'클립'} />
         <section className='hotClipWrap'>
-          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
+          <CntTitle title={'🌟 지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.list.length > 0 ?
             <Swiper {...swiperParams}>
               {hotClipInfo.list.map((row, index) => {
                 return (<div key={index}>
                   {row.map((coreRow, coreIndex) => {
                     if (Object.keys(coreRow).length > 0) {
-                      return (<HotClip key={coreIndex} info={coreRow} playAction={playClip}/>);
+                      return (<HotClip key={coreIndex} info={coreRow} playAction={(e)=>{
+                        const playListInfoData = {
+                        type:'one'
+                      }
+                        sessionStorage.setItem(
+                          "clipPlayListInfo",
+                          JSON.stringify(playListInfoData)
+                        );
+                        playClip(e)
+                      }}/>);
                     }
                   })}
                 </div>);
@@ -226,7 +235,7 @@ const ClipPage = () => {
               return (
                 <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
-                    <img src={`${IMG_SERVER}/clip/dalla/${list.icon}`} alt={list.cdNm}/>
+                    <span>{list.icon}</span>
                     <p>{list.cdNm}</p>
                   </div>
                 </div>
@@ -243,13 +252,31 @@ const ClipPage = () => {
           {listenClipInfo.list.length > 0 &&
           <>
             <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
-            <SwiperList data={listenClipInfo.list} playAction={playClip} />
+            <SwiperList data={listenClipInfo.list} playAction={(e)=>{
+              const playListInfoData = {
+                type:'one'
+              }
+              sessionStorage.setItem(
+                "clipPlayListInfo",
+                JSON.stringify(playListInfoData)
+              );
+              playClip(e)
+            }} />
           </>
           }
           {likeClipInfo.list.length > 0 &&
           <div className="mgt24">
             <ClipSubTitle title={'좋아요한 클립'} more={'clip/like/list'}/>
-            <SwiperList data={likeClipInfo.list} playAction={playClip} />
+            <SwiperList data={likeClipInfo.list} playAction={(e)=>{
+              const playListInfoData = {
+                type:'one'
+              }
+              sessionStorage.setItem(
+                "clipPlayListInfo",
+                JSON.stringify(playListInfoData)
+              );
+              playClip(e)
+            }} />
           </div>
           }
         </section>
@@ -263,7 +290,19 @@ const ClipPage = () => {
                     <div>
                       {row.map((coreRow, coreIndex) => {
                         if (Object.keys(coreRow).length > 0) {
-                          return (<NowClip key={coreIndex} info={coreRow} playAction={playClip} />)
+                          return (<NowClip key={coreIndex} info={coreRow} playAction={(e)=>{
+                            const playListInfoData = {
+                              dateType: 0,
+                              page: 1,
+                              records: 100,
+                              slctType: 1
+                            }
+                            sessionStorage.setItem(
+                              "clipPlayListInfo",
+                              JSON.stringify(playListInfoData)
+                            );
+                            playClip(e)
+                          }} />)
                         } else {
                           return <></>;
                         }
@@ -279,10 +318,27 @@ const ClipPage = () => {
         </section>
         <section className="clipList">
           <div className="cntTitle">
-            <h2><img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/>{`${subSearchInfo.cdNm}은(는) 어떠세요?`}</h2>
+            <h2>
+              {/* <img src={`${IMG_SERVER}/clip/dalla/${subSearchInfo.icon}`} alt={subSearchInfo.cdNm}/> */}
+              <span>{subSearchInfo.icon}</span>
+              {`${subSearchInfo.cdNm}은(는) 어떠세요?`}
+            </h2>
             <button onClick={changeList}>새로고침</button>
           </div>
-          <SwiperList data={subClipInfo.list} playAction={playClip}/>
+          <SwiperList data={subClipInfo.list} playAction={(e)=>{
+            const playListInfoData = {
+              dateType: 0,
+              page: 1,
+              records: 100,
+              slctType: 2,
+              subjectType: ""
+            }
+            sessionStorage.setItem(
+              "clipPlayListInfo",
+              JSON.stringify(playListInfoData)
+            );
+            playClip(e)
+          }}/>
         </section>
       </div>
     </>

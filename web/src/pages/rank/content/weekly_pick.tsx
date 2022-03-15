@@ -41,7 +41,7 @@ function WeeklyPick({ empty }) {
                           className="profileBox flexBox"
                         >
                           <ProfileImage
-                            imageData={{ profImg: v1.imageInfo.thumb120x120 }}
+                            imageData={{ profImg: v1.imageInfo.thumb292x292 }}
                             imageSize={74}
                           />
                           <strong className="nickNameBox ellipsis">

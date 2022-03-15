@@ -102,15 +102,15 @@
           .back {
             margin-left:auto;
             button {
-              width:76px;
-              line-height: 34px;
+              width:62px;
+              line-height: 30px;
               background-color: $BLACKBTNCOLOR;
               @include border($BLACKBTNCOLOR,100px);
-              @include font(14px,500,white);
+              @include font(12px,500,white);
               &.isFan {
                 background-color: white;
                 @include border(#E3E3E3,100px);
-                @include font(14px,500,#303030);
+                @include font(12px,500,#303030);
               }
             }
           }

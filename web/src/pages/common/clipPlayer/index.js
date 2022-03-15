@@ -1,24 +1,28 @@
-import React from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 import qs from 'query-string'
 //context
+import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 
 // etc
+import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
 import {clipExit} from './clip_func'
+import Lottie from 'react-lottie'
 
 import IconStart from './static/play_w_m.svg'
 import IconPause from './static/pause_w_m.svg'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxClipPlayerState} from "redux/actions/globalCtx";
+import equalizerClipAni from "./ani/equalizer_clip.json";
+import CloseBtn from "../../../common/images/ic_player_close_btn.svg";
 
 export default (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {clipState, clipPlayerState, clipPlayerInfo} = globalState
+  //---------------------------------------------------------------------
+  //context
+  const globalCtx = useContext(Context)
+  const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
   const {webview} = qs.parse(location.search)
 
   const settingSessionInfo = (type) => {
@@ -32,84 +36,138 @@ export default (props) => {
     switch (clipPlayerState) {
       case 'playing':
         return (
-          <button
+          <img
+            className="playToggle__play"
             onClick={() => {
               if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerPause')
-              dispatch(setGlobalCtxClipPlayerState('paused'));
+              globalCtx.action.updateClipPlayerState('paused')
               settingSessionInfo('paused')
-            }}>
-            <img src={IconPause} alt="멈춤" />
-          </button>
+            }}
+            src={IconPause}
+            alt="멈춤"
+          />
         )
       case 'paused':
       case 'ended':
         return (
-          <button
+          <img
+            className="playToggle__play"
             onClick={() => {
               if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerStart')
-              dispatch(setGlobalCtxClipPlayerState('playing'));
+              globalCtx.action.updateClipPlayerState('playing')
               settingSessionInfo('playing')
-            }}>
-            <img src={IconStart} alt="시작" />
-          </button>
+            }}
+            src={IconStart}
+            alt="시작"
+          />
         )
       default:
         return null
     }
   }
-
+  
   if (!clipState || clipPlayerInfo === null || webview === 'new' || Utility.getCookie('clip-player-info') == undefined)
     return null
 
   //------------------------------------------------------------------------
   return (
-    <ClipPlayer>
-      <div className="player-wrap">
-        <div className="equalizer">
-          <ul className={clipPlayerState !== 'playing' ? 'off' : 'on'}>
-            <li>
-              <span></span>
-            </li>
-            <li>
-              <span></span>
-            </li>
-            <li>
-              <span></span>
-            </li>
-            <li>
-              <span></span>
-            </li>
-            <li>
-              <span></span>
-            </li>
-          </ul>
-          <p>CLIP</p>
-        </div>
-        <div className="info">
-          <div className="profile">
-            <Figure url={clipPlayerInfo.bgImg}>{makePlayBtn()}</Figure>
+    <div id="player">
+      <div className="inner-player">
+        <div className="inner-player-bg"
+             style={{background:`url(${clipPlayerInfo.bgImg}) center/contain no-repeat`}}
+        />
+        <div className="info-wrap">
+          <div className="equalizer">
+            <Lottie
+              options={{
+                loop: true,
+                autoplay: true,
+                animationData: equalizerClipAni,
+              }}
+              isClickToPauseDisabled={true}
+              width={24}
+              height={27}
+            />
           </div>
-          <p
+          <div
+            className="thumb"
+            style={{backgroundImage:`url(${clipPlayerInfo.bgImg})`}}
+            onClick={()=>{
+
+            }}
+          />
+          <div
+            className="room-info"
             onClick={() => {
               Hybrid('ClipPlayerEnter')
-            }}>
-            <b>{clipPlayerInfo.nickname}</b>
-            <span>{clipPlayerInfo.title}</span>
-          </p>
+            }}
+          >
+            <p className="title">{clipPlayerInfo.title}</p>
+            <p>{clipPlayerInfo.nickname}</p>
+          </div>
+          <div className="counting"/>
         </div>
-        <button
-          className="close"
-          onClick={() => {
-            sessionStorage.removeItem('clip_active')
-            clipExit()
-            sessionStorage.setItem('listening', 'N')
-          }}>
-          닫기
-        </button>
+        <div className="buttonGroup">
+          {makePlayBtn()}
+          <img
+            src={CloseBtn} className="close-btn"
+            onClick={() => {
+              sessionStorage.removeItem('clip_active')
+              clipExit(globalCtx)
+              sessionStorage.setItem('listening', 'N')
+            }}
+            alt={"close"}
+          />
+        </div>
       </div>
-    </ClipPlayer>
+    </div>
+    // <ClipPlayer>
+    //   <div className="player-wrap">
+    //     <div className="equalizer">
+    //       <ul className={clipPlayerState !== 'playing' ? 'off' : 'on'}>
+    //         <li>
+    //           <span></span>
+    //         </li>
+    //         <li>
+    //           <span></span>
+    //         </li>
+    //         <li>
+    //           <span></span>
+    //         </li>
+    //         <li>
+    //           <span></span>
+    //         </li>
+    //         <li>
+    //           <span></span>
+    //         </li>
+    //       </ul>
+    //       <p>CLIP</p>
+    //     </div>
+    //     <div className="info">
+    //       <div className="profile">
+    //         <Figure url={clipPlayerInfo.bgImg}>{makePlayBtn()}</Figure>
+    //       </div>
+    //       <p
+    //         onClick={() => {
+    //           Hybrid('ClipPlayerEnter')
+    //         }}>
+    //         <b>{clipPlayerInfo.nickname}</b>
+    //         <span>{clipPlayerInfo.title}</span>
+    //       </p>
+    //     </div>
+    //     <button
+    //       className="close"
+    //       onClick={() => {
+    //         sessionStorage.removeItem('clip_active')
+    //         clipExit(globalCtx)
+    //         sessionStorage.setItem('listening', 'N')
+    //       }}>
+    //       닫기
+    //     </button>
+    //   </div>
+    // </ClipPlayer>
   )
 }
 

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import PopSlide from 'components/ui/popSlide/PopSlide'
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 
 // components
 import Tabmenu from '../components/Tabmenu'
@@ -14,17 +14,22 @@ import RankingList from '../components/rankingList'
 import './rankingDetail.scss'
 import {convertDateTimeForamt, convertMonday, convertMonth} from "pages/common/rank/rank_fn";
 import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
+
+  let location = useLocation();
+
+  const dispatch = useDispatch();
+  const commonPopup = useSelector(state => state.popup);
   const rankingListType = params.type
   //Ranking 종류(DJ, FAN, CUPID)
   const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
   //Ranking 기간(타임, 일간 등등)
-  const [rankType, setRankType] = useState(1);
-  //Ranking 종류 선택 팝업
-  const [slidePop, setSlidePop] = useState(false);
+  const [rankType, setRankType] = useState("");
   //Ranking 종류 Title
   const [select, setSelect] = useState("");  
   //탭 목록
@@ -46,14 +51,14 @@ const RankDetailPage = () => {
 
   useEffect(() => {
     if (rankingListType === 'DJ') {
-      setTabList(['타임','오늘','이번주', '이번달', '올해']);
-      setTabName('오늘')
+      setTabList(['타임','일간','주간', '월간', '연간']);
+      setTabName(typeof location.state === "undefined" ? "일간" : location.state === "time" ? "타임" : location.state === "today" ? "일간"  : location.state === "thisweek" ? "주간" : location.state === "thismonth" ? "월간" : "연간");
     } else if (rankingListType === 'FAN') {
-      setTabList(['오늘','이번주', '이번달']);
-      setTabName('오늘')
+      setTabList(['일간','주간', '월간']);
+      setTabName('일간')
     } else if (rankingListType === 'CUPID') {
-      setTabList(['오늘','이번주']);
-      setTabName('오늘')
+      setTabList(['일간','주간']);
+      setTabName('일간')
     }
     setSelect(rankingListType);
   }, []);
@@ -214,49 +219,54 @@ const RankDetailPage = () => {
   }
 
   const bottomSlide = () => {
-    setSlidePop(true);
+    dispatch(setSlidePopupOpen());
+  }
+
+  const closeSlidePop = () => {
+    closePopup(dispatch);
   }
 
   const optionSelect = (e) => {
     let text = e.currentTarget.innerText;
     if(text === "DJ"){
       setSelect("DJ");
-      setTabName('오늘');
-      setTabList(['타임','오늘','이번주', '이번달', '올해']);
-      setRankSlct(1);
-      setRankType(1);
+      setTabName('일간');
+      setTabList(['타임','일간','주간', '월간', '연간']);
     } else if(text === "FAN") {
       setSelect("FAN");
-      setTabName('오늘');
-      setTabList(['오늘','이번주', '이번달']);
-      setRankSlct(2);
-      setRankType(1);
+      setTabName('일간');
+      setTabList(['일간','주간', '월간']);
     } else {      
       setSelect("CUPID")
-      setTabName('오늘');
-      setTabList(['오늘','이번주']);
-      setRankSlct(3);
-      setRankType(1);
+      setTabName('일간');
+      setTabList(['일간','주간']);
     }
-    setSlidePop(false);
+    closeSlidePop();
   }
 
   useEffect(() => {
-    if (rankType !== 0){
-      setPageNo(1);
-      fetchRankData(rankSlct, rankType, 1);
+    if (rankType !== ""){
+      if (tabName === "타임"){
+        fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
+      } else {
+        fetchRankData(rankSlct, rankType, 1);
+      }
     }
   }, [rankSlct, rankType]);
 
   useEffect(() => {
     setPageNo(1);
-    if (tabName === "타임"){
-      setRankType(0);
-      fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
+    if (select === "DJ"){
+      setRankType(tabName === "타임" ? 0  : tabName === "주간" ? 2 : tabName === "월간" ? 3 : tabName === "연간" ? 4 : 1);
+      setRankSlct(1);
+    } else if (select === "FAN") {
+      setRankType(tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
+      setRankSlct(2);
     } else {
-      setRankType(tabName === "올해" ? 4 : tabName === "이번주" ? 2 : tabName === "이번달" ? 3 : 1);
+      setRankType(tabName === "주간" ? 2 :  1);
+      setRankSlct(3);
     }
-  }, [tabName]);
+  }, [tabName, select]);
 
   const getTopRankDate = (dateType, currentDate) => {
     let day1 = new Date(moment(currentDate));
@@ -325,8 +335,8 @@ const RankDetailPage = () => {
         </div>
       </div>
 
-      {slidePop &&
-        <PopSlide setPopSlide={setSlidePop}>
+      {commonPopup.commonPopup &&
+        <PopSlide>
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
             <div className={`selectOption ${select === "FAN" ? "active" : ""}`} onClick={optionSelect}>FAN</div>

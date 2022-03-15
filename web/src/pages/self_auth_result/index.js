@@ -26,7 +26,7 @@ export default (props) => {
   const location = useLocation()
 
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-  const {result, code, message, returntype, url} = qs.parse(location.search)
+  const {result, code, message, returntype, url, pushLink} = qs.parse(location.search)
 
   /**
    * authState
@@ -85,6 +85,8 @@ export default (props) => {
       setAuthState(10)
     } else if(returntype === '' && url === '11') {
       setAuthState(11)
+    } else if(returntype === 'default') {
+      setAuthState(12)
     } else {
       checkAuth()
     }
@@ -145,7 +147,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/wallet?exchange');
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/wallet?exchange');
+                  }
                 }}>
                 확인
               </button>
@@ -171,7 +177,11 @@ export default (props) => {
               <button
                 className="cancel"
                 onClick={() => {
-                  window.location.href = '/'
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/')
+                  }
                 }}>
                 취소
               </button>
@@ -194,7 +204,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/wallet?exchange')
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/wallet?exchange')
+                  }
                 }}>
                 확인
               </button>
@@ -254,7 +268,13 @@ export default (props) => {
             </h5>
             <div className="btn-wrap">
               <button
-                onClick={() => window.location.href = '/'}
+                onClick={() => {
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    window.location.href = '/'
+                  }
+                }}
               >확인
               </button>
             </div>
@@ -288,6 +308,27 @@ export default (props) => {
               </div>
             </div>
           )
+      case 12:
+        return (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다.
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    const decodeLink = decodeURIComponent(pushLink);
+                    history.push(decodeLink)
+                  }
+                }}
+              >확인
+              </button>
+            </div>
+          </div>
+        )
       default:
         return <></>
     }
@@ -299,7 +340,7 @@ export default (props) => {
       {authState === 0 ? (
         <></>
       ) :
-        authState === 4 ?
+        (authState === 4 || authState === 12) ?
           <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
         : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
       }

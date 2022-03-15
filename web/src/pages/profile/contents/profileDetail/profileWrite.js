@@ -1,5 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
+import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 import Api from 'context/api'
 
@@ -13,17 +14,15 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
-import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
 
-  const {token, profile} = globalState;
+  //context
+  const context = useContext(Context);
+  const {token, profile} = context;
 
   //수정 : index 필수
   if (action === 'modify' && !index) {
@@ -71,7 +70,7 @@ const ProfileWrite = () => {
     }
 
     if(!confirm)
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+      context.action.toast({msg: message});
 
     return confirm;
   };
@@ -82,7 +81,7 @@ const ProfileWrite = () => {
     const {title, contents, others, photoInfoList} = formState;
 
     if (type === 'feed') {
-      const {data, message, result } = await Api.mypage_notice_upload({
+      Api.mypage_notice_upload({
         reqBody: true,
         data: {
           title,
@@ -90,11 +89,14 @@ const ProfileWrite = () => {
           topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
+      }).then((res) => {
+        const {data, message, result } = res;
+        context.action.toast({msg: message});
+
+        if (result === 'success') {
+          history.goBack();
+        }
       });
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
-      if (result === 'success') {
-        history.goBack();
-      }
     } else if (type === 'fanBoard') {
       const {data, result, message} = await Api.member_fanboard_add({
         data: {
@@ -104,7 +106,7 @@ const ProfileWrite = () => {
           viewOn: others
         }
       });
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+      context.action.toast({msg: message});
       if (result === 'success') {
         history.goBack();
       }
@@ -128,7 +130,7 @@ const ProfileWrite = () => {
           chrgrName: profile?.nickName,
         }
       });
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+      context.action.toast({msg: message});
       if (result === 'success') {
         history.goBack();
       }
@@ -144,10 +146,10 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
-        dispatch(setGlobalCtxMessage({type: "toast", msg: '팬보드를 수정했습니다.'}));
+        context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'}));
+        context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
       }
     }
   }
@@ -174,7 +176,7 @@ const ProfileWrite = () => {
       //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
       // }
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert", msg: '사진 업로드를 실패하였습니다.'}));
+      context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
     }
   };
 
@@ -186,13 +188,13 @@ const ProfileWrite = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        dispatch(setGlobalCtxMessage({
+        context.action.alert({
           status: true,
           type: 'alert',
           content: image.content,
           callback: () => {
           }
-        }))
+        })
       } else {
         noticePhotoUpload();
       }
@@ -286,7 +288,7 @@ const ProfileWrite = () => {
                 <label key={index} onClick={(e) => e.preventDefault()}>
                   <div className="insertPicture"
                        onClick={() => setShowSlide({show: true, viewIndex: index})}>
-                    <img src={data?.thumb60x60 || data?.thumb50x50} alt=""/>
+                    <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
                   </div>
                   <button className="cancelBtn"
                           onClick={(e) => {
@@ -311,7 +313,7 @@ const ProfileWrite = () => {
                 }}>
                   <div className="insertPicture"
                        onClick={() => setShowSlide({show: true, viewIndex: 0})}>
-                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb50x50} alt=""/>
+                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>
                   </div>
                   <button className="cancelBtn"
                           onClick={(e) => {

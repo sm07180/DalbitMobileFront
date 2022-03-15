@@ -55,9 +55,9 @@ function RealTimeLive(props: any) {
               className="broadcast-img"
               style={{ backgroundImage: `url(${bjProfImg["thumb190x190"]})` }}
             >
-              {gstProfImg.thumb190x190 && (
+              {gstProfImg.thumb292x292 && (
                 <span className="thumb-guest">
-                  <img src={gstProfImg.thumb190x190} alt="게스트" />
+                  <img src={gstProfImg.thumb292x292} alt="게스트" />
                 </span>
               )}
             </div>
@@ -187,7 +187,7 @@ function RealTimeLive(props: any) {
 
                 <div
                   className={`bottom-wrap ${
-                    gstProfImg.thumb190x190 ? "text_cut" : ""
+                    gstProfImg.thumb292x292 ? "text_cut" : ""
                   }`}
                 >
                   <div className="dj-nickname">{bjNickNm}</div>

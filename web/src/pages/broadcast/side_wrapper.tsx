@@ -1,14 +1,16 @@
-import React, {useContext, useEffect, useState} from "react";
-import {useHistory, useParams} from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
 // static
-import {broadcastAllExit, broadcastExit, broadcastInfoNew, broadcastJoin, selfAuthCheck} from "common/api";
+import { broadcastAllExit, broadcastExit, broadcastJoin, broadcastInfoNew, selfAuthCheck } from "common/api";
 
 // others
-import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
+import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 
 // context
-import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
+import { GlobalContext } from "context";
+import { BroadcastContext } from "context/broadcast_ctx";
+import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // content
 import ChatSide from "./content/chat_side";
@@ -17,34 +19,19 @@ import RightSide from "./content/right_side";
 import Agora from "./content/left_side_agora"
 
 import LayerSwitchRendered from "./component/layer_switch_rendered";
+
+import LevelUpLayerComponent from "./content/level_up_layer";
 import "./index.scss";
-import {MediaType, MiniGameType, tabType} from "./constant";
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setBroadcastCtxChatFreeze,
-  setBroadcastCtxExtendTimeOnce, setBroadcastCtxIsWide,
-  setBroadcastCtxLikeClicked,
-  setBroadcastCtxMiniGameInfo,
-  setBroadcastCtxRealTimeValueSetLikeFanRank,
-  setBroadcastCtxRightTabType,
-  setBroadcastCtxRoomInfoReset,
-  setBroadcastCtxUserCount,
-  setBroadcastCtxVideoEffect
-} from "../../redux/actions/broadcastCtx";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxGuestInfoEmpty,
-  setGlobalCtxRtcInfoEmpty
-} from "../../redux/actions/globalCtx";
+import { MediaType, MiniGameType, tabType } from "./constant";
+import {useDispatch} from "react-redux";
+import {moveVoteStep, setVoteActive} from "../../redux/actions/vote";
 
 export default function SideWrapper() {
   const [splashData, setSplashData] = useState<any>(null);
   const [roomOwner, setRoomOwner] = useState<boolean | null>(null);
   const [forceChatScrollDown, setForceChatScrollDown] = useState<boolean>(false);
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const dispatch = useDispatch();
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const { baseData, chatInfo, rtcInfo, guestInfo } = globalState;
 
   const { dispatchLayer, dispatchDimLayer, dimLayer } = useContext(BroadcastLayerContext);
@@ -54,6 +41,7 @@ export default function SideWrapper() {
   const [fetching, setFetching] = useState<boolean>(false);
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const disconnectGuest = () => {
     if (guestInfo !== null) {
@@ -62,7 +50,9 @@ export default function SideWrapper() {
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          dispatch(setGlobalCtxGuestInfoEmpty());
+          globalAction.dispatchGuestInfo!({
+            type: "EMPTY",
+          });
         });
       }
     }
@@ -71,7 +61,7 @@ export default function SideWrapper() {
   useEffect(() => {
     const videoEffect = sessionStorage.getItem("videoEffect");
     if (videoEffect) {
-      dispatch(setBroadcastCtxVideoEffect(JSON.parse(videoEffect)));
+      broadcastAction.setVideoEffect!(JSON.parse(videoEffect));
     }
 
     if (globalState.splashData) {
@@ -80,31 +70,33 @@ export default function SideWrapper() {
 
 
     async function broadcastJoinConfirm() {
-      dispatch(setGlobalCtxAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?`,
-        callback: () => {
-          const callResetListen = async () => {
-            const { result, message } = await broadcastAllExit();
-            if (result === "success") {
-              setTimeout(() => {
-                broadcastInit();
-              }, 700);
-            } else {
-              dispatch(setGlobalCtxAlertStatus({
-                status: true,
-                title: "알림",
-                content: `${message}`,
-                callback: () => history.push("/"),
-                cancelCallback: () => history.push("/"),
-              }));
-            }
-          };
-          callResetListen();
-        },
-        cancelCallback: () => history.push("/"),
-      }));
+      globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          content: `이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?`,
+          callback: () => {
+            const callResetListen = async () => {
+              const { result, message } = await broadcastAllExit();
+              if (result === "success") {
+                setTimeout(() => {
+                  broadcastInit();
+                }, 700);
+              } else {
+                globalAction.setAlertStatus &&
+                  globalAction.setAlertStatus({
+                    status: true,
+                    title: "알림",
+                    content: `${message}`,
+                    callback: () => history.push("/"),
+                    cancelCallback: () => history.push("/"),
+                  });
+              }
+            };
+            callResetListen();
+          },
+          cancelCallback: () => history.push("/"),
+        });
     }
 
     async function broadcastExitAction(exitRoomNo) {
@@ -114,7 +106,7 @@ export default function SideWrapper() {
           chatInfo.privateChannelDisconnect();
           if (rtcInfo !== null) {
             rtcInfo!.stop();
-            dispatch(setGlobalCtxRtcInfoEmpty());
+            globalAction.dispatchRtcInfo!({ type: "empty" });
           }
           disconnectGuest();
           rtcSessionClear();
@@ -127,18 +119,19 @@ export default function SideWrapper() {
           chatInfo.privateChannelDisconnect();
           if (rtcInfo !== null) {
             rtcInfo!.stop();
-            dispatch(setGlobalCtxRtcInfoEmpty());
+            globalAction.dispatchRtcInfo!({ type: "empty" });
           }
           disconnectGuest();
         }
         rtcSessionClear();
-        dispatch(setGlobalCtxAlertStatus({
-          status: true,
-          title: "알림",
-          content: `${message}`,
-          callback: () => history.push("/"),
-          cancelCallback: () => history.push("/"),
-        }));
+        globalAction.setAlertStatus &&
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: `${message}`,
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          });
       }
     }
     //청취자 입장
@@ -153,22 +146,32 @@ export default function SideWrapper() {
         const { isFreeze, isExtend, isLike, bjMemNo, fanRank, likes, rank, miniGameList } = roomInfo;
 
         setRoomOwner(baseData.memNo === bjMemNo ? true : false);
-        dispatch(setBroadcastCtxRealTimeValueSetLikeFanRank({ fanRank, likes, rank }));
-        dispatch(setBroadcastCtxRoomInfoReset(roomInfo));
+        broadcastAction.dispatchRealTimeValue &&
+          broadcastAction.dispatchRealTimeValue({ type: "setLikeFanRank", data: { fanRank, likes, rank } });
+        broadcastAction.dispatchRoomInfo &&
+        broadcastAction.dispatchRoomInfo({
+          type: "reset",
+          data: roomInfo,
+        });
         sessionStorage.setItem("broadcast_data", JSON.stringify(roomInfo));
 
-        dispatch(setBroadcastCtxChatFreeze(isFreeze));
-        dispatch(setBroadcastCtxExtendTimeOnce(isExtend));
-        dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, history:roomInfo.entryCnt}));
-        dispatch(setBroadcastCtxChatFreeze(isFreeze));
-        dispatch(setBroadcastCtxLikeClicked(isLike));
+        broadcastAction.setChatFreeze!(isFreeze);
+        broadcastAction.setExtendTimeOnce!(isExtend);
+        broadcastAction.setUserCount &&
+          broadcastAction.setUserCount((prev) => {
+            return { ...prev, history: roomInfo.entryCnt };
+          });
+
+        chatInfo && chatInfo.setChatFreeze(isFreeze);
         chatInfo?.setRoomInfo(roomInfo);
         chatInfo?.setBroadcastLayerAction({ dispatchLayer, dispatchDimLayer });
+
+        broadcastAction.setLikeClicked!(isLike);
         if (roomInfo.useFilter === false) {
           sessionStorage.removeItem("videoEffect");
         }
         if (miniGameList.length > 0) {
-          dispatch(setBroadcastCtxMiniGameInfo({
+          broadcastAction.setMiniGameInfo!({
             status: true,
             miniGameType: MiniGameType.ROLUTTE,
             isFree: miniGameList[0].isFree,
@@ -178,10 +181,13 @@ export default function SideWrapper() {
             rouletteNo: miniGameList[0].rouletteNo,
             versionIdx: miniGameList[0].versionIdx,
             autoYn: miniGameList[0].autoYn,
-          }))
+          });
         } else if (miniGameList.length === 0) {
-          dispatch(setBroadcastCtxMiniGameInfo({status:false}));
+          broadcastAction.setMiniGameInfo!({
+            status: false,
+          });
         }
+        dispatch(setVoteActive(data.isVote));
 
         setFetching(true);
         //Facebook,Firebase 이벤트 호출
@@ -203,49 +209,53 @@ export default function SideWrapper() {
           authCheck();
         } else if (code === "-8") {
           // Host Join case
-          dispatch(setGlobalCtxAlertStatus({
-            status: true,
-            title: "알림",
-            content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
-            callback: () => history.push("/"),
-            cancelCallback: () => history.push("/"),
-          }));
+          globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              title: "알림",
+              content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
+              callback: () => history.push("/"),
+              cancelCallback: () => history.push("/"),
+            });
         } else if (code === "-14") {
-          dispatch(setGlobalCtxAlertStatus({
-            status: true,
-            title: "알림",
-            content: `${message}`,
-            callback: () => {
-              history.push(`/self_auth/self?type=adultJoin`);
-            },
-          }));
+          globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              title: "알림",
+              content: `${message}`,
+              callback: () => {
+                history.push(`/self_auth/self?type=adultJoin`);
+              },
+            });
         } else if (code === "-99") {
-          dispatch(setGlobalCtxAlertStatus({
-            status: true,
-            title: "알림",
-            content: `${message}`,
-            callback: () => {
-              history.push({
-                pathname: "/login",
-                state: `/broadcast/${roomNo}`,
-              });
-            },
-          }));
+          globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              title: "알림",
+              content: `${message}`,
+              callback: () => {
+                history.push({
+                  pathname: "/login",
+                  state: `/broadcast/${roomNo}`,
+                });
+              },
+            });
         } else {
           if (chatInfo && chatInfo !== null) {
             chatInfo.privateChannelDisconnect();
             if (rtcInfo !== null) rtcInfo!.stop();
             disconnectGuest();
-            dispatch(setGlobalCtxRtcInfoEmpty());
+            globalAction.dispatchRtcInfo!({ type: "empty" });
           }
           rtcSessionClear();
-          dispatch(setGlobalCtxAlertStatus({
-            status: true,
-            title: "알림",
-            content: `${message}`,
-            callback: () => history.push("/"),
-            cancelCallback: () => history.push("/"),
-          }));
+          globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              title: "알림",
+              content: `${message}`,
+              callback: () => history.push("/"),
+              cancelCallback: () => history.push("/"),
+            });
         }
       }
     }
@@ -267,21 +277,30 @@ export default function SideWrapper() {
         };
         const { auth, fanRank, likes, rank, isExtend, isFreeze, isLike, miniGameList } = roomInfo;
         setRoomOwner(auth === 3 ? true : false);
-        dispatch(setBroadcastCtxRealTimeValueSetLikeFanRank({ fanRank, likes, rank }));
-        dispatch(setBroadcastCtxExtendTimeOnce(isExtend));
-        dispatch(setBroadcastCtxChatFreeze(isFreeze));
-        dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, history: roomInfo.entryCnt}));
-        dispatch(setBroadcastCtxLikeClicked(isLike));
+        broadcastAction.dispatchRealTimeValue &&
+          broadcastAction.dispatchRealTimeValue({ type: "setLikeFanRank", data: { fanRank, likes, rank } });
+        // broadcastAction.dispatchRoomInfo &&
+        //   broadcastAction.dispatchRoomInfo({
+        //     type: "reset",
+        //     data: roomInfo,
+        //   });
+        broadcastAction.setExtendTimeOnce!(isExtend);
+        broadcastAction.setChatFreeze!(isFreeze);
+        broadcastAction.setUserCount &&
+          broadcastAction.setUserCount((prev) => {
+            return { ...prev, history: roomInfo.entryCnt };
+          });
         chatInfo && chatInfo.setChatFreeze(isFreeze);
         chatInfo?.setRoomInfo(roomInfo);
         chatInfo?.setBroadcastLayerAction({ dispatchLayer, dispatchDimLayer });
-
+        broadcastAction.setLikeClicked!(isLike);
+        dispatch(setVoteActive(newRoomInfo.data.isVote));
         sessionStorage.setItem("room_no", roomNo);
         if (roomInfo.useFilter === false) {
           sessionStorage.removeItem("videoEffect");
         }
         if (miniGameList.length > 0) {
-          dispatch(setBroadcastCtxMiniGameInfo({
+          broadcastAction.setMiniGameInfo!({
             status: true,
             miniGameType: MiniGameType.ROLUTTE,
             isFree: miniGameList[0].isFree,
@@ -291,9 +310,11 @@ export default function SideWrapper() {
             rouletteNo: miniGameList[0].rouletteNo,
             versionIdx: miniGameList[0].versionIdx,
             autoYn: miniGameList[0].autoYn,
-          }));
+          });
         } else if (miniGameList.length === 0) {
-          dispatch(setBroadcastCtxMiniGameInfo({status: false,}));
+          broadcastAction.setMiniGameInfo!({
+            status: false,
+          });
         }
 
         setFetching(true);
@@ -303,13 +324,14 @@ export default function SideWrapper() {
           broadcastJoinConfirm();
         } else if (newRoomInfo.code === "-8") {
           // Host Join case
-          dispatch(setGlobalCtxAlertStatus({
-            status: true,
-            title: "알림",
-            content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
-            callback: () => history.push("/"),
-            cancelCallback: () => history.push("/"),
-          }));
+          globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              title: "알림",
+              content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
+              callback: () => history.push("/"),
+              cancelCallback: () => history.push("/"),
+            });
         } else if (newRoomInfo.code + "" === "-3") {
           //해당방 회원 아님 룸조인 처리
           const listenRoomNo = sessionStorage.getItem("room_no");
@@ -320,13 +342,14 @@ export default function SideWrapper() {
             broadcastExitAction(listenRoomNo);
           }
         } else {
-          dispatch(setGlobalCtxAlertStatus({
-            status: true,
-            title: "알림",
-            content: `${newRoomInfo.message}`,
-            callback: () => history.push("/"),
-            cancelCallback: () => history.push("/"),
-          }));
+          globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              title: "알림",
+              content: `${newRoomInfo.message}`,
+              callback: () => history.push("/"),
+              cancelCallback: () => history.push("/"),
+            });
         }
       }
     }
@@ -346,14 +369,16 @@ export default function SideWrapper() {
         if (roomInfo !== null) {
           const roomOwner = baseData.memNo === roomInfo.bjMemNo;
           if (rtcInfo?.roomInfo?.roomNo !== roomNo) {
-            dispatch(setGlobalCtxAlertStatus({
-              status: true,
-              type: "alert",
-              title: "알림",
-              content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
-              callback: () => history.goBack(),
-              cancelCallback: () => history.goBack(),
-            }));
+            if (globalAction.setAlertStatus) {
+              globalAction.setAlertStatus({
+                status: true,
+                type: "alert",
+                title: "알림",
+                content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
+                callback: () => history.goBack(),
+                cancelCallback: () => history.goBack(),
+              });
+            }
           } else if (rtcInfo?.roomInfo?.roomNo === roomNo) {
             broadcastInit();
           }
@@ -378,8 +403,10 @@ export default function SideWrapper() {
 
     return () => {
       window.removeEventListener("click", LayerInit);
-      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
-      dispatch(setBroadcastCtxIsWide(true));
+
+      broadcastAction.setRightTabType!(tabType.PROFILE);
+
+      broadcastAction.setIsWide!(true);
     };
   }, []);
   // if (roomOwner !== null) {
@@ -468,7 +495,7 @@ export default function SideWrapper() {
         //   setForceChatScrollDown={setForceChatScrollDown}
         // />
       ) : (
-        <div className="temp-left-side"></div>
+        <div className="temp-left-side"/>
       )}
 
       {broadcastState.roomInfo?.mediaType === MediaType.VIDEO && (
@@ -488,23 +515,23 @@ export default function SideWrapper() {
 
 export const authCheck = async () => {
   const history = useHistory();
-  const dispatch = useDispatch();
+  const { globalState, globalAction } = useContext(GlobalContext);
 
   const { result } = await selfAuthCheck();
   if (result === "success") {
-    dispatch(setGlobalCtxAlertStatus({
+    globalAction.setAlertStatus({
       status: true,
       content: "20세 이상만 입장할 수 있는 방송입니다.",
       callback: () => history.push("/"),
       cancelCallback: () => history.push("/"),
-    }));
+    });
   } else {
-    dispatch(setGlobalCtxAlertStatus({
+    globalAction.setAlertStatus({
       status: true,
       content: "20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.",
       callback: () => history.push("/mysetting"),
       cancelCallback: () => history.push("/"),
-    }));
+    });
   }
 }
 

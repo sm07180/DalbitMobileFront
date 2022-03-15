@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
@@ -10,15 +10,18 @@ import {Context} from "context";
 
 const MainSlide = (props) => {
   const {data, common, pullToRefreshPause} = props
+
   const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
     loop: true,
+    speed: 700,
     autoplay: {
       delay: 7000,
       disableOnInteraction: false
     },
+    parallax: true,
     on:{
       click: function(evt) {
         evt.preventDefault();
@@ -42,6 +45,7 @@ const MainSlide = (props) => {
     }
   }, [common.isRefresh, pullToRefreshPause]);
 
+
   return (
     <>
       {data.length > 0 ?
@@ -50,15 +54,17 @@ const MainSlide = (props) => {
             return (
               <div key={index}>
                 {list.bannerUrl && list.nickNm === "banner" && list.roomType === 'link' ?
-                  <ListColumn photo={list.bannerUrl} index={index} />
+                  <ListColumn photo={list.profImg.thumb700x700} index={index} />
                   :
-                  <ListColumn photo={list.bannerUrl} index={index}>
+                  <ListColumn photo={list.profImg.thumb700x700} index={index}>
                     <div className='info'>
-                      <div className="badgeGroup">
-                        <BadgeItems data={list} type='isBadge' />
+                      <div className='animation' data-swiper-parallax="-100" >
+                        <div className="badgeGroup">
+                          <BadgeItems data={list} type='isBadge' />
+                        </div>
+                        <span className="title">{list.title}</span>
+                        <span className="nick">{list.nickNm}</span>
                       </div>
-                      <span className="title">{list.title}</span>
-                      <span className="nick">{list.nickNm}</span>
                     </div>
                   </ListColumn>
                 }

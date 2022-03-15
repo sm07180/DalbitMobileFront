@@ -1,8 +1,10 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef, useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import {authReq} from 'pages/self_auth'
+import {Context} from 'context'
 import moment from 'moment'
+import qs from 'query-string'
 
 import Api from 'context/api'
 
@@ -13,24 +15,68 @@ import PopupChoice from './content/popupChoice'
 
 import './style.scss'
 import PopupItems from "pages/event/welcome/content/popupItems";
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const EventWelcome = () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
+  const context = useContext(Context)
+  const {webview} = qs.parse(location.search)
+
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
-  const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo: ''})
+  const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo:''})
   const [tabContent, setTabContent] = useState({name: 'Lisen', quality: 'n', userQuality: 'n', djQuality: 'n'}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
-  const [resultItemPopInfo, setResultItemPopInfo] = useState({open: false, giftInfo: {}}); // 아이템 보상 결과 팝업
+  const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
 
-  const nowTime = moment().format('YYMMDD')
-  const eStartTime = '220201'
+  // 뒤로가기 이벤트
+  const backEvent = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      return history.goBack()
+    }
+  };
+
+  const colorInfo = useMemo(() => {
+    let bgColor = '';
+    let btnColor = '';
+    const currentMonth = parseInt(moment().format('MM'));
+    switch (currentMonth) {
+      case 12:
+      case 1:
+      case 2:
+        bgColor = '#4184FF';
+        btnColor = '#14389D';
+        break;
+      case 3:
+      case 4:
+      case 5:
+        bgColor = '#FF7F97';
+        btnColor = '#E93667';
+        break;
+      case 6:
+      case 7:
+      case 8:
+        bgColor = '#25A5FF';
+        btnColor = '#005088';
+        break;
+      case 9:
+      case 10:
+      case 11:
+        bgColor = '#FF9A38';
+        btnColor = '#FF6600';
+        break;
+    }
+
+    return {
+      bgUrl: currentMonth,
+      bgColor,
+      btnColor
+    }
+  }, []);
 
   // 조회 API
   // 0. 이벤트 자격 여부
@@ -75,36 +121,33 @@ const EventWelcome = () => {
       return
     }
 
-    if (!globalState.token.isLogin) {
+    if (!context.token.isLogin) {
       history.push('/login')
       return
     }
 
     if (eventAuth.check === false) {
-      dispatch(setGlobalCtxMessage({
-        type: "confirm",
+      context.action.confirm({
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('9', globalState.authRef, dispatch)
+          authReq('9', context.authRef, context)
         }
-      }))
+      })
       return
     }
 
     if (eventAuth.adultYn === 'n') {
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+      context.action.alert({
         msg: `시청자 선물은 19세 이상인 회원님만 받을 수 있습니다.`
-      }))
+      })
       return
     }
 
     if (tabContent.quality === 'n') {
-      dispatch(setGlobalCtxMessage({
-        type: "toast",
+      context.action.toast({
         msg: `이벤트 참여대상이 아닙니다.
               신입회원님들을 위한 이벤트이니 양해 부탁드립니다.`
-      }))
+      })
       return
     }
     const temp = stepItemInfo.find((row) => row.stepNo == targetNum)
@@ -112,7 +155,7 @@ const EventWelcome = () => {
     if (temp.dalCnt >= temp.maxDalCnt && temp.likeCnt >= temp.maxLikeCnt && temp.memTime >= temp.maxMemTime) {
       setChoicePopInfo({...choicePopInfo, open: true, stepNo: targetNum, list: temp.itemList})
     } else {
-      dispatch(setGlobalCtxMessage({type: "toast", msg: `조건을 만족하지 못했습니다.`}))
+      context.action.toast({msg: `조건을 만족하지 못했습니다.`})
     }
   }
 
@@ -135,12 +178,11 @@ const EventWelcome = () => {
     }
 
     if(giftStepNo == 3) {
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+      context.action.alert({
         msg: `축하드립니다!
               ALL CLEAR 선물에 자동으로 응모되었습니다.
               결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
-      }))
+      })
     }
     setResultItemPopInfo({ open: false, giftInfo: {} });
   };
@@ -176,15 +218,11 @@ const EventWelcome = () => {
   }, [tabContent.name])
 
   return (
-    <div id="welcome">
-      <Header title="이벤트" type="back" />
-      {nowTime >= eStartTime ?
-      <img src={`${IMG_SERVER}/event/welcome/welcomeTop-2.png`} className="bgImg" />
-      :
-      <img src={`${IMG_SERVER}/event/welcome/welcomeTop.png`} className="bgImg" />
-      }
+    <div id="welcome" style={{background: `${colorInfo.bgColor}`}}>
+      <Header title="이벤트" type="back" backEvent={backEvent}/>
+      <img src={`${IMG_SERVER}/event/welcome/welcomeTop-${colorInfo.bgUrl}.png`} className="bgImg" />
       <Tabmenu tab={tabContent.name}>
-        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} />
+        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} btnColor={colorInfo.btnColor}/>
       </Tabmenu>
       <div className="step">
         {stepItemInfo.length > 0 &&

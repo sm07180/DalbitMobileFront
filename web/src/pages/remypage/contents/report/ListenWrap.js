@@ -1,23 +1,24 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 //global components
 import InputItems from 'components/ui/inputItems/InputItems'
 // components
+
 import './report.scss'
 import API from "context/api";
+import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
 import ReportTabMenu from "../../components/ReportTabMenu";
 import DatePicker from "./DatePicker";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
-import PopSlide from "components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setSlidePopupOpen} from "redux/actions/common";
 
-const ListenWrap = () => {
+const ListenWrap = () =>{
   const history = useHistory();
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context);
   //조회 기간설정
   const tabmenu = ['오늘', '어제', '주간', '월간']
   const [tabType, setTabType] = useState(tabmenu[3])
@@ -34,8 +35,9 @@ const ListenWrap = () => {
   const [listenListInfo, setListenListInfo] = useState([]);
   //총 선물한 달, 청취시간
   const [listenTotalInfo, setListenTotalInfo] = useState({giftDalTotCnt: 0, listeningTime: 0});
-  //Popup Open/Close용
-  const [bottomSlide, setBottomSlide] = useState(false);
+
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
 
   //청취내역 조회
@@ -57,7 +59,7 @@ const ListenWrap = () => {
           setListenTotalInfo({giftDalTotCnt: res.data.giftDalTotCnt, listeningTime: res.data.listeningTime})
         }
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
+        context.action.alert({msg: res.message});
       }
     }).catch((e) => {console.log(e)})
   };
@@ -104,21 +106,21 @@ const ListenWrap = () => {
   //기간 적용시 해당 요일로 방송,청취 내역 조회
   const clickConfirm = () => {
     fetchData();
-    closePopup();
+    closePop();
   }
 
   //조회시 팝업 open
   const openPopup = () => {
-    setBottomSlide(true);
+    dispatch(setSlidePopupOpen());
   }
 
   //조회시 팝업 close
-  const closePopup = () => {
-    setBottomSlide(false);
+  const closePop = () => {
+    closePopup(dispatch);
   }
 
   useEffect(() => {
-    if (!(globalState.token.isLogin)) {
+    if(!(context.token.isLogin)) {
       history.push("/login");
     }
   }, []);
@@ -169,8 +171,8 @@ const ListenWrap = () => {
         })}
       </section>
 
-      {bottomSlide &&
-      <PopSlide title="기간 설정" setPopSlide={setBottomSlide}>
+      {popup.commonPopup &&
+      <PopSlide title="기간 설정">
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>
           <DatePicker name="pickdata" value={dt.pickdataPrev} change={pickerPrev} changeActive={changeActive}/>

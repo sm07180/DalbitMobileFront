@@ -152,7 +152,7 @@ export default () => {
                           history.push(`/profile/${memNo}`)
                         }}>
                         <div className="thumb">
-                          <img src={profImg.thumb120x120} />
+                          <img src={profImg.thumb292x292} />
                         </div>
                         <p>{nickNm}</p>
                       </td>

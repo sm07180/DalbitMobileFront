@@ -242,7 +242,9 @@ const Alert = styled.section`
   }
 
   #nonMemberPopup {
+    color:#202020;
     img {
+      display:none;
       width: 166px;
       padding-top: 12px;
     }

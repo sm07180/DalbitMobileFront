@@ -20,7 +20,7 @@ import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
-import {setNoticeTab} from "../redux/actions/notice";
+import {setNoticeData, setNoticeTab} from "../redux/actions/notice";
 import API from "../context/api";
 import {setMailBoxIsMailBoxNew} from "../redux/actions/mailBox";
 
@@ -47,17 +47,17 @@ export default function GNB() {
   const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   const history = useHistory();
+  const member = useSelector((state)=> state.member)
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const dispatch = useDispatch();
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
-  const [newCnt, setNewCnt] = useState(0);
-  const [noticeCount, setNoticeCount] = useState(0);
 
   const [activeType, setActiveType] = useState('');
 
   const [isGnb, setIsGnb] = useState(true);
+  const alarmData = useSelector(state => state.newAlarm);
 
   //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
   const gnbOtherPageCheck = useCallback((url) => {
@@ -354,22 +354,21 @@ export default function GNB() {
     }
   };
 
+  //새 알림 조회
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
     if(res.result === "success") {
       if(res.data) {
-        setNewCnt(res.data.newCnt);
-        setNoticeCount(res.data.notice);
+        dispatch(setNoticeData(res.data));
       }}
   }
 
   useEffect(() => {
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
     return () => globalAction.setBroadClipDim!(false);
   }, []);
-
-  useEffect(() => {
-    fetchMypageNewCntData(context.profile.memNo);
-  }, [localStorage.getItem("mypageNew")]);
 
   useEffect(() => {
     if (globalState.broadClipDim) {
@@ -468,16 +467,16 @@ export default function GNB() {
                       <li key={index} data-url={item.url}
                           className={`${activeType === item.url || gnbOtherPageCheck(item.url) ? 'active' : ''} ${activeType !== item.url || gnbOtherPageCheck(item.url) ? 'cursorPointer' : ''}`}
                           onClick={() => {
-                            if(item.url === "/alarm" && noticeCount === 0) {
+                            if(item.url === "/alarm" && alarmData.notice === 0) {
                               dispatch(setNoticeTab("알림"));
-                            } else if(item.url === "/alarm" && noticeCount > 0) {
+                            } else if(item.url === "/alarm" && alarmData.notice > 0) {
                               dispatch(setNoticeTab("공지사항"));
                             }
                             history.push(item.url)
                           }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
-                        {item.url === '/alarm' && newCnt > 0 && <span className="newDot"/>}
+                        {item.url === '/alarm' && alarmData.newCnt > 0 && <span className="newDot"/>}
                       </li>
                     )
                   })}

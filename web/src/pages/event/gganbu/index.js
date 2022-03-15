@@ -1,7 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 import Api from 'context/api'
+import {Context} from 'context'
 import Header from 'components/ui/new_header.js'
 import Collect from './content/collect'
 import Betting from './content/betting'
@@ -11,13 +12,9 @@ import PopupStatus from './content/popupStatus'
 
 import './style.scss'
 import './betting.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxGganbuTab, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const globalCtx = useContext(Context)
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
@@ -63,11 +60,11 @@ export default () => {
   const fetchGganbuBadge = async () => {
     const param = {
       gganbuNo: 1,
-      memNo: globalState.profile.memNo,
+      memNo: globalCtx.profile.memNo,
       badgeSlct: 'p'
     }
     const {data, message} = await Api.getGganbuBadge(param)
-    console.log(gganbuNumber, globalState.profile.memNo)
+    console.log(gganbuNumber, globalCtx.profile.memNo)
     if (message === 'SUCCESS') {
       console.log(message)
     } else {
@@ -91,13 +88,13 @@ export default () => {
 
   useEffect(() => {
     if (gganbuInfo) {
-      if (globalState.profile.memNo === gganbuInfo.mem_no) {
+      if (globalCtx.profile.memNo === gganbuInfo.mem_no) {
         setMetchState(true)
       } else {
         setMetchState(false)
       }
     }
-  }, [gganbuRoundLookup, globalState.globalGganbuState])
+  }, [gganbuRoundLookup, globalCtx.globalGganbuState])
 
   const GganbuMetch = () => {
     return (
@@ -110,7 +107,7 @@ export default () => {
                 ? () => history.push(`/mypage/${gganbuInfo.mem_no}`)
                 : () => history.push(`/mypage/${gganbuInfo.ptr_mem_no}`)
             }>
-            <img src={metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
+            <img src={metchState ? gganbuInfo.mem_profile.thumb292x292 : gganbuInfo.ptr_mem_profile.thumb292x292} alt="유저이미지" />
           </div>
           <LevelBox className="badge" levelColor={metchState ? gganbuInfo.mem_level_color : gganbuInfo.ptr_mem_level_color}>
             Lv {metchState ? gganbuInfo.mem_level : gganbuInfo.ptr_mem_level}
@@ -132,7 +129,7 @@ export default () => {
                 ? () => history.push(`/mypage/${gganbuInfo.mem_no}`)
                 : () => history.push(`/mypage/${gganbuInfo.ptr_mem_no}`)
             }>
-            <img src={!metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
+            <img src={!metchState ? gganbuInfo.mem_profile.thumb292x292 : gganbuInfo.ptr_mem_profile.thumb292x292} alt="유저이미지" />
           </div>
           <PtrLevelBox
             className="badge"
@@ -146,7 +143,7 @@ export default () => {
   }
 
   const loginCheck = () => {
-    if (!globalState.token.isLogin) {
+    if (!globalCtx.token.isLogin) {
       history.push({
         pathname: '/login',
         state: {
@@ -157,10 +154,9 @@ export default () => {
   }
 
   const notLoginAlert = () => {
-    dispatch(setGlobalCtxMessage({
-      type: "alert",
+    globalCtx.action.alert({
       msg: `깐부를 맺으면<br/>베팅소가 열립니다.`
-    }))
+    })
   }
 
   useEffect(() => {
@@ -169,8 +165,8 @@ export default () => {
   }, [gganbuNumber])
 
   useEffect(() => {
-    if (globalState.globalGganbuState > 0) gganbuRoundLookup()
-  }, [globalState.globalGganbuState])
+    if (globalCtx.globalGganbuState > 0) gganbuRoundLookup()
+  }, [globalCtx.globalGganbuState])
 
   useEffect(() => {
     window.addEventListener('scroll', tabScrollEvent)
@@ -207,21 +203,21 @@ export default () => {
         <div className="memo">
           <div className="memoInner">
             <div className="userWrap">
-              {globalState.profile && gganbuState === -1 ? (
+              {globalCtx.profile && gganbuState === -1 ? (
                 <>
                   <div className="userTxt"></div>
                   <div className="userUl">
                     <div className="userList">
-                      <div className="photo" onClick={() => history.push(`/mypage/${globalState.profile.memNo}`)}>
-                        <img src={globalState.profile.profImg.thumb80x80} alt="유저이미지"/>
+                      <div className="photo" onClick={() => history.push(`/mypage/${globalCtx.profile.memNo}`)}>
+                        <img src={globalCtx.profile.profImg.thumb292x292} alt="유저이미지" />
                       </div>
-                      <LevelBox className="badge" levelColor={globalState.profile.levelColor}>
-                        Lv {globalState.profile.level}
+                      <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+                        Lv {globalCtx.profile.level}
                       </LevelBox>
-                      <span className="nick">{globalState.profile.nickNm}</span>
+                      <span className="nick">{globalCtx.profile.nickNm}</span>
                     </div>
                     <div className="dot">
-                      <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png"/>
+                      <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
                     </div>
                     <div className="userList">
                       <div className="photo" onClick={() => setPopupSearch(true)}>
@@ -249,31 +245,29 @@ export default () => {
       <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`} ref={tabMenuRef}>
         <div className="tabBtn" ref={tabBtnRef}>
           <button
-            className={globalState.gganbuTab === 'collect' ? 'active' : ''}
-            onClick={() => {
-              dispatch(setGlobalCtxGganbuTab('collect'))
-            }}>
+            className={globalCtx.gganbuTab === 'collect' ? 'active' : ''}
+            onClick={() => globalCtx.action.updateGganbuTab('collect')}>
             <img
-              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${globalState.gganbuTab === 'collect' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${globalCtx.gganbuTab === 'collect' ? 'on' : 'off'}.png`}
               alt="구슬 모으기"
             />
           </button>
           <button
-            className={globalState.gganbuTab === 'betting' ? 'active' : ''}
+            className={globalCtx.gganbuTab === 'betting' ? 'active' : ''}
             onClick={() => {
-              gganbuState === 1 ? dispatch(setGlobalCtxGganbuTab('betting')) : notLoginAlert()
+              gganbuState === 1 ? globalCtx.action.updateGganbuTab('betting') : notLoginAlert()
             }}>
             <img
-              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${globalState.gganbuTab === 'betting' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${globalCtx.gganbuTab === 'betting' ? 'on' : 'off'}.png`}
               alt="구슬 베팅소"
             />
           </button>
           <span className="tabLine"></span>
         </div>
       </div>
-      {globalState.gganbuTab === 'collect' ? (
+      {globalCtx.gganbuTab === 'collect' ? (
         <Collect
-          tabContent={globalState.gganbuTab}
+          tabContent={globalCtx.gganbuTab}
           gganbuState={gganbuState}
           gganbuNumber={gganbuNumber}
           gganbuInfo={gganbuInfo}
@@ -281,7 +275,7 @@ export default () => {
           rankList={rankList}
         />
       ) : (
-        <Betting tabContent={globalState.gganbuTab} gganbuNo={gganbuNumber}/>
+        <Betting tabContent={globalCtx.gganbuTab} gganbuNo={gganbuNumber} />
       )}
 
       {/* 팝업 */}

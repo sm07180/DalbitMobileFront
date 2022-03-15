@@ -10,8 +10,9 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 
 import './style.scss'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
 const myProfileTabInfos = {
   titleTab: [
@@ -38,9 +39,10 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, setPopLike, myMemNo, setNoticePop, likePopTabState} = props
+  const {isMyProfile, fanToggle, profileData, goProfile, myMemNo, likePopTabState, closePopupAction} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
+  const popup = useSelector(state => state.popup);
 
   const [showList, setShowList] = useState([]); // 리스트
 
@@ -126,7 +128,7 @@ const LikePopup = (props) => {
   /* 프로필 이동 */
   const goProfileAction = (targetMemNo) => {
     goProfile(targetMemNo)
-    setPopLike(false);
+    closePopupAction();
   }
 
   const pagingReset = () => {
@@ -195,10 +197,6 @@ const LikePopup = (props) => {
     }
   }, []);
 
-  const closePop = () => {
-    setPopLike(false);
-  }
-
   const tabSetting = () => {
     if(likePopTabState) { // 열고싶은 탭
       /* 제목 */
@@ -214,6 +212,10 @@ const LikePopup = (props) => {
       setCurrentTitleTabInfo(isMyProfile ? myProfileTabInfos.titleTab[1] : notMyProfileTabInfos.titleTab[0])
       setCurrentSubTabInfo(isMyProfile ? myProfileTabInfos.subTab.totalRank[1] : notMyProfileTabInfos.subTab.rank[2]);
     }
+  }
+
+  const openNoticePop = () => {
+    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
   }
 
   useEffect(() => {
@@ -241,7 +243,9 @@ const LikePopup = (props) => {
 
   useEffect(() => {
     tabSetting()
-    return () => removeScrollEvent();
+    return () => {
+      removeScrollEvent();
+    }
   },[])
 
   return (
@@ -262,7 +266,7 @@ const LikePopup = (props) => {
       <div className="listContainer">
         {isMyProfile ?
           <ul className="tabmenu">
-            {currentTitleTabInfo?.key && myProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
+            {currentTitleTabInfo?.key && myProfileTabInfos.subTab[currentTitleTabInfo.key]?.map((data,index) => {
               return (
                 <div className="likeTab" key={index}>
                   <li className={currentSubTabInfo?.key === data.key ? 'active' : ''}
@@ -274,7 +278,7 @@ const LikePopup = (props) => {
           </ul>
           :
           <ul className="tabmenu">
-            {currentTitleTabInfo?.key && notMyProfileTabInfos.subTab[currentTitleTabInfo.key].map((data,index) => {
+            {currentTitleTabInfo?.key && notMyProfileTabInfos.subTab[currentTitleTabInfo.key]?.map((data,index) => {
               return (
                 <div className="likeTab" key={index}>
                   <li className={currentSubTabInfo?.key === data.key ? 'active' : ''}
@@ -283,7 +287,7 @@ const LikePopup = (props) => {
                 </div>
               )
             })}
-            <button onClick={() => setNoticePop(true)}>?</button>
+            <button onClick={openNoticePop}>?</button>
           </ul>
         }
         {showList.length > 0 ?
@@ -333,7 +337,7 @@ const LikePopup = (props) => {
         <NoResult />
         }
       </div>
-      <button className="popClose" onClick={closePop}></button>
+      <button className="popClose" onClick={closePopupAction} />
     </section>
   )
 }

@@ -1,27 +1,38 @@
 import React from 'react'
 //context
-import {Hybrid} from 'context/hybrid'
 // etc
-import Utility from 'components/lib/utility'
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
+import {closePopup} from "components/ui/popSlide/PopSlide";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
-export const backFunc = (dispatch, globalState) => {
-  switch (globalState.backFunction.name) {
+export const backFunc = (context, dispatch) => {
+  const {backFunction} = context
+  const nameLength = backFunction.name.length
+  switch (backFunction.name[nameLength-1]) {
     case 'booleanType':
-      dispatch(setGlobalCtxBackFunction({name: 'booleanType', value: false}));
+      context.action.updateBackFunction({name: 'booleanType', value: false})
       break
     case 'multiViewer':
-      dispatch(setGlobalCtxMultiViewer({show: false}));
+      context.action.updateMultiViewer({show: false})
       break
     case 'event':
     case 'selfauth':
       window.location.href = '/'
       break
-
+    case 'popClose':
+      closePopup(dispatch)
+      break;
+    case 'alertClose':
+      context.action.alert({visible: false})
+      break;
+    case 'questionPop':
+      dispatch(setCommonPopupOpenData({...backFunction.popupData, commonPopup: false}))
+      break;
     default:
       break
   }
   setTimeout(() => {
-    dispatch(setGlobalCtxBackState(null));
+    if(nameLength === 1) {
+      context.action.updateSetBack(null)
+    }
   }, 100)
 }

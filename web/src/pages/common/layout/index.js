@@ -62,9 +62,11 @@ const Layout = (props) => {
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <Article
-        className={`content-article ${
+        className={`content-article mobileType ${
           webview ? `webview ${playerCls} ${isMainPage ? 'main-page' : ''}` : `${playerCls} ${isMainPage ? 'main-page' : ''}`
-        }`}>
+        }
+        ${playerCls ? "player" : ""}
+        `}>
         {children}
       </Article>
       {/* (방송방)Player */}
@@ -104,5 +106,8 @@ const Article = styled.article`
     .header-wrap .close-btn {
       display: none;
     }
+  }
+  &.player {
+    padding-bottom : 40px;
   }
 `

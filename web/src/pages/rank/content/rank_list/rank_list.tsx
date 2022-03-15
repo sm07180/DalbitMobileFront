@@ -153,7 +153,7 @@ function RankList() {
                   <div className="thumbBox">
                     {formState[formState.pageType].rankType === RANK_TYPE.FAN &&
                       index < 2 && <div className="thumbBox__frame" />}
-                    <img src={profImg.thumb120x120} className="thumbBox__pic" />
+                    <img src={profImg.thumb292x292} className="thumbBox__pic" />
                   </div>
 
                   <div className="infoBox">

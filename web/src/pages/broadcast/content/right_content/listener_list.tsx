@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
-
 // api
 import { getBroadcastListeners } from "common/api";
 
@@ -8,6 +7,8 @@ import { getBroadcastListeners } from "common/api";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
+import { GlobalContext } from "context";
+import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -16,65 +17,62 @@ import { tabType } from "pages/broadcast/constant";
 // component
 import ListenerListItem from "./listener_list_item";
 import { AuthType } from "constant";
+import {thumbInlineStyle} from "../../../../common/pip/PlayerStyle";
 import {useDispatch, useSelector} from "react-redux";
-import {
-  setBroadcastCtxListenerList,
-  setBroadcastCtxRightTabType, setBroadcastCtxUserCount,
-  setBroadcastCtxUserMemNo,
-} from "../../../../redux/actions/broadcastCtx";
+import {getList, nextList, prevList, setListParam} from "../../../../redux/actions/broadcast/listener";
+import {initialState} from "../../../../redux/reducers/broadcast";
 
 export default function ListenerList(props: { roomInfo: any; roomOwner: boolean; roomNo: string; profile: any }) {
   const { roomInfo, roomOwner, roomNo, profile } = props;
+
   const history = useHistory();
+
   const dispatch = useDispatch();
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const broadcastRdx = useSelector(({broadcast})=> broadcast);
   // ctx
-  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const { guestState } = useContext(GuestContext);
   const { isLogin } = globalState.baseData;
   const { userCount } = broadcastState;
+  const { setRightTabType, setUserMemNo, setListenerList } = broadcastAction;
   const { guestConnectStatus, guestObj } = guestState;
   // state
-  const [listenersList, setListenersList] = useState<Array<any>>([]);
-  const [managerList, setManagerList] = useState<Array<any>>([]);
-  const [guestList, setGuestList] = useState<Array<any>>([]);
+  const [pageInfo, setPageInfo] = useState({
+    page:1
+    , pagePerCnt:50
+  })
   // 프로필 보기
   const viewProfile = useCallback((memNo: string) => {
     if (isLogin === true) {
-      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
-      dispatch(setBroadcastCtxUserMemNo(memNo));
+      setRightTabType && setRightTabType(tabType.PROFILE);
+      setUserMemNo && setUserMemNo(memNo);
     } else {
       return history.push("/login");
     }
   }, []);
 
   // fetch data
-  const page = 1;
-  const records = 1000;
-  const fetchData = async function() {
-    const { result, data, message } = await getBroadcastListeners({ roomNo, page, records });
+  const [init , setInit] = useState(false);
 
-    if (result === "success" && data.hasOwnProperty("list")) {
-      dispatch(setBroadcastCtxListenerList(data.list));
-      const listenersFilter = data.list.filter((user) => user.auth === AuthType.LISTENER && user.isGuest === false);
-      const managerFilter = data.list.filter((user) => user.auth === AuthType.MANAGER && user.isGuest === false);
-      const guestFilter = data.list.filter((user) => user.isGuest === true);
-      setListenersList(listenersFilter);
-      setManagerList(managerFilter);
-      setGuestList(guestFilter);
-      dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, current:data.list.length}));
-    } else {
-    }
-  };
-  const [init , setInit] = useState(false)
+  if(!broadcastState.roomInfo){
+    return <></>
+  }
+
   useEffect(() => {
-    if(!init){
-      setInit(true);
-      fetchData().then(()=>{
-        setInit(false);
-      });
-    }
-  }, [broadcastState.roomInfo]);
+    // if(!init){
+    //   setInit(true);
+    //   fetchData().then(()=>{
+    //     setInit(false);
+    //   });
+    // }
+    dispatch(getList({...initialState.listener.list.param, roomNo:roomNo}))
+  }, [broadcastState.roomInfo.isListenerUpdate]);
+  const copy = [...broadcastRdx.listener.list.data.list];
+  const listeners = copy.splice((pageInfo.page-1)*pageInfo.pagePerCnt,pageInfo.pagePerCnt);
+  const listenersFilter = listeners.filter((user) => user.auth === AuthType.LISTENER && user.isGuest === false);
+  const managerFilter = listeners.filter((user) => user.auth === AuthType.MANAGER && user.isGuest === false);
+  const guestFilter = listeners.filter((user) => user.isGuest === true);
 
   return (
     <>
@@ -92,7 +90,7 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
                       viewProfile(roomInfo.bjMemNo);
                     }}
                   >
-                    <span className="user__thumb" style={{ backgroundImage: `url(${roomInfo.bjProfImg.url})` }}>
+                    <span className="user__thumb" style={thumbInlineStyle(roomInfo.bjProfImg)}>
                       <span className="blind">{roomInfo.bjNickNm}</span>
                     </span>
                     <div className={`user__badge dj ${roomInfo.isNew === true ? "new" : ""}`}>
@@ -107,43 +105,78 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
               <>
                 <h4 className="subTitle">게스트</h4>
                 <div className="userBox">
-                  {isLogin === true && Array.isArray(guestList) && (
-                    <ListenerListItem
-                      roomOwner={roomOwner}
-                      roomNo={roomNo}
-                      profile={profile}
-                      data={guestList}
-                      classNm="listeners"
-                    />
-                  )}
+                  {
+                    isLogin === true &&
+                    <ListenerListItem roomOwner={roomOwner} roomNo={roomNo} profile={profile} data={guestFilter} classNm="listeners" />
+                  }
                 </div>
               </>
             )}
             {
-              managerList.length > 0 &&
+              managerFilter.length > 0 &&
               <>
                 <h4 className="subTitle">방송 매니저</h4>
                 <div className="userBox">
-                  {isLogin === true && Array.isArray(managerList) && (
-                    <ListenerListItem roomOwner={roomOwner} roomNo={roomNo} profile={profile} data={managerList} classNm="manager" />
-                  )}
+                  {
+                    isLogin === true &&
+                    <ListenerListItem roomOwner={roomOwner} roomNo={roomNo} profile={profile} data={managerFilter} classNm="manager" />
+                  }
                 </div>
               </>
             }
-            <h4 className="subTitle">청취자</h4>
+            <h4 className="subTitle">
+              청취자
+              <button className="refreshBtn" onClick={()=>{
+                dispatch(getList({...initialState.listener.list.param, roomNo:roomNo}));
+                setPageInfo({...pageInfo, page: 1})
+                // dispatch(setListParam(initialState.listener.list.param));
+              }}/>
+            </h4>
             <div className="userBox">
-              {isLogin === true && Array.isArray(listenersList) && (
-                <ListenerListItem
-                  roomOwner={roomOwner}
-                  roomNo={roomNo}
-                  profile={profile}
-                  data={listenersList}
-                  classNm="listeners"
-                />
-              )}
+              {/*{isLogin === true && Array.isArray(listenersList) && (*/}
+              {
+                isLogin === true &&
+                <ListenerListItem roomOwner={roomOwner} roomNo={roomNo} profile={profile} data={listenersFilter} classNm="listeners" />
+              }
             </div>
           </div>
         </DalbitScroll>
+      </div>
+      <div className="btnWrap" >
+        <button className={`paginationBtn ${pageInfo.page === 1 ? 'disabled' : ''}`}
+                onClick={()=>{
+                  if(pageInfo.page === 1){
+                    return;
+                  }
+
+                  const page = pageInfo.page-1;
+                  if(
+                    (page - 1) * pageInfo.pagePerCnt <= broadcastRdx.listener.list.data.list.length
+                    && broadcastRdx.listener.list.data.list.length <= page * pageInfo.pagePerCnt
+                  ){
+                    setPageInfo({...pageInfo, page: pageInfo.page-1})
+                  }else{
+                    dispatch(getList({
+                      roomNo:roomNo,
+                      records: broadcastRdx.listener.list.param.records,
+                      page: 1
+                    }))
+                    setPageInfo({...pageInfo, page: 1})
+                  }
+                }}
+        >
+          &lt;
+        </button>
+        <button className={`paginationBtn ${pageInfo.page * pageInfo.pagePerCnt < broadcastRdx.listener.list.data.list.length ? '' : 'disabled'}`}
+                onClick={()=>{
+                  if(pageInfo.page * pageInfo.pagePerCnt >= broadcastRdx.listener.list.data.list.length){
+                    return;
+                  }
+                  setPageInfo({...pageInfo, page: pageInfo.page+1})
+                }}
+        >
+          &gt;
+        </button>
       </div>
     </>
   );

@@ -124,7 +124,6 @@ export default function ClipContent() {
         dispatch(setGlobalCtxClipPlayListTabAdd(globalState.clipPlayList));
       }
     }
-
     if (playListInfo.hasOwnProperty("listCnt")) {
       if (playListInfo.hasOwnProperty("subjectType")) {
         //메인 top3

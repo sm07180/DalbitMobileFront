@@ -1,6 +1,7 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 
+import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
@@ -10,11 +11,11 @@ import {useHistory} from "react-router-dom";
 
 const TopSwiper = (props) => {
   const {data, openShowSlide, webview, isMyProfile,
-    disabledBadge, swiperParam, setPopHistory, type} = props;
+    disabledBadge, swiperParam, setPopHistory, type, listenOpen} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0 = 공개-따라가기X,1 = 공개-따라가기ㅇ, 2 = 비공개) -> liveBag 보여주는 여부
 
   const context = useContext(Context);
   const history = useHistory();
-  
+
   const swiperPicture = {
     slidesPerView: 'auto',
     spaceBetween: 8,
@@ -38,7 +39,7 @@ const TopSwiper = (props) => {
       listenRoomNo: data.listenRoomNo,
       webview
     }
-    RoomValidateFromProfile(params);
+      RoomValidateFromProfile(params);
   }
 
 
@@ -90,12 +91,21 @@ const TopSwiper = (props) => {
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {!isMyProfile && webview === '' && data.roomNo !== "" &&
-          <div className="liveBdg">
-            <img src={`${IMG_SERVER}/profile/profile_liveBdg-1.png`} alt="LIVE" onClick={roomJoinHandler} />
+        {type === 'profile' && webview === '' && data.roomNo !== "" &&
+          <div className='badgeLive' onClick={roomJoinHandler}>                                    
+            <span className='equalizer'>
+              <Lottie
+                options={{
+                  loop: true,
+                  autoPlay: true,
+                  path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                }}
+              />
+            </span>
+            <span className='liveText'>LIVE</span>
           </div>
         }
-        {!isMyProfile && webview === '' && data.listenRoomNo !== "" &&
+        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
           <div className="liveBdg">
             <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
           </div>
@@ -110,4 +120,4 @@ TopSwiper.defaultProps = {
   disabledBadge: false,  // 뱃지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
   swiperParam: {} // 스와이퍼 추가옵션이 필요한 경우
 }
-export default TopSwiper
+export default TopSwiper;

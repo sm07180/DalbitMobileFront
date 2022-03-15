@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-import Utility from 'components/lib/utility'
+import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import Api from 'context/api'
+import {Context} from 'context'
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
+import BadgeList from 'common/badge_list'
 import moment from 'moment'
-import {useDispatch, useSelector} from "react-redux";
 
 // 사랑꾼 선발대회 Content Component
 const Lover = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context)
   const history = useHistory()
   const [myRankInfo, setMyRankInfo] = useState() // 자신의 랭킹 정보
   const [rankListInfo, setRankListInfo] = useState({cnt: 0, list: [], breakNo: 30}) // 랭킹 리스트 정보
@@ -30,7 +30,7 @@ const Lover = (props) => {
 
   // 사랑꾼 내 랭킹 정보 가져오기
   const getRankUserInfo = () => {
-    Api.getLikeTreeRankUserInfo({memNo: globalState.profile.memNo, seqNo: pageInfo.seqNo})
+    Api.getLikeTreeRankUserInfo({memNo: context.profile.memNo, seqNo: pageInfo.seqNo})
       .then((res) => {
         if (res.code === '00000') {
           setMyRankInfo(res.data)
@@ -88,7 +88,7 @@ const Lover = (props) => {
   }
 
   useEffect(() => {
-    if (globalState.token.isLogin) {
+    if (context.token.isLogin) {
       getRankUserInfo()
     }
   }, [pageInfo.seqNo])
@@ -133,14 +133,14 @@ const Lover = (props) => {
               <span className="num">{myRankInfo.rankNo == 0 ? '-' : myRankInfo.rankNo}</span>
             </div>
             <div className="photo">
-              <img src={globalState.profile.profImg.thumb50x50}/>
+              <img src={context.profile.profImg.thumb292x292} />
             </div>
             <div className="listBox">
-              <span className="level">Lv {globalState.profile.level}</span>
-              <span className="userNick">{globalState.profile.nickNm}</span>
+              <span className="level">Lv {context.profile.level}</span>
+              <span className="userNick">{context.profile.nickNm}</span>
             </div>
             <div className="listBack">
-              <img src={`${IMG_SERVER}/event/tree/rankPoint.png`}/>
+              <img src={`${IMG_SERVER}/event/tree/rankPoint.png`} />
               {Utility.addComma(myRankInfo.totScoreCnt)}
             </div>
           </div>

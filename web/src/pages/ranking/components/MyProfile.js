@@ -144,7 +144,7 @@ export default function MyProfile(props) {
 
                 <div className="thumbBox thumbBox__profile">
                   <img src={myProfile.holder} className="thumbBox__frame" />
-                  <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+                  <img src={myProfile.profImg.thumb292x292} className="thumbBox__pic" />
                 </div>
 
                 <div className="myRanking__right">

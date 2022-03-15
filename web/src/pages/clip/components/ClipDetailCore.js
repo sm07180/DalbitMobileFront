@@ -1,15 +1,14 @@
-import React from "react";
+import React, {useContext, useEffect, useState} from "react";
 import GenderItems from "components/ui/genderItems/GenderItems";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 import clip from '../static/clip.svg';
 import {NewClipPlayerJoin} from "common/audio/clip_func";
+import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 
 const ClipDetailCore = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {item} = props;
+  const { item,subjectType,slctType } = props;
+  const context = useContext(Context);
   const history = useHistory();
 
   const handleImgError = (e) => {
@@ -17,10 +16,20 @@ const ClipDetailCore = (props) => {
   };
 
   const playClip = (e) => {
-    const {clipNo} = e.currentTarget.dataset;
-
+    const { clipNo } = e.currentTarget.dataset;
+    const playListInfoData = {
+      dateType: 0,
+      page: 1,
+      records: 100,
+      slctType: slctType.index,
+      subjectType:subjectType
+    }
+    sessionStorage.setItem(
+      "clipPlayListInfo",
+      JSON.stringify(playListInfoData)
+    );
     if (clipNo !== undefined) {
-      const clipParam = {clipNo: clipNo, globalState, dispatch, history};
+      const clipParam = { clipNo: clipNo, gtx: context, history };
 
       NewClipPlayerJoin(clipParam);
     }
@@ -29,7 +38,7 @@ const ClipDetailCore = (props) => {
   return (
     <div className="listRow" data-clip-no={item.clipNo} onClick={playClip}>
       <div className="photo">
-        <img src={item.bgImg.url} alt={`${item.nickName}`} onError={handleImgError}/>
+        <img src={item.bgImg.thumb292x292} alt={`${item.nickName}`} onError={handleImgError}/>
       </div>
       <div className="listInfo">
         <div className="listItem">

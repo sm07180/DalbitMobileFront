@@ -1,28 +1,20 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 // components
 import './faq.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {Context} from "context";
 
 const Faq = () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const [totalList, setTotalList] = useState({
-    cnt: 0,
-    normalList: [],
-    broadcastList: [],
-    paymentList: [],
-    accountList: [],
-    otherList: []
-  });
+  const [totalList, setTotalList] = useState({cnt: 0, normalList: [], broadcastList: [], paymentList: [], accountList: [], otherList: []});
   const [selectedFaqIdx, setSelectedFaqIdx] = useState(0); //해당하는 질문 faqIdx
   const [answer, setAnswer] = useState(0); //FAQ 답변
   const [searchText, setSearchText] = useState("") //검색에 입력한 text
   const [currentSearch, setCurrentSearch] = useState(""); //검색할 text
+  const [focus, setFocus] = useState(false);
+  const context = useContext(Context);
 
   //FAQ 내역 조회
   const fetchData = () => {
@@ -46,9 +38,7 @@ const Faq = () => {
           accountList: listFilter(res.data.list, 98),
           otherList: listFilter(res.data.list, 5)
         })
-      } else {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
-      }
+      } else {context.action.alert({msg: res.message});}
     }).catch((e) => console.log(e));
   }
 
@@ -83,6 +73,16 @@ const Faq = () => {
     setSearchText(e.target.value)
   }
 
+  //input 태그 클릭시 포커스처리
+  const focusChange = () => {
+    setFocus(true);
+  }
+
+  //input 태그 클릭 해제시 포커스 해제
+  const blurChange = () => {
+    setFocus(false);
+  }
+
   useEffect(() => {
     fetchData()
   }, [currentSearch])
@@ -95,8 +95,8 @@ const Faq = () => {
     <div id="faq">
       <Header position={'sticky'} title={'FAQ'} type={'back'}/>
       <div className="searchWrap">
-          <div className='searchForm'>
-            <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" value={searchText} onChange={searchChange}/>
+          <div className={`searchForm ${focus ? "focus" : ""}`}>
+            <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" onFocus={focusChange} onBlur={blurChange} value={searchText} onChange={searchChange}/>
             <button className="searchBtn" data-text={searchText} onClick={searchClick}/>
           </div>
         </div>

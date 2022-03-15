@@ -83,7 +83,7 @@ function LikeList({empty}) {
                     history.push(`/login`)
                   }
                 }}>
-                <img src={profImg.thumb120x120} className="thumbBox__pic" />
+                <img src={profImg.thumb292x292} className="thumbBox__pic" />
               </div>
               <div className="likeDetailWrap">
                 <div

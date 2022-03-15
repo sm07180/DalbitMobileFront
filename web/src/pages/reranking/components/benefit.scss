@@ -1,189 +1,210 @@
 @import "components/ui/_mixin.scss";
 
-.benefitTop {
-  @include flex(center, center, column);
-  width: 100%;
-  padding: 16px 0;
-  text-align: center;
-  background-color: #FF3C7B;
-  color: #FFFFFF;
-  .mainText {
-    @include font(14px, 700, #FFF93D);
-    margin-bottom: 6px;
-    letter-spacing: -1px;
-  }
-  .subText {
-    @include font(14px, 400, #FFF);
-    letter-spacing: -1px;
-  }
-}
-
-.tableNotice {
-  padding: 20px;
-  font-size: 12px;
-  color: #333;
-}
-
-.tableBox {
-  margin-top: 24px;
-  padding: 0 16px;
-
-  .title {
-    position: relative;
-    @include font(16px, 600, #000);
-    margin-bottom: 12px;
-    letter-spacing: -1px;
-    img {
-      vertical-align: middle;
-      margin-top: -4px;
-      margin-right: 2px;
-    }
-  }
-
-  .text {
-    @include font(12px, 400, #424242);
-    letter-spacing: -1px;
-  }
-  .subText {
-    @include font(12px, 400, #757575);
-    letter-spacing: -1px;
-    margin-bottom: 10px;
-  }
-
-  &__notice {
-    margin: 8px 0 24px;
-    font-size: 12px;
-    line-height: 18px;
-    letter-spacing: -0.3px;
-    color: #424242;
-  }
-
-  table {
-    th {
-      padding: 7px 0;
-      border-top: 1px solid #FF3C7B;
-      border-bottom: 1px solid #FF3C7B;
-      font-size: 12px;
-      font-weight: normal;
-      color: #FF3C7B;
-      letter-spacing: -0.8px;
-    }
-
-    td {
-      height: 46px;
-      padding: 13px 0;
-      border-bottom: 1px solid #e0e0e0;
+#rankingBenefit {
+  .benefitTop {
+    @include flex(center, center, column);
+    width: 100%;
+    padding: 16px 0;
+    text-align: center;
+    background-color: #FF3C7B;
+    color: #FFFFFF;
+    .mainText {
+      @include font(14px, 700, #FFF93D);
+      margin-bottom: 6px;
       letter-spacing: -1px;
-      @include font(12px, 700, #424242);
-      text-align: center;
-      box-sizing: border-box;
-
+    }
+    .subText {
+      @include font(14px, 400, #FFF);
+      letter-spacing: -1px;
+    }
+  }
+  
+  .tableNotice {
+    padding: 20px;
+    font-size: 12px;
+    color: #333;
+  }
+  
+  .tableBox {
+    margin-top: 24px;
+    padding: 0 16px;
+  
+    .title {
+      position: relative;
+      @include font(16px, 600, #000);
+      margin-bottom: 12px;
+      letter-spacing: -1px;
       img {
-        display: inline-block;
         vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 2px;
       }
+    }
+  
+    .text {
+      @include font(12px, 400, #424242);
+      letter-spacing: -1px;
+    }
+    .subText {
+      @include font(12px, 400, #757575);
+      letter-spacing: -1px;
+      margin-bottom: 10px;
+    }
 
-      &.rank {
-        font-weight: 700;
-      }
-
-      .likeInfo {
-        width: auto;
-        padding: 0 10px;
-        max-height: 82px;
-        margin: 0 auto;
-      }
-
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        height: 18px;
-        padding: 2px 6px 2px 3px;
-        line-height: 18px;
-        border-radius: 100px;
-        background-color: #22B5B0;
-        @include font(10px, 500, #FFF);
+    .infoWrap {
+      @include flex($fd: column);
+      width: 100%;
+      margin-top: 8px;
+      .mainInfo {
+        @include font(12px, 500, #424242);
         letter-spacing: -1px;
-
-        &.djWeek {
-          background-color: #0095BB;
+      }
+      .subInfo {
+        margin-top: 5px;
+        @include font(12px, 500, #757575);
+        letter-spacing: -1px;
+        span {
+          @include font(13px, 700, #FF3C7B);
         }
-
-        &.fanDay {
-          background-color: #CE42D4;
+      }
+    }
+  
+    &__notice {
+      margin: 8px 0 24px;
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: -0.3px;
+      color: #424242;
+    }
+  
+    table {
+      th {
+        padding: 7px 0;
+        border-top: 1px solid #FF3C7B;
+        border-bottom: 1px solid #FF3C7B;
+        font-size: 12px;
+        font-weight: normal;
+        color: #FF3C7B;
+        letter-spacing: -0.8px;
+      }
+  
+      td {
+        height: 46px;
+        padding: 13px 0;
+        border-bottom: 1px solid #e0e0e0;
+        letter-spacing: -1px;
+        @include font(12px, 700, #424242);
+        text-align: center;
+        box-sizing: border-box;
+  
+        img {
+          display: inline-block;
+          vertical-align: middle;
         }
-
-        &.fanWeek {
-          background-color: #544FE1;
+  
+        &.rank {
+          font-weight: 700;
         }
-
-        &.likeWeek {
-          background-color: #FF3651;
+  
+        .likeInfo {
+          width: auto;
+          padding: 0 10px;
+          max-height: 82px;
+          margin: 0 auto;
+        }
+  
+        .badge {
+          display: inline-flex;
+          align-items: center;
+          height: 18px;
+          padding: 2px 6px 2px 3px;
+          line-height: 18px;
+          border-radius: 100px;
+          background-color: #22B5B0;
+          @include font(10px, 500, #FFF);
           letter-spacing: -1px;
-
+  
+          &.djWeek {
+            background-color: #0095BB;
+          }
+  
+          &.fanDay {
+            background-color: #CE42D4;
+          }
+  
+          &.fanWeek {
+            background-color: #544FE1;
+          }
+  
+          &.likeWeek {
+            background-color: #FF3651;
+            letter-spacing: -1px;
+  
+            img {
+              margin-right: 0;
+            }
+          }
+  
           img {
-            margin-right: 0;
+            margin-right: 2px;
           }
         }
-
-        img {
-          margin-right: 2px;
-        }
-      }
-
-      .effect {
-        background-image: linear-gradient(98deg, #eeff00 8%, #00ffba 102%);
-        border-radius: 10px;
-        padding: 2px;
-        box-sizing: border-box;
-
-        p {
-          background-color: #666;
+  
+        .effect {
+          background-image: linear-gradient(98deg, #eeff00 8%, #00ffba 102%);
           border-radius: 10px;
-          color: #FFFFFF;
-          font-weight: 400;
-          text-align: left;
-          line-height: 18px;
-          padding: 4px 9px;
+          padding: 2px;
           box-sizing: border-box;
+  
+          p {
+            background-color: #666;
+            border-radius: 10px;
+            color: #FFFFFF;
+            font-weight: 400;
+            text-align: left;
+            line-height: 18px;
+            padding: 4px 9px;
+            box-sizing: border-box;
+          }
         }
       }
-    }
-
-    tr.special {
-      td {
-        color: #ec455f;
-        border-color: #ec455f;
-        border-top: 1px solid #ec455f;
-
-        &:first-child {
-          border-left: 1px solid #ec455f;
-        }
-
-        &:last-child {
-          border-right: 1px solid #ec455f;
-        }
-      }
-    }
-
-    tr.signature {
-      td {
-        img {
-          vertical-align: bottom;
+  
+      tr.special {
+        td {
+          color: #ec455f;
+          border-color: #ec455f;
+          border-top: 1px solid #ec455f;
+  
+          &:first-child {
+            border-left: 1px solid #ec455f;
+          }
+  
+          &:last-child {
+            border-right: 1px solid #ec455f;
+          }
         }
       }
-    }
-
-    tr.frame {
-      td {
-        padding: 20px 0;
+  
+      tr.signature {
+        td {
+          img {
+            vertical-align: bottom;
+          }
+        }
       }
-    }
-  }  
+  
+      tr.animationFrame {
+        td {
+          padding: 20px 0;
+        }
+      }
+    }  
+  }
+  
+  
+  .memo {
+    @include font(12px, 400, #757575);
+    margin-top: 16px;
+  }
 }
 
-
-.memo {
-  @include font(12px, 400, #757575);
-  margin-top: 16px;
-}

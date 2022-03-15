@@ -45,7 +45,7 @@ function LikeListTop() {
                       history.push(`/login`)
                     }
                   }}>
-                  <img src={profImg.thumb120x120} className="TopBoxThumb__pic" />
+                  <img src={profImg.thumb292x292} className="TopBoxThumb__pic" />
                 </div>
 
                 <div
@@ -72,7 +72,7 @@ function LikeListTop() {
                           history.push(`/login`)
                         }
                       }}>
-                      <img src={djProfImg && djProfImg.thumb120x120} alt={djNickNm} />
+                      <img src={djProfImg && djProfImg.thumb292x292} alt={djNickNm} />
                     </div>
                     <p className="nickName">{djNickNm}</p>
                   </div>

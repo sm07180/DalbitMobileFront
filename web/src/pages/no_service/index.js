@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
+import {Context} from 'context'
 import Api from 'context/api'
 import {authReq} from 'pages/self_auth'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -8,13 +9,11 @@ import {BeforeLogout} from 'common/logout_func'
 import NoServiceIcon from './static/ic_sorry.png'
 import './index.scss'
 import Message from 'pages/common/message'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage, setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
+import {useHistory} from "react-router-dom";
 
 export default function Service() {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const globalCtx = useContext(Context)
+  const history = useHistory();
   const [fetching, setFetching] = useState(false)
   const [authCheckYn, setAuthCheckYn] = useState('y') // y인 경우에 본인인증을 시도할 수 있다 (1일 1회)
 
@@ -29,17 +28,20 @@ export default function Service() {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', logoutInfo.data)
         }
-        dispatch(setGlobalCtxUpdateToken(logoutInfo.data));
-        dispatch(setGlobalCtxUpdateProfile(null));
+        globalCtx.action.updateToken(logoutInfo.data)
+        globalCtx.action.updateProfile(null)
         // props.history.push('/')
         window.location.href = '/'
         return
       } else if (logoutInfo.result === 'fail') {
-        dispatch(setGlobalCtxMessage({type: "alert", visible: true, title: '로그아웃 실패', msg: `${logoutInfo.message}`}));
+        globalCtx.action.alert({
+          title: '로그아웃 실패',
+          msg: `${logoutInfo.message}`
+        })
         setFetching(false)
       }
     }
-    BeforeLogout(dispatch, fetchLogout)
+    BeforeLogout(globalCtx, fetchLogout)
   }
 
   const authYnCheck = () => {
@@ -68,9 +70,9 @@ export default function Service() {
           </div>
         </div>
         <div className="buttonWrap">
-          <button onClick={() => location.replace('/customer/personal')}>1:1 문의하기</button>
+          <button onClick={() => {history.push('/customer/inquire')}}>1:1 문의하기</button>
           {authCheckYn === 'y' ? (
-            <button onClick={() => authReq('9', globalState.authRef, dispatch)}>본인인증</button>
+            <button onClick={() => authReq('9', globalCtx.authRef, globalCtx)}>본인인증</button>
           ) : (
             <button className="disabled" disabled>
               본인인증을 이미 완료했습니다.

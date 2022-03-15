@@ -143,7 +143,7 @@ function RankListTop({specialPop}) {
                         history.push(`/login`)
                       }
                     }}>
-                    <img src={profImg.thumb120x120} className="TopBoxThumb__pic" />
+                    <img src={profImg.thumb292x292} className="TopBoxThumb__pic" />
 
                     {formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? (
                       <img

@@ -22,7 +22,7 @@ export async function ClipPlayFn(clipNum, type, globalState, dispatch, history) 
       clipNo: clipNum
     })
     if (result === 'success') {
-      if (type === 'dal') {
+/*      if (type === 'dal') {
         localStorage.removeItem('clipPlayListInfo')
       } else {
         const playListInfoData = {
@@ -31,7 +31,7 @@ export async function ClipPlayFn(clipNum, type, globalState, dispatch, history) 
           isClick: true
         }
         localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      }
+      }*/
 
       clipJoin(data, dispatch, globalState)
     } else {

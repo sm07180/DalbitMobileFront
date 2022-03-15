@@ -24,7 +24,7 @@ const ClipListenCore = (props) => {
   return (
     <div className="listRow" data-clip-no={item.clipNo} onClick={playClip}>
       <div className="photo">
-        <img src={item.bgImg.url} alt={`${item.nickName}`} />
+        <img src={item.bgImg.thumb292x292} alt={`${item.nickName}`} />
       </div>
       <div className="listInfo">
         <div className="listItem">

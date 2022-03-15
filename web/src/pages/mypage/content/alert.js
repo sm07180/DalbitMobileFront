@@ -135,7 +135,7 @@ export default (props) => {
                         })
                       }
                     }}>
-                    <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
+                    <figure style={{background: `url(${profImg.thumb292x292}) no-repeat center center/ cover`}}></figure>
                     {textArea}
                   </li>
                 )

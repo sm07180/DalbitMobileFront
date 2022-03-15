@@ -1,22 +1,20 @@
-import React, {useRef, useState} from 'react'
+import React, {useContext, useRef, useState} from 'react'
 import Utility from 'components/lib/utility'
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
 import './style.scss'
 import {useHistory} from "react-router-dom";
+import {Context} from "context";
 import UseInput from "common/useInput/useInput";
 import Api from "context/api";
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const dalList = [50, 100, 500, 1000, 2000, 3000, 5000, 10000];
 const MIN_DAL_CNT = 10;
 
 const Present = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {profileData, setPopPresent} = props;
+  const { profileData, closePopupAction } = props
+  const context = useContext(Context);
   const history = useHistory();
   const [selected, setSelected] = useState(0);
   const [inputValue, setInputValue] = useState('');
@@ -60,45 +58,41 @@ const Present = (props) => {
   const dalGiftAction = () => {
     if(selected > -1) {
       dalGiftApiAction(dalList[selected]);
-      setPopPresent(false);
+      closePopupAction();
     }else if(parseInt(inputValue) >= 10){
       dalGiftApiAction(inputValue);
-      setPopPresent(false);
+      closePopupAction();
     }else {
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+      context.action.alert({
         msg: `달은 ${MIN_DAL_CNT}개 이상부터 선물이 가능합니다.`
-      }))
+      })
     }
   }
 
   /* 선물하기 api */
   const dalGiftApiAction = (dalCount) => {
     const targetMemNo = profileData.memNo;
-    const myMemNo = globalState.profile.memNo;
+    const myMemNo = context.profile.memNo;
     const data = {
       memNo: targetMemNo,
       dal: dalCount
     }
     Api.member_gift_dal({data}).then(res => {
       if (res.result === 'success') {
-        dispatch(setGlobalCtxMessage({
-          type: "alert",
+        context.action.alert({
           callback: () => {
             async function updateMyPofile() {
               const profileInfo = await Api.profile({params: {memNo: myMemNo}})
               if (profileInfo.result === 'success') {
-                dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
+                context.action.updateProfile(profileInfo.data)
               }
             }
-
             updateMyPofile()
           },
           msg: res.message
-        }))
+        })
       } else if (res.result === 'fail' && res.code === '-4') {
-        dispatch(setGlobalCtxMessage({
-          type: "confirm",
+        context.action.confirm({
           msg: res.message,
           buttonText: {
             right: '충전하기'
@@ -106,12 +100,11 @@ const Present = (props) => {
           callback: () => {
             history.push('/store')
           }
-        }))
+        })
       } else {
-        dispatch(setGlobalCtxMessage({
-          type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     })
   }
@@ -126,7 +119,7 @@ const Present = (props) => {
       <div className="payBox">
         <div className="possess">
           <span>내가 보유한 달</span>
-          <div className="count">{Utility.addComma(globalState.profile.dalCnt)}</div>
+          <div className="count">{Utility.addComma(context.profile.dalCnt)}</div>
         </div>
         <button onClick={goCharge}>충전하기</button>
       </div>
@@ -145,15 +138,15 @@ const Present = (props) => {
         <UseInput forwardedRef={presentInputRef}
                   placeholder="직접입력"
                   validator={presentInputValidator}
-                  focus={focusAction}
-                  blur={blurAction}
+                  onFocus={focusAction}
+                  onBlur={blurAction}
                   value={inputValue}
                   setValue={setInputValue}
         />
       </InputItems>
       <span className='log'>달은 {MIN_DAL_CNT}개 이상부터 선물이 가능합니다.</span>
       <div className="buttonGroup">
-        <button className='cancel' onClick={() => setPopPresent(false)}>취소</button>
+        <button className='cancel' onClick={closePopupAction}>취소</button>
         <button className={(selected > -1 || parseInt(inputValue) >= MIN_DAL_CNT) ? 'active' : 'disabled'}
                 onClick={dalGiftAction}
         >선물하기</button>

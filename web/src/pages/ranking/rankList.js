@@ -96,7 +96,7 @@ export default (props) => {
                   }}>
                   <div className="myRanking__rightWrap">
                     <div className="thumbBox">
-                      <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                      <img src={profImg.thumb292x292} width="50px" className="thumbBox__pic" />
                     </div>
 
                     <div>

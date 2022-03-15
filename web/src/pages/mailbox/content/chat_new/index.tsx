@@ -14,7 +14,7 @@ export default function chatNewPage() {
 
   return (
     <>
-      <CustomHeader title="새로운 메세지" type="back"/>
+      <Header title="새로운 메세지" type="back"/>
       <div className="chatNewPage subContent gray">
         <div className="tabBox">
           <button className={`${mailboxState.tabState === 1 ? "active" : ""}`} onClick={() => dispatch(setMailBoxTabState(1)) }>

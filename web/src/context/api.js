@@ -723,7 +723,7 @@ export default class API {
       params: params
     })
   }
-  
+
   /**
    * @brief 마이페이지 팬보드 상세조회
    * @method "GET""
@@ -1290,7 +1290,7 @@ export default class API {
   static mypage_notice_detail_sel = async (params) => {
     return await ajax({url: `/mypage/notice/detail`, method: 'GET', params});
   }
-  
+
   /**
    * @breif 마이페이지 지갑 내역 조회
    * @method "GET"
@@ -3753,7 +3753,7 @@ export default class API {
       params: data,
     })
   }
-  
+
   /* 굿 스타트 이벤트 */
   // Dj 페이지 (dj 랭킹, 전체 회차정보)
   static getGoodStartDjInfo = async (data) => {
@@ -3877,8 +3877,7 @@ export default class API {
   }
 
   // 공유 이벤트 댓글 등록
-  static shareTailIns = async (obj) => {
-    const {data} = obj || {}
+  static shareTailIns = async (data) => {
     return await ajax({
       url: '/event/share/tail/ins',
       method: 'POST',
@@ -3896,6 +3895,88 @@ export default class API {
       reqBody: true,
       data: data,
     })
+  }
+  //이행시 이벤트
+  static poem = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/poem',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
+  // 투표 등록
+  static insVote = async (data) => {
+    return await ajax({url: '/broad/vote/insVote', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표
+  static insMemVote = async (data) => {
+    return await ajax({url: '/broad/vote/insMemVote', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표 삭제
+  static delVote = async (data) => {
+    return await ajax({url: '/broad/vote/delVote', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표 마감
+  static endVote = async (data) => {
+    return await ajax({url: '/broad/vote/endVote', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표 리스트
+  static getVoteList = async (data) => {
+    return await ajax({url: '/broad/vote/getVoteList', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표 항목 리스트
+  static getVoteDetailList = async (data) => {
+    return ajax({url: '/broad/vote/getVoteDetailList', method: 'POST', reqBody: true, data: data})
+  }
+  // 투표 정보, 항목 리스트
+  static getVoteSelAndDetailList = async (data) => {
+    return ajax({url: '/broad/vote/getVoteSelAndDetailList', method: 'POST', reqBody: true, data: data})
+  }
+
+
+
+  // 달라져스 회차정보
+  static getDallagersReqNo = async (obj) => {
+    return await ajax({url: '/event/dallagers/reqNo', method: 'GET'})
+  }
+
+  /* 이니셜 스톤 교환하기 */
+  // useDallaGubunOne: 'd' (사용할 이니셜) , useDallaGubunTwo: 'a' (사용할 이니셜)
+  static getDallagersStoneChange = async (obj) => {
+    const {data} = obj || {};
+    return await ajax({
+      url: '/event/dallagers/stoneReplace',
+      method: 'POST',
+      reqBody: true,
+      data: data
+    })
+  }
+
+  // 달라져스 랭킹 내정보
+  static getDallagersMyRankInfo = async (obj) => {
+    const {seqNo} = obj || {};
+    return await ajax({url: `/event/dallagers/myInfo/${seqNo}`, method: 'GET'})
+  }
+
+  // 달라져스 랭킹 리스트
+  static getDallagersRankList = async (obj) => {
+    const {seqNo, pageNo, pagePerCnt} = obj || {};
+    return await ajax({url: `/event/dallagers/list/${seqNo}/${pageNo}/${pagePerCnt}`, method: 'GET'})
+  }
+
+  // 달라져스 스페셜 랭킹 내정보
+  static getDallagersSpecialMyRankInfo = async (obj) => {
+    return await ajax({url: `/event/dallagers/specialMyInfo`, method: 'GET'})
+  }
+
+  // 달라져스 스페셜 랭킹 리스트
+  static getDallagersSpecialMyRankList = async (obj) => {
+    const {pageNo, pagePerCnt} = obj || {};
+    return await ajax({url: `/event/dallagers/specialList/${pageNo}/${pagePerCnt}`, method: 'GET'})
   }
 
 }

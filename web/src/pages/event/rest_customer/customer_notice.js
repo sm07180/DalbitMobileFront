@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import Header from 'components/ui/new_header'
+import Header from "components/ui/header/Header";
 
 import './style.scss'
 import {useDispatch, useSelector} from "react-redux";

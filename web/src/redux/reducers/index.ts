@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import common from './common';
+import common from './common/index';
 import member from './member';
 import main from './main/index';
 import live from './main/live';
@@ -11,13 +11,11 @@ import clip from './clip/clip';
 import honor from './honor/index';
 import notice from './notice/index';
 import inquire from "./inquire";
-import profilePopup from './profile/popup';
-import modalCtx from './modal';
-import clipRankCtx from './clipRank';
-import rankCtx from './rank';
-import broadcastCtx from './broadcastCtx';
-import mailBoxCtx from './mailBox';
-import globalCtx from './globalCtx';
+import newAlarm from "./notice/newAlarm";
+import popup from "./common/popup";
+import rank from "./rank/index"
+import vote from './vote';
+import broadcast from './broadcast';
 
 const rootReducer = combineReducers({
   common
@@ -32,13 +30,11 @@ const rootReducer = combineReducers({
   , honor
   , notice
   , inquire
-  , profilePopup
-  , modalCtx
-  , clipRankCtx
-  , rankCtx
-  , broadcastCtx
-  , mailBoxCtx
-  , globalCtx
+  , popup
+  , newAlarm
+  , vote
+  , rank
+  , broadcast
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

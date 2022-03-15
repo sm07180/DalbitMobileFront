@@ -33,7 +33,7 @@ function WeeklyPick({empty}) {
                     memberList.map((v1, i1) => {
                       return (
                         <div key={`memberList-${i1}`} className="profileBox flexBox">
-                          <ProfileImage imageData={{profImg: v1.imageInfo.thumb120x120}} imageSize={74} />
+                          <ProfileImage imageData={{profImg: v1.imageInfo.thumb292x292}} imageSize={74} />
                           <strong className="nickNameBox ellipsis">{v1.memNick}</strong>
                         </div>
                       )

@@ -10,6 +10,7 @@ type StateType = {
   chatAnimation: chatAnimationType | null;
   comboAnimation: ComboAnimationType | null;
   userMemNo: string;
+  heartActive: boolean;
   userNickNm: string;
   userCount: any;
   realTimeValue: realTimeType | null;
@@ -60,6 +61,7 @@ type ActionType = {
   setRightTabType(data: tabType): void;
   dispatchChatAnimation(action: { type: string; data?: any }): void;
   dispatchComboAnimation(action: { type: string; data?: any }): void;
+  setHeartActive(data: boolean): void;
   setUserMemNo(data: string): void;
   setUserNickNm(data: string): void;
   setUserCount(data: any): void;
@@ -106,6 +108,13 @@ const roomInfoReducer = (state: roomInfoType, action: { type: string; data?: any
   const { type, data } = action;
 
   switch (type) {
+    case "isListenerUpdate": {
+      return {
+        ...state,
+        isListenerUpdate: !state.isListenerUpdate
+      };
+    }
+
     case "broadcastSettingUpdate": {
       console.log('@@ broadcastSettingUpdate', data)
       return {
@@ -240,9 +249,10 @@ const realTimeValueReducer = (state: any, action: { type: string; data: any }) =
 const initialData = {
   broadcastState: {
     roomInfo: null,
-    rightTabType: tabType.LISTENER,
+    rightTabType: tabType.PROFILE,
     chatAnimation: null,
     comboAnimation: null,
+    heartActive: false,
     userMemNo: "",
     userNickNm: "",
     userCount: {
@@ -310,6 +320,7 @@ const initialData = {
     setRightTabType:()=>{},
     dispatchChatAnimation:()=>{},
     dispatchComboAnimation:()=>{},
+    setHeartActive:()=>{},
     setUserMemNo:()=>{},
     setUserNickNm:()=>{},
     setUserCount:()=>{},
@@ -347,7 +358,7 @@ function BroadcastProvider(props: { children: JSX.Element }) {
   const [rightTabType, setRightTabType] = useState<tabType>(initialData.broadcastState.rightTabType);
   const [chatAnimation, dispatchChatAnimation] = useReducer(chatAnimationReducer, initialData.broadcastState.chatAnimation);
   const [comboAnimation, dispatchComboAnimation] = useReducer(comboAnimationReducer, initialData.broadcastState.comboAnimation);
-
+  const [heartActive, setHeartActive] = useState<boolean>(false);
   const [userMemNo, setUserMemNo] = useState(initialData.broadcastState.userMemNo);
   const [userNickNm, setUserNickNm] = useState(initialData.broadcastState.userNickNm);
   const [userCount, setUserCount] = useState(initialData.broadcastState.userCount);
@@ -400,6 +411,7 @@ function BroadcastProvider(props: { children: JSX.Element }) {
     chatAnimation,
     comboAnimation,
     userMemNo,
+    heartActive,
     userNickNm,
     userCount,
     realTimeValue,
@@ -440,6 +452,7 @@ function BroadcastProvider(props: { children: JSX.Element }) {
     dispatchChatAnimation,
     dispatchComboAnimation,
     setUserMemNo,
+    setHeartActive,
     setUserNickNm,
     setUserCount,
     dispatchRealTimeValue,

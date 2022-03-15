@@ -470,7 +470,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
               <div className="profile__imgWrap">
                 {/* 프로필 사진 영역 */}
-                <img src={profileData.profImg.thumb150x150} className="thumb" />
+                <img src={profileData.profImg.thumb292x292} className="thumb" />
                 {profileData.level > 50 && (
                   <div className="holderBg" style={{ backgroundImage: `url(${profileData.holderBg})` }}></div>
                 )}

@@ -168,7 +168,7 @@ export default (props) => {
                   <a onClick={() => history.push(link)}>
                     <figure
                       style={{
-                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                        background: `url(${profImg.thumb292x292}) no-repeat center center/ cover`
                       }}></figure>
                     <div>
                       <span>{nickNm}</span>
@@ -214,7 +214,7 @@ export default (props) => {
                   <a onClick={() => history.push(link)}>
                     <figure
                       style={{
-                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                        background: `url(${profImg.thumb292x292}) no-repeat center center/ cover`
                       }}></figure>
                     <div>
                       <span>{nickNm}</span>
@@ -261,7 +261,7 @@ export default (props) => {
                   <a onClick={() => history.push(link)}>
                     <figure
                       style={{
-                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                        background: `url(${profImg.thumb292x292}) no-repeat center center/ cover`
                       }}></figure>
                     <div>
                       <span>{nickNm}</span>

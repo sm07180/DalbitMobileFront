@@ -267,7 +267,7 @@ export default function MyProfile() {
                 </div>
 
                 <div className="thumbBox">
-                  <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+                  <img src={myProfile.profImg.thumb292x292} className="thumbBox__pic" />
                 </div>
 
                 <div className="myRanking__content">

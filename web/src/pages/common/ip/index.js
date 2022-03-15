@@ -88,12 +88,7 @@ export default () => {
                 if(!isHybrid()) { //web
                   location.href = host;
                 } else { //mobile
-                  const osType = getDeviceOSTypeChk();
-                  if(osType === OS_TYPE['IOS']){ //IOS 브릿지 작업안되어서 분기처리
-                    location.href = host;
-                  } else { //Android
-                    serverChangeAction(host, api, photo, socketURL); //bridge Call
-                  }
+                  serverChangeAction(host, api, photo, socketURL); //bridge Call
                 }
               }
             }}>

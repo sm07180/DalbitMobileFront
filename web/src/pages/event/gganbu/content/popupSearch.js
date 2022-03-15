@@ -203,7 +203,7 @@ export default (props) => {
                     return (
                       <div className="list" key={`fan-${index}`}>
                         <div className="photo">
-                          <img src={fanMemProfile.thumb50x50} alt="유저이미지" />
+                          <img src={fanMemProfile.thumb292x292} alt="유저이미지" />
                         </div>
                         <div className="listBox">
                           <div className="nick">{nickName}</div>
@@ -257,7 +257,7 @@ export default (props) => {
                   return (
                     <div className="list" key={`memder-${index}`}>
                       <div className="photo">
-                        <img src={mem_profile.thumb50x50} alt="유저이미지" />
+                        <img src={mem_profile.thumb292x292} alt="유저이미지" />
                       </div>
                       <div className="listBox">
                         <div className="nick">{mem_nick}</div>

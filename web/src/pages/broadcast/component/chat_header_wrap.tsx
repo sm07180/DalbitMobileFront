@@ -6,6 +6,8 @@ import styled from "styled-components";
 import {getBroadcastBoost, getMoonLandMissionSel, miniGameEnd, postBroadcastRoomExtend} from "common/api";
 
 // ctx
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 
 // lib
@@ -25,34 +27,27 @@ import CloseIcon from "../static/ic_close_m.svg";
 // component
 import GuestComponent from "./guest_component";
 import MoonComponent from "./moon_component";
+import DallagersTopSection from "./DallagersTopSection";
+
 import {useDispatch, useSelector} from "react-redux";
-import {
-  setBroadcastCtxCommonBadgeList,
-  setBroadcastCtxExtendTime,
-  setBroadcastCtxExtendTimeOnce, setBroadcastCtxMiniGameInfo,
-  setBroadcastCtxRightTabType,
-  setBroadcastCtxStoryState,
-  setBroadcastCtxUserMemNo
-} from "../../../redux/actions/broadcastCtx";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxSetToastStatus,
-  setGlobalCtxTooltipStatus
-} from "../../../redux/actions/globalCtx";
+import {endVote, moveVoteListStep} from "../../../redux/actions/vote";
 
 let boostInterval;
 
 export default function ChatHeaderWrap(prop: any) {
   const { roomOwner, roomNo, roomInfo, displayWrapRef } = prop;
   const { likes, startDt } = roomInfo;
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { globalState, globalAction } = useContext(GlobalContext);
 
   const { baseData, chatInfo } = globalState;
-  const dispatch = useDispatch();
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const { realTimeValue, useBoost, commonBadgeList } = broadcastState;
+  const { setRightTabType, setUserMemNo, setCommonBadgeList } = broadcastAction;
+
 
   const { dispatchDimLayer } = useContext(BroadcastLayerContext);
+  const memberRdx = useSelector((state) => state.member);
+  const voteRdx = useSelector(({vote})=> vote);
 
   const [broadcastTime, setBroadcastTime] = useState<number | null>(null);
   const [boostInfo, setBoostInfo] = useState<any>(null);
@@ -61,6 +56,7 @@ export default function ChatHeaderWrap(prop: any) {
   const [moonLandEventBool, setMoonLandEventBool] = useState<boolean>(false);
 
   const history = useHistory();
+  const dispatch = useDispatch();
   useEffect(() => {
     const timeIntervalId = (() => {
       if (startDt) {
@@ -81,28 +77,29 @@ export default function ChatHeaderWrap(prop: any) {
     };
   }, [startDt]);
   const StoryToggle = () => {
-    dispatch(setBroadcastCtxRightTabType(tabType.STORY));
+    setRightTabType && setRightTabType(tabType.STORY);
     if (broadcastState.storyState === 1) {
-      dispatch(setBroadcastCtxStoryState(-1));
+      broadcastAction.setStoryState!(-1);
     }
   };
   const NoticeToggle = () => {
-    dispatch(setBroadcastCtxRightTabType(tabType.NOTICE));
+    setRightTabType && setRightTabType(tabType.NOTICE);
     if (broadcastState.noticeState === 1) {
-      dispatch(setBroadcastCtxStoryState(-1));
+      broadcastAction.setNoticeState!(-1);
     }
   };
   const LikeToggle = () => {
-    dispatch(setBroadcastCtxRightTabType(tabType.LIKELIST));
+    setRightTabType && setRightTabType(tabType.LIKELIST);
     if (broadcastState.likeState === 1) {
-      dispatch(setBroadcastCtxStoryState(-1));
+      broadcastAction.setLikeState!(-1);
     }
   };
   const tooltipToggle = () => {
-    dispatch(setGlobalCtxTooltipStatus({
-      status: true,
-      message: "방송 시작부터 현재까지 입장한 모든 청취자 수의 합계입니다.",
-    }));
+    globalAction.setTooltipStatus &&
+      globalAction.setTooltipStatus({
+        status: true,
+        message: "방송 시작부터 현재까지 입장한 모든 청취자 수의 합계입니다.",
+      });
   };
   const createFanBadgeList = () => {
     const { fanBadgeList } = roomInfo;
@@ -120,10 +117,10 @@ export default function ChatHeaderWrap(prop: any) {
             key={idx}
             onClick={() => {
               if (val.tipMsg !== "") {
-                dispatch(setGlobalCtxSetToastStatus({
+                globalAction.callSetToastStatus!({
                   status: true,
                   message: val.tipMsg,
-                }));
+                });
               }
             }}
           >
@@ -136,7 +133,7 @@ export default function ChatHeaderWrap(prop: any) {
   };
 
   useEffect(() => {
-    dispatch(setBroadcastCtxCommonBadgeList(roomInfo.commonBadgeList));
+    setCommonBadgeList && setCommonBadgeList(roomInfo.commonBadgeList);
 
     //달나라 팝업 버튼 노출 여부
     if(roomInfo && roomInfo.hasOwnProperty('moonLandEvent') && roomInfo.moonLandEvent){
@@ -180,8 +177,8 @@ export default function ChatHeaderWrap(prop: any) {
           <div
             className="profile-image"
             onClick={() => {
-              dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
-              dispatch(setBroadcastCtxUserMemNo(roomInfo.bjMemNo));
+              setRightTabType && setRightTabType(tabType.PROFILE);
+              setUserMemNo && setUserMemNo(roomInfo.bjMemNo);
             }}
           >
             <div
@@ -245,8 +242,8 @@ export default function ChatHeaderWrap(prop: any) {
                     onClick={() => {
                       const { memNo } = fan;
 
-                      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
-                      dispatch(setBroadcastCtxUserMemNo(memNo));
+                      setRightTabType && setRightTabType(tabType.PROFILE);
+                      setUserMemNo && setUserMemNo(memNo);
                     }}
                   >
                     {fan.badgeFrame && (
@@ -272,7 +269,7 @@ export default function ChatHeaderWrap(prop: any) {
           <div
             className="current-user"
             onClick={() => {
-              dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
+              setRightTabType && setRightTabType(tabType.LISTENER);
             }}
           >
             <div className="icon"></div>
@@ -326,20 +323,29 @@ export default function ChatHeaderWrap(prop: any) {
               broadcastState.extendTime === true && (
                 <ExtendingIconStyled
                   onClick={async () => {
-                    const { result, message, data } =
-                      await postBroadcastRoomExtend({ roomNo });
-                    if (result === "success") {
-                      dispatch(setBroadcastCtxExtendTime(false));
-                      dispatch(setBroadcastCtxExtendTimeOnce(true));
-                      dispatch(setGlobalCtxAlertStatus({
-                        status: true,
-                        content: "연장에 성공하였습니다.",
-                      }));
-                    } else if (result === "fail") {
-                      dispatch(setGlobalCtxAlertStatus({
-                        status: true,
-                        content: message,
-                      }));
+                    if (
+                      broadcastAction.setExtendTime &&
+                      broadcastAction.setExtendTimeOnce
+                    ) {
+                      const { result, message, data } =
+                        await postBroadcastRoomExtend({ roomNo });
+                      if (result === "success") {
+                        broadcastAction.setExtendTime(false);
+                        broadcastAction.setExtendTimeOnce(true);
+                        if (globalAction.setAlertStatus) {
+                          globalAction.setAlertStatus({
+                            status: true,
+                            content: "연장에 성공하였습니다.",
+                          });
+                        }
+                      } else if (result === "fail") {
+                        if (globalAction.setAlertStatus) {
+                          globalAction.setAlertStatus({
+                            status: true,
+                            content: message,
+                          });
+                        }
+                      }
                     }
                   }}
                 >
@@ -386,7 +392,7 @@ export default function ChatHeaderWrap(prop: any) {
         <RankIconStyled
           onClick={() => {
             baseData.isLogin
-              ? dispatch(setBroadcastCtxRightTabType(tabType.BOOST))
+              ? setRightTabType && setRightTabType(tabType.BOOST)
               : history.push("/login");
           }}
           className={
@@ -458,7 +464,7 @@ export default function ChatHeaderWrap(prop: any) {
                       <span
                       className="fan-badge"
                       style={{
-                        backgroundImage: 
+                        backgroundImage:
                         `linear-gradient(to right, ${startColor} ${bgAlpha * 100}%, ${endColor} ${bgAlpha * 100}%)`,
                         border: borderColor
                           ? `1px solid ${borderColor}`
@@ -525,68 +531,125 @@ export default function ChatHeaderWrap(prop: any) {
           displayWrapRef={displayWrapRef}
         />
       </div>
-      {broadcastState.miniGameInfo.status === true &&
-        ((roomOwner === false &&
-          broadcastState.miniGameInfo.isFree === false) ||
-          roomOwner === true) && (
-          <div className={`mini_game_section`}>
-            <button
-              className="icon"
-              onClick={(e) => {
-                e.stopPropagation();
+      <div className="mini_game_section">
+        {broadcastState.miniGameInfo.status === true &&
+          ((roomOwner === false &&
+            broadcastState.miniGameInfo.isFree === false) ||
+            roomOwner === true) && (
+            <div className={`mini_game_wrap`}>
+              <button
+                className="icon"
+                onClick={(e) => {
+                  e.stopPropagation();
 
-                dispatchDimLayer({
-                  type: "ROULETTE",
-                  others: {
-                    roomOwner,
-                  },
-                });
+                  dispatchDimLayer({
+                    type: "ROULETTE",
+                    others: {
+                      roomOwner,
+                    },
+                  });
+                }}
+              >
+                <img src={RouletteIcon} alt="미니게임 룰렛" />
+              </button>
+              {roomOwner === true && (
+                <div className={`mini_game_slide`}>
+                  <button
+                    onClick={() => {
+                      broadcastAction.setRightTabType &&
+                        broadcastAction.setRightTabType(tabType.ROULETTE);
+                    }}
+                  >
+                    <img src={SettingIcon} alt="미니게임 세팅" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      globalAction.setAlertStatus &&
+                        globalAction.setAlertStatus({
+                          status: true,
+                          type: "confirm",
+                          title: "종료하기",
+                          content:
+                            "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
+                          callback: async () => {
+                            const { result, data, message } = await miniGameEnd({
+                              roomNo: roomNo,
+                              gameNo: MiniGameType.ROLUTTE,
+                              rouletteNo: broadcastState.miniGameInfo.rouletteNo,
+                              versionIdx: broadcastState.miniGameInfo.versionIdx,
+                            });
+
+                            if (result === "success") {
+                              broadcastAction.setMiniGameInfo &&
+                                broadcastAction.setMiniGameInfo({
+                                  status: false,
+                                });
+                            }
+                          },
+                        });
+                    }}
+                  >
+                    <img src={CloseIcon} alt="미니게임 삭제" />
+                  </button>
+                </div>
+              )}
+            </div>
+          )
+        }
+        {
+          voteRdx.active &&
+          <div className="mini_game_wrap">
+            <button
+              onClick={() => {
+                if(broadcastState.roomInfo && broadcastState.roomInfo.bjMemNo){
+                  dispatch(moveVoteListStep({
+                    roomNo: roomNo
+                    , memNo: broadcastState.roomInfo.bjMemNo
+                    , voteSlct: 's'
+                  }));
+                  broadcastAction.setRightTabType(tabType.VOTE);
+                }
               }}
             >
-              <img src={RouletteIcon} alt="미니게임" />
+              <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
             </button>
             {roomOwner === true && (
               <div className={`mini_game_slide`}>
                 <button
                   onClick={() => {
-                    dispatch(setBroadcastCtxRightTabType(tabType.ROULETTE));
-                  }}
-                >
-                  <img src={SettingIcon} alt="미니게임 세팅" />
-                </button>
-                <button
-                  onClick={() => {
-                    dispatch(setGlobalCtxAlertStatus({
+                    globalAction.setAlertStatus({
                       status: true,
                       type: "confirm",
                       title: "종료하기",
-                      content:
-                        "룰렛을 종료하겠습니까? <br /> 종료 후에는 DJ, 청취자 모두 룰렛을 <br /> 돌릴 수 없습니다.",
+                      content: "투표를 종료하겠습니까? <br /> 종료 시 모든 투표가 마감처리 됩니다.",
                       callback: async () => {
-                        const { result, data, message } = await miniGameEnd({
-                          roomNo: roomNo,
-                          gameNo: MiniGameType.ROLUTTE,
-                          rouletteNo: broadcastState.miniGameInfo.rouletteNo,
-                          versionIdx: broadcastState.miniGameInfo.versionIdx,
-                        });
-
-                        if (result === "success") {
-                          dispatch(setBroadcastCtxMiniGameInfo({status:false}));
-                        }
+                        dispatch(endVote({
+                          memNo: memberRdx.memNo
+                          , roomNo: roomNo
+                          , voteNo: '0'
+                          , endSlct: 'a'
+                        }))
                       },
-                    }));
+                    });
                   }}
                 >
-                  <img src={CloseIcon} alt="미니게임 삭제" />
+                  <img src={CloseIcon} alt="투표 마감" />
                 </button>
               </div>
             )}
           </div>
-        )}
+        }
+
+      </div>
+
       <div className="gotomoon-section"/>
       <div className="moon-section">
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
       </div>
+      {/* 달라져스 버튼 & 애니메이션 영역 */}
+      {roomInfo?.stoneEventInfo.visible &&
+        <DallagersTopSection/>
+      }
 
       {/* 달나라 갈꺼야 버튼 */}
       {moonLandEventBool &&
@@ -876,62 +939,68 @@ const ChatHeaderWrapStyled = styled.div`
     display: flex;
     padding-top: 5px;
   }
-
-  .mini_game_section {
-    display: flex;
+  .mini_game_section{
+    display:flex;
+    flex-direction: column;
+    align-items:flex-start;
     position: absolute;
     left: 16px;
     top: 190px;
-    background-color: black;
-    border-radius: 32px;
-    z-index: 1;
-
-    & > .icon {
-      & > img {
-        width: 62px;
-        height: 62px;
-      }
-    }
-
-    & > .mini_game_slide {
+    .mini_game_wrap {
       display: flex;
-      overflow-x: hidden;
-
-      & > button:first-child {
-        margin-left: 6px;
+      background-color: black;
+      border-radius: 32px;
+      z-index: 1;
+      & + .mini_game_wrap{
+        margin-top: 8px;
       }
-
-      & > button:last-child {
-        margin-right: 6px;
-      }
-
-      &.in {
-        width: 80px;
-        animation: fadeIn 0.4s;
-      }
-
-      &.out {
-        width: 0px;
-        animation: fadeOut 0.4s;
-      }
-
-      @keyframes fadeIn {
-        0% {
-          width: 0px;
+      & > .icon {
+        & > img {
+          width: 62px;
+          height: 62px;
         }
-
-        100% {
+      }
+  
+      & > .mini_game_slide {
+        display: flex;
+        overflow-x: hidden;
+  
+        & > button:first-child {
+          margin-left: 6px;
+        }
+  
+        & > button:last-child {
+          margin-right: 6px;
+        }
+  
+        &.in {
           width: 80px;
+          animation: fadeIn 0.4s;
         }
-      }
-
-      @keyframes fadeOut {
-        0% {
-          width: 80px;
-        }
-
-        100% {
+  
+        &.out {
           width: 0px;
+          animation: fadeOut 0.4s;
+        }
+  
+        @keyframes fadeIn {
+          0% {
+            width: 0px;
+          }
+  
+          100% {
+            width: 80px;
+          }
+        }
+  
+        @keyframes fadeOut {
+          0% {
+            width: 80px;
+          }
+  
+          100% {
+            width: 0px;
+          }
         }
       }
     }

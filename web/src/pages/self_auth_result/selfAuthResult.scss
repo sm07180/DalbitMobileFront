@@ -1,5 +1,15 @@
 @import 'components/ui/_mixin.scss';
 
+.container {
+  .totalWrap {
+    #selfAuthResult {
+      header {
+        top: 0px !important;
+      }
+    }
+  }
+}
+
 #selfAuthResult{
   section{
     padding: 30px 16px;
@@ -47,13 +57,12 @@
       padding-top: 30px;
       button {
         flex: 1;
-        height: 44px;
-        border-radius: 12px;
-        color: #fff;
-        font-weight: 600;
+        height: 48px;
+        border-radius: 16px;
+        @include font(16px, 700, #FFFFFF);
         background: $DOWNCOLOR;
         border: 1px solid $DOWNCOLOR;
-        line-height: 44px;
+        line-height: 46px;
         &.cancel {
           color: $MAINCOLOR;
           background: #fff;

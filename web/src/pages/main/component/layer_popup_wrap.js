@@ -77,28 +77,27 @@ export default function LayerPopupWrap({data, setData}) {
   const makeTextInner = (popupData) => {
     return (
       <>
-        <div className="popupBg">
-          {popupData.title && popupData.is_title_view === 1 && <h3 className="popup__title">{popupData.title}</h3>}
-          <div className="inner">
-            <div className="innerScroll">
-              <p className="contents" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
-            </div>
-            <div className="btnWrap">
-              <button
-                className="btn-ok"
-                onClick={() => {
-                  {
-                    popupData.is_button_view === 0 && handleDimClick()
-                  }
-                  {
-                    popupData.is_button_view === 1 && handleRoute(popupData)
-                  }
-                }}>
-                {popupData.buttonNm}
-              </button>
-            </div>
+          {
+            popupData.title && popupData.is_title_view === 1 &&
+            <h2 className='title'>{popupData.title}</h2>
+          }
+          <div className='content'>
+            <p dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
           </div>
-        </div>
+          {/* <div className="btnGroup">
+            <button
+              className="btn"
+              onClick={() => {
+                {
+                  popupData.is_button_view === 0 && handleDimClick()
+                }
+                {
+                  popupData.is_button_view === 1 && handleRoute(popupData)
+                }
+              }}>
+              {popupData.buttonNm}
+            </button>
+          </div> */}
       </>
     )
   }

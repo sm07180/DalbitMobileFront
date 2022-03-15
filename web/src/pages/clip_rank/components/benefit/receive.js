@@ -162,7 +162,7 @@ const Receive = () => {
 
                 <div className="rankingList__content">
                   <div className="thumbBox">
-                    <img src={v.bgImg.thumb120x120} className="thumbBox__img" />
+                    <img src={v.bgImg.thumb292x292} className="thumbBox__img" />
                   </div>
 
                   <div className="iconBox">

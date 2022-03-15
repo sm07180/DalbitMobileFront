@@ -16,19 +16,23 @@ import Utility from "components/lib/utility";
 import Api from "context/api";
 import {Hybrid, isHybrid} from "context/hybrid";
 import qs from 'query-string';
+import {useDispatch, useSelector} from "react-redux";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const DidLogin = (props) => {
   const globalCtx = useContext(Context)
   const {webview, redirect} = qs.parse(location.search)
   const [fetching, setFetching] = useState(false)
   const [btnActive, setBtnActive] = useState(false)
-  const [slidePop, setSlidePop] = useState(false)
   const [popup, setPopup] = useState(false)
   const [popupVal, setPopupVal] = useState("")
 
   const [loginInfo, setLoginInfo] = useState({ phoneNum : '', password : '', })
   const inputPhoneRef = useRef()
   const inputPasswordRef = useRef()
+
+  const commonPopup = useSelector(state => state.popup);
+  const dispatch = useDispatch();
 
   const getSessionRedirectURL = useMemo(() => {
     try {
@@ -46,7 +50,7 @@ const DidLogin = (props) => {
 
   //회원가입 팝업 클릭 처리
   const signPop = () => {
-    setSlidePop(true)
+    dispatch(setSlidePopupOpen());
     setBtnActive(false)
   }
 
@@ -177,7 +181,7 @@ const DidLogin = (props) => {
         globalCtx.action.alert({title: '달라 사용 제한', msg: `${msg}`,
           callback: () => {
             if (webview && webview === 'new') {
-              Hybrid('CloseLayerPopUp')
+              Hybrid('CloseLayerPopup')
             }
           }
         })
@@ -252,8 +256,8 @@ const DidLogin = (props) => {
           <div className="linkText" onClick={()=>props.history.push("/password")}>비밀번호 찾기</div>
         </div>
       </section>
-      {slidePop &&
-      <PopSlide setPopSlide={setSlidePop}>
+      {commonPopup.commonPopup &&
+      <PopSlide>
         <div className='title'>이용약관동의</div>
         <div className="agreeWrap">
           <div className="agreeListAll">

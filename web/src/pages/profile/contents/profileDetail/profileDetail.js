@@ -1,5 +1,6 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
+import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 import Api from 'context/api'
@@ -10,16 +11,16 @@ import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponen
 import Utility from "components/lib/utility";
 import Swiper from "react-id-swiper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import PopSlide from "components/ui/popSlide/PopSlide";
+import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
 const ProfileDetail = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const {token, profile} = globalState
+  //context
+  const context = useContext(Context)
+  const {token, profile} = context
   const {memNo, type, index} = useParams();
   //memNo :글이 작성되있는 프로필 주인의 memNo
 
@@ -48,8 +49,9 @@ const ProfileDetail = (props) => {
   const [text, setText] = useState('');
 
   //차단 / 신고하기
-  const [popBlockReport, setPopBlockReport] = useState(false);
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -65,7 +67,7 @@ const ProfileDetail = (props) => {
 
   //내가 작성한 글 여부
   const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === (type === 'feed' ? item?.mem_no : item?.writer_mem_no)?.toString();
-  const adminChecker = globalState?.adminChecker;
+  const adminChecker = context?.adminChecker;
 
   /* 프로필 사진 확대 */
   const openShowSlide = (data, isList = "y", keyName='profImg') => {
@@ -97,7 +99,7 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           setItem(data);
         } else {
-          dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+          context.action.toast({msg: message});
           history.goBack();
         }
       })
@@ -203,11 +205,10 @@ const ProfileDetail = (props) => {
         }
       }
     }
-    dispatch(setGlobalCtxMessage({
-      type: "confirm",
+    context.action.confirm({
       msg: '정말 삭제 하시겠습니까?',
       callback
-    }));
+    });
   };
 
   const validChecker = () => {
@@ -224,7 +225,7 @@ const ProfileDetail = (props) => {
     }
 
     if(!confirm)
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+      context.action.toast({msg: message});
 
     return confirm;
   };
@@ -240,7 +241,7 @@ const ProfileDetail = (props) => {
         contents: text
       });
 
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+      context.action.toast({msg: message});
       if (result === 'success') {
         setText('');
         if (replyRef.current) {
@@ -258,7 +259,7 @@ const ProfileDetail = (props) => {
         contents: text
       }});
 
-      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
+      context.action.toast({msg: message});
       if (result === 'success') {
         setText('');
         if (replyRef.current) {
@@ -293,14 +294,14 @@ const ProfileDetail = (props) => {
       );
 
       if (result === 'success') {
-        dispatch(setGlobalCtxMessage({type: "toast", msg: '댓글이 수정되었습니다.'}))
+        context.action.toast({msg: '댓글이 수정되었습니다.'})
 
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: message}));
+        context.action.alert({msg: message});
       }
 
     } else if (type === 'fanBoard') {
@@ -311,14 +312,14 @@ const ProfileDetail = (props) => {
       }});
 
       if(result ==='success'){
-        dispatch(setGlobalCtxMessage({type: "toast", msg: '댓글이 수정되었습니다.'}))
+        context.action.toast({msg: '댓글이 수정되었습니다.'})
 
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       }else{
-        dispatch(setGlobalCtxMessage({type: "alert", msg: message}));
+        context.action.alert({msg: message});
       }
 
     }
@@ -346,23 +347,22 @@ const ProfileDetail = (props) => {
       }
     };
 
-    dispatch(setGlobalCtxMessage({
-      type: "confirm",
+    context.action.confirm({
       msg: '정말 삭제 하시겠습니까?',
       callback: () => callback(replyIdx)
-    }));
+    });
   };
 
   /* 차단/신고 팝업 열기 */
   const openBlockReportPop = (blockReportInfo) => {
     console.log('report info',blockReportInfo);
-    setPopBlockReport(true);
+    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
     setBlockReportInfo(blockReportInfo);
   }
 
   /* 차단/신고 팝업 닫기 */
   const closeBlockReportPop = () => {
-    setPopBlockReport(false);
+    closePopup(dispatch);
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
@@ -409,7 +409,7 @@ const ProfileDetail = (props) => {
             : item?.photoInfoList?.length === 1 ?
               <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
                 <div className="photo">
-                  <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
+                  <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
                 </div>
               </div>
             : <></>
@@ -451,8 +451,8 @@ const ProfileDetail = (props) => {
       {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
 
       {/* 차단 / 신고하기 */}
-      {popBlockReport &&
-      <PopSlide setPopSlide={setPopBlockReport}>
+      {popup.blockReportPopup &&
+      <PopSlide>
         <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
       </PopSlide>
       }

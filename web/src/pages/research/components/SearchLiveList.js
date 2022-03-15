@@ -36,7 +36,7 @@ const SearchLiveList = (props) => {
               return (
                 <div className="listRow" key={index} data-room-no={list.roomNo}  data-bj-nick-nm={list.bjNickNm} onClick={RoomEnter}>
                   <div className="photo">
-                    <img src={list.bgImg.thumb150x150} />
+                    <img src={list.bgImg.thumb292x292} />
                     {list.roomType === '03' && <div className="badgeVideo"/>}
                   </div>
                   <div className='listContent'>
