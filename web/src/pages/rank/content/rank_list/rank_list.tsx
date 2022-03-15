@@ -232,7 +232,7 @@ function RankList() {
                   <button
                     onClick={() => {
                       if (roomNo !== "") {
-                        RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
+                        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
                       } else {
                         let alertMsg;
                         if (isNaN(listenRoomNo)) {
@@ -249,14 +249,7 @@ function RankList() {
                             type: "confirm",
                             content: alertMsg,
                             callback: () => {
-                              RoomValidateFromClip(
-                                listenRoomNo,
-                                globalState,
-                                dispatch,
-                                history,
-                                "",
-                                "listener"
-                              );
+                              RoomValidateFromClip(listenRoomNo, dispatch, globalState, history, "", "listener");
                             },
                           }));
                         }

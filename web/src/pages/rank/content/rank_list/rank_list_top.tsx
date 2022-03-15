@@ -191,7 +191,7 @@ function RankListTop() {
                   <div
                     className="nickNameBox"
                     onClick={() => {
-                      RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
+                      RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
                     }}
                   >
                     <p className="nickNameBox__nick">{nickNm}</p>

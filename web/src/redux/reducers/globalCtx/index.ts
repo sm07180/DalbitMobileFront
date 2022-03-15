@@ -136,7 +136,7 @@ const initialState: GlobalCtxStateType = {
   currentChatData: [],
   clipPlayer: null,
   broadClipDim: false,
-  clipInfo: {},
+  clipInfo: null,
   checkDev: false,
   checkAdmin: false,
   shadowAdmin: 0,

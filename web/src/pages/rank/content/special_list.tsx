@@ -92,7 +92,7 @@ function SpecialList({ empty }) {
                           <img
                             src={live}
                             onClick={() => {
-                              RoomValidateFromClip(v.roomNo, globalState, dispatch, history, v.nickNm);
+                              RoomValidateFromClip(v.roomNo, dispatch, globalState, history, v.nickNm);
                             }}
                             className="liveBox__img"
                           />

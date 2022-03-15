@@ -73,8 +73,8 @@ const makeContents = (props) => {
             } else {
               RoomValidateFromClip(
                   roomNo,
-                  globalState,
                   dispatch,
+                  globalState,
                   history,
                   bjNickNm
               )

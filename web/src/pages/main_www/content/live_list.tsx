@@ -48,7 +48,7 @@ function RealTimeLive(props: any) {
             }`}
             key={`live-${idx}`}
             onClick={() => {
-              RoomValidateFromClip(roomNo, globalState, dispatch, history, bjNickNm);
+              RoomValidateFromClip(roomNo, dispatch, globalState, history, bjNickNm);
             }}
           >
             <div

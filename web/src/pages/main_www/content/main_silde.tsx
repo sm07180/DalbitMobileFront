@@ -51,13 +51,13 @@ export default function MainSlide(props: any) {
         } else {
           if (broadUrl.test(roomNo)) {
             const room_no = roomNo.substring(roomNo.lastIndexOf("/") + 1);
-            RoomValidateFromClip(room_no, globalState, dispatch, history, "noName");
+            RoomValidateFromClip(room_no, dispatch, globalState, history, "noName");
           } else {
             window.open(`${roomNo}`);
           }
         }
       } else {
-        RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
+        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
       }
     }
   };
@@ -78,13 +78,13 @@ export default function MainSlide(props: any) {
         } else {
           if (broadUrl.test(roomNo)) {
             const room_no = roomNo.substring(roomNo.lastIndexOf("/") + 1);
-            RoomValidateFromClip(room_no, globalState, dispatch, history, "noName");
+            RoomValidateFromClip(room_no, dispatch, globalState, history, "noName");
           } else {
             window.open(`${roomNo}`);
           }
         }
       } else {
-        RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
+        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
       }
     }
   };
@@ -204,19 +204,13 @@ export default function MainSlide(props: any) {
                             const room_no = roomNo.substring(
                               roomNo.lastIndexOf("/") + 1
                             );
-                            RoomValidateFromClip(
-                              room_no,
-                              globalState,
-                              dispatch,
-                              history,
-                              "noName"
-                            );
+                            RoomValidateFromClip(room_no, dispatch, globalState, history, "noName");
                           } else {
                             window.open(`${roomNo}`);
                           }
                         }
                       } else {
-                        RoomValidateFromClip(roomNo, globalState, dispatch, history, nickNm);
+                        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
                       }
                     }
                   }}
