@@ -5,6 +5,7 @@ const initialState: IProfileTabState = {
   tabList: ['방송공지','팬보드','클립'],
   tabName: '방송공지',
   isRefresh: true,
+  isReset: true,
 }
 
 const profileTab = createReducer<IProfileTabState,ProfileActions>(initialState,{

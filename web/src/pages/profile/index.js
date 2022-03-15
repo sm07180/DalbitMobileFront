@@ -55,7 +55,7 @@ const ProfilePage = () => {
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
-  const [scrollPagingCnt, setScrollPagingCnt] = useState(1); // 스크롤 이벤트 갱신을 위함
+  const [scrollPagingCall, setScrollPagingCall] = useState(1); // 스크롤 이벤트 갱신을 위함
 
   const [webview, setWebview] = useState('');
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
@@ -70,6 +70,8 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
+
+  const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
@@ -117,6 +119,9 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : profilePagingDefault, // 호출한 페이지 정보
           isLastPage,
         }));
+        if(isLastPage) {
+          removeScrollEvent();
+        }
       } else {
         context.action.alert({
           msg: res.message
@@ -144,6 +149,9 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : profilePagingDefault,
           isLastPage,
         }));
+        if(isLastPage) {
+          removeScrollEvent();
+        }
       } else {
         context.action.alert({
           msg: res.message
@@ -170,6 +178,9 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : profileClipPagingDefault,
           isLastPage,
         }));
+        if(isLastPage) {
+          removeScrollEvent();
+        }
       } else {
         context.action.alert({ msg: res.message })
       }
@@ -353,7 +364,7 @@ const ProfilePage = () => {
   /* 피드, 팬보드, 클립 페이징 */
   const profileScrollEvent = useCallback(() => {
     const callback = () => {
-      setScrollPagingCnt(scrollPagingCnt => scrollPagingCnt + 1);
+      setScrollPagingCall(scrollPagingCall => scrollPagingCall + 1);
     }
     scrollEvent(document.documentElement, callback);
   }, []);
@@ -370,16 +381,14 @@ const ProfilePage = () => {
       document.addEventListener('scroll', profileScrollEvent);
     }
 
-    console.log(item, profileTab.tabList);
-
     if(item === profileTab.tabList[0]) {
-      dispatch(setProfileFeedData({...feedData, paging: profilePagingDefault, isLastPage: false}));
+      getFeedData(true);
       scrollEventHandler();
     }else if(item === profileTab.tabList[1]) {
-      dispatch(setProfileFanBoardData({...fanBoardData, paging: profilePagingDefault, isLastPage: false}));
+      getFanBoardData(true);
       scrollEventHandler();
     }else if(item === profileTab.tabList[2]) {
-      dispatch(setProfileClipData({...clipData, paging: profileClipPagingDefault, isLastPage: false}));
+      getClipData(true);
       scrollEventHandler();
     }
   }
@@ -393,22 +402,21 @@ const ProfilePage = () => {
 
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
-    if(location.search) {
-      let tabState = 0; // default
-      const searchParams = location.search.split('?')[1];
-      searchParams.split('&').forEach(item => {
-        const itemSplit = item.split('=');
-        const paramType = itemSplit[0].toLowerCase();
-        if(paramType === 'webview') {
-          setWebview(itemSplit[1]);
-        }else if(paramType === 'tab') {
-          if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) { // 탭이 범위 안에 있을때(0~2)
-            tabState = parseInt(itemSplit[1])
-          }
+    let tabState = 0; // default
+    const searchParams = location.search.split('?')[1];
+    searchParams.split('&').forEach(item => {
+      const itemSplit = item.split('=');
+      const paramType = itemSplit[0].toLowerCase();
+      if(paramType === 'webview') {
+        setWebview(itemSplit[1]);
+      }else if(paramType === 'tab') {
+        if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) { // 탭이 범위 안에 있을때(0~2)
+          tabState = parseInt(itemSplit[1])
         }
-      });
-      setProfileTabName(profileTab.tabList[tabState]);
-    }
+      }
+    });
+    socialTabChangeAction(profileTab.tabList[tabState])
+    setProfileTabName(profileTab.tabList[tabState]);
   }
 
   /* 프로필 데이터 초기화 */
@@ -464,126 +472,90 @@ const ProfilePage = () => {
     }
   }
 
-  const profileTabCheck = (isInit) => {
-    if(profileTab.isRefresh) {
-      if(profileTab.tabName === profileTab.tabList[0]) {
-        getFeedData(isInit);
-        setScrollPagingCnt(1);
-      }else if(profileTab.tabName === profileTab.tabList[1]) {
-        getFanBoardData(isInit);
-        setScrollPagingCnt(1);
-      }else if(profileTab.tabName === profileTab.tabList[2]) {
-        getClipData(isInit);
-        setScrollPagingCnt(1);
-      }
+  /* 하단 현재 탭 데이터 초기화 */
+  const profileTabDataCall = () => {
+    if(profileTab.tabName === profileTab.tabList[0]) {
+      document.addEventListener('scroll', profileScrollEvent);
+      getFeedData(true);
+    }else if(profileTab.tabName === profileTab.tabList[1]) {
+      document.addEventListener('scroll', profileScrollEvent);
+      getFanBoardData(true);
+    }else if(profileTab.tabName === profileTab.tabList[2]) {
+      document.addEventListener('scroll', profileScrollEvent);
+      getClipData(true);
     }
+    dispatch(setProfileTabData({...profileTab, isRefresh: true})); // 하단 탭
+  }
+
+  /* 하단 탭 기본값으로 초기화 */
+  const profileTabInit = () => {
+    dispatch(setProfileTabData({
+      ...profileTab,
+      tabName: profileDefaultTab,
+      isReset: true
+    }))
+    getFeedData(true); // 피드
+    dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
+    dispatch(setProfileClipData(profileClipDefaultState)); // 클립
+    document.addEventListener('scroll', profileScrollEvent);
+    setScrollPagingCall(1);
   }
 
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
-    if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
+    if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCall > 1 && !feedData.isLastPage) {
       getFeedData();
-    }else if(profileTab.tabName === profileTab.tabList[1] && scrollPagingCnt > 1 && !fanBoardData.isLastPage) {
+    }else if(profileTab.tabName === profileTab.tabList[1] && scrollPagingCall > 1 && !fanBoardData.isLastPage) {
       getFanBoardData();
-    }else if(profileTab.tabName === profileTab.tabList[2] && scrollPagingCnt > 1 && !clipData.isLastPage) {
+    }else if(profileTab.tabName === profileTab.tabList[2] && scrollPagingCall > 1 && !clipData.isLastPage) {
       getClipData();
     }
-  }, [scrollPagingCnt]);
+  }, [scrollPagingCall]);
 
-  /* 피드 마지막 페이지 호출 체크 */
+  /* 페이지 이동 */
   useEffect(() => {
-    if(feedData.isLastPage){
-      removeScrollEvent();
+    if(context.token.isLogin) {
+      if(profileReady) {
+        getProfileData(); // 프로필 상단 데이터
+        profileTabInit();
+      }
+    }else {
+      history.replace('/login');
     }
-  }, [feedData.isLastPage])
-
-  /* 팬보드 마지막 페이지 호출 체크 */
-  useEffect(() => {
-    if(fanBoardData.isLastPage){
-      removeScrollEvent();
-    }
-  }, [fanBoardData.isLastPage])
-
-  /* 클립 마지막 페이지 호출 체크 */
-  useEffect(() => {
-    if(clipData.isLastPage){
-      removeScrollEvent();
-    }
-  }, [clipData.isLastPage])
-
-  /* 페이지 이동할때 탭 초기화 상태인지 체크한다 */
-  useEffect(() => {
-    if(context.token.isLogin && profileReady) {
-      document.addEventListener('scroll', profileScrollEvent);
-
-
-      /*setProfileTabName(profileTab.tabList[0]);
-      resetTabData();
-      getProfileData(); // 프로필 상단 데이터
-      profileTabCheck(); // 프로필 하단 탭 및 데이터
-      document.addEventListener('scroll', profileScrollEvent);*/
-    }
-  }, [location.pathname, profileReady]);
-
-  /* 피드 / 팬보드 / 클립 */
-  useEffect(() => {
-    if(profileReady) {
-      // getProfileData(); // 프로필 상단 데이터
-      // profileTabCheck();
-    }
-  }, [profileTab.tabName])
+  }, [location.pathname]);
 
   useEffect(() => {
     if(!context.token.isLogin) {
       return history.replace('/login');
     }
 
-
-    console.log(profileTab.isRefresh, profileTab.tabName)
     getProfileData(); // 프로필 상단 데이터
+    /* 프로필 하단 탭 데이터 */
+    if(location.search) {
+      parameterManager(); // 주소 뒤에 파라미터 체크
+    }else {
+      if(profileTab.isReset) { // 탭, 데이터 초기화
+        profileTabInit();
+      }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
+        profileTabDataCall();
+      }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
+        if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
+          document.addEventListener('scroll', profileScrollEvent);
+        }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
+          document.addEventListener('scroll', profileScrollEvent);
+        }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
+          document.addEventListener('scroll', profileScrollEvent);
+        }
 
-
-    if(profileTab.isRefresh) { // 프로필 탭 초기화
-      setProfileTabName(profileTab.tabList[0]);
-      getFeedData(true);
-      // setScrollPagingCnt(1);
-    }else { // 초기화 안하는 경우
-      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
       }
-
-      dispatch(setProfileTabData({...profileTab, isRefresh: true}));
     }
 
-
-    /*if(profileTab.isRefresh) {
-      setProfileTabName(profileTab.tabList[0]);
-      resetTabData();
-    }else {
-      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }
-
-      dispatch(setProfileTabData({...profileTab, isRefresh: true}));
-    }*/
-
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
-    parameterManager(); // 주소 뒤에 파라미터 체크
-
     setProfileReady(true);
 
     return () => {
-      // resetProfileData();
-      // resetTabData();
-
+      resetProfileData();
       removeScrollEvent();
     }
   }, []);

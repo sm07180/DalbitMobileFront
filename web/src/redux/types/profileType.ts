@@ -283,4 +283,5 @@ export interface IProfileTabState {
   tabList: Array<string>;
   tabName: string;
   isRefresh: boolean;
+  isReset: boolean;
 }

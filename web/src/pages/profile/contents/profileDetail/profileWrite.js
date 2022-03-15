@@ -99,6 +99,7 @@ const ProfileWrite = () => {
         context.action.toast({msg: message});
 
         if (result === 'success') {
+          dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
           history.goBack();
         }
       });
@@ -113,6 +114,7 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
     }
@@ -137,6 +139,7 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
 
@@ -151,6 +154,7 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
       } else {
