@@ -1,11 +1,9 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
-//context
-import {Context} from 'context'
-
 // static
 import './rankList.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const EventRankList = (props) => {
   const {
@@ -15,9 +13,9 @@ const EventRankList = (props) => {
 		listNum,
 		index
   } = props
-  const globalCtx = useContext(Context)
   const history = useHistory()
-
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   // 프로필 이동 이벤트
   const goProfile = (memNo) => {
     if (memNo !== undefined && memNo > 0) {
@@ -26,15 +24,15 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
+		<div className={`eventRankList ${type === 'my' && globalState.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
 			<div className="rankNum">
-				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
-				{type === 'my' ? 
+				{type === 'my' && globalState.token.isLogin ? <span className='tit'>내순위</span> : <></>}
+				{type === 'my' ?
 					<span className="num">
 						{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}
 						{rankList && rankList.rankNo != 0 ? rankList.rankNo : '-'}
-					</span> 
-					: 
+					</span>
+					:
 					<span className="num">{listNum + 1}</span>
 				}
 				{rankList && rankList.upDown && <p className="rankChange">

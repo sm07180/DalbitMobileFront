@@ -14,7 +14,7 @@ import "./index.scss";
 import {broadcastInfoNew} from "../../common/api";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {setBroadcastCtxRoomInfoReset} from "../../redux/actions/broadcastCtx";
+import {setBroadcastCtxRoomInfoReset, setBroadcastCtxUserMemNo} from "../../redux/actions/broadcastCtx";
 
 export default function Broadcast() {
   const globalState = useSelector(({globalCtx})=> globalCtx);
@@ -41,7 +41,7 @@ export default function Broadcast() {
     if(!roomInfo){
       return
     }
-    broadcastAction.setUserMemNo(roomInfo.bjMemNo);
+    dispatch(setBroadcastCtxUserMemNo(roomInfo.bjMemNo));
   },[roomInfo]);
   return (
     <BroadcastLayerProvider>

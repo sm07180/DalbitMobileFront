@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 
-import { GlobalContext } from "context";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 import DirectGiftImg from "./static/img_directgift.svg";
@@ -8,9 +7,17 @@ import MoonIcon from "./static/ic_moon_l.svg";
 
 import "./index.scss";
 import { postSendGift, getProfile } from "common/api";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../redux/actions/globalCtx";
 
 function DirectGiftLayer() {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const { userProfile } = globalState;
   if(!userProfile){
     return <></>
@@ -52,23 +59,23 @@ function DirectGiftLayer() {
     });
 
     if (result === "success") {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "선물이 성공적으로 발송되었습니다.",
-      });
+      }));
 
       const res = await getProfile({
         memNo: globalState.baseData.memNo,
       });
 
       if (res.result === "success") {
-        globalAction.setUserProfile!(res.data);
+        dispatch(setGlobalCtxUserProfile(res.data));
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
 
     // dispatchLayer({

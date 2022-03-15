@@ -12,8 +12,6 @@ import {
 } from "common/api";
 // others
 import {AgoraHostRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-// context
-import {Context} from "context";
 import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
@@ -24,6 +22,12 @@ import {MediaType} from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
 import {useDispatch, useSelector} from "react-redux";
 import {setBroadcastCtxExtendTime} from "../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxMessage, setGlobalCtxRtcInfoEmpty,
+  setGlobalCtxRtcInfoInit,
+  setGlobalCtxSetToastStatus
+} from "../../redux/actions/globalCtx";
 
 declare global {
   interface Window {
@@ -143,10 +147,9 @@ let constraint = {
 
 export default function BroadcastSetting() {
   const history = useHistory();
-  const dispatch = useDispatch();
   const titleInputRef = useRef<any>();
-  const context = useContext(Context)
-  const { globalState, globalAction } = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { chatInfo, rtcInfo } = globalState;
   const modalState = useSelector(({modalCtx}) => modalCtx);
   const [state, dispatchWithoutAction] = useReducer(reducer, {
@@ -244,10 +247,10 @@ export default function BroadcastSetting() {
       return alert("jpg, png, gif 이미지만 사용 가능합니다.");
     }
     if (fileExtension === "gif" && fileSize > 5000000) {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "GIF 파일 크기는 최대 5MB를 넘을 수 없습니다.",
-      });
+      }));
       return;
     }
     reader.onload = async () => {
@@ -262,19 +265,17 @@ export default function BroadcastSetting() {
             setBroadBg(reader.result);
             setBgChange(data.path);
           } else {
-            globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
+            dispatch(setGlobalCtxAlertStatus({
               status: true,
               content: "이미지 업로드에 실패하였습니다.\n다시 시도해주세요",
-            });
+            }));
             return;
           }
         } else {
-          globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             content: message,
-          });
+          }));
         }
       }
     };
@@ -287,25 +288,24 @@ export default function BroadcastSetting() {
         titleInputRef.current.focus();
       }
 
-      if (globalAction.callSetToastStatus)
-        return globalAction.callSetToastStatus({
-          status: true,
-          message: "방송 제목을 3자 이상 입력해주세요",
-        });
+      return dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: "방송 제목을 3자 이상 입력해주세요",
+      }));
     }
 
     if (state.micState === false) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `마이크 연결 상태를 확인해주세요.`,
-      });
+      }));
     }
 
     if (state.mediaType === MediaType.VIDEO && state.videoState === false) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "캠 연결 상태를 확인해주세요.",
-      });
+      }));
     }
 
     if (state.micState === true && state.titleChange.length > 2) {
@@ -362,7 +362,7 @@ export default function BroadcastSetting() {
           );
           newRtcInfo.setRoomInfo({...data, micState: true,});
           newRtcInfo.publish();
-          globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
+          dispatch(setGlobalCtxRtcInfoInit(newRtcInfo));
           sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:newRtcInfo.roomInfo, userType:newRtcInfo.userType}));
           sessionStorage.setItem("room_no", data.roomNo);
           dispatch(setBroadcastCtxExtendTime(false));
@@ -381,7 +381,7 @@ export default function BroadcastSetting() {
           const dispatchRtcInfo = new AgoraHostRtc(UserType.HOST, data.webRtcUrl, data.webRtcAppName, data.webRtcStreamName, data.roomNo, false, videoConstraints);
           dispatchRtcInfo.setRoomInfo(data);
           dispatchRtcInfo.join(data).then(()=>{
-            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
             sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
           });
           try {
@@ -396,18 +396,16 @@ export default function BroadcastSetting() {
       } else if (result === "fail") {
         if (code === "-6") {
           return (
-            globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
+            dispatch(setGlobalCtxAlertStatus({
               status: true,
               content: message,
               callback: () => {
                 history.push("/self_auth/self?type=create");
               },
             })
-          );
+          ));
         }
-        globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({ status: true, content: message });
+        dispatch(setGlobalCtxAlertStatus({ status: true, content: message }));
       }
     };
 
@@ -424,7 +422,7 @@ export default function BroadcastSetting() {
           }
           if (rtcInfo && rtcInfo !== null) {
             rtcInfo!.stop();
-            globalAction.dispatchRtcInfo!({ type: "empty" });
+            dispatch(setGlobalCtxRtcInfoEmpty());
           }
           return makeRoom();
         }
@@ -524,9 +522,9 @@ export default function BroadcastSetting() {
           message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
             " 다른 캡처 장치를 선택해주세요"
         }
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: message
-        })
+        }))
         if(currentCam !== undefined){
           sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
           localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
@@ -598,9 +596,9 @@ export default function BroadcastSetting() {
           //장치 연결 관련 팝업
           let message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
             " 다른 캡처 장치를 선택해주세요"
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type: "alert",
             msg: message
-          })
+          }))
         }
       });
     }
@@ -708,8 +706,7 @@ export default function BroadcastSetting() {
 
   useEffect(() => {
     if (rtcInfo !== null) {
-      globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "confirm",
         title: "알림",
@@ -721,8 +718,7 @@ export default function BroadcastSetting() {
             chatInfo.privateChannelDisconnect();
             rtcInfo.socketDisconnect();
             rtcInfo.stop();
-            globalAction.dispatchRtcInfo &&
-            globalAction.dispatchRtcInfo({ type: "empty" });
+            dispatch(setGlobalCtxRtcInfoEmpty());
             rtcSessionClear();
             broadcastAllExit();
           }
@@ -730,7 +726,7 @@ export default function BroadcastSetting() {
         cancelCallback: () => {
           history.goBack();
         },
-      });
+      }));
     }
   }, []);
 
@@ -915,12 +911,10 @@ export default function BroadcastSetting() {
                     onClick={() => {
                       setEntry(item.id);
                       if (item.id === ACCESS_TYPE.ADULT) {
-                        if (globalAction.callSetToastStatus) {
-                          globalAction.callSetToastStatus({
-                            status: true,
-                            message: "20세 이상 청취 하실 수 있습니다",
-                          });
-                        }
+                        dispatch(setGlobalCtxSetToastStatus({
+                          status: true,
+                          message: "20세 이상 청취 하실 수 있습니다",
+                        }));
                       }
                     }}
                     className={

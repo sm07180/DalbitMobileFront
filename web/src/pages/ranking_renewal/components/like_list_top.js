@@ -1,16 +1,14 @@
 import React, {useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
-// context
-import {Context} from 'context'
-
 //constant
 import {RANK_TYPE} from '../constant'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 function LikeListTop() {
   const history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const rankState = useSelector(({rankCtx}) => rankCtx);
   const {formState, likeList, rankList} = rankState
 
@@ -39,7 +37,7 @@ function LikeListTop() {
                 <div
                   className={`TopBoxThumb ${formState[formState.pageType].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
                   onClick={() => {
-                    if (context.token.isLogin) {
+                    if (globalState.token.isLogin) {
                       history.push(`/profile/${memNo}`)
                     } else {
                       history.push(`/login`)
@@ -62,8 +60,8 @@ function LikeListTop() {
                     <div
                       className="thumbBox"
                       onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
+                        if (globalState.token.isLogin) {
+                          if (globalState.token.memNo === memNo) {
                             history.push(`/myProfile`)
                           } else {
                             history.push(`/profile/${djMemNo}`)

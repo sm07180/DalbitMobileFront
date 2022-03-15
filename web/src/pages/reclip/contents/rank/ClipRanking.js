@@ -14,15 +14,16 @@ import RankingList from '../../components/RankingList'
 import './clipRanking.scss'
 import moment from "moment";
 import {array} from "@storybook/addon-knobs";
-import {ClipPlayFn} from "pages/clip/components/clip_play_fn";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
 import NoResult from "components/ui/noResult/NoResult";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipRanking = () => {
   const tabmenu = ['오늘', '이번주'];
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const [ rankClipInfo, setRankClipInfo ] = useState({ list: [], paging: {}, topInfo: [] });
   const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100});
@@ -61,7 +62,7 @@ const ClipRanking = () => {
     let tempType = type;
     if (type === undefined) tempType = 1;
     if (rankClipInfo.list.length > 0) {
-      const clipParam = { clipNo: clipNo, gtx: context, history, type: 'all' };
+      const clipParam = {clipNo: clipNo, globalState, dispatch, history, type: 'all'};
       let playListInfoData = {
         ...searchInfo,
         rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate)
@@ -94,7 +95,7 @@ const ClipRanking = () => {
           :
           <NoResult/>
         }
-      </div>      
+      </div>
     </div>
   );
 };

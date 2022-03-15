@@ -1,5 +1,4 @@
 import React, {useState, useEffect,useContext} from 'react'
-import {Context} from 'context'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
@@ -8,9 +7,6 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 const NewlyAccount = (props) => {
   const {repplySubmit, exchangeForm, setExchangeForm} = props;
-  //context
-  const context = useContext(Context);
-  const {profile} = context;
 
   return (
     <>

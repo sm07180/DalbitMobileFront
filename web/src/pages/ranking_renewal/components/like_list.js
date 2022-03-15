@@ -1,7 +1,5 @@
 import React, {useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
-// context
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 //static
@@ -9,14 +7,15 @@ import likeIcon from '../static/like_g_s.svg'
 import likeRedIcon from '../static/like_red_m.svg'
 
 import {RANK_TYPE} from '../constant'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 
 function LikeList({empty}) {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const rankState = useSelector(({rankCtx}) => rankCtx);
   const history = useHistory()
   const {formState, likeList, rankList} = rankState
@@ -77,7 +76,7 @@ function LikeList({empty}) {
               <div
                 className="thumbBox"
                 onClick={() => {
-                  if (context.token.isLogin) {
+                  if (globalState.token.isLogin) {
                     history.push(`/profile/${memNo}`)
                   } else {
                     history.push(`/login`)
@@ -89,7 +88,7 @@ function LikeList({empty}) {
                 <div
                   className="likeListDetail"
                   onClick={() => {
-                    if (context.token.isLogin) {
+                    if (globalState.token.isLogin) {
                       history.push(`/profile/${memNo}`)
                     } else {
                       history.push(`/login`)
@@ -108,8 +107,8 @@ function LikeList({empty}) {
                   <span
                     className="bestFanBox__nickname"
                     onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                      if (globalState.token.isLogin) {
+                        if (globalState.token.memNo === memNo) {
                           history.push(`/myProfile`)
                         } else {
                           history.push(`/mypage/${djMemNo}`)

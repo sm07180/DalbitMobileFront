@@ -2,17 +2,18 @@ import React, {useContext} from 'react'
 import styled, {css} from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
-import {Context} from 'context'
 import {RoomJoin} from 'context/room'
 
 import NoResult from 'components/ui/noResult'
 import ProfileImage from 'components/ui/profileImage'
 import live from '../static/live_m.svg'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 function SpecialList({empty}) {
   const history = useHistory()
-  const context = useContext(Context)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {specialList} = rankState
@@ -41,7 +42,7 @@ function SpecialList({empty}) {
                       <div
                         className="profileBox"
                         onClick={() => {
-                          if (context.token.isLogin) {
+                          if (globalState.token.isLogin) {
                             history.push(`/profile/${v.memNo}`)
                           } else {
                             history.push('/login')
@@ -53,7 +54,7 @@ function SpecialList({empty}) {
                         <div
                           className="nickNameBox special"
                           onClick={() => {
-                            if (context.token.isLogin) {
+                            if (globalState.token.isLogin) {
                               history.push(`/profile/${v.memNo}`)
                             } else {
                               history.push('/login')
@@ -86,10 +87,10 @@ function SpecialList({empty}) {
                             src={live}
                             onClick={() => {
                               if (customHeader['os'] === OS_TYPE['Desktop']) {
-                                if (context.token.isLogin === false) {
+                                if (globalState.token.isLogin === false) {
                                   history.push('/login')
                                 } else {
-                                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                                  dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 2]}));
                                 }
                               } else {
                                 RoomJoin({roomNo: v.roomNo, nickNm: v.nickNm})

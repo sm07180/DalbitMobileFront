@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -9,12 +8,14 @@ import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import './style.scss'
 import _ from "lodash";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {OS_TYPE} from "context/config";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const StorePage = () => {
   const history = useHistory()
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [select, setSelect] = useState(3);
   const [storeInfo, setStoreInfo] = useState({
@@ -41,9 +42,9 @@ const StorePage = () => {
           dalPrice: response.data.list
         })
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: response.message
-        })
+        }))
       }
     });
   }
@@ -60,7 +61,7 @@ const StorePage = () => {
   }
 
   const movePayment = () => {
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       history.push({
         pathname: '/store/dalcharge',
         search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`

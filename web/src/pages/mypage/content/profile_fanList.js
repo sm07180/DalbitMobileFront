@@ -7,27 +7,33 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 
 import CloseBtn from '../static/close_w_l.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxClose,
+  setGlobalCtxCloseFanCnt, setGlobalCtxCloseGoodCnt, setGlobalCtxCloseSpecial,
+  setGlobalCtxCloseStarCnt,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let {webview} = qs.parse(location.search)
   if (sessionStorage.getItem('webview') === 'new') {
     webview = 'new'
   }
   const {name} = props
-  //context------------------------------------------
-  const context = useContext(Context)
-  const ctx = useContext(Context)
   let history = useHistory()
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  const myProfileNo = ctx.profile.memNo
-  const MyMemNo = context.profile && context.profile.memNo
+  const myProfileNo = globalState.profile.memNo
+  const MyMemNo = globalState.profile && globalState.profile.memNo
   //state
   const [rankInfo, setRankInfo] = useState('')
   const [starInfo, setStarInfo] = useState('')
@@ -87,10 +93,10 @@ export default (props) => {
     if (res.result === 'success') {
       setFanInfo(res.data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {},
         msg: res.message
-      })
+      }))
     }
     return
   }
@@ -104,10 +110,10 @@ export default (props) => {
     if (res.result === 'success') {
       setGoodInfo(res.data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {},
         msg: res.message
-      })
+      }))
     }
     return
   }
@@ -120,10 +126,10 @@ export default (props) => {
     if (res.result === 'success') {
       setSpecialInfo(res.data)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {},
         msg: res.message
-      })
+      }))
     }
     return
   }
@@ -142,22 +148,22 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type: "toast",
           msg: `${nickNm}님의 팬이 되었습니다`
-        })
+        }))
         setSelect(memNo)
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {},
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataFanRegist(memNo)
   }
 
   const Cancel = (memNo, isFan, nickNm) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         async function fetchDataFanCancel(memNo, isFan) {
@@ -167,32 +173,32 @@ export default (props) => {
             }
           })
           if (res.result === 'success') {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({type: "toast",
               msg: res.message
-            })
+            }))
             setSelect(memNo + 1)
           } else if (res.result === 'fail') {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({type: "alert",
               callback: () => {},
               msg: res.message
-            })
+            }))
           }
         }
         fetchDataFanCancel(memNo)
       }
-    })
+    }))
   }
   const closePopup = () => {
     if (name === '팬 랭킹') {
-      context.action.updateClose(false)
+      dispatch(setGlobalCtxClose(false));
     } else if (name === '팬') {
-      context.action.updateCloseFanCnt(false)
+      dispatch(setGlobalCtxCloseFanCnt(false));
     } else if (name === '스타') {
-      context.action.updateCloseStarCnt(false)
+      dispatch(setGlobalCtxCloseStarCnt(false));
     } else if (name === '좋아요') {
-      context.action.updateCloseGoodCnt(false)
+      dispatch(setGlobalCtxCloseGoodCnt(false));
     } else if (name === '스디') {
-      context.action.updateCloseSpecial(false)
+      dispatch(setGlobalCtxCloseSpecial(false));
     }
   }
 
@@ -214,15 +220,15 @@ export default (props) => {
   useEffect(() => {
     window.onpopstate = (e) => {
       if (name === '팬 랭킹') {
-        context.action.updateClose(false)
+        dispatch(setGlobalCtxClose(false));
       } else if (name === '팬') {
-        context.action.updateCloseFanCnt(false)
+        dispatch(setGlobalCtxCloseFanCnt(false));
       } else if (name === '스타') {
-        context.action.updateCloseStarCnt(false)
+        dispatch(setGlobalCtxCloseStarCnt(false));
       } else if (name === '좋아요') {
-        context.action.updateCloseGoodCnt(false)
+        dispatch(setGlobalCtxCloseGoodCnt(false));
       } else if (name === '스디') {
-        context.action.updateCloseSpecial(false)
+        dispatch(setGlobalCtxCloseSpecial(false));
       }
     }
   }, [])
@@ -234,11 +240,11 @@ export default (props) => {
   }, [])
 
   const ClickUrl = (link) => {
-    context.action.updateClose(false)
-    context.action.updateCloseFanCnt(false)
-    context.action.updateCloseStarCnt(false)
-    context.action.updateCloseGoodCnt(false)
-    context.action.updateCloseSpecial(false)
+    dispatch(setGlobalCtxClose(false));
+    dispatch(setGlobalCtxCloseFanCnt(false));
+    dispatch(setGlobalCtxCloseStarCnt(false));
+    dispatch(setGlobalCtxCloseGoodCnt(false));
+    dispatch(setGlobalCtxCloseSpecial(false));
     history.push(link, {
       hash: window.location.hash
     })
@@ -289,12 +295,12 @@ export default (props) => {
                                     bg={profImg.thumb62x62}></span>
                                   <span className="nickNm">{nickNm}</span>
                                 </div>
-                                {isFan === false && memNo !== ctx.token.memNo && (
+                                {isFan === false && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                                     +팬등록
                                   </button>
                                 )}
-                                {isFan === true && memNo !== ctx.token.memNo && (
+                                {isFan === true && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Cancel(memNo, isFan, nickNm)}>팬</button>
                                 )}
                               </div>
@@ -314,12 +320,12 @@ export default (props) => {
                                     bg={profImg.thumb62x62}></span>
                                   <span className="nickNm">{nickNm}</span>
                                 </div>
-                                {isFan === false && memNo !== ctx.token.memNo && (
+                                {isFan === false && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                                     +팬등록
                                   </button>
                                 )}
-                                {isFan === true && memNo !== ctx.token.memNo && (
+                                {isFan === true && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Cancel(memNo, isFan, nickNm)}>팬</button>
                                 )}
                               </div>
@@ -339,12 +345,12 @@ export default (props) => {
                                     bg={profImg.thumb62x62}></span>
                                   <span className="nickNm">{nickNm}</span>
                                 </div>
-                                {isFan === false && memNo !== ctx.token.memNo && (
+                                {isFan === false && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                                     +팬등록
                                   </button>
                                 )}
-                                {isFan === true && memNo !== ctx.token.memNo && (
+                                {isFan === true && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Cancel(memNo, isFan, nickNm)}>팬</button>
                                 )}
                               </div>
@@ -364,12 +370,12 @@ export default (props) => {
                                     bg={profImg.thumb62x62}></span>
                                   <span className="nickNm">{nickNm}</span>
                                 </div>
-                                {isFan === false && memNo !== ctx.token.memNo && (
+                                {isFan === false && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                                     +팬등록
                                   </button>
                                 )}
-                                {isFan === true && memNo !== ctx.token.memNo && (
+                                {isFan === true && memNo !== globalState.token.memNo && (
                                   <button onClick={() => Cancel(memNo, isFan, nickNm)}>팬</button>
                                 )}
                               </div>

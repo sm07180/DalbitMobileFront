@@ -7,12 +7,13 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // css
 import '../scss/swiperList.scss'
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipList = (props) => {
   const { data } = props;
-  const context = useContext(Context); //context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
   const swiperParams = {
@@ -34,7 +35,7 @@ const ClipList = (props) => {
       JSON.stringify(playListInfoData)
     );
     if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, gtx: context, history };
+      const clipParam = { clipNo: clipNo, globalState, dispatch, history };
       NewClipPlayerJoin(clipParam);
     }
   };

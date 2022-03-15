@@ -2,8 +2,6 @@ import React, {useContext, useState, useRef, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
-//context
-import {Context} from 'context'
 import {COLOR_MAIN} from 'context/color'
 
 //layout
@@ -19,12 +17,14 @@ import icCheckOff from './static/ico-checkbox-off.svg'
 import icCheckOn from './static/ico-checkbox-on.svg'
 import {isDesktop} from "lib/agent";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxWalletIdx} from "redux/actions/globalCtx";
 
 //
 export default (props) => {
   //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   //state
   const [agreeTerm, setAgreeTerm] = useState('1825')
@@ -70,10 +70,10 @@ export default (props) => {
       )
 
       if (KMCIS_window == null) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg:
             ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
-        })
+        }))
       }
       authFormRef.current.target = 'KMCISWindow'
     }
@@ -105,9 +105,9 @@ export default (props) => {
       })
       authRequest()
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -121,49 +121,49 @@ export default (props) => {
   //인증 요청 버튼 벨리데이션
   function authClick() {
     if (name.length === 0) {
-      return context.action.alert({msg: '보호자 성명을 입력해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '보호자 성명을 입력해 주세요.'}))
     }
     const namePattern = /^[가-힣]{2,5}|[a-zA-Z]{2,10}\s[a-zA-Z]{2,10}$/
     if (!namePattern.test(name)) {
-      return context.action.alert({msg: '보호자 성명을 확인해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '보호자 성명을 확인해 주세요.'}))
     }
 
     if (gender.length === 0) {
-      return context.action.alert({msg: '성별을 입력해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '성별을 입력해 주세요.'}))
     }
 
     if (birthDay.length === 0) {
-      return context.action.alert({msg: '생년월일을 입력해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '생년월일을 입력해 주세요.'}))
     }
 
     const birthPattern = /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/
     if (!birthPattern.test(birthDay)) {
-      return context.action.alert({msg: '생년월일을 확인해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '생년월일을 확인해 주세요.'}))
     }
 
     if (calcAge(birthDay) < 20) {
-      return context.action.alert({msg: '법정대리인(보호자)은 20세 이상이어야만 동의 가능합니다.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '법정대리인(보호자)은 20세 이상이어야만 동의 가능합니다.'}))
     }
 
     if (phoneCorp.length === 0) {
-      return context.action.alert({msg: '통신사 정보를 확인해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '통신사 정보를 확인해 주세요.'}))
     }
 
     if (phoneNo.length === 0) {
-      return context.action.alert({msg: '휴대폰 번호를 입력해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '휴대폰 번호를 입력해 주세요.'}))
     }
 
     const phonePattern = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if (!phonePattern.test(phoneNo)) {
-      return context.action.alert({msg: '휴대폰 번호를 확인해 주세요.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '휴대폰 번호를 확인해 주세요.'}))
     }
 
     if (!term1) {
-      return context.action.alert({msg: '법정대리인(보호자)는 상세내용 확인에 대해 동의하셔야 환전 신청이 가능합니다.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '법정대리인(보호자)는 상세내용 확인에 대해 동의하셔야 환전 신청이 가능합니다.'}))
     }
 
     if (!term2) {
-      return context.action.alert({msg: '법정대리인(보호자)는 개인정보 수집 및 이용에 동의하셔야 환전 신청이 가능합니다.'})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: '법정대리인(보호자)는 개인정보 수집 및 이용에 동의하셔야 환전 신청이 가능합니다.'}))
     }
 
     authReq()
@@ -171,7 +171,7 @@ export default (props) => {
 
   const goBack = () => {
     // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-    context.action.updateWalletIdx(1)
+    dispatch(setGlobalCtxWalletIdx(1));
     window.history.back()
   }
 

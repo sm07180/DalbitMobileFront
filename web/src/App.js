@@ -6,8 +6,6 @@ import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
 import {ErrorBoundary} from 'react-error-boundary'
 import 'styles/errorstyle.scss'
 
-//context
-import {Context} from 'context'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
@@ -35,36 +33,56 @@ import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
 import {useHistory} from "react-router-dom";
 import {setBroadcastCtxRoomInfoReset} from "redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAdminChecker, setGlobalCtxAlarmMoveUrl,
+  setGlobalCtxAlarmStatus,
+  setGlobalCtxAuthRef, setGlobalCtxChatInfoInit, setGlobalCtxClipInfoAdd,
+  setGlobalCtxClipPlayerInfo, setGlobalCtxClipPlayerInit,
+  setGlobalCtxClipPlayerState,
+  setGlobalCtxClipState,
+  setGlobalCtxCustomHeader, setGlobalCtxIntervalId,
+  setGlobalCtxIsMailboxOn, setGlobalCtxMailChatInfoInit,
+  setGlobalCtxMediaPlayerStatus,
+  setGlobalCtxMessage,
+  setGlobalCtxMyInfo,
+  setGlobalCtxNativePlayer,
+  setGlobalCtxNoServiceInfo,
+  setGlobalCtxPlayer,
+  setGlobalCtxRoomType, setGlobalCtxRtcInfoInit,
+  setGlobalCtxSplash,
+  setGlobalCtxSplashData,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken,
+  setGlobalCtxUseMailbox
+} from "redux/actions/globalCtx";
 
-function setNativeClipInfo(isJsonString, globalCtx) {
+function setNativeClipInfo(isJsonString, dispatch) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
   if (nativeClipInfo) {
     if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
       const parsed = JSON.parse(nativeClipInfo)
-      globalCtx.action.updateClipState(true)
-      globalCtx.action.updateClipPlayerState(parsed.playerState)
-      globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
-      globalCtx.action.updatePlayer(true)
+      dispatch(setGlobalCtxClipState(true))
+      dispatch(setGlobalCtxClipPlayerState(parsed.playerState))
+      dispatch(setGlobalCtxClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname}))
+      dispatch(setGlobalCtxPlayer(true))
     }
   }
 }
 
-function setNativePlayInfo(isJsonString, globalCtx) {
+function setNativePlayInfo(isJsonString, dispatch) {
   const nativeInfo = Utility.getCookie('native-player-info')
   if (nativeInfo) {
     if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
       const parsed = JSON.parse(nativeInfo)
-      globalCtx.action.updatePlayer(true)
-      globalCtx.action.updateMediaPlayerStatus(true)
-      globalCtx.action.updateNativePlayer(parsed)
+      dispatch(setGlobalCtxPlayer(true));
+      dispatch(setGlobalCtxMediaPlayerStatus(true));
+      dispatch(setGlobalCtxNativePlayer(parsed));
     }
   }
 }
 
 
-const baseSetting = async (globalCtx, dispatch) => {
-  const globalAction = globalCtx.globalAction;
-  const globalState = globalCtx.globalState;
+const baseSetting = async (dispatch, globalState) => {
 
   const item = sessionStorage.getItem("clip");
   if (item !== null) {
@@ -73,7 +91,6 @@ const baseSetting = async (globalCtx, dispatch) => {
     if (newClipPlayer === null) {
       newClipPlayer = new ClipPlayerHandler(data)
     };
-    newClipPlayer.setGlobalAction?.(globalAction);
     const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
     const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
     if ( fileUrlBoolean && clipNoBoolean ) {
@@ -84,11 +101,8 @@ const baseSetting = async (globalCtx, dispatch) => {
     }
     newClipPlayer?.clipNoUpdate(data.clipNo);
 
-    globalAction.dispatchClipPlayer?.({ type: "init", data: newClipPlayer });
-    globalAction.dispatchClipInfo?.({
-      type: "add",
-      data: { ...data, ...{ isPaused: true } },
-    });
+    dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
+    dispatch(setGlobalCtxClipInfoAdd({...data, ...{isPaused: true}}));
   }
 
   const broadcastData = sessionStorage.getItem("broadcast_data");
@@ -115,7 +129,8 @@ const setServerDataJson = () =>{
 
 const App = () => {
   let serverDataJson = setServerDataJson();
-  const globalCtx = useContext(Context)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   App.context = () => context
   //본인인증
   const authRef = useRef()
@@ -125,7 +140,7 @@ const App = () => {
   const memberRdx = useSelector((state)=> state.member);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [ready, setReady] = useState(false)
-  const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
+  const AGE_LIMIT = globalState.noServiceInfo.limitAge
   const [isFooterPage, setIsFooterPage] = useState(false);
 
   const {
@@ -133,7 +148,7 @@ const App = () => {
     rtcInfo,
     mailChatInfo,
     alarmStatus,
-  } = globalCtx.globalState;
+  } = globalState;
 
   const isJsonString = (str) => {
     try {
@@ -227,32 +242,24 @@ const App = () => {
       locale: CHAT_CONFIG.locale.ko_KR,
       roomNo: null,
     };
-    if (
-        globalCtx.globalAction.dispatchChatInfo &&
-        globalCtx.globalAction.dispatchMailChatInfo
-    ) {
-      const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
-      chatInfo.setMemNo(memNo);
-      // chatInfo.setSplashData(globalState.splashData);
-      //deep copy chatInfo
-      let cloneMailInfo = Object.assign(
-          Object.create(Object.getPrototypeOf(chatInfo)),
-          chatInfo
-      );
+    const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
+    chatInfo.setMemNo(memNo);
+    // chatInfo.setSplashData(globalState.splashData);
+    //deep copy chatInfo
+    let cloneMailInfo = Object.assign(
+      Object.create(Object.getPrototypeOf(chatInfo)),
+      chatInfo
+    );
 
-      globalCtx.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
-      globalCtx.globalAction.dispatchMailChatInfo({
-        type: "init",
-        data: cloneMailInfo,
-      });
-    }
+    dispatch(setGlobalCtxChatInfoInit(chatInfo));
+    dispatch(setGlobalCtxMailChatInfoInit(cloneMailInfo));
   }
   async function fetchData(dispatch) {
     // Renew token
     let tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
-      globalCtx.action.updateCustomHeader(customHeader)
-      globalCtx.action.updateToken(tokenInfo.data)
+      dispatch(setGlobalCtxCustomHeader(customHeader));
+      dispatch(setGlobalCtxUpdateToken(tokenInfo.data))
       if (isHybrid()) {
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
@@ -273,7 +280,7 @@ const App = () => {
               const parsed = JSON.parse(customHeaderCookie)
               if (parsed['isFirst'] === 'Y') {
                 parsed['isFirst'] = 'N'
-                globalCtx.action.updateCustomHeader(parsed)
+                dispatch(setGlobalCtxCustomHeader(parsed))
               }
             }
           }
@@ -285,8 +292,8 @@ const App = () => {
 
           // ?webview=new 형태로 이루어진 player종료
         }
-        setNativePlayInfo(isJsonString, globalCtx);
-        setNativeClipInfo(isJsonString, globalCtx);
+        setNativePlayInfo(isJsonString, dispatch);
+        setNativeClipInfo(isJsonString, dispatch);
 
         const appIsFirst = Utility.getCookie('appIsFirst')
 
@@ -308,24 +315,24 @@ const App = () => {
           })
           if (myProfile.result === 'success') {
             const data = myProfile.data
-            globalCtx.action.updateProfile(data)
-            globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
+            dispatch(setGlobalCtxUpdateProfile(data))
+            dispatch(setGlobalCtxIsMailboxOn(data.isMailboxOn))
           } else {
-            globalCtx.action.updateProfile(false)
+            dispatch(setGlobalCtxUpdateProfile(false))
           }
         }
         const myInfoRes = async () => {
           const res = await Api.mypage()
           if (res.result === 'success') {
-            globalCtx.action.updateMyInfo(res.data)
+            dispatch(setGlobalCtxMyInfo(res.data))
           }
         }
         const fetchAdmin = async () => {
           const adminFunc = await Api.getAdmin()
           if (adminFunc.result === 'success') {
-            globalCtx.action.updateAdminChecker(true)
+            dispatch(setGlobalCtxAdminChecker(true))
           } else if (adminFunc.result === 'fail') {
-            globalCtx.action.updateAdminChecker(false)
+            dispatch(setGlobalCtxAdminChecker(false))
           }
         }
         dispatch(getMemberProfile({
@@ -336,13 +343,13 @@ const App = () => {
         myInfoRes()
         fetchAdmin()
       } else {
-        globalCtx.action.updateProfile(false)
-        globalCtx.action.updateMyInfo(false)
-        globalCtx.action.updateAdminChecker(false)
+        dispatch(setGlobalCtxUpdateProfile(false))
+        dispatch(setGlobalCtxMyInfo(false))
+        dispatch(setGlobalCtxAdminChecker(false))
       }
       if(isDesktop){
-        baseSetting(globalCtx, dispatch);
-        globalCtx.globalAction?.setAlarmStatus?.(false);
+        baseSetting(dispatch, globalState);
+        dispatch(setGlobalCtxAlarmStatus(false));
       }
       //모든 처리 완료
     } else {
@@ -369,13 +376,13 @@ const App = () => {
         }
       })
 
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         title: tokenInfo.messageKey,
         msg: tokenInfo.message,
         callback: () => {
           window.location.reload()
         }
-      })
+      }))
     }
   }
 
@@ -390,15 +397,15 @@ const App = () => {
           if (alarmCheckIntervalId) {
             clearInterval(alarmCheckIntervalId);
           }
-          globalCtx.globalAction.setAlarmStatus?.(true);
-          globalCtx.globalAction.setAlarmMoveUrl?.(data.moveUrl);
+          dispatch(setGlobalCtxAlarmStatus(true));
+          dispatch(setGlobalCtxAlarmMoveUrl(data.moveUrl));
         } else {
           if (alarmCheckIntervalId) {
             clearInterval(alarmCheckIntervalId);
           }
           alarmCheckIntervalId = setInterval(alarmCheck, 60000);
-          globalCtx.globalAction.setAlarmStatus?.(false);
-          globalCtx.globalAction.setAlarmMoveUrl?.("");
+          dispatch(setGlobalCtxAlarmStatus(false));
+          dispatch(setGlobalCtxAlarmMoveUrl(""));
         }
       }
     }
@@ -407,8 +414,8 @@ const App = () => {
       if (memberRdx.isLogin === true) {
         alarmCheck();
       } else {
-        globalCtx.globalAction.setAlarmStatus?.(false);
-        globalCtx.globalAction.setAlarmMoveUrl?.("");
+        dispatch(setGlobalCtxAlarmStatus(false));
+        dispatch(setGlobalCtxAlarmMoveUrl(""));
       }
     }
     return () => {};
@@ -417,8 +424,8 @@ const App = () => {
   useEffect(()=>{
     if(memberRdx.isLogin && memberRdx.data !== null){
       const data = memberRdx.data
-      globalCtx.action.updateProfile(data)
-      globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
+      dispatch(setGlobalCtxUpdateProfile(data))
+      dispatch(setGlobalCtxIsMailboxOn(data.isMailboxOn))
     }
   },[memberRdx])
 
@@ -437,11 +444,11 @@ const App = () => {
       const {data} = splashData
       const {roomType, useMailBox} = data
       if (roomType) {
-        globalCtx.action.updateRoomType(roomType)
+        dispatch(setGlobalCtxRoomType(roomType))
       }
-      globalCtx.action.updateSplash(data)
-      globalCtx.action.updateUseMailbox(useMailBox)
-      globalCtx.globalAction.setSplashData(data);
+      dispatch(setGlobalCtxSplash(data));
+      dispatch(setGlobalCtxUseMailbox(useMailBox));
+      dispatch(setGlobalCtxSplashData(data));
     } else {
       Api.error_log({
         data: {
@@ -457,23 +464,23 @@ const App = () => {
 
   const ageCheck = () => {
     const pathname = location.pathname
-    const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth)
+    const americanAge = Utility.birthToAmericanAge(globalState.profile.birth)
     const ageCheckFunc = () => {
       if (americanAge < AGE_LIMIT && !pathname.includes('/customer/inquire')) {
         // 1:1문의는 보임
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: 'y'})
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge, showPageYn: 'y'}))
       } else {
         let passed = false
-        if (americanAge >= globalCtx.noServiceInfo.limitAge) passed = true
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: 'n', passed})
+        if (americanAge >= globalState.noServiceInfo.limitAge) passed = true
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge, showPageYn: 'n', passed}))
       }
     }
 
-    if (globalCtx.profile.memJoinYn === 'o') {
+    if (globalState.profile.memJoinYn === 'o') {
       const auth = async () => {
         const authCheck = await Api.self_auth_check()
         if (authCheck.result === 'fail') {
-          globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: 'n', americanAge, passed: true})
+          dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, showPageYn: 'n', americanAge, passed: true}))
         } else {
           ageCheckFunc()
         }
@@ -509,10 +516,10 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
+    if (globalState.splash !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
       setReady(true)
     }
-  }, [globalCtx.splash, globalCtx.token, globalCtx.profile])
+  }, [globalState.splash, globalState.token, globalState.profile])
 
   useEffect(() => {
     fetchSplash()
@@ -547,7 +554,7 @@ const App = () => {
           const dispatchRtcInfo = getWowzaRtc(data);
           // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
           chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
-          globalCtx.globalAction.dispatchRtcInfo({ type: "init", data: dispatchRtcInfo });
+          dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
           sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
         }
         if(sessionAgoraRtc){
@@ -555,7 +562,7 @@ const App = () => {
           const dispatchRtcInfo = getArgoraRtc(data);
           chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
           dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
-            globalCtx.globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
             sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
           })
         }
@@ -567,18 +574,18 @@ const App = () => {
 
 
   useEffect(() => {
-    if (globalCtx.token) {
-      if (globalCtx.token.isLogin) {
-        if (globalCtx.noServiceInfo.passed){
+    if (globalState.token) {
+      if (globalState.token.isLogin) {
+        if (globalState.noServiceInfo.passed){
           return;
-        } else if(globalCtx.profile){
+        } else if(globalState.profile){
           ageCheck()
         }
-      } else if (!globalCtx.token.isLogin) {
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false})
+      } else if (!globalState.token.isLogin) {
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false}))
       }
     }
-  }, [globalCtx.profile, globalCtx.token, location.pathname])
+  }, [globalState.profile, globalState.token, location.pathname])
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -592,8 +599,8 @@ const App = () => {
       setCookieAuthToken(Utility.getCookie('authToken'))
     }, 1000)
 
-    globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
-    globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
+    dispatch(setGlobalCtxAuthRef(authRef))// 본인인증 ref
+    dispatch(setGlobalCtxIntervalId(id))//서버이동시 interval clear
 
   }, [])
 
@@ -654,14 +661,14 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (chatInfo !== null && globalCtx.globalState.splashData !== null) {
-      chatInfo.setSplashData(globalCtx.globalState.splashData);
+    if (chatInfo !== null && globalState.splashData !== null) {
+      chatInfo.setSplashData(globalState.splashData);
     }
-  }, [chatInfo, globalCtx.globalState.splashData]);
+  }, [chatInfo, globalState.splashData]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      {globalCtx.noServiceInfo.showPageYn === 'n' ? (
+      {globalState.noServiceInfo.showPageYn === 'n' ? (
         ready ? (
           <>
             <Interface />
@@ -671,7 +678,7 @@ const App = () => {
                 <Layout>
                   <Route />
                 </Layout>
-                {globalCtx.globalState.broadcastAdminLayer.status && globalCtx.globalState.baseData.isLogin && <AdminLayerPopup />}
+                {globalState.broadcastAdminLayer.status && globalState.baseData.isLogin && <AdminLayerPopup />}
               </>
             }
             { !isDesktop &&
@@ -690,7 +697,7 @@ const App = () => {
             </div>
           </>
         )
-      ) : globalCtx.noServiceInfo.showPageYn === 'y' ? (
+      ) : globalState.noServiceInfo.showPageYn === 'y' ? (
         <>
           <NoService />
           <Interface />

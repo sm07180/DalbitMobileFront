@@ -8,10 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-export const StoreLink = async () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+export const StoreLink = async ({history, dispatch, globalState}) => {
 
   if (!globalState.token.isLogin) {
     history.push('/login')

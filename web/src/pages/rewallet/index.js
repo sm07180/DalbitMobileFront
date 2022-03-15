@@ -12,14 +12,22 @@ import Exchange from './contents/exchange/Exchange'
 // css
 import './style.scss'
 import {useHistory, useLocation} from "react-router-dom";
-import {Context} from "context";
 import {isIos} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxMessage,
+  setGlobalCtxWalletAddData,
+  setGlobalCtxWalletAddHistory,
+  setGlobalCtxWalletInitData
+} from "redux/actions/globalCtx";
 
 const WalletPage = (props) => {
   const history = useHistory();
   const location = useLocation();
-  const context = useContext(Context);
-  const {walletData, token} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {walletData, token} = globalState;
   const tabMenuRef = useRef(null);  //우편번호 팝업 위치 설정용...
   //아이폰 앱에서 달교환 버튼 클릭시 새창 띄움
   const isIOS = useMemo(() => {
@@ -51,7 +59,7 @@ const WalletPage = (props) => {
   let pagePerCnt = 20;
 
   //달, 별 내역 조회하기
-  //상세조건 옵션리스트, 지갑 내역 리스트 조회 
+  //상세조건 옵션리스트, 지갑 내역 리스트 조회
   const getWalletHistory = (pageNo, code) => {
     //환전하기 return;
     if(walletType === walletTabMenu[2]) return;
@@ -80,7 +88,7 @@ const WalletPage = (props) => {
             popHistoryCnt += v?.cnt;
           })
 
-          context.globalAction.dispatchWalletData({
+          dispatch(setGlobalCtxWalletAddData({
             type: 'ADD_DATA',
             data: {
               ...byeolAndDal,
@@ -88,17 +96,17 @@ const WalletPage = (props) => {
               popHistory: popRes.data?.list,
               popHistoryCnt
             }
-          });
+          }));
           setIsLoading(false);
         } else if (listRes.message === "사용내역이 없습니다.") {
-          context.globalAction.dispatchWalletData({
+          dispatch(setGlobalCtxWalletAddHistory({
             type: 'ADD_HISTORY',
             data: {
               listHistory: [],
               popHistory: popRes.data?.list,
               popHistoryCnt: 0
             }
-          });
+          }));
         }
 
       });
@@ -119,7 +127,7 @@ const WalletPage = (props) => {
 
   //tab 이동
   const setTabType = (walletType) => {
-    context.globalAction.dispatchWalletData({type:'ADD_DATA', data: {walletType}})
+    dispatch(setGlobalCtxWalletAddData({walletType}));
   }
 
   useEffect(() => {
@@ -150,7 +158,7 @@ const WalletPage = (props) => {
     }
 
     return () => {
-      context.globalAction.dispatchWalletData({type:'INIT'});
+      dispatch(setGlobalCtxWalletInitData());
     };
   },[]);
 
@@ -162,21 +170,21 @@ const WalletPage = (props) => {
       })
       if (result === 'success') {
         getWalletHistory(1, walletType === walletTabMenu[0] ? 1 : 0);
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           title: '환전 취소가 완료되었습니다.',
           msg: message
-        });
+        }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: message,
-        })
+        }))
       }
     }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: '환전신청을 취소 하시겠습니까?',
       callback
-    });
+    }));
   }
 
   // 스토어로 이동

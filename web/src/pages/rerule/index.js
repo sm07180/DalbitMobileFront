@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
@@ -11,13 +10,15 @@ import Terms from './contents/terms/Terms'
 import Secession from './contents/secession/Secession'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const Rule = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
   const params = useParams();
 
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
+  const {token, profile} = globalState
   const category = params.category;
 
 

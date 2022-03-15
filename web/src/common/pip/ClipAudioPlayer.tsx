@@ -1,10 +1,9 @@
 // others
-import React, {useContext, useEffect,} from "react";
+import React, {useEffect,} from "react";
 import {useHistory} from "react-router-dom";
 
 import Lottie from 'react-lottie'
 // static
-import {GlobalContext} from "context";
 
 import {clipPlayConfirm,} from "common/api";
 import CloseBtn from "../images/ic_player_close_btn.svg";
@@ -13,18 +12,21 @@ import PauseIcon from "../static/ic_pause.svg";
 import PlayIcon from "../static/ic_play.svg";
 import {audioEndHandler} from "../../pages/clip_player/components/player_box";
 
-import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle"
+import {thumbInlineStyle} from "./PlayerStyle"
 
 import equalizerClipAni from "./ani/equalizer_clip.json";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxIsShowPlayer} from "../../redux/actions/globalCtx";
 
 const ClipAudioPlayer = ()=>{
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipPlayer, clipPlayList, clipInfo, baseData, userProfile } = globalState;
 
   useEffect(() => {
     if (baseData.isLogin) {
-      globalAction.setIsShowPlayer(true);
+      dispatch(setGlobalCtxIsShowPlayer(true));
     }
   },[baseData]);
 
@@ -122,7 +124,7 @@ const ClipAudioPlayer = ()=>{
             <img onClick={playIconClick} src={clipInfo!.isPaused ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
             <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
           </div>
-          
+
         </div>
       </div>
     )

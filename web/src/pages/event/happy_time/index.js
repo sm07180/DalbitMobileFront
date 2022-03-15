@@ -8,12 +8,12 @@ import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header.js'
 
 import {StoreLink} from 'context/link'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
   const dispatch = useDispatch();
-
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
   const [eventData, setEventData] = useState('')
   const [osCheck, setOsCheck] = useState(-1)
@@ -52,7 +52,7 @@ export default () => {
 
   const eventBtn = () => {
     if (osCheck === OS_TYPE['IOS']) {
-      StoreLink()
+      StoreLink({history,dispatch,globalState})
     } else if (eventData.rate === 5 || eventData.rate === 3) {
       history.push(`/store`)
     }

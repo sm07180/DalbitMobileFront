@@ -1,9 +1,9 @@
 import React, {useContext} from "react"
-import {GlobalContext} from "context";
 import BroadCastPlayer from "./BroadCastPlayer";
 import ClipAudioPlayer from "./ClipAudioPlayer";
 import qs from 'query-string'
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 /**
  * index - 클립, 방송 라우팅
@@ -15,7 +15,8 @@ import {useHistory} from "react-router-dom";
  */
 const PipPlayer = () => {
   const history = useHistory();
-  const {globalState} = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const {clipPlayer, clipInfo, rtcInfo} = globalState;
 

@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -17,11 +16,11 @@ import API from "context/api";
 
 
 const NoticePage = () => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const noticeTabmenu = ['알림','공지사항'];
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
-  const context = useContext(Context)
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
 
@@ -35,13 +34,13 @@ const NoticePage = () => {
 
   useEffect(() => {
     if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
+      fetchMypageNewCntData(globalState.profile.memNo);
     }
   }, [alarmData.newCnt]);
 
   // 로그인 토큰값 확인
   useEffect(() => {
-    if(!(context.token.isLogin)) {
+    if(!(globalState.token.isLogin)) {
       history.push("/login")
     }
   }, []);

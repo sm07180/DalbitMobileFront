@@ -9,16 +9,19 @@ import {useHistory} from "react-router-dom";
 import _ from 'lodash';
 import Utility from "components/lib/utility";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
 import Api from "common/api";
 import API from "context/api";
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import TabButton from "components/ui/tabBtn/TabButton";
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 
 const MyClipUpload = (props) => {
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const uploadTab = ['마이 클립', '청취 회원', '좋아요 회원', '선물한 회원'];
   const [myClipInfo, setMyClipInfo] = useState({total: 0, totalPage: 1, list: []});
@@ -34,7 +37,7 @@ const MyClipUpload = (props) => {
     if (searchInfo.myClipType === 0) {
       if (!clipNo) return;
       const playListInfoData = {
-        memNo: context.globalState.baseData.memNo,
+        memNo: globalState.baseData.memNo,
         page: 1,
         records: 100
       }
@@ -43,7 +46,7 @@ const MyClipUpload = (props) => {
         "clipPlayListInfo",
         JSON.stringify(playListInfoData)
       );
-      const clipParam = {clipNo: clipNo, gtx: context, history};
+      const clipParam = {clipNo: clipNo, globalState, dispatch, history};
       NewClipPlayerJoin(clipParam);
     } else {
       if (!memNo) return;
@@ -74,7 +77,7 @@ const MyClipUpload = (props) => {
         }
       } else {
         setMyClipInfo({total: 0, totalPage: 1, list: []});
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -170,7 +173,7 @@ const MyClipUpload = (props) => {
         setMyClipInfo({...myClipInfo, list: tempList});
         setMorePop(-1);
 
-        context.action.alert({msg: `클립을 ${tempList[target].openType ? '공개' : '비공개'}하였습니다.`});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: `클립을 ${tempList[target].openType ? '공개' : '비공개'}하였습니다.`}));
       }
     })
   };

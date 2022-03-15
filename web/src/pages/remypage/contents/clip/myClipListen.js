@@ -8,12 +8,13 @@ import {useHistory} from "react-router-dom";
 import Api from "context/api";
 import clip from "pages/clip/static/clip.svg";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 //import 'tabBtn.scss';
 
 const MyClipListen =()=>{
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const listenTab = ['최근','좋아요','선물'];
   const [ slctType, setSlctType ] = useState(0)
@@ -21,9 +22,9 @@ const MyClipListen =()=>{
 
   // 클립 리스트 가져오기
   const getClipList = () => {
-    if (context.token.memNo === undefined) return;
+    if (globalState.token.memNo === undefined) return;
 
-    Api.getHistoryList({ memNo: context.token.memNo, slctType: slctType, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: globalState.token.memNo, slctType: slctType, page: 1, records: 100, }).then(res => {
       if ( res.code === 'C001' && res.data.paging.total > 0 ) {
         setListInfo(res.data);
       } else {
@@ -48,7 +49,7 @@ const MyClipListen =()=>{
     const { clipNo } = e.currentTarget.dataset;
 
     if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, gtx: context, history };
+      const clipParam = { clipNo: clipNo, globalState, dispatch, history };
 
       NewClipPlayerJoin(clipParam);
     }

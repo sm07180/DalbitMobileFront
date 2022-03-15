@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext, useMemo, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
@@ -9,21 +8,23 @@ import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 import Api from "context/api";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // components
 
 const MyAccount = (props) => {
   const {repplySubmit, accountList, setAccountList, getMyAccountData, recent_exchangeIndex} = props;
 
   const history = useHistory();
-  //context
-  const context = useContext(Context);
-  const {profile, splash} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile, splash} = globalState;
 
   const [slideData, setSlideData] = useState({});
   const [listShow, setListShow] = useState(false);
   const [modifySlidePop, setModifySlidePop] = useState(true);
 
-  const dispatch = useDispatch();
+
   const popup = useSelector(state => state.popup);
 
   const formInit = {
@@ -62,7 +63,7 @@ const MyAccount = (props) => {
   const onClickModifyAcount = (exchangeForm) => {
     dispatch(setSlidePopupOpen());
     setSlideData(exchangeForm);
-    setExchangeForm(exchangeForm);    //계좌목록중에서 선택한 값 세팅  
+    setExchangeForm(exchangeForm);    //계좌목록중에서 선택한 값 세팅
     prevState.current = exchangeForm; //이전 state 유지용
     setModifySlidePop(true);  //등록
   }
@@ -105,13 +106,13 @@ const MyAccount = (props) => {
     setExchangeForm(formInit);
     if (result === 'success') {
       getMyAccountData();
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: message
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: message,
-      })
+      }))
     }
   }
 
@@ -129,18 +130,18 @@ const MyAccount = (props) => {
     closePop();
     if (result === 'success') {
       getMyAccountData();
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: message
-      });
+      }));
     } else {
       if(messageKey === "exchange.my.account.number.delete.impossible"){
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: '환전신청 또는 승인 정보로\n삭제가 불가합니다.'
-        });
+        }));
       }else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: message
-        });
+        }));
       }
     }
   }
@@ -158,24 +159,24 @@ const MyAccount = (props) => {
       }
     });
     const {result, data, message, messageKey} = res;
-    
+
     //팝업 닫기
     closePop();
     setExchangeForm(formInit);
     if (result === 'success') {
       getMyAccountData();
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: message
-      });
+      }));
     } else {
       if(messageKey === "exchange.my.account.number.delete.impossible"){
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: '환전신청 또는 승인 정보로\n삭제가 불가합니다.'
-        });
+        }));
       }else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: message
-        });
+        }));
       }
     }
   }

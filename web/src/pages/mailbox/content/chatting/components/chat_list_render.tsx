@@ -1,32 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
-import { dateFormatterKorDay, makeHourMinute } from "lib/common_fn";
+import React from "react";
+import {dateFormatterKorDay, makeHourMinute} from "lib/common_fn";
+import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxImgSliderInit, setMailBoxOtherInfo} from "../../../../../redux/actions/mailBox";
 
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
-import { useHistory, useParams } from "react-router-dom";
 function timeCheck(time: Date) {
   return time.getMinutes() + "분" + time.getSeconds() + "초" + time.getMilliseconds() + "밀리초";
 }
 
 function ChatList({ msgGroup }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { baseData } = globalState;
 
-  const { mailboxState, mailboxAction } = useContext(MailboxContext);
+  // const { mailboxState, mailboxAction } = useContext(MailboxContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { deletedImgArray } = mailboxState.imgSliderInfo;
 
   const giftAction = (itemInfo, nickNm, imageInfo, myChat) => {
     if (myChat) {
-      mailboxAction.setOtherInfo!({
+      dispatch(setMailBoxOtherInfo({
         nick: globalState.userProfile!.nickNm,
         profImg: globalState.userProfile!.profImg.thumb292x292,
-      });
+      }));
     } else {
-      mailboxAction.setOtherInfo!({ nick: nickNm, profImg: imageInfo });
+      dispatch(setMailBoxOtherInfo({ nick: nickNm, profImg: imageInfo }));
     }
-
-    mailboxAction.setGiftItemInfo!(itemInfo);
+    dispatch(setMailBoxOtherInfo(itemInfo));
   };
 
   const createMsgByChatType = (msgItem: any, isRead: boolean) => {
@@ -60,14 +61,10 @@ function ChatList({ msgGroup }) {
               <p
                 className={`textBox__msg textBox__msg--img`}
                 onClick={() => {
-                  mailboxAction.dispathImgSliderInfo &&
-                    mailboxAction.dispathImgSliderInfo({
-                      type: "init",
-                      data: {
-                        memNo: memNo,
-                        idx: msgIdx,
-                      },
-                    });
+                  dispatch(setMailBoxImgSliderInit({
+                    memNo: memNo,
+                    idx: msgIdx,
+                  }));
                 }}
               >
                 <span className="imgBox">

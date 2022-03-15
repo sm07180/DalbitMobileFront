@@ -1,8 +1,6 @@
 import React, {useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
-//context
-import {Context} from 'context'
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
@@ -10,6 +8,8 @@ import Utility from 'components/lib/utility'
 import NoResult from 'components/ui/noResult/NoResult'
 import './comment.scss'
 import moment from 'moment'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const EventComment = (props) => {
   const {commentList,
@@ -24,9 +24,10 @@ const EventComment = (props) => {
     noResultMsg,
     maxLength,
     contTitle
-  } = props
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  } = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
   const history = useHistory()
   const contRef = useRef()
   const lengthRef = useRef()
@@ -55,7 +56,7 @@ const EventComment = (props) => {
     lengthRef.current.innerText = e.currentTarget.value.length
 
     if (value.length >= maxLength) {
-      globalCtx.action.toast({msg: `최대 ${maxLength}자 이내 입력 가능합니다.`})
+      dispatch(setGlobalCtxMessage({type: "toast",msg: `최대 ${maxLength}자 이내 입력 가능합니다.`}))
       return
     }
   }
@@ -83,7 +84,7 @@ const EventComment = (props) => {
       contRef.current.value = ''
       lengthRef.current.innerText = contRef.current.value.length
     } else {
-      globalCtx.action.toast({msg: `${contTitle}을 입력해주세요.`})
+      dispatch(setGlobalCtxMessage({type: "toast",msg: `${contTitle}을 입력해주세요.`}))
     }
   }
 
@@ -92,13 +93,13 @@ const EventComment = (props) => {
     const {targetNum} = e.currentTarget.dataset
 
     if (targetNum !== undefined) {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({type: "confirm",
         callback: () => {
           setMoreState(-1)
           commentDel(targetNum)
         },
         msg: `해당 ${contTitle}을 삭제하시겠습니까?\n`
-      })
+      }))
     }
   }
 
@@ -107,13 +108,13 @@ const EventComment = (props) => {
     const {targetNum} = e.currentTarget.dataset
 
     if (targetNum !== undefined) {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({type: "confirm",
         callback: () => {
           setMoreState(-1)
           commentRpt(targetNum)
         },
         msg: `해당 ${contTitle}을 신고하시겠습니까?\n`
-      })
+      }))
     }
   }
 
@@ -147,7 +148,7 @@ const EventComment = (props) => {
 
   return (
     <div className="commentEventWrap">
-      {globalCtx.token.isLogin && (
+      {globalState.token.isLogin && (
         <div className="addInputBox">
           <div className="textareaWrap">
             <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={maxLength} />
@@ -166,7 +167,7 @@ const EventComment = (props) => {
           <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_event_refresh.png`} alt="새로고침" />
           </button>
-          {globalCtx.token.isLogin && <button className="myCommentBtn" onClick={()=>setMyCommentView(!myCommentView)}>{myCommentView ? "전체 댓글 보기" : "내 댓글 보기"}</button>}
+          {globalState.token.isLogin && <button className="myCommentBtn" onClick={()=>setMyCommentView(!myCommentView)}>{myCommentView ? "전체 댓글 보기" : "내 댓글 보기"}</button>}
         </div>
         {commentList.length > 0 ? (
           <>

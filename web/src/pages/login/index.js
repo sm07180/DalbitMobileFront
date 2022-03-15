@@ -1,19 +1,20 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {Context} from "context";
-import {isMobileWeb} from "../../context/hybrid";
 // global components
 // components
 // contents
 // css
 import './style.scss'
 import Start from "pages/login/contents/start";
+import {useDispatch, useSelector} from "react-redux";
 
 const LoginPage = () => {
   const history = useHistory()
   const location = useLocation();
-  const context = useContext(Context)
-  const {token} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token} = globalState
 
   const loginStart = () => {
     if (!token.isLogin) {

@@ -1,17 +1,21 @@
-import React, {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {useHistory} from "react-router-dom";
 //api
 import {getProfile, postChatImage} from "common/api";
 // context
-import {GlobalContext} from "context";
 import DalbitCropper from "common/ui/dalbit_cropper";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../../redux/actions/globalCtx";
 
 export default function chatInput(props) {
   const { setChatText, sendMessage, chatText, setGiftPop, targetIsMailboxOn } = props;
   const history = useHistory();
-  // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { chatInfo, isMailboxOn } = globalState;
   const textareaRef = useRef<any>(null);
@@ -51,10 +55,10 @@ export default function chatInput(props) {
   );
 
   const chatNoUseToast = () => {
-    globalAction.callSetToastStatus!({
+    dispatch(setGlobalCtxSetToastStatus({
       status: true,
       message: "메시지 기능을 사용하지 않는 상태이므로 사용할 수 없습니다.",
-    });
+    }));
   };
   const openGiftPop = () => {
     if (!chatDisable) return chatNoUseToast();
@@ -66,16 +70,16 @@ export default function chatInput(props) {
       memNo: globalState.baseData.memNo,
     });
     if (result === "success") {
-      globalAction.setUserProfile!(data);
+      dispatch(setGlobalCtxUserProfile(data));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {
           history.push(`/`);
         },
-      });
+      }));
     }
   }
   //----------------------
@@ -86,15 +90,14 @@ export default function chatInput(props) {
   useEffect(() => {
     if (image !== null) {
       if (image.status === false) {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: image.content,
-            callback: () => {
-              return;
-            },
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          type: "alert",
+          content: image.content,
+          callback: () => {
+            return;
+          },
+        }));
       } else {
         const imageUpload = async () => {
           const { result, data, message } = await postChatImage({
@@ -106,12 +109,11 @@ export default function chatInput(props) {
             (document.getElementById("fileUpload") as HTMLInputElement).value = "";
             setImage(null);
           } else {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                content: message,
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: message,
+            }));
           }
         };
         imageUpload();

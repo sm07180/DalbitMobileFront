@@ -1,16 +1,18 @@
-import React, {useContext, useEffect} from "react";
+import React, {useEffect} from "react";
 import Layout from "common/layout";
 import Header from "components/ui/header/Header";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import {authReq} from 'pages/self_auth'
-import { setCookie } from "common/utility/cookie";
-import {Context} from 'context'
+import {setCookie} from "common/utility/cookie";
 import "./style.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "../../../redux/actions/globalCtx";
 
 export default (props) => {
   const {memNo} = props;
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   //본인인증 완료 후
   function updateDispatch(event) {
@@ -21,23 +23,23 @@ export default (props) => {
         isLogin: true,
         memNo: memNo,
       };
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: "본인인증 완료되었습니다.",
         callback: () => {
           setCookie("authToken", baseData.authToken, 3);
           history.replace('/');
         },
-      });
+      }));
     } else {
-      context.action.alert!({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: event.detail.message,
-      });
+      }));
     }
   }
 
   useEffect(() => {
     console.log(memNo);
-    console.log(context.profile)
+    console.log(globalState.profile)
     //새로고침했을경우
     if (memNo.slice(0, 1) === "8") {
       history.goBack();
@@ -88,7 +90,7 @@ export default (props) => {
           <button
             className="button"
             onClick={() => {
-              authReq('7', context.authRef, context);
+              authReq('7', globalState.authRef, dispatch);
             }}
           >
             본인인증 후 휴면 해제하기

@@ -1,14 +1,17 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
-import { GlobalContext } from "context";
 import { getPlayList, getClipType } from "common/api";
 import PlayListEdit from "./play_list_edit";
 import { useHistory } from "react-router-dom";
 import Header from "../../../components/ui/header/Header";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxClipPlayListTabAdd} from "../../../redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
 
   const { clipInfo, clipPlayListTab } = globalState;
 
@@ -21,10 +24,10 @@ export default () => {
     if (result === "success") {
       setClipType(data);
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `${message}`,
-      });
+      }))
     }
   };
 
@@ -98,7 +101,7 @@ export default () => {
       const { type } = JSON.parse(sessionStorage.getItem("clipPlayListInfo")!);
       const oneData = JSON.parse(sessionStorage.getItem("clip")!);
       if (type === "one") {
-        globalAction.dispatchClipPlayListTab && globalAction.dispatchClipPlayListTab({ type: "add", data: oneData });
+        dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
       }
     }
     fetchDataClipType();

@@ -8,7 +8,7 @@ import speacialOn from './static/ic_success.svg'
 import speacialOff from './static/ic_unsuccess.svg'
 import './specialdj.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default () => {
   const dispatch = useDispatch();

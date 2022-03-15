@@ -2183,7 +2183,7 @@ export class ChatSocketHandler {
               this.addMsgElement(msgElem);
               if (this.msgListWrapRef !== null) {
                 const msgListWrapElem = this.msgListWrapRef.current;
-                if(msgListWrapElem.children.length >= 1000){
+                if(msgListWrapElem && msgListWrapElem.children && msgListWrapElem.children.length >= 1000){
                   msgListWrapElem.children[0].remove();
                 }
               }

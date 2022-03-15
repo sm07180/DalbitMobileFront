@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Lottie from "lottie-web";
-import {Context} from 'context';
 import moment from "moment";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 let intervalId = 0;
 
@@ -23,8 +23,10 @@ let aniStatus = {
 };
 
 const DallagersTopSection = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
-  const {globalState} = useContext(Context);
   const {chatInfo} = globalState;
   const lottieRef = useRef(null);
   const feverLottieRef = useRef(null);
@@ -181,7 +183,7 @@ const DallagersTopSection = (props) => {
   useEffect(() => {
     if(feverPlaying.playing){
       aniStatus.feverTimePlaying = true;
-      
+
       if(feverLottieController.current) // 피버타임 로티 재생
         feverLottieController.current.goToAndPlay(1, true);
 

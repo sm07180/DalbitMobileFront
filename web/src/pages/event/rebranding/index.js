@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} from 'react'
-import {Context} from 'context'
 import {setIsRefresh, setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -22,6 +21,7 @@ import Round_2 from './contents/Round_2'
 import Round_3 from './contents/Round_3'
 
 import './style.scss'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const tabmenu = [1,2,3]
 
@@ -42,8 +42,8 @@ const Rebranding = () => {
   const dispatch = useDispatch()
   const common = useSelector(state => state.common);
   const popup = useSelector(state => state.popup);
-  const context = useContext(Context)
-  const {token} = context
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
 
   const [reloadInit, setReloadInit] = useState(false)
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true)
@@ -58,7 +58,7 @@ const Rebranding = () => {
   const [noticePop2, setNoticePop2] = useState(false)
   const [giveawayPop, setGiveawayPop] = useState(false)
   const [actionAni, setActionAni] = useState(false)
-  
+
   const [eventInfo, setEventInfo] = useState({
     cnt: 0,
     end_date: "",
@@ -85,7 +85,7 @@ const Rebranding = () => {
       {data: 'l', value: myPieceInfo.ins_l_cnt - lCnt},
     ]);
   },[myPieceInfo, stoneValue1, stoneValue2])
-  
+
   // API 조회
   /* 이벤트 회차 정보 */
   const fetchEventInfo = () => {
@@ -293,9 +293,9 @@ const Rebranding = () => {
   }
 
   const disabledAction = () => {
-    context.action.toast({
+    dispatch(setGlobalCtxMessage({type: "toast",
       msg: `먼저 사용할 스톤을 넣어주세요.`
-    })
+    }))
   }
 
   // 모바일 뒤로가기 이벤트
@@ -318,7 +318,7 @@ const Rebranding = () => {
     if (window.scrollY >= tabMenuTop) {
       setTabFixed(true)
     } else {
-      setTabFixed(false)      
+      setTabFixed(false)
     }
   }
 
@@ -327,7 +327,7 @@ const Rebranding = () => {
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
   },[])
-  
+
   useEffect(() => {
     if (actionAni === false) {
       fetchMyRankInfo(tabmenuType)
@@ -336,7 +336,7 @@ const Rebranding = () => {
     console.log(actionAni);
   },[actionAni])
 
-  
+
   useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
@@ -353,7 +353,7 @@ const Rebranding = () => {
       }
     }
   },[eventInfo.seq_no,tabmenuType])
-  
+
   return (
     <>
     <div className="refresh-wrap"
@@ -399,7 +399,7 @@ const Rebranding = () => {
         <div className="stoneWrap">
           <button data-target-value="1" onClick={stoneValue1.on !== true ? clickSelect : null}>
             <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 1" />
-            {stoneValue1.value !== '' && 
+            {stoneValue1.value !== '' &&
               <>
                 <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue1.value}.png`} className="stoneImg" />
                 <div className="close" onClick={stoneClose}>닫기</div>
@@ -462,18 +462,18 @@ const Rebranding = () => {
         <div className='giveawayBtn' onClick={giveawayPopView}>경품안내</div>
       </section>
       {popup.confirmPopup &&
-        <Confirm 
-          setActionAni={setActionAni} 
-          stoneValue1={stoneValue1} 
-          setStoneValue1={setStoneValue1} 
-          stoneValue2={stoneValue2} 
-          setStoneValue2={setStoneValue2} 
+        <Confirm
+          setActionAni={setActionAni}
+          stoneValue1={stoneValue1}
+          setStoneValue1={setStoneValue1}
+          stoneValue2={stoneValue2}
+          setStoneValue2={setStoneValue2}
           fetchStoneChange={fetchStoneChange} />
       }
       {actionAni &&
         <MergePop result={mergeResult} />
       }
-      {giveawayPop && 
+      {giveawayPop &&
         <LayerPopup title="경품안내" setPopup={setGiveawayPop}>
           <section className="giveawayInfo">
             <ul className='depth1'>
@@ -511,7 +511,7 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {noticePop1 && 
+      {noticePop1 &&
         <LayerPopup title="놀다 보면 생기는 스톤들" setPopup={setNoticePop1}>
           <section className="dallagers">
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-1.png`} />방송 하기 & 듣기 20분당 1개</div>
@@ -528,7 +528,7 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {noticePop2 && 
+      {noticePop2 &&
         <LayerPopup title="FEVER TIME!" setPopup={setNoticePop2}>
           <section className="dallagers">
             <div className="pointText">· 한 방에서 DJ에게</div>
@@ -556,9 +556,9 @@ const Rebranding = () => {
             {stone.map((v,idx) => {
               const stonCount = v.value;
               return (
-                <div 
-                  className={`label ${stonCount === 0 ? 'disabled' : ''}`} 
-                  data-choice-stone={v.data} 
+                <div
+                  className={`label ${stonCount === 0 ? 'disabled' : ''}`}
+                  data-choice-stone={v.data}
                   onClick={(e) => { choicePiece(e,stonCount) }}
                   key={idx}>
                   <img src={`${IMG_SERVER}/event/rebranding/ico-${v.data}.png`} alt={v.data} />

@@ -7,12 +7,13 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // css
 import '../scss/swiperList.scss'
 import {RoomValidateFromClip} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const HotLiveList = (props) => {
-  const {data, type, nickNmKey} = props
-  const context = useContext(Context); //context
+  const {data, type, nickNmKey} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
   const swiperParams = {
@@ -25,7 +26,7 @@ const HotLiveList = (props) => {
     const { roomNo, bjNickNm } = e.currentTarget.dataset;
 
     if (roomNo !== undefined && bjNickNm !== undefined && bjNickNm !== '') {
-      RoomValidateFromClip(roomNo, context, history, bjNickNm)
+      RoomValidateFromClip(roomNo, dispatch, globalState, history, bjNickNm)
     }
   };
 

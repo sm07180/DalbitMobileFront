@@ -1,12 +1,9 @@
-import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 import {useHistory, useParams} from 'react-router-dom'
 import qs from 'query-string'
-//context
-import {Context} from 'context'
 import {Hybrid, isHybrid} from 'context/hybrid'
 //layout
-import Layout2 from 'pages/common/layout2.5';
 import Header from 'components/ui/header/Header';
 import BoardList from '../../pages/mypage/content/board_list';
 import WriteBoard from '../../pages/mypage/content/board_write';
@@ -14,9 +11,13 @@ import NoResult from "components/ui/noResult/NoResult";
 
 //scss
 import '../mypage/index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBackState, setGlobalCtxPlayer} from "redux/actions/globalCtx";
 
 const ClipReply = (props) => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview} = qs.parse(location.search);
   const history = useHistory();
 
@@ -66,8 +67,8 @@ const ClipReply = (props) => {
   }, []);
 
   useEffect(() => {
-    globalCtx.action.updateSetBack(null)
-    globalCtx.action.updatePlayer(false)
+    dispatch(setGlobalCtxBackState(null))
+    dispatch(setGlobalCtxPlayer(false));
     return () => {}
   }, []);
 

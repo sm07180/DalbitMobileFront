@@ -5,19 +5,19 @@ import {useHistory, useParams} from 'react-router-dom'
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 import Toast from 'components/ui/toast/Toast'
-// components
-import Tabmenu from '../../components/tabmenu'
-import SwitchList from '../../components/switchList'
 
 import './push.scss'
 import API from "context/api";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let first = true;
 const SettingPush = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let isSelect = false;
   const [myAlimType, setMyAlimType] = useState(-1); //무음, 소리, 진동
-  const context = useContext(Context);
   const [toast, setToast] = useState({state : false, msg : ""});
   //푸쉬 알림 설정 리스트
   const [alarmArray, setAlarmArray] = useState([
@@ -51,7 +51,7 @@ const SettingPush = () => {
       }))
       setMyAlimType(res.data.alimType);
     } else {
-      context.action.alert({msg: res.message});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
     }
   }
 

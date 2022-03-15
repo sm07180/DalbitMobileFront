@@ -14,7 +14,6 @@ import InOutMessage from 'pages/resetting/contents/broadcast/inOutMessage'
 
 import './broadcast.scss'
 import API from "context/api";
-import {Context} from "context";
 import Toast from "components/ui/toast/Toast";
 
 const SettingBroadcast = () => {

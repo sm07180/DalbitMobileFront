@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 import Api from 'context/api'
@@ -15,12 +14,12 @@ import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileDetail = (props) => {
-  const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const history = useHistory();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token, profile} = globalState
   const {memNo, type, index} = useParams();
   //memNo :글이 작성되있는 프로필 주인의 memNo
 
@@ -67,7 +66,7 @@ const ProfileDetail = (props) => {
 
   //내가 작성한 글 여부
   const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === (type === 'feed' ? item?.mem_no : item?.writer_mem_no)?.toString();
-  const adminChecker = context?.adminChecker;
+  const adminChecker = globalState.adminChecker;
 
   /* 프로필 사진 확대 */
   const openShowSlide = (data, isList = "y", keyName='profImg') => {
@@ -99,7 +98,7 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           setItem(data);
         } else {
-          context.action.toast({msg: message});
+          dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
           history.goBack();
         }
       })
@@ -205,10 +204,10 @@ const ProfileDetail = (props) => {
         }
       }
     }
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: '정말 삭제 하시겠습니까?',
       callback
-    });
+    }));
   };
 
   const validChecker = () => {
@@ -225,7 +224,7 @@ const ProfileDetail = (props) => {
     }
 
     if(!confirm)
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
 
     return confirm;
   };
@@ -241,7 +240,7 @@ const ProfileDetail = (props) => {
         contents: text
       });
 
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
       if (result === 'success') {
         setText('');
         if (replyRef.current) {
@@ -259,7 +258,7 @@ const ProfileDetail = (props) => {
         contents: text
       }});
 
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
       if (result === 'success') {
         setText('');
         if (replyRef.current) {
@@ -294,14 +293,14 @@ const ProfileDetail = (props) => {
       );
 
       if (result === 'success') {
-        context.action.toast({msg: '댓글이 수정되었습니다.'})
+        dispatch(setGlobalCtxMessage({type: "toast",msg: '댓글이 수정되었습니다.'}))
 
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       } else {
-        context.action.alert({msg: message});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: message}));
       }
 
     } else if (type === 'fanBoard') {
@@ -312,14 +311,14 @@ const ProfileDetail = (props) => {
       }});
 
       if(result ==='success'){
-        context.action.toast({msg: '댓글이 수정되었습니다.'})
+        dispatch(setGlobalCtxMessage({type: "toast",msg: '댓글이 수정되었습니다.'}))
 
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       }else{
-        context.action.alert({msg: message});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: message}));
       }
 
     }
@@ -347,10 +346,10 @@ const ProfileDetail = (props) => {
       }
     };
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: '정말 삭제 하시겠습니까?',
       callback: () => callback(replyIdx)
-    });
+    }));
   };
 
   /* 차단/신고 팝업 열기 */

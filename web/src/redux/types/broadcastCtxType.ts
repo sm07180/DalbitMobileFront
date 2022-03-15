@@ -40,6 +40,8 @@ export type BroadcastCtxStateType = {
   isTTSPlaying: boolean
   settingObj: userBroadcastSettingType | null
   soundVolume: number
+  heartActive: boolean
+
 }
 
 export type GiftStateType = {

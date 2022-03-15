@@ -1,20 +1,23 @@
-import React, {useState, useContext} from 'react'
-import {Context} from 'context'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {convertContents} from './common_fn'
 import iconDown from '../static/arrow_down.svg'
 import iconUp from '../static/arrow_up.svg'
 import iconClose from '../static/close.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
-  const global_ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const [detail, setDetail] = useState(-1)
   const [zoom, setZoom] = useState(false)
 
   const deleteFn = (idx) => {
-    global_ctx.action.confirm({
+    dispatch(setGlobalCtxMessage({type:"confirm",
       msg: '삭제하시겠습니까?',
       callback: async () => {
         const res = await Api.event_proofshot_dellete({
@@ -27,11 +30,11 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
           await fetchEventProofshotList()
         }
       }
-    })
+    }))
   }
 
   const routeMypage = (item) => {
-    if (global_ctx.token.isLogin) {
+    if (globalState.token.isLogin) {
       history.push(`/profile/${item.mem_no}`)
     } else {
       history.push('/login')

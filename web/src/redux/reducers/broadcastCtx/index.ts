@@ -96,6 +96,7 @@ const initialState: BroadcastCtxStateType = {
     // State
     isVideo: false,
     isMic: false,
+    isListenerUpdate: false
   },
 //state start
   rightTabType: tabType.LISTENER,
@@ -167,7 +168,7 @@ const initialState: BroadcastCtxStateType = {
   isTTSPlaying: false,
   settingObj: null,
   soundVolume: 1,  //tts, sound Item 볼륨조절 0 ~ 1
-
+  heartActive: false,
 };
 
 const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initialState, {
@@ -261,7 +262,9 @@ const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initia
   "broadcast/ctx/SET_SOUND_VOLUME": (state, {payload}) => {
     return {...state, soundVolume: payload}
   },
-
+  "broadcast/ctx/SET_HEART_ACTIVE": (state, {payload}) => {
+    return {...state, heartActive: payload}
+  },
   "broadcast/ctx/SET_ROOM_INFO_SETTING_UPDATE": (state, {payload}) => {
     return {...state, roomInfo: {...state.roomInfo, ...payload}};
   },
@@ -270,6 +273,9 @@ const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initia
   },
   "broadcast/ctx/SET_ROOM_INFO_BOOSTER_OFF": (state) => {
     return {...state, roomInfo: {...state.roomInfo, useBoost: false}};
+  },
+  "broadcast/ctx/SET_ROOM_INFO_IS_LISTENER_UPDATE": (state) => {
+    return {...state, roomInfo: {...state.roomInfo, isListenerUpdate: !state.roomInfo.isListenerUpdate}};
   },
   "broadcast/ctx/SET_ROOM_INFO_GRANT_REFRESH": (state, {payload}) => {
     if(state.roomInfo.currentMemNo === payload.memNo){

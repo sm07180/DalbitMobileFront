@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 
@@ -22,6 +21,7 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import Notice from "pages/remypage/contents/notice/Notice";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
 
 const myMenuItem = [
   {menuNm: '서비스 설정', path:'setting', isNew: false},
@@ -33,30 +33,31 @@ const Remypage = () => {
   const history = useHistory()
   const params = useParams()
   const settingCategory = params.category;
-  //context
-  const context = useContext(Context)
-  const {splash, token, profile} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {splash, token, profile} = globalState;
   const customHeader = JSON.parse(Api.customHeader)
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
-  const dispatch = useDispatch();
-  
+
+
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
     if (result === 'success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data));
     } else {
       if (code === '-5') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => history.goBack(),
           msg: message
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => history.goBack(),
           msg: '회원정보를 찾을 수 없습니다.'
-        })
+        }))
       }
     }
   }
@@ -67,15 +68,15 @@ const Remypage = () => {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', res.data)
         }
-        context.action.updateToken(res.data)
-        context.action.updateProfile(null)
+        dispatch(setGlobalCtxUpdateToken(res.data));
+        dispatch(setGlobalCtxUpdateProfile(null));
         // props.history.push('/')
         window.location.href = '/'
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           title: '로그아웃 실패',
           msg: `${res.message}`
-        })
+        }))
       }
     });
   }
@@ -96,7 +97,7 @@ const Remypage = () => {
 
   //충전하기 버튼
   const storeAndCharge = () => {
-    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    if (globalState.customHeader['os'] === OS_TYPE['IOS']) {
       return webkit.messageHandlers.openInApp.postMessage('')
     } else {
       history.push('/store')
@@ -118,7 +119,7 @@ const Remypage = () => {
   useEffect(() => {
     if(alarmData.notice > 0){
       myMenuItem[1].isNew = true;
-    } else {      
+    } else {
       myMenuItem[1].isNew = false;
     }
   }, [alarmData.notice]);

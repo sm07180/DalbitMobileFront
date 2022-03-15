@@ -5,11 +5,14 @@ import Header from 'components/ui/header/Header'
 
 import './style.scss'
 import moment from "moment";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const EventZip = () => {
   let history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const platformWarEventEnd = new moment().isAfter('20220312');
   const shareEventEnd = new moment().isAfter('20220325');
   const poemEventEnd = new moment().isAfter('20220323');
@@ -17,12 +20,12 @@ const EventZip = () => {
   const wiseEventEnd = new moment().isAfter('20220328');
 
   const playMakerEventEnd = new moment().isAfter('20301231');
-  
+
   const dalragersEvenetEnd = new moment().isAfter('20220328');
 
   const golink = (path, endDay, num) => {
     if(endDay){
-      context.action.alert({msg: "해당 이벤트는 종료되었습니다."})
+      dispatch(setGlobalCtxMessage({type: "alert",msg: "해당 이벤트는 종료되었습니다."}))
     }else{
       if(num !== undefined) {
         //golink("path(/notice)", endDay, num(공지사항번호)) => 공지사항 번호를 state값으로 같이 넘겨줘야함

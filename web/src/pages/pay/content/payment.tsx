@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState, useRef, useMemo } from "react";
-import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import { NODE_ENV } from "constant/define";
 import { getCookie, setCookie } from "common/utility/cookie";
@@ -29,12 +28,14 @@ import LayerPopupWrap from "../../main_www/content/layer_popup_wrap";
 import { date } from "@storybook/addon-knobs";
 import {useDispatch, useSelector} from "react-redux";
 import {setPayInfo} from "../../../redux/actions/modal";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 export default function Payment() {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const dispatch = useDispatch();
   const modalState = useSelector(({modalCtx}) => modalCtx);
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { payInfo } = modalState;
   const { baseData } = globalState;
 
@@ -181,10 +182,10 @@ export default function Payment() {
       // MCASH_PAYMENT(ft);
       ft.innerHTML = "";
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   }
 
@@ -205,10 +206,10 @@ export default function Payment() {
         setPopupState(true);
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: res.message,
-      });
+      }));
     }
   }
 
@@ -291,7 +292,7 @@ export default function Payment() {
       }))
       history.push("/payment/result");
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
         callback: () => {
@@ -300,25 +301,26 @@ export default function Payment() {
         cancelCallback: () => {
           history.push("/store");
         },
-      });
+      }));
     }
   };
 
   const quantityCalc = (type) => {
     if (type === "plus") {
       if (totalQuantity === 10) {
-        return globalAction.callSetToastStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           message: "최대 10개까지 구매 가능합니다.",
-        });
+        }));
       }
       setTotalQuantity(totalQuantity + 1);
     } else if (type === "minus") {
       if (totalQuantity === 1) {
-        return globalAction.callSetToastStatus!({
+
+        return dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "최소 1개부터 구매 가능합니다.",
-        });
+        }));
       }
 
       setTotalQuantity(totalQuantity - 1);
@@ -362,42 +364,41 @@ export default function Payment() {
               fontSize: "15px",
               textAlign: "left",
             };
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                contentStyle: contStyle,
-                content: `
-          ★ 필수 : 인증 정보를 확인해 주세요.
-          <br />
-          -----------------------------------------------
-          <br />
-          회원 이름 : <span style='color: #FF3C7B; font-weight: bold;'>${
-            res.data.memName
-          }</span>
-          <br />
-          연락처 : 
-          <span style='color: #FF3C7B; font-weight: bold;'>
-          ${res.data.phoneNo.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
-          </span>
-          <br />
-          -----------------------------------------------
-          <br /> <br />
-          - 안전한 계좌 정보 등록을 위해
-          <br />
-            한 번 더 본인인증을 해주셔야 합니다.
-          <br />
-          - (중요) 추가 인증 시에는 반드시
-          <br />
-            위의 회원정보와 일치해야 합니다.
-          <br />
-            ※ 추가 인증은 딱 1회만 진행됩니다.
-          `,
-                callback: () => {
-                  setPopupCookie();
-                  fetchPay(res.data.ci);
-                },
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              contentStyle: contStyle,
+              content: `
+              ★ 필수 : 인증 정보를 확인해 주세요.
+              <br />
+              -----------------------------------------------
+              <br />
+              회원 이름 : <span style='color: #FF3C7B; font-weight: bold;'>${
+                res.data.memName
+              }</span>
+              <br />
+              연락처 : 
+              <span style='color: #FF3C7B; font-weight: bold;'>
+              ${res.data.phoneNo.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")}
+              </span>
+              <br />
+              -----------------------------------------------
+              <br /> <br />
+              - 안전한 계좌 정보 등록을 위해
+              <br />
+                한 번 더 본인인증을 해주셔야 합니다.
+              <br />
+              - (중요) 추가 인증 시에는 반드시
+              <br />
+                위의 회원정보와 일치해야 합니다.
+              <br />
+                ※ 추가 인증은 딱 1회만 진행됩니다.
+              `,
+              callback: () => {
+                setPopupCookie();
+                fetchPay(res.data.ci);
+              },
+            }));
           }
         }
       } else {

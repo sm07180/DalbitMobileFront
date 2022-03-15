@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useMemo, useContext, useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
@@ -16,12 +15,14 @@ import PasswordChange from "pages/password";
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import {authReq} from "pages/self_auth";
-
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxSetToastStatus, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 const ProfileEdit = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
+  const {token, profile} = globalState
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -78,11 +79,11 @@ const ProfileEdit = () => {
 
   const getMyInfo = async () => {
     const {result, data, message} = await Api.profile({
-      params: {memNo: context.token.memNo}
+      params: {memNo: globalState.token.memNo}
     })
     showSlideClear();
     if (result === 'success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data));
     }
   };
 
@@ -93,9 +94,9 @@ const ProfileEdit = () => {
     if (result === 'success') {
       showSlideClear();
       getMyInfo();
-      context.action.toast({msg: '선택 이미지로 대표 이미지가 변경되었습니다.'});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: '선택 이미지로 대표 이미지가 변경되었습니다.'}));
     } else {
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: message}));
     }
   }
 
@@ -114,19 +115,21 @@ const ProfileEdit = () => {
     const {result, data, message} = await Api.profile_edit({data: param});
 
     if (result === 'success') {
-      context.action.updateProfile({...profile, ...data});
-      context.action.alert({
+      dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `저장되었습니다.`,
-        callback: finished ? () => history.replace('/myProfile') : () => {}
-      });
+        callback: finished ? () => history.goBack() : () => {
+        }
+      }));
     } else {
-      context.action.alert({title: 'Error', msg: message});
+      dispatch(setGlobalCtxMessage({type: "alert", title: 'Error', msg: message}));
     }
   }
 
   /* 본인인증 열기 */
   const getAuth = () => {
-    authReq('5', context.authRef, context);
+    authReq('5', globalState.authRef, dispatch);
   }
 
   /* 본인인증 여부 */
@@ -155,9 +158,9 @@ const ProfileEdit = () => {
       const {result, message} = res
       if (result === 'success') {
         getMyInfo(); //프로필 정보 갱신
-        context.action.toast({msg: '이미지 등록 되었습니다.'});
+        dispatch(setGlobalCtxMessage({type: "toast", msg: '이미지 등록 되었습니다.'}))
       } else {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type: "toast", msg: message}))
       }
     })
   };
@@ -167,8 +170,7 @@ const ProfileEdit = () => {
     if (imgIdx !== null) {
       Api.postDeleteProfileImg({idx: imgIdx}).then((res) => {
         const {result, message} = res;
-        context.action.toast({msg: message});
-
+        dispatch(setGlobalCtxMessage({type: "toast", msg: message}))
         showSlideClear();
         if (result === 'success') {
           getMyInfo(); //프로필 정보 갱신
@@ -205,10 +207,10 @@ const ProfileEdit = () => {
         }
 
       } else {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type: "toast", msg: message}))
       }
     } catch(e) { //image upload Error
-      context.action.toast({msg: '이미지 업로드 실패'});
+      dispatch(setGlobalCtxMessage({type: "toast", msg: '이미지 업로드 실패'}))
       setImage(null);
     };
   };
@@ -235,9 +237,7 @@ const ProfileEdit = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        context.action.alert({
-          msg: '지원하지 않는 파일입니다.'
-        })
+        dispatch(setGlobalCtxMessage({type: "alert", msg: '이미지 업로드 실패'}))
       } else {
         photoUpload();// 사진 업로드
       }
@@ -256,169 +256,179 @@ const ProfileEdit = () => {
   },[profile]);
 
   return (
-      <>{
-          !passwordPageView ?
-          <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
-              <button className='saveBtn'
-                      onClick={() => profileEditConfirm(null, true)}>저장
-              </button>
-            </Header>
-            <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
-              {profileInfo?.profImgList?.length > 1 ?
-                <TopSwiper data={profileDataNoReader} disabledBadge={true}
-                           swiperParam={{
-                             on: {
-                               init: function () {
-                                 topSwiperRef.current = this;
-                               }
+    <>{
+      !passwordPageView ?
+        <div id="profileEdit">
+          <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
+            <button className='saveBtn'
+                    onClick={() => profileEditConfirm(null, true)}>저장
+            </button>
+          </Header>
+          <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
+            {profileInfo?.profImgList?.length > 1 ?
+              <TopSwiper data={profileDataNoReader} disabledBadge={true}
+                         swiperParam={{
+                           on: {
+                             init: function () {
+                               topSwiperRef.current = this;
                              }
-                           }}
-                />
-                :
-                <div className="nonePhoto"
+                           }
+                         }}
+              />
+              :
+              <div className="nonePhoto"
+                   onClick={(e) => {
+                     e.stopPropagation();
+                     inputRef.current.click();
+                   }}>
+                <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
+              </div>
+            }
+          </section>
+          <section className="insertPhoto">
+            <div className="insertBtn">
+              <div className="photo"
+                   onClick={()=> {
+                     profileInfo?.profImgList.length >0 ?
+                       showImagePopUp(profileInfo?.profImgList, 'profileList') :
+                       inputRef.current.click();
+                   }}>
+                <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
+                <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
+              </div>
+            </div>
+
+            <div className="coverPhoto">
+              <div className="title">프로필사진<small>(최대 10장)</small></div>
+              <Swiper {...swiperParams}>
+                {profileInfo?.profImgList?.map((data, index) =>{
+                  return <div key={data?.idx}>
+                    <label onClick={(e)=>e.preventDefault()}>
+                      <img src={data?.profImg?.thumb292x292} alt=""
+                           onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
+                      <button className="cancelBtn"
+                              onClick={() => {
+                                dispatch(setGlobalCtxMessage({
+                                  type: "confirm",
+                                  msg: '정말로 삭제하시겠습니까?',
+                                  callback: ()=> {
+                                    deleteProfileImage(data?.idx)
+                                  }
+                                }))
+                              }}/>
+                    </label>
+                  </div>})
+                }
+                {emptySwiperItems.map((v, i) =>{
+                  return (<div key={i}
+                               onClick={() => {
+                                 inputRef.current.click();
+                               }}>
+                    <div className='empty'>+</div>
+                  </div>);
+                })}
+              </Swiper>
+            </div>
+          </section>
+          <section className="editInfo">
+            <InputItems title="닉네임">
+              <input type="text" maxLength="15" defaultValue={profile.nickNm} ref={nickNameRef}
                      onClick={(e) => {
                        e.stopPropagation();
-                       inputRef.current.click();
-                     }}>
-                  <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
-                </div>
-              }
-            </section>
-            <section className="insertPhoto">
-              <div className="insertBtn">
-                <div className="photo"
-                     onClick={()=> {
-                       profileInfo?.profImgList.length >0 ?
-                         showImagePopUp(profileInfo?.profImgList, 'profileList') :
-                         inputRef.current.click();
-                     }}>
-                  <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
-                  <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
-                </div>
-              </div>
+                       if(!focusClearRef.current && e.target.value === '') {  //입력 폼에 한번 포커싱 되면 한번더 클릭해도 내용 초기화 안되게하기.
+                         focusClearRef.current = true;
+                         e.target.value = profile?.nickNm || '';
+                       }
+                     }}
+                     onBlur={() => {
+                       if(focusClearRef.current === true){
+                         focusClearRef.current = false;
+                       }
+                     }}
+                     onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
+              <button className='inputDel'
+                      onClick={() => {
+                        //닉네임 초기화
+                        if (nickNameRef.current) nickNameRef.current.value = '';
+                        setProfileInfo({...profileInfo, nickNm: ''})
 
-              <div className="coverPhoto">
-                <div className="title">프로필사진<small>(최대 10장)</small></div>
-                <Swiper {...swiperParams}>
-                  {profileInfo?.profImgList?.map((data, index) =>{
-                    return <div key={data?.idx}>
-                      <label onClick={(e)=>e.preventDefault()}>
-                        <img src={data?.profImg?.thumb292x292} alt=""
-                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
-                        <button className="cancelBtn"
-                                onClick={() => {
-                                  context.action.confirm({
-                                    msg: '정말로 삭제하시겠습니까?',
-                                    callback: ()=> deleteProfileImage(data?.idx)
-                                  })
-                                }}/>
-                      </label>
-                    </div>})
-                  }
-                  {emptySwiperItems.map((v, i) =>{
-                    return (<div key={i}
-                                 onClick={() => {
-                                   inputRef.current.click();
-                                 }}>
-                      <div className='empty'>+</div>
-                    </div>);
-                  })}
-                </Swiper>
-              </div>
-            </section>
-            <section className="editInfo">
-              <InputItems title="닉네임">
-                <input type="text" maxLength="15" defaultValue={profile.nickNm} ref={nickNameRef}
-                       onClick={(e) => {
-                         e.stopPropagation();
-                         if(!focusClearRef.current && e.target.value === '') {  //입력 폼에 한번 포커싱 되면 한번더 클릭해도 내용 초기화 안되게하기.
-                           focusClearRef.current = true;
-                           e.target.value = profile?.nickNm || '';
-                         }
-                       }}
-                       onBlur={() => {
-                         if(focusClearRef.current === true){
-                           focusClearRef.current = false;
-                         }
-                       }}
-                       onChange={(e) => setProfileInfo({...profileInfo, nickNm: e.target.value})}/>
-                <button className='inputDel'
-                        onClick={() => {
-                          //닉네임 초기화
-                          if (nickNameRef.current) nickNameRef.current.value = '';
-                          setProfileInfo({...profileInfo, nickNm: ''})
-
-                          if(!focusClearRef.current) {  // 닉네임 초기화 방지
-                            focusClearRef.current = true;
-                          }
-                          nickNameRef.current.focus();
-                        }}/>
-              </InputItems>
-              <InputItems title="휴대폰번호" button="인증하기" buttonClass={"point"} onClick={getAuth}>
-                <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
-              </InputItems>
-              <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
-                <input type="password" name="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} disabled />
-              </InputItems>
-              <div className="inputItems">
-                <div className="title">성별</div>
-                <ul className="selectMenu">
-                  {hasGender ?
-                    <li className='active fixGender'>{profileInfo?.gender === 'm' ? '남성' : '여성'}</li>
-                    :
-                    <>
-                      <li className={`${profileInfo?.gender === 'm' ? 'active' : ''}`}
-                          onClick={() => setProfileInfo({...profileInfo, gender: 'm'})}>남성</li>
-                      <li className={`${profileInfo?.gender === 'f' ? 'active' : ''}`}
-                          onClick={() => setProfileInfo({...profileInfo, gender: 'f'})}>여성</li>
-                    </>
-                  }
-                </ul>
-              </div>
-              <InputItems title={'프로필 메시지'} type={'textarea'}>
+                        if(!focusClearRef.current) {  // 닉네임 초기화 방지
+                          focusClearRef.current = true;
+                        }
+                        nickNameRef.current.focus();
+                      }}/>
+            </InputItems>
+            <InputItems title="휴대폰번호" button="인증하기" buttonClass={"point"} onClick={getAuth}>
+              <input type="text" placeholder={`${authState ? phone : '휴대폰 인증을 해주세요'}`} disabled />
+            </InputItems>
+            <InputItems title="비밀번호" button="변경하기" onClick={() => setPasswordPageView(true)}>
+              <input type="password" name="password" maxLength="20" defaultValue={"@@@@@@@@@@@@@@@@@"} disabled />
+            </InputItems>
+            <div className="inputItems">
+              <div className="title">성별</div>
+              <ul className="selectMenu">
+                {hasGender ?
+                  <li className='active fixGender'>{profileInfo?.gender === 'm' ? '남성' : '여성'}</li>
+                  :
+                  <>
+                    <li className={`${profileInfo?.gender === 'm' ? 'active' : ''}`}
+                        onClick={() => setProfileInfo({...profileInfo, gender: 'm'})}>남성</li>
+                    <li className={`${profileInfo?.gender === 'f' ? 'active' : ''}`}
+                        onClick={() => setProfileInfo({...profileInfo, gender: 'f'})}>여성</li>
+                  </>
+                }
+              </ul>
+            </div>
+            <InputItems title={'프로필 메시지'} type={'textarea'}>
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
                           value={profileInfo?.profMsg || ''}
                           onChange={(e) => {
                             setProfileInfo({...profileInfo, profMsg: e.target.value});
                           }}/>
-                <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
-              </InputItems>
-            </section>
+              <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
+            </InputItems>
+          </section>
 
-            <input ref={inputRef} type="file" className='blind'
-                   accept="image/jpg, image/jpeg, image/png"
-                   onChange={(e) => {
-                     e.persist();
-                     setEventObj(e);
-                     setCropOpen(true);
-                   }}/>
-            {cropOpen && eventObj !== null && (
-              <DalbitCropper
-                imgInfo={eventObj}
-                onClose={() => {
-                  setCropOpen(false)
-                  if (inputRef.current) {
-                    inputRef.current.value = ''
-                  }
-                }}
-                onCrop={(value) => setImage(value)}
-              />
-            )}
-
-            {showSlide?.visible &&
-            <ShowSwiper imageList={showSlide?.imgList || []} popClose={showSlideClear} showTopOptionSection={true}
-                        readerButtonAction={readerImageEdit}
-                        deleteButtonAction={(idx) =>
-                          context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
-                        swiperParam={{initialSlide: showSlide?.initialSlide}}
+          <input ref={inputRef} type="file" className='blind'
+                 accept="image/jpg, image/jpeg, image/png"
+                 onChange={(e) => {
+                   e.persist();
+                   setEventObj(e);
+                   setCropOpen(true);
+                 }}/>
+          {cropOpen && eventObj !== null && (
+            <DalbitCropper
+              imgInfo={eventObj}
+              onClose={() => {
+                setCropOpen(false)
+                if (inputRef.current) {
+                  inputRef.current.value = ''
+                }
+              }}
+              onCrop={(value) => setImage(value)}
             />
-            }
-          </div>
-            :
+          )}
+
+          {showSlide?.visible &&
+          <ShowSwiper imageList={showSlide?.imgList || []} popClose={showSlideClear} showTopOptionSection={true}
+                      readerButtonAction={readerImageEdit}
+                      deleteButtonAction={(idx) =>{
+                        dispatch(setGlobalCtxMessage({
+                          type: "confirm",
+                          msg: '정말로 삭제하시겠습니까?',
+                          callback: ()=> {
+                            deleteProfileImage(idx)
+                          }
+                        }))
+                      }}
+                      swiperParam={{initialSlide: showSlide?.initialSlide}}
+          />
+          }
+        </div>
+        :
         <PasswordChange backEvent={() => setPasswordPageView(false)}/>
-      }
-      </>
+    }
+    </>
   )
 }
 

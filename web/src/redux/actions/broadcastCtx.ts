@@ -34,7 +34,7 @@ export const SET_TTS_ACTION_INFO                    = 'broadcast/ctx/SET_TTS_ACT
 export const SET_IS_TTS_PLAYING                     = 'broadcast/ctx/SET_IS_TTS_PLAYING';
 export const SET_SETTING_OBJECT                     = 'broadcast/ctx/SET_SETTING_OBJECT';
 export const SET_SOUND_VOLUME                       = 'broadcast/ctx/SET_SOUND_VOLUME';
-
+export const SET_HEART_ACTIVE                       = 'broadcast/ctx/SET_HEART_ACTIVE';
 // ctx_reducer
 export const SET_ROOM_INFO_SETTING_UPDATE           = 'broadcast/ctx/SET_ROOM_INFO_SETTING_UPDATE';
 export const SET_ROOM_INFO_BOOSTER_ON               = 'broadcast/ctx/SET_ROOM_INFO_BOOSTER_ON';
@@ -48,6 +48,7 @@ export const SET_ROOM_INFO_VIDEO_STATE              = 'broadcast/ctx/SET_ROOM_IN
 export const SET_ROOM_INFO_NEW_FAN_CNT              = 'broadcast/ctx/SET_ROOM_INFO_NEW_FAN_CNT';
 export const SET_ROOM_INFO_RESET                    = 'broadcast/ctx/SET_ROOM_INFO_RESET';
 export const SET_ROOM_INFO_REFRESH                  = 'broadcast/ctx/SET_ROOM_INFO_REFRESH';
+export const SET_ROOM_INFO_IS_LISTENER_UPDATE       = 'broadcast/ctx/SET_ROOM_INFO_IS_LISTENER_UPDATE';
 export const SET_CHAT_ANIMATION_START               = 'broadcast/ctx/SET_CHAT_ANIMATION_START';
 export const SET_CHAT_ANIMATION_END                 = 'broadcast/ctx/SET_CHAT_ANIMATION_END';
 export const SET_COMBO_ANIMATION_START              = 'broadcast/ctx/SET_COMBO_ANIMATION_START';
@@ -84,6 +85,7 @@ export const setBroadcastCtxTtsActionInfo = createAction(SET_TTS_ACTION_INFO)<tt
 export const setBroadcastCtxIsTtsPlaying = createAction(SET_IS_TTS_PLAYING)<boolean>();
 export const setBroadcastCtxSettingObject = createAction(SET_SETTING_OBJECT)<userBroadcastSettingType | null>();
 export const setBroadcastCtxSoundVolume = createAction(SET_SOUND_VOLUME)<number>();
+export const setBroadcastCtxHeartActive = createAction(SET_HEART_ACTIVE)<boolean>();
 
 export const setBroadcastCtxRoomInfoSettingUpdate = createAction(SET_ROOM_INFO_SETTING_UPDATE)<any>();
 export const setBroadcastCtxRoomInfoBoosterOn = createAction(SET_ROOM_INFO_BOOSTER_ON)();
@@ -97,6 +99,7 @@ export const setBroadcastCtxRoomInfoVideoState = createAction(SET_ROOM_INFO_VIDE
 export const setBroadcastCtxRoomInfoNewFanCnt = createAction(SET_ROOM_INFO_NEW_FAN_CNT)<any>();
 export const setBroadcastCtxRoomInfoReset = createAction(SET_ROOM_INFO_RESET)<any>();
 export const setBroadcastCtxRoomInfoRefresh = createAction(SET_ROOM_INFO_REFRESH)();
+export const setBroadcastCtxRoomInfoIsListenerUpdate = createAction(SET_ROOM_INFO_IS_LISTENER_UPDATE)();
 export const setBroadcastCtxChatAnimationStart = createAction(SET_CHAT_ANIMATION_START)<any>();
 export const setBroadcastCtxChatAnimationEnd = createAction(SET_CHAT_ANIMATION_END)();
 export const setBroadcastCtxComboAnimationStart = createAction(SET_COMBO_ANIMATION_START)<any>();

@@ -1,34 +1,29 @@
-/**
- *
- */
-//context
-import {Context} from 'context'
 import Gnb from 'pages/common/gnb'
 import Ip from 'pages/common/ip'
-import Message from 'pages/common/message'
 import NewPlayer from 'pages/common/newPlayer'
 import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Sticker from 'pages/common/sticker'
 
-import React, {useContext, useMemo, useEffect, useState, useRef} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
-import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import MultiImageViewer from '../multi_image_viewer'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
 //
 const Layout = (props) => {
   const {children, webview} = props
-
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const location = useLocation()
   const history = useHistory();
   const playerCls = useMemo(() => {
-    return context.player || context.clipState ? 'player_show' : ''
+    return globalState.player || globalState.clipState ? 'player_show' : ''
   })
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
@@ -51,13 +46,13 @@ const Layout = (props) => {
   }, [noAppCheck])
 
   useEffect(() => {
-    context.action.updateMultiViewer({show: false})
+    dispatch(setGlobalCtxMultiViewer({show: false}));
   }, [location])
 
   return (
     <>
       {/* Sticker */}
-      {context.sticker && <Sticker />}
+      {globalState.sticker && <Sticker />}
       {/* GNB */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
@@ -93,7 +88,7 @@ const Layout = (props) => {
       {/*  </>*/}
       {/*)}*/}
 
-      {context.multiViewer.show && <MultiImageViewer />}
+      {globalState.multiViewer.show && <MultiImageViewer />}
     </>
   )
 }

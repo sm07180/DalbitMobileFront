@@ -1,18 +1,22 @@
 import React from 'react'
-//context
 // etc
 import {closePopup} from "components/ui/popSlide/PopSlide";
 import {setCommonPopupOpenData} from "redux/actions/common";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage,
+  setGlobalCtxMultiViewer
+} from "redux/actions/globalCtx";
 
-export const backFunc = (context, dispatch) => {
-  const {backFunction} = context
-  const nameLength = backFunction.name.length
-  switch (backFunction.name[nameLength-1]) {
+export const backFunc = (dispatch, globalState) => {
+  const nameLength = globalState.backFunction.name.length
+  switch (globalState.backFunction.name[nameLength-1]) {
     case 'booleanType':
-      context.action.updateBackFunction({name: 'booleanType', value: false})
+      dispatch(setGlobalCtxBackFunction({name: 'booleanType', value: false}));
       break
     case 'multiViewer':
-      context.action.updateMultiViewer({show: false})
+      dispatch(setGlobalCtxMultiViewer({show: false}));
       break
     case 'event':
     case 'selfauth':
@@ -22,17 +26,18 @@ export const backFunc = (context, dispatch) => {
       closePopup(dispatch)
       break;
     case 'alertClose':
-      context.action.alert({visible: false})
+
+      dispatch(setGlobalCtxMessage({type: "alert",visible: false}))
       break;
     case 'questionPop':
-      dispatch(setCommonPopupOpenData({...backFunction.popupData, commonPopup: false}))
+      dispatch(setCommonPopupOpenData({...globalState.backFunction.popupData, commonPopup: false}))
       break;
     default:
       break
   }
   setTimeout(() => {
     if(nameLength === 1) {
-      context.action.updateSetBack(null)
+      dispatch(setGlobalCtxBackState(null));
     }
   }, 100)
 }
