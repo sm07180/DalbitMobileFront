@@ -302,21 +302,15 @@ export default function ChatHeaderWrap(prop: any) {
                 {realTimeValue !== null ? realTimeValue.likes : likes}
               </span>
             </span>
-            {((broadcastState.roomInfo && broadcastState.roomInfo.auth === 1) ||
-              roomOwner === true) &&
-              startDt && (
-                <span className="info time">
-                  <img
-                    className="icon"
-                    src="https://image.dalbitlive.com/broadcast/ico_time.svg"
-                    alt="시간"
-                  />
-                  <span className="text">
-                    {broadcastTime !== null &&
-                      secToDateConvertor(broadcastTime)}
-                  </span>
+            {
+              startDt &&
+              <span className="info time">
+                <img className="icon" src="https://image.dalbitlive.com/broadcast/ico_time.svg" alt="시간"/>
+                <span className="text">
+                  {broadcastTime !== null && secToDateConvertor(broadcastTime)}
                 </span>
-              )}
+              </span>
+            }
 
             {roomOwner === true &&
               broadcastState.extendTimeOnce === false &&
