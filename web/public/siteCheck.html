@@ -18,13 +18,6 @@
         height: 100%;
       }
 
-      h1,
-      b,
-      p {
-        font-weight: 400;
-        text-align: center;
-      }
-
       #wrap {
         min-width: 320px;
         height: 100%;
@@ -33,44 +26,108 @@
         display: flex;
         flex-direction: column;
       }
-
-      h1 {
-        font-size: 24px;
-        color: #000;
-        margin-bottom: 20px;
+      #siteCheckPage{
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       max-width: 480px;
+       width: 100%;
+       height: 100%;
+       padding: 0 16px; 
+       box-sizing: border-box;
+      }
+      .textWrap{
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+        margin-bottom: 120px;
+        text-align: center;
+      }
+      h3.emoji{
+        margin-bottom: 30px;
+        font-size: 47px;
         font-weight: 700;
       }
-      b {
+      .text{
+        display: flex;
+        flex-direction: column;
+      }
+      .text > span:first-child{
+        margin-bottom: 6px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #202020;
+      }
+      .text > span:last-child{
+        font-size: 15px;
+        font-weight: 500;
+        color: #303030;
+      }
+      p.dateWrap{
+        display: flex;
+        align-items: center;
+        margin-top: 40px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #303030;
+      }
+      .dateWrap .date{
+        font-size: 15px;
+        font-weight: 600;
         color: #FF3C7B;
-        line-height: 22px;
-        letter-spacing: -0.35px;
+        margin-left: 6px;
+      }
+      .buttonGroup{
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: auto 16px 20px;
+      }
+      .buttonGroup > div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 48px;
+        border-radius: 16px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .close{
+        margin-right: 8px;
+        border: 1px solid #d5d5d5;
+        font-weight: 500;
+        color: #666;
+      }
+      .submit{
+        background-color: #FF6999;
         font-weight: 700;
-      }
-      p {
-        color: #424242;
-        line-height: 22px;
-        letter-spacing: -0.35px;
-        margin-bottom: 200px;
-      }
-
-      img {
-        display: block;
-        margin-bottom: 20px;
-        width: 136px;
+        color: #fff;
       }
     </style>
 
     <div id="wrap">
-      <h1>서버 점검 안내</h1>
-
-      <img src="https://image.dalbitlive.com/images/api/serviceCheck.png" alt="서버 점검 안내" />
-
-      <b> 2월 21일(월)<br />오전 9시부터 약 2시간 가량,</b>
-
-      <p>
-        시스템 점검으로 접속이 불가하오니<br />
-        많은 양해 부탁드립니다.
-      </p>
+      <div id="siteCheckPage">
+        <div class="textWrap">
+          <h3 class="emoji">🛠️</h3>
+          <p class="text">
+            <span>현재 서버 점검중 입니다.</span>
+            <span>서비스 이용에 불편을 드려 죄송합니다.</span>
+          </p>
+          <p class="dateWrap">
+            <span>점검일시</span>
+            <span class="date">2022.02.20(일) - 02.21(월)</span>
+          </p>
+        </div>
+        <!-- <div class="buttonGroup">
+          <div class="close">앱종료</div>
+          <div class="submit">재접속</div>
+        </div> -->
+      </div>
     </div>
   </body>
 </html>
