@@ -256,15 +256,17 @@ const RankDetailPage = () => {
 
   useEffect(() => {
     setPageNo(1);
-    if (select === "DJ"){
-      setRankType(tabName === "타임" ? 0  : tabName === "주간" ? 2 : tabName === "월간" ? 3 : tabName === "연간" ? 4 : 1);
-      setRankSlct(1);
-    } else if (select === "FAN") {
-      setRankType(tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
-      setRankSlct(2);
-    } else {
-      setRankType(tabName === "주간" ? 2 :  1);
-      setRankSlct(3);
+    if (select !== "" && tabName !== ""){
+      if (select === "DJ"){
+        setRankType(tabName === "타임" ? 0  : tabName === "주간" ? 2 : tabName === "월간" ? 3 : tabName === "연간" ? 4 : 1);
+        setRankSlct(1);
+      } else if (select === "FAN") {
+        setRankType(tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
+        setRankSlct(2);
+      } else {
+        setRankType(tabName === "주간" ? 2 :  1);
+        setRankSlct(3);
+      }
     }
   }, [tabName, select]);
 
