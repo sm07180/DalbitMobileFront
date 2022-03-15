@@ -29,7 +29,7 @@ const RankDetailPage = () => {
   //Ranking 종류(DJ, FAN, CUPID)
   const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
   //Ranking 기간(타임, 일간 등등)
-  const [rankType, setRankType] = useState(1);
+  const [rankType, setRankType] = useState("");
   //Ranking 종류 Title
   const [select, setSelect] = useState("");  
   //탭 목록
@@ -53,7 +53,6 @@ const RankDetailPage = () => {
     if (rankingListType === 'DJ') {
       setTabList(['타임','일간','주간', '월간', '연간']);
       setTabName(typeof location.state === "undefined" ? "일간" : location.state === "time" ? "타임" : location.state === "today" ? "일간"  : location.state === "thisweek" ? "주간" : location.state === "thismonth" ? "월간" : "연간");
-      setRankType(typeof location.state === "undefined" ? 1 : location.state === "time" ? 0 : location.state === "today" ? 1  : location.state === "thisweek" ? 2 : location.state === "thismonth" ? 3 : 4);
     } else if (rankingListType === 'FAN') {
       setTabList(['일간','주간', '월간']);
       setTabName('일간')
@@ -246,10 +245,12 @@ const RankDetailPage = () => {
   }
 
   useEffect(() => {
-    if (tabName === "타임"){
-      fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
-    } else {
-      fetchRankData(rankSlct, rankType, 1);
+    if (rankType !== ""){
+      if (tabName === "타임"){
+        fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
+      } else {
+        fetchRankData(rankSlct, rankType, 1);
+      }
     }
   }, [rankSlct, rankType]);
 
