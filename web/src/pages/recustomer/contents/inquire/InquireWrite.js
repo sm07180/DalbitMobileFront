@@ -36,6 +36,7 @@ const Write = (props) => {
   ])
   const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
+  const history = useHistory();
 
   //문의하기 등록
   const fetchData = () => {
@@ -50,16 +51,21 @@ const Write = (props) => {
       questionFileName1: imageFileName[0],
       questionFileName2: imageFileName[1],
       questionFileName3: imageFileName[2],
-      phone: inputData.phone,
+      phone: inputData.phone !== undefined ? inputData.phone : "",
       email: "",
-      nickName: context.profile.nickName
+      nickName: context.profile.nickName !== undefined ? context.profile.nickName : "미선택"
     }
     isFetchFalse = true;
     API.center_qna_add({params}).then((res) => {
       isFetchFalse = false;
       if(res.result === "success") {
-        context.action.alert({msg: "1:1문의가 등록되었습니다."})
-        setInquire("나의 문의내역");
+        context.action.alert({msg: "1:1문의가 등록되었습니다.", callback: () => {
+          if(!context.token.isLogin) {
+            history.goBack();
+          } else {
+            setInquire("나의 문의내역");
+          }
+        }})
       } else {
         context.action.alert({msg: res.message});
       }
@@ -74,6 +80,12 @@ const Write = (props) => {
       [e.target.name]: e.target.value
     });
   };
+
+  //예외 조건
+  const onlyNum = (data) => {
+    let onlyNum = /^[0-9]+$/g;
+    return (onlyNum.test(data));
+  }
 
   //문의 유형 클릭시 세부내용 출력
   const changeOption = () => {
@@ -148,8 +160,8 @@ const Write = (props) => {
 
   //등록시 예외 조건 확인
   const validator = () => {
-    if(!context.token.isLogin){
-      if(inputData.phone !== "" && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
+    if(!context.token.isLogin) {
+      if((inputData.phone !== "" && onlyNum(inputData.phone)) && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
         if(isDisabled === true) {
           if(isFetchFalse === false) {
             fetchData();
@@ -179,7 +191,7 @@ const Write = (props) => {
     <div id='inquireWrite'>
       {!context.token.isLogin &&
         <InputItems title="연락처">
-          <input type="text" placeholder="연락처를 입력해주세요." name="phone" onChange={onChange}/>
+          <input type="text" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
         </InputItems>
       }
       <InputItems title="문의 제목">
