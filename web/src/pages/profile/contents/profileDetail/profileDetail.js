@@ -434,7 +434,8 @@ const ProfileDetail = (props) => {
             })}
         </div>
         <div className='bottomWrite'>
-          <div ref={replyRef} className={`trickTextarea ${text.length && 'isText'}`} contentEditable="true"
+          <div ref={replyRef} className={`trickTextarea ${text.length > 0 && 'isText'}`} contentEditable="true"
+               style={text.length === 0 ? {height:'20px'}: {}}
                onKeyUp={(e) => setText(e.target?.innerText)}
           />
 
