@@ -177,7 +177,7 @@ const Exchange = (props) => {
       const res = await Api.exchangeCalc({
         data: {byeol: sendByeolCnt}
       })
-      context.action.alert({msg:res.message});
+      // context.action.alert({msg:res.message});
 
       if (res.result === 'success') {
         //result :
@@ -414,6 +414,11 @@ const Exchange = (props) => {
             <button onClick={() => exchangeCalc(exchangeCalcData?.reqByeolCnt || 0)}>
               환전 계산하기
             </button>
+          }
+          {isIOS &&
+          <button className='exchange' onClick={() => Hybrid('openUrl', `https://${window.location.host}/wallet`)}>
+            달 교환
+          </button>
           }
         </div>
       </section>

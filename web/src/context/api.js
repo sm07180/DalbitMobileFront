@@ -3979,6 +3979,10 @@ export default class API {
     return await ajax({url: `/event/dallagers/specialList/${pageNo}/${pagePerCnt}`, method: 'GET'})
   }
 
+  static getStarList = async (data) => {
+    return await ajax({url: `/myStar/list`, method: 'post', reqBody: true, data: data})
+  }
+
 }
 
 API.customHeader = null
