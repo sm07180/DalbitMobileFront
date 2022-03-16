@@ -51,7 +51,7 @@ const Write = (props) => {
       questionFileName1: imageFileName[0],
       questionFileName2: imageFileName[1],
       questionFileName3: imageFileName[2],
-      phone: inputData.phone !== undefined ? inputData.phone : "",
+      phone: inputData.phone !== "" ? inputData.phone : "",
       email: "",
       nickName: context.profile.nickName !== undefined ? context.profile.nickName : "미선택"
     }
