@@ -361,7 +361,7 @@ const Exchange = (props) => {
         <button className='noticeBtn' onClick={noticePop}>
           <span className="noticeIcon">?</span>환전이 궁금하시다면?
         </button>
-        <div className={`amountBox ${byeolTotCnt>569 ? 'apply' : ''}`}>
+        <div className="amountBox">
           <i className="iconStar"></i>
           <p>보유 별</p>
           <div className='counter active'>
@@ -415,13 +415,6 @@ const Exchange = (props) => {
               환전 계산하기
             </button>
           }
-          <button className='exchange'
-                  onClick={() =>
-                    isIOS ?
-                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange=1`) :
-                      history.push('/wallet/exchange')}>
-            달 교환
-          </button>
         </div>
       </section>
 

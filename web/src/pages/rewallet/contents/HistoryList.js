@@ -4,15 +4,19 @@ import moment from 'moment';
 
 // global components
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import CheckList from '../components/CheckList'
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {useHistory, useLocation} from "react-router-dom";
 
 const HistoryList = (props) => {
   const {walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading, setIsLoading, getWalletHistory, lastPage, cancelExchangeFetch, walletType} = props;
 
-  const {popHistory, listHistory, popHistoryCnt} = walletData;
+  const {popHistory, listHistory, popHistoryCnt, byeolTotCnt, dalTotCnt,} = walletData;
+  
+  const history = useHistory();
 
   const [beforeCode, setBeforeCode] = useState("0");
   const commonPopup = useSelector(state => state.popup);
@@ -64,6 +68,27 @@ const HistoryList = (props) => {
   return (
     <>
       {/* 상세내역 리스트 */}
+      <section className='currentWrap'>
+        {walletType === '달 내역' ? (
+          <div className="currentBox">
+            <div className="payCount" >
+              <i className='iconDal'/>
+              <span className="text">보유한 달</span>
+              <span className="amount">{Utility.addComma(dalTotCnt)}개</span>
+            </div>
+            <SubmitBtn text="충전하기" onClick={() => {history.push('/store')}}/>
+          </div>
+        ) : (
+          <div className="currentBox" >
+            <div className="payCount">
+              <i className='iconStar'/>
+              <span className="text">보유한 별</span>
+              <span className="amount">{Utility.addComma(byeolTotCnt)}개</span>
+            </div>
+            <SubmitBtn text="달 교환" onClick={() => {history.push('/wallet/exchange')}} />
+          </div>
+        )}
+      </section>
       <section className="optionWrap">
         <div className="selectBox">
           <button onClick={onClickPopSlide}>전체<i className="arrowDownIcon" /></button>

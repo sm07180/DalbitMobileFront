@@ -101,7 +101,7 @@ export default () => {
               </td>
             </tr>
 
-            <tr className="frame">
+            <tr className="animationFrame">
               <td className="rank">애니메이션<br />프레임</td>
               <td>
                 <img src={`${IMG_SERVER}/ranking/likewf1@2x.png`} width={40} height={51.7} />
