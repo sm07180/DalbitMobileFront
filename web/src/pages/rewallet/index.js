@@ -192,8 +192,6 @@ const WalletPage = (props) => {
 
   return (
     <div id="walletPage">
-      {/*1. 백버튼*/}
-      {/*2. 백버튼 안보여야함*/}
       {(isDesktop || isHybrid()) ?
         <Header type="back" title="내 지갑"/>
         :
