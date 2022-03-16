@@ -11,6 +11,9 @@ const EventZip = () => {
   let history = useHistory()
   const context = useContext(Context)
   const nowDay = moment().format('YYYYMMDD');
+  const [ingEvent, setIngEvent] = useState([]);
+  const [endEvent, setEndEvent] = useState([]);
+
   const [eventInfo, setEventInfo] = useState(
     [
       {
@@ -68,7 +71,7 @@ const EventZip = () => {
         endDay : "20220307",
         bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7590.png",
         path : "/event/invite",
-        endState :false
+        endState : false
       },
     ]
   );
@@ -76,9 +79,15 @@ const EventZip = () => {
   useEffect(() => {
     for(let i = 0; i < eventInfo.length; i++){
       if(moment(nowDay).isAfter(moment(eventInfo[i].endDay).add(1, 'days'))){
-        eventInfo[i].endState = true
+        eventInfo[i].endState = true;
+        setIngEvent(ingEvent.concat(eventInfo));
+      } else {
+        eventInfo[i].endState = false;
+        setEndEvent(endEvent.concat(eventInfo));
       }
     }
+    console.log(ingEvent);
+    console.log(endEvent);
   }, [nowDay]);
 
   const golink = (path, endDay, num) => {
@@ -102,7 +111,7 @@ const EventZip = () => {
       <div className='eventWrap'>        
         <div id='ingWrap'>
           {
-            eventInfo.map((list, index) => {
+            ingEvent.map((list, index) => {
               if(!list.endState){
                 return (
                   <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState, `${list.noticeNum && list.noticeNum}`)}}>
@@ -129,7 +138,7 @@ const EventZip = () => {
         </div>
         <div id='endWrap'>
           {
-            eventInfo.map((list, index) => {
+            endEvent.map((list, index) => {
               if(list.endState){
                 return (
                   <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState)}}>
