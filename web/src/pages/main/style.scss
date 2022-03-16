@@ -201,14 +201,18 @@
             box-sizing: border-box;
           }
         }
-        .listMore{
+        .listMoreBox{
           @include flex(center, center);
-          width: 70px;
-          height: 70px;
-          background-color: #f6f6f6;
-          border-radius: 100%;
-          @include font(20px, $Bold, #acacac);
-          cursor: pointer;
+          height: 80px;
+          .listMore{
+            @include flex(center, center);
+            width: 70px;
+            height: 70px;
+            background-color: #f6f6f6;
+            border-radius: 100%;
+            @include font(20px, $Bold, #acacac);
+            cursor: pointer;
+          }
         }
       }
     }
