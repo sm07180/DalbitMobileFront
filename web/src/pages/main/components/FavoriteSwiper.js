@@ -88,8 +88,10 @@ const SwiperList = (props) => {
         <div className='listColumn' onClick={() => {
           history.push('/recentstar')
         }}>
-          <div className="listMore">
-            +{myStarCnt - 10}
+          <div className="listMoreBox">
+            <div className="listMore">
+              +{myStarCnt - 10}
+            </div>
           </div>
         </div>
       }
