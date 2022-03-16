@@ -1,0 +1,50 @@
+@import 'components/ui/_mixin.scss';
+
+#recentStar{
+  position: relative;
+  .starList{
+    padding: 16px;
+    .listRow{
+      cursor: pointer;
+      margin-bottom: 12px;
+      .photo{
+        width: 58px;
+        height: 58px;
+        margin-right: 8px;
+        img{border-radius: 100%;}
+      }
+      .userNick{
+        width: 100%;
+        @include font(13px, $Medium, #333);
+        @include fontCut;
+      }
+      .listBack {
+        flex: none;
+        @include flex(center, center);
+        margin-left: 15px;
+        .badgeLive {
+          @include flex(center, center);
+          width:62px;height:28px;
+          background-color: #FFE9E9;
+          border-radius: 100px;
+          cursor: pointer;
+          .equalizer {
+            display: inline-block;
+            width: 12px;
+            margin-top: -2px;
+            margin-right: 4px;
+          }
+          .follow{
+            width: 12px;
+            height: 8px;
+            margin-right: 4px;
+            @include BGIMG('common/icon/icoHeadset-p.png');
+          }
+          .liveText {
+            @include font(12px, 900, #FF3C7B);
+          }
+        }
+      }
+    }
+  }
+}

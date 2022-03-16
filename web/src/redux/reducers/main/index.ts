@@ -1,9 +1,10 @@
-import { createReducer } from "typesafe-actions";
-import { MainActions, IMainState } from "../../types/mainType";
+import {createReducer} from "typesafe-actions";
+import {IMainState, MainActions} from "../../types/mainType";
 
 const initialState:IMainState = {
   topBanner: [],
   myStar: [],
+  myStarCnt: 0,
   dayRanking: {
     djRank: [],
     fanRank: [],

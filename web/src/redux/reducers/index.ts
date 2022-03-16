@@ -15,6 +15,7 @@ import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
 import rank from "./rank/index"
 import vote from './vote';
+import broadcast from './broadcast';
 import profileTab from './profile/tab'
 
 const rootReducer = combineReducers({
@@ -34,6 +35,7 @@ const rootReducer = combineReducers({
   , newAlarm
   , vote
   , rank
+  , broadcast
   , profileTab
 });
 

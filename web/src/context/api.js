@@ -3929,10 +3929,6 @@ export default class API {
   static getVoteList = async (data) => {
     return await ajax({url: '/broad/vote/getVoteList', method: 'POST', reqBody: true, data: data})
   }
-  // 투표 정보
-  static getVoteSel = async (data) => {
-    return await ajax({url: '/broad/vote/getVoteSel', method: 'POST', reqBody: true, data: data})
-  }
   // 투표 항목 리스트
   static getVoteDetailList = async (data) => {
     return ajax({url: '/broad/vote/getVoteDetailList', method: 'POST', reqBody: true, data: data})
@@ -3985,6 +3981,10 @@ export default class API {
   static getDallagersSpecialMyRankList = async (obj) => {
     const {pageNo, pagePerCnt} = obj || {};
     return await ajax({url: `/event/dallagers/specialList/${pageNo}/${pagePerCnt}`, method: 'GET'})
+  }
+
+  static getStarList = async (data) => {
+    return await ajax({url: `/myStar/list`, method: 'post', reqBody: true, data: data})
   }
 
 }

@@ -3,6 +3,7 @@ import common from "./common";
 import main from './main';
 import member from "./member";
 import vote from "./vote";
+import broadcast from "./broadcast";
 
 export default function* rootSagas() {
   yield all([
@@ -10,5 +11,6 @@ export default function* rootSagas() {
     ,...main
     ,...member
     ,...vote
+    ,...broadcast
   ]);
 }
