@@ -191,28 +191,15 @@ const WalletPage = (props) => {
   //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
-      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'>
-        {walletType === walletTabMenu[1] ? (
-          <div className="buttonGroup">
-            <button className="payCount" onClick={goStoreHandler}>
-              <i className='iconStar'/>
-              <span>{Utility.addComma(byeolTotCnt)}</span>
-            </button>
-          </div>
-        ) : (
-          <div className="buttonGroup">
-            <button className="payCount" onClick={goStoreHandler}>
-              <i className='iconDal'/>
-              <span>{Utility.addComma(dalTotCnt)}</span>
-            </button>
-          </div>
-        )}
-      </Header>
+      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'/>
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
       {walletType !== walletTabMenu[2] ?
-        <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode} setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading} getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch} walletType={walletType}/>
+        <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode}
+                     setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading}
+                     getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch}
+                     walletType={walletType} isIOS={isIOS}/>
         :
         /*환전 ( = ios : 달 교환)*/
         <Exchange isIOS={isIOS} tabMenuRef={tabMenuRef}/>

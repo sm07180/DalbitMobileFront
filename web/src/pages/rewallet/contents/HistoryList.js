@@ -10,9 +10,11 @@ import CheckList from '../components/CheckList'
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 import {useHistory, useLocation} from "react-router-dom";
+import {Hybrid} from "context/hybrid";
 
 const HistoryList = (props) => {
-  const {walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading, setIsLoading, getWalletHistory, lastPage, cancelExchangeFetch, walletType} = props;
+  const {walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading,
+        setIsLoading, getWalletHistory, lastPage, cancelExchangeFetch, walletType, isIOS} = props;
 
   const {popHistory, listHistory, popHistoryCnt, byeolTotCnt, dalTotCnt,} = walletData;
   
@@ -85,7 +87,9 @@ const HistoryList = (props) => {
               <span className="text">보유한 별</span>
               <span className="amount">{Utility.addComma(byeolTotCnt)}개</span>
             </div>
-            <SubmitBtn text="달 교환" onClick={() => {history.push('/wallet/exchange')}} />
+            {isIOS ? <SubmitBtn text="달 교환" onClick={() => Hybrid('openUrl', `https://${window.location.host}/wallet`)} /> :
+              <SubmitBtn text="달 교환" onClick={() => {history.push('/wallet/exchange')}} />
+            }
           </div>
         )}
       </section>
@@ -105,8 +109,6 @@ const HistoryList = (props) => {
                 <button className="exCancelBtn"
                         onClick={() => cancelExchangeFetch(data.exchangeIdx)}>취소하기</button>
                 }
-                {/*<div className="otherUserNick">계란노른자</div>*/}
-                {/*<span className="privateBdg">몰래</span>*/}
               </div>
               <div className="listItem">
                 <div className="historyDate">{moment(data?.updateDt,'YYYYMMDD').format('YYYY.MM.DD')}</div>

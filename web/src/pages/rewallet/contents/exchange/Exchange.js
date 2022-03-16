@@ -415,6 +415,11 @@ const Exchange = (props) => {
               환전 계산하기
             </button>
           }
+          {isIOS &&
+          <button className='exchange' onClick={() => Hybrid('openUrl', `https://${window.location.host}/wallet`)}>
+            달 교환
+          </button>
+          }
         </div>
       </section>
 
