@@ -21,7 +21,7 @@ const SwiperList = (props) => {
   let locationStateHistory = useHistory();
 
   const swiperParams = useMemo(() => {
-    let tempResult = { slidesPerView: 'auto', rebuildOnUpdate: true }
+    let tempResult = { slidesPerView: 'auto'}
     if (isDesktop) {
       tempResult.navigation = {
         nextEl: '.swiper-button-next',
