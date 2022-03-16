@@ -8,6 +8,12 @@ import {
   setMailBoxPushChatInfo,
   setMailBoxUserCount
 } from "../../redux/actions/mailBox";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxChatInfoInit,
+  setGlobalCtxCurrentChatDataEmpty,
+  setGlobalCtxIsShowPlayer
+} from "../../redux/actions/globalCtx";
 
 // lib
 const socketClusterClient = require("socketcluster-client");
@@ -207,10 +213,7 @@ export class MailChatSocketHandler {
           if (isReConnect === false) {
             this.reConnect.setPrivateChannelNo(this.privateChannelNo);
           }
-
-          if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-            this.globalAction.dispatchCurrentChatData({ type: "empty" });
-          }
+          this.dispatch(setGlobalCtxCurrentChatDataEmpty());
         }
       }
     };
@@ -248,9 +251,7 @@ export class MailChatSocketHandler {
   }
 
   privateChannelDisconnect() {
-    if (this.globalAction && this.globalAction.setIsShowPlayer) {
-      this.globalAction.setIsShowPlayer(false);
-    }
+    this.dispatch(setGlobalCtxIsShowPlayer(false));
 
     if (this.privateChannelHandle !== null) {
       this.privateChannelHandle.unsubscribe();
@@ -259,9 +260,7 @@ export class MailChatSocketHandler {
       this.privateChannelNo = "";
       this.reConnect.setPrivateChannelNo(this.privateChannelNo);
 
-      if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-        this.globalAction.dispatchCurrentChatData({ type: "empty" });
-      }
+      this.dispatch(setGlobalCtxCurrentChatDataEmpty());
     }
   }
 
@@ -567,21 +566,17 @@ export class ReConnectChat {
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
         const chatInfo = new MailChatSocketHandler(this.chatUserInfo, this, this.dispatch);
-        console.log("dd", chatInfo);
-        this.globalAction &&
-          this.globalAction.dispatchChatInfo &&
-          this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+        this.dispatch(setGlobalCtxChatInfoInit(chatInfo));
       } else {
         if (this.isRetryFinish == false) {
-          this.globalAction.setAlertStatus &&
-            this.globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
-              callback: () => {
-                window.location.href = "/";
-              },
-            });
+          this.dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
+            callback: () => {
+              window.location.href = "/";
+            },
+          }));
         }
         this.isRetryFinish = true;
       }

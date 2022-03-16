@@ -10,7 +10,7 @@ import Navigator from './pages/navigator'
 
 import Popup from 'components/ui/popup'
 import Modal from "common/modal";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 
 // import Main from 'pages/main'
 //----- dalla -----//
@@ -139,7 +139,6 @@ const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 
 const Router = () => {
-  const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   return (
     <React.Suspense

@@ -30,9 +30,9 @@ export class ClipPlayerHandler {
   public initSave60seconds: () => void;
   private dispatch : any;
 
-  constructor(info: any) {
-    this.globalState = info.globalState;
-    this.dispatch = info.dispatch;
+  constructor({info, dispatch, globalState}) {
+    this.globalState = globalState;
+    this.dispatch = dispatch;
     this.clipNo = info.clipNo;
     this.clipAudioTag = document.createElement("audio");
     this.clipAudioTag.muted = false;

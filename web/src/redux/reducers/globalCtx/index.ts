@@ -641,11 +641,8 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, clipPlayer: null}
   },
   "global/ctx/CLIP_INFO_ADD": (state, {payload}) => {
-    if (state.clipInfo) {
-      return {...state, clipInfo: {...state.clipInfo, ...payload}}
-    } else {
-      return {...state, clipInfo: payload}
-    }
+    // debugger
+    return {...state, clipInfo: {...state.clipInfo, ...payload}}
   },
   "global/ctx/CLIP_INFO_EMPTY": (state) => {
     return {...state, clipInfo: null}

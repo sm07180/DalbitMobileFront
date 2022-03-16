@@ -62,7 +62,7 @@ export type RouletteHistoryType = {
   totalCnt: number
 }
 export type BooleanDataType = {
-  [key: string]: any
+  [key: string]: boolean
 }
 export type AnyDataType = {
   [key: string]: any

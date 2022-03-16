@@ -5,7 +5,7 @@ import rootSagas from './sagas/index';
 
 const bindMiddleware = (middleware) => {
   //if (process.env.DEV_TOOL === 'true') {
-  const { composeWithDevTools } = require('redux-devtools-extension');
+  const { composeWithDevTools } = require('@redux-devtools/extension');
   return composeWithDevTools(applyMiddleware(...middleware));
   // }
   // return applyMiddleware(...middleware);

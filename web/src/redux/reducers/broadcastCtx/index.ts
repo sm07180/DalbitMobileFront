@@ -215,7 +215,7 @@ const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initia
     return {...state, commonBadgeList: payload}
   },
   "broadcast/ctx/SET_BOOST": (state, {payload}) => {
-    return {...state, boost: payload}
+    return {...state, boost: {boost:payload}}
   },
   "broadcast/ctx/SET_CHAT_FREEZE": (state, {payload}) => {
     return {...state, chatFreeze: payload}

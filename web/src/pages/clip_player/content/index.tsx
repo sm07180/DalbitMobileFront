@@ -42,11 +42,12 @@ export default function ClipContent() {
   let newClipPlayer = clipPlayer;
 
   const clipPlay = async () => {
+
     const { result, message, data } = await postClipPlay({
       clipNo: clipNo,
     });
     if (result === "success") {
-      createPlayer({...data, dispatch:dispatch, globalState:globalState}, "firstStart");
+      createPlayer(data, "firstStart");
       sessionStorage.setItem("clip", JSON.stringify(data));
       if (!clipInfo?.clipNo || (clipInfo?.clipNo !== data.clipNo && historyState === "firstJoin")) {
         updatePlayList(data);
@@ -63,7 +64,7 @@ export default function ClipContent() {
 
   const createPlayer = (data: any, type: string) => {
     if (clipPlayer === null) {
-      newClipPlayer = new ClipPlayerHandler(data);
+      newClipPlayer = new ClipPlayerHandler({info:data, dispatch, globalState});
       if (type !== "restart")
         dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"normal"}));
     }
@@ -188,7 +189,7 @@ export default function ClipContent() {
     }
     let data = JSON.parse(sessionStorage.getItem("clip")!);
     if (clipNo === data.clipNo) {
-      createPlayer({...data, dispatch:dispatch, globalState:globalState}, "restart");
+      createPlayer(data, "restart");
     } else {
       clipPlay();
     }
@@ -248,7 +249,6 @@ export default function ClipContent() {
       clip60secondsConfirm();
     }
   }, [clipInfo]);
-
   return (
     <>
       {playState && globalState.clipInfo && (

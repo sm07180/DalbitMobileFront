@@ -82,7 +82,9 @@ const MainPage = () => {
   const common = useSelector(state => state.common);
 
   // page 조회 API
-  const fetchMainInfo = () => dispatch(setMainData());
+  const fetchMainInfo = () => {
+    dispatch(setMainData());
+  }
 
   /* 라이브 리스트 */
   const fetchLiveInfo = useCallback((pageNo) => {
@@ -132,7 +134,7 @@ const MainPage = () => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
     const overNode = overRef.current
     const headerNode = headerRef.current
-    
+
     if (window.scrollY >= 1) {
       setScrollOn(true)
     } else {
@@ -550,4 +552,3 @@ const MainPage = () => {
 }
 
 export default MainPage
- 

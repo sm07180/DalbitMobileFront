@@ -22,6 +22,41 @@ import {
 } from "../../redux/types/voteType";
 
 import {isDesktop} from "../../lib/agent";
+import {
+  setBroadcastCtxBoost,
+  setBroadcastCtxChatAnimationStart,
+  setBroadcastCtxChatCount, setBroadcastCtxChatFreeze,
+  setBroadcastCtxComboAnimationStart, setBroadcastCtxCommonBadgeList,
+  setBroadcastCtxExtendTime,
+  setBroadcastCtxMiniGameInfo,
+  setBroadcastCtxMiniGameResult, setBroadcastCtxNoticeState, setBroadcastCtxRealTimeValueSetLikeFanRank,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxRoomInfoBoosterOff,
+  setBroadcastCtxRoomInfoBoosterOn,
+  setBroadcastCtxRoomInfoGrantRefresh,
+  setBroadcastCtxRoomInfoIsListenerUpdate,
+  setBroadcastCtxRoomInfoMoonCheck,
+  setBroadcastCtxRoomInfoNewFanCnt,
+  setBroadcastCtxRoomInfoRefresh,
+  setBroadcastCtxRoomInfoSettingUpdate, setBroadcastCtxStoryState,
+  setBroadcastCtxUseBoost, setBroadcastCtxUserCount2,
+  setBroadcastCtxUserMemNo
+} from "../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus, setGlobalCtxChatInfoInit,
+  setGlobalCtxCurrentChatDataEmpty, setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxIsShowPlayer, setGlobalCtxMailBlockUser,
+  setGlobalCtxMoveToAlert,
+  setGlobalCtxRealtimeBroadStatus,
+  setGlobalCtxRtcInfoEmpty,
+  setGlobalCtxSetToastStatus, setGlobalCtxSplashData, setGlobalCtxTooltipStatus
+} from "../../redux/actions/globalCtx";
+import {
+  setMailBoxChatListUpdate, setMailBoxImgSliderAddDeleteImg,
+  setMailBoxIsMailBoxNew,
+  setMailBoxPushChatInfo,
+  setMailBoxUserCount
+} from "../../redux/actions/mailBox";
 
 // lib
 const socketClusterClient = require("socketcluster-client");
@@ -241,10 +276,7 @@ export class ChatSocketHandler {
         }
 
         msgListWrapElem.appendChild(msgElem);
-
-        if (this.broadcastAction !== null && this.broadcastAction.setChatCount) {
-          this.broadcastAction.setChatCount(this.chatCnt);
-        }
+        this.dispatch(setBroadcastCtxChatCount(this.chatCnt));
       }
     }
     }catch(e){
@@ -339,9 +371,7 @@ export class ChatSocketHandler {
             this.reConnect.setPrivateChannelNo(this.privateChannelNo);
           }
 
-          if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-            this.globalAction.dispatchCurrentChatData({ type: "empty" });
-          }
+          this.dispatch(setGlobalCtxCurrentChatDataEmpty());
         }
       }
     };
@@ -380,9 +410,7 @@ export class ChatSocketHandler {
   }
 
   privateChannelDisconnect() {
-    if (this.globalAction && this.globalAction.setIsShowPlayer) {
-      this.globalAction.setIsShowPlayer(false);
-    }
+    this.dispatch(setGlobalCtxIsShowPlayer(false));
 
     if (this.privateChannelHandle) {
       //console.log(`@@chat socket ...`, this.privateChannelHandle)
@@ -392,9 +420,7 @@ export class ChatSocketHandler {
       this.privateChannelNo = "";
       this.reConnect.setPrivateChannelNo(this.privateChannelNo);
 
-      if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-        this.globalAction.dispatchCurrentChatData({ type: "empty" });
-      }
+      this.dispatch(setGlobalCtxCurrentChatDataEmpty());
     }
   }
 
@@ -425,55 +451,47 @@ export class ChatSocketHandler {
           switch (cmd) {
             case "reqSocketPush": {
               const { reqSocketPush } = data;
-              if (this.globalAction) {
-                this.globalAction.setRealtimeBroadStatus!({
-                  status: true,
-                  type: "broadAlarm",
-                  message: `${reqSocketPush.msg}`,
-                  roomNo: `${reqSocketPush.roomNo}`,
-                  profImg: `${reqSocketPush.profImg.thumb62x62}`,
-                });
-              }
+              this.dispatch(setGlobalCtxRealtimeBroadStatus({
+                status: true,
+                type: "broadAlarm",
+                message: `${reqSocketPush.msg}`,
+                roomNo: `${reqSocketPush.roomNo}`,
+                profImg: `${reqSocketPush.profImg.thumb62x62}`,
+              }))
               return null;
             }
             case "mailBoxPubChat": {
               const { mailBoxPubChat } = data;
-              if (this.mailboxAction !== null) {
-                this.mailboxAction.setIsMailboxNew(true);
-                this.mailboxAction.dispathChatList({ type: "update", data: mailBoxPubChat });
-              }
-              if (this.globalAction) {
-                this.globalAction.setRealtimeBroadStatus!({
-                  status: true,
-                  type: "MailAlarm",
-                  nickNm: `${mailBoxPubChat.nickNm}`,
-                  message: `${mailBoxPubChat.msg}`,
-                  roomNo: `${mailBoxPubChat.chatNo}`,
-                  profImg: `${mailBoxPubChat.profImg.thumb62x62}`,
-                  time: `${mailBoxPubChat.sendDt}`,
-                  memNo: `${mailBoxPubChat.memNo}`,
-                });
-              }
+              this.dispatch(setMailBoxIsMailBoxNew(true));
+              this.dispatch(setMailBoxChatListUpdate(mailBoxPubChat));
+              this.dispatch(setGlobalCtxRealtimeBroadStatus({
+                status: true,
+                type: "MailAlarm",
+                nickNm: `${mailBoxPubChat.nickNm}`,
+                message: `${mailBoxPubChat.msg}`,
+                roomNo: `${mailBoxPubChat.chatNo}`,
+                profImg: `${mailBoxPubChat.profImg.thumb62x62}`,
+                time: `${mailBoxPubChat.sendDt}`,
+                memNo: `${mailBoxPubChat.memNo}`,
+              }))
               return null;
             }
             case "reqMemBlack": {
               const { reqMemBlack } = data;
               const { memNo, blackMemNo } = reqMemBlack;
-              if (this.globalAction) {
-                this.globalAction.setMailBlockUser!({
-                  memNo: memNo,
-                  blackMemNo: blackMemNo,
-                });
-              }
+              this.dispatch(setGlobalCtxMailBlockUser({
+                memNo: memNo,
+                blackMemNo: blackMemNo,
+              }))
               return null;
             }
             case "reqChangeItem": {
               getItems().then((resolve) => {
-                if (this.globalAction && this.globalAction.setSplashData && this.splashData !== null) {
-                  this.globalAction.setSplashData({
+                if (this.splashData !== null) {
+                  this.dispatch(setGlobalCtxSplashData({
                     ...this.splashData,
                     items: [...resolve.data.items],
-                  });
+                  }))
                 }
               });
               break;
@@ -504,24 +522,17 @@ export class ChatSocketHandler {
                 case "mailBoxConnect": {
                   const { count } = data;
                   const { userCount, maxUserCount } = count;
-                  if (this.mailboxAction !== null) {
-                    if (userCount > 1) {
-                      this.mailboxAction.setUserCount(true);
-                    }
+                  if (userCount > 1) {
+                    this.dispatch(setMailBoxUserCount(true));
                   }
                   return null;
                 }
                 case "mailBoxChat": {
-                  if (this.mailboxAction !== null) {
-                    this.mailboxAction.setPushChatInfo({
-                      ...mailBoxChat,
-                    });
-                  }
+                  this.dispatch(setMailBoxPushChatInfo(mailBoxChat));
                   return null;
                 }
                 case "reqMailBoxImageChatDelete": {
-                  this.mailboxAction.dispathImgSliderInfo &&
-                    this.mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: reqMailBoxImageChatDelete.msgIdx });
+                  this.dispatch(setMailBoxImgSliderAddDeleteImg(reqMailBoxImageChatDelete.msgIdx));
                   return null;
                 }
               }
@@ -543,20 +554,15 @@ export class ChatSocketHandler {
                     if (
                       this.rtcInfo &&
                       this.rtcInfo !== null &&
-                      this.globalAction &&
-                      this.globalAction.setAlertStatus &&
-                      this.globalAction.dispatchRtcInfo &&
-                      this.globalAction.dispatchGuestInfo &&
                       this.history
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
                       if (this.guestInfo && this.guestInfo !== null) {
                         this.guestInfo.stop && this.guestInfo.stop();
-                        this.globalAction.dispatchGuestInfo({ type: "EMPTY" });
+                        this.dispatch(setGlobalCtxGuestInfoEmpty());
                       }
-
-                      this.globalAction.dispatchRtcInfo({ type: "empty" });
+                      this.dispatch(setGlobalCtxRtcInfoEmpty());
 
                       if (
                         this.guestAction &&
@@ -569,7 +575,7 @@ export class ChatSocketHandler {
                         this.guestAction.setGuestConnectStatus(false);
                       }
 
-                      this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                      this.dispatch(setGlobalCtxIsShowPlayer(false));
                       rtcSessionClear();
 
                       if (this.history.location.pathname.match("/broadcast/")) {
@@ -584,10 +590,10 @@ export class ChatSocketHandler {
                         }
                       } else {
                         setTimeout(() => {
-                          this.globalAction.setAlertStatus({
+                          this.dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             content: "방송이 종료되었습니다.",
-                          });
+                          }));
                         }, 600);
                       }
                       // setTimeout(() => {
@@ -603,15 +609,12 @@ export class ChatSocketHandler {
                     }
                     if (
                       this.rtcInfo !== null &&
-                      this.globalAction &&
-                      this.globalAction.setAlertStatus &&
-                      this.globalAction.dispatchRtcInfo &&
                       this.history
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
-                      this.globalAction.dispatchRtcInfo({ type: "empty" });
-                      this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                      this.dispatch(setGlobalCtxRtcInfoEmpty());
+                      this.dispatch(setGlobalCtxIsShowPlayer(false));
                       rtcSessionClear();
 
                       if (this.history.location.pathname.match("/broadcast/")) {
@@ -626,15 +629,15 @@ export class ChatSocketHandler {
                         }
                       } else {
                         setTimeout(() => {
-                          this.globalAction.setAlertStatus({
+                          this.dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             content: "방송이 종료되었습니다.",
-                          });
+                          }));
                         }, 600);
                       }
 
                       // setTimeout(() => {
-                      //   this.globalAction.setAlertStatus({
+                      //   this.dispatch(setGlobalCtxAlertStatus({
                       //     status: true,
                       //     content: "방송이 종료되었습니다.",
                       //   });
@@ -670,8 +673,8 @@ export class ChatSocketHandler {
                       }, 4000);
                     }
 
-                    if (this.roomOwner === true && this.broadcastAction !== null && this.broadcastAction.setExtendTime) {
-                      this.broadcastAction.setExtendTime(true);
+                    if (this.roomOwner === true) {
+                      this.dispatch(setBroadcastCtxExtendTime(true));
                     }
 
                     return null;
@@ -682,21 +685,20 @@ export class ChatSocketHandler {
 
                     const { msg, type } = recvMsg;
                     if (type === "system") {
-                      if (this.globalAction !== null && this.globalAction.setTooltipStatus) {
-                        this.globalAction.setTooltipStatus({
-                          status: true,
-                          message: msg,
-                          type: "system",
-                        });
-                      }
+
+                      this.dispatch(setGlobalCtxTooltipStatus({
+                        status: true,
+                        message: msg,
+                        type: "system",
+                      }));
 
                       setTimeout(() => {
-                        this.globalAction.setTooltipStatus!({
+                        this.dispatch(setGlobalCtxTooltipStatus({
                           status: false,
                           message: "",
                           style: {},
                           type: "",
-                        });
+                        }));
                       }, 4000);
 
                       return null;
@@ -801,10 +803,10 @@ export class ChatSocketHandler {
                         (!this.roomOwner && lottieData?.soundFileUrl && this.userSettingObj?.normalSound) )) {
                       if ((lottieData?.ttsUseYn === 'y' && isTTSItem && this.roomInfo?.djTtsSound === false) ||
                           (lottieData?.soundFileUrl && this.roomInfo?.djNormalSound === false)) {
-                        this.globalAction?.callSetToastStatus && this.globalAction.callSetToastStatus({
+                        this.dispatch(setGlobalCtxSetToastStatus({
                           status: true,
                           message: 'DJ설정으로 소리가 나오지 않습니다'
-                        });
+                        }));
                       }
                     }
                     // tts : 방장설정이 off이면 재생 x, on이면 청취자 개인설정에 따라 재생
@@ -817,10 +819,10 @@ export class ChatSocketHandler {
                     }
                     if(memNo === this.chatUserInfo.memNo && isTTSItem && (reqGiftImg.ttsData && reqGiftImg.ttsData.error)) {
                       console.log('chat_socket : ', reqGiftImg.ttsData.error);
-                      this.globalAction.callSetToastStatus({
+                      this.dispatch(setGlobalCtxSetToastStatus({
                         status: true,
                         message: "TTS 목소리 재생을 실패했습니다.",
-                      });
+                      }));
                     }
 
                     if (lottieData && isSecret === false) {
@@ -828,46 +830,35 @@ export class ChatSocketHandler {
                       const isCombo = type === "sticker";
 
                       if (isCombo) {
-                        if (this.broadcastAction !== null && this.broadcastAction.dispatchComboAnimation) {
-                          this.broadcastAction.dispatchComboAnimation({
-                            type: "start",
-                            data: {
-                              url: webpUrl || lottieUrl,
-                              repeatCnt,
-                              duration: duration * 1000,
-                              itemNo,
-                              memNo,
-                              userImage,
-                              userNickname,
-                            },
-                          });
-                        }
+                        this.dispatch(setBroadcastCtxComboAnimationStart({
+                            url: webpUrl || lottieUrl,
+                            repeatCnt,
+                            duration: duration * 1000,
+                            itemNo,
+                            memNo,
+                            userImage,
+                            userNickname,
+                        }));
                       } else {
-                        if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-
-                          this.broadcastAction.dispatchChatAnimation({
-                            type: "start",
-                            data: {
-                              url: lottieUrl,
-                              width,
-                              height,
-                              duration: duration * 1000 * repeatCnt,
-                              location,
-                              soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
-                              count,
-                              isCombo,
-                              userNickname,
-                              userImage,
-                              webpUrl,
-                              soundFileUrl : isSoundItem? soundFileUrl : '',
-                              itemNo,
-                              memNo,
-                              ttsItemInfo,
-                              isTTSItem,
-                              // repeatCnt,
-                            },
-                          });
-                        }
+                        this.dispatch(setBroadcastCtxChatAnimationStart({
+                          url: lottieUrl,
+                          width,
+                          height,
+                          duration: duration * 1000 * repeatCnt,
+                          location,
+                          soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
+                          count,
+                          isCombo,
+                          userNickname,
+                          userImage,
+                          webpUrl,
+                          soundFileUrl : isSoundItem? soundFileUrl : '',
+                          itemNo,
+                          memNo,
+                          ttsItemInfo,
+                          isTTSItem,
+                          // repeatCnt,
+                        }))
                       }
                     }
 
@@ -963,23 +954,6 @@ export class ChatSocketHandler {
                                               }
                                             }
                                           }
-
-                                          // if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                                          //   if (this.roomOwner === false) {
-                                          //     if (itemType === "items") {
-                                          //       this.broadcastLayerAction
-
-                                          //       this.broadcastAction.setGiftState &&
-                                          //         this.broadcastAction.setGiftState({
-                                          //           display: true,
-                                          //           itemNo: data.reqGiftImg.itemNo,
-                                          //           cnt: data.reqGiftImg.itemCnt,
-                                          //         });
-                                          //     } else if (itemType === "boost") {
-                                          //       this.broadcastAction.setRightTabType(tabType.BOOST);
-                                          //     }
-                                          //   }
-                                          // }
                                         },
                                       },
                                     ],
@@ -1028,28 +1002,23 @@ export class ChatSocketHandler {
                     if(enterAni.indexOf('NULL') > -1){
                       return null;
                     }
-                    if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-                      this.broadcastAction.dispatchChatAnimation({
-                        type: "start",
-                        data: {
-                          url: "",
-                          width: 300,
-                          height: 200,
-                          duration: 6 * 1000,
-                          location: "topRight",
-                          count: 1,
-                          isCombo: false,
-                          userNickname: nk,
-                          userImage: image,
-                          webpUrl: enterAni,
-                          backgroundImg: enterBgImg,
-                          backgroundColor: [startColor, endColor],
-                          soundFileUrl: "",
-                          ttsItemInfo: {},
-                          isTTSItem: false,
-                        },
-                      });
-                    }
+                    this.dispatch(setBroadcastCtxChatAnimationStart({
+                      url: "",
+                      width: 300,
+                      height: 200,
+                      duration: 6 * 1000,
+                      location: "topRight",
+                      count: 1,
+                      isCombo: false,
+                      userNickname: nk,
+                      userImage: image,
+                      webpUrl: enterAni,
+                      backgroundImg: enterBgImg,
+                      backgroundColor: [startColor, endColor],
+                      soundFileUrl: "",
+                      ttsItemInfo: {},
+                      isTTSItem: false,
+                    }))
 
                     return null;
                   }
@@ -1061,22 +1030,14 @@ export class ChatSocketHandler {
                     return null;
                   }
                   case "reqBooster": {
-                    if (this.broadcastAction) {
-                      this.broadcastAction.dispatchRoomInfo({ type: "boosterOn" });
-                      this.broadcastAction.setBoost({
-                        boost: true,
-                      });
-                    }
+                    this.dispatch(setBroadcastCtxRoomInfoBoosterOn());
+                    this.dispatch(setBroadcastCtxBoost(true));
 
                     return null;
                   }
                   case "reqBoosterEnd": {
-                    if (this.broadcastAction) {
-                      this.broadcastAction.dispatchRoomInfo({ type: "boosterOff" });
-                      this.broadcastAction.setBoost({
-                        boost: false,
-                      });
-                    }
+                    this.dispatch(setBroadcastCtxRoomInfoBoosterOff());
+                    this.dispatch(setBroadcastCtxBoost(false));
                     return null;
                   }
                   case "reqBcStart": {
@@ -1090,27 +1051,15 @@ export class ChatSocketHandler {
                   }
                   case "reqChangeCount": {
                     const { reqChangeCount } = data;
-                    if (this.broadcastAction !== null && this.broadcastAction.dispatchRealTimeValue) {
-                      const { fanRank, likes, rank, newFanCnt } = reqChangeCount;
-                      this.broadcastAction.dispatchRealTimeValue({
-                        type: "setLikeFanRank",
-                        data: { fanRank, likes, rank, newFanCnt },
-                      });
-
-                      if (this.broadcastAction.dispatchRoomInfo) {
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "newFanCnt",
-                          data: newFanCnt,
-                        });
-                      }
-                    }
+                    const { fanRank, likes, rank, newFanCnt } = reqChangeCount;
+                    this.dispatch(setBroadcastCtxRealTimeValueSetLikeFanRank({ fanRank, likes, rank, newFanCnt }))
+                    this.dispatch(setBroadcastCtxRoomInfoNewFanCnt(newFanCnt));
                     return null;
                   }
                   //kjo 방송방 수정하기 수정
                   case "reqRoomChangeInfo": {
                     const { reqRoomChangeInfo } = data;
-
-                    this.broadcastAction.dispatchRoomInfo({ type: "broadcastSettingUpdate", data: reqRoomChangeInfo });
+                    this.dispatch(setBroadcastCtxRoomInfoSettingUpdate(reqRoomChangeInfo));
                     return null;
                   }
                   case "reqGoodFirst": {
@@ -1126,28 +1075,22 @@ export class ChatSocketHandler {
                     const lottieData = reqGood.goodRank === 0 ? particles[particleIdx] : loveGood[reqGood.goodRank - 1];
 
                     const { webpUrl, duration, width, height, location, type } = lottieData;
-
-                    if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-                      this.broadcastAction.dispatchChatAnimation({
-                        type: "start",
-                        data: {
-                          webpUrl: webpUrl,
-                          url: "",
-                          width,
-                          height,
-                          duration: duration * 1000,
-                          location,
-                          soundFileUrl: "",
-                          count: 1,
-                          isCombo: false,
-                          userNickname: "'",
-                          userImage: "",
-                          backgroundImg: "",
-                          ttsItemInfo: {},
-                          isTTSItem: false,
-                        },
-                      });
-                    }
+                    this.dispatch(setBroadcastCtxChatAnimationStart({
+                      webpUrl: webpUrl,
+                      url: "",
+                      width,
+                      height,
+                      duration: duration * 1000,
+                      location,
+                      soundFileUrl: "",
+                      count: 1,
+                      isCombo: false,
+                      userNickname: "'",
+                      userImage: "",
+                      backgroundImg: "",
+                      ttsItemInfo: {},
+                      isTTSItem: false,
+                    }))
 
                     return ReqGood({
                       type: "div",
@@ -1157,21 +1100,15 @@ export class ChatSocketHandler {
                   }
 
                   case "reqStory": {
-                    this.broadcastAction.setStoryState(1);
+                    this.dispatch(setBroadcastCtxStoryState(1));
                   }
                   case "reqGrant": {
                     const { recvMsg } = data;
-                    this.broadcastAction.dispatchRoomInfo({
-                      type: "grantRefresh",
-                      data: {
+                    this.dispatch(setBroadcastCtxRoomInfoGrantRefresh({
                         auth: parseInt(recvMsg.msg),
                         memNo: data.chat.memNo,
-                      },
-                    });
-                    this.broadcastAction.dispatchRoomInfo({
-                      type: "isListenerUpdate",
-                      data: {},
-                    });
+                    }));
+                    this.dispatch(setBroadcastCtxRoomInfoIsListenerUpdate());
                     return null;
                   }
                   case "reqKickOut": {
@@ -1180,22 +1117,20 @@ export class ChatSocketHandler {
 
                     if (
                       this.roomOwner === false &&
-                      data.reqKickOut.revMemNo === this.chatUserInfo.memNo &&
-                      this.globalAction &&
-                      this.globalAction.setAlertStatus
+                      data.reqKickOut.revMemNo === this.chatUserInfo.memNo
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
-                      this.globalAction.dispatchRtcInfo({ type: "empty" });
-                      this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                      this.dispatch(setGlobalCtxRtcInfoEmpty());
+                      this.dispatch(setGlobalCtxIsShowPlayer(false));
                       rtcSessionClear();
-                      this.globalAction.setMoveToAlert({
+                      this.dispatch(setGlobalCtxMoveToAlert({
                         dest: "/",
                         alertStatus: {
                           status: true,
                           content: data.recvMsg.msg,
                         }
-                      })
+                      }))
                     }
 
                     if (auth === AuthType.DJ || auth === AuthType.MANAGER) {
@@ -1226,9 +1161,7 @@ export class ChatSocketHandler {
                     return null;
                   }
                   case "reqNotice": {
-                    if (this.broadcastAction !== null && this.broadcastAction.setNoticeState) {
-                      this.broadcastAction.setNoticeState(1);
-                    }
+                    this.dispatch(setBroadcastCtxNoticeState(1));
 
                     return null;
                   }
@@ -1255,14 +1188,9 @@ export class ChatSocketHandler {
                   case "connect": {
                     const { count, user, recvMsg } = data;
 
-                    if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
-                      if (count) {
-                        const { userCount, historyCount } = count;
-
-                        this.broadcastAction.setUserCount((prev) => {
-                          return { ...prev, current: userCount, history: historyCount };
-                        });
-                      }
+                    if (count) {
+                      const { userCount, historyCount } = count;
+                      this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
                     }
                     if (recvMsg.msg !== "") {
                       // if (user.auth === AuthType.MANAGER || this.roomOwner === true) {
@@ -1291,14 +1219,10 @@ export class ChatSocketHandler {
                   //kjo 방송방 bjReConnect 추가
                   case "bjReconnect": {
                     const { count, user, recvMsg } = data;
-                    if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
-                      if (count) {
-                        const { userCount, historyCount } = count;
-                        if (userCount >= 0 && historyCount >= 0) {
-                          this.broadcastAction.setUserCount((prev) => {
-                            return { ...prev, current: userCount, history: historyCount };
-                          });
-                        }
+                    if (count) {
+                      const { userCount, historyCount } = count;
+                      if (userCount >= 0 && historyCount >= 0) {
+                        this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
                       }
                     }
 
@@ -1307,14 +1231,10 @@ export class ChatSocketHandler {
 
                   case "disconnect": {
                     const { count, user, recvMsg } = data;
-                    if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
-                      if (count) {
-                        const { userCount, historyCount } = count;
-                        if (userCount >= 0 && historyCount >= 0) {
-                          this.broadcastAction.setUserCount((prev) => {
-                            return { ...prev, current: userCount, history: historyCount };
-                          });
-                        }
+                    if (count) {
+                      const { userCount, historyCount } = count;
+                      if (userCount >= 0 && historyCount >= 0) {
+                        this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
                       }
                     }
 
@@ -1481,30 +1401,26 @@ export class ChatSocketHandler {
                       // 초대 거절
                       case 4:
                         if (this.roomOwner === true) {
-                          if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
-                            this.globalAction.callSetToastStatus({
-                              status: true,
-                              message: "게스트 초대가 거절당했습니다.",
+                          this.dispatch(setGlobalCtxSetToastStatus({
+                            status: true,
+                            message: "게스트 초대가 거절당했습니다.",
+                          }));
+                          if (this.guestAction !== null && this.guestAction.dispatchStatus) {
+                            this.guestAction.dispatchStatus({
+                              type: "reject",
                             });
-                            if (this.guestAction !== null && this.guestAction.dispatchStatus) {
-                              this.guestAction.dispatchStatus({
-                                type: "reject",
-                              });
-                            }
                           }
                         }
 
                         if (this.chatUserInfo === user.memNo) {
-                          if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
-                            this.globalAction.callSetToastStatus({
-                              status: true,
-                              message: "게스트 초대를 거절했습니다.",
+                          this.dispatch(setGlobalCtxSetToastStatus({
+                            status: true,
+                            message: "게스트 초대를 거절했습니다.",
+                          }));
+                          if (this.guestAction !== null && this.guestAction.dispatchStatus) {
+                            this.guestAction.dispatchStatus({
+                              type: "reject",
                             });
-                            if (this.guestAction !== null && this.guestAction.dispatchStatus) {
-                              this.guestAction.dispatchStatus({
-                                type: "reject",
-                              });
-                            }
                           }
                         }
                         return null;
@@ -1555,10 +1471,7 @@ export class ChatSocketHandler {
                           });
                         }
 
-                        this.broadcastAction.dispatchRoomInfo &&
-                          this.broadcastAction.dispatchRoomInfo({
-                            type: "refresh",
-                          });
+                        this.dispatch(setBroadcastCtxRoomInfoRefresh());
 
                         return NormalMsgFormat({
                           type: "div",
@@ -1656,31 +1569,19 @@ export class ChatSocketHandler {
                   case "reqRankingDj": {
                     const { user } = data;
                     const { commonBadgeList } = user;
-                    if (this.broadcastAction !== null && this.broadcastAction.setCommonBadgeList) {
-                      this.broadcastAction.setCommonBadgeList(commonBadgeList);
-                    }
+                    this.dispatch(setBroadcastCtxCommonBadgeList(commonBadgeList))
                     return null;
                   }
 
                   case "reqRoomLock": {
                     const { recvMsg } = data;
                     const jsonObj = JSON.parse(recvMsg.msg);
-                    if (this.broadcastAction !== null && this.broadcastAction.setChatFreeze) {
-                      this.broadcastAction.setChatFreeze(jsonObj.isFreeze);
-                      this.setChatFreeze(jsonObj.isFreeze);
-                    }
-                    if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
-                      this.globalAction.callSetToastStatus({
-                        status: true,
-                        message: jsonObj.msg,
-                      });
-                    }
-                    // if (this.broadcastAction !== null && this.broadcastAction.dispatchRoomInfo) {
-                    //   this.broadcastAction.dispatchRoomInfo({
-                    //     type: "freeze",
-                    //     data: jsonObj.isFreeze,
-                    //   });
-                    // }
+                    this.dispatch(setBroadcastCtxChatFreeze(jsonObj.isFreeze));
+                    this.setChatFreeze(jsonObj.isFreeze);
+                    this.dispatch(setGlobalCtxSetToastStatus({
+                      status: true,
+                      message: jsonObj.msg,
+                    }));
 
                     return null;
                   }
@@ -1689,58 +1590,45 @@ export class ChatSocketHandler {
                     const { moonCheck } = data;
                     const { dlgTitle, dlgText } = moonCheck;
                     if (moonCheck.moonStep === 4) {
-                      if (this.broadcastAction !== null && this.broadcastAction.dispatchRoomInfo) {
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "moonCheck",
-                          data: { ...moonCheck, moonStepAniFileNm: "", step: moonCheck.moonStep },
-                        });
-                      }
+                      this.dispatch(setBroadcastCtxRoomInfoMoonCheck({
+                        ...moonCheck, moonStepAniFileNm: "", step: moonCheck.moonStep
+                      }));
 
-                      if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
-                        setTimeout(() => {
-                          this.broadcastAction.dispatchChatAnimation({
-                            type: "start",
-                            data: {
-                              url: "",
-                              width: "",
-                              height: "",
-                              duration: moonCheck.aniDuration ? moonCheck.aniDuration * 1000 : 6000,
-                              location: "topLeft",
-                              count: 1,
-                              isCombo: false,
-                              userNickname: "'",
-                              userImage: "",
-                              webpUrl: moonCheck.moonStepAniFileNm,
-                              soundFileUrl: "",
-                              ttsItemInfo: {},
-                              isTTSItem: false,
+                      setTimeout(() => {
+                        this.dispatch(setBroadcastCtxChatAnimationStart({
+                          url: "",
+                          width: "",
+                          height: "",
+                          duration: moonCheck.aniDuration ? moonCheck.aniDuration * 1000 : 6000,
+                          location: "topLeft",
+                          count: 1,
+                          isCombo: false,
+                          userNickname: "'",
+                          userImage: "",
+                          webpUrl: moonCheck.moonStepAniFileNm,
+                          soundFileUrl: "",
+                          ttsItemInfo: {},
+                          isTTSItem: false,
+                        }))
+                      }, 1000);
+
+                      setTimeout(() => {
+                        if (
+                          this.broadcastLayerAction &&
+                          this.broadcastLayerAction !== null &&
+                          this.broadcastLayerAction.dispatchDimLayer
+                        ) {
+                          this.broadcastLayerAction.dispatchDimLayer({
+                            type: "FULL_MOON",
+                            others: {
+                              dlgTitle,
+                              dlgText,
                             },
                           });
-                        }, 1000);
-
-                        setTimeout(() => {
-                          if (
-                            this.broadcastLayerAction &&
-                            this.broadcastLayerAction !== null &&
-                            this.broadcastLayerAction.dispatchDimLayer
-                          ) {
-                            this.broadcastLayerAction.dispatchDimLayer({
-                              type: "FULL_MOON",
-                              others: {
-                                dlgTitle,
-                                dlgText,
-                              },
-                            });
-                          }
-                        }, 1200 + moonCheck.aniDuration * 1000);
-                      }
+                        }
+                      }, 1200 + moonCheck.aniDuration * 1000);
                     } else {
-                      if (this.broadcastAction !== null && this.broadcastAction.dispatchRoomInfo) {
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "moonCheck",
-                          data: { ...moonCheck },
-                        });
-                      }
+                      this.dispatch(setBroadcastCtxRoomInfoMoonCheck(moonCheck));
                     }
 
                     return null;
@@ -1797,35 +1685,27 @@ export class ChatSocketHandler {
 
                   case "reqMiniGameAdd": {
                     const { reqMiniGameAdd } = data;
-
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: true,
-                        gameNo: MiniGameType.ROLUTTE,
-                        ...reqMiniGameAdd,
-                      });
+                    this.dispatch(setBroadcastCtxMiniGameInfo({
+                      status: true,
+                      gameNo: MiniGameType.ROLUTTE,
+                      ...reqMiniGameAdd,
+                    }))
 
                     return null;
                   }
 
                   case "reqMiniGameEdit": {
                     const { reqMiniGameEdit } = data;
+                    this.dispatch(setBroadcastCtxMiniGameInfo({
+                      status: true,
+                      gameNo: MiniGameType.ROLUTTE,
+                      ...reqMiniGameEdit,
+                    }))
 
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: true,
-                        gameNo: MiniGameType.ROLUTTE,
-                        ...reqMiniGameEdit,
-                      });
-
-                    this.globalAction !== null &&
-                      this.globalAction.callSetToastStatus &&
-                      this.globalAction.callSetToastStatus({
-                        status: true,
-                        message: reqMiniGameEdit.msg,
-                      });
+                    this.dispatch(setGlobalCtxSetToastStatus({
+                      status: true,
+                      message: reqMiniGameEdit.msg,
+                    }));
 
                     return null;
                   }
@@ -1839,13 +1719,11 @@ export class ChatSocketHandler {
                         type: "ROULETTE",
                       });
 
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameResult &&
-                      this.broadcastAction.setMiniGameResult({
-                        status: true,
-                        gameNo: MiniGameType.ROLUTTE,
-                        ...reqMiniGameStart,
-                      });
+                    this.dispatch(setBroadcastCtxMiniGameResult({
+                      status: true,
+                      gameNo: MiniGameType.ROLUTTE,
+                      ...reqMiniGameStart,
+                    }));
 
                     setTimeout(() => {
                       this.addMsgElement(
@@ -1922,21 +1800,20 @@ export class ChatSocketHandler {
                   case "reqMiniGameEnd": {
                     const { reqMiniGameEnd } = data;
 
-                    this.broadcastAction !== null &&
-                      this.broadcastAction.setMiniGameInfo &&
-                      this.broadcastAction.setMiniGameInfo({
-                        status: false,
-                      });
+                    this.dispatch(setBroadcastCtxMiniGameInfo({
+                      status: false,
+                    }));
+
 
                     return null;
                   }
                   case "reqInsVote": {
                     // 투표 생성
                     if(this.memNo === data.reqInsVote.memNo){
-                      this.broadcastAction.setRightTabType(tabType.VOTE);
+                      this.dispatch(setBroadcastCtxRightTabType(tabType.VOTE));
                       this.dispatch(setVoteActive(true));
                     }else if(this.memNo !== data.reqInsVote.memNo){
-                      this.broadcastAction.setRightTabType(tabType.VOTE);
+                      this.dispatch(setBroadcastCtxRightTabType(tabType.VOTE));
                       this.dispatch(setVoteActive(true));
                       this.dispatch(moveVoteListStep({
                         memNo: data.reqInsVote.memNo
@@ -1945,7 +1822,7 @@ export class ChatSocketHandler {
                       }));
 
                       // this.dispatch(getVoteList(data.reqInsVote));
-                      this.globalAction.setAlertStatus({
+                      this.dispatch(setGlobalCtxAlertStatus({
                         status: true,
                         type: "confirm",
                         content: `새로운 투표가 등록됐어요!<br/><br/>${data.reqInsVote.voteTitle}`,
@@ -1959,7 +1836,7 @@ export class ChatSocketHandler {
                             , voteNo: data.reqInsVote.voteNo
                           }));
                         },
-                      });
+                      }));
                     }
 
                     return null;
@@ -1990,19 +1867,19 @@ export class ChatSocketHandler {
                         voteSlct: 's'
                       }))
                     }else{
-                      this.globalAction.setAlertStatus({
+                      this.dispatch(setGlobalCtxAlertStatus({
                         status: false,
                         type: "confirm",
-                      })
+                      }))
                       const getCallback = new Promise<VoteCallbackPromisePropsType>((resolve, reject)=>{
                         const voteResult:VoteCallbackPromisePropsType = [{
                           step: 'vote',
                           data: data.reqDelVote,
                           callback: ()=>{
-                            this.globalAction.callSetToastStatus({
+                            this.dispatch(setGlobalCtxSetToastStatus({
                               status: true,
                               message: `해당 투표가 삭제되어 투표 목록으로 이동합니다.`,
-                            });
+                            }));
                             this.dispatch(moveVoteListStep({
                               memNo: data.reqDelVote.memNo,
                               roomNo: data.reqDelVote.roomNo,
@@ -2029,7 +1906,7 @@ export class ChatSocketHandler {
                   case "reqEndVote": {
                     // 투표 마감
                     if(data.reqEndVote.endSlct === 'a'){
-                      this.broadcastAction?.setRightTabType(tabType.LISTENER);
+                      this.dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
                       this.dispatch(setVoteActive(false))
                     }else if(data.reqEndVote.endSlct === 'o'){
                       if(this.memNo === data.reqEndVote.memNo){
@@ -2044,10 +1921,10 @@ export class ChatSocketHandler {
                             step: 'vote',
                             data: data.reqEndVote,
                             callback: ()=>{
-                              this.globalAction.callSetToastStatus({
+                              this.dispatch(setGlobalCtxSetToastStatus({
                                 status: true,
                                 message: `해당 투표가 마감되어 투표 목록으로 이동합니다.`,
-                              });
+                              }));
                               this.dispatch(moveVoteListStep({
                                 memNo: data.reqEndVote.memNo,
                                 roomNo: data.reqEndVote.roomNo,
@@ -2096,27 +1973,25 @@ export class ChatSocketHandler {
                     const {reqPlayAni} = data;
                     // 아이템미션 성공 시 띄우는 달나라 뿅 애니메이션 출력여부
                     if (reqPlayAni && reqPlayAni.hasOwnProperty('aniCode')) {
-                      this.broadcastAction.dispatchChatAnimation({
-                        type: "start",
-                        data: {
-                          url: '',
-                          width: 360,
-                          height: 540,
-                          duration: 12000,
-                          location: 'midTop',
-                          count: 1,
-                          isCombo: false,
-                          userNickname: '',
-                          userImage: '',
-                          webpUrl: `${reqPlayAni.aniCode}?${Date.now()}`,
-                          soundFileUrl: '',
-                          itemNo: '',
-                          memNo: '',
-                          ttsItemInfo: null,
-                          isTTSItem: false,
-                          // repeatCnt,
-                        },
-                      });
+
+                      this.dispatch(setBroadcastCtxChatAnimationStart({
+                        url: '',
+                        width: 360,
+                        height: 540,
+                        duration: 12000,
+                        location: 'midTop',
+                        count: 1,
+                        isCombo: false,
+                        userNickname: '',
+                        userImage: '',
+                        webpUrl: `${reqPlayAni.aniCode}?${Date.now()}`,
+                        soundFileUrl: '',
+                        itemNo: '',
+                        memNo: '',
+                        ttsItemInfo: null,
+                        isTTSItem: false,
+                        // repeatCnt,
+                      }))
                     }
                     return null;
                   }
@@ -2126,18 +2001,14 @@ export class ChatSocketHandler {
                     if (dj_normal_sound !== 'undefined' && dj_tts_sound !== 'undefined') {
                       //방장 설정 정보 세팅
                       const djSetting = {djNormalSound: dj_normal_sound, djTtsSound: dj_tts_sound};
-                      if(this.broadcastAction?.dispatchRoomInfo){
-                        this.setRoomInfo({...this.roomInfo, ...djSetting});
-                        this.broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data: djSetting});
+                      this.setRoomInfo({...this.roomInfo, ...djSetting});
+                      this.dispatch(setBroadcastCtxRoomInfoSettingUpdate(djSetting))
 
-                        this.globalAction && text && !this.roomOwner &&
-                        this.globalAction.callSetToastStatus({
-                          status: true,
-                          message: text,
-                        });
-                      } else {
-                        console.error('reqDjSetting => this.broadcastAction.dispatchRoomInfo : null');
-                      }
+                      text && !this.roomOwner &&
+                      this.dispatch(setGlobalCtxSetToastStatus({
+                        status: true,
+                        message: text,
+                      }));
                     }
                     return null;
                   }
@@ -2213,15 +2084,12 @@ export class ChatSocketHandler {
 
                 if (
                   this.rtcInfo !== null &&
-                  this.globalAction &&
-                  this.globalAction.setAlertStatus &&
-                  this.globalAction.dispatchRtcInfo &&
                   this.history
                 ) {
                   this.privateChannelDisconnect();
                   this.rtcInfo?.stop();
-                  this.globalAction.dispatchRtcInfo({ type: "empty" });
-                  this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
+                  this.dispatch(setGlobalCtxRtcInfoEmpty());
+                  this.dispatch(setGlobalCtxIsShowPlayer(false));
                   rtcSessionClear();
                   if (window.location.pathname.match("/broadcast/")) {
                     if (this.broadcastLayerAction && this.broadcastLayerAction.dispatchDimLayer) {
@@ -2235,15 +2103,15 @@ export class ChatSocketHandler {
                     }
                   } else {
                     setTimeout(() => {
-                      this.globalAction.setAlertStatus({
+                      this.dispatch(setGlobalCtxAlertStatus({
                         status: true,
                         content: "방송이 종료되었습니다.",
-                      });
+                      }));
                     }, 600);
                   }
 
                   // setTimeout(() => {
-                  //   this.globalAction.setAlertStatus({
+                  //   this.dispatch(setGlobalCtxAlertStatus({
                   //     status: true,
                   //     content: "방송이 종료되었습니다.",
                   //   });
@@ -2453,10 +2321,8 @@ export class ChatSocketHandler {
           {
             type: "click",
             callback: () => {
-              if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                this.broadcastAction.setUserMemNo(memNo);
-                this.broadcastAction.setRightTabType(tabType.PROFILE);
-              }
+              this.dispatch(setBroadcastCtxUserMemNo(memNo));
+              this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
             },
           },
         ],
@@ -2481,10 +2347,8 @@ export class ChatSocketHandler {
             {
               type: "click",
               callback: () => {
-                if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                  this.broadcastAction.setUserMemNo(memNo);
-                  this.broadcastAction.setRightTabType(tabType.PROFILE);
-                }
+                this.dispatch(setBroadcastCtxUserMemNo(memNo));
+                this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
               },
             },
           ],
@@ -2507,10 +2371,8 @@ export class ChatSocketHandler {
             {
               type: "click",
               callback: () => {
-                if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                  this.broadcastAction.setUserMemNo(memNo);
-                  this.broadcastAction.setRightTabType(tabType.PROFILE);
-                }
+                this.dispatch(setBroadcastCtxUserMemNo(memNo));
+                this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
               },
             },
           ],
@@ -2539,7 +2401,7 @@ export class ChatSocketHandler {
     //         callback: () => {
     //           val.tipMsg &&
     //             this.globalAction &&
-    //             this.globalAction.callSetToastStatus!({
+    //             this.dispatch(setGlobalCtxSetToastStatus({
     //               status: true,
     //               message: val.tipMsg,
     //             });
@@ -2592,12 +2454,12 @@ export class ChatSocketHandler {
           {
             type: "click",
             callback: () => {
+
               val.tipMsg &&
-                this.globalAction &&
-                this.globalAction.callSetToastStatus!({
-                  status: true,
-                  message: val.tipMsg,
-                });
+              this.dispatch(setGlobalCtxSetToastStatus({
+                status: true,
+                message: val.tipMsg,
+              }));
             },
           },
         ],
@@ -2656,10 +2518,8 @@ export class ChatSocketHandler {
           {
             type: "click",
             callback: () => {
-              if (this.broadcastAction !== null && this.broadcastAction.setRightTabType) {
-                this.broadcastAction.setUserMemNo(memNo);
-                this.broadcastAction.setRightTabType(tabType.PROFILE);
-              }
+              this.dispatch(setBroadcastCtxUserMemNo(memNo));
+              this.dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
             },
           },
         ],
@@ -2759,20 +2619,18 @@ export class ReConnectChat {
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
         const chatInfo = new ChatSocketHandler(this.chatUserInfo, this);
-        this.globalAction &&
-          this.globalAction.dispatchChatInfo &&
-          this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+        this.dispatch(setGlobalCtxChatInfoInit(chatInfo));
       } else {
         if (this.isRetryFinish == false) {
-          this.globalAction.setAlertStatus &&
-            this.globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
-              callback: () => {
-                window.location.href = "/";
-              },
-            });
+
+          this.dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
+            callback: () => {
+              window.location.href = "/";
+            },
+          }));
         }
         this.isRetryFinish = true;
       }

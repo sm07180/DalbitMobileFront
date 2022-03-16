@@ -89,8 +89,8 @@ const baseSetting = async (dispatch, globalState) => {
     const data = JSON.parse(item);
     let newClipPlayer = globalState.clipPlayer;
     if (newClipPlayer === null) {
-      newClipPlayer = new ClipPlayerHandler(data)
-    };
+      newClipPlayer = new ClipPlayerHandler({info:data, dispatch, globalState})
+    }
     const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
     const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
     if ( fileUrlBoolean && clipNoBoolean ) {
