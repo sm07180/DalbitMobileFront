@@ -67,14 +67,14 @@ export default (props) => {
           window.location.href = '/'
         }
       })
-    } else if(url === '10') {
-      setAuthState(10)
     } else if (returntype === 'profile') {
       setAuthState(4)
     } else if (returntype === 'create') {
       setAuthState(5)
     } else if (returntype === 'join') {
       setAuthState(6)
+    } else if (returntype === 'sleep') {
+      setAuthState(7)
     } else if (returntype === 'event') {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
@@ -248,6 +248,22 @@ export default (props) => {
             </div>
           </div>
         )
+      case 7:
+        return (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다.
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  console.log('hi');
+                }}
+              >확인
+              </button>
+            </div>
+          </div>
+        )
       case 9:
         return (
           <div className="auth-wrap">
@@ -263,20 +279,6 @@ export default (props) => {
                     window.location.href = '/'
                   }
                 }}
-              >확인
-              </button>
-            </div>
-          </div>
-        )
-      case 10:
-        return (
-          <div className="auth-wrap">
-            <h5>
-              본인 인증이 완료되었습니다.
-            </h5>
-            <div className="btn-wrap">
-              <button
-                onClick={() => history.push('/event/tree')}
               >확인
               </button>
             </div>
@@ -321,6 +323,12 @@ export default (props) => {
         return <></>
     }
   }
+
+  useEffect(() => {
+    if(returntype === 'sleep') {
+      console.log(result);
+    }
+  }, []);
 
   //---------------------------------------------------------------------
   return (
