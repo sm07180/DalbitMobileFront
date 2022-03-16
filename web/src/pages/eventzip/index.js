@@ -77,15 +77,19 @@ const EventZip = () => {
   );
 
   useEffect(() => {
+    let endList = [];
+    let ingList = [];
     for(let i = 0; i < eventInfo.length; i++){
       if(moment(nowDay).isAfter(moment(eventInfo[i].endDay).add(1, 'days'))){
         eventInfo[i].endState = true;
-        endEvent.push(eventInfo[i]);
+        endList.push(eventInfo[i]);        
       } else {
         eventInfo[i].endState = false;
-        ingEvent.push(eventInfo[i]);
+        ingList.push(eventInfo[i]);
       }
-    }
+    }    
+    setIngEvent(ingList);
+    setEndEvent(endList);
   }, [nowDay]);
 
   const golink = (path, endDay, num) => {
