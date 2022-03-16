@@ -28,7 +28,7 @@ export default (props) => {
   const location = useLocation()
 
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-  const {result, code, message, returntype, url, pushLink, phoneNo} = qs.parse(location.search)
+  const {result, code, message, returntype, url, pushLink, phoneNum} = qs.parse(location.search)
 
   /**
    * authState
@@ -263,7 +263,7 @@ export default (props) => {
           </div>
         )
       case 7:
-        console.log(phoneNo);
+        console.log(phoneNum);
         // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
         /*/!* 휴면 해제 체크 *!/
         postSleepMemUpd({memNo, memPhone: event.detail.phoneNum}).then(res => {
