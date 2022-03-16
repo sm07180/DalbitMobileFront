@@ -263,6 +263,7 @@ export default (props) => {
           </div>
         )
       case 7:
+        console.log('hi : ', qs.parse(location.search));
         /*/!* 휴면 해제 체크 *!/
         postSleepMemUpd({memNo, memPhone: event.detail.phoneNum}).then(res => {
           const resultCode = res.code;
@@ -370,10 +371,6 @@ export default (props) => {
         return <></>
     }
   }
-
-  useEffect(() => {
-    console.log(result);
-  }, []);
 
   //---------------------------------------------------------------------
   return (
