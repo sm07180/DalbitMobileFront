@@ -201,7 +201,8 @@ const initialState: GlobalCtxStateType = {
   globalGganbuState: -1,
   gganbuTab: "collect",
   goToMoonTab: "info",
-  walletData:initWalletData
+  walletData:initWalletData,
+  popup:[]
 };
 
 

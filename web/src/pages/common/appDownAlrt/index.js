@@ -17,8 +17,7 @@ const appDownAlrt = (props) => {
     setOsCheck(navigator.userAgent.match(/Android/i) != null ? 1 : navigator.userAgent.match(/iPhone|iPad|iPod/i) != null ? 2 : 3)
   }, [])
 
-  const pageName = globalState.popup_code[2]
-
+  const pageName = globalState.popup[2]
   const appCheckDwon = () => {
     window.location.href = 'https://inforexseoul.page.link/Ws4t'
   }

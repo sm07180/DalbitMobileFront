@@ -8,7 +8,7 @@ export type GlobalCtxStateType = {
   roomInfo?: any
   customHeader?: any
   token?: any
-  popup?: Array<any>
+  popup: Array<any>
   visible?: boolean
   gnbVisible?: boolean
   login?: boolean

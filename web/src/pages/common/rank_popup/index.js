@@ -10,7 +10,7 @@ export default () => {
 
   return (
     <div id="rankPopupWrap">
-      {globalState.popup_code[1] === 'level' ? (
+      {globalState.popup[1] === 'level' ? (
         <>
           <div className="title">레벨 랭킹</div>
           <div className="content">

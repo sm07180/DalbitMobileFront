@@ -35,7 +35,7 @@ let popup = (props) => {
 
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
-    switch (globalState.popup_code[0]) {
+    switch (globalState.popup[0]) {
       case 'TERMS': //---------------------------------------이용약관
         return (
           <>
@@ -172,37 +172,37 @@ let popup = (props) => {
   }
   //useEffect
   useEffect(() => {
-    globalState.popup_visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
-  }, [globalState.popup_visible])
+    globalState.visible ? document.body.classList.add('popup-open') : document.body.classList.remove('popup-open')
+  }, [globalState.visible])
 
   useEffect(() => {
-    if (globalState.popup_code[0] == 'TERMS') {
+    if (globalState.popup[0] === 'TERMS') {
       setLayout('round terms')
-    } else if (globalState.popup_code[0] == 'CHARGE') {
+    } else if (globalState.popup[0] === 'CHARGE') {
       setLayout('round charge')
-    } else if (globalState.popup_code[0] === 'GUIDANCE') {
+    } else if (globalState.popup[0] === 'GUIDANCE') {
       setLayout('guidance')
-    } else if (globalState.popup_code[0] === 'AGREEDETAIL') {
+    } else if (globalState.popup[0] === 'AGREEDETAIL') {
       setLayout('agreeDetail')
-    } else if (globalState.popup_code[0] == 'RANK_POP' || globalState.popup_code[0] == 'ALARM') {
+    } else if (globalState.popup[0] === 'RANK_POP' || globalState.popup[0] === 'ALARM') {
       setLayout('rankPopup')
-    } else if (globalState.popup_code[0] == 'PROOF_SHOT') {
+    } else if (globalState.popup[0] === 'PROOF_SHOT') {
       setLayout('clipOpen')
-    } else if (globalState.popup_code[0] == 'SPECIAL_DJ_GOODS_DETAIL') {
+    } else if (globalState.popup[0] === 'SPECIAL_DJ_GOODS_DETAIL') {
       setLayout('clipOpen')
-    } else if (globalState.popup_code[0] == 'SPECIAL_DJ_STARTING') {
+    } else if (globalState.popup[0] === 'SPECIAL_DJ_STARTING') {
       setLayout('clipOpen')
-    } else if (globalState.popup_code[0] == 'CLIP_OPEN') {
+    } else if (globalState.popup[0] === 'CLIP_OPEN') {
       setLayout('clipOpen')
     } else {
       setLayout('square')
     }
-  }, [globalState.popup_code])
+  }, [globalState.popup])
 
   //---------------------------------------------------------------------
   return (
     <Popup>
-      {globalState.popup_visible && (
+      {globalState.visible && (
         <Container>
           <Wrap className={layout}>{makePopupContents()}</Wrap>
           <Background

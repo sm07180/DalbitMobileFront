@@ -30,7 +30,7 @@ export default (props) => {
   const termsArea = useRef(null)
   //   레이어팝업컨텐츠
   const makeTermsContents = () => {
-    switch (globalState.popup_code[1]) {
+    switch (globalState.popup[1]) {
       case 'service': //---------------------------------------서비스 이용약관
         return <Service {...props} />
       case 'privacy': //---------------------------------------개인정보 취급방침
