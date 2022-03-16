@@ -23,7 +23,7 @@ import "./clip_player.scss";
 import "./tab_contents.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  setGlobalCtxAlertStatus,
+  setGlobalCtxAlertStatus, setGlobalCtxClipInfoAdd,
   setGlobalCtxClipPlayerInit, setGlobalCtxClipPlayListTabAdd,
   setGlobalCtxClipPlayMode
 } from "../../../redux/actions/globalCtx";
@@ -84,6 +84,7 @@ export default function ClipContent() {
     newClipPlayer?.clipNoUpdate(data.clipNo);
     dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
     const addObj = { type: "add", data: { ...data, ...{ isPaused: true, isSaved60seconds: false } } };
+    dispatch(setGlobalCtxClipInfoAdd({ ...data, ...{ isPaused: true, isSaved60seconds: false } }))
     clipAction.dispatchClipInfo!(addObj);
     newClipPlayer?.start();
     if (globalState.baseData.memNo === data.clipMemNo) {

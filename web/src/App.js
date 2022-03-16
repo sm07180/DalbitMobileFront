@@ -140,15 +140,288 @@ const App = () => {
   const memberRdx = useSelector((state)=> state.member);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [ready, setReady] = useState(false)
+  const [cookieAuthToken, setCookieAuthToken] = useState('')
   const AGE_LIMIT = globalState.noServiceInfo.limitAge
   const [isFooterPage, setIsFooterPage] = useState(false);
 
-  const {
-    chatInfo,
-    rtcInfo,
-    mailChatInfo,
-    alarmStatus,
-  } = globalState;
+  const {chatInfo, rtcInfo, alarmStatus} = globalState;
+
+
+  useEffect(() => {
+    async function alarmCheck() {
+      let memNoParams = memberRdx.memNo ? memberRdx.memNo : "";
+      const { result, data, message } = await getMypageNew({
+        data: memNoParams,
+      });
+      if (result === "success") {
+        if (data.newCnt > 0) {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          dispatch(setGlobalCtxAlarmStatus(true));
+          dispatch(setGlobalCtxAlarmMoveUrl(data.moveUrl));
+        } else {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          alarmCheckIntervalId = setInterval(alarmCheck, 60000);
+          dispatch(setGlobalCtxAlarmStatus(false));
+          dispatch(setGlobalCtxAlarmMoveUrl(""));
+        }
+      }
+    }
+
+    if(isDesktop) {
+      if (memberRdx.isLogin === true) {
+        alarmCheck();
+      } else {
+        dispatch(setGlobalCtxAlarmStatus(false));
+        dispatch(setGlobalCtxAlarmMoveUrl(""));
+      }
+    }
+    return () => {};
+  }, [memberRdx.isLogin, alarmStatus]);
+
+  useEffect(()=>{
+    if(memberRdx.isLogin && memberRdx.data !== null){
+      const data = memberRdx.data
+      dispatch(setGlobalCtxUpdateProfile(data))
+      dispatch(setGlobalCtxIsMailboxOn(data.isMailboxOn))
+    }
+  },[memberRdx])
+
+  useEffect(() => {
+    if (globalState.splash !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
+      setReady(true)
+    }
+  }, [globalState.splash, globalState.token, globalState.profile])
+
+  useEffect(() => {
+    fetchSplash()
+    // set header (custom-header, authToken)
+    if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
+      customHeader['isHybrid'] = 'Y'
+    }
+
+    Api.setCustomHeader(JSON.stringify(customHeader))
+    Api.setAuthToken(authToken)
+
+    // Renew all initial data
+    fetchData(dispatch)
+  }, [])
+
+  useEffect(()=>{
+    if(!memberRdx.memNo || !chatInfo){
+      return;
+    }
+    const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
+    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+
+    const sessionRtc = sessionWowzaRtc
+        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
+            ? JSON.parse(sessionAgoraRtc) : undefined;
+
+    if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
+      if(!rtcInfo){
+        if(sessionWowzaRtc){
+          const data = JSON.parse(sessionWowzaRtc);
+          const dispatchRtcInfo = getWowzaRtc(data);
+          // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
+          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+        }
+        if(sessionAgoraRtc){
+          const data = JSON.parse(sessionAgoraRtc);
+          const dispatchRtcInfo = getArgoraRtc(data);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
+            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          })
+        }
+      }
+    }else{
+      rtcSessionClear();
+    }
+  }, [memberRdx.memNo, chatInfo])
+
+  useEffect(() => {
+    if (globalState.token) {
+      if (globalState.token.isLogin) {
+        if (globalState.noServiceInfo.passed){
+          return;
+        } else if(globalState.profile){
+          ageCheck()
+        }
+      } else if (!globalState.token.isLogin) {
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false}))
+      }
+    }
+  }, [globalState.profile, globalState.token, location.pathname])
+
+  useEffect(() => {
+    if (ready && cookieAuthToken !== Api.authToken) {
+      window.location.reload()
+    }
+  }, [cookieAuthToken])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCookieAuthToken(Utility.getCookie('authToken'))
+    }, 1000)
+
+    dispatch(setGlobalCtxAuthRef(authRef))// 본인인증 ref
+    dispatch(setGlobalCtxIntervalId(id))//서버이동시 interval clear
+
+  }, [])
+  //
+  useEffect(()=>{
+    let historyListener = () => {
+      isFooter();
+      nativeFooterManager();
+    };
+    historyListener();
+    history.listen(historyListener);
+  },[])
+  //
+  useEffect(() => {
+    if (chatInfo !== null && globalState.splashData !== null) {
+      chatInfo.setSplashData(globalState.splashData);
+    }
+  }, [chatInfo, globalState.splashData]);
+
+  function ErrorFallback({error, resetErrorBoundary}) {
+    if ('ChunkLoadError' === error.name) {
+      window.location.reload()
+    } else {
+      Api.error_log({
+        data: {
+          os: 'mobile',
+          appVer: customHeader.appVersion,
+          dataType: __NODE_ENV,
+          commandType: window.location.pathname,
+          desc: error.name + '\n' + error.message + '\n' + error.stack
+        }
+      })
+
+      // window.location.href = '/error';
+
+      /*return (
+        <section id="error">
+          <button
+            className="closeButon"
+            onClick={() => {
+              window.location.href = '/'
+            }}>
+            닫기
+          </button>
+
+          <div className="img"></div>
+
+          <p className="text">
+            해당 페이지 접속이 지연되고 있습니다.
+            <br />
+            다시 시도해주세요
+          </p>
+
+          <div className="buttonWrap">
+            <button
+              onClick={() => {
+                window.location.href = '/'
+              }}>
+              확인
+            </button>
+          </div>
+        </section>
+      )*/
+    }
+  }
+  //SPLASH Room
+  async function fetchSplash() {
+    let splashData = null;
+    if(serverDataJson){
+      splashData = {
+        result : 'success',
+        data : serverDataJson.splash
+      };
+    }else {
+      splashData = await Api.splash({})
+    }
+    if (splashData.result === 'success') {
+      const {data} = splashData
+      const {roomType, useMailBox} = data
+      if (roomType) {
+        dispatch(setGlobalCtxRoomType(roomType))
+      }
+      dispatch(setGlobalCtxSplash(data));
+      dispatch(setGlobalCtxUseMailbox(useMailBox));
+      dispatch(setGlobalCtxSplashData(data));
+    } else {
+      Api.error_log({
+        data: {
+          os: 'mobile',
+          appVer: customHeader.appVersion,
+          dataType: __NODE_ENV,
+          commandType: window.location.pathname,
+          desc: 'splash error' + error.name + '\n' + error.message + '\n' + error.stack
+        }
+      })
+    }
+  }
+
+  const ageCheck = () => {
+    const pathname = location.pathname
+    const americanAge = Utility.birthToAmericanAge(globalState.profile.birth)
+    const ageCheckFunc = () => {
+      if (americanAge < AGE_LIMIT && !pathname.includes('/customer/inquire')) {
+        // 1:1문의는 보임
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge, showPageYn: 'y'}))
+      } else {
+        let passed = false
+        if (americanAge >= globalState.noServiceInfo.limitAge) passed = true
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge, showPageYn: 'n', passed}))
+      }
+    }
+
+    if (globalState.profile.memJoinYn === 'o') {
+      const auth = async () => {
+        const authCheck = await Api.self_auth_check()
+        if (authCheck.result === 'fail') {
+          dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, showPageYn: 'n', americanAge, passed: true}))
+        } else {
+          ageCheckFunc()
+        }
+      }
+      auth()
+    } else {
+      ageCheckFunc()
+    }
+  }
+
+  /* 모바일웹용 푸터 */
+  const isFooter = () => {
+    if(!isDesktop && !isHybrid()) {
+      const pages = ['/', '/clip', '/search', '/mypage', '/login'];
+      const isFooterPage = pages.findIndex(item => item === location.pathname.toLowerCase()) > -1;
+
+      setIsFooterPage(isFooterPage);
+    }
+  }
+
+  /* 네이티브용 푸터 관리 */
+  const nativeFooterManager = () => {
+    if(isHybrid()) {
+      const currentPath = location.pathname.toLowerCase();
+      const visible = !!FOOTER_VIEW_PAGES[currentPath];
+      const stateFooterParam = {
+        tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
+        visible: visible
+      };
+
+      Hybrid('stateFooter', stateFooterParam);
+    }
+  }
 
   const isJsonString = (str) => {
     try {
@@ -385,286 +658,6 @@ const App = () => {
       }))
     }
   }
-
-  useEffect(() => {
-    async function alarmCheck() {
-      let memNoParams = memberRdx.memNo ? memberRdx.memNo : "";
-      const { result, data, message } = await getMypageNew({
-        data: memNoParams,
-      });
-      if (result === "success") {
-        if (data.newCnt > 0) {
-          if (alarmCheckIntervalId) {
-            clearInterval(alarmCheckIntervalId);
-          }
-          dispatch(setGlobalCtxAlarmStatus(true));
-          dispatch(setGlobalCtxAlarmMoveUrl(data.moveUrl));
-        } else {
-          if (alarmCheckIntervalId) {
-            clearInterval(alarmCheckIntervalId);
-          }
-          alarmCheckIntervalId = setInterval(alarmCheck, 60000);
-          dispatch(setGlobalCtxAlarmStatus(false));
-          dispatch(setGlobalCtxAlarmMoveUrl(""));
-        }
-      }
-    }
-
-    if(isDesktop) {
-      if (memberRdx.isLogin === true) {
-        alarmCheck();
-      } else {
-        dispatch(setGlobalCtxAlarmStatus(false));
-        dispatch(setGlobalCtxAlarmMoveUrl(""));
-      }
-    }
-    return () => {};
-  }, [memberRdx.isLogin, alarmStatus]);
-
-  useEffect(()=>{
-    if(memberRdx.isLogin && memberRdx.data !== null){
-      const data = memberRdx.data
-      dispatch(setGlobalCtxUpdateProfile(data))
-      dispatch(setGlobalCtxIsMailboxOn(data.isMailboxOn))
-    }
-  },[memberRdx])
-
-  //SPLASH Room
-  async function fetchSplash() {
-    let splashData = null;
-    if(serverDataJson){
-      splashData = {
-        result : 'success',
-        data : serverDataJson.splash
-      };
-    }else {
-      splashData = await Api.splash({})
-    }
-    if (splashData.result === 'success') {
-      const {data} = splashData
-      const {roomType, useMailBox} = data
-      if (roomType) {
-        dispatch(setGlobalCtxRoomType(roomType))
-      }
-      dispatch(setGlobalCtxSplash(data));
-      dispatch(setGlobalCtxUseMailbox(useMailBox));
-      dispatch(setGlobalCtxSplashData(data));
-    } else {
-      Api.error_log({
-        data: {
-          os: 'mobile',
-          appVer: customHeader.appVersion,
-          dataType: __NODE_ENV,
-          commandType: window.location.pathname,
-          desc: 'splash error' + error.name + '\n' + error.message + '\n' + error.stack
-        }
-      })
-    }
-  }
-
-  const ageCheck = () => {
-    const pathname = location.pathname
-    const americanAge = Utility.birthToAmericanAge(globalState.profile.birth)
-    const ageCheckFunc = () => {
-      if (americanAge < AGE_LIMIT && !pathname.includes('/customer/inquire')) {
-        // 1:1문의는 보임
-        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge, showPageYn: 'y'}))
-      } else {
-        let passed = false
-        if (americanAge >= globalState.noServiceInfo.limitAge) passed = true
-        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge, showPageYn: 'n', passed}))
-      }
-    }
-
-    if (globalState.profile.memJoinYn === 'o') {
-      const auth = async () => {
-        const authCheck = await Api.self_auth_check()
-        if (authCheck.result === 'fail') {
-          dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, showPageYn: 'n', americanAge, passed: true}))
-        } else {
-          ageCheckFunc()
-        }
-      }
-      auth()
-    } else {
-      ageCheckFunc()
-    }
-  }
-
-  /* 모바일웹용 푸터 */
-  const isFooter = () => {
-    if(!isDesktop && !isHybrid()) {
-      const pages = ['/', '/clip', '/search', '/mypage', '/login'];
-      const isFooterPage = pages.findIndex(item => item === location.pathname.toLowerCase()) > -1;
-
-      setIsFooterPage(isFooterPage);
-    }
-  }
-
-  /* 네이티브용 푸터 관리 */
-  const nativeFooterManager = () => {
-    if(isHybrid()) {
-      const currentPath = location.pathname.toLowerCase();
-      const visible = !!FOOTER_VIEW_PAGES[currentPath];
-      const stateFooterParam = {
-        tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
-        visible: visible
-      };
-
-      Hybrid('stateFooter', stateFooterParam);
-    }
-  }
-
-  useEffect(() => {
-    if (globalState.splash !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
-      setReady(true)
-    }
-  }, [globalState.splash, globalState.token, globalState.profile])
-
-  useEffect(() => {
-    fetchSplash()
-    // set header (custom-header, authToken)
-    if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
-      customHeader['isHybrid'] = 'Y'
-    }
-
-    Api.setCustomHeader(JSON.stringify(customHeader))
-    Api.setAuthToken(authToken)
-
-    // Renew all initial data
-    fetchData(dispatch)
-  }, [])
-
-
-  useEffect(()=>{
-    if(!memberRdx.memNo || !chatInfo){
-      return;
-    }
-    const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
-    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
-
-    const sessionRtc = sessionWowzaRtc
-        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
-            ? JSON.parse(sessionAgoraRtc) : undefined;
-
-    if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
-      if(!rtcInfo){
-        if(sessionWowzaRtc){
-          const data = JSON.parse(sessionWowzaRtc);
-          const dispatchRtcInfo = getWowzaRtc(data);
-          // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
-          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
-          dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
-          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-        }
-        if(sessionAgoraRtc){
-          const data = JSON.parse(sessionAgoraRtc);
-          const dispatchRtcInfo = getArgoraRtc(data);
-          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
-          dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
-            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
-            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-          })
-        }
-      }
-    }else{
-      rtcSessionClear();
-    }
-  }, [memberRdx.memNo, chatInfo])
-
-
-  useEffect(() => {
-    if (globalState.token) {
-      if (globalState.token.isLogin) {
-        if (globalState.noServiceInfo.passed){
-          return;
-        } else if(globalState.profile){
-          ageCheck()
-        }
-      } else if (!globalState.token.isLogin) {
-        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false}))
-      }
-    }
-  }, [globalState.profile, globalState.token, location.pathname])
-
-  const [cookieAuthToken, setCookieAuthToken] = useState('')
-  useEffect(() => {
-    if (ready && cookieAuthToken !== Api.authToken) {
-      window.location.reload()
-    }
-  }, [cookieAuthToken])
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setCookieAuthToken(Utility.getCookie('authToken'))
-    }, 1000)
-
-    dispatch(setGlobalCtxAuthRef(authRef))// 본인인증 ref
-    dispatch(setGlobalCtxIntervalId(id))//서버이동시 interval clear
-
-  }, [])
-
-  useEffect(()=>{
-    let historyListener = () => {
-      isFooter();
-      nativeFooterManager();
-    };
-    historyListener();
-    history.listen(historyListener);
-  },[])
-
-  function ErrorFallback({error, resetErrorBoundary}) {
-    if ('ChunkLoadError' === error.name) {
-      window.location.reload()
-    } else {
-      Api.error_log({
-        data: {
-          os: 'mobile',
-          appVer: customHeader.appVersion,
-          dataType: __NODE_ENV,
-          commandType: window.location.pathname,
-          desc: error.name + '\n' + error.message + '\n' + error.stack
-        }
-      })
-
-      // window.location.href = '/error';
-
-      /*return (
-        <section id="error">
-          <button
-            className="closeButon"
-            onClick={() => {
-              window.location.href = '/'
-            }}>
-            닫기
-          </button>
-
-          <div className="img"></div>
-
-          <p className="text">
-            해당 페이지 접속이 지연되고 있습니다.
-            <br />
-            다시 시도해주세요
-          </p>
-
-          <div className="buttonWrap">
-            <button
-              onClick={() => {
-                window.location.href = '/'
-              }}>
-              확인
-            </button>
-          </div>
-        </section>
-      )*/
-    }
-  }
-
-  useEffect(() => {
-    if (chatInfo !== null && globalState.splashData !== null) {
-      chatInfo.setSplashData(globalState.splashData);
-    }
-  }, [chatInfo, globalState.splashData]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
