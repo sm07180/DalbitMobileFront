@@ -52,14 +52,14 @@ export default function awardEventComment(props) {
       if (result === 'success') {
         setCurrentPage(0)
         setWriteState(false)
-        dispatch(setGlobalCtxMessage({type:"taost",msg: message}))
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
       } else {
-        dispatch(setGlobalCtxMessage({type:"taost",msg: message}))
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
       }
     }
     if (token.isLogin) {
       if (commentTxt === '') {
-        dispatch(setGlobalCtxMessage({type:"taost",
+        dispatch(setGlobalCtxMessage({type:"toast",
           msg: '내용을 입력해주세요.'
         }))
       } else {
@@ -81,9 +81,9 @@ export default function awardEventComment(props) {
       const {result, message} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
         setCurrentPage(0)
-        dispatch(setGlobalCtxMessage({type:"taost",msg: message}))
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
       } else {
-        dispatch(setGlobalCtxMessage({type:"taost",
+        dispatch(setGlobalCtxMessage({type:"toast",
           msg: message
         }))
       }
@@ -117,10 +117,10 @@ export default function awardEventComment(props) {
         tailLoginMedia: loginMedia
       })
       if (result === 'success') {
-        dispatch(setGlobalCtxMessage({type:"taost",msg: message}))
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
         setCurrentPage(0)
       } else {
-        dispatch(setGlobalCtxMessage({type:"taost",
+        dispatch(setGlobalCtxMessage({type:"toast",
           msg: message
         }))
       }
@@ -128,7 +128,7 @@ export default function awardEventComment(props) {
       setModifyState(false)
     }
     if (commentTxt === '') {
-      dispatch(setGlobalCtxMessage({type:"taost",
+      dispatch(setGlobalCtxMessage({type:"toast",
         msg: '내용을 입력해주세요.'
       }))
     } else {

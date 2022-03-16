@@ -72,8 +72,9 @@ export default () => {
   useEffect(() => {
     if (last === true && msgData.length === 0) {
 
-      dispatch(setGlobalCtxMessage({type:"toast",
-        message: ''
+      dispatch(setGlobalCtxMessage({
+        type:"toast",
+        msg: ''
       }))
       setLast(false)
     }
