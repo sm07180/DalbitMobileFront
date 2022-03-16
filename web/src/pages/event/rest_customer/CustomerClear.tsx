@@ -101,7 +101,7 @@ export default (props) => {
         <button
           className="button"
           onClick={() => {
-            authReq('7', context.authRef, context);
+            authReq('7', context.authRef, context, 'none', memNo);
           }}
         >
           본인인증 후 휴면 해제하기
