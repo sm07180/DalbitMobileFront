@@ -45,7 +45,7 @@ const common = () => {
   return (
       <>
         <GNB/>
-        {pcMenuState && <Guide />}
+        {/*{pcMenuState && <Guide />}*/}
         <PipPlayer/>
         {globalState.imgViewerPath !== ""  && <ImageViewer path={globalState.imgViewerPath} />}
         {globalState.multiViewer.show && <MultiImageViewer />}
