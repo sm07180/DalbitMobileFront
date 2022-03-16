@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState, useMemo, useRef} from 'react'
-import {useSelector} from "react-redux";
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
