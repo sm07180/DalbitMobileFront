@@ -13,7 +13,7 @@ import Exchange from './contents/exchange/Exchange'
 import './style.scss'
 import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
-import {isIos} from "context/hybrid";
+import {isHybrid, isIos} from "context/hybrid";
 
 const WalletPage = (props) => {
   const history = useHistory();
@@ -188,10 +188,9 @@ const WalletPage = (props) => {
     }
   }
 
-  //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
   return (
     <div id="walletPage">
-      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'/>
+      <Header type={isHybrid() ? 'back':'back'} title='내 지갑'/>
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
