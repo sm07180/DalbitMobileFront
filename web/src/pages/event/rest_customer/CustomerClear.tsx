@@ -68,7 +68,7 @@ export default (props) => {
   return (
     <>
       <Layout>
-        <Header title="휴면회원 안내" />
+        <Header title="휴면회원 안내" type={"back"}/>
 
         <div id="customerClear">
           <div className="visual"></div>
