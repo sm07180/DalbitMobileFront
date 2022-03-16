@@ -7,9 +7,6 @@
         .buttonGroup{
           display: flex;
         }
-        .back{
-          display: block;
-        }
       }
       .tabmenu {
         top: $PC-TABTOP;
@@ -19,9 +16,6 @@
 }
 
 #walletPage{
-  header{
-    .back{display: none;}
-  }
   section{
     position: relative;
   }
