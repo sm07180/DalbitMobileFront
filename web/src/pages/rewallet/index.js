@@ -190,7 +190,7 @@ const WalletPage = (props) => {
 
   return (
     <div id="walletPage">
-      <Header type={isHybrid() ? 'back':'back'} title='내 지갑'/>
+      <Header type={'back'} title='내 지갑'/>
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
