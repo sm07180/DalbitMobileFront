@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 
-import "../asset/scss/index.scss";
 import Footer from "./footer";
 import GNB from "./gnb";
 import Guide from "./guide";
