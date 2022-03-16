@@ -15,8 +15,9 @@ export default (props) => {
 
   //본인인증 완료 후
   function updateDispatch(event) {
-    if (event.detail.result == "success" && event.detail.code == "0") {
-      /* 휴면 해제 체크 */
+    console.log(event.detail)
+    /*if (event.detail.result == "success" && event.detail.code == "0") {
+      /!* 휴면 해제 체크 *!/
       postSleepMemUpd({memNo, memPhone: event.detail.phoneNum}).then(res => {
         const resultCode = res.code;
         if(resultCode === '0') {
@@ -48,7 +49,7 @@ export default (props) => {
       context.action.alert!({
         msg: event.detail.message,
       });
-    }
+    }*/
   }
 
   useEffect(() => {
