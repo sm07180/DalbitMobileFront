@@ -177,7 +177,7 @@ const Exchange = (props) => {
       const res = await Api.exchangeCalc({
         data: {byeol: sendByeolCnt}
       })
-      context.action.alert({msg:res.message});
+      // context.action.alert({msg:res.message});
 
       if (res.result === 'success') {
         //result :
