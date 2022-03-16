@@ -56,15 +56,6 @@ const EventZip = () => {
           </div>
         </div>
 
-        <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/platformWar", platformWarEventEnd)}}>
-        {/*  <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice", platformWarEventEnd, 612)}}>*/}
-          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7677.png)`}}/>
-          <div className='eventInfo'>
-            <div className='eventTitle'>3사 플랫폼 노래대전</div>
-            <div className='eventDate'>03.03 - 03.11</div>
-          </div>
-        </div>
-
         <div className={`eventList ${shareEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/share", shareEventEnd)}}>
           <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7650.png)`}}/>
           <div className='eventInfo'>
@@ -93,6 +84,15 @@ const EventZip = () => {
           <div className='thumbNail'/>
           <div className='eventInfo'>
             <div className='eventTitle'>이벤트가 시작되면 배너를 통해 알려드려요.</div>
+          </div>
+        </div>
+        
+        <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/event/platformWar", platformWarEventEnd)}}>
+        {/*  <div className={`eventList ${platformWarEventEnd ? 'end' : ''}`} onClick={() => {golink("/notice", platformWarEventEnd, 612)}}>*/}
+          <div className='thumbNail' style={{backgroundImage: `url(https://image.dalbitlive.com/eventzip/eventZip_7677.png)`}}/>
+          <div className='eventInfo'>
+            <div className='eventTitle'>3사 플랫폼 노래대전</div>
+            <div className='eventDate'>03.03 - 03.11</div>
           </div>
         </div>
 

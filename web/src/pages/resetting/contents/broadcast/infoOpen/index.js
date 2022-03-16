@@ -26,9 +26,10 @@ const InfoOpen = (props) => {
   const switchAction = (e) => {
     const checking = e.target.checked;
     const value = parseInt(e.target.value);
+    const {index} = e.currentTarget.dataset;
     if(checking){
       setCheckState(true)
-      fetchData(+value);
+      if(index !== "0") {fetchData(+value);}
     } else {
       setCheckState(false)
       let radioEle = document.getElementsByName("broadcastLocation");
