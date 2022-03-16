@@ -21,15 +21,9 @@ const Rule = () => {
   const {token, profile} = globalCtx
   const category = params.category;
 
-
-
   const golink = (path) => {
     history.push("/rule/" + path);
   }
-
-  useEffect(() => {
-    console.log(profile);
-  }, [])
 
   return (
     <div id='rule'>

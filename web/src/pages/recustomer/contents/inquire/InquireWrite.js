@@ -13,8 +13,6 @@ import ImageUpload from "pages/recustomer/components/ImageUpload";
 import CheckList from "pages/recustomer/components/CheckList";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
-let isDisabled = true;
-let isFetchFalse = false;
 const Write = (props) => {
   const {setInquire} = props
   const context = useContext(Context);
@@ -36,6 +34,8 @@ const Write = (props) => {
   ])
   const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isFetchFalse, setIsFetchFalse] = useState(false);
   const history = useHistory();
 
   //문의하기 등록
@@ -55,17 +55,16 @@ const Write = (props) => {
       email: "",
       nickName: context.profile.nickName !== undefined ? context.profile.nickName : "미선택"
     }
-    isFetchFalse = true;
+    setIsFetchFalse(true);
     API.center_qna_add({params}).then((res) => {
-      isFetchFalse = false;
+      setIsFetchFalse(false);
       if(res.result === "success") {
-        context.action.alert({msg: "1:1문의가 등록되었습니다.", callback: () => {
-            if(!context.token.isLogin) {
-              history.goBack();
-            } else {
-              setInquire("나의 문의내역");
-            }
-          }})
+        context.action.alert({msg: "1:1문의가 등록되었습니다."})
+        if(!context.token.isLogin) {
+          history.goBack();
+        } else {
+          setInquire("나의 문의내역");
+        }
       } else {
         context.action.alert({msg: res.message});
       }
@@ -99,14 +98,17 @@ const Write = (props) => {
     setSelectedInfo(name)
   }
 
+  //문의 내용 클릭시
   const onTextFocus = () => {
     setTextValue(inputData.contents);
   }
 
+  //자세히보기 클릭시
   const popupOpen = () => {
     setPopup(true);
   }
 
+  //개인정보 수집 동의 여부
   const onClick = (e) => {
     if(e.target.checked) {setAgree(true)}
     else {setAgree(false);}
@@ -144,6 +146,8 @@ const Write = (props) => {
         } else {
           context.action.alert({msg: res.message});
         }
+      } else {
+        context.action.alert({msg: "최대 3장까지 첨부 가능합니다."})
       }}
   };
 
@@ -163,11 +167,9 @@ const Write = (props) => {
     if(!context.token.isLogin) {
       if((inputData.phone !== "" && onlyNum(inputData.phone)) && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
         if(isDisabled === true) {
-          if(isFetchFalse === false) {
-            fetchData();
-          }
+          if(isFetchFalse === false) {fetchData();}
         } else {
-          isDisabled = false;
+          setIsDisabled(false);
         }
       } else {
         context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
@@ -175,11 +177,9 @@ const Write = (props) => {
     } else {
       if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
         if(isDisabled === true) {
-          if(isFetchFalse === false) {
-            fetchData();
-          }
+          if(isFetchFalse === false) {fetchData();}
         } else {
-          isDisabled = false;
+          setIsDisabled(false);
         }
       } else {
         context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
