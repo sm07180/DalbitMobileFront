@@ -16,6 +16,8 @@ import {IMG_SERVER} from 'context/config'
 //
 import './selfAuthResult.scss'
 import {isDesktop} from "lib/agent";
+import {postSleepMemUpd} from "common/api";
+import {setCookie} from "common/utility/cookie";
 
 //
 export default (props) => {
@@ -249,6 +251,35 @@ export default (props) => {
           </div>
         )
       case 7:
+        /*/!* 휴면 해제 체크 *!/
+        postSleepMemUpd({memNo, memPhone: event.detail.phoneNum}).then(res => {
+          const resultCode = res.code;
+          if(resultCode === '0') {
+            const baseData = {
+              authToken: event.detail.authToken,
+              isLogin: true,
+              memNo: memNo,
+            };
+            context.action.alert({
+              title: '휴면상태가 해제되었습니다.',
+              msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
+              callback: () => {
+                setCookie("authToken", baseData.authToken, 3);
+                history.replace('/');
+              }
+            })
+          }else if(resultCode === '-1') {
+            context.action.alert({
+              title: '기존 정보와 일치하지 않습니다.',
+              msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
+            })
+          }else {
+            context.action.alert!({
+              msg: res.message
+            });
+          }
+        })*/
+
         return (
           <div className="auth-wrap">
             <h5>
@@ -257,7 +288,11 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  console.log('hi');
+                  if(isDesktop()) {
+
+                  }else {
+
+                  }
                 }}
               >확인
               </button>
@@ -325,9 +360,7 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if(returntype === 'sleep') {
-      console.log(result);
-    }
+    console.log(result);
   }, []);
 
   //---------------------------------------------------------------------
