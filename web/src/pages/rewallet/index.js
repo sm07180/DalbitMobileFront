@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState, useMemo, useRef} from 'react'
+import {useSelector} from "react-redux";
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
@@ -26,6 +27,7 @@ const WalletPage = (props) => {
     const agent = window.navigator.userAgent.match(/(ios webview)/gi);
     return !agent? false : agent[0] === 'ios webview';
     } ,[]);  //아이폰이면 환전 메뉴를 다르게 보여주는 정책!
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
 
   const search = location?.search || '';
 
@@ -190,7 +192,15 @@ const WalletPage = (props) => {
 
   return (
     <div id="walletPage">
-      <Header type={'back'} title='내 지갑'/>
+      {/*1. 백버튼*/}
+      {/*2. 백버튼 안보여야함*/}
+      {(isDesktop || isHybrid()) ?
+        <Header type="back" title="내 지갑"/>
+        :
+        <header className='back'>
+          <h1 className="title">내 지갑</h1>
+        </header>
+      }
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
