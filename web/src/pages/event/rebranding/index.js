@@ -476,7 +476,11 @@ const Rebranding = () => {
         <img src={`${IMG_SERVER}/event/rebranding/mainVisual-1.png`} alt="이벤트 이미지" />
       </section>
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/bg-2-fix.png`} alt="이벤트 이미지" />
+        {eventInfo.seq_no >= 2 ?
+          <img src={`${IMG_SERVER}/event/rebranding/bg-2-fix.png`} alt="이벤트 이미지" />
+          :
+          <img src={`${IMG_SERVER}/event/rebranding/bg-2.png`} alt="이벤트 이미지" />
+        }
         <button onClick={noticePopView1}>
           <img src={`${IMG_SERVER}/event/rebranding/btn-1.png`} alt="버튼 이미지" />
         </button>
@@ -648,8 +652,17 @@ const Rebranding = () => {
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-1.png`} />방송 하기 & 듣기 20분당 1개</div>
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-2.png`} />방송 선물 보내기 & 받기</div>
             <ul className="textBox">
-              <li>· 보낸 달 50개당 2개</li>
-              <li>· 받은 별 100개당 3개</li>
+              {eventInfo.seq_no >= 2 ? 
+                <>
+                  <li>· 보낸 달 50개당 2개</li>
+                  <li>· 받은 별 100개당 3개</li>
+                </>
+                :
+                <>
+                  <li>· 보낸 달 50개당 1개</li>
+                  <li>· 받은 별 100개당 1개</li>
+                </>
+              }
               <li>· 부스터도 포함됩니다.</li>
             </ul>
             <div className="infoWrap">
