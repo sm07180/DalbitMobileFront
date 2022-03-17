@@ -14,6 +14,7 @@ const AdminLayerPopup = (props: any)=> {
   const { globalState, globalAction } = useContext(GlobalContext);
   const history = useHistory();
   const popupClose = () => {
+    sessionStorage.removeItem('room_active')
     globalAction.setBroadcastAdminLayer!((prevState) => ({
       ...prevState,
       status: false,
