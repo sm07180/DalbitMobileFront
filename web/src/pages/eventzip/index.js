@@ -77,17 +77,19 @@ const EventZip = () => {
   );
 
   useEffect(() => {
+    let endList = [];
+    let ingList = [];
     for(let i = 0; i < eventInfo.length; i++){
       if(moment(nowDay).isAfter(moment(eventInfo[i].endDay).add(1, 'days'))){
         eventInfo[i].endState = true;
-        setIngEvent(ingEvent.concat(eventInfo));
+        endList.push(eventInfo[i]);        
       } else {
         eventInfo[i].endState = false;
-        setEndEvent(endEvent.concat(eventInfo));
+        ingList.push(eventInfo[i]);
       }
-    }
-    console.log(ingEvent);
-    console.log(endEvent);
+    }    
+    setIngEvent(ingList);
+    setEndEvent(endList);
   }, [nowDay]);
 
   const golink = (path, endDay, num) => {
@@ -112,19 +114,17 @@ const EventZip = () => {
         <div id='ingWrap'>
           {
             ingEvent.map((list, index) => {
-              if(!list.endState){
-                return (
-                  <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState, `${list.noticeNum && list.noticeNum}`)}}>
-                    <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
-                    <div className='eventInfo'>
-                      <div className='eventTitle'>{list.eventTitle}</div>
-                      <div className='eventDate'>
-                        {list.endDay ? `${moment(list.startDay).format('MM.DD')} - ${moment(list.endDay).format('MM.DD')}` : "상시모집"}
-                      </div>
+              return (
+                <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState, `${list.noticeNum && list.noticeNum}`)}}>
+                  <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
+                  <div className='eventInfo'>
+                    <div className='eventTitle'>{list.eventTitle}</div>
+                    <div className='eventDate'>
+                      {list.endDay ? `${moment(list.startDay).format('MM.DD')} - ${moment(list.endDay).format('MM.DD')}` : "상시모집"}
                     </div>
                   </div>
-                )
-              }                   
+                </div>
+              )      
             })
           }
         </div>
@@ -139,17 +139,15 @@ const EventZip = () => {
         <div id='endWrap'>
           {
             endEvent.map((list, index) => {
-              if(list.endState){
-                return (
-                  <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState)}}>
-                    <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
-                    <div className='eventInfo'>
-                      <div className='eventTitle'>{list.eventTitle}</div>
-                      <div className='eventDate'>{moment(list.startDay).format('MM.DD')} - {moment(list.endDay).format('MM.DD')}</div>
-                    </div>
+              return (
+                <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState)}}>
+                  <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
+                  <div className='eventInfo'>
+                    <div className='eventTitle'>{list.eventTitle}</div>
+                    <div className='eventDate'>{moment(list.startDay).format('MM.DD')} - {moment(list.endDay).format('MM.DD')}</div>
                   </div>
-                )
-              }                   
+                </div>
+              )              
             })
           }
         </div>  
