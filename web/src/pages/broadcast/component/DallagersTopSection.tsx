@@ -23,6 +23,8 @@ let aniStatus = {
 };
 
 const DallagersTopSection = (props) => {
+  const {roomNo} = props;
+
   const history = useHistory();
   const {globalState} = useContext(Context);
   const {chatInfo} = globalState;
@@ -35,9 +37,40 @@ const DallagersTopSection = (props) => {
   const [stoneAniQueue, setStoneAniQueue] = useState([]);
   const [stoneAni, setStoneAni] = useState({playing: false, comboPlay: false, webpUrl: '', comboCnt: 0 });
 
-  //피버타임
-  const [feverPlaying, setFeverPlaying] = useState({playing: false, nothingVal:0});
-  //const [feverTimeText, setFeverTimeText] = useState(0);
+  //피버타임 (playing :로티 렌더링, lottieContinuePlaySec: 로티 이어서 재생)
+  const [feverPlaying, setFeverPlaying] = useState({playing: false, lottieContinuePlaySec: 0});
+
+  const stopFeverTime = () => {
+    rafFeverTime = 0;
+    rafPrevFeverTime = 0;
+    aniStatus.feverTimePlaying = false; // 상태 체크용
+    setFeverPlaying({playing: false, lottieContinuePlaySec: 0});
+    cancelAnimationFrame(rafId);
+    window.sessionStorage.removeItem("feverInfo");
+  };
+
+  const remainTimeChecker = () => {
+    const startedTime  = window.sessionStorage.getItem("feverInfo");
+    if(startedTime) {
+      const feverInfo = JSON.parse(startedTime);
+
+      if(feverInfo?.roomNo === roomNo && feverInfo?.startTime) {
+        const nowTime = moment();
+        const prevDateTime = moment(feverInfo?.startTime, 'YYYY-MM-DD HH:mm:ss');
+
+        const diffSeconds = moment.duration(nowTime.diff(prevDateTime)).asSeconds();
+
+        if(diffSeconds < 60){
+          // 피버타임 이어서 시작하기
+          feverStartedTime = prevDateTime;
+          setFeverPlaying({playing: true, lottieContinuePlaySec: diffSeconds});
+        } else {
+          window.sessionStorage.removeItem("feverInfo");
+        }
+
+      }
+    }
+  };
 
   useEffect(() => {
     //icon_fever.json
@@ -57,7 +90,6 @@ const DallagersTopSection = (props) => {
       path: 'https://image.dalbitlive.com/event/rebranding/icon_fever.json',
     });
 
-
     stoneLottie.addEventListener('data_ready', () => {
         intervalId = setInterval(() => {
           stoneLottie.goToAndPlay(1, true);
@@ -67,7 +99,9 @@ const DallagersTopSection = (props) => {
     feverTimeLottie.addEventListener('data_ready', () => {
       console.log("load done");
       feverLottieController.current = feverTimeLottie;
-        //feverLottieController.current.goToAndPlay(1, true);
+
+      // 피버타임 진행중에 방송방 종료시 세션스토리지에서 시간이 남았는지 체크
+      remainTimeChecker();
     });
 
     return () => {
@@ -82,21 +116,25 @@ const DallagersTopSection = (props) => {
     if (chatInfo) {
       //애니메이션 붙이는 곳
       chatInfo.setBroadcastStateChange('setStoneAniQueueState', (state) => {
-        //console.log("스톤 애니메이션 실행, 받은 돌: \n", state[0] || '','\n', state[1] || '','\n', state[2] || '');
         setStoneAniQueue(() => stoneAniQueueRef.current.concat(state));
       });
 
       //피버타임 시작해주세요
       chatInfo.setBroadcastStateChange('setFeverTimeState', (state) => {
-        console.log("socket -> fever start")
         feverStartedTime = moment();
-        setFeverPlaying({playing: state, nothingVal: Date.now()});
+        if(state === true) {  // 피버타임 시작
+          setFeverPlaying({playing: true, lottieContinuePlaySec: 0});
+          window.sessionStorage.setItem("feverInfo", JSON.stringify({startTime: feverStartedTime.format("YYYY-MM-DD HH:mm:ss"), roomNo}));
+        } else {  // 피버타임 종료
+          stopFeverTime();
+        }
       });
     }
 
     return () => {
       if (chatInfo && chatInfo.hasOwnProperty('setBroadcastStateClear')) {
-        chatInfo.setBroadcastStateClear();
+        chatInfo.setBroadcastStateClear('setStoneAniQueueState');
+        chatInfo.setBroadcastStateClear('setFeverTimeState');
       }
     };
   }, [chatInfo]);
@@ -107,7 +145,7 @@ const DallagersTopSection = (props) => {
       if(rafFeverTime === 0) rafFeverTime = timestamp;  // rafFeverTime : 0으로 초기화 하면 60초부터 재시작
       let _feverTime = timestamp - rafFeverTime;  // 진행된 누적 시간
       let remainFeverTime;
-      if(_feverTime - rafPrevFeverTime > 900){  // 1초 차이마다 60초 카운트 state 변화
+      if(_feverTime - rafPrevFeverTime > 500){
         rafPrevFeverTime = _feverTime;  //1초 계산용
 
         //백그라운드에 뒀을때 타이머가 늦게 시작한 경우 시간차를 계산, 남은시간 60초를 감산해서 계산하기
@@ -133,11 +171,8 @@ const DallagersTopSection = (props) => {
       }
 
       // 피버타임 끝
-      if(remainFeverTime < 0){
-        rafFeverTime = 0;
-        rafPrevFeverTime = 0;
-        aniStatus.feverTimePlaying = false; // 상태 체크용
-        setFeverPlaying({playing: false, nothingVal: 0}); // dom 렌더링 용도
+      if(remainFeverTime <= 0){
+        stopFeverTime();
       }
 
       rafId = requestAnimationFrame(reqCallback);
@@ -181,24 +216,26 @@ const DallagersTopSection = (props) => {
   useEffect(() => {
     if(feverPlaying.playing){
       aniStatus.feverTimePlaying = true;
-      
-      if(feverLottieController.current) // 피버타임 로티 재생
-        feverLottieController.current.goToAndPlay(1, true);
 
-      if(rafFeverTime > 0){ //피버타임 진행중에 피버타임 재시작
+      // 피버타임 로티 재생
+      if(feverLottieController.current) {
+        if (feverPlaying.lottieContinuePlaySec === 0) {  // 60초 부터 카운트 ( 1 프레임 부터 재생 )
+          feverLottieController.current.goToAndPlay(1, true);
+        } else {  // sessionStorage 에 저장해둔 시간 (60 - t) 을 비교하여 이어서 카운트 시작하기 ( n 초 이후 부터 재생 )
+          feverLottieController.current.goToAndStop(Math.floor( feverPlaying.lottieContinuePlaySec ) * 30, true);
+        }
+      }
+
+      //피버타임 진행중에 피버타임 재시작
+      if(rafFeverTime > 0){
         rafFeverTime = 0;
         rafPrevFeverTime = 0;
-        console.log("feverTime restart@@@");
-      } else{ //test
-        console.log("feverTime start");
       }
-      //setFeverTimeText(60);
-      if(rafFeverTime === 0){ //중복 카운팅 방지
+
+      //중복 카운팅 방지
+      if(rafFeverTime === 0){
         rafId = requestAnimationFrame(reqCallback);
       }
-    } else {
-      console.log("feverTime end");
-      aniStatus.feverTimePlaying = false;
     }
   },[feverPlaying]);
 
@@ -245,9 +282,6 @@ const DallagersTopSection = (props) => {
           }
         }
       } else {  // 조각 애니메이션이 실행중이면, 애니메이션 queue에 넣어둠
-
-        const testCode1 = stoneAniQueueRef.current;
-        const testCode2 = stoneAniQueue;
         stoneAniQueueRef.current = stoneAniQueue.concat([]);
         //console.log("애니메이션 실행중 => 조각 push", testCode1, '=>', testCode2 );
       }

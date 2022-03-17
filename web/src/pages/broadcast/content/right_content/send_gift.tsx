@@ -317,7 +317,7 @@ export default function SendGift(props: {
         status: true,
         message: '메시지가 입력되지 않은 상태에서 몰래 보낼 수 있습니다.',
       });
-
+      setIsLoading(false);
       return;
     }
 
@@ -350,6 +350,7 @@ export default function SendGift(props: {
           type: "alert",
           content: "아이템을 선택해 주세요",
         });
+      setIsLoading(false);
       return false;
     }
 
@@ -359,11 +360,13 @@ export default function SendGift(props: {
           status: true,
           content: "선물할 사용자를 선택해 주세요.",
         });
+      setIsLoading(false);
       return false;
     }
     preventClick = true;
 
     const sendGiftRes = await postSendGift(params);
+
     if (sendGiftRes.result === "success") {
       globalAction.callSetToastStatus &&
       globalAction.callSetToastStatus({
@@ -373,10 +376,10 @@ export default function SendGift(props: {
 
       setItem(-1);
       setCount(0);
-
-      dispatchLayer({
-        type: "INIT",
-      });
+      setIsLoading(false);
+      // dispatchLayer({
+      //   type: "INIT",
+      // });
 
       if(ttsText) setCookie(ttsActorCookieNaming, ttsActor, 3); // 성우 저장
 
@@ -396,12 +399,10 @@ export default function SendGift(props: {
           type: "alert",
           content: sendGiftRes.message,
         });
+      dispatchLayer({
+        type: "INIT",
+      });
     }
-
-    dispatchLayer({
-      type: "INIT",
-    });
-    if(isLoading) setIsLoading(false);
 
     preventClick = false;
   }
