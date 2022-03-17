@@ -133,7 +133,8 @@ const DallagersTopSection = (props) => {
 
     return () => {
       if (chatInfo && chatInfo.hasOwnProperty('setBroadcastStateClear')) {
-        chatInfo.setBroadcastStateClear();
+        chatInfo.setBroadcastStateClear('setStoneAniQueueState');
+        chatInfo.setBroadcastStateClear('setFeverTimeState');
       }
     };
   }, [chatInfo]);
