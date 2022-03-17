@@ -1,26 +1,26 @@
-import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} from 'react'
+import React, {useState, useEffect, useCallback, useContext, useRef} from 'react'
 import {Context} from 'context'
 import {setIsRefresh, setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {Hybrid, isHybrid} from "context/hybrid";
-import {IMG_SERVER} from 'context/config'
-import Api from 'context/api'
-import Lottie from 'react-lottie'
-import qs from 'query-string'
+import {IMG_SERVER} from 'context/config';
+import Api from 'context/api';
+import Lottie from 'react-lottie';
+import qs from 'query-string';
 // global components
-import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/InputItems'
-import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
+import Header from 'components/ui/header/Header';
+import InputItems from 'components/ui/inputItems/InputItems';
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
+import LayerPopup from 'components/ui/layerPopup/LayerPopup';
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide';
 // components
 import Confirm from './components/Confirm'
 import MergePop from './components/MergePop'
 // contents
-import Round_1 from './contents/Round_1'
-import Round_2 from './contents/Round_2'
-import Round_3 from './contents/Round_3'
+import Round_1 from './contents/Round_1';
+import Round_2 from './contents/Round_2';
+import Round_3 from './contents/Round_3';
 
 import './style.scss'
 
@@ -80,6 +80,7 @@ const Rebranding = () => {
     Api.getDallagersReqNo().then((res) => {
       if (res.result === 'success') {
         setEventInfo(res.data)
+        setTabmenuType(tabmenu[res.data.seq_no - 1])
       }
     })
   }
