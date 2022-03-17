@@ -267,49 +267,9 @@ export default (props) => {
         if(!dupCheck) {
           setDupCheck(true);
           // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
-          /* 휴면 해제 체크 */
-          postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
-            const resultCode = res.code;
-            if(resultCode === '0') {
-              context.action.alert({
-                title: '휴면상태가 해제되었습니다.',
-                msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
-                callback: () => {
-                  if(isDesktop()) {
-                    window.close();
-                  }else {
-                    history.replace('/login');
-                  }
-                }
-              })
-            }else if(resultCode === '-1') {
-              context.action.alert({
-                title: '기존 정보와 일치하지 않습니다.',
-                msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
-                callback: () => {
-                  if(isDesktop()) {
-                    window.close();
-                  }else {
-                    history.replace('/login');
-                  }
-                }
-              })
-            }else {
-              context.action.alert({
-                title: '기존 정보와 일치하지 않습니다.',
-                msg: res.message,
-                callback: () => {
-                  if(isDesktop()) {
-                    window.close();
-                  }else {
-                    history.replace('/login');
-                  }
-                }
-              })
-            }
-          })
-
-          return (
+        }
+        return (
+          <div className="auth-wrap">
             <div className="btn-wrap">
               <button
                 onClick={() => {
@@ -318,13 +278,12 @@ export default (props) => {
                   }else {
                     history.push('/login');
                   }
-                }}>
-                확인
+                }}
+              >확인
               </button>
             </div>
-          )
-        }
-        break;
+          </div>
+        )
       case 9:
         return (
           <div className="auth-wrap">
@@ -384,6 +343,52 @@ export default (props) => {
         return <></>
     }
   }
+
+  useEffect(() => {
+    if(dupCheck) {
+      /* 휴면 해제 체크 */
+      postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
+        const resultCode = res.code;
+        if(resultCode === '0') {
+          context.action.alert({
+            title: '휴면상태가 해제되었습니다.',
+            msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
+            callback: () => {
+              if(isDesktop()) {
+                window.close();
+              }else {
+                history.replace('/login');
+              }
+            }
+          })
+        }else if(resultCode === '-1') {
+          context.action.alert({
+            title: '기존 정보와 일치하지 않습니다.',
+            msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
+            callback: () => {
+              if(isDesktop()) {
+                window.close();
+              }else {
+                history.replace('/login');
+              }
+            }
+          })
+        }else {
+          context.action.alert({
+            title: '기존 정보와 일치하지 않습니다.',
+            msg: res.message,
+            callback: () => {
+              if(isDesktop()) {
+                window.close();
+              }else {
+                history.replace('/login');
+              }
+            }
+          })
+        }
+      })
+    }
+  }, [dupCheck])
 
   //---------------------------------------------------------------------
   return (
