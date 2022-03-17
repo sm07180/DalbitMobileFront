@@ -1,12 +1,9 @@
 import React, {useContext, useEffect} from "react";
-import Layout from "common/layout";
 import Header from "components/ui/header/Header";
 import { useHistory } from "react-router-dom";
 import {authReq} from 'pages/self_auth'
-import { setCookie } from "common/utility/cookie";
 import {Context} from 'context'
 import "./style.scss";
-import {postSleepMemUpd} from "../../../common/api";
 
 export default (props) => {
   const {memNo} = props;
