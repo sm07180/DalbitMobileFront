@@ -38,6 +38,7 @@ export default (props) => {
    * 4 : 프로필에서 본인인증 완료 후
    */
   const [authState, setAuthState] = useState(0)
+  const [dupCheck, setDupCheck] = useState(false);
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
@@ -263,49 +264,54 @@ export default (props) => {
           </div>
         )
       case 7:
-        console.log(phoneNum);
-        // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
-        /* 휴면 해제 체크 */
-        postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
-          const resultCode = res.code;
-          if(resultCode === '0') {
-            context.action.alert({
-              title: '휴면상태가 해제되었습니다.',
-              msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
-              callback: () => {
-                if(isDesktop()) {
-                  window.close();
-                }else {
-                  history.replace('/login');
+        if(!dupCheck) {
+          setDupCheck(true);
+          console.log(phoneNum);
+          // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
+          /* 휴면 해제 체크 */
+          postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
+            console.log(res);
+            const resultCode = res.code;
+            if(resultCode === '0') {
+              context.action.alert({
+                title: '휴면상태가 해제되었습니다.',
+                msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
+                callback: () => {
+                  if(isDesktop()) {
+                    window.close();
+                  }else {
+                    history.replace('/login');
+                  }
                 }
-              }
-            })
-          }else if(resultCode === '-1') {
-            context.action.alert({
-              title: '기존 정보와 일치하지 않습니다.',
-              msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
-              callback: () => {
-                if(isDesktop()) {
-                  window.close();
-                }else {
-                  history.replace('/login');
+              })
+            }else if(resultCode === '-1') {
+              context.action.alert({
+                title: '기존 정보와 일치하지 않습니다.',
+                msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
+                callback: () => {
+                  if(isDesktop()) {
+                    window.close();
+                  }else {
+                    history.replace('/login');
+                  }
                 }
-              }
-            })
-          }else {
-            context.action.alert({
-              title: '기존 정보와 일치하지 않습니다.',
-              msg: res.message,
-              callback: () => {
-                if(isDesktop()) {
-                  window.close();
-                }else {
-                  history.replace('/login');
+              })
+            }else {
+              context.action.alert({
+                title: '기존 정보와 일치하지 않습니다.',
+                msg: res.message,
+                callback: () => {
+                  if(isDesktop()) {
+                    window.close();
+                  }else {
+                    history.replace('/login');
+                  }
                 }
-              }
-            })
-          }
-        })
+              })
+            }
+          })
+        }
+        break;
       case 9:
         return (
           <div className="auth-wrap">
