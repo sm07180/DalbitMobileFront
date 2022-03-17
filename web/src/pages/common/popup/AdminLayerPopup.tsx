@@ -5,6 +5,8 @@ import {Context, GlobalContext} from "context";
 import './adminLayerPopup.scss'
 import {ReportPopup} from "./ReportPopup";
 import API from "../../../context/api";
+import {isDesktop} from "../../../lib/agent";
+import {RoomJoin} from "../../../context/room";
 
 const AdminLayerPopup = (props: any)=> {
   const [popup, setPopup] = useState(false);
@@ -34,27 +36,38 @@ const AdminLayerPopup = (props: any)=> {
 
   //clip Link
   const broadCastLink = (type: string) => {
-    if (type === "admin") {
-      globalAction.setShadowAdmin!(1);
-      popupClose();
-      if (globalState.inBroadcast) {
-        window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
-        setTimeout(() => {
-          globalAction.setInBroadcast!(false);
-        }, 10);
+    if(isDesktop()){
+      if (type === "admin") {
+        globalAction.setShadowAdmin!(1);
+        popupClose();
+        if (globalState.inBroadcast) {
+          window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
+          setTimeout(() => {
+            globalAction.setInBroadcast!(false);
+          }, 10);
+        } else {
+          history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
+        }
       } else {
-        history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
+        globalAction.setShadowAdmin!(0);
+        popupClose();
+        if (globalState.inBroadcast) {
+          window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
+          setTimeout(() => {
+            globalAction.setInBroadcast!(false);
+          }, 10);
+        } else {
+          history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
+        }
       }
-    } else {
-      globalAction.setShadowAdmin!(0);
+    }else{
       popupClose();
-      if (globalState.inBroadcast) {
-        window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
-        setTimeout(() => {
-          globalAction.setInBroadcast!(false);
-        }, 10);
-      } else {
-        history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
+      if (type === "admin") {
+        sessionStorage.removeItem('room_active')
+        RoomJoin({roomNo: globalState.broadcastAdminLayer.roomNo, shadow: 1})
+      }else{
+        sessionStorage.removeItem('room_active')
+        RoomJoin({roomNo: globalState.broadcastAdminLayer.roomNo, shadow: 0})
       }
     }
   };

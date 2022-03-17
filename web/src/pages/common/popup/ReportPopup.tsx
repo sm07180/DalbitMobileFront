@@ -9,12 +9,15 @@ import API from "../../../context/api";
 function SanctionList({ value, type,text, name, register, children }) {
     let inputText = text === 'input';
     let [ inputDisabled, setInputDisabled ] = useState(true);
+    let register1 = register(name);
     return <>
         <div className="sanctionlist">
             <label className={`${type === "check" ? 'checkBox' : "radio" }Label`}>
-                <input type={`${type === "check" ? 'checkbox' : "radio" }`} {...register(name)} onChange={()=>{
-                    setInputDisabled(!inputDisabled)
-                }} className="blind" value={value}/>
+                <input type={`${type === "check" ? 'checkbox' : "radio" }`} { ...register1}
+                    onChange={(e)=>{
+                        setInputDisabled(!inputDisabled)
+                        register1.onChange(e);
+                    }} className="blind" value={value}/>
                 <span className={`${type}Icon`}/>
                 <p>{children}</p>
             </label>
@@ -64,7 +67,6 @@ export function ReportPopup({ popup}) {
     } = useForm();
 
     let onClick = (data , notificationYn)=>{
-        console.log(data)
         if(!data.declaration_slctType){
             globalAction.setAlertStatus({
                 status: true,

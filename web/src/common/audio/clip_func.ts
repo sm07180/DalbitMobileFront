@@ -252,7 +252,7 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
       return history.push('/login');
     }
   } else {
-    RoomJoin({roomNo: roomNo})
+    RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm})
   }
 }
 
