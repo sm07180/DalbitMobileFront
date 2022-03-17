@@ -3979,6 +3979,16 @@ export default class API {
     return await ajax({url: `/event/dallagers/specialList/${pageNo}/${pagePerCnt}`, method: 'GET'})
   }
 
+  // 회원 제재
+  static adminDeclarationOperate = async (data) => {
+    return await ajax({url: `/admin/declaration/operate`, method: 'POST', reqBody: true, data: data})
+  }
+
+  // 회원 방폭
+  static adminBroadcastForceExit = async (data) => {
+    return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
+  }
+
 }
 
 API.customHeader = null

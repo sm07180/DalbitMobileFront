@@ -5,7 +5,7 @@ import Swiper from 'react-id-swiper'
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {IMG_SERVER} from 'context/config'
 import {Context, GlobalContext} from "context";
@@ -37,7 +37,7 @@ const TopRanker = (props) => {
     rebuildOnUpdate: true
   }
 
-  const goLive = (roomNo, nickNm, listenRoomNo) => {
+  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
     if (context.token.isLogin === false) {
       context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
@@ -47,7 +47,7 @@ const TopRanker = (props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, nickNm: nickNm})
@@ -142,7 +142,7 @@ const TopRanker = (props) => {
                                 data.roomNo &&
                                   <div className='badgeLive' onClick={(e) => {
                                     e.stopPropagation();
-                                    goLive(data.roomNo, data.nickNm, data.listenRoomNo);
+                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
                                   }}>                                    
                                     <span className='equalizer'>
                                       <Lottie

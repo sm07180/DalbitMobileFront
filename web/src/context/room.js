@@ -53,7 +53,7 @@ export default Room
  */
 export const RoomJoin = async (obj) => {
   /* 임시 업데이트 체크 --------------------- */
-  const res = await Api.verisionCheck();
+  /*const res = await Api.verisionCheck();
   if(res.data.isUpdate) {
     return Room.context.action.confirm({
       msg: '안정적인 서비스 제공을 위해 최신버전으로 업데이트가 필요합니다.',
@@ -69,7 +69,7 @@ export const RoomJoin = async (obj) => {
         return false;
       }
     })
-  }
+  }*/
   /* -------------------------------------- */
 
   const {roomNo, callbackFunc, shadow, mode, nickNm, listener} = obj
