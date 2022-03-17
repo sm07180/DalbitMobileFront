@@ -141,12 +141,15 @@ export class ChatSocketHandler {
   setMemNo(memNo){
     this.memNo = memNo;
   }
+
   setBroadcastStateChange(key: string, setStateFn: Function){
     this.broadcastStateChange = {...this.broadcastStateChange, [key] : setStateFn};
   }
 
-  setBroadcastStateClear(){
-    this.broadcastStateChange = {};
+  setBroadcastStateClear(keyName){
+    if(this.broadcastStateChange[keyName]) {
+      delete this.broadcastStateChange[keyName];
+    }
   }
 
   setUserSettingObj(obj: userBroadcastSettingType) {

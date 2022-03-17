@@ -22,9 +22,6 @@ const MoonLandAnimationComponent = (props: any) => {
   //달나라 이벤트 진행중 여부
   const moonLandEventBool = roomInfo && roomInfo.hasOwnProperty('moonLandEvent') && roomInfo.moonLandEvent;
 
-  const animationId = useRef(0);
-  const timerControlRef = useRef({});
-
   //receiveSocket -> component
   const [pointAnimate, setPointAnimate] = useState<any>(null);
   
@@ -73,7 +70,6 @@ const MoonLandAnimationComponent = (props: any) => {
   // chat_socket -> "reqPlayCoin" 패킷을 받으면 실행할 콜백함수 전달
   useEffect(() => {
     if (chatInfo && moonLandEventBool) {
-      console.log("stateFn call");
       chatInfo.setBroadcastStateChange('moonLandStateFn', (state) => {
         setPointAnimate(state);
       });
@@ -81,7 +77,7 @@ const MoonLandAnimationComponent = (props: any) => {
 
     return () => {
       if (chatInfo && chatInfo.hasOwnProperty('setBroadcastStateClear')) {
-        chatInfo.setBroadcastStateClear();
+        chatInfo.setBroadcastStateClear('moonLandStateFn');
       }
     };
   }, [chatInfo]);
