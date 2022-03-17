@@ -28,7 +28,7 @@ export default (props) => {
   const location = useLocation()
 
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-  const {result, code, message, returntype, url, pushLink, phoneNum} = qs.parse(location.search)
+  const {result, code, message, returntype, url, pushLink, phoneNum, memNo} = qs.parse(location.search)
 
   /**
    * authState
