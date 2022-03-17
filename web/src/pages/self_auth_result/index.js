@@ -393,7 +393,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <>
-      {authState !== 7 ? createResult() :
+      {authState === 7 ? createResult() :
         <div id="selfAuthResult">
           {authState === 0 ? (
               <></>

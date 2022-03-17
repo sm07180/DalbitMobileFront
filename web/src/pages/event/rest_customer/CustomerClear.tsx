@@ -15,7 +15,7 @@ export default (props) => {
 
   //본인인증 완료 후
   function updateDispatch() {
-    alert('hello')
+    history.push('/login');
   }
 
   useEffect(() => {
