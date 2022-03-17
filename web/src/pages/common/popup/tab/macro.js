@@ -111,10 +111,7 @@ const MacroInput = props => {
         callback: () => {
           console.log()
         },
-<<<<<<< HEAD
-=======
         // title: '달라라디오',
->>>>>>> origin/br_Renewal-jiho
         msg: '입력 가능한 수를 초과했습니다.'
       })
     }

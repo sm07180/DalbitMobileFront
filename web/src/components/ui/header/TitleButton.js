@@ -36,7 +36,7 @@ export const MessageButton = ({history, context, mailboxAction, mailboxState}) =
 }
 
 export const AlarmButton = ({history, dispatch, newAlarmCnt, isLogin, noticeCount}) => {
-  return <button className={`alarm ${isLogin && newAlarmCnt > 0 ? 'new' : ''}`} onClick={() => {
+  return <button className={`alarm ${isLogin && (newAlarmCnt || noticeCount) > 0 ? 'new' : ''}`} onClick={() => {
     if(noticeCount === 0) {
       dispatch(setNoticeTab("알림"));
     } else {
@@ -94,14 +94,14 @@ const TitleButton = (props) => {
           <StoreButton event={storeButtonEvent}/>
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>
       )
     case '클립 랭킹':
@@ -114,7 +114,7 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>
       )
     case '랭킹':
@@ -128,7 +128,7 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <StoreButton event={storeButtonEvent} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.newCnt} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>
       )
     default :
