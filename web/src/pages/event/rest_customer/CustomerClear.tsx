@@ -15,10 +15,7 @@ export default (props) => {
 
   //본인인증 완료 후
   function updateDispatch() {
-    if(location.pathname.includes('customer_clear')) {
-      alert('hello')
-      history.replace('/login');
-    }
+    alert('hello')
   }
 
   useEffect(() => {

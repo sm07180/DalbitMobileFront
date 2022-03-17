@@ -266,11 +266,9 @@ export default (props) => {
       case 7:
         if(!dupCheck) {
           setDupCheck(true);
-          console.log(phoneNum);
           // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
           /* 휴면 해제 체크 */
           postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
-            console.log(res);
             const resultCode = res.code;
             if(resultCode === '0') {
               context.action.alert({
@@ -310,6 +308,21 @@ export default (props) => {
               })
             }
           })
+
+          return (
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    history.push('/login');
+                  }
+                }}>
+                확인
+              </button>
+            </div>
+          )
         }
         break;
       case 9:
@@ -374,25 +387,29 @@ export default (props) => {
 
   //---------------------------------------------------------------------
   return (
-    <div id="selfAuthResult">
-      {(authState === 0 || authState === 7) ? (
-        <></>
-      ) :
-        (authState === 4 || authState === 12) ?
-          <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
-        : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+    <>
+      {authState !== 7 &&
+        <div id="selfAuthResult">
+          {authState === 0 ? (
+              <></>
+            ) :
+            (authState === 4 || authState === 12) ?
+              <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
+              : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+          }
+          <section className="resultWrap">
+            {authState !== 0 && (
+              <>
+                <div className="img_wrap">
+                  <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
+                </div>
+                <h2>본인 인증 완료</h2>
+                {createResult()}
+              </>
+            )}
+          </section>
+        </div>
       }
-      <section className="resultWrap">
-        {authState !== 0 && (
-          <>
-            <div className="img_wrap">
-              <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
-            </div>
-            <h2>본인 인증 완료</h2>
-            {createResult()}
-          </>
-        )}
-      </section>
-    </div>
+    </>
   )
 }
