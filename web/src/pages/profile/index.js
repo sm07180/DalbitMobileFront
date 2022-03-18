@@ -43,7 +43,7 @@ import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
 import {setCommonPopupOpenData} from "redux/actions/common";
 
-const socialTabmenu = ['방송공지','팬보드','클립']
+const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
 
 const ProfilePage = () => {
