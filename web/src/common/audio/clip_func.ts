@@ -140,7 +140,7 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
           type: 'confirm',
           msg: `해당 청취자가 있는 방송으로 입장하시겠습니까?`,
           callback: () => {
-            return RoomValidateFromClipMemNo(listenRoomNo, context, history, nickNm);
+            return RoomValidateFromClipMemNo(listenRoomNo,memNo, context, history, nickNm);
           }
         })
       }
@@ -148,7 +148,7 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
   }else if(isHybrid()){
     const roomEnterAction = () => {
       if(roomNo) {
-        return RoomJoin({roomNo})
+        return RoomJoin({roomNo:roomNo, memNo:memNo,nickNm:nickNm,})
       }else {
         let alertMsg
         if (isNaN(listenRoomNo)) {
@@ -163,7 +163,7 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
             type: 'confirm',
             msg: alertMsg,
             callback: () => {
-              return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+              return RoomJoin({roomNo: listenRoomNo, memNo:memNo,nickNm:nickNm,listener: 'listener'})
             }
           })
         }

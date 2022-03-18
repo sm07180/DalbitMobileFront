@@ -170,6 +170,7 @@ export function ReportPopup({ popup}) {
                 }));
             }
         };
+        sessionStorage.removeItem('room_active')
         context.action.confirm(message1)
     };
     return <LayerPopup title="신고조치" setPopup={popup}>

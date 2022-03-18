@@ -50,7 +50,7 @@ const TopRanker = (props) => {
         RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
         if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, nickNm: nickNm})
+          RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
         } else {
           let alertMsg
           if (isNaN(listenRoomNo)) {
@@ -65,7 +65,7 @@ const TopRanker = (props) => {
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
-                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
               }
             })
           }

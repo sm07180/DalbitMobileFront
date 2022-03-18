@@ -88,7 +88,7 @@ const SpecialDj = (props) => {
       if (getDeviceOSTypeChk() === 3){
         RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
-        RoomJoin({roomNo: roomNo, nickNm: nickNm})
+        RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm})
       }
     }
   }
