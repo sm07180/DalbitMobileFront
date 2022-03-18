@@ -118,9 +118,8 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
       }
 
       const appVersionCheck = async () => {
-        failCallback();
-        // const targetVersion = isAndroid() ? '1.9.3' : '1.7.8';
-        // await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+        const targetVersion = isAndroid() ? '1.9.7' : '1.8.0';
+        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
       }
 
       appVersionCheck();
