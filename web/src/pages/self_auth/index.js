@@ -1,17 +1,14 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext} from 'react'
 import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
-import styled from 'styled-components'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 
 //context
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
 
 //layout
-import Layout from 'pages/common/layout'
 import Header from 'components/ui/header/Header'
 
 import './selfAuth.scss'

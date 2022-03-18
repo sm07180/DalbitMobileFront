@@ -1,5 +1,4 @@
 import React, {useContext, useState, useEffect} from 'react'
-import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory, useLocation} from 'react-router-dom'
 import qs from 'query-string'
@@ -7,7 +6,6 @@ import {Hybrid} from 'context/hybrid'
 
 //context
 import {Context} from 'context'
-import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Header from 'components/ui/header/Header'
@@ -17,7 +15,6 @@ import {IMG_SERVER} from 'context/config'
 import './selfAuthResult.scss'
 import {isDesktop} from "lib/agent";
 import {postSleepMemUpd} from "common/api";
-import {setCookie} from "common/utility/cookie";
 
 //
 export default (props) => {

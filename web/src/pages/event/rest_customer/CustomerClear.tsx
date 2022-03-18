@@ -4,28 +4,17 @@ import { useHistory } from "react-router-dom";
 import {authReq} from 'pages/self_auth'
 import {Context} from 'context'
 import "./style.scss";
-import {isDesktop} from "../../../lib/agent";
 
 export default (props) => {
   const {memNo} = props;
   const history = useHistory();
   const context = useContext(Context);
 
-  //본인인증 완료 후
-  const updateDispatch = () => {
-    history.push('/login');
-  }
-
   useEffect(() => {
     //새로고침했을경우
     if (memNo.slice(0, 1) === "8") {
       history.goBack();
     }
-
-    document.addEventListener("self-auth", updateDispatch);
-    return () => {
-      document.removeEventListener("self-auth", updateDispatch);
-    };
   }, []);
 
   return (
