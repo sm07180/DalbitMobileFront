@@ -478,7 +478,7 @@ export default function GNB() {
                           }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
-                        {item.url === '/alarm' && alarmData.newCnt > 0 && <span className="newDot"/>}
+                        {item.url === '/alarm' && (alarmData.alarm || alarmData.notice) > 0 && <span className="newDot"/>}
                       </li>
                     )
                   })}

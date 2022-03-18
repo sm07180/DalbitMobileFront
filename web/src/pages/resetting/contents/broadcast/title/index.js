@@ -80,7 +80,7 @@ const BroadcastTitle = () => {
     if(res.result === "success") {
       toastMessage("방송제목이 수정 되었습니다.")
       setTitleList(res.data.list);
-      setTitleSelect({...titleSelect, val: "", index: -1});
+      setTitleSelect({state: false, val: "", index: -1});
     }
   }
 

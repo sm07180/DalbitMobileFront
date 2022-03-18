@@ -24,8 +24,7 @@ export default (props) => {
 
   return (
     <>
-      <Header title="휴면회원 안내" type={"back"}/>
-
+      <Header title="휴면회원 안내" type="sub" />
       <div id="customerClear">
         <div className="visual"></div>
         <strong className="title">회원님께서는 현재 휴면 상태입니다.</strong>
@@ -51,11 +50,11 @@ export default (props) => {
         <span className="subText">※ 본인인증이 완료되면 자동 휴면 해제되어 기존 회원정보로 서비스 이용이 가능합니다.</span>
 
         <span className="subText">
-            ※ 휴면전환 정책은 <button onClick={() => history.push("/modal/service")}>이용약관</button>과{" "}
+          ※ 휴면전환 정책은 <button onClick={() => history.push("/modal/service")}>이용약관</button>과{" "}
           <button onClick={() => history.push("/modal/individualInfo")}>개인정보 취급방침</button>에 명시되어 있으며, 해제를
-            하지 않으신 경우
-            <strong>5년 후 자동 탈퇴 처리되어 보유하신 '달'과 '별'이 자동 소멸</strong>됩니다.
-          </span>
+          하지 않으신 경우
+          <strong>5년 후 자동 탈퇴 처리되어 보유하신 '달'과 '별'이 자동 소멸</strong>됩니다.
+        </span>
 
         <button
           className="button"

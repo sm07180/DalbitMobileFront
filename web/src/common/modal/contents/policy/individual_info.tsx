@@ -9,12 +9,10 @@ export default (props) => {
 
   return (
     <div className="fanlist-modal" onClick={(e) => e.stopPropagation()}>
-      <button className="closeBtn" onClick={() => history.goBack()}></button>
-      <DalbitScroll width={500} height={750} displayClassName="fanListWrapper">
-        <div className="termsWrap privacy">
-          <h2>개인정보 취급방침</h2>
-          <br />
-          <p>
+      <div className="termsWrap privacy">
+        <h2>개인정보 취급방침<button className="closeBtn" onClick={() => history.goBack()}>&times;</button></h2>
+        <div className="termsScroll">
+          <p style={{marginTop:"12px"}}>
             (주)여보야(이하 “회사”라 함)는 개인 정보 보호법, 정보통신망 이용
             촉진 및 정보보호 등에 관한 법률 등 정보통신서비스 제공자가
             준수하여야 할 관련 법령상의 개인 정보보호 규정을 준수하며, 관련
@@ -563,7 +561,7 @@ export default (props) => {
             </ol>
           </div>
         </div>
-      </DalbitScroll>
+      </div>
     </div>
   );
 };

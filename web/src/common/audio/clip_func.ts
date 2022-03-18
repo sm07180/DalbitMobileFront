@@ -182,14 +182,14 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
 }
 
 /* 방송 따라가기 있는 경우 */
-export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, listenRoomNo, webview}) => {
+export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm, listenRoomNo, webview}) => {
   if(!context.token.isLogin) {
     return history.push('/login')
   }
 
   if(isDesktop()) {
     if(roomNo) {
-      return RoomValidateFromClip(roomNo, context, history, nickNm);
+      return RoomValidateFromClipMemNo(roomNo,memNo, context, history, nickNm);
     }else if(listenRoomNo) {
       if(isNaN(listenRoomNo)) {
         return context.action.alert({
@@ -201,7 +201,7 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
           type: 'confirm',
           msg: `해당 청취자가 있는 방송으로 입장하시겠습니까?`,
           callback: () => {
-            return RoomValidateFromClip(listenRoomNo, context, history, nickNm);
+            return RoomValidateFromClipMemNo(listenRoomNo,memNo, context, history, nickNm);
           }
         })
       }
@@ -209,7 +209,7 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
   }else if(isHybrid()){
     const roomEnterAction = () => {
       if(roomNo) {
-        return RoomJoin({roomNo})
+        return RoomJoin({roomNo:roomNo, memNo:memNo,nickNm:nickNm,})
       }else {
         let alertMsg
         if (isNaN(listenRoomNo)) {
@@ -224,7 +224,7 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
             type: 'confirm',
             msg: alertMsg,
             callback: () => {
-              return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+              return RoomJoin({roomNo: listenRoomNo, memNo:memNo,nickNm:nickNm,listener: 'listener'})
             }
           })
         }
@@ -246,13 +246,13 @@ export const RoomValidateFromProfile = ({roomNo, history, context, nickNm, liste
   }
 }
 
-export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
-  const { globalState, globalAction } = gtx;
-  if(isDesktop()) {
+export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
+  const {globalState, globalAction} = gtx;
+  if (isDesktop()) {
     if (!globalState.baseData.isLogin) {
       return history.push("/login");
     }
-    const { clipInfo, clipPlayer, rtcInfo } = globalState;
+    const {clipInfo, clipPlayer, rtcInfo} = globalState;
     if (clipInfo !== null) {
       globalAction.setAlertStatus!({
         status: true,
@@ -265,6 +265,7 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
               ...prevState,
               status: `broadcast`,
               roomNo: roomNo,
+              memNo:memNo,
               nickNm: nickNm,
             }));
           } else {
@@ -278,7 +279,7 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
           history.push(`/broadcast/${roomNo}`);
         } else {
           const listenRoomNo = rtcInfo && rtcInfo.roomInfo.roomNo;
-          if(rtcInfo !== null && listenRoomNo !== roomNo) { // 방송 청취중이며 다른방 입장 시도
+          if (rtcInfo !== null && listenRoomNo !== roomNo) { // 방송 청취중이며 다른방 입장 시도
             globalAction.setAlertStatus &&
             globalAction.setAlertStatus({
               status: true,
@@ -288,7 +289,7 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
                 history.push(`/broadcast/${roomNo}`);
               },
             });
-          }else {
+          } else {
             history.push(`/broadcast/${roomNo}`);
           }
         }
@@ -298,19 +299,24 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
             ...prevState,
             status: `broadcast`,
             roomNo: roomNo,
+            memNo:memNo,
             nickNm: nickNm === "noName" ? "" : nickNm,
           }));
           //history.push(`/broadcast/${roomNo}`);
         }
       }
     }
-  }else if(isMobileWeb()) {
+  } else if (isMobileWeb()) {
     if (globalState.baseData.isLogin) {
       return gtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
-    }else {
+    } else {
       return history.push('/login');
     }
-  }else {
-    RoomJoin({roomNo: roomNo})
+  } else {
+    RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm})
   }
+}
+
+export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
+  return RoomValidateFromClipMemNo(roomNo,0, gtx, history, nickNm, listener);
 }

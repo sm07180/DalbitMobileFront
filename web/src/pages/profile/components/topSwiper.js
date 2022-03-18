@@ -37,6 +37,7 @@ const TopSwiper = (props) => {
   const roomJoinHandler = () => {
     const params = {
       roomNo: data.roomNo,
+      memNo : data.memNo,
       history,
       context,
       nickNm: data.nickNm,
