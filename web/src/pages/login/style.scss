@@ -56,6 +56,14 @@ $btnDisable : #FFD8E4;
         background: lighten($btnActive, 2%);
       }
     }
+    .downloadBtn{
+      width: 180px;
+      height: 54px;
+      img{width: 100%;}
+      &+.downloadBtn{
+        margin-top: 16px;
+      }
+    }
   }
   .loginSns {
     padding-top:36px;

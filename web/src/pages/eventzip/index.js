@@ -11,6 +11,9 @@ const EventZip = () => {
   let history = useHistory()
   const context = useContext(Context)
   const nowDay = moment().format('YYYYMMDD');
+  const [ingEvent, setIngEvent] = useState([]);
+  const [endEvent, setEndEvent] = useState([]);
+
   const [eventInfo, setEventInfo] = useState(
     [
       {
@@ -68,17 +71,25 @@ const EventZip = () => {
         endDay : "20220307",
         bannerImg : "https://image.dalbitlive.com/eventzip/eventZip_7590.png",
         path : "/event/invite",
-        endState :false
+        endState : false
       },
     ]
   );
 
   useEffect(() => {
+    let endList = [];
+    let ingList = [];
     for(let i = 0; i < eventInfo.length; i++){
       if(moment(nowDay).isAfter(moment(eventInfo[i].endDay).add(1, 'days'))){
-        eventInfo[i].endState = true
+        eventInfo[i].endState = true;
+        endList.push(eventInfo[i]);        
+      } else {
+        eventInfo[i].endState = false;
+        ingList.push(eventInfo[i]);
       }
-    }
+    }    
+    setIngEvent(ingList);
+    setEndEvent(endList);
   }, [nowDay]);
 
   const golink = (path, endDay, num) => {
@@ -102,20 +113,18 @@ const EventZip = () => {
       <div className='eventWrap'>        
         <div id='ingWrap'>
           {
-            eventInfo.map((list, index) => {
-              if(!list.endState){
-                return (
-                  <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState, `${list.noticeNum && list.noticeNum}`)}}>
-                    <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
-                    <div className='eventInfo'>
-                      <div className='eventTitle'>{list.eventTitle}</div>
-                      <div className='eventDate'>
-                        {list.endDay ? `${moment(list.startDay).format('MM.DD')} - ${moment(list.endDay).format('MM.DD')}` : "상시모집"}
-                      </div>
+            ingEvent.map((list, index) => {
+              return (
+                <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState, `${list.noticeNum && list.noticeNum}`)}}>
+                  <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
+                  <div className='eventInfo'>
+                    <div className='eventTitle'>{list.eventTitle}</div>
+                    <div className='eventDate'>
+                      {list.endDay ? `${moment(list.startDay).format('MM.DD')} - ${moment(list.endDay).format('MM.DD')}` : "상시모집"}
                     </div>
                   </div>
-                )
-              }                   
+                </div>
+              )      
             })
           }
         </div>
@@ -129,18 +138,16 @@ const EventZip = () => {
         </div>
         <div id='endWrap'>
           {
-            eventInfo.map((list, index) => {
-              if(list.endState){
-                return (
-                  <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState)}}>
-                    <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
-                    <div className='eventInfo'>
-                      <div className='eventTitle'>{list.eventTitle}</div>
-                      <div className='eventDate'>{moment(list.startDay).format('MM.DD')} - {moment(list.endDay).format('MM.DD')}</div>
-                    </div>
+            endEvent.map((list, index) => {
+              return (
+                <div key={index} className={`eventList ${list.endState ? 'end' : ''}`} onClick={() => {golink(`${list.path}`, list.endState)}}>
+                  <div className='thumbNail' style={{backgroundImage: `url(${list.bannerImg})`}}/>
+                  <div className='eventInfo'>
+                    <div className='eventTitle'>{list.eventTitle}</div>
+                    <div className='eventDate'>{moment(list.startDay).format('MM.DD')} - {moment(list.endDay).format('MM.DD')}</div>
                   </div>
-                )
-              }                   
+                </div>
+              )              
             })
           }
         </div>  

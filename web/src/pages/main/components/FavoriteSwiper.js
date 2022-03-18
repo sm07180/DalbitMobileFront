@@ -21,7 +21,7 @@ const SwiperList = (props) => {
   let locationStateHistory = useHistory();
 
   const swiperParams = useMemo(() => {
-    let tempResult = { slidesPerView: 'auto', rebuildOnUpdate: true }
+    let tempResult = { slidesPerView: 'auto'}
     if (isDesktop) {
       tempResult.navigation = {
         nextEl: '.swiper-button-next',
@@ -88,8 +88,10 @@ const SwiperList = (props) => {
         <div className='listColumn' onClick={() => {
           history.push('/recentstar')
         }}>
-          <div className="listMore">
-            +{myStarCnt - 10}
+          <div className="listMoreBox">
+            <div className="listMore">
+              +{myStarCnt - 10}
+            </div>
           </div>
         </div>
       }
