@@ -23,6 +23,7 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
+import {postSleepMemUpd} from "../common/api";
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -3937,7 +3938,10 @@ export default class API {
     return ajax({url: '/broad/vote/getVoteSelAndDetailList', method: 'POST', reqBody: true, data: data})
   }
 
-
+  // 휴면 회원 인증
+  static postSleepMemUpd = async (data) => {
+    return ajax({url: '/sleep/member/update', method: 'POST', reqBody: true, data: data})
+  }
 
   // 달라져스 회차정보
   static getDallagersReqNo = async (obj) => {
