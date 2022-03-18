@@ -350,6 +350,9 @@ export default (props) => {
 
   useEffect(() => {
     if(dupCheck) {
+      if(isDesktop()) {
+        window.opener.location.href = '/login';
+      }
       /* 휴면 해제 체크 */
       postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
         const resultCode = res.code;
