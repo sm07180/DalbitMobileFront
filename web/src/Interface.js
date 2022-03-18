@@ -340,7 +340,7 @@ export default () => {
             callResetListen(loginInfo.data.memNo)
           }
         })
-      } else if (loginInfo.code === '-6') {
+      } else if (loginInfo.code === '-8') {
         return props.history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         context.action.alert({
