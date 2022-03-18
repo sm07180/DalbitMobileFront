@@ -337,7 +337,7 @@ export default function GNB() {
   };
 
   const updateDispatch = (event) => {
-    if(location.pathname.includes('customer')) {
+    if(location.pathname.includes('customer') && !location.pathname.includes('customer_clear')) {
       if (event.detail.result == "success" && event.detail.code == "0") {
         globalAction.setAlertStatus!({
           status: true,

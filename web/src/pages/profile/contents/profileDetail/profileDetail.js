@@ -15,6 +15,7 @@ import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
+import {setProfileTabData} from "redux/actions/profile";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -52,6 +53,7 @@ const ProfileDetail = (props) => {
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
+  const profileTab = useSelector(state => state.profileTab);
 
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -375,7 +377,7 @@ const ProfileDetail = (props) => {
             {isMore &&
               <div className="isMore">
                 {isMyContents &&
-                  <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>
+                  <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index, dispatch, profileTab })}>
                     수정하기</button>}
                 {(isMyContents || adminChecker) &&
                   <button onClick={deleteContents}>삭제하기</button>}
@@ -471,9 +473,11 @@ const ProfileDetail = (props) => {
  * targetMemNo : 글주인 memNo
  * */
 export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
-                                    index, memNo}) => {
+                                    index, memNo, dispatch, profileTab}) => {
   if(!history) return;
   if (type !== 'feed' && type !== 'fanBoard') return;
+  
+  dispatch(setProfileTabData({...profileTab, isRefresh: false, isReset: false})); // 프로필 탭 초기화 여부
 
   if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
       history.push(`/profileDetail/${memNo}/${type}/${index}`);

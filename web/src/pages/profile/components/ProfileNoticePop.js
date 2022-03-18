@@ -10,13 +10,13 @@ const ProfileNoticePop = () => {
   const popup = useSelector(state => state.popup);
   const context = useContext(Context);
   const closePop = () => {
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: false}))
+    dispatch(setCommonPopupOpenData({...popup, questionMarkPopup: false}))
   }
 
   useEffect(() => {
     if(isAndroid()) {
       context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'questionPop', popupData: popup})
+      context.action.updateBackFunction({name: 'commonPop', popupData: {...popup, questionMarkPopup: false}})
     }
 
     return () => {
