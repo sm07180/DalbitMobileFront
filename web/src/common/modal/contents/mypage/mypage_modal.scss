@@ -8,6 +8,16 @@
 }
 .fanlist-modal {
   position: relative;
+  width:100vw;
+  max-width:500px;
+  height:100vh;
+  max-height:750px;
+  border-radius:8px;
+  overflow: hidden;
+  .termsScroll {
+    height:calc(100% - 53px);
+    overflow-y:auto;
+  }
 }
 .exchange-modal {
   position: relative;
@@ -17,13 +27,12 @@
 }
 
 .closeBtn {
-  text-indent: -9999px;
   position: absolute;
+  top:0;
   right: 0;
-  top: -36px;
   width: 36px;
   height: 36px;
-  background: url("../../static/ic_close.svg");
+  @include font(24px,$Bold,black);
 }
 .myModalWrap {
   position: relative;
@@ -400,6 +409,34 @@
       &__dal {
         font-size: 14px;
         color: #424242;
+      }
+    }
+  }
+}
+
+.mobileType {
+  .fanlist-modal {
+    border-radius:0;
+    .privacy,.service {
+      padding:0;
+      height:100vh;
+      .closeBtn {
+        top:8px;
+      }
+    }
+    .termsScroll {
+      padding-bottom:16px;
+      h3 {
+        padding: 0 16px;
+      }
+      p {
+        padding: 0 16px;
+      }
+      ol {
+        padding: 0 16px;
+      }
+      .depth-info {
+        padding: 0 16px;
       }
     }
   }

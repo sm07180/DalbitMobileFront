@@ -51,9 +51,7 @@ export default (props) => {
 
   return (
     <>
-      <Layout>
-        <Header title="휴면회원 안내" />
-
+        <Header title="휴면회원 안내" type="sub" />
         <div id="customerClear">
           <div className="visual"></div>
           <strong className="title">회원님께서는 현재 휴면 상태입니다.</strong>
@@ -95,7 +93,6 @@ export default (props) => {
           </button>
 
         </div>
-      </Layout>
     </>
   );
 };
