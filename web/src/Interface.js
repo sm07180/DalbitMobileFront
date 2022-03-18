@@ -340,6 +340,8 @@ export default () => {
             callResetListen(loginInfo.data.memNo)
           }
         })
+      } else if (loginInfo.code === '-6') {
+        return props.history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         context.action.alert({
           title: '로그인 실패',
