@@ -269,19 +269,26 @@ export default (props) => {
           // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
         }
         return (
-          <div className="auth-wrap">
-            <div className="btn-wrap">
-              <button
-                onClick={() => {
-                  if(isDesktop()) {
-                    window.close()
-                  }else {
-                    history.push('/login');
-                  }
-                }}
-              >확인
-              </button>
-            </div>
+          <div id="selfAuthResult">
+            <section className="resultWrap">
+              <div className="img_wrap">
+                <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
+              </div>
+              <div className="auth-wrap">
+                <div className="btn-wrap">
+                  <button
+                    onClick={() => {
+                      if(isDesktop()) {
+                        window.close()
+                      }else {
+                        history.push('/login');
+                      }
+                    }}
+                  >확인
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
         )
       case 9:
@@ -357,7 +364,7 @@ export default (props) => {
               if(isDesktop()) {
                 window.close();
               }else {
-                history.replace('/login');
+                history.push('/login');
               }
             }
           })
@@ -369,7 +376,7 @@ export default (props) => {
               if(isDesktop()) {
                 window.close();
               }else {
-                history.replace('/login');
+                history.push('/login');
               }
             }
           })
@@ -381,7 +388,7 @@ export default (props) => {
               if(isDesktop()) {
                 window.close();
               }else {
-                history.replace('/login');
+                history.push('/login');
               }
             }
           })

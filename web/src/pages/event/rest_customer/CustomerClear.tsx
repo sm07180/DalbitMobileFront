@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import {authReq} from 'pages/self_auth'
 import {Context} from 'context'
 import "./style.scss";
+import {isDesktop} from "../../../lib/agent";
 
 export default (props) => {
   const {memNo} = props;
@@ -11,7 +12,7 @@ export default (props) => {
   const context = useContext(Context);
 
   //본인인증 완료 후
-  function updateDispatch() {
+  const updateDispatch = () => {
     history.push('/login');
   }
 
