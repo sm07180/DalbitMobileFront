@@ -122,6 +122,27 @@ $ExtraBold: 800;
   @include font($font,500,white);
 }
 
+@mixin btnGroupStyle {
+  @include flex(center);
+  button {
+    flex:1;
+    line-height:46px;
+    margin-top:28px;
+    border:1px solid;
+    border-radius:16px;
+    &:first-of-type {
+      border-color:#D5D5D5;
+      @include font(16px,$Medium,#666);
+    }
+    &:last-of-type {
+      margin-left:8px;
+      border-color:$DOWNCOLOR;
+      background-color:$DOWNCOLOR;
+      @include font(16px,$Bold,#fff);
+    }
+  }
+}
+
 @mixin photoStyle($width, $height, $radius) {
   position: relative;
   width: $width; height: $height;

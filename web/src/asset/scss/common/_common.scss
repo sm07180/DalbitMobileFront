@@ -15,6 +15,13 @@ legend {
 .hidden {
   display: none !important;
 }
+.overflowHidden {
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
+  overflow: hideen;
+  /* 이외의 브라우저 */
+  overscroll-behavior: none;
+}
 // 메인및 서브 페이지 센터영역 공통 wrap
 #root {
   width:100%;

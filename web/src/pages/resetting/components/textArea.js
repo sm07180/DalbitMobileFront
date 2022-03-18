@@ -41,6 +41,8 @@ const TextArea = (props) => {
 
   const submitEdit = () => {
       fetchModifyData();
+      setSelect({state: false, val: "", index: -1});
+      setList(list.splice(select.index));
   }
 
   const removeList = () => {

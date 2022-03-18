@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react';
 
-import {setCommonPopupClose} from "redux/actions/common";
+import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 
 import CheckList from './CheckList'
@@ -8,9 +8,10 @@ import CheckList from './CheckList'
 import './confirm.scss'
 
 const Confirm = (props) => {
-  const {setActionAni,stoneValue1,setStoneValue1,stoneValue2,setStoneValue2,fetchStoneChange} = props;
+  const {setActionAni,stoneValue1,stoneValue2,stoneValue3,fetchStoneChange} = props;
   
   const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
   // 
   const cookieChecked = () => {
     if(!localStorage.getItem('rebranding')){
@@ -25,14 +26,13 @@ const Confirm = (props) => {
   }
   // 
   const btnConfirm = () => {
-    fetchStoneChange(stoneValue1.value,stoneValue2.value);
+    fetchStoneChange(stoneValue1.value,stoneValue2.value,stoneValue3.value);
     dispatch(setCommonPopupClose());
     setActionAni(true);
-    setStoneValue1({on: false, value: ''});
-    setStoneValue2({on: false, value: ''});
     setTimeout(() => {
       setActionAni(false);
-    }, 6000);
+      dispatch(setCommonPopupOpenData({...popup, resultPopup: true, confirmPopup: false}));
+    }, 4500);
   };
 
   useEffect(() => {
