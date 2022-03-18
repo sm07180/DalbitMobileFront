@@ -3945,7 +3945,6 @@ export default class API {
   }
 
   /* 이니셜 스톤 교환하기 */
-  // useDallaGubunOne: 'd' (사용할 이니셜) , useDallaGubunTwo: 'a' (사용할 이니셜)
   static getDallagersStoneChange = async (obj) => {
     const {data} = obj || {};
     return await ajax({
@@ -3977,6 +3976,10 @@ export default class API {
   static getDallagersSpecialMyRankList = async (obj) => {
     const {pageNo, pagePerCnt} = obj || {};
     return await ajax({url: `/event/dallagers/specialList/${pageNo}/${pagePerCnt}`, method: 'GET'})
+  }
+
+  static getStarList = async (data) => {
+    return await ajax({url: `/myStar/list`, method: 'post', reqBody: true, data: data})
   }
 
 }

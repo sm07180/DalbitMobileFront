@@ -1,6 +1,6 @@
-import { ActionType } from 'typesafe-actions';
+import {ActionType} from 'typesafe-actions';
 import * as actions from '../actions/main';
-import { MediaType, IImageVo, Gender, ILiveBadgeList, IPaging } from './commonType';
+import {Gender, IImageVo, ILiveBadgeList, IPaging, MediaType} from './commonType';
 
 export type MainActions = ActionType<typeof actions>;
 
@@ -295,6 +295,7 @@ interface ILiveList {
 export interface IMainState {
   topBanner: Array<ITopBanner>,
   myStar: Array<IMyStar>;
+  myStarCnt: number;
   dayRanking: IDayRanking;
   newBjList: Array<INewBjList>;
   centerBanner: Array<ICenterBanner>;
