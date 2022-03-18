@@ -5,7 +5,7 @@ import {MediaType} from "../constant";
 const MoonLandAnimateChildren = (props: any) => {
   const {handleRemoveAniChildren, isWide} = props;
   const {uid, webpPrevClass, left, webpUrl,
-          type, score, roomNo, autoTouch, mediaType} = props.data;
+          type, score, roomNo, autoTouch, mediaType, coinKey} = props.data;
 
   const thisElRef = useRef<any>(null);
   const timerRef = useRef(0);
@@ -32,7 +32,7 @@ const MoonLandAnimateChildren = (props: any) => {
         scoreAnimateRef.current.animate([{top: "0px", zIndex: "2"}], {duration: 330, fill: "forwards"});
 
       if(!autoTouch) {
-        const {data, message} = await setMoonLandScore({type, score, roomNo});
+        const {data, message} = await setMoonLandScore({type, score, roomNo, coinKey});
       }
 
     }

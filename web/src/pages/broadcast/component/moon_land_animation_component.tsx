@@ -100,7 +100,8 @@ const MoonLandAnimationComponent = (props: any) => {
         score: data.score,                                    //score insert Param
         roomNo: chatInfo ? chatInfo.chatUserInfo.roomNo : 0,  //score insert Param
         autoTouch: roomOwner,  //방장인 경우 자동으로 점수 획득되는 애니메이션 (실제로는 이미 점수 획득한 상태)
-        mediaType
+        mediaType,
+        coinKey: data?.coinKey
       };
     } else {
       return {};
