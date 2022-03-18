@@ -1,12 +1,13 @@
 @import "components/ui/_mixin.scss";
 
 .totalInfo {
-  padding: 16px 16px 20px;
+  padding: 16px 0 20px;
   border-bottom:8px solid #F2F2F2;
   .badgeInfo {
     @include flex(flex-start);
     height:20px;
     margin-bottom:16px;
+    padding:0 16px;
     @include font(11px);
     overflow:hidden;
     &.isOpen {
@@ -44,13 +45,14 @@
   }
   .rankInfo {
     @include flex;
+    padding:0 16px;
     .box {
       flex:1;
       @include flex(center);
       height:58px;
       margin-right:5px;
       padding: 12px 10px 12px 8px;
-      border-radius:16px;
+      border-radius:8px;
       background-color: #F8F8F8;
       &:last-child {
         flex-grow: 0;
@@ -108,15 +110,93 @@
   }
   .comment {
     margin-top: 20px;
+    padding:0 16px;
     .title {
-      height:16px;
-      margin-bottom:4px;
-      img {
-        height:100%;
-      }
+      margin-bottom:8px;
+      @include font(17px,$Bold,#202020);
     }
     .text {
       @include font(15px,$Medium,black);
+    }
+  }
+  .broadcastNotice {
+    margin-top:16px;
+    .title {
+      margin-bottom:12px;
+      padding:0 16px;
+      @include font(17px,$Bold,#202020);
+    }
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        width:auto;
+        &:last-child {
+          margin-right:24px;
+        }
+      } 
+    }
+    .swiper-slide {
+      // $colors: (#FFE8F7:#EFB5CA,#FFE6DE:#FFBBA5,#FFF6E1:#FFD471,#E2EAFF:#98B4FF,#F3EEFF:#C1A8FF,#EDF5DF:#B5D878,#E3F6F2:#7EDBC7,#E5F5FB:#89D5F1,#FFECEE:#FFAEB6);
+      $boxColors: (#FFE8F7,#FFE6DE,#FFF6E1,#E2EAFF,#F3EEFF,#EDF5DF,#E3F6F2,#E5F5FB,#FFECEE);
+      $badgeColors: (#EFB5CA,#FFBBA5,#FFD471,#98B4FF,#C1A8FF,#B5D878,#7EDBC7,#89D5F1,#FFAEB6);
+      $colors: zip($boxColors,$badgeColors);
+      @each $color in $colors {
+        $i: index($colors,$color);
+        &:nth-child(9n+#{$i}) {
+          .feedBox {
+            background-color:nth($color,1);
+            .badge {
+              background-color:nth($color,2);
+            }
+          }
+        }
+      }
+      .feedBox {
+        @include flex($fd:column);
+        width:266px;
+        height:126px;
+        margin-right:10px;
+        padding: 16px 16px 12px 16px;
+        border-radius:8px;
+        .badge {
+          width:48px;
+          line-height:18px;
+          margin-bottom:8px;
+          border-radius:100px;
+          letter-spacing: -.2px;
+          font-style:italic;
+          text-align:center;
+          @include font(12px,$Medium,white);
+        }
+        .text {
+          padding-right:24px;
+          line-height:22px;
+          word-break: break-all;
+          @include font(15px,$SemiBold,#202020);
+          @include fontLineCut;
+        }
+        .info {
+          @include flex;
+          height:25px;
+          margin-top:auto;
+          i {
+            display:inline-block;
+            line-height:25px;
+            font-style:normal;
+            @include font(14px,$Medium,#666);
+            &.like {
+              @include BGIMG("profile/icocomment-g.png");
+            }
+            &.cmt {
+              @include BGIMG("profile/comment_icon-g.png");
+            }
+          }
+          .time {
+            letter-spacing: -1px;
+            @include font(12px); 
+          }
+        }
+      }
     }
   }
 }
