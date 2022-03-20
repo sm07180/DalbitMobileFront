@@ -341,7 +341,7 @@ export default () => {
           }
         })
       } else if (loginInfo.code === '-8') {
-        return props.history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
+        return history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         context.action.alert({
           title: '로그인 실패',
