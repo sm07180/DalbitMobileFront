@@ -150,6 +150,7 @@ const initialState: GlobalCtxStateType = {
     status: false,
     roomNo: "",
     nickNm: "",
+    memNo: ""
   },
   inBroadcast: false,
   alarmStatus: false,
