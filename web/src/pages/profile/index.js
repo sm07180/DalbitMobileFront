@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
+import {Context} from 'context'
 import './style.scss'
 import Api from 'context/api'
 // global components
@@ -35,17 +36,18 @@ import {
   profileFeedDefaultState, profilePagingDefault
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
+import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData} from "redux/actions/common";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
 
 const ProfilePage = () => {
   const history = useHistory()
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const location = useLocation();
+  const context = useContext(Context)
+  const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
   const tabmenuRef = useRef();
 
@@ -69,6 +71,7 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
+  const isWebView = useSelector(state => state.common).isWebView;
 
   const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
 
@@ -83,16 +86,16 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
-    let targetMemNo = params.memNo ? params.memNo : globalState.profile.memNo;
+    let targetMemNo = params.memNo ? params.memNo : context.profile.memNo;
 
     Api.profile({params: {memNo: targetMemNo }}).then(res => {
       if(res.code === '0') {
         dispatch(setProfileData(res.data))
       }else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           callback: () => history.goBack(),
           msg: res.message
-        }))
+        })
       }
     })
   };
@@ -100,7 +103,7 @@ const ProfilePage = () => {
   /* 피드 데이터 호출 */
   const getFeedData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : feedData.paging.next,
       pagePerCnt: feedData.paging.records,
       topFix: 0,
@@ -122,9 +125,9 @@ const ProfilePage = () => {
           removeScrollEvent();
         }
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     })
   }
@@ -132,7 +135,7 @@ const ProfilePage = () => {
   /* 팬보드 데이터 */
   const getFanBoardData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
       records: fanBoardData.paging.records
     }
@@ -152,9 +155,9 @@ const ProfilePage = () => {
           removeScrollEvent();
         }
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     })
   }
@@ -162,7 +165,7 @@ const ProfilePage = () => {
   /* 클립 데이터 */
   const getClipData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
       page: isInit ? 1 : clipData.paging.next,
       records: clipData.paging.records
     }
@@ -181,9 +184,7 @@ const ProfilePage = () => {
           removeScrollEvent();
         }
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
-          msg: res.message
-        }))
+        context.action.alert({ msg: res.message })
       }
     })
   }
@@ -198,32 +199,32 @@ const ProfilePage = () => {
     Api.fan_change({data: {memNo}}).then(res => {
       if (res.result === 'success') {
         if(typeof callback === 'function') callback();
-        dispatch(setGlobalCtxMessage({type: "toast",
+        context.action.toast({
           msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        }))
+        })
       } else if (res.result === 'fail') {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     })
   }
 
   /* 팬 해제 */
   const deleteFan = (memNo, memNick, callback) => {
-    dispatch(setGlobalCtxMessage({type: "confirm",
+    context.action.confirm({
       msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             if(typeof callback === 'function') callback();
-            dispatch(setGlobalCtxMessage({type: "toast", msg: res.message }))
+            context.action.toast({ msg: res.message })
           } else if (res.result === 'fail') {
-            dispatch(setGlobalCtxMessage({type: "alert", msg: res.message }))
+            context.action.alert({ msg: res.message })
           }
         });
       }
-    }))
+    })
   }
 
   /* 방송시작 알림 설정 api */
@@ -239,11 +240,11 @@ const ProfilePage = () => {
           isReceive
         }))
 
-        dispatch(setGlobalCtxMessage({type: "alert",title, msg}))
+        context.action.alert({title, msg})
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     });
   }, [profileData.memNo, profileData.isReceive])
@@ -253,15 +254,14 @@ const ProfilePage = () => {
     const isReceive = profileData.isReceive;
     closePopupAction();
     if(isReceive) {
-      dispatch(setGlobalCtxMessage({type: "confirm",
+      context.action.confirm({
         msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
         callback: () => {
           editAlarms('', '설정해제가 완료되었습니다.', !isReceive)
         }
-      }))
+      })
     }else {
-      dispatch(setGlobalCtxMessage({
-        type: "confirm",
+      context.action.confirm({
         title: '알림받기 설정',
         msg: `팬으로 등록하지 않아도 🔔알림받기를 설정하면 방송시작에 대한 알림 메시지를 받을 수 있습니다.`,
         buttonText: {right: '설정하기'},
@@ -272,7 +272,7 @@ const ProfilePage = () => {
             !isReceive
           )
         }
-      }))
+      })
     }
   },[profileData.memNo, profileData.isReceive])
 
@@ -280,7 +280,7 @@ const ProfilePage = () => {
   const goProfile = memNo => {
     if(memNo) {
       if(isMyProfile) {
-        if(globalState.profile.memNo !== memNo) {
+        if(context.profile.memNo !== memNo) {
           history.push(`/profile/${memNo}`)
         }
       }else {
@@ -342,8 +342,8 @@ const ProfilePage = () => {
   /* 메시지 이동 */
   const goMailAction = () => {
     const goMailParams = {
-      dispatch,
-      globalState,
+      context,
+      mailboxAction,
       targetMemNo: profileData.memNo,
       history,
       targetMemLevel: profileData.level
@@ -354,7 +354,6 @@ const ProfilePage = () => {
 
   /* 스크롤 이벤트 */
   const scrollEvent = useCallback((scrollTarget, callback) => {
-    console.log('scroll');
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
@@ -404,6 +403,8 @@ const ProfilePage = () => {
 
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
+    let hasTabParam = false;
+    let isWebViewState = false;
     let tabState = 0; // default
     const searchParams = location.search.split('?')[1];
     searchParams.split('&').forEach(item => {
@@ -411,14 +412,28 @@ const ProfilePage = () => {
       const paramType = itemSplit[0].toLowerCase();
       if(paramType === 'webview') {
         setWebview(itemSplit[1]);
+        isWebViewState = true;
+        dispatch(setIsWebView('new'));
       }else if(paramType === 'tab') {
         if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) { // 탭이 범위 안에 있을때(0~2)
           tabState = parseInt(itemSplit[1])
         }
+        hasTabParam = true;
       }
     });
-    socialTabChangeAction(profileTab.tabList[tabState])
-    setProfileTabName(profileTab.tabList[tabState]);
+
+    if(hasTabParam) {
+      socialTabChangeAction(profileTab.tabList[tabState])
+      setProfileTabName(profileTab.tabList[tabState]);
+    }else {
+      tabHandler();
+    }
+
+    if(isWebViewState) {
+      window.history.replaceState('', null, !params.memNo ? '/myProfile' : `/profile/${params.memNo}?webview=new`) // url 변경
+    }else {
+      window.history.replaceState('', null, !params.memNo ? '/myProfile' : `/profile/${params.memNo}`) // url 변경
+    }
   }
 
   /* 프로필 데이터 초기화 */
@@ -447,7 +462,7 @@ const ProfilePage = () => {
           const feedList = feedData.feedList.concat([]).filter((feed, _index) => feed.noticeIdx !== index);
           dispatch(setProfileFeedData({...feedData, feedList}));
         } else {
-          dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
+          context.action.toast({msg: message});
         }
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
         const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
@@ -456,19 +471,23 @@ const ProfilePage = () => {
         if (result === 'success') {
           dispatch(setProfileFanBoardData({...fanBoardData, list}));
         } else {
-          dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
+          context.action.toast({msg: message});
         }
       }
     }
-    dispatch(setGlobalCtxMessage({type: "confirm",
+    context.action.confirm({
       msg: '정말 삭제 하시겠습니까?',
       callback
-    }));
+    });
   }
 
   const headerBackEvent = () => {
     if(webview === 'new' && isHybrid()) {
-      Hybrid('CloseLayerPopup');
+      if(location.key) {
+        history.goBack();
+      }else {
+        Hybrid('CloseLayerPopup');
+      }
     }else {
       history.goBack();
     }
@@ -503,6 +522,25 @@ const ProfilePage = () => {
     setScrollPagingCall(1);
   }
 
+  /* 하단 탭 핸들러(componentDidMount 시점) */
+  const tabHandler = () => {
+    if(profileTab.isReset) { // 탭, 데이터 초기화
+      profileTabInit();
+    }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
+      profileTabDataCall();
+    }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
+      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }
+
+      dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
+    }
+  }
+
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCall > 1 && !feedData.isLastPage) {
@@ -516,10 +554,13 @@ const ProfilePage = () => {
 
   /* 페이지 이동 */
   useEffect(() => {
-    if(globalState.token.isLogin) {
+    if(context.token.isLogin) {
       if(profileReady) {
         getProfileData(); // 프로필 상단 데이터
         profileTabInit();
+        if(location.search) {
+          parameterManager(); // 주소 뒤에 파라미터 체크
+        }
       }
     }else {
       history.replace('/login');
@@ -527,7 +568,7 @@ const ProfilePage = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    if(!globalState.token.isLogin) {
+    if(!context.token.isLogin) {
       return history.replace('/login');
     }
 
@@ -536,21 +577,7 @@ const ProfilePage = () => {
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
     }else {
-      if(profileTab.isReset) { // 탭, 데이터 초기화
-        profileTabInit();
-      }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
-        profileTabDataCall();
-      }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
-        if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
-          document.addEventListener('scroll', profileScrollEvent);
-        }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
-          document.addEventListener('scroll', profileScrollEvent);
-        }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
-          document.addEventListener('scroll', profileScrollEvent);
-        }
-
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
-      }
+      tabHandler();
     }
 
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
@@ -638,7 +665,7 @@ const ProfilePage = () => {
       {popup.fanStarPopup &&
         <PopSlide>
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
-                       goProfile={goProfile} myMemNo={globalState.profile.memNo}
+                       goProfile={goProfile} myMemNo={context.profile.memNo}
                        closePopupAction={closePopupAction}
           />
         </PopSlide>
@@ -648,7 +675,7 @@ const ProfilePage = () => {
       {popup.likePopup &&
         <PopSlide>
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     myMemNo={globalState.profile.memNo} likePopTabState={likePopTabState} closePopupAction={closePopupAction}
+                     myMemNo={context.profile.memNo} likePopTabState={likePopTabState} closePopupAction={closePopupAction}
           />
         </PopSlide>
       }

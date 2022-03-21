@@ -433,20 +433,10 @@ export default class Utility {
   // firebase, adbrix, facebook 이벤트 요청
   static addAdsData = (cmd) => {
     const firebaseDataArray = [
-      { type : "firebase", key : cmd, value: {} }, // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
-      { type : "adbrix", key : cmd, value: {} },   // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
-      { type : "facebook", key : cmd, value: {} }, // aos: 1.8.2, ios: 1.6.6 추가 (facebook)
+      { type : "firebase", key : cmd, value: {} },
+      { type : "adbrix", key : cmd, value: {} },
+      { type : "facebook", key : cmd, value: {} },
     ];
     Hybrid('eventTracking', {service: firebaseDataArray})
-  }
-
-  // firebase, adbrix, facebook 이벤트 요청
-  static oldAddAdsData = (cmd) => {
-    const firebaseDataArray = [
-      { type : "firebase", key : cmd, value: {} }, // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
-      { type : "adbrix", key : cmd, value: {} },   // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
-    ];
-    Hybrid('eventTracking', {service: firebaseDataArray})
-    fbq('track', cmd)
   }
 }

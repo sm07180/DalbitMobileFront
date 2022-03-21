@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
+import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -8,13 +9,10 @@ import moment from "moment";
 import {RoomJoin} from "context/room";
 // components
 import './notice.scss'
-import {useDispatch, useSelector} from "react-redux";
 
 const Allim = () => {
   const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const context = useContext(Context);
   const history = useHistory();
 
   //회원 알림 db값 가져오기
@@ -49,8 +47,8 @@ const Allim = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if (globalState.profile.memNo === roomNo) {history.push(`/myProfile`)}
-        else {history.push(`/profile/${memNo}`)}
+        if (context.profile.memNo === roomNo) {history.push(`/myProfile?tab=1`)}
+        else {history.push(`/profile/${memNo}?tab=1`)}
         break;
       case "32":                                                                            //내 지갑
         try {history.push(`/wallet`);}
@@ -103,7 +101,7 @@ const Allim = () => {
   }, []);
 
   useEffect(() => {
-    if(!(globalState.token.isLogin)) {history.push("/login")}
+    if(!(context.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (

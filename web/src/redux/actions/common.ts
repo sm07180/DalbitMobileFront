@@ -31,3 +31,7 @@ export const setSlidePopupClose = createAction(SET_SLIDE_POPUP_CLOSE)<void>();
 const SET_SLIDE_POPUP_OPEN = 'common/SET_SLIDE_POPUP_OPEN';
 export const setSlidePopupOpen = createAction(SET_SLIDE_POPUP_OPEN)<void>();
 // -----------------------------------------------------------------------
+
+/* 웹뷰 체크 */
+const SET_IS_WEBVIEW = 'common/SET_IS_WEBVIEW';
+export const setIsWebView = createAction(SET_IS_WEBVIEW)<string>();
