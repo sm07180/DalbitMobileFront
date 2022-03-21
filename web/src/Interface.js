@@ -340,6 +340,8 @@ export default () => {
             callResetListen(loginInfo.data.memNo)
           }
         })
+      } else if (loginInfo.code === '-8') {
+        return history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         context.action.alert({
           title: '로그인 실패',
@@ -513,8 +515,10 @@ export default () => {
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_active')
         //(BJ)일경우 방송하기:방송중
-        if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
+        const isDj = _.hasIn(event.detail, 'auth') && event.detail.auth === 3;
+        if (isDj) {
           context.action.updateCastState(event.detail.roomNo)
+          Utility.setCookie('isDj', isDj, 3);
         }
 
         if (event.detail.mediaType !== 'v') {
@@ -539,6 +543,7 @@ export default () => {
         sessionStorage.removeItem('room_no')
         Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
+        Utility.setCookie('isDj', false, 3);
         break
       case 'native-non-member-end':
         context.action.confirm({

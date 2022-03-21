@@ -457,7 +457,7 @@ const Exchange = (props) => {
           />
           : depositType === depositTabmenu[1] ?
             /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
-          <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}/>
+          <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm}/>
           :
             /*내 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
           <MyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}

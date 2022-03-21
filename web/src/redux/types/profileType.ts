@@ -277,3 +277,11 @@ export interface IProfileClipState {
   paging: IPaging;
   isLastPage: boolean;
 }
+
+/* 탭 */
+export interface IProfileTabState {
+  tabList: Array<string>;
+  tabName: string;
+  isRefresh: boolean;
+  isReset: boolean;
+}
