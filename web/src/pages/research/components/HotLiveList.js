@@ -6,7 +6,7 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import { RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 
@@ -22,10 +22,10 @@ const HotLiveList = (props) => {
 
   const RoomEnter = (e) => {
     e.preventDefault();
-    const { roomNo, bjNickNm } = e.currentTarget.dataset;
+    const { roomNo, bjNickNm ,bjMemNo} = e.currentTarget.dataset;
 
     if (roomNo !== undefined && bjNickNm !== undefined && bjNickNm !== '') {
-      RoomValidateFromClip(roomNo, context, history, bjNickNm)
+      RoomValidateFromClipMemNo(roomNo,bjMemNo, context, history, bjNickNm)
     }
   };
 
@@ -36,7 +36,7 @@ const HotLiveList = (props) => {
         {data.map((list,index) => {
           const targetNickName = list.hasOwnProperty(nickNmKey) === undefined ? '' : list[nickNmKey];
           return (
-            <div key={index} data-room-no={list.roomNo}  data-bj-nick-nm={targetNickName} onClick={RoomEnter}>
+            <div key={index} data-room-no={list.roomNo}  data-bj-mem-no={list.bjMemNo} data-bj-nick-nm={targetNickName} onClick={RoomEnter}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.bgImg.thumb292x292} />

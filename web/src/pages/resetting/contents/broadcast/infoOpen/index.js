@@ -36,7 +36,9 @@ const InfoOpen = (props) => {
       for(let i = 0; i < radioEle.length; i++) {
         if(radioEle[i].getAttribute('type') === "radio") {radioEle[i].checked = false;}
       }
-      fetchData(2)
+      if(settingData.listenOpen !== 2) {
+        fetchData(2);
+      }
     }
   }
 

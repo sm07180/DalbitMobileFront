@@ -18,14 +18,14 @@ export const backFunc = (context, dispatch) => {
     case 'selfauth':
       window.location.href = '/'
       break
-    case 'popClose':
+    case 'popClose': // 슬라이드 팝업
       closePopup(dispatch)
       break;
-    case 'alertClose':
+    case 'alertClose': // 알럿, 컨펌
       context.action.alert({visible: false})
       break;
-    case 'questionPop':
-      dispatch(setCommonPopupOpenData({...backFunction.popupData, commonPopup: false}))
+    case 'commonPop':
+      dispatch(setCommonPopupOpenData({...backFunction.popupData}))
       break;
     default:
       break

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { addComma } from "../../../lib/common_fn";
 import { GlobalContext } from "context";
 import { RankContext } from "context/rank_ctx";
-import { RoomValidateFromClip } from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 
 import NoResult from "common/ui/no_result";
 import SpecialHandleHistory from "./special_history_handle";
@@ -95,7 +95,7 @@ function SpecialList({ empty }) {
                           <img
                             src={live}
                             onClick={() => {
-                              RoomValidateFromClip(v.roomNo, gtx, history, v.nickNm);
+                              RoomValidateFromClipMemNo(v.roomNo, v.memNo, gtx, history, v.nickNm);
                             }}
                             className="liveBox__img"
                           />

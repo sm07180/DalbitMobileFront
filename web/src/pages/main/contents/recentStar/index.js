@@ -12,7 +12,7 @@ import Api from 'context/api'
 import photoCommon from "common/utility/photoCommon";
 import {withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {Context, GlobalContext} from "context";
 
@@ -47,7 +47,7 @@ const RecentStar = (props) => {
     })
   }
 
-  const goLive = (roomNo, nickNm, listenRoomNo) => {
+  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
     if (context.token.isLogin === false) {
       context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
@@ -57,12 +57,12 @@ const RecentStar = (props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo === "0" ? listenRoomNo : roomNo, gtx, props.history, nickNm);
+        RoomValidateFromClipMemNo(roomNo === "0" ? listenRoomNo : roomNo, memNo,gtx, props.history, nickNm);
       } else {
         if (roomNo !== "0") {
-          RoomJoin({roomNo: roomNo, nickNm: nickNm});
+          RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm});
         } else {
-          RoomJoin({roomNo: listenRoomNo, listener: 'listener'});
+          RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'});
         }
       }
     }
@@ -113,7 +113,7 @@ const RecentStar = (props) => {
                   {val.roomNo !== "0" &&
                     <div className="badgeLive" onClick={(e) => {
                       e.stopPropagation();
-                      goLive(val.roomNo, val.nickNm, "0");
+                      goLive(val.roomNo, val.memNo,  val.nickNm, "0");
                     }}>
                       <span className="equalizer">
                         <Lottie
@@ -130,7 +130,7 @@ const RecentStar = (props) => {
                   {val.listen_room_no !== "0" &&
                     <div className="badgeLive" onClick={(e) => {
                       e.stopPropagation();
-                      goLive("0", val.nickNm, val.listen_room_no);
+                      goLive("0", val.memNo, val.nickNm, val.listen_room_no);
                     }}>
                       <span className="follow"/>
                       <div className="liveText">LIVE</div>

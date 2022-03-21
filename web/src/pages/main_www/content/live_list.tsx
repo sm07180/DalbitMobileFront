@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { printNumber } from "lib/common_fn";
-import { RoomValidateFromClip } from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import { GlobalContext } from "context";
 import BadgeList from "../../../common/badge_list";
 
@@ -16,6 +16,7 @@ function RealTimeLive(props: any) {
         const {
           roomNo,
           roomType,
+          bjMemNo,
           bjProfImg,
           bjNickNm,
           bjGender,
@@ -47,7 +48,7 @@ function RealTimeLive(props: any) {
             }`}
             key={`live-${idx}`}
             onClick={() => {
-              RoomValidateFromClip(roomNo, gtx, history, bjNickNm);
+              RoomValidateFromClipMemNo(roomNo, bjMemNo, gtx, history, bjNickNm);
             }}
           >
             <div

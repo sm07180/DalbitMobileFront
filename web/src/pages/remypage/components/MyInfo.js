@@ -8,10 +8,10 @@ import moment from "moment";
 import Utility from "components/lib/utility";
 
 const greetingComment = [
-  {start: '060000', end: '120000', comment: '굿모닝이에요!'},
-  {start: '120000', end: '180000', comment: '점심 메뉴는 뭐였어요?'},
-  {start: '180000', end: '240000', comment: '신나는 저녁이에요!'},
-  {start: '000000', end: '060000', comment: '일찍 일어났네요?'},
+  {start: '060000', end: '115959', comment: '굿모닝이에요!'},
+  {start: '120000', end: '175959', comment: '점심 메뉴는 뭐였어요?'},
+  {start: '180000', end: '235959', comment: '신나는 저녁이에요!'},
+  {start: '000000', end: '055959', comment: '일찍 일어났네요?'},
 ]
 
 const MyInfo = (props) => {

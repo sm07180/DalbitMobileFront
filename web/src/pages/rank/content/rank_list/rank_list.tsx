@@ -8,7 +8,7 @@ import { printNumber } from "lib/common_fn";
 // import {Context} from 'context'
 import { GlobalContext } from "context";
 import { RankContext } from "context/rank_ctx";
-import { RoomValidateFromClip } from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import { convertDateToText } from "lib/rank_fn";
 import { RANK_TYPE, DATE_TYPE } from "pages/rank/constant";
 
@@ -233,7 +233,7 @@ function RankList() {
                   <button
                     onClick={() => {
                       if (roomNo !== "") {
-                        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+                        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
                       } else {
                         let alertMsg;
                         if (isNaN(listenRoomNo)) {
@@ -250,8 +250,9 @@ function RankList() {
                             type: "confirm",
                             content: alertMsg,
                             callback: () => {
-                              RoomValidateFromClip(
+                              RoomValidateFromClipMemNo(
                                 listenRoomNo,
+                                memNo,
                                 gtx,
                                 history,
                                 "",

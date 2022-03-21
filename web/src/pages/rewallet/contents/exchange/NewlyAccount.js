@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useContext} from 'react'
+import React, {useMemo, useContext} from 'react'
 import {Context} from 'context'
 
 // global components
@@ -7,10 +7,19 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 
 const NewlyAccount = (props) => {
-  const {repplySubmit, exchangeForm, setExchangeForm} = props;
+  const {repplySubmit, exchangeForm} = props;
   //context
   const context = useContext(Context);
-  const {profile} = context;
+  const {splash} = context;
+
+  const bankName = useMemo(() => {
+    if (splash?.exchangeBankCode && exchangeForm?.recent_bankCode) {
+      const bankName = splash?.exchangeBankCode.find((v)=> v?.cd === exchangeForm?.recent_bankCode)?.cdNm;
+      return bankName ? bankName : "error";
+    } else {
+      return "";
+    }
+  }, [splash, exchangeForm]);
 
   return (
     <>
@@ -18,19 +27,19 @@ const NewlyAccount = (props) => {
         <div className="listRow">
           <div className="title">예금주</div>
           <InputItems>
-            <div className="text" value={exchangeForm?.recent_accountName}/>
+            <div className="text">{exchangeForm?.recent_accountName}</div>
           </InputItems>
         </div>
         <div className="listRow">
           <div className="title">은행</div>
           <InputItems>
-            <div className="text" value={exchangeForm?.recent_accountName}/>
+            <div className="text">{bankName}</div>
           </InputItems>
         </div>
         <div className="listRow">
           <div className="title">계좌번호</div>
           <InputItems>
-            <div className="text" value={exchangeForm?.recent_accountNo}/>
+            <div className="text">{exchangeForm?.recent_accountNo}</div>
           </InputItems>
         </div>
 

@@ -22,6 +22,163 @@
         width:100%;
       }
     }
+    .stoneSelect {
+      @include position-top-left;
+      @include flex(center,center);
+      width:25%;
+      height:16.982%;
+      border:2px solid #1A1311;
+      border-radius: 50%;
+      @mixin stoneBtn-off($type,$top,$left) {
+        top:$top;
+        left:$left;
+        .stoneIcon {
+          @include BGIMG("event/rebranding/#{$type}-off.png");
+          background-size: 60%;
+          background-color:#FAFAFA;
+        }
+      }
+      &.dStone {
+        @include stoneBtn-off(d,33.02%,50%);
+        transform: translateX(-49.4%);
+      }
+      &.aStone {
+        @include stoneBtn-off(a,67.738%,7.5%);
+      }
+      &.lStone {
+        @include stoneBtn-off(l,67.738%,auto);
+        right: 7.92%;
+      }
+      &.focus {
+        $dColor: #EC612D;
+        $aColor: #3084F6;
+        $lColor: #C337FF;
+        @mixin stoneBtn-focus($type,$color) {
+          .count {
+            color:$color;
+          }
+          .stoneIcon {
+            @include BGIMG("event/rebranding/#{$type}-on.png");
+            background-size: 60%;
+            background-color:#FAFAFA;
+          }
+        }
+        &.dStone {
+          @include stoneBtn-focus(d,$dColor);
+        }
+        &.aStone {
+          @include stoneBtn-focus(a,$aColor);
+        }
+        &.lStone {
+          @include stoneBtn-focus(l,$lColor);
+        }
+      }
+      &.active {
+        $dBorderColor: #EC612D;
+        $aBorderColor: #3084F6;
+        $lBorderColor: #C337FF;
+        @mixin stoneBtn-on($type,$borderColor) {
+          border-color: $borderColor;
+          button {
+            border-color: $borderColor;
+          }
+          .stoneIcon {
+            @include BGIMG("event/rebranding/#{$type}-on.png");
+            background-size: 60%;
+            background-color:#FAFAFA;
+            border-color: $borderColor;
+          }
+        }
+        &.dStone {
+          @include stoneBtn-on(d,$dBorderColor);
+          button {
+            background:linear-gradient(to bottom,#FFFDDC,#EEEEEE);
+          }
+        }
+        &.aStone {
+          @include stoneBtn-on(a,$aBorderColor);
+          button {
+            background:linear-gradient(to bottom,#E8FBFF,#EEEEEE);
+          }
+        }
+        &.lStone {
+          @include stoneBtn-on(l,$lBorderColor);
+          button {
+            background:linear-gradient(to bottom,#FCEFFF,#EEEEEE);
+          }
+        }
+      }
+      button {
+        position:relative;
+        @include flex(center,center,column);
+        width:calc(100% - 2px);height:calc(100% - 2px);
+        border:1px solid #666361;
+        border-radius:50%;
+        background: linear-gradient(to bottom,#FFF,#EEE);
+        span {
+          &.count {
+            @include font(17.5px,$ExtraBold,#45413F);
+          }
+          &.text {
+            @include font(13px,$SemiBold,#45413F);
+          }
+          &.cancel {
+            @include position-horizon;
+            bottom:-10px;
+            display:inline-block;
+            width:57px;
+            line-height:19px;
+            border-radius:100px;
+            background-color:black;
+            @include font(12px,$Medium,white);
+          }
+        }
+        .stoneIcon {
+          @include position-horizon;
+          top:-30%;
+          width:50%;
+          height:50%;
+          border:1px solid;
+          border-radius:50%;
+          background-color:#FAFAFA;
+        }
+      }
+    }
+    .stoneDraw {
+      @include position-horizon;
+      top:56.984%;
+      left:50.558%;
+      width:22.5%;
+      cursor: pointer;
+      img {
+        width:100%;
+      }
+    }
+    .totalDalla {
+      @include position-horizon;
+      bottom:4.718%;
+      @include flex(center);
+      max-width:49.17%;
+      height:6.984%;
+      padding:3px 3px 3px 16px;
+      border:1px solid #DEDEDE;
+      border-radius:100px;
+      background-color: #F5F5F5;
+      @include font(15px,$Medium,#303030);
+      img {
+        width:29.88%;
+        margin-left:4px;
+      }
+      span {
+        @include flex(center,flex-end);
+        min-width:45%;
+        height:100%;
+        margin-left:auto;
+        padding:0 16px;
+        border-radius:100px;
+        background-color:#fff;
+      }
+    }
     .stoneWrap {
       @include position-bottom-left;
       bottom:8.815%;
@@ -31,6 +188,7 @@
       padding: 3.335% 0;
       border-radius:100px;
       background-color:#F2F2F2;
+      display:none;
       button {
         position:relative;
         >img {
@@ -434,63 +592,59 @@
     .eventRebranding {
       position:relative;
       width:100%;
-      padding:0 28px 42px;
+      padding:0 16px 42px;
       .title {
         @include flex(center);
         width:100%;
         margin-top:12px;
         margin-bottom:16px;
         padding:0 12px;
-        @include font(20px,$SemiBold,#202020);
         img {
-          width:43px;
-          height:15px;
+          width:26px;
+          height:35px;
           margin-left:4px;
         }
         span {
-          margin-left:auto;
+          margin-left:4px;
+          @include font(16px,$SemiBold,#202020);
+        }
+        small {
+          margin-left:4px;
+          @include font(16px,$SemiBold,#ACACAC);
         }
       }
-      .label {
-        @include flex(center,space-between);
-        width:100%;
-        height:50px;
-        padding:0 16px;
-        @include border(#E3E3E3,16px);
-        @include font(15px,$SemiBold,#202020);
-        cursor: pointer;
-        + .label {
-          margin-top:8px;
-        }
-        img {
-          width:30px;
-          height:41px;
-        }
-        &.active {
-          border-color:$MAINCOLOR;
-          color:$MAINCOLOR;
-        }
-        &.disabled {
-          border-color:#F6F6F6;
-          background-color:#F6F6F6;
-          color:#ACACAC;
-          &:hover {
-            border-color:#F6F6F6;
-            background-color:#F6F6F6;
-            color:#ACACAC;
-            cursor:initial;
+      .stoneListWrap {
+        margin: 0 0 12px;
+        padding: 12px 24px 12px 28px;
+        border-bottom:1px solid #ACACAC;
+        .stoneList {
+          @include flex(center,space-between);
+          height:42px;
+          + .stoneList {
+            margin-top:16px;
+          }
+          img {
+            width:30px;
           }
         }
-        &:hover {
-          border-color:#FFD4E1;
-          background-color:#FFD4E1;
-          color:$MAINCOLOR;
-        }
+      }
+      .stoneTotal {
+        padding-right:24px;
+        text-align:right;
+        @include font(20px,$SemiBold,#202020);
       }
       p {
-        margin-top:12px;
+        margin:28px 0 20px;
         text-align:center;
         @include font(13px,$Regular,#303030);
+      }
+      .buttonGroup {
+        @include btnGroupStyle;
+      }
+      >button {
+        position:relative;
+        bottom:auto;
+        width:100%;
       }
     }
     .rebrandingRank {
