@@ -520,7 +520,7 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (globalState.splash !== null && globalState.token !== null && globalState.token.memNo && globalState.profile !== null) {
+    if (globalState.splash !== null && globalState.token !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
       setReady(true)
     }
   }, [globalState.splash, globalState.token, globalState.profile])
@@ -670,6 +670,7 @@ const App = () => {
     }
   }, [chatInfo, globalState.splashData]);
 
+  console.log(globalState, ready)
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalState.noServiceInfo.showPageYn === 'n' ? (
