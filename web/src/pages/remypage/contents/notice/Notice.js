@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -24,6 +24,7 @@ const NoticePage = () => {
   const context = useContext(Context)
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const [scrollPagingCall, setScrollPagingCall] = useState(1);
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -31,6 +32,36 @@ const NoticePage = () => {
       if(res.data) {
         dispatch(setNoticeData(res.data));
       }}
+  }
+
+  const scrollEvent = useCallback((scrollTarget, callback) => {
+    const popHeight = scrollTarget.scrollHeight;
+    const targetHeight = scrollTarget.clientHeight;
+    const scrollTop = scrollTarget.scrollTop;
+    if(popHeight - 1 < targetHeight + scrollTop) {
+      callback()
+    }
+  }, []);
+
+  const noticeScrollEvent = useCallback(() => {
+    const callback = () => {
+      setScrollPagingCall(scrollPagingCall => scrollPagingCall + 1);
+    }
+    scrollEvent(document.documentElement, callback());
+  }, [])
+
+  const removeScrollEvent = useCallback(() => {
+    document.removeEventListener("scroll", noticeScrollEvent);
+  }, []);
+
+  const noticeTabChangeAction = (item) => {
+    const scrollEventHandler = () => {
+      removeScrollEvent();
+      document.addEventListener("scroll", noticeScrollEvent);
+    }
+    if(item === tab) {
+      scrollEventHandler();
+    }
   }
 
   useEffect(() => {
@@ -65,7 +96,7 @@ const NoticePage = () => {
             if(data === "알림") {alarmData.alarm > 0 ? newTage = true : false}
             else {alarmData.notice > 0 ? newTage = true : false}
             return (
-              <TabBtn param={param} key={index} newTage={newTage}/>
+              <TabBtn param={param} key={index} newTage={newTage} tabChangeAction={noticeTabChangeAction}/>
             )
           })}
           <div className="underline"/>
