@@ -5,7 +5,8 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
 import {ErrorBoundary} from 'react-error-boundary'
 import 'styles/errorstyle.scss'
-
+import "./asset/scss/index.scss";
+import './styles/navigation.scss'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
@@ -24,7 +25,6 @@ import {getArgoraRtc, getWowzaRtc, rtcSessionClear} from "common/realtime/rtc_so
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew} from "common/api";
 import Navigation from "components/ui/navigation/Navigation";
-import './styles/navigation.scss'
 import LayoutMobile from 'pages/common/layout'
 import Layout from "common/layout";
 import Common from "common";
@@ -670,7 +670,6 @@ const App = () => {
     }
   }, [chatInfo, globalState.splashData]);
 
-  console.log(globalState, ready)
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalState.noServiceInfo.showPageYn === 'n' ? (
