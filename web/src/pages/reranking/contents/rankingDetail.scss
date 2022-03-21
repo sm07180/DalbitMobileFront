@@ -193,6 +193,23 @@
             @include font(12px, 900, #FF3C7B);
           }
         }
+        .badgeListener {
+          @include flex(center, center);
+          width:100px;height:28px;
+          margin: 12px auto 0px;
+          background-color: #F0EBFF;
+          border-radius: 100px;
+          cursor: pointer;
+          .headset {
+            display: inline-block;
+            width: 12px;
+            margin-top: -2px;
+            margin-right: 4px;
+          }
+          .ListenerText {
+            @include font(12px, 900, #9A78FF);
+          }
+        }
       }
       .cupidWrap {
         position: relative;

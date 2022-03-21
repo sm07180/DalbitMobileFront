@@ -155,7 +155,25 @@ const TopRanker = (props) => {
                                     </span>
                                     <span className='liveText'>LIVE</span>
                                   </div>
-                                }
+                              }
+                              {/* {
+                                data.listenRoomNo !== "" && listenOpen !== 2 &&
+                                <div className='badgeListener' onClick={(e) => {
+                                  e.stopPropagation();
+                                  goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
+                                }}>                     
+                                  <span className='headset'>                          
+                                    <Lottie
+                                        options={{
+                                          loop: true,
+                                          autoPlay: true,
+                                          path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                                        }}
+                                      />
+                                  </span>      
+                                  <span className='ListenerText'>LIVE</span>
+                                </div>                                  
+                              } */}
                             </>
                           }
                         </div>
