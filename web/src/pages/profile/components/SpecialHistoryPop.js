@@ -1,11 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Api from "context/api";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
+import {setCommonPopupOpenData} from "redux/actions/common";
+import {useDispatch, useSelector} from "react-redux";
+import {Context} from "context";
+import {isAndroid} from "context/hybrid";
 
 const SpecialHistoryPop = (props) => {
-  const {profileData, setPopHistory} = props;
+  const {profileData} = props;
   const [specialHistory, setSpecialHistory] = useState([]); // 해당유저의 스페셜DJ 데이터
   const [specialLog, setSpecialLog] = useState([]); // 해당유저의 스페셜DJ 획득 로그
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
+  const context = useContext(Context);
 
   /* 스페셜DJ 약력 조회 */
   const fetchSpecialHistory = () => {
@@ -22,12 +29,31 @@ const SpecialHistoryPop = (props) => {
     });
   }
 
+  const closePop = () => {
+    dispatch(setCommonPopupOpenData({...popup, historyPopup: false}))
+  }
+
   useEffect(() => {
     fetchSpecialHistory();
+
+    if(isAndroid()) {
+      context.action.updateSetBack(true)
+      context.action.updateBackFunction({name: 'commonPop', popupData: {...popup, historyPopup: false}})
+    }
+
+    return () => {
+      closePop();
+      if(isAndroid()) {
+        if(context.backFunction.name.length === 1) {
+          context.action.updateSetBack(null)
+        }
+        context.action.updateBackFunction({name: ''})
+      }
+    }
   },[])
 
   return (
-    <LayerPopup setPopup={setPopHistory}>
+    <LayerPopup setPopup={closePop}>
       <section className="honorPopup">
         <div className='title'>
           <span><strong>{specialHistory.nickNm}</strong>님은</span>

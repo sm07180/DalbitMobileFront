@@ -6,13 +6,15 @@ import Swiper from 'react-id-swiper'
 // components
 // css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip} from "common/audio/clip_func";
-import {useDispatch, useSelector} from "react-redux";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {Context, GlobalContext} from "context";
+import {useSelector} from "react-redux";
 
 const SwiperList = (props) => {
+
   const {data, profImgName, type, pullToRefreshPause, myStarCnt} = props;
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { globalState } = useContext(GlobalContext);
+  const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -31,7 +33,7 @@ const SwiperList = (props) => {
 
   const goLive = (item) => {
     const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
-    RoomValidateFromClip(item.roomNo, dispatch, globalState, history, memNick);
+    RoomValidateFromClipMemNo(item.roomNo, item.memNo, context, history, memNick);
   }
 
   const swiperRefresh = () => {

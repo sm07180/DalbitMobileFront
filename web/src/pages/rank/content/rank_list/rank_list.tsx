@@ -5,7 +5,10 @@ import { useHistory } from "react-router-dom";
 import { printNumber } from "lib/common_fn";
 
 // context
-import { RoomValidateFromClip } from "common/audio/clip_func";
+// import {Context} from 'context'
+import { GlobalContext } from "context";
+import { RankContext } from "context/rank_ctx";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import { convertDateToText } from "lib/rank_fn";
 import { RANK_TYPE, DATE_TYPE } from "pages/rank/constant";
 
@@ -15,18 +18,16 @@ import live from "../../static/live_m.svg";
 import goldMedalIcon from "../../static/medal_gold_b.svg";
 import silverMedalIcon from "../../static/medal_silver_b.svg";
 import bronzeMedalIcon from "../../static/medal_bronze_m.svg";
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 function RankList() {
   //context
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const dispatch = useDispatch();
-  const rankState = useSelector(({rankCtx}) => rankCtx);
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { rankState, rankAction } = useContext(RankContext);
 
   const { formState, rankList } = rankState;
 
   const history = useHistory();
+  const gtx = useContext(GlobalContext);
 
   const sliceStart = useMemo(() => {
     if (
@@ -232,26 +233,33 @@ function RankList() {
                   <button
                     onClick={() => {
                       if (roomNo !== "") {
-                        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
+                        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
                       } else {
                         let alertMsg;
                         if (isNaN(listenRoomNo)) {
                           alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`;
-                          dispatch(setGlobalCtxAlertStatus({
+                          globalAction.setAlertStatus!({
                             status: true,
                             type: "alert",
                             content: alertMsg,
-                          }));
+                          });
                         } else {
                           alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`;
-                          dispatch(setGlobalCtxAlertStatus({
+                          globalAction.setAlertStatus!({
                             status: true,
                             type: "confirm",
                             content: alertMsg,
                             callback: () => {
-                              RoomValidateFromClip(listenRoomNo, dispatch, globalState, history, "", "listener");
+                              RoomValidateFromClipMemNo(
+                                listenRoomNo,
+                                memNo,
+                                gtx,
+                                history,
+                                "",
+                                "listener"
+                              );
                             },
-                          }));
+                          });
                         }
                       }
                     }}

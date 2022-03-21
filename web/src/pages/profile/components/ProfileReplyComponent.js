@@ -1,11 +1,17 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {useState, useEffect, useMemo, useCallback, useRef} from 'react';
 import ListRow from "components/ui/listRow/ListRow";
 import Utility from "components/lib/utility";
+import {IMG_SERVER} from "context/config";
+import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setProfileTabData} from "redux/actions/profile";
 
 const ProfileReplyComponent = (props) => {
   const {item, profile, isMyProfile, adminChecker, dateKey, replyDelete,
     replyEditFormActive, type, blurBlock, goProfile, openBlockReportPop
   } = props;
+  const dispatch = useDispatch();
+  const profileTab = useSelector(state => state.profileTab);
 
   const memNo = type==='feed'? item?.writerMemNo : item?.writerMemNo;
   //isMyProfile : 프로필 주인 여부
@@ -32,6 +38,11 @@ const ProfileReplyComponent = (props) => {
     }
   },[isMore]);
 
+  const replyGoProfileHandler = () => {
+    goProfile();
+    dispatch(setProfileTabData({...profileTab, isReset: true}));
+  }
+
   useEffect(() => {
     if(isMore) {
       document.body.addEventListener('click', replyIsMoreClickCheckerEvent);
@@ -42,7 +53,7 @@ const ProfileReplyComponent = (props) => {
   },[isMore]);
 
   return (
-    <ListRow photo={type ==='feed'?item?.profileImg?.thumb292x292 : item?.profImg?.thumb292x292} photoClick={goProfile}>
+    <ListRow photo={type ==='feed'?item?.profileImg?.thumb292x292 : item?.profImg?.thumb292x292} photoClick={replyGoProfileHandler}>
       <div className="listContent">
         <div className="listItems">
           <div className="nick">{item?.nickName}</div>

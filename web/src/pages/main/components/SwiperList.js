@@ -7,15 +7,16 @@ import Lottie from 'react-lottie'
 // components
 // css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip} from "common/audio/clip_func";
-import {useDispatch, useSelector} from "react-redux";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {Context, GlobalContext} from "context";
+import {useSelector} from "react-redux";
 import {IMG_SERVER} from 'context/config'
 
 const SwiperList = (props) => {
 
   const {data, profImgName, type, pullToRefreshPause} = props;
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { globalState } = useContext(GlobalContext);
+  const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -41,7 +42,7 @@ const SwiperList = (props) => {
       }
     }else if(type === 'daldungs' || type === 'favorites') {
       const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
-      RoomValidateFromClip(item.roomNo, dispatch, globalState, history, memNick);
+      RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, history, memNick);
     }
   }
 
@@ -61,7 +62,7 @@ const SwiperList = (props) => {
     if(common.isRefresh && data.length > 0) { // refresh 될때
       swiperRefresh();
     }
-  }, [common.isRefresh]);
+  }, [common.isRefresh]);    
 
   return (
     <>
@@ -74,12 +75,12 @@ const SwiperList = (props) => {
               <div className="photo">
                 <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                {item.rank && <div className={`rank-${item.rank}`}></div>}
+                {item.rank && <div className={`rank-${item.rank}`}></div>}                
                 {
                   item.roomNo &&
                     <div className='livetag' onClick={(e) => {
                       e.stopPropagation();
-                      RoomValidateFromClip(item.roomNo, dispatch, globalState, locationStateHistory, item.nickNm);
+                      RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, locationStateHistory, item.nickNm);
                     }}>
                        <Lottie
                           options={{

@@ -1,27 +1,28 @@
-import React, {useState, useEffect, useMemo, useCallback, useContext, useRef} from 'react'
+import React, {useState, useEffect, useCallback, useContext, useRef} from 'react'
+import {Context} from 'context'
 import {setIsRefresh, setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
 import {Hybrid, isHybrid} from "context/hybrid";
-import {IMG_SERVER} from 'context/config'
-import Api from 'context/api'
-import Lottie from 'react-lottie'
-import qs from 'query-string'
+import {IMG_SERVER} from 'context/config';
+import Api from 'context/api';
+import Lottie from 'react-lottie';
+import qs from 'query-string';
 // global components
-import Header from 'components/ui/header/Header'
-import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
+import Header from 'components/ui/header/Header';
+import InputItems from 'components/ui/inputItems/InputItems';
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
+import LayerPopup from 'components/ui/layerPopup/LayerPopup';
+import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide';
 // components
-import Tabmenu from './components/Tabmenu'
 import Confirm from './components/Confirm'
 import MergePop from './components/MergePop'
 // contents
-import Round_1 from './contents/Round_1'
-import Round_2 from './contents/Round_2'
-import Round_3 from './contents/Round_3'
+import Round_1 from './contents/Round_1';
+import Round_2 from './contents/Round_2';
+import Round_3 from './contents/Round_3';
 
 import './style.scss'
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const tabmenu = [1,2,3]
 
@@ -36,29 +37,33 @@ const Rebranding = () => {
   const mainRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
+  const inputRef = useRef()
 
   const tabMenuRef = useRef()
 
   const dispatch = useDispatch()
   const common = useSelector(state => state.common);
   const popup = useSelector(state => state.popup);
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {token} = globalState
+  const context = useContext(Context)
+  const {token} = context
 
   const [reloadInit, setReloadInit] = useState(false)
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true)
 
   const [tabFixed, setTabFixed] = useState(false);
   const [tabmenuType, setTabmenuType] = useState(tabmenu[0])
-  const [stoneInfo, setStoneInfo] = useState('')
-  const [stoneValue1, setStoneValue1] = useState({on: false, value: ''})
-  const [stoneValue2, setStoneValue2] = useState({on: false, value: ''})
-  const [mergeResult, setMergeResult] = useState('')
+  const [stoneInfo, setStoneInfo] = useState({type: '', value: 0})
+  const [stoneValue1, setStoneValue1] = useState({on: false, value: 0})
+  const [stoneValue2, setStoneValue2] = useState({on: false, value: 0})
+  const [stoneValue3, setStoneValue3] = useState({on: false, value: 0})
+  const [drawState, setDrawState] = useState(false)
+  const [oddState, setOddState] = useState(false)
+  const [mergeResult, setMergeResult] = useState({})
   const [noticePop1, setNoticePop1] = useState(false)
   const [noticePop2, setNoticePop2] = useState(false)
   const [giveawayPop, setGiveawayPop] = useState(false)
   const [actionAni, setActionAni] = useState(false)
-
+  
   const [eventInfo, setEventInfo] = useState({
     cnt: 0,
     end_date: "",
@@ -68,23 +73,6 @@ const Rebranding = () => {
   const [myRankInfo, setMyRankInfo] = useState({})
   const [mySpecialRankInfo, setMySpecialRankInfo] = useState({})
   const [myPieceInfo, setMyPieceInfo] = useState({})
-  const stone = useMemo(() => {
-    let dCnt = 0;
-    let aCnt = 0;
-    let lCnt = 0;
-    if(stoneValue1.value === 'd') dCnt ++;
-    if(stoneValue1.value === 'a') aCnt ++;
-    if(stoneValue1.value === 'l') lCnt ++;
-    if(stoneValue2.value === 'd') dCnt ++;
-    if(stoneValue2.value === 'a') aCnt ++;
-    if(stoneValue2.value === 'l') lCnt ++;
-
-    return ([
-      {data: 'd', value: myPieceInfo.ins_d_cnt - dCnt},
-      {data: 'a', value: myPieceInfo.ins_a_cnt - aCnt},
-      {data: 'l', value: myPieceInfo.ins_l_cnt - lCnt},
-    ]);
-  },[myPieceInfo, stoneValue1, stoneValue2])
 
   // API 조회
   /* 이벤트 회차 정보 */
@@ -92,6 +80,7 @@ const Rebranding = () => {
     Api.getDallagersReqNo().then((res) => {
       if (res.result === 'success') {
         setEventInfo(res.data)
+        setTabmenuType(tabmenu[res.data.seq_no - 1])
       }
     })
   }
@@ -123,11 +112,12 @@ const Rebranding = () => {
   }
 
   /* 이니셜 스톤 교환 */
-  const fetchStoneChange = (v1, v2) => {
+  const fetchStoneChange = (v1, v2, v3) => {
     Api.getDallagersStoneChange({data:{
       seqNo : eventInfo.seq_no, // 회차정보
-      useDallaGubunOne : v1,	//첫번째 선택 스톤
-      useDallaGubunTwo : v2, //두번째 선택 스톤
+      slot1 : v1,	//첫번째 선택 스톤
+      slot2 : v2, //두번째 선택 스톤
+      slot3 : v3, //두번째 선택 스톤
     }}).then((res) => {
       if (res.result === 'success') {
         setMergeResult(res.data.resultStone)
@@ -139,8 +129,11 @@ const Rebranding = () => {
   }
 
   const mainDataReset = () => {
-    setStoneValue1({...stoneValue1, on: false, value: ''});
-    setStoneValue2({...stoneValue2, on: false, value: ''});
+    setStoneValue1({...stoneValue1, on: false, value: 0});
+    setStoneValue2({...stoneValue2, on: false, value: 0});
+    setStoneValue3({...stoneValue3, on: false, value: 0});
+    setDrawState(false);
+    setOddState(false);
   }
 
   // 당겨서 새로 고침
@@ -243,59 +236,160 @@ const Rebranding = () => {
   }
   // 스톤 버튼 선택
   const clickSelect = (e) => {
-    const {targetValue} = e.currentTarget.dataset;
+    const {targetType} = e.currentTarget.dataset;
 
     if (!token.isLogin) {
       history.push('/login')
       return
     }
-    setStoneInfo(targetValue)
-    dispatch(setSlidePopupOpen());
-    // setPopSlide(true)
+
+    if (targetType === 'd' && myPieceInfo.ins_d_cnt > 0) {
+      setStoneInfo({...stoneInfo, type: targetType, value: myPieceInfo.ins_d_cnt})
+      dispatch(setSlidePopupOpen());
+    } else if (targetType === 'd' && myPieceInfo.ins_d_cnt === 0) {
+      context.action.toast({
+        msg: `사용할 수 있는 스톤이 없습니다.`
+      })
+    }
+    if (targetType === 'a' && myPieceInfo.ins_a_cnt > 0) {
+      setStoneInfo({...stoneInfo, type: targetType, value: myPieceInfo.ins_a_cnt})
+      dispatch(setSlidePopupOpen());
+    } else if (targetType === 'a' && myPieceInfo.ins_a_cnt === 0) {
+      context.action.toast({
+        msg: `사용할 수 있는 스톤이 없습니다.`
+      })
+    }
+    if (targetType === 'l' && myPieceInfo.ins_l_cnt > 0) {
+      setStoneInfo({...stoneInfo, type: targetType, value: myPieceInfo.ins_l_cnt})
+      dispatch(setSlidePopupOpen());
+    } else if (targetType === 'l' && myPieceInfo.ins_l_cnt === 0) {
+      context.action.toast({
+        msg: `사용할 수 있는 스톤이 없습니다.`
+      })
+    }
   }
-  // 스톤 종류 선택
-  const choicePiece = (e,value) => {
-    const {choiceStone} = e.currentTarget.dataset
-    if (value !== 0) {
-      if (stoneInfo === '1' && stoneValue1.value === '') {
-        setStoneValue1({...stoneValue1, on: true, value: choiceStone})
+
+  // 스톤 갯수 확인
+  const choicePiece = () => {
+    let inputValue = Number(inputRef.current.value)
+    
+    if (inputValue === 0) {
+      context.action.toast({
+        msg: `1 이상 값을 입력해주세요.`
+      })
+      return
+    }
+    
+    if (stoneInfo.type === 'd' && inputValue <= stoneInfo.value) {
+      if (inputValue > 50) {
+        context.action.toast({
+          msg: `한 번에 스톤당 최대 50개까지 사용할 수 있어요.`
+        })
+      } else {
+        setStoneValue1({...stoneValue1, on: true, value: inputValue})
+        setDrawState(drawCheck(Number(inputValue)))
+        closePopup(dispatch);
       }
-      if (stoneInfo === '2' && stoneValue2.value === '') {
-        setStoneValue2({...stoneValue2, on: true, value: choiceStone})
+    } else if (stoneInfo.type === 'd' && inputValue > stoneInfo.value) {
+      context.action.toast({
+        msg: `스톤이 부족해요. 보유 스톤을 확인해주세요.`
+      })
+    }
+    if (stoneInfo.type === 'a' && inputValue <= stoneInfo.value) {
+      if (inputValue > 50) {
+        context.action.toast({
+          msg: `한 번에 스톤당 최대 50개까지 사용할 수 있어요.`
+        })
+      } else {
+        setStoneValue2({...stoneValue2, on: true, value: inputValue})
+        setDrawState(drawCheck(Number(inputValue)))
+        closePopup(dispatch);
       }
-      closePopup(dispatch);
-      // setPopSlide(false)
+    } else if (stoneInfo.type === 'a' && inputValue > stoneInfo.value) {
+      context.action.toast({
+        msg: `스톤이 부족해요. 보유 스톤을 확인해주세요.`
+      })
+    }
+    if (stoneInfo.type === 'l' && inputValue <= stoneInfo.value) {
+      if (inputValue > 50) {
+        context.action.toast({
+          msg: `한 번에 스톤당 최대 50개까지 사용할 수 있어요.`
+        })
+      } else {
+        setStoneValue3({...stoneValue3, on: true, value: inputValue})
+        setDrawState(drawCheck(Number(inputValue)))
+        closePopup(dispatch);
+      }
+    } else if (stoneInfo.type === 'l' && inputValue > stoneInfo.value) {
+      context.action.toast({
+        msg: `스톤이 부족해요. 보유 스톤을 확인해주세요.`
+      })
     }
   }
   // 스톤 초기화
   const stoneClose = (e) => {
-    const {targetValue} = e.currentTarget.parentNode.dataset
-    if (targetValue === '1') {
-      setStoneValue1({...stoneValue1, on: false, value: ''})
+    e.stopPropagation()
+    const {targetType} = e.currentTarget.parentNode.dataset
+    if (targetType === 'd') {
+      setStoneValue1({...stoneValue1, on: false, value: 0})
+      setStoneInfo({...stoneInfo, type: '', value: 0})
     }
-    if (targetValue === '2') {
-      setStoneValue2({...stoneValue2, on: false, value: ''})
+    if (targetType === 'a') {
+      setStoneValue2({...stoneValue2, on: false, value: 0})
+      setStoneInfo({...stoneInfo, type: '', value: 0})
+    }
+    if (targetType === 'l') {
+      setStoneValue3({...stoneValue3, on: false, value: 0})
+      setStoneInfo({...stoneInfo, type: '', value: 0})
+    }
+    setDrawState(drawCheck(0))
+    setOddState(false)
+  }
+  // 뽑기 가능 체크
+  const drawCheck = (v) => {
+    let totalValue = 0;
+    if(stoneInfo.type === 'd'){
+      totalValue = v + stoneValue2.value + stoneValue3.value
+    } else if(stoneInfo.type === 'a'){
+      totalValue = stoneValue1.value + v + stoneValue3.value
+    } else if(stoneInfo.type === 'l'){
+      totalValue = stoneValue1.value + stoneValue2.value + v
+    }
+
+    if (totalValue > 0 && totalValue%2 === 0) {
+      console.log('1',totalValue);
+      setOddState(false)
+      return true
+    } else {
+      console.log('2',totalValue);
+      setOddState(true)
+      return false
     }
   }
   // 스톤 조합
   const completeAction = () => {
     if(localStorage.getItem('rebranding')){
-      fetchStoneChange(stoneValue1.value,stoneValue2.value)
+      fetchStoneChange(stoneValue1.value,stoneValue2.value,stoneValue3.value)
       setActionAni(true)
-      setStoneValue1({on: false, value: ''})
-      setStoneValue2({on: false, value: ''})
       setTimeout(() => {
         setActionAni(false)
-      }, 6000);
+        dispatch(setCommonPopupOpenData({...popup, resultPopup: true}));
+      }, 4500);
     } else {
       dispatch(setCommonPopupOpenData({...popup, confirmPopup: true}));
     }
   }
 
   const disabledAction = () => {
-    dispatch(setGlobalCtxMessage({type: "toast",
+    context.action.toast({
       msg: `먼저 사용할 스톤을 넣어주세요.`
-    }))
+    })
+  }
+  const disabledAction1 = () => {
+    context.action.toast({
+      msg: `<span>사용할 스톤의 합이 짝수일 때 뽑을 수 있습니다.</span>
+      사용할 스톤을 확인해주세요.`
+    })
   }
 
   // 모바일 뒤로가기 이벤트
@@ -318,7 +412,7 @@ const Rebranding = () => {
     if (window.scrollY >= tabMenuTop) {
       setTabFixed(true)
     } else {
-      setTabFixed(false)
+      setTabFixed(false)      
     }
   }
 
@@ -333,10 +427,9 @@ const Rebranding = () => {
       fetchMyRankInfo(tabmenuType)
       fetchMyPieceInfo()
     }
-    console.log(actionAni);
   },[actionAni])
 
-
+  
   useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
@@ -353,7 +446,7 @@ const Rebranding = () => {
       }
     }
   },[eventInfo.seq_no,tabmenuType])
-
+  
   return (
     <>
     <div className="refresh-wrap"
@@ -372,7 +465,7 @@ const Rebranding = () => {
         </div>
       </div>
     </div>
-    <div id="rebranding"
+    <div id="rebranding" 
       ref={mainRef}
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
@@ -380,10 +473,14 @@ const Rebranding = () => {
       >
       <Header title="이벤트" type="back" backEvent={backEvent}/>
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/mainVisual-1-fix.png`} alt="이벤트 이미지" />
+        <img src={`${IMG_SERVER}/event/rebranding/mainVisual-1.png`} alt="이벤트 이미지" />
       </section>
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/bg-2.png`} alt="이벤트 이미지" />
+        {eventInfo.seq_no >= 2 ?
+          <img src={`${IMG_SERVER}/event/rebranding/bg-2-fix.png`} alt="이벤트 이미지" />
+          :
+          <img src={`${IMG_SERVER}/event/rebranding/bg-2.png`} alt="이벤트 이미지" />
+        }
         <button onClick={noticePopView1}>
           <img src={`${IMG_SERVER}/event/rebranding/btn-1.png`} alt="버튼 이미지" />
         </button>
@@ -395,36 +492,74 @@ const Rebranding = () => {
         </button>
       </section>
       <section>
-        <img src={`${IMG_SERVER}/event/rebranding/bg-4.png`} alt="이벤트 이미지" />
-        <div className="stoneWrap">
-          <button data-target-value="1" onClick={stoneValue1.on !== true ? clickSelect : null}>
-            <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 1" />
-            {stoneValue1.value !== '' &&
+        {drawState ? 
+          <img src={`${IMG_SERVER}/event/rebranding/bg-4-on.png`} alt="이벤트 이미지" />
+          :
+          <img src={`${IMG_SERVER}/event/rebranding/bg-4-off.png`} alt="이벤트 이미지" />
+        }
+        <div className={`stoneSelect dStone ${myPieceInfo.ins_d_cnt > 0 ? 'focus' : ''} ${stoneValue1.on === true ? 'active' : ''}`}>
+          <button data-target-type="d" onClick={clickSelect}>
+          {stoneValue1.on !== true ?
               <>
-                <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue1.value}.png`} className="stoneImg" />
-                <div className="close" onClick={stoneClose}>닫기</div>
+                <span className="count">{myPieceInfo.ins_d_cnt === undefined ? 0 : myPieceInfo.ins_d_cnt}개</span>
+                <span className="text">보유</span>
+              </>
+              :
+              <>
+                <span className="count">{stoneValue1.value}개</span>
+                <span className="text">사용예정</span>
+                <span className="cancel" onClick={stoneClose}>사용취소</span>
               </>
             }
+            <div className="stoneIcon"></div>
           </button>
-          <button data-target-value="2" onClick={stoneValue2.on !== true ? clickSelect : null}>
-            <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-1.png`} alt="인피니티 스톤 2" />
-            {stoneValue2.value !== '' &&
+        </div>
+        <div className={`stoneSelect aStone ${myPieceInfo.ins_a_cnt > 0 ? 'focus' : ''} ${stoneValue2.on === true ? 'active' : ''}`}>
+          <button data-target-type="a" onClick={clickSelect}>
+          {stoneValue2.on !== true ?
               <>
-                <img src={`${IMG_SERVER}/event/rebranding/ico-${stoneValue2.value}.png`} className="stoneImg" />
-                <div className="close" onClick={stoneClose}>닫기</div>
+                <span className="count">{myPieceInfo.ins_a_cnt === undefined ? 0 : myPieceInfo.ins_a_cnt}개</span>
+                <span className="text">보유</span>
+              </>
+              :
+              <>
+                <span className="count">{stoneValue2.value}개</span>
+                <span className="text">사용예정</span>
+                <span className="cancel" onClick={stoneClose}>사용취소</span>
               </>
             }
+            <div className="stoneIcon"></div>
           </button>
-          <img src={`${IMG_SERVER}/event/rebranding/sign.png`} className="sign" />
-          {stoneValue1.on === true && stoneValue2.on === true ?
-            <button onClick={completeAction}>
-              <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-4.png`} alt="인피니티 스톤" />
-            </button>
-            :
-            <button onClick={disabledAction}>
-              <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-2.png`} alt="인피니티 스톤" />
-            </button>
-          }
+        </div>
+        <div className={`stoneSelect lStone ${myPieceInfo.ins_l_cnt > 0 ? 'focus' : ''} ${stoneValue3.on === true ? 'active' : ''}`}>
+          <button data-target-type="l" onClick={clickSelect}>
+            {stoneValue3.on !== true ?
+              <>
+                <span className="count">{myPieceInfo.ins_l_cnt === undefined ? 0 : myPieceInfo.ins_l_cnt}개</span>
+                <span className="text">보유</span>
+              </>
+              :
+              <>
+                <span className="count">{stoneValue3.value}개</span>
+                <span className="text">사용예정</span>
+                <span className="cancel" onClick={stoneClose}>사용취소</span>
+              </>
+            }
+            <div className="stoneIcon"></div>
+          </button>
+        </div>
+        <div className="stoneDraw">
+        {drawState ?
+          <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-on.png`} onClick={completeAction} alt="뽑기" />
+          : oddState ?
+          <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-off.png`} onClick={disabledAction1} alt="뽑기" />
+          :
+          <img src={`${IMG_SERVER}/event/rebranding/stoneBtn-off.png`} onClick={disabledAction} alt="뽑기" />
+        }
+        </div>
+        <div className="totalDalla">
+          내 <img src="https://image.dalbitlive.com/event/rebranding/dalla_logo.png" alt="dalla" />
+          <span>{myPieceInfo.dalla_cnt === undefined ? 0 : myPieceInfo.dalla_cnt}개</span>
         </div>
       </section>
       <div className={`tabmenuWrap ${tabFixed ? 'fixed' : ''}`} ref={tabMenuRef}>
@@ -454,26 +589,26 @@ const Rebranding = () => {
           <li>높은 순위일 수록 스페셜라운드 당첨 확률이 높아집니다.</li>
           <li>경품 당첨자는 공지사항을 통해 발표됩니다.</li>
           <li>부계정으로 이벤트에 중복 당첨될 경우 더 높은 순위로 선정됩니다.</li>
-          <li>경품의 재고 문제로 경품을 지급할 수 없게될 경우 현금으로 대체 지급됩니다.</li>
+          <li>현저한 가격변동 및 품절(재고 부족)등의 이유로 경품을 지급할 수 없게될 경우 현금으로 대체 지급됩니다.</li>
           <li>5만원 이상 경품 수령시 22%의 제세공과금이 발생하며 이는 당첨자가 부담합니다.</li>
           <li>경품 수령을 원치 않을 경우 1:1문의를 통해 현금으로 지급을 요청하실 수 있습니다.</li>
           <li>더욱 자세한 사항은 이벤트 공지사항을 확인해주시기 바랍니다.</li>
+          <li>본 이벤트는 Apple과 무관하며 Apple은 본 이벤트의 스폰서가 아닙니다.</li>
         </ul>
         <div className='giveawayBtn' onClick={giveawayPopView}>경품안내</div>
       </section>
       {popup.confirmPopup &&
-        <Confirm
-          setActionAni={setActionAni}
-          stoneValue1={stoneValue1}
-          setStoneValue1={setStoneValue1}
-          stoneValue2={stoneValue2}
-          setStoneValue2={setStoneValue2}
+        <Confirm 
+          setActionAni={setActionAni} 
+          stoneValue1={stoneValue1} 
+          stoneValue2={stoneValue2} 
+          stoneValue3={stoneValue3} 
           fetchStoneChange={fetchStoneChange} />
       }
       {actionAni &&
         <MergePop result={mergeResult} />
       }
-      {giveawayPop &&
+      {giveawayPop && 
         <LayerPopup title="경품안내" setPopup={setGiveawayPop}>
           <section className="giveawayInfo">
             <ul className='depth1'>
@@ -511,14 +646,23 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {noticePop1 &&
+      {noticePop1 && 
         <LayerPopup title="놀다 보면 생기는 스톤들" setPopup={setNoticePop1}>
           <section className="dallagers">
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-1.png`} />방송 하기 & 듣기 20분당 1개</div>
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-2.png`} />방송 선물 보내기 & 받기</div>
             <ul className="textBox">
-              <li>· 보낸 달 50개당 1개</li>
-              <li>· 받은 별 100개당 1개</li>
+              {eventInfo.seq_no >= 2 ? 
+                <>
+                  <li>· 보낸 달 50개당 2개</li>
+                  <li>· 받은 별 100개당 3개</li>
+                </>
+                :
+                <>
+                  <li>· 보낸 달 50개당 1개</li>
+                  <li>· 받은 별 100개당 1개</li>
+                </>
+              }
               <li>· 부스터도 포함됩니다.</li>
             </ul>
             <div className="infoWrap">
@@ -528,7 +672,7 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {noticePop2 &&
+      {noticePop2 && 
         <LayerPopup title="FEVER TIME!" setPopup={setNoticePop2}>
           <section className="dallagers">
             <div className="pointText">· 한 방에서 DJ에게</div>
@@ -546,27 +690,47 @@ const Rebranding = () => {
         </LayerPopup>
       }
       {popup.commonPopup &&
-        <PopSlide title="사용할 스톤을 선택하세요.">
+        <PopSlide title="사용할 스톤 개수를 알려주세요">
           <section className="eventRebranding">
             <div className="title">
-              내
-              <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="" />
-              <span>{myPieceInfo.dalla_cnt}개</span>
+              <img src={`${IMG_SERVER}/event/rebranding/${stoneInfo.type}-on.png`} alt={stoneInfo.type} />
+              <span>
+                {stoneInfo.value}개
+              </span>
+              <small>보유중</small>
             </div>
-            {stone.map((v,idx) => {
-              const stonCount = v.value;
-              return (
-                <div
-                  className={`label ${stonCount === 0 ? 'disabled' : ''}`}
-                  data-choice-stone={v.data}
-                  onClick={(e) => { choicePiece(e,stonCount) }}
-                  key={idx}>
-                  <img src={`${IMG_SERVER}/event/rebranding/ico-${v.data}.png`} alt={v.data} />
-                  <span>{stonCount} 개 남음</span>
-                </div>
-              )
-            })}
-            <p>선택된 스톤 1개를 사용합니다.</p>
+            <InputItems type="text">
+              <input type="number" pattern="\d*" ref={inputRef} placeholder="최대 50개 까지 입력 가능" autoFocus/>
+            </InputItems>
+            <div className="buttonGroup">
+              <button onClick={() => closePopup(dispatch)}>취소</button>
+              <button onClick={choicePiece}>확인</button>
+            </div>
+          </section>
+        </PopSlide>
+      }
+      {popup.resultPopup &&
+        <PopSlide title="받은 스톤">
+          <section className="eventRebranding">
+            <div className="stoneListWrap">
+              <div className="stoneList">
+                <img src={`${IMG_SERVER}/event/rebranding/d-on.png`} alt={stoneInfo.type} />
+                <span>{mergeResult.dStone}개</span>
+              </div>
+              <div className="stoneList">
+                <img src={`${IMG_SERVER}/event/rebranding/a-on.png`} alt={stoneInfo.type} />
+                <span>{mergeResult.aStone}개</span>
+              </div>
+              <div className="stoneList">
+                <img src={`${IMG_SERVER}/event/rebranding/l-on.png`} alt={stoneInfo.type} />
+                <span>{mergeResult.lStone}개</span>
+              </div>
+            </div>
+            <div className="stoneTotal">
+              총{mergeResult.dStone + mergeResult.aStone + mergeResult.lStone}개
+            </div>
+            <p>받은 스톤 또한 dalla를 만들기 위해서 자동으로 사용됩니다.</p>
+            <SubmitBtn text="확인" onClick={() => closePopup(dispatch)} />
           </section>
         </PopSlide>
       }

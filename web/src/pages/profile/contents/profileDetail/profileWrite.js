@@ -1,5 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
+import {Context} from 'context'
+import Swiper from 'react-id-swiper'
 import Api from 'context/api'
 
 // global components
@@ -12,17 +14,20 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {setProfileTabData} from "redux/actions/profile";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxAlertStatus, setGlobalCtxBroadcastAdminLayer, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileWrite = () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
 
-  const {token, profile} = globalState;
+  const dispatch = useDispatch();
+  const profileTab = useSelector(state => state.profileTab);
+
+  //context
+  const context = useContext(Context);
+  const {token, profile} = context;
 
   //수정 : index 필수
   if (action === 'modify' && !index) {
@@ -69,14 +74,8 @@ const ProfileWrite = () => {
       confirm = false;
     }
 
-    if(!confirm){
-      dispatch(setGlobalCtxMessage({
-        type:"toast",
-        msg: message
-      }))
-    }
-
-
+    if(!confirm)
+      context.action.toast({msg: message});
 
     return confirm;
   };
@@ -97,11 +96,10 @@ const ProfileWrite = () => {
         }
       }).then((res) => {
         const {data, message, result } = res;
-        dispatch(setGlobalCtxMessage({
-          type:"toast",
-          msg: message
-        }))
+        context.action.toast({msg: message});
+
         if (result === 'success') {
+          dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
           history.goBack();
         }
       });
@@ -114,11 +112,9 @@ const ProfileWrite = () => {
           viewOn: others
         }
       });
-      dispatch(setGlobalCtxMessage({
-        type:"toast",
-        msg: message
-      }))
+      context.action.toast({msg: message});
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
     }
@@ -141,11 +137,9 @@ const ProfileWrite = () => {
           chrgrName: profile?.nickName,
         }
       });
-      dispatch(setGlobalCtxMessage({
-        type:"toast",
-        msg: message
-      }))
+      context.action.toast({msg: message});
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
 
@@ -160,17 +154,11 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
-        dispatch(setGlobalCtxMessage({
-          type:"toast",
-          msg: '팬보드를 수정했습니다.'
-        }))
-
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
+        context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
       } else {
-        dispatch(setGlobalCtxMessage({
-          type:"alert",
-          msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'
-        }))
+        context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
       }
     }
   }
@@ -197,10 +185,7 @@ const ProfileWrite = () => {
       //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
       // }
     } else {
-      dispatch(setGlobalCtxMessage({
-        type:"alert",
-        msg: '사진 업로드를 실패하였습니다.'
-      }))
+      context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
     }
   };
 
@@ -212,11 +197,13 @@ const ProfileWrite = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        dispatch(setGlobalCtxAlertStatus({
+        context.action.alert({
           status: true,
-          type: "alert",
+          type: 'alert',
           content: image.content,
-        }))
+          callback: () => {
+          }
+        })
       } else {
         noticePhotoUpload();
       }

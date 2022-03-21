@@ -299,6 +299,7 @@ const initialData = {
       status: false,
       roomNo: "",
       nickNm: "",
+      memNo:""
     },
     inBroadcast: false,
     alarmStatus: false,

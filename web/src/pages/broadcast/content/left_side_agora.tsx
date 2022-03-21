@@ -61,6 +61,9 @@ import {
   setGlobalCtxRtcInfoInit
 } from "../../../redux/actions/globalCtx";
 
+// 달나라 동전 그리는 컴포넌트
+import MoonLandAnimationComponent from "../component/moon_land_animation_component";
+
 type ComboType = {
   status: boolean;
   playing: boolean;
@@ -1312,7 +1315,10 @@ export default function LeftSideAgora(props: {
 
         {/* {((chatAnimation !== null && chatAnimation.status === true) ||
           (comboAnimation !== null && comboAnimation.status === true)) && ( */}
-        <LottieDisplayStyled ref={lottieDisplayRef} id="chat-animation" />
+        <LottieDisplayStyled ref={lottieDisplayRef} id="chat-animation" >
+          {/* 달나라 갈꺼야 - 포인트 애니메이션 출현 컴포넌트 */}
+          <MoonLandAnimationComponent roomOwner={roomOwner} roomInfo={roomInfo} chatInfo={chatInfo} isWide={broadcastState.isWide}/>
+        </LottieDisplayStyled>
         {/* )} */}
 
         <NoticeDisplayStyled id="broadcast-notice-display"></NoticeDisplayStyled>

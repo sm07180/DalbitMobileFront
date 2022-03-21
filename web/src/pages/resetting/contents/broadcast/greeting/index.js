@@ -69,6 +69,7 @@ const Greeting = () => {
     if(res.result === "success") {setTitleList(res.data.list);}
   }
 
+  //인사말 수정
   const fetchModifyData = async () => {
     const res = await API.modifyBroadcastOption({
       optionType: 2,
@@ -78,7 +79,7 @@ const Greeting = () => {
     if(res.result === "success") {
       toastMessage("DJ 인사말이 수정 되었습니다.");
       setTitleList(res.data.list);
-      setTitleSelect({...titleSelect, val: "", index: -1});
+      setTitleSelect({state: false, val: "", index: -1});
     }
   }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 import Lottie from 'react-lottie'
 
@@ -8,52 +8,53 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {IMG_SERVER} from 'context/config'
 import {RoomJoin} from "context/room";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {Context, GlobalContext} from "context";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // components
 // css
 
 export default withRouter((props) => {
   const {data, children, tab} = props;
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const context = useContext(Context);
+
+  const gtx = useContext(GlobalContext);
+
   const history = useHistory();
 
-  const goLive = (roomNo, nickNm, listenRoomNo) => {
-    if (globalState.token.isLogin === false) {
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
+    if (context.token.isLogin === false) {
+      context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      }))
+      })
     } else {
-      if (getDeviceOSTypeChk() === 3) {
-        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
+      if (getDeviceOSTypeChk() === 3){
+        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
         if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, nickNm: nickNm})
+          RoomJoin({roomNo: roomNo,memNo:memNo, nickNm: nickNm})
         } else {
           let alertMsg
           if (isNaN(listenRoomNo)) {
             alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            dispatch(setGlobalCtxMessage({
+            context.action.alert({
               type: 'alert',
               msg: alertMsg
-            }))
+            })
           } else {
             alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            dispatch(setGlobalCtxMessage({
+            context.action.confirm({
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
-                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
               }
-            }))
+            })
           }
         }
       }
@@ -84,7 +85,7 @@ export default withRouter((props) => {
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
-                  goLive(list.roomNo, list.nickNm, list.listenRoomNo);
+                  goLive(list.roomNo, list.memNo,list.nickNm, list.listenRoomNo);
                 }}>
                   <span className='equalizer'>
                     <Lottie

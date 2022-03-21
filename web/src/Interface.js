@@ -11,6 +11,7 @@ import _ from 'lodash'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
+import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
 import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
 import {backFunc} from 'components/lib/back_func'
@@ -19,29 +20,9 @@ import Utility from 'components/lib/utility'
 
 import qs from 'query-string'
 import {authReq} from "pages/self_auth";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
-import {
-  setGlobalCtxAdminChecker,
-  setGlobalCtxCastState,
-  setGlobalCtxClipPlayerInfo,
-  setGlobalCtxClipPlayerState,
-  setGlobalCtxClipState,
-  setGlobalCtxGnbVisible,
-  setGlobalCtxIsMailboxNew,
-  setGlobalCtxIsMailboxOn,
-  setGlobalCtxMediaPlayerStatus,
-  setGlobalCtxMessage,
-  setGlobalCtxNativePlayer,
-  setGlobalCtxNativeTid,
-  setGlobalCtxPlayer,
-  setGlobalCtxSelfAuth,
-  setGlobalCtxSticker,
-  setGlobalCtxStickerMsg,
-  setGlobalCtxUpdateProfile,
-  setGlobalCtxUpdateToken
-} from "redux/actions/globalCtx";
-import {setMailBoxIsMailBoxNew} from "redux/actions/mailBox";
+import {MailboxContext} from "context/mailbox_ctx";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -52,8 +33,9 @@ export const FOOTER_VIEW_PAGES = {
 };
 
 export default () => {
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  //context
+  const context = useContext(Context)
+  const { mailboxAction } = useContext(MailboxContext);
   //history
   let history = useHistory()
   const dispatch = useDispatch();
@@ -62,16 +44,16 @@ export default () => {
     Api.certificationCheck().then(res => {
       if(res.message === "SUCCESS") {
         if(res.data === 'y') {
-          dispatch(setGlobalCtxMessage({type: "confirm",
+          context.action.confirm({
             msg: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
             callback: () => {
-              authReq('9', globalState.authRef, dispatch);
+              authReq('9', context.authRef, context);
             }
-          }))
+          })
         }else {
-          dispatch(setGlobalCtxMessage({type: "alert",
+          context.action.alert({
             msg: '본인인증을 이미 완료했습니다.<br/>1일 1회만 가능합니다.'
-          }))
+          })
         }
       }
     });
@@ -100,19 +82,19 @@ export default () => {
         playCnt: data.playCnt
       }
       localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-      clipJoin(data, dispatch, globalState, 'none', 'push')
+      clipJoin(data, context, 'none', 'push')
     } else {
       if (code === '-99') {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        }))
+        })
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: message
-        }))
+        })
       }
     }
   }
@@ -135,11 +117,10 @@ export default () => {
     const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
       setAuthState(false)
-
-      dispatch(setGlobalCtxSelfAuth(false))
+      context.action.updateSelfAuth(false)
     } else {
       setAuthState(true)
-      dispatch(setGlobalCtxSelfAuth(true))
+      context.action.updateSelfAuth(true)
     }
   }
 
@@ -184,7 +165,8 @@ export default () => {
           mypageURL = `/mypage/${memNo}`
           if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
         }
-        dispatch(setGlobalCtxUpdateToken(loginInfo.data))
+
+        context.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
 
         if (profileInfo.result === 'success') {
@@ -198,7 +180,7 @@ export default () => {
             const decodedUrl = decodeURIComponent(redirect)
             return (window.location.href = decodedUrl)
           }
-          dispatch(setGlobalCtxUpdateProfile(profileInfo.data))
+          context.action.updateProfile(profileInfo.data)
 
           //--##마이페이지 Redirect
           if (mypageURL !== '') {
@@ -220,7 +202,7 @@ export default () => {
         if (msg === undefined || msg === null || msg === '') {
           msg = loginInfo.message
         }
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           title: '달라 사용 제한',
           msg: `${msg}`,
           callback: () => {
@@ -228,9 +210,9 @@ export default () => {
               Hybrid('CloseLayerPopup')
             }
           }
-        }))
+        })
       } else if (loginInfo.code === '-6') {
-        dispatch(setGlobalCtxMessage({type: "confirm",
+        context.action.confirm({
           msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
           callback: () => {
             const callResetListen = async (mem_no) => {
@@ -242,24 +224,24 @@ export default () => {
                   socialLogin(inputData, type);
                 }, 700)
               } else {
-                dispatch(setGlobalCtxMessage({type: "alert",
+                context.action.alert({
                   msg: `${loginInfo.message}`
-                }))
+                })
               }
             }
             callResetListen(loginInfo.data.memNo)
           }
-        }))
+        })
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           title: '로그인 실패',
           msg: `${loginInfo.message}`
-        }))
+        })
       }
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert",
+      context.action.alert({
         msg: `${social_result.message}`
-      }))
+      })
     }
   }
 
@@ -293,7 +275,8 @@ export default () => {
           mypageURL = `/mypage/${memNo}`
           if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
         }
-        dispatch(setGlobalCtxUpdateToken(loginInfo.data))
+
+        context.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
 
         if (profileInfo.result === 'success') {
@@ -306,7 +289,7 @@ export default () => {
             const decodedUrl = decodeURIComponent(redirect)
             return (window.location.href = decodedUrl)
           }
-          dispatch(setGlobalCtxUpdateProfile(profileInfo.data))
+          context.action.updateProfile(profileInfo.data)
 
           //--##마이페이지 Redirect
           if (mypageURL !== '') {
@@ -327,7 +310,7 @@ export default () => {
         if (msg === undefined || msg === null || msg === '') {
           msg = loginInfo.message
         }
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           title: '달라 사용 제한',
           msg: `${msg}`,
           callback: () => {
@@ -335,9 +318,9 @@ export default () => {
               Hybrid('CloseLayerPopup')
             }
           }
-        }))
+        })
       } else if (loginInfo.code === '-6') {
-        dispatch(setGlobalCtxMessage({type: "confirm",
+        context.action.confirm({
           msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
           callback: () => {
             const callResetListen = async (mem_no) => {
@@ -349,31 +332,33 @@ export default () => {
                   socialLogin(inputData, type);
                 }, 700)
               } else {
-                dispatch(setGlobalCtxMessage({type: "alert",
+                context.action.alert({
                   msg: `${loginInfo.message}`
-                }))
+                })
               }
             }
             callResetListen(loginInfo.data.memNo)
           }
-        }))
+        })
+      } else if (loginInfo.code === '-8') {
+        return history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           title: '로그인 실패',
           msg: `${loginInfo.message}`
-        }))
+        })
       }
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert",
+      context.action.alert({
         msg: `${social_result.message}`
-      }))
+      })
     }
   }
 
   //
   //---------------------------------------------------------------------
   function update(event) {
-    const agePassYn = globalState.noServiceInfo.americanAge >= globalState.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
+    const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
 
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
@@ -403,6 +388,7 @@ export default () => {
           }
         }
 
+        const {isLogin} = context.token
         const {push_type} = pushMsg
         //let room_no, mem_no, board_idx
 
@@ -419,8 +405,8 @@ export default () => {
         switch (push_type + '') {
           case '1': //-----------------방송방 [room_no]
             pushMsg.title = pushMsg.title.trim() ? pushMsg.title.trim() : pushMsg.contents;
-            dispatch(setGlobalCtxStickerMsg(pushMsg))
-            dispatch(setGlobalCtxSticker(true)) //true,false
+            context.action.updateStickerMsg(pushMsg)
+            context.action.updateSticker(true) //true,false
             break
           case '2': //------------------메인
             window.location.href = '/'
@@ -434,14 +420,14 @@ export default () => {
           case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
             break
           case '34': //-----------------마이페이지>알림>해당 알림 글
-            dispatch(setGlobalCtxMessage({type: "alert",msg: pushMsg.contents}))
+            context.action.alert({msg: pushMsg.contents})
             break
           case '35': //-----------------마이페이지
-            dispatch(setGlobalCtxMessage({type: "alert",msg: pushMsg.contents}))
+            context.action.alert({msg: pushMsg.contents})
             break
           case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
-            dispatch(setGlobalCtxStickerMsg(pushMsg))
-            dispatch(setGlobalCtxSticker(true)) //true,false
+            context.action.updateStickerMsg(pushMsg)
+            context.action.updateSticker(true) //true,false
             break
           case '37': //------------------1:1 문의 답변
             //context.action.updateNews(true) //true,false
@@ -458,7 +444,7 @@ export default () => {
           case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
             break
           case '7': //------------------공지사항 페이지 [board_idx](미정)
-            dispatch(setGlobalCtxMessage({type: "alert",msg: pushMsg.contents}))
+            context.action.alert({msg: pushMsg.contents})
             break
           case '65': // 깐부 수락 / 신청
             history.push('/event/gganbu');
@@ -491,16 +477,16 @@ export default () => {
           async function logout() {
             const res = await Api.member_logout()
             if (res.result === 'success') {
-              dispatch(setGlobalCtxUpdateToken(res.data))
+              context.action.updateToken(res.data)
               Hybrid('GetLogoutToken', res.data)
               setTimeout(() => {
                 window.location.href = '/'
               }, 500)
-              dispatch(setGlobalCtxAdminChecker(false));
+              context.action.updateAdminChecker(false)
             } else {
-              dispatch(setGlobalCtxMessage({type: "alert",
+              context.action.alert({
                 msg: res.message
-              }))
+              })
             }
           }
           //---
@@ -514,14 +500,14 @@ export default () => {
       case 'native-player-show': //---------------------Native player-show (IOS)
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
-          dispatch(setGlobalCtxCastState(event.detail.roomNo))
+          context.action.updateCastState(event.detail.roomNo)
         }
         if (event.detail.mediaType !== 'v') {
           const _ios = JSON.stringify(event.detail)
           Utility.setCookie('native-player-info', _ios, 100)
-          dispatch(setGlobalCtxPlayer(true));
-          dispatch(setGlobalCtxMediaPlayerStatus(true));
-          dispatch(setGlobalCtxNativePlayer(event.detail))
+          context.action.updatePlayer(true)
+          context.action.updateMediaPlayerStatus(true)
+          context.action.updateNativePlayer(event.detail)
         }
         break
       case 'native-start': //---------------------------Native player-show (Android & IOS)
@@ -529,35 +515,38 @@ export default () => {
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_active')
         //(BJ)일경우 방송하기:방송중
-        if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
-          dispatch(setGlobalCtxCastState(event.detail.roomNo))
+        const isDj = _.hasIn(event.detail, 'auth') && event.detail.auth === 3;
+        if (isDj) {
+          context.action.updateCastState(event.detail.roomNo)
+          Utility.setCookie('isDj', isDj, 3);
         }
 
         if (event.detail.mediaType !== 'v') {
           const _android = JSON.stringify(event.detail)
           Utility.setCookie('native-player-info', _android, 100)
-          dispatch(setGlobalCtxPlayer(true))
-          dispatch(setGlobalCtxMediaPlayerStatus(true))
-          dispatch(setGlobalCtxNativePlayer(event.detail))
+          context.action.updatePlayer(true)
+          context.action.updateMediaPlayerStatus(true)
+          context.action.updateNativePlayer(event.detail)
         }
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
         //쿠키삭제
         Utility.setCookie('native-player-info', '', -1)
-        dispatch(setGlobalCtxPlayer(false))
-        dispatch(setGlobalCtxMediaPlayerStatus(false))
+        context.action.updatePlayer(false)
+        context.action.updateMediaPlayerStatus(false)
         //방송종료
-        dispatch(setGlobalCtxCastState(false))
+        context.action.updateCastState(false)
         //(BJ)일경우 방송하기:방송중
-        dispatch(setGlobalCtxCastState(null))
+        context.action.updateCastState(null)
         //종료시
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_no')
         Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
+        Utility.setCookie('isDj', false, 3);
         break
       case 'native-non-member-end':
-        dispatch(setGlobalCtxMessage({type: "confirm",
+        context.action.confirm({
           buttonText: {right: '로그인'},
           msg: `<div id="nonMemberPopup"><p>이 방송이 즐거우셨나요~?<br/>로그인 후 DJ와 소통해보세요!<br>DJ가 당신을 기다립니다 ^^</p><img src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
           callback: () => {
@@ -570,7 +559,7 @@ export default () => {
             )
             history.push('/login')
           }
-        }))
+        })
 
         break
       case 'native-google-login': //-------------------------Google 로그인
@@ -591,32 +580,32 @@ export default () => {
         }
         break;
       case 'native-room-make':
-        if (!globalState.token.isLogin) return (window.location.href = '/login');
+        if (!context.token.isLogin) return (window.location.href = '/login');
         if(authState) {
           if(agePassYn === 'y') {
             if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
               if (Utility.getCookie('clip-player-info')) {
-                dispatch(setGlobalCtxMessage({type: "confirm",
+                context.action.confirm({
                   msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
                   callback: () => {
-                    clipExit(dispatch)
-                    RoomMake(dispatch, globalState)
+                    clipExit(context)
+                    RoomMake(context)
                   }
-                }))
+                })
               } else {
-                RoomMake(dispatch, globalState)
+                RoomMake(context)
               }
             } else {
-              dispatch(setGlobalCtxMessage({type: "confirm",
+              context.action.confirm({
                 msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
                 callback: () => {
                   sessionStorage.removeItem('room_no')
                   Utility.setCookie('listen_room_no', null)
                   Hybrid('ExitRoom', '')
-                  dispatch(setGlobalCtxPlayer(false))
-                  RoomMake(dispatch, globalState)
+                  context.action.updatePlayer(false)
+                  RoomMake(context)
                 }
-              }))
+              })
             }
           }else {
             doAuthCheck();
@@ -633,10 +622,10 @@ export default () => {
          */
         break
       case 'react-gnb-open': //-------------------------GNB 열기
-        dispatch(setGlobalCtxGnbVisible(true))
+        context.action.updateGnbVisible(true)
         break
       case 'react-gnb-close': //------------------------GNB 닫기
-        dispatch(setGlobalCtxGnbVisible(false))
+        context.action.updateGnbVisible(false)
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
@@ -644,19 +633,19 @@ export default () => {
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
         localStorage.setItem('play_clip_no', event.detail.clipNo)
-        dispatch(setGlobalCtxClipState(true));
-        dispatch(setGlobalCtxClipPlayerInfo(event.detail))
-        dispatch(setGlobalCtxPlayer(true))
+        context.action.updateClipState(true)
+        context.action.updateClipPlayerInfo(event.detail)
+        context.action.updatePlayer(true)
         sessionStorage.removeItem('clip_active')
-        dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
+        context.action.alert({visible: false})
         sessionStorage.setItem('listening', 'N')
         break
       case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
         Utility.setCookie('clip-player-info', '', -1)
-        dispatch(setGlobalCtxClipState(null))
-        dispatch(setGlobalCtxClipPlayerState(null))
-        dispatch(setGlobalCtxClipState(null))
-        dispatch(setGlobalCtxPlayer(false))
+        context.action.updateClipState(null)
+        context.action.updateClipPlayerState(null)
+        context.action.updateClipState(null)
+        context.action.updatePlayer(false)
         sessionStorage.setItem('listening', 'N')
         sessionStorage.removeItem('clip_active')
         break
@@ -679,34 +668,34 @@ export default () => {
         localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
-        if (!globalState.token.isLogin) return (window.location.href = '/login')
+        if (!context.token.isLogin) return (window.location.href = '/login')
         //2020-10-13 본인인증 임시 막기
         // if (!authState) return (window.location.href = '/selfauth?type=create')
         if(authState) {
           if(agePassYn === 'y') {
             if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
               if (Utility.getCookie('clip-player-info')) {
-                dispatch(setGlobalCtxMessage({type: "confirm",
+                context.action.confirm({
                   msg: `현재 재생 중인 클립이 있습니다.\n클립을 업로드하시겠습니까?`,
                   callback: () => {
-                    clipExit(dispatch)
+                    clipExit(context)
                     Hybrid('ClipUploadJoin')
                   }
-                }))
+                })
               } else {
                 Hybrid('ClipUploadJoin')
               }
             } else {
-              dispatch(setGlobalCtxMessage({type: "confirm",
+              context.action.confirm({
                 msg: `현재 청취 중인 방송방이 있습니다.\n클립을 업로드하시겠습니까?`,
                 callback: () => {
                   sessionStorage.removeItem('room_no')
                   Utility.setCookie('listen_room_no', null)
                   Hybrid('ExitRoom', '')
-                  dispatch(setGlobalCtxPlayer(false))
+                  context.action.updatePlayer(false)
                   Hybrid('ClipUploadJoin')
                 }
-              }))
+              })
             }
           }else {
             doAuthCheck();
@@ -717,34 +706,34 @@ export default () => {
 
         break
       case 'native-clip-record': //-----------------------네이티브 딤 메뉴에서 클립 녹음 클릭 시
-        if (!globalState.token.isLogin) return (window.location.href = '/login')
+        if (!context.token.isLogin) return (window.location.href = '/login')
         //2020-10-13 본인인증 임시 막기
         // if (!authState) return (window.location.href = '/selfauth?type=create')
         if(authState) {
           if(agePassYn === 'y') {
             if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
               if (Utility.getCookie('clip-player-info')) {
-                dispatch(setGlobalCtxMessage({type: "confirm",
+                context.action.confirm({
                   msg: `현재 재생 중인 클립이 있습니다.\n클립을 녹음하시겠습니까?`,
                   callback: () => {
-                    clipExit(dispatch)
+                    clipExit(context)
                     Hybrid('EnterClipRecord')
                   }
-                }))
+                })
               } else {
                 Hybrid('EnterClipRecord')
               }
             } else {
-              dispatch(setGlobalCtxMessage({type: "confirm",
+              context.action.confirm({
                 msg: `현재 청취 중인 방송방이 있습니다.\n클립을 녹음하시겠습니까?`,
                 callback: () => {
                   sessionStorage.removeItem('room_no')
                   Utility.setCookie('listen_room_no', null)
                   Hybrid('ExitRoom', '')
-                  dispatch(setGlobalCtxPlayer(false))
+                  context.action.updatePlayer(false)
                   Hybrid('EnterClipRecord')
                 }
-              }))
+              })
             }
           }else {
             doAuthCheck();
@@ -762,10 +751,10 @@ export default () => {
         // if (__NODE_ENV === 'dev') {
         //   alert('event:native-back-click')
         // }
-        if (globalState.backState === null) {
+        if (context.backState === null) {
           Hybrid('goBack')
         } else {
-          backFunc(dispatch, globalState)
+          backFunc(context, dispatch)
         }
         // break
         break
@@ -792,12 +781,13 @@ export default () => {
         history.push(`/`)
         break
       case 'mailbox-state':
-        dispatch(setMailBoxIsMailBoxNew(event.detail.new));
-        dispatch(setGlobalCtxIsMailboxNew(event.detail.new))
+        mailboxAction.setIsMailboxNew(event.detail.new)
+        context.action.updateIsMailboxNew(event.detail.new)
         break
 
       case 'mailbox-use-state':
-        dispatch(setGlobalCtxIsMailboxOn(event.detail.isMailboxOn))
+        console.log(JSON.stringify(event.detail))
+        context.action.updateIsMailboxOn(event.detail.isMailboxOn)
         break
 
       case 'native-footer': // native footer 이동
@@ -825,12 +815,12 @@ export default () => {
     data = JSON.parse(data)
     data = {...data, playerState: type}
     Utility.setCookie('clip-player-info', JSON.stringify(data))
-    dispatch(setGlobalCtxClipPlayerState(type))
+    context.action.updateClipPlayerState(type)
   }
 
   function getMemNo(redirect) {
-    if (_.hasIn(globalState, 'profile.memNo')) {
-      return globalState.profile.memNo
+    if (_.hasIn(context, 'profile.memNo')) {
+      return context.profile.memNo
     } else {
       /**
        * @비회원일때
@@ -882,7 +872,7 @@ export default () => {
         37 : 1:1 문의 답변
 
       */
-    const {isLogin} = globalState.token
+    const {isLogin} = context.token
     const {push_type} = pushMsg
     let room_no, mem_no, board_idx, redirect_url
 
@@ -909,7 +899,7 @@ export default () => {
         mem_no = pushMsg.mem_no
         if (mem_no != undefined) {
           if (isLogin) {
-            history.push(`/profile/${globalState.profile.memNo}?tab=1`)
+            history.push(`/profile/${context.profile.memNo}?tab=1`)
           }
         }
         break
@@ -1019,10 +1009,10 @@ export default () => {
           //   alert('JoinMailBox ' + memNo)
           //   alert('useMailbox ' + context.useMailbox)
           // }
-          if (globalState.useMailbox) {
+          if (context.useMailbox) {
             if (
-              (globalState.customHeader['os'] === OS_TYPE['IOS'] && globalState.customHeader['appBuild'] >= 284) ||
-              (globalState.customHeader['os'] === OS_TYPE['Android'] && globalState.customHeader['appBuild'] >= 52)
+              (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 284) ||
+              (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] >= 52)
             ) {
               Hybrid('PushMailboxJoin', memNo)
             } else {
@@ -1090,7 +1080,7 @@ export default () => {
         nativeTid = ''
       }
     }
-    dispatch(setGlobalCtxNativeTid(nativeTid))
+    context.action.updateNativeTid(nativeTid)
   }
   //---------------------------------------------------------------------
   //useEffect addEventListener
@@ -1192,18 +1182,18 @@ export default () => {
       document.removeEventListener('native-clip-upload', update)
       document.removeEventListener('native-clip-record', update)
     }
-  }, [globalState.token, authState, globalState.noServiceInfo.americanAge])
+  }, [context.token, authState, context.noServiceInfo.americanAge])
 
   useEffect(() => {
     checkSelfAuth()
-  }, [globalState.token])
+  }, [context.token])
 
   useEffect(() => {
     document.addEventListener('native-back-click', update)
     return () => {
       document.removeEventListener('native-back-click', update)
     }
-  }, [globalState.backFunction, globalState.backState])
+  }, [context.backFunction, context.backState])
 
   return (
     <React.Fragment>

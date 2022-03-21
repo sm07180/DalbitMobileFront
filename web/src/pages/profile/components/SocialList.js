@@ -8,16 +8,17 @@ import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 import {useHistory} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {Context} from "context";
 import Utility from "components/lib/utility";
 import {useDispatch, useSelector} from "react-redux";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData} = props
   const history = useHistory();
+  const context = useContext(Context);
+  const {profile} = context;
   const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
-  const {profile} = globalState;
+  const profileTab = useSelector(state => state.profileTab);
 
   // 스와이퍼
   const swiperFeeds = {
@@ -38,13 +39,13 @@ const SocialList = (props) => {
   return (
     <div className="socialListWrap">
       {socialList.map((item, index) => {
-        if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== globalState.profile.memNo)) {
+        if(type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== context.profile.memNo)) {
           return <React.Fragment key={item.replyIdx} />
         }
 
         const memNo = type==='feed'? profileData.memNo : item?.writerMemNo; //글 작성자
-        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo};
-        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo };
+        const detailPageParam = {history, action:'detail', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo: profileData.memNo, dispatch, profileTab};
+        const modifyParam = {history, action:'modify', type, index: item.noticeIdx ? item.noticeIdx : item.replyIdx, memNo:profileData.memNo, dispatch, profileTab };
         return (
           <div className='socialList' key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} openBlockReportPop={openBlockReportPop}

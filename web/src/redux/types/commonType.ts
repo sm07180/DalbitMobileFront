@@ -73,10 +73,13 @@ export interface ICommonPopupState {
   likePopup: boolean;
   blockReportPopup: boolean;
   presentPopup: boolean;
+  questionMarkPopup: boolean;
+  historyPopup: boolean;
 
   // 달라져스 이벤트
   morePopup: boolean;
   confirmPopup: boolean;
+  resultPopup: boolean;
 
   /* 공통 팝업 */
   commonPopup: boolean;

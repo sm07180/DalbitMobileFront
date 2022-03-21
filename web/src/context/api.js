@@ -23,6 +23,7 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
+import {postSleepMemUpd} from "../common/api";
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -3937,7 +3938,10 @@ export default class API {
     return ajax({url: '/broad/vote/getVoteSelAndDetailList', method: 'POST', reqBody: true, data: data})
   }
 
-
+  // 휴면 회원 인증
+  static postSleepMemUpd = async (data) => {
+    return ajax({url: '/sleep/member/update', method: 'POST', reqBody: true, data: data})
+  }
 
   // 달라져스 회차정보
   static getDallagersReqNo = async (obj) => {
@@ -3945,7 +3949,6 @@ export default class API {
   }
 
   /* 이니셜 스톤 교환하기 */
-  // useDallaGubunOne: 'd' (사용할 이니셜) , useDallaGubunTwo: 'a' (사용할 이니셜)
   static getDallagersStoneChange = async (obj) => {
     const {data} = obj || {};
     return await ajax({
@@ -3981,6 +3984,16 @@ export default class API {
 
   static getStarList = async (data) => {
     return await ajax({url: `/myStar/list`, method: 'post', reqBody: true, data: data})
+  }
+
+  // 회원 제재
+  static adminDeclarationOperate = async (data) => {
+    return await ajax({url: `/admin/declaration/operate`, method: 'POST', reqBody: true, data: data})
+  }
+
+  // 회원 방폭
+  static adminBroadcastForceExit = async (data) => {
+    return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
   }
 
 }

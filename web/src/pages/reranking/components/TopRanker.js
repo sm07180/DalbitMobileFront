@@ -5,20 +5,21 @@ import Swiper from 'react-id-swiper'
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {IMG_SERVER} from 'context/config'
+import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // global components
 
 const TopRanker = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {data, rankSlct, rankType} = props;
+  const {data, rankSlct, rankType} = props
+
+  const context = useContext(Context);
 
   const history = useHistory();
+
+  const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
 
@@ -36,38 +37,37 @@ const TopRanker = (props) => {
     rebuildOnUpdate: true
   }
 
-  const goLive = (roomNo, nickNm, listenRoomNo) => {
-    if (globalState.token.isLogin === false) {
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
+    if (context.token.isLogin === false) {
+      context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      }))
+      })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
         if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, nickNm: nickNm})
+          RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
         } else {
           let alertMsg
           if (isNaN(listenRoomNo)) {
             alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            dispatch(setGlobalCtxMessage({
+            context.action.alert({
               type: 'alert',
               msg: alertMsg
-            }))
+            })
           } else {
             alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            dispatch(setGlobalCtxMessage({
+            context.action.confirm({
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
-                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
               }
-            }))
+            })
           }
         }
       }
@@ -77,7 +77,7 @@ const TopRanker = (props) => {
   return (
     <React.Fragment>
       <span className='questionMark' onClick={() => setPopup(true)}></span>
-      {data && data.length > 0 &&
+      {data && data.length > 0 &&    
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
@@ -142,8 +142,8 @@ const TopRanker = (props) => {
                                 data.roomNo &&
                                   <div className='badgeLive' onClick={(e) => {
                                     e.stopPropagation();
-                                    goLive(data.roomNo, data.nickNm, data.listenRoomNo);
-                                  }}>
+                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
+                                  }}>                                    
                                     <span className='equalizer'>
                                       <Lottie
                                         options={{

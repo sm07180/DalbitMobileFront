@@ -176,12 +176,15 @@ export class ChatSocketHandler {
   setMemNo(memNo){
     this.memNo = memNo;
   }
+
   setBroadcastStateChange(key: string, setStateFn: Function){
     this.broadcastStateChange = {...this.broadcastStateChange, [key] : setStateFn};
   }
 
-  setBroadcastStateClear(){
-    this.broadcastStateChange = {};
+  setBroadcastStateClear(keyName){
+    if(this.broadcastStateChange[keyName]) {
+      delete this.broadcastStateChange[keyName];
+    }
   }
 
   setUserSettingObj(obj: userBroadcastSettingType) {
@@ -2037,12 +2040,11 @@ export class ChatSocketHandler {
                     */
                     //reqStartFeverTime: {type 1: 선물, 2: 인원+방송시간+선물, time 진행시간}
                     const {type, time} = data?.reqStartFeverTime;
-
                     this.broadcastStateChange['setFeverTimeState'](true);
                     return null;
                   }
                   case "reqStopFeverTime": { // 피버타임 종료
-                    //this.broadcastStateChange['setFeverTimeState'](false);
+                    this.broadcastStateChange['setFeverTimeState'](false);
                     return null;
                   }
 

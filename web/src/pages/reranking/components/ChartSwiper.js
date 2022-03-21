@@ -4,16 +4,15 @@ import Lottie from 'react-lottie'
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
+import {Context, GlobalContext} from "context";
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {IMG_SERVER} from 'context/config'
-import {useDispatch, useSelector} from "react-redux";
 const CardList = (props) => {
   const {data} = props
 
   const history = useHistory();
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context);
 
   let locationStateHistory = useHistory();
 
@@ -26,7 +25,7 @@ const CardList = (props) => {
 
   return (
     <div className='chartSwiper'>
-      {data && data.length > 0 &&
+      {data && data.length > 0 &&  
         <Swiper {...swiperParams}>
             {data.map((list, index) => {
               return (
@@ -39,7 +38,7 @@ const CardList = (props) => {
                       list.roomNo &&
                         <div className='livetag' onClick={(e) => {
                           e.stopPropagation();
-                          RoomValidateFromClip(list.roomNo, dispatch, globalState, locationStateHistory, list.nickNm);
+                          RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, locationStateHistory, list.nickNm);
                         }}>
                           <Lottie
                             options={{

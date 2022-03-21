@@ -75,6 +75,7 @@
   font-size: 14px;
   line-height: 1.56;
   h2 {
+    position:relative;
     line-height: 52px;
     color: #000;
     text-align: center;
@@ -188,6 +189,10 @@
 
 .privacy {
   padding: 16px;
+  height:100%;
+  h2 {
+    position:relative;
+  }
   ol {
     li {
       position: relative;

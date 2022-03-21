@@ -40,13 +40,13 @@ const PopSlide = (props) => {
   }
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
+    document.body.classList.add('overflowHidden')
     if(isAndroid()) {
       dispatch(setGlobalCtxBackState(true));
       dispatch(setGlobalCtxBackFunction({name: 'popClose'}));
     }
     return () => {
-      document.body.style.overflow = ''
+      document.body.classList.remove('overflowHidden')
       dispatch(setCommonPopupClose());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {

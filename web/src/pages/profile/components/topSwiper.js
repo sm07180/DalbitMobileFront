@@ -5,16 +5,20 @@ import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
+import {Context} from "context";
 import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
+import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 
 const TopSwiper = (props) => {
-  const dispatch = useDispatch();
+  const {data, openShowSlide, webview,
+    disabledBadge, swiperParam, type, listenOpen} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0 = 공개-따라가기X,1 = 공개-따라가기ㅇ, 2 = 비공개) -> liveBag 보여주는 여부
+
+  const context = useContext(Context);
   const history = useHistory();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const {data, openShowSlide, webview, isMyProfile,
-    disabledBadge, swiperParam, setPopHistory, type, listenOpen} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0 = 공개-따라가기X,1 = 공개-따라가기ㅇ, 2 = 비공개) -> liveBag 보여주는 여부
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   const swiperPicture = {
     slidesPerView: 'auto',
@@ -33,20 +37,20 @@ const TopSwiper = (props) => {
   const roomJoinHandler = () => {
     const params = {
       roomNo: data.roomNo,
+      memNo : data.memNo,
       history,
-      dispatch,
-      globalState,
+      context,
       nickNm: data.nickNm,
       listenRoomNo: data.listenRoomNo,
       webview
     }
-    RoomValidateFromProfile(params);
+      RoomValidateFromProfile(params);
   }
 
 
   /* 스페셜DJ 약력 팝업 생성 */
   const popupOpen = () => {
-    setPopHistory(true);
+    dispatch(setCommonPopupOpenData({...popup, historyPopup: true}))
   }
 
   useEffect(() => {
@@ -79,7 +83,7 @@ const TopSwiper = (props) => {
         </div>
         :
         <div className="swiper-slide">
-          <div className="photo" style={{backgroundColor:"#eee"}}>
+          <div className="photo" style={{backgroundColor:"#eee", height: '480px'}}>
             <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
           </div>
         </div>
@@ -93,7 +97,7 @@ const TopSwiper = (props) => {
           </div>
         }
         {type === 'profile' && webview === '' && data.roomNo !== "" &&
-          <div className='badgeLive' onClick={roomJoinHandler}>
+          <div className='badgeLive' onClick={roomJoinHandler}>                                    
             <span className='equalizer'>
               <Lottie
                 options={{

@@ -13,14 +13,10 @@ import notice from './notice/index';
 import inquire from "./inquire";
 import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
+import rank from "./rank/index"
 import vote from './vote';
 import broadcast from './broadcast';
-import rankCtx from "./rankCtx"
-import broadcastCtx from './broadcastCtx';
-import globalCtx from './globalCtx';
-import mailBoxCtx from './mailBoxCtx';
-import modalCtx from './modalCtx';
-import clipRankCtx from './clipRankCtx';
+import profileTab from './profile/tab'
 
 const rootReducer = combineReducers({
   common
@@ -38,13 +34,9 @@ const rootReducer = combineReducers({
   , popup
   , newAlarm
   , vote
+  , rank
   , broadcast
-  , rankCtx
-  , broadcastCtx
-  , globalCtx
-  , mailBoxCtx
-  , modalCtx
-  , clipRankCtx
+  , profileTab
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

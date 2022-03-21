@@ -307,7 +307,9 @@ const Navigation = () => {
   };
 
   const updateDispatch = (event) => {
-    if(location.pathname.includes('customer')) {
+    if(location.pathname.includes('customer_clear')) {
+      history.push('/login');
+    }else if(location.pathname.includes('customer')) {
       if (event.detail.result == "success" && event.detail.code == "0") {
         dispatch(setGlobalCtxAlertStatus({
           status: true,

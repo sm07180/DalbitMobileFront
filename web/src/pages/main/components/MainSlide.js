@@ -5,14 +5,13 @@ import Swiper from 'react-id-swiper'
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip} from "common/audio/clip_func";
-import {useDispatch, useSelector} from "react-redux";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {Context} from "context";
 
 const MainSlide = (props) => {
   const {data, common, pullToRefreshPause} = props
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
 
+  const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
@@ -32,7 +31,7 @@ const MainSlide = (props) => {
         if(target.nickNm === 'banner' && target.roomType === 'link') {
           history.push(target.roomNo);
         }else {
-          RoomValidateFromClip(target.roomNo, dispatch, globalState, history, target.nickNm); // 방송방으로 이동
+          RoomValidateFromClipMemNo(target.roomNo, target.memNo, context, history, target.nickNm); // 방송방으로 이동
         }
       },
     }
