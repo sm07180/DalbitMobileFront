@@ -4,9 +4,6 @@ import {useHistory, useLocation} from 'react-router-dom'
 import qs from 'query-string'
 import {Hybrid} from 'context/hybrid'
 
-//context
-import {Context} from 'context'
-
 //layout
 import Header from 'components/ui/header/Header'
 import {IMG_SERVER} from 'context/config'
@@ -15,12 +12,21 @@ import {IMG_SERVER} from 'context/config'
 import './selfAuthResult.scss'
 import {isDesktop} from "lib/agent";
 import {postSleepMemUpd} from "common/api";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage,
+  setGlobalCtxWalletIdx
+} from "redux/actions/globalCtx";
 
 //
 export default (props) => {
   //---------------------------------------------------------------------
   //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const location = useLocation()
 
@@ -46,12 +52,12 @@ export default (props) => {
         if (parentsAgreeYn === 'n' && adultYn === 'n') return setAuthState(2)
         if (parentsAgreeYn === 'y' && adultYn === 'n') return setAuthState(3)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: res.message,
           callback: () => {
             window.location.href = '/'
           }
-        })
+        }))
       }
     }
     fetchSelfAuth()
@@ -59,14 +65,14 @@ export default (props) => {
 
   useEffect(() => {
     if (result === 'fail' || code === 'C007' || code === 'C008') {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({type: "alert",
         msg: message,
         callback: () => {
           // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
           // context.action.updateWalletIdx(1)
           window.location.href = '/'
         }
-      })
+      }))
     } else if (returntype === 'profile') {
       setAuthState(4)
     } else if (returntype === 'create') {
@@ -91,16 +97,16 @@ export default (props) => {
       checkAuth()
     }
 
-    context.action.updateSetBack(true)
-    context.action.updateBackFunction({name: 'selfauth'})
+    dispatch(setGlobalCtxBackState(true));
+    dispatch(setGlobalCtxBackFunction({name: 'selfauth'}));
     return () => {
-      context.action.updateSetBack(null)
+      dispatch(setGlobalCtxBackState(null));
     }
   }, [])
 
   const goWallet = () => {
     props.history.push(`/wallet`)
-    context.action.updateWalletIdx(1)
+    dispatch(setGlobalCtxWalletIdx(1));
   }
 
   const goBack = () => {
@@ -116,9 +122,9 @@ export default (props) => {
     }
 
     if (myBirth > baseYear) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({type: "alert",
         msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-      })
+      }))
     }
 
     history.push(`/legalauth`)
@@ -357,7 +363,7 @@ export default (props) => {
       postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
         const resultCode = res.code;
         if(resultCode === '0') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type: "alert",
             title: '휴면상태가 해제되었습니다.',
             msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
             callback: () => {
@@ -367,9 +373,9 @@ export default (props) => {
                 history.push('/login');
               }
             }
-          })
+          }))
         }else if(resultCode === '-1') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type: "alert",
             title: '기존 정보와 일치하지 않습니다.',
             msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
             callback: () => {
@@ -379,9 +385,9 @@ export default (props) => {
                 history.push('/login');
               }
             }
-          })
+          }))
         }else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type: "alert",
             title: '기존 정보와 일치하지 않습니다.',
             msg: res.message,
             callback: () => {
@@ -391,7 +397,7 @@ export default (props) => {
                 history.push('/login');
               }
             }
-          })
+          }))
         }
       })
     }

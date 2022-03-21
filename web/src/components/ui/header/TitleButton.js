@@ -1,8 +1,6 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useHistory} from "react-router-dom";
-import {Context} from "context";
 import {goMail} from "common/mailbox/mail_func";
-import {MailboxContext} from "context/mailbox_ctx";
 import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
@@ -18,13 +16,17 @@ export const RankingRewardButton = ({history}) => {
   return <button className='benefits' onClick={() => history.push('/clip_rank/reward')} >혜택</button>
 }
 
-export const MessageButton = ({history, context, mailboxAction, mailboxState}) => {
+export const MessageButton = ({history}) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+
   /* 메시지 이동 */
   const goMailAction = () => {
     const goMailParams = {
-      context,
-      mailboxAction,
-      targetMemNo: context.profile.memNo,
+      dispatch,
+      globalState,
+      targetMemNo: globalState.profile.memNo,
       history,
       isChatListPage: true,
     }
@@ -57,8 +59,7 @@ export const SearchButton = ({history}) => {
 const TitleButton = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const context = useContext(Context);
-  const { mailboxState, mailboxAction } = useContext(MailboxContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const alarmData = useSelector(state => state.newAlarm);
 
   const fetchMypageNewCntData = async (memNo) => {
@@ -71,13 +72,13 @@ const TitleButton = (props) => {
 
   useEffect(() => {
     if(isHybrid()) {
-      fetchMypageNewCntData(context.profile.memNo);
+      fetchMypageNewCntData(globalState.profile.memNo);
     }
   }, []);
 
   const storeButtonEvent = () => {
-    if(context.token.isLogin){
-      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    if(globalState.token.isLogin){
+      if (globalState.customHeader['os'] === OS_TYPE['IOS']) {
         return webkit.messageHandlers.openInApp.postMessage('')
       } else {
         history.push('/store')
@@ -93,15 +94,15 @@ const TitleButton = (props) => {
         <div className="buttonGroup">
           <StoreButton event={storeButtonEvent}/>
           <RankingButton history={history} />
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <MessageButton history={history}/>
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={globalState.profile} />
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <MessageButton history={history}/>
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={globalState.profile} />
         </div>
       )
     case '클립 랭킹':
@@ -113,12 +114,12 @@ const TitleButton = (props) => {
     case '검색':
       return (
         <div className="buttonGroup">
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <MessageButton history={history}/>
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={globalState.profile} />
         </div>
       )
     case '랭킹':
-      return (        
+      return (
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>
@@ -127,8 +128,8 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <StoreButton event={storeButtonEvent} />
-          <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
-          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
+          <MessageButton history={history}/>
+          <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={globalState.profile} />
         </div>
       )
     default :

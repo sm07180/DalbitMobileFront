@@ -3,16 +3,16 @@ import Api from "context/api";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
-import {Context} from "context";
 import {isAndroid} from "context/hybrid";
+import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
   const {profileData} = props;
   const [specialHistory, setSpecialHistory] = useState([]); // 해당유저의 스페셜DJ 데이터
   const [specialLog, setSpecialLog] = useState([]); // 해당유저의 스페셜DJ 획득 로그
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popup = useSelector(state => state.popup);
-  const context = useContext(Context);
 
   /* 스페셜DJ 약력 조회 */
   const fetchSpecialHistory = () => {
@@ -21,10 +21,10 @@ const SpecialHistoryPop = (props) => {
         setSpecialHistory(res.data)
         setSpecialLog(res.data.list)
       } else {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type:"alert",
           msg: res.message
-        })
+        }))
       }
     });
   }
@@ -37,17 +37,17 @@ const SpecialHistoryPop = (props) => {
     fetchSpecialHistory();
 
     if(isAndroid()) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'commonPop', popupData: {...popup, historyPopup: false}})
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop', popupData: {...popup, historyPopup: false}}));
     }
 
     return () => {
       closePop();
       if(isAndroid()) {
-        if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null)
+        if(globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
         }
-        context.action.updateBackFunction({name: ''})
+        dispatch(setGlobalCtxBackFunction({name: ''}));
       }
     }
   },[])

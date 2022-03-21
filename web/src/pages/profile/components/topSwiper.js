@@ -5,7 +5,6 @@ import Lottie from 'react-lottie'
 import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
-import {Context} from "context";
 import {RoomValidateFromProfile} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 import {setCommonPopupOpenData} from "redux/actions/common";
@@ -14,8 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 const TopSwiper = (props) => {
   const {data, openShowSlide, webview,
     disabledBadge, swiperParam, type, listenOpen} = props; //listenOpen = 회원 방송 청취 정보 공개 여부(0 = 공개-따라가기X,1 = 공개-따라가기ㅇ, 2 = 비공개) -> liveBag 보여주는 여부
-
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
@@ -39,7 +37,8 @@ const TopSwiper = (props) => {
       roomNo: data.roomNo,
       memNo : data.memNo,
       history,
-      context,
+      dispatch,
+      globalState,
       nickNm: data.nickNm,
       listenRoomNo: data.listenRoomNo,
       webview
@@ -97,7 +96,7 @@ const TopSwiper = (props) => {
           </div>
         }
         {type === 'profile' && webview === '' && data.roomNo !== "" &&
-          <div className='badgeLive' onClick={roomJoinHandler}>                                    
+          <div className='badgeLive' onClick={roomJoinHandler}>
             <span className='equalizer'>
               <Lottie
                 options={{

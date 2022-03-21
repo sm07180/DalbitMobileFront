@@ -3,29 +3,29 @@ import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
-import {Context} from "context";
+import {setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
 
 const ProfileNoticePop = () => {
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const closePop = () => {
     dispatch(setCommonPopupOpenData({...popup, questionMarkPopup: false}))
   }
 
   useEffect(() => {
     if(isAndroid()) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'commonPop', popupData: {...popup, questionMarkPopup: false}})
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop', popupData: {...popup, questionMarkPopup: false}}));
     }
 
     return () => {
       closePop();
       if(isAndroid()) {
-        if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null)
+        if(globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
         }
-        context.action.updateBackFunction({name: ''})
+        dispatch(setGlobalCtxBackFunction({name: ''}));
       }
     }
   }, []);

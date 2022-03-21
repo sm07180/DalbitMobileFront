@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback, useContext, useRef} from 'react'
-import {Context} from 'context'
 import {setIsRefresh, setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
@@ -23,6 +22,7 @@ import Round_2 from './contents/Round_2';
 import Round_3 from './contents/Round_3';
 
 import './style.scss'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const tabmenu = [1,2,3]
 
@@ -44,8 +44,8 @@ const Rebranding = () => {
   const dispatch = useDispatch()
   const common = useSelector(state => state.common);
   const popup = useSelector(state => state.popup);
-  const context = useContext(Context)
-  const {token} = context
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
 
   const [reloadInit, setReloadInit] = useState(false)
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true)
@@ -63,7 +63,7 @@ const Rebranding = () => {
   const [noticePop2, setNoticePop2] = useState(false)
   const [giveawayPop, setGiveawayPop] = useState(false)
   const [actionAni, setActionAni] = useState(false)
-  
+
   const [eventInfo, setEventInfo] = useState({
     cnt: 0,
     end_date: "",
@@ -247,83 +247,83 @@ const Rebranding = () => {
       setStoneInfo({...stoneInfo, type: targetType, value: myPieceInfo.ins_d_cnt})
       dispatch(setSlidePopupOpen());
     } else if (targetType === 'd' && myPieceInfo.ins_d_cnt === 0) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `사용할 수 있는 스톤이 없습니다.`
-      })
+      }))
     }
     if (targetType === 'a' && myPieceInfo.ins_a_cnt > 0) {
       setStoneInfo({...stoneInfo, type: targetType, value: myPieceInfo.ins_a_cnt})
       dispatch(setSlidePopupOpen());
     } else if (targetType === 'a' && myPieceInfo.ins_a_cnt === 0) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `사용할 수 있는 스톤이 없습니다.`
-      })
+      }))
     }
     if (targetType === 'l' && myPieceInfo.ins_l_cnt > 0) {
       setStoneInfo({...stoneInfo, type: targetType, value: myPieceInfo.ins_l_cnt})
       dispatch(setSlidePopupOpen());
     } else if (targetType === 'l' && myPieceInfo.ins_l_cnt === 0) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `사용할 수 있는 스톤이 없습니다.`
-      })
+      }))
     }
   }
 
   // 스톤 갯수 확인
   const choicePiece = () => {
     let inputValue = Number(inputRef.current.value)
-    
+
     if (inputValue === 0) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `1 이상 값을 입력해주세요.`
-      })
+      }))
       return
     }
-    
+
     if (stoneInfo.type === 'd' && inputValue <= stoneInfo.value) {
       if (inputValue > 50) {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type: "toast",
           msg: `한 번에 스톤당 최대 50개까지 사용할 수 있어요.`
-        })
+        }))
       } else {
         setStoneValue1({...stoneValue1, on: true, value: inputValue})
         setDrawState(drawCheck(Number(inputValue)))
         closePopup(dispatch);
       }
     } else if (stoneInfo.type === 'd' && inputValue > stoneInfo.value) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `스톤이 부족해요. 보유 스톤을 확인해주세요.`
-      })
+      }))
     }
     if (stoneInfo.type === 'a' && inputValue <= stoneInfo.value) {
       if (inputValue > 50) {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type: "toast",
           msg: `한 번에 스톤당 최대 50개까지 사용할 수 있어요.`
-        })
+        }))
       } else {
         setStoneValue2({...stoneValue2, on: true, value: inputValue})
         setDrawState(drawCheck(Number(inputValue)))
         closePopup(dispatch);
       }
     } else if (stoneInfo.type === 'a' && inputValue > stoneInfo.value) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `스톤이 부족해요. 보유 스톤을 확인해주세요.`
-      })
+      }))
     }
     if (stoneInfo.type === 'l' && inputValue <= stoneInfo.value) {
       if (inputValue > 50) {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type: "toast",
           msg: `한 번에 스톤당 최대 50개까지 사용할 수 있어요.`
-        })
+        }))
       } else {
         setStoneValue3({...stoneValue3, on: true, value: inputValue})
         setDrawState(drawCheck(Number(inputValue)))
         closePopup(dispatch);
       }
     } else if (stoneInfo.type === 'l' && inputValue > stoneInfo.value) {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type: "toast",
         msg: `스톤이 부족해요. 보유 스톤을 확인해주세요.`
-      })
+      }))
     }
   }
   // 스톤 초기화
@@ -381,15 +381,15 @@ const Rebranding = () => {
   }
 
   const disabledAction = () => {
-    context.action.toast({
+    dispatch(setGlobalCtxMessage({type: "toast",
       msg: `먼저 사용할 스톤을 넣어주세요.`
-    })
+    }))
   }
   const disabledAction1 = () => {
-    context.action.toast({
+    dispatch(setGlobalCtxMessage({type: "toast",
       msg: `<span>사용할 스톤의 합이 짝수일 때 뽑을 수 있습니다.</span>
       사용할 스톤을 확인해주세요.`
-    })
+    }))
   }
 
   // 모바일 뒤로가기 이벤트
@@ -412,7 +412,7 @@ const Rebranding = () => {
     if (window.scrollY >= tabMenuTop) {
       setTabFixed(true)
     } else {
-      setTabFixed(false)      
+      setTabFixed(false)
     }
   }
 
@@ -429,7 +429,7 @@ const Rebranding = () => {
     }
   },[actionAni])
 
-  
+
   useEffect(() => {
     if(common.isRefresh) {
       mainDataReset();
@@ -446,7 +446,7 @@ const Rebranding = () => {
       }
     }
   },[eventInfo.seq_no,tabmenuType])
-  
+
   return (
     <>
     <div className="refresh-wrap"
@@ -465,7 +465,7 @@ const Rebranding = () => {
         </div>
       </div>
     </div>
-    <div id="rebranding" 
+    <div id="rebranding"
       ref={mainRef}
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
@@ -492,7 +492,7 @@ const Rebranding = () => {
         </button>
       </section>
       <section>
-        {drawState ? 
+        {drawState ?
           <img src={`${IMG_SERVER}/event/rebranding/bg-4-on.png`} alt="이벤트 이미지" />
           :
           <img src={`${IMG_SERVER}/event/rebranding/bg-4-off.png`} alt="이벤트 이미지" />
@@ -598,17 +598,17 @@ const Rebranding = () => {
         <div className='giveawayBtn' onClick={giveawayPopView}>경품안내</div>
       </section>
       {popup.confirmPopup &&
-        <Confirm 
-          setActionAni={setActionAni} 
-          stoneValue1={stoneValue1} 
-          stoneValue2={stoneValue2} 
-          stoneValue3={stoneValue3} 
+        <Confirm
+          setActionAni={setActionAni}
+          stoneValue1={stoneValue1}
+          stoneValue2={stoneValue2}
+          stoneValue3={stoneValue3}
           fetchStoneChange={fetchStoneChange} />
       }
       {actionAni &&
         <MergePop result={mergeResult} />
       }
-      {giveawayPop && 
+      {giveawayPop &&
         <LayerPopup title="경품안내" setPopup={setGiveawayPop}>
           <section className="giveawayInfo">
             <ul className='depth1'>
@@ -646,13 +646,13 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {noticePop1 && 
+      {noticePop1 &&
         <LayerPopup title="놀다 보면 생기는 스톤들" setPopup={setNoticePop1}>
           <section className="dallagers">
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-1.png`} />방송 하기 & 듣기 20분당 1개</div>
             <div className="pointText"><img src={`${IMG_SERVER}/event/rebranding/point-2.png`} />방송 선물 보내기 & 받기</div>
             <ul className="textBox">
-              {eventInfo.seq_no >= 2 ? 
+              {eventInfo.seq_no >= 2 ?
                 <>
                   <li>· 보낸 달 50개당 2개</li>
                   <li>· 받은 별 100개당 3개</li>
@@ -672,7 +672,7 @@ const Rebranding = () => {
           </section>
         </LayerPopup>
       }
-      {noticePop2 && 
+      {noticePop2 &&
         <LayerPopup title="FEVER TIME!" setPopup={setNoticePop2}>
           <section className="dallagers">
             <div className="pointText">· 한 방에서 DJ에게</div>

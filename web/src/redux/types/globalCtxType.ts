@@ -182,9 +182,19 @@ export type UserProfileType = {
 export type MessageType = {
   title?: string,
   type: '' | 'alert' | 'layerPop' | 'alert_no_close' | 'toast' | 'confirm' | 'confirm_admin'
+  buttonText?:ButtonTextType
   msg?: string
+  remsg?: string
+  subMsg?: string
+  content?: string
   callback?: any
+  cancelCallback?: any
   visible?: boolean
+  status?: boolean
+}
+export type ButtonTextType = {
+  left?: string
+  right?: string
 }
 export type ExitMarbleInfoType = {
   rMarbleCnt: number
@@ -230,6 +240,7 @@ export type BroadcastAdminLayerType = {
   status: boolean
   roomNo: string
   nickNm: string
+  memNo: string
 }
 export type LayerStatusType = {
   rightSide: boolean

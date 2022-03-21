@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
-import Swiper from 'react-id-swiper'
 import Api from 'context/api'
 
 // global components
@@ -16,6 +14,7 @@ import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import {setProfileTabData} from "redux/actions/profile";
 import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileWrite = () => {
   const history = useHistory();
@@ -23,11 +22,9 @@ const ProfileWrite = () => {
   const {memNo, type, action, index} = useParams();
 
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const profileTab = useSelector(state => state.profileTab);
-
-  //context
-  const context = useContext(Context);
-  const {token, profile} = context;
+  const {token, profile} = globalState;
 
   //수정 : index 필수
   if (action === 'modify' && !index) {
@@ -75,7 +72,7 @@ const ProfileWrite = () => {
     }
 
     if(!confirm)
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
 
     return confirm;
   };
@@ -96,7 +93,7 @@ const ProfileWrite = () => {
         }
       }).then((res) => {
         const {data, message, result } = res;
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
 
         if (result === 'success') {
           dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
@@ -112,7 +109,7 @@ const ProfileWrite = () => {
           viewOn: others
         }
       });
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
       if (result === 'success') {
         dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
@@ -137,7 +134,7 @@ const ProfileWrite = () => {
           chrgrName: profile?.nickName,
         }
       });
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg: message}));
       if (result === 'success') {
         dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
@@ -155,10 +152,10 @@ const ProfileWrite = () => {
 
       if (result === 'success') {
         dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
-        context.action.toast({msg: '팬보드를 수정했습니다.'});
+        dispatch(setGlobalCtxMessage({type: "toast",msg: '팬보드를 수정했습니다.'}));
         history.goBack();
       } else {
-        context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'}));
       }
     }
   }
@@ -185,7 +182,7 @@ const ProfileWrite = () => {
       //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
       // }
     } else {
-      context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: '사진 업로드를 실패하였습니다.'}));
     }
   };
 
@@ -197,13 +194,13 @@ const ProfileWrite = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
           status: true,
           type: 'alert',
           content: image.content,
           callback: () => {
           }
-        })
+        }))
       } else {
         noticePhotoUpload();
       }
