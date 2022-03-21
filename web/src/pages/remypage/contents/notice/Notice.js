@@ -12,8 +12,9 @@ import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeData, setNoticeTab} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab, setNoticeTabList} from "redux/actions/notice";
 import API from "context/api";
+import noticeTabList from "redux/reducers/notice/tabList";
 
 
 const NoticePage = () => {
@@ -25,6 +26,7 @@ const NoticePage = () => {
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [scrollPagingCall, setScrollPagingCall] = useState(1);
+  const noticeTabList = useSelector((state) => state.noticeTabList);
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -35,11 +37,12 @@ const NoticePage = () => {
   }
 
   const scrollEvent = useCallback((scrollTarget, callback) => {
+    console.log("scroll");
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
     if(popHeight - 1 < targetHeight + scrollTop) {
-      callback()
+      callback();
     }
   }, []);
 
@@ -47,10 +50,11 @@ const NoticePage = () => {
     const callback = () => {
       setScrollPagingCall(scrollPagingCall => scrollPagingCall + 1);
     }
-    scrollEvent(document.documentElement, callback());
+    scrollEvent(document.documentElement, callback);
   }, [])
 
   const removeScrollEvent = useCallback(() => {
+    console.log("1");
     document.removeEventListener("scroll", noticeScrollEvent);
   }, []);
 
@@ -59,10 +63,22 @@ const NoticePage = () => {
       removeScrollEvent();
       document.addEventListener("scroll", noticeScrollEvent);
     }
-    if(item === tab) {
+    if(item === noticeTabList.tabList[1]) {
       scrollEventHandler();
     }
   }
+
+  useEffect(() => {
+    if(tab === noticeTabList.tabList[0]) {
+      document.addEventListener("scroll", noticeScrollEvent);
+    } else if(tab === noticeTabList.tabList[1]) {
+      document.addEventListener("scroll", noticeScrollEvent);
+    }
+    dispatch(setNoticeTabList({...noticeTabList, tabName: tab, isRefresh: true, isReset: true}));
+    return () => {
+      removeScrollEvent();
+    }
+  }, [])
 
   useEffect(() => {
     if(isDesktop) {
