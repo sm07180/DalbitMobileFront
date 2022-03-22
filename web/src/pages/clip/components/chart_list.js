@@ -152,7 +152,7 @@ export default (props) => {
                   page: nowPage,
                   records: 100
                 };
-                sessionStorage.setItem(
+                localStorage.setItem(
                     "clipPlayListInfo",
                     JSON.stringify(playListInfoData)
                 );

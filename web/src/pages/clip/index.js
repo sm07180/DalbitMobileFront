@@ -215,7 +215,7 @@ const ClipPage = () => {
                           records: 100,
                           type:'one'
                       }
-                        sessionStorage.setItem(
+                        localStorage.setItem(
                           "clipPlayListInfo",
                           JSON.stringify(playListInfoData)
                         );
@@ -265,7 +265,7 @@ const ClipPage = () => {
                 records: 100,
                 type:'one'
               }
-              sessionStorage.setItem(
+              localStorage.setItem(
                 "clipPlayListInfo",
                 JSON.stringify(playListInfoData)
               );
@@ -284,7 +284,7 @@ const ClipPage = () => {
                 records: 100,
                 type:'one'
               }
-              sessionStorage.setItem(
+              localStorage.setItem(
                 "clipPlayListInfo",
                 JSON.stringify(playListInfoData)
               );
@@ -310,7 +310,7 @@ const ClipPage = () => {
                               records: 100,
                               slctType: 1
                             }
-                            sessionStorage.setItem(
+                            localStorage.setItem(
                               "clipPlayListInfo",
                               JSON.stringify(playListInfoData)
                             );
@@ -346,7 +346,7 @@ const ClipPage = () => {
               slctType: 2,
               subjectType: ""
             }
-            sessionStorage.setItem(
+            localStorage.setItem(
               "clipPlayListInfo",
               JSON.stringify(playListInfoData)
             );

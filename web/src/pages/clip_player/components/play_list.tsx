@@ -94,8 +94,8 @@ export default () => {
   };
 
   useEffect(() => {
-    if (sessionStorage.getItem("clipPlayListInfo")) {
-      const { type } = JSON.parse(sessionStorage.getItem("clipPlayListInfo")!);
+    if (localStorage.getItem("clipPlayListInfo")) {
+      const { type } = JSON.parse(localStorage.getItem("clipPlayListInfo")!);
       const oneData = JSON.parse(sessionStorage.getItem("clip")!);
       if (type === "one") {
         globalAction.dispatchClipPlayListTab && globalAction.dispatchClipPlayListTab({ type: "add", data: oneData });
