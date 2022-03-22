@@ -3,9 +3,9 @@ import {setMoonLandScore} from "../../../common/api";
 import {MediaType} from "../constant";
 
 const MoonLandAnimateChildren = (props: any) => {
-  const {handleRemoveAniChildren, isWide} = props;
-  const {uid, webpPrevClass, left, webpUrl,
-          type, score, roomNo, autoTouch, mediaType, coinKey} = props.data;
+  const {handleRemoveAniChildren} = props;
+  const {uid, webpPrevClass, right, webpUrl,
+          type, score, roomNo, autoTouch, coinKey} = props.data;
 
   const thisElRef = useRef<any>(null);
   const timerRef = useRef(0);
@@ -41,13 +41,14 @@ const MoonLandAnimateChildren = (props: any) => {
   useEffect(() => {
     if(thisElRef.current) {
       try {
-        thisElRef.current.style.left = `${left}px`;
+        thisElRef.current.style.right = `${right}px`;
 
         if (!autoTouch) {
+          const endPositionTop = Math.floor(Math.random() * 40 + 20);
           const keyFrameEffect = new KeyframeEffect(
             thisElRef.current,
-            [{top: `${Math.floor(Math.random() * 20 + 640)}px`}, {top: `${Math.floor(Math.random() * 40 + 20)}px`}],
-            {duration: 4000, fill: "forwards"});// easing: "cubic-bezier(.61,.31,.44,.99)"
+            [{top: `${Math.floor(Math.random() * 20 + 640)}px`}, {top: `${endPositionTop}px`}],
+            {duration: 4000, fill: "forwards", easing: "cubic-bezier(.61,.31,.44,.99)"});
           animateRef.current = new Animation(keyFrameEffect, document.timeline);
           animateRef.current.play();
 
@@ -56,6 +57,17 @@ const MoonLandAnimateChildren = (props: any) => {
           //animation end - 5s timer start
           animateRef.current.finished.then((res) => {
             if (thisElRef.current && timerRef.current === 0) {
+              /* 둥실거리는 효과 */
+              const keyFrameEffect = new KeyframeEffect(
+                thisElRef.current,
+                [
+                  {top: `${Math.floor(endPositionTop)}px`, easing: "cubic-bezier(.61,.31,.44,.99)", offset: 0},
+                  {top: `${Math.floor(endPositionTop + Math.random()*11 + 1)}px`, easing: "cubic-bezier(.61,.31,.44,.99)", offset: 0.5},
+                  {top: `${Math.floor(endPositionTop)}px`, easing: "cubic-bezier(.61,.31,.44,.99)", offset: 1}],
+                {duration: 2000, fill: "forwards", iterations: Infinity});
+              animateRef.current = new Animation(keyFrameEffect, document.timeline);
+              animateRef.current.play();
+              
               timerRef.current = setTimeout(() => {
                 handleRemoveAniChildren(uid);
               }, 5000);
@@ -65,7 +77,7 @@ const MoonLandAnimateChildren = (props: any) => {
           const keyFrameEffect = new KeyframeEffect(
             thisElRef.current,
             [{top: `${Math.floor(Math.random() * 20 + 640)}px`}, {top: `${Math.floor(Math.random() * 40 + 20)}px`}],
-            {duration: 4000, fill: "forwards"});// easing: "cubic-bezier(.61,.31,.44,.99)"
+            {duration: 4000, fill: "forwards", easing: "cubic-bezier(.61,.31,.44,.99)"});
           animateRef.current = new Animation(keyFrameEffect, document.timeline);
           animateRef.current.play();
 
@@ -83,7 +95,6 @@ const MoonLandAnimateChildren = (props: any) => {
                 scoreAnimateRef.current.animate([{top: "-5px", zIndex: "2"}], {duration: 330, fill: "forwards"});
             }, Math.floor(Math.random() * 2001 + 2000));
           }
-          
         }
       }catch(e){
         console.log('달나라 애니메이션 에러', e);
@@ -99,17 +110,6 @@ const MoonLandAnimateChildren = (props: any) => {
     };
 
   },[]);
-
-  //영상방인 경우에 화면크기 변경시 동전 가려짐 방지)
-  useEffect(() => {
-    if (mediaType === MediaType.VIDEO && thisElRef.current) {
-      if (!isWide) { //작은 화면 모드
-          thisElRef.current.style.left = `${left - 200}px`;
-      } else { // 기본 화면 모드
-          thisElRef.current.style.left = `${left}px`;
-      }
-    }
-  },[isWide])
   
   //class 이미지 -> webp 이미지로 변경
   return (

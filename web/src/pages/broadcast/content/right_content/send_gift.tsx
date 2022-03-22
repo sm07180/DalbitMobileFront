@@ -38,7 +38,7 @@ export default function SendGift(props: {
   const { roomInfo, roomNo, roomOwner } = props;
 
   const { globalAction, globalState } = useContext(GlobalContext);
-  const { splashData } = globalState;
+  const { splashData, chatInfo } = globalState;
 
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
 
@@ -297,11 +297,6 @@ export default function SendGift(props: {
     getActorList();
   }, []);
 
-  //TTS 아이템, 사운드 아이템 체크용
-  const ttsOrSoundItemChk = useCallback((itemNo = "") => {
-    return giftList.filter((v) => v.itemNo === itemNo);
-  },[giftList]);
-
   // 선물하기
   async function sendGift(count: number, itemNo: string, isHidden: boolean) {
     if (preventClick === true) {
@@ -374,6 +369,11 @@ export default function SendGift(props: {
         message: sendGiftRes.data ? sendGiftRes.data.message : alertMsg
       });
 
+      /* 누적 선물 달에 선물한 달 더하기 */
+      const item = giftList.find(v => v?.itemNo === itemNo);
+      console.log('find item=>', item, item.cost, count);
+      chatInfo?.addRoomInfoDalCnt(item?.cost * count);
+      
       setItem(-1);
       setCount(0);
       setIsLoading(false);
@@ -528,7 +528,6 @@ export default function SendGift(props: {
                 {giftList &&
                   giftList.map((v: any, i: number) => {
                     const { type } = v;
-
                     return (
                       <li
                         key={`gift-${i}`}
