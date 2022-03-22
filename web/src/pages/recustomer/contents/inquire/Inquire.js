@@ -21,7 +21,11 @@ const Inquire = () => {
   return (
     <div id="inquire">
       <Header title="1:1 문의" type="back"/>
-      {context.token.isLogin ?
+      {!context.token.isLogin ?
+        <div className='subContent'>
+          <InquireWrite setInquire={setInquire}/>
+        </div>
+        :
         <div className='subContent'>
           <Tabmenu data={inquireTabmenu} tab={inquire} setTab={setInquire} />
           {inquire === '문의하기' ?
@@ -29,10 +33,6 @@ const Inquire = () => {
             :
             <InquireLog/>
           }
-        </div>
-        :
-        <div className='subContent'>
-          <InquireWrite setInquire={setInquire}/>
         </div>
       }
 

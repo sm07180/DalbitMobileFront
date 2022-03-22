@@ -197,7 +197,7 @@ const Write = (props) => {
     <div id='inquireWrite'>
       {!context.token.isLogin &&
       <InputItems title="연락처">
-        <input type="number" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
+        <input type="tel" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
       </InputItems>
       }
       <InputItems title="문의 제목">
