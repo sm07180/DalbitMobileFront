@@ -17,7 +17,7 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // css
 
 export default withRouter((props) => {
-  const {data, children, tab} = props;
+  const {data, children, tab, topRankList} = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -64,7 +64,7 @@ export default withRouter((props) => {
       {data.map((list, index) => {
         return (
           <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{list.rank}</div>
+            <div className="rank">{typeof topRankList === "undefined" ? index + 1 : index + 4}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />

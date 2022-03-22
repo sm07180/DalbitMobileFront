@@ -33,7 +33,7 @@ const CardList = (props) => {
                 <div key={index}>
                   <ListRow photo={list.profImg.thumb292x292} onClick={() => history.push(`/profile/${list.memNo}`)}>
                     <div className='rankWrap'>
-                      <div className='rank'>{list.rank}</div>
+                      <div className='rank'>{index + 1}</div>
                     </div>
                     {
                       list.roomNo &&
