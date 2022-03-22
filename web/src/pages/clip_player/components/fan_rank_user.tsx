@@ -1,13 +1,12 @@
 // api
-import { getFanRankList, getGoodRankList, postAddFan, deleteFan } from "common/api";
-import { useHistory, useParams } from "react-router-dom";
-import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {deleteFan, getFanRankList, getGoodRankList, postAddFan} from "common/api";
+import {useHistory} from "react-router-dom";
+import {DalbitScroll} from "common/ui/dalbit_scroll";
 
 // ctx
-import { ClipProvider, ClipContext } from "context/clip_ctx";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 // constant
-import { tabType } from "../constant";
+import {tabType} from "../constant";
 
 import NoResult from "common/ui/no_result";
 import GuidePopup from "../../../common/modal/contents/mypage/guide_user";
@@ -15,19 +14,17 @@ import GuidePopup from "../../../common/modal/contents/mypage/guide_user";
 import goldMedal from "../../../common/modal/contents/mypage/static/medal_gold_m@2x.png";
 import silverMedal from "../../../common/modal/contents/mypage/static/medal_silver_m@2x.png";
 import bronzeMedal from "../../../common/modal/contents/mypage/static/medal_bronze_m@2x.png";
-import dalIcon from "../../../common/modal/contents/mypage/static/ic_moon_s@2x.png";
-import goodIcon from "../../../common/modal/contents/mypage/static/like_red_m@2x.png";
 import hintIcon from "../../../common/modal/contents/mypage/static/hint.svg";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType, setClipCtxUserMemNo} from "../../../redux/actions/clipCtx";
 
 export default function FanList() {
   // ctx
   const history = useHistory();
-  const { clipState, clipAction } = useContext(ClipContext);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { setRightTabType, setUserMemNo } = clipAction;
   const { userMemNo } = clipState;
 
   const [popupState, setPopupState] = useState(false);
@@ -120,9 +117,9 @@ export default function FanList() {
   }
 
   const viewProfile = (memNo?: any) => {
-    clipAction.setRightTabType && clipAction.setRightTabType(tabType.PROFILE);
+    dispatch(setClipCtxRightTabType(tabType.PROFILE));
     if (memNo) {
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setClipCtxUserMemNo(memNo));
     }
   };
   //----------------------------------------------------

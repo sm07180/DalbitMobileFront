@@ -22,6 +22,7 @@ import globalCtx from './globalCtx';
 import mailBoxCtx from './mailBoxCtx';
 import modalCtx from './modalCtx';
 import clipRankCtx from './clipRankCtx';
+import clipCtx from './clipCtx';
 
 const rootReducer = combineReducers({
   common
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   , mailBoxCtx
   , modalCtx
   , clipRankCtx
+  , clipCtx
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

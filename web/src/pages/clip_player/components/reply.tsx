@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
-import { ClipContext } from "context/clip_ctx";
 import ReplyItem from "./reply_item";
 
 import { getClipReplyList, postClipReplyAdd, postClipReplyEdit } from "common/api";
@@ -9,11 +8,11 @@ import { getClipReplyList, postClipReplyAdd, postClipReplyEdit } from "common/ap
 import { tabType } from "../constant";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxAlertStatus, setGlobalCtxClipInfoAdd} from "../../../redux/actions/globalCtx";
+import {setClipCtxReplyIdx} from "../../../redux/actions/clipCtx";
 
 export default (props) => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
-  const { clipState, clipAction } = useContext(ClipContext);
   const [registToggle, setRegistToggle] = useState<boolean>(false);
   const [contentValue, setContentValue] = useState("");
   const [replyList, setReplyList] = useState([]);
@@ -39,7 +38,7 @@ export default (props) => {
 
   const RegistBtnToggle = () => {
     if (registToggle) {
-      clipAction.setClipReplyIdx!(0);
+      dispatch(setClipCtxReplyIdx(0));
       setRegistToggle(false);
       setContentValue("");
       setReplyIdx(-1);
@@ -79,7 +78,7 @@ export default (props) => {
       });
       if (result === "success") {
         setRegistToggle(false);
-        clipAction.setClipReplyIdx!(0);
+        dispatch(setClipCtxReplyIdx(0));
       } else {
         dispatch(setGlobalCtxAlertStatus({
           status: true,
@@ -108,7 +107,7 @@ export default (props) => {
 
       if (result === "success") {
         setReplyIdx(-1);
-        clipAction.setClipReplyIdx!(0);
+        dispatch(setClipCtxReplyIdx(0));
         setRegistToggle(false);
       } else {
         dispatch(setGlobalCtxAlertStatus({

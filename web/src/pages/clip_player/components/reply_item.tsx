@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 
 import { postClipReplyDelete } from "common/api";
-import { ClipProvider, ClipContext } from "context/clip_ctx";
 import { useHistory } from "react-router-dom";
 import optionIcon from "../static/morelist_g.svg";
 import reportIcon from "../static/ic_report_g.svg";
@@ -9,15 +8,16 @@ import reportIcon from "../static/ic_report_g.svg";
 import { tabType } from "../constant";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
+import {setClipCtxReplyIdx} from "../../../redux/actions/clipCtx";
 
 export default ({ replyValue, fetchReplyList, replyEdit }) => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
   const dispatch = useDispatch();
-  const { clipState, clipAction } = useContext(ClipContext);
   const history = useHistory();
 
   const optionBtnToggle = () => {
-    clipAction.setClipReplyIdx!(replyValue.replyIdx);
+    dispatch(setClipCtxReplyIdx(replyValue.replyIdx));
   };
   useEffect(() => {
     // console.log(clipState.clipReplyIdx);
@@ -33,7 +33,7 @@ export default ({ replyValue, fetchReplyList, replyEdit }) => {
           status: true,
           message: message,
         }));
-        clipAction.setClipReplyIdx!(0);
+        dispatch(setClipCtxReplyIdx(0));
         fetchReplyList();
       }
     }

@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-import { ClipContext } from "context/clip_ctx";
 import { printNumber, addComma } from "lib/common_fn";
-
 import { getProfile, postAddFan, deleteFan, MypageBlackListAdd } from "common/api";
 import { tabType } from "../constant";
 // lib
@@ -18,13 +16,14 @@ import {
   setGlobalCtxMultiViewer,
   setGlobalCtxSetToastStatus
 } from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType, setClipCtxUserMemNo} from "../../../redux/actions/clipCtx";
 
 let Profile = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { clipState, clipAction } = useContext(ClipContext);
-  const { setUserMemNo } = clipAction;
+  const clipState = useSelector(({clipCtx}) => clipCtx);
+
   const { baseData, clipInfo, clipPlayer } = globalState;
   const { isLogin } = baseData;
 
@@ -73,7 +72,7 @@ let Profile = () => {
   const viewProfile = useCallback(
       (memNo: string) => {
         if (isLogin === true) {
-          clipAction.setRightTabType && clipAction.setRightTabType(tabType.PROFILE);
+          dispatch(setClipCtxRightTabType(tabType.PROFILE))
           fetchProfileData(memNo);
         } else {
           return history.push("/login");
@@ -85,9 +84,9 @@ let Profile = () => {
   const viewSpecialList = useCallback(
       (memNo: string) => {
         if (isLogin === true) {
-          setUserMemNo!(memNo);
+          dispatch(setClipCtxUserMemNo(memNo));
           dispatch(setBroadcastCtxUserMemNo(memNo));
-          clipAction.setRightTabType && clipAction.setRightTabType(tabType.SPECIALDJLIST);
+          dispatch(setClipCtxRightTabType(tabType.SPECIALDJLIST))
         } else {
           return history.push("/login");
         }
@@ -376,11 +375,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -413,11 +412,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -447,11 +446,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -471,11 +470,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -504,7 +503,7 @@ let Profile = () => {
                               className="btn btn_gift"
                               onClick={() => {
                                 // giftDal();
-                                clipAction.setRightTabType && clipAction.setRightTabType(tabType.GIFT_GIVE);
+                                dispatch(setClipCtxRightTabType(tabType.GIFT_GIVE))
                                 // setUserNickNm && setUserNickNm(profileData.nickNm);
                               }}
                           >

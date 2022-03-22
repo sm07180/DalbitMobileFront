@@ -1,9 +1,7 @@
-import React, { useContext, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback} from "react";
+import {useHistory} from "react-router-dom";
 
-import { tabType } from "../constant";
-
-import { ClipContext } from "context/clip_ctx";
+import {tabType} from "../constant";
 
 import btnReplay from "../static/replay.svg";
 import btnReplayAll from "../static/replay_b.svg";
@@ -20,16 +18,13 @@ import {
   setGlobalCtxClipPlayMode,
   setGlobalCtxSetToastStatus
 } from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType} from "../../../redux/actions/clipCtx";
 
 export default function ClipPlayerBarButton() {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-
-  const { clipState, clipAction } = useContext(ClipContext);
-
   const { clipPlayer, clipPlayMode, clipInfo } = globalState;
-  const { setRightTabType, setUserMemNo } = clipAction;
 
   const createModeBtn = useCallback(() => {
     switch (clipPlayMode) {
@@ -136,6 +131,7 @@ export default function ClipPlayerBarButton() {
           type="button"
           className="playerBtn__prev"
           onClick={() => {
+            // debugger
             if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
               history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
             } else {
@@ -151,7 +147,7 @@ export default function ClipPlayerBarButton() {
         type="button"
         className="playerBtnWrap__refresh"
         onClick={() => {
-          setRightTabType && setRightTabType(tabType.PLAY_LIST);
+          dispatch(setClipCtxRightTabType(tabType.PLAY_LIST));
         }}
       >
         <img src={btnPlayList} width={32} alt="PlayList" />

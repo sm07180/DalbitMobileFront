@@ -1,32 +1,34 @@
-import React, { useState, useEffect, useCallback, useContext } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useHistory, useParams} from "react-router-dom";
 
-import { ClipPlayerHandler } from "common/audio/clip_player";
+import {ClipPlayerHandler} from "common/audio/clip_player";
 import {
-  postClipPlay,
+  clipPlayConfirm,
+  getClipList,
+  getClipRankingList,
+  getHistoryList,
   getMainTop3List,
+  getMarketingClipList,
   getPopularList,
   getUploadList,
-  getHistoryList,
-  getClipList,
-  clipPlayConfirm,
-  getMarketingClipList,
-  getClipRankingList,
+  postClipPlay,
 } from "common/api";
 
 import PlayBox from "../components/player_box";
 import ClipRightTabRender from "../components/right_tab_render";
 
-import { ClipContext } from "context/clip_ctx";
-
 import "./clip_player.scss";
 import "./tab_contents.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {
-  setGlobalCtxAlertStatus, setGlobalCtxClipInfoAdd,
-  setGlobalCtxClipPlayerInit, setGlobalCtxClipPlayListAdd, setGlobalCtxClipPlayListTabAdd,
+  setGlobalCtxAlertStatus,
+  setGlobalCtxClipInfoAdd,
+  setGlobalCtxClipPlayerInit,
+  setGlobalCtxClipPlayListAdd,
+  setGlobalCtxClipPlayListTabAdd,
   setGlobalCtxClipPlayMode
 } from "../../../redux/actions/globalCtx";
+import {setClipCtxInfoAdd, setClipCtxIsMyClip} from "../../../redux/actions/clipCtx";
 
 export default function ClipContent() {
   const { clipNo } = useParams<{ clipNo: string }>();
@@ -34,7 +36,8 @@ export default function ClipContent() {
   const historyState = history.location.state;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { clipState, clipAction } = useContext(ClipContext);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
+
   const { clipPlayer, baseData, clipInfo } = globalState;
 
   const [playState, setPlayState] = useState(false);
@@ -46,6 +49,7 @@ export default function ClipContent() {
     const { result, message, data } = await postClipPlay({
       clipNo: clipNo,
     });
+    // debugger
     if (result === "success") {
       createPlayer(data, "firstStart");
       sessionStorage.setItem("clip", JSON.stringify(data));
@@ -65,8 +69,9 @@ export default function ClipContent() {
   const createPlayer = (data: any, type: string) => {
     if (clipPlayer === null) {
       newClipPlayer = new ClipPlayerHandler({info:data, dispatch, globalState});
-      if (type !== "restart")
+      if (type !== "restart"){
         dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"normal"}));
+      }
     }
     newClipPlayer!.clipAudioTag!.onerror = () => {
       dispatch(setGlobalCtxAlertStatus({
@@ -83,14 +88,14 @@ export default function ClipContent() {
     newClipPlayer?.init(data.file.url);
     newClipPlayer?.clipNoUpdate(data.clipNo);
     dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
-    const addObj = { type: "add", data: { ...data, ...{ isPaused: true, isSaved60seconds: false } } };
-    dispatch(setGlobalCtxClipInfoAdd({ ...data, ...{ isPaused: true, isSaved60seconds: false } }))
-    clipAction.dispatchClipInfo!(addObj);
+    const addObj = { ...data, ...{ isPaused: true, isSaved60seconds: false } };
+    dispatch(setGlobalCtxClipInfoAdd(addObj))
+    dispatch(setClipCtxInfoAdd(addObj))
     newClipPlayer?.start();
     if (globalState.baseData.memNo === data.clipMemNo) {
-      clipAction.setIsMyClip!(true);
+      dispatch(setClipCtxIsMyClip(true));
     } else {
-      clipAction.setIsMyClip!(false);
+      dispatch(setClipCtxIsMyClip(false));
     }
   };
 
@@ -184,6 +189,7 @@ export default function ClipContent() {
   }, [globalState.clipInfo]);
 
   useEffect(() => {
+    // debugger
     if (sessionStorage.getItem("clip") === null) {
       clipPlay();
       return;

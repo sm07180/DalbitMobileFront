@@ -6,7 +6,6 @@ import NoResult from "common/ui/no_result";
 
 import { printNumber, addComma } from "lib/common_fn";
 
-import { ClipProvider, ClipContext } from "context/clip_ctx";
 import {useDispatch, useSelector} from "react-redux";
 
 export default (props) => {

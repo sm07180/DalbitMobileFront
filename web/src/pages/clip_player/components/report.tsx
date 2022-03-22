@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-// ctx
-import { ClipProvider, ClipContext } from "context/clip_ctx";
 import { useHistory, useParams } from "react-router-dom";
 // constant
 import { tabType } from "../constant";
@@ -11,14 +9,13 @@ import { DECLARATION_TAB } from "../constant";
 import Caution from "../static/caution.png";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType} from "../../../redux/actions/clipCtx";
 
 export default function Report() {
-  // ctx
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const dispatch = useDispatch();
 
-  const { clipState, clipAction } = useContext(ClipContext);
-  const { setRightTabType } = clipAction;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
   const { clipInfo } = globalState;
 
   // state
@@ -60,7 +57,9 @@ export default function Report() {
         status: true,
         type: "alert",
         content: message,
-        callback: () => setRightTabType && setRightTabType(tabType.PROFILE),
+        callback: () => {
+          dispatch(setClipCtxRightTabType(tabType.PROFILE))
+        },
       }));
     } else if (code === "-3") {
       dispatch(setGlobalCtxAlertStatus({
@@ -126,7 +125,7 @@ export default function Report() {
         message: message,
       }));
       setTimeout(() => {
-        setRightTabType && setRightTabType(tabType.PROFILE);
+        dispatch(setClipCtxRightTabType(tabType.PROFILE))
       }, 500);
     } else {
       dispatch(setGlobalCtxSetToastStatus({
@@ -134,7 +133,7 @@ export default function Report() {
         message: message,
       }));
       setTimeout(() => {
-        setRightTabType && setRightTabType(tabType.PROFILE);
+        dispatch(setClipCtxRightTabType(tabType.PROFILE))
       }, 500);
     }
   }
@@ -240,7 +239,7 @@ export default function Report() {
                     <button
                       className="btn btn_cancel"
                       onClick={() => {
-                        setRightTabType && setRightTabType(tabType.PROFILE);
+                        dispatch(setClipCtxRightTabType(tabType.PROFILE))
                       }}
                     >
                       취소

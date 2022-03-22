@@ -1,25 +1,23 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, {useEffect, useState} from "react";
 
-import { useHistory } from "react-router-dom";
-import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {useHistory} from "react-router-dom";
+import {DalbitScroll} from "common/ui/dalbit_scroll";
 
-import { ClipProvider, ClipContext } from "context/clip_ctx";
-
-import { getProfile, postClipSendGift } from "common/api";
+import {getProfile, postClipSendGift} from "common/api";
 import {useDispatch, useSelector} from "react-redux";
 import {
   setGlobalCtxAlertStatus,
   setGlobalCtxClipInfoAdd,
-  setGlobalCtxSetToastStatus, setGlobalCtxUserProfile
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
 } from "../../../redux/actions/globalCtx";
+import {setClipCtxLottie, setClipCtxLottieUrl} from "../../../redux/actions/clipCtx";
 
 let preventClick = false;
 
 export default (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { clipState, clipAction } = useContext(ClipContext);
-
   const { clipInfo, splashData } = globalState;
 
   const profile: any = globalState.userProfile;
@@ -103,7 +101,7 @@ export default (props) => {
     preventClick = true;
     const res = await postClipSendGift(params);
     if (res.result === "success") {
-      clipAction.setlottieUrl && clipAction.setlottieUrl!(lottie);
+      dispatch(setClipCtxLottieUrl(lottie))
       dispatch(setGlobalCtxClipInfoAdd({ list: res.data.list }));
       dispatch(setGlobalCtxSetToastStatus({
         status: true,
@@ -116,16 +114,16 @@ export default (props) => {
       });
       if (result === "success") {
         dispatch(setGlobalCtxUserProfile(data));
-        clipAction.setLottie &&
-          clipAction.setLottie({
-            ...lottie,
-            ...{
-              profImg: data.profImg.thumb292x292,
-              nickName: data.nickNm,
-              count: count,
-              isCombo: lottie.category === "combo" ? true : count > 1 ? true : false,
-            },
-          });
+        dispatch(setClipCtxLottie({
+          ...lottie,
+          ...{
+            profImg: data.profImg.thumb292x292,
+            nickName: data.nickNm,
+            count: count,
+            isCombo: lottie.category === "combo" ? true : count > 1 ? true : false,
+          },
+        }))
+
       }
 
       setItem(-1);

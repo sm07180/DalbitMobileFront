@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {useEffect, useState} from "react";
 
-import { getProfile, postGiftDal, splash, postSendGift } from "common/api";
-import { ClipProvider, ClipContext } from "context/clip_ctx";
-import { useHistory } from "react-router-dom";
+import {getProfile, postGiftDal, postSendGift} from "common/api";
+import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
@@ -13,7 +12,6 @@ export default function GiftDal(props) {
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const { splashData } = globalState;
-  const { clipState, clipAction } = useContext(ClipContext);
 
   const [giftInfo, setGiftInfo] = useState<any>([]);
   const [giftCount, setGiftCount] = useState<any>([]);
