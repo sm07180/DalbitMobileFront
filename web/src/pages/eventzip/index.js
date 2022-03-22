@@ -80,9 +80,9 @@ const EventZip = () => {
     let endList = [];
     let ingList = [];
     for(let i = 0; i < eventInfo.length; i++){
-      if(moment(nowDay).isAfter(moment(eventInfo[i].endDay).add(1, 'days'))){
+      if(moment(nowDay).isAfter(moment(eventInfo[i].endDay))){
         eventInfo[i].endState = true;
-        endList.push(eventInfo[i]);        
+        endList.push(eventInfo[i]);
       } else {
         eventInfo[i].endState = false;
         ingList.push(eventInfo[i]);

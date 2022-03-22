@@ -47,8 +47,8 @@ const Allim = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if (context.profile.memNo === roomNo) {history.push(`/myProfile`)}
-        else {history.push(`/profile/${memNo}`)}
+        if (context.profile.memNo === roomNo) {history.push(`/myProfile?tab=1`)}
+        else {history.push(`/profile/${memNo}?tab=1`)}
         break;
       case "32":                                                                            //내 지갑
         try {history.push(`/wallet`);}
