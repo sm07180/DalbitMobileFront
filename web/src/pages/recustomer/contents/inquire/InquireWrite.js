@@ -5,7 +5,6 @@ import React, {useState, useEffect, useContext} from 'react'
 import API from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import Swiper from "react-id-swiper";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
@@ -168,14 +167,18 @@ const Write = (props) => {
   //등록시 예외 조건 확인
   const validator = () => {
     if(!context.token.isLogin) {
-      if((inputData.phone !== "" && onlyNum(inputData.phone)) && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
+      if((inputData.phone !== "" && inputData.phone.length >= 10 && onlyNum(inputData.phone)) && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
         if(isDisabled === true) {
           if(isFetchFalse === false) {fetchData();}
         } else {
           setIsDisabled(false);
         }
       } else {
-        context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
+        if(!onlyNum(inputData.phone) || inputData.phone.length < 10) {
+          context.action.alert({msg: "올바른 연락처를 입력해주세요."});
+        } else {
+          context.action.alert({msg: "필수 항목을 모두 입력해주세요."});
+        }
       }
     } else {
       if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
@@ -185,7 +188,7 @@ const Write = (props) => {
           setIsDisabled(false);
         }
       } else {
-        context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
+        context.action.alert({msg: "필수 항목을 모두 입력해주세요."})
       }
     }
   }
