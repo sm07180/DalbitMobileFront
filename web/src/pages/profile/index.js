@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './style.scss'
 import Api from 'context/api'
@@ -41,10 +41,11 @@ import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
 
 const ProfilePage = () => {
   const history = useHistory()
+  const location = useLocation();
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
@@ -70,6 +71,7 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
+  const isWebView = useSelector(state => state.common).isWebView;
 
   const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
 
@@ -352,7 +354,6 @@ const ProfilePage = () => {
 
   /* 스크롤 이벤트 */
   const scrollEvent = useCallback((scrollTarget, callback) => {
-    console.log('scroll');
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
     const scrollTop = scrollTarget.scrollTop;
@@ -402,6 +403,8 @@ const ProfilePage = () => {
 
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
+    let hasTabParam = false;
+    let isWebViewState = false;
     let tabState = 0; // default
     const searchParams = location.search.split('?')[1];
     searchParams.split('&').forEach(item => {
@@ -409,14 +412,28 @@ const ProfilePage = () => {
       const paramType = itemSplit[0].toLowerCase();
       if(paramType === 'webview') {
         setWebview(itemSplit[1]);
+        isWebViewState = true;
+        dispatch(setIsWebView('new'));
       }else if(paramType === 'tab') {
         if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) { // 탭이 범위 안에 있을때(0~2)
           tabState = parseInt(itemSplit[1])
         }
+        hasTabParam = true;
       }
     });
-    socialTabChangeAction(profileTab.tabList[tabState])
-    setProfileTabName(profileTab.tabList[tabState]);
+
+    if(hasTabParam) {
+      socialTabChangeAction(profileTab.tabList[tabState])
+      setProfileTabName(profileTab.tabList[tabState]);
+    }else {
+      tabHandler();
+    }
+
+    if(isWebViewState) {
+      window.history.replaceState('', null, !params.memNo ? '/myProfile' : `/profile/${params.memNo}?webview=new`) // url 변경
+    }else {
+      window.history.replaceState('', null, !params.memNo ? '/myProfile' : `/profile/${params.memNo}`) // url 변경
+    }
   }
 
   /* 프로필 데이터 초기화 */
@@ -466,7 +483,11 @@ const ProfilePage = () => {
 
   const headerBackEvent = () => {
     if(webview === 'new' && isHybrid()) {
-      Hybrid('CloseLayerPopup');
+      if(location.key) {
+        history.goBack();
+      }else {
+        Hybrid('CloseLayerPopup');
+      }
     }else {
       history.goBack();
     }
@@ -501,6 +522,25 @@ const ProfilePage = () => {
     setScrollPagingCall(1);
   }
 
+  /* 하단 탭 핸들러(componentDidMount 시점) */
+  const tabHandler = () => {
+    if(profileTab.isReset) { // 탭, 데이터 초기화
+      profileTabInit();
+    }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
+      profileTabDataCall();
+    }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
+      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }
+
+      dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
+    }
+  }
+
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCall > 1 && !feedData.isLastPage) {
@@ -518,6 +558,9 @@ const ProfilePage = () => {
       if(profileReady) {
         getProfileData(); // 프로필 상단 데이터
         profileTabInit();
+        if(location.search) {
+          parameterManager(); // 주소 뒤에 파라미터 체크
+        }
       }
     }else {
       history.replace('/login');
@@ -534,21 +577,7 @@ const ProfilePage = () => {
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
     }else {
-      if(profileTab.isReset) { // 탭, 데이터 초기화
-        profileTabInit();
-      }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
-        profileTabDataCall();
-      }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
-        if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
-          document.addEventListener('scroll', profileScrollEvent);
-        }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
-          document.addEventListener('scroll', profileScrollEvent);
-        }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
-          document.addEventListener('scroll', profileScrollEvent);
-        }
-
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
-      }
+      tabHandler();
     }
 
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Header from "components/ui/header/Header";
 import { useHistory } from "react-router-dom";
 import {authReq} from 'pages/self_auth'
@@ -6,14 +6,19 @@ import {Context} from 'context'
 import "./style.scss";
 
 export default (props) => {
-  const {memNo} = props;
   const history = useHistory();
   const context = useContext(Context);
+  const [memNo, setMemNo] = useState(props.memNo);
 
   useEffect(() => {
     //새로고침했을경우
-    if (memNo.slice(0, 1) === "8") {
+    if (memNo?.slice(0, 1) === "8") {
       history.goBack();
+    }
+
+    if(memNo === undefined) {
+      const getMemNoParam = location.search?.split('=')[1];
+      setMemNo(getMemNoParam);
     }
   }, []);
 
