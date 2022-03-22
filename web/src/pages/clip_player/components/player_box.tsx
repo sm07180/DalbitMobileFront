@@ -30,16 +30,22 @@ export default () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     return () => {
-      clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipAudioTag?.removeEventListener("ended", ()=>{
+        audioEndHandler({globalState})
+      });
     };
   }, []);
 
   useEffect(() => {
     if (globalState.clipPlayList!.length > 0) {
-      clipAudioTag?.addEventListener("ended", audioEndHandler);
+      clipAudioTag?.addEventListener("ended", ()=>{
+        audioEndHandler({globalState})
+      });
     }
     return () => {
-      clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipAudioTag?.removeEventListener("ended", ()=>{
+        audioEndHandler({globalState})
+      });
     };
   }, [globalState.clipPlayList, clipPlayMode]);
 
@@ -69,9 +75,8 @@ export default () => {
 };
 
 
-export const audioEndHandler = async () => {
+export const audioEndHandler = async ({globalState}) => {
   const history = useHistory();
-  const globalState = useSelector(({globalCtx})=> globalCtx);
   const { clipPlayer, clipPlayMode } = globalState;
     console.log("audioEndHandler====>",clipPlayMode,clipPlayer)
   if (globalState.clipPlayList?.length === 0) return null;
