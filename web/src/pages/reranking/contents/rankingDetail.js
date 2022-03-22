@@ -332,8 +332,7 @@ const RankDetailPage = () => {
       <div className="rankingContent">
         <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
         <div className='listWrap'>
-          <RankingList data={rankList} tab={select}>
-          </RankingList>
+          <RankingList data={rankList} tab={select}/>
         </div>
       </div>
 
