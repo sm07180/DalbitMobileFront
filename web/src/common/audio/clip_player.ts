@@ -24,7 +24,7 @@ export class ClipPlayerHandler {
   public clipExit: () => void;
   public clipNoUpdate: (clipNo) => void;
   public isPlayingIdx?: number;
-  public findPlayingClip: (clipNo) => void;
+  public findPlayingClip: ({clipNo, clipPlayList}) => void;
   public save60seconds: number;
   private saveTimer: any;
   public initSave60seconds: () => void;
@@ -136,10 +136,8 @@ export class ClipPlayerHandler {
       clearInterval(this.saveTimer);
     };
 
-    this.findPlayingClip = (clipNo) => {
-      const { clipPlayList } = this.globalState;
-      const playingIdx = clipPlayList.indexOf(clipPlayList.find((item) => item.clipNo === clipNo));
-      this.isPlayingIdx = playingIdx;
+    this.findPlayingClip = ({clipNo, clipPlayList}) => {
+      this.isPlayingIdx = clipPlayList.indexOf(clipPlayList.find((item) => item.clipNo === clipNo));
     };
   }
 }

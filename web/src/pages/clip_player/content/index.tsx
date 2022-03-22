@@ -206,7 +206,7 @@ export default function ClipContent() {
       }
     }
     if (globalState.clipPlayList.length > 0) {
-      newClipPlayer?.findPlayingClip(clipNo);
+      newClipPlayer?.findPlayingClip({clipNo:clipNo, clipPlayList:globalState.clipPlayList});
     }
   }, [clipNo]);
 
@@ -221,7 +221,7 @@ export default function ClipContent() {
 
   useEffect(() => {
     if (globalState.clipPlayList.length > 0) {
-      newClipPlayer?.findPlayingClip(clipNo);
+      newClipPlayer?.findPlayingClip({clipNo:clipNo, clipPlayList:globalState.clipPlayList});
     }
   }, [globalState.clipPlayList, newClipPlayer, globalState.clipPlayListTab, clipState.isMyClip]);
 

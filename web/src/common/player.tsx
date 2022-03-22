@@ -477,13 +477,13 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
         newClipPlayer?.init(data.file.url);
       }
       newClipPlayer?.clipNoUpdate(data.clipNo);
-      newClipPlayer?.findPlayingClip(data.clipNo);
+      newClipPlayer?.findPlayingClip({clipNo:data.clipNo, clipPlayList:globalState.clipPlayList});
       dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
       dispatch(setGlobalCtxClipInfoAdd({ ...data, ...{ isPaused: true } }));
       newClipPlayer?.start();
       sessionStorage.setItem("clip", JSON.stringify(data));
     } else {
-      newClipPlayer?.findPlayingClip(setClipNo);
+      newClipPlayer?.findPlayingClip({clipNo:setClipNo, clipPlayList:globalState.clipPlayList});
       if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
         if (
           globalState.clipPlayMode !== "normal" &&
