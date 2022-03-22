@@ -23,6 +23,8 @@ const Main = React.lazy(() => import('pages/main'))
 const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 // 이벤트 모음 Zip
 const EventZip = React.lazy(() => import('pages/eventzip'))
+// 최근 접속한 스타
+const RecentStar = React.lazy(() => import('pages/main/contents/recentStar'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip'));
@@ -161,6 +163,8 @@ const Router = () => {
         <Route exact path="/mobileWeb" component={MobileWeb} />
 
         <Route exact path="/eventzip" component={EventZip} />
+        
+        <Route exact path="/recentStar" component={RecentStar} />
 
         <Route exact path="/rule/" component={ReRule} />
         <Route exact path="/rule/:category" component={ReRule} />

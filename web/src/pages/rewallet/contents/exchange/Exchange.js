@@ -177,7 +177,7 @@ const Exchange = (props) => {
       const res = await Api.exchangeCalc({
         data: {byeol: sendByeolCnt}
       })
-      context.action.alert({msg:res.message});
+      // context.action.alert({msg:res.message});
 
       if (res.result === 'success') {
         //result :
@@ -361,7 +361,7 @@ const Exchange = (props) => {
         <button className='noticeBtn' onClick={noticePop}>
           <span className="noticeIcon">?</span>환전이 궁금하시다면?
         </button>
-        <div className={`amountBox ${byeolTotCnt>569 ? 'apply' : ''}`}>
+        <div className="amountBox">
           <i className="iconStar"></i>
           <p>보유 별</p>
           <div className='counter active'>
@@ -415,13 +415,11 @@ const Exchange = (props) => {
               환전 계산하기
             </button>
           }
-          <button className='exchange'
-                  onClick={() =>
-                    isIOS ?
-                      Hybrid('openUrl', `https://${window.location.host}/wallet?exchange=1`) :
-                      history.push('/wallet/exchange')}>
+          {isIOS &&
+          <button className='exchange' onClick={() => Hybrid('openUrl', `https://${window.location.host}/wallet`)}>
             달 교환
           </button>
+          }
         </div>
       </section>
 
@@ -459,7 +457,7 @@ const Exchange = (props) => {
           />
           : depositType === depositTabmenu[1] ?
             /*최근 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
-          <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}/>
+          <NewlyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm}/>
           :
             /*내 계좌 (환전신청후 승인된 적이 있어야 이용가능 => exchangeForm?.recent_exchangeIndex > 0)*/
           <MyAccount repplySubmit={repplySubmit} exchangeForm={exchangeForm} setExchangeForm={setExchangeForm}

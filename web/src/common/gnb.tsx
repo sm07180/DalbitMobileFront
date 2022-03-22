@@ -337,7 +337,9 @@ export default function GNB() {
   };
 
   const updateDispatch = (event) => {
-    if(location.pathname.includes('customer')) {
+    if(location.pathname.includes('customer_clear')) {
+      history.push('/login');
+    }else if(location.pathname.includes('customer')) {
       if (event.detail.result == "success" && event.detail.code == "0") {
         globalAction.setAlertStatus!({
           status: true,
@@ -476,7 +478,7 @@ export default function GNB() {
                           }}
                       >
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
-                        {item.url === '/alarm' && alarmData.newCnt > 0 && <span className="newDot"/>}
+                        {item.url === '/alarm' && (alarmData.alarm || alarmData.notice) > 0 && <span className="newDot"/>}
                       </li>
                     )
                   })}

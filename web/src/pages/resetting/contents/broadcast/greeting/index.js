@@ -69,6 +69,7 @@ const Greeting = () => {
     if(res.result === "success") {setTitleList(res.data.list);}
   }
 
+  //인사말 수정
   const fetchModifyData = async () => {
     const res = await API.modifyBroadcastOption({
       optionType: 2,

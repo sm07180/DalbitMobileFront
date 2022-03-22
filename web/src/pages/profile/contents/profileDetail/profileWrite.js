@@ -14,11 +14,16 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {setProfileTabData} from "redux/actions/profile";
+import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
+
+  const dispatch = useDispatch();
+  const profileTab = useSelector(state => state.profileTab);
 
   //context
   const context = useContext(Context);
@@ -94,6 +99,7 @@ const ProfileWrite = () => {
         context.action.toast({msg: message});
 
         if (result === 'success') {
+          dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
           history.goBack();
           // location.replace("/myProfile");
         }
@@ -109,6 +115,7 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
     }
@@ -133,6 +140,7 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
 
@@ -147,6 +155,7 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
+        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
       } else {

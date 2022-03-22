@@ -7,7 +7,7 @@ import Lottie from 'react-lottie'
 // components
 // css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
 import {useSelector} from "react-redux";
 import {IMG_SERVER} from 'context/config'
@@ -42,7 +42,7 @@ const SwiperList = (props) => {
       }
     }else if(type === 'daldungs' || type === 'favorites') {
       const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
-      RoomValidateFromClip(item.roomNo, context, history, memNick);
+      RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, history, memNick);
     }
   }
 
@@ -80,7 +80,7 @@ const SwiperList = (props) => {
                   item.roomNo &&
                     <div className='livetag' onClick={(e) => {
                       e.stopPropagation();
-                      RoomValidateFromClip(item.roomNo, context, locationStateHistory, item.nickNm);
+                      RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, locationStateHistory, item.nickNm);
                     }}>
                        <Lottie
                           options={{

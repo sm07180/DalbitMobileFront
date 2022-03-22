@@ -5,7 +5,6 @@ import React, {useState, useEffect, useContext} from 'react'
 import API from "context/api";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import Swiper from "react-id-swiper";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
@@ -13,12 +12,11 @@ import ImageUpload from "pages/recustomer/components/ImageUpload";
 import CheckList from "pages/recustomer/components/CheckList";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
-let isDisabled = true;
-let isFetchFalse = false;
 const Write = (props) => {
   const {setInquire} = props
   const context = useContext(Context);
   const [inputData, setInputData] = useState({
+    phone: "",
     title: "",
     faqType: 0,
     contents: "아래 내용을 함께 보내주시면 더욱 빠른 처리가 가능합니다. \n\nOS (ex-Window 버전10) : \n브라우저 : \n문제발생 일시 : \n문의내용 : "
@@ -35,6 +33,9 @@ const Write = (props) => {
   ])
   const [selectedInfo, setSelectedInfo] = useState("");
   const [popup, setPopup] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
+  const [isFetchFalse, setIsFetchFalse] = useState(false);
+  const history = useHistory();
 
   //문의하기 등록
   const fetchData = () => {
@@ -49,16 +50,20 @@ const Write = (props) => {
       questionFileName1: imageFileName[0],
       questionFileName2: imageFileName[1],
       questionFileName3: imageFileName[2],
-      phone: "",
+      phone: inputData.phone !== "" ? inputData.phone : "",
       email: "",
-      nickName: context.profile.nickName
+      nickName: context.profile.nickName !== undefined ? context.profile.nickName : "미선택"
     }
-    isFetchFalse = true;
+    setIsFetchFalse(true);
     API.center_qna_add({params}).then((res) => {
-      isFetchFalse = false;
+      setIsFetchFalse(false);
       if(res.result === "success") {
         context.action.alert({msg: "1:1문의가 등록되었습니다."})
-        setInquire("나의 문의내역");
+        if(!context.token.isLogin) {
+          history.goBack();
+        } else {
+          setInquire("나의 문의내역");
+        }
       } else {
         context.action.alert({msg: res.message});
       }
@@ -74,6 +79,12 @@ const Write = (props) => {
     });
   };
 
+  //예외 조건
+  const onlyNum = (data) => {
+    let onlyNum = /^[0-9]+$/g;
+    return (onlyNum.test(data));
+  }
+
   //문의 유형 클릭시 세부내용 출력
   const changeOption = () => {
     setOption(!option);
@@ -86,14 +97,17 @@ const Write = (props) => {
     setSelectedInfo(name)
   }
 
+  //문의 내용 클릭시
   const onTextFocus = () => {
     setTextValue(inputData.contents);
   }
 
+  //자세히보기 클릭시
   const popupOpen = () => {
     setPopup(true);
   }
 
+  //개인정보 수집 동의 여부
   const onClick = (e) => {
     if(e.target.checked) {setAgree(true)}
     else {setAgree(false);}
@@ -105,6 +119,7 @@ const Write = (props) => {
     if (target.files.length === 0) return;
     let reader = new FileReader();
     const file = target.files[0];
+    const fileSize = file.size;
     const fileName = file.name;
     const fileSplited = fileName.split(".");
     const fileExtension = fileSplited.pop().toLowerCase();
@@ -118,7 +133,7 @@ const Write = (props) => {
     }
     reader.readAsDataURL(target.files[0]);
     reader.onload = async () => {
-      if (reader.result && imageFile.length < 3) {
+      if (reader.result && imageFile.length < 3 && fileSize < 10000000) {
         const res = await API.image_upload({
           data: {
             dataURL: reader.result,
@@ -128,8 +143,12 @@ const Write = (props) => {
           setImageFile(imageFile.concat(res.data.path));
           setImgFile(imgFile.concat(res.data.url));
           setImageFileName(imageFileName.concat(fileName));
+        }
+      } else {
+        if(fileSize > 10000000) {
+          context.action.alert({msg: "최대 10MB까지 첨부 가능합니다."})
         } else {
-          context.action.alert({msg: res.message});
+          context.action.alert({msg: "최대 3장까지 첨부 가능합니다."})
         }
       }}
   };
@@ -147,21 +166,40 @@ const Write = (props) => {
 
   //등록시 예외 조건 확인
   const validator = () => {
-    if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
-      if(isDisabled === true) {
-        if(isFetchFalse === false) {
-          fetchData();
+    if(!context.token.isLogin) {
+      if((inputData.phone !== "" && inputData.phone.length >= 10 && onlyNum(inputData.phone)) && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
+        if(isDisabled === true) {
+          if(isFetchFalse === false) {fetchData();}
+        } else {
+          setIsDisabled(false);
         }
       } else {
-        isDisabled = false;
+        if(!onlyNum(inputData.phone) || inputData.phone.length < 10) {
+          context.action.alert({msg: "올바른 연락처를 입력해주세요."});
+        } else {
+          context.action.alert({msg: "필수 항목을 모두 입력해주세요."});
+        }
       }
     } else {
-      context.action.alert({msg: "필수 항목을 모두 입력해주세요"})
+      if(inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
+        if(isDisabled === true) {
+          if(isFetchFalse === false) {fetchData();}
+        } else {
+          setIsDisabled(false);
+        }
+      } else {
+        context.action.alert({msg: "필수 항목을 모두 입력해주세요."})
+      }
     }
   }
 
   return (
     <div id='inquireWrite'>
+      {!context.token.isLogin &&
+      <InputItems title="연락처">
+        <input type="text" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
+      </InputItems>
+      }
       <InputItems title="문의 제목">
         <input type="text" placeholder="문의 제목을 입력해주세요." name="title" onChange={onChange}/>
       </InputItems>

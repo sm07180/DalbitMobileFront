@@ -141,12 +141,15 @@ export class ChatSocketHandler {
   setMemNo(memNo){
     this.memNo = memNo;
   }
+
   setBroadcastStateChange(key: string, setStateFn: Function){
     this.broadcastStateChange = {...this.broadcastStateChange, [key] : setStateFn};
   }
 
-  setBroadcastStateClear(){
-    this.broadcastStateChange = {};
+  setBroadcastStateClear(keyName){
+    if(this.broadcastStateChange[keyName]) {
+      delete this.broadcastStateChange[keyName];
+    }
   }
 
   setUserSettingObj(obj: userBroadcastSettingType) {
@@ -1161,15 +1164,17 @@ export class ChatSocketHandler {
                   }
                   case "reqGrant": {
                     const { recvMsg } = data;
-                    this.broadcastAction.dispatchRoomInfo &&
-                      this.broadcastAction.dispatchRoomInfo({
-                        type: "grantRefresh",
-                        data: {
-                          auth: parseInt(recvMsg.msg),
-                          memNo: data.chat.memNo,
-                        },
-                      });
-
+                    this.broadcastAction.dispatchRoomInfo({
+                      type: "grantRefresh",
+                      data: {
+                        auth: parseInt(recvMsg.msg),
+                        memNo: data.chat.memNo,
+                      },
+                    });
+                    this.broadcastAction.dispatchRoomInfo({
+                      type: "isListenerUpdate",
+                      data: {},
+                    });
                     return null;
                   }
                   case "reqKickOut": {
@@ -2164,12 +2169,11 @@ export class ChatSocketHandler {
                     */
                     //reqStartFeverTime: {type 1: 선물, 2: 인원+방송시간+선물, time 진행시간}
                     const {type, time} = data?.reqStartFeverTime;
-
                     this.broadcastStateChange['setFeverTimeState'](true);
                     return null;
                   }
                   case "reqStopFeverTime": { // 피버타임 종료
-                    //this.broadcastStateChange['setFeverTimeState'](false);
+                    this.broadcastStateChange['setFeverTimeState'](false);
                     return null;
                   }
 
@@ -2179,6 +2183,13 @@ export class ChatSocketHandler {
               };
               const msgElem = chatMsgElement(data);
               this.addMsgElement(msgElem);
+              if (this.msgListWrapRef !== null) {
+                const msgListWrapElem = this.msgListWrapRef.current;
+                if(msgListWrapElem.children.length >= 1000){
+                  msgListWrapElem.children[0].remove();
+                }
+              }
+
               // this.chatCnt = this.chatCnt + 1;
               // if (msgListWrapElem && msgElem !== null) {
               //   if (msgListWrapElem.children.length === 2000) {

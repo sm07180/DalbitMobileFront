@@ -11,7 +11,7 @@ import {OS_TYPE} from 'context/config.js'
 import Util from 'components/lib/utility.js'
 
 import BadgeList from 'common/badge_list'
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 
 const makeContents = (props) => {
   let history = useHistory()
@@ -24,6 +24,7 @@ const makeContents = (props) => {
     const {
       roomNo,
       roomType,
+      bjMemNo,
       bjProfImg,
       bjNickNm,
       bjGender,
@@ -69,8 +70,9 @@ const makeContents = (props) => {
                 }
               })
             } else {
-              RoomValidateFromClip(
+              RoomValidateFromClipMemNo(
                   roomNo,
+                  bjMemNo,
                   globalCtx,
                   history,
                   bjNickNm

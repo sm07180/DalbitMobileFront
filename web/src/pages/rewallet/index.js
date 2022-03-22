@@ -1,4 +1,5 @@
 import React, {useContext, useEffect, useState, useMemo, useRef} from 'react'
+import {useSelector} from "react-redux";
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
@@ -13,8 +14,7 @@ import Exchange from './contents/exchange/Exchange'
 import './style.scss'
 import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
-import {OS_TYPE} from 'context/config.js';
-import {getDeviceOSTypeChk} from "common/DeviceCommon";
+import {isHybrid, isIos} from "context/hybrid";
 
 const WalletPage = (props) => {
   const history = useHistory();
@@ -27,6 +27,7 @@ const WalletPage = (props) => {
     const agent = window.navigator.userAgent.match(/(ios webview)/gi);
     return !agent? false : agent[0] === 'ios webview';
     } ,[]);  //아이폰이면 환전 메뉴를 다르게 보여주는 정책!
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
 
   const search = location?.search || '';
 
@@ -179,31 +180,33 @@ const WalletPage = (props) => {
       callback
     });
   }
-  //location?.search.indexOf('exchange') > -1? 아이폰 앱에서 웹뷰로 들어온 경우
+
+  // 스토어로 이동
+  const goStoreHandler = () => {
+    if(isIos()) {
+      return webkit.messageHandlers.openInApp.postMessage('')
+    }else {
+      history.push('/store')
+    }
+  }
+
   return (
     <div id="walletPage">
-      <Header type={location?.search.indexOf('exchange') > -1 ? '':'back'} title='내 지갑'>
-        {walletType === walletTabMenu[1] ? (
-          <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
-              <i className='iconStar'/>
-              <span>{Utility.addComma(byeolTotCnt)}</span>
-            </button>
-          </div>
-        ) : (
-          <div className="buttonGroup">
-            <button className="payCount" onClick={() => {history.push('/store')}}>
-              <i className='iconDal'/>
-              <span>{Utility.addComma(dalTotCnt)}</span>
-            </button>
-          </div>
-        )}
-      </Header>
+      {(isDesktop || isHybrid()) ?
+        <Header type="back" title="내 지갑"/>
+        :
+        <header className='back'>
+          <h1 className="title">내 지갑</h1>
+        </header>
+      }
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 
       {/*달 내역 & 별 내역*/}
       {walletType !== walletTabMenu[2] ?
-        <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode} setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading} getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch} walletType={walletType}/>
+        <HistoryList walletData={walletData} pageNo={pageNo} setPageNo={setPageNo} selectedCode={selectedCode}
+                     setSelectedCode={setSelectedCode} isLoading={isLoading} setIsLoading={setIsLoading}
+                     getWalletHistory={getWalletHistory} lastPage={lastPage} cancelExchangeFetch={cancelExchangeFetch}
+                     walletType={walletType} isIOS={isIOS}/>
         :
         /*환전 ( = ios : 달 교환)*/
         <Exchange isIOS={isIOS} tabMenuRef={tabMenuRef}/>

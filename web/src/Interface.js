@@ -5,11 +5,11 @@
  * @code document.dispatchEvent(new CustomEvent('native-goLogin', {detail:{info:'someDate'}}))
  */
 import React, {useState, useEffect, useContext, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 import _ from 'lodash'
 //context
 import {OS_TYPE} from 'context/config.js'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isAndroid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
@@ -20,8 +20,8 @@ import Utility from 'components/lib/utility'
 
 import qs from 'query-string'
 import {authReq} from "pages/self_auth";
-import {useDispatch} from "react-redux";
-import {setIsRefresh} from "redux/actions/common";
+import {useDispatch, useSelector} from "react-redux";
+import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
 
 export const FOOTER_VIEW_PAGES = {
@@ -39,6 +39,8 @@ export default () => {
   //history
   let history = useHistory()
   const dispatch = useDispatch();
+  const webView = useSelector(state => state.common).isWebView;
+  const uLocation = useLocation();
 
   const doAuthCheck = () => {
     Api.certificationCheck().then(res => {
@@ -340,6 +342,8 @@ export default () => {
             callResetListen(loginInfo.data.memNo)
           }
         })
+      } else if (loginInfo.code === '-8') {
+        return history.push({pathname: '/event/customer_clear', state: {memNo: loginInfo.data.memNo}});
       } else {
         context.action.alert({
           title: '로그인 실패',
@@ -513,8 +517,10 @@ export default () => {
         //App에서 방송종료 알림경우
         sessionStorage.removeItem('room_active')
         //(BJ)일경우 방송하기:방송중
-        if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
+        const isDj = _.hasIn(event.detail, 'auth') && event.detail.auth === 3;
+        if (isDj) {
           context.action.updateCastState(event.detail.roomNo)
+          Utility.setCookie('isDj', isDj, 3);
         }
 
         if (event.detail.mediaType !== 'v') {
@@ -539,6 +545,7 @@ export default () => {
         sessionStorage.removeItem('room_no')
         Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
+        Utility.setCookie('isDj', false, 3);
         break
       case 'native-non-member-end':
         context.action.confirm({
@@ -746,7 +753,14 @@ export default () => {
         // if (__NODE_ENV === 'dev') {
         //   alert('event:native-back-click')
         // }
-        if (context.backState === null) {
+        if(webView === 'new' && context.backState === null) {
+          if(uLocation.key) {
+            history.goBack();
+          }else {
+            Hybrid('goBack')
+            dispatch(setIsWebView(''));
+          }
+        }else if (context.backState === null) {
           Hybrid('goBack')
         } else {
           backFunc(context, dispatch)
@@ -1184,11 +1198,13 @@ export default () => {
   }, [context.token])
 
   useEffect(() => {
-    document.addEventListener('native-back-click', update)
-    return () => {
-      document.removeEventListener('native-back-click', update)
+    if(isAndroid()) {
+      document.addEventListener('native-back-click', update)
+      return () => {
+        document.removeEventListener('native-back-click', update)
+      }
     }
-  }, [context.backFunction, context.backState])
+  }, [context.backFunction, context.backState, uLocation.pathname, webView])
 
   return (
     <React.Fragment>

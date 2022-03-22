@@ -17,7 +17,7 @@ import React, {useEffect, useState, useContext} from 'react'
 //context
 import Api from 'context/api'
 import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
-import {Context} from 'context'
+import {Context, GlobalContext} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
 import Utility from 'components/lib/utility'
@@ -27,12 +27,14 @@ import {clipExit} from 'pages/common/clipPlayer/clip_func'
 const Room = () => {
   //context
   const context = useContext(Context)
+  const globalContext = useContext(GlobalContext)
   //useState
   const [roomInfo, setRoomInfo] = useState(null)
   const [auth, setAuth] = useState(false)
   const [itv, setItv] = useState(0)
   //interface
   Room.context = context
+  Room.globalContext = globalContext
   Room.auth = auth
   Room.itv = itv
   Room.roomInfo = roomInfo
@@ -52,11 +54,31 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
-  const {roomNo, callbackFunc, shadow, mode, nickNm, listener} = obj
+  /* 임시 업데이트 체크 --------------------- */
+  /*const res = await Api.verisionCheck();
+  if(res.data.isUpdate) {
+    return Room.context.action.confirm({
+      msg: '안정적인 서비스 제공을 위해 최신버전으로 업데이트가 필요합니다.',
+      buttonText: {right: '업데이트'},
+      callback: () => {
+        if(isAndroid()) {
+          Hybrid('goToPlayStore');
+        }else {
+          Hybrid('openUrl', res.data.storeUrl)
+        }
+      },
+      cancelCallback: () => {
+        return false;
+      }
+    })
+  }*/
+  /* -------------------------------------- */
+
+  const {roomNo, callbackFunc, shadow, mode, memNo, nickNm, listener} = obj
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
   localStorage.removeItem('prevRoomInfo')
-  //const sessionRoomActive = sessionStorage.getItem('room_active')
+  const sessionRoomActive = sessionStorage.getItem('room_active')
   if (sessionStorage.getItem('room_active') === 'N') {
     Room.context.action.alert({
       msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
@@ -80,7 +102,7 @@ export const RoomJoin = async (obj) => {
       callback: () => {
         clipExit(Room.context)
         sessionStorage.removeItem('room_active')
-        return RoomJoin({roomNo: roomNo, callbackFunc: callbackFunc, shadow: shadow, listener: 'clip'})
+        return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, callbackFunc: callbackFunc, shadow: shadow, listener: 'clip'})
       },
       cancelCallback: () => {
         sessionStorage.removeItem('room_active')
@@ -90,37 +112,19 @@ export const RoomJoin = async (obj) => {
 
   if (shadow === undefined) {
     if (Room.context.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
-      if (listener === 'listener') {
-        return Room.context.action.confirm_admin({
-          callback: () => {
-            sessionStorage.removeItem('room_active')
-            return RoomJoin({roomNo: roomNo, shadow: 1})
-          },
-          cancelCallback: () => {
-            sessionStorage.removeItem('room_active')
-            return RoomJoin({roomNo: roomNo, shadow: 0})
-          },
-          msg: `관리자로 입장하시겠습니까?`
-        })
-      } else {
-        return Room.context.action.confirm_admin({
-          callback: () => {
-            sessionStorage.removeItem('room_active')
-            return RoomJoin({roomNo: roomNo, shadow: 1})
-          },
-          cancelCallback: () => {
-            sessionStorage.removeItem('room_active')
-            return RoomJoin({roomNo: roomNo, shadow: 0})
-          },
-          msg: nickNm === undefined ? `관리자로 입장하시겠습니까?` : `${nickNm} 님의 방송방에 <br /> 입장하시겠습니까?`
-        })
-      }
+      return Room.globalContext.globalAction.setBroadcastAdminLayer((prevState) => ({
+        ...prevState,
+        status: `broadcast`,
+        roomNo: roomNo,
+        memNo:memNo,
+        nickNm: nickNm === "noName" ? "" : nickNm,
+      }));
     } else if (Room.context.adminChecker === true && roomNo === Utility.getCookie('listen_room_no')) {
       return Hybrid('EnterRoom', '')
     } else if (Room.context.adminChecker === false) {
       if (listener === 'listener' || listener === 'clip') {
         sessionStorage.removeItem('room_active')
-        return RoomJoin({roomNo: roomNo, shadow: 0})
+        return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
       } else if (Room.context.adminChecker === false && roomNo === Utility.getCookie('listen_room_no')) {
         return Hybrid('EnterRoom', '')
       } else {
@@ -128,7 +132,7 @@ export const RoomJoin = async (obj) => {
           return Room.context.action.confirm({
             callback: () => {
               sessionStorage.removeItem('room_active')
-              return RoomJoin({roomNo: roomNo, shadow: 0})
+              return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
             },
             cancelCallback: () => {
               sessionStorage.removeItem('room_active')
@@ -137,18 +141,8 @@ export const RoomJoin = async (obj) => {
           })
         }else {
           sessionStorage.removeItem('room_active')
-          return RoomJoin({roomNo: roomNo, shadow: 0})
+          return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
         }
-        /*return Room.context.action.confirm({
-          callback: () => {
-            sessionStorage.removeItem('room_active')
-            return RoomJoin({roomNo: roomNo, shadow: 0})
-          },
-          cancelCallback: () => {
-            sessionStorage.removeItem('room_active')
-          },
-          msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
-        })*/
       }
     }
   }

@@ -17,7 +17,7 @@ import moment from "moment";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
-const RankDetailPage = () => {
+const RankDetailPage = (props) => {
   const params = useParams()
   let history = useHistory()
 
@@ -29,7 +29,7 @@ const RankDetailPage = () => {
   //Ranking 종류(DJ, FAN, CUPID)
   const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
   //Ranking 기간(타임, 일간 등등)
-  const [rankType, setRankType] = useState(1);
+  const [rankType, setRankType] = useState("");
   //Ranking 종류 Title
   const [select, setSelect] = useState("");  
   //탭 목록
@@ -50,10 +50,11 @@ const RankDetailPage = () => {
   let pagePerCnt = 50;
 
   useEffect(() => {
+    //아이폰 웹뷰 스크롤 버그 때문에 넣음
+    window.scrollTo(1, 0);
     if (rankingListType === 'DJ') {
       setTabList(['타임','일간','주간', '월간', '연간']);
       setTabName(typeof location.state === "undefined" ? "일간" : location.state === "time" ? "타임" : location.state === "today" ? "일간"  : location.state === "thisweek" ? "주간" : location.state === "thismonth" ? "월간" : "연간");
-      setRankType(typeof location.state === "undefined" ? 1 : location.state === "time" ? 0 : location.state === "today" ? 1  : location.state === "thisweek" ? 2 : location.state === "thismonth" ? 3 : 4);
     } else if (rankingListType === 'FAN') {
       setTabList(['일간','주간', '월간']);
       setTabName('일간')
@@ -62,7 +63,7 @@ const RankDetailPage = () => {
       setTabName('일간')
     }
     setSelect(rankingListType);
-  }, []);
+  }, [props.match.params.type]);
 
   useEffect(() => {
     if (typeof document !== "undefined"){
@@ -230,43 +231,40 @@ const RankDetailPage = () => {
   const optionSelect = (e) => {
     let text = e.currentTarget.innerText;
     if(text === "DJ"){
-      setSelect("DJ");
-      setTabName('일간');
-      setTabList(['타임','일간','주간', '월간', '연간']);
-      setRankSlct(1);
-      setRankType(1);
+      history.replace("/rankDetail/DJ");
     } else if(text === "FAN") {
-      setSelect("FAN");
-      setTabName('일간');
-      setTabList(['일간','주간', '월간']);
-      setRankSlct(2);
-      setRankType(1);
-    } else {      
-      setSelect("CUPID")
-      setTabName('일간');
-      setTabList(['일간','주간']);
-      setRankSlct(3);
-      setRankType(1);
+      history.replace("/rankDetail/FAN");
+    } else {
+      history.replace("/rankDetail/CUPID");
     }
     closeSlidePop();
   }
 
   useEffect(() => {
-    if (rankType !== 0){
-      setPageNo(1);
-      fetchRankData(rankSlct, rankType, 1);
+    if (rankType !== ""){
+      if (tabName === "타임"){
+        fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
+      } else {
+        fetchRankData(rankSlct, rankType, 1);
+      }
     }
   }, [rankSlct, rankType]);
 
   useEffect(() => {
     setPageNo(1);
-    if (tabName === "타임"){
-      setRankType(0);
-      fetchTimeRank(1, convertDateTimeForamt(new Date() , "-"));
-    } else {
-      setRankType(tabName === "연간" ? 4 : tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
+    if (select !== "" && tabName !== ""){
+      if (select === "DJ"){
+        setRankType(tabName === "타임" ? 0  : tabName === "주간" ? 2 : tabName === "월간" ? 3 : tabName === "연간" ? 4 : 1);
+        setRankSlct(1);
+      } else if (select === "FAN") {
+        setRankType(tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
+        setRankSlct(2);
+      } else {
+        setRankType(tabName === "주간" ? 2 :  1);
+        setRankSlct(3);
+      }
     }
-  }, [tabName]);
+  }, [tabName, select]);
 
   const getTopRankDate = (dateType, currentDate) => {
     let day1 = new Date(moment(currentDate));
@@ -323,14 +321,17 @@ const RankDetailPage = () => {
       <Header position={'sticky'} type={'back'}>
         <h1 className='title' onClick={bottomSlide}>{select.toUpperCase()}<span className='optionSelect'></span></h1>
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
+          <button className='benefits' onClick={() => history.push({
+            pathname: "/rankBenefit",
+            state: select
+          })}>혜택</button>
         </div>
       </Header>
       <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
       <div className="rankingContent">
         <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
         <div className='listWrap'>
-          <RankingList data={rankList} tab={select}>
+          <RankingList data={rankList} tab={select} topRankList={topRankList}>
           </RankingList>
         </div>
       </div>
