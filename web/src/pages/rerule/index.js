@@ -21,21 +21,15 @@ const Rule = () => {
   const {token, profile} = globalState
   const category = params.category;
 
-
-
   const golink = (path) => {
     history.push("/rule/" + path);
   }
-
-  useEffect(() => {
-    console.log(profile);
-  }, [])
 
   return (
     <div id='rule'>
       {!category ?
         <>
-          <Header position={'sticky'} title="운영 정책 / 회원탈퇴" type={'back'}/>
+          <Header position={'sticky'} title={`${globalState.token.isLogin ? "운영 정책 / 회원탈퇴" : "운영 정책"}`} type={'back'}/>
           <div className='content'>
             <div className='menuWrap'>
               <div className='menuList' onClick={() => {golink("termsT")}}>
@@ -54,32 +48,37 @@ const Rule = () => {
                 <div className='menuName'>운영정책</div>
                 <span className='arrow'></span>
               </div>
-              <div className='menuList' onClick={() => {golink("secession")}}>
-                <div className='menuName'>회원탈퇴</div>
-                <span className='arrow'></span>
-              </div>
-              <div className='menuList uid'>
-                <div className='menuName'>사용자 ID</div>
-                <span className='uid'>{profile.memId}</span>
-              </div>
+              {
+                globalState.token.isLogin &&
+                <>
+                  <div className='menuList' onClick={() => {golink("secession")}}>
+                    <div className='menuName'>회원탈퇴</div>
+                    <span className='arrow'></span>
+                  </div>
+                  <div className='menuList uid'>
+                    <div className='menuName'>사용자 ID</div>
+                    <span className='uid'>{profile.memId}</span>
+                  </div>
+                </>
+              }
             </div>
           </div>
         </>
         :
         category === "policy" ?
           <Policy/>
-        :
-        category === "privacy" ?
-          <Privacy/>
-        :
-        category === "minor" ?
-          <Minor/>
-        :
-        category === "secession" ?
-          <Secession/>
-        :
-          (category === "terms" || category === "termsT") &&
-          <Terms/>
+          :
+          category === "privacy" ?
+            <Privacy/>
+            :
+            category === "minor" ?
+              <Minor/>
+              :
+              category === "secession" ?
+                <Secession/>
+                :
+                (category === "terms" || category === "termsT") &&
+                <Terms/>
       }
     </div>
   )

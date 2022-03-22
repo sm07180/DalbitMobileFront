@@ -43,7 +43,11 @@ const Customer = () => {
           <Header position={'sticky'} type={'back'}/>
           <div className='content'>
             <div className='mainText'>
-              {!globalState.token.isLogin ? <span>달라에게</span> : <span><strong>{globalState.profile.nickNm}</strong>님,</span>}
+              {!globalState.token.isLogin ?
+                <span>안녕하세요!</span>
+                :
+                <span><strong>{globalState.profile.nickNm}</strong>님,</span>
+              }
               <span>궁금한게 있으시다구요?</span>
             </div>
             <div className='subText'>
