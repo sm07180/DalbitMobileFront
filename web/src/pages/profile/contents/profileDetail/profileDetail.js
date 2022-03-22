@@ -368,7 +368,7 @@ const ProfileDetail = (props) => {
 
   return (
     <div id="profileDetail">
-      <Header title={item?.nickName} type="back">
+      <Header title="" type="back">
         <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -394,7 +394,7 @@ const ProfileDetail = (props) => {
           <pre className="text">{item?.contents}</pre>
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-              <Swiper {...swiperFeeds}>
+              {/* <Swiper {...swiperFeeds}>
                 {item.photoInfoList.map((photo) => {
                   return (
                     <div>
@@ -404,21 +404,26 @@ const ProfileDetail = (props) => {
                     </div>
                   )
                 })}
-              </Swiper>
-            </div>
-            : item?.photoInfoList?.length === 1 ?
-              <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
-                <div className="photo">
-                  <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
+              </Swiper> */}
+              {item.photoInfoList.map((photo,index) => {
+                return (
+                <div className="photo" key={index}>
+                  <img src={photo?.imgObj?.thumb500x500} alt="이미지" />
                 </div>
-              </div>
+                )
+              })}
+            </div>
+            // : item?.photoInfoList?.length === 1 ?
+            //   <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+            //     <div className="photo">
+            //       <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+            //     </div>
+            //   </div>
             : <></>
           )}
           <div className="info">
-            {/*<i className='like'></i>
-            <span>{Utility.addComma(123)}</span>*/}
-            <i className='comment'/>
-            <span>{Utility.addComma(replyList.length)}</span>
+            <i className="like">156</i>
+            <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>
         </div>
 

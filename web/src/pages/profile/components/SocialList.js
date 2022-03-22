@@ -46,16 +46,32 @@ const SocialList = (props) => {
         return (
           <div className='socialList' key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} openBlockReportPop={openBlockReportPop}
-                              modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
-                              deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
-                              photoClick={() => {photoClickEvent(item.mem_no)}}
+                        modifyEvent={() => {memNo === profile.memNo && goProfileDetailPage(modifyParam)}}
+                        deleteEvent={() => deleteContents(type, item.noticeIdx ? item.noticeIdx : item.replyIdx, profileData.memNo )}
+                        photoClick={() => {photoClickEvent(item.mem_no)}}
             />
             <div className="socialContent">
-              <div className="text"
+              <div className="text lineCut-4"
                    onClick={() => goProfileDetailPage(detailPageParam)}
                    dangerouslySetInnerHTML={{__html: Utility.nl2br(item.contents)}}
               />
-              {type === 'feed' && (item.photoInfoList.length > 1 ?
+              <div className="swiperPhoto">
+                <div className="photo grid-2">
+                  <img src="https://devphoto.dalbitlive.com/room_0/21421249200/20220321085254736329.png?500x500" alt="" />
+                  <img src="https://devphoto.dalbitlive.com/room_0/21421249200/20220321085254736329.png?500x500" alt="" />
+                </div>
+                <div className="photo grid-3">
+                  <img src="https://devphoto.dalbitlive.com/room_0/21421249200/20220321085254736329.png?500x500" alt="" />
+                  <img src="https://devphoto.dalbitlive.com/room_0/21421249200/20220321085254736329.png?500x500" alt="" />
+                  <img src="https://devphoto.dalbitlive.com/room_0/21421249200/20220321085254736329.png?500x500" alt="" />
+                  <div className="photoMore">
+                    <div className="none"></div>
+                    <div className="none"></div>
+                    <div className="count">+1</div>
+                  </div>
+                </div>
+              </div>
+              {type === 'feed' && (item.photoInfoList.length > 5 ?
                 <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
                   <Swiper {...swiperFeeds}>
                     {item.photoInfoList.map((photo, index) => {
@@ -69,16 +85,42 @@ const SocialList = (props) => {
                     })}
                   </Swiper>
                 </div>
+                : item.photoInfoList.length === 5 ?
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                    <div className="photo">
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                    </div>
+                  </div>
+                : item.photoInfoList.length === 4 ?
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                    <div className="photo">
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                    </div>
+                  </div>
+                : item.photoInfoList.length === 3 ?
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                    <div className="photo">
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                    </div>
+                  </div>
+                : item.photoInfoList.length === 2 ?
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                    <div className="photo">
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                    </div>
+                  </div>
                 : item.photoInfoList.length === 1 ?
                   <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
                     <div className="photo">
-                      <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
                     </div>
                   </div>
-                    : <></>
+                : <></>
               )}
               <div className="info">
-                <DataCnt type={"replyCnt"} value={item.replyCnt} clickEvent={() => goProfileDetailPage(detailPageParam)}/>
+                <i className="like">156</i>
+                <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{item.replyCnt}</i>
               </div>
             </div>
           </div>

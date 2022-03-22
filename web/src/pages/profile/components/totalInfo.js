@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
+import Utility from "components/lib/utility";
 import Swiper from 'react-id-swiper'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
-
+// components
+// css
 import './totalInfo.scss'
-import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
   const {data, goProfile, openPopLike, isMyProfile} = props
@@ -111,7 +112,7 @@ const TotalInfo = (props) => {
         <div className="title">방송공지</div>
         <Swiper {...swiperParams}>
           <div>
-            <div className="feedBox">
+            <div className="noticeBox">
               <div className="badge">Notice</div>
               <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
               다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
@@ -119,56 +120,11 @@ const TotalInfo = (props) => {
               <div className="info">
                 <i className="like">156</i>
                 <i className="cmt">123</i>
+                <span className="time">3시간 전</span>
               </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은</div>
-              <div className="info">Notice</div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은...</div>
-              <div className="info">Notice</div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은...</div>
-              <div className="info">Notice</div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은...</div>
-              <div className="info">Notice</div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은...</div>
-              <div className="info">Notice</div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은...</div>
-              <div className="info">Notice</div>
+              <button className="fixIcon">
+                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+              </button>
             </div>
           </div>
         </Swiper>

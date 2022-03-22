@@ -246,13 +246,13 @@ const ProfileWrite = () => {
 
   return (
     <div id="profileWrite">
-      <Header title={`${type === 'feed' ? '방송공지' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
+      <Header title={`${type === 'feed' ? '피드' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'
-                  defaultValue={formState?.contents || ''}
-                  onChange={(e) => {
-                    setFormState({...formState, contents: e.target.value});
-                  }}
+          defaultValue={formState?.contents || ''}
+          onChange={(e) => {
+            setFormState({...formState, contents: e.target.value});
+          }}
         />
         <div className="bottomGroup">
           {/*비밀글 viewOn : [0 : 비밀글, 1 : 기본]*/}

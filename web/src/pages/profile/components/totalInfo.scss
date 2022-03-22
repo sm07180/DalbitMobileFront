@@ -136,14 +136,13 @@
       } 
     }
     .swiper-slide {
-      // $colors: (#FFE8F7:#EFB5CA,#FFE6DE:#FFBBA5,#FFF6E1:#FFD471,#E2EAFF:#98B4FF,#F3EEFF:#C1A8FF,#EDF5DF:#B5D878,#E3F6F2:#7EDBC7,#E5F5FB:#89D5F1,#FFECEE:#FFAEB6);
       $boxColors: (#FFE8F7,#FFE6DE,#FFF6E1,#E2EAFF,#F3EEFF,#EDF5DF,#E3F6F2,#E5F5FB,#FFECEE);
       $badgeColors: (#EFB5CA,#FFBBA5,#FFD471,#98B4FF,#C1A8FF,#B5D878,#7EDBC7,#89D5F1,#FFAEB6);
       $colors: zip($boxColors,$badgeColors);
       @each $color in $colors {
         $i: index($colors,$color);
         &:nth-child(9n+#{$i}) {
-          .feedBox {
+          .noticeBox {
             background-color:nth($color,1);
             .badge {
               background-color:nth($color,2);
@@ -151,7 +150,8 @@
           }
         }
       }
-      .feedBox {
+      .noticeBox {
+        position:relative;
         @include flex($fd:column);
         width:266px;
         height:126px;
@@ -176,24 +176,42 @@
           @include fontLineCut;
         }
         .info {
-          @include flex;
+          @include flex(center);
           height:25px;
           margin-top:auto;
           i {
             display:inline-block;
+            padding-left:24px;
             line-height:25px;
             font-style:normal;
+            + i {
+              margin-left:10px;
+            }
             @include font(14px,$Medium,#666);
             &.like {
-              @include BGIMG("profile/icocomment-g.png");
+              @include BGIMG("profile/heart_icon-notice.png");
+              background-position:left center;
+              background-size:20px;
             }
             &.cmt {
-              @include BGIMG("profile/comment_icon-g.png");
+              @include BGIMG("profile/comment_icon-notice.png");
+              background-position:left center;
+              background-size:20px;
             }
           }
           .time {
+            margin-left:auto;
             letter-spacing: -1px;
-            @include font(12px); 
+            @include font(12px,$Medium,black);
+          }
+        }
+        .fixIcon {
+          @include position-top-right(14px,10px);
+          width:20px;
+          height:20px;
+          img {
+            width:100%;
+            height:100%;
           }
         }
       }

@@ -65,7 +65,6 @@ const ListRowComponent = (props) => {
         <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
       <div className="listBack">
-        {item.topFix === 1 && <div className="fixIcon" />}
         {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
           <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
           <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
