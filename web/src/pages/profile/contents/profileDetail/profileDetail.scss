@@ -72,24 +72,58 @@
       }
       .swiperPhoto{
         margin-bottom: 16px;
+        .photo {
+          + .photo {
+            margin-top:12px;
+          }
+          img {
+            width:100%;
+          }
+        }
       }
       .info {
         @include flex(center);
+        height:25px;
+        margin-top:auto;
         i {
           display:inline-block;
-          width:20px;height:20px;
-          margin-right:4px;
-          &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
-          &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
-          &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
-        }
-        span {
-          height:20px;
-          line-height:18px;
-          margin-right:8px;
-          @include font(13px,400,#6B6B6B);
+          padding-left:28px;
+          line-height:25px;
+          font-style:normal;
+          cursor:pointer;
+          + i {
+            margin-left:10px;
+          }
+          @include font(14px,$Medium,#666);
+          &.like {
+            @include BGIMG("profile/heart_icon-notice.png");
+            background-position:left center;
+            background-size:25px;
+          }
+          &.cmt {
+            @include BGIMG("profile/comment_icon-notice.png");
+            background-position:left center;
+            background-size:25px;
+          }
         }
       }
+      // .info {
+      //   @include flex(center);
+      //   i {
+      //     display:inline-block;
+      //     width:20px;height:20px;
+      //     margin-right:4px;
+      //     &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
+      //     &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
+      //     &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
+      //   }
+      //   span {
+      //     height:20px;
+      //     line-height:18px;
+      //     margin-right:8px;
+      //     @include font(13px,400,#6B6B6B);
+      //   }
+      // }
     }
     .listWrap {
       padding:0 16px;

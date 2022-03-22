@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
+import Utility from "components/lib/utility";
+import Swiper from 'react-id-swiper'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
-
+// components
+// css
 import './totalInfo.scss'
-import Utility from "components/lib/utility";
 
 const TotalInfo = (props) => {
   const {data, goProfile, openPopLike, isMyProfile} = props
@@ -22,6 +24,11 @@ const TotalInfo = (props) => {
       subTabType: isMyProfile ? 'fanRank' : ''
     }
     openPopLike(e, tabState)
+  }
+  
+  // 스와이퍼
+  const swiperParams = {
+    slidesPerView: 'auto',
   }
 
   useEffect(() => {
@@ -95,15 +102,33 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
-      {
-        data.profMsg &&
-          <div className="comment">
-            <div className="title">
-              <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
+      {data.profMsg &&
+        <div className="comment">
+          <div className="title">코멘트</div>
+          <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
+        </div>
+      }
+      <div className="broadcastNotice">
+        <div className="title">방송공지</div>
+        <Swiper {...swiperParams}>
+          <div>
+            <div className="noticeBox">
+              <div className="badge">Notice</div>
+              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
+              다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
+              다른 방을 청취하고 선물하는 것은</div>
+              <div className="info">
+                <i className="like">156</i>
+                <i className="cmt">123</i>
+                <span className="time">3시간 전</span>
+              </div>
+              <button className="fixIcon">
+                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+              </button>
             </div>
-            <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
           </div>
-      }      
+        </Swiper>
+      </div>
     </>
   )
 }

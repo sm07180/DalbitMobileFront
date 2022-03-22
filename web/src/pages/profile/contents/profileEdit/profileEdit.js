@@ -7,14 +7,15 @@ import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
+import DalbitCropper from "components/ui/dalbit_cropper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import PopSlide from "components/ui/popSlide/PopSlide";
 // components
 import TopSwiper from '../../components/topSwiper'
 // contents
 
 import './profileEdit.scss'
 import PasswordChange from "pages/password";
-import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import {authReq} from "pages/self_auth";
 
 const ProfileEdit = () => {

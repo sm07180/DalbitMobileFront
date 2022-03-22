@@ -15,7 +15,6 @@ import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
-import {setProfileTabData} from "redux/actions/profile";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -53,7 +52,6 @@ const ProfileDetail = (props) => {
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
-  const profileTab = useSelector(state => state.profileTab);
 
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -370,14 +368,14 @@ const ProfileDetail = (props) => {
 
   return (
     <div id="profileDetail">
-      <Header title={item?.nickName} type="back">
+      <Header title="" type="back">
         <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
             {isMore &&
               <div className="isMore">
                 {isMyContents &&
-                  <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index, dispatch, profileTab })}>
+                  <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>
                     수정하기</button>}
                 {(isMyContents || adminChecker) &&
                   <button onClick={deleteContents}>삭제하기</button>}
@@ -396,7 +394,7 @@ const ProfileDetail = (props) => {
           <pre className="text">{item?.contents}</pre>
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-              <Swiper {...swiperFeeds}>
+              {/* <Swiper {...swiperFeeds}>
                 {item.photoInfoList.map((photo) => {
                   return (
                     <div>
@@ -406,21 +404,26 @@ const ProfileDetail = (props) => {
                     </div>
                   )
                 })}
-              </Swiper>
-            </div>
-            : item?.photoInfoList?.length === 1 ?
-              <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
-                <div className="photo">
-                  <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
+              </Swiper> */}
+              {item.photoInfoList.map((photo,index) => {
+                return (
+                <div className="photo" key={index}>
+                  <img src={photo?.imgObj?.thumb500x500} alt="이미지" />
                 </div>
-              </div>
+                )
+              })}
+            </div>
+            // : item?.photoInfoList?.length === 1 ?
+            //   <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+            //     <div className="photo">
+            //       <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+            //     </div>
+            //   </div>
             : <></>
           )}
           <div className="info">
-            {/*<i className='like'></i>
-            <span>{Utility.addComma(123)}</span>*/}
-            <i className='comment'/>
-            <span>{Utility.addComma(replyList.length)}</span>
+            <i className="like">156</i>
+            <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>
         </div>
 
@@ -473,11 +476,9 @@ const ProfileDetail = (props) => {
  * targetMemNo : 글주인 memNo
  * */
 export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
-                                    index, memNo, dispatch, profileTab}) => {
+                                    index, memNo}) => {
   if(!history) return;
   if (type !== 'feed' && type !== 'fanBoard') return;
-  
-  dispatch(setProfileTabData({...profileTab, isRefresh: false, isReset: false})); // 프로필 탭 초기화 여부
 
   if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
       history.push(`/profileDetail/${memNo}/${type}/${index}`);

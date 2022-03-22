@@ -15,7 +15,7 @@ const greetingComment = [
 ]
 
 const MyInfo = (props) => {
-  const {data, openLevelPop} = props
+  const {data, openLevelPop, openPopFanStar, openPopLike} = props
   const [nowComment, setNowComment] = useState('');
 
   /* time: HH:mm:ss */
@@ -57,12 +57,18 @@ const MyInfo = (props) => {
           <span className='userId'>{data?.memId}</span>
         </div>
         <div className="count">
-          <i>팬</i>
-          <span>{data?.fanCnt}</span>
-          <i>스타</i>
-          <span>{data?.starCnt}</span>
-          <i>좋아요</i>
-          <span>{data?.likeTotCnt}</span>
+          <div data-target-type="fan" onClick={openPopFanStar}>
+            <i>팬</i>
+            <span>{data?.fanCnt}</span>
+          </div>
+          <div data-target-type="star" onClick={openPopFanStar}>
+            <i>스타</i>
+            <span>{data?.starCnt}</span>
+          </div>
+          <div data-target-type="like" onClick={openPopLike}>
+            <i>좋아요</i>
+            <span>{data?.likeTotCnt}</span>
+          </div>
         </div>
       </div>
       <div className="photoWrap">
