@@ -63,7 +63,7 @@ const ClipAudioPlayer = ()=>{
     e.stopPropagation();
     clipPlayer?.clipExit();
     sessionStorage.removeItem("clip");
-    sessionStorage.removeItem("clipPlayListInfo");
+    localStorage.removeItem("clipPlayListInfo");
   };
 
   const playerBarClickEvent = (e) => {

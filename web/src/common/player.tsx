@@ -504,7 +504,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
     if (isClip) {
       clipPlayer.clipExit();
       sessionStorage.removeItem("clip");
-      sessionStorage.removeItem("clipPlayListInfo");
+      localStorage.removeItem("clipPlayListInfo");
     } else {
       if ((rtcInfo !== null && rtcInfo !== undefined) || roomNo !== null) {
         const roomNo1 = rtcInfo ? rtcInfo.getRoomNo() : roomNo;

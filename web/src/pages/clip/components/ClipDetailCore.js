@@ -25,7 +25,7 @@ const ClipDetailCore = (props) => {
       slctType: slctType.index,
       subjectType:subjectType
     }
-    sessionStorage.setItem(
+    localStorage.setItem(
       "clipPlayListInfo",
       JSON.stringify(playListInfoData)
     );

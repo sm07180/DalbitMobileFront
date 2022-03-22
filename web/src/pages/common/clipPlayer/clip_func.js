@@ -42,7 +42,7 @@ export const clipJoin = (data, dispatch, globalState, webview, isPush) => {
     }
   }
 
-  let playListData = JSON.parse(sessionStorage.getItem('clipPlayListInfo'))
+  let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
   let url = ''
   let currentType = ''
   if (playListData) {
