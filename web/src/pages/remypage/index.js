@@ -21,7 +21,11 @@ import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import Notice from "pages/remypage/contents/notice/Notice";
 import {useDispatch, useSelector} from "react-redux";
-import {setSlidePopupOpen} from "redux/actions/common";
+import {setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
+
+// 프로필 폴더에서 가져옴
+import FanStarPopup from "../profile/components/popSlide/FanStarPopup"
+import LikePopup from "../profile/components/popSlide/LikePopup"
 
 const myMenuItem = [
   {menuNm: '서비스 설정', path:'setting', isNew: false},
@@ -40,7 +44,10 @@ const Remypage = () => {
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
   const dispatch = useDispatch();
-  
+  const popup = useSelector(state => state.popup);
+
+  const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
+  const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -78,6 +85,65 @@ const Remypage = () => {
         })
       }
     });
+  }
+
+  //슬라이드 팝업 열고 닫기
+  const openPopFanStar = (e) => {
+    const {targetType} = e.currentTarget.dataset;
+    e.stopPropagation()
+    setOpenFanStarType(targetType)
+    console.log('11');
+    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+  }
+
+  const openPopLike = (e, tabState) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setLikePopTabState(tabState)
+    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+  }
+  
+  /* 팬 등록 해제 */
+  const fanToggle = (memNo, memNick, isFan, callback) => {
+    isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  }
+
+  /* 팬 등록 */
+  const addFan = (memNo, memNick, callback) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        if(typeof callback === 'function') callback();
+        context.action.toast({
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    })
+  }
+
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick, callback) => {
+    context.action.confirm({
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            if(typeof callback === 'function') callback();
+            context.action.toast({ msg: res.message })
+          } else if (res.result === 'fail') {
+            context.action.alert({ msg: res.message })
+          }
+        });
+      }
+    })
+  }
+  
+  /* 팝업 닫기 공통 */
+  const closePopupAction = () => {
+    closePopup(dispatch);
   }
 
   // 프로필 페이지로 이동
@@ -141,7 +207,7 @@ const Remypage = () => {
         <div id="remypage">
           <Header title={'MY'} />
           <section className="myInfo" onClick={goProfile}>
-            <MyInfo data={profile} openLevelPop={openLevelPop} />
+            <MyInfo data={profile} openLevelPop={openLevelPop} openPopFanStar={openPopFanStar} openPopLike={openPopLike} />
           </section>
           <section className='mydalDetail'>
             <div className="dalCount">
@@ -191,6 +257,36 @@ const Remypage = () => {
                 <div className="exp">다음 레벨까지 {profile?.expNext} EXP 남음</div>
                 <SubmitBtn text="확인" onClick={closeLevelPop} />
               </section>
+            </PopSlide>
+          }
+
+          {/* 팬 / 스타 */}
+          {popup.fanStarPopup &&
+            <PopSlide>
+              <FanStarPopup 
+                type={openFanStarType} 
+                isMyProfile={true} 
+                fanToggle={fanToggle} 
+                profileData={profile}
+                goProfile={goProfile}
+                myMemNo={profile.memNo}
+                closePopupAction={closePopupAction} />
+            </PopSlide>
+          }
+          
+
+          {/* 좋아요 */}
+          {popup.likePopup &&
+            <PopSlide>
+              <LikePopup 
+                isMyProfile={true} 
+                fanToggle={fanToggle} 
+                profileData={profile} 
+                goProfile={goProfile}
+                myMemNo={profile.memNo} 
+                likePopTabState={likePopTabState} 
+                closePopupAction={closePopupAction}
+              />
             </PopSlide>
           }
         </div>

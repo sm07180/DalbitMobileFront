@@ -14,16 +14,11 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import {setProfileTabData} from "redux/actions/profile";
-import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
-
-  const dispatch = useDispatch();
-  const profileTab = useSelector(state => state.profileTab);
 
   //context
   const context = useContext(Context);
@@ -99,9 +94,7 @@ const ProfileWrite = () => {
         context.action.toast({msg: message});
 
         if (result === 'success') {
-          dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
           history.goBack();
-          // location.replace("/myProfile");
         }
       });
     } else if (type === 'fanBoard') {
@@ -115,7 +108,6 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
     }
@@ -140,7 +132,6 @@ const ProfileWrite = () => {
       });
       context.action.toast({msg: message});
       if (result === 'success') {
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
 
@@ -155,7 +146,6 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
       } else {
@@ -256,13 +246,13 @@ const ProfileWrite = () => {
 
   return (
     <div id="profileWrite">
-      <Header title={`${type === 'feed' ? '피드' : '팬보드'} ${action === 'write' ? '작성' : '수정'}`} type={'back'}/>
+      <Header title={`${type === 'feed' ? '피드' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'
-                  defaultValue={formState?.contents || ''}
-                  onChange={(e) => {
-                    setFormState({...formState, contents: e.target.value});
-                  }}
+          defaultValue={formState?.contents || ''}
+          onChange={(e) => {
+            setFormState({...formState, contents: e.target.value});
+          }}
         />
         <div className="bottomGroup">
           {/*비밀글 viewOn : [0 : 비밀글, 1 : 기본]*/}
@@ -291,6 +281,7 @@ const ProfileWrite = () => {
         {/*사진 리스트 스와이퍼*/}
         {type === 'feed' &&
         <div className="insertGroup">
+          {/* 피드로 바뀌면 이거 쓰면 됨
           <div className="title">사진 첨부<span>(최대 10장)</span></div>
             <Swiper {...swiperParams} ref={photoListSwiperRef}>
               {formState?.photoInfoList.map((data, index) =>
@@ -311,34 +302,35 @@ const ProfileWrite = () => {
                   <button className='insertBtn'>+</button>
                 </label>)}
             </Swiper>
-          {/*<div className="title">사진 첨부</div>*/}
-          {/*<div className={"swiper-container"}>*/}
-          {/*  <div className={"swiper-wrapper"}>*/}
-          {/*    {formState?.photoInfoList[0] ?*/}
-          {/*      <label className={"swiper-slide"} onClick={(e) => {*/}
-          {/*        e.stopPropagation();*/}
-          {/*        e.preventDefault();*/}
-          {/*      }}>*/}
-          {/*        <div className="insertPicture"*/}
-          {/*             onClick={() => setShowSlide({show: true, viewIndex: 0})}>*/}
-          {/*          <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>*/}
-          {/*        </div>*/}
-          {/*        <button className="cancelBtn"*/}
-          {/*                onClick={(e) => {*/}
-          {/*                  e.preventDefault();*/}
-          {/*                  deleteThumbnailImageList([formState?.photoInfoList[0]], 0)*/}
-          {/*                }}/>*/}
-          {/*      </label>*/}
-          {/*      :*/}
-          {/*      <label className={"swiper-slide"}*/}
-          {/*             onClick={(e) => {*/}
-          {/*               inputRef?.current?.click();*/}
-          {/*             }}>*/}
-          {/*        <button className='insertBtn'>+</button>*/}
-          {/*      </label>*/}
-          {/*    }*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          */}
+          <div className="title">사진 첨부</div>
+          <div className={"swiper-container"}>
+            <div className={"swiper-wrapper"}>
+              {formState?.photoInfoList[0] ?
+                <label className={"swiper-slide"} onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}>
+                  <div className="insertPicture"
+                       onClick={() => setShowSlide({show: true, viewIndex: 0})}>
+                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>
+                  </div>
+                  <button className="cancelBtn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            deleteThumbnailImageList([formState?.photoInfoList[0]], 0)
+                          }}/>
+                </label>
+                :
+                <label className={"swiper-slide"}
+                       onClick={(e) => {
+                         inputRef?.current?.click();
+                       }}>
+                  <button className='insertBtn'>+</button>
+                </label>
+              }
+            </div>
+          </div>
         </div>
         }
         <div className="insertButton">
