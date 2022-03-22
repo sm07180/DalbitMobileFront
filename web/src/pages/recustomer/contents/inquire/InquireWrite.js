@@ -197,7 +197,7 @@ const Write = (props) => {
     <div id='inquireWrite'>
       {!context.token.isLogin &&
       <InputItems title="연락처">
-        <input type="text" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
+        <input type="number" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
       </InputItems>
       }
       <InputItems title="문의 제목">
@@ -229,14 +229,26 @@ const Write = (props) => {
       {popup &&
       <LayerPopup setPopup={setPopup}>
         <div className='popTitle'>개인정보 수집 및 이용에 동의</div>
-        <div className='popContent'>
-          <ul className='dashList'>
-            <li>수집 및 이용 항목 : 닉네임, 이메일, 휴대전화번호</li>
-            <li>수집 및 이용 목적 : 문의에 대한 답변 관련 업무</li>
-            <li>보유 및 이용 기간 : 6개월</li>
-            <li>회사는 문의에 대한 답변을 위한 목적으로 관계 법령에 따라 정보 수집 및 이용에 동의를 얻어 수집 합니다.</li>
-          </ul>
-        </div>
+        {!context.token.isLogin ?
+          <div className='popContent'>
+            <ul className='dashList'>
+              <li>수집 및 이용 항목 : 휴대전화번호</li>
+              <li>수집 및 이용 목적 : 문의에 대한 답변 관련 업무</li>
+              <li>보유 및 이용 기간 : 6개월</li>
+              <li>회사는 문의에 대한 답변을 위한 목적으로 관계 법령에 따라 정보 수집 및 이용에 동의를 얻어 수집 합니다.</li>
+            </ul>
+          </div>
+          :
+          <div className='popContent'>
+            <ul className='dashList'>
+              <li>수집 및 이용 항목 : 닉네임, 이메일, 휴대전화번호</li>
+              <li>수집 및 이용 목적 : 문의에 대한 답변 관련 업무</li>
+              <li>보유 및 이용 기간 : 6개월</li>
+              <li>회사는 문의에 대한 답변을 위한 목적으로 관계 법령에 따라 정보 수집 및 이용에 동의를 얻어 수집 합니다.</li>
+            </ul>
+          </div>
+        }
+
       </LayerPopup>
       }
     </div>
