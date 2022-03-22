@@ -24,7 +24,7 @@ import "./tab_contents.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {
   setGlobalCtxAlertStatus, setGlobalCtxClipInfoAdd,
-  setGlobalCtxClipPlayerInit, setGlobalCtxClipPlayListTabAdd,
+  setGlobalCtxClipPlayerInit, setGlobalCtxClipPlayListAdd, setGlobalCtxClipPlayListTabAdd,
   setGlobalCtxClipPlayMode
 } from "../../../redux/actions/globalCtx";
 
@@ -121,9 +121,9 @@ export default function ClipContent() {
     if (playListInfo.hasOwnProperty("type") && playListInfo.type === "one") {
       dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
       if (globalState.clipPlayMode !== "shuffle") {
-        return dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
+        return dispatch(setGlobalCtxClipPlayListAdd(oneData))
       } else {
-        dispatch(setGlobalCtxClipPlayListTabAdd(globalState.clipPlayList));
+        dispatch(setGlobalCtxClipPlayListAdd(globalState.clipPlayList))
       }
     }
     if (playListInfo.hasOwnProperty("listCnt")) {
@@ -165,9 +165,9 @@ export default function ClipContent() {
     if (res.result === "success") {
       dispatch(setGlobalCtxClipPlayListTabAdd(res.data.list));
       if (globalState.clipPlayMode !== "shuffle") {
-        dispatch(setGlobalCtxClipPlayListTabAdd(res.data.list));
+        dispatch(setGlobalCtxClipPlayListAdd(res.data.list));
       } else {
-        dispatch(setGlobalCtxClipPlayListTabAdd(globalState.clipPlayList));
+        dispatch(setGlobalCtxClipPlayListAdd(globalState.clipPlayList));
       }
     } else {
       dispatch(setGlobalCtxAlertStatus({
