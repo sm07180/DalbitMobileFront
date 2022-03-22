@@ -209,7 +209,11 @@ const ClipPage = () => {
                     if (Object.keys(coreRow).length > 0) {
                       return (<HotClip key={coreIndex} info={coreRow} playAction={(e)=>{
                         const playListInfoData = {
-                        type:'one'
+                          slctType: 2,
+                          dateType: 0,
+                          page: 1,
+                          records: 100,
+                          type:'one'
                       }
                         sessionStorage.setItem(
                           "clipPlayListInfo",
@@ -255,6 +259,10 @@ const ClipPage = () => {
             <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
             <SwiperList data={listenClipInfo.list} playAction={(e)=>{
               const playListInfoData = {
+                slctType: 4,
+                dateType: 0,
+                page: 1,
+                records: 100,
                 type:'one'
               }
               sessionStorage.setItem(
@@ -270,6 +278,10 @@ const ClipPage = () => {
             <ClipSubTitle title={'좋아요한 클립'} more={'clip/like/list'}/>
             <SwiperList data={likeClipInfo.list} playAction={(e)=>{
               const playListInfoData = {
+                slctType: 3,
+                dateType: 0,
+                page: 1,
+                records: 100,
                 type:'one'
               }
               sessionStorage.setItem(
