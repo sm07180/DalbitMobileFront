@@ -26,7 +26,7 @@ const SettingBroadcast = () => {
   const [menuListInfo, setMenuListInfo] = useState([
     {text:'방송 제목', path: '/setting/streaming/title'},
     {text:'DJ 인사말', path: '/setting/streaming/greeting'},
-    {text:'방송 공지', path: '/setting/streaming/broadcastNotice'},
+    {text:'방송방 공지', path: '/setting/streaming/broadcastNotice'},
     {text:'퀵 메시지', path: '/setting/streaming/message'},
     {text:'방송 청취 정보 공개', path: '/setting/streaming/infoOpen'},
     {text:'선물 시 자동 스타 추가', value: false},
