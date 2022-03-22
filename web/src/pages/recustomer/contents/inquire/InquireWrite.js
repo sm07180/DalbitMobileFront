@@ -248,7 +248,6 @@ const Write = (props) => {
             </ul>
           </div>
         }
-
       </LayerPopup>
       }
     </div>

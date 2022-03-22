@@ -21,20 +21,21 @@ const Inquire = () => {
   return (
     <div id="inquire">
       <Header title="1:1 문의" type="back"/>
-      <div className='subContent'>
-        {!context.token.isLogin &&
-        <>
-          <Tabmenu data={"문의하기"} tab={"문의하기"} setTab={"문의하기"} />
-          <InquireWrite setInquire={"문의하기"} />
-        </>
-        }
-        <Tabmenu data={inquireTabmenu} tab={inquire} setTab={setInquire} />
-        {inquire === '문의하기' ?
-          <InquireWrite setInquire={setInquire}/>
+      {context.token.isLogin ?
+        <div className='subContent'>
+          <Tabmenu data={inquireTabmenu} tab={inquire} setTab={setInquire} />
+          {inquire === '문의하기' ?
+            <InquireWrite setInquire={setInquire}/>
+            :
+            <InquireLog/>
+          }
+        </div>
         :
-          <InquireLog/>
-        }
-      </div>
+        <div className='subContent'>
+          <InquireWrite setInquire={setInquire}/>
+        </div>
+      }
+
     </div>
   )
 }
