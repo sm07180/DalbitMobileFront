@@ -12,6 +12,7 @@ import ClipPlayerBanner from "./player_banner";
 import {useSelector} from "react-redux";
 
 export default () => {
+  const history = useHistory();
   const globalState = useSelector(({globalCtx})=> globalCtx);
   const { clipInfo, clipPlayMode } = globalState;
   const { clipPlayer } = globalState;
@@ -31,7 +32,7 @@ export default () => {
     window.scrollTo(0, 0);
     return () => {
       clipAudioTag?.removeEventListener("ended", ()=>{
-        audioEndHandler({globalState})
+        audioEndHandler({history, globalState})
       });
     };
   }, []);
@@ -39,12 +40,12 @@ export default () => {
   useEffect(() => {
     if (globalState.clipPlayList!.length > 0) {
       clipAudioTag?.addEventListener("ended", ()=>{
-        audioEndHandler({globalState})
+        audioEndHandler({history, globalState})
       });
     }
     return () => {
       clipAudioTag?.removeEventListener("ended", ()=>{
-        audioEndHandler({globalState})
+        audioEndHandler({history, globalState})
       });
     };
   }, [globalState.clipPlayList, clipPlayMode]);
@@ -75,8 +76,7 @@ export default () => {
 };
 
 
-export const audioEndHandler = async ({globalState}) => {
-  const history = useHistory();
+export const audioEndHandler = async ({history, globalState}) => {
   const { clipPlayer, clipPlayMode } = globalState;
     console.log("audioEndHandler====>",clipPlayMode,clipPlayer)
   if (globalState.clipPlayList?.length === 0) return null;
