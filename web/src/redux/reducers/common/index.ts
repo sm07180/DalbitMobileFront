@@ -5,6 +5,7 @@ const initialState:CommonState = {
   isLoading:false,
   isDesktop:false,
   isRefresh: false,
+  isWebView: '',
 }
 
 const common = createReducer<CommonState,CommonActions>(initialState,{
@@ -20,6 +21,9 @@ const common = createReducer<CommonState,CommonActions>(initialState,{
   },
   "common/SET_IS_REFRESH": (state, {payload}) => {
     return {...state, isRefresh: payload}
+  },
+  "common/SET_IS_WEBVIEW": (state, {payload}) => {
+    return {...state, isWebView: payload}
   }
 });
 

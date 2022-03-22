@@ -6,7 +6,7 @@ import Swiper from 'react-id-swiper'
 // components
 // css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
 import {useSelector} from "react-redux";
 
@@ -33,7 +33,7 @@ const SwiperList = (props) => {
 
   const goLive = (item) => {
     const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
-    RoomValidateFromClip(item.roomNo, context, history, memNick);
+    RoomValidateFromClipMemNo(item.roomNo, item.memNo, context, history, memNick);
   }
 
   const swiperRefresh = () => {

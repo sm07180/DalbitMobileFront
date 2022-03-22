@@ -685,14 +685,14 @@ const App = () => {
                 <Layout>
                   <Route />
                 </Layout>
-                {globalCtx.globalState.broadcastAdminLayer.status && globalCtx.globalState.baseData.isLogin && <AdminLayerPopup />}
-              </>
+                </>
             }
             { !isDesktop &&
               <LayoutMobile status="no_gnb">
                   <Route />
               </LayoutMobile>
             }
+            {globalCtx.globalState.broadcastAdminLayer.status && globalCtx.globalState.baseData.isLogin && <AdminLayerPopup />}
             <Alert />
             <MoveToAlert />
             {isFooterPage && <Navigation />}

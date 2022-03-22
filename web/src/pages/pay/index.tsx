@@ -8,9 +8,11 @@ export default function Payment() {
     try {
       if (window.fbq) {
         window.fbq("track", "Purchase", { price: amount });
+        // window.fbq("track", "Buy_moon");
       }
       if (window.firebase) {
         window.firebase.analytics().logEvent("Purchase", { price: amount });
+        // window.firebase.analytics().logEvent("Buy_moon");
       }
       if (window.kakaoPixel) {
         window.kakaoPixel("114527450721661229").purchase({ total_price: amount, currency: "KRW" });

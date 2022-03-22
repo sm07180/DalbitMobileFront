@@ -1,17 +1,14 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext} from 'react'
 import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
-import styled from 'styled-components'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 
 //context
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
 
 //layout
-import Layout from 'pages/common/layout'
 import Header from 'components/ui/header/Header'
 
 import './selfAuth.scss'
@@ -56,12 +53,13 @@ export const openAuthPage = (formTagRef, context) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef, context, pushLink) => {
+export const authReq = async (code, formTagRef, context, pushLink, memNo) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
       authType: '0',
       pushLink: pushLink ? encodeURIComponent(pushLink) : 'none',
+      memNo
     }
   })
   if (res.result == 'success' && res.code == 0) {
