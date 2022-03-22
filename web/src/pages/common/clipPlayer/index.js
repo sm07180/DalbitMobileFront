@@ -68,7 +68,7 @@ export default (props) => {
     }
   }
 
-  if (!clipState || clipPlayerInfo === null || webview === 'new' || Utility.getCookie('clip-player-info') == undefined)
+  if (!clipState || clipPlayerInfo === null || !clipPlayerInfo || webview === 'new' || Utility.getCookie('clip-player-info') == undefined)
     return null
 
   //------------------------------------------------------------------------
