@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
@@ -28,8 +28,10 @@ const ProfileDetail = (props) => {
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
   const replyIsMoreRef = useRef(null);
+  const infoRef = useRef(null);
 
   //팝업 사진 스와이퍼
+  const [tooltipEvent, setTooltipEvent] = useState(false);
   const [showSlide, setShowSlide] = useState(false);
   const [imgList, setImgList] = useState([]);
 
@@ -167,6 +169,19 @@ const ProfileDetail = (props) => {
     }
     blurBlockStatus.current = false;
   };
+
+  // 좋아요 툴팁 이벤트
+  const tooltipScrollEvent = useCallback(() => {
+    const infoNode = infoRef.current;
+    const infoPosition = infoNode.offsetTop;
+    const scrollBottom = window.scrollY + document.documentElement.clientHeight - 100;
+
+    console.log(infoPosition,scrollBottom);
+
+    if (scrollBottom > infoPosition) {
+      setTooltipEvent(true);
+    }
+  }, []);
 
   useEffect(() => {
     getAllData(1, 9999);
@@ -366,6 +381,13 @@ const ProfileDetail = (props) => {
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
+  useEffect(() => {
+    document.addEventListener('scroll', tooltipScrollEvent);
+    return () => {
+      document.removeEventListener('scroll', tooltipScrollEvent);
+    }
+  },[])
+
   return (
     <div id="profileDetail">
       <Header title="" type="back">
@@ -421,8 +443,15 @@ const ProfileDetail = (props) => {
             //   </div>
             : <></>
           )}
-          <div className="info">
-            <i className="like">156</i>
+          <div className="info" ref={infoRef}>
+            <i className="like">
+              {Utility.addComma(1111)}
+              {tooltipEvent &&
+                <div className="likeTooltip">
+                  <img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" />
+                </div>
+              }
+            </i>
             <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>
         </div>

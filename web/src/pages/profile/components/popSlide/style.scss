@@ -2,7 +2,7 @@
 
 #popSlide {
   // 팬 스타 좋아요 보기
-  .FanStarLike {
+  .fanStarLike {
     @include flex($fd:column);
     width:100%;
     height:540px;
@@ -316,5 +316,25 @@
         }
       }
     }
-  }  
+  }
+  // 사진 순서 변경
+  .photoChangeOrder {
+    position:relative;
+    width:100%;
+    .gridSection {
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      grid-template-rows: repeat(3,1fr);
+      gap:8px;
+      padding:18px 16px 56px;
+      .item {
+        width:100%;height:100%;
+        text-align:center;
+        img {
+          width:100%;
+          border-radius:8px;
+        }
+      }
+    }
+  }
 }

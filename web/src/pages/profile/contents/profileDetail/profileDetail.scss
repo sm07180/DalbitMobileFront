@@ -1,4 +1,5 @@
 @import "components/ui/_mixin.scss";
+@import "components/ui/_animation.scss";
 
 #profileDetail {
   flex:1;
@@ -96,9 +97,27 @@
           }
           @include font(14px,$Medium,#666);
           &.like {
+            position:relative;
             @include BGIMG("profile/heart_icon-notice.png");
             background-position:left center;
             background-size:25px;
+            .likeTooltip {
+              @include position-top-left(-64px);
+              width:187px;
+              height:60px;
+              animation: jello-vertical .9s both, hideAni 5.9s both;
+              // animation: wobble-ver-left .9s both, hideAni 5.9s both;
+              // transform-origin: bottom left;
+              @keyframes hideAni {
+                0% {opacity: 1;}
+                99% {opacity:1;width:187px;height:60px;}
+                100% {opacity: 0;width:0;height:0;}
+              }
+              img {
+                width:100%;
+                vertical-align: bottom;
+              }
+            }
           }
           &.cmt {
             @include BGIMG("profile/comment_icon-notice.png");

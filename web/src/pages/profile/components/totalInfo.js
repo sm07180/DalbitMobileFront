@@ -123,7 +123,7 @@ const TotalInfo = (props) => {
                 <span className="time">3시간 전</span>
               </div>
               <button className="fixIcon">
-                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+                <img src={`${IMG_SERVER}/profile/bookmark-off.png`} />
               </button>
             </div>
           </div>
