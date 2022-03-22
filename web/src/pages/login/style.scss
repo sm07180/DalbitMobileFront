@@ -56,6 +56,14 @@ $btnDisable : #FFD8E4;
         background: lighten($btnActive, 2%);
       }
     }
+    .downloadBtn{
+      width: 180px;
+      height: 54px;
+      img{width: 100%;}
+      &+.downloadBtn{
+        margin-top: 16px;
+      }
+    }
   }
   .loginSns {
     padding-top:36px;
@@ -101,6 +109,15 @@ $btnDisable : #FFD8E4;
         background-color: #f9e000;
         color: #381e1f;
         border: none;
+      }
+    }
+    p {
+      margin-top: 20px;
+      text-align: center;
+      @include font(12px, 500, #666666);
+      span {
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
   }
@@ -166,13 +183,13 @@ $btnDisable : #FFD8E4;
             position: relative;
             @include flex(center);
             width: 100%;
-            margin-bottom: 20px;                    
+            margin-bottom: 20px;
             .checkinfo {
               @include font(14px, 400, #43464A);
-            }         
+            }
           }
           &:last-child {
-            margin-bottom: 0px;   
+            margin-bottom: 0px;
           }
         }
         .inputLabel {
@@ -196,8 +213,8 @@ $btnDisable : #FFD8E4;
             background-image: url("https://image.dalbitlive.com/common/input/checkbox-default.png");
             background-position: center;
             background-repeat: no-repeat;
-            background-size: cover;              
-          }  
+            background-size: cover;
+          }
           .blind:checked + .checkIcon{
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E ");
           }
@@ -247,8 +264,8 @@ $btnDisable : #FFD8E4;
       }
       .popContent {
         width: 100%; max-height: 400px;
-        overflow: auto;        
+        overflow: auto;
       }
-    }   
+    }
   }
 }

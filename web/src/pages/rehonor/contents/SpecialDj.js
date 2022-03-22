@@ -11,7 +11,7 @@ import DetailView from '../components/DetailView'
 import Api from "context/api";
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 
 const SpecialDj = (props) => {
@@ -76,7 +76,7 @@ const SpecialDj = (props) => {
     props.history.push(`/profile/${memNo}`)
   }
 
-  const goLive = (roomNo, nickNm) => {
+  const goLive = (roomNo, memNo, nickNm) => {
     if (context.token.isLogin === false) {
       context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
@@ -86,9 +86,9 @@ const SpecialDj = (props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
-        RoomJoin({roomNo: roomNo, nickNm: nickNm})
+        RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm})
       }
     }
   }
@@ -114,7 +114,7 @@ const SpecialDj = (props) => {
                     }
                     {list.roomNo && <span className='live' onClick={(e) => {
                       e.stopPropagation();
-                      goLive(list.roomNo, list.nickNm);
+                      goLive(list.roomNo, list.memNo, list.nickNm);
                     }}>LIVE</span>}
                   </div>
                   <div className="photo" onClick={() => goProfile(list.memNo)}>

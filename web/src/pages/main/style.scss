@@ -38,7 +38,7 @@
     height:360px;
     margin-bottom:0px;
     + .favorites {
-      margin-top: 8px;
+      margin-top: 16px;
     }
     + .top10 {
       margin-top: 24px;
@@ -189,6 +189,9 @@
               background-color: white;
               @include border(white,50%,3px);
             }
+            &.off{
+              background:#ccc !important;
+            }
           }
           p {
             width: 100%;
@@ -196,6 +199,19 @@
             @include font(12px,$Regular,#303030);
             @include fontCut;
             box-sizing: border-box;
+          }
+        }
+        .listMoreBox{
+          @include flex(center, center);
+          height: 80px;
+          .listMore{
+            @include flex(center, center);
+            width: 70px;
+            height: 70px;
+            background-color: #f6f6f6;
+            border-radius: 100%;
+            @include font(20px, $Bold, #acacac);
+            cursor: pointer;
           }
         }
       }

@@ -44,6 +44,18 @@ const LoginPage = () => {
             <p className='subText'>로그인 후 이용할 수 있습니다.</p>
           </div>
           <button className='loginBtn' onClick={loginStart}>로그인</button>
+          
+          {/*ios 모바일 웹 일 경우*/}
+          {/* <div className="textWrap">
+            <p className='mainText'>요즘 대세 라이브는?<br/>당근 달라지!</p>
+            <p className='subText'>여기서 뭐해요? 빨리 와서 같이 놀아요!</p>
+          </div>
+          <button className="downloadBtn">
+            <img src="https://image.dalbitlive.com/login/dalla/download-google.png" alt="구글 플레이스토어 다운로드" />
+          </button>
+          <button className="downloadBtn">
+            <img src="https://image.dalbitlive.com/login/dalla/download-apple.png" alt="애플 앱스토어 다운로드" />
+          </button> */}
         </section>
       </div>
     )

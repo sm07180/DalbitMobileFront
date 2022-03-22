@@ -6,7 +6,7 @@ import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {Context} from "context";
 
 const LiveView = (props) => {
@@ -69,7 +69,7 @@ const LiveView = (props) => {
                 id={`${timeRank === "타임 1위" ? "timeRankwer1st" : timeRank === "타임 2위" ? "timeRankwer2nd" : timeRank === "타임 3위" ? "timeRankwer3rd" : ""}`}
                 key={index}
                 onClick={() => {
-                  RoomValidateFromClip(list.roomNo, context, locationStateHistory, list.bjNickNm);
+                  RoomValidateFromClipMemNo(list.roomNo, list.bjMemNo, context, locationStateHistory, list.bjNickNm);
                 }}
               >
                 <div className="photo">

@@ -8,6 +8,7 @@
         .wrap {
             @include flex(flex-start, flex-start, column);
             margin-bottom: 20px;
+            width: 100%;
         }
         h3 {
             @include font(16px, 700, #202020);
@@ -22,6 +23,25 @@
             line-height: 20px;
             word-break: keep-all;
             letter-spacing: -1px;
+        }
+        strong {
+            font-weight: 600;
+        }
+        .monitoring {
+            flex: 1;
+            display: grid;
+            grid-gap: 4px;
+            grid-template-columns: repeat(4,1fr);
+            grid-template-rows: repeat(2,1fr);
+            width: 100%;
+            span {
+                flex: 1;
+                @include flex(center, center);
+                height: 36px;
+                border-radius: 4px;
+                border: 1px solid #cbcbcb;
+                @include font(13px, 400, #666);
+            }
         }
         .list {
             position: relative;
@@ -151,7 +171,7 @@
             }
         }
         .tableCel {            
-            margin: 30px 0 12px 0;
+            margin: 10px 0 12px 0;
             border-top: 1px solid #FF3C7B;
             border-collapse: collapse;
             th {

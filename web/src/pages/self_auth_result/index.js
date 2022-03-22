@@ -1,5 +1,4 @@
 import React, {useContext, useState, useEffect} from 'react'
-import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory, useLocation} from 'react-router-dom'
 import qs from 'query-string'
@@ -7,7 +6,6 @@ import {Hybrid} from 'context/hybrid'
 
 //context
 import {Context} from 'context'
-import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Header from 'components/ui/header/Header'
@@ -16,6 +14,7 @@ import {IMG_SERVER} from 'context/config'
 //
 import './selfAuthResult.scss'
 import {isDesktop} from "lib/agent";
+import {postSleepMemUpd} from "common/api";
 
 //
 export default (props) => {
@@ -26,7 +25,7 @@ export default (props) => {
   const location = useLocation()
 
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-  const {result, code, message, returntype, url, pushLink} = qs.parse(location.search)
+  const {result, code, message, returntype, url, pushLink, phoneNum, memNo} = qs.parse(location.search)
 
   /**
    * authState
@@ -36,6 +35,7 @@ export default (props) => {
    * 4 : 프로필에서 본인인증 완료 후
    */
   const [authState, setAuthState] = useState(0)
+  const [dupCheck, setDupCheck] = useState(false);
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
@@ -67,14 +67,14 @@ export default (props) => {
           window.location.href = '/'
         }
       })
-    } else if(url === '10') {
-      setAuthState(10)
     } else if (returntype === 'profile') {
       setAuthState(4)
     } else if (returntype === 'create') {
       setAuthState(5)
     } else if (returntype === 'join') {
       setAuthState(6)
+    } else if (returntype === 'sleep') {
+      setAuthState(7)
     } else if (returntype === 'event') {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
@@ -260,6 +260,34 @@ export default (props) => {
             </div>
           </div>
         )
+      case 7:
+        if(!dupCheck) {
+          setDupCheck(true);
+          // code0: null, message: "본인인증 성공하였습니다.", result: "success", returntype: "sleep", state: "auth"
+        }
+        return (
+          <div id="selfAuthResult">
+            <section className="resultWrap">
+              <div className="img_wrap">
+                <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
+              </div>
+              <div className="auth-wrap">
+                <div className="btn-wrap">
+                  <button
+                    onClick={() => {
+                      if(isDesktop()) {
+                        window.close()
+                      }else {
+                        history.push('/login');
+                      }
+                    }}
+                  >확인
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        )
       case 9:
         return (
           <div className="auth-wrap">
@@ -275,20 +303,6 @@ export default (props) => {
                     window.location.href = '/'
                   }
                 }}
-              >확인
-              </button>
-            </div>
-          </div>
-        )
-      case 10:
-        return (
-          <div className="auth-wrap">
-            <h5>
-              본인 인증이 완료되었습니다.
-            </h5>
-            <div className="btn-wrap">
-              <button
-                onClick={() => history.push('/event/tree')}
               >확인
               </button>
             </div>
@@ -334,27 +348,80 @@ export default (props) => {
     }
   }
 
+  useEffect(() => {
+    if(dupCheck) {
+      if(isDesktop()) {
+        window.opener.location.href = '/login';
+      }
+      /* 휴면 해제 체크 */
+      postSleepMemUpd({memNo, memPhone: phoneNum}).then(res => {
+        const resultCode = res.code;
+        if(resultCode === '0') {
+          context.action.alert({
+            title: '휴면상태가 해제되었습니다.',
+            msg: `해제된 계정으로 다시 로그인하시면 달라의\n모든 서비스를 이용할 수 있습니다.`,
+            callback: () => {
+              if(isDesktop()) {
+                window.close();
+              }else {
+                history.push('/login');
+              }
+            }
+          })
+        }else if(resultCode === '-1') {
+          context.action.alert({
+            title: '기존 정보와 일치하지 않습니다.',
+            msg: `이용에 어려움이 발생한 경우 고객센터(1522-0251 혹은 help@dallalive.com)로 문의주시기 바랍니다.`,
+            callback: () => {
+              if(isDesktop()) {
+                window.close();
+              }else {
+                history.push('/login');
+              }
+            }
+          })
+        }else {
+          context.action.alert({
+            title: '기존 정보와 일치하지 않습니다.',
+            msg: res.message,
+            callback: () => {
+              if(isDesktop()) {
+                window.close();
+              }else {
+                history.push('/login');
+              }
+            }
+          })
+        }
+      })
+    }
+  }, [dupCheck])
+
   //---------------------------------------------------------------------
   return (
-    <div id="selfAuthResult">
-      {authState === 0 ? (
-        <></>
-      ) :
-        (authState === 4 || authState === 12) ?
-          <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
-        : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+    <>
+      {authState === 7 ? createResult() :
+        <div id="selfAuthResult">
+          {authState === 0 ? (
+              <></>
+            ) :
+            (authState === 4 || authState === 12) ?
+              <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
+              : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+          }
+          <section className="resultWrap">
+            {authState !== 0 && (
+              <>
+                <div className="img_wrap">
+                  <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
+                </div>
+                <h2>본인 인증 완료</h2>
+                {createResult()}
+              </>
+            )}
+          </section>
+        </div>
       }
-      <section className="resultWrap">
-        {authState !== 0 && (
-          <>
-            <div className="img_wrap">
-              <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
-            </div>
-            <h2>본인 인증 완료</h2>
-            {createResult()}
-          </>
-        )}
-      </section>
-    </div>
+    </>
   )
 }

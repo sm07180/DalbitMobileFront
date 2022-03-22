@@ -9,14 +9,14 @@ import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {IMG_SERVER} from 'context/config'
 import {RoomJoin} from "context/room";
 import {Context, GlobalContext} from "context";
-import {RoomValidateFromClip} from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 // components
 // css
 
 export default withRouter((props) => {
-  const {data, children, tab} = props;
+  const {data, children, tab, topRankList} = props;
 
   const context = useContext(Context);
 
@@ -24,7 +24,7 @@ export default withRouter((props) => {
 
   const history = useHistory();
 
-  const goLive = (roomNo, nickNm, listenRoomNo) => {
+  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
     if (context.token.isLogin === false) {
       context.action.alert({
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
@@ -34,10 +34,10 @@ export default withRouter((props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
         if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, nickNm: nickNm})
+          RoomJoin({roomNo: roomNo,memNo:memNo, nickNm: nickNm})
         } else {
           let alertMsg
           if (isNaN(listenRoomNo)) {
@@ -52,7 +52,7 @@ export default withRouter((props) => {
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
-                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
               }
             })
           }
@@ -66,7 +66,7 @@ export default withRouter((props) => {
       {data.map((list, index) => {
         return (
           <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{list.rank}</div>
+            <div className="rank">{typeof topRankList === "undefined" ? index + 1 : index + 4}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />
@@ -85,7 +85,7 @@ export default withRouter((props) => {
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
-                  goLive(list.roomNo, list.nickNm, list.listenRoomNo);
+                  goLive(list.roomNo, list.memNo,list.nickNm, list.listenRoomNo);
                 }}>
                   <span className='equalizer'>
                     <Lottie

@@ -14,7 +14,7 @@ const MergePop = (props) => {
   return (
     <div id="webp-ani">
       {result !== '' &&
-        <img src={`${IMG_SERVER}/event/rebranding/merge_${result}.webp?timestamp=${Math.random()}`} alt="" />
+        <img src={`${IMG_SERVER}/event/rebranding/merge_unite.webp?timestamp=${Math.random()}`} alt="" />
       }
     </div>
   )
