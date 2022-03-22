@@ -76,17 +76,17 @@ export default () => {
 };
 
 
-export const audioEndHandler = async ({history, globalState}) => {
-  const { clipPlayer, clipPlayMode } = globalState;
+export const audioEndHandler = ({history, globalState}) => {
+  const { clipPlayer, clipPlayMode, clipPlayList } = globalState;
     console.log("audioEndHandler====>",clipPlayMode,clipPlayer)
-  if (globalState.clipPlayList?.length === 0) return null;
-  if (globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
+  if (clipPlayList?.length === 0) return null;
+  if (clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
     if (clipPlayMode === "allLoop") {
-      return history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
+      return history.push(`/clip/${clipPlayList![0].clipNo}`);
     } else {
       return console.log("마지막곡입니다");
     }
   }
   const isNotClipPlayerPage = window.location.pathname.indexOf("/clip/") === -1;
-  if (!isNotClipPlayerPage) history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+  if (!isNotClipPlayerPage) history.push(`/clip/${clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
 };
