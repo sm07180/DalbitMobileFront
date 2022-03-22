@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
 import Header from 'components/ui/header/Header'
 import Tabmenu from '../components/Tabmenu'
@@ -9,12 +9,15 @@ import BenefitLover from '../components/BenefitLover'
 // components
 //static
 import './rankingBenefit.scss'
+import {useLocation} from "react-router-dom";
 
 const RankingBenefit = () => {
+  let location = useLocation();
+
   //탭 목록
   const [tabList, setTabList] = useState(["DJ", "FAN", "CUPID"]);
   //현재 선택된 탭 이름
-  const [tabName, setTabName] = useState(tabList[0]);
+  const [tabName, setTabName] = useState(location.state === "FAN" ? "FAN" : location.state === "CUPID" ? "CUPID" : "DJ");
 
   return (
     <div id="rankingBenefit">      
