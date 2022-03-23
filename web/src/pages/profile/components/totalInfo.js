@@ -7,12 +7,16 @@ import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 // components
 // css
 import './totalInfo.scss'
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {useHistory} from "react-router-dom";
+import {useDispatch} from "react-redux";
 
 const TotalInfo = (props) => {
-  const {data, goProfile, openPopLike, isMyProfile} = props
+  const {data, goProfile, openPopLike, isMyProfile, feedData, getFeedData, fetchHandleLike} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
-  // 
+  const history = useHistory();
+  //
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
   }
@@ -48,6 +52,15 @@ const TotalInfo = (props) => {
       }
     }
   },[data])
+
+  /* 피드 삭제시 스와이퍼 업데이트용 */
+  useEffect(() => {
+    if(feedData !== undefined) {
+      const swiper = document.querySelector('.swiper-container').swiper;
+      swiper.update();
+      // swiper.slideTo(0);
+    }
+  }, [feedData])
 
   return (
     <>
@@ -111,26 +124,56 @@ const TotalInfo = (props) => {
       <div className="broadcastNotice">
         <div className="title">방송공지</div>
         <Swiper {...swiperParams}>
-          <div>
-            <div className="noticeBox">
-              <div className="badge">Notice</div>
-              <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
-              다른 방을 청취하고 선물하는 것은</div>
-              <div className="info">
-                <i className="like">156</i>
-                <i className="cmt">123</i>
-                <span className="time">3시간 전</span>
+          {feedData.fixedFeedList !== undefined &&
+            feedData.fixedFeedList.map((v, idx) => {
+              const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+              return (
+              <div key={idx}>
+                <div className="noticeBox">
+                  <div className="badge">Notice</div>
+                  <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                  <div className="info">
+                    {v.like_yn === "n" ?
+                      <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                      : <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                    }
+                    <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{v.replyCnt}</i>
+                    <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
+                  </div>
+                  <button className="fixIcon">
+                    <img src={`${IMG_SERVER}/profile/fixmark-on.png`} />
+                  </button>
+                </div>
               </div>
-              <button className="fixIcon">
-                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
-              </button>
-            </div>
-          </div>
+            )
+          })}
+          {feedData.feedList !== undefined &&
+            feedData.feedList.map((v, idx) => {
+              const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+              return (
+              <div key={idx}>
+                <div className="noticeBox">
+                  <div className="badge">Notice</div>
+                  <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                  <div className="info">
+                    {v.like_yn === "n" ?
+                      <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                      : <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                    }
+                    <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{v.replyCnt}</i>
+                    <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
+                  </div>
+                  <button className="fixIcon">
+                    <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+                  </button>
+                </div>
+              </div>
+            )
+          })}
         </Swiper>
       </div>
     </>
   )
 }
 
-export default TotalInfo
+export default TotalInfo;

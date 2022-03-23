@@ -53,7 +53,7 @@ const ProfileReplyComponent = (props) => {
   },[isMore]);
 
   return (
-    <ListRow photo={type ==='feed'?item?.profileImg?.thumb292x292 : item?.profImg?.thumb292x292} photoClick={replyGoProfileHandler}>
+    <ListRow photo={type ==='notice'?item?.profileImg?.thumb292x292 : item?.profImg?.thumb292x292} photoClick={replyGoProfileHandler}>
       <div className="listContent">
         <div className="listItems">
           <div className="nick">{item?.nickName}</div>

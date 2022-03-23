@@ -34,7 +34,7 @@ const NoticeDetail = (props) => {
         <div className="noticeList">
           <div className="noticeBox">
             <div className="badge">Notice</div>
-            <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
+            <div className="text">세아스토리의 팬닉입니다. 닉변은 피해줘요!
             다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
             다른 방을 청취하고 선물하는 것은</div>
             <div className="info">

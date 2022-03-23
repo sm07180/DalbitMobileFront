@@ -111,10 +111,10 @@ const ProfilePage = () => {
   };
 
   /* 피드 데이터 호출 */
-  const getFeedData = () => {
+  const getFeedData = (pageNo) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      pageNo: feedData.paging.next,
+      pageNo: pageNo !== undefined ? pageNo : feedData.paging.next,
       pagePerCnt: feedData.paging.records,
       topFix: 0,
     }
@@ -126,8 +126,8 @@ const ProfilePage = () => {
         dispatch(setProfileFeedData({
           ...feedData,
           feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
-          // fixedFeedList: data.fixList, // 고정 피드
-          // fixCnt: data.fixList.length, // 고정 피드 개수
+          fixedFeedList: data.fixList, // 고정 피드
+          fixCnt: data.fixList.length, // 고정 피드 개수
           paging: data.paging ? data.paging : profilePagingDefault, // 호출한 페이지 정보
           isLastPage,
         }));
@@ -140,10 +140,10 @@ const ProfilePage = () => {
   }
 
   /* 팬보드 데이터 */
-  const getFanBoardData = () => {
+  const getFanBoardData = (pageNo) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      page: fanBoardData.paging.next,
+      page: pageNo !== undefined ? pageNo :fanBoardData.paging.next,
       records: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
@@ -292,6 +292,32 @@ const ProfilePage = () => {
       }
     }
   }
+
+  /* 방송공지 좋아요 */
+  const fetchHandleLike = async (regNo, mMemNo, like) => {
+    const params = {
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    };
+    if(like === "n") {
+      Api.profileFeedLike(params).then((res) => {
+        if(res.result === "success") {
+          getFeedData(1);
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    } else if(like === "y") {
+      Api.profileFeedLikeCancel(params).then((res) => {
+        if(res.result === "success") {
+          getFeedData(1);
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    }
+  };
 
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
@@ -617,7 +643,8 @@ const ProfilePage = () => {
         />
       </section>
       <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
+        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile}
+                   feedData={feedData} getFeedData={getFeedData} fetchHandleLike={fetchHandleLike}/>
       </section>
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
@@ -626,13 +653,13 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchHandleLike={fetchHandleLike}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {socialType === socialTabmenu[1] &&
-          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile}
+          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} getFanBoardData={getFanBoardData}
                           deleteContents={deleteContents} openBlockReportPop={openBlockReportPop} />
         }
 
@@ -651,7 +678,7 @@ const ProfilePage = () => {
             socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
         }}>등록</button>} */}
         <button className={`floatBtn ${floatBtnHidden === true ? 'on' : ''}`} onClick={floatingOpen} ref={floatingRef}>
-          <div className="blackCurtain"></div>
+          <div className="blackCurtain"/>
           <div className={`floatWrap ${floatScrollAction === true ? 'action' : 'disAction'}`}>
             <ul>
               <li onClick={floatingButton1}>

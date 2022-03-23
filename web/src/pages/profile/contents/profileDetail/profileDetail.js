@@ -66,7 +66,7 @@ const ProfileDetail = (props) => {
   const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
 
   //내가 작성한 글 여부
-  const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === (type === 'feed' ? item?.mem_no : item?.writer_mem_no)?.toString();
+  const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === (type === 'notice' ? item?.mem_no : item?.writer_mem_no)?.toString();
   const adminChecker = context?.adminChecker;
 
   /* 프로필 사진 확대 */
@@ -81,7 +81,7 @@ const ProfileDetail = (props) => {
 
   //상세조회
   const getDetailData = () => {
-    if(type==='feed'){
+    if(type==='notice') {
       Api.mypage_notice_detail_sel({feedNo: index, memNo})
         .then((res) => {
           const {data, result, message} = res;
@@ -109,7 +109,7 @@ const ProfileDetail = (props) => {
 
   //댓글 조회
   const getReplyList = (_page, records= 10) => {
-    if (type === 'feed') {
+    if (type === 'notice') {
       Api.getMypageNoticeReply({
         memNo,
         noticeIdx: index,
@@ -138,6 +138,10 @@ const ProfileDetail = (props) => {
 
     }
   }
+
+  useEffect(() => {
+    console.log(replyList);
+  })
 
   //전체 조회  (피드, 팬보드)
   const getAllData = (_page, records) => {
@@ -182,10 +186,11 @@ const ProfileDetail = (props) => {
   //글 삭제
   const deleteContents = () => {
     const callback = async () => {
-      if (type === 'feed') {
+      if (type === 'notice') {
+        console.log(item?.nickName);
         const {result, data, message} = await Api.mypage_notice_delete({
           data: {
-            delChrgrName: profile?.nickName,
+            delChrgrName: item?.nickName,
             noticeIdx: index,
           }
         })
@@ -234,7 +239,7 @@ const ProfileDetail = (props) => {
   const replyWrite = async () => {
     if(!validChecker()) return;
 
-    if (type === 'feed') {
+    if (type === 'notice') {
       const {data, result, message} = await Api.insertMypageNoticeReply({
         memNo,
         noticeIdx: index,
@@ -285,7 +290,7 @@ const ProfileDetail = (props) => {
   const replyEdit = async (replyIdx, contents) => {
     if(!validChecker()) return;
 
-    if(type==='feed'){
+    if(type==='notice'){
       const {data, result, message} = await Api.modifyMypageNoticeReply({
           memNo,
           replyIdx,
@@ -328,7 +333,7 @@ const ProfileDetail = (props) => {
   //댓글 삭제
   const replyDelete = (replyIdx) => {
     const callback = async (replyIdx) => {
-      if (type === 'feed') {
+      if (type === 'notice') {
         const {data, result, message} = await Api.deleteMypageNoticeReply({memNo, replyIdx});
 
         if (result === 'success') {
@@ -352,6 +357,34 @@ const ProfileDetail = (props) => {
       callback: () => callback(replyIdx)
     });
   };
+
+  /* 좋아요 */
+  const fetchHandleLike = async (regNo, mMemNo, like) => {
+      if(type === 'notice') {
+        const params = {
+          regNo: regNo,
+          mMemNo: mMemNo,
+          vMemNo: context.profile.memNo
+        };
+        if(like === "n") {
+          await Api.profileFeedLike(params).then((res) => {
+            if(res.result === "success") {
+              getDetailData();
+            } else {
+              context.action.toast({msg: res.message});
+            }
+          }).catch((e) => console.log(e));
+        } else if(like === "y") {
+          await Api.profileFeedLikeCancel(params).then((res) => {
+            if(res.result === "success") {
+              getDetailData();
+            }  else {
+              context.action.toast({msg: res.message});
+            }
+          }).catch((e) => console.log(e));
+        }
+      }
+  }
 
   /* 차단/신고 팝업 열기 */
   const openBlockReportPop = (blockReportInfo) => {
@@ -392,9 +425,9 @@ const ProfileDetail = (props) => {
         <div className="detail">
           {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
           <pre className="text">{item?.contents}</pre>
-          {type === 'feed' && (item?.photoInfoList?.length > 1 ?
+          {type === 'notice' && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-              {/* <Swiper {...swiperFeeds}>
+              <Swiper {...swiperFeeds}>
                 {item.photoInfoList.map((photo) => {
                   return (
                     <div>
@@ -404,7 +437,7 @@ const ProfileDetail = (props) => {
                     </div>
                   )
                 })}
-              </Swiper> */}
+              </Swiper>
               {item.photoInfoList.map((photo,index) => {
                 return (
                 <div className="photo" key={index}>
@@ -413,16 +446,19 @@ const ProfileDetail = (props) => {
                 )
               })}
             </div>
-            // : item?.photoInfoList?.length === 1 ?
-            //   <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
-            //     <div className="photo">
-            //       <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
-            //     </div>
-            //   </div>
+            : item?.photoInfoList?.length === 1 ?
+              <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+                <div className="photo">
+                  <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                </div>
+              </div>
             : <></>
           )}
           <div className="info">
-            <i className="like">156</i>
+            {item?.like_yn === "n" ?
+              <i className="like" onClick={() => fetchHandleLike(item?.noticeIdx, item?.mem_no, item?.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
+              : <i className="like" onClick={() => fetchHandleLike(item?.noticeIdx, item?.mem_no, item?.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
+            }
             <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>
         </div>
@@ -478,17 +514,19 @@ const ProfileDetail = (props) => {
 export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
                                     index, memNo}) => {
   if(!history) return;
-  if (type !== 'feed' && type !== 'fanBoard') return;
+  if (type !== 'feed' && type !== 'fanBoard' && type !== 'notice') return;
 
-  if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
+  if (action === 'detail') {                                            //상세 memNo : 프로필 주인의 memNo
       history.push(`/profileDetail/${memNo}/${type}/${index}`);
-  } else if (action === 'write') { // 작성
-    if(type=='feed'){ // 작성 memNo : 프로필 주인의 memNo
+  } else if (action === 'write') {                                      // 작성
+    if(type=='feed') {                                                  // 작성 memNo : 프로필 주인의 memNo
       history.push(`/profileWrite/${memNo}/${type}/write`);
-    }else if(type ==='fanBoard'){ // 작성 memNo : 프로필 주인의 memNo
+    } else if (type ==='fanBoard') {                                    // 작성 memNo : 프로필 주인의 memNo
+      history.push(`/profileWrite/${memNo}/${type}/write`);
+    } else if (type === "notice") {
       history.push(`/profileWrite/${memNo}/${type}/write`);
     }
-  } else if (action === 'modify') { // 수정 memNo : 프로필 주인의 memNo
+  } else if (action === 'modify') {                                     // 수정 memNo : 프로필 주인의 memNo
       history.push(`/profileWrite/${memNo}/${type}/modify/${index}`);
   }
 };
