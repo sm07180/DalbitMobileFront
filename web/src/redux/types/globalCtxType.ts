@@ -93,7 +93,6 @@ export type GlobalCtxStateType = {
   chatInfo: any
   mailChatInfo: any
   guestInfo: any
-  splashData: any
   currentChatData: Array<any>
   clipPlayer: any
   broadClipDim: boolean

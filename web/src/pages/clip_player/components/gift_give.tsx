@@ -18,7 +18,7 @@ let preventClick = false;
 export default (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { clipInfo, splashData } = globalState;
+  const { clipInfo, splash } = globalState;
 
   const profile: any = globalState.userProfile;
   const history = useHistory();
@@ -153,9 +153,9 @@ export default (props) => {
   }, [byeolState]);
 
   useEffect(() => {
-    if (splashData) {
-      setGiftCategoryItem(splashData.itemCategories);
-      setGiftList(splashData.items);
+    if (splash) {
+      setGiftCategoryItem(splash.itemCategories);
+      setGiftList(splash.items);
     }
 
     return () => {

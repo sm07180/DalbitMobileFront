@@ -42,7 +42,7 @@ export default function SendGift(props: {
 }) {
   const { roomInfo, roomNo, roomOwner } = props;
   const globalState = useSelector(({globalCtx})=> globalCtx);
-  const { splashData } = globalState;
+  const { splash } = globalState;
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
@@ -55,12 +55,12 @@ export default function SendGift(props: {
   const { guestConnectStatus, guestObj } = guestState;
 
   const common = useMemo(() => {
-    if (splashData !== null) {
-      return splashData;
+    if (splash !== null) {
+      return splash;
     } else {
       return {};
     }
-  }, [splashData]);
+  }, [splash]);
 
   const profile = useMemo(() => {
     if (globalState.userProfile !== null) {

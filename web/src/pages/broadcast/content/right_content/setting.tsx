@@ -188,11 +188,11 @@ export default function Setting(props: { roomInfo: roomInfoType; roomNo: string 
                 );
               })}
             </div>
-            {globalState.splashData?.roomType.length > 0 && (
+            {globalState.splash?.roomType.length > 0 && (
               <>
                 <div className="title">방송주제</div>
                 <div className="roomTypeListWrap">
-                  {globalState.splashData?.roomType.map((v, idx) => {
+                  {globalState.splash?.roomType.map((v, idx) => {
                     const { cdNm, cd } = v;
                     return (
                       <button onClick={() => setRoomType(cd)} className={`${roomType === cd && "on"}`} key={idx}>

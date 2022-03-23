@@ -82,7 +82,6 @@ export default function Main() {
   const {
     baseData,
     userProfile,
-    splashData,
     alarmStatus,
     isMailboxOn,
   } = globalState;

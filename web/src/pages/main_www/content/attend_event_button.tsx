@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 export default (props: any) => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { baseData, splashData } = globalState;
+  const { baseData } = globalState;
   const [attendCheck, setAttendCheck] = useState(-1);
   const history = useHistory();
   async function fetchEventAttendCheck() {

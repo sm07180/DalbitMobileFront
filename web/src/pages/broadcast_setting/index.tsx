@@ -931,11 +931,11 @@ export default function BroadcastSetting() {
           </ul>
 
           {/* 방송주제 라디오박스영역 */}
-          {globalState.splashData?.roomType.length > 0 && (
+          {globalState.splash?.roomType.length > 0 && (
             <>
               <div className="title">방송주제</div>
               <ul className="category">
-                {globalState.splashData?.roomType.map(
+                {globalState.splash?.roomType.map(
                   (item: { cdNm: string; value: string }, idx: number) => {
                     return (
                       <li

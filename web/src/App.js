@@ -54,7 +54,6 @@ import {
   setGlobalCtxRoomType,
   setGlobalCtxRtcInfoInit,
   setGlobalCtxSplash,
-  setGlobalCtxSplashData,
   setGlobalCtxUpdateProfile,
   setGlobalCtxUpdateToken,
   setGlobalCtxUseMailbox
@@ -248,13 +247,8 @@ const App = () => {
     };
     const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
     chatInfo.setMemNo(memNo);
-    // chatInfo.setSplashData(globalState.splashData);
     //deep copy chatInfo
-    let cloneMailInfo = Object.assign(
-      Object.create(Object.getPrototypeOf(chatInfo)),
-      chatInfo
-    );
-
+    const cloneMailInfo = Object.assign({},chatInfo);
     dispatch(setGlobalCtxChatInfoInit(chatInfo));
     dispatch(setGlobalCtxMailChatInfoInit(cloneMailInfo));
   }
@@ -452,7 +446,7 @@ const App = () => {
       }
       dispatch(setGlobalCtxSplash(data));
       dispatch(setGlobalCtxUseMailbox(useMailBox));
-      dispatch(setGlobalCtxSplashData(data));
+      // dispatch(setGlobalCtxSplashData(data));
     } else {
       Api.error_log({
         data: {
@@ -665,10 +659,10 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (chatInfo !== null && globalState.splashData !== null) {
-      chatInfo.setSplashData(globalState.splashData);
+    if (chatInfo !== null && globalState.splash !== null) {
+      chatInfo.setSplashData(globalState.splash);
     }
-  }, [chatInfo, globalState.splashData]);
+  }, [chatInfo, globalState.splash]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

@@ -76,8 +76,8 @@ export default function SideWrapper() {
       dispatch(setBroadcastCtxVideoEffect(JSON.parse(videoEffect)));
     }
 
-    if (globalState.splashData) {
-      setSplashData(globalState.splashData);
+    if (globalState.splash) {
+      setSplashData(globalState.splash);
     }
 
 

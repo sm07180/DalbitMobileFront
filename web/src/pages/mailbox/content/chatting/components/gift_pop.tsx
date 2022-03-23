@@ -15,7 +15,7 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   // ctx
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const dispatch = useDispatch();
-  const { splashData } = globalState;
+  const { splash } = globalState;
   const history = useHistory();
   // profileInfo
   const profile: any = globalState.userProfile;
@@ -103,9 +103,9 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   };
   //초기 데이터 세팅
   useEffect(() => {
-    if (splashData) {
-      setGiftCategoryItem(splashData.itemCategories);
-      setGiftList(splashData.items);
+    if (splash) {
+      setGiftCategoryItem(splash.itemCategories);
+      setGiftList(splash.items);
     }
   }, []);
   // 카테고리 필터링

@@ -11,7 +11,7 @@ export default function GiftDal(props) {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const { splashData } = globalState;
+  const { splash } = globalState;
 
   const [giftInfo, setGiftInfo] = useState<any>([]);
   const [giftCount, setGiftCount] = useState<any>([]);
@@ -121,10 +121,9 @@ export default function GiftDal(props) {
   };
 
   useEffect(() => {
-    // console.log(splashData);
-    if (splashData) {
-      setDalMin(splashData.giftDalMin);
-      setGiftCount(splashData.giftDal);
+    if (splash) {
+      setDalMin(splash.giftDalMin);
+      setGiftCount(splash.giftDal);
     }
   }, [dalMin]);
   //-----------------------------------------------------
@@ -192,7 +191,7 @@ export default function GiftDal(props) {
                     );
                   })}
                 </div>
-                {splashData?.giftDalDirect && (
+                {splash?.giftDalDirect && (
                   <input
                     type="number"
                     className="dalList__input"

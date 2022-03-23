@@ -17,7 +17,7 @@ export default function GiftDal(props: { common: any; profile: any }) {
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const { userMemNo, userNickNm } = broadcastState;
   const history = useHistory();
-  const { splashData } = globalState;
+  const { splash } = globalState;
   // state
   const [dal, setDal] = useState<number>(0);
   const [mydal, setMyDal] = useState<number>(0);
@@ -144,7 +144,7 @@ export default function GiftDal(props: { common: any; profile: any }) {
             );
           })}
         </div>
-        {splashData?.giftDalDirect && (
+        {splash?.giftDalDirect && (
           <input
             type="number"
             className="input__text"

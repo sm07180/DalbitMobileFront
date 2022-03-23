@@ -132,8 +132,6 @@ const initialState: GlobalCtxStateType = {
   guestInfo: {
     type: "EMPTY",
   },
-  splashData: null,
-  // splashData: null,
   currentChatData: [],
   clipPlayer: null,
   broadClipDim: false,
@@ -457,9 +455,6 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_SPLASH": (state, {payload}) => {
     return {...state, splash: payload}
-  },
-  "global/ctx/SET_SPLASH_DATA": (state, {payload}) => {
-    return {...state, splashData: {...state.splashData, ...payload}}
   },
   "global/ctx/SET_IS_MAILBOX_NEW": (state, {payload}) => {
     return {...state, isMailboxNew: payload}

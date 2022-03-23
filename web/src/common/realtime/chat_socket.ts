@@ -49,7 +49,7 @@ import {
   setGlobalCtxMoveToAlert,
   setGlobalCtxRealtimeBroadStatus,
   setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxSetToastStatus, setGlobalCtxSplashData, setGlobalCtxTooltipStatus
+  setGlobalCtxSetToastStatus, setGlobalCtxSplash, setGlobalCtxTooltipStatus
 } from "../../redux/actions/globalCtx";
 import {
   setMailBoxChatListUpdate, setMailBoxImgSliderAddDeleteImg,
@@ -490,12 +490,7 @@ export class ChatSocketHandler {
             }
             case "reqChangeItem": {
               getItems().then((resolve) => {
-                if (this.splashData !== null) {
-                  this.dispatch(setGlobalCtxSplashData({
-                    ...this.splashData,
-                    items: [...resolve.data.items],
-                  }))
-                }
+                this.dispatch(setGlobalCtxSplash({items: [...resolve.data.items]}))
               });
               break;
             }
