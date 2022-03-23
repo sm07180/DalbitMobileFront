@@ -48,7 +48,7 @@ export default function Broadcast() {
       <GuestProvider>
         <div id="broadcast-page">
           <div
-            className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
+            className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO ? "video" : "radio"} ${flipIsLeft === false &&
               "reverse"} ${broadcastState.isWide && "wide"} `}
           >
             <SideWrapper />
