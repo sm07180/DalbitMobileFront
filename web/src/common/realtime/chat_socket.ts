@@ -2102,7 +2102,7 @@ export class ChatSocketHandler {
                           }
                         }
                       } else {
-                        console.error('moonLandStateFn error !!!!', this.broadcastStateChange);
+                        console.warn('moonLandStateFn error !!!!', this.broadcastStateChange);
                       }
                     }
                     return null;

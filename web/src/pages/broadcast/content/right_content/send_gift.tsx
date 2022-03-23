@@ -371,7 +371,6 @@ export default function SendGift(props: {
 
       /* 누적 선물 달에 선물한 달 더하기 */
       const item = giftList.find(v => v?.itemNo === itemNo);
-      console.log('find item=>', item, item.cost, count);
       chatInfo?.addRoomInfoDalCnt(item?.cost * count);
       
       setItem(-1);

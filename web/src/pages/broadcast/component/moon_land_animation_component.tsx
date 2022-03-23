@@ -77,7 +77,6 @@ const MoonLandAnimationComponent = (props: any) => {
 
     return () => {
       if (chatInfo && chatInfo.hasOwnProperty('setBroadcastStateClear')) {
-        console.log("clear @@@");
         chatInfo.setBroadcastStateClear('moonLandStateFn');
       }
     };
