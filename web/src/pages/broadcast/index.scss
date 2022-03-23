@@ -91,6 +91,7 @@
     align-self: flex-start;
     background-color: $black;
     &.radio {
+      max-width: 836px !important;
       height:750px;
     }
     &.video {
