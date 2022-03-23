@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -12,9 +12,8 @@ import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeData, setNoticeTab, setNoticeTabList} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab} from "redux/actions/notice";
 import API from "context/api";
-import noticeTabList from "redux/reducers/notice/tabList";
 
 
 const NoticePage = () => {
@@ -23,10 +22,22 @@ const NoticePage = () => {
   const dispatch = useDispatch();
   const history = useHistory()
   const context = useContext(Context)
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
-  const [scrollPagingCall, setScrollPagingCall] = useState(1);
-  const noticeTabList = useSelector((state) => state.noticeTabList);
+
+  const fetchData = () => {
+    let params = {page: 1, records: 1000};
+    Api.my_notification(params).then((res) => {
+      if(res.result === "success") {
+        if(res.data.list.length > 0) {
+          setAlarmList({...alarmList, list: res.data.list, cnt: res.data.cnt, newCnt: res.data.newCnt});
+        } else {
+          setAlarmList({...alarmList});
+        }
+      }
+    }).catch((e) => console.log(e));
+  }
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -35,50 +46,6 @@ const NoticePage = () => {
         dispatch(setNoticeData(res.data));
       }}
   }
-
-  const scrollEvent = useCallback((scrollTarget, callback) => {
-    console.log("scroll");
-    const popHeight = scrollTarget.scrollHeight;
-    const targetHeight = scrollTarget.clientHeight;
-    const scrollTop = scrollTarget.scrollTop;
-    if(popHeight - 1 < targetHeight + scrollTop) {
-      callback();
-    }
-  }, []);
-
-  const noticeScrollEvent = useCallback(() => {
-    const callback = () => {
-      setScrollPagingCall(scrollPagingCall => scrollPagingCall + 1);
-    }
-    scrollEvent(document.documentElement, callback);
-  }, [])
-
-  const removeScrollEvent = useCallback(() => {
-    console.log("1");
-    document.removeEventListener("scroll", noticeScrollEvent);
-  }, []);
-
-  const noticeTabChangeAction = (item) => {
-    const scrollEventHandler = () => {
-      removeScrollEvent();
-      document.addEventListener("scroll", noticeScrollEvent);
-    }
-    if(item === noticeTabList.tabList[1]) {
-      scrollEventHandler();
-    }
-  }
-
-  useEffect(() => {
-    if(tab === noticeTabList.tabList[0]) {
-      document.addEventListener("scroll", noticeScrollEvent);
-    } else if(tab === noticeTabList.tabList[1]) {
-      document.addEventListener("scroll", noticeScrollEvent);
-    }
-    dispatch(setNoticeTabList({...noticeTabList, tabName: tab, isRefresh: true, isReset: true}));
-    return () => {
-      removeScrollEvent();
-    }
-  }, [])
 
   useEffect(() => {
     if(isDesktop) {
@@ -91,6 +58,7 @@ const NoticePage = () => {
     if(!(context.token.isLogin)) {
       history.push("/login")
     }
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -112,13 +80,13 @@ const NoticePage = () => {
             if(data === "알림") {alarmData.alarm > 0 ? newTage = true : false}
             else {alarmData.notice > 0 ? newTage = true : false}
             return (
-              <TabBtn param={param} key={index} newTage={newTage} tabChangeAction={noticeTabChangeAction}/>
+              <TabBtn param={param} key={index} newTage={newTage}/>
             )
           })}
           <div className="underline"/>
         </ul>
         {tab === noticeTabmenu[0] ?
-          <Allim />
+          <Allim alarmList={alarmList} setAlarmList={setAlarmList}/>
           :
           <Post />
         }
