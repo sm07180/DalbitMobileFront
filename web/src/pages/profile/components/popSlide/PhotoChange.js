@@ -1,8 +1,9 @@
 import React, {useState, useContext} from 'react'
+import { ReactSortable } from "react-sortablejs";
 import {IMG_SERVER} from 'context/config'
 
 // global components
-import InputItems from '../../../../components/ui/inputItems/InputItems';
+import SubmitBtn from '../../../../components/ui/submitBtn/SubmitBtn';
 // components
 
 import './style.scss'
@@ -10,28 +11,32 @@ import {Context} from "context";
 import {useHistory} from "react-router-dom";
 
 const PhotoChange = (props) => {
+  const {list} = props
   const history = useHistory();
   const context = useContext(Context);
 
+  console.log(list);
+
+  const [state, setState] = useState(list);
+
   return (
     <section className="photoChangeOrder">
-      <div className="gridSection">
-        <div className="item">
-          <img src={`https://devphoto.dalbitlive.com/profile_0/21422419200/20220322105552264125.png?500x500`} alt="" />
-        </div>
-        <div className="item">
-        <img src={`https://devphoto.dalbitlive.com/profile_0/21422419200/20220322105552264125.png?500x500`} alt="" />
-        </div>
-        <div className="item">1</div>
-        <div className="item">1</div>
-        <div className="item">1</div>
-        <div className="item">1</div>
-        <div className="item">1</div>
-        <div className="item">1</div>
-        <div className="item">
-        <img src={`https://devphoto.dalbitlive.com/profile_0/21422419200/20220322105552264125.png?500x500`} alt="" />
-        </div>
-      </div>
+      <ReactSortable 
+        list={state} 
+        setList={setState} 
+        className={"gridSection"}
+        animation={200}
+        delayOnTouchStart={true}
+        delay={2}>
+        {state.map((data,index) => {
+          return (
+            <div className="item" key={index}>
+              <img src={data.profImg.thumb150x150} alt={index} />
+            </div>
+          )
+        })}
+      </ReactSortable>
+      <SubmitBtn text="확인" />
     </section>
   )
 }

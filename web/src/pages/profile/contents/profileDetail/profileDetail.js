@@ -458,14 +458,14 @@ const ProfileDetail = (props) => {
 
         {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
-          {replyList.map((item, index) => {
-            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
-            return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
-                                          replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
-                                          blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
-                                          openBlockReportPop={openBlockReportPop}
-              />
-            })}
+        {replyList.map((item, index) => {
+          const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
+          return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
+                                        replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
+                                        blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
+                                        openBlockReportPop={openBlockReportPop}
+            />
+          })}
         </div>
         <div className='bottomWrite'>
           <div ref={replyRef} className={`trickTextarea ${text.length > 0 && 'isText'}`} contentEditable="true"

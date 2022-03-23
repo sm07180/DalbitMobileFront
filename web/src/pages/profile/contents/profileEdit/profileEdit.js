@@ -430,7 +430,7 @@ const ProfileEdit = () => {
 
             {popup.commonPopup &&
             <PopSlide title="사진 순서 변경">
-              <PhotoChange />
+              <PhotoChange list={profileInfo?.profImgList} />
             </PopSlide>
             }
           </div>
