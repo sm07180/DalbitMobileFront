@@ -1312,7 +1312,6 @@ export class AgoraHostRtc extends RtcSocketHandler{
               user.videoTrack?.play(`local-player`,{mirror:false})
             }
           })
-          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
           localTracks.videoTrack.play("local-player",{mirror:false});
           // await client.publish(Object.values(localTracks));
         }else if(client.connectionState === 'DISCONNECTED'){
@@ -1338,7 +1337,6 @@ export class AgoraHostRtc extends RtcSocketHandler{
                 bitrateMin: roomInfo.agoraOption.agoraMinVideoBitrate, bitrateMax: roomInfo.agoraOption.agoraMaxVideoBitrate,
               },cameraId:camId?.replaceAll("\"","")})
           ]);
-          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
           localTracks.videoTrack.play("local-player",{mirror:false});
           // publish local tracks to channel
           await client.publish(Object.values(localTracks));
