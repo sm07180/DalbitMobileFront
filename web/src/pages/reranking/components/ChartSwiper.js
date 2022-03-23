@@ -4,10 +4,11 @@ import Lottie from 'react-lottie'
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
-import {Context, GlobalContext} from "context";
+import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {IMG_SERVER} from 'context/config'
+
 const CardList = (props) => {
   const {data} = props
 
@@ -32,7 +33,7 @@ const CardList = (props) => {
                 <div key={index}>
                   <ListRow photo={list.profImg.thumb292x292} onClick={() => history.push(`/profile/${list.memNo}`)}>
                     <div className='rankWrap'>
-                      <div className='rank'>{list.rank}</div>
+                      <div className='rank'>{index + 1}</div>
                     </div>
                     {
                       list.roomNo &&

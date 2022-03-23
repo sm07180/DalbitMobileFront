@@ -109,8 +109,8 @@ export default function ClipContent() {
 
   const updatePlayList = async (oneData: any) => {
     let playListInfo;
-    if (sessionStorage.getItem("clipPlayListInfo") !== null) {
-      playListInfo = JSON.parse(sessionStorage.getItem("clipPlayListInfo")!);
+    if (localStorage.getItem("clipPlayListInfo") !== null) {
+      playListInfo = JSON.parse(localStorage.getItem("clipPlayListInfo")!);
     }
     if (playListInfo === undefined) return null;
     if (playListInfo.hasOwnProperty("type") && playListInfo.type === "one") {
@@ -204,7 +204,7 @@ export default function ClipContent() {
     if (!baseData.isLogin) {
       clipPlayer?.clipExit();
       sessionStorage.removeItem("clip");
-      sessionStorage.removeItem("clipPlayListInfo");
+      localStorage.removeItem("clipPlayListInfo");
       history.push("/");
     }
   }, [baseData.isLogin]);
