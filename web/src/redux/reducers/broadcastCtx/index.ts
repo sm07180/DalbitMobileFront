@@ -182,16 +182,13 @@ const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initia
     return {...state, userNickNm: payload}
   },
   "broadcast/ctx/SET_USER_COUNT": (state, {payload}) => {
-    return {...state, userCount: payload}
-  },
-  "broadcast/ctx/SET_USER_COUNT2": (state, {payload}) => {
     return {...state, userCount: {...state.userCount, ...payload}}
   },
   "broadcast/ctx/SET_LISTENER_LIST": (state, {payload}) => {
     return {...state, listenerList: payload}
   },
   "broadcast/ctx/SET_MSG_SHORT_CUT": (state, {payload}) => {
-    return {...state, userCount: payload}
+    return {...state, msgShortCut: payload}
   },
   "broadcast/ctx/SET_USE_BOOST": (state, {payload}) => {
     return {...state, useBoost: payload}

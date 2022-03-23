@@ -39,7 +39,7 @@ import {
   setBroadcastCtxRoomInfoNewFanCnt,
   setBroadcastCtxRoomInfoRefresh,
   setBroadcastCtxRoomInfoSettingUpdate, setBroadcastCtxStoryState,
-  setBroadcastCtxUseBoost, setBroadcastCtxUserCount2,
+  setBroadcastCtxUseBoost, setBroadcastCtxUserCount,
   setBroadcastCtxUserMemNo
 } from "../../redux/actions/broadcastCtx";
 import {
@@ -1193,7 +1193,7 @@ export class ChatSocketHandler {
 
                     if (count) {
                       const { userCount, historyCount } = count;
-                      this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
+                      this.dispatch(setBroadcastCtxUserCount({current: userCount, history: historyCount}))
                     }
                     if (recvMsg.msg !== "") {
                       // if (user.auth === AuthType.MANAGER || this.roomOwner === true) {
@@ -1225,7 +1225,7 @@ export class ChatSocketHandler {
                     if (count) {
                       const { userCount, historyCount } = count;
                       if (userCount >= 0 && historyCount >= 0) {
-                        this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
+                        this.dispatch(setBroadcastCtxUserCount({current: userCount, history: historyCount}))
                       }
                     }
 
@@ -1237,7 +1237,7 @@ export class ChatSocketHandler {
                     if (count) {
                       const { userCount, historyCount } = count;
                       if (userCount >= 0 && historyCount >= 0) {
-                        this.dispatch(setBroadcastCtxUserCount2({current: userCount, history: historyCount}))
+                        this.dispatch(setBroadcastCtxUserCount({current: userCount, history: historyCount}))
                       }
                     }
 

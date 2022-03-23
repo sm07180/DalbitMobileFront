@@ -161,7 +161,7 @@ export default function SideWrapper() {
 
         dispatch(setBroadcastCtxChatFreeze(isFreeze));
         dispatch(setBroadcastCtxExtendTimeOnce(isExtend));
-        dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, history:roomInfo.entryCnt}));
+        dispatch(setBroadcastCtxUserCount({history:roomInfo.entryCnt}));
         dispatch(setBroadcastCtxChatFreeze(isFreeze));
         dispatch(setBroadcastCtxLikeClicked(isLike));
         chatInfo?.setRoomInfo(roomInfo);
@@ -273,7 +273,7 @@ export default function SideWrapper() {
         dispatch(setBroadcastCtxRealTimeValueSetLikeFanRank({ fanRank, likes, rank }));
         dispatch(setBroadcastCtxExtendTimeOnce(isExtend));
         dispatch(setBroadcastCtxChatFreeze(isFreeze));
-        dispatch(setBroadcastCtxUserCount({...broadcastState.userCount, history: roomInfo.entryCnt}));
+        dispatch(setBroadcastCtxUserCount({history: roomInfo.entryCnt}));
         dispatch(setBroadcastCtxLikeClicked(isLike));
         chatInfo && chatInfo.setChatFreeze(isFreeze);
         chatInfo?.setRoomInfo(roomInfo);

@@ -6,6 +6,7 @@ import UserList from "./user_list";
 import {CustomHeader} from "../chat_list";
 import {useDispatch, useSelector} from "react-redux";
 import {setMailBoxTabState} from "../../../../redux/actions/mailBox";
+import Header from "../../../../components/ui/header/Header";
 
 export default function chatNewPage() {
   const dispatch = useDispatch();

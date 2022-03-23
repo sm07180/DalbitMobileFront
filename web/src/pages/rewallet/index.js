@@ -90,23 +90,17 @@ const WalletPage = (props) => {
           })
 
           dispatch(setGlobalCtxWalletAddData({
-            type: 'ADD_DATA',
-            data: {
-              ...byeolAndDal,
-              listHistory: pageNo === 1 ? listRes.data?.list : walletData.listHistory.concat(listRes.data?.list),
-              popHistory: popRes.data?.list,
-              popHistoryCnt
-            }
+            ...byeolAndDal,
+            listHistory: pageNo === 1 ? listRes.data?.list : walletData.listHistory.concat(listRes.data?.list),
+            popHistory: popRes.data?.list,
+            popHistoryCnt
           }));
           setIsLoading(false);
         } else if (listRes.message === "사용내역이 없습니다.") {
           dispatch(setGlobalCtxWalletAddHistory({
-            type: 'ADD_HISTORY',
-            data: {
-              listHistory: [],
-              popHistory: popRes.data?.list,
-              popHistoryCnt: 0
-            }
+            listHistory: [],
+            popHistory: popRes.data?.list,
+            popHistoryCnt: 0
           }));
         }
 

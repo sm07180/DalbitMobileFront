@@ -6,6 +6,7 @@ import Api from "../../../context/api";
 import Utility from "../../../components/lib/utility";
 import {CHAT_MAX_COUNT} from "../../../pages/broadcast/constant";
 
+//baseData, mailChatInfo, mailBlockUser
 const initUserProfile = {
   auth: 0,
   managerType: 0,
@@ -131,7 +132,7 @@ const initialState: GlobalCtxStateType = {
   guestInfo: {
     type: "EMPTY",
   },
-  splashData: {},
+  splashData: null,
   // splashData: null,
   currentChatData: [],
   clipPlayer: null,
@@ -601,7 +602,7 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, chatInfo: payload}
   },
   "global/ctx/MAIL_CHAT_INFO_INIT": (state, {payload}) => {
-    return {...state, chatInfo: payload}
+    return {...state, mailChatInfo: payload}
   },
   "global/ctx/GUEST_INFO_INIT": (state, {payload}) => {
     return {...state, guestInfo: {[payload.memNo]: payload.RTC}}
