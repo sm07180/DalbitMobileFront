@@ -31,7 +31,7 @@ const PhotoChange = (props) => {
         {state.map((data,index) => {
           return (
             <div className="item" key={index}>
-              <img src={data.profImg.thumb150x150} alt={index} />
+              <img src={data.profImg.thumb292x292} alt={index} />
             </div>
           )
         })}
