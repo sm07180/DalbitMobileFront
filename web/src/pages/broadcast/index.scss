@@ -59,18 +59,19 @@
   .broadcastWrap {
     display: flex;
     justify-content: space-between;
-    width: 1398px;
-    height: calc(100vh - #{$GNB-HEIGHT});
-    padding: 20px 90px;
+    width: 1204px;
+    min-height: calc(100vh - #{$GNB-HEIGHT});
+    padding: 20px 0px;
     margin: 0 auto;
     box-sizing: border-box;
 
     &.video {
       // 기존코드
-      width: 1392px;
+      width: 1204px;
       justify-content: center;
       &.wide {
-        width: 100%;
+        // width: 100%;
+        width: 1204px;
       }
     }
 
@@ -85,15 +86,19 @@
     flex-direction: column;
     justify-content: space-between;
     position: relative;
-    width: 836px;
-    height: 100%;
+    width: 836px; height: 100%;
     border-radius: 10px;
     align-self: flex-start;
     background-color: $black;
+    &.radio {
+      max-width: 836px !important;
+      height:750px;
+    }
     &.video {
-      width: 480px;
+      width: 460px;
+      height:750px;
       margin: 0px 10px;
-      min-width: 480px;
+      min-width: 460px;
 
       &.wide {
         width: 100%;
@@ -163,6 +168,7 @@
 
     .chat-display {
       position: relative;
+      max-width: 100% !important;
       height: 100%;
       background-repeat: no-repeat;
       background-position: center;
