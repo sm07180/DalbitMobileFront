@@ -60,98 +60,26 @@ import {
 } from "redux/actions/globalCtx";
 import {setBroadcastCtxRoomInfoReset} from "redux/actions/broadcastCtx";
 
-function setNativeClipInfo(isJsonString, dispatch) {
-  const nativeClipInfo = Utility.getCookie('clip-player-info')
-  if (nativeClipInfo) {
-    if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
-      const parsed = JSON.parse(nativeClipInfo)
-      dispatch(setGlobalCtxClipState(true))
-      dispatch(setGlobalCtxClipPlayerState(parsed.playerState))
-      dispatch(setGlobalCtxClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname}))
-      dispatch(setGlobalCtxPlayer(true))
-    }
-  }
-}
-
-function setNativePlayInfo(isJsonString, dispatch) {
-  const nativeInfo = Utility.getCookie('native-player-info')
-  if (nativeInfo) {
-    if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
-      const parsed = JSON.parse(nativeInfo)
-      dispatch(setGlobalCtxPlayer(true));
-      dispatch(setGlobalCtxMediaPlayerStatus(true));
-      dispatch(setGlobalCtxNativePlayer(parsed));
-    }
-  }
-}
-
-
-const baseSetting = async (dispatch, globalState) => {
-
-  const item = sessionStorage.getItem("clip");
-  if (item !== null) {
-    const data = JSON.parse(item);
-    let newClipPlayer = globalState.clipPlayer;
-    if (newClipPlayer === null) {
-      newClipPlayer = new ClipPlayerHandler({info:data, dispatch, globalState});
-    }
-    const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
-    const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
-    if ( fileUrlBoolean && clipNoBoolean ) {
-      newClipPlayer?.init(data.file.url);
-      newClipPlayer?.restart();
-    } else {
-      newClipPlayer?.init(data.file.url);
-    }
-    newClipPlayer?.clipNoUpdate(data.clipNo);
-    dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
-    dispatch(setGlobalCtxClipInfoAdd({...data, ...{isPaused: true}}));
-  }
-
-  const broadcastData = sessionStorage.getItem("broadcast_data");
-  if (broadcastData !== null) {
-    const data = JSON.parse(broadcastData);
-    dispatch(setBroadcastCtxRoomInfoReset(data));
-  }
-}
-
-
 let alarmCheckIntervalId = 0;
 
-const setServerDataJson = () =>{
-  const serverData = document?.getElementById('__SERVER_DATA__')?.innerHTML;
-  if (serverData && serverData !== '' && serverData !== 'null') {
-    try {
-      return JSON.parse(serverData);
-    } catch (e) {
-      return null;
-    }
-  }
-  return null;
-}
-
 const App = () => {
-  let serverDataJson = setServerDataJson();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  App.context = () => context
   //본인인증
-  const authRef = useRef()
-  const history = useHistory()
-
+  const authRef = useRef();
+  const history = useHistory();
   const dispatch = useDispatch();
 
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const memberRdx = useSelector((state)=> state.member);
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
-  const [ready, setReady] = useState(false)
-  const AGE_LIMIT = globalState.noServiceInfo.limitAge
+  const isDesktop = useSelector((state)=> state.common.isDesktop);
+
+  const [ready, setReady] = useState(false);
+  const [cookieAuthToken, setCookieAuthToken] = useState('');
   const [isFooterPage, setIsFooterPage] = useState(false);
 
-  const {
-    chatInfo,
-    rtcInfo,
-    mailChatInfo,
-    alarmStatus,
-  } = globalState;
+  const { chatInfo, rtcInfo, mailChatInfo, alarmStatus,} = globalState;
+
+  let serverDataJson = setServerDataJson();
+  const AGE_LIMIT = globalState.noServiceInfo.limitAge;
 
   const isJsonString = (str) => {
     try {
@@ -252,6 +180,7 @@ const App = () => {
     dispatch(setGlobalCtxChatInfoInit(chatInfo));
     dispatch(setGlobalCtxMailChatInfoInit(cloneMailInfo));
   }
+
   async function fetchData(dispatch) {
     // Renew token
     let tokenInfo = await Api.getToken()
@@ -384,49 +313,6 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    async function alarmCheck() {
-      let memNoParams = memberRdx.memNo ? memberRdx.memNo : "";
-      const { result, data, message } = await getMypageNew({
-        data: memNoParams,
-      });
-      if (result === "success") {
-        if (data.newCnt > 0) {
-          if (alarmCheckIntervalId) {
-            clearInterval(alarmCheckIntervalId);
-          }
-          dispatch(setGlobalCtxAlarmStatus(true));
-          dispatch(setGlobalCtxAlarmMoveUrl(data.moveUrl));
-        } else {
-          if (alarmCheckIntervalId) {
-            clearInterval(alarmCheckIntervalId);
-          }
-          alarmCheckIntervalId = setInterval(alarmCheck, 60000);
-          dispatch(setGlobalCtxAlarmStatus(false));
-          dispatch(setGlobalCtxAlarmMoveUrl(""));
-        }
-      }
-    }
-
-    if(isDesktop) {
-      if (memberRdx.isLogin === true) {
-        alarmCheck();
-      } else {
-        dispatch(setGlobalCtxAlarmStatus(false));
-        dispatch(setGlobalCtxAlarmMoveUrl(""));
-      }
-    }
-    return () => {};
-  }, [memberRdx.isLogin, alarmStatus]);
-
-  useEffect(()=>{
-    if(memberRdx.isLogin && memberRdx.data !== null){
-      const data = memberRdx.data;
-      dispatch(setGlobalCtxUpdateProfile(data));
-      dispatch(setGlobalCtxIsMailboxOn(data.isMailboxOn));
-    }
-  },[memberRdx])
-
   //SPLASH Room
   async function fetchSplash() {
     let splashData = null;
@@ -513,104 +399,6 @@ const App = () => {
     }
   }
 
-  useEffect(() => {
-    if (globalState.splash !== null && globalState.token !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
-      setReady(true)
-    }
-  }, [globalState.splash, globalState.token, globalState.profile])
-
-  useEffect(() => {
-    fetchSplash()
-    // set header (custom-header, authToken)
-    if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
-      customHeader['isHybrid'] = 'Y'
-    }
-
-    Api.setCustomHeader(JSON.stringify(customHeader))
-    Api.setAuthToken(authToken)
-
-    // Renew all initial data
-    fetchData(dispatch)
-  }, [])
-
-
-  useEffect(()=>{
-    if(!memberRdx.memNo || !chatInfo){
-      return;
-    }
-    const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
-    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
-
-    const sessionRtc = sessionWowzaRtc
-        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
-            ? JSON.parse(sessionAgoraRtc) : undefined;
-
-    if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
-      if(!rtcInfo){
-        if(sessionWowzaRtc){
-          const data = JSON.parse(sessionWowzaRtc);
-          const dispatchRtcInfo = getWowzaRtc(data);
-          // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
-          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
-          dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
-          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-        }
-        if(sessionAgoraRtc){
-          const data = JSON.parse(sessionAgoraRtc);
-          const dispatchRtcInfo = getArgoraRtc(data);
-          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
-          dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
-            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
-            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-          })
-        }
-      }
-    }else{
-      rtcSessionClear();
-    }
-  }, [memberRdx.memNo, chatInfo])
-
-
-  useEffect(() => {
-    if (globalState.token) {
-      if (globalState.token.isLogin) {
-        if (globalState.noServiceInfo.passed){
-          return;
-        } else if(globalState.profile){
-          ageCheck()
-        }
-      } else if (!globalState.token.isLogin) {
-        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false}));
-      }
-    }
-  }, [globalState.profile, globalState.token, location.pathname])
-
-  const [cookieAuthToken, setCookieAuthToken] = useState('')
-  useEffect(() => {
-    if (ready && cookieAuthToken !== Api.authToken) {
-      window.location.reload()
-    }
-  }, [cookieAuthToken])
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setCookieAuthToken(Utility.getCookie('authToken'))
-    }, 1000)
-
-    dispatch(setGlobalCtxAuthRef(authRef))// 본인인증 ref
-    dispatch(setGlobalCtxIntervalId(id))//서버이동시 interval clear
-
-  }, [])
-
-  useEffect(()=>{
-    let historyListener = () => {
-      isFooter();
-      nativeFooterManager();
-    };
-    historyListener();
-    history.listen(historyListener);
-  },[])
-
   function ErrorFallback({error, resetErrorBoundary}) {
     if ('ChunkLoadError' === error.name) {
       window.location.reload()
@@ -657,6 +445,144 @@ const App = () => {
       )*/
     }
   }
+
+  useEffect(() => {
+    async function alarmCheck() {
+      let memNoParams = memberRdx.memNo ? memberRdx.memNo : "";
+      const { result, data, message } = await getMypageNew({
+        data: memNoParams,
+      });
+      if (result === "success") {
+        if (data.newCnt > 0) {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          dispatch(setGlobalCtxAlarmStatus(true));
+          dispatch(setGlobalCtxAlarmMoveUrl(data.moveUrl));
+        } else {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          alarmCheckIntervalId = setInterval(alarmCheck, 60000);
+          dispatch(setGlobalCtxAlarmStatus(false));
+          dispatch(setGlobalCtxAlarmMoveUrl(""));
+        }
+      }
+    }
+
+    if(isDesktop) {
+      if (memberRdx.isLogin === true) {
+        alarmCheck();
+      } else {
+        dispatch(setGlobalCtxAlarmStatus(false));
+        dispatch(setGlobalCtxAlarmMoveUrl(""));
+      }
+    }
+    return () => {};
+  }, [memberRdx.isLogin, alarmStatus]);
+
+  useEffect(()=>{
+    if(memberRdx.isLogin && memberRdx.data !== null){
+      const data = memberRdx.data;
+      dispatch(setGlobalCtxUpdateProfile(data));
+      dispatch(setGlobalCtxIsMailboxOn(data.isMailboxOn));
+    }
+  },[memberRdx])
+
+  useEffect(() => {
+    if (globalState.splash !== null && globalState.token !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
+      setReady(true)
+    }
+  }, [globalState.splash, globalState.token, globalState.profile])
+
+  useEffect(() => {
+    fetchSplash()
+    // set header (custom-header, authToken)
+    if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
+      customHeader['isHybrid'] = 'Y'
+    }
+
+    Api.setCustomHeader(JSON.stringify(customHeader))
+    Api.setAuthToken(authToken)
+
+    // Renew all initial data
+    fetchData(dispatch)
+  }, [])
+
+  useEffect(()=>{
+    if(!memberRdx.memNo || !chatInfo){
+      return;
+    }
+    const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
+    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+
+    const sessionRtc = sessionWowzaRtc
+        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
+            ? JSON.parse(sessionAgoraRtc) : undefined;
+
+    if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
+      if(!rtcInfo){
+        if(sessionWowzaRtc){
+          const data = JSON.parse(sessionWowzaRtc);
+          const dispatchRtcInfo = getWowzaRtc(data);
+          // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
+          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+        }
+        if(sessionAgoraRtc){
+          const data = JSON.parse(sessionAgoraRtc);
+          const dispatchRtcInfo = getArgoraRtc(data);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
+            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          })
+        }
+      }
+    }else{
+      rtcSessionClear();
+    }
+  }, [memberRdx.memNo, chatInfo])
+
+  useEffect(() => {
+    if (globalState.token) {
+      if (globalState.token.isLogin) {
+        if (globalState.noServiceInfo.passed){
+          return;
+        } else if(globalState.profile){
+          ageCheck()
+        }
+      } else if (!globalState.token.isLogin) {
+        dispatch(setGlobalCtxNoServiceInfo({...globalState.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false}));
+      }
+    }
+  }, [globalState.profile, globalState.token, location.pathname])
+
+  useEffect(() => {
+    if (ready && cookieAuthToken !== Api.authToken) {
+      window.location.reload()
+    }
+  }, [cookieAuthToken])
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCookieAuthToken(Utility.getCookie('authToken'))
+    }, 1000)
+
+    dispatch(setGlobalCtxAuthRef(authRef))// 본인인증 ref
+    dispatch(setGlobalCtxIntervalId(id))//서버이동시 interval clear
+
+  }, [])
+
+  useEffect(()=>{
+    let historyListener = () => {
+      isFooter();
+      nativeFooterManager();
+    };
+    historyListener();
+    history.listen(historyListener);
+  },[])
 
   useEffect(() => {
     if (chatInfo !== null && globalState.splash !== null) {
@@ -709,10 +635,68 @@ const App = () => {
 }
 export default App
 
-/**
- * @title 글로벌변수
- * @example const context=useContext(Context) 와 동일
- */
-export const Global = () => {
-  return App.context()
+function setNativeClipInfo(isJsonString, dispatch) {
+  const nativeClipInfo = Utility.getCookie('clip-player-info')
+  if (nativeClipInfo) {
+    if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+      const parsed = JSON.parse(nativeClipInfo)
+      dispatch(setGlobalCtxClipState(true))
+      dispatch(setGlobalCtxClipPlayerState(parsed.playerState))
+      dispatch(setGlobalCtxClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname}))
+      dispatch(setGlobalCtxPlayer(true))
+    }
+  }
+}
+
+function setNativePlayInfo(isJsonString, dispatch) {
+  const nativeInfo = Utility.getCookie('native-player-info')
+  if (nativeInfo) {
+    if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
+      const parsed = JSON.parse(nativeInfo)
+      dispatch(setGlobalCtxPlayer(true));
+      dispatch(setGlobalCtxMediaPlayerStatus(true));
+      dispatch(setGlobalCtxNativePlayer(parsed));
+    }
+  }
+}
+
+const baseSetting = async (dispatch, globalState) => {
+
+  const item = sessionStorage.getItem("clip");
+  if (item !== null) {
+    const data = JSON.parse(item);
+    let newClipPlayer = globalState.clipPlayer;
+    if (newClipPlayer === null) {
+      newClipPlayer = new ClipPlayerHandler({info:data, dispatch, globalState});
+    }
+    const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
+    const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
+    if ( fileUrlBoolean && clipNoBoolean ) {
+      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.restart();
+    } else {
+      newClipPlayer?.init(data.file.url);
+    }
+    newClipPlayer?.clipNoUpdate(data.clipNo);
+    dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
+    dispatch(setGlobalCtxClipInfoAdd({...data, ...{isPaused: true}}));
+  }
+
+  const broadcastData = sessionStorage.getItem("broadcast_data");
+  if (broadcastData !== null) {
+    const data = JSON.parse(broadcastData);
+    dispatch(setBroadcastCtxRoomInfoReset(data));
+  }
+}
+
+const setServerDataJson = () =>{
+  const serverData = document?.getElementById('__SERVER_DATA__')?.innerHTML;
+  if (serverData && serverData !== '' && serverData !== 'null') {
+    try {
+      return JSON.parse(serverData);
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
 }
