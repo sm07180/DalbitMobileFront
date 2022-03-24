@@ -1,0 +1,133 @@
+@import "components/ui/_mixin.scss";
+
+#legalRepresentative {
+  @include flex($fd: column);
+  min-height: calc(100vh - #{$GNB-HEIGHT});
+
+  .infomation {
+    position: relative;
+    @include flex(center, center, column);
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #F2F2F2;
+    @include font(12px, 400, #000000);
+    background-color: #F5F5F5;
+    box-sizing: border-box;
+    line-height: 18px;
+    text-align: center;
+    letter-spacing: -1px;
+    .point {
+      @include font(12px, 700, #FF3C7B);
+    }
+  }
+
+  .form {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 16px;
+    background-color: #fff;
+    box-sizing: border-box;
+    .section {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin-bottom: 20px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      .head {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        .title {
+          flex: 1;
+          font-size: 16px;
+          font-weight: 700;
+          color: #000000;
+        }
+        .selectBox {
+          flex: none;
+          position: relative;
+          padding: 0 58px 0 24px;
+          border: 1px solid #E0E0E0;
+          border-radius: 12px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #000000;
+          line-height: 40px;
+          background-image: url(https://image.dalbitlive.com/svg/arrow_down_g.svg);
+          background-position: right 4px center;
+          background-size: 24px 24px;
+          background-repeat: no-repeat;
+          cursor: pointer;
+        }
+      }
+      
+      .contents {
+        .emailForm {
+          width: 100%;
+          padding: 0 16px;
+          border: 1px solid #E0E0E0;
+          border-radius: 12px;
+          line-height: 40px;
+          box-sizing: border-box;
+        }
+        .explanation {
+          margin-top: 5px;
+          font-size: 12px;
+          font-weight: 400;
+          color: #757575;
+          letter-spacing: -1px;
+        }
+      }      
+    }
+    .bottom {
+      margin-top: auto;
+      .checkSection {
+        position: relative;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #E0E0E0;
+        border-radius: 12px;
+        background-color: #F5F5F5;
+        box-sizing: border-box;
+        .checkLabel {
+          display: flex;
+          align-items: flex-start;
+          cursor: pointer;
+          
+          .checkText {
+            flex: 1;
+            display: inline-block;
+            margin-left: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #616161;
+            line-height: 20px;
+            letter-spacing: -1px;
+          }
+        }
+      }
+      .btnSection {
+        margin-top: 16px;
+        .btnAgree {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 44px;
+          border-radius: 12px;
+          color: #fff;
+          font-size: 18px;
+          font-weight: 700;
+          background-color: #632beb;
+        }
+      }
+    }
+    
+  }
+
+}
