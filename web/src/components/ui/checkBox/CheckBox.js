@@ -35,7 +35,7 @@ const CheckBox = (props) => {
 }
 
 CheckBox.defaultProps = {
-  type: 'text',
+  name: 'checkList',
   check: false,
 }
 
