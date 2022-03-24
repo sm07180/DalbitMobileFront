@@ -81,6 +81,10 @@ const DidLogin = React.lazy(() => import('pages/login/contents/didLogin'))
 const SignUp = React.lazy(() => import('pages/signup'))
 const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
 const RecommendDj = React.lazy(() => import('pages/signup/contents/RecommendDj'))
+
+// 법정대리인
+const legalRepresentative = React.lazy(() => import('pages/legalRepresentative'))
+
 //----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
@@ -194,6 +198,8 @@ const Router = () => {
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
+
+        <Route exact path="/legalRepresentative" component={legalRepresentative} />
 
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
