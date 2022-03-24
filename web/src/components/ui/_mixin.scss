@@ -259,7 +259,7 @@ $ExtraBold: 800;
 @mixin bankResult {
   .bankResult{
     @include flex($fd:column);
-    min-height:calc(100vh - #{$HEADER-HEIGHT});
+    min-height: 100vh;
     .resultText {
       padding:52px 0 48px;
       text-align: center;
@@ -302,9 +302,11 @@ $ExtraBold: 800;
         @include BGIMG("store/dalla/receiptBody.png");
         background-repeat:repeat-y;
         span {
+          flex: none;
           @include font(13px,400,#999);
         }
         p {
+          flex: 1;
           margin-left: auto;
           @include font(15px,500,black);
         }
