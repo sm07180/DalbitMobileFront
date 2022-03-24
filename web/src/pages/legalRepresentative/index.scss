@@ -103,6 +103,23 @@
       .bottom {
         width: 100%;
         margin-top: auto;
+        .checkLabel {
+          .checkText {
+            @include font(16px, 600, #303030);
+          }
+          .necessary::after {
+            content: "[필수]";
+            margin-left: 4px;
+            @include font(12px, 700, #FF3C7B);
+            line-height: 20px;
+          }
+        }
+        .agreeInfo {
+          margin-top: 10px;
+          @include font(12px, 400, #303030);
+          letter-spacing: -0.5px;
+          word-break: keep-all;
+        }    
         .btnSection {
           margin-top: 40px;
           .btnAgree {

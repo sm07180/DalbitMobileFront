@@ -16,8 +16,8 @@ const LegalRepresentative = () => {
   const [agreeCheck, setAgreeCheck] = useState(false);
   const [submitState, setSubmitState] = useState(false);
 
-    const onBlurHandler = (ele) => {
-    let value = ele.value;
+    const onBlurHandler = (e) => {
+    let value = e.value;
     let regExp;
     regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     if (!regExp.test(value) && value !== "") {      
@@ -29,8 +29,8 @@ const LegalRepresentative = () => {
     }
   };
 
-  const onChange = (ele) => {
-    setAgreePeriod(ele.value);
+  const onChange = (e) => {
+    setAgreePeriod(e.value);
   };
 
   const onFocus = (e) => {
@@ -44,10 +44,8 @@ const LegalRepresentative = () => {
 
   useEffect(() => {
     if(emailValue !== "" && agreePeriod !== "" && agreeCheck) {
-      console.log("버튼 활성화")
       setSubmitState(true);
     } else {
-      console.log("버튼 비활성화")
       setSubmitState(false);
     }    
   }, [emailValue, agreePeriod, agreeCheck])
@@ -95,9 +93,8 @@ const LegalRepresentative = () => {
             </div>
 
             <div className="bottom">
-              <div className="checkSection">
-                <CheckBox name={"agree"} text={"법적대리인 동의"} returnCheck={setAgreeCheck}/>                
-              </div>
+              <CheckBox name={"agree"} text={"법적대리인 동의"} returnCheck={setAgreeCheck} necessary={true}/> 
+              <p className="agreeInfo">본인은 만 19세 미만 이용자의 법정대리인임을 확인하며,  해당 이용자의 서비스 및 유료결제 이용에 동의합니다.</p>
               <div className="btnSection">
                 <button className={`btnAgree ${submitState ? "active" : "disable"}`}>법정대리인 동의하기</button>
               </div>
