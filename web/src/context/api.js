@@ -23,7 +23,6 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
-import {postSleepMemUpd} from "../common/api";
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -3994,6 +3993,16 @@ export default class API {
   // 회원 방폭
   static adminBroadcastForceExit = async (data) => {
     return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
+  }
+
+  //메인 슬라이더
+  static getBannerList = async (data) => {
+    return await ajax({url: `/v2/main/getMainSwiper`})
+  }
+
+  //파비 list
+  static getPartnerDjList = async (data) => {
+    return await ajax({url: `/getPartnerDjList`, method: 'POST', reqBody: true, data: data})
   }
 
 }
