@@ -109,7 +109,7 @@
                     background-color: #FF3C7B;
                 }
                 .codeText {
-                    @include font(14px, 400, #FFD4E1);
+                    @include font(14px, 400, $DISABLEDCOLOR);
                 }
                 .btnName {
                     @include font(16px, 700, #FFFFFF);
@@ -514,7 +514,7 @@
             border-radius: 16px;
             background-color: #FF3C7B;
             .codeText {
-                @include font(14px, 400, #FFD4E1);
+                @include font(14px, 400, $DISABLEDCOLOR);
             }
             .btnName {
                 @include font(16px, 700, #FFFFFF);
