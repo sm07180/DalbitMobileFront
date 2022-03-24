@@ -299,16 +299,19 @@ $ExtraBold: 800;
         @include flex;
         line-height:36px;
         padding:0 10%;
-        @include BGIMG("store/dalla/receiptBody.png");
-        background-repeat:repeat-y;
+        background-image:url("https://image.dalbitlive.comstore/dalla/receiptBody.png");
+        background-size: 100%;
+        background-repeat: repeat-y;
         span {
           flex: none;
           @include font(13px,400,#999);
         }
         p {
           flex: 1;
-          margin-left: auto;
+          text-align: right;
+          margin-left: 20px;
           @include font(15px,500,black);
+          word-break: break-all;
         }
         .point{
           @include font(15px,500,#FF3C7B);
