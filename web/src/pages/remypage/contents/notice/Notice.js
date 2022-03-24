@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
@@ -21,8 +21,22 @@ const NoticePage = () => {
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+
+  const fetchData = () => {
+    let params = {page: 1, records: 1000};
+    Api.my_notification(params).then((res) => {
+      if(res.result === "success") {
+        if(res.data.list.length > 0) {
+          setAlarmList({...alarmList, list: res.data.list, cnt: res.data.cnt, newCnt: res.data.newCnt});
+        } else {
+          setAlarmList({...alarmList});
+        }
+      }
+    }).catch((e) => console.log(e));
+  }
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -43,6 +57,7 @@ const NoticePage = () => {
     if(!(globalState.token.isLogin)) {
       history.push("/login")
     }
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -70,7 +85,7 @@ const NoticePage = () => {
           <div className="underline"/>
         </ul>
         {tab === noticeTabmenu[0] ?
-          <Allim />
+          <Allim alarmList={alarmList} setAlarmList={setAlarmList}/>
           :
           <Post />
         }

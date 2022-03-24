@@ -15,6 +15,7 @@ const Faq = () => {
   const [searchText, setSearchText] = useState("") //검색에 입력한 text
   const [currentSearch, setCurrentSearch] = useState(""); //검색할 text
   const [focus, setFocus] = useState(false);
+  const [fetchOn, setFetchOn] = useState(false);
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
@@ -62,9 +63,15 @@ const Faq = () => {
   }
 
   //질문 클릭시 해당 faqIdx 담아주기
-  const answerActive = (e) => {
-    if(selectedFaqIdx === parseInt(e.currentTarget.dataset.idx)) {setSelectedFaqIdx(0);}
-    else {setSelectedFaqIdx(parseInt(e.currentTarget.dataset.idx));}
+  const answerActive = (e) => { //닫을 때
+    if(selectedFaqIdx === parseInt(e.currentTarget.dataset.idx)) {
+      setFetchOn(false);
+      setSelectedFaqIdx(0);
+    }
+    else { //펼칠 때
+      setFetchOn(true);
+      setSelectedFaqIdx(parseInt(e.currentTarget.dataset.idx));
+    }
   }
 
   //검색버튼 클릭시 해당 text값으로 검색
@@ -92,18 +99,20 @@ const Faq = () => {
   }, [currentSearch])
 
   useEffect(() => {
-    fetchDataDetail();
+    if(fetchOn === true) {
+      fetchDataDetail();
+    }
   }, [selectedFaqIdx])
 
   return (
     <div id="faq">
       <Header position={'sticky'} title={'FAQ'} type={'back'}/>
       <div className="searchWrap">
-          <div className={`searchForm ${focus ? "focus" : ""}`}>
-            <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" onFocus={focusChange} onBlur={blurChange} value={searchText} onChange={searchChange}/>
-            <button className="searchBtn" data-text={searchText} onClick={searchClick}/>
-          </div>
+        <div className={`searchForm ${focus ? "focus" : ""}`}>
+          <input type="text" placeholder="궁금한 내용을 검색해보세요." className="searchInput" onFocus={focusChange} onBlur={blurChange} value={searchText} onChange={searchChange}/>
+          <button className="searchBtn" data-text={searchText} onClick={searchClick}/>
         </div>
+      </div>
       <div className='subContent'>
         {currentSearch !== "" &&
         <>

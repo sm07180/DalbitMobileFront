@@ -15,7 +15,8 @@ import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
 import vote from './vote';
 import broadcast from './broadcast';
-import profileTab from './profile/tab'
+import profileTab from './profile/tab';
+import noticeTabList from "./notice/tabList";
 import rankCtx from "./rankCtx"
 import broadcastCtx from './broadcastCtx';
 import globalCtx from './globalCtx';
@@ -42,6 +43,7 @@ const rootReducer = combineReducers({
   , vote
   , broadcast
   , profileTab
+  , noticeTabList
   , rankCtx
   , broadcastCtx
   , globalCtx
