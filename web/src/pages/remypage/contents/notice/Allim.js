@@ -10,24 +10,10 @@ import {RoomJoin} from "context/room";
 // components
 import './notice.scss'
 
-const Allim = () => {
-  const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
+const Allim = (props) => {
+  const {alarmList, setAlarmList} = props
   const context = useContext(Context);
   const history = useHistory();
-
-  //회원 알림 db값 가져오기
-  const fetchData = () => {
-    let params = {page: 1, records: 1000};
-    Api.my_notification(params).then((res) => {
-      if(res.result === "success") {
-        if(res.data.list.length > 0) {
-          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt, newCnt: res.data.newCnt});
-        } else {
-          setAlarmList({...alarmList});
-        }
-      }
-    }).catch((e) => {console.log(e)});
-  };
 
   //알림 클릭시 해당 페이지로 이동 -> 리브랜딩 주소로 다시 바꿔야함....
   const handleClick = (e) => {
@@ -95,10 +81,6 @@ const Allim = () => {
   const onClick = () => {
     history.push(`/setting/push`);
   };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     if(!(context.token.isLogin)) {history.push("/login")}
