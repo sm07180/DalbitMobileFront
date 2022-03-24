@@ -87,7 +87,9 @@ export default (props) => {
       setAuthState(11)
     } else if(returntype === 'default') {
       setAuthState(12)
-    } else {
+    } else if(returntype === 'parents') {
+      setAuthState(13)
+    }  else {
       checkAuth()
     }
 
@@ -339,6 +341,33 @@ export default (props) => {
                   }
                 }}
               >확인
+              </button>
+            </div>
+          </div>
+        )
+      case 13:
+        return (
+          <div className="auth-wrap">
+            <h4>
+              만 19세 미만 미성년자 이용에 대한
+              <br />
+              <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
+            </h4>
+            <p>
+              ※ 동의 철회를 원하시는 경우, <br />
+              달라 고객센터에서 철회 신청을 해주시기 바랍니다.
+            </p>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  if(isDesktop()) {
+                    window.close()
+                  }else {
+                    const decodeLink = decodeURIComponent(pushLink);
+                    history.push(decodeLink)
+                  }
+                }}>
+                확인
               </button>
             </div>
           </div>

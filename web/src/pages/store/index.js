@@ -11,6 +11,7 @@ import './style.scss'
 import _ from "lodash";
 import {useSelector} from "react-redux";
 import {OS_TYPE} from "context/config";
+import {authReq} from "pages/self_auth";
 
 const StorePage = () => {
   const history = useHistory()
@@ -59,12 +60,32 @@ const StorePage = () => {
     })
   }
 
-  const movePayment = () => {
+  const movePayment = async () => {
     if (context.token.isLogin) {
-      history.push({
-        pathname: '/store/dalcharge',
-        search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
-      })
+      const {result, data} = await Api.self_auth_check();
+      if(result === 'success') {
+        console.log(data);
+        if(data.adultYn === 'y' || data.parentsAgreeYn === 'y') {
+          history.push({
+            pathname: '/store/dalcharge',
+            search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
+          })
+        }else {
+          context.action.confirm({
+            msg: `달충전을 하시려면 보호자(법정대리인)의 동의가 필요합니다.`,
+            callback: () => {
+              authReq('13', context.authRef, context, '/store', '','2');
+            }
+          })
+        }
+      }else {
+        context.action.confirm({
+          msg: `결제를 하기 위해 본인인증을 완료해주세요.`,
+          callback: () => {
+            authReq('12', context.authRef, context, '/store');
+          }
+        })
+      }
     } else {
       history.push('/login')
     }
