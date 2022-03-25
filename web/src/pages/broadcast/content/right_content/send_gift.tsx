@@ -193,6 +193,9 @@ export default function SendGift(props: {
           case "emotion":
             setGiftCategoryItem(2);
             break;
+          case "text":
+            setGiftCategoryItem(3);
+            break;
         }
 
         const filterList = common.items.filter((v) => {
