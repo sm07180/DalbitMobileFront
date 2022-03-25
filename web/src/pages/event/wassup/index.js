@@ -65,6 +65,11 @@ const Wassup = () => {
 
   useEffect(()=>{
     Api.pEvtWassupManNoSel().then((res)=>{
+      if(!res.data.seqNo){
+        setTimeout(()=>{
+          history.replace("/")
+        },0)
+      }
       if(tabmenuType === tabmenu[0]){
         Api.getWhatsUpDjList({
           ...pageInfo, seqNo: res.data.seqNo

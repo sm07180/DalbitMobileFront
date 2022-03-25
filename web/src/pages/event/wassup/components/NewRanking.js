@@ -50,14 +50,14 @@ const RankingWrap = (props) => {
       </div>
       <div className="rankingBox">
         {
-          props.wassupList.length < 1 &&
+          props.wassupList && props.wassupList.length < 1 &&
           <div className="noList">
             <img src={`${IMG_SERVER}/event/rebranding/list_none.png`} alt={`list_none`}/>
             <span>현재 랭킹 내역이 없어요.</span>
           </div>
         }
         {
-          props.wassupList.length > 0 &&
+          props.wassupList && props.wassupList.length > 0 &&
           props.wassupList.map((item, idx)=>
             <RankList photoSize={55} rankList={{...item, mem_no: item.memNo}} listNum={idx} key={idx}>
               <div className="listContent">
