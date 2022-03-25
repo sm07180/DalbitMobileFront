@@ -90,7 +90,7 @@ const Start = (props) => {
           </button>
         </div>
         <p>
-          문의가 있을 경우 <span onClick={()=>{golink('/customer')}}>고객센터</span>로 연락주세요.
+          달라에 <span onClick={()=>{golink('/customer')}}>문의사항</span>이 있으신가요?
         </p>
       </section>
     </div>
