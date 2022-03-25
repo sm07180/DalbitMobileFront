@@ -94,7 +94,7 @@ export default (props) => {
   return (
     <div className='popLayer' id="confirmPop">
       <div className="popContent">
-        {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
+        {context.message.title && <h1 className="title" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
         {context.message.subMsg && (
           <div className="subMsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.subMsg)}}></div>

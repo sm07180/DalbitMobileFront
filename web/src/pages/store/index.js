@@ -10,8 +10,8 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import './style.scss'
 import _ from "lodash";
 import {useSelector} from "react-redux";
-import {OS_TYPE} from "context/config";
 import {authReq} from "pages/self_auth";
+import {parentCertChk} from "common/api";
 
 const StorePage = () => {
   const history = useHistory()
@@ -64,22 +64,42 @@ const StorePage = () => {
     if (context.token.isLogin) {
       const {result, data} = await Api.self_auth_check();
       if(result === 'success') {
+        const parentCert = await parentCertChk();
         console.log(data);
-        if(data.adultYn === 'y' || data.parentsAgreeYn === 'y') {
-          history.push({
-            pathname: '/store/dalcharge',
-            search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
-          })
-        }else {
+        console.log(parentCert);
+        if(parentCert.code === '00000') {
           context.action.confirm({
+            title: '보호자의 동의가 필요합니다',
             msg: `달충전을 하시려면 보호자(법정대리인)의 동의가 필요합니다.`,
             callback: () => {
-              authReq('13', context.authRef, context, '/store', '','2');
+              history.push(`/legalRepresentative`);
+            }
+          })
+          /*if(data.adultYn === 'y' || parentCert.data === 'y') {
+            history.push({
+              pathname: '/store/dalcharge',
+              search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
+            })
+          }else {
+            context.action.confirm({
+              title: '보호자의 동의가 필요합니다',
+              msg: `달충전을 하시려면 보호자(법정대리인)의 동의가 필요합니다.`,
+              callback: () => {
+                history.push(`/legalRepresentative`);
+              }
+            })
+          }*/
+        }else {
+          context.action.alert({
+            msg: `오류가 발생했습니다.`,
+            callback: () => {
+              history.push('/')
             }
           })
         }
       }else {
         context.action.confirm({
+          title: '본인인증을 완료해주세요',
           msg: `결제를 하기 위해 본인인증을 완료해주세요.`,
           callback: () => {
             authReq('12', context.authRef, context, '/store');

@@ -36,6 +36,7 @@ export default (props) => {
    */
   const [authState, setAuthState] = useState(0)
   const [dupCheck, setDupCheck] = useState(false);
+  const [parentCert, setParentCert] = useState(false);
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
@@ -346,6 +347,9 @@ export default (props) => {
           </div>
         )
       case 13:
+        if(!parentCert) {
+          setParentCert(true);
+        }
         return (
           <div className="auth-wrap">
             <h4>
@@ -377,6 +381,7 @@ export default (props) => {
     }
   }
 
+  /* 휴면 해제 처리 */
   useEffect(() => {
     if(dupCheck) {
       if(isDesktop()) {
@@ -425,6 +430,14 @@ export default (props) => {
       })
     }
   }, [dupCheck])
+
+  /* 미성년자 법정대리인 동의 메일 */
+  useEffect(() => {
+    if(parentCert) {
+      console.log('hi');
+      console.log(sessionStorage.getItem('certItem'))
+    }
+  }, [parentCert]);
 
   //---------------------------------------------------------------------
   return (
