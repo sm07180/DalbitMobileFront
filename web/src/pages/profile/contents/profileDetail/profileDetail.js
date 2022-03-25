@@ -66,7 +66,7 @@ const ProfileDetail = (props) => {
   const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
 
   //내가 작성한 글 여부
-  const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === (type === 'notice' ? item?.mem_no : item?.writer_mem_no)?.toString();
+  const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === ((type === 'notice' || type === 'feed') ? item?.mem_no : item?.writer_mem_no)?.toString();
   const adminChecker = context?.adminChecker;
 
   /* 프로필 사진 확대 */
@@ -103,6 +103,20 @@ const ProfileDetail = (props) => {
           history.goBack();
         }
       })
+    } else if(type === "feed") {
+      Api.myPageFeedDetailSel({
+        feedNo: index,
+        memNo: memNo,
+        viewMemNo: context.profile.memNo
+      }).then((res) => {
+        const {data, result, message} = res;
+        if(result === "success") {
+          setItem(data);
+        } else {
+          context.action.toast({msg: message});
+          history.goBack();
+        }
+      }).catch((e) => console.log(e));
     }
 
   }
@@ -136,12 +150,10 @@ const ProfileDetail = (props) => {
         }
       });
 
+    } else if(type === "feed") {
+
     }
   }
-
-  useEffect(() => {
-    console.log(replyList);
-  })
 
   //전체 조회  (피드, 팬보드)
   const getAllData = (_page, records) => {
@@ -187,7 +199,6 @@ const ProfileDetail = (props) => {
   const deleteContents = () => {
     const callback = async () => {
       if (type === 'notice') {
-        console.log(item?.nickName);
         const {result, data, message} = await Api.mypage_notice_delete({
           data: {
             delChrgrName: item?.nickName,
@@ -207,6 +218,18 @@ const ProfileDetail = (props) => {
           history.goBack();
         } else {
           //실패
+        }
+      } else if(type === "feed") {
+        const {result, data, message} = await Api.myPageFeedDel({
+          data: {
+            feedNo: index,
+            delChrgrname: item?.nickName
+          }
+        })
+        if(result === "success") {
+          history.goBack();
+        } else {
+
         }
       }
     }
@@ -273,6 +296,8 @@ const ProfileDetail = (props) => {
         getAllData(1, 9999);
       } else {
       }
+    } else if(type === "feed") {
+
     }
   };
 
@@ -327,6 +352,8 @@ const ProfileDetail = (props) => {
         context.action.alert({msg: message});
       }
 
+    } else if(type === "feed") {
+
     }
   };
 
@@ -349,6 +376,8 @@ const ProfileDetail = (props) => {
         } else {
           //실패
         }
+      } else if(type === "feed") {
+
       }
     };
 
@@ -383,6 +412,8 @@ const ProfileDetail = (props) => {
             }
           }).catch((e) => console.log(e));
         }
+      } else if(type === "feed") {
+
       }
   }
 
@@ -398,6 +429,10 @@ const ProfileDetail = (props) => {
     closePopup(dispatch);
     setBlockReportInfo({memNo: '', memNick: ''});
   }
+
+  useEffect(() => {
+    console.log(item);
+  }, [item])
 
   return (
     <div id="profileDetail">
@@ -424,20 +459,20 @@ const ProfileDetail = (props) => {
         {/* 피드, 팬보드 게시글 영역 */}
         <div className="detail">
           {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
-          <pre className="text">{item?.contents}</pre>
-          {type === 'notice' && (item?.photoInfoList?.length > 1 ?
+          <pre className="text">{item?.feed_conts ? item.feed_conts : item?.contents}</pre>
+          {(type === 'notice' || type === 'feed') && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-              <Swiper {...swiperFeeds}>
-                {item.photoInfoList.map((photo) => {
-                  return (
-                    <div>
-                      <div className="photo">
-                        <img src={photo?.imgObj?.thumb500x500} alt="" />
-                      </div>
-                    </div>
-                  )
-                })}
-              </Swiper>
+              {/*<Swiper {...swiperFeeds}>*/}
+              {/*  {item.photoInfoList.map((photo, index) => {*/}
+              {/*    return (*/}
+              {/*      <div key={index}>*/}
+              {/*        <div className="photo">*/}
+              {/*          <img src={photo?.imgObj?.thumb500x500} alt="" />*/}
+              {/*        </div>*/}
+              {/*      </div>*/}
+              {/*    )*/}
+              {/*  })}*/}
+              {/*</Swiper>*/}
               {item.photoInfoList.map((photo,index) => {
                 return (
                 <div className="photo" key={index}>
@@ -455,9 +490,10 @@ const ProfileDetail = (props) => {
             : <></>
           )}
           <div className="info">
-            {item?.like_yn === "n" ?
-              <i className="like" onClick={() => fetchHandleLike(item?.noticeIdx, item?.mem_no, item?.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
-              : <i className="like" onClick={() => fetchHandleLike(item?.noticeIdx, item?.mem_no, item?.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
+            {(type === "feed" || type === 'notice') && item?.like_yn === "n" ?
+              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
+              : (type === "feed" || type === 'notice') && item?.like_yn === "y" &&
+              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
             }
             <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>

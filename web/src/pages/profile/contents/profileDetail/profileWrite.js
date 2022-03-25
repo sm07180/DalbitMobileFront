@@ -49,7 +49,7 @@ const ProfileWrite = () => {
   const [formState, setFormState] = useState({
     title: '',
     contents: '',
-    others: type==='feed'? 0: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
+    others: type==='notice'? 0: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
     photoInfoList: []
   });
   const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
@@ -97,19 +97,20 @@ const ProfileWrite = () => {
           history.goBack();
         }
       });
-    } else if (type === 'fanBoard') { //피드 프로시져 나오면 변경
-      const {data, result, message} = await Api.member_fanboard_add({
+    } else if (type === "feed") {
+      Api.myPageFeedIns({
+        reqBody: true,
         data: {
-          memNo,
-          depth: 1,
-          contents,
-          viewOn: others
+          memNo: memNo,
+          feedContents: contents,
+          photoInfoList
         }
-      });
-      context.action.toast({msg: message});
-      if (result === 'success') {
-        history.goBack();
-      }
+      }).then((res) => {
+        context.action.toast({msg: res.message});
+        if(res.result === "success") {
+          history.goBack();
+        }
+      }).catch((e) => console.log(e));
     }
   };
 
@@ -135,13 +136,14 @@ const ProfileWrite = () => {
         history.goBack();
       }
 
-    } else if (type === 'fanBoard') { //피드로 변경
+    } else if (type === 'fanBoard') {
       //팬보드 수정에서는 비밀글 여부를 수정할 수 없음!
       const {data, result, message} = await Api.mypage_board_edit({
         data: {
           memNo,
           replyIdx: index,
-          contents: contents
+          contents: contents,
+          delChrgrname: profile?.nickName
         }
       });
 
@@ -150,6 +152,23 @@ const ProfileWrite = () => {
         history.goBack();
       } else {
         context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
+      }
+    } else if (type === 'feed') {
+      const {data, result, message} = await Api.myPageFeedUpd({
+        reqBody: true,
+        data: {
+          feedNo: index,
+          memNo: memNo,
+          feedContents: contents,
+          photoInfoList,
+          delChrgrName: profile?.nickName
+        }
+      });
+      if(result === 'success') {
+        context.action.toast({msg: message});
+        history.goBack();
+      } else {
+        context.action.alert({msg: "피드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요."});
       }
     }
   }
@@ -231,6 +250,23 @@ const ProfileWrite = () => {
           history.goBack();
         }
       })
+    } else if (type === 'feed') {
+      Api.myPageFeedDetailSel({
+        feedNo: index,
+        memNo: memNo,
+        viewMemNo: context.profile.memNo
+      }).then((res) => {
+        const {data, result, message} = res;
+        let newPhotoInfoList = [];
+        if(result === "success") {
+          data.photoInfoList.map((data, index) => {
+            newPhotoInfoList.push(Object.assign({img_name: data?.img_name}, {...data?.imgObj}));
+          });
+          setFormState({...formState, contents: data.feed_conts, photoInfoList: newPhotoInfoList})
+        } else {
+          history.goBack();
+        }
+      });
     }
   };
 
@@ -243,6 +279,10 @@ const ProfileWrite = () => {
   useEffect(() => {
     action === 'modify' && getDetailData();
   }, []);
+
+  useEffect(() => {
+    console.log(formState);
+  })
 
   return (
     <div id="profileWrite">
@@ -281,54 +321,74 @@ const ProfileWrite = () => {
         {/*사진 리스트 스와이퍼*/}
         {type === 'notice' &&
         <div className="insertGroup">
-          <div className="title">사진 첨부<span>(최대 10장)</span></div>
-            <Swiper {...swiperParams} ref={photoListSwiperRef}>
-              {formState?.photoInfoList.map((data, index) =>
-                <label key={index} onClick={(e) => e.preventDefault()}>
-                  <div className="insertPicture"
-                       onClick={() => setShowSlide({show: true, viewIndex: index})}>
-                    <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
-                  </div>
-                  <button className="cancelBtn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteThumbnailImageList(formState?.photoInfoList, index)
-                          }}/>
-                </label>)
-              }
-              {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>
-                <label key={i} onClick={() => inputRef?.current?.click()}>
-                  <button className='insertBtn'>+</button>
-                </label>)}
-            </Swiper>
-          {/*<div className="title">사진 첨부</div>*/}
-          {/*<div className={"swiper-container"}>*/}
-          {/*  <div className={"swiper-wrapper"}>*/}
-          {/*    {formState?.photoInfoList[0] ?*/}
-          {/*      <label className={"swiper-slide"} onClick={(e) => {*/}
-          {/*        e.stopPropagation();*/}
-          {/*        e.preventDefault();*/}
-          {/*      }}>*/}
+          {/*<div className="title">사진 첨부<span>(최대 10장)</span></div>*/}
+          {/*  <Swiper {...swiperParams} ref={photoListSwiperRef}>*/}
+          {/*    {formState?.photoInfoList.map((data, index) =>*/}
+          {/*      <label key={index} onClick={(e) => e.preventDefault()}>*/}
           {/*        <div className="insertPicture"*/}
-          {/*             onClick={() => setShowSlide({show: true, viewIndex: 0})}>*/}
-          {/*          <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>*/}
+          {/*             onClick={() => setShowSlide({show: true, viewIndex: index})}>*/}
+          {/*          <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>*/}
           {/*        </div>*/}
           {/*        <button className="cancelBtn"*/}
           {/*                onClick={(e) => {*/}
-          {/*                  e.preventDefault();*/}
-          {/*                  deleteThumbnailImageList([formState?.photoInfoList[0]], 0)*/}
+          {/*                  e.stopPropagation();*/}
+          {/*                  deleteThumbnailImageList(formState?.photoInfoList, index)*/}
           {/*                }}/>*/}
-          {/*      </label>*/}
-          {/*      :*/}
-          {/*      <label className={"swiper-slide"}*/}
-          {/*             onClick={(e) => {*/}
-          {/*               inputRef?.current?.click();*/}
-          {/*             }}>*/}
-          {/*        <button className='insertBtn'>+</button>*/}
-          {/*      </label>*/}
+          {/*      </label>)*/}
           {/*    }*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          {/*    {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>*/}
+          {/*      <label key={i} onClick={() => inputRef?.current?.click()}>*/}
+          {/*        <button className='insertBtn'>+</button>*/}
+          {/*      </label>)}*/}
+          {/*  </Swiper>*/}
+          <div className="title">사진 첨부</div>
+          <div className={"swiper-container"}>
+            <div className={"swiper-wrapper"}>
+              {formState?.photoInfoList[0] ?
+                <label className={"swiper-slide"} onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                }}>
+                  <div className="insertPicture"
+                       onClick={() => setShowSlide({show: true, viewIndex: 0})}>
+                    <img src={formState?.photoInfoList[0]?.thumb60x60 || formState?.photoInfoList[0]?.thumb292x292} alt=""/>
+                  </div>
+                  <button className="cancelBtn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            deleteThumbnailImageList([formState?.photoInfoList[0]], 0)
+                          }}/>
+                </label>
+                :
+                <label className={"swiper-slide"}
+                       onClick={(e) => {
+                         inputRef?.current?.click();
+                       }}>
+                  <button className='insertBtn'>+</button>
+                </label>
+              }
+            </div>
+          </div>
+        </div>
+        }
+        {type === "feed" &&
+        <div className="insertGroup">
+          <div className="title">사진 첨부<span>(최대 10장)</span></div>
+          <Swiper {...swiperParams} ref={photoListSwiperRef}>
+            {formState?.photoInfoList.map((data, index) =>
+              <label key={index} onClick={(e) => e.preventDefault()}>
+                <div className="insertPicture"
+                     onClick={() => setShowSlide({show: true, viewIndex: index})}>
+                  <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
+                </div>
+                <button className="cancelBtn" onClick={(e) => {e.stopPropagation();deleteThumbnailImageList(formState?.photoInfoList, index)}}/>
+              </label>)
+            }
+            {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>
+              <label key={i} onClick={() => inputRef?.current?.click()}>
+                <button className='insertBtn'>+</button>
+              </label>)}
+          </Swiper>
         </div>
         }
         <div className="insertButton">

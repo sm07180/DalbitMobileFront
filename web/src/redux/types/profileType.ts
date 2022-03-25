@@ -77,7 +77,7 @@ export const profileDefaultState = {
   wasSpecial: false,
 }
 
-/* 피드 default */
+/* 방송공지 default */
 export const profileFeedDefaultState = {
   feedList: [],
   fixedFeedList: [],
@@ -98,6 +98,13 @@ export const profileFanBoardDefaultState = {
 export const profileClipDefaultState = {
   list: [],
   paging: profileClipPagingDefault,
+  isLastPage: false,
+}
+
+/* 피드 default */
+export const profileFeedNewDefaultState = {
+  feedList: [],
+  paging: profilePagingDefault,
   isLastPage: false,
 }
 
@@ -254,7 +261,21 @@ export interface IProfileState {
   wasSpecial: boolean;
 }
 
-/* 피드 */
+/* 피드 데이터 */
+export interface IFeedNewData {
+  contents: string;
+  imagePath: string;
+  nickNm: string;
+  noticeIdx: number;
+  profImg: IImageVo | null;
+  readCnt: number;
+  replyCnt: number;
+  rcv_like_cnt: number;
+  like_yn: string;
+  writeDate: string;
+}
+
+/* 방송공지 */
 export interface IProfileFeedState {
   feedList: Array<IFeedData>;
   fixedFeedList: Array<IFeedData>,
@@ -284,4 +305,11 @@ export interface IProfileTabState {
   tabName: string;
   isRefresh: boolean;
   isReset: boolean;
+}
+
+/* 피드 */
+export interface IProfileFeedNewState {
+  feedList: Array<IFeedNewData>;
+  paging: IPaging;
+  isLastPage: boolean;
 }

@@ -17,6 +17,7 @@ import rank from "./rank/index"
 import vote from './vote';
 import broadcast from './broadcast';
 import profileTab from './profile/tab'
+import feedNew from "./profile/feedNew";
 
 const rootReducer = combineReducers({
   common
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
   , rank
   , broadcast
   , profileTab
+  , feedNew
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

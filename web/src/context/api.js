@@ -853,6 +853,89 @@ export default class API {
   }
 
   /**
+   * 피드 등록
+   */
+  static myPageFeedIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/add`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 조회
+   */
+  static myPageFeedSel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 피드 수정
+   */
+  static myPageFeedUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ... params,
+      url: url || `/mypage/feed/edit`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 삭제
+   */
+  static myPageFeedDel = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed`,
+      method: method || 'DELETE',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 상세 조회
+   */
+  static myPageFeedDetailSel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/detail`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 피드 좋아요
+   */
+  static myPageFeedLike = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/like`,
+      method: 'POST',
+      params
+    })
+  }
+
+  /**
+   * 피드 좋아요 취소
+   */
+  static myPageFeedLikeCancel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/cancel`,
+      method: 'POST',
+      params
+    })
+  }
+
+  /**
    * @brief 마이페이지 공지사항 등록
    * @method "POST""
    * @todo
@@ -3451,7 +3534,6 @@ export default class API {
 
   // 추억의 뽑기 이벤트 뽑기
   static putDrawSelect = async (data) => {
-    console.log(data)
     return await ajax({
       url: '/event/draw/select',
       method: 'POST',

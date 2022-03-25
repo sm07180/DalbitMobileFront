@@ -27,14 +27,14 @@ import {
   setProfileClipData,
   setProfileData,
   setProfileFanBoardData,
-  setProfileFeedData,
+  setProfileFeedData, setProfileFeedNewData,
 } from "redux/actions/profile";
 import {
   profileClipPagingDefault,
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileFeedDefaultState, profilePagingDefault
+  profileFeedDefaultState, profilePagingDefault, profileFeedNewDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
@@ -84,6 +84,7 @@ const ProfilePage = () => {
   const fanBoardData = useSelector(state => state.fanBoard);
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
+  const feedNewData = useSelector(state => state.feedNew);
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
@@ -110,7 +111,7 @@ const ProfilePage = () => {
     })
   };
 
-  /* 피드 데이터 호출 */
+  /* 방송공지 데이터 호출 */
   const getFeedData = (pageNo) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
@@ -137,6 +138,30 @@ const ProfilePage = () => {
         })
       }
     })
+  }
+
+  /* 피드 데이터 */
+  const fetchFeedData = () => {
+    const params = {
+      memNo: context.profile.memNo,
+      pageNo: 1,
+      pageCnt: 1000
+    }
+    Api.myPageFeedSel(params).then((res) => {
+      if(res.result === "success") {
+        const data = res.data;
+        const callPageNo = data.paging?.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileFeedNewData({
+          ...feedNewData,
+          feedList: data.paging?.page > 1 ? feedNewData.feedList.concat(data.list) : data.list,
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage,
+        }));
+      } else {
+        context.action.alert({msg: res.message});
+      }
+    }).catch((e) => console.log(e));
   }
 
   /* 팬보드 데이터 */
@@ -319,6 +344,31 @@ const ProfilePage = () => {
     }
   };
 
+  const fetchFeedHandleLike = async (feedNo, mMemNo, like) => {
+    const params = {
+      feedNo: feedNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    };
+    if(like === "n") {
+      Api.myPageFeedLike(params).then((res) => {
+        if(res.result === "success") {
+          fetchFeedData();
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    } else if(like === "y") {
+      Api.myPageFeedLikeCancel(params).then((res) => {
+        if(res.result === "success") {
+          fetchFeedData();
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    }
+  };
+
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
     closePopup(dispatch);
@@ -408,6 +458,7 @@ const ProfilePage = () => {
   const socialTabChangeAction = (item) => {
     if(item === socialTabmenu[0]) {
       dispatch(setProfileFeedData({...feedData, paging: profilePagingDefault, isLastPage: false}));
+      dispatch(setProfileFeedNewData({...feedNewData, paging: profilePagingDefault, isLastPage: false}));
       removeScrollEvent();
       document.addEventListener('scroll', profileScrollEvent);
     }else if(item === socialTabmenu[1]) {
@@ -452,7 +503,8 @@ const ProfilePage = () => {
   /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
     dispatch(setProfileData(profileDefaultState)); // 프로필 상단
-    dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
+    dispatch(setProfileFeedData(profileFeedDefaultState)); // 방송공지
+    dispatch(setProfileFeedNewData(profileFeedNewDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
   }
@@ -460,7 +512,7 @@ const ProfilePage = () => {
   /* 피드글, 팬보드 삭제후 데이터 비우기 */
   const deleteContents = (type, index, memNo) => {
     const callback = async () => {
-      if (type === 'feed') {
+      if (type === 'notice') {
         const {result, data, message} = await Api.mypage_notice_delete({
           data: {
             delChrgrName: profileData?.nickNm,
@@ -482,6 +534,22 @@ const ProfilePage = () => {
         } else {
           context.action.toast({msg: message});
         }
+      } else if (type === 'feed') {
+         await Api.myPageFeedDel({
+           data: {
+             feedNo: index,
+             delChrgrName: profileData?.nickNm
+           }
+         }).then((res) => {
+           console.log(res);
+           if(res.result === "success") {
+             console.log("피드 삭제");
+             const feedNewList = feedNewData.feedList.concat([]).filter((feedNew, _index) => feedNew.feedNo !== index);
+             dispatch(setProfileFeedNewData({...feedNewData, feedNewList}));
+           } else {
+             context.action.toast({msg: message});
+           }
+         })
       }
     }
     context.action.confirm({
@@ -501,6 +569,7 @@ const ProfilePage = () => {
   const profileTabCheck = () => {
     if(socialType === socialTabmenu[0]) {
       getFeedData();
+      fetchFeedData();
       setScrollPagingCnt(1);
     }else if(socialType === socialTabmenu[1]) {
       getFanBoardData();
@@ -545,6 +614,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
       getFeedData();
+      fetchFeedData();
     }else if(socialType === socialTabmenu[1] && scrollPagingCnt > 1 && !fanBoardData.isLastPage) {
       getFanBoardData();
     }else if(socialType === socialTabmenu[2] && scrollPagingCnt > 1 && !clipData.isLastPage) {
@@ -552,7 +622,7 @@ const ProfilePage = () => {
     }
   }, [scrollPagingCnt]);
 
-  /* 피드 마지막 페이지 호출 이펙트 */
+  /* 방송공지 마지막 페이지 호출 이펙트 */
   useEffect(() => {
     if(feedData.isLastPage){
       removeScrollEvent();
@@ -580,6 +650,13 @@ const ProfilePage = () => {
       setCallProfileData(true);
     }
   }, [location.pathname]);
+
+  /* 피드 마지막 페이지 호출 이펙트 */
+  useEffect(() => {
+    if(feedNewData.isLastPage) {
+      removeScrollEvent();
+    }
+  }, [feedNewData.isLastPage]);
 
   useEffect(() => {
     if(callProfileData) {
@@ -653,7 +730,7 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchHandleLike={fetchHandleLike}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedNewData} fetchHandleLike={fetchHandleLike}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
