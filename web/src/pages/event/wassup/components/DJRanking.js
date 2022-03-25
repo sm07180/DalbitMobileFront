@@ -62,7 +62,7 @@ const RankingWrap = (props) => {
           {
             props.wassupList.length > 0 &&
             props.wassupList.map((item, idx)=>
-              <RankList photoSize={55} rankList={item}>
+              <RankList photoSize={55} rankList={{...item, mem_no: item.memNo}} listNum={idx} key={idx}>
                 <div className="listContent">
                   <div className="listItem">
                     <GenderItems data={item.memSex}/>

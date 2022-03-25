@@ -245,7 +245,7 @@ const Wassup = () => {
         {
           tabmenuType === tabmenu[0] ?
             wassupSel && <DJRanking wassupSel={wassupSel} wassupList={wassupList}/>
-          :
+            :
             wassupSel && <NewRanking wassupSel={wassupSel} wassupList={wassupList}/>
         }
         <section className="notice">
