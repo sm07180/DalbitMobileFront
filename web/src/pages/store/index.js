@@ -102,7 +102,7 @@ const StorePage = () => {
           title: '본인인증을 완료해주세요',
           msg: `결제를 하기 위해 본인인증을 완료해주세요.`,
           callback: () => {
-            authReq('12', context.authRef, context, '/store');
+            authReq({code: '12', formTagRef: context.authRef, context, pushLink: '/store'});
           }
         })
       }

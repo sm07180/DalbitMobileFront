@@ -75,7 +75,7 @@ const Share = () => {
               context.action.confirm({
                 msg: `이벤트에 참여하기 위해 본인인증을 완료해 주세요.`,
                 callback: () => {
-                  authReq('12', context.authRef, context, '/event/share');
+                  authReq({code: '12',formTagRef: context.authRef, context: context, pushLink: '/event/share'});
                 }
               })
             }

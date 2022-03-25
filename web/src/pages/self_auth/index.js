@@ -53,13 +53,14 @@ export const openAuthPage = (formTagRef, context) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef, context, pushLink, memNo, authType) => {
+export const authReq = async ({code, formTagRef, context, pushLink='', memNo='', authType='', agreePeriod=''}) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
       authType: authType ? authType : '0',
       pushLink: pushLink ? encodeURIComponent(pushLink) : 'none',
-      memNo
+      memNo,
+      agreePeriod
     }
   })
   if (res.result == 'success' && res.code == 0) {
@@ -104,10 +105,10 @@ export default (props) => {
       return authReq(url, context.authRef, context)
     }
 
-    if (type === 'create' || type === 'adultCreate') return authReq('6', context.authRef, context)
-    if (type === 'adultJoin') return authReq('8', context.authRef, context)
+    if (type === 'create' || type === 'adultCreate') return authReq({code: '6', formTagRef: context.authRef, context})
+    if (type === 'adultJoin') return authReq({code: '8', formTagRef: context.authRef, context})
 
-    return authReq('4', context.authRef, context)
+    return authReq({code: '4', formTagRef: context.authRef, context})
   }
 
   const goBack = () => {

@@ -1,5 +1,4 @@
 import React, {useState,useReducer,useEffect,useContext} from "react";
-import { useHistory } from "react-router-dom";
 import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
@@ -9,11 +8,19 @@ import "./index.scss";
 import {authReq} from "pages/self_auth";
 import UseInput from "common/useInput/useInput";
 
+const periodType = [
+  {value: '12', name: '12개월'},
+  {value: '9', name: '9개월'},
+  {value: '6', name: '6개월'},
+  {value: '3', name: '3개월'},
+  {value: '1', name: '1개월'},
+]
+
 const LegalRepresentative = () => { 
   const context = useContext(Context)
 
   const [emailValue, setEmailValue] = useState("");
-  const [agreePeriod, setAgreePeriod] = useState("12개월");
+  const [agreePeriod, setAgreePeriod] = useState(periodType[0].value);
   const [agreeCheck, setAgreeCheck] = useState(false);
   const [submitState, setSubmitState] = useState(false);
 
@@ -58,10 +65,8 @@ const LegalRepresentative = () => {
   }
 
   const agreeSubmit = () => {
-    console.log(emailValue, agreePeriod, agreeCheck);
-
     if(emailValidator() && agreePeriod !== '' && agreeCheckHandler()) {
-      return authReq('13', context.authRef, context, '/store', '','2');
+      return authReq({code: '13', formTagRef: context.authRef, context, pushLink: '/store', authType: '2', agreePeriod});
     }
   }
 
@@ -115,11 +120,11 @@ const LegalRepresentative = () => {
               <div className="head">
                 <span className="title necessary">동의기간</span>
                 <select className="selectBox" onChange={onChange}>
-                  <option>12개월</option>
-                  <option>9개월</option>
-                  <option>6개월</option>
-                  <option>3개월</option>
-                  <option>1개월</option>
+                  {periodType.map((item, index) => {
+                    return (
+                      <option key={index} value={item.value}>{item.name}</option>
+                    )
+                  })}
                 </select>
               </div>            
               <div className="contents">
