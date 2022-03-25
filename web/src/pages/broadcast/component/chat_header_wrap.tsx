@@ -687,6 +687,7 @@ const ChatHeaderWrapStyled = styled.div`
       display: flex;
       align-items: center;
       flex: 1;
+      width: 50%;
       padding-top: 10px;
 
       &::before {
