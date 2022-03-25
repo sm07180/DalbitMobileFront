@@ -13,6 +13,8 @@ import DJRanking from './components/DJRanking'
 import NewRanking from './components/NewRanking'
 
 import './style.scss'
+import Api from "context/api";
+import moment from "moment";
 
 const tabmenu = [1,2]
 
@@ -33,8 +35,14 @@ const Wassup = () => {
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true)
 
   const [tabFixed, setTabFixed] = useState(false);
-  const [tabmenuType, setTabmenuType] = useState(tabmenu[0])
-  
+  const [tabmenuType, setTabmenuType] = useState(tabmenu[0]);
+
+  const [pageInfo, setPageInfo] = useState({
+    pageNo: 1, pagePerCnt: 10
+  });
+  const [wassupSel, setWassupSel] = useState(null);
+  const [wassupList, setWassupList] = useState([]);
+
   const tabActive = (index) => {
     setTabmenuType(tabmenu[index])
   }
@@ -45,7 +53,7 @@ const Wassup = () => {
     if (window.scrollY >= tabMenuTop) {
       setTabFixed(true)
     } else {
-      setTabFixed(false)      
+      setTabFixed(false)
     }
   }
 
@@ -53,7 +61,36 @@ const Wassup = () => {
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
   },[])
-  
+
+
+  useEffect(()=>{
+    Api.pEvtWassupManNoSel().then((res)=>{
+      if(tabmenuType === tabmenu[0]){
+        Api.getWhatsUpDjList({
+          ...pageInfo, seqNo: res.data.seqNo
+        }).then((res) => {
+          setWassupList(res.data.list)
+        })
+        Api.getWhatsUpDjSel({
+          seqNo: res.data.seqNo
+        }).then((res) => {
+          setWassupSel(res.data);
+        })
+      }else if(tabmenuType === tabmenu[1]){
+        Api.getWhatsUpNewMemberList({
+          ...pageInfo, seqNo: res.data.seqNo
+        }).then((res) => {
+          setWassupList(res.data.list)
+        })
+        Api.getWhatsUpNewMemberSel({
+          seqNo: res.data.seqNo
+        }).then((res) => {
+          setWassupSel(res.data);
+        })
+      }
+    })
+  }, [tabmenuType])
+
   // 당겨서 새로 고침
   const mainTouchStart = useCallback(
     (e) => {
@@ -147,6 +184,24 @@ const Wassup = () => {
     }
   };
 
+  const getSeqNo = ()=>{
+    const now = moment.now();
+    // const now = moment("2022.04.08 00:00:00:001",'YYYY.MM.DD HH:mm:ss:SSS');
+    const seq1 = moment("2022.04.01 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
+    const seq2 = moment("2022.04.08 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
+    const end = moment("2022.04.15 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
+    // const seq1 = moment("2022.03.01 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
+    // const seq2 = moment("2022.03.26 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
+    // const end = moment("2022.04.15 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
+    if(moment(now).isBetween(seq1, seq2)){
+      return 1
+    }else if(moment(now).isBetween(seq2, end)){
+      return 2
+    }else{
+      return -1
+    }
+  }
+
   return (
     <>
       <div className="refresh-wrap"
@@ -186,11 +241,12 @@ const Wassup = () => {
             })}
           </ul>
         </div>
+
         {
           tabmenuType === tabmenu[0] ?
-          <DJRanking/>
+            wassupSel && <DJRanking wassupSel={wassupSel} wassupList={wassupList}/>
           :
-          <NewRanking/>
+            wassupSel && <NewRanking wassupSel={wassupSel} wassupList={wassupList}/>
         }
         <section className="notice">
           <div className="title">
@@ -206,5 +262,6 @@ const Wassup = () => {
     </>
   );
 };
+
 
 export default Wassup;
