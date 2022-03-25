@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useState,
   useMemo,
-  useCallback
+  useRef
 } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -24,6 +24,7 @@ import UseInput from '../../../../common/useInput/useInput';
 import {getCookie, setCookie} from "../../../../common/utility/cookie";
 
 let preventClick = false;
+let giftListScroll = {active: false, itemNo: '',}; // giftList effect
 
 type inputTTSStateType = {
   showInputField: boolean;
@@ -49,6 +50,10 @@ export default function SendGift(props: {
 
   const { guestState } = useContext(GuestContext);
   const { guestConnectStatus, guestObj } = guestState;
+
+  // 선물 팝업 스크롤 처리용도
+  const itemListRef = useRef<any>({});
+  const scrollInnerRef = useRef<any>();
 
   const common = useMemo(() => {
     if (splashData !== null) {
@@ -194,6 +199,8 @@ export default function SendGift(props: {
           return v.category === giftStateItem.category && v.visibility;
         });
 
+        // 아이템 위치로 스크롤 처리
+        giftListScroll = {active: true, itemNo: layer.others.itemNo};
         setGiftList([...filterList]);
 
         const idx = filterList.findIndex((v) => {
@@ -296,6 +303,21 @@ export default function SendGift(props: {
   useEffect(() => {
     getActorList();
   }, []);
+
+  /* 특정 아이템 선택시 스크롤 이동 ( giftListScroll?.active : true 일때 작동) */
+  useEffect(() => {
+    try {
+      if (giftListScroll?.active && itemListRef.current && itemListRef.current[giftListScroll?.itemNo]) {
+        const innerRef = scrollInnerRef.current?.getInnerRef();
+        innerRef?.scrollTo(0, itemListRef.current[giftListScroll?.itemNo]?.offsetTop);
+
+        giftListScroll = {active: false, itemNo: ''};
+        itemListRef.current = {};
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  },[giftList]);
 
   // 선물하기
   async function sendGift(count: number, itemNo: string, isHidden: boolean) {
@@ -522,13 +544,14 @@ export default function SendGift(props: {
                 <span/>
               </div>
             }
-            <DalbitScroll preventAutoHidden={true} always={true}>
+            <DalbitScroll preventAutoHidden={true} always={true} ref={scrollInnerRef}>
               <ul className="giftList">
                 {giftList &&
                   giftList.map((v: any, i: number) => {
                     const { type } = v;
                     return (
                       <li
+                        ref={(el) => {itemListRef.current[v?.itemNo] = el}}
                         key={`gift-${i}`}
                         onClick={() => {
                           if (type === "direct") {

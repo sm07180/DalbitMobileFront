@@ -41,13 +41,14 @@ const MoonLandAnimateChildren = (props: any) => {
   useEffect(() => {
     if(thisElRef.current) {
       try {
+        const startPositionTop =  550;
         thisElRef.current.style.right = `${right}px`;
 
         if (!autoTouch) {
           const endPositionTop = Math.floor(Math.random() * 40 + 20);
           const keyFrameEffect = new KeyframeEffect(
             thisElRef.current,
-            [{top: `${Math.floor(Math.random() * 20 + 640)}px`}, {top: `${endPositionTop}px`}],
+            [{top: `${Math.floor(Math.random() * 20 + startPositionTop)}px`}, {top: `${endPositionTop}px`}],
             {duration: 4000, fill: "forwards", easing: "cubic-bezier(.61,.31,.44,.99)"});
           animateRef.current = new Animation(keyFrameEffect, document.timeline);
           animateRef.current.play();
@@ -76,7 +77,7 @@ const MoonLandAnimateChildren = (props: any) => {
         } else { //자동 터치
           const keyFrameEffect = new KeyframeEffect(
             thisElRef.current,
-            [{top: `${Math.floor(Math.random() * 20 + 640)}px`}, {top: `${Math.floor(Math.random() * 40 + 20)}px`}],
+            [{top: `${Math.floor(Math.random() * 20 + startPositionTop)}px`}, {top: `${Math.floor(Math.random() * 40 + 20)}px`}],
             {duration: 4000, fill: "forwards", easing: "cubic-bezier(.61,.31,.44,.99)"});
           animateRef.current = new Animation(keyFrameEffect, document.timeline);
           animateRef.current.play();
