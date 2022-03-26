@@ -16,8 +16,8 @@ import popup from "./common/popup";
 import rank from "./rank/index"
 import vote from './vote';
 import broadcast from './broadcast';
-import profileTab from './profile/tab'
-import feedNew from "./profile/feedNew";
+import profileTab from './profile/tab';
+import noticeTabList from "./notice/tabList";
 
 const rootReducer = combineReducers({
   common
@@ -38,7 +38,7 @@ const rootReducer = combineReducers({
   , rank
   , broadcast
   , profileTab
-  , feedNew
+  , noticeTabList
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

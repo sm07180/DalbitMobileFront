@@ -42,3 +42,10 @@ export interface NoticeNewAlarmState {
     notice: number;
     qna: number;
 }
+
+export interface NoticeTabListState {
+    tabList: Array<string>;
+    tabName: string;
+    isRefresh: boolean;
+    isReset: boolean;
+}

@@ -1251,8 +1251,7 @@ export default function LeftSideAgora(props: {
 
   return (
     <div
-      className={`left-side ${roomInfo.mediaType === MediaType.VIDEO &&
-      "video"} ${broadcastState.isWide && "wide"}`}
+      className={`left-side ${roomInfo.mediaType === MediaType.VIDEO ? "video" : "radio"} ${broadcastState.isWide && "wide"}`}
       id="display"
     >
       <div id="local-player" className="player"/>

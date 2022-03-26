@@ -9,29 +9,13 @@ import moment from "moment";
 import {RoomJoin} from "context/room";
 // components
 import './notice.scss'
-import {useSelector} from "react-redux";
 
 const Allim = (props) => {
-  const {fetchMypageNewCntData} = props;
-  const [alarmList, setAlarmList] = useState({list : [], cnt : 0, newCnt: 0});
+  const {alarmList, setAlarmList} = props
   const context = useContext(Context);
   const history = useHistory();
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
 
-  //회원 알림 db값 가져오기
-  const fetchData = () => {
-    let params = {page: 1, records: 1000};
-    Api.my_notification(params).then((res) => {
-      if(res.result === "success") {
-        if(res.data.list.length > 0) {
-          setAlarmList({...alarmList, list: res.data.list, cnt : res.data.cnt, newCnt: res.data.newCnt});
-        } else {
-          setAlarmList({...alarmList});
-        }
-      }
-    }).catch((e) => {console.log(e)});
-  };
-
+  //알림 클릭시 해당 페이지로 이동 -> 리브랜딩 주소로 다시 바꿔야함....
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
     const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
@@ -100,10 +84,6 @@ const Allim = (props) => {
 
   useEffect(() => {
     if(!(context.token.isLogin)) {history.push("/login")}
-    fetchData();
-    if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
-    }
   }, []);
 
   return (
@@ -114,7 +94,8 @@ const Allim = (props) => {
             <>
               {alarmList.list.map((v, idx) => { //newCnt -> 새로운 알림 있을때 1, 없을때 0
                 return (
-                  <ListRow key={idx} photo={v.profImg.thumb292x292} photoClick={() => history.push(`/profile/${v.memNo}`)}>
+                  <ListRow key={idx} photo={v.profImg.thumb292x292}>
+                    {v.newCnt === 1 && <span className="newDot"/>}
                     <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
                          data-link={v.link} onClick={handleClick}>
                       <div className="title">{v.contents}</div>

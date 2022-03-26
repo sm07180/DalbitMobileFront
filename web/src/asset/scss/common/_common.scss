@@ -150,6 +150,9 @@ legend {
     @include flex(center);
     height:100%;
     margin: 0 auto;
+    &.wide {
+      width: 1204px;
+    }
     .gnbHeader {
       flex:1;
       @include flex(center,center);

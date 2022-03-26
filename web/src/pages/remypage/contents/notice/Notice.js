@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -22,8 +22,22 @@ const NoticePage = () => {
   const dispatch = useDispatch();
   const history = useHistory()
   const context = useContext(Context)
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+
+  const fetchData = () => {
+    let params = {page: 1, records: 1000};
+    Api.my_notification(params).then((res) => {
+      if(res.result === "success") {
+        if(res.data.list.length > 0) {
+          setAlarmList({...alarmList, list: res.data.list, cnt: res.data.cnt, newCnt: res.data.newCnt});
+        } else {
+          setAlarmList({...alarmList});
+        }
+      }
+    }).catch((e) => console.log(e));
+  }
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -37,18 +51,23 @@ const NoticePage = () => {
     if(isDesktop) {
       fetchMypageNewCntData(context.profile.memNo);
     }
-  }, []);
+  }, [alarmData.newCnt]);
 
   // 로그인 토큰값 확인
   useEffect(() => {
     if(!(context.token.isLogin)) {
       history.push("/login")
     }
-    if(alarmData.newCnt > 0) {
-      if(alarmData.alarm > 0) {dispatch(setNoticeTab("알림"))}
-      else if(alarmData.notice > 0) {dispatch(setNoticeTab("공지사항"));}
-    }
+    fetchData();
   }, []);
+
+  useEffect(() => {
+    if(alarmData.alarm > 0) {
+      dispatch(setNoticeTab("알림"))
+    } else if(alarmData.notice > 0) {
+      dispatch(setNoticeTab("공지사항"))
+    }
+  }, [])
 
   return (
     <div id="notice">
@@ -67,9 +86,9 @@ const NoticePage = () => {
           <div className="underline"/>
         </ul>
         {tab === noticeTabmenu[0] ?
-          <Allim fetchMypageNewCntData={fetchMypageNewCntData}/>
+          <Allim alarmList={alarmList} setAlarmList={setAlarmList}/>
           :
-          <Post fetchMypageNewCntData={fetchMypageNewCntData}/>
+          <Post />
         }
       </section>
     </div>

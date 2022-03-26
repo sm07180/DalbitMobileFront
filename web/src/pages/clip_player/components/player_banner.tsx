@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useState, useRef, useContext} from "react";
 import { useHistory } from "react-router-dom";
 import { postClipPlay } from "common/api";
 import Swiper from "react-id-swiper";
+import { GlobalContext } from "context";
 
 type bannerType = {
   link: string;
@@ -13,32 +14,41 @@ let intervalOver;
 let interval;
 export default function ClipPlayerBanner({ clipPlayNo }) {
   const history = useHistory();
+  const { globalState } = useContext(GlobalContext);
+  const { clipInfo } = globalState;
   const [bannerList, setBannerList] = useState<Array<bannerType>>([]);
   const [swiper, setSwiper] = useState<any | null>(null);
   const [isOne, setIsOne] = useState<boolean>(false);
   const SwiperRef = useRef<any | null>(null);
 
   const fetchBannerData = async () => {
-    const { result, data } = await postClipPlay({
-      clipNo: clipPlayNo,
-    });
-    if (result === "success") {
-      if (data.hasOwnProperty("banners")) {
-        if (data.banners.length > 1) {
-          setIsOne(false);
-        } else {
-          setIsOne(true);
-        }
-
-        const banners = data.banners.map((item) => {
-          if (item.link) {
-            return { ...item, isLink: true };
+    // 혹시 모르니깐, clipPlayNo랑 컨텍스트 값이 다르면 clipPlayNo 데이터로 조회.
+    // 배너 정보를 play에서 가져오도록 구현해놔서, play를 다시 조회하는 것 같음. => 컨텍스트 정보에 있는 배너정보 가져오도록 수정함.
+    if (clipPlayNo !== clipInfo.clipNo) {
+      const { result, data } = await postClipPlay({
+        clipNo: clipPlayNo,
+      });
+      if (result === "success") {
+        if (data.hasOwnProperty("banners")) {
+          if (data.banners.length > 1) {
+            setIsOne(false);
           } else {
-            return { ...item, isLink: false };
+            setIsOne(true);
           }
-        });
-        setBannerList(banners);
+
+          const banners = data.banners.map((item) => {
+            if (item.link) {
+              return { ...item, isLink: true };
+            } else {
+              return { ...item, isLink: false };
+            }
+          });
+          setBannerList(banners);
+        }
       }
+    } else {
+      // 혹시 모르니깐, undefined 체크도 해준다
+      setBannerList(clipInfo.banners || []);
     }
   };
 
