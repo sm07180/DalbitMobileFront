@@ -82,8 +82,6 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
-    } else if(returntype === '') {
-      setAuthState(10)
     } else if(returntype === '' && url === '11') {
       setAuthState(11)
     } else if(returntype === 'default') {
@@ -132,6 +130,22 @@ export default (props) => {
       window.close();
     }else {
       history.replace('/');
+    }
+  }
+
+  const createHeader = () => {
+    switch (authState) {
+      case 0:
+        return <></>;
+      case 3:
+        return <Header title={'법정대리인(보호자) 동의 완료'} type='back' />
+      case 4:
+      case 12:
+        return <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />;
+      case 13:
+        return <Header title={'법정대리인(보호자) 동의'} type='back' />
+      default:
+        return <Header title={'본인 인증 완료'} type='back' />
     }
   }
 
@@ -370,8 +384,8 @@ export default (props) => {
           )
         }
 
-        if(resultData.result === 'success') {
-          if(resultData.data.parentAuth.data === 1) {
+        if(resultData?.result === 'success') {
+          if(resultData?.data.parentAuth.data === 1) {
             return (
               <div className="auth-wrap">
                 <h4>
@@ -399,12 +413,11 @@ export default (props) => {
               </div>
             )
           }else {
-            authFail();
+            return authFail();
           }
         }else {
-          authFail();
+          return authFail();
         }
-        break;
       default:
         return <></>
     }
@@ -474,20 +487,14 @@ export default (props) => {
     <>
       {authState === 7 ? createResult() :
         <div id="selfAuthResult">
-          {authState === 0 ? (
-              <></>
-            ) :
-            (authState === 4 || authState === 12) ?
-              <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
-              : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
-          }
+          {createHeader()}
           <section className="resultWrap">
             {authState !== 0 && (
               <>
                 <div className="img_wrap">
                   <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
                 </div>
-                <h2>본인 인증 완료</h2>
+                {authState !== 13 && <h2>본인 인증 완료</h2>}
                 {createResult()}
               </>
             )}
