@@ -37,6 +37,7 @@ export default (props) => {
   const [authState, setAuthState] = useState(0)
   const [dupCheck, setDupCheck] = useState(false);
   const [resultData, setResultData] = useState(null);
+  const [windowClose, setWindowClose] = useState(false);
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
@@ -361,6 +362,9 @@ export default (props) => {
           </div>
         )
       case 13:
+        if(!windowClose) {
+          setWindowClose(true);
+        }
         const authFail = () => {
           return (
             <div className="auth-wrap">
@@ -385,7 +389,7 @@ export default (props) => {
         }
 
         if(resultData?.result === 'success') {
-          if(resultData?.data.parentAuth.data === 1) {
+          if(resultData?.data?.parentAuth?.data === 1) {
             return (
               <div className="auth-wrap">
                 <h4>
@@ -422,6 +426,14 @@ export default (props) => {
         return <></>
     }
   }
+
+  useEffect(() => {
+    if(windowClose) {
+      if(isDesktop()) {
+        window.opener.location.href = pushLink;
+      }
+    }
+  }, [windowClose]);
 
   /* 휴면 해제 처리 */
   useEffect(() => {
