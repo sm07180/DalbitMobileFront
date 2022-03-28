@@ -17,7 +17,7 @@ type aniQueueReturnType = {
 };
 
 const MoonLandAnimationComponent = (props: any) => {
-  const {roomInfo, chatInfo, roomOwner, isWide} = props;
+  const {roomInfo, chatInfo, roomOwner} = props;
 
   //달나라 이벤트 진행중 여부
   const moonLandEventBool = roomInfo && roomInfo.hasOwnProperty('moonLandEvent') && roomInfo.moonLandEvent;
@@ -86,8 +86,7 @@ const MoonLandAnimationComponent = (props: any) => {
     if(data && data.hasOwnProperty('type') && data.hasOwnProperty('score') && data.hasOwnProperty('aniCode') ) {
       const uid = Date.now();
       const randId = Math.floor(Math.random() * 1000);
-      const left = mediaType === MediaType.VIDEO ? Math.floor(Math.random() * 150 + 460) :
-                      mediaType === MediaType.AUDIO ? Math.floor(Math.random() * 200 + 560) : Math.floor(Math.random() * 150 + 460);
+      const right = Math.floor(Math.random() * 120);
       const rotateClass = Math.floor(Math.random() * 10) % 2 === 0 ? 'rotateLeft' : 'rotateRight';
       const webpPrevClass = getCoinFormat(data.type);
 
@@ -95,12 +94,13 @@ const MoonLandAnimationComponent = (props: any) => {
         uid: `coin${uid}${randId}`,
         webpPrevClass: `${webpPrevClass} ${rotateClass}`,
         webpUrl : `${data.aniCode}?${uid}`,
-        left,
+        right,
         type: data.type,                                      //score insert Param
         score: data.score,                                    //score insert Param
         roomNo: chatInfo ? chatInfo.chatUserInfo.roomNo : 0,  //score insert Param
         autoTouch: roomOwner,  //방장인 경우 자동으로 점수 획득되는 애니메이션 (실제로는 이미 점수 획득한 상태)
-        mediaType
+        //mediaType,
+        coinKey: data?.coinKey
       };
     } else {
       return {};
@@ -137,7 +137,7 @@ const MoonLandAnimationComponent = (props: any) => {
 
   return (<>
     {aniQueue.length > 0 && aniQueue.map((data: any, index) => {
-      return <MoonLandAnimateChildren key={`${data.uid}`} data={data} handleRemoveAniChildren={handleRemoveAniChildren} isWide={isWide}/>;
+      return <MoonLandAnimateChildren key={`${data.uid}`} data={data} handleRemoveAniChildren={handleRemoveAniChildren}/>;
     })}
   </>);
 };

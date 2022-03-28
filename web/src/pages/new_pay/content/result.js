@@ -108,9 +108,11 @@ export default () => {
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
-          fbq('track', 'Purchase')
-          firebase.analytics().logEvent('Purchase')
-          kakaoPixel('114527450721661229').purchase()
+          // fbq('track', 'Purchase')
+          // firebase.analytics().logEvent('Purchase')
+          // kakaoPixel('114527450721661229').purchase()
+          fbq('track', 'Buy_moon')
+          firebase.analytics().logEvent('Buy_moon')
         } catch (e) {}
 
         context.action.alert({
@@ -123,9 +125,11 @@ export default () => {
       } else {
         //Facebook,Firebase 이벤트 호출
         try {
-          fbq('track', 'Purchase', {price: prdtPrice})
-          firebase.analytics().logEvent('Purchase', {price: prdtPrice})
-          kakaoPixel('114527450721661229').purchase({total_price: prdtPrice, currency: 'KRW'})
+          // fbq('track', 'Purchase', {price: prdtPrice})
+          // firebase.analytics().logEvent('Purchase', {price: prdtPrice})
+          // kakaoPixel('114527450721661229').purchase({total_price: prdtPrice, currency: 'KRW'})
+          fbq('track', 'Buy_moon')
+          firebase.analytics().logEvent('Buy_moon')
         } catch (e) {}
         makePayType()
         const payInfo = {

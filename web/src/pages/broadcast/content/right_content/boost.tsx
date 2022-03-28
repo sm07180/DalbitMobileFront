@@ -28,6 +28,7 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
   // ctx
   const { globalState, globalAction } = useContext(GlobalContext);
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const { chatInfo } = globalState;
   // state
   const [boostList, setBoostList] = useState<any>({});
   const [myTimer, setMyTimer] = useState<any>();
@@ -165,6 +166,9 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
         fetchData(); // 부스트 사용 후 다시 조회
 
         globalAction.callSetToastStatus && globalAction.callSetToastStatus({ status: true, message: "부스터가 사용되었습니다" });
+
+        /* 누적 선물 달에 선물한 달 더하기 */
+        if(!useItem) chatInfo?.addRoomInfoDalCnt(boostCount * 10);
 
         const { result, data } = await getProfile({ memNo: globalState.baseData.memNo });
         if (result === "success") {
