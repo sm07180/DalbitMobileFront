@@ -65,17 +65,8 @@ const StorePage = () => {
       const {result, data} = await Api.self_auth_check();
       if(result === 'success') {
         const parentCert = await parentCertChk();
-        console.log(data);
-        console.log(parentCert);
         if(parentCert.code === '00000') {
-          context.action.confirm({
-            title: '보호자의 동의가 필요합니다',
-            msg: `달충전을 하시려면 보호자(법정대리인)의 동의가 필요합니다.`,
-            callback: () => {
-              history.push(`/legalRepresentative`);
-            }
-          })
-          /*if(data.adultYn === 'y' || parentCert.data === 'y') {
+          if(data.adultYn === 'y' || parentCert.data === 'y') {
             history.push({
               pathname: '/store/dalcharge',
               search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
@@ -88,7 +79,7 @@ const StorePage = () => {
                 history.push(`/legalRepresentative`);
               }
             })
-          }*/
+          }
         }else {
           context.action.alert({
             msg: `오류가 발생했습니다.`,

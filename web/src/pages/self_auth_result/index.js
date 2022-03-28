@@ -36,7 +36,7 @@ export default (props) => {
    */
   const [authState, setAuthState] = useState(0)
   const [dupCheck, setDupCheck] = useState(false);
-  const [parentCert, setParentCert] = useState(false);
+  const [resultData, setResultData] = useState(null);
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
@@ -347,35 +347,64 @@ export default (props) => {
           </div>
         )
       case 13:
-        if(!parentCert) {
-          setParentCert(true);
-        }
-        return (
-          <div className="auth-wrap">
-            <h4>
-              만 19세 미만 미성년자 이용에 대한
-              <br />
-              <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
-            </h4>
-            <p>
-              ※ 동의 철회를 원하시는 경우, <br />
-              달라 고객센터에서 철회 신청을 해주시기 바랍니다.
-            </p>
-            <div className="btn-wrap">
-              <button
-                onClick={() => {
-                  if(isDesktop()) {
-                    window.close()
-                  }else {
-                    const decodeLink = decodeURIComponent(pushLink);
-                    history.push(decodeLink)
-                  }
-                }}>
-                확인
-              </button>
+        const authFail = () => {
+          return (
+            <div className="auth-wrap">
+              <h4>
+                <span>법정대리인(보호자) 동의를 </span>실패했습니다.
+              </h4>
+              <div className="btn-wrap">
+                <button
+                  onClick={() => {
+                    if(isDesktop()) {
+                      window.close()
+                    }else {
+                      const decodeLink = decodeURIComponent(pushLink);
+                      history.push(decodeLink)
+                    }
+                  }}>
+                  확인
+                </button>
+              </div>
             </div>
-          </div>
-        )
+          )
+        }
+
+        if(resultData.result === 'success') {
+          if(resultData.data.parentAuth.data === 1) {
+            return (
+              <div className="auth-wrap">
+                <h4>
+                  만 19세 미만 미성년자 이용에 대한
+                  <br />
+                  <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
+                </h4>
+                <p>
+                  ※ 동의 철회를 원하시는 경우, <br />
+                  달라 고객센터에서 철회 신청을 해주시기 바랍니다.
+                </p>
+                <div className="btn-wrap">
+                  <button
+                    onClick={() => {
+                      if(isDesktop()) {
+                        window.close()
+                      }else {
+                        const decodeLink = decodeURIComponent(pushLink);
+                        history.push(decodeLink)
+                      }
+                    }}>
+                    확인
+                  </button>
+                </div>
+              </div>
+            )
+          }else {
+            authFail();
+          }
+        }else {
+          authFail();
+        }
+        break;
       default:
         return <></>
     }
@@ -433,11 +462,12 @@ export default (props) => {
 
   /* 미성년자 법정대리인 동의 메일 */
   useEffect(() => {
-    if(parentCert) {
-      console.log('hi');
-      console.log(sessionStorage.getItem('certItem'))
+    const certResult = sessionStorage.getItem('certItem');
+    if(certResult) {
+      setResultData(JSON.parse(certResult));
+      sessionStorage.removeItem('certItem')
     }
-  }, [parentCert]);
+  }, []);
 
   //---------------------------------------------------------------------
   return (

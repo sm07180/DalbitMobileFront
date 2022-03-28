@@ -7,6 +7,7 @@ import CheckBox from 'components/ui/checkBox/CheckBox'
 import "./index.scss";
 import {authReq} from "pages/self_auth";
 import UseInput from "common/useInput/useInput";
+import {parentCertIns} from "common/api";
 
 const periodType = [
   {value: '12', name: '12개월'},
@@ -66,7 +67,21 @@ const LegalRepresentative = () => {
 
   const agreeSubmit = () => {
     if(emailValidator() && agreePeriod !== '' && agreeCheckHandler()) {
-      return authReq({code: '13', formTagRef: context.authRef, context, pushLink: '/store', authType: '2', agreePeriod});
+      const emailInsParam = {
+        pMemEmail: emailValue,
+        agreementDate: agreePeriod,
+      }
+
+      /* 유저의 법정대리인의 email ins */
+      parentCertIns(emailInsParam).then(res => {
+        if(res.data === 1) {
+          return authReq({code: '13', formTagRef: context.authRef, context, pushLink: '/store', authType: '2', agreePeriod});
+        }else {
+          context.action.alert({
+            msg: res.message
+          })
+        }
+      })
     }
   }
 
