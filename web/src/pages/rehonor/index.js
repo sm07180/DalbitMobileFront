@@ -4,14 +4,15 @@ import Header from 'components/ui/header/Header'
 // components
 import Tabmenu from './components/Tabmenu'
 // contents
+import SpecialDj from "./contents/SpecialDj";
 import WeeklyPick from './contents/WeeklyPick'
-import SpecialDj from "pages/rehonor/contents/SpecialDj";
+import PartnerDj from './contents/PartnerDj'
 import {useDispatch, useSelector} from "react-redux";
 
 import './style.scss'
 import {setHonorTab} from "redux/actions/honor";
 
-const honorTabmenu = ["스페셜DJ", "위클리 픽"]
+const honorTabmenu = ["스페셜DJ", "파트너DJ"]
 
 const Honor = () => {
   const {tab} = useSelector((state) => state.honor);
@@ -28,7 +29,7 @@ const Honor = () => {
       {tab === honorTabmenu[0] ?
         <SpecialDj />
         :
-        <WeeklyPick />
+        <PartnerDj />
       }
    </div>
   )

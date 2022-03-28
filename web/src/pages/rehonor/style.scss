@@ -11,6 +11,8 @@
 }
 
 #honor {
+  @include flex($fd:column);
+  width: 100%; min-height: calc(100vh - #{$GNB-HEIGHT});
   // 뱃지 아이콘 mixin
   @mixin specialCnt {
     @include flex(center, center);
@@ -207,6 +209,115 @@
             display: inline-block;
             width: 20px; height: 20px;
             @include BGIMG("common/arrow/rightArrow-757575.png");
+          }
+        }
+      }
+    }
+  }
+
+  .partnerDjInfo {
+    @include flex(center,center);
+    width: 100%;
+    padding: 39px 36px 33px 20px;
+    box-sizing: border-box;
+    @include BGIMG("honor/partnerDj/honor_partnerDj-topBg.png");
+    .infoText {
+      flex: 1;
+      @include flex(flex-start, center, column);
+      span {
+        @include font(26px, 700, #303030);
+        margin-bottom: 8px;
+      }
+      p {
+        @include font(15px, 500, #303030);
+        margin-bottom: 24px;
+      }
+      button {
+        text-align: left;
+        @include font(14px, 500, #FF3C7B);
+        text-decoration: underline;
+      }
+    }
+    .infoDecoration {
+      flex: none;
+      width: 78px;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  .partnerDjWrap {
+    flex: 1;
+    display: grid;
+    row-gap: 16px;
+    column-gap: 12px;
+    grid-template-columns: repeat(2,1fr);
+    grid-auto-rows: max-content;
+    width: 100%;
+    padding: 12px 16px;
+    box-sizing: border-box;
+    background-color: #F7F7F7;
+    .partnerDjList {
+      @include flex(center, flex-start, column);
+      width: 100%;
+      border-radius: 8px;
+      background-color: #fff;
+      overflow: hidden;
+      cursor: pointer;
+      .thumbnail {
+        width: 100%;
+        img {
+          width: 100%;
+        }
+      }
+      .userInfo {
+        @include flex(center, center, column);
+        width: 100%;
+        padding: 18px;
+        .userData {
+          @include flex(center, center); 
+          width: 100%;
+          overflow: hidden;
+          .male {
+            flex: none;
+            display: inline-block;
+            width: 18px; height: 18px;
+            margin-right: 4px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_male' transform='translate(-261 -1931)'%3E%3Cg transform='translate(261 1931)' fill='none' stroke='%238989eb' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath d='M318.97,320.273v-4.822l2.229,2.229,1.739-1.738-5.2-5.2-5.2,5.2,1.739,1.738,2.229-2.229v4.822a4.885,4.885,0,1,0,2.459,0Zm-1.229,7.147a2.425,2.425,0,1,1,2.426-2.425A2.428,2.428,0,0,1,317.74,327.42Z' transform='translate(-42.74 1624.211)' fill='%238989eb'/%3E%3C/g%3E%3C/svg%3E%0A");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+          }
+          .female {
+            flex: none;
+            display: inline-block;
+            width: 18px; height: 18px;
+            margin-right: 4px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_female' transform='translate(-259 -1931)'%3E%3Cg transform='translate(259 1931)' fill='none' stroke='%23ff927b' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath d='M402.731,322.425a5,5,0,1,0-2.517,0v1.356H397.73V326.3h2.483v4.66h2.517V326.3h2.483v-2.517h-2.483Zm-3.742-4.834a2.483,2.483,0,1,1,2.483,2.483A2.486,2.486,0,0,1,398.989,317.592Z' transform='translate(-128.473 1623.887)' fill='%23ff927b'/%3E%3C/g%3E%3C/svg%3E%0A");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+          }
+          .nickNm {
+            @include font(17px, 700, #202020);
+            @include fontCut;
+          }
+        }
+        .badgeLive {
+          @include flex(center, center);
+          width:100px;height:28px;
+          margin-top: 13px;
+          background-color: #FFE9E9;
+          border-radius: 100px;
+          cursor: pointer;
+          .equalizer {
+            display: inline-block;
+            width: 12px;
+            margin-top: -2px;
+            margin-right: 4px;
+          }
+          .liveText {
+            @include font(12px, 900, #FF3C7B);
           }
         }
       }

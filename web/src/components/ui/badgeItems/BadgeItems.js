@@ -13,7 +13,8 @@ const BadgeItems = (props) => {
     recommend: data.isRecomm,
     new: data.isNew,
     contents: data.isConDj,
-    badgeSpecial: data.badgeSpecial
+    badgeSpecial: data.badgeSpecial,
+    badgePartner:data.badge_partner
   }
   const isNew = {
     new: data.isNew,
@@ -65,7 +66,9 @@ const BadgeItems = (props) => {
         </em>
       }
       {type === 'isBadge' && (
-        isBadge.badgeSpecial == 2 ? (
+        isBadge.badgePartner == 1 ? (
+        <em className="badgeItem partnerDj">파트너DJ</em>
+      ) : isBadge.badgeSpecial == 2 ? (
         <em className="badgeItem bestDj">베스트DJ</em>
       ) : isBadge.contents === true ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>

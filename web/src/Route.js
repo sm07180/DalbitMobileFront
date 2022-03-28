@@ -121,6 +121,8 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
+const PartnerDj = React.lazy(() => import('pages/partnerDj'))
+
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
@@ -335,6 +337,8 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
+        
+        <Route exact path="/partnerDj" component={PartnerDj} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
