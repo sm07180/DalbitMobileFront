@@ -26,7 +26,7 @@ export default function EndApp() {
   const payTracking = () =>{
     try {
       Utility.addAdsData('Buy_moon');
-      Utility.addAdsData('Purchase');
+      // Utility.addAdsData('Purchase');
     } catch (e) {
       console.log(e);
     }
