@@ -13,7 +13,7 @@ export default function TopInfo(props) {
 
   return (    
     <div id="topInfo">
-      <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoon-info.png" className="img_full" alt="이벤트 내용 설명"/>
+      <img src="https://image.dalbitlive.com/event/dalla/7781/event_gotomoon-explanation.png" className="img_full" alt="이벤트 내용 설명"/>
       <div className="eventSchedule">
         {eventStart} ~ {eventEnd}
       </div>
