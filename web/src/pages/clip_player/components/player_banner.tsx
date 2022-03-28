@@ -2,7 +2,7 @@ import React, {useEffect, useState, useRef, useContext} from "react";
 import { useHistory } from "react-router-dom";
 import { postClipPlay } from "common/api";
 import Swiper from "react-id-swiper";
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 type bannerType = {
   link: string;
@@ -14,7 +14,8 @@ let intervalOver;
 let interval;
 export default function ClipPlayerBanner({ clipPlayNo }) {
   const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipInfo } = globalState;
   const [bannerList, setBannerList] = useState<Array<bannerType>>([]);
   const [swiper, setSwiper] = useState<any | null>(null);
