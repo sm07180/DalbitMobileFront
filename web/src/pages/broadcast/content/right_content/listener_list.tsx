@@ -65,7 +65,8 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
     //   });
     // }
     dispatch(getList({...initialState.listener.list.param, roomNo:roomNo}))
-  }, [broadcastState.roomInfo.isListenerUpdate]);
+  }, [broadcastState.roomInfo]);
+  // }, [broadcastState.roomInfo.isListenerUpdate]);
   const copy = [...broadcastRdx.listener.list.data.list];
   const listeners = copy.splice((pageInfo.page-1)*pageInfo.pagePerCnt,pageInfo.pagePerCnt);
   const listenersFilter = listeners.filter((user) => user.auth === AuthType.LISTENER && user.isGuest === false);
