@@ -430,7 +430,8 @@ export default (props) => {
   useEffect(() => {
     if(windowClose) {
       if(isDesktop()) {
-        window.opener.location.href = pushLink;
+        console.log(pushLink);
+        window.opener.location.href = pushLink ? pushLink : '/store';
       }
     }
   }, [windowClose]);
