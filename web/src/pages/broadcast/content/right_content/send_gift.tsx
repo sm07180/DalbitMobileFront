@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useState,
   useMemo,
-  useCallback
+  useRef
 } from "react";
 import { useHistory } from "react-router-dom";
 
@@ -29,6 +29,7 @@ import {
 } from "../../../../redux/actions/globalCtx";
 
 let preventClick = false;
+let giftListScroll = {active: false, itemNo: '',}; // giftList effect
 
 type inputTTSStateType = {
   showInputField: boolean;
@@ -41,10 +42,10 @@ export default function SendGift(props: {
   roomOwner: boolean | null;
 }) {
   const { roomInfo, roomNo, roomOwner } = props;
-  const globalState = useSelector(({globalCtx})=> globalCtx);
-  const { splash } = globalState;
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const { splash, chatInfo } = globalState;
 
   // settingObj : 유저방송 설정 ( ttsSound, normalSound : 아이템 사용여부 send_gift.tsx 에서는 2개만 사용중)
   const {settingObj} = broadcastState;
@@ -53,6 +54,10 @@ export default function SendGift(props: {
 
   const { guestState } = useContext(GuestContext);
   const { guestConnectStatus, guestObj } = guestState;
+
+  // 선물 팝업 스크롤 처리용도
+  const itemListRef = useRef<any>({});
+  const scrollInnerRef = useRef<any>();
 
   const common = useMemo(() => {
     if (splash !== null) {
@@ -191,12 +196,17 @@ export default function SendGift(props: {
           case "emotion":
             setGiftCategoryItem(2);
             break;
+          case "text":
+            setGiftCategoryItem(3);
+            break;
         }
 
         const filterList = common.items.filter((v) => {
           return v.category === giftStateItem.category && v.visibility;
         });
 
+        // 아이템 위치로 스크롤 처리
+        giftListScroll = {active: true, itemNo: layer.others.itemNo};
         setGiftList([...filterList]);
 
         const idx = filterList.findIndex((v) => {
@@ -300,9 +310,19 @@ export default function SendGift(props: {
     getActorList();
   }, []);
 
-  //TTS 아이템, 사운드 아이템 체크용
-  const ttsOrSoundItemChk = useCallback((itemNo = "") => {
-    return giftList.filter((v) => v.itemNo === itemNo);
+  /* 특정 아이템 선택시 스크롤 이동 ( giftListScroll?.active : true 일때 작동) */
+  useEffect(() => {
+    try {
+      if (giftListScroll?.active && itemListRef.current && itemListRef.current[giftListScroll?.itemNo]) {
+        const innerRef = scrollInnerRef.current?.getInnerRef();
+        innerRef?.scrollTo(0, itemListRef.current[giftListScroll?.itemNo]?.offsetTop);
+
+        giftListScroll = {active: false, itemNo: ''};
+        itemListRef.current = {};
+      }
+    } catch (e) {
+      console.warn(e);
+    }
   },[giftList]);
 
   // 선물하기
@@ -373,6 +393,10 @@ export default function SendGift(props: {
         status: true,
         message: sendGiftRes.data ? sendGiftRes.data.message : alertMsg
       }));
+
+      /* 누적 선물 달에 선물한 달 더하기 */
+      const item = giftList.find(v => v?.itemNo === itemNo);
+      chatInfo?.addRoomInfoDalCnt(item?.cost * count);
 
       setItem(-1);
       setCount(0);
@@ -520,14 +544,14 @@ export default function SendGift(props: {
                 <span/>
               </div>
             }
-            <DalbitScroll preventAutoHidden={true} always={true}>
+            <DalbitScroll preventAutoHidden={true} always={true} ref={scrollInnerRef}>
               <ul className="giftList">
                 {giftList &&
                   giftList.map((v: any, i: number) => {
                     const { type } = v;
-
                     return (
                       <li
+                        ref={(el) => {itemListRef.current[v?.itemNo] = el}}
                         key={`gift-${i}`}
                         onClick={() => {
                           if (type === "direct") {

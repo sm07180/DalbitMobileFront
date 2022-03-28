@@ -882,6 +882,26 @@ export default function LeftSideAgora(props: {
                   "style",
                   "position: absolute; left: 35%; object-fit: contain; height: inherit; width: 50px;"
                 );
+              } else if(
+                location === 'midTop'
+              ) {  // 달나라 4종 아이템 선물 미션 달성시 출력되는 애니메이션
+                try {
+                  const leftSide = document.querySelector("#display");//leftSide 영역의 marginTop값 계산
+                  if(lottieDisplayElem && leftSide) {
+                    const lottieEl = lottieDisplayElem.getBoundingClientRect();
+                    const topCalc = lottieEl.top - leftSide.getBoundingClientRect().top;
+                    const leftCalc = (lottieEl.width/2) - 180; // 180 : (webp width/2)
+                    webpImg.setAttribute(
+                      "style",
+                      `z-index: 9999; position: absolute; object-fit: contain; width: 360px; height: 540px; top: -${topCalc}px; left:${leftCalc}px`
+                    );
+                  }
+                } catch (e) {
+                  webpImg.setAttribute(
+                    "style",
+                    `position: absolute; object-fit: contain; width: 360px; height: 540px; top: 20px; left:50%`
+                  );
+                }
               } else {
                 webpImg.setAttribute(
                   "style",
