@@ -27,7 +27,7 @@ const PartnerDj = (props) => {
         pagePerCnt: 100
       }).then((res) => {
         if (res.result === 'success') {
-          setListData(res.data.list);
+          setListData(res.data[1]);
         }
       })
   }
@@ -69,7 +69,7 @@ const PartnerDj = (props) => {
       </div>
       <div className='partnerDjWrap'>
         {
-          listData.length > 0 &&
+          (listData && listData.length > 0) &&
             listData.map((list, index) => {
               return (
                 <div className='partnerDjList' key={index} onClick={() => golink(`/profile/${list.mem_no}`)}>

@@ -14,7 +14,7 @@ const BadgeItems = (props) => {
     new: data.isNew,
     contents: data.isConDj,
     badgeSpecial: data.badgeSpecial,
-    badgePartner:data.badge_partner
+    badgePartner:data.badgePartner
   }
   const isNew = {
     new: data.isNew,

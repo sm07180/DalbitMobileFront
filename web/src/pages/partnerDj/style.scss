@@ -63,6 +63,7 @@
           height: 66px;
           &:nth-child(1) {
             width: 60%;
+            padding-right: 6%;
             clip-path: polygon(90% 0%, 100% 50%, 90% 100%, 0 100%, 0 0);
             @include font(14px, 500, #202020);
             background-color: #F8F8F8;
@@ -70,6 +71,7 @@
           &:nth-child(2) {
             width: 40%;
             margin-left: -4%;
+            padding-left: 6%;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 15% 50%);
             @include font(14px, 800, #202020);
             background-color: #ECECEC;
