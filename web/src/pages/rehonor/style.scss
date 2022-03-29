@@ -320,6 +320,21 @@
             @include font(12px, 900, #FF3C7B);
           }
         }
+        .fanButton {
+          @include flex(center, center);
+          width:100px;height:28px;
+          margin-top: 13px;
+          background-color: #202020;
+          border: 1px solid #202020;
+          border-radius: 100px;
+          @include font(12px, 600, #FFF);
+          box-sizing: border-box;
+          &.active {
+            background-color: white;
+            border: 1px solid #E3E3E3;
+            @include font(12px, 600, #303030);
+          }
+        }
       }
     }
   }

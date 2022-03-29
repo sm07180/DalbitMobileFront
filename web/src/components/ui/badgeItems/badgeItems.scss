@@ -8,12 +8,15 @@
   padding:0 6px 0 3px;
   border-radius:100px;
   letter-spacing: -.5px;
-  @include font(10px,$Medium,white);
+  @include font(12px,$Medium,white);
   box-sizing: border-box;
   img {
-    width:13px;
-    height:13px;
+    width:15px;
+    height:14px;
     margin-right:2px;
+  }
+  span {
+    line-height: 18px;
   }
   @mixin bcsBadge($width,$image) {
     width:$width;

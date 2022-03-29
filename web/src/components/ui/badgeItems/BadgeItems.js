@@ -26,17 +26,18 @@ const BadgeItems = (props) => {
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
-          <React.Fragment key={index}>
-            <em
-              className={`badgeItem`}
-              key={index}
-              style={{
-                background: `linear-gradient(to right, ${startColor}, ${endColor}`
-              }}>
-              {icon !== '' && <img src={icon} alt="뱃지아이콘" />}
-              <span>{text}</span>
-            </em>
-          </React.Fragment>
+            text !== "Partner" &&
+              <React.Fragment key={index}>
+                <em
+                  className={`badgeItem`}
+                  key={index}
+                  style={{
+                    background: `linear-gradient(to right, ${startColor}, ${endColor}`
+                  }}>
+                  {icon !== '' && <img src={icon} alt="뱃지아이콘" />}
+                  <span>{text}</span>
+                </em>
+              </React.Fragment>          
         )
       })}
       {type === 'liveBadgeList' && liveBadgeList.map((list, index) => {
