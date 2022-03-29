@@ -48,6 +48,7 @@ import PlayMaker from './playMaker'
 import Invite from './invite'
 import Share from './share'
 import PlatformWar from './platformWar'
+import ContentLab from './contentLab'
 import moment from "moment";
 
 export default (props) => {
@@ -152,6 +153,8 @@ export default (props) => {
         return <Share />
       case 'platformWar':
         return <PlatformWar />
+      case 'contentlab':
+        return <ContentLab />
       default:
         return <></>
         break
