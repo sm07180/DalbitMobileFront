@@ -75,7 +75,8 @@ export default (props) => {
     if (category === 'store') {
       if (customHeader.os === OS_TYPE['IOS']) {
         if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
-          return webkit.messageHandlers.openInApp.postMessage('')
+          //return webkit.messageHandlers.openInApp.postMessage('')
+          return history.push('/store')
         } else {
           globalCtx.action.alert({
             msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'

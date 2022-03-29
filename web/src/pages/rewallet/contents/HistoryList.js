@@ -17,7 +17,7 @@ const HistoryList = (props) => {
         setIsLoading, getWalletHistory, lastPage, cancelExchangeFetch, walletType, isIOS} = props;
 
   const {popHistory, listHistory, popHistoryCnt, byeolTotCnt, dalTotCnt,} = walletData;
-  
+
   const history = useHistory();
 
   const isDesktop = useSelector((state)=> state.common.isDesktop)
@@ -79,10 +79,11 @@ const HistoryList = (props) => {
               <span className="text">보유한 달</span>
               <span className="amount">{Utility.addComma(dalTotCnt)}개</span>
             </div>
-            {(isDesktop || isHybrid()) ?
-              isIOS ? <SubmitBtn text="충전하기" onClick={() => webkit.messageHandlers.openInApp.postMessage('')} /> :
-              <SubmitBtn text="충전하기" onClick={() => {history.push('/store')}}/> : <></>
-            }
+            {/*{(isDesktop || isHybrid()) ?*/}
+            {/*  isIOS ? <SubmitBtn text="충전하기" onClick={() => webkit.messageHandlers.openInApp.postMessage('')} /> :*/}
+            {/*  <SubmitBtn text="충전하기" onClick={() => {history.push('/store')}}/> : <></>*/}
+            {/*}*/}
+            <SubmitBtn text="충전하기" onClick={() => {history.push('/store')}}/>
           </div>
         ) : (
           <div className="currentBox" >

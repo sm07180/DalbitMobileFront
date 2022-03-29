@@ -78,7 +78,8 @@ const TitleButton = (props) => {
   const storeButtonEvent = () => {
     if(context.token.isLogin){
       if (context.customHeader['os'] === OS_TYPE['IOS']) {
-        return webkit.messageHandlers.openInApp.postMessage('')
+        // return webkit.messageHandlers.openInApp.postMessage('')
+        return history.push('/store')
       } else {
         history.push('/store')
       }
@@ -118,7 +119,7 @@ const TitleButton = (props) => {
         </div>
       )
     case '랭킹':
-      return (        
+      return (
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
         </div>

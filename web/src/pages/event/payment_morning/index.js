@@ -57,7 +57,8 @@ export default () => {
             <button
               className="payLink"
               onClick={() => {
-                webkit.messageHandlers.openInApp.postMessage('')
+                // webkit.messageHandlers.openInApp.postMessage('')
+                history.push('/store')
               }}>
               충전
             </button>

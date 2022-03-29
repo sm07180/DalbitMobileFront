@@ -8,9 +8,13 @@ import StorePage from "./contents/StorePage";
 const index = ()=>{
   const context = useContext(Context);
   const [select, setSelect] = useState(3);
-  const [storeInfo, setStoreInfo] = useState<StoreInfoType>({myDal: 0, defaultNum: 0, dalPriceList: [], os: OsType.Android, mode:'all'})
-  const [payInfo, setPayInfo] = useState<PayInfoType>({itemNm: "달 300", dal: "300", price: "33000", itemNo: "A1555"})
-  // 조회 Api
+  const [storeInfo, setStoreInfo] = useState<StoreInfoType>({
+    myDal: 0, defaultNum: 0, dalPriceList: [], os: OsType.Android, mode:'all', modeTab:'other'
+  })
+  const [payInfo, setPayInfo] = useState<PayInfoType>({
+    itemNm: "달 300", dal: "300", price: "33000", itemNo: "A1555"
+  })
+  // TODO API 하나로 합쳐
   const getStoreInfo = () => {
     Api.store_list().then((response) => {
       if (response.result !== 'success' || !_.hasIn(response, 'data')) {

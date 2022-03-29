@@ -162,7 +162,8 @@ export default (props) => {
                         {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                           <button
                             onClick={() => {
-                              webkit.messageHandlers.openInApp.postMessage('')
+                              // webkit.messageHandlers.openInApp.postMessage('')
+                              history.push('/store')
                             }}>
                             충전
                           </button>

@@ -40,7 +40,7 @@ const Remypage = () => {
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
   const dispatch = useDispatch();
-  
+
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -97,7 +97,8 @@ const Remypage = () => {
   //충전하기 버튼
   const storeAndCharge = () => {
     if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
+      // return webkit.messageHandlers.openInApp.postMessage('')
+      return history.push('/store')
     } else {
       history.push('/store')
     }
@@ -118,7 +119,7 @@ const Remypage = () => {
   useEffect(() => {
     if(alarmData.notice > 0){
       myMenuItem[1].isNew = true;
-    } else {      
+    } else {
       myMenuItem[1].isNew = false;
     }
   }, [alarmData.notice]);

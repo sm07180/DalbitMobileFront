@@ -63,7 +63,8 @@ const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/pro
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/store/Store'))
-const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+// const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/OtherCharge'))
 const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
 const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))

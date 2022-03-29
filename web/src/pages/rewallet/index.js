@@ -53,7 +53,7 @@ const WalletPage = (props) => {
   let pagePerCnt = 20;
 
   //달, 별 내역 조회하기
-  //상세조건 옵션리스트, 지갑 내역 리스트 조회 
+  //상세조건 옵션리스트, 지갑 내역 리스트 조회
   const getWalletHistory = (pageNo, code) => {
     //환전하기 return;
     if(walletType === walletTabMenu[2]) return;
@@ -184,7 +184,8 @@ const WalletPage = (props) => {
   // 스토어로 이동
   const goStoreHandler = () => {
     if(isIos()) {
-      return webkit.messageHandlers.openInApp.postMessage('')
+      // return webkit.messageHandlers.openInApp.postMessage('')
+      return history.push('/store')
     }else {
       history.push('/store')
     }

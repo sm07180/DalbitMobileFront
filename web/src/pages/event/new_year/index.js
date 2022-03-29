@@ -54,7 +54,8 @@ export default () => {
 
   const HandleStore = () => {
     if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
+      // return webkit.messageHandlers.openInApp.postMessage('')
+      return history.push('/store')
     } else {
       return history.push('/store?event=3')
     }

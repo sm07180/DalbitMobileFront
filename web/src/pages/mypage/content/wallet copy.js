@@ -420,7 +420,8 @@ export default (props) => {
                 {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <CoinChargeBtn
                     onClick={() => {
-                      webkit.messageHandlers.openInApp.postMessage('')
+                      // webkit.messageHandlers.openInApp.postMessage('')
+                      history.push('/store')
                     }}>
                     충전하기
                   </CoinChargeBtn>
