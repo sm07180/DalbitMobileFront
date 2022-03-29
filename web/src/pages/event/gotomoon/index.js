@@ -67,7 +67,7 @@ export default function Gotomoon() {
     <div id="goToMoon">
       <Header title="이벤트" type="back"/>
       <div className="page">
-        <img src="https://image.dalbitlive.com/event/dalla/7781/event_gotomoom-visual.png" className="img_full" alt="달라에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
+        <img src="https://image.dalbitlive.com/event/gotomoon/event_7781-top.png" className="img_full" alt="달라에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
         <div className="pageContent" ref={tabWrapRef}>
           <div className={`tabWrap ${tabFixed === true ? "fixed" : ""}`} ref={tabBtnRef}>
             <button className="tabMenu" onClick={() =>globalCtx.action.updateGotomoonTab('info')}>
