@@ -125,7 +125,7 @@ const PartnerDj = (props) => {
                           <span className='liveText'>LIVE</span>
                         </div>
                         :
-                        <></>
+                        <span className={`fanButton ${list.mem_sex === "f" ? "active" : ""}`}>{list.mem_sex === "f" ? "팬" : "+ 팬등록"}</span>
                     }
                   </div>
                 </div>
