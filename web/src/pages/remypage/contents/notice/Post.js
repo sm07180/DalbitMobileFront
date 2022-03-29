@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef, useReducer} from 'react'
+import React, {useEffect, useState, useContext, useRef, useReducer, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -8,6 +8,7 @@ import moment from "moment";
 import './notice.scss'
 import TabBtn from "components/ui/tabBtn/TabBtn";
 import Header from "components/ui/header/Header";
+import {useSelector} from "react-redux";
 
 const Post = () => {
   const context = useContext(Context);

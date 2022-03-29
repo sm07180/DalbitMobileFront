@@ -29,7 +29,7 @@ const ClipList = (props) => {
       records: 10,
       slctType: 0
     }
-    sessionStorage.setItem(
+    localStorage.setItem(
       "clipPlayListInfo",
       JSON.stringify(playListInfoData)
     );

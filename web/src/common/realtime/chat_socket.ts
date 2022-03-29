@@ -151,6 +151,15 @@ export class ChatSocketHandler {
       delete this.broadcastStateChange[keyName];
     }
   }
+  /*
+   선물시 누적 선물 달 (roomInfo.sendDalCnt)에 저장
+   방 재입장시 API: "/broad/vw/info", "/broad/vw/join"에서 roomInfo.sendDalCnt 값 세팅
+  */
+  addRoomInfoDalCnt(addDal: number){
+    if(typeof this.roomInfo?.sendDalCnt === 'number'){
+      this.roomInfo.sendDalCnt += addDal;
+    }
+  }
 
   setUserSettingObj(obj: userBroadcastSettingType) {
     this.userSettingObj = obj;
@@ -2077,20 +2086,24 @@ export class ChatSocketHandler {
                   }
 
                   case "reqPlayCoin": { // 달나라 동전 생성
-                    // 이벤트 진행중 여부 체크
                     const {reqPlayCoin} = data;
-                    // 동전 애니메이션 생성 ( moon_land_animation_component에서 사용하는 setState 함수 )
-                    if (this.broadcastStateChange.hasOwnProperty('moonLandStateFn')) {
-                      if (typeof window !== 'undefined') {
-                        if (localStorage.getItem('toTheMoonOnOff') === 'true') {
-                          this.broadcastStateChange['moonLandStateFn']({...reqPlayCoin});
-                        } else if (!localStorage.getItem('toTheMoonOnOff')) { //초기 값이 없으면 디폴트값 세팅
-                          localStorage.setItem('toTheMoonOnOff', 'true');
-                          this.broadcastStateChange['moonLandStateFn']({...reqPlayCoin});
+                    /* 일반코인은 누적선물달을 체크 하지 않음 ( 그 외 보너스코인은 모두 10달 이상이여야 화면에 노출 ) */
+                    const isNormalCoin = reqPlayCoin?.normal?.score > 0 && reqPlayCoin?.character?.score === 0 && reqPlayCoin?.gold?.score === 0;
+
+                    if (this.roomOwner || isNormalCoin || this.roomInfo?.sendDalCnt >= this.roomInfo?.sendDalFix ) {  // 보낸달 10달 이상 체크
+                      // 동전 애니메이션 생성 ( moon_land_animation_component에서 사용하는 setState 함수 )
+                      if (this.broadcastStateChange.hasOwnProperty('moonLandStateFn')) {
+                        if (typeof window !== 'undefined') {
+                          if (localStorage.getItem('toTheMoonOnOff') === 'true') {
+                            this.broadcastStateChange['moonLandStateFn']({...reqPlayCoin});
+                          } else if (!localStorage.getItem('toTheMoonOnOff')) { //초기 값이 없으면 디폴트값 세팅
+                            localStorage.setItem('toTheMoonOnOff', 'true');
+                            this.broadcastStateChange['moonLandStateFn']({...reqPlayCoin});
+                          }
                         }
+                      } else {
+                        console.warn('moonLandStateFn error !!!!', this.broadcastStateChange);
                       }
-                    } else {
-                      console.error('moonLandStateFn error !!!!', this.broadcastStateChange);
                     }
                     return null;
                   }

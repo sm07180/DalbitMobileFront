@@ -66,7 +66,7 @@ const ClipRanking = () => {
         ...searchInfo,
         rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate)
       }
-      sessionStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
+      localStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
       NewClipPlayerJoin(clipParam);
     }
   };

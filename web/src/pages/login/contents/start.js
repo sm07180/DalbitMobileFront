@@ -44,12 +44,16 @@ const Start = (props) => {
     }
   }
 
-  const backButton = () => {    
+  const backButton = () => {
     if(webview === 'new'){
       Hybrid('CloseLayerPopup');
     }else{
       history.push('/')
     }
+  }
+
+  const golink = (path) => {
+    history.push(path);
   }
 
   return (
@@ -85,6 +89,9 @@ const Start = (props) => {
             <span>페이스북으로 계속하기</span>
           </button>
         </div>
+        <p>
+          달라에 <span onClick={()=>{golink('/customer')}}>문의사항</span>이 있으신가요?
+        </p>
       </section>
     </div>
   )

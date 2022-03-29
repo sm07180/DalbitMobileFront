@@ -17,7 +17,7 @@ import moment from "moment";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
-const RankDetailPage = () => {
+const RankDetailPage = (props) => {
   const params = useParams()
   let history = useHistory()
 
@@ -50,6 +50,8 @@ const RankDetailPage = () => {
   let pagePerCnt = 50;
 
   useEffect(() => {
+    //아이폰 웹뷰 스크롤 버그 때문에 넣음
+    window.scrollTo(1, 0);
     if (rankingListType === 'DJ') {
       setTabList(['타임','일간','주간', '월간', '연간']);
       setTabName(typeof location.state === "undefined" ? "일간" : location.state === "time" ? "타임" : location.state === "today" ? "일간"  : location.state === "thisweek" ? "주간" : location.state === "thismonth" ? "월간" : "연간");
@@ -61,7 +63,7 @@ const RankDetailPage = () => {
       setTabName('일간')
     }
     setSelect(rankingListType);
-  }, []);
+  }, [props.match.params.type]);
 
   useEffect(() => {
     if (typeof document !== "undefined"){
@@ -229,17 +231,11 @@ const RankDetailPage = () => {
   const optionSelect = (e) => {
     let text = e.currentTarget.innerText;
     if(text === "DJ"){
-      setSelect("DJ");
-      setTabName('일간');
-      setTabList(['타임','일간','주간', '월간', '연간']);
+      history.replace("/rankDetail/DJ");
     } else if(text === "FAN") {
-      setSelect("FAN");
-      setTabName('일간');
-      setTabList(['일간','주간', '월간']);
-    } else {      
-      setSelect("CUPID")
-      setTabName('일간');
-      setTabList(['일간','주간']);
+      history.replace("/rankDetail/FAN");
+    } else {
+      history.replace("/rankDetail/CUPID");
     }
     closeSlidePop();
   }
@@ -325,7 +321,10 @@ const RankDetailPage = () => {
       <Header position={'sticky'} type={'back'}>
         <h1 className='title' onClick={bottomSlide}>{select.toUpperCase()}<span className='optionSelect'></span></h1>
         <div className='buttonGroup'>
-          <button className='benefits' onClick={() => history.push("/rankBenefit")}>혜택</button>
+          <button className='benefits' onClick={() => history.push({
+            pathname: "/rankBenefit",
+            state: select
+          })}>혜택</button>
         </div>
       </Header>
       <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />

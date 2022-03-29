@@ -7,6 +7,7 @@ export interface CommonState {
   isLoading: boolean;
   isDesktop: boolean;
   isRefresh: boolean;
+  isWebView: string;
 }
 
 export type Gender = "" | "m" | "f";

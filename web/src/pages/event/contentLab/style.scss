@@ -1,0 +1,43 @@
+@import 'components/ui/_mixin.scss';
+
+#contentLab{
+  position: relative;
+  section{position: relative;}
+  img{width: 100%;}
+  .applyBtn{
+    @include position-bottom-left(35px, 50%);
+    transform: translateX(-50%);
+    width: 63%;
+  }
+  .notice {
+    padding:28px 16px;
+    background-color: #323232;
+    .title {
+      margin-bottom:12px;
+      @include font(20px, $SemiBold, #fff)
+    }
+    li {
+      position: relative;
+      line-height:18px;
+      padding-left:12px;
+      @include font(15px,$Regular,#fff);
+      margin-bottom: 15px;
+      word-break: keep-all;
+      &::before {
+        content:"";
+        @include position-top-left(6px);
+        display: inline-block;
+        width:6px;height:6px;
+        border-radius:50%;
+        background-color:#fff;
+      }
+    }
+    .logo{
+      @include flex(center,center);
+      width: 100%;
+      >img{
+        width: 87px;
+      }
+    }
+  }
+}

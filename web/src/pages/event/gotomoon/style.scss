@@ -1,6 +1,7 @@
 #goToMoon {
   .img_full {
     width: 100%;
+    -webkit-user-drag: none;
   }
   .header-wrap {
     position: sticky;
@@ -20,7 +21,7 @@
         align-items: center;
         width: 100%;
         &.fixed {
-          position: fixed;
+          position: sticky;
           top: 50px;
           width: 100%;
           z-index: 100;
@@ -489,8 +490,8 @@
                     }
                     .badgeFemale {
                       display: inline-block;
-                      width: 24px; height: 16px;
-                      background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+                      width: 14px; height: 14px;
+                      background-image: url("https://image.dalbitlive.com/common/icon/icoFemale.png");
                       background-size: contain;
                       background-repeat: no-repeat;
                       background-position: 0 0;                      
@@ -498,8 +499,8 @@
                     }
                     .badgeMale {
                       display: inline-block;
-                      width: 24px; height: 16px;
-                      background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+                      width: 14px; height: 14px;
+                      background-image: url("https://image.dalbitlive.com/common/icon/icoMale.png");
                       background-size: contain;
                       background-repeat: no-repeat;
                       background-position: 0 0;                      
