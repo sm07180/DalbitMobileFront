@@ -4004,6 +4004,32 @@ export default class API {
   static getPartnerDjList = async (data) => {
     return await ajax({url: `/getPartnerDjList`, method: 'POST', reqBody: true, data: data})
   }
+  
+  // 와썹맨 dj 리스트
+  static getWhatsUpDjList = async (data) => {
+    return ajax({url: '/event/whatsUp/getDjList', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 dj 회원정보
+  static getWhatsUpDjSel = async (data) => {
+    return ajax({url: '/event/whatsUp/getDjSel', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 신입회원 리스트
+  static getWhatsUpNewMemberList = async (data) => {
+    return ajax({url: '/event/whatsUp/getNewMemberList', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 신입회원  회원정보
+  static getWhatsUpNewMemberSel = async (data) => {
+    return ajax({url: '/event/whatsUp/getNewMemberSel', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 회차정보
+  static pEvtWassupManNoSel = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManNoSel', method: 'POST', reqBody: true})
+  }
+  // 와썹맨 회차리스트
+  static pEvtWassupManNoList = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
+  }
+
 
 }
 
