@@ -2,34 +2,60 @@ import React, {useContext, useEffect, useState} from 'react'
 import {Context, GlobalContext} from "context";
 
 import {useHistory, withRouter} from "react-router-dom";
-import {PHOTO_SERVER} from 'context/config'
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {IMG_SERVER} from 'context/config'
 
 import Api from "context/api";
 import Lottie from 'react-lottie'
+import photoCommon from "common/utility/photoCommon";
 
 const PartnerDj = (props) => {
   const context = useContext(Context);
   const gtx = useContext(GlobalContext);
   const history = useHistory();
 
-  const [listData, setListData] = useState([]);
+  const [listData, setListData] = useState({cnt: 0, list: []});
+
+  const [scrollParam, setScrollParam] = useState({loading: false, pageNo: 1, pagePerCnt: 100});
 
   useEffect(() => {
-    getPartnerDj();
+    getPartnerDj(1);
   }, []);
 
-  const getPartnerDj = () => {
-      Api.getPartnerDjList({
-        pageNo: 1,
-        pagePerCnt: 100
-      }).then((res) => {
-        if (res.result === 'success') {
-          setListData(res.data.list);
+  useEffect(() => {
+    if (typeof document !== "undefined"){
+      document.addEventListener("scroll", scrollEvent);
+    }
+
+    return () => {
+      document.removeEventListener("scroll", scrollEvent);
+    }
+  }, [listData, scrollParam]);
+
+  const scrollEvent = () => {
+    let scrollHeight = document.documentElement.scrollHeight;
+    let scrollTop = document.documentElement.scrollTop
+    let height = document.documentElement.offsetHeight;
+    let lastPage = Math.ceil(listData.cnt / scrollParam.pagePerCnt)
+    if (scrollHeight - 5 < scrollTop + height && !scrollParam.loading && scrollParam.pageNo < lastPage){
+      setScrollParam({...scrollParam, loading: true});
+      getPartnerDj(scrollParam.pageNo + 1);
+    }
+  }
+
+  const getPartnerDj = (pageNo) => {
+    Api.getPartnerDjList({
+      pageNo: pageNo,
+      pagePerCnt: scrollParam.pagePerCnt
+    }).then((res) => {
+      if (res.result === "success"){
+        setListData({cnt: res.data[0][0], list: listData.list.concat(res.data[1])})
+        if (pageNo > 1){
+          setScrollParam({...scrollParam, pageNo: pageNo, loading: false});
         }
-      })
+      }
+    })
   }
 
   const goLive = (roomNo, memNo, nickNm) => {
@@ -69,12 +95,12 @@ const PartnerDj = (props) => {
       </div>
       <div className='partnerDjWrap'>
         {
-          listData.length > 0 &&
-            listData.map((list, index) => {
+          listData.list.length > 0 &&
+            listData.list.map((list, index) => {
               return (
                 <div className='partnerDjList' key={index} onClick={() => golink(`/profile/${list.mem_no}`)}>
                   <div className='thumbnail'>
-                    <img src={`${PHOTO_SERVER}${list.image_profile}`} alt=''/>
+                    <img src={photoCommon.getPhotoUrl(PHOTO_SERVER, list.image_profile, "700X700")} alt=''/>
                   </div>
                   <div className='userInfo'>
                     <div className='userData'>
@@ -82,7 +108,7 @@ const PartnerDj = (props) => {
                       <span className='nickNm'>{list.mem_nick}</span>
                     </div>
                     {
-                      list.room_no !== "" ?
+                      typeof list.room_no === "undefined" || list.room_no === null || list.room_no !== "" ?
                         <div className="badgeLive" onClick={(e) => {
                             e.stopPropagation();
                             goLive(list.room_no, list.mem_no, list.mem_nick);
