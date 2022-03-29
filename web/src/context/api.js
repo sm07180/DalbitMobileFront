@@ -4020,7 +4020,10 @@ export default class API {
   static pEvtWassupManNoList = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
   }
-
+  // IP 국가 코드 조회 _ KR
+  static getNationCode = async (data) => {
+    return ajax({url: '/getNationCode', method: 'POST', reqBody: true})
+  }
 
 }
 
