@@ -83,6 +83,9 @@ export const DalbitScroll = React.forwardRef((props: ScrollPropsType, ref: any) 
         // setScrollBottom(true);
       }
     },
+    getInnerRef: () => {  /* 스크롤 제어용 */
+      return innerRef.current;
+    }
   }));
 
   const scrollMove = useCallback(

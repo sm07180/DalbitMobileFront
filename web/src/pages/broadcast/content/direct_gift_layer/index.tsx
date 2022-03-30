@@ -11,7 +11,7 @@ import { postSendGift, getProfile } from "common/api";
 
 function DirectGiftLayer() {
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { userProfile } = globalState;
+  const { userProfile, chatInfo } = globalState;
   if(!userProfile){
     return <></>
   }
@@ -56,6 +56,9 @@ function DirectGiftLayer() {
         status: true,
         message: "선물이 성공적으로 발송되었습니다.",
       });
+
+      /* 누적 선물 달에 선물한 달 더하기 */
+      chatInfo?.addRoomInfoDalCnt(giftDalCntNumber);
 
       const res = await getProfile({
         memNo: globalState.baseData.memNo,
