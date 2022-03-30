@@ -146,10 +146,12 @@
         }
         .title {
           height: auto;
+          margin: 8px 0 0;
           padding-top: 40px;
           border-bottom: none;
           font-size: 22px;
           font-weight: bold;
+          text-align: center;
         }
         .welcomeGift {
           display: flex;
@@ -178,6 +180,7 @@
       }
 
       .closeBtn {
+        position: static;
         display: flex;
         align-items: center;
         justify-content: center;
