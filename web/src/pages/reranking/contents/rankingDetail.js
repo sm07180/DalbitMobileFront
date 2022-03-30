@@ -354,7 +354,9 @@ const RankDetailPage = (props) => {
         <div className={`rankCategoryList ${rankingListType === "CUPID" ? "active" : ""}`} onClick={() => {changeCategory("CUPID")}}>CUPID</div>
         <div className="underline"></div>
       </div>
-      <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
+      <div className='tabWrap'>
+        <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
+      </div>      
       <div className="rankingContent">
         <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
         <div className='listWrap'>
