@@ -3,9 +3,12 @@
 .container {
   .totalWrap {
    #rankingList {
-     .tabmenu {
+     .rankCategory {
        top: $PC-TABTOP;
      }
+     .tabmenu {
+      top: calc(#{$PC-TABTOP} + 48px);
+    }
    }
   } 
  }
@@ -13,24 +16,46 @@
 #rankingList {
   header {
     .benefits {
-      display: inline-block;
-      width: 40px; height: 40px;
+      @include flex(center);
+      height: 40px;
       margin-right: 12px;
       @include font(14px, 400, #666666);
-    }
-    .title {
-      pointer-events: auto;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      cursor: pointer;
-      .optionSelect {
+      &::after {
+        content: "";
         display: inline-block;
         width: 20px; height: 20px;
-        margin-left: 4px;
-        @include BGIMG('ranking/dalla/titleArrow-b.png');
-        cursor: pointer;
+        @include BGIMG("common/icon/icon_benefit.png");
       }
+    }
+  }
+  #rankCategory {
+    position:sticky;
+    top: $MOBILE-TABTOP;
+    @include flex(center);
+    transition: all .5s ease-in-out;
+    background: linear-gradient(to right, #AF6FF5 0%, #F675CE 100% );
+    background-size: 400%;
+    z-index: $TAB-ZINDEX;
+    .rankCategoryList {
+      flex: 1;
+      position: relative;
+      @include flex(center, center);
+      height: 48px;
+      @include font(18px,800,rgba(255,255,255,0.6));
+      box-sizing: border-box;
+      cursor: pointer;
+      &.active {
+        @include font(18px,800,#FFF);
+      }      
+    }
+    .underline {
+      position: absolute;
+      bottom: 0;
+      left: 0%;
+      width: 25px; height: 5px;
+      border-radius: 100px;
+      transition: all .5s ease-in-out;
+      background-color: rgba($color: #FFFFFF, $alpha: 0.8);
     }
   }
   .tabmenu {
@@ -448,4 +473,3 @@
     }     
   }
 }
-

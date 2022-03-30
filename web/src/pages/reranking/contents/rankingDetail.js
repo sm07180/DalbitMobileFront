@@ -65,6 +65,27 @@ const RankDetailPage = (props) => {
     setSelect(rankingListType);
   }, [props.match.params.type]);
 
+
+  const changeCategory = (category) => {
+    history.replace("/rankDetail/" + category);
+  }
+
+  useEffect(() => {
+    const categoryTab = document.getElementById("rankCategory");
+    const categoryListLength = document.getElementsByClassName('rankCategoryList').length;
+    const childNodes = categoryTab.lastElementChild;
+    let activeIndex = 0;
+
+    for(let i = 0; i < categoryListLength; i++) {
+      if(categoryTab.childNodes[i].classList.contains('active')){
+        activeIndex = i;
+      }      
+    }
+
+    childNodes.style.left = `calc((` + 100 / categoryListLength / 2 +  `% - 12.5px) + ` + (100 / categoryListLength * activeIndex) + `%)`;
+
+  }, [rankingListType])
+
   useEffect(() => {
     if (typeof document !== "undefined"){
       document.addEventListener("scroll", scrollEvent);
@@ -318,8 +339,7 @@ const RankDetailPage = (props) => {
 
   return (
     <div id="rankingList">
-      <Header position={'sticky'} type={'back'}>
-        <h1 className='title' onClick={bottomSlide}>{select.toUpperCase()}<span className='optionSelect'></span></h1>
+      <Header position={'sticky'} title={'랭킹 전체'} type={'back'}>
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push({
             pathname: "/rankBenefit",
@@ -327,6 +347,12 @@ const RankDetailPage = (props) => {
           })}>혜택</button>
         </div>
       </Header>
+      <div id="rankCategory">
+        <div className={`rankCategoryList ${rankingListType === "DJ" ? "active" : ""}`} onClick={() => {changeCategory("DJ")}}>DJ</div>
+        <div className={`rankCategoryList ${rankingListType === "FAN" ? "active" : ""}`} onClick={() => {changeCategory("FAN")}}>FAN</div>
+        <div className={`rankCategoryList ${rankingListType === "CUPID" ? "active" : ""}`} onClick={() => {changeCategory("CUPID")}}>CUPID</div>
+        <div className="underline"></div>
+      </div>
       <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
       <div className="rankingContent">
         <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
