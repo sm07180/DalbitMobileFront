@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
@@ -22,14 +22,17 @@ const ProfileDetail = (props) => {
   const context = useContext(Context)
   const {token, profile} = context
   const {memNo, type, index} = useParams();
+  const {tmemNo} = profile.memNo;
   //memNo :글이 작성되있는 프로필 주인의 memNo
 
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
   const replyIsMoreRef = useRef(null);
+  const infoRef = useRef(null);
 
   //팝업 사진 스와이퍼
+  const [tooltipEvent, setTooltipEvent] = useState(false);
   const [showSlide, setShowSlide] = useState(false);
   const [imgList, setImgList] = useState([]);
 
@@ -82,7 +85,7 @@ const ProfileDetail = (props) => {
   //상세조회
   const getDetailData = () => {
     if(type==='notice') {
-      Api.mypage_notice_detail_sel({feedNo: index, memNo})
+      Api.mypage_notice_detail_sel({noticeNo: index, memNo})
         .then((res) => {
           const {data, result, message} = res;
           if(result === 'success'){
@@ -151,7 +154,16 @@ const ProfileDetail = (props) => {
       });
 
     } else if(type === "feed") {
-
+      const params = {
+        feedNo: index,
+        pageNo: 1,
+        pageCnt: 100,
+      }
+      Api.myPageFeedReplyList(params).then((res) => {
+        if(res.result === "success") {
+          setReplyList(res.data?.list);
+        }
+      }).catch((e) => console.log(e));
     }
   }
 
@@ -184,6 +196,19 @@ const ProfileDetail = (props) => {
     blurBlockStatus.current = false;
   };
 
+  // 좋아요 툴팁 이벤트
+  const tooltipScrollEvent = useCallback(() => {
+    const infoNode = infoRef.current;
+    const infoPosition = infoNode.offsetTop;
+    const scrollBottom = window.scrollY + document.documentElement.clientHeight - 100;
+
+    console.log(infoPosition,scrollBottom);
+
+    if (scrollBottom > infoPosition) {
+      setTooltipEvent(true);
+    }
+  }, []);
+
   useEffect(() => {
     getAllData(1, 9999);
   }, []);
@@ -201,8 +226,8 @@ const ProfileDetail = (props) => {
       if (type === 'notice') {
         const {result, data, message} = await Api.mypage_notice_delete({
           data: {
+            noticeNo: index,
             delChrgrName: item?.nickName,
-            noticeIdx: index,
           }
         })
 
@@ -297,7 +322,22 @@ const ProfileDetail = (props) => {
       } else {
       }
     } else if(type === "feed") {
-
+      Api.myPageFeedReplyAdd({reqBody: true, data: {
+          regNo: index,
+          memNo: memNo,
+          tmemNo: tmemNo,
+          tmemConts: text
+        }
+      }).then((res) => {
+        if(res.result === "success") {
+          setText("");
+          if(replyRef.current) {
+            replyRef.current.innerText = "";
+          }
+          context.action.toast({msg: res.message});
+          getAllData(1, 9999);
+        } else {}
+      }).catch((e) => console.log(e));
     }
   };
 
@@ -341,7 +381,7 @@ const ProfileDetail = (props) => {
         contents
       }});
 
-      if(result ==='success'){
+      if(result === 'success'){
         context.action.toast({msg: '댓글이 수정되었습니다.'})
 
         getAllData(1, 9999);
@@ -353,7 +393,21 @@ const ProfileDetail = (props) => {
       }
 
     } else if(type === "feed") {
-
+      console.log(replyIdx, contents);
+      Api.myPageFeedReplyUpd({reqBody: true, data: {
+        tailNo: replyIdx,
+        tmemConts: contents
+        }}).then((res) => {
+          if(res.result === "success") {
+            context.action.toast({msg: '댓글이 수정되었습니다.'});
+            getAllData(1, 9999);
+            setText("");
+            replyRef.current.innerText = "";
+            setInputModeAction("add");
+          } else {
+            context.action.alert({msg: res.message});
+          }
+      }).catch((e) => console.log(e));
     }
   };
 
@@ -362,7 +416,6 @@ const ProfileDetail = (props) => {
     const callback = async (replyIdx) => {
       if (type === 'notice') {
         const {data, result, message} = await Api.deleteMypageNoticeReply({memNo, replyIdx});
-
         if (result === 'success') {
           getAllData(1, 9999);
         } else {
@@ -377,7 +430,18 @@ const ProfileDetail = (props) => {
           //실패
         }
       } else if(type === "feed") {
-
+        const params = {
+          regNo: index,
+          tailNo: replyIdx,
+          chrgrName: memNo
+        }
+        await Api.myPageFeedReplyDel(params).then((res) => {
+          if(res.result === "success") {
+            getAllData(1, 9999);
+          } else {
+            //실패
+          }
+        }).catch((e) => console.log(e));
       }
     };
 
@@ -431,8 +495,11 @@ const ProfileDetail = (props) => {
   }
 
   useEffect(() => {
-    console.log(item);
-  }, [item])
+    document.addEventListener('scroll', tooltipScrollEvent);
+    return () => {
+      document.removeEventListener('scroll', tooltipScrollEvent);
+    }
+  },[])
 
   return (
     <div id="profileDetail">
@@ -462,17 +529,6 @@ const ProfileDetail = (props) => {
           <pre className="text">{item?.feed_conts ? item.feed_conts : item?.contents}</pre>
           {(type === 'notice' || type === 'feed') && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-              {/*<Swiper {...swiperFeeds}>*/}
-              {/*  {item.photoInfoList.map((photo, index) => {*/}
-              {/*    return (*/}
-              {/*      <div key={index}>*/}
-              {/*        <div className="photo">*/}
-              {/*          <img src={photo?.imgObj?.thumb500x500} alt="" />*/}
-              {/*        </div>*/}
-              {/*      </div>*/}
-              {/*    )*/}
-              {/*  })}*/}
-              {/*</Swiper>*/}
               {item.photoInfoList.map((photo,index) => {
                 return (
                 <div className="photo" key={index}>
@@ -489,11 +545,17 @@ const ProfileDetail = (props) => {
               </div>
             : <></>
           )}
-          <div className="info">
+          <div className="info" ref={infoRef}>
             {(type === "feed" || type === 'notice') && item?.like_yn === "n" ?
-              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
+              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>
+                {tooltipEvent && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
+                {item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}
+              </i>
               : (type === "feed" || type === 'notice') && item?.like_yn === "y" &&
-              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}</i>
+              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>
+                {tooltipEvent && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
+                {item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}
+              </i>
             }
             <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>
@@ -503,7 +565,7 @@ const ProfileDetail = (props) => {
         <div className='listWrap'>
           {replyList.map((item, index) => {
             const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
-            return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
+            return <ProfileReplyComponent key={item?.replyIdx || item?.tail_no} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
                                           replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
                                           blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
                                           openBlockReportPop={openBlockReportPop}
@@ -517,11 +579,12 @@ const ProfileDetail = (props) => {
           />
 
           {/*댓글에서 수정 버튼을 눌렀을 때,  inputMode : false => true*/}
-          <button ref={replyButtonRef} onClick={(e) => {
-            inputMode.action === 'edit' ? replyEdit(inputMode.replyIdx, text) : replyWrite();
-          }}>
-            {inputMode.action === 'add' ? '등록' : '수정'}
-          </button>
+            <button ref={replyButtonRef} onClick={(e) => {
+              inputMode.action === 'edit' ? replyEdit(inputMode.replyIdx, text) : replyWrite();
+            }}>
+              {inputMode.action === 'add' ? '등록' : '수정'}
+            </button>
+
         </div>
       </section>
 

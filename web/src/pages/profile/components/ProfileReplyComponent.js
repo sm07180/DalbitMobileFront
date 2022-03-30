@@ -13,11 +13,11 @@ const ProfileReplyComponent = (props) => {
   const dispatch = useDispatch();
   const profileTab = useSelector(state => state.profileTab);
 
-  const memNo = type==='feed'? item?.writerMemNo : item?.writerMemNo;
+  const memNo = type==='feed'? item?.tail_mem_no : item?.writerMemNo;
   //isMyProfile : 프로필 주인 여부
   //내가 작성한 댓글 여부
   const isMyContents = (typeof profile?.memNo !=='undefined' && typeof memNo !== 'undefined')
-    && profile?.memNo === memNo;
+    && profile?.memNo === memNo.toString();
 
   const [isMore, setIsMore] = useState(false);
   const isMoreRef = useRef(null);
@@ -26,6 +26,8 @@ const ProfileReplyComponent = (props) => {
   const timeDiffCalc = useMemo(() => {
     if (item?.[dateKey]) {
       return Utility.writeTimeDffCalc(item?.[dateKey]);
+    } else if(item?.ins_date) {
+      return Utility.writeTimeDffCalc(item?.ins_date);
     } else {
       return '';
     }
@@ -53,49 +55,43 @@ const ProfileReplyComponent = (props) => {
   },[isMore]);
 
   return (
-    <ListRow photo={(type ==='notice' || type === 'feed') ? item?.profileImg?.thumb292x292 : item?.profImg?.thumb292x292} photoClick={replyGoProfileHandler}>
+    <ListRow photo={type ==='notice' ? item?.profileImg?.thumb292x292 : item?.profImg?.thumb292x292} photoClick={replyGoProfileHandler}>
       <div className="listContent">
         <div className="listItems">
-          <div className="nick">{item?.nickName}</div>
+          {type !== "feed" ?
+            <div className="nick">{item?.nickName}</div>
+            :
+            <div className="nick">{item?.tail_mem_nick}</div>
+          }
           <div className="time">{timeDiffCalc}</div>
         </div>
 
         <div className="listItems">
-          <pre className="text">
-            {item?.contents}
-          </pre>
+          {type !== "feed" ?
+            <pre className="text">{item?.contents}</pre>
+            :
+            <pre className="text">{item?.tail_conts}</pre>
+          }
         </div>
-        {/*좋아요*}
-        {/*<div className="listItems">
-          <i className='like'/>
-          <span>{Utility.addComma(3211)}</span>
-        </div>*/}
       </div>
+
       <div className="listBack">
         <div className='moreBtn' ref={isMoreRef} onClick={() => setIsMore(!isMore)}>
           <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
           {isMore &&
           <div className="isMore">
-            {(isMyProfile || isMyContents || adminChecker) &&
-            <button onClick={() => replyDelete(item?.replyIdx)}>삭제하기</button>
+            {(isMyProfile || isMyContents || adminChecker) && <button onClick={() => replyDelete(item?.replyIdx || item?.tail_no)}>삭제하기</button>}
+            {(isMyContents) && type !== "feed" ?
+            <button onClick={() => {blurBlock(); replyEditFormActive(item?.replyIdx, item?.contents);}}>수정하기</button>
+              : isMyContents &&
+              <button onClick={() => {blurBlock(); replyEditFormActive(item?.tail_no, item?.tail_conts);}}>수정하기</button>
             }
-            {isMyContents &&
-            <button onClick={() => {
-              blurBlock();
-              replyEditFormActive(item?.replyIdx, item?.contents);
-            }}>수정하기</button>
-            }
-            {!isMyContents &&
-            <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>
-            }
-          </div>}
+            {(!isMyContents) && <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>}
+          </div>
+          }
         </div>
       </div>
-
-
     </ListRow>
-
-
   );
 }
 

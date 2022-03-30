@@ -62,7 +62,7 @@ const ListRowComponent = (props) => {
           {item.viewOn === 0 && <div className="lock" />}
           <div className="nick">{item.mem_nick ? item.mem_nick : item.nickName}</div>
         </div>
-        <div className="time">{item.ins_date ? Utility.writeTimeDffCalc(item.ins_date) : Utility.writeTimeDffCalc(item.writeDt)}</div>
+        <div className="time">{item.ins_date ? Utility.writeTimeDffCalc(item.ins_date) : item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : item.writeDt && Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
       <div className="listBack">
         {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>

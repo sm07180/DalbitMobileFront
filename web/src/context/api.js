@@ -936,6 +936,65 @@ export default class API {
   }
 
   /**
+   * 피드 댓글 등록
+   */
+  static myPageFeedReplyAdd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/reply/add`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 댓글 수정
+   */
+  static myPageFeedReplyUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/reply/upd`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 댓글 삭제
+   */
+  static myPageFeedReplyDel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/reply`,
+      method: 'DELETE',
+      params
+    })
+  }
+
+  /**
+   * 피드 댓글 조회
+   */
+  static myPageFeedReplyList = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/reply/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 방송 공지 리스트(고정) 조회
+   */
+  static myPageNoticeFixList = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/fix/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
    * @brief 마이페이지 공지사항 등록
    * @method "POST""
    * @todo

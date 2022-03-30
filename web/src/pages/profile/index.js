@@ -27,14 +27,14 @@ import {
   setProfileClipData,
   setProfileData,
   setProfileFanBoardData,
-  setProfileFeedData, setProfileFeedNewData,
+  setProfileFeedData, setProfileFeedNewData, setProfileNoticeFixData,
 } from "redux/actions/profile";
 import {
   profileClipPagingDefault,
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileFeedDefaultState, profilePagingDefault, profileFeedNewDefaultState
+  profileFeedDefaultState, profilePagingDefault, profileFeedNewDefaultState, profileNoticeFixDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
@@ -43,6 +43,7 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileD
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
 import {setCommonPopupOpenData} from "redux/actions/common";
+import noticeFix from "redux/reducers/profile/noticeFix";
 
 const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -85,6 +86,7 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const feedNewData = useSelector(state => state.feedNew);
+  const noticeFixData = useSelector(state => state.noticeFix);
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
@@ -116,7 +118,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: pageNo !== undefined ? pageNo : feedData.paging.next,
-      pagePerCnt: feedData.paging.records,
+      pageCnt: feedData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
@@ -127,8 +129,8 @@ const ProfilePage = () => {
         dispatch(setProfileFeedData({
           ...feedData,
           feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
-          fixedFeedList: data.fixList, // 고정 피드
-          fixCnt: data.fixList.length, // 고정 피드 개수
+          // fixedFeedList: data.fixList, // 고정 피드
+          // fixCnt: data.fixList.length, // 고정 피드 개수
           paging: data.paging ? data.paging : profilePagingDefault, // 호출한 페이지 정보
           isLastPage,
         }));
@@ -140,14 +142,40 @@ const ProfilePage = () => {
     })
   }
 
-  /* 피드 데이터 */
-  const fetchFeedData = () => {
-    const params = {
-      memNo: context.profile.memNo,
-      pageNo: 1,
-      pageCnt: 1000
+  /* 방송공지(고정) 데이터 호출 */
+  const getNoticeFixData = (pageNo) => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: pageNo !== undefined ? pageNo : noticeFixData.paging.next,
+      pageCnt: noticeFixData.paging.records,
     }
-    Api.myPageFeedSel(params).then((res) => {
+    Api.myPageNoticeFixList(apiParams).then((res) => {
+      if(res.result === "success") {
+        const data = res.data;
+        const callPageNo = data.paging?.page;
+        const isLastPage = data.fixList.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileNoticeFixData({
+          ...noticeFixData,
+          fixedFeedList: data.paging?.page > 1 ? noticeFixData.fixedFeedList.concat(data.fixList) : data.fixList,
+          fixCnt: data.fixList.length,
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage,
+        }));
+      } else {
+        context.action.alert({msg: res.message});
+      }
+    }).catch((e) => console.log(e));
+  }
+
+  /* 피드 데이터 */
+  const fetchFeedData = (pageNo) => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: pageNo !== undefined ? pageNo : feedNewData.paging.next,
+      pageCnt: feedNewData.paging.records,
+    }
+    Api.myPageFeedSel(apiParams).then((res) => {
+      console.log(res.data);
       if(res.result === "success") {
         const data = res.data;
         const callPageNo = data.paging?.page;
@@ -325,10 +353,12 @@ const ProfilePage = () => {
       mMemNo: mMemNo,
       vMemNo: context.profile.memNo
     };
+    console.log(params, like);
     if(like === "n") {
       Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
           getFeedData(1);
+          getNoticeFixData(1);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -337,6 +367,7 @@ const ProfilePage = () => {
       Api.profileFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
           getFeedData(1);
+          getNoticeFixData(1);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -353,7 +384,7 @@ const ProfilePage = () => {
     if(like === "n") {
       Api.myPageFeedLike(params).then((res) => {
         if(res.result === "success") {
-          fetchFeedData();
+          fetchFeedData(1);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -361,7 +392,7 @@ const ProfilePage = () => {
     } else if(like === "y") {
       Api.myPageFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
-          fetchFeedData();
+          fetchFeedData(1);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -459,6 +490,7 @@ const ProfilePage = () => {
     if(item === socialTabmenu[0]) {
       dispatch(setProfileFeedData({...feedData, paging: profilePagingDefault, isLastPage: false}));
       dispatch(setProfileFeedNewData({...feedNewData, paging: profilePagingDefault, isLastPage: false}));
+      dispatch(setProfileNoticeFixData({...noticeFixData, paging: profilePagingDefault, isLastPage: false}));
       removeScrollEvent();
       document.addEventListener('scroll', profileScrollEvent);
     }else if(item === socialTabmenu[1]) {
@@ -507,6 +539,7 @@ const ProfilePage = () => {
     dispatch(setProfileFeedNewData(profileFeedNewDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
+    dispatch(setProfileNoticeFixData(profileNoticeFixDefaultState)); // 방송공지(고정)
   }
 
   /* 피드글, 팬보드 삭제후 데이터 비우기 */
@@ -541,9 +574,7 @@ const ProfilePage = () => {
              delChrgrName: profileData?.nickNm
            }
          }).then((res) => {
-           console.log(res);
            if(res.result === "success") {
-             console.log("피드 삭제");
              const feedNewList = feedNewData.feedList.concat([]).filter((feedNew, _index) => feedNew.feedNo !== index);
              dispatch(setProfileFeedNewData({...feedNewData, feedNewList}));
            } else {
@@ -570,6 +601,7 @@ const ProfilePage = () => {
     if(socialType === socialTabmenu[0]) {
       getFeedData();
       fetchFeedData();
+      getNoticeFixData();
       setScrollPagingCnt(1);
     }else if(socialType === socialTabmenu[1]) {
       getFanBoardData();
@@ -615,6 +647,7 @@ const ProfilePage = () => {
     if(socialType === socialTabmenu[0] && scrollPagingCnt > 1 && !feedData.isLastPage) {
       getFeedData();
       fetchFeedData();
+      getNoticeFixData();
     }else if(socialType === socialTabmenu[1] && scrollPagingCnt > 1 && !fanBoardData.isLastPage) {
       getFanBoardData();
     }else if(socialType === socialTabmenu[2] && scrollPagingCnt > 1 && !clipData.isLastPage) {
@@ -721,7 +754,7 @@ const ProfilePage = () => {
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile}
-                   feedData={feedData} getFeedData={getFeedData} fetchHandleLike={fetchHandleLike}/>
+                   feedData={feedData} noticeFixData={noticeFixData} getFeedData={getFeedData} getNoticeFixData={getNoticeFixData} fetchHandleLike={fetchHandleLike}/>
       </section>
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
@@ -730,13 +763,13 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedNewData} fetchHandleLike={fetchHandleLike}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedNewData} fetchHandleLike={fetchFeedHandleLike}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {socialType === socialTabmenu[1] &&
-          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} getFanBoardData={getFanBoardData}
+          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} getFanBoardData={getFanBoardData} params={params}
                           deleteContents={deleteContents} openBlockReportPop={openBlockReportPop} />
         }
 

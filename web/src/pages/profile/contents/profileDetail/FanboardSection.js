@@ -11,7 +11,7 @@ import API from "context/api";
 import {useHistory, useParams} from "react-router-dom";
 
 const FanboardSection = (props) => {
-  const { fanBoardData, isMyProfile, deleteContents, profileData, openBlockReportPop, getFanBoardData } = props;
+  const { fanBoardData, isMyProfile, deleteContents, profileData, openBlockReportPop, getFanBoardData, params } = props;
   const context = useContext(Context)
   const memNo = context.profile.memNo;
   const [formState, setFormState] = useState({
@@ -43,7 +43,7 @@ const FanboardSection = (props) => {
     const {contents, others} = formState;
     const {data, result, message} = await API.member_fanboard_add({
       data: {
-        memNo,
+        memNo: params.memNo ? params.memNo : context.profile.memNo,
         depth: 1,
         contents,
         viewOn: others

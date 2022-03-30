@@ -86,6 +86,7 @@ const ProfileWrite = () => {
         data: {
           title,
           contents,
+          imgName: photoInfoList.length !== 0 ? photoInfoList[0].img_name : "",
           topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
@@ -123,11 +124,12 @@ const ProfileWrite = () => {
       const {data, result, message} = await Api.mypage_notice_edit({
         reqBody: true,
         data: {
-          title,
-          contents,
-          topFix: others,
+          noticeNo: index,
+          noticeTitle: title,
+          noticeContents: contents,
+          imgName: photoInfoList.length !== 0 ? photoInfoList[0].img_name : "",
+          noticeTopFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
-          noticeIdx: index,
           chrgrName: profile?.nickName,
         }
       });
@@ -223,7 +225,7 @@ const ProfileWrite = () => {
   //상세조회 (수정만)
   const getDetailData = () => {
     if (type === 'notice') {
-      Api.mypage_notice_detail_sel({feedNo: index, memNo})
+      Api.mypage_notice_detail_sel({noticeNo: index, memNo})
         .then((res) => {
           const {data, result, message} = res;
           if (result === 'success') {
@@ -279,10 +281,6 @@ const ProfileWrite = () => {
   useEffect(() => {
     action === 'modify' && getDetailData();
   }, []);
-
-  useEffect(() => {
-    console.log(formState);
-  })
 
   return (
     <div id="profileWrite">

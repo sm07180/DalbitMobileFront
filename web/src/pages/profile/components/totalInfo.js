@@ -10,12 +10,16 @@ import './totalInfo.scss'
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
+import noticeFix from "redux/reducers/profile/noticeFix";
 
 const TotalInfo = (props) => {
-  const {data, goProfile, openPopLike, isMyProfile, feedData, getFeedData, fetchHandleLike} = props
+  const {data, goProfile, openPopLike, isMyProfile, feedData, getFeedData, fetchHandleLike, noticeFixData, getNoticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const history = useHistory();
+  const defaultNotice = [{
+    contents: "방송 공지를 등록해주세요."
+  }]
   //
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
@@ -33,6 +37,10 @@ const TotalInfo = (props) => {
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
+  }
+
+  const onClick = () => {
+    history.push({pathname: "/brdcst", state: {feedData, noticeFixData}})
   }
 
   useEffect(() => {
@@ -55,12 +63,12 @@ const TotalInfo = (props) => {
 
   /* 피드 삭제시 스와이퍼 업데이트용 */
   useEffect(() => {
-    if(feedData !== undefined) {
+    if((feedData || noticeFixData) !== undefined) {
       const swiper = document.querySelector('.swiper-container').swiper;
       swiper.update();
       // swiper.slideTo(0);
     }
-  }, [feedData])
+  }, [feedData, noticeFixData]);
 
   return (
     <>
@@ -122,10 +130,10 @@ const TotalInfo = (props) => {
         </div>
       }
       <div className="broadcastNotice">
-        <div className="title">방송공지</div>
+        <div className="title" onClick={onClick}>방송공지</div>
         <Swiper {...swiperParams}>
-          {feedData.fixedFeedList !== undefined &&
-            feedData.fixedFeedList.map((v, idx) => {
+          {noticeFixData.fixedFeedList.length !== 0 &&
+          noticeFixData.fixedFeedList.map((v, idx) => {
               const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
               return (
               <div key={idx}>
@@ -147,7 +155,7 @@ const TotalInfo = (props) => {
               </div>
             )
           })}
-          {feedData.feedList !== undefined &&
+          {feedData.feedList.length !== 0 &&
             feedData.feedList.map((v, idx) => {
               const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
               return (
@@ -170,6 +178,26 @@ const TotalInfo = (props) => {
               </div>
             )
           })}
+          {(noticeFixData.fixedFeedList.length === 0 && feedData.feedList.length === 0) && isMyProfile &&
+            defaultNotice.map((v, idx) => {
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text">{v.contents}</div>
+                    <div className="info">
+                      <i className="like">0</i>
+                      <i className="cmt">0</i>
+                    </div>
+                    <button className="fixIcon">
+                      <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+
+          }
         </Swiper>
       </div>
     </>

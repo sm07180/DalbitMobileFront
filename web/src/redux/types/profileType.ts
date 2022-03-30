@@ -108,6 +108,13 @@ export const profileFeedNewDefaultState = {
   isLastPage: false,
 }
 
+export const profileNoticeFixDefaultState = {
+  fixedFeedList: [],
+  fixCnt: 0,
+  paging: profilePagingDefault,
+  isLastPage: false,
+}
+
 interface IFanRank {
   age: number;
   gender: Gender;
@@ -205,6 +212,20 @@ interface IClipData {
   title: string;
 }
 
+interface INoticeFix {
+  contents: string;
+  imagePath: string;
+  isTop: boolean;
+  nickNm: string;
+  noticeIdx: number;
+  profImg: IImageVo | null;
+  readCnt: number;
+  replyCnt: number;
+  title: string;
+  writeDt: string;
+  writeTs: number;
+}
+
 /* 프로필 상단 데이터 */
 export interface IProfileState {
   age: number;
@@ -278,8 +299,6 @@ export interface IFeedNewData {
 /* 방송공지 */
 export interface IProfileFeedState {
   feedList: Array<IFeedData>;
-  fixedFeedList: Array<IFeedData>,
-  fixCnt: number;
   paging: IPaging;
   isLastPage: boolean;
 }
@@ -310,6 +329,14 @@ export interface IProfileTabState {
 /* 피드 */
 export interface IProfileFeedNewState {
   feedList: Array<IFeedNewData>;
+  paging: IPaging;
+  isLastPage: boolean;
+}
+
+/* 방송공지(고정) 데이터 */
+export interface IProfileNoticeFixState {
+  fixedFeedList: Array<INoticeFix>,
+  fixCnt: number;
   paging: IPaging;
   isLastPage: boolean;
 }

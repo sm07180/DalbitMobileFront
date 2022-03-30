@@ -45,6 +45,10 @@ const SocialList = (props) => {
     }
   }
 
+  useEffect(() => {
+    console.log(socialList);
+  }, [])
+
   return (
     <div className="socialListWrap">
       {socialList.map((item, index) => {
@@ -179,11 +183,16 @@ const SocialList = (props) => {
               {/*)}*/}
               <div className="info">
                 {type === "feed" && item.like_yn === "n" ?
-                  <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  <i className="like" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                   : type === "feed" && item.like_yn === "y" &&
-                  <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  <i className="like" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                 }
-                <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{item.tail_cnt ? item.tail_cnt : item.replyCnt}</i>
+
+                {type === "feed" ?
+                  <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{item.tail_cnt}</i>
+                  :
+                  <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{item.replyCnt}</i>
+                }
               </div>
             </div>
           </div>
