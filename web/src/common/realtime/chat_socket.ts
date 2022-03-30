@@ -2196,10 +2196,12 @@ export class ChatSocketHandler {
               };
               const msgElem = chatMsgElement(data);
               this.addMsgElement(msgElem);
-              if (this.msgListWrapRef !== null) {
+              if (this.msgListWrapRef) {
                 const msgListWrapElem = this.msgListWrapRef.current;
-                if(msgListWrapElem.children.length >= 1000){
-                  msgListWrapElem.children[0].remove();
+                if(msgListWrapElem && msgListWrapElem.children){
+                  if(msgListWrapElem.children.length >= 1000){
+                    msgListWrapElem.children[0].remove();
+                  }
                 }
               }
 
