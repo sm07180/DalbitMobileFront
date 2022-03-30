@@ -38,7 +38,7 @@
     height:360px;
     margin-bottom:0px;
     + .favorites {
-      margin-top: 8px;
+      margin-top: 16px;
     }
     + .top10 {
       margin-top: 24px;
@@ -111,7 +111,6 @@
             word-break: keep-all;
             @include font(24px,$SemiBold,#202020);
             @include fontLineCut;
-            word-break: keep-all;
           }
           .nick {
             width:72%;

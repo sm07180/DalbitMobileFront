@@ -8,7 +8,7 @@ import { RankContext } from "context/rank_ctx";
 // import { RoomJoin } from "context/room";
 
 import { printNumber } from "lib/common_fn";
-import { RoomValidateFromClip } from "common/audio/clip_func";
+import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import { convertMonday, convertMonth, convertDateToText, convertSetSpecialDate } from "lib/rank_fn";
 import SpecialPointPop from "./special_point_pop";
 
@@ -190,7 +190,7 @@ function RankListTop() {
                   <div
                     className="nickNameBox"
                     onClick={() => {
-                      RoomValidateFromClip(roomNo, gtx, history, nickNm);
+                      RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm);
                     }}
                   >
                     <p className="nickNameBox__nick">{nickNm}</p>

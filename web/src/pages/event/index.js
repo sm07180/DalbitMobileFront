@@ -48,6 +48,8 @@ import PlayMaker from './playMaker'
 import Invite from './invite'
 import Share from './share'
 import PlatformWar from './platformWar'
+import ContentLab from './contentLab'
+import Wassup from './wassup'
 import moment from "moment";
 
 export default (props) => {
@@ -81,9 +83,9 @@ export default (props) => {
       case 'customer_change':
         return <RestChange />
       case 'customer_clear':
-        return <RestClear memNo={props.location.state.memNo} />
+        return <RestClear memNo={props.location?.state?.memNo} />
       case 'customer_notice':
-        return <RestNotice memNo={props.location.state.memNo} />
+        return <RestNotice memNo={props.location?.state?.memNo} />
       case 'happy_time':
         return <HappyTime />
       case 'specialdj':
@@ -152,6 +154,10 @@ export default (props) => {
         return <Share />
       case 'platformWar':
         return <PlatformWar />
+      case 'contentlab':
+        return <ContentLab />
+      case 'wassup':
+        return <Wassup />
       default:
         return <></>
         break

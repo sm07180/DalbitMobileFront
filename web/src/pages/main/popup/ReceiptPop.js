@@ -28,14 +28,16 @@ const ReceiptPop = (props) => {
   //결제 트래킹
   const payTracking = () =>{
     if (window.fbq) {
-      window.fbq("track", "Purchase");
+      // window.fbq("track", "Purchase");
+      window.fbq("track", "Buy_moon");
     }
     if (window.firebase) {
-      window.firebase.analytics().logEvent("Purchase");
+      // window.firebase.analytics().logEvent("Purchase");
+      window.firebase.analytics().logEvent("Buy_moon");
     }
-    if (window.kakaoPixel) {
+    /*if (window.kakaoPixel) {
       window.kakaoPixel("114527450721661229").purchase();
-    }
+    }*/
   }
 
   //결제 정보 가져오기

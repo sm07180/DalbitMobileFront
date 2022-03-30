@@ -64,14 +64,11 @@ export default () => {
   };
 
   useEffect(() => {
-    if (history && history.location.pathname === '/') {  //메인페이지에서만 서버 리스트를 보여줍니다.
-      const clientIp = localStorage.getItem('innerChk');
-      if (!clientIp) {
-        getInnerServerList();
-      } else {
-        innerIpChk(clientIp) && getInnerServerList();
-        setRedirectList([]);
-      }
+    const clientIp = localStorage.getItem('innerChk');
+    if (!clientIp) {
+      getInnerServerList();
+    } else {
+      innerIpChk(clientIp) ? getInnerServerList() : setRedirectList([]);
     }
   }, []);
 

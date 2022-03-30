@@ -1,13 +1,14 @@
 import React, {useState, useMemo, useContext} from 'react';
 
 // Context
-// import {GlobalContext} from "context";
 // import {BroadcastContext} from "context/broadcast_ctx";
+import {GlobalContext} from "context";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 import "./index.scss";
 import {addComma} from "../../../../lib/common_fn";
 
 const MoonLandPop = (props: any) => {
+  const {globalAction} = useContext(GlobalContext);
   const {dispatchLayer, dispatchDimLayer} = useContext(BroadcastLayerContext);
   const {roomOwner, data} = props;
 
@@ -43,6 +44,10 @@ const MoonLandPop = (props: any) => {
   };
 
   const switchToggle = () => {
+    globalAction?.callSetToastStatus({
+      status: true,
+      message: aniSwitch?'방송방에 코인이 출현하지 않습니다.' : '방송방에 코인이 출현합니다.'
+    });
     setAniSwitch(!aniSwitch);
     if(typeof window !== 'undefined'){
       localStorage.setItem("toTheMoonOnOff", `${!aniSwitch}`);

@@ -8,7 +8,7 @@ import Utility, {addComma , isHitBottom} from 'components/lib/utility'
 import {PHOTO_SERVER} from 'context/config'
 
 import moment from "moment";
-import NoResult from 'components/ui/new_noResult'
+import ListNone from 'components/ui/listNone/ListNone'
 
 import "../style.scss";
 
@@ -165,11 +165,11 @@ export default function GotoMoonRanking(props) {
                 totalRankingList.map((item, index) => {
                     const { image_profile, mem_nick, rank_pt, rank_num, mem_sex, mem_no } = item;
                     let eventReward = 0;
-                    if(rank_num === 1) {eventReward = 5000;}
-                    else if(rank_num === 2) {eventReward = 3000;}
-                    else if(rank_num <= 5) {eventReward = 1000;}
-                    else if(rank_num <= 10) {eventReward = 500;}
-                    else if(rank_num <= 20) {eventReward = 300;}
+                    if(rank_num === 1) {eventReward = 2000;}
+                    else if(rank_num === 2) {eventReward = 1000;}
+                    else if(rank_num <= 5) {eventReward = 500;}
+                    else if(rank_num <= 10) {eventReward = 300;}
+                    else if(rank_num <= 20) {eventReward = 200;}
                     else if(rank_num <= 30) {eventReward = 100;}
 
                     return (
@@ -211,7 +211,7 @@ export default function GotoMoonRanking(props) {
             </div>
             :            
             <div className="rankingWrap">
-              <NoResult type="default" text="해당 내역이 없습니다." />
+              <ListNone/>
             </div>
           }        
       </div>

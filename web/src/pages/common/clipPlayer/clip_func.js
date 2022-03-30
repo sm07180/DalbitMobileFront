@@ -34,7 +34,7 @@ export const clipJoin = (data, context, webview, isPush) => {
     }
   }
 
-  let playListData = JSON.parse(sessionStorage.getItem('clipPlayListInfo'))
+  let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
   let url = ''
   let currentType = ''
   if (playListData) {

@@ -215,7 +215,7 @@ const LikePopup = (props) => {
   }
 
   const openNoticePop = () => {
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    dispatch(setCommonPopupOpenData({...popup, questionMarkPopup: true}));
   }
 
   useEffect(() => {

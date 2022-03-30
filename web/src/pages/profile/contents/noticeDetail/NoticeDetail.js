@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
@@ -20,6 +20,8 @@ const NoticeDetail = (props) => {
   const {token, profile} = context
   const {memNo, type, index} = useParams();
   //memNo :글이 작성되있는 프로필 주인의 memNo
+  const location = useLocation();
+  const {feedData, noticeFixData} = location.state;
 
   return (
     <div id="noticeDetail">
@@ -31,22 +33,45 @@ const NoticeDetail = (props) => {
         </div>
       </Header>
       <section className='detailWrap'>
-        <div className="noticeList">
-          <div className="noticeBox">
-            <div className="badge">Notice</div>
-            <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-            다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
-            다른 방을 청취하고 선물하는 것은</div>
-            <div className="info">
-              <i className="like">156</i>
-              <i className="cmt">123</i>
-              <span className="time">3시간 전</span>
+        {noticeFixData.fixedFeedList.length !== 0 &&
+        noticeFixData.fixedFeedList.map((v, idx) => {
+          const detailPageParam = {history, action: 'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no}
+          return (
+            <div className="noticeList" key={idx}>
+              <div className="noticeBox">
+                <div className="badge">Notice</div>
+                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                <div className="info">
+                  <i className="like">{v.rcv_like_cnt}</i>
+                  <i className="cmt">{v.replyCnt}</i>
+                  <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
+                </div>
+                <button className="fixIcon">
+                  <img src={`${IMG_SERVER}/profile/bookmark-on.png`} />
+                </button>
+              </div>
             </div>
-            <button className="fixIcon">
-              <img src={`${IMG_SERVER}/profile/bookmark-on.png`} />
-            </button>
-          </div>
-        </div>
+          )
+        })}
+        {feedData.feedList.length !== 0 &&
+        feedData.feedList.map((v, idx) => {
+          return (
+            <div className="noticeList" key={idx}>
+              <div className="noticeBox">
+                <div className="badge">Notice</div>
+                <div className="text">{v.contents}</div>
+                <div className="info">
+                  <i className="like">{v.rcv_like_cnt}</i>
+                  <i className="cmt">{v.replyCnt}</i>
+                  <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
+                </div>
+                <button className="fixIcon">
+                  <img src={`${IMG_SERVER}/profile/bookmark-off.png`} />
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </section>
     </div>
   )

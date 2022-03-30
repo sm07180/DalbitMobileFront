@@ -1967,4 +1967,9 @@ export async function getGoodStartFanInfo(data: dataType): Promise<responseType>
   return await ajax(Method.GET, `/event/goodStart/fan/page`, data);
 }
 
+// 휴면 회원 인증
+export async function postSleepMemUpd(data): Promise<responseType> {
+  return ajax(Method.POST, '/sleep/member/update', data)
+}
+
 /********************************************/

@@ -23,6 +23,7 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
+import {postSleepMemUpd} from "../common/api";
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -783,6 +784,216 @@ export default class API {
       params: params
     })
   }
+
+
+  /**
+   * 설정 방송공지 조회
+   */
+  static  myPageBroadcastNoticeSel = async (params) => {
+    return await ajax({url: `/mypage/broad/sel`, method: 'GET', params});
+  }
+
+  /**
+   * 설정 방송공지 등록
+   */
+  static myPageBroadcastNoticeIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/add`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 수정
+   */
+  static myPageBroadcastNoticeUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/edit`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 삭제
+   */
+  static myPageBroadcastNoticeDel = async (params) => {
+    return await ajax({
+      url: `/mypage/broad/del`,
+      method: 'DELETE',
+      data: params
+    });
+  }
+
+  /**
+   * 프로필 피드 좋아요
+   */
+  static profileFeedLike = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/like`,
+      method: 'POST',
+      data: params
+    })
+  }
+
+  /**
+   * 프로필 피드 좋아요 취소
+   */
+  static profileFeedLikeCancel = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/cancel`,
+      method: 'POST',
+      data: params
+    })
+  }
+
+  /**
+   * 피드 등록
+   */
+  static myPageFeedIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/add`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 조회
+   */
+  static myPageFeedSel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 피드 수정
+   */
+  static myPageFeedUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ... params,
+      url: url || `/mypage/feed/edit`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 삭제
+   */
+  static myPageFeedDel = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed`,
+      method: method || 'DELETE',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 상세 조회
+   */
+  static myPageFeedDetailSel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/detail`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 피드 좋아요
+   */
+  static myPageFeedLike = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/like`,
+      method: 'POST',
+      params
+    })
+  }
+
+  /**
+   * 피드 좋아요 취소
+   */
+  static myPageFeedLikeCancel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/cancel`,
+      method: 'POST',
+      params
+    })
+  }
+
+  /**
+   * 피드 댓글 등록
+   */
+  static myPageFeedReplyAdd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/reply/add`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 댓글 수정
+   */
+  static myPageFeedReplyUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/reply/upd`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 댓글 삭제
+   */
+  static myPageFeedReplyDel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/reply`,
+      method: 'DELETE',
+      params
+    })
+  }
+
+  /**
+   * 피드 댓글 조회
+   */
+  static myPageFeedReplyList = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/reply/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 방송 공지 리스트(고정) 조회
+   */
+  static myPageNoticeFixList = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/fix/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
   /**
    * @brief 마이페이지 공지사항 등록
    * @method "POST""
@@ -3385,7 +3596,6 @@ export default class API {
 
   // 추억의 뽑기 이벤트 뽑기
   static putDrawSelect = async (data) => {
-    console.log(data)
     return await ajax({
       url: '/event/draw/select',
       method: 'POST',
@@ -3940,7 +4150,10 @@ export default class API {
     return ajax({url: '/broad/vote/getVoteSelAndDetailList', method: 'POST', reqBody: true, data: data})
   }
 
-
+  // 휴면 회원 인증
+  static postSleepMemUpd = async (data) => {
+    return ajax({url: '/sleep/member/update', method: 'POST', reqBody: true, data: data})
+  }
 
   // 달라져스 회차정보
   static getDallagersReqNo = async (obj) => {
@@ -3984,6 +4197,42 @@ export default class API {
   static getStarList = async (data) => {
     return await ajax({url: `/myStar/list`, method: 'post', reqBody: true, data: data})
   }
+
+  // 회원 제재
+  static adminDeclarationOperate = async (data) => {
+    return await ajax({url: `/admin/declaration/operate`, method: 'POST', reqBody: true, data: data})
+  }
+
+  // 회원 방폭
+  static adminBroadcastForceExit = async (data) => {
+    return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
+  }
+
+  // 와썹맨 dj 리스트
+  static getWhatsUpDjList = async (data) => {
+    return ajax({url: '/event/whatsUp/getDjList', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 dj 회원정보
+  static getWhatsUpDjSel = async (data) => {
+    return ajax({url: '/event/whatsUp/getDjSel', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 신입회원 리스트
+  static getWhatsUpNewMemberList = async (data) => {
+    return ajax({url: '/event/whatsUp/getNewMemberList', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 신입회원  회원정보
+  static getWhatsUpNewMemberSel = async (data) => {
+    return ajax({url: '/event/whatsUp/getNewMemberSel', method: 'POST', reqBody: true, data: data})
+  }
+  // 와썹맨 회차정보
+  static pEvtWassupManNoSel = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManNoSel', method: 'POST', reqBody: true})
+  }
+  // 와썹맨 회차리스트
+  static pEvtWassupManNoList = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
+  }
+
 
 }
 

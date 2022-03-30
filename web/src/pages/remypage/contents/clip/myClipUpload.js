@@ -39,7 +39,7 @@ const MyClipUpload = (props) => {
         records: 100
       }
 
-      sessionStorage.setItem(
+      localStorage.setItem(
         "clipPlayListInfo",
         JSON.stringify(playListInfoData)
       );

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef, useReducer} from 'react'
+import React, {useEffect, useState, useContext, useRef, useReducer, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -8,13 +8,17 @@ import moment from "moment";
 import './notice.scss'
 import TabBtn from "components/ui/tabBtn/TabBtn";
 import Header from "components/ui/header/Header";
+import {useSelector} from "react-redux";
 
-const Post = () => {
+const Post = (props) => {
+  const {fetchMypageNewCntData} = props;
   const context = useContext(Context);
   const history = useHistory();
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
   const [postPageInfo, setPostPageInfo] = useState({noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
+
 
   //공지사항 신규 알림 안보이게 하기
   let mypageNewStg = localStorage.getItem("mypageNew")
@@ -88,8 +92,12 @@ const Post = () => {
   };
 
   useEffect(() => {
+    if(!(context.token.isLogin)) {history.push("/login")}
     fetchData();
-  }, [postPageInfo]);
+    if(isDesktop) {
+      fetchMypageNewCntData(context.profile.memNo);
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", scrollEvt);
@@ -97,10 +105,6 @@ const Post = () => {
       window.removeEventListener("scroll", scrollEvt);
     }
   }, [postListInfo]);
-
-  useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
-  }, []);
 
   return (
     <div id="notice">

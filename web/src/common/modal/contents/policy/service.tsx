@@ -9,10 +9,9 @@ export default (props) => {
 
   return (
     <div className="fanlist-modal" onClick={(e) => e.stopPropagation()}>
-      <button className="closeBtn" onClick={() => history.goBack()}></button>
-      <DalbitScroll width={500} height={750} displayClassName="fanListWrapper">
-        <div className="termsWrap service">
-          <h2>이용약관</h2>
+      <div className="termsWrap service">
+        <h2>이용약관<button className="closeBtn" onClick={() => history.goBack()}>&times;</button></h2>
+        <div className="termsScroll">
           <h3>제 1 조 (목적)</h3>
           <p>
             본 약관은 주식회사 여보야(이하 “회사”라고 함)가 제공하는 달라
@@ -826,7 +825,7 @@ export default (props) => {
             1. 본 약관은 2020. 06 29일로부터 시행됩니다
           </p>
         </div>
-      </DalbitScroll>
+      </div>
     </div>
   );
 };

@@ -24,7 +24,6 @@ const Round_3 = (props) => {
   // 
   const [rankInfo, setRankInfo] = useState([])
   const [popSpecial, setPopSpecial] = useState(false)
-  const [popRankSlide, setPopRankSlide] = useState(false)
 
   /* 이벤트 랭킹 정보 */
   const fetchRankInfo = () => {
@@ -67,24 +66,21 @@ const Round_3 = (props) => {
             <button className="question" onClick={onPopSpecial}></button>
         }
       </section>
-      {nowTime > lodingTime ?
-        <RoundList 
-          myRankInfo={myRankInfo} 
-          rankInfo={rankInfo}  
-          lodingTime={lodingTime} 
-          moreRank={moreRank}
-          eventFixDate={eventFixDate}
-        />
-        :
-        <>
-          <section className="listWrap">
-            <div className="specialRound">
-              <img src={`${IMG_SERVER}/event/rebranding/specialRound_roulette.png`} alt="" />
-            </div>
-          </section>
-          <img src={`${IMG_SERVER}/event/rebranding/giveaway_specialRound2.png`} alt="" className='fullImg'/>
-        </>
-      }
+      <RoundList
+        myRankInfo={myRankInfo}
+        rankInfo={rankInfo}
+        lodingTime={lodingTime}
+        moreRank={moreRank}
+        eventFixDate={eventFixDate}
+      />
+      <>
+        <section className="listWrap">
+          <div className="specialRound">
+            <img src={`${IMG_SERVER}/event/rebranding/specialRound_roulette.png`} alt="" />
+          </div>
+        </section>
+        <img src={`${IMG_SERVER}/event/rebranding/giveaway_specialRound2.png`} alt="" className='fullImg'/>
+      </>
       {popSpecial && 
         <LayerPopup setPopup={setPopSpecial} close={false}>
           <section className="specialRound">

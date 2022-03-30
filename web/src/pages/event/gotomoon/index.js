@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header/Header'
 
 import TopInfo from "./content/topInfo";
 import GotoMoonRanking from "./content/ranking";
@@ -34,7 +34,7 @@ export default function Gotomoon() {
   const gotomoonEventDate = async () => {
     const { data, message } = await Api.getMoonLandInfoData();
     if (message === "SUCCESS") {
-      const {moon_no, start_date, end_date, ins_date} = data[data.length - 1];
+      const {moon_no, start_date, end_date, ins_date} = data?.list[data?.list?.length - 1];
       setMoonNumber(parseInt(moon_no));
       setStartDate(start_date);
       setEndDate(end_date);
@@ -65,10 +65,10 @@ export default function Gotomoon() {
   
   return (
     <div id="goToMoon">
-      <Header title="이벤트" />
+      <Header title="이벤트" type="back"/>
       <div className="page">
-        <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoom-visual.png" className="img_full" alt="달라에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
-        <div className="pageContent" ref={tabWrapRef} style={{ paddingTop: tabFixed ? "50px" : "" }}>
+        <img src="https://image.dalbitlive.com/event/gotomoon/event_7781-top.png" className="img_full" alt="달라에 코인 등장! 코인 모아서 달나라 갈끄니까!"/>
+        <div className="pageContent" ref={tabWrapRef}>
           <div className={`tabWrap ${tabFixed === true ? "fixed" : ""}`} ref={tabBtnRef}>
             <button className="tabMenu" onClick={() =>globalCtx.action.updateGotomoonTab('info')}>
               <img src="https://image.dalbitlive.com/event/gotomoon/event_gotomoonTitle-info.png" className="titleImg" alt="이벤트 설명"/>

@@ -7,6 +7,7 @@ export interface CommonState {
   isLoading: boolean;
   isDesktop: boolean;
   isRefresh: boolean;
+  isWebView: string;
 }
 
 export type Gender = "" | "m" | "f";
@@ -73,6 +74,8 @@ export interface ICommonPopupState {
   likePopup: boolean;
   blockReportPopup: boolean;
   presentPopup: boolean;
+  questionMarkPopup: boolean;
+  historyPopup: boolean;
 
   // 달라져스 이벤트
   morePopup: boolean;
