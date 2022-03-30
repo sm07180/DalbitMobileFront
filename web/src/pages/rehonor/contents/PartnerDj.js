@@ -80,6 +80,46 @@ const PartnerDj = (props) => {
   const golink = (path) => {
     history.push(path);
   }
+
+  /* 팬 등록 */
+  const addFan = (memNo, memNick) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        fanCallback(memNo);
+        context.action.toast({
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    })
+  }
+
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick) => {
+    context.action.confirm({
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            fanCallback(memNo);
+            context.action.toast({ msg: res.message })
+          } else if (res.result === 'fail') {
+            context.action.alert({ msg: res.message })
+          }
+        });
+      }
+    })
+  }
+
+  const fanCallback = (memNo) => {
+    let editFan = listData.list.map((v, i) => {
+      return v.mem_no === memNo ? v.fanYn === "y" ? {...v,fanYn: "n" } : {...v, fanYn: "y"} : {...v};
+    })
+    setListData({...listData, list: editFan});
+  }
   
   return (
     <>
@@ -124,8 +164,14 @@ const PartnerDj = (props) => {
                           </span>
                           <span className='liveText'>LIVE</span>
                         </div>
+                        : context.token.memNo !== list.mem_no ?
+                        <span className={`fanButton ${list.fanYn=== "y" ? "active" : ""}`} onClick={(e) => {
+                          e.stopPropagation();
+                          list.fanYn === "y" ? deleteFan(list.mem_no, list.mem_nick) : addFan(list.mem_no, list.mem_nick);
+                        }}>{list.fanYn=== "y" ? "팬" : "+ 팬등록"}</span>
                         :
-                        <span className={`fanButton ${list.mem_sex === "f" ? "active" : ""}`}>{list.mem_sex === "f" ? "팬" : "+ 팬등록"}</span>
+                        <>
+                        </>
                     }
                   </div>
                 </div>
