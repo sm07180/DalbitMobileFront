@@ -1187,7 +1187,9 @@ const RoomBadgeWrap = styled.div`
 
   .fan-badge img {
     width: auto;
-    height: 20px;
+    margin-left: -4px;
+    height: 22px;
+    margin-right: 2px;
   }
   .fan-badge span {
     display: inline-block;
