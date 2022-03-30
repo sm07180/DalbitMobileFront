@@ -40,8 +40,14 @@ const index = ()=>{
 
   }
 
+  const test = ()=>{
+    Api.getStoreIndexData({}).then(res=>{
+      console.log(res)
+    })
+  }
   useEffect(() => {
     getStoreInfo();
+    test();
   }, []);
 
   return (
