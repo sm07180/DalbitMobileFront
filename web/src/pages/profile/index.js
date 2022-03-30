@@ -375,6 +375,7 @@ const ProfilePage = () => {
     }
   };
 
+  /* 피드 좋아요 */
   const fetchFeedHandleLike = async (feedNo, mMemNo, like) => {
     const params = {
       feedNo: feedNo,

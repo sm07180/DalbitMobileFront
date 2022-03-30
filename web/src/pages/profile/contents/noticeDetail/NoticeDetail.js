@@ -35,11 +35,12 @@ const NoticeDetail = (props) => {
       <section className='detailWrap'>
         {noticeFixData.fixedFeedList.length !== 0 &&
         noticeFixData.fixedFeedList.map((v, idx) => {
+          const detailPageParam = {history, action: 'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no}
           return (
             <div className="noticeList" key={idx}>
               <div className="noticeBox">
                 <div className="badge">Notice</div>
-                <div className="text">{v.contents}</div>
+                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
                 <div className="info">
                   <i className="like">{v.rcv_like_cnt}</i>
                   <i className="cmt">{v.replyCnt}</i>
