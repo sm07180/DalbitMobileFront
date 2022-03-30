@@ -38,7 +38,7 @@ const StorePage = () => {
       if (response.result === 'success' && _.hasIn(response, 'data')) {
         setStoreInfo({
           myDal: response.data.dalCnt,
-          dalPrice: response.data.list
+          dalPrice: response.data.dalPriceList
         })
       } else {
         context.action.alert({

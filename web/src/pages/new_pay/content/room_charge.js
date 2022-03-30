@@ -59,7 +59,7 @@ export default (props) => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setChargeList(res.data.list.slice(0, 9))
+      setChargeList(res.data.dalPriceList.slice(0, 9))
       setMyDal(Utility.addComma(res.data.dalCnt))
     } else {
       context.action.alert({
@@ -179,7 +179,7 @@ export default (props) => {
           callback: () => {
             if(gganbuData) {
               const data = gganbuData.data;
-            
+
               if (data.s_return === 1) {
                 setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
                 setRewardPop(true);

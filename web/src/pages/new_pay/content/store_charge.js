@@ -55,7 +55,7 @@ export default (props) => {
   async function getStoreList() {
     const res = await Api.store_list({})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.list)
+      setList(res.data.dalPriceList)
       setListState(1)
       setMydal(res.data.dalCnt)
     } else {

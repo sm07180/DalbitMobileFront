@@ -24,7 +24,7 @@ const index = ()=>{
       setStoreInfo({
         ...storeInfo,
         myDal: response.data.dalCnt,
-        dalPriceList: response.data.list,
+        dalPriceList: response.data.dalPriceList,
         defaultNum: response.data.defaultNum
       })
     });
