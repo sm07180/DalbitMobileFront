@@ -82,7 +82,8 @@ const RankDetailPage = (props) => {
       }      
     }
 
-    childNodes.style.left = `calc((` + 100 / categoryListLength / 2 +  `% - 12.5px) + ` + (100 / categoryListLength * activeIndex) + `%)`;
+    childNodes.style.left = `calc((` + 100/categoryListLength/2 +  `% - 12.5px) + ` + (100/categoryListLength*activeIndex) + `%)`;
+    categoryTab.style.backgroundPositionX = 25 * activeIndex + "%";
 
   }, [rankingListType])
 
