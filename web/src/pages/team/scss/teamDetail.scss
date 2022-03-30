@@ -1,0 +1,25 @@
+@import "components/ui/_mixin.scss";
+
+#teamDetail {
+  @include flex($fd: column);
+  min-height:100vh;
+  .listRow {
+    @include flex(center);
+    .teamSymbol {
+      @include teamSymbol;
+      margin-right:16px;
+    }
+    .listContent {
+      @include flex($fd: column);
+      .teamName {
+        @include font(20px,$SemiBold,black);
+      }
+    }
+  }
+}
+
+.pcType {
+  #teamDetail {
+    min-height:calc(100vh - #{$GNB-HEIGHT});
+  }
+}

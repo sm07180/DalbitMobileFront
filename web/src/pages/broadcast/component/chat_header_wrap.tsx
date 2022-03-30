@@ -257,7 +257,7 @@ export default function ChatHeaderWrap(prop: any) {
                         <div
                           className="fan-holder"
                           style={{
-                            backgroundImage: `url(${fan.badgeFrame.frameAni})`,
+                            backgroundImage: `url("https://image.dalbitlive.com/event/dallagers/frame/dallagers_1st_small-frame_02.webp")`/*`url(${fan.badgeFrame.frameAni})`*/,
                           }}
                         ></div>
                       </>

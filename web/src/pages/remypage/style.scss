@@ -200,6 +200,21 @@
             }
           }
         }
+        .teamInfo {
+          @include flex(center);
+          margin-left:auto;
+          @include font(13px,$Medium,#9D9D9D);
+          i {
+            display:inline-block;
+            width:21px;height:21px;
+            line-height:21px;
+            margin-left:6px;
+            margin-right:8px;
+            background-color:#F1F1F1;
+            border-radius:6px;
+            border:1px dashed #9D9D9D;
+          }
+        }
         .rightArrow {
           display:inline-block;
           content:'';

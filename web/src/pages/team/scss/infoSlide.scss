@@ -1,0 +1,41 @@
+@import "components/ui/_mixin.scss";
+
+.swiper-container {
+  width:100%;
+  margin-top:24px;
+  .infoSlide {
+    .slideTitle {
+      @include flex($fd:column);
+      height:100px;
+      padding:0 16px;
+      .title {
+        @include font(24px,$SemiBold,#202020);
+      }
+      .subTitle {
+        line-height:20px;
+        margin-top:8px;
+        @include font(15px,$Regular,#202020);
+      }
+    }
+    .imgItem {
+      img {
+        width:100%;
+      }
+    }
+  }
+  .swiper-pagination {
+    @include flex(center,flex-end);
+    height:20px;
+    padding:0 16px;
+  }
+  .swiper-pagination-bullets {
+    top:68px;
+    bottom:auto;
+    .swiper-pagination-bullet {
+      margin:0 2.5px;
+    }
+    .swiper-pagination-bullet-active {
+      background:$MAINCOLOR;
+    }
+  }
+}

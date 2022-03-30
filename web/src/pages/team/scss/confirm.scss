@@ -1,0 +1,35 @@
+@import "components/ui/_mixin.scss";
+
+#layerPop {
+  .popLayer {
+    .popContainer {
+      text-align:center;
+      .popOverTopImg {
+        @include position-horizon;
+        top:0;
+        height:0;
+        .teamSymbol {
+          @include teamSymbol;
+          transform:translateY(-50%);
+        }
+      }
+      h2 {
+        width:100%;
+        padding:40px 0 24px;
+        @include font(18px,$SemiBold,$MAINCOLOR);
+      }
+      .text1 {
+        line-height:48px;
+        @include font(16px,$SemiBold,#202020);
+      }
+      .text2 {
+        line-height:20px;
+        @include font(14px,$Regular,#666);
+      }
+      .buttonGroup {
+        @include btnGroupStyle;
+        width:100%;
+      }
+    }
+  }
+}

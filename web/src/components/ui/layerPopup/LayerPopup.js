@@ -3,7 +3,7 @@ import React, { useEffect, useState} from 'react'
 import './layerPopup.scss'
 
 const LayerPop = (props) => {
-  const {setPopup, title, children, cookie, close } = props
+  const {setPopup, title, children, cookie, close} = props
 
   const dontShowAgain = (cookieName) => {
     setPopupCookie(cookieName, 'y')

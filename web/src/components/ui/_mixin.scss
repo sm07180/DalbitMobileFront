@@ -431,6 +431,19 @@ $ExtraBold: 800;
   }
 }
 
+@mixin teamSymbol {
+  position:relative;
+  width:80px;
+  height:80px;
+  border-radius:16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.16);
+  overflow:hidden;
+  img {
+    @include position-center;
+    width:100%;
+  }
+}
+
 @mixin navigationStyle {
   #navigation {
     height:50px;

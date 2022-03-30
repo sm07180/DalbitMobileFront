@@ -12,6 +12,7 @@ import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
+import Team from "pages/team";
 
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
@@ -25,6 +26,7 @@ import {setSlidePopupOpen} from "redux/actions/common";
 
 const myMenuItem = [
   {menuNm: '서비스 설정', path:'setting', isNew: false},
+  {menuNm: '팀', path:'team', isNew: false},
   {menuNm: '공지사항', path:'notice', isNew: true},
   {menuNm: '고객센터', path:'customer', isNew: false},
 ]
@@ -117,9 +119,9 @@ const Remypage = () => {
 
   useEffect(() => {
     if(alarmData.notice > 0){
-      myMenuItem[1].isNew = true;
+      myMenuItem[2].isNew = true;
     } else {      
-      myMenuItem[1].isNew = false;
+      myMenuItem[2].isNew = false;
     }
   }, [alarmData.notice]);
 
@@ -135,6 +137,8 @@ const Remypage = () => {
       return(<Notice />)
     case 'customer' :
       return(<Customer />)
+    case 'team' :
+      return(<Team />)
     default :
       return(
         <>

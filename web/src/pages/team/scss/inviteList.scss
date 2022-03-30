@@ -1,0 +1,79 @@
+@import "components/ui/_mixin.scss";
+
+.titleWrap {
+  margin-top:24px;
+  padding:0 16px;
+  h2 {
+    width:100%;
+    line-height:24px;
+    @include font(18px,$SemiBold,#202020);
+  }
+  h3 {
+    width:100%;
+    line-height:15px;
+    @include font(12px,$Regular,#666);
+  }
+}
+.listWrap {
+  padding:16px 13px 16px 16px;
+  .listRow {
+    margin-bottom:16px;
+    .photo {
+      width:60px;
+      height:60px;
+      margin-right:8px;
+      cursor:pointer;
+    }
+    .listContent {
+      @include flex($fd:column);
+      min-width:0;
+      .text {
+        @include font(14px,$Medium,#303030);
+        @include fontCut;
+      }
+      .time {
+        @include font(12px,$Regular,#999);
+        @include fontCut;
+      }
+      .listItem {
+        i {
+          margin-right:6px;
+          padding-left:16px;
+          font-style:normal;
+          @include font(12px,$Regular,#999);
+        }
+        .infoRank {
+          background:url("#{$IMGSERVER}/team/ico_rank.png") left center/16px no-repeat;
+        }
+        .infoPerson {
+          background:url("#{$IMGSERVER}/team/ico_person.png") left center/16px no-repeat;
+        }
+      }
+    }
+    .listBack {
+      flex:none;
+      margin-left:auto;
+      padding-left:8px;
+      .buttonGroup {
+        @include flex(center);
+        button {
+          width:50px;
+          line-height:28px;
+          border-radius:100px;
+          @include font(12px,$Medium,#303030);
+          + button {
+            margin-left:4px;
+          }
+          &.cancel {
+            @include border(#E3E3E3,100px);
+          }
+          &.accept {
+            background-color:#202020;
+            @include border(#202020,100px);
+            color:white;
+          }
+        }
+      }
+    }
+  }
+}
