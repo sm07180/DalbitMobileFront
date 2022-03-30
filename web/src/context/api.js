@@ -1207,6 +1207,9 @@ export default class API {
     return await ajax({url: '/profile/delete/img', method: 'POST', data})
   }
 
+  static profileImageUpdate = async (data) => {
+    return await ajax({url: '/profile/update/img', reqBody:true, method: 'POST', data})
+  }
   /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"

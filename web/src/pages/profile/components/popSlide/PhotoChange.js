@@ -1,22 +1,14 @@
-import React, {useState, useContext} from 'react'
+import React, {useState} from 'react'
 import { ReactSortable } from "react-sortablejs";
-import {IMG_SERVER} from 'context/config'
 
 // global components
 import SubmitBtn from '../../../../components/ui/submitBtn/SubmitBtn';
 // components
 
 import './style.scss'
-import {Context} from "context";
-import {useHistory} from "react-router-dom";
 
 const PhotoChange = (props) => {
-  const {list} = props
-  const history = useHistory();
-  const context = useContext(Context);
-
-  console.log(list);
-
+  const {list, confirm} = props;
   const [state, setState] = useState(list);
 
   return (
@@ -36,9 +28,13 @@ const PhotoChange = (props) => {
           )
         })}
       </ReactSortable>
-      <SubmitBtn text="확인" />
+      <SubmitBtn text="확인" onClick={() => confirm(state)}/>
     </section>
   )
 }
+
+PhotoChange.defaultProps = {
+  confirm: () => {},
+};
 
 export default PhotoChange
