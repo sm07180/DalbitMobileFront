@@ -47,11 +47,11 @@ const TopRanker = (props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        // if(listenRoomNo){
-        //   RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
-        // } else {
+        if(listenRoomNo){
+          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
+        } else {
           RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
-        // }
+        }
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
