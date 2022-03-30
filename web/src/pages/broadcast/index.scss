@@ -308,24 +308,24 @@
               }
 
               .live-rank-profile {
-                width: 36px;
+                width: 38px;
                 height: 60px;
                 position: relative;
 
                 .profile-img {
                   margin-top: 14px;
                   margin-left: 2px;
-                  width: 32px;
-                  height: 32px;
+                  width: 34px;
+                  height: 34px;
                 }
 
                 .live-rank-frame {
                   position: absolute;
                   left: 0;
                   top: 0;
-                  width: 36px;
+                  width: 38px;
                   height: 60px;
-                  background-size: 36px 60px;
+                  background-size: 38px 60px;
 
                   &.fan::after {
                     width: 12px;
