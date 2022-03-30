@@ -55,6 +55,7 @@
       padding:60px 0 16px;
       border-bottom:1px solid #DEDEDE;
       .title {
+        @include flex;
         line-height:20px;
         margin-bottom:8px;
         padding:0 16px;
@@ -62,6 +63,10 @@
         @include font(14px,400,black);
         small {
           @include font(12px,400,#666);
+        }
+        button {
+          margin-left:auto;
+          @include font(12px,$Regular,#303030);
         }
       }
       .swiper-wrapper {
