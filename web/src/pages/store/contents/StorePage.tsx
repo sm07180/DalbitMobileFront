@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import '../style.scss'
 import Header from "../../../components/ui/header/Header";
 import Utility from "../../../components/lib/utility";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {
   DalPriceType,
   ModeTabType,
@@ -10,19 +10,21 @@ import {
   OsType,
   StoreTabInfoType
 } from "../../../redux/types/pay/storeType";
-import {Hybrid} from "../../../context/hybrid";
+import {Hybrid, isHybrid} from "../../../context/hybrid";
 import {OS_TYPE} from "../../../context/config";
 import Tabmenu from "../../broadcast/content/right_content/component/tabmenu";
 import {useDispatch, useSelector} from "react-redux";
 import {setStoreTabInfo} from "../../../redux/actions/payStore";
+import qs from 'query-string';
 
 const StorePage = ()=>{
   // console.log(`@@ storeInfo ->`, storeInfo);
   // console.log(`@@ storeTabInfo ->`, storeTabInfo);
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
   const payStoreRdx = useSelector(({payStore})=> payStore);
-
+  const {webview} = qs.parse(location.search)
   const movePayment = (item:DalPriceType) => {
     if(payStoreRdx.storeInfo.mode === ModeType.none){
       console.log(`storeInfo.mode none`)
@@ -34,14 +36,15 @@ const StorePage = ()=>{
     }
 
     if(tabInfo.modeTab === ModeTabType.inApp){
+      const info = {
+        itemCode: item.itemNo,
+        itemKey: item.itemNo
+      };
       if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.Android){
-        Hybrid('doBilling', {
-          itemCode: item.itemNo,
-          itemKey: item.itemNo
-        });
+        Hybrid('doBilling', info);
       }
       if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.IOS){
-        Hybrid('openInApp', '');
+        Hybrid('openChargeWithItemCode', info);
       }
       return;
     }else{
@@ -70,7 +73,11 @@ const StorePage = ()=>{
   return (
     <div id="storePage">
       <Header title={'스토어'} position="sticky" type="back" backEvent={()=>{
-        history.push("/")
+        if (isHybrid() && webview && webview === 'new') {
+          Hybrid('CloseLayerPopup', undefined);
+        }else{
+          history.goBack();
+        }
       }}/>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
