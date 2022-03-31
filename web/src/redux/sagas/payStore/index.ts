@@ -2,6 +2,7 @@ import {call, put, select, takeLatest} from "redux-saga/effects";
 import {GET_INDEX_DATA, GET_PRICE_LIST, SET_STORE_INFO, SET_STORE_TAB_INFO} from "../../actions/payStore";
 import {getDalPriceList, getStoreIndexData} from "../../../common/api";
 import {ModeTabType, ModeType, PayStoreStateType} from "../../types/pay/storeType";
+import {Action} from "history";
 
 function* getIndexData(param) {
 	try {
@@ -20,7 +21,9 @@ function* getIndexData(param) {
 
 			const before = payStore.storeTabInfo.find(f=>f.selected);
 
-			m.selected = before ? m.modeTab === before.modeTab :
+			const payload:Action = param.payload;
+
+			m.selected = payload === 'POP' && before ? m.modeTab === before.modeTab :
 				res.data.mode === ModeType.all ?
 					m.modeTab === ModeTabType.inApp : m.modeTab === res.data.mode;
 

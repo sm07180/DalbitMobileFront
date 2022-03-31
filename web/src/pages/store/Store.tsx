@@ -1,20 +1,22 @@
 import React, {useEffect} from "react";
-import {ModeTabType, ModeType, OsType,} from "../../redux/types/pay/storeType";
+import {ModeTabType, ModeType, OsType} from "../../redux/types/pay/storeType";
 import StorePage from "./contents/StorePage";
 import {useDispatch, useSelector} from "react-redux";
 import {getIndexData, getPriceList} from "../../redux/actions/payStore";
+import {useHistory} from "react-router-dom";
 
 const index = ()=>{
   const dispatch = useDispatch();
+  const history = useHistory();
   const memberRdx = useSelector(({member}) => member);
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
   useEffect(() => {
     if(!memberRdx.memNo){
-      history.back();
+      history.goBack();
       return;
     }
-    dispatch(getIndexData());
+    dispatch(getIndexData(history.action));
   }, []);
 
   useEffect(() => {

@@ -35,9 +35,9 @@ const StorePage = ()=>{
 
     if(tabInfo.modeTab === ModeTabType.inApp){
       if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.Android){
-        Hybrid('reqItemBuy', {
-          itemCode: '',
-          itemKey: ''
+        Hybrid('doBilling', {
+          itemCode: item.itemNo,
+          itemKey: item.itemNo
         });
       }
       if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.IOS){
