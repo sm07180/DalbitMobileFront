@@ -103,7 +103,9 @@ const StorePage = ({storeInfo, storeTabInfo, setStoreTabInfo}: StorePagePropsTyp
                    movePayment(item);
                    // onSelectDal(index, item.itemNm, item.givenDal, item.itemPrice, item.itemNo)
                  }} >
-              <div className="itemIcon"/>
+              <div className="icon">
+                <img src={`${item.img}`} alt={`이미지`} />
+              </div>
               <div className="dal">{Utility.addComma(item.givenDal)}</div>
               {item.salePrice === 1100000 && <div className='bonus'>{`+${Utility.addComma(500)}`}</div>}
               <div className="price">{`￦${Utility.addComma(item.salePrice)}`}</div>
