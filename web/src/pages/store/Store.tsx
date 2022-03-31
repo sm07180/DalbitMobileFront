@@ -1,61 +1,85 @@
 import React, {useContext, useEffect, useState} from "react";
-import Api from "../../context/api";
-import _ from "lodash";
 import {Context} from "context";
-import {OsType, PayInfoType, StoreInfoType} from "../../redux/types/pay/storeType";
+import {
+  ModeTabType,
+  ModeType,
+  OsType,
+  PAYMENT_TAB,
+  StoreInfoType,
+  StorePagePropsType,
+  StoreTabInfoType
+} from "../../redux/types/pay/storeType";
 import StorePage from "./contents/StorePage";
+import {getDalPriceList, getStoreIndexData} from "../../common/api";
 
 const index = ()=>{
   const context = useContext(Context);
-  const [select, setSelect] = useState(3);
   const [storeInfo, setStoreInfo] = useState<StoreInfoType>({
-    myDal: 0, defaultNum: 0, dalPriceList: [], os: OsType.Android, mode:'all', modeTab:'other'
-  })
-  const [payInfo, setPayInfo] = useState<PayInfoType>({
-    itemNm: "달 300", dal: "300", price: "33000", itemNo: "A1555"
-  })
-  // TODO API 하나로 합쳐
-  const getStoreInfo = () => {
-    Api.store_list().then((response) => {
-      if (response.result !== 'success' || !_.hasIn(response, 'data')) {
-        context.action.alert({msg: response.message})
-        return;
-      }
-      setStoreInfo({
-        ...storeInfo,
-        myDal: response.data.dalCnt,
-        dalPriceList: response.data.dalPriceList,
-        defaultNum: response.data.defaultNum
-      })
-    });
+    dalCnt: 0, defaultNum: 0, dalPriceList: [], mode:ModeType.all, modeTab:ModeTabType.none,
+    deviceInfo:{}
+  });
+  const [storeTabInfo, setStoreTabInfo] = useState<Array<StoreTabInfoType>>(PAYMENT_TAB);
 
-    /**
-     * 외부결제 활성화 체크, 이외 조건 체크 결과를 받아서 처리
-      setStoreInfo({
-        ...storeInfo,
-        os: res.data.os,
-        mode: res.data.mode
-      })
-     */
+  const getIndexData = async ()=>{
+    const res = await getStoreIndexData();
+    setStoreInfo({
+      ...storeInfo,
+      dalCnt: res.data.dalCnt,
+      defaultNum: res.data.defaultNum,
+      deviceInfo: res.data.deviceInfo,
+      mode: res.data.mode,
+      modeTab: res.data.platform,
+    });
+    setStoreTabInfo(storeTabInfo.map((m,i)=>{
+      m.active = res.data.mode === ModeType.all ? true : m.modeTab === res.data.platform;
+
+      m.selected = res.data.mode === ModeType.all ?
+        m.modeTab === ModeTabType.inApp
+        : m.modeTab === res.data.mode;
+
+      return m;
+    }));
 
   }
-
-  const test = ()=>{
-    Api.getStoreIndexData({}).then(res=>{
-      console.log(res)
-    })
+  const getPriceList = async (platform:ModeTabType)=>{
+    setStoreInfo({
+      ...storeInfo,
+      dalPriceList: [],
+    });
+    const res = await getDalPriceList({platform});
+    setStoreInfo({
+      ...storeInfo,
+      dalPriceList: res.data.dalPriceList,
+    });
   }
   useEffect(() => {
-    getStoreInfo();
-    test();
+    if(!context.token.isLogin){
+      history.back();
+      return;
+    }
+    getIndexData();
   }, []);
+  useEffect(() => {
+    if(storeInfo.modeTab === ModeTabType.none){
+      return;
+    }
+    const platform = storeTabInfo.find(f=>f.selected);
+    if(!platform){
+      return
+    }
+    getPriceList(platform.modeTab);
+  }, [storeTabInfo]);
 
+  const storePageProps:StorePagePropsType = {
+    storeInfo : storeInfo,
+    storeTabInfo,
+    setStoreTabInfo
+  }
   return (
     <>
       {
-        storeInfo.os !== OsType.Unknown && storeInfo.mode !== 'none' &&
-        storeInfo.dalPriceList && storeInfo.dalPriceList.length > 0 &&
-        <StorePage storeInfo={storeInfo} select={select} setSelect={setSelect} payInfo={payInfo} setPayInfo={setPayInfo}/>
+        storeInfo.deviceInfo.os !== OsType.Unknown && storeInfo.mode !== ModeType.none &&
+        <StorePage {...storePageProps} />
       }
     </>
   )

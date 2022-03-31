@@ -4025,10 +4025,6 @@ export default class API {
     return ajax({url: '/getNationCode', method: 'POST', reqBody: true})
   }
 
-  static getStoreIndexData = async (data) => {
-    return ajax({url: '/store/getIndexData', method: 'POST', reqBody: true})
-  }
-
 }
 
 API.customHeader = null

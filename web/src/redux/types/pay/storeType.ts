@@ -4,13 +4,38 @@ export enum OsType {
   Desktop = 3,
   Unknown = 4,
 }
+export enum ModeTabType {
+  inApp = 'inApp',
+  other = 'other',
+  none = 'none',
+}
+export enum ModeType {
+  inApp = 'inApp',
+  other = 'other',
+  all = 'all',
+  none = 'none',
+}
+export type DeviceInfoType = {
+  adId?: string
+  appBuild?: string
+  appVersion?: string
+  deviceManufacturer?: string
+  deviceModel?: string
+  deviceToken?: string
+  deviceUuid?: string
+  ip?: string
+  isFirst?: string
+  isHybrid?: string
+  os?: OsType
+  sdkVersion?: string
+}
 export type StoreInfoType = {
-  myDal: number
+  dalCnt: number
   dalPriceList: Array<DalPriceType>
   defaultNum: number
-  os: OsType
-  modeTab: 'inApp' | 'other'
-  mode: 'inApp' | 'other' | 'all' | 'none'
+  deviceInfo: DeviceInfoType
+  modeTab: ModeTabType
+  mode: ModeType
 }
 export type PayInfoType = {
   itemNm: string
@@ -34,12 +59,16 @@ export type DalPriceType = {
 }
 export type StorePagePropsType = {
   storeInfo:StoreInfoType
-  select: number
-  payInfo: PayInfoType
-  setSelect: Function
-  setPayInfo: Function
+  storeTabInfo:Array<StoreTabInfoType>
+  setStoreTabInfo: Function
 }
 
+export type StoreTabInfoType = {
+  text: string
+  active: boolean
+  selected: boolean
+  hasTip: boolean
+} & Pick<StoreInfoType, 'modeTab'>
 
 export const PAYMENT_LIST = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
@@ -55,4 +84,8 @@ export const PAYMENT_LIST = [
   // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
   // {type: "스마트문상(게임문화상품권)", fetch: 'pay_gg'},
   // {type: "도서문화상품권", fetch: 'pay_gc'},
+]
+export const PAYMENT_TAB:Array<StoreTabInfoType> = [
+  {text:'인앱(스토어) 결제', hasTip:true, active:false, selected:false, modeTab:ModeTabType.inApp},
+  {text:'신용카드 / 기타 결제', hasTip:false, active:false, selected:false, modeTab:ModeTabType.other},
 ]

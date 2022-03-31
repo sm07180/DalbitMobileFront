@@ -277,9 +277,9 @@ export async function getStoreList(): Promise<responseType> {
 export async function getMyStar(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/profile/star/list/new", data);
 }
-/* 
+/*
 방송방 리스트 & sorting
-searchType //-1,0 or null:전체,1:추천,2:인기,3:신입 
+searchType //-1,0 or null:전체,1:추천,2:인기,3:신입
 */
 
 export async function broadcastList(data: {
@@ -1971,5 +1971,13 @@ export async function getGoodStartFanInfo(data: dataType): Promise<responseType>
 export async function postSleepMemUpd(data): Promise<responseType> {
   return ajax(Method.POST, '/sleep/member/update', data)
 }
+
+export async function getStoreIndexData(): Promise<responseType> {
+  return ajax(Method.POST, '/store/getIndexData')
+}
+export async function getDalPriceList(data): Promise<responseType> {
+  return ajax(Method.POST, '/store/getDalPriceList', data)
+}
+
 
 /********************************************/
