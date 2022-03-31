@@ -22,6 +22,15 @@
     width:100%;
   }
   @include purchaseList;
+  .storeDalList{
+    .icon{
+      width: 51px;
+      height: 51px;
+      img{
+        width: 100%;
+      }
+    }
+  }
   .bannerWrap {
     margin-bottom:20px;
     padding:0 16px;
