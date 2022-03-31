@@ -7,6 +7,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import ChartSwiper from './components/ChartSwiper'
@@ -357,7 +358,13 @@ const RankPage = () => {
             <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
           </div>
         </section>          
-      }
+      }      
+      <section className='bannerWrap'>
+        <BannerSlide/>
+      </section>
+      {/* <section className='rankingBottom' onClick={() => history.push('/honor')}>
+        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
+      </section> */}
       <section className='dailyRankList'>
         <div className="cntTitle">
           <h2>일간 FAN / CUPID</h2>
@@ -390,9 +397,6 @@ const RankPage = () => {
             </>
           }
         </div>
-      </section>
-      <section className='rankingBottom' onClick={() => history.push('/honor')}>
-        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
       </section>
       {commonPopup.commonPopup &&
       <PopSlide>

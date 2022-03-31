@@ -1,9 +1,7 @@
 import React, {useState,useEffect} from 'react'
 
 // global components
-import LevelItems from '../../../components/ui/levelItems/LevelItems'
-import SubmitBtn from '../../../components/ui/submitBtn/SubmitBtn'
-import PopSlide from "../../../components/ui/popSlide/PopSlide";
+import BadgeItems from "../../../components/ui/badgeItems/BadgeItems";
 import moment from "moment";
 import Utility from "components/lib/utility";
 
