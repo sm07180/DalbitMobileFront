@@ -18,6 +18,7 @@ import vote from './vote';
 import broadcast from './broadcast';
 import profileTab from './profile/tab';
 import noticeTabList from "./notice/tabList";
+import payStore from './payStore';
 
 const rootReducer = combineReducers({
   common
@@ -39,6 +40,7 @@ const rootReducer = combineReducers({
   , broadcast
   , profileTab
   , noticeTabList
+  , payStore
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

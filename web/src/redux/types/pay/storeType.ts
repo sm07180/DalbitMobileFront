@@ -1,3 +1,6 @@
+import {ActionType} from "typesafe-actions";
+import * as actions from "../../actions/payStore";
+
 export enum OsType {
   Android = 1,
   IOS = 2,
@@ -15,6 +18,7 @@ export enum ModeType {
   all = 'all',
   none = 'none',
 }
+export type PayStoreActions = ActionType<typeof actions>;
 export type DeviceInfoType = {
   adId?: string
   appBuild?: string
@@ -36,6 +40,10 @@ export type StoreInfoType = {
   deviceInfo: DeviceInfoType
   modeTab: ModeTabType
   mode: ModeType
+}
+export type PayStoreStateType = {
+  storeInfo: StoreInfoType
+  storeTabInfo: Array<StoreTabInfoType>
 }
 export type PayInfoType = {
   itemNm: string

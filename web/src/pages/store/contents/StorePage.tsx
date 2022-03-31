@@ -8,36 +8,39 @@ import {
   ModeTabType,
   ModeType,
   OsType,
-  StorePagePropsType,
   StoreTabInfoType
 } from "../../../redux/types/pay/storeType";
 import {Hybrid} from "../../../context/hybrid";
 import {OS_TYPE} from "../../../context/config";
 import Tabmenu from "../../broadcast/content/right_content/component/tabmenu";
+import {useDispatch, useSelector} from "react-redux";
+import {setStoreTabInfo} from "../../../redux/actions/payStore";
 
-const StorePage = ({storeInfo, storeTabInfo, setStoreTabInfo}: StorePagePropsType)=>{
+const StorePage = ()=>{
   // console.log(`@@ storeInfo ->`, storeInfo);
   // console.log(`@@ storeTabInfo ->`, storeTabInfo);
-  const history = useHistory()
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const movePayment = (item:DalPriceType) => {
-    if(storeInfo.mode === ModeType.none){
+    if(payStoreRdx.storeInfo.mode === ModeType.none){
       console.log(`storeInfo.mode none`)
       return;
     }
-    const tabInfo = storeTabInfo.find(f=>f.selected);
+    const tabInfo = payStoreRdx.storeTabInfo.find(f=>f.selected);
     if(!tabInfo){
       return;
     }
 
     if(tabInfo.modeTab === ModeTabType.inApp){
-      if(storeInfo.deviceInfo.os === OS_TYPE.Android){
+      if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.Android){
         Hybrid('reqItemBuy', {
           itemCode: '',
-          itemKey: '',
-          version: ''
+          itemKey: ''
         });
       }
-      if(storeInfo.deviceInfo.os === OS_TYPE.IOS){
+      if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.IOS){
         Hybrid('openInApp', '');
       }
       return;
@@ -51,22 +54,19 @@ const StorePage = ({storeInfo, storeTabInfo, setStoreTabInfo}: StorePagePropsTyp
   }
 
   const tabMenuPros = {
-    data: Array.from(storeTabInfo, a=>a.text),
-    tab: storeTabInfo.find(f=>f.selected)?.text,
+    data: Array.from(payStoreRdx.storeTabInfo, a=>a.text),
+    tab: payStoreRdx.storeTabInfo.find(f=>f.selected)?.text,
     setTab: (text)=>{
-      const copy:Array<StoreTabInfoType> = [...storeTabInfo].map(m=>{
+      const copy:Array<StoreTabInfoType> = [...payStoreRdx.storeTabInfo].map(m=>{
         m.selected = m.text === text;
         return m;
       });
-      setStoreTabInfo(copy);
+
+      dispatch(setStoreTabInfo(copy))
     }
   }
-  const nowTab = storeTabInfo.find(f=>f.selected);
-  // alert(JSON.stringify(storeTabInfo));
+  const nowTab = payStoreRdx.storeTabInfo.find(f=>f.selected);
 
-  useEffect(()=>{
-    // alert(JSON.stringify(storeTabInfo));
-  }, [])
   return (
     <div id="storePage">
       <Header title={'스토어'} position="sticky" type="back" backEvent={()=>{
@@ -74,10 +74,10 @@ const StorePage = ({storeInfo, storeTabInfo, setStoreTabInfo}: StorePagePropsTyp
       }}/>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
-        <span className="dal">{Utility.addComma(storeInfo.dalCnt)}</span>
+        <span className="dal">{Utility.addComma(payStoreRdx.storeInfo.dalCnt)}</span>
       </section>
       {
-        storeTabInfo.filter(f=>f.active).length === storeTabInfo.length &&
+        payStoreRdx.storeTabInfo.filter(f=>f.active).length === payStoreRdx.storeTabInfo.length &&
         <section className="storeTabWrap">
           <Tabmenu {...tabMenuPros} />
           {
@@ -86,7 +86,7 @@ const StorePage = ({storeInfo, storeTabInfo, setStoreTabInfo}: StorePagePropsTyp
               <div className="title">
                 <i/>결제 TIP
               </div>
-              <p>PC 또는 {storeInfo.deviceInfo.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
+              <p>PC 또는 {payStoreRdx.storeInfo.deviceInfo.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
               <p>
                 www.dallalive.com
               </p>
@@ -97,11 +97,10 @@ const StorePage = ({storeInfo, storeTabInfo, setStoreTabInfo}: StorePagePropsTyp
 
       <section className="storeDalList">
         {
-          storeInfo.dalPriceList && storeInfo.dalPriceList.map((item, index) =>
+          payStoreRdx.storeInfo.dalPriceList && payStoreRdx.storeInfo.dalPriceList.map((item, index) =>
             <div className={`item`} data-target-index={index} key={index}
                  onClick={()=>{
                    movePayment(item);
-                   // onSelectDal(index, item.itemNm, item.givenDal, item.itemPrice, item.itemNo)
                  }} >
               <div className="icon">
                 <img src={`${item.img}`} alt={`이미지`} />
