@@ -151,7 +151,9 @@ const PartnerDj = (props) => {
                       typeof list.room_no === "undefined" || list.room_no === null || list.room_no !== "" ?
                         <div className="badgeLive" onClick={(e) => {
                             e.stopPropagation();
-                            goLive(list.room_no, list.mem_no, list.mem_nick);
+                            if (context.token.memNo !== list.mem_no){
+                              goLive(list.room_no, list.mem_no, list.mem_nick);
+                            }
                           }}>
                           <span className='equalizer'>
                             <Lottie
