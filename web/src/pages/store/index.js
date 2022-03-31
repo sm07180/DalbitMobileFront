@@ -12,6 +12,7 @@ import './style.scss'
 import _ from "lodash";
 import {useSelector} from "react-redux";
 import {OS_TYPE} from "context/config";
+import {IMG_SERVER} from 'context/config'
 
 const storeTabMenu =['인앱(스토어) 결제', '신용카드 / 기타 결제']
 
@@ -106,7 +107,9 @@ const StorePage = () => {
           return (
             <div className={`item ${Number(select) === index && 'active'}`} data-target-index={index}
                  onClick={()=>onSelectDal(index, item.itemNm, item.givenDal, item.itemPrice, item.itemNo)} key={index}>
-              <div className="itemIcon"/>
+              <div className="icon">
+                <img src={`${IMG_SERVER}/store/dalla/icoDal_1.png`} alt="" />
+              </div>
               <div className="dal">{Utility.addComma(item.givenDal)}</div>
               {item.salePrice === 1100000 && <div className='bonus'>{`+${Utility.addComma(500)}`}</div>}
               <div className="price">{`￦${Utility.addComma(item.salePrice)}`}</div>
