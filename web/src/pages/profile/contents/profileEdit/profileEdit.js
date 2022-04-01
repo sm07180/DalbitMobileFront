@@ -54,8 +54,6 @@ const ProfileEdit = () => {
   const [profileInfo, setProfileInfo] = useState({
     birth: null, nickNm: null, gender: null, profImg: null, profMsg: null, memId: null, profImgList: []
   })
-  //대표 이미지
-  const [currentAvatar, setCurrentAvatar] = useState('')
 
   //성별 선택 여부 (true: 선택함, false: 성별선택안함)
   const [hasGender, setHasGender] = useState(false)
@@ -71,10 +69,9 @@ const ProfileEdit = () => {
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      //const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
+
       initProfileInfo.current = {nickNm, profImg, profMsg, gender};
       setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList});
-      setCurrentAvatar(profImg);
       setHasGender(gender !== 'n');
 
     }
@@ -124,7 +121,7 @@ const ProfileEdit = () => {
       nickNm : nickNm || initProfileInfo.current.nickNm,
       profMsg: profMsg,
       birth: birth || initProfileInfo.current.birth,
-      profImg: (_profileInfo? profImg.path : currentAvatar.path) || initProfileInfo.current.profImg.path,
+      profImg: profImg?.path || initProfileInfo.current.profImg.path,
     }
 
     const {result, data, message} = await Api.profile_edit({data: param});
@@ -213,7 +210,6 @@ const ProfileEdit = () => {
         if (profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
           profileEditConfirm({...profileInfo, profImg: data});
           setImage(null);
-          setCurrentAvatar(data);
         } else {  //기존 이미지가 1장 이상 있으면, 이미지 add Api만 호출, 프로필정보 갱신 API call
           //이미지 추가등록 API - profImgList에 추가
           addProfileImage(data.path);
@@ -368,6 +364,7 @@ const ProfileEdit = () => {
                   })}
                 </Swiper>
               </div>
+
             </section>
             <section className="editInfo">
               <InputItems title="닉네임">
