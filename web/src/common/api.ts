@@ -1978,6 +1978,13 @@ export async function getStoreIndexData(): Promise<responseType> {
 export async function getDalPriceList(data): Promise<responseType> {
   return ajax(Method.POST, '/store/getDalPriceList', data)
 }
+export async function getDalCnt(): Promise<responseType> {
+  return ajax(Method.POST, '/store/getDalCnt')
+}
+export async function payAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos", data);
+}
+
 
 
 /********************************************/

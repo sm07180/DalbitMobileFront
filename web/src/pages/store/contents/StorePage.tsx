@@ -16,6 +16,7 @@ import Tabmenu from "../../broadcast/content/right_content/component/tabmenu";
 import {useDispatch, useSelector} from "react-redux";
 import {setStoreTabInfo} from "../../../redux/actions/payStore";
 import qs from 'query-string';
+import moment from "moment";
 
 const StorePage = ()=>{
   // console.log(`@@ storeInfo ->`, storeInfo);
@@ -24,6 +25,7 @@ const StorePage = ()=>{
   const location = useLocation();
   const dispatch = useDispatch();
   const payStoreRdx = useSelector(({payStore})=> payStore);
+  const memberRdx = useSelector(({member})=> member);
   const {webview} = qs.parse(location.search)
   const movePayment = (item:DalPriceType) => {
     if(payStoreRdx.storeInfo.mode === ModeType.none){
@@ -38,7 +40,7 @@ const StorePage = ()=>{
     if(tabInfo.modeTab === ModeTabType.inApp){
       const info = {
         itemCode: item.itemNo,
-        itemKey: item.itemNo
+        itemKey: `${memberRdx.memNo}_${moment(moment.now()).format('YYYYMMDDHHmmss')}`
       };
       if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.Android){
         Hybrid('doBilling', info);

@@ -23,6 +23,8 @@ import {authReq} from "pages/self_auth";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
+import {payAOSInApp} from "common/api";
+import {getIndexData} from "redux/actions/payStore";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -798,7 +800,6 @@ export default () => {
         console.log(JSON.stringify(event.detail))
         context.action.updateIsMailboxOn(event.detail.isMailboxOn)
         break
-
       case 'native-footer': // native footer 이동
         const type = event.detail.type.toLowerCase();
         const prevPath = location.pathname.toLowerCase();
@@ -813,6 +814,45 @@ export default () => {
           history.push(pushUrl);
         }
         break;
+      // AOS 인앱 결제 결과
+      case 'native-purchase':{
+        try{
+          console.log(`@@native-purchase`,event)
+          // [event.detail]
+          // callSlct: "1"
+          // developerPayload: "IX27sTrd35tMBVecU33bYTEbBiBPhoVwEAFIzQFMSYI=\n"
+          // purchaseData: "{\"orderId\":\"GPA.3356-4769-3255-81458\",\"packageName\":\"kr.co.inforexseoul.radioproject\",\"productId\":\"pay_299000\",\"purchaseTime\":1648778628496,\"purchaseState\":0,\"purchaseToken\":\"ggonkamfkhfochdeelijopao.AO-J1OynhoNicsTWzcoJMABH2mDtpvDYU6kWWjwj46mum8TJ3T02ZEUrJJE7a4MvclVAAjYRt1BMErRd6kZ6ctT7sZTfSQa7o3FT80UqndexdPrVcy3gsaM\",\"obfuscatedAccountId\":\"11643153519105_20220401110347\",\"acknowledged\":false}"
+          // signature: "GfN2TaYxWgQgRzMBaDw7XpRgbIp3fiNkyGuvrpF4DqK0zKBx/RbUxv5fh+TkKZDQE/4gW2Dqmzx5bIXd5fLXo1813H7xIczUN5v5p6dC5me/iXGDlytH5RTZfhLt5vodvBWxz7pm+grlHN2l3ZW8GGBSWNVupWhddiZrrR3u0fFEtW2JBcE0b31vJiZ/7wtbtDlbEU9YGCs5VljpVWUys3O7BmajYW9EkNWjVXRBkd1oFbEXL5a+EaREZ8byg7bZRXKPhwVPj9+ipl/5KTuxcVHNYdUEFMBA88OD9SdcBI/IRI5IuLSp6uRRhimF63egn9jCZMkv86Ex3qekm2vU9Q=="
+          // console.log(payStoreRdx)
+          payAOSInApp({...event.detail}).then(({data})=>{
+            console.log(`@@native-purchase api result =>`, data)
+            const onPurchaseResultData = {
+              result:data.code,
+              signature:event.detail.signature,
+              originalJson:event.detail.purchaseData,
+            }
+            Hybrid('onPurchaseResult', onPurchaseResultData);
+          });
+        }catch(e){
+          console.error(`native-purchase e=>`, e);
+          Hybrid('onPurchaseResult', {msg:e});
+        }
+        break;
+      }
+      // AOS 인앱 소비 결과
+      case 'native-consume':{
+        try{
+          // Hybrid('onConsumeResult', onPurchaseResultData);
+          // window.location.reload()
+          dispatch(getIndexData(history.action));
+          // history.
+          // console.log(`@@native-consume`,event)
+        }catch(e){
+          console.error(`native-consume e=>`, e);
+          Hybrid('onConsumeResult', {type:'error', msg:e});
+        }
+        break;
+      }
       default:
         break
     }
@@ -1138,6 +1178,10 @@ export default () => {
     /* native footer */
     document.addEventListener('native-footer', update)
 
+    /* AOS-inApp */
+    document.addEventListener('native-purchase', update)
+    document.addEventListener('native-consume', update)
+
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -1178,6 +1222,9 @@ export default () => {
 
       /* native footer */
       document.removeEventListener('native-footer', update)
+
+      document.removeEventListener('native-purchase', update)
+      document.removeEventListener('native-consume', update)
     }
   }, [])
 
