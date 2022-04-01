@@ -180,7 +180,7 @@ const Remypage = () => {
             </div>
           </section>
           <section className='bannerWrap'>
-            <BannerSlide/>
+            <BannerSlide type={18}/>
           </section>            
           {isHybrid() &&
             <section className="versionInfo">
