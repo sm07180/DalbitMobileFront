@@ -110,7 +110,8 @@ const Exchange = (props) => {
           })
         }
         const {parentsAgreeYn, adultYn} = res.data
-        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
+        /* 법정대리인 동의 필요! */
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/exchangeLegalAuth')
         if (myBirth > baseYear) {
           return context.action.alert({
             msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
