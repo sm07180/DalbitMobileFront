@@ -101,6 +101,19 @@ export const profileClipDefaultState = {
   isLastPage: false,
 }
 
+export const profileFeedNewDefaultState = {
+  feedList: [],
+  paging: profilePagingDefault,
+  isLastPage: false
+}
+
+export const profileNoticeFixDefaultState = {
+  fixedFeedList: [],
+  fixCnt: 0,
+  paging: profilePagingDefault,
+  isLastPage: false
+}
+
 interface IFanRank {
   age: number;
   gender: Gender;
@@ -284,4 +297,17 @@ export interface IProfileTabState {
   tabName: string;
   isRefresh: boolean;
   isReset: boolean;
+}
+
+export interface IProfileFeedNewState {
+  feedList: Array<IFeedData>;
+  paging: IPaging;
+  isLastPage: boolean;
+}
+
+export interface IProfileNoticeFixState {
+  fixedFeedList: Array<IFeedData>;
+  fixCnt: number;
+  paging: IPaging;
+  isLastPage: boolean;
 }

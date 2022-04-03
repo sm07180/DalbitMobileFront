@@ -143,6 +143,7 @@ const Report = React.lazy(() => import("pages/remypage/contents/report/Report"))
 const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
+const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -335,6 +336,8 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
+
+        <Route exact path="/brdcst" component={BroadNoticeDetail} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
