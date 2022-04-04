@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 import Swiper from 'react-id-swiper'
 
 import './showSwiper.scss'
+import {isAndroid} from "context/hybrid";
+import {Context} from 'context';
 
 const ShowSwiper = (props) => {
+  const context = useContext(Context);
   const {imageList, popClose, imageKeyName, imageParam, initialSlide,
     showTopOptionSection, readerButtonAction, deleteButtonAction, swiperParam} = props
 
@@ -41,6 +44,26 @@ const ShowSwiper = (props) => {
       }
     }
   }, [imageList]);
+
+  useEffect(() => {
+    if(isAndroid()) {
+      context.action.updateSetBack(true);
+      context.action.updateBackFunction({name: 'imageViewer'});
+      context.action.updateBackEventCallback(() => {
+        popClose(false)
+      });
+    }
+
+    return () => {
+      if (isAndroid()) {
+        if (context.backFunction.name.length === 1) {
+          context.action.updateSetBack(null);
+        }
+        context.action.updateBackFunction({name: ''});
+        context.action.updateBackEventCallback(null);
+      }
+    }
+  },[]);
 
   return (
     <div id="popShowSwiper">
