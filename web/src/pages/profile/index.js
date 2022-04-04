@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 import './style.scss'
 import Api from 'context/api'
 // global components
@@ -50,6 +51,8 @@ const ProfilePage = () => {
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
   const tabmenuRef = useRef();
+  const socialRef = useRef();
+  const floatingRef = useRef();
 
   const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
   const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
@@ -63,6 +66,9 @@ const ProfilePage = () => {
   const [profileReady, setProfileReady] = useState(false); // 페이지 mount 후 ready
 
   const [morePopHidden, setMorePopHidden] = useState(false); // slidePop이 unmount 될때 꼬여서 임시로 처방
+
+  const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
+  const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -541,6 +547,36 @@ const ProfilePage = () => {
     }
   }
 
+  /* 플루팅 버튼 이벤트 */
+  const floatScrollEvent = useCallback(() => {
+    const floatNode = floatingRef.current;
+    const scrollBottom = floatNode.offsetTop;
+
+    if (scrollBottom > 150) {
+      setFloatScrollAction(true);
+    } else {
+      setFloatScrollAction(false);
+    }
+  }, []);
+  const floatingOpen = () => {
+    setFloatBtnHidden(!floatBtnHidden)
+  }
+  const floatingButton1 = (e) => {
+    e.stopPropagation;
+    goProfileDetailPage({history, action:'write', type:'notice', memNo:profileData.memNo});
+  }
+  const floatingButton2 = (e) => {
+    e.stopPropagation;
+    goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo});
+  }
+
+  useEffect(() => {
+    document.addEventListener('scroll', floatScrollEvent);
+    return () => {
+      document.removeEventListener('scroll', floatScrollEvent);
+    }
+  },[])
+
   /* 스크롤 페이징 이펙트 */
   useEffect(() => {
     if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCall > 1 && !feedData.isLastPage) {
@@ -566,6 +602,15 @@ const ProfilePage = () => {
       history.replace('/login');
     }
   }, [location.pathname]);
+
+  // 플로팅 버튼 오픈시 스크롤 막기
+  useEffect(() => {
+    if (floatBtnHidden === true) {
+      document.body.classList.add('overflowHidden')
+    } else {
+      document.body.classList.remove('overflowHidden')
+    }
+  }, [floatBtnHidden])
 
   useEffect(() => {
     if(!context.token.isLogin) {
@@ -615,7 +660,7 @@ const ProfilePage = () => {
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
       </section>
-      <section className="socialWrap">
+      <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
           <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction} />
           {(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])
@@ -644,6 +689,28 @@ const ProfilePage = () => {
 
         {/* 프로필 사진 확대 */}
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+
+        {/* 글쓰기 플로팅 버튼 */}
+        {/* {(socialType === socialTabmenu[0] && isMyProfile || socialType === socialTabmenu[1])
+          && <button className="floatBtn" onClick={() => {
+          socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
+            socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
+        }}>등록</button>} */}
+        <button className={`floatBtn ${floatBtnHidden === true ? 'on' : ''}`} onClick={floatingOpen} ref={floatingRef}>
+          <div className="blackCurtain"></div>
+          <div className={`floatWrap ${floatScrollAction === true ? 'action' : 'disAction'}`}>
+            <ul>
+              <li onClick={floatingButton1}>
+                방송공지 쓰기
+                <img src={`${IMG_SERVER}/profile/floating-btn-2.png`} alt="아이콘" />
+              </li>
+              <li onClick={floatingButton2}>
+                피드 쓰기
+                <img src={`${IMG_SERVER}/profile/floating-btn-1.png`} alt="아이콘" />
+              </li>
+            </ul>
+          </div>
+        </button>
       </section>
 
       {/* 더보기 */}

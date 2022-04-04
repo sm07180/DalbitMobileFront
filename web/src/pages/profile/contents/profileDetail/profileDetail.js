@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
@@ -29,8 +29,10 @@ const ProfileDetail = (props) => {
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
   const replyIsMoreRef = useRef(null);
+  const infoRef = useRef(null);
 
   //팝업 사진 스와이퍼
+  const [tooltipEvent, setTooltipEvent] = useState(false);
   const [showSlide, setShowSlide] = useState(false);
   const [imgList, setImgList] = useState([]);
 
@@ -169,6 +171,19 @@ const ProfileDetail = (props) => {
     }
     blurBlockStatus.current = false;
   };
+
+  // 좋아요 툴팁 이벤트
+  const tooltipScrollEvent = useCallback(() => {
+    const infoNode = infoRef.current;
+    const infoPosition = infoNode.offsetTop;
+    const scrollBottom = window.scrollY + document.documentElement.clientHeight - 100;
+
+    console.log(infoPosition,scrollBottom);
+
+    if (scrollBottom > infoPosition) {
+      setTooltipEvent(true);
+    }
+  }, []);
 
   useEffect(() => {
     getAllData(1, 9999);
@@ -368,9 +383,16 @@ const ProfileDetail = (props) => {
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
+  useEffect(() => {
+    document.addEventListener('scroll', tooltipScrollEvent);
+    return () => {
+      document.removeEventListener('scroll', tooltipScrollEvent);
+    }
+  },[])
+
   return (
     <div id="profileDetail">
-      <Header title={item?.nickName} type="back">
+      <Header title="" type="back">
         <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
@@ -396,7 +418,7 @@ const ProfileDetail = (props) => {
           <pre className="text">{item?.contents}</pre>
           {type === 'feed' && (item?.photoInfoList?.length > 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-              <Swiper {...swiperFeeds}>
+              {/* <Swiper {...swiperFeeds}>
                 {item.photoInfoList.map((photo) => {
                   return (
                     <div>
@@ -406,34 +428,46 @@ const ProfileDetail = (props) => {
                     </div>
                   )
                 })}
-              </Swiper>
-            </div>
-            : item?.photoInfoList?.length === 1 ?
-              <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
-                <div className="photo">
-                  <img src={item?.photoInfoList[0]?.imgObj?.thumb292x292} alt="" />
+              </Swiper> */}
+              {item.photoInfoList.map((photo,index) => {
+                return (
+                <div className="photo" key={index}>
+                  <img src={photo?.imgObj?.thumb500x500} alt="이미지" />
                 </div>
-              </div>
+                )
+              })}
+            </div>
+            // : item?.photoInfoList?.length === 1 ?
+            //   <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+            //     <div className="photo">
+            //       <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+            //     </div>
+            //   </div>
             : <></>
           )}
-          <div className="info">
-            {/*<i className='like'></i>
-            <span>{Utility.addComma(123)}</span>*/}
-            <i className='comment'/>
-            <span>{Utility.addComma(replyList.length)}</span>
+          <div className="info" ref={infoRef}>
+            <i className="like">
+              {Utility.addComma(1111)}
+              {tooltipEvent &&
+                <div className="likeTooltip">
+                  <img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" />
+                </div>
+              }
+            </i>
+            <i className="cmt">{Utility.addComma(replyList.length)}</i>
           </div>
         </div>
 
         {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
-          {replyList.map((item, index) => {
-            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
-            return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
-                                          replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
-                                          blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
-                                          openBlockReportPop={openBlockReportPop}
-              />
-            })}
+        {replyList.map((item, index) => {
+          const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
+          return <ProfileReplyComponent key={item?.replyIdx} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
+                                        replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
+                                        blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
+                                        openBlockReportPop={openBlockReportPop}
+            />
+          })}
         </div>
         <div className='bottomWrite'>
           <div ref={replyRef} className={`trickTextarea ${text.length > 0 && 'isText'}`} contentEditable="true"

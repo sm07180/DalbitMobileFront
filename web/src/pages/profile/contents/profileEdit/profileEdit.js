@@ -7,15 +7,20 @@ import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
+import DalbitCropper from "components/ui/dalbit_cropper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import PopSlide from "components/ui/popSlide/PopSlide";
 // components
 import TopSwiper from '../../components/topSwiper'
+import PhotoChange from '../../components/popSlide/PhotoChange'
 // contents
 
 import './profileEdit.scss'
 import PasswordChange from "pages/password";
-import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import {authReq} from "pages/self_auth";
+// redux
+import {useDispatch, useSelector} from "react-redux";
+import {setCommonPopupOpenData} from "redux/actions/common";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -26,6 +31,9 @@ const ProfileEdit = () => {
   const swiperParams = {
     slidesPerView: 'auto',
   }
+
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   //이미지 크로퍼
   const inputRef = useRef(null);
@@ -82,6 +90,11 @@ const ProfileEdit = () => {
       context.action.updateProfile(data);
     }
   };
+
+  const openMoreList = () => {
+    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}))
+    console.log('1');
+  }
 
   //대표 이미지 지정
   const readerImageEdit = async (idx) => {
@@ -295,7 +308,7 @@ const ProfileEdit = () => {
               </div>
 
               <div className="coverPhoto">
-                <div className="title">프로필사진<small>(최대 10장)</small></div>
+                <div className="title">프로필사진<small>(최대 10장)</small><button onClick={openMoreList}>순서변경</button></div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
@@ -410,6 +423,12 @@ const ProfileEdit = () => {
                           context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
                         swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
+            }
+
+            {popup.commonPopup &&
+            <PopSlide title="사진 순서 변경">
+              <PhotoChange list={profileInfo?.profImgList} />
+            </PopSlide>
             }
           </div>
             :
