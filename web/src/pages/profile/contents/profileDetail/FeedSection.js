@@ -7,7 +7,7 @@ import SocialList from '../../components/SocialList';
 const FeedSection = (props) => {
   const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents, fetchHandleLike } = props;
   //context
-  const { feedList, } = feedData;
+  const { feedList } = feedData;
 
   return (
     <div className="feedSection">

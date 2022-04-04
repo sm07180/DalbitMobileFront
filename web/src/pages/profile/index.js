@@ -26,14 +26,14 @@ import {
   setProfileClipData,
   setProfileData,
   setProfileFanBoardData,
-  setProfileFeedData, setProfileTabData,
+  setProfileNoticeData, setProfileFeedNewData, setProfileNoticeFixData, setProfileTabData,
 } from "redux/actions/profile";
 import {
   profileClipPagingDefault,
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileFeedDefaultState, profilePagingDefault
+  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
@@ -41,8 +41,9 @@ import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
+import {IMG_SERVER} from "context/config";
 
 const socialTabmenu = ['피드','팬보드','클립']
 const socialDefault = socialTabmenu[0];
@@ -75,12 +76,14 @@ const ProfilePage = () => {
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
-  const feedData = useSelector(state => state.feed);
+  const noticeData = useSelector(state => state.brdcst);
   const fanBoardData = useSelector(state => state.fanBoard);
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
   const isWebView = useSelector(state => state.common).isWebView;
+  const feedData = useSelector(state => state.feed);
+  const noticeFixData = useSelector(state => state.noticeFix);
 
   const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
 
@@ -109,12 +112,12 @@ const ProfilePage = () => {
     })
   };
 
-  /* 피드 데이터 호출 */
-  const getFeedData = (isInit) => {
+  /* 방송공지 데이터 호출 */
+  const getNoticeData = (isInit) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
-      pageNo: isInit ? 1 : feedData.paging.next,
-      pagePerCnt: feedData.paging.records,
+      pageNo: isInit ? 1 : noticeData.paging.next,
+      pageCnt: noticeData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
@@ -122,17 +125,12 @@ const ProfilePage = () => {
         const data = res.data;
         const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
-        dispatch(setProfileFeedData({
-          ...feedData,
-          feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list, // 피드(고정 + 일반)
-          // fixedFeedList: data.fixList, // 고정 피드
-          // fixCnt: data.fixList.length, // 고정 피드 개수
+        dispatch(setProfileNoticeData({
+          ...noticeData,
+          feedList: data.paging?.page > 1 ? noticeData.feedList.concat(data.list) : data.list, // 피드(일반)
           paging: data.paging ? data.paging : profilePagingDefault, // 호출한 페이지 정보
           isLastPage,
         }));
-        if(isLastPage) {
-          removeScrollEvent();
-        }
       } else {
         context.action.alert({
           msg: res.message
@@ -140,6 +138,57 @@ const ProfilePage = () => {
       }
     })
   }
+
+  /* 방송공지(고정) 데이터 호출 */
+  const getNoticeFixData = (isInit) => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: isInit ? 1 : noticeFixData.paging.next,
+      pageCnt: noticeFixData.paging.records,
+    }
+    Api.myPageNoticeFixList(apiParams).then((res) => {
+      if(res.result === "success") {
+        const data = res.data;
+        const callPageNo = data.paging?.page;
+        const isLastPage = data.fixList.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileNoticeFixData({
+          ...noticeFixData,
+          fixedFeedList: data.paging?.page > 1 ? noticeFixData.fixedFeedList.concat(data.fixList) : data.fixList,
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage
+        }));
+      } else {
+        context.action.alert({msg: res.message});
+      }
+    }).catch((e) => console.log(e));
+  };
+
+  /* 피드 데이터 */
+  const getFeedData = (isInit) => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: isInit ? 1 : feedData.paging.next,
+      pageCnt: feedData.paging.records,
+    }
+    Api.myPageFeedSel(apiParams).then((res) => {
+      if(res.result === "success") {
+        const data = res.data;
+        const callPageNo = data.paging?.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileFeedNewData({
+          ...feedData,
+          feedList: data.paging?.page > 1 ? feedData.feedList.concat(data.list) : data.list,
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage
+        }));
+        if(isLastPage) {
+          removeScrollEvent();
+        }
+      } else {
+        context.action.alert({msg: res.message});
+      }
+    }).catch((e) => console.log(e));
+  };
 
   /* 팬보드 데이터 */
   const getFanBoardData = (isInit) => {
@@ -312,8 +361,8 @@ const ProfilePage = () => {
     if(like === "n") {
       Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
-          getFeedData(1);
-          getNoticeFixData(1);
+          getNoticeData(true);
+          getNoticeFixData(true);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -321,8 +370,8 @@ const ProfilePage = () => {
     } else if(like === "y") {
       Api.profileFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
-          getFeedData(1);
-          getNoticeFixData(1);
+          getNoticeData(true);
+          getNoticeFixData(true);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -340,7 +389,7 @@ const ProfilePage = () => {
     if(like === "n") {
       Api.myPageFeedLike(params).then((res) => {
         if(res.result === "success") {
-          fetchFeedData(1);
+          getFeedData(true);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -348,7 +397,7 @@ const ProfilePage = () => {
     } else if(like === "y") {
       Api.myPageFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
-          fetchFeedData(1);
+          getFeedData(true);
         } else {
           context.action.toast({msg: res.message});
         }
@@ -509,7 +558,7 @@ const ProfilePage = () => {
 
   /* 피드, 팬보드, 클립 초기화 */
   const resetTabData = () => {
-    dispatch(setProfileFeedData(profileFeedDefaultState)); // 피드
+    dispatch(setProfileFeedNewData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
   }
@@ -517,7 +566,7 @@ const ProfilePage = () => {
   /* 피드글, 팬보드 삭제후 데이터 비우기 */
   const deleteContents = (type, index, memNo) => {
     const callback = async () => {
-      if (type === 'feed') {
+      if (type === 'notice') {
         const {result, data, message} = await Api.mypage_notice_delete({
           data: {
             delChrgrName: profileData?.nickNm,
@@ -525,8 +574,8 @@ const ProfilePage = () => {
           }
         })
         if (result === 'success') {
-          const feedList = feedData.feedList.concat([]).filter((feed, _index) => feed.noticeIdx !== index);
-          dispatch(setProfileFeedData({...feedData, feedList}));
+          const noticeList = noticeData.feedList.concat([]).filter((notice, _index) => notice.noticeIdx !== index);
+          dispatch(setProfileNoticeData({...noticeData, noticeList}));
         } else {
           context.action.toast({msg: message});
         }
@@ -539,6 +588,21 @@ const ProfilePage = () => {
         } else {
           context.action.toast({msg: message});
         }
+      } else if (type === "feed") {
+        const feedList = feedData.feedList.concat([]).filter((feedNew, _index) => feedNew.reg_no !== index);
+        await Api.myPageFeedDel({
+          data: {
+            feedNo: index,
+            delChrgrName: profileData?.nickNm
+          }
+        }).then((res) => {
+          if(res.result === "success") {
+            dispatch(setProfileFeedNewData({...feedData, feedList}));
+            getFeedData(true);
+          } else {
+            context.action.toast({msg: res.message});
+          }
+        }).catch((e) => console.log(e));
       }
     }
     context.action.confirm({
@@ -574,6 +638,20 @@ const ProfilePage = () => {
     dispatch(setProfileTabData({...profileTab, isRefresh: true})); // 하단 탭
   }
 
+  /* 하단 탭 기본값으로 초기화 */
+  const profileTabInit = () => {
+    dispatch(setProfileTabData({
+      ...profileTab,
+      tabName: profileDefaultTab,
+      isReset: true
+    }))
+    getNoticeData(true); // 피드
+    dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
+    dispatch(setProfileClipData(profileClipDefaultState)); // 클립
+    document.addEventListener('scroll', profileScrollEvent);
+    setScrollPagingCall(1);
+  }
+
   /* 플루팅 버튼 이벤트 */
   const floatScrollEvent = useCallback(() => {
     const floatNode = floatingRef.current;
@@ -585,17 +663,35 @@ const ProfilePage = () => {
       setFloatScrollAction(false);
     }
   }, []);
+
   const floatingOpen = () => {
     setFloatBtnHidden(!floatBtnHidden)
   }
+
   const floatingButton1 = (e) => {
     e.stopPropagation;
     goProfileDetailPage({history, action:'write', type:'notice', memNo:profileData.memNo});
   }
+
   const floatingButton2 = (e) => {
     e.stopPropagation;
     goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo});
   }
+
+  /* 하단 탭 핸들러(componentDidMount 시점) */
+  const tabHandler = () => {
+    if(profileTab.isReset) { // 탭, 데이터 초기화
+      profileTabInit();
+    }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
+      profileTabDataCall();
+    }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
+      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
+        document.addEventListener('scroll', profileScrollEvent);
+      }
 
       dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
     }
@@ -617,6 +713,8 @@ const ProfilePage = () => {
     if(context.token.isLogin) {
       if(profileReady) {
         getProfileData(); // 프로필 상단 데이터
+        getNoticeFixData();
+        getNoticeData();
         profileTabInit();
         if(location.search) {
           parameterManager(); // 주소 뒤에 파라미터 체크
@@ -627,14 +725,25 @@ const ProfilePage = () => {
     }
   }, [location.pathname]);
 
-// 플로팅 버튼 오픈시 스크롤 막기
-useEffect(() => {
-  if (floatBtnHidden === true) {
-    document.body.classList.add('overflowHidden')
-  } else {
-    document.body.classList.remove('overflowHidden')
-  }
-}, [floatBtnHidden])
+  useEffect(() => {
+    getNoticeFixData();
+  }, []);
+
+  // 플로팅 버튼 오픈시 스크롤 막기
+  useEffect(() => {
+    if (floatBtnHidden === true) {
+      document.body.classList.add('overflowHidden')
+    } else {
+      document.body.classList.remove('overflowHidden')
+    }
+  }, [floatBtnHidden])
+
+  useEffect(() => {
+    document.addEventListener('scroll', floatScrollEvent);
+    return () => {
+      document.removeEventListener('scroll', floatScrollEvent);
+    }
+  },[])
 
   useEffect(() => {
     if(!context.token.isLogin) {
@@ -682,7 +791,8 @@ useEffect(() => {
         />
       </section>
       <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
+        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} noticeData={noticeData} noticeFixData={noticeFixData}
+                   getNoticeData={getNoticeData} getNoticeFixData={getNoticeFixData} fetchHandleLike={fetchHandleLike} />
       </section>
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
@@ -696,13 +806,13 @@ useEffect(() => {
 
         {/* 피드 */}
         {profileTab.tabName === profileTab.tabList[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}  fetchHandleLike={fetchFeedHandleLike}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {profileTab.tabName === profileTab.tabList[1] &&
-          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile}
+          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} getFanBoardData={getFanBoardData} params={params}
                            deleteContents={deleteContents} openBlockReportPop={openBlockReportPop} />
         }
 
@@ -715,11 +825,7 @@ useEffect(() => {
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
 
         {/* 글쓰기 플로팅 버튼 */}
-        {/* {(socialType === socialTabmenu[0] && isMyProfile || socialType === socialTabmenu[1])
-          && <button className="floatBtn" onClick={() => {
-          socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
-            socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
-        }}>등록</button>} */}
+        {isMyProfile &&
         <button className={`floatBtn ${floatBtnHidden === true ? 'on' : ''}`} onClick={floatingOpen} ref={floatingRef}>
           <div className="blackCurtain"/>
           <div className={`floatWrap ${floatScrollAction === true ? 'action' : 'disAction'}`}>
@@ -735,6 +841,7 @@ useEffect(() => {
             </ul>
           </div>
         </button>
+        }
       </section>
 
       {/* 더보기 */}

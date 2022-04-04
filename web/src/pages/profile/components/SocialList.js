@@ -13,41 +13,21 @@ import Utility from "components/lib/utility";
 import {useDispatch, useSelector} from "react-redux";
 
 const SocialList = (props) => {
-  const {
-    socialList,
-    openShowSlide,
-    isMyProfile,
-    type,
-    openBlockReportPop,
-    deleteContents,
-    profileData,
-    fetchHandleLike
-  } = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike} = props
   const history = useHistory();
   const context = useContext(Context);
   const {profile} = context;
   const dispatch = useDispatch();
   const profileTab = useSelector(state => state.profileTab);
-
-  // 스와이퍼
-  const swiperFeeds = {
-    slidesPerView: 'auto',
-    spaceBetween: 8,
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction'
-    }
-  }
+  const [contentsHeight, setContentsHeight] = useState([]);
 
   const photoClickEvent = (memNo) => {
-    if (type === 'fanBoard') {
-      history.push(`/profile/${memNo}`)
-    }
+    if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
   }
 
   useEffect(() => {
-    console.log(socialList);
-  }, [])
+    setContentsHeight(document.getElementsByClassName("socialText"));
+  }, [contentsHeight]);
 
   return (
     <div className="socialListWrap">
@@ -72,7 +52,7 @@ const SocialList = (props) => {
                               }}
             />
             <div className="socialContent">
-              <div className="text lineCut-4"
+              <div className={type === "feed" && contentsHeight[index]?.offsetHeight >= 64 ? "socialText lineCut-4" : "socialText"}
                    onClick={() => goProfileDetailPage(detailPageParam)}
                    dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
               />
@@ -80,42 +60,20 @@ const SocialList = (props) => {
               <div className="swiperPhoto" onClick={() => goProfileDetailPage(detailPageParam)}>
                 {item.photoInfoList.length <= 2 ?
                   <div className="photo grid-2">
-                    {item.photoInfoList.map((v, idx) => {
-                      return (
-                        <img key={idx} src={v.imgObj.thumb500x500} alt="" />
-                      )
-                    })}
+                    {item.photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} alt="" />)})}
                   </div>
                   : item.photoInfoList.length === 3 ?
                     <div className="photo grid-3">
-                      {item.photoInfoList.map((v, idx) => {
-                        return (
-                          <div key={idx}>
-                            <img src={v.imgObj.thumb500x500} alt="" />
-                          </div>
-                        )
-                      })}
+                      {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" /></div>)})}
                     </div>
                     : item.photoInfoList.length === 4 ?
                       <div className="photo grid-2">
-                        {item.photoInfoList.map((v, idx) => {
-                          return (
-                            <div key={idx}>
-                              <img src={v.imgObj.thumb500x500} alt="" />
-                            </div>
-                          )
-                        })}
+                        {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" /></div>)})}
                       </div>
                       : item.photoInfoList.length >= 5 &&
                       <>
                         <div className="photo grid-2">
-                          {item.photoInfoList.map((v, idx) => {
-                            return (
-                              <div key={idx}>
-                                {idx <= 1 && <img src={v.imgObj.thumb500x500} alt=""/>}
-                              </div>
-                            )
-                          })}
+                          {item.photoInfoList.map((v, idx) => {return (<div key={idx}>{idx <= 1 && <img src={v.imgObj.thumb500x500} alt=""/>}</div>)})}
                         </div>
                         <div className="photo grid-3">
                           <img src={item?.photoInfoList[2]?.imgObj?.thumb500x500} alt="" />
@@ -134,58 +92,12 @@ const SocialList = (props) => {
                 }
               </div>
               }
-              {/*{type === 'feed' && (item.photoInfoList.length > 5 ?*/}
-              {/*    <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>*/}
-              {/*      <Swiper {...swiperFeeds}>*/}
-              {/*        {item.photoInfoList.map((photo, index) => {*/}
-              {/*          return (*/}
-              {/*            <div key={index}>*/}
-              {/*              <div className="photo">*/}
-              {/*                <img src={photo?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*              </div>*/}
-              {/*            </div>*/}
-              {/*          )*/}
-              {/*        })}*/}
-              {/*      </Swiper>*/}
-              {/*    </div>*/}
-              {/*    : item.photoInfoList.length === 5 ?*/}
-              {/*      <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>*/}
-              {/*        <div className="photo">*/}
-              {/*          <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*        </div>*/}
-              {/*      </div>*/}
-              {/*      : item.photoInfoList.length === 4 ?*/}
-              {/*        <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>*/}
-              {/*          <div className="photo">*/}
-              {/*            <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*          </div>*/}
-              {/*        </div>*/}
-              {/*        : item.photoInfoList.length === 3 ?*/}
-              {/*          <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>*/}
-              {/*            <div className="photo">*/}
-              {/*              <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*            </div>*/}
-              {/*          </div>*/}
-              {/*          : item.photoInfoList.length === 2 ?*/}
-              {/*            <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>*/}
-              {/*              <div className="photo">*/}
-              {/*                <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*                <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*              </div>*/}
-              {/*            </div>*/}
-              {/*            : item.photoInfoList.length === 1 ?*/}
-              {/*              <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>*/}
-              {/*                <div className="photo">*/}
-              {/*                  <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt=""/>*/}
-              {/*                </div>*/}
-              {/*              </div>*/}
-              {/*              : <></>*/}
-              {/*)}*/}
+
               <div className="info">
                 {type === "feed" && item.like_yn === "n" ?
-                  <i className="like" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  <i className="likeOff" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                   : type === "feed" && item.like_yn === "y" &&
-                  <i className="like" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
+                  <i className="likeOn" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
                 }
 
                 {type === "feed" ?

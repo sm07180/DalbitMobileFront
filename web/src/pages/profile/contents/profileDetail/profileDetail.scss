@@ -67,7 +67,7 @@
       }
       .text {
         margin-bottom:20px;
-        word-wrap: break-word; 
+        word-wrap: break-word;
         white-space: pre-line;
         @include font(14px,400,black);
       }
@@ -96,9 +96,9 @@
             margin-left:10px;
           }
           @include font(14px,$Medium,#666);
-          &.like {
+          &.likeOff {
             position:relative;
-            @include BGIMG("profile/heart_icon-notice.png");
+            @include BGIMG("profile/heart_icon-off.png");
             background-position:left center;
             background-size:25px;
             .likeTooltip {
@@ -118,6 +118,11 @@
                 vertical-align: bottom;
               }
             }
+          }
+          &.likeOn {
+            @include BGIMG("profile/heart_icon-on.png");
+            background-position:left center;
+            background-size:25px;
           }
           &.cmt {
             @include BGIMG("profile/comment_icon-notice.png");
@@ -178,7 +183,7 @@
             }
             .text {
               margin-bottom:8px;
-              word-wrap: break-word; 
+              word-wrap: break-word;
               white-space: pre-line;
               @include font(14px,400,black);
             }

@@ -11,14 +11,17 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileD
 import {useHistory} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import noticeFix from "redux/reducers/profile/noticeFix";
+import FeedLike from "pages/profile/components/FeedLike";
 
 const TotalInfo = (props) => {
-  const {data, goProfile, openPopLike, isMyProfile, feedData, getFeedData, fetchHandleLike, noticeFixData, getNoticeFixData} = props
+  const {data, goProfile, openPopLike, isMyProfile, noticeData, getNoticeData, fetchHandleLike, noticeFixData, getNoticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const history = useHistory();
   const defaultNotice = [{
-    contents: "방송 공지를 등록해주세요."
+    contents: "방송 공지를 등록해주세요.",
+    rcv_like_cnt: 0,
+    replyCnt: 0
   }]
   //
   const onOpenBdage = () => {
@@ -40,7 +43,7 @@ const TotalInfo = (props) => {
   }
 
   const onClick = () => {
-    history.push({pathname: "/brdcst", state: {feedData, noticeFixData}})
+    history.push({pathname: "/brdcst", state: data});
   }
 
   useEffect(() => {
@@ -63,12 +66,12 @@ const TotalInfo = (props) => {
 
   /* 피드 삭제시 스와이퍼 업데이트용 */
   useEffect(() => {
-    if((feedData || noticeFixData) !== undefined) {
+    if((noticeData || noticeFixData) !== undefined) {
       const swiper = document.querySelector('.swiper-container').swiper;
       swiper.update();
       // swiper.slideTo(0);
     }
-  }, [feedData, noticeFixData]);
+  }, [noticeData, noticeFixData]);
 
   return (
     <>
@@ -129,56 +132,35 @@ const TotalInfo = (props) => {
         <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
       </div>
       }
+
       <div className="broadcastNotice">
         <div className="title" onClick={onClick}>방송공지</div>
         <Swiper {...swiperParams}>
-          {noticeFixData.fixedFeedList.length !== 0 &&
-          noticeFixData.fixedFeedList.map((v, idx) => {
+          {noticeFixData?.fixedFeedList.map((v, idx) => {
             const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
             return (
               <div key={idx}>
                 <div className="noticeBox">
                   <div className="badge">Notice</div>
                   <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                  <div className="info">
-                    {v.like_yn === "n" ?
-                      <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                      : <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                    }
-                    <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{v.replyCnt}</i>
-                    <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
-                  </div>
-                  <button className="fixIcon">
-                    <img src={`${IMG_SERVER}/profile/fixmark-on.png`} />
-                  </button>
+                  <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
                 </div>
               </div>
             )
           })}
-          {feedData.feedList.length !== 0 &&
-          feedData.feedList.map((v, idx) => {
+          {noticeData?.feedList.map((v, idx) => {
             const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
             return (
               <div key={idx}>
                 <div className="noticeBox">
                   <div className="badge">Notice</div>
                   <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                  <div className="info">
-                    {v.like_yn === "n" ?
-                      <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                      : <i className="like" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn)}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                    }
-                    <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{v.replyCnt}</i>
-                    <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
-                  </div>
-                  <button className="fixIcon">
-                    <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
-                  </button>
+                  <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
                 </div>
               </div>
             )
           })}
-          {(noticeFixData.fixedFeedList.length === 0 && feedData.feedList.length === 0) && isMyProfile &&
+          {(noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0) && isMyProfile &&
           defaultNotice.map((v, idx) => {
             return (
               <div key={idx}>
@@ -186,8 +168,8 @@ const TotalInfo = (props) => {
                   <div className="badge">Notice</div>
                   <div className="text">{v.contents}</div>
                   <div className="info">
-                    <i className="like">0</i>
-                    <i className="cmt">0</i>
+                    <i className="likeOff">{v.rcv_like_cnt}</i>
+                    <i className="cmt">{v.replyCnt}</i>
                   </div>
                   <button className="fixIcon">
                     <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />

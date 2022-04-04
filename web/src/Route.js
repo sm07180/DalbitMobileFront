@@ -145,8 +145,6 @@ const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
-const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
-
 const Router = () => {
   const context = useContext(Context);
   return (
