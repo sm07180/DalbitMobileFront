@@ -145,6 +145,8 @@ const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
 const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
+const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
+
 const Router = () => {
   const context = useContext(Context);
   return (
@@ -267,8 +269,6 @@ const Router = () => {
                  }
                }}
         />
-
-        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
         {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
         {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}

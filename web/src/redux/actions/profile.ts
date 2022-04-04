@@ -3,7 +3,7 @@ import {
   IProfileState,
   IProfileFeedState,
   IProfileFanBoardState,
-  IProfileClipState, IProfileTabState, IProfileNoticeFixState, IProfileFeedNewState,
+  IProfileClipState, IProfileTabState, IProfileFeedNewState, IProfileNoticeFixState,
 } from "../types/profileType";
 
 const SET_PROFILE_DATA = 'profile/SET_PROFILE_DATA';

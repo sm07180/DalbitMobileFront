@@ -249,7 +249,7 @@ const LikePopup = (props) => {
   },[])
 
   return (
-    <section className="FanStarLike">
+    <section className="fanStarLike">
       {isMyProfile ?
         <ul className="tabmenu">
           {titleTabInfoList.map((data,index) => {

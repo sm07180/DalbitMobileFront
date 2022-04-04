@@ -41,7 +41,11 @@ import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
+import {setCommonPopupOpenData} from "redux/actions/common";
+import noticeFix from "redux/reducers/profile/noticeFix";
+
+const socialTabmenu = ['피드','팬보드','클립']
+const socialDefault = socialTabmenu[0];
 
 const ProfilePage = () => {
   const history = useHistory()
@@ -50,6 +54,8 @@ const ProfilePage = () => {
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
   const tabmenuRef = useRef();
+  const socialRef = useRef();
+  const floatingRef = useRef();
 
   const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
   const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
@@ -64,6 +70,9 @@ const ProfilePage = () => {
 
   const [morePopHidden, setMorePopHidden] = useState(false); // slidePop이 unmount 될때 꼬여서 임시로 처방
 
+  const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
+  const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
+
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
   const feedData = useSelector(state => state.feed);
@@ -72,13 +81,12 @@ const ProfilePage = () => {
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
   const isWebView = useSelector(state => state.common).isWebView;
-  const feedNewData = useSelector(state => state.feedNew);
 
   const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
-    if (profileData?.profImgList?.length > 0) {
+    if (profileData?.profImgList?.length > 1) {
       return {...profileData, profImgList: profileData?.profImgList.concat([]).filter((data, index)=> !data.isLeader)};
     } else {
       return profileData;
@@ -253,6 +261,7 @@ const ProfilePage = () => {
   /* 방송시작 알림 설정 */
   const editAlarm = useCallback(() => {
     const isReceive = profileData.isReceive;
+    // setPopSlide(false);
     closePopupAction();
     if(isReceive) {
       context.action.confirm({
@@ -291,6 +300,61 @@ const ProfilePage = () => {
       }
     }
   }
+
+  /* 방송공지 좋아요 */
+  const fetchHandleLike = async (regNo, mMemNo, like) => {
+    const params = {
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    };
+    console.log(params, like);
+    if(like === "n") {
+      Api.profileFeedLike(params).then((res) => {
+        if(res.result === "success") {
+          getFeedData(1);
+          getNoticeFixData(1);
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    } else if(like === "y") {
+      Api.profileFeedLikeCancel(params).then((res) => {
+        if(res.result === "success") {
+          getFeedData(1);
+          getNoticeFixData(1);
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    }
+  };
+
+  /* 피드 좋아요 */
+  const fetchFeedHandleLike = async (feedNo, mMemNo, like) => {
+    const params = {
+      feedNo: feedNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    };
+    if(like === "n") {
+      Api.myPageFeedLike(params).then((res) => {
+        if(res.result === "success") {
+          fetchFeedData(1);
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    } else if(like === "y") {
+      Api.myPageFeedLikeCancel(params).then((res) => {
+        if(res.result === "success") {
+          fetchFeedData(1);
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    }
+  };
 
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
@@ -351,6 +415,7 @@ const ProfilePage = () => {
     }
     goMail(goMailParams);
     closePopupAction();
+    // setPopSlide(false);
   }
 
   /* 스크롤 이벤트 */
@@ -509,34 +574,28 @@ const ProfilePage = () => {
     dispatch(setProfileTabData({...profileTab, isRefresh: true})); // 하단 탭
   }
 
-  /* 하단 탭 기본값으로 초기화 */
-  const profileTabInit = () => {
-    dispatch(setProfileTabData({
-      ...profileTab,
-      tabName: profileDefaultTab,
-      isReset: true
-    }))
-    getFeedData(true); // 피드
-    dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
-    dispatch(setProfileClipData(profileClipDefaultState)); // 클립
-    document.addEventListener('scroll', profileScrollEvent);
-    setScrollPagingCall(1);
-  }
+  /* 플루팅 버튼 이벤트 */
+  const floatScrollEvent = useCallback(() => {
+    const floatNode = floatingRef.current;
+    const scrollBottom = floatNode.offsetTop;
 
-  /* 하단 탭 핸들러(componentDidMount 시점) */
-  const tabHandler = () => {
-    if(profileTab.isReset) { // 탭, 데이터 초기화
-      profileTabInit();
-    }else if(profileTab.isRefresh) { // 탭 유지, 데이터 초기화
-      profileTabDataCall();
-    }else { // 초기화 안하는 경우 (글 상세, 글 쓰기)
-      if(profileTab.tabName === profileTab.tabList[0] && !feedData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }else if(profileTab.tabName === profileTab.tabList[1] && !fanBoardData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
-        document.addEventListener('scroll', profileScrollEvent);
-      }
+    if (scrollBottom > 150) {
+      setFloatScrollAction(true);
+    } else {
+      setFloatScrollAction(false);
+    }
+  }, []);
+  const floatingOpen = () => {
+    setFloatBtnHidden(!floatBtnHidden)
+  }
+  const floatingButton1 = (e) => {
+    e.stopPropagation;
+    goProfileDetailPage({history, action:'write', type:'notice', memNo:profileData.memNo});
+  }
+  const floatingButton2 = (e) => {
+    e.stopPropagation;
+    goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo});
+  }
 
       dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
     }
@@ -567,6 +626,15 @@ const ProfilePage = () => {
       history.replace('/login');
     }
   }, [location.pathname]);
+
+// 플로팅 버튼 오픈시 스크롤 막기
+useEffect(() => {
+  if (floatBtnHidden === true) {
+    document.body.classList.add('overflowHidden')
+  } else {
+    document.body.classList.remove('overflowHidden')
+  }
+}, [floatBtnHidden])
 
   useEffect(() => {
     if(!context.token.isLogin) {
@@ -616,7 +684,7 @@ const ProfilePage = () => {
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} />
       </section>
-      <section className="socialWrap">
+      <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
           <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction} />
           {(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])
@@ -645,6 +713,28 @@ const ProfilePage = () => {
 
         {/* 프로필 사진 확대 */}
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+
+        {/* 글쓰기 플로팅 버튼 */}
+        {/* {(socialType === socialTabmenu[0] && isMyProfile || socialType === socialTabmenu[1])
+          && <button className="floatBtn" onClick={() => {
+          socialType === socialTabmenu[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo} );
+            socialType === socialTabmenu[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo})
+        }}>등록</button>} */}
+        <button className={`floatBtn ${floatBtnHidden === true ? 'on' : ''}`} onClick={floatingOpen} ref={floatingRef}>
+          <div className="blackCurtain"/>
+          <div className={`floatWrap ${floatScrollAction === true ? 'action' : 'disAction'}`}>
+            <ul>
+              <li onClick={floatingButton1}>
+                방송공지 쓰기
+                <img src={`${IMG_SERVER}/profile/floating-btn-2.png`} alt="아이콘" />
+              </li>
+              <li onClick={floatingButton2}>
+                피드 쓰기
+                <img src={`${IMG_SERVER}/profile/floating-btn-1.png`} alt="아이콘" />
+              </li>
+            </ul>
+          </div>
+        </button>
       </section>
 
       {/* 더보기 */}

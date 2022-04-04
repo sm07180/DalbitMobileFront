@@ -7,15 +7,20 @@ import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
+import DalbitCropper from "components/ui/dalbit_cropper";
+import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import PopSlide from "components/ui/popSlide/PopSlide";
 // components
 import TopSwiper from '../../components/topSwiper'
+import PhotoChange from '../../components/popSlide/PhotoChange'
 // contents
 
 import './profileEdit.scss'
 import PasswordChange from "pages/password";
-import DalbitCropper from "components/ui/dalbit_cropper";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import {authReq} from "pages/self_auth";
+// redux
+import {useDispatch, useSelector} from "react-redux";
+import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -26,6 +31,9 @@ const ProfileEdit = () => {
   const swiperParams = {
     slidesPerView: 'auto',
   }
+
+  const dispatch = useDispatch();
+  const popup = useSelector(state => state.popup);
 
   //이미지 크로퍼
   const inputRef = useRef(null);
@@ -46,8 +54,6 @@ const ProfileEdit = () => {
   const [profileInfo, setProfileInfo] = useState({
     birth: null, nickNm: null, gender: null, profImg: null, profMsg: null, memId: null, profImgList: []
   })
-  //대표 이미지
-  const [currentAvatar, setCurrentAvatar] = useState('')
 
   //성별 선택 여부 (true: 선택함, false: 성별선택안함)
   const [hasGender, setHasGender] = useState(false)
@@ -63,10 +69,9 @@ const ProfileEdit = () => {
   const dispatchProfileInfo = useCallback(() => {
     if (profile !== null) {
       const {birth, nickNm, gender, profImg, profMsg, memId, profImgList} = profile
-      //const sortImgList = profImgList.concat([]).sort((a, b)=> a.idx - b.idx);
+
       initProfileInfo.current = {nickNm, profImg, profMsg, gender};
       setProfileInfo({gender, birth, nickNm, profImg, profMsg, memId, profImgList});
-      setCurrentAvatar(profImg);
       setHasGender(gender !== 'n');
 
     }
@@ -84,6 +89,14 @@ const ProfileEdit = () => {
     if (result === 'success') {
       context.action.updateProfile(data);
     }
+  };
+
+  const openMoreList = () => {
+    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}))
+  };
+
+  const closeMoreList = () => {
+    dispatch(setCommonPopupClose());
   };
 
   //대표 이미지 지정
@@ -108,7 +121,7 @@ const ProfileEdit = () => {
       nickNm : nickNm || initProfileInfo.current.nickNm,
       profMsg: profMsg,
       birth: birth || initProfileInfo.current.birth,
-      profImg: (_profileInfo? profImg.path : currentAvatar.path) || initProfileInfo.current.profImg.path,
+      profImg: profImg?.path || initProfileInfo.current.profImg.path,
     }
 
     const {result, data, message} = await Api.profile_edit({data: param});
@@ -197,7 +210,6 @@ const ProfileEdit = () => {
         if (profileInfo?.profImgList.length === 0) { // 프로필 편집 (편집후 return 에서 profile정보 받아서 갱신 처리)
           profileEditConfirm({...profileInfo, profImg: data});
           setImage(null);
-          setCurrentAvatar(data);
         } else {  //기존 이미지가 1장 이상 있으면, 이미지 add Api만 호출, 프로필정보 갱신 API call
           //이미지 추가등록 API - profImgList에 추가
           addProfileImage(data.path);
@@ -230,6 +242,29 @@ const ProfileEdit = () => {
 
     setShowSlide({visible:true, imgList: resultMap, initialSlide });
   };
+
+  const imageSorting = (imageList = []) => {
+    let list = [];
+    imageList.map((v) => {
+      if(v?.profImg?.path)
+        list.push(v?.profImg?.path);
+    });
+    if(list.length> 1) {
+      Api.profileImageUpdate({imageList: list})
+        .then((res) => {
+          const {result, message, data} = res;
+          if (result === 'success') {
+            context.action.toast({msg: '성공'});
+            closeMoreList();
+            getMyInfo();
+          } else {
+            context.action.toast({msg: '사진 변경 실패'});
+          }
+        });
+    } else {
+      closeMoreList();
+    }
+  }
 
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
   useEffect(() => {
@@ -265,7 +300,7 @@ const ProfileEdit = () => {
               </button>
             </Header>
             <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
-              {profileInfo?.profImgList?.length > 1 ?
+              {profileInfo?.profImgList?.length > 0 ?
                 <TopSwiper data={profileDataNoReader} disabledBadge={true}
                            swiperParam={{
                              on: {
@@ -294,12 +329,15 @@ const ProfileEdit = () => {
                          inputRef.current.click();
                      }}>
                   <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
-                  <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
                 </div>
               </div>
 
               <div className="coverPhoto">
-                <div className="title">프로필사진<small>(최대 10장)</small></div>
+                <div className="title">프로필사진<small>(최대 10장)</small>
+                  {profileInfo?.profImgList?.length > 1 &&
+                    <button onClick={openMoreList}>순서변경</button>
+                  }
+                </div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
@@ -326,6 +364,7 @@ const ProfileEdit = () => {
                   })}
                 </Swiper>
               </div>
+
             </section>
             <section className="editInfo">
               <InputItems title="닉네임">
@@ -413,6 +452,13 @@ const ProfileEdit = () => {
                           context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
                         swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
+            }
+
+            {popup.commonPopup &&
+            <PopSlide title="사진 순서 변경">
+              <PhotoChange list={profileInfo?.profImgList}
+                           confirm={imageSorting}/>
+            </PopSlide>
             }
           </div>
             :
