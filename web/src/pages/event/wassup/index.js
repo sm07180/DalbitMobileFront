@@ -67,7 +67,7 @@ const Wassup = () => {
     Api.pEvtWassupManNoSel().then((res)=>{
       if(!res.data.seqNo){
         setTimeout(()=>{
-          history.replace("/")
+          // history.replace("/")
         },0)
       }
       if(tabmenuType === tabmenu[0]){

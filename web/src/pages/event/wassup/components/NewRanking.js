@@ -74,6 +74,9 @@ const RankingWrap = (props) => {
             </RankList>
           )
         }
+        <div className="rankingMore">
+          더보기
+        </div>
       </div>
     </section>
   );
