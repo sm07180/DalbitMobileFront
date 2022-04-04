@@ -374,14 +374,29 @@ const Exchange = (props) => {
         {!isIOS
           &&
         <div className="infoBox">
-            {profile?.badgeSpecial > 0 && (
+            {
+              profile?.playMakerYn === "y" ?
+              <>
+                <p className={"special"}>회원님은 현재 플레이메이커입니다.</p>
+                <p className={"special"}>환전 수수로 10% 우대 혜택을 받습니다.</p>
+                <p>별 570개 이상부터 환전을 신청할 수 있습니다.</p>
+                <p>별 1개당 KRW70으로 환전됩니다.</p>
+              </>
+              :
+              profile?.badgeSpecial > 0 ?
               <>
                 <p className="special">DJ님은 스페셜 DJ 입니다.</p>
                 <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
+                <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
+                <p>별 1개당 KRW 60으로 환전됩니다.</p>
               </>
-            )}
-            <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
-            <p>별 1개당 KRW 60으로 환전됩니다.</p>
+              :
+              <>
+                <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
+                <p>별 1개당 KRW 60으로 환전됩니다.</p>
+              </>
+            }
+
         </div>
         }
         {!isIOS &&
