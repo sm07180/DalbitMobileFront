@@ -42,6 +42,7 @@ const Wassup = () => {
   });
   const [wassupSel, setWassupSel] = useState(null);
   const [wassupList, setWassupList] = useState([]);
+  const [wassupListCnt, setWassupListCnt] = useState(0);
 
   const tabActive = (index) => {
     setTabmenuType(tabmenu[index])
@@ -67,32 +68,21 @@ const Wassup = () => {
     Api.pEvtWassupManNoSel().then((res)=>{
       if(!res.data.seqNo){
         setTimeout(()=>{
-          // history.replace("/")
+          history.replace("/")
         },0)
       }
-      if(tabmenuType === tabmenu[0]){
-        Api.getWhatsUpDjList({
-          ...pageInfo, seqNo: res.data.seqNo
-        }).then((res) => {
-          setWassupList(res.data.list)
-        })
-        Api.getWhatsUpDjSel({
-          seqNo: res.data.seqNo
-        }).then((res) => {
-          setWassupSel(res.data);
-        })
-      }else if(tabmenuType === tabmenu[1]){
-        Api.getWhatsUpNewMemberList({
-          ...pageInfo, seqNo: res.data.seqNo
-        }).then((res) => {
-          setWassupList(res.data.list)
-        })
-        Api.getWhatsUpNewMemberSel({
-          seqNo: res.data.seqNo
-        }).then((res) => {
-          setWassupSel(res.data);
-        })
-      }
+      const listApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
+      const selApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjSel : Api.getWhatsUpNewMemberSel;
+
+      listApi({...pageInfo, pageNo:1, seqNo: res.data.seqNo}).then((res) => {
+        setWassupList(res.data.list);
+        setWassupListCnt(res.data.cnt);
+        setPageInfo({...pageInfo, pageNo: 1});
+      });
+
+      selApi({seqNo: res.data.seqNo}).then((res) => {
+        setWassupSel(res.data);
+      });
     })
   }, [tabmenuType])
 
@@ -189,22 +179,21 @@ const Wassup = () => {
     }
   };
 
-  const getSeqNo = ()=>{
-    const now = moment.now();
-    // const now = moment("2022.04.08 00:00:00:001",'YYYY.MM.DD HH:mm:ss:SSS');
-    const seq1 = moment("2022.04.01 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
-    const seq2 = moment("2022.04.08 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
-    const end = moment("2022.04.15 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
-    // const seq1 = moment("2022.03.01 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
-    // const seq2 = moment("2022.03.26 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
-    // const end = moment("2022.04.15 00:00:00:000",'YYYY.MM.DD HH:mm:ss:SSS');
-    if(moment(now).isBetween(seq1, seq2)){
-      return 1
-    }else if(moment(now).isBetween(seq2, end)){
-      return 2
-    }else{
-      return -1
+  const getNextList = ()=>{
+    if(!wassupSel){
+      return;
     }
+    const paging = Object.assign({}, pageInfo, {pageNo:pageInfo.pageNo+1})
+    const targetApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
+    targetApi({
+      ...paging, seqNo: wassupSel.seqNo
+    }).then((res) => {
+      if(res.data.list && res.data.list.length>0){
+        setWassupList(f=>f.concat(res.data.list));
+        setWassupListCnt(res.data.cnt);
+        setPageInfo(paging);
+      }
+    })
   }
 
   return (
@@ -249,9 +238,9 @@ const Wassup = () => {
 
         {
           tabmenuType === tabmenu[0] ?
-            wassupSel && <DJRanking wassupSel={wassupSel} wassupList={wassupList}/>
+            wassupSel && <DJRanking wassupSel={wassupSel} wassupList={wassupList} wassupListCnt={wassupListCnt} getNextList={getNextList} pageInfo={pageInfo}/>
             :
-            wassupSel && <NewRanking wassupSel={wassupSel} wassupList={wassupList}/>
+            wassupSel && <NewRanking wassupSel={wassupSel} wassupList={wassupList} wassupListCnt={wassupListCnt} getNextList={getNextList} pageInfo={pageInfo}/>
         }
         <section className="notice">
           <div className="title">
