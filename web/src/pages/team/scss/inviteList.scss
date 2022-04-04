@@ -51,7 +51,7 @@
       }
     }
     .listBack {
-      flex:none;
+      flex-shrink:0;
       margin-left:auto;
       padding-left:8px;
       .buttonGroup {
@@ -75,5 +75,18 @@
         }
       }
     }
+  }
+}
+.listNone {
+  flex:1;
+  @include flex(center,center,column);
+  height:100%;
+  text-align:center;
+  button {
+    width:112px;
+    height:36px;
+    margin-top:20px;
+    @include border(#D5D5D5,100px);
+    @include font(14px,$Medium,#666);
   }
 }

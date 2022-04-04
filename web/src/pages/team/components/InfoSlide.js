@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
-import Swiper from 'react-id-swiper'
-import {IMG_SERVER} from 'context/config'
+import React, {useEffect, useState} from 'react';
+import Swiper from 'react-id-swiper';
+import {IMG_SERVER} from 'context/config';
 // global components
 
 const InfoSlide = (props) => {
@@ -18,7 +18,7 @@ const InfoSlide = (props) => {
     {
       text: `팀 랭킹에 오르면\n리워드 지급!`,
       subText: "리워드 역시 모든 멤버에게",
-      imgSrc: ""
+      imgSrc: `${IMG_SERVER}/team/slideImg-3.png`
     },
     {
       text: `지금 팀 활동을\n시작하세요!`,
@@ -64,4 +64,4 @@ const InfoSlide = (props) => {
   )
 }
 
-export default InfoSlide
+export default InfoSlide;

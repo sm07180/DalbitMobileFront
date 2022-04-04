@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import '../../scss/confirm.scss';
 
 const ConfirmPop = (props) => {
-  const {partsA, partsB, partsC} = props;
+  const {partsA, partsB, partsC, closePopup} = props;
 
   // 페이지 시작
   return (
@@ -21,8 +21,8 @@ const ConfirmPop = (props) => {
       <p className="text2">팀 심볼과 이름은 생성 후 72시간 이내에<br/>
       최대 1번만 수정할 수 있어요.</p>
       <div className="buttonGroup">
-        <button className="modify">수정</button>
-        <button className="complete">완료</button>
+        <button className="modify" onClick={closePopup}>수정</button>
+        <button className="complete" onClick={closePopup}>완료</button>
       </div>
     </>
   )

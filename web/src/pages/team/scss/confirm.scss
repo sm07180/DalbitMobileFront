@@ -3,6 +3,7 @@
 #layerPop {
   .popLayer {
     .popContainer {
+      padding:16px;
       text-align:center;
       .popOverTopImg {
         @include position-horizon;
@@ -15,7 +16,8 @@
       }
       h2 {
         width:100%;
-        padding:40px 0 24px;
+        line-height:normal;
+        padding:48px 0 24px;
         @include font(18px,$SemiBold,$MAINCOLOR);
       }
       .text1 {

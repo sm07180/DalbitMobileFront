@@ -1,26 +1,23 @@
 @import "components/ui/_mixin.scss";
 
 #team {
-  @include flex($fd:column);
-  min-height:100vh;
-  @import "./scss/infoSlide.scss";
-  @import "./scss/inviteList.scss";
-  .buttonWrap {
-    position:relative;
-    margin-top:auto;
-    padding:0 16px 12px;
-    .submitBtn {
-      width:100%;
-      &.disabled {
-        background-color:#FFD4E1;
-        opacity: 1;
+  #cntWrapper {
+    padding:0;
+    @import "./scss/infoSlide.scss";
+    @import "./scss/inviteList.scss";
+    .buttonWrap {
+      position:-webkit-sticky;
+      position:sticky;
+      bottom:0;
+      margin-top:auto;
+      padding: 0 16px 30px;
+      .submitBtn {
+        width:100%;
+        &.disabled {
+          background-color:#FFD4E1;
+          opacity: 1;
+        }
       }
     }
-  }
-}
-
-.pcType {
-  #team {
-    min-height:calc(100vh - #{$GNB-HEIGHT});
   }
 }

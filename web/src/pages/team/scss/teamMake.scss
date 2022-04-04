@@ -1,8 +1,6 @@
 @import "components/ui/_mixin.scss";
 
 #teamMake {
-  @include flex($fd: column);
-  min-height:100vh;
   .teamParts {
     @include flex(center,center,column);
     padding:90px 0 64px;
@@ -88,8 +86,7 @@
       }
     }
   }
-  .teamMakeForm {
-    padding:0 16px;
+  .teamForm {
     opacity: 0;
     &.active {
       opacity: 1;
@@ -118,10 +115,17 @@
       }
     }
   }
-  .submitBtn {
-    margin:auto 16px 30px;
+  .buttonWrap {
+    position:-webkit-sticky;
+    position:sticky;
+    bottom:0;
+    margin-top:auto;
+    padding-bottom: 30px;
+    .submitBtn {
+      width:100%;
+    }
   }
-  &.make-2 {
+  &.nextStep {
     .teamParts {
       padding:24px 0 30px;
       .parts-C {
@@ -139,11 +143,5 @@
     .partsType {
       display:none;
     }
-  }
-}
-
-.pcType {
-  #teamMake {
-    min-height:calc(100vh - #{$GNB-HEIGHT});
   }
 }

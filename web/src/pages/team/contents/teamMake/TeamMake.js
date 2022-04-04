@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {useHistory} from "react-router-dom";
 // global components
 import Header from 'components/ui/header/Header';
-import InputItems from 'components/ui/inputItems/InputItems';
+import CntWrapper from 'components/ui/cntWrapper/CntWrapper';
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import LayerPop from 'components/ui/layerPopup/LayerPopup'
 // components
+import TeamForm from '../../components/TeamForm';
 import PartsPop from '../../components/parts/PartsPop';
 import Confirm from '../../components/popup/Confirm';
 // redux
@@ -40,8 +41,8 @@ const TeamMake = () => {
     dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
   };
 
-  const openConfirmPopup = () => {
-    setConfirmPop(true);
+  const clickConfirmPopup = () => {
+    setConfirmPop(!confirmPop);
   };
 
   const partsSelect = (value) => {
@@ -59,76 +60,72 @@ const TeamMake = () => {
 
   // 페이지 시작
   return (
-    <div id="teamMake" className={`${nextStep === true ? 'make-2' : ''}`}>
+    <div id="teamMake" className={`${nextStep === true ? 'nextStep' : ''}`}>
       <Header title="팀 만들기" type="sub">
         <button className="back" onClick={nextStep ? nextStepShow : () => history.push('/team')} />
       </Header>
-      <div className="teamParts">
-        <div className={`parts-C ${partsC !== '' ? 'active' : ''}`}>
-          <img src={partsC} />
-          <div className={`parts-B ${partsB !== '' ? 'active' : ''}`}>
-            <img src={partsB} />
-          </div>
-          <div className={`parts-A ${partsA !== '' ? 'active' : ''}`}>
-            <img src={partsA} />
-          </div>
-        </div>
-        <span className="text">각 파츠를 선택해<br/>
-        팀 심볼을 만드세요.</span>
-      </div>
-      <div className="partsType">
-        {parts.map((list,index) => {
-          return (
-            <div className="typeList" key={index}>
-              {index === 0 && partsA !== '' ? 
-                <button
-                  className="acitve"
-                  data-target-name={list} 
-                  onClick={openPartsChoice}>
-                  <img src={partsA} alt="" />
-                </button>
-                : index === 1 && partsB !== '' ? 
-                <button
-                  className="acitve"
-                  data-target-name={list} 
-                  onClick={openPartsChoice}>
-                  <img src={partsB} alt="" />
-                </button>
-                : index === 2 && partsC !== '' ? 
-                <button
-                  className="acitve"
-                  data-target-name={list} 
-                  onClick={openPartsChoice}>
-                  <img src={partsC} alt="" />
-                </button>
-                : 
-                <button
-                  data-target-name={list} 
-                  onClick={openPartsChoice}>
-                  +
-                </button>
-              }
-              <span>{list}</span>
+      <CntWrapper>
+        <section className="teamParts">
+          <div className={`parts-C ${partsC !== '' ? 'active' : ''}`}>
+            <img src={partsC} />
+            <div className={`parts-B ${partsB !== '' ? 'active' : ''}`}>
+              <img src={partsB} />
             </div>
-          )
-        })}
-      </div>
-      {nextStep &&
-        <div className={`teamMakeForm ${nextStep === true ? 'active' : ''}`}>
-          <InputItems title="팀 이름">
-            <input type="text" maxLength={10} placeholder="필수입력(최대 10자)" />
-          </InputItems>
-          <InputItems title="팀 소개" type="textarea">
-            <textarea rows="10" maxLength={150} placeholder="팀을 소개해 주세요. (최대 150자)" />
-            <p className="count">5/150</p>
-          </InputItems>
+            <div className={`parts-A ${partsA !== '' ? 'active' : ''}`}>
+              <img src={partsA} />
+            </div>
+          </div>
+          <span className="text">각 파츠를 선택해<br/>
+          팀 심볼을 만드세요.</span>
+        </section>
+        <section className="partsType">
+          {parts.map((list,index) => {
+            return (
+              <div className="typeList" key={index}>
+                {index === 0 && partsA !== '' ? 
+                  <button
+                    className="acitve"
+                    data-target-name={list} 
+                    onClick={openPartsChoice}>
+                    <img src={partsA} alt="" />
+                  </button>
+                  : index === 1 && partsB !== '' ? 
+                  <button
+                    className="acitve"
+                    data-target-name={list} 
+                    onClick={openPartsChoice}>
+                    <img src={partsB} alt="" />
+                  </button>
+                  : index === 2 && partsC !== '' ? 
+                  <button
+                    className="acitve"
+                    data-target-name={list} 
+                    onClick={openPartsChoice}>
+                    <img src={partsC} alt="" />
+                  </button>
+                  : 
+                  <button
+                    data-target-name={list} 
+                    onClick={openPartsChoice}>
+                    +
+                  </button>
+                }
+                <span>{list}</span>
+              </div>
+            )
+          })}
+        </section>
+        {nextStep &&
+          <TeamForm nextStep={nextStep} rows={10} />
+        }
+        <div className="buttonWrap">
+          {nextStep ? 
+            <SubmitBtn text="완료" onClick={clickConfirmPopup} />
+            :
+            <SubmitBtn text="다음" onClick={nextStepShow} state={(partsA && partsB && partsC) !== '' ? '' : 'disabled'} />
+          }
         </div>
-      }
-      {nextStep ? 
-        <SubmitBtn text="완료" onClick={openConfirmPopup} />
-        :
-        <SubmitBtn text="다음" onClick={nextStepShow} state={(partsA && partsB && partsC) !== '' ? '' : 'disabled'} />
-      }
+      </CntWrapper>
       {popup.commonPopup &&
         <PopSlide title={`${partsName} 고르기`}>
           <PartsPop partsSelect={partsSelect} />
@@ -136,7 +133,7 @@ const TeamMake = () => {
       }
       {confirmPop &&
         <LayerPop setPopup={setConfirmPop} close={false}>
-          <Confirm partsA={partsA} partsB={partsB} partsC={partsC} />
+          <Confirm partsA={partsA} partsB={partsB} partsC={partsC} closePopup={clickConfirmPopup} />
         </LayerPop>
       }
     </div>

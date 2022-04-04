@@ -24,13 +24,13 @@
     }
   }
   .swiper-pagination {
-    @include flex(center,flex-end);
+    position:relative;
+    @include flex(center,center);
     height:20px;
     padding:0 16px;
   }
   .swiper-pagination-bullets {
-    top:68px;
-    bottom:auto;
+    bottom:0;
     .swiper-pagination-bullet {
       margin:0 2.5px;
     }
