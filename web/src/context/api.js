@@ -1200,12 +1200,17 @@ export default class API {
   static postAddProfileImg = async (data) => {
     return await ajax({url: '/profile/add/img', method: 'POST', data})
   }
+
   static postSetLeaderProfileImg = async (data) => {
     return await ajax({url: '/profile/leader/img', method: 'POST', data})
   }
 
   static postDeleteProfileImg = async (data) => {
     return await ajax({url: '/profile/delete/img', method: 'POST', data})
+  }
+
+  static profileImageUpdate = async (data) => {
+    return await ajax({url: '/profile/update/img', reqBody:true, method: 'POST', data})
   }
 
   /**

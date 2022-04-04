@@ -266,8 +266,6 @@ const Router = () => {
                  }
                }}
         />
-
-        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
         {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
         {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}

@@ -20,7 +20,7 @@ import PasswordChange from "pages/password";
 import {authReq} from "pages/self_auth";
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -95,6 +95,10 @@ const ProfileEdit = () => {
     dispatch(setCommonPopupOpenData({...popup, commonPopup: true}))
     console.log('1');
   }
+
+  const closeMoreList = () => {
+    dispatch(setCommonPopupClose());
+  };
 
   //대표 이미지 지정
   const readerImageEdit = async (idx) => {
@@ -240,6 +244,29 @@ const ProfileEdit = () => {
     setShowSlide({visible:true, imgList: resultMap, initialSlide });
   };
 
+  const imageSorting = (imageList = []) => {
+    let list = [];
+    imageList.map((v) => {
+      if(v?.profImg?.path)
+        list.push(v?.profImg?.path);
+    });
+    if(list.length> 1) {
+      Api.profileImageUpdate({imageList: list})
+        .then((res) => {
+          const {result, message, data} = res;
+          if (result === 'success') {
+            context.action.toast({msg: '성공'});
+            closeMoreList();
+            getMyInfo();
+          } else {
+            context.action.toast({msg: '사진 변경 실패'});
+          }
+        });
+    } else {
+      closeMoreList();
+    }
+  };
+
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
   useEffect(() => {
     if (image) {
@@ -274,7 +301,7 @@ const ProfileEdit = () => {
               </button>
             </Header>
             <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
-              {profileInfo?.profImgList?.length > 1 ?
+              {profileInfo?.profImgList?.length > 0 ?
                 <TopSwiper data={profileDataNoReader} disabledBadge={true}
                            swiperParam={{
                              on: {
@@ -303,12 +330,15 @@ const ProfileEdit = () => {
                          inputRef.current.click();
                      }}>
                   <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
-                  <button><img src="https://image.dalbitlive.com/mypage/dalla/addPhotoBtn.png" alt=""/></button>
                 </div>
               </div>
 
               <div className="coverPhoto">
-                <div className="title">프로필사진<small>(최대 10장)</small><button onClick={openMoreList}>순서변경</button></div>
+                <div className="title">프로필사진<small>(최대 10장)</small>
+                  {profileInfo?.profImgList?.length > 1 &&
+                    <button onClick={openMoreList}>순서변경</button>
+                  }
+                </div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
@@ -427,7 +457,8 @@ const ProfileEdit = () => {
 
             {popup.commonPopup &&
             <PopSlide title="사진 순서 변경">
-              <PhotoChange list={profileInfo?.profImgList} />
+              <PhotoChange list={profileInfo?.profImgList}
+                           confirm={imageSorting}/>
             </PopSlide>
             }
           </div>
