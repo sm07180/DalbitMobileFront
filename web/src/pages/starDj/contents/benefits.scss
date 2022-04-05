@@ -1,0 +1,19 @@
+@import "components/ui/_mixin.scss";
+
+#StarDjBenefits {
+  .content {
+    position: relative;
+    @include flex(center, center, column);
+    width: 100%;
+    padding: 30px 16px;
+  }
+  .starDjBottom {
+    padding: 30px 16px 20%;
+  }
+}
+
+.pcType {
+  #StarDjBenefits {    
+          
+  }
+}

@@ -122,6 +122,8 @@ const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
 const PartnerDj = React.lazy(() => import('pages/partnerDj'))
+const StarDj = React.lazy(() => import('pages/starDj'))
+const StarDjBenefits = React.lazy(() => import('pages/starDj/contents/Benefits'))
 
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
@@ -339,6 +341,8 @@ const Router = () => {
         <Route exact path="/alarm" component={Notice} />
         
         <Route exact path="/partnerDj" component={PartnerDj} />
+        <Route exact path="/starDj" component={StarDj} />
+        <Route exact path="/starDj/benefits" component={StarDjBenefits} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

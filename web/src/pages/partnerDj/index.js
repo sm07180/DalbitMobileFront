@@ -6,7 +6,7 @@ import Header from 'components/ui/header/Header'
 import './style.scss'
 import {Context} from "context";
 
-const EventZip = () => {
+const PartnerDj = () => {
   let history = useHistory()
   const context = useContext(Context)  
 
@@ -42,4 +42,4 @@ const EventZip = () => {
   )
 }
 
-export default EventZip
+export default PartnerDj
