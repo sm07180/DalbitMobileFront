@@ -294,7 +294,7 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
               globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
-                content: `${nickNm}님의 방송방에 입장하시겠습니까?`,
+                content: `${nickNm ? `${nickNm}님의 ` : ''}방송방에 입장하시겠습니까?`,
                 callback: () => {
                   history.push(`/broadcast/${roomNo}`);
                 },
