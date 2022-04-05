@@ -73,6 +73,8 @@ const Receipt = React.lazy(() => import('pages/store/contents/end/Receipt'))
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
 const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
+// 내지갑 > 환전 / 법정대리인 동의 안내페이지
+const ExchangeLegalAuth = React.lazy(() => import('pages/self_auth_result/ExchangeLegalAuth'))
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
 const LoginStart = React.lazy(() => import('pages/login/contents/start'))
@@ -143,6 +145,7 @@ const Report = React.lazy(() => import("pages/remypage/contents/report/Report"))
 const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
+const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -194,6 +197,7 @@ const Router = () => {
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
+        <Route exact path="/exchangeLegalAuth" component={ExchangeLegalAuth} />
 
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
@@ -333,6 +337,8 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
+
+        <Route exact path="/brdcst" component={BroadNoticeDetail} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

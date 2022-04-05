@@ -1,82 +1,187 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
-import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import './noticeDetail.scss'
 import Utility from "components/lib/utility";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
-import BlockReport from "pages/profile/components/popSlide/BlockReport";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import API from "context/api";
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setProfileNoticeData, setProfileNoticeFixData} from "redux/actions/profile";
+import {profilePagingDefault} from "redux/types/profileType";
+import Api from "context/api";
 
-const NoticeDetail = (props) => {
+const NoticeDetail = () => {
   const history = useHistory()
+  const location = useLocation();
+  const data = location.state;
   //context
   const context = useContext(Context)
-  const {token, profile} = context
-  const {memNo, type, index} = useParams();
-  //memNo :글이 작성되있는 프로필 주인의 memNo
+  const {token} = context
+  const params = useParams();
+  const dispatch = useDispatch();
+  const noticeData = useSelector(state => state.brdcst);
+  const noticeFixData = useSelector(state => state.noticeFix);
+
+  const getFetchData = (pageNo) => {
+    const apiParam = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: pageNo ? pageNo : noticeData.paging.next,
+      pageCnt: noticeData.paging.records,
+      topFix: 0
+    }
+    API.mypage_notice_sel(apiParam).then((res) => {
+      if(res.result === "success") {
+        console.log(res);
+        const data = res.data;
+        const callPageNo = data.paging?.page;
+        const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileNoticeData({
+          ...noticeData,
+          feedList: data.paging?.page > 1 ? noticeData.feedList.concat(data.list) : data.list,
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage
+        }));
+      } else {
+        context.action.alert({msg: res.message});
+      }
+    }).catch((e) => console.log(e));
+  }
+
+  const getFetchFixData = (pageNo) => {
+    const apiParam = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: pageNo ? pageNo : noticeFixData.paging.next,
+      pageCnt : noticeFixData.paging.records
+    }
+    API.myPageNoticeFixList(apiParam).then((res) => {
+      if(res.result === "success") {
+        const data = res.data;
+        const callPageNo = data.paging?.page;
+        const isLastPage = data.fixList.length > 0 ? data.paging.totalPage === callPageNo : true;
+        dispatch(setProfileNoticeFixData({
+          ...noticeFixData,
+          fixedFeedList: data.paging?.page > 1 ? noticeFixData.fixedFeedList.concat(data.fixList) : data.fixList,
+          fixCnt: data.fixList.length,
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage
+        }));
+      } else {
+        context.action.alert({msg: res.message});
+      }
+    }).catch((e) => console.log(e));
+  }
+
+  const fetchHandleLike = async (regNo, mMemNo, like, type) => {
+    const params = {
+      regNo: regNo,
+      mMemNo: mMemNo,
+      vMemNo: context.profile.memNo
+    };
+    if(like === "n") {
+      Api.profileFeedLike(params).then((res) => {
+        if(res.result === "success") {
+          if(type === "nonFix") {
+            getFetchData(1);
+          } else if(type === "fix") {
+            getFetchFixData(1);
+          }
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    } else if(like === "y") {
+      Api.profileFeedLikeCancel(params).then((res) => {
+        if(res.result === "success") {
+          if(type === "nonFix") {
+            getFetchData(1);
+          } else if(type === "fix") {
+            getFetchFixData(1);
+          }
+        } else {
+          context.action.toast({msg: res.message});
+        }
+      }).catch((e) => console.log(e));
+    }
+  };
+
+  const onClick = () => {
+    goProfileDetailPage({history, action: 'write', type: 'notice', memNo: data.memNo});
+  }
+
+  useEffect(() => {
+    if(!token.isLogin) {
+      history.push("/login");
+    }
+    getFetchData(1);
+    getFetchFixData(1);
+  }, []);
+
+  useEffect(() => {
+    console.log(noticeData.feedList);
+  })
 
   return (
     <div id="noticeDetail">
       <Header title="방송공지" type="back">
         <div className="buttonGroup">
-          <div className='moreBtn'>
+          <div className='moreBtn' onClick={onClick}>
             <img src={`${IMG_SERVER}/profile/sectionEdit.png`} alt="" />
           </div>
         </div>
       </Header>
       <section className='detailWrap'>
-        <div className="noticeList">
-          <div className="noticeBox">
-            <div className="badge">Notice</div>
-            <div className="text">세아의 팬닉입니다. 닉변은 피해줘요!
-            다른 방을 청취하고 선물하는 것은 세아의 팬닉입니다. 닉변은 피해줘요!
-            다른 방을 청취하고 선물하는 것은</div>
-            <div className="info">
-              <i className="like">156</i>
-              <i className="cmt">123</i>
-              <span className="time">3시간 전</span>
+        {noticeFixData.fixedFeedList.length !== 0 &&
+        noticeFixData.fixedFeedList.map((v, idx) => {
+          const detailPageParam = {history, action: 'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no}
+          return (
+            <div className="noticeList" key={idx}>
+              <div className="noticeBox">
+                <div className="badge">Notice</div>
+                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                <div className="info">
+                  {v.like_yn === "n" ?
+                    <i className="likeOff" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'fix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                    : <i className="likeOn" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'fix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                  }
+                  <i className="cmt">{v.replyCnt}</i>
+                  <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
+                </div>
+                <button className="fixIcon">
+                  <img src={`${IMG_SERVER}/profile/bookmark-on.png`} />
+                </button>
+              </div>
             </div>
-            <button className="fixIcon">
-              <img src={`${IMG_SERVER}/profile/bookmark-on.png`} />
-            </button>
-          </div>
-        </div>
+          )
+        })}
+        {noticeData.feedList.length !== 0 &&
+        noticeData.feedList.map((v, idx) => {
+          const detailPageParam = {history, action: 'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no}
+          return (
+            <div className="noticeList" key={idx}>
+              <div className="noticeBox">
+                <div className="badge">Notice</div>
+                <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                <div className="info">
+                  {v.like_yn === "n" ?
+                    <i className="likeOff" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'nonFix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                    : <i className="likeOn" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'nonFix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
+                  }
+                  <i className="cmt">{v.replyCnt}</i>
+                  <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
+                </div>
+                <button className="fixIcon">
+                  <img src={`${IMG_SERVER}/profile/bookmark-off.png`} />
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </section>
     </div>
   )
 }
 
-/**
- * 프로필 상세 관련 주소이동 공통처리
- * @Param:
- * history : useHistory()
- * action : detail, write, modify
- * type : feed, fanBaord
- * index : 글번호
- * targetMemNo : 글주인 memNo
- * */
-export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
-                                    index, memNo}) => {
-  if(!history) return;
-  if (type !== 'feed' && type !== 'fanBoard') return;
-
-  if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
-      history.push(`/profileDetail/${memNo}/${type}/${index}`);
-  } else if (action === 'write') { // 작성
-    if(type=='feed'){ // 작성 memNo : 프로필 주인의 memNo
-      history.push(`/profileWrite/${memNo}/${type}/write`);
-    }else if(type ==='fanBoard'){ // 작성 memNo : 프로필 주인의 memNo
-      history.push(`/profileWrite/${memNo}/${type}/write`);
-    }
-  } else if (action === 'modify') { // 수정 memNo : 프로필 주인의 memNo
-      history.push(`/profileWrite/${memNo}/${type}/modify/${index}`);
-  }
-};
-
-export default NoticeDetail
+export default NoticeDetail;

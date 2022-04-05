@@ -20,7 +20,7 @@
           border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
           border-radius:50%;
           box-sizing: border-box;
-        }    
+        }
       }
       .listContent {
         letter-spacing: -.5px;
@@ -62,7 +62,7 @@
   }
   .socialContent {
     padding: 2px 16px 16px;
-    .text {
+    .socialText {
       position:relative;
       margin-bottom:16px;
       word-break: break-all;
@@ -160,8 +160,13 @@
           margin-left:10px;
         }
         @include font(14px,$Medium,#666);
-        &.like {
-          @include BGIMG("profile/heart_icon-notice.png");
+        &.likeOff {
+          @include BGIMG("profile/heart_icon-off.png");
+          background-position:left center;
+          background-size:25px;
+        }
+        &.likeOn {
+          @include BGIMG("profile/heart_icon-on.png");
           background-position:left center;
           background-size:25px;
         }

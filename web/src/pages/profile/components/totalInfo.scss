@@ -85,7 +85,7 @@
           border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
           border-radius:50%;
           box-sizing: border-box;
-        }        
+        }
         img {
           width:100%;
           height:100%;
@@ -133,7 +133,7 @@
         &:last-child {
           margin-right:24px;
         }
-      } 
+      }
     }
     .swiper-slide {
       $boxColors: (#FFE8F7,#FFE6DE,#FFF6E1,#E2EAFF,#F3EEFF,#EDF5DF,#E3F6F2,#E5F5FB,#FFECEE);
@@ -181,22 +181,27 @@
           margin-top:auto;
           i {
             display:inline-block;
-            padding-left:24px;
+            padding-left:30px;
             line-height:25px;
             font-style:normal;
             + i {
               margin-left:10px;
             }
             @include font(14px,$Medium,#666);
-            &.like {
-              @include BGIMG("profile/heart_icon-notice.png");
+            &.likeOff {
+              @include BGIMG("profile/heart_icon-off.png");
               background-position:left center;
-              background-size:20px;
+              background-size:25px;
+            }
+            &.likeOn {
+              @include BGIMG("profile/heart_icon-on.png");
+              background-position:left center;
+              background-size:25px;
             }
             &.cmt {
               @include BGIMG("profile/comment_icon-notice.png");
               background-position:left center;
-              background-size:20px;
+              background-size:25px;
             }
           }
           .time {

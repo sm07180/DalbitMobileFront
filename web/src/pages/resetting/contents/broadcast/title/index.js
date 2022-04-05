@@ -7,19 +7,12 @@ import './title.scss'
 import API from "context/api";
 import TextArea from "pages/resetting/components/textArea";
 import Toast from "components/ui/toast/Toast";
+import {Context} from "context";
 
 const BroadcastTitle = () => {
   const [titleList, setTitleList] = useState([])
   const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
-  const [toast, setToast] = useState({state : false, msg : ""});
-
-  //토스트 메시지 출력
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
+  const context = useContext(Context);
 
   //등록된 제목 버튼 클릭시 해당 정보 가져오기
   const selectTitle = (e) => {
@@ -39,10 +32,10 @@ const BroadcastTitle = () => {
       contents: titleSelect.val
     })
     if(titleSelect.val === "") {
-      toastMessage("입력 된 방송제목이 없습니다. \n방송제목을 입력하세요.");
+      context.action.toast({msg: "입력 된 방송제목이 없습니다. \n방송제목을 입력하세요."});
     } else {
       if (res.result === "success") {
-        toastMessage("방송제목이 등록 되었습니다.")
+        context.action.toast({msg: "방송제목이 등록 되었습니다."})
         setTitleList(res.data.list);
         setTitleSelect({...titleSelect, val: ""});
       }
@@ -56,7 +49,7 @@ const BroadcastTitle = () => {
       idx: titleSelect.index
     })
     if(res.result === "success") {
-      toastMessage("방송제목이 삭제 되었습니다.")
+      context.action.toast({msg: "방송제목이 삭제 되었습니다."})
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }
@@ -78,7 +71,7 @@ const BroadcastTitle = () => {
       contents: titleSelect.val
     })
     if(res.result === "success") {
-      toastMessage("방송제목이 수정 되었습니다.")
+      context.action.toast({msg: "방송제목이 수정 되었습니다."})
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }
@@ -92,7 +85,7 @@ const BroadcastTitle = () => {
   return (
     <div id="title">
       <Header position='sticky' title='방송 제목' type='back'/>
-      <section className='titleInpuBox'>
+      <section className='titleInputBox'>
         <p className='topText'>최대 3개까지 저장 가능</p>
         <TextArea max={20} list={titleList} setList={setTitleList} select={titleSelect} setSelect={setTitleSelect}
                   fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
@@ -109,7 +102,6 @@ const BroadcastTitle = () => {
         </div>
       </section>
       }
-      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }

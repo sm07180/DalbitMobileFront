@@ -37,4 +37,8 @@ PhotoChange.defaultProps = {
   confirm: () => {},
 };
 
+PhotoChange.defaultProps = {
+  confirm: () => {},
+};
+
 export default PhotoChange

@@ -93,8 +93,7 @@ const ProfileEdit = () => {
 
   const openMoreList = () => {
     dispatch(setCommonPopupOpenData({...popup, commonPopup: true}))
-    console.log('1');
-  }
+  };
 
   const closeMoreList = () => {
     dispatch(setCommonPopupClose());
@@ -265,7 +264,7 @@ const ProfileEdit = () => {
     } else {
       closeMoreList();
     }
-  };
+  }
 
   //크로퍼 완료시 실행 Effect -> 결과물 포토섭에 1장만 업로드
   useEffect(() => {

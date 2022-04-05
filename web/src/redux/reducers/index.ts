@@ -4,7 +4,7 @@ import member from './member';
 import main from './main/index';
 import live from './main/live';
 import profile from './profile/index';
-import feed from './profile/feed';
+import brdcst from './profile/brdcst';
 import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
 import clip from './clip/clip';
@@ -18,6 +18,8 @@ import vote from './vote';
 import broadcast from './broadcast';
 import profileTab from './profile/tab';
 import noticeTabList from "./notice/tabList";
+import feed from "./profile/feed";
+import noticeFix from "./profile/noticeFix";
 
 const rootReducer = combineReducers({
   common
@@ -25,7 +27,7 @@ const rootReducer = combineReducers({
   , main
   , live
   , profile
-  , feed
+  , brdcst
   , fanBoard
   , profileClip
   , clip
@@ -39,6 +41,8 @@ const rootReducer = combineReducers({
   , broadcast
   , profileTab
   , noticeTabList
+  , feed
+  , noticeFix
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
