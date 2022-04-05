@@ -160,7 +160,7 @@ const TopRanker = (props) => {
                                     <span className='liveText'>LIVE</span>
                                   </div>
                               }
-                              {
+                              {/* {
                                 data.listenRoomNo !== "" &&
                                   <div className='badgeListener' onClick={(e) => {
                                     e.stopPropagation();
@@ -177,7 +177,7 @@ const TopRanker = (props) => {
                                     </span>      
                                     <span className='ListenerText'>LIVE</span>
                                   </div>                                  
-                              }
+                              } */}
                             </>
                           }
                         </div>

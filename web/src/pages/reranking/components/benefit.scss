@@ -43,7 +43,12 @@
   
     .text {
       @include font(12px, 400, #424242);
+      margin-bottom: 8px;
+      word-break: keep-all;
       letter-spacing: -1px;
+      &:last-child {
+        margin-bottom: 0px;        
+      }
     }
     .subText {
       @include font(12px, 400, #757575);

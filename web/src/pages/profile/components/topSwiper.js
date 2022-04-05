@@ -110,7 +110,7 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+        {/* {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
           <div className='badgeListener' onClick={roomJoinHandler}>                     
             <span className='headset'>                          
               <Lottie
@@ -123,7 +123,7 @@ const TopSwiper = (props) => {
             </span>      
            <span className='ListenerText'>LIVE</span>
          </div>
-        }
+        } */}
       </div>
       }
     </>

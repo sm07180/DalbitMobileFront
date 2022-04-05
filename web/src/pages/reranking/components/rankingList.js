@@ -104,7 +104,7 @@ export default withRouter((props) => {
                 </div>
               </div>
             }
-            {
+            {/* {
               list.listenRoomNo !== "" &&
                 <div className="listBack">
                   <div className='badgeListener' onClick={(e) => {
@@ -123,7 +123,7 @@ export default withRouter((props) => {
                     <span className='ListenerText'>LIVE</span>
                   </div>  
                 </div>                                
-            }
+            } */}
           </ListRow>
         )
       })}
