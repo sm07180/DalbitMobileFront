@@ -36,7 +36,7 @@ import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
 const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
-const pagePerCnt = 20
+const pagePerCnt = 50
 
 let touchStartY = null
 let touchEndY = null

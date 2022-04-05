@@ -140,8 +140,18 @@ export const RoomJoin = async (obj) => {
             msg: '현재 청취 중인 방송방이 있습니다.\n방송에 입장하시겠습니까?',
           })
         }else {
-          sessionStorage.removeItem('room_active')
-          return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
+          // sessionStorage.removeItem('room_active')
+          // return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
+          return Room.context.action.confirm({
+            callback: () => {
+              sessionStorage.removeItem('room_active')
+              return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
+            },
+            cancelCallback: () => {
+              sessionStorage.removeItem('room_active')
+            },
+            msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
+          })
         }
       }
     }
