@@ -74,6 +74,12 @@ const RankingWrap = (props) => {
             </RankList>
           )
         }
+        {
+          props.wassupList.length < props.wassupListCnt && props.pageInfo.pageNo < 3 &&
+          <div className="rankingMore" onClick={props.getNextList}>
+            더보기
+          </div>
+        }
       </div>
     </section>
   );
