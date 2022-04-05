@@ -24,7 +24,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
 import {payAOSInApp} from "common/api";
-import {getIndexData} from "redux/actions/payStore";
+import {getIndexData, setStoreInfo} from "redux/actions/payStore";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -842,17 +842,26 @@ export default () => {
       // AOS 인앱 소비 결과
       case 'native-consume':{
         try{
-          // Hybrid('onConsumeResult', onPurchaseResultData);
-          // window.location.reload()
           dispatch(getIndexData(history.action));
-          // history.
-          // console.log(`@@native-consume`,event)
+          Hybrid('onConsumeResult', 1);
+          dispatch(setStoreInfo({state:"ready"}));
         }catch(e){
           console.error(`native-consume e=>`, e);
-          Hybrid('onConsumeResult', {type:'error', msg:e});
+          Hybrid('onConsumeResult', {result:'error', msg:e});
         }
         break;
       }
+      // IOS 인앱 결과
+      case 'native-ios-inapp-result':{
+        try{
+          dispatch(setStoreInfo({state:"ready"}));
+          window.location.replace(history.location.pathname+history.location.search);
+        }catch(e){
+          console.error(`native-ios-inapp-result e=>`, e);
+        }
+        break;
+      }
+
       default:
         break
     }
@@ -1181,6 +1190,8 @@ export default () => {
     /* AOS-inApp */
     document.addEventListener('native-purchase', update)
     document.addEventListener('native-consume', update)
+    /* IOS-inApp */
+    document.addEventListener('native-ios-inapp-result', update)
 
     return () => {
       /*----native----*/
@@ -1225,6 +1236,9 @@ export default () => {
 
       document.removeEventListener('native-purchase', update)
       document.removeEventListener('native-consume', update)
+
+      /* IOS-inApp */
+      document.addEventListener('native-ios-inapp-result', update)
     }
   }, [])
 

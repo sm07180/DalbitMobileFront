@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useContext, useEffect} from "react";
 import '../style.scss'
 import Header from "../../../components/ui/header/Header";
 import Utility from "../../../components/lib/utility";
@@ -14,13 +14,17 @@ import {Hybrid, isHybrid} from "../../../context/hybrid";
 import {OS_TYPE} from "../../../context/config";
 import Tabmenu from "../../broadcast/content/right_content/component/tabmenu";
 import {useDispatch, useSelector} from "react-redux";
-import {setStoreTabInfo} from "../../../redux/actions/payStore";
+import {setStoreInfo, setStoreTabInfo} from "../../../redux/actions/payStore";
 import qs from 'query-string';
 import moment from "moment";
+
+import { GlobalContext } from "context";
 
 const StorePage = ()=>{
   // console.log(`@@ storeInfo ->`, storeInfo);
   // console.log(`@@ storeTabInfo ->`, storeTabInfo);
+  const { globalAction } = useContext(GlobalContext);
+
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -32,21 +36,37 @@ const StorePage = ()=>{
       console.log(`storeInfo.mode none`)
       return;
     }
+    if(payStoreRdx.storeInfo.state === 'progress'){
+      globalAction.setAlertStatus!({
+        status: true,
+        type: "alert",
+        content: `잠시 후 다시 시도해 주세요.`,
+        callback: () => {
+        },
+      });
+      return;
+    }
     const tabInfo = payStoreRdx.storeTabInfo.find(f=>f.selected);
     if(!tabInfo){
       return;
     }
 
     if(tabInfo.modeTab === ModeTabType.inApp){
-      const info = {
-        itemCode: item.itemNo,
-        itemKey: `${memberRdx.memNo}_${moment(moment.now()).format('YYYYMMDDHHmmss')}`
-      };
-      if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.Android){
-        Hybrid('doBilling', info);
+      dispatch(setStoreInfo({state:"progress"}));
+      setTimeout(()=>{
+        dispatch(setStoreInfo({state:"ready"}));
+      }, 2000)
+      if(payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.Android){
+        Hybrid('doBilling', {
+          itemCode: item.itemNo,
+          itemKey: `${memberRdx.memNo}_${moment(moment.now()).format('YYYYMMDDHHmmss')}`
+        });
       }
-      if(payStoreRdx.storeInfo.deviceInfo.os === OS_TYPE.IOS){
-        Hybrid('openChargeWithItemCode', info);
+      if(payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.IOS){
+        Hybrid('openChargeWithItemCode', {
+          productNm: item.itemNo
+          , productPrice: item.itemPriceDefault
+        });
       }
       return;
     }else{
@@ -95,7 +115,7 @@ const StorePage = ()=>{
               <div className="title">
                 <i/>결제 TIP
               </div>
-              <p>PC 또는 {payStoreRdx.storeInfo.deviceInfo.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
+              <p>PC 또는 {payStoreRdx.storeInfo.deviceInfo?.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
               <p>
                 www.dallalive.com
               </p>

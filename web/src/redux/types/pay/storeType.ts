@@ -34,12 +34,13 @@ export type DeviceInfoType = {
   sdkVersion?: string
 }
 export type StoreInfoType = {
-  dalCnt: number
-  dalPriceList: Array<DalPriceType>
-  defaultNum: number
-  deviceInfo: DeviceInfoType
-  modeTab: ModeTabType
-  mode: ModeType
+  dalCnt?: number
+  dalPriceList?: Array<DalPriceType>
+  defaultNum?: number
+  deviceInfo?: DeviceInfoType
+  modeTab?: ModeTabType
+  mode?: ModeType
+  state?: 'ready' | 'progress'
 }
 export type PayStoreStateType = {
   storeInfo: StoreInfoType

@@ -4,7 +4,7 @@ import {ModeTabType, ModeType, PAYMENT_TAB, PayStoreActions, PayStoreStateType} 
 export const initialState:PayStoreStateType = {
   storeInfo:{
     dalCnt: 0, defaultNum: 0, dalPriceList: [], mode:ModeType.all, modeTab:ModeTabType.none,
-    deviceInfo:{}
+    deviceInfo:{}, state: 'ready'
   },
   storeTabInfo:PAYMENT_TAB
 }
