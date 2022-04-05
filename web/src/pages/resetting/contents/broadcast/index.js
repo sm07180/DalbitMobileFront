@@ -20,7 +20,6 @@ import Notice from "pages/resetting/contents/broadcast/broadcastNotice";
 
 const SettingBroadcast = () => {
   const params = useParams();
-  const history = useHistory();
   const settingCategory = params.category;
   const [settingData, setSettingData] = useState({});
   const [menuListInfo, setMenuListInfo] = useState([
@@ -32,20 +31,13 @@ const SettingBroadcast = () => {
     {text:'선물 시 자동 스타 추가', value: false},
     {text:'배지 / 입·퇴장 메시지', path: '/setting/streaming/inOutMessage'},
   ]);
-  const [toast, setToast] = useState({state : false, msg : ""});
-
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
+  const context = useContext(Context);
 
   //선물 시 자동 스타 추가 정보 수정
   const fetchData = async (value, index) => {
     const res = await API.modifyBroadcastSetting({giftFanReg: !value})
     if(res.result === "success") {
-      toastMessage(res.message);
+      context.action.toast({msg: res.message});
       setMenuListInfo(menuListInfo.map((v, idx) => {
         if(idx === index) {v.value = !value}
         return v
@@ -80,11 +72,12 @@ const SettingBroadcast = () => {
               return (
                 <MenuList text={list.text} path={list.path} key={index} disabledClick={index === 5 ? true : false}>
                   {index < 2 && <small>최대 3개</small>}
+                  {index === 2 && <small>최대 1개</small>}
                   {index === 3 && <small>최대 6개</small>}
                   {index === 5 &&
                   <label className="inputLabel" >
-                        <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
-                               onChange={() => fetchData(list.value, index)}/>
+                    <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
+                           onChange={() => fetchData(list.value, index)}/>
                     <span className={`switchBtn`}/>
                   </label>
                   }
@@ -95,24 +88,23 @@ const SettingBroadcast = () => {
         </div>
         :
         settingCategory === "title" ?
-        <Title/>
-        :
-        settingCategory === "greeting" ?
-        <Greeting/>
-        :
-        settingCategory === 'broadcastNotice' ?
-        <Notice />
-        :
-        settingCategory === "message" ?
-        <Message/>
-        :
-        settingCategory === "infoOpen" ?
-        <InfoOpen settingData={settingData} setSettingData={setSettingData}/>
-        :
-        settingCategory === "inOutMessage" &&
-        <InOutMessage settingData={settingData} setSettingData={setSettingData}/>
+          <Title/>
+          :
+          settingCategory === "greeting" ?
+            <Greeting/>
+            :
+            settingCategory === 'broadcastNotice' ?
+              <Notice />
+              :
+              settingCategory === "message" ?
+                <Message/>
+                :
+                settingCategory === "infoOpen" ?
+                  <InfoOpen settingData={settingData} setSettingData={setSettingData}/>
+                  :
+                  settingCategory === "inOutMessage" &&
+                  <InOutMessage settingData={settingData} setSettingData={setSettingData}/>
       }
-      {toast.state && <Toast msg={toast.msg}/>}
     </>
   )
 }

@@ -11,14 +11,13 @@ import Header from "components/ui/header/Header";
 import {useSelector} from "react-redux";
 
 const Post = (props) => {
-  const {fetchMypageNewCntData} = props;
+  const {onClick} = props
   const context = useContext(Context);
   const history = useHistory();
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
   const [postPageInfo, setPostPageInfo] = useState({noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
   const isDesktop = useSelector((state)=> state.common.isDesktop)
-
 
   //공지사항 신규 알림 안보이게 하기
   let mypageNewStg = localStorage.getItem("mypageNew")
@@ -79,12 +78,6 @@ const Post = (props) => {
     return moment(date, "YYYYMMDDhhmmss").format("YY.MM.DD");
   };
 
-  //공지사항 세부페이지 이동
-  const onClick = (e) => {
-    const {num} = e.currentTarget.dataset
-    history.push({pathname: `/notice/${num}`, state: num});
-  };
-
   //태그, nbsp제거
   const deleteTag = (data) => {
     const regTag = data.replace(/(<([^>]+)>)/ig, "").replace(/&nbsp;/g, "").replace(/&lt;/g, "").replace(/&gt;/g, "");
@@ -94,10 +87,7 @@ const Post = (props) => {
   useEffect(() => {
     if(!(context.token.isLogin)) {history.push("/login")}
     fetchData();
-    if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
-    }
-  }, []);
+  }, [postPageInfo]);
 
   useEffect(() => {
     window.addEventListener("scroll", scrollEvt);
@@ -116,8 +106,8 @@ const Post = (props) => {
                 {/* noticeType 1 = 공지사항, 2 = 이벤트, 3 = 정기정검, 4 = 업데이트, 5 = 언론보도 */}
                 <div className="photo">
                   <img src={list.noticeType === 1 || list.noticeType === 5 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.noticeImg}.png`
-                : list.noticeType === 2 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
-                  : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""} alt=""/>
+                    : list.noticeType === 2 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.eventImg}.png`
+                      : list.noticeType === 3 || list.noticeType === 4 ? `https://image.dalbitlive.com/mypage/dalla/notice/${imgFile.showImg}.png` : ""} alt=""/>
                   {getNewIcon(list.noticeIdx, list.isNew) && <span className='newBadge'>N</span>}
                 </div>
                 <div className="listContent" data-num={list.noticeIdx} onClick={onClick}>

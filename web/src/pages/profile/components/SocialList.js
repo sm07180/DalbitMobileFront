@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -11,6 +11,7 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileD
 import {Context} from "context";
 import Utility from "components/lib/utility";
 import {useDispatch, useSelector} from "react-redux";
+import FeedLike from "pages/profile/components/FeedLike";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike} = props
@@ -19,15 +20,11 @@ const SocialList = (props) => {
   const {profile} = context;
   const dispatch = useDispatch();
   const profileTab = useSelector(state => state.profileTab);
-  const [contentsHeight, setContentsHeight] = useState([]);
+  const socialRef = useRef([]);
 
   const photoClickEvent = (memNo) => {
     if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
   }
-
-  useEffect(() => {
-    setContentsHeight(document.getElementsByClassName("socialText"));
-  }, [contentsHeight]);
 
   return (
     <div className="socialListWrap">
@@ -52,10 +49,12 @@ const SocialList = (props) => {
                               }}
             />
             <div className="socialContent">
-              <div className={type === "feed" && contentsHeight[index]?.offsetHeight >= 64 ? "socialText lineCut-4" : "socialText"}
+              <div className={type === "feed" && socialRef.current[index]?.offsetHeight >= 64 ? "socialText lineCut-4" : "socialText"}
                    onClick={() => goProfileDetailPage(detailPageParam)}
+                   ref={el => socialRef.current[index] = el}
                    dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
               />
+
               {type === 'feed' && item.photoInfoList.length > 0 &&
               <div className="swiperPhoto" onClick={() => goProfileDetailPage(detailPageParam)}>
                 {item.photoInfoList.length <= 2 ?
@@ -93,19 +92,7 @@ const SocialList = (props) => {
               </div>
               }
 
-              <div className="info">
-                {type === "feed" && item.like_yn === "n" ?
-                  <i className="likeOff" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
-                  : type === "feed" && item.like_yn === "y" &&
-                  <i className="likeOn" onClick={() => fetchHandleLike(item.reg_no, item.mem_no, item.like_yn)}>{item.rcv_like_cnt ? Utility.printNumber(item.rcv_like_cnt) : 0}</i>
-                }
-
-                {type === "feed" ?
-                  <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{item.tail_cnt}</i>
-                  :
-                  <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{item.replyCnt}</i>
-                }
-              </div>
+              <FeedLike data={item} fetchHandleLike={fetchHandleLike} type={"feed"} detailPageParam={detailPageParam} />
             </div>
           </div>
         )

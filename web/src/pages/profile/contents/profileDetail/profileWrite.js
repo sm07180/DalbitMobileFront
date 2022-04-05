@@ -192,10 +192,6 @@ const ProfileWrite = () => {
       setFormState({...formState, photoInfoList: globalPhotoInfoListRef.current.concat({img_name: data?.path, ...data})});
       setImage(null);
 
-      // if (photoListSwiperRef.current?.swiper) {
-      //   photoListSwiperRef.current?.swiper?.update();
-      //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
-      // }
     } else {
       context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
     }
@@ -319,26 +315,6 @@ const ProfileWrite = () => {
         {/*사진 리스트 스와이퍼*/}
         {type === 'notice' &&
         <div className="insertGroup">
-          {/*<div className="title">사진 첨부<span>(최대 10장)</span></div>*/}
-          {/*  <Swiper {...swiperParams} ref={photoListSwiperRef}>*/}
-          {/*    {formState?.photoInfoList.map((data, index) =>*/}
-          {/*      <label key={index} onClick={(e) => e.preventDefault()}>*/}
-          {/*        <div className="insertPicture"*/}
-          {/*             onClick={() => setShowSlide({show: true, viewIndex: index})}>*/}
-          {/*          <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>*/}
-          {/*        </div>*/}
-          {/*        <button className="cancelBtn"*/}
-          {/*                onClick={(e) => {*/}
-          {/*                  e.stopPropagation();*/}
-          {/*                  deleteThumbnailImageList(formState?.photoInfoList, index)*/}
-          {/*                }}/>*/}
-          {/*      </label>)*/}
-          {/*    }*/}
-          {/*    {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>*/}
-          {/*      <label key={i} onClick={() => inputRef?.current?.click()}>*/}
-          {/*        <button className='insertBtn'>+</button>*/}
-          {/*      </label>)}*/}
-          {/*  </Swiper>*/}
           <div className="title">사진 첨부</div>
           <div className={"swiper-container"}>
             <div className={"swiper-wrapper"}>

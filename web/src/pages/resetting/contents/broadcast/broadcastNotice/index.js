@@ -3,34 +3,14 @@ import Header from "components/ui/header/Header";
 import TextArea from "pages/resetting/components/textArea";
 import RadioList from "pages/resetting/components/radioList";
 import Toast from "components/ui/toast/Toast";
-import "../title/title.scss"
+import './broadcastNotice.scss'
 import {Context} from "context";
 import API from "context/api";
 
 const BroadcastNotice = () => {
   const [noticeList, setNoticeList] = useState([]);
   const [noticeSelect, setNoticeSelect] = useState({state: false, val: "", index: -1});
-  const [toast, setToast] = useState({state: false, msg: ""});
   const context = useContext(Context);
-
-  /* 하단 토스트 메세지 */
-  const toastMessage = (text) => {
-    setToast({state: true, msg: text});
-    setTimeout(() => {
-      setToast({... toast, state: false});
-    }, 3000);
-  }
-
-  /* 등록된 방송공지 클릭시 값 가져오기 */
-  const selectNotice = (e) => {
-    let selectVal = e.currentTarget.innerText;
-    const {targetIndex} = e.currentTarget.dataset;
-    setNoticeSelect({
-      state: true,
-      val: selectVal,
-      index: targetIndex
-    });
-  }
 
   /* 방송공지 조회 */
   const fetchData = async () => {
@@ -41,7 +21,6 @@ const BroadcastNotice = () => {
       setNoticeList(res.data.list);
     }).catch((e) => console.log(e));
   }
-
 
   /* 방송공지 등록 */
   const fetchAddData = async () => {
@@ -54,14 +33,14 @@ const BroadcastNotice = () => {
       }
     });
     if(noticeSelect.val === "") {
-      toastMessage("입력 된 방송 공지가 없습니다. \n방송 공지를 입력하세요.");
+      context.action.toast({msg: "입력 된 방송 공지가 없습니다. \n방송 공지를 입력하세요."});
     } else {
       if(res.result === "success") {
-        toastMessage("방송 공지가 등록 되었습니다.");
+        context.action.toast({msg: "방송 공지가 등록 되었습니다."});
         setNoticeSelect({...noticeSelect, val: ""});
         fetchData();
       } else {
-        toastMessage("이미 입력된 방송 공지가 있습니다.");
+        context.action.toast({msg: "이미 입력된 방송 공지가 있습니다."});
       }
     }
   }
@@ -78,7 +57,7 @@ const BroadcastNotice = () => {
       }
     })
     if(res.result === "success") {
-      toastMessage("방송 공지가 수정 되었습니다.")
+      context.action.toast({msg: "방송 공지가 수정 되었습니다."});
       setNoticeSelect({state: false, val: "", index: -1});
       fetchData();
     }
@@ -93,7 +72,7 @@ const BroadcastNotice = () => {
       delChrgrName: ""
     })
     if(res.result === "success") {
-      toastMessage("방송 공지가 삭제 되었습니다.");
+      context.action.toast({msg: "방송 공지가 삭제 되었습니다."});
       setNoticeSelect({state: false, val: "", index: -1});
       fetchData();
     }
@@ -104,21 +83,13 @@ const BroadcastNotice = () => {
   }, []);
 
   return (
-    <div id="title">
-      <Header position="sticky" title="방송방 공지" type="back"/>
-      <section className="titleInpuBox">
+    <div id="broadNotice">
+      <Header position={"sticky"} title={"방송방 공지"} type={"back"}/>
+      <section className="noticeInputBox">
+        <p className="topText">최대 1개까지 저장 가능</p>
         <TextArea max={1000} type={"방송 공지"} list={noticeList} setList={setNoticeList} select={noticeSelect} setSelect={setNoticeSelect}
-                  fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData}/>
+                  fetchAddData={fetchAddData} fetchDeleteData={fetchDeleteData} fetchModifyData={fetchModifyData} />
       </section>
-      {noticeList.length > 0 &&
-      <section className="titleListBox">
-        <div className="sectionTitle">등록된 공지<span className="point">{noticeList.length}</span></div>
-        <div className="radioWrap">
-          <RadioList title={noticeList[0]?.conts} listIndex={noticeList[0]?.auto_no} clickEvent={selectNotice} titleSelect={noticeSelect} setTitleSelect={setNoticeSelect}/>
-        </div>
-      </section>
-      }
-      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   );
 };

@@ -713,8 +713,6 @@ const ProfilePage = () => {
     if(context.token.isLogin) {
       if(profileReady) {
         getProfileData(); // 프로필 상단 데이터
-        getNoticeFixData();
-        getNoticeData();
         profileTabInit();
         if(location.search) {
           parameterManager(); // 주소 뒤에 파라미터 체크
@@ -724,10 +722,6 @@ const ProfilePage = () => {
       history.replace('/login');
     }
   }, [location.pathname]);
-
-  useEffect(() => {
-    getNoticeFixData();
-  }, []);
 
   // 플로팅 버튼 오픈시 스크롤 막기
   useEffect(() => {
@@ -749,8 +743,10 @@ const ProfilePage = () => {
     if(!context.token.isLogin) {
       return history.replace('/login');
     }
-
     getProfileData(); // 프로필 상단 데이터
+    getNoticeData(true);
+    getNoticeFixData(true);
+    getFeedData(true);
     /* 프로필 하단 탭 데이터 */
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
@@ -797,11 +793,11 @@ const ProfilePage = () => {
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
           <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction} />
-          {(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])
-            && <button onClick={() => {
-            profileTab.tabName === profileTab.tabList[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo, dispatch, profileTab} );
-              profileTab.tabName === profileTab.tabList[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo, dispatch, profileTab})
-          }}>등록</button>}
+          {/*{(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])*/}
+          {/*  && <button onClick={() => {*/}
+          {/*  profileTab.tabName === profileTab.tabList[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo, dispatch, profileTab} );*/}
+          {/*    profileTab.tabName === profileTab.tabList[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo, dispatch, profileTab})*/}
+          {/*}}>등록</button>}*/}
         </div>
 
         {/* 피드 */}

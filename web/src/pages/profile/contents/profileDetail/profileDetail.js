@@ -15,6 +15,7 @@ import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
+import FeedLike from "pages/profile/components/FeedLike";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -195,7 +196,7 @@ const ProfileDetail = (props) => {
   // 좋아요 툴팁 이벤트
   const tooltipScrollEvent = useCallback(() => {
     const infoNode = infoRef.current;
-    const infoPosition = infoNode.offsetTop;
+    const infoPosition = infoNode?.offsetTop;
     const scrollBottom = window.scrollY + document.documentElement.clientHeight - 100;
 
     if (scrollBottom > infoPosition) {
@@ -447,12 +448,12 @@ const ProfileDetail = (props) => {
 
   /* 좋아요 */
   const fetchHandleLike = async (regNo, mMemNo, like) => {
-    const params = {
-      regNo: regNo,
-      mMemNo: mMemNo,
-      vMemNo: context.profile.memNo
-    };
     if(type === 'notice') {
+      const params = {
+        regNo: regNo,
+        mMemNo: mMemNo,
+        vMemNo: context.profile.memNo
+      };
       if(like === "n") {
         await Api.profileFeedLike(params).then((res) => {
           if(res.result === "success") {
@@ -471,6 +472,11 @@ const ProfileDetail = (props) => {
         }).catch((e) => console.log(e));
       }
     } else if(type === "feed") {
+      const params = {
+        feedNo: regNo,
+        mMemNo: mMemNo,
+        vMemNo: context.profile.memNo
+      };
       if(like === "n") {
         await Api.myPageFeedLike(params).then((res) => {
           if(res.result === "success") {
@@ -555,20 +561,7 @@ const ProfileDetail = (props) => {
                 </div>
                 : <></>
           )}
-          <div className="info" ref={infoRef}>
-            {(type === "feed" || type === 'notice') && item?.like_yn === "n" ?
-              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>
-                {tooltipEvent && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
-                {item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}
-              </i>
-              : (type === "feed" || type === 'notice') && item?.like_yn === "y" &&
-              <i className="like" onClick={() => fetchHandleLike(item.noticeIdx, item.mem_no, item.like_yn)}>
-                {/*{tooltipEvent && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}*/}
-                {item?.rcv_like_cnt ? Utility.printNumber(item?.rcv_like_cnt) : 0}
-              </i>
-            }
-            <i className="cmt">{Utility.addComma(replyList.length)}</i>
-          </div>
+          <FeedLike data={item} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"} />
         </div>
 
         {/* 댓글 리스트 영역 */}
