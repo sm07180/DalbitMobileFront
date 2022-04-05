@@ -60,7 +60,7 @@ const ClipRanking = () => {
     const { clipNo, type } = e.currentTarget.dataset;
     let tempType = type;
     if (type === undefined) tempType = 1;
-    if (rankClipInfo.list.length > 0) {
+    if (clipNo) {
       const clipParam = { clipNo: clipNo, gtx: context, history, type: 'all' };
       let playListInfoData = {
         ...searchInfo,
@@ -92,7 +92,7 @@ const ClipRanking = () => {
             </section>
           </>
           :
-          <NoResult/>
+          <NoResult ment="클립 랭킹 순위가 만들어지고 있어요." />
         }
       </div>      
     </div>
