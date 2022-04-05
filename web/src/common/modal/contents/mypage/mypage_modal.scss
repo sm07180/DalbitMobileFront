@@ -18,6 +18,14 @@
     height:calc(100% - 53px);
     overflow-y:auto;
   }
+  .closeBtn {
+    position: absolute;
+    top:0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    @include font(24px, $Bold,black);
+  }
 }
 .exchange-modal {
   position: relative;
@@ -26,14 +34,6 @@
   }
 }
 
-.closeBtn {
-  position: absolute;
-  top:0;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  @include font(24px,$Bold,black);
-}
 .myModalWrap {
   position: relative;
   box-sizing: border-box;
