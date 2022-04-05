@@ -25,7 +25,7 @@ const index = ()=>{
     }
 
     const platform = payStoreRdx.storeTabInfo.find(f=>f.selected);
-    if(!platform){
+    if(!platform || !platform.modeTab){
       return
     }
     dispatch(getPriceList(platform.modeTab));
@@ -34,7 +34,7 @@ const index = ()=>{
   return (
     <>
       {
-        payStoreRdx.storeInfo.deviceInfo.os !== OsType.Unknown &&
+        payStoreRdx.storeInfo.deviceInfo?.os !== OsType.Unknown &&
         payStoreRdx.storeInfo.mode !== ModeType.none &&
         <StorePage />
       }
