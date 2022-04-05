@@ -223,7 +223,8 @@ export default (props) => {
               <button
                 onClick={() => {
                   if(isDesktop()) {
-                    window.close()
+                    window.opener.location.href = '/wallet?exchange';
+                    window.close();
                   }else {
                     history.push('/wallet?exchange')
                   }

@@ -36,106 +36,114 @@
       &.my{
         margin-bottom: 8px;
       }
-    }
-    .eventRankList {
-      padding:0 16px 0 10px;
-      height:74px;
-      border-bottom:1px solid #EFEFEF;
-      cursor: pointer;
-      @for $i from 1 through 3 {
-        &:nth-child(#{$i}) {
-          .rankNum {
-            position:relative;
-            width:36px;
-            &::after {
-              content:"";
-              @include position-center;
-              width:36px;height:40px;
-              @include BGIMG("event/medal-#{$i}.png");
-            }
-            .num {
-              display: none;
-            }
-          }
-        }
-      }
-      @for $i from 4 through 10 {
-        &:nth-child(#{$i}) {
-          .rankNum {
-            width:36px;
-            .num {
-              background-color: #3BC258;
-              color: white;
+      .eventRankList {
+        padding:0 16px 0 10px;
+        height:74px;
+        border-bottom:1px solid #EFEFEF;
+        cursor: pointer;
+        @for $i from 1 through 3 {
+          &:nth-child(#{$i}) {
+            .rankNum {
+              position:relative;
+              width:36px;
+              &::after {
+                content:"";
+                @include position-center;
+                width:36px;height:40px;
+                @include BGIMG("event/medal-#{$i}.png");
+              }
+              .num {
+                display: none;
+              }
             }
           }
         }
-      }
-      &.my {
-        border-bottom:0;
+        @for $i from 4 through 10 {
+          &:nth-child(#{$i}) {
+            .rankNum {
+              width:36px;
+              .num {
+                background-color: #3BC258;
+                color: white;
+              }
+            }
+          }
+        }
+        &.my {
+          border-bottom:0;
+          .rankNum {
+            .num {
+              display:block;
+              background-color: #eee !important;
+            }
+            &::after {display:none;}
+          }
+        }
         .rankNum {
           .num {
             display:block;
-            background-color: #eee !important;
+            background-color: #eee;
+            color:black;
           }
-          &::after {display:none;}
+        }
+        .photo {
+          margin-right:8px;
+          border-radius:50%;
+          background-color:#eee;
+        }
+        .listContent {
+          flex:1;
+          @include flex($fd:column);
+          min-width: 0;
+          .listItem {
+            @include flex(center);
+            line-height: 22px;
+            .gender {
+              margin-right:4px;
+            }
+            i {
+              padding-left:17px;
+              margin-right:8px;
+              font-style: normal;
+              @include font(12px,$Medium,#6A6A6A);
+            }
+            .nick {
+              flex:1;
+              @include font(16px,$Medium,#202020);
+              @include fontCut;
+            }
+          }
+          .text {
+            text-align: center;
+            @include font(13px,$Medium,#999);
+          }
+        }
+        .listBack {
+          @include flex(flex-end,center,column);
+          min-width:52px;
+          margin-left:auto;
+          padding-left:8px;
+          @include font(12px, $Medium, #757575);
+          &.center{
+            align-items: center;
+          }
+          .numBox{
+            @include flex(center);
+            margin-top: 5px;
+            >.num{
+              @include font(16px, $SemiBold,#3BC258);
+              margin-right: 4px;
+            }
+          }
         }
       }
-      .rankNum {
-        .num {
-          display:block;
-          background-color: #eee;
-          color:black;
-        }
-      }
-      .photo {
-        margin-right:8px;
-        border-radius:50%;
-        background-color:#eee;
-      }
-      .listContent {
-        flex:1;
-        @include flex($fd:column);
-        min-width: 0;
-        .listItem {
-          @include flex(center);
-          line-height: 22px;
-          .gender {
-            margin-right:4px;
-          }
-          i {
-            padding-left:17px;
-            margin-right:8px;
-            font-style: normal;
-            @include font(12px,$Medium,#6A6A6A);
-          }
-          .nick {
-            flex:1;
-            @include font(16px,$Medium,#202020);
-            @include fontCut;
-          }
-        }
-        .text {
-          text-align: center;
-          @include font(13px,$Medium,#999);
-        }
-      }
-      .listBack {
-        @include flex(flex-end,center,column);
-        min-width:52px;
-        margin-left:auto;
-        padding-left:8px;
-        @include font(12px, $Medium, #757575);
-        &.center{
-          align-items: center;
-        }
-        .numBox{
-          @include flex(center);
-          margin-top: 5px;
-          >.num{
-            @include font(16px, $SemiBold,#3BC258);
-            margin-right: 4px;
-          }
-        }
+      .rankingMore{
+        @include flex(center, center);
+        width: 100%;
+        height: 50px;
+        background: #3BC258;
+        @include font(14px, $SemiBold, #fff);
+        cursor: pointer;
       }
     }
   }

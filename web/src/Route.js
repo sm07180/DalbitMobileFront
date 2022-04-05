@@ -73,6 +73,8 @@ const Receipt = React.lazy(() => import('pages/store/contents/end/Receipt'))
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
 const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
+// 내지갑 > 환전 / 법정대리인 동의 안내페이지
+const ExchangeLegalAuth = React.lazy(() => import('pages/self_auth_result/ExchangeLegalAuth'))
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
 const LoginStart = React.lazy(() => import('pages/login/contents/start'))
@@ -198,6 +200,7 @@ const Router = () => {
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
+        <Route exact path="/exchangeLegalAuth" component={ExchangeLegalAuth} />
 
         <Route exact path="/legalRepresentative" component={legalRepresentative} />
 
