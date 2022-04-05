@@ -34,7 +34,11 @@ export default withRouter((props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        if(listenRoomNo){
+          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
+        } else {
+          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        }
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo,memNo:memNo, nickNm: nickNm})
@@ -100,6 +104,26 @@ export default withRouter((props) => {
                 </div>
               </div>
             }
+            {/* {
+              list.listenRoomNo !== "" &&
+                <div className="listBack">
+                  <div className='badgeListener' onClick={(e) => {
+                    e.stopPropagation();
+                    goLive(list.roomNo, list.memNo, list.nickNm, list.listenRoomNo);
+                  }}>                     
+                    <span className='headset'>                          
+                      <Lottie
+                          options={{
+                            loop: true,
+                            autoPlay: true,
+                            path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                          }}
+                        />
+                    </span>      
+                    <span className='ListenerText'>LIVE</span>
+                  </div>  
+                </div>                                
+            } */}
           </ListRow>
         )
       })}
