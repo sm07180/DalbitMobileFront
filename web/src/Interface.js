@@ -23,7 +23,7 @@ import {authReq} from "pages/self_auth";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
-import {payAOSInApp} from "common/api";
+import {payAOSInApp, payAOSPrevInApp} from "common/api";
 import {getIndexData, setStoreInfo} from "redux/actions/payStore";
 
 export const FOOTER_VIEW_PAGES = {
@@ -817,22 +817,14 @@ export default () => {
       // AOS 인앱 결제 결과
       case 'native-purchase':{
         try{
-          console.log(`@@native-purchase`,event)
-          // [event.detail]
-          // callSlct: "1"
-          // developerPayload: "IX27sTrd35tMBVecU33bYTEbBiBPhoVwEAFIzQFMSYI=\n"
-          // purchaseData: "{\"orderId\":\"GPA.3356-4769-3255-81458\",\"packageName\":\"kr.co.inforexseoul.radioproject\",\"productId\":\"pay_299000\",\"purchaseTime\":1648778628496,\"purchaseState\":0,\"purchaseToken\":\"ggonkamfkhfochdeelijopao.AO-J1OynhoNicsTWzcoJMABH2mDtpvDYU6kWWjwj46mum8TJ3T02ZEUrJJE7a4MvclVAAjYRt1BMErRd6kZ6ctT7sZTfSQa7o3FT80UqndexdPrVcy3gsaM\",\"obfuscatedAccountId\":\"11643153519105_20220401110347\",\"acknowledged\":false}"
-          // signature: "GfN2TaYxWgQgRzMBaDw7XpRgbIp3fiNkyGuvrpF4DqK0zKBx/RbUxv5fh+TkKZDQE/4gW2Dqmzx5bIXd5fLXo1813H7xIczUN5v5p6dC5me/iXGDlytH5RTZfhLt5vodvBWxz7pm+grlHN2l3ZW8GGBSWNVupWhddiZrrR3u0fFEtW2JBcE0b31vJiZ/7wtbtDlbEU9YGCs5VljpVWUys3O7BmajYW9EkNWjVXRBkd1oFbEXL5a+EaREZ8byg7bZRXKPhwVPj9+ipl/5KTuxcVHNYdUEFMBA88OD9SdcBI/IRI5IuLSp6uRRhimF63egn9jCZMkv86Ex3qekm2vU9Q=="
-          // console.log(payStoreRdx)
-          payAOSInApp({...event.detail}).then(({data})=>{
-            console.log(`@@native-purchase api result =>`, data)
+          payAOSPrevInApp({...event.detail}).then(({data})=>{
             const onPurchaseResultData = {
               result:data.code,
               signature:event.detail.signature,
               originalJson:event.detail.purchaseData,
             }
             Hybrid('onPurchaseResult', onPurchaseResultData);
-          });
+          })
         }catch(e){
           console.error(`native-purchase e=>`, e);
           Hybrid('onPurchaseResult', {msg:e});
@@ -842,12 +834,14 @@ export default () => {
       // AOS 인앱 소비 결과
       case 'native-consume':{
         try{
-          dispatch(getIndexData(history.action));
-          Hybrid('onConsumeResult', 1);
-          dispatch(setStoreInfo({state:"ready"}));
+          payAOSInApp({...event.detail}).then(({data})=>{
+            Hybrid('onConsumeResult', data.code);
+            dispatch(getIndexData(history.action));
+            dispatch(setStoreInfo({state:"ready"}));
+          });
         }catch(e){
           console.error(`native-consume e=>`, e);
-          Hybrid('onConsumeResult', {result:'error', msg:e});
+          Hybrid('onConsumeResult', -1);
         }
         break;
       }

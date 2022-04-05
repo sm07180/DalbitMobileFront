@@ -1984,7 +1984,9 @@ export async function getDalCnt(): Promise<responseType> {
 export async function payAOSInApp(data: dataType): Promise<responseType> {
   return await ajax(Method.POST, "/rest/pay/aos", data);
 }
-
+export async function payAOSPrevInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/prev/aos", data);
+}
 
 
 /********************************************/
