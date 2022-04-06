@@ -28,8 +28,9 @@ export const backFunc = (context, dispatch) => {
       dispatch(setCommonPopupOpenData({...backFunction.popupData}))
       break;
     case 'imageViewer': // 사진 팝업
-      if (context?.backEventCallback?.callback === 'function')
+      if (typeof context?.backEventCallback?.callback === 'function') {
         context?.backEventCallback?.callback();
+      }
       break;
     default:
       break

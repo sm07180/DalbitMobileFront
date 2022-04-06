@@ -334,9 +334,9 @@ const ProfileEdit = () => {
 
               <div className="coverPhoto">
                 <div className="title">프로필사진<small>(최대 10장)</small>
-                  {/*{profileInfo?.profImgList?.length > 1 &&*/}
-                  {/*  <button onClick={openMoreList}>순서변경</button>*/}
-                  {/*}*/}
+                  {profileInfo?.profImgList?.length > 1 &&
+                    <button onClick={openMoreList}>순서변경</button>
+                  }
                 </div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
