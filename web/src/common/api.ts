@@ -1981,11 +1981,11 @@ export async function getDalPriceList(data): Promise<responseType> {
 export async function getDalCnt(): Promise<responseType> {
   return ajax(Method.POST, '/store/getDalCnt')
 }
-export async function payAOSInApp(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/rest/pay/aos", data);
+export async function payTryAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos/try", data);
 }
-export async function payAOSPrevInApp(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/rest/pay/prev/aos", data);
+export async function payEndAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos/end", data);
 }
 
 

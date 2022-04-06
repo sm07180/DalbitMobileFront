@@ -23,8 +23,8 @@ import {authReq} from "pages/self_auth";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
-import {payAOSInApp, payAOSPrevInApp} from "common/api";
 import {getIndexData, setStoreInfo} from "redux/actions/payStore";
+import {payEndAOSInApp, payTryAOSInApp} from "common/api";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -814,10 +814,11 @@ export default () => {
           history.push(pushUrl);
         }
         break;
-      // AOS 인앱 결제 결과
+      // [Native->web] AOS 인앱 결제 결과
       case 'native-purchase':{
         try{
-          payAOSPrevInApp({...event.detail}).then(({data})=>{
+          const data = Object.assign({}, event.detail);
+          payTryAOSInApp(data).then(({data})=>{
             const onPurchaseResultData = {
               result:data.code,
               signature:event.detail.signature,
@@ -826,26 +827,29 @@ export default () => {
             Hybrid('onPurchaseResult', onPurchaseResultData);
           })
         }catch(e){
-          console.error(`native-purchase e=>`, e);
-          Hybrid('onPurchaseResult', {msg:e});
+          Hybrid('onPurchaseResult', {
+            result:-1,
+            signature:event.detail.signature,
+            originalJson:event.detail.purchaseData,
+          });
         }
         break;
       }
-      // AOS 인앱 소비 결과
+      // [Native->web] AOS 인앱 소비 결과
       case 'native-consume':{
         try{
-          payAOSInApp({...event.detail}).then(({data})=>{
+          const data = Object.assign({}, event.detail);
+          payEndAOSInApp(data).then(({data})=>{
             Hybrid('onConsumeResult', data.code);
             dispatch(getIndexData(history.action));
             dispatch(setStoreInfo({state:"ready"}));
           });
         }catch(e){
-          console.error(`native-consume e=>`, e);
           Hybrid('onConsumeResult', -1);
         }
         break;
       }
-      // IOS 인앱 결과
+      // [Native->web] IOS 인앱 결과
       case 'native-ios-inapp-result':{
         try{
           dispatch(setStoreInfo({state:"ready"}));

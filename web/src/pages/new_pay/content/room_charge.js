@@ -34,13 +34,7 @@ export default (props) => {
   //useState
   const [chargeList, setChargeList] = useState(false)
   const [exchangeList, setExchangeList] = useState(false)
-  const [selected, setSelected] = useState({
-    num: 1,
-    dal: "100",
-    name: '달 100',
-    price: "11000",
-    itemNo: 'A1335',
-  })
+  const [selected, setSelected] = useState(-1)
   const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
   const [myByeol, setMyByeol] = useState('')
@@ -239,13 +233,13 @@ export default (props) => {
   return (
     <Content>
       {/* <TabItem>
-        <button className={`${selectedItem === 'change' && 'true'}`} onClick={() => {tabClick('change')}}>달 교환</button>
+        <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
       </TabItem>
       <div className="cnt-wrap">
         <p className={`my-cnt-text dal ${selectedItem === 'charge' && 'on'}`}>{myDal}</p>
       </div> */}
       <div className="topWrap">
-        <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
+        <button className={`${selectedItem === 'change' && 'true'}`} >달 교환</button>
         <p className={`${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
       </div>
       {selectedItem === 'charge' ? (
