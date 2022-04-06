@@ -34,13 +34,16 @@
       height:28px;
       line-height:12px;
       border-radius:100px;
-      background-color: $MAINCOLOR;
+      background-color: #666;
       cursor: pointer;
       img {
         height:12px;
       }
       span {
         @include font(10px,$Bold,white);
+      }
+      &.isSpecial {
+        background-color:$MAINCOLOR;
       }
     }
     .liveBdg {

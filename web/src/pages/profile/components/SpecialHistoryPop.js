@@ -57,7 +57,7 @@ const SpecialHistoryPop = (props) => {
       <section className="honorPopup">
         <div className='title'>
           <span><strong>{specialHistory.nickNm}</strong>님은</span>
-          <span>현재 스페셜DJ입니다.</span>
+          <span>현재 스페셜DJ{profileData.isSpecial ? '입니다.' : '가 아닙니다.'}</span>
         </div>
         <div className='table'>
           <div className='summary'>
