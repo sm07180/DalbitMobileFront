@@ -65,7 +65,7 @@ const ExchangeLegalAuth = () => {
       })
     }
 
-    history.push(`/legalauth`)
+    history.replace(`/legalauth`)
   }
   const goWalletExchange = ()=>{
     history.goBack();

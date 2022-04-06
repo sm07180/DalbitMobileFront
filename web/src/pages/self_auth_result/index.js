@@ -207,8 +207,8 @@ export default (props) => {
                   if(isDesktop()) {
                     window.opener.location.href = '/wallet?exchange';
                     window.close();
-                  }else {
-                    history.push('/wallet?exchange')
+                  } else {
+                    history.replace('/wallet?exchange');
                   }
                 }}>
                 확인
@@ -416,7 +416,8 @@ export default (props) => {
                 <div className="img_wrap">
                   <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
                 </div>
-                <h2>본인 인증 완료</h2>
+                {/* 3: 법정 대리인 동의 완료 */}
+                {authState !== 3 && <h2>본인 인증 완료</h2>}
                 {createResult()}
               </>
             )}
