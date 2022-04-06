@@ -42,6 +42,9 @@
       span {
         @include font(10px,$Bold,white);
       }
+      &.isSpecial {
+        background-color:#666;
+      }
     }
     .liveBdg {
       width:60px;
