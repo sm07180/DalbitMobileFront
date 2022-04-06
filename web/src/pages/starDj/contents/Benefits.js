@@ -19,7 +19,22 @@ const StarDjBenefits = () => {
    <div id='StarDjBenefits'>
     <Header position={'sticky'} title="스타DJ 혜택" type={'back'}/>
     <div className='content'>
+      <section className='benefits'>
+        <div className='benefitsTitle'>
+          <span>달라를 빛내줄 셀럽</span>
+          <span>스타 DJ의 어메이징한 혜택!</span>
+        </div>
+        <div className=''>
 
+        </div>
+      </section>
+      <section className='benefits'>
+        <div className='benefitsTitle'>
+          <span>선정될 때마다 추가로 쏟아지는 혜택</span>
+          <span>활동 지원비 & 다양한 굿즈 지급!</span>
+        </div>
+
+      </section>
     </div>
     <Bottom>
       <div className='notice'>
