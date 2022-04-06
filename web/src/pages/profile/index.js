@@ -45,9 +45,6 @@ import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
 
-const socialTabmenu = ['피드','팬보드','클립']
-const socialDefault = socialTabmenu[0];
-
 const ProfilePage = () => {
   const history = useHistory()
   const location = useLocation();
@@ -85,7 +82,7 @@ const ProfilePage = () => {
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
 
-  const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
+  const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 팬보드
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {

@@ -80,12 +80,12 @@ const ProfileReplyComponent = (props) => {
           <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
           {isMore &&
           <div className="isMore">
-            {(isMyProfile || isMyContents || adminChecker) && <button onClick={() => replyDelete(item?.replyIdx || item?.tail_no)}>삭제하기</button>}
             {(isMyContents) && type !== "feed" ?
             <button onClick={() => {blurBlock(); replyEditFormActive(item?.replyIdx, item?.contents);}}>수정하기</button>
               : isMyContents &&
               <button onClick={() => {blurBlock(); replyEditFormActive(item?.tail_no, item?.tail_conts);}}>수정하기</button>
             }
+            {(isMyProfile || isMyContents || adminChecker) && <button onClick={() => replyDelete(item?.replyIdx || item?.tail_no)}>삭제하기</button>}
             {(!isMyContents) && <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>}
           </div>
           }
