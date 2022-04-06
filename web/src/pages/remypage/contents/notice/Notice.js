@@ -113,12 +113,12 @@ const NoticePage = () => {
   const onClick = (e) => {
     const {num} = e.currentTarget.dataset
     history.push({pathname: `/notice/${num}`, state: num});
+    postFix = true;
   };
 
   useEffect(() => {
     if(isDesktop) {
       fetchMypageNewCntData(context.profile.memNo);
-      postFix = true;
     }
   }, [alarmData.newCnt]);
 
