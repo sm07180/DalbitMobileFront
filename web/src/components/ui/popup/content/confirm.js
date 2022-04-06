@@ -9,16 +9,13 @@
  * @param {msg} string(html)           //메시지영역 노출 (html or)
  */
 import React, {useMemo, useRef, useEffect, useContext} from 'react'
-import styled from 'styled-components'
 import _ from 'lodash'
 //context
-import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 //hooks
 import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
-import {COLOR_MAIN} from 'context/color'
 import {isAndroid} from "context/hybrid";
 //
 export default (props) => {
