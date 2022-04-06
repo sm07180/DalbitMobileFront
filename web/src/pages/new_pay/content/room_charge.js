@@ -238,13 +238,15 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <TabItem>
-        <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
+      {/* <TabItem>
         <button className={`${selectedItem === 'change' && 'true'}`} onClick={() => {tabClick('change')}}>달 교환</button>
       </TabItem>
       <div className="cnt-wrap">
         <p className={`my-cnt-text dal ${selectedItem === 'charge' && 'on'}`}>{myDal}</p>
-        <p className={`my-cnt-text byeol ${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
+      </div> */}
+      <div className="topWrap">
+        <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
+        <p className={`${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
       </div>
       {selectedItem === 'charge' ? (
         <>
@@ -360,6 +362,25 @@ const Content = styled.section`
     font-weight: bold;
   }
 
+  .topWrap {
+    display:flex;
+    align-items:center;
+    margin-bottom:20px;
+    button {
+      font-size:20px;
+      font-weight:800;
+      color:${COLOR_MAIN};
+    }
+    p {
+      margin-left:auto;
+      padding-left:24px;
+      font-size:14px;
+      font-weight:bold;
+      background: url(${starIcon}) left center no-repeat;
+      background-size: 20px;
+    }
+  }
+
   .cnt-wrap {
     display: flex;
     padding-bottom: 9px;
@@ -456,7 +477,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 100%;
-    padding: 44px 12px 0 12px;
+    padding: 20px 12px 0 12px;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
