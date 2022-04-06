@@ -524,7 +524,7 @@ const ProfileDetail = (props) => {
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
             {isMore &&
             <div className="isMore">
-              {isMyContents &&
+              {type !== 'fanBoard' && isMyContents &&
               <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>
                 수정하기</button>}
               {(isMyContents || adminChecker) &&
