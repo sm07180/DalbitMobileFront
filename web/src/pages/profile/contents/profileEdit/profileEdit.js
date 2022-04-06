@@ -419,7 +419,11 @@ const ProfileEdit = () => {
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
                           value={profileInfo?.profMsg || ''}
                           onChange={(e) => {
-                            setProfileInfo({...profileInfo, profMsg: e.target.value});
+                            if(e.target.value?.length> 100) {
+                              e.target.value = profileInfo?.profMsg;
+                            } else {
+                              setProfileInfo({...profileInfo, profMsg: e.target.value});
+                            }
                           }}/>
                 <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
               </InputItems>
