@@ -34,7 +34,7 @@
       height:28px;
       line-height:12px;
       border-radius:100px;
-      background-color: $MAINCOLOR;
+      background-color: #666;
       cursor: pointer;
       img {
         height:12px;
@@ -43,7 +43,7 @@
         @include font(10px,$Bold,white);
       }
       &.isSpecial {
-        background-color:#666;
+        background-color:$MAINCOLOR;
       }
     }
     .liveBdg {

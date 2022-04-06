@@ -91,7 +91,7 @@ const TopSwiper = (props) => {
       {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 && type === 'profile' &&
-          <div className={`specialBdg ${context.profile.isSpecial ? 'isSpecial': ''}`} onClick={popupOpen}>
+          <div className={`specialBdg ${data.isSpecial ? 'isSpecial': ''}`} onClick={popupOpen}>
             <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
             <span>{data.specialDjCnt}회</span>
           </div>
