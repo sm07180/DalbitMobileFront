@@ -47,7 +47,11 @@ const TopRanker = (props) => {
       })
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        if(listenRoomNo){
+          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
+        } else {
+          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        }
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
@@ -105,7 +109,7 @@ const TopRanker = (props) => {
                           </div>
                           {rankSlct === "CUPID" &&
                             <div className='cupidWrap'>
-                              <div className='cupidHeader'>Honey</div>
+                              <div className='cupidHeader'>HONEY</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
                                   <img src={"https://image.dalbitlive.com/images/listNone-userProfile.png"} />
@@ -122,13 +126,13 @@ const TopRanker = (props) => {
                           <div className="listColumn" onClick={() => props.history.push(`/profile/${data.memNo}`)}>
                             <div className="photo">
                               <img src={data.profImg.thumb292x292} alt="" />
-                              <div className={`rankerRank ${index === 0 ? "first" : ""}`}>{index + 1}</div>
+                              <div className={`rankerRank index${index + 1}`}></div>
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
                           {rankSlct === "CUPID" && data.djProfImg ?
                             <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
-                              <div className='cupidHeader'>Honey</div>
+                              <div className='cupidHeader'>HONEY</div>
                               <div className='cupidContent'>
                                 <div className='cupidThumb'>
                                   <img src={data.djProfImg.thumb292x292} alt={data.nickNm} />
@@ -155,7 +159,25 @@ const TopRanker = (props) => {
                                     </span>
                                     <span className='liveText'>LIVE</span>
                                   </div>
-                                }
+                              }
+                              {/* {
+                                data.listenRoomNo !== "" &&
+                                  <div className='badgeListener' onClick={(e) => {
+                                    e.stopPropagation();
+                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
+                                  }}>                     
+                                    <span className='headset'>                          
+                                      <Lottie
+                                          options={{
+                                            loop: true,
+                                            autoPlay: true,
+                                            path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                                          }}
+                                        />
+                                    </span>      
+                                    <span className='ListenerText'>LIVE</span>
+                                  </div>                                  
+                              } */}
                             </>
                           }
                         </div>
