@@ -45,9 +45,6 @@ import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
 
-const socialTabmenu = ['피드','팬보드','클립']
-const socialDefault = socialTabmenu[0];
-
 const ProfilePage = () => {
   const history = useHistory()
   const location = useLocation();
@@ -73,7 +70,7 @@ const ProfilePage = () => {
 
   const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
   const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
-  
+
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
   const noticeData = useSelector(state => state.brdcst);
@@ -357,7 +354,6 @@ const ProfilePage = () => {
       mMemNo: mMemNo,
       vMemNo: context.profile.memNo
     };
-    console.log(params, like);
     if(like === "n") {
       Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
@@ -655,7 +651,7 @@ const ProfilePage = () => {
   /* 플루팅 버튼 이벤트 */
   const floatScrollEvent = useCallback(() => {
     const floatNode = floatingRef.current;
-    const scrollBottom = floatNode.offsetTop;
+    const scrollBottom = floatNode?.offsetTop;
 
     if (scrollBottom > 150) {
       setFloatScrollAction(true);
@@ -824,7 +820,7 @@ const ProfilePage = () => {
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
 
         {/* 글쓰기 플로팅 버튼 */}
-        {isMyProfile &&
+        {isMyProfile && profileTab.tabName === profileTab.tabList[0] &&
         <button className={`floatBtn ${floatBtnHidden === true ? 'on' : ''}`} onClick={floatingOpen} ref={floatingRef}>
           <div className="blackCurtain"/>
           <div className={`floatWrap ${floatScrollAction === true ? 'action' : 'disAction'}`}>

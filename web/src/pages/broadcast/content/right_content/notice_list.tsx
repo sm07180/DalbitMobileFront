@@ -24,10 +24,10 @@ export default function NoticeList(props: any) {
   //공지사항 조회
   const searchNotice = useCallback((roomNo: string) => {
     async function searchNoticeFunc() {
-      let params = {memNo: globalState.userProfile.memNo}
+      let params = {memNo: broadcastState.roomInfo?.bjMemNo, roomNo: roomNo}
       const { result, data } = await API.myPageBroadcastNoticeSel(params);
       if (result === "success") {
-        setLoadNoticeMsg(data.list[0].conts);
+        setLoadNoticeMsg(data.notice ? data.notice : "");
         setNoticeList(data.list[0]);
       }
     }
@@ -150,7 +150,7 @@ export default function NoticeList(props: any) {
                     등록하기
                   </button>
                   :
-                  <button onClick={() => fetchNoticeModify(roomNo, noticeList.auto_no, noticeMsg)} className="noticeForm__registBtn">
+                  <button onClick={() => fetchNoticeModify(roomNo, noticeList?.auto_no, noticeMsg)} className="noticeForm__registBtn">
                     수정하기
                   </button>
               }
@@ -165,7 +165,7 @@ export default function NoticeList(props: any) {
                 <pre className="noticeForm__textArea">{loadNoticeMsg}</pre>
               </DalbitScroll>
               <div className="noticeForm__btnWrap">
-                <button data-notice-idx={noticeList.auto_no} onClick={DeleteNotice} className="noticeForm__btnWrap__cancelBtn">
+                <button data-notice-idx={noticeList?.auto_no} onClick={DeleteNotice} className="noticeForm__btnWrap__cancelBtn">
                   삭제하기
                 </button>
                 <button onClick={modifyNotice} className="noticeForm__btnWrap__modifyBtn">

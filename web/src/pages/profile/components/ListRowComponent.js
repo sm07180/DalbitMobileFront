@@ -68,7 +68,7 @@ const ListRowComponent = (props) => {
         {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
           <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
           <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-            {(context.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
+            {type !=='fanBoard' && (context.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
             {(isMyProfile || context.profile.memNo === item.mem_no || (type==='feed' && context.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
             {context.profile.memNo !== item.mem_no.toString() && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
           </div>

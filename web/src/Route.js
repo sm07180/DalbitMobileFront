@@ -244,11 +244,14 @@ const Router = () => {
                   return <Route component={ProfileContentsWrite} />
                }}
         />
-        {/*피드, 팬보드 수정*/}
+        {/*피드 수정 (팬보드 수정 삭제) */}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
                  const myMemNo = context.profile.memNo;
                  const {memNo, type, action} = match.params;
+                 if(type==='fanBoard' && action==='modify'){
+                   return <Redirect to={{ pathname: `/profile/${memNo}` }} />
+                 }
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if(action === 'write'){

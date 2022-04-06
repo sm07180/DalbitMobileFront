@@ -229,7 +229,7 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           history.goBack();
         } else {
-          //실패
+          context.action.alert({msg: message});
         }
 
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
@@ -237,19 +237,19 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           history.goBack();
         } else {
-          //실패
+          context.action.alert({msg: message});
         }
       } else if(type === "feed") {
         const {result, data, message} = await Api.myPageFeedDel({
           data: {
             feedNo: index,
-            delChrgrname: item?.nickName
+            delChrgrName: item?.nickName || item?.mem_nick
           }
         })
         if(result === "success") {
           history.goBack();
         } else {
-
+          context.action.alert({msg: message});
         }
       }
     }
@@ -388,7 +388,6 @@ const ProfileDetail = (props) => {
       }
 
     } else if(type === "feed") {
-      console.log(replyIdx, contents);
       Api.myPageFeedReplyUpd({reqBody: true, data: {
           tailNo: replyIdx,
           tmemConts: contents
@@ -525,7 +524,7 @@ const ProfileDetail = (props) => {
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
             {isMore &&
             <div className="isMore">
-              {isMyContents &&
+              {type !== 'fanBoard' && isMyContents &&
               <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>
                 수정하기</button>}
               {(isMyContents || adminChecker) &&

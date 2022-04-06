@@ -253,7 +253,7 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
       return history.push("/login");
     }
     const {clipInfo, clipPlayer, rtcInfo} = globalState;
-    if (clipInfo !== null) {
+    if (clipInfo !== null) { // 클립 청취 중?
       globalAction.setAlertStatus!({
         status: true,
         type: "confirm",
@@ -274,7 +274,7 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
         },
       });
     } else {
-      if (gtx.adminChecker !== true && globalState.baseData.isLogin) {
+      if (!gtx.adminChecker) { // 어드민?
         if (listener === "listener") {
           history.push(`/broadcast/${roomNo}`);
         } else {
@@ -290,20 +290,28 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
               },
             });
           } else {
-            history.push(`/broadcast/${roomNo}`);
+            if(listenRoomNo !== roomNo) {
+              globalAction.setAlertStatus({
+                status: true,
+                type: "confirm",
+                content: `${nickNm ? `${nickNm}님의 ` : ''}방송방에 입장하시겠습니까?`,
+                callback: () => {
+                  history.push(`/broadcast/${roomNo}`);
+                },
+              });
+            }else {
+              history.push(`/broadcast/${roomNo}`);
+            }
           }
         }
       } else {
-        if (gtx.adminChecker === true && globalState.baseData.isLogin) {
-          globalAction.setBroadcastAdminLayer!((prevState) => ({
-            ...prevState,
-            status: `broadcast`,
-            roomNo: roomNo,
-            memNo:memNo,
-            nickNm: nickNm === "noName" ? "" : nickNm,
-          }));
-          //history.push(`/broadcast/${roomNo}`);
-        }
+        globalAction.setBroadcastAdminLayer!((prevState) => ({
+          ...prevState,
+          status: `broadcast`,
+          roomNo: roomNo,
+          memNo:memNo,
+          nickNm: nickNm === "noName" ? "" : nickNm,
+        }));
       }
     }
   } else if (isMobileWeb()) {

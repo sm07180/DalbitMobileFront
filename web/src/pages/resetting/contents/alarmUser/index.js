@@ -22,7 +22,6 @@ const SettingAlarm = () => {
   const fetchData = () =>{
     Api.getPushMembers({}).then((res) =>{
       if (res.result === 'success'){
-        console.log(res);
         setPushMembers(res.data.list)
       }
     })
