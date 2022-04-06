@@ -16,7 +16,7 @@ import Api from "context/api";
 const NoticeDetail = () => {
   const history = useHistory()
   const location = useLocation();
-  const data = location.state;
+  const {data, isMyProfile} = location.state;
   //context
   const context = useContext(Context)
   const {token} = context
@@ -27,7 +27,7 @@ const NoticeDetail = () => {
 
   const getFetchData = (pageNo) => {
     const apiParam = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: data.memNo,
       pageNo: pageNo ? pageNo : noticeData.paging.next,
       pageCnt: noticeData.paging.records,
       topFix: 0
@@ -52,7 +52,7 @@ const NoticeDetail = () => {
 
   const getFetchFixData = (pageNo) => {
     const apiParam = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: data.memNo,
       pageNo: pageNo ? pageNo : noticeFixData.paging.next,
       pageCnt : noticeFixData.paging.records
     }
@@ -119,17 +119,15 @@ const NoticeDetail = () => {
     getFetchFixData(1);
   }, []);
 
-  useEffect(() => {
-    console.log(noticeData.feedList);
-  })
-
   return (
     <div id="noticeDetail">
       <Header title="방송공지" type="back">
         <div className="buttonGroup">
+          {isMyProfile &&
           <div className='moreBtn' onClick={onClick}>
             <img src={`${IMG_SERVER}/profile/sectionEdit.png`} alt="" />
           </div>
+          }
         </div>
       </Header>
       <section className='detailWrap'>

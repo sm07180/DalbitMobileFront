@@ -43,7 +43,7 @@ const TotalInfo = (props) => {
   }
 
   const onClick = () => {
-    history.push({pathname: "/brdcst", state: data});
+    history.push({pathname: "/brdcst", state: {data: data, isMyProfile: isMyProfile}});
   }
 
   useEffect(() => {

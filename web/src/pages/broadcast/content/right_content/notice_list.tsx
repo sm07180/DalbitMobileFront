@@ -24,7 +24,7 @@ export default function NoticeList(props: any) {
   //공지사항 조회
   const searchNotice = useCallback((roomNo: string) => {
     async function searchNoticeFunc() {
-      let params = {memNo: globalState.userProfile.memNo}
+      let params = {memNo: broadcastState.roomInfo?.bjMemNo}
       const { result, data } = await API.myPageBroadcastNoticeSel(params);
       if (result === "success") {
         setLoadNoticeMsg(data.list[0].conts);

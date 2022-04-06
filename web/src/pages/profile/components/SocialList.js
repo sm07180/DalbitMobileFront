@@ -56,7 +56,7 @@ const SocialList = (props) => {
               />
 
               {type === 'feed' && item.photoInfoList.length > 0 &&
-              <div className="swiperPhoto" onClick={() => goProfileDetailPage(detailPageParam)}>
+              <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
                 {item.photoInfoList.length <= 2 ?
                   <div className="photo grid-2">
                     {item.photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} alt="" />)})}
