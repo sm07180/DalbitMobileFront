@@ -27,8 +27,11 @@ const ExchangeLegalAuth = () => {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
         const {parentsAgreeYn, adultYn} = res.data
-        if (parentsAgreeYn === 'n' && adultYn === 'n') return setAuthState(2)
-
+        if (parentsAgreeYn === 'n' && adultYn === 'n') {
+          setAuthState(2);
+        } else{
+         history.goBack();
+        }
       } else {
         context.action.alert({
           msg: res.message,

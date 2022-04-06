@@ -131,6 +131,17 @@ export default (props) => {
       history.replace('/');
     }
   }
+  
+  /* 법정대리 동의 완료 후 뒤로가기 처리 */
+  const legalAuthBackEvent = () => {
+    if(isDesktop()) {
+      window.opener.location.replace('/wallet?exchange');
+      window.close();
+    } else {
+      sessionStorage.setItem('goWallet', 'true');
+      history.goBack();
+    }
+  }
 
   const createResult = () => {
     switch (authState) {
@@ -203,14 +214,7 @@ export default (props) => {
             </p>
             <div className="btn-wrap">
               <button
-                onClick={() => {
-                  if(isDesktop()) {
-                    window.opener.location.href = '/wallet?exchange';
-                    window.close();
-                  } else {
-                    history.replace('/wallet?exchange');
-                  }
-                }}>
+                onClick={legalAuthBackEvent}>
                 확인
               </button>
             </div>
@@ -408,7 +412,9 @@ export default (props) => {
             ) :
             (authState === 4 || authState === 12) ?
               <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
-              : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
+              : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back'
+                        backEvent={authState === 3? legalAuthBackEvent: null}
+              />
           }
           <section className="resultWrap">
             {authState !== 0 && (
