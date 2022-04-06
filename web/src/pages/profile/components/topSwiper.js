@@ -110,11 +110,20 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
-          <div className="liveBdg">
-            <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
-          </div>
-        }
+        {/* {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+          <div className='badgeListener' onClick={roomJoinHandler}>                     
+            <span className='headset'>                          
+              <Lottie
+                  options={{
+                    loop: true,
+                    autoPlay: true,
+                    path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                  }}
+                />
+            </span>      
+           <span className='ListenerText'>LIVE</span>
+         </div>
+        } */}
       </div>
       }
     </>

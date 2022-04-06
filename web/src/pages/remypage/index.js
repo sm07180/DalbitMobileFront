@@ -8,6 +8,7 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
@@ -23,12 +24,6 @@ import Notice from "pages/remypage/contents/notice/Notice";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
-const myMenuItem = [
-  {menuNm: '서비스 설정', path:'setting', isNew: false},
-  {menuNm: '공지사항', path:'notice', isNew: true},
-  {menuNm: '고객센터', path:'customer', isNew: false},
-]
-
 const Remypage = () => {
   const history = useHistory()
   const params = useParams()
@@ -40,6 +35,8 @@ const Remypage = () => {
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
   const dispatch = useDispatch();
+
+  const [noticeNew, setNoticeNew] = useState(false);
 
 
   const settingProfileInfo = async (memNo) => {
@@ -118,9 +115,9 @@ const Remypage = () => {
 
   useEffect(() => {
     if(alarmData.notice > 0){
-      myMenuItem[1].isNew = true;
+      setNoticeNew(true)
     } else {
-      myMenuItem[1].isNew = false;
+      setNoticeNew(false)
     }
   }, [alarmData.notice]);
 
@@ -141,42 +138,58 @@ const Remypage = () => {
         <>
         <div id="remypage">
           <Header title={'MY'} />
-          <section className="myInfo" onClick={goProfile}>
-            <MyInfo data={profile} openLevelPop={openLevelPop} />
+          <section className='mypageTop'>
+            <div className="myInfo" onClick={goProfile}>
+              <MyInfo data={profile} openLevelPop={openLevelPop} />
+            </div>
+            <div className='mydalDetail'>
+              <div className="dalCount">
+                <span>달 지갑</span>
+                <div>
+                  <span>{Utility.addComma(profile?.dalCnt)}</span>개
+                </div>
+              </div>
+              <div className="buttonGroup">
+                <button className='charge' onClick={storeAndCharge}>+ 충전하기</button>
+              </div>
+            </div>
+            <div className='myData'>
+              <div className='myDataList' onClick={() => history.push('/wallet')}>
+                <span className='icon wallet'></span>
+                <span className="myDataType">내 지갑</span>
+              </div>
+              <div className='myDataList' onClick={() => history.push('/report')}>
+                <span className='icon report'></span>
+                <span className="myDataType">방송리포트</span>
+              </div>
+              <div className='myDataList' onClick={() => history.push('/myclip')}>
+                <span className='icon clip'></span>
+                <span className="myDataType">클립 관리</span>
+              </div>
+              <div className='myDataList' onClick={() => history.push('/setting')}>
+                <span className='icon setting'></span>
+                <span className="myDataType">서비스 설정</span>
+              </div>
+              <div className='myDataList' onClick={() => history.push('/notice')}>
+                <span className={`icon notice ${!noticeNew ? "new" : ""}`}></span>
+                <span className="myDataType">공지사항</span>
+              </div>
+              <div className='myDataList' onClick={() => history.push('/customer')}>
+                <span className='icon customer'></span>
+                <span className="myDataType">고객센터</span>
+              </div>
+            </div>
           </section>
-          <section className='mydalDetail'>
-            <div className="dalCount">
-              보유한 달
-              <span>{Utility.addComma(profile?.dalCnt)}개</span>
-            </div>
-            <div className="buttonGroup">
-              <button className='charge' onClick={storeAndCharge}>충전하기</button>
-            </div>
+          <section className='bannerWrap'>
+            <BannerSlide type={18}/>
           </section>
-          <section className='myData'>
-            <div className='myDataList' onClick={() => history.push('/wallet')}>
-              <span className='walletIcon'></span>
-              <span className="myDataType">내 지갑</span>
-            </div>
-            <div className='myDataList' onClick={() => history.push('/report')}>
-              <span className='reportIcon'></span>
-              <span className="myDataType">방송리포트</span>
-            </div>
-            <div className='myDataList' onClick={() => history.push('/myclip')}>
-              <span className='clipIcon'></span>
-              <span className="myDataType">클립 관리</span>
-            </div>
-          </section>
-          <section className="myMenu">
-            <MyMenu data={myMenuItem} memNo={profile?.memNo}/>
-            {isHybrid() &&
-            <div className="versionInfo">
+          {isHybrid() &&
+            <section className="versionInfo">
               <span className="title">버전정보</span>
               <span className="version">현재 버전 {customHeader.appVer}</span>
-            </div>
-            }
-            <button className='logout' onClick={logout}>로그아웃</button>
-          </section>
+            </section>
+          }
+          <button className='logout' onClick={logout}>로그아웃</button>
 
           {commonPopup.commonPopup &&
             <PopSlide title="내 레벨">

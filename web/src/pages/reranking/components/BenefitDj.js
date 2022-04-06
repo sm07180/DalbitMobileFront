@@ -282,6 +282,7 @@ export default () => {
       <div className='tableBox'>
         <p className="title">월간 DJ 랭킹 TOP5</p>
         <p className="text">랭킹 5위까지 선정된 DJ는 전체 회원 대상 푸시를 1회 보낼 수 있습니다. 1:1문의를 통해 신청해주세요!</p>
+        <p className='text'>푸시 알림은 1:1문의를 통해 방송(이벤트/기념일/콘텐츠 방송 한정) 예정 시간, 제목 및 내용(각 20글자 이내)을 보내주시면 검수 후 발송됩니다.</p>
       </div>
     </>
   )
