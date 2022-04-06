@@ -69,5 +69,20 @@
         @include font(12px, 900, #FF3C7B);
       }
     }
+    .badgeListener {
+      @include flex(center, center);
+      width:62px;height:28px;
+      background-color: #F0EBFF;
+      border-radius: 100px;
+      cursor: pointer;
+      .headset {
+        display: inline-block;
+        width: 15px;
+        margin-right: 2px;
+      }
+      .ListenerText {
+        @include font(12px, 900, #9A78FF);
+      }
+    }
   }
 }

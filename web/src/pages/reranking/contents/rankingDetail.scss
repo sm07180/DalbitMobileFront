@@ -3,9 +3,12 @@
 .container {
   .totalWrap {
    #rankingList {
-     .tabmenu {
+     #rankCategory {
        top: $PC-TABTOP;
      }
+     .tabWrap {
+      top: calc(#{$PC-TABTOP} + 48px);
+    }
    }
   } 
  }
@@ -13,52 +16,83 @@
 #rankingList {
   header {
     .benefits {
-      display: inline-block;
-      width: 40px; height: 40px;
+      @include flex(center);
+      height: 40px;
       margin-right: 12px;
       @include font(14px, 400, #666666);
-    }
-    .title {
-      pointer-events: auto;
-      left: 50%;
-      transform: translateX(-50%);
-      width: auto;
-      cursor: pointer;
-      .optionSelect {
+      &::after {
+        content: "";
         display: inline-block;
         width: 20px; height: 20px;
-        margin-left: 4px;
-        @include BGIMG('ranking/dalla/titleArrow-b.png');
-        cursor: pointer;
+        @include BGIMG("common/icon/icon_benefit.png");
       }
     }
   }
-  .tabmenu {
+  #rankCategory {
     position:sticky;
     top: $MOBILE-TABTOP;
     @include flex(center);
-    padding:0 16px;
-    background-color: #fff;
+    transition: all .2s ease-in-out;
+    background: linear-gradient(to right, #AF6FF5 0%, #F675CE 100% );
+    background-size: 400%;
     z-index: $TAB-ZINDEX;
-    li {
+    .rankCategoryList {
       flex: 1;
+      position: relative;
       @include flex(center, center);
       height: 48px;
-      border-bottom: 2px solid #F2F2F2;
-      @include font(16px,600,#ACACAC);
+      @include font(18px,800,rgba(255,255,255,0.6));
       box-sizing: border-box;
+      cursor: pointer;
       &.active {
-        @include font(16px,700,#202020);
-        border-bottom: 2px solid #202020;
+        @include font(18px,800,#FFF);
+      }      
+    }
+    .underline {
+      position: absolute;
+      bottom: 0;
+      left: 0%;
+      width: 25px; height: 5px;
+      border-radius: 100px;
+      // transition: all .2s ease-in-out;
+      background-color: rgba($color: #FFFFFF, $alpha: 0.8);
+    }
+  }
+  .tabWrap {
+    position:sticky;
+    top: #{$MOBILE-TABTOP + 48px};
+    @include flex(center);
+    width: 100%;
+    padding:13px 16px 5px;
+    background-color: #fff;
+    z-index: $TAB-ZINDEX;
+    .tabmenu {
+      @include flex(center);
+      width: 100%;
+      border-radius: 100px;
+      background-color: #F6F6F6;
+      li {
+        flex: 1;
+        @include flex(center, center);
+        height: 36px;
+        @include font(14px,500,#ACACAC);
+        box-sizing: border-box;
+        &.active {
+          @include font(14px,700,#1A1A1A);
+          border: 1px solid #666666;
+          border-radius: 100px;
+          background-color: #FFF;
+        }
       }
     }
   }
+  
   .rankingContent {
     position: relative;
     box-sizing: border-box;
     .questionMark {
       position: absolute;
-      top: 34px; right: 16px;
+      top: 24px; right: 16px;
       transform: translateY(-50%);
       width: 20px; height: 20px;
       @include BGIMG('common/icon/ico_questionMark-bgGray.png');
@@ -71,10 +105,6 @@
       width: 100%;
       padding: 0 16px 21px;
       box-sizing: border-box;
-      @include BGIMG('ranking/dalla/rankingDetail-Top3Bg.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: left top;
       .swiper-pagination {
         position: absolute;
         bottom:0px; left: 50%;
@@ -98,8 +128,7 @@
       .topHeader {
         position: relative;
         @include flex(center, center);
-        width: 100%;
-        padding: 14px 16px;
+        width: 100%; height: 47px;
         @include font(18px, 600, #272727);
         line-height: 40px;
       }
@@ -155,16 +184,19 @@
               border-radius: 50%;
             }
             .rankerRank {
-              @include position-top-left;
+              @include position-top-left(0px, -4px);
               @include flex(center, center);
-              width: 28px; height: 28px;
-              line-height: 28px;
-              border-radius: 50%;
-              background: linear-gradient(to bottom, #FF3C7B 0%, #FF8565 100%);
-              @include font(20px, 700, #fff);
-              &.first {
-                width: 32px; height: 32px;
-                line-height: 32px;
+              &.index1 {
+                width: 40px; height: 50px;
+                @include BGIMG("ranking/dalla/rankDetail_1st.png");
+              }
+              &.index2 {
+                width: 30px; height: 40px;
+                @include BGIMG("ranking/dalla/rankDetail_2nd.png");
+              }
+              &.index3 {
+                width: 30px; height: 40px;
+                @include BGIMG("ranking/dalla/rankDetail_3rd.png");
               }
             }
           }
@@ -193,6 +225,22 @@
             @include font(12px, 900, #FF3C7B);
           }
         }
+        .badgeListener {
+          @include flex(center, center);
+          width:100px;height:28px;
+          margin: 12px auto 0px;
+          background-color: #F0EBFF;
+          border-radius: 100px;
+          cursor: pointer;
+          .headset {
+            display: inline-block;
+            width: 15px;
+            margin-right: 2px;
+          }
+          .ListenerText {
+            @include font(12px, 900, #9A78FF);
+          }
+        }
       }
       .cupidWrap {
         position: relative;
@@ -203,13 +251,13 @@
         border-radius: 16px;
         background-color: #F6F6F6;
         .cupidHeader {
-          @include flex(center);
-          width: 61px; height: 20px;
+          @include flex(center, center);
+          width: 74px; height: 20px;
           border-radius: 100px;
           padding: 0px 6px 0px 20px;
           margin: -18px 0 12px;
           @include font(12px,500,#FFFFFF);
-          @include BGIMG('common/icon/icoppyong.png');
+          @include BGIMG('common/icon/icon_honey.png');
           background-color:#303030;
           background-position: 4px center;
           background-size: 16px 16px;
@@ -351,6 +399,22 @@
               @include font(12px, 900, #FF3C7B);
             }
           }
+          .badgeListener {
+            @include flex(center, center);
+            width:62px;height:28px;
+            margin: 12px auto 0px;
+            background-color: #F0EBFF;
+            border-radius: 100px;
+            cursor: pointer;
+            .headset {
+              display: inline-block;
+              width: 15px;
+              margin-right: 2px;
+            }
+            .ListenerText {
+              @include font(12px, 900, #9A78FF);
+            }
+          }
         }
       }
     }
@@ -416,4 +480,3 @@
     }     
   }
 }
-
