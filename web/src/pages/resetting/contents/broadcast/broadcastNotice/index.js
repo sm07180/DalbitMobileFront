@@ -15,7 +15,8 @@ const BroadcastNotice = () => {
   /* 방송공지 조회 */
   const fetchData = async () => {
     let apiParams = {
-      memNo: context.profile.memNo
+      memNo: context.profile.memNo,
+      roomNo: context.profile.roomNo ? context.profile.roomNo : 0
     }
     await API.myPageBroadcastNoticeSel(apiParams).then((res) => {
       setNoticeList(res.data.list);

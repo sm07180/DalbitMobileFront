@@ -12,6 +12,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {setProfileNoticeData, setProfileNoticeFixData} from "redux/actions/profile";
 import {profilePagingDefault} from "redux/types/profileType";
 import Api from "context/api";
+import FeedLike from "pages/profile/components/FeedLike";
+import NoResult from "components/ui/noResult/NoResult";
 
 const NoticeDetail = () => {
   const history = useHistory()
@@ -20,7 +22,6 @@ const NoticeDetail = () => {
   //context
   const context = useContext(Context)
   const {token} = context
-  const params = useParams();
   const dispatch = useDispatch();
   const noticeData = useSelector(state => state.brdcst);
   const noticeFixData = useSelector(state => state.noticeFix);
@@ -34,7 +35,6 @@ const NoticeDetail = () => {
     }
     API.mypage_notice_sel(apiParam).then((res) => {
       if(res.result === "success") {
-        console.log(res);
         const data = res.data;
         const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
@@ -139,17 +139,7 @@ const NoticeDetail = () => {
               <div className="noticeBox">
                 <div className="badge">Notice</div>
                 <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <div className="info">
-                  {v.like_yn === "n" ?
-                    <i className="likeOff" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'fix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                    : <i className="likeOn" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'fix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                  }
-                  <i className="cmt">{v.replyCnt}</i>
-                  <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
-                </div>
-                <button className="fixIcon">
-                  <img src={`${IMG_SERVER}/profile/bookmark-on.png`} />
-                </button>
+                <FeedLike data={v} fetchHandleLike={fetchHandleLike} likeType={"fix"} type={"notice"} detailPageParam={detailPageParam} />
               </div>
             </div>
           )
@@ -162,21 +152,14 @@ const NoticeDetail = () => {
               <div className="noticeBox">
                 <div className="badge">Notice</div>
                 <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                <div className="info">
-                  {v.like_yn === "n" ?
-                    <i className="likeOff" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'nonFix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                    : <i className="likeOn" onClick={() => fetchHandleLike(v.noticeIdx, v.mem_no, v.like_yn, 'nonFix')}>{v.rcv_like_cnt ? Utility.printNumber(v.rcv_like_cnt) : 0}</i>
-                  }
-                  <i className="cmt">{v.replyCnt}</i>
-                  <span className="time">{Utility.writeTimeDffCalc(v.writeDate)}</span>
-                </div>
-                <button className="fixIcon">
-                  <img src={`${IMG_SERVER}/profile/bookmark-off.png`} />
-                </button>
+                <FeedLike data={v} fetchHandleLike={fetchHandleLike} likeType={"nonFix"} type={"notice"} detailPageParam={detailPageParam} />
               </div>
             </div>
           )
         })}
+        {noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0 &&
+        <NoResult />
+        }
       </section>
     </div>
   )

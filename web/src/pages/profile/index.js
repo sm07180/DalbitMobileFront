@@ -82,7 +82,7 @@ const ProfilePage = () => {
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
 
-  const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 팬보드
+  const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 팬보드
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
