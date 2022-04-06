@@ -24,6 +24,64 @@
           }
         }
       }
+      .benefitsWrap {
+        @include flex(center);
+        flex-wrap: wrap;
+        width: 100%;
+        border-top: 2px solid #D2D2D2;
+        border-bottom: 2px solid #D2D2D2;
+        .benefitsList {
+          position: relative;
+          width: 50%;
+          border-bottom: 1px solid #E1E1E1;
+          img {
+            width: 100%;
+            pointer-events: none;
+          }
+          .benefitsName {
+            @include position-bottom-left;
+            width: 100%;
+            text-align: center;
+            @include font(13px, 500, #202020);
+            line-height: 48px;
+          }
+          &:nth-child(7) {border-bottom: none;}
+          &:nth-child(8) {border-bottom: none;}
+        }
+      }
+      .rewardWrap {
+        @include flex(center, center, column);
+        width: 100%;
+        .rewardList {
+          @include flex(center);
+          width: 100%; min-height: 38px;
+          padding: 10px 0;
+          &:nth-child(odd) {background-color: #F8F8F8;}
+          &:nth-child(even) {background-color: #FFFFFF;}
+          .selectedCount {
+            flex: none;
+            @include flex(center, center);
+            width: 80px;
+            @include font(12px, $Medium, #202020);
+            &.point {
+              @include font(12px, $Medium, #7A5CE1);
+            }
+          }
+          .selectedReward {
+            flex: 1;
+            @include flex(center, center, column);
+            @include font(14px, $Medium, #202020);
+            text-align: center;
+            line-height: 18px;
+            img {
+              display: inline-block;
+              width: 66px;
+              height: 66px;
+              margin-bottom: 4px;
+            }
+          }
+        }
+      }
     }
   }
   .starDjBottom {
@@ -33,6 +91,16 @@
 
 .pcType {
   #StarDjBenefits {    
-          
+    .content {
+      .benefits {        
+        .benefitsWrap {
+          .benefitsList {
+            img {
+              image-rendering: -webkit-optimize-contrast;
+            }
+          }
+        }
+      }
+    }
   }
 }

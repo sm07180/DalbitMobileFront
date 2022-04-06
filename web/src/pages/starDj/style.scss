@@ -208,6 +208,80 @@
       }
     }    
   }
+  #layerPop {
+    .popLayer {
+      .popContainer {
+        padding: 20px 0px;
+        .popTitle {
+          @include font(16px, $Bold, #202020);
+          line-height: 48px;
+        }
+        .popContent {
+          width: 100%;
+          padding: 12px 20px;
+          .period {            
+            @include font(13px, $Medium, #202020);
+            margin-bottom: 12px;
+            line-height: 20px;
+            letter-spacing: -0.5px;
+          }
+          .score {
+            @include flex($fd:column);
+            @include font(13px, $Regular, #202020);
+            margin-bottom: 12px;
+            line-height: 20px;
+            letter-spacing: -0.5px;
+            p {
+              @include flex(flex-start);
+              span {
+                &:first-child {
+                  flex: none;
+                }
+                &:last-child {
+                  flex: 1;
+                }
+              }
+            }
+          }
+          .referenceWrap {
+            @include flex($fd:column);
+            width: 100%;
+            margin-bottom: 12px;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+            .referenceTitle {
+              @include flex(center);
+              @include font(13px, 600, #202020);
+              &::before {
+                content: "*";
+                display: inline-block;
+                @include font(13px, 600, #202020);
+                margin-right: 4px;
+              }
+            }
+            .referenceList {
+              @include flex($fd:column);
+              li {
+                position: relative;
+                width: 100%;
+                padding-left: 15px;
+                @include font(13px, $Regular, #202020);
+                line-height: 20px;
+                &::before {
+                  content: "";
+                  @include position-top-left(8px, 4px);
+                  display: inline-block;
+                  width: 4px; height: 1px;
+                  background-color: #202020;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .pcType {

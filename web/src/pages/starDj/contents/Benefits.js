@@ -11,6 +11,41 @@ import {Context} from "context";
 import { IMG_SERVER } from "constant/define";
 
 const StarDjBenefits = () => {
+  const benefitList = [
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-1.png",
+      benefitsName : "스타DJ 전용 배지"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-2.png",
+      benefitsName : "스타DJ 전용 프레임"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-3.png",
+      benefitsName : "라이브 썸네일 선택 기능"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-4.png",
+      benefitsName : "라이브 푸시 알림 1회 발송"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-5.png",
+      benefitsName : "방송 개설 시 부스터 효과"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-6.png",
+      benefitsName : "방송 개설 시 탑 배너 노출"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-7.png",
+      benefitsName : "환전 수수료 특별 우대"
+    },
+    {
+      benefitsImg : "/starDJ/benefits/starDJ_benefits-8.png",
+      benefitsName : "첫 선정 기념 달비굿즈 지급"
+    },
+  ]
+
   let history = useHistory()
   const context = useContext(Context) 
 
@@ -24,8 +59,17 @@ const StarDjBenefits = () => {
           <span>달라를 빛내줄 셀럽</span>
           <span>스타 DJ의 어메이징한 혜택!</span>
         </div>
-        <div className=''>
-
+        <div className='benefitsWrap'>
+          {
+            benefitList.map((list, index) => {
+              return (
+                <div className='benefitsList' key={index}>
+                  <img src={`${IMG_SERVER}${list.benefitsImg}`} alt={`${list.benefitsName}`}/>
+                  <span className='benefitsName'>{list.benefitsName}</span>
+                </div>
+              )
+            })
+          }
         </div>
       </section>
       <section className='benefits'>
@@ -33,7 +77,47 @@ const StarDjBenefits = () => {
           <span>선정될 때마다 추가로 쏟아지는 혜택</span>
           <span>활동 지원비 & 다양한 굿즈 지급!</span>
         </div>
-
+        <div className='rewardWrap'>
+          <div className='rewardList'>
+            <span className='selectedCount'>1~5회</span>
+            <span className='selectedReward'>500달</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount'>6회</span>
+            <span className='selectedReward'>2,000달 + 부스터 30개 + 시그니처 아이템</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount'>7~9회</span>
+            <span className='selectedReward'>2,000달 + 부스터 30개</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount'>10회</span>
+            <span className='selectedReward'>4,000달 + 달 무드등 굿즈 + 부스터 30개<br/>+ 시그니처 아이템</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount'>11~14회</span>
+            <span className='selectedReward'>3,000달 + 부스터 30개</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount'>15회</span>
+            <span className='selectedReward'>40만원 + 4,000달 + 부스터 30개</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount'>16~19회</span>
+            <span className='selectedReward'>4,000달 + 부스터 30개</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount point'>20회</span>
+            <span className='selectedReward'>150만원 + 부스터 30개</span>
+          </div>
+          <div className='rewardList'>
+            <span className='selectedCount point'>21회</span>
+            <span className='selectedReward'>
+              <img src={`${IMG_SERVER}/starDJ/benefits/starDJ_benefits-frame.png`}/>
+              명예 프레임 (영구 소장)
+            </span>
+          </div>
+        </div>
       </section>
     </div>
     <Bottom>
