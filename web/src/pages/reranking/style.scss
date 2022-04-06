@@ -51,10 +51,16 @@ $errorMsg : #FF1919;
 #renewalRanking {
   header {
     .benefits {
-      display: inline-block;
-      width: 40px; height: 40px;
+      @include flex(center);
+      height: 40px;
       margin-right: 10px;
       @include font(14px, 400, #666666);
+      &::after {
+        content: "";
+        display: inline-block;
+        width: 20px; height: 20px;
+        @include BGIMG("common/icon/icon_benefit.png");
+      }
     }
   }
   .cntTitle {
@@ -353,12 +359,12 @@ $errorMsg : #FF1919;
         @include font(16px,600,#ACACAC);
         box-sizing: border-box;
         &.active {
-          @include font(16px,700,#202020);
+          @include font(16px,700,#FF6999);
         }
       }
       .underline {
         height:2px;
-        background-color:#202020;
+        background-color:#FF6999;
       }
     }
     .listWrap {
