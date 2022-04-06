@@ -234,8 +234,10 @@ const RankDetailPage = (props) => {
       history.replace("/rankDetail/DJ");
     } else if(text === "FAN") {
       history.replace("/rankDetail/FAN");
-    } else {
+    } else if(text === "CUPID") {
       history.replace("/rankDetail/CUPID");
+    } else {
+      history.replace("/rankDetail/TEAM");
     }
     closeSlidePop();
   }
@@ -259,9 +261,12 @@ const RankDetailPage = (props) => {
       } else if (select === "FAN") {
         setRankType(tabName === "주간" ? 2 : tabName === "월간" ? 3 : 1);
         setRankSlct(2);
-      } else {
+      } else if (select === "CUPID") {
         setRankType(tabName === "주간" ? 2 :  1);
         setRankSlct(3);
+      } else {
+        setRankType(tabName === "주간" ? 2 :  1);
+        setRankSlct(4);
       }
     }
   }, [tabName, select]);
@@ -342,6 +347,7 @@ const RankDetailPage = (props) => {
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
             <div className={`selectOption ${select === "FAN" ? "active" : ""}`} onClick={optionSelect}>FAN</div>
             <div className={`selectOption ${select === "CUPID" ? "active" : ""}`} onClick={optionSelect}>CUPID</div>
+            <div className={`selectOption ${select === "TEAM" ? "active" : ""}`} onClick={optionSelect}>TEAM</div>
           </div>
         </PopSlide>
       }

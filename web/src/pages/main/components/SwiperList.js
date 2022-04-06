@@ -75,7 +75,7 @@ const SwiperList = (props) => {
               <div className="photo">
                 <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                {item.rank && <div className={`rank-${item.rank}`}></div>}                
+                {item.rank && <div className={`rank-${item.rank}`}></div>}
                 {
                   item.roomNo &&
                     <div className='livetag' onClick={(e) => {

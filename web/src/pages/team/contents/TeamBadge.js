@@ -45,7 +45,7 @@ const InviteList = (props) => {
         </div>
         <div className="title">활동 배지<span><strong>0</strong>/4</span></div>
         <section className="badgeList">
-          <label className="badgeItem" onClick={onClickBadge}>
+          <label className="badgeItem" onClick={true ? '' : onClickBadge}>
             <img src={`${IMG_SERVER}/team/badge/a002.png`} alt="" />
             {true &&
               <div className="checkboxLabel">
