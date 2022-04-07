@@ -116,6 +116,10 @@ export const profileFeedDefaultState = {
   isLastPage: false
 }
 
+/* 디테일 default */
+export const profileDetailDefaultState = {
+  list: [],
+}
 
 interface IFanRank {
   age: number;
@@ -313,4 +317,9 @@ export interface IProfileFeedState {
   feedList: Array<IFeedData>;
   paging: IPaging;
   isLastPage: boolean;
+}
+
+/* 디테일 */
+export interface IProfileDetailState {
+  list: Array<IFeedData>;
 }

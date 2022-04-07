@@ -74,29 +74,45 @@ const NoticeDetail = () => {
     }).catch((e) => console.log(e));
   }
 
-  const fetchHandleLike = async (regNo, mMemNo, like, type) => {
+  const fetchHandleLike = async (regNo, mMemNo, like, likeType, index) => {
     const params = {
       regNo: regNo,
       mMemNo: mMemNo,
       vMemNo: context.profile.memNo
     };
     if(like === "n") {
-      Api.profileFeedLike(params).then((res) => {
+      await Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
-          if(type === "nonFix") {
-            getFetchData(1);
-          } else if(type === "fix") {
-            getFetchFixData(1);
+          if(likeType === "fix") {
+            let tempIndex = noticeFixData.fixedFeedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeFixData.fixedFeedList.concat([]);
+            temp[tempIndex].like_yn = "y";
+            temp[tempIndex].rcv_like_cnt++;
+            dispatch(setProfileNoticeFixData({...noticeFixData, fixedFeedList: temp}))
+          } else {
+            let tempIndex = noticeData.feedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeData.feedList.concat([]);
+            temp[tempIndex].like_yn = "y";
+            temp[tempIndex].rcv_like_cnt++;
+            dispatch(setProfileNoticeData({...noticeData, feedList: temp}))
           }
         }
       }).catch((e) => console.log(e));
     } else if(like === "y") {
-      Api.profileFeedLikeCancel(params).then((res) => {
+      await Api.profileFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
-          if(type === "nonFix") {
-            getFetchData(1);
-          } else if(type === "fix") {
-            getFetchFixData(1);
+          if(likeType === "fix") {
+            let tempIndex = noticeFixData.fixedFeedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeFixData.fixedFeedList.concat([]);
+            temp[tempIndex].like_yn = "n";
+            temp[tempIndex].rcv_like_cnt--;
+            dispatch(setProfileNoticeFixData({...noticeFixData, fixedFeedList: temp}))
+          } else {
+            let tempIndex = noticeData.feedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeData.feedList.concat([]);
+            temp[tempIndex].like_yn = "n";
+            temp[tempIndex].rcv_like_cnt--;
+            dispatch(setProfileNoticeData({...noticeData, feedList: temp}))
           }
         }
       }).catch((e) => console.log(e));

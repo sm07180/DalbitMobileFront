@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Utility from "components/lib/utility";
 import {IMG_SERVER} from "context/config";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {isHybrid, isMobileWeb} from "context/hybrid";
 
 const FeedLike = (props) => {
   const {data, fetchHandleLike, type, likeType, detailPageParam, detail} = props;
@@ -21,12 +22,9 @@ const FeedLike = (props) => {
   }, []);
 
   /* 좋아요 클릭 이벤트 */
-  const onClick = () => {
-    if(isDisabled) {
-      fetchHandleLike((data.noticeIdx || data.reg_no), data.mem_no, data.like_yn, likeType);
-      setIsDisabled(false);
-      setTimeout(() => setIsDisabled(true), 300);
-    }
+  const onClick = (e) => {
+    const index = e.currentTarget.dataset.index;
+    fetchHandleLike((data.noticeIdx ? data.noticeIdx : data.reg_no), data.mem_no, data.like_yn, likeType, index);
   }
 
   useEffect(() => {
@@ -40,12 +38,12 @@ const FeedLike = (props) => {
     <>
       <div className="info" ref={infoRef}>
         {type !== "fanBoard" && data?.like_yn === "n" ?
-          <i className="likeOff" onClick={onClick}>
+          <i className="likeOff" onClick={onClick} data-index={data.noticeIdx ? data.noticeIdx : data.reg_no}>
             {data.rcv_like_cnt ? Utility.printNumber(data.rcv_like_cnt) : 0}
             {(tooltipEvent && type === "feed" && detail) && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
           </i>
           : type !== "fanBoard" && data?.like_yn === "y" &&
-          <i className="likeOn" onClick={onClick}>
+          <i className="likeOn" onClick={onClick} data-index={data.noticeIdx ? data.noticeIdx : data.reg_no}>
             {data.rcv_like_cnt ? Utility.printNumber(data.rcv_like_cnt) : 0}
           </i>
         }

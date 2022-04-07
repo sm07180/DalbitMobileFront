@@ -13,13 +13,14 @@ import notice from './notice/index';
 import inquire from "./inquire";
 import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
-import rank from "./rank/index"
+import rank from "./rank/index";
 import vote from './vote';
 import broadcast from './broadcast';
 import profileTab from './profile/tab';
 import noticeTabList from "./notice/tabList";
 import feed from "./profile/feed";
 import noticeFix from "./profile/noticeFix";
+import detail from "./profile/detail";
 
 const rootReducer = combineReducers({
   common
@@ -43,6 +44,7 @@ const rootReducer = combineReducers({
   , noticeTabList
   , feed
   , noticeFix
+  , detail
 });
 
 export type AppState = ReturnType<typeof rootReducer>;
