@@ -4,9 +4,10 @@ import {IMG_SERVER} from "context/config";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const FeedLike = (props) => {
-  const {data, fetchHandleLike, type, likeType, detailPageParam, detail } = props;
+  const {data, fetchHandleLike, type, likeType, detailPageParam, detail} = props;
   const infoRef = useRef();
   const [tooltipEvent, setTooltipEvent] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   /* 좋아요 툴팁 이벤트 */
   const tooltipScrollEvent = useCallback(() => {
@@ -19,6 +20,15 @@ const FeedLike = (props) => {
     }
   }, []);
 
+  /* 좋아요 클릭 이벤트 */
+  const onClick = () => {
+    if(isDisabled) {
+      fetchHandleLike((data.noticeIdx || data.reg_no), data.mem_no, data.like_yn, likeType);
+      setIsDisabled(false);
+      setTimeout(() => setIsDisabled(true), 300);
+    }
+  }
+
   useEffect(() => {
     document.addEventListener('scroll', tooltipScrollEvent);
     return () => {
@@ -30,12 +40,12 @@ const FeedLike = (props) => {
     <>
       <div className="info" ref={infoRef}>
         {type !== "fanBoard" && data?.like_yn === "n" ?
-          <i className="likeOff" onClick={() => fetchHandleLike((data.noticeIdx || data.reg_no), data.mem_no, data.like_yn, likeType)}>
+          <i className="likeOff" onClick={onClick}>
             {data.rcv_like_cnt ? Utility.printNumber(data.rcv_like_cnt) : 0}
             {(tooltipEvent && type === "feed" && detail) && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
           </i>
           : type !== "fanBoard" && data?.like_yn === "y" &&
-          <i className="likeOn" onClick={() => fetchHandleLike((data.noticeIdx || data.reg_no), data.mem_no, data.like_yn, likeType)}>
+          <i className="likeOn" onClick={onClick}>
             {data.rcv_like_cnt ? Utility.printNumber(data.rcv_like_cnt) : 0}
           </i>
         }

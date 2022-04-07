@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import FeedLike from "pages/profile/components/FeedLike";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike} = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
   const history = useHistory();
   const context = useContext(Context);
   const {profile} = context;
@@ -56,34 +56,34 @@ const SocialList = (props) => {
               />
 
               {type === 'feed' && item.photoInfoList.length > 0 &&
-              <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
+              <div className="swiperPhoto">
                 {item.photoInfoList.length <= 2 ?
                   <div className="photo grid-2">
-                    {item.photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} alt="" />)})}
+                    {item.photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)} />)})}
                   </div>
                   : item.photoInfoList.length === 3 ?
                     <div className="photo grid-3">
-                      {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" /></div>)})}
+                      {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)} /></div>)})}
                     </div>
                     : item.photoInfoList.length === 4 ?
                       <div className="photo grid-2">
-                        {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" /></div>)})}
+                        {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)}/></div>)})}
                       </div>
                       : item.photoInfoList.length >= 5 &&
                       <>
                         <div className="photo grid-2">
-                          {item.photoInfoList.map((v, idx) => {return (<div key={idx}>{idx <= 1 && <img src={v.imgObj.thumb500x500} alt=""/>}</div>)})}
+                          {item.photoInfoList.map((v, idx) => {return (<div key={idx}>{idx <= 1 && <img src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)}/>}</div>)})}
                         </div>
                         <div className="photo grid-3">
-                          <img src={item?.photoInfoList[2]?.imgObj?.thumb500x500} alt="" />
-                          <img src={item?.photoInfoList[3]?.imgObj?.thumb500x500} alt="" />
-                          <img src={item?.photoInfoList[4]?.imgObj?.thumb500x500} alt="" />
+                          <img src={item?.photoInfoList[2]?.imgObj?.thumb500x500} alt=""/>
+                          <img src={item?.photoInfoList[3]?.imgObj?.thumb500x500} alt=""/>
+                          <img src={item?.photoInfoList[4]?.imgObj?.thumb500x500} alt=""/>
                           <div className="photoMore">
-                            <div className="none"/>
-                            <div className="none"/>
+                            <div className="none" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 2)}/>
+                            <div className="none" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 3)}/>
                             {item.photoInfoList.length - 5 > 0 ?
-                              <div className="count">+{item.photoInfoList.length - 5}</div>
-                              : <div className="none"/>
+                              <div className="count" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 4)}>+{item.photoInfoList.length - 5}</div>
+                              : <div className="none" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 4)}/>
                             }
                           </div>
                         </div>

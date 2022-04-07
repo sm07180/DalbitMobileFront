@@ -122,9 +122,17 @@
   .broadcastNotice {
     margin-top:16px;
     .title {
+      @include flex(center);
       margin-bottom:12px;
       padding:0 16px;
       @include font(17px,$Bold,#202020);
+      &::after {
+        content:"";
+        display:block;
+        width:24px;
+        height:24px;
+        @include BGIMG("profile/broadcast_arrow.png");
+      }
     }
     .swiper-wrapper {
       padding-left:16px;

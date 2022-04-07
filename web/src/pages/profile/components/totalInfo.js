@@ -14,7 +14,7 @@ import noticeFix from "redux/reducers/profile/noticeFix";
 import FeedLike from "pages/profile/components/FeedLike";
 
 const TotalInfo = (props) => {
-  const {data, goProfile, openPopLike, isMyProfile, noticeData, getNoticeData, fetchHandleLike, noticeFixData, getNoticeFixData} = props
+  const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const history = useHistory();
