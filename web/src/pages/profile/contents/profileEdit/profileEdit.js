@@ -78,7 +78,7 @@ const ProfileEdit = () => {
     }
   }, [profile])
 
-  const showSlideClear = useCallback((p)=>{
+  const showSlideClear = useCallback(() => {
     setShowSlide({visible: false, imgList: [], initialSlide: 0});
   },[]);
 
@@ -227,21 +227,14 @@ const ProfileEdit = () => {
   };
 
   //이미지 팝업 띄우기
-  const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
-    if(!data) return;
-
-    let resultMap = [];
-    if (type === 'profileList') { // 프로필 이미지 리스트, 대표 이미지 눌렀을 때
-      data.map((v, idx) => {
-        if (v?.profImg) {
-          resultMap.push({idx: v.idx, ...v.profImg});
-        }
-      });
-    } else { //배경 이미지 눌렀을때
-      resultMap.push({idx: data.idx, ...data.profImg});
-    }
-
-    setShowSlide({visible:true, imgList: resultMap, initialSlide });
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide= 0) => {
+    let list = [];
+    data.map((v, idx) => {
+      if (v?.profImg) {
+        list.push({idx: v.idx, ...v.profImg});
+      }
+    });
+    setShowSlide({visible: true, imgList: list, initialSlide});
   };
 
   const imageSorting = (imageList = []) => {
@@ -299,17 +292,11 @@ const ProfileEdit = () => {
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
+            <section className='profileTopSwiper'>
               {profileInfo?.profImgList?.length > 0 ?
                 <TopSwiper data={profileDataNoReader}
                            disabledBadge={true}
-                           swiperParam={{
-                             on: {
-                               init: function () {
-                                 topSwiperRef.current = this;
-                               }
-                             }
-                           }}
+                           openShowSlide={openShowSlide}
                 />
                 :
                 <div className="nonePhoto"
@@ -324,10 +311,10 @@ const ProfileEdit = () => {
             <section className="insertPhoto">
               <div className="insertBtn">
                 <div className="photo"
-                     onClick={()=> {
-                       profileInfo?.profImgList.length >0 ?
-                         showImagePopUp(profileInfo?.profImgList, 'profileList') :
-                         inputRef.current.click();
+                     onClick={() => {
+                       profileInfo?.profImgList.length > 0?
+                         openShowSlide(profileInfo?.profImgList,  'y', 'profImg', 0)
+                         : inputRef.current.click();
                      }}>
                   <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
                 </div>
@@ -344,7 +331,9 @@ const ProfileEdit = () => {
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
                         <img src={data?.profImg?.thumb292x292} alt=""
-                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
+                             onClick={() => {
+                               openShowSlide(profileInfo?.profImgList, 'y', 'profImg', index)
+                             }}/>
                         <button className="cancelBtn"
                                 onClick={() => {
                                   context.action.confirm({

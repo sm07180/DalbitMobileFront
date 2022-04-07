@@ -55,8 +55,7 @@ const ProfilePage = () => {
   const socialRef = useRef();
   const floatingRef = useRef();
 
-  const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
-  const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
+  const [showSlide, setShowSlide] = useState({visible: false, imgList: [], initialSlide: 0}); // 프사 확대 슬라이드
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
@@ -425,14 +424,17 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y", keyName='profImg') => {
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide= 0) => {
     const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
 
-    setImgList(list);
-    setShowSlide(true);
-  }
+    setShowSlide({visible: true, imgList: list, initialSlide});
+  };
+
+  const closeShowSlide = useCallback(() => {
+    setShowSlide({visible: false, imgList: [], initialSlide: 0});
+  },[]);
 
   /* 팬,스타 슬라이드 팝업 열기/닫기 */
   const openPopFanStar = (e) => {
@@ -792,11 +794,6 @@ const ProfilePage = () => {
         <div className="tabmenuWrap" ref={tabmenuRef}>
           <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction}
                    subTextList={[`(${noticeData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
-          {/*{(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])*/}
-          {/*  && <button onClick={() => {*/}
-          {/*  profileTab.tabName === profileTab.tabList[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo, dispatch, profileTab} );*/}
-          {/*    profileTab.tabName === profileTab.tabList[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo, dispatch, profileTab})*/}
-          {/*}}>등록</button>}*/}
         </div>
 
         {/* 피드 */}
@@ -817,7 +814,9 @@ const ProfilePage = () => {
         }
 
         {/* 프로필 사진 확대 */}
-        {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+        {showSlide?.visible &&
+          <ShowSwiper imageList={showSlide?.imgList} popClose={closeShowSlide} swiperParam={{initialSlide: showSlide?.initialSlide}}/>
+        }
 
         {/* 글쓰기 플로팅 버튼 */}
         {isMyProfile && profileTab.tabName === profileTab.tabList[0] &&
