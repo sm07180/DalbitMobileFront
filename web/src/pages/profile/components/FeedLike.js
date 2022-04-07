@@ -21,10 +21,6 @@ const FeedLike = (props) => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(tooltipEvent);
-  })
-
   /* 좋아요 클릭 이벤트 */
   const onClick = (e) => {
     const index = e.currentTarget.dataset.index;
