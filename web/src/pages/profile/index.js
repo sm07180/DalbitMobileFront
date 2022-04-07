@@ -348,7 +348,7 @@ const ProfilePage = () => {
   }
 
   /* 방송공지 좋아요 */
-  const fetchHandleLike = async (regNo, mMemNo, like, likeType) => {
+  const fetchHandleLike = async (regNo, mMemNo, like, likeType, index) => {
     const params = {
       regNo: regNo,
       mMemNo: mMemNo,
@@ -358,9 +358,17 @@ const ProfilePage = () => {
       await Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
           if(likeType === "fix") {
-            getNoticeFixData(true);
+            let tempIndex = noticeFixData.fixedFeedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeFixData.fixedFeedList.concat([]);
+            temp[tempIndex].like_yn = "y";
+            temp[tempIndex].rcv_like_cnt++;
+            dispatch(setProfileNoticeFixData({...noticeFixData, fixedFeedList: temp}))
           } else {
-            getNoticeData(true);
+            let tempIndex = noticeData.feedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeData.feedList.concat([]);
+            temp[tempIndex].like_yn = "y";
+            temp[tempIndex].rcv_like_cnt++;
+            dispatch(setProfileNoticeData({...noticeData, feedList: temp}))
           }
         }
       }).catch((e) => console.log(e));
@@ -368,9 +376,17 @@ const ProfilePage = () => {
       await Api.profileFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
           if(likeType === "fix") {
-            getNoticeFixData(true);
+            let tempIndex = noticeFixData.fixedFeedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeFixData.fixedFeedList.concat([]);
+            temp[tempIndex].like_yn = "n";
+            temp[tempIndex].rcv_like_cnt--;
+            dispatch(setProfileNoticeFixData({...noticeFixData, fixedFeedList: temp}))
           } else {
-            getNoticeData(true);
+            let tempIndex = noticeData.feedList.findIndex(value => value.noticeIdx === parseInt(index));
+            let temp = noticeData.feedList.concat([]);
+            temp[tempIndex].like_yn = "n";
+            temp[tempIndex].rcv_like_cnt--;
+            dispatch(setProfileNoticeData({...noticeData, feedList: temp}))
           }
         }
       }).catch((e) => console.log(e));
@@ -378,7 +394,7 @@ const ProfilePage = () => {
   };
 
   /* 피드 좋아요 */
-  const fetchFeedHandleLike = async (feedNo, mMemNo, like) => {
+  const fetchFeedHandleLike = async (feedNo, mMemNo, like, likeType, index) => {
     const params = {
       feedNo: feedNo,
       mMemNo: mMemNo,
@@ -387,13 +403,21 @@ const ProfilePage = () => {
     if(like === "n") {
       await Api.myPageFeedLike(params).then((res) => {
         if(res.result === "success") {
-          getFeedData(true);
+          let tempIndex = feedData.feedList.findIndex(value => value.reg_no === parseInt(index));
+          let temp = feedData.feedList.concat([]);
+          temp[tempIndex].like_yn = "y";
+          temp[tempIndex].rcv_like_cnt++;
+          dispatch(setProfileFeedNewData({...feedData, feedList: temp}))
         }
       }).catch((e) => console.log(e));
     } else if(like === "y") {
       await Api.myPageFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
-          getFeedData(true);
+          let tempIndex = feedData.feedList.findIndex(value => value.reg_no === parseInt(index));
+          let temp = feedData.feedList.concat([]);
+          temp[tempIndex].like_yn = "n";
+          temp[tempIndex].rcv_like_cnt--;
+          dispatch(setProfileFeedNewData({...feedData, feedList: temp}))
         }
       }).catch((e) => console.log(e));
     }

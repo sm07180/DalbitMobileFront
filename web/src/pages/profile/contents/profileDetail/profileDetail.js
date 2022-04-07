@@ -16,6 +16,7 @@ import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import FeedLike from "pages/profile/components/FeedLike";
+import {setProfileDetailData} from "redux/actions/profile";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -56,6 +57,7 @@ const ProfileDetail = (props) => {
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
+  const detailData = useSelector(state => state.detail);
 
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -90,6 +92,10 @@ const ProfileDetail = (props) => {
         .then((res) => {
           const {data, result, message} = res;
           if(result === 'success'){
+            dispatch(setProfileDetailData({
+              ...detailData,
+              list: data
+            }))
             setItem(data);
           } else {
             history.goBack();
@@ -115,6 +121,10 @@ const ProfileDetail = (props) => {
       }).then((res) => {
         const {data, result, message} = res;
         if(result === "success") {
+          dispatch(setProfileDetailData({
+            ...detailData,
+            list: data
+          }))
           setItem(data);
         } else {
           context.action.toast({msg: message});
@@ -456,17 +466,19 @@ const ProfileDetail = (props) => {
       if(like === "n") {
         await Api.profileFeedLike(params).then((res) => {
           if(res.result === "success") {
-            getDetailData();
-          } else {
-            context.action.toast({msg: res.message});
+            let temp = detailData.list;
+            temp.like_yn = "y";
+            temp.rcv_like_cnt++;
+            dispatch(setProfileDetailData({...detailData, list: temp}));
           }
         }).catch((e) => console.log(e));
       } else if(like === "y") {
         await Api.profileFeedLikeCancel(params).then((res) => {
           if(res.result === "success") {
-            getDetailData();
-          } else {
-            context.action.toast({msg: res.message});
+            let temp = detailData.list;
+            temp.like_yn = "n";
+            temp.rcv_like_cnt--;
+            dispatch(setProfileDetailData({...detailData, list: temp}));
           }
         }).catch((e) => console.log(e));
       }
@@ -479,17 +491,19 @@ const ProfileDetail = (props) => {
       if(like === "n") {
         await Api.myPageFeedLike(params).then((res) => {
           if(res.result === "success") {
-            getDetailData();
-          } else {
-            context.action.toast({msg: res.message});
+            let temp = detailData.list;
+            temp.like_yn = "y";
+            temp.rcv_like_cnt++;
+            dispatch(setProfileDetailData({...detailData, list: temp}));
           }
         }).catch((e) => console.log(e));
       } else if(like === "y") {
         await Api.myPageFeedLikeCancel(params).then((res) => {
           if(res.result === "success") {
-            getDetailData();
-          } else {
-            context.action.toast({msg: res.message});
+            let temp = detailData.list;
+            temp.like_yn = "n";
+            temp.rcv_like_cnt--;
+            dispatch(setProfileDetailData({...detailData, list: temp}));
           }
         }).catch((e) => console.log(e));
       }
@@ -560,7 +574,7 @@ const ProfileDetail = (props) => {
                 </div>
                 : <></>
           )}
-          <FeedLike data={item} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"} />
+          <FeedLike data={detailData.list} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"} />
         </div>
 
         {/* 댓글 리스트 영역 */}

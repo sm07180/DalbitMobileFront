@@ -67,11 +67,16 @@ const TotalInfo = (props) => {
   /* 피드 삭제시 스와이퍼 업데이트용 */
   useEffect(() => {
     if((noticeData || noticeFixData) !== undefined) {
-      const swiper = document.querySelector('.swiper-container').swiper;
-      swiper.update();
+      const swiper = document.querySelector('.swiper-container')?.swiper;
+      swiper?.update();
       // swiper.slideTo(0);
     }
   }, [noticeData, noticeFixData]);
+
+  useEffect(() => {
+    console.log(noticeFixData.fixedFeedList.length)
+    console.log(noticeData.feedList.length);
+  })
 
   return (
     <>
@@ -133,55 +138,60 @@ const TotalInfo = (props) => {
       </div>
       }
 
-      <div className="broadcastNotice">
-        <div className="title" onClick={onClick}>방송공지</div>
-        <Swiper {...swiperParams}>
-          {noticeFixData?.fixedFeedList.map((v, idx) => {
-            const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-            return (
-              <div key={idx}>
-                <div className="noticeBox">
-                  <div className="badge">Notice</div>
-                  <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                  <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
-                </div>
-              </div>
-            )
-          })}
-          {noticeData?.feedList.map((v, idx) => {
-            const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
-            return (
-              <div key={idx}>
-                <div className="noticeBox">
-                  <div className="badge">Notice</div>
-                  <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
-                  <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
-                </div>
-              </div>
-            )
-          })}
-          {(noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0) && isMyProfile &&
-          defaultNotice.map((v, idx) => {
-            return (
-              <div key={idx}>
-                <div className="noticeBox">
-                  <div className="badge">Notice</div>
-                  <div className="text">{v.contents}</div>
-                  <div className="info">
-                    <i className="likeOff">{v.rcv_like_cnt}</i>
-                    <i className="cmt">{v.replyCnt}</i>
+      {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
+        <div className="broadcastNotice">
+          <div className="title" onClick={onClick}>방송공지</div>
+          <Swiper {...swiperParams}>
+            {noticeFixData?.fixedFeedList.map((v, idx) => {
+              const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                    <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
                   </div>
-                  <button className="fixIcon">
-                    <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
-                  </button>
                 </div>
-              </div>
-            )
-          })
+              )
+            })}
+            {noticeData?.feedList.map((v, idx) => {
+              const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                    <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
+                  </div>
+                </div>
+              )
+            })}
+            {(noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0) && isMyProfile &&
+            defaultNotice.map((v, idx) => {
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text">{v.contents}</div>
+                    <div className="info">
+                      <i className="likeOff">{v.rcv_like_cnt}</i>
+                      <i className="cmt">{v.replyCnt}</i>
+                    </div>
+                    <button className="fixIcon">
+                      <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+            }
+          </Swiper>
+        </div>
+        :
+        <>
+        </>
+      }
 
-          }
-        </Swiper>
-      </div>
     </>
   )
 }
