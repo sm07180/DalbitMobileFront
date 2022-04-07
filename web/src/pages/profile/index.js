@@ -70,6 +70,7 @@ const ProfilePage = () => {
 
   const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
   const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
+  const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -348,28 +349,30 @@ const ProfilePage = () => {
   }
 
   /* 방송공지 좋아요 */
-  const fetchHandleLike = async (regNo, mMemNo, like) => {
+  const fetchHandleLike = async (regNo, mMemNo, like, likeType) => {
     const params = {
       regNo: regNo,
       mMemNo: mMemNo,
       vMemNo: context.profile.memNo
     };
     if(like === "n") {
-      Api.profileFeedLike(params).then((res) => {
+      await Api.profileFeedLike(params).then((res) => {
         if(res.result === "success") {
-          getNoticeData(true);
-          getNoticeFixData(true);
-        } else {
-          context.action.toast({msg: res.message});
+          if(likeType === "fix") {
+            getNoticeFixData(true);
+          } else {
+            getNoticeData(true);
+          }
         }
       }).catch((e) => console.log(e));
     } else if(like === "y") {
-      Api.profileFeedLikeCancel(params).then((res) => {
+      await Api.profileFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
-          getNoticeData(true);
-          getNoticeFixData(true);
-        } else {
-          context.action.toast({msg: res.message});
+          if(likeType === "fix") {
+            getNoticeFixData(true);
+          } else {
+            getNoticeData(true);
+          }
         }
       }).catch((e) => console.log(e));
     }
@@ -383,19 +386,15 @@ const ProfilePage = () => {
       vMemNo: context.profile.memNo
     };
     if(like === "n") {
-      Api.myPageFeedLike(params).then((res) => {
+      await Api.myPageFeedLike(params).then((res) => {
         if(res.result === "success") {
           getFeedData(true);
-        } else {
-          context.action.toast({msg: res.message});
         }
       }).catch((e) => console.log(e));
     } else if(like === "y") {
-      Api.myPageFeedLikeCancel(params).then((res) => {
+      await Api.myPageFeedLikeCancel(params).then((res) => {
         if(res.result === "success") {
           getFeedData(true);
-        } else {
-          context.action.toast({msg: res.message});
         }
       }).catch((e) => console.log(e));
     }
@@ -425,7 +424,7 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y", keyName='profImg') => {
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide = 0) => {
     const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
@@ -433,6 +432,25 @@ const ProfilePage = () => {
     setImgList(list);
     setShowSlide(true);
   }
+
+  /* 피드 사진(여러장) 확대 */
+  const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
+    if(!data) return;
+    let resultMap = [];
+    if (type === 'feedList') { // 피드 이미지 리스트
+      data.map((v, idx) => {
+        if (v?.imgObj) {
+          resultMap.push({photo_no: v.photo_no, ...v.imgObj});
+        }
+      });
+    }
+    setFeedShowSlide({visible:true, imgList: resultMap, initialSlide });
+  };
+
+  /* 피드 사진 닫기 */
+  const showSlideClear = useCallback(() => {
+    setFeedShowSlide({visible: false, imgList: [], initialSlide: 0});
+  }, []);
 
   /* 팬,스타 슬라이드 팝업 열기/닫기 */
   const openPopFanStar = (e) => {
@@ -775,7 +793,7 @@ const ProfilePage = () => {
       </Header>
       <section className='profileTopSwiper'>
         <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} listenOpen={profileData.listenOpen}
-                   webview={webview} type="profile" />
+                   webview={webview} type="profile"/>
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
@@ -798,7 +816,7 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {profileTab.tabName === profileTab.tabList[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}  fetchHandleLike={fetchFeedHandleLike}
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchHandleLike={fetchFeedHandleLike} showImagePopUp={showImagePopUp}
                        isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
         }
 
@@ -815,6 +833,9 @@ const ProfilePage = () => {
 
         {/* 프로필 사진 확대 */}
         {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+
+        {/* 피드 사진 확대 */}
+        {feedShowSlide?.visible && <ShowSwiper imageList={feedShowSlide?.imgList || []} popClose={showSlideClear} swiperParam={{initialSlide: feedShowSlide?.initialSlide}}/>}
 
         {/* 글쓰기 플로팅 버튼 */}
         {isMyProfile && profileTab.tabName === profileTab.tabList[0] &&

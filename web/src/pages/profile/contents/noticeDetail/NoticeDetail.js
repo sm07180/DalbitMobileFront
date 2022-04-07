@@ -88,8 +88,6 @@ const NoticeDetail = () => {
           } else if(type === "fix") {
             getFetchFixData(1);
           }
-        } else {
-          context.action.toast({msg: res.message});
         }
       }).catch((e) => console.log(e));
     } else if(like === "y") {
@@ -100,8 +98,6 @@ const NoticeDetail = () => {
           } else if(type === "fix") {
             getFetchFixData(1);
           }
-        } else {
-          context.action.toast({msg: res.message});
         }
       }).catch((e) => console.log(e));
     }
