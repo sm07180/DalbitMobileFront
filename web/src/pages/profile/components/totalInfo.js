@@ -73,6 +73,11 @@ const TotalInfo = (props) => {
     }
   }, [noticeData, noticeFixData]);
 
+  useEffect(() => {
+    console.log(noticeFixData.fixedFeedList.length)
+    console.log(noticeData.feedList.length);
+  })
+
   return (
     <>
       {badgeTotalCnt !== 0 &&
@@ -133,7 +138,7 @@ const TotalInfo = (props) => {
       </div>
       }
 
-      {noticeFixData.fixedFeedList.length !== 0 && noticeData.feedList.length !== 0 ?
+      {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
         <div className="broadcastNotice">
           <div className="title" onClick={onClick}>방송공지</div>
           <Swiper {...swiperParams}>
