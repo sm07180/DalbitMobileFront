@@ -1,13 +1,15 @@
 // 메인 팝업 관리자 wrapper - test
 // 김재오 수정 2020-07-24
 import React, {useEffect, useState} from 'react'
-import Api from 'context/api'
 import {OS_TYPE} from '../../../context/config'
 import {Hybrid} from 'context/hybrid'
+import {useHistory} from "react-router-dom";
+import Api from 'context/api'
 import Utility from 'components/lib/utility'
+// global components
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // style
 import 'styles/layerpopup.scss'
-import {useHistory} from "react-router-dom";
 
 export default function LayerPopupWrap({data, setData}) {
   const history = useHistory();
@@ -134,7 +136,7 @@ export default function LayerPopupWrap({data, setData}) {
     <>
       {
         data.map((v, idx) => {
-          const {popup_type} = v
+          const {popup_type,bannerUrl,linkUrl,is_button_view,buttonNm} = v
           return (
             <div id="eventPop"
                  onClick={closePopup}
@@ -145,6 +147,8 @@ export default function LayerPopupWrap({data, setData}) {
                 <div className="popContainer">
                   <div className="popContent" onClick={(e) => e.stopPropagation()}>
                     {popup_type === 0 ? makeImgInner(v) : makeTextInner(v)}
+                    {is_button_view === 0 ? <></> : <SubmitBtn text={buttonNm} onClick={linkUrl} />
+                    }
                   </div>
                 </div>
                 <div className='closeWrap'>
