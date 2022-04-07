@@ -22,7 +22,7 @@ function* updateIndexData(param) {
 			const before = payStore.storeTabInfo.find(f=>f.selected);
 
 			const payload:Action = param.payload;
-
+			// 스토어 페이지 접근 했을때 탭 초기화
 			m.selected = payload === 'POP' && before ? m.modeTab === before.modeTab :
 				res.data.mode === ModeType.all ?
 					m.modeTab === ModeTabType.inApp : m.modeTab === res.data.mode;
