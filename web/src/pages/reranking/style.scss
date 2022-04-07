@@ -434,20 +434,7 @@ $errorMsg : #FF1919;
           flex: none;
           @include flex(center, center);
           .badgeLive {
-            @include flex(center, center);
-            width:62px;height:28px;
-            background-color: #FFE9E9;
-            border-radius: 100px;
-            cursor: pointer;
-            .equalizer {
-              display: inline-block;
-              width: 12px;
-              margin-top: -2px;
-              margin-right: 4px;
-            }
-            .liveText {
-              @include font(12px, 900, #FF3C7B);
-            }
+            @include badgeLive;
           }
           .badgeListener {
             @include flex(center, center);

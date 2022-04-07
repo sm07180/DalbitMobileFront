@@ -1,0 +1,147 @@
+@import "components/ui/_mixin.scss";
+
+#teamMake {
+  .teamParts {
+    @include flex(center,center,column);
+    padding:90px 0 64px;
+    text-align:center;
+    transition:padding .2s;
+    @include font(16px,$Medium,#303030);
+    @mixin partsBox($size,$bg) {
+      @include flex(center,center);
+      width:$size;
+      height:$size;
+      border-radius:16px;
+      background-color:$bg;
+      overflow:hidden;
+      &.active {
+        width:100%;
+        height:100%;
+        max-width:140px;
+        max-height:140px;
+        background-color:transparent;
+        transition:width .4s, height .4s, max-width .4s, max-height .4s;
+      }
+      img {
+        width:100%;
+      }
+    }
+    .parts-C {
+      position:relative;
+      @include partsBox(140px,#F6F6F6);
+      box-shadow:0 2px 4px rgba(0,0,0,.16);
+    }
+    .parts-B {
+      @include position-center;
+      @include partsBox(116px,#E9E9E9);
+    }
+    .parts-A {
+      @include position-center;
+      @include partsBox(88px,#DCDCDC);
+    }
+    .text {
+      margin-top:22px;
+    }
+  }
+  .partsType {
+    @include flex(center,center);
+    .typeList {
+      @include flex(center,center,column);
+      margin:0 8px;
+      button {
+        position:relative;
+        @include flex(center,center);
+        width:88px;height:88px;
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 2px 4px rgba(0,0,0,.16);
+        @include font(20px,$Regular,#666);
+        img {
+          width:100%;
+        }
+      }
+      $colors : (#DCDCDC,#E9E9E9,#F6F6F6);
+      @each $color in $colors {
+        $i: index($colors,$color);
+        &:nth-child(#{$i}) {
+          button {
+            background-color:$color;
+            &.acitve {
+              background-color:#999;
+              &::after {
+                @include position-top-right;
+                content:"";
+                display:block;
+                width:22px;height:22px;
+                margin:6px;
+                @include BGIMG('team/partsEdit.png');
+              }
+            }
+          }
+        }
+      }
+      span {
+        margin-top:8px;
+        @include font(15px,$Regular,#666);
+      }
+    }
+  }
+  .teamForm {
+    opacity: 0;
+    &.active {
+      opacity: 1;
+    }
+    .inputItems {
+      &:nth-child(1) {
+        margin-bottom:16px;
+        .title {
+          position:relative;
+          &::after {
+            content:"";
+            display:inline-block;
+            width:4px;
+            height:4px;
+            margin-left:2px;
+            margin-bottom:6px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
+          }
+        }
+      }
+      p.count {
+        line-height:20px;
+        text-align:right;
+        @include font(14px,$Medium,#666);
+      }
+    }
+  }
+  .buttonWrap {
+    position:-webkit-sticky;
+    position:sticky;
+    bottom:0;
+    margin-top:auto;
+    padding-bottom: 30px;
+    .submitBtn {
+      width:100%;
+    }
+  }
+  &.nextStep {
+    .teamParts {
+      padding:24px 0 30px;
+      .parts-C {
+        &.active {
+          width:80px;
+          height:80px;
+          max-width:80px;
+          max-height:80px;
+        }
+      }
+      .text {
+        display:none;
+      }
+    }
+    .partsType {
+      display:none;
+    }
+  }
+}

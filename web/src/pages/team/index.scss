@@ -1,0 +1,23 @@
+@import "components/ui/_mixin.scss";
+
+#team {
+  #cntWrapper {
+    padding:0;
+    @import "./scss/infoSlide.scss";
+    @import "./scss/inviteList.scss";
+    .buttonWrap {
+      position:-webkit-sticky;
+      position:sticky;
+      bottom:0;
+      margin-top:auto;
+      padding: 0 16px 30px;
+      .submitBtn {
+        width:100%;
+        &.disabled {
+          background-color:#FFD4E1;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

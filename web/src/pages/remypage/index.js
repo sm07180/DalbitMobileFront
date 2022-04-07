@@ -13,6 +13,7 @@ import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
+import Team from "pages/team";
 
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
@@ -132,6 +133,8 @@ const Remypage = () => {
       return(<Notice />)
     case 'customer' :
       return(<Customer />)
+    case 'team' :
+      return(<Team />)
     default :
       return(
         <>

@@ -146,6 +146,7 @@ $ExtraBold: 800;
 @mixin photoStyle($width, $height, $radius) {
   position: relative;
   width: $width; height: $height;
+  border-radius:$radius;
   box-sizing: border-box;
   &::before {
     content: "";
@@ -433,6 +434,36 @@ $ExtraBold: 800;
         border-top:1px solid #F2F2F2;;
       }
     }
+  }
+}
+
+@mixin badgeLive {
+  @include flex(center, center);
+  width:62px;height:28px;
+  background-color: #FFE9E9;
+  border-radius: 100px;
+  cursor: pointer;
+  .equalizer {
+    display: inline-block;
+    width: 12px;
+    margin-top: -2px;
+    margin-right: 4px;
+  }
+  .liveText {
+    @include font(12px, 900, #FF3C7B);
+  }
+}
+
+@mixin teamSymbol {
+  position:relative;
+  width:80px;
+  height:80px;
+  border-radius:16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.16);
+  overflow:hidden;
+  img {
+    @include position-center;
+    width:100%;
   }
 }
 

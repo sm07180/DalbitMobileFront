@@ -33,7 +33,7 @@ import {useHistory} from "react-router-dom";
 import smoothscroll from 'smoothscroll-polyfill';
 import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
 
-const topTenTabMenu = ['DJ','FAN','CUPID']
+const topTenTabMenu = ['DJ','FAN','TEAM']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 50

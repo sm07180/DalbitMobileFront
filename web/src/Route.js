@@ -53,6 +53,13 @@ const ReCustomer = React.lazy(() => import('pages/recustomer'))
 // 운영정책
 const ReRule = React.lazy(() => import('pages/rerule'))
 
+// 팀
+const Team = React.lazy(() => import('pages/team'))
+const TeamMake = React.lazy(() => import('pages/team/contents/teamMake/TeamMake'))
+const TeamDetail = React.lazy(() => import('pages/team/contents/teamDetail/TeamDetail'))
+const TeamManager = React.lazy(() => import('pages/team/contents/teamManager/TeamManager'))
+const TeamBadge = React.lazy(() => import('pages/team/contents/TeamBadge'))
+
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
 // 프로필 수정
@@ -277,6 +284,12 @@ const Router = () => {
 
 
         {/*<Route exact path="/profile/:memNo/write" component={ProfileWrite} />*/}
+
+        <Route exact path="/team" component={Team} />
+        <Route exact path="/team/make" component={TeamMake} />
+        <Route exact path="/team/detail" component={TeamDetail} />
+        <Route exact path="/team/manager" component={TeamManager} />
+        <Route exact path="/team/badge" component={TeamBadge} />
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />

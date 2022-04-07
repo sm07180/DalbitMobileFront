@@ -351,8 +351,7 @@ const RankPage = () => {
         </section>
           :
         <section className='myRanking'>
-          <CntTitle title={'나의 순위는?'}>
-          </CntTitle>
+          <CntTitle title={'나의 순위는?'} />
           <div className='rankBox'>
             <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
             <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
