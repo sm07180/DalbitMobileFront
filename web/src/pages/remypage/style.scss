@@ -69,6 +69,7 @@
           }
         }
         .count {
+          @include flex;
           line-height: 25px;
           i {
             margin-right:4px;

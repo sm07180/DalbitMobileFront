@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 
 // global components
@@ -7,20 +7,13 @@ import Header from 'components/ui/header/Header'
 import './infoOpen.scss'
 import API from "context/api";
 import Toast from "components/ui/toast/Toast";
+import {Context} from "context";
 
 const InfoOpen = (props) => {
   const [checkState, setCheckState] = useState(false);
-  const localOpen = [{path: -1, name: "방송 청취 정보 공개", value: 0}, {path: 1, name: "공개", value: 0}, {path: 0, name: "비공개", value: 0}]
   const {settingData, setSettingData} = props;
-  const [toast, setToast] = useState({state : false, msg : ""});
-
-  //토스트 메시지 출력
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
+  const context = useContext(Context);
+  const localOpen = [{path: -1, name: "방송 청취 정보 공개", value: 0}, {path: 1, name: "공개", value: 0}, {path: 0, name: "비공개", value: 0}]
 
   //토글 클릭시
   const switchAction = (e) => {
@@ -48,7 +41,7 @@ const InfoOpen = (props) => {
       const res = await API.modifyBroadcastSetting({listenOpen: slctedVal})
       if(res.result === "success") {
         setSettingData({...settingData, listenOpen: slctedVal})
-        toastMessage(res.message);
+        context.action.toast({msg: res.message});
       }
     }
   }
@@ -83,7 +76,6 @@ const InfoOpen = (props) => {
           </div>
         </div>
       </div>
-      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }

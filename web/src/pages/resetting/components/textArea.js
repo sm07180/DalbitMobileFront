@@ -7,7 +7,7 @@ import './textArea.scss'
 import {Context} from "context";
 
 const TextArea = (props) => {
-  const { max, list, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
+  const { max, list, type, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("");
@@ -15,12 +15,23 @@ const TextArea = (props) => {
 
   const textChange = (e) => {
     let textVal = e.target.value;
+    const idx = e.currentTarget.dataset.idx;
     if(textVal.length > max) {
       e.target.value = e.target.value.substr(0, max);
     } else {
-      setValueCount(textVal.length);
-      setTextValue(textVal);
-      setSelect({...select, val: textVal});
+      if(type === "방송 공지") {
+        setValueCount(textVal.length);
+        setTextValue(textVal);
+        if(list[0]?.conts) {
+          setSelect({state: true, val: textVal, index: idx});
+        } else {
+          setSelect({...select, val: textVal})
+        }
+      } else {
+        setValueCount(textVal.length);
+        setTextValue(textVal);
+        setSelect({...select, val: textVal});
+      }
     }
   }
 
@@ -29,20 +40,31 @@ const TextArea = (props) => {
   }
 
   const submit = () => {
-    if(list.length < 3){
-      setList(list.concat(textvalue))
-      setTextValue("");
-      setValueCount(0);
-      fetchAddData();
+    if(type === "방송 공지") {
+      if(list.length < 1) {
+        setList(list.concat(textvalue));
+        setTextValue("");
+        setValueCount(0);
+        fetchAddData();
+      } else {
+        context.action.toast({msg: "더 이상 추가하실 수 없습니다."});
+      }
     } else {
-      context.action.alert({msg: "더 이상 추가하실 수 없습니다."})
+      if(list.length < 3){
+        setList(list.concat(textvalue))
+        setTextValue("");
+        setValueCount(0);
+        fetchAddData();
+      } else {
+        context.action.alert({msg: "더 이상 추가하실 수 없습니다."})
+      }
     }
   }
 
   const submitEdit = () => {
-      fetchModifyData();
-      setSelect({state: false, val: "", index: -1});
-      setList(list.splice(select.index));
+    fetchModifyData();
+    setSelect({state: false, val: "", index: -1});
+    setList(list.splice(select.index));
   }
 
   const removeList = () => {
@@ -52,13 +74,28 @@ const TextArea = (props) => {
   }
 
   const resetList = () => {
-    setSelect({state: false, val: "", index: -1})
+    if(type === "방송 공지") {
+      setSelect({state: false, val: list[0]?.conts ? list[0]?.conts : "", index: -1});
+    } else {
+      setSelect({state: false, val: "", index: -1});
+    }
   }
+
+  useEffect(() => {
+    if(type==="방송 공지" && list[0]?.conts) {
+      setSelect({...select, val: list[0]?.conts})
+      setValueCount(list[0]?.conts.length);
+    }
+  }, [list]);
 
   return (
     <div className={`inputTextArea ${textareaState}`}>
       <InputItems type="textarea">
-        <input type="text" placeholder={list.length === 3 ? "더 이상 추가하실 수 없습니다." : '내용을 입력해주세요.'} onChange={textChange} value={select.val === "" ? "" : select.val}/>
+        {type === "방송 공지" ?
+          <textarea rows="5" placeholder="내용을 입력해주세요." data-idx={list[0]?.auto_no} onChange={textChange} value={select.val === "" ? "" : select.val} />
+          :
+          <input type="text" placeholder={list.length === 3 ? "더 이상 추가하실 수 없습니다." : '내용을 입력해주세요.'} onChange={textChange} value={select.val === "" ? "" : select.val}/>
+        }
         <div className='textCount'>
           <span>{valueCount}</span>
           <span>/{max}</span>
@@ -71,7 +108,7 @@ const TextArea = (props) => {
         <div className='rightBtn'>
           {select.state && <button className='cancelBtn' onClick={resetList}>취소</button>}
           {select.index === -1 ? <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
-          : <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>
+            : <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>
           }
         </div>
       </div>

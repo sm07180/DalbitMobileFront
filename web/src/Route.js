@@ -146,6 +146,7 @@ const Report = React.lazy(() => import("pages/remypage/contents/report/Report"))
 const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
+const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -244,11 +245,14 @@ const Router = () => {
                   return <Route component={ProfileContentsWrite} />
                }}
         />
-        {/*피드, 팬보드 수정*/}
+        {/*피드 수정 (팬보드 수정 삭제) */}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
                  const myMemNo = context.profile.memNo;
                  const {memNo, type, action} = match.params;
+                 if(type==='fanBoard' && action==='modify'){
+                   return <Redirect to={{ pathname: `/profile/${memNo}` }} />
+                 }
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if(action === 'write'){
@@ -270,8 +274,6 @@ const Router = () => {
                  }
                }}
         />
-
-        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
         {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
         {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
@@ -339,6 +341,8 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
+
+        <Route exact path="/brdcst" component={BroadNoticeDetail} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 
 // global components
@@ -7,17 +7,20 @@ import Header from 'components/ui/header/Header'
 import './inOutMessage.scss'
 import API from "context/api";
 import InfoSwitchList from "pages/resetting/components/InfoSwitchList";
+import {Context} from "context";
 
 const InOutMessage = (props) => {
   /**
    * liveBadgeView 실시간 팬 배지 djListenerIn DJ 입장 메시지, djListenerOut DJ 퇴장 메시지, listenerIn 청취자 입장 메시지, listenerOut 청취자 퇴장 메시지 => true, false
    * */
   const {settingData, setSettingData} = props;
+  const context = useContext(Context);
 
   const fetchData = async (type) => {
     const res = await API.modifyBroadcastSetting({[type]: !settingData[type]});
     if(res.result === "success") {
       setSettingData({...settingData, [type]: !settingData[type]})
+      context.action.toast({msg: res.message});
     }
   }
 

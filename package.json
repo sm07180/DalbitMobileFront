@@ -1,1 +1,6 @@
-{}
+{
+  "dependencies": {
+    "react-sortablejs": "^6.1.1",
+    "sortablejs": "^1.15.0"
+  }
+}
