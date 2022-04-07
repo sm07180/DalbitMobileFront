@@ -21,6 +21,7 @@ import {authReq} from "pages/self_auth";
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -168,7 +169,7 @@ const ProfileEdit = () => {
       const {result, message} = res
       if (result === 'success') {
         getMyInfo(); //프로필 정보 갱신
-        context.action.toast({msg: '이미지 등록 되었습니다.'});
+        context.action.toast({msg: '이미지가 등록 되었습니다.'});
       } else {
         context.action.toast({msg: message});
       }
@@ -254,11 +255,10 @@ const ProfileEdit = () => {
         .then((res) => {
           const {result, message, data} = res;
           if (result === 'success') {
-            context.action.toast({msg: '성공'});
             closeMoreList();
             getMyInfo();
           } else {
-            context.action.toast({msg: '사진 변경 실패'});
+            context.action.toast({msg: '잠시후에 다시 시도해주세요.'});
           }
         });
     } else {
@@ -294,14 +294,15 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
+            <Header title={'프로필 수정'} type={'back'} >
               <button className='saveBtn'
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
             <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profileDataNoReader} disabledBadge={true}
+                <TopSwiper data={profileDataNoReader}
+                           disabledBadge={true}
                            swiperParam={{
                              on: {
                                init: function () {

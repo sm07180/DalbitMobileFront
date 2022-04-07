@@ -45,10 +45,11 @@ const ShowSwiper = (props) => {
     }
   }, [imageList]);
 
+  /* 안드로이드 물리 백버튼시 감지용 */
   useEffect(() => {
     if(isAndroid()) {
       context.action.updateSetBack(true);
-      context.action.updateBackFunction({name: 'imageViewer'});
+      context.action.updateBackFunction({name: 'callback'});
       context.action.updateBackEventCallback(() => {
         popClose(false)
       });

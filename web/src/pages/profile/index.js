@@ -767,7 +767,7 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className="editBtn" onClick={()=>history.replace('/myProfile/edit')}>편집</button>
+            <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>
           </div>
           :
           <div className="buttonGroup">
