@@ -445,7 +445,7 @@ export default function GNB() {
               {gnbTypes.map((item, index) => {
                 return (
                   <li key={index} data-url={item.url}
-                      className={`${activeType === item.url ? 'active' : activeType.indexOf("/rankDetail") > -1 && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
+                      className={`${activeType === item.url ? 'active' : (activeType.indexOf("/rankDetail") > -1 || activeType.indexOf('/rankBenefit') > -1) && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
                       onClick={() => {
                         if(item.isUpdate && activeType === item.url) {
                           dispatch(setIsRefresh(true))
