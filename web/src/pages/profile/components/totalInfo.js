@@ -133,7 +133,7 @@ const TotalInfo = (props) => {
       </div>
       }
 
-      {noticeFixData.fixedFeedList && noticeData.feedList ?
+      {noticeFixData.fixedFeedList.length !== 0 && noticeData.feedList.length !== 0 ?
         <div className="broadcastNotice">
           <div className="title" onClick={onClick}>방송공지</div>
           <Swiper {...swiperParams}>
