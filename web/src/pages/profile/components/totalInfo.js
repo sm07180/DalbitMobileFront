@@ -133,7 +133,7 @@ const TotalInfo = (props) => {
       </div>
       }
 
-      {noticeFixData.fixedFeedList && noticeData.feedList && isMyProfile ?
+      {noticeFixData.fixedFeedList && noticeData.feedList ?
         <div className="broadcastNotice">
           <div className="title" onClick={onClick}>방송공지</div>
           <Swiper {...swiperParams}>
