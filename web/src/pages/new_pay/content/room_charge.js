@@ -23,7 +23,6 @@ import notiIcon from '../static/ic_notice.svg'
 
 import GganbuReward from '../../event/gganbu/content/gganbuReward'
 
-
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -225,7 +224,7 @@ export default (props) => {
 
   //useEffect
   useEffect(() => {
-    getStoreList()
+    //getStoreList()
     getChangeList()
   }, [])
 

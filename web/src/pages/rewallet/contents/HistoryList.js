@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 import {useHistory, useLocation} from "react-router-dom";
 import {Hybrid, isHybrid} from "context/hybrid";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
 
 const HistoryList = (props) => {
   const {walletData, pageNo, setPageNo, selectedCode, setSelectedCode, isLoading,
@@ -19,8 +20,10 @@ const HistoryList = (props) => {
   const {popHistory, listHistory, popHistoryCnt, byeolTotCnt, dalTotCnt,} = walletData;
 
   const history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const isDesktop = useSelector((state)=> state.common.isDesktop);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [beforeCode, setBeforeCode] = useState("0");
   const commonPopup = useSelector(state => state.popup);
   const dispatch = useDispatch();
@@ -83,7 +86,9 @@ const HistoryList = (props) => {
             {/*  isIOS ? <SubmitBtn text="충전하기" onClick={() => webkit.messageHandlers.openInApp.postMessage('')} /> :*/}
             {/*  <SubmitBtn text="충전하기" onClick={() => {history.push('/store')}}/> : <></>*/}
             {/*}*/}
-            <SubmitBtn text="충전하기" onClick={() => {history.push('/store')}}/>
+            <SubmitBtn text="충전하기" onClick={() => {
+              storeButtonEvent({history, memberRdx, payStoreRdx});
+            }}/>
           </div>
         ) : (
           <div className="currentBox" >

@@ -6,7 +6,10 @@ export const initialState:PayStoreStateType = {
     dalCnt: 0, defaultNum: 0, dalPriceList: [], mode:ModeType.all, modeTab:ModeTabType.none,
     deviceInfo:{}, state: 'ready'
   },
-  storeTabInfo:PAYMENT_TAB
+  storeTabInfo:PAYMENT_TAB,
+  updateVersionInfo:{
+    aos:'', ios:''
+  }
 }
 const payStore = createReducer<PayStoreStateType, PayStoreActions>(initialState,{
   "payStore/SET_STORE_INFO" : (state, {payload})=>{
@@ -14,6 +17,9 @@ const payStore = createReducer<PayStoreStateType, PayStoreActions>(initialState,
   },
   "payStore/SET_STORE_TAB_INFO" : (state, {payload})=>{
     return {...state, storeTabInfo:payload}
+  },
+  "payStore/SET_UPDATE_VERSION_INFO" : (state, {payload})=>{
+    return {...state, updateVersionInfo:payload}
   },
 });
 

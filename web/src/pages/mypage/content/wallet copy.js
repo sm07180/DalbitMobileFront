@@ -22,6 +22,8 @@ import paging from 'components/ui/paging.js'
 import WalletPop from '../component/wallet/wallet_pop'
 
 import '../index.scss'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 // concat
 
@@ -65,7 +67,10 @@ const reducer = (state, action) => {
 }
 
 export default (props) => {
-  let history = useHistory()
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const context = useContext(Context)
 
   const [formState, formDispatch] = useReducer(reducer, {
@@ -416,24 +421,14 @@ export default (props) => {
 
           <div>
             {formState.coinType === 'dal' ? (
-              <>
-                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                  <CoinChargeBtn
-                    onClick={() => {
-                      // webkit.messageHandlers.openInApp.postMessage('')
-                      history.push('/store')
-                    }}>
-                    충전하기
-                  </CoinChargeBtn>
-                ) : (
-                  <CoinChargeBtn
-                    onClick={() => {
-                      history.push('/store')
-                    }}>
-                    충전하기
-                  </CoinChargeBtn>
-                )}
-              </>
+              <CoinChargeBtn
+                onClick={() => {
+                  storeButtonEvent({history, memberRdx, payStoreRdx});
+                  // webkit.messageHandlers.openInApp.postMessage('')
+                  // history.push('/store')
+                }}>
+                충전하기
+              </CoinChargeBtn>
             ) : (
               <>
                 {

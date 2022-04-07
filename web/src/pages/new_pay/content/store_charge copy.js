@@ -21,6 +21,7 @@ import Header from 'components/ui/new_header'
 import NoResult from 'components/ui/noResult'
 import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 
+/** @deprecated */
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -170,7 +171,7 @@ export default (props) => {
   //useEffect
   useEffect(() => {
     fetchAdmin()
-    getStoreList()
+    // getStoreList()
     // fetchMainPopupData(12)
     fetchMainPopupData(4)
   }, [])

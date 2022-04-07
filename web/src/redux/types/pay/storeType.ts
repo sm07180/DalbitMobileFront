@@ -45,6 +45,12 @@ export type StoreInfoType = {
 export type PayStoreStateType = {
   storeInfo: StoreInfoType
   storeTabInfo: Array<StoreTabInfoType>
+  updateVersionInfo: UpdateVersionInfoType
+}
+
+export type UpdateVersionInfoType = {
+  aos: string
+  ios: string
 }
 export type PayInfoType = {
   itemNm: string

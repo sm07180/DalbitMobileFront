@@ -16,6 +16,7 @@ import {IMG_SERVER} from 'context/config'
 
 const storeTabMenu =['인앱(스토어) 결제', '신용카드 / 기타 결제']
 
+/** @deprecated */
 const StorePage = () => {
   const history = useHistory()
   const context = useContext(Context);
@@ -35,7 +36,7 @@ const StorePage = () => {
   })
 
   useEffect(() => {
-    getStoreInfo();
+    // getStoreInfo();
   }, []);
   useEffect(() => {
     setOsCheck(navigator.userAgent.match(/Android/i) != null ? 1 : navigator.userAgent.match(/iPhone|iPad|iPod/i) != null ? 2 : 3)
@@ -89,7 +90,7 @@ const StorePage = () => {
         </section>
         <section className="storeTabWrap">
           <Tabmenu data={storeTabMenu} tab={storeType} setTab={setStoreType} />
-          {storeType === storeTabMenu[0] && 
+          {storeType === storeTabMenu[0] &&
             <div className="tipWrap">
               <div className="title">
                 <i/>결제 TIP

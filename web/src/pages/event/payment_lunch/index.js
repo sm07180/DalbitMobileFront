@@ -7,6 +7,8 @@ import {OS_TYPE} from 'context/config.js'
 import qs from 'query-string'
 import styled from 'styled-components'
 import Header from 'components/ui/new_header.js'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
 
@@ -16,6 +18,8 @@ export default () => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const {webview} = qs.parse(location.search)
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const [noticeView, setNoticeView] = useState(false)
 
@@ -56,7 +60,9 @@ export default () => {
               className="payLink"
               onClick={() => {
                 // webkit.messageHandlers.openInApp.postMessage('')
-                history.push('/store')
+                // history.push('/store')
+                storeButtonEvent({history, memberRdx, payStoreRdx});
+
               }}>
               충전
             </button>

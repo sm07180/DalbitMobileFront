@@ -36,6 +36,7 @@ import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
 import {useHistory} from "react-router-dom";
+import {setUpdateVersionInfo} from "redux/actions/payStore";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -252,7 +253,13 @@ const App = () => {
   }
   async function fetchData(dispatch) {
     // Renew token
-    let tokenInfo = await Api.getToken()
+    let tokenInfo = await Api.getToken();
+    let etcData = await Api.getEtcData();
+    dispatch(setUpdateVersionInfo({
+      ios:etcData.data.ios,
+      aos:etcData.data.aos
+    }))
+
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)

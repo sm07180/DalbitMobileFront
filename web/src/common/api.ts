@@ -269,7 +269,7 @@ export async function postRandomboxReward(
 export async function getSpecialPoint(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/member/special/point/list", data);
 }
-
+/** @deprecated */
 export async function getStoreList(): Promise<responseType> {
   return await ajax(Method.GET, "/store/charge");
 }

@@ -7,12 +7,16 @@ import Api from 'context/api'
 import styled from 'styled-components'
 
 import LayerPopupPay from './layer_popup_pay'
+import {useSelector} from "react-redux";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
 
 export default () => {
   let history = useHistory()
   const context = useContext(Context)
   const [myDal, setMyDal] = useState(0)
   const [payState, setPayState] = useState(false)
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const setPayPopup = () => {
     setPayState(false)
@@ -49,12 +53,13 @@ export default () => {
   }
 
   const HandleStore = () => {
-    if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      // return webkit.messageHandlers.openInApp.postMessage('')
-      return history.push('/store')
-    } else {
-      return history.push('/store?event=3')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+    // if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // } else {
+    //   return history.push('/store?event=3')
+    // }
   }
 
   useEffect(() => {

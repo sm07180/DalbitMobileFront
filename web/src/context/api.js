@@ -115,6 +115,9 @@ export default class API {
   static main_init_data_v2 = async () => {
     return await ajax({url: '/v2/main/page', method: 'GET'})
   }
+  static getEtcData = async () => {
+    return await ajax({url: '/v2/main/etcData', method: 'GET'})
+  }
 
   /**
    * @brief 방송방 리스트 (익명 로그인일때 프로시저 memLogin:0 추가)
@@ -2137,6 +2140,7 @@ export default class API {
    * @method "GET"
    * @create 이은비 2020.03.24
    */
+  /** @deprecated */
   static store_list = async (obj) => {
     const {url, method} = obj || {}
     return await ajax({

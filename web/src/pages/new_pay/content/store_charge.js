@@ -144,7 +144,7 @@ export default (props) => {
   //useEffect
   useEffect(() => {
     fetchAdmin()
-    getStoreList()
+    // getStoreList()
     // fetchMainPopupData(12)
     fetchMainPopupData(4)
   }, [])
