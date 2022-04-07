@@ -421,7 +421,6 @@
         .fanButton {
           @include flex(center, center);
           width:100px;height:28px;
-          margin-top: 13px;
           background-color: #202020;
           border: 1px solid #202020;
           border-radius: 100px;
@@ -472,6 +471,29 @@
           .dataList {
             @include flex(center, space-between);
             width: 100%;
+            margin-bottom: 4px;
+            &:last-child {
+              margin-bottom: 0px;
+            }              
+            .dataTitle {
+              position: relative;
+              @include flex(center);
+              padding-left: 18px;
+              background-position: left center;
+              background-repeat: no-repeat;
+              background-size: contain;
+              @include font(12px, $Medium, #999999);
+              &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
+              &.listenerCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
+              &.broadMin {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
+            }
+            .dataNum {
+              @include font(12px, $Medium, #666666);
+              strong {
+                @include font(12px, $Bold, #666666);
+                margin-right: 4px;
+              }
+            }
           }
         }
       }      

@@ -115,8 +115,8 @@ const StarDj = (props) => {
                         //     list.fanYn === "y" ? deleteFan(list.mem_no, list.mem_nick) : addFan(list.mem_no, list.mem_nick);
                         //   }}>{list.fanYn=== "y" ? "팬" : "+ 팬등록"}</span>
                         :
-                        <>
-                        </>
+                        // 팬등록 버튼 필요(임시로 디자인 확인을 위해 넣어놓은 코드)
+                        <span className={`fanButton ${list.specialCnt > 1 ? "active" : ""}`}>{list.specialCnt > 1 ? "팬" : "+ 팬등록"}</span>
                     }
                   </div>
                   <div className='userInfoWrap'>
@@ -126,16 +126,16 @@ const StarDj = (props) => {
                     </div>
                     <div className='dataWrap'>
                       <div className='dataList'>
-                        <span>누적 좋아요</span>
-                        <span>{addComma(list.goodCnt)}개</span>
+                        <span className='dataTitle goodCnt'>누적 좋아요</span>
+                        <span className='dataNum'><strong>{addComma(list.goodCnt)}</strong>개</span>
                       </div>
                       <div className='dataList'>
-                        <span>누적 청취자</span>
-                        <span>{addComma(list.goodCnt)}명</span>
+                        <span className='dataTitle listenerCnt'>누적 청취자</span>
+                        <span className='dataNum'><strong>{addComma(list.listenerCnt)}</strong>명</span>
                       </div>
                       <div className='dataList'>
-                        <span>누적 방송시간</span>
-                        <span>{addComma(list.broadMin)}분</span>
+                        <span className='dataTitle broadMin'>누적 방송시간</span>
+                        <span className='dataNum'><strong>{addComma(list.broadMin)}</strong>분</span>
                       </div>
                     </div>
                   </div>
