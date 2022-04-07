@@ -73,11 +73,6 @@ const TotalInfo = (props) => {
     }
   }, [noticeData, noticeFixData]);
 
-  useEffect(() => {
-    console.log(noticeFixData.fixedFeedList.length)
-    console.log(noticeData.feedList.length);
-  })
-
   return (
     <>
       {badgeTotalCnt !== 0 &&
