@@ -401,7 +401,6 @@ const ProfilePage = () => {
       mMemNo: mMemNo,
       vMemNo: context.profile.memNo
     };
-    console.log(index);
     if(like === "n") {
       await Api.myPageFeedLike(params).then((res) => {
         if(res.result === "success") {

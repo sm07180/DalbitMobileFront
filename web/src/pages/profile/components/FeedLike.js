@@ -7,7 +7,7 @@ import {isHybrid, isMobileWeb} from "context/hybrid";
 const FeedLike = (props) => {
   const {data, fetchHandleLike, type, likeType, detailPageParam, detail} = props;
   const infoRef = useRef();
-  const [tooltipEvent, setTooltipEvent] = useState(false);
+  const [tooltipEvent, setTooltipEvent] = useState(true);
   const [isDisabled, setIsDisabled] = useState(true);
 
   /* 좋아요 툴팁 이벤트 */
@@ -20,6 +20,10 @@ const FeedLike = (props) => {
       setTooltipEvent(true);
     }
   }, []);
+
+  useEffect(() => {
+    console.log(tooltipEvent);
+  })
 
   /* 좋아요 클릭 이벤트 */
   const onClick = (e) => {
@@ -40,7 +44,7 @@ const FeedLike = (props) => {
         {type !== "fanBoard" && data?.like_yn === "n" ?
           <i className="likeOff" onClick={onClick} data-index={data.noticeIdx ? data.noticeIdx : data.reg_no}>
             {data.rcv_like_cnt ? Utility.printNumber(data.rcv_like_cnt) : 0}
-            {(tooltipEvent && type === "feed" && detail) && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
+            {(tooltipEvent && (type === "feed" || type === "notice") && detail) && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
           </i>
           : type !== "fanBoard" && data?.like_yn === "y" &&
           <i className="likeOn" onClick={onClick} data-index={data.noticeIdx ? data.noticeIdx : data.reg_no}>
