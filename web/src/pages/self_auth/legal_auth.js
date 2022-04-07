@@ -182,11 +182,6 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if(sessionStorage.getItem('goWallet')){
-      sessionStorage.removeItem('goWallet');
-      history.replace('/wallet?exchange');
-    }
-
     document.addEventListener("self-auth", updateDispatch);
     return () => {
       document.removeEventListener("self-auth", updateDispatch);

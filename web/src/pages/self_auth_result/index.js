@@ -138,8 +138,7 @@ export default (props) => {
       window.opener.location.replace('/wallet?exchange');
       window.close();
     } else {
-      sessionStorage.setItem('goWallet', 'true');
-      history.goBack();
+      history.replace('/');
     }
   }
 
