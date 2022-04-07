@@ -6,6 +6,7 @@ import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomJoin} from "context/room";
+import { addComma } from "lib/common_fn";
 
 import Api from "context/api";
 import Lottie from 'react-lottie'
@@ -118,7 +119,25 @@ const StarDj = (props) => {
                         </>
                     }
                   </div>
-                  <div>
+                  <div className='userInfoWrap'>
+                    <div className='infoWrap'>
+                      <span className={`gender ${list.gender === "m" ? "male" : "female"}`}></span>
+                      <span className='nickName'>{list.nickNm}</span>
+                    </div>
+                    <div className='dataWrap'>
+                      <div className='dataList'>
+                        <span>누적 좋아요</span>
+                        <span>{addComma(list.goodCnt)}개</span>
+                      </div>
+                      <div className='dataList'>
+                        <span>누적 청취자</span>
+                        <span>{addComma(list.goodCnt)}명</span>
+                      </div>
+                      <div className='dataList'>
+                        <span>누적 방송시간</span>
+                        <span>{addComma(list.broadMin)}분</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )

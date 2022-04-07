@@ -146,6 +146,7 @@ $ExtraBold: 800;
 @mixin photoStyle($width, $height, $radius) {
   position: relative;
   width: $width; height: $height;
+  border-radius:$radius;
   box-sizing: border-box;
   &::before {
     content: "";
