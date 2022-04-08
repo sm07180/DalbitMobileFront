@@ -23,7 +23,7 @@ const contentStar = () => {
     <div id="contentStar">
       <Header title="콘텐츠 스타" type="back"/>
       <section className="mainWrap">
-        <img src={`${IMG_SERVER}/event/contentStar/main.png`} alt="콘텐츠 스타" />
+        <img src={`${IMG_SERVER}/event/contentStar/main-fix.png`} alt="콘텐츠 스타" />
         <button className="applyBtn" onClick={()=>{form()}}>
           지원하러 가기
         </button>
