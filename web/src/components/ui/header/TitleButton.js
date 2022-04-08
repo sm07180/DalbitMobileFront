@@ -48,10 +48,10 @@ export const AlarmButton = ({history, dispatch, newAlarmCnt, isLogin, noticeCoun
   }} />
 }
 
-export const StoreButton = ({history, memberRdx}) => {
+export const StoreButton = ({history, memberRdx, payStoreRdx}) => {
   return <button className='store' onClick={()=>{
 
-    storeButtonEvent({history, memberRdx})
+    storeButtonEvent({history, memberRdx, payStoreRdx})
   }} />
 }
 
@@ -66,6 +66,8 @@ const TitleButton = (props) => {
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
   const alarmData = useSelector(state => state.newAlarm);
   const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
     if(res.result === "success") {
@@ -84,7 +86,7 @@ const TitleButton = (props) => {
     case '메인':
       return (
         <div className="buttonGroup">
-          <StoreButton history={history} memberRdx={memberRdx} />
+          <StoreButton history={history} memberRdx={memberRdx} payStoreRdx={payStoreRdx}/>
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
@@ -121,7 +123,7 @@ const TitleButton = (props) => {
     case 'MY':
       return (
         <div className="buttonGroup">
-          <StoreButton history={history} memberRdx={memberRdx} />
+          <StoreButton history={history} memberRdx={memberRdx} payStoreRdx={payStoreRdx}/>
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>

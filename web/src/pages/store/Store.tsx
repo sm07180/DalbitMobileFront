@@ -12,7 +12,7 @@ const index = ()=>{
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
   useEffect(() => {
-    if(!memberRdx.memNo){
+    if(!memberRdx.isLogin){
       history.goBack();
       return;
     }
