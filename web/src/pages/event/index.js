@@ -49,6 +49,7 @@ import Invite from './invite'
 import Share from './share'
 import PlatformWar from './platformWar'
 import ContentLab from './contentLab'
+import ContentStar from './contentStar'
 import Wassup from './wassup'
 import moment from "moment";
 
@@ -158,6 +159,8 @@ export default (props) => {
         return <ContentLab />
       case 'wassup':
         return <Wassup />
+      case 'contentstar':
+        return <ContentStar />
       default:
         return <></>
         break

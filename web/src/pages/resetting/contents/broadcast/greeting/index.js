@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 // global components
 import Header from 'components/ui/header/Header'
@@ -8,19 +8,12 @@ import RadioList from 'pages/resetting/components/radioList'
 import './greeting.scss'
 import API from "context/api";
 import Toast from "components/ui/toast/Toast";
+import {Context} from "context";
 
 const Greeting = () => {
   const [titleList, setTitleList] = useState([])
   const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
-  const [toast, setToast] = useState({state : false, msg : ""});
-
-  //토스트 메시지 출력
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
+  const context = useContext(Context);
 
   //등록된 인사말 버튼 클릭시 정보 조회
   const selectGreeting = (e) => {
@@ -40,10 +33,10 @@ const Greeting = () => {
       contents: titleSelect.val
     })
     if(titleSelect.val === "") {
-      toastMessage("입력 된 인사말이 없습니다. \n인사말을 입력하세요.")
+      context.action.toast({msg: "입력 된 인사말이 없습니다. \n인사말을 입력하세요."})
     } else {
       if(res.result === "success") {
-        toastMessage("DJ 인사말이 등록 되었습니다.");
+        context.action.toast({msg: "DJ 인사말이 등록 되었습니다."});
         setTitleList(res.data.list);
         setTitleSelect({...titleSelect, val: ""});
       }
@@ -57,7 +50,7 @@ const Greeting = () => {
       idx: titleSelect.index
     })
     if(res.result === "success") {
-      toastMessage("DJ 인사말이 삭제 되었습니다.");
+      context.action.toast({msg: "DJ 인사말이 삭제 되었습니다."});
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }
@@ -77,7 +70,7 @@ const Greeting = () => {
       contents: titleSelect.val
     })
     if(res.result === "success") {
-      toastMessage("DJ 인사말이 수정 되었습니다.");
+      context.action.toast({msg: "DJ 인사말이 수정 되었습니다."});
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }
@@ -110,7 +103,6 @@ const Greeting = () => {
         </div>
         }
       </div>
-      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useRef} from 'react'
 import {IMG_SERVER} from 'context/config'
 
 import Lottie from 'react-lottie'
@@ -19,6 +19,7 @@ const TopSwiper = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
+  const topSwiperRef = useRef(null);
 
   const swiperPicture = {
     slidesPerView: 'auto',
@@ -31,7 +32,11 @@ const TopSwiper = (props) => {
       el: '.swiper-pagination',
       type: 'fraction'
     },
-    ...swiperParam
+    on: {
+      init: function () {
+        topSwiperRef.current = this;
+      }
+    }
   }
 
   const roomJoinHandler = () => {
@@ -67,7 +72,7 @@ const TopSwiper = (props) => {
         <Swiper {...swiperPicture}>
           {data.profImgList.map((item, index) => {
             return (
-              <div key={index} onClick={() => {openShowSlide(data.profImgList)}}>
+              <div key={index} onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
                 <div className="photo" style={{cursor:"pointer"}}>
                   <img src={item.profImg.thumb500x500} alt="" />
                 </div>
@@ -76,7 +81,7 @@ const TopSwiper = (props) => {
           })}
         </Swiper>
         : data.profImgList.length === 1 ?
-        <div onClick={() => openShowSlide(data.profImgList)}>
+        <div onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
           <div className="photo">
             <img src={data.profImgList[0].profImg.thumb500x500} style={{width:'100%', height:'100%', objectFit:'cover'}} alt="" />
           </div>
@@ -91,7 +96,7 @@ const TopSwiper = (props) => {
       {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 && type === 'profile' &&
-          <div className="specialBdg" onClick={popupOpen}>
+          <div className={`specialBdg ${data.isSpecial ? 'isSpecial': ''}`} onClick={popupOpen}>
             <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
             <span>{data.specialDjCnt}회</span>
           </div>

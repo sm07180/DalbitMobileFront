@@ -91,7 +91,7 @@ const SwiperList = (props) => {
                         />
                     </div>
                 }
-                {
+                {/* {
                   item.listenRoomNo &&
                     <div className='listenertag' onClick={(e) => {
                       e.stopPropagation();
@@ -105,7 +105,7 @@ const SwiperList = (props) => {
                           }}
                         />
                     </div>                            
-                }
+                } */}
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
