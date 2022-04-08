@@ -1,16 +1,29 @@
 import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
+import Utility from "components/lib/utility";
+import Swiper from 'react-id-swiper'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
-
+// components
+// css
 import './totalInfo.scss'
-import Utility from "components/lib/utility";
+import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
+import {useHistory} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import noticeFix from "redux/reducers/profile/noticeFix";
+import FeedLike from "pages/profile/components/FeedLike";
 
 const TotalInfo = (props) => {
-  const {data, goProfile, openPopLike, isMyProfile} = props
+  const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
-  // 
+  const history = useHistory();
+  const defaultNotice = [{
+    contents: "방송 공지를 등록해주세요.",
+    rcv_like_cnt: 0,
+    replyCnt: 0
+  }]
+  //
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
   }
@@ -22,6 +35,15 @@ const TotalInfo = (props) => {
       subTabType: isMyProfile ? 'fanRank' : ''
     }
     openPopLike(e, tabState)
+  }
+
+  // 스와이퍼
+  const swiperParams = {
+    slidesPerView: 'auto',
+  }
+
+  const onClick = () => {
+    history.push({pathname: "/brdcst", state: {data: data, isMyProfile: isMyProfile}});
   }
 
   useEffect(() => {
@@ -42,19 +64,33 @@ const TotalInfo = (props) => {
     }
   },[data])
 
+  /* 피드 삭제시 스와이퍼 업데이트용 */
+  useEffect(() => {
+    if((noticeData || noticeFixData) !== undefined) {
+      const swiper = document.querySelector('.swiper-container')?.swiper;
+      swiper?.update();
+      // swiper.slideTo(0);
+    }
+  }, [noticeData, noticeFixData]);
+
+  useEffect(() => {
+    console.log(noticeFixData.fixedFeedList.length)
+    console.log(noticeData.feedList.length);
+  })
+
   return (
     <>
       {badgeTotalCnt !== 0 &&
-        <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
-          <div className="title">뱃지</div>
-          <div className="badgeGroup">
-            <BadgeItems data={data} type="commonBadgeList" />
-            <BadgeItems data={data} type="isBadge" />
-          </div>
-          {badgeTotalCnt > 3 &&
-            <button onClick={onOpenBdage}>열기/닫기</button>
-          }
+      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+        <div className="title">뱃지</div>
+        <div className="badgeGroup">
+          <BadgeItems data={data} type="commonBadgeList" />
+          <BadgeItems data={data} type="isBadge" />
         </div>
+        {badgeTotalCnt > 3 &&
+        <button onClick={onOpenBdage}>열기/닫기</button>
+        }
+      </div>
       }
       <div className="rankInfo">
         <div className="box">
@@ -95,17 +131,69 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
-      {
-        data.profMsg &&
-          <div className="comment">
-            <div className="title">
-              <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
-            </div>
-            <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
-          </div>
-      }      
+      {data.profMsg &&
+      <div className="comment">
+        <div className="title">코멘트</div>
+        <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
+      </div>
+      }
+
+      {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
+        <div className="broadcastNotice">
+          <div className="title" onClick={onClick}>방송공지</div>
+          <Swiper {...swiperParams}>
+            {noticeFixData?.fixedFeedList.map((v, idx) => {
+              const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                    <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"fix"} detailPageParam={detailPageParam} />
+                  </div>
+                </div>
+              )
+            })}
+            {noticeData?.feedList.map((v, idx) => {
+              const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text" onClick={() => goProfileDetailPage(detailPageParam)}>{v.contents}</div>
+                    <FeedLike data={v} fetchHandleLike={fetchHandleLike} type={"notice"} likeType={"nonFix"} detailPageParam={detailPageParam} />
+                  </div>
+                </div>
+              )
+            })}
+            {(noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0) && isMyProfile &&
+            defaultNotice.map((v, idx) => {
+              return (
+                <div key={idx}>
+                  <div className="noticeBox">
+                    <div className="badge">Notice</div>
+                    <div className="text">{v.contents}</div>
+                    <div className="info">
+                      <i className="likeOff">{v.rcv_like_cnt}</i>
+                      <i className="cmt">{v.replyCnt}</i>
+                    </div>
+                    <button className="fixIcon">
+                      <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+                    </button>
+                  </div>
+                </div>
+              )
+            })
+            }
+          </Swiper>
+        </div>
+        :
+        <>
+        </>
+      }
+
     </>
   )
 }
 
-export default TotalInfo
+export default TotalInfo;

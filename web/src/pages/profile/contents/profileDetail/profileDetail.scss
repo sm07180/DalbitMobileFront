@@ -1,4 +1,5 @@
 @import "components/ui/_mixin.scss";
+@import "components/ui/_animation.scss";
 
 #profileDetail {
   flex:1;
@@ -66,30 +67,87 @@
       }
       .text {
         margin-bottom:20px;
-        word-wrap: break-word; 
+        word-wrap: break-word;
         white-space: pre-line;
         @include font(14px,400,black);
       }
       .swiperPhoto{
         margin-bottom: 16px;
+        .photo {
+          + .photo {
+            margin-top:12px;
+          }
+          img {
+            width:100%;
+          }
+        }
       }
       .info {
         @include flex(center);
+        height:25px;
+        margin-top:auto;
         i {
           display:inline-block;
-          width:20px;height:20px;
-          margin-right:4px;
-          &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
-          &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
-          &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
-        }
-        span {
-          height:20px;
-          line-height:18px;
-          margin-right:8px;
-          @include font(13px,400,#6B6B6B);
+          padding-left:28px;
+          line-height:25px;
+          font-style:normal;
+          cursor:pointer;
+          + i {
+            margin-left:10px;
+          }
+          @include font(14px,$Medium,#666);
+          &.likeOff {
+            position:relative;
+            @include BGIMG("profile/heart_icon-off.png");
+            background-position:left center;
+            background-size:25px;
+            .likeTooltip {
+              @include position-top-left(-64px);
+              width:187px;
+              height:60px;
+              animation: jello-vertical .9s both, hideAni 5.9s both;
+              // animation: wobble-ver-left .9s both, hideAni 5.9s both;
+              // transform-origin: bottom left;
+              @keyframes hideAni {
+                0% {opacity: 1;}
+                99% {opacity:1;width:187px;height:60px;}
+                100% {opacity: 0;width:0;height:0;}
+              }
+              img {
+                width:100%;
+                vertical-align: bottom;
+              }
+            }
+          }
+          &.likeOn {
+            @include BGIMG("profile/heart_icon-on.png");
+            background-position:left center;
+            background-size:25px;
+          }
+          &.cmt {
+            @include BGIMG("profile/comment_icon-notice.png");
+            background-position:left center;
+            background-size:25px;
+          }
         }
       }
+      // .info {
+      //   @include flex(center);
+      //   i {
+      //     display:inline-block;
+      //     width:20px;height:20px;
+      //     margin-right:4px;
+      //     &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
+      //     &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
+      //     &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
+      //   }
+      //   span {
+      //     height:20px;
+      //     line-height:18px;
+      //     margin-right:8px;
+      //     @include font(13px,400,#6B6B6B);
+      //   }
+      // }
     }
     .listWrap {
       padding:0 16px;
@@ -125,7 +183,7 @@
             }
             .text {
               margin-bottom:8px;
-              word-wrap: break-word; 
+              word-wrap: break-word;
               white-space: pre-line;
               @include font(14px,400,black);
             }

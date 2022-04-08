@@ -14,16 +14,11 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import {setProfileTabData} from "redux/actions/profile";
-import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
   const history = useHistory();
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
-
-  const dispatch = useDispatch();
-  const profileTab = useSelector(state => state.profileTab);
 
   //context
   const context = useContext(Context);
@@ -54,7 +49,7 @@ const ProfileWrite = () => {
   const [formState, setFormState] = useState({
     title: '',
     contents: '',
-    others: type==='feed'? 0: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
+    others: type==='notice'? 0: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
     photoInfoList: []
   });
   const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
@@ -69,7 +64,7 @@ const ProfileWrite = () => {
     }
     //피드 1000자 이하, 팬보드 100자 이하
     if ((type==='feed' && formState?.contents?.length > 1000) ||
-        (type==='fanBoard' && formState?.contents?.length > 1000)) {
+        (type==='notice' && formState?.contents?.length > 1000)) {
       message = '내용을 1,000자 이하로 입력해주세요.';
       confirm = false;
     }
@@ -85,12 +80,13 @@ const ProfileWrite = () => {
     if(!validChecker()) return;
     const {title, contents, others, photoInfoList} = formState;
 
-    if (type === 'feed') {
+    if (type === 'notice') {
       Api.mypage_notice_upload({
         reqBody: true,
         data: {
           title,
           contents,
+          imgName: photoInfoList.length !== 0 ? photoInfoList[0].img_name : "",
           topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
@@ -99,24 +95,23 @@ const ProfileWrite = () => {
         context.action.toast({msg: message});
 
         if (result === 'success') {
-          dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
           history.goBack();
         }
       });
-    } else if (type === 'fanBoard') {
-      const {data, result, message} = await Api.member_fanboard_add({
+    } else if (type === "feed") {
+      Api.myPageFeedIns({
+        reqBody: true,
         data: {
-          memNo,
-          depth: 1,
-          contents,
-          viewOn: others
+          memNo: memNo,
+          feedContents: contents,
+          photoInfoList
         }
-      });
-      context.action.toast({msg: message});
-      if (result === 'success') {
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
-        history.goBack();
-      }
+      }).then((res) => {
+        context.action.toast({msg: res.message});
+        if(res.result === "success") {
+          history.goBack();
+        }
+      }).catch((e) => console.log(e));
     }
   };
 
@@ -125,21 +120,21 @@ const ProfileWrite = () => {
     if(!validChecker()) return;
     const {title, contents, others, photoInfoList} = formState;
 
-    if (type === 'feed') {
+    if (type === 'notice') {
       const {data, result, message} = await Api.mypage_notice_edit({
         reqBody: true,
         data: {
-          title,
-          contents,
-          topFix: others,
+          noticeNo: index,
+          noticeTitle: title,
+          noticeContents: contents,
+          imgName: photoInfoList.length !== 0 ? photoInfoList[0].img_name : "",
+          noticeTopFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
-          noticeIdx: index,
           chrgrName: profile?.nickName,
         }
       });
       context.action.toast({msg: message});
       if (result === 'success') {
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         history.goBack();
       }
 
@@ -149,16 +144,33 @@ const ProfileWrite = () => {
         data: {
           memNo,
           replyIdx: index,
-          contents: contents
+          contents: contents,
+          delChrgrname: profile?.nickName
         }
       });
 
       if (result === 'success') {
-        dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
         context.action.toast({msg: '팬보드를 수정했습니다.'});
         history.goBack();
       } else {
         context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
+      }
+    } else if (type === 'feed') {
+      const {data, result, message} = await Api.myPageFeedUpd({
+        reqBody: true,
+        data: {
+          feedNo: index,
+          memNo: memNo,
+          feedContents: contents,
+          photoInfoList,
+          delChrgrName: profile?.nickName
+        }
+      });
+      if(result === 'success') {
+        context.action.toast({msg: message});
+        history.goBack();
+      } else {
+        context.action.alert({msg: "피드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요."});
       }
     }
   }
@@ -180,10 +192,6 @@ const ProfileWrite = () => {
       setFormState({...formState, photoInfoList: globalPhotoInfoListRef.current.concat({img_name: data?.path, ...data})});
       setImage(null);
 
-      // if (photoListSwiperRef.current?.swiper) {
-      //   photoListSwiperRef.current?.swiper?.update();
-      //   photoListSwiperRef.current?.swiper?.slideTo(globalPhotoInfoListRef.current?.length || 0);
-      // }
     } else {
       context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
     }
@@ -212,8 +220,8 @@ const ProfileWrite = () => {
 
   //상세조회 (수정만)
   const getDetailData = () => {
-    if (type === 'feed') {
-      Api.mypage_notice_detail_sel({feedNo: index, memNo})
+    if (type === 'notice') {
+      Api.mypage_notice_detail_sel({noticeNo: index, memNo})
         .then((res) => {
           const {data, result, message} = res;
           if (result === 'success') {
@@ -228,7 +236,7 @@ const ProfileWrite = () => {
             history.goBack();
           }
         });
-    } else if (type === 'fanBoard') {
+    } else if (type === 'fanBoard') { //피드로 수정
       Api.mypage_fanboard_detail({
         memNo, fanBoardNo: index
       }).then((res) => {
@@ -240,6 +248,23 @@ const ProfileWrite = () => {
           history.goBack();
         }
       })
+    } else if (type === 'feed') {
+      Api.myPageFeedDetailSel({
+        feedNo: index,
+        memNo: memNo,
+        viewMemNo: context.profile.memNo
+      }).then((res) => {
+        const {data, result, message} = res;
+        let newPhotoInfoList = [];
+        if(result === "success") {
+          data.photoInfoList.map((data, index) => {
+            newPhotoInfoList.push(Object.assign({img_name: data?.img_name}, {...data?.imgObj}));
+          });
+          setFormState({...formState, contents: data.feed_conts, photoInfoList: newPhotoInfoList})
+        } else {
+          history.goBack();
+        }
+      });
     }
   };
 
@@ -255,17 +280,17 @@ const ProfileWrite = () => {
 
   return (
     <div id="profileWrite">
-      <Header title={`${type === 'feed' ? '방송공지' : '팬보드'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
+      <Header title={`${type === 'feed' ? '피드' : type === 'fanBoard' ? '팬보드' : type === 'notice' && '방송공지'} ${action === 'write' ? '쓰기' : '수정'}`} type={'back'}/>
       <section className='writeWrap'>
         <textarea maxLength={1000} placeholder='작성하고자 하는 글의 내용을 입력해주세요.'
-                  defaultValue={formState?.contents || ''}
-                  onChange={(e) => {
-                    setFormState({...formState, contents: e.target.value});
-                  }}
+          defaultValue={formState?.contents || ''}
+          onChange={(e) => {
+            setFormState({...formState, contents: e.target.value});
+          }}
         />
         <div className="bottomGroup">
           {/*비밀글 viewOn : [0 : 비밀글, 1 : 기본]*/}
-          {type === 'feed' ?
+          {type === 'notice' ?
             <CheckList text="상단고정" checkStatus={formState.others===1}
                        onClick={()=>{setFormState({...formState, others:formState.others === 1? 0: 1})}}/>
             : ( action==='write' && (!isMyProfile || action==='modify') &&
@@ -288,30 +313,8 @@ const ProfileWrite = () => {
                  setCropOpen(true);
                }}/>
         {/*사진 리스트 스와이퍼*/}
-        {type === 'feed' &&
+        {type === 'notice' &&
         <div className="insertGroup">
-          {/* 피드로 바뀌면 이거 쓰면 됨
-          <div className="title">사진 첨부<span>(최대 10장)</span></div>
-            <Swiper {...swiperParams} ref={photoListSwiperRef}>
-              {formState?.photoInfoList.map((data, index) =>
-                <label key={index} onClick={(e) => e.preventDefault()}>
-                  <div className="insertPicture"
-                       onClick={() => setShowSlide({show: true, viewIndex: index})}>
-                    <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
-                  </div>
-                  <button className="cancelBtn"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteThumbnailImageList(formState?.photoInfoList, index)
-                          }}/>
-                </label>)
-              }
-              {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>
-                <label key={i} onClick={() => inputRef?.current?.click()}>
-                  <button className='insertBtn'>+</button>
-                </label>)}
-            </Swiper>
-          */}
           <div className="title">사진 첨부</div>
           <div className={"swiper-container"}>
             <div className={"swiper-wrapper"}>
@@ -340,6 +343,26 @@ const ProfileWrite = () => {
               }
             </div>
           </div>
+        </div>
+        }
+        {type === "feed" &&
+        <div className="insertGroup">
+          <div className="title">사진 첨부<span>(최대 10장)</span></div>
+          <Swiper {...swiperParams} ref={photoListSwiperRef}>
+            {formState?.photoInfoList.map((data, index) =>
+              <label key={index} onClick={(e) => e.preventDefault()}>
+                <div className="insertPicture"
+                     onClick={() => setShowSlide({show: true, viewIndex: index})}>
+                  <img src={data?.thumb60x60 || data?.thumb292x292} alt=""/>
+                </div>
+                <button className="cancelBtn" onClick={(e) => {e.stopPropagation();deleteThumbnailImageList(formState?.photoInfoList, index)}}/>
+              </label>)
+            }
+            {Array(10 - formState?.photoInfoList.length).fill({}).map((v, i) =>
+              <label key={i} onClick={() => inputRef?.current?.click()}>
+                <button className='insertBtn'>+</button>
+              </label>)}
+          </Swiper>
         </div>
         }
         <div className="insertButton">
@@ -373,4 +396,4 @@ const ProfileWrite = () => {
   )
 }
 
-export default ProfileWrite
+export default ProfileWrite;

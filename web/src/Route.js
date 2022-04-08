@@ -73,6 +73,8 @@ const Receipt = React.lazy(() => import('pages/store/contents/end/Receipt'))
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
 const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
+// 내지갑 > 환전 / 법정대리인 동의 안내페이지
+const ExchangeLegalAuth = React.lazy(() => import('pages/self_auth_result/ExchangeLegalAuth'))
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
 const LoginStart = React.lazy(() => import('pages/login/contents/start'))
@@ -143,6 +145,7 @@ const Report = React.lazy(() => import("pages/remypage/contents/report/Report"))
 const MyClip = React.lazy(() => import("pages/remypage/contents/clip/clip"));
 
 const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromotion"));
+const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -194,6 +197,7 @@ const Router = () => {
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchange" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
+        <Route exact path="/exchangeLegalAuth" component={ExchangeLegalAuth} />
 
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
@@ -240,11 +244,14 @@ const Router = () => {
                   return <Route component={ProfileContentsWrite} />
                }}
         />
-        {/*피드, 팬보드 수정*/}
+        {/*피드 수정 (팬보드 수정 삭제) */}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
                  const myMemNo = context.profile.memNo;
                  const {memNo, type, action} = match.params;
+                 if(type==='fanBoard' && action==='modify'){
+                   return <Redirect to={{ pathname: `/profile/${memNo}` }} />
+                 }
                  if(!context.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if(action === 'write'){
@@ -266,8 +273,6 @@ const Router = () => {
                  }
                }}
         />
-
-        <Route exact path={"/myProfile/edit"} component={ProfileEdit}/>
         {/*<Route exact path="/mypage/:memNo/:category" component={MyPage} />*/}
         {/*<Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />*/}
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
@@ -335,6 +340,8 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
+
+        <Route exact path="/brdcst" component={BroadNoticeDetail} />
 
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />

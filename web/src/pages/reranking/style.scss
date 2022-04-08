@@ -51,10 +51,16 @@ $errorMsg : #FF1919;
 #renewalRanking {
   header {
     .benefits {
-      display: inline-block;
-      width: 40px; height: 40px;
+      @include flex(center);
+      height: 40px;
       margin-right: 10px;
       @include font(14px, 400, #666666);
+      &::after {
+        content: "";
+        display: inline-block;
+        width: 20px; height: 20px;
+        @include BGIMG("common/icon/icon_benefit.png");
+      }
     }
   }
   .cntTitle {
@@ -73,7 +79,7 @@ $errorMsg : #FF1919;
     position: relative;
     @include flex(flex-start, flex-start, column);
     width: 100%;
-    padding: 15px 15px 60px;
+    padding: 15px 16px 60px;
     margin: 0;
     background-image: url("https://image.dalbitlive.com/ranking/dalla/rankingTopBg.png");
     background-position: center bottom;
@@ -254,10 +260,11 @@ $errorMsg : #FF1919;
     position: relative;
     @include flex(center, center, column);
     width: 100%;
-    padding: 44px 15px 0px;
+    padding: 40px 0px 27px;
     box-sizing: border-box;
     .cntTitle {
-      margin-bottom:15px;
+      padding: 0px 16px;
+      margin-bottom:24px;
     }
     .tabmenu {
       $nav-length: 4;
@@ -281,13 +288,19 @@ $errorMsg : #FF1919;
       }
     }
     .rankBox {
+      position: relative;
       @include flex(center, space-between);
       width: 100%;
-      height: 87px;
-      padding: 20px;
-      border-radius: 16px;
+      padding: 27px 0;
       background-color: #F6F6F6;
       box-sizing: border-box;
+      &::after {
+        content: "";
+        @include position-top-left(-32px, 16px);
+        display: inline-block;
+        border: 16px solid transparent;
+        border-bottom: 16px solid #F6F6F6;
+      }
       li {
         position: relative;
         flex: 1;
@@ -306,7 +319,7 @@ $errorMsg : #FF1919;
         }
         .rankData {
           margin-top: 10px;
-          @include font(16px,900,#333);
+          @include font(18px,900,#333);
           &::after {
             content: "위";
             @include font(13px,500,#666666);
@@ -332,7 +345,7 @@ $errorMsg : #FF1919;
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    padding: 44px 15px;
+    padding: 44px 16px;
     .tabmenu {
       position: relative;
       @include flex(center, center);
@@ -346,12 +359,12 @@ $errorMsg : #FF1919;
         @include font(16px,600,#ACACAC);
         box-sizing: border-box;
         &.active {
-          @include font(16px,700,#202020);
+          @include font(16px,700,#FF6999);
         }
       }
       .underline {
         height:2px;
-        background-color:#202020;
+        background-color:#FF6999;
       }
     }
     .listWrap {
@@ -434,6 +447,22 @@ $errorMsg : #FF1919;
             }
             .liveText {
               @include font(12px, 900, #FF3C7B);
+            }
+          }
+          .badgeListener {
+            @include flex(center, center);
+            width:62px;height:28px;
+            margin: 12px auto 0px;
+            background-color: #F0EBFF;
+            border-radius: 100px;
+            cursor: pointer;
+            .headset {
+              display: inline-block;
+              width: 15px;
+              margin-right: 2px;
+            }
+            .ListenerText {
+              @include font(12px, 900, #9A78FF);
             }
           }
         }
