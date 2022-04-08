@@ -114,7 +114,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : noticeData.paging.next,
-      pageCnt: noticeData.paging.records,
+      pageCnt: isInit? 20: noticeData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
@@ -141,7 +141,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : noticeFixData.paging.next,
-      pageCnt: noticeFixData.paging.records,
+      pageCnt: isInit? 20: noticeFixData.paging.records,
     }
     Api.myPageNoticeFixList(apiParams).then((res) => {
       if(res.result === "success") {
@@ -673,7 +673,9 @@ const ProfilePage = () => {
       document.addEventListener('scroll', profileScrollEvent);
     }
     // 탭 유지, 데이터 가져오기
-    getFeedData(true);
+    getNoticeData(true); // 방송공지
+    getNoticeFixData(true); // 방송공지(고정)
+    getFeedData(true); // 피드
     getFanBoardData(true);
     getClipData(true);
 
@@ -690,6 +692,8 @@ const ProfilePage = () => {
     getNoticeData(true); // 방송공지
     getNoticeFixData(true); // 방송공지(고정)
     getFeedData(true); // 피드
+    getFanBoardData(true);
+    getClipData(true);
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);
