@@ -2348,20 +2348,6 @@ export default class API {
   }
 
   //-------------------------------------------------------------스토어, 결제
-  /**
-   * @brief 스토어 구매상품 목록
-   * @method "GET"
-   * @create 이은비 2020.03.24
-   */
-  /** @deprecated */
-  static store_list = async (obj) => {
-    const {url, method} = obj || {}
-    return await ajax({
-      ...obj,
-      url: url || `/store/charge`,
-      method: method || 'GET'
-    })
-  }
 
   /**
    * @brief 신용카드 결제요청

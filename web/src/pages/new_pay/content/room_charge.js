@@ -49,17 +49,6 @@ export default (props) => {
 
   //---------------------------------------------------------------------
 
-  async function getStoreList() {
-    const res = await Api.store_list({})
-    if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setChargeList(res.data.dalPriceList.slice(0, 9))
-      setMyDal(Utility.addComma(res.data.dalCnt))
-    } else {
-      context.action.alert({
-        msg: res.message
-      })
-    }
-  }
 
   async function getChangeList() {
     const res = await Api.getChangeItem({})

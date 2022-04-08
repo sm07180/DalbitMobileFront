@@ -42,21 +42,6 @@ const StorePage = () => {
     setOsCheck(navigator.userAgent.match(/Android/i) != null ? 1 : navigator.userAgent.match(/iPhone|iPad|iPod/i) != null ? 2 : 3)
   }, [])
 
-  // 조회 Api
-  const getStoreInfo = () => {
-    Api.store_list().then((response) => {
-      if (response.result === 'success' && _.hasIn(response, 'data')) {
-        setStoreInfo({
-          myDal: response.data.dalCnt,
-          dalPrice: response.data.dalPriceList
-        })
-      } else {
-        context.action.alert({
-          msg: response.message
-        })
-      }
-    });
-  }
 
   const onSelectDal = (index, itemNm, givenDal, price, itemNo) => {
     setSelect(index);

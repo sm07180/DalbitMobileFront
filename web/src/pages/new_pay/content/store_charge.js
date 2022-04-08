@@ -52,19 +52,6 @@ export default (props) => {
     }
   }
 
-  async function getStoreList() {
-    const res = await Api.store_list({})
-    if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.dalPriceList)
-      setListState(1)
-      setMydal(res.data.dalCnt)
-    } else {
-      setListState(0)
-      context.action.alert({
-        msg: res.message
-      })
-    }
-  }
 
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
