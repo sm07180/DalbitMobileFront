@@ -412,13 +412,14 @@ legend {
 }
 #player {
   position: fixed;bottom:0;left:50%;
-  transform:translateX(-50%);z-index: 50;
+  transform:translateX(-50%);
   width: 100%;max-width:480px;
   height: 70px;
   border-radius: 16px 16px 0 0;
   overflow:hidden;
   color: white;
   cursor: pointer;
+  z-index: $PLAYER-ZINDEX;
   .inner-player {
     position: relative;
     @include flex(center,space-between);
