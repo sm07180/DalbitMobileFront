@@ -4,6 +4,7 @@ import StorePage from "./contents/StorePage";
 import {useDispatch, useSelector} from "react-redux";
 import {getIndexData, getPriceList} from "../../redux/actions/payStore";
 import {useHistory} from "react-router-dom";
+import Api from "../../context/api";
 
 const index = ()=>{
   const dispatch = useDispatch();
@@ -17,6 +18,9 @@ const index = ()=>{
       return;
     }
     dispatch(getIndexData(history.action));
+
+    const customHeader = JSON.parse(Api.customHeader);
+    alert(JSON.stringify(customHeader))
   }, []);
 
   useEffect(() => {
