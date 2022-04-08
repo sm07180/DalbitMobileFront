@@ -584,7 +584,13 @@ const ProfileDetail = (props) => {
                 </div>
                 : <></>
           )}
-          <FeedLike data={detailData.list} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"} />
+          {type === 'fanBoard' ?
+            <div className="info">
+              <i className="cmt">{(replyList?.length) ? Utility.printNumber(replyList?.length) : 0}</i>
+            </div>
+            :
+            <FeedLike data={detailData.list} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"}/>
+          }
         </div>
 
         {/* 댓글 리스트 영역 */}
