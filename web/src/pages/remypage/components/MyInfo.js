@@ -13,7 +13,7 @@ const greetingComment = [
 ]
 
 const MyInfo = (props) => {
-  const {data, openLevelPop} = props
+  const {data, openLevelPop, openStarDJHistoryPop} = props
   const [nowComment, setNowComment] = useState('');
 
   /* time: HH:mm:ss */
@@ -52,6 +52,10 @@ const MyInfo = (props) => {
         </div>
         <div className="info">
           <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
+          {
+            data?.starCnt > 0 &&
+              <em className={`starDj ${data.isSpecial ? "active" : ""}`}></em>                
+          }
           <span className='userId'>{data?.memId}</span>
         </div>
         <div className="count">

@@ -85,7 +85,7 @@ const StarDj = (props) => {
           specialList.length > 0 &&
             specialList.map((list, index) => {
               return (
-                <div className='starDjList' key={index}>
+                <div className='starDjList' key={index} onClick={() => {golink(`/profile/${list.memNo}`)}}>
                   <div className='photoWrap'>
                     <div className='thumbnail'>
                       <img src={`${list.profImg.thumb100x100}`} alt={`${list.nickNm}님의 프로필 이미지`}/>

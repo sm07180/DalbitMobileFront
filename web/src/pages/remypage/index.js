@@ -8,6 +8,7 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
+import SpecialHistoryPop from "pages/remypage/components/SpecialHistoryPop";
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
@@ -37,7 +38,6 @@ const Remypage = () => {
   const dispatch = useDispatch();
 
   const [noticeNew, setNoticeNew] = useState(false);
-  
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -77,7 +77,7 @@ const Remypage = () => {
     });
   }
 
-  // 프로필 페이지로 이동
+    // 프로필 페이지로 이동
   const goProfile = () => history.push('/myProfile');
 
   // 페이지 셋팅
@@ -104,6 +104,12 @@ const Remypage = () => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(setSlidePopupOpen());
+  }
+
+  const openStarDJHistoryPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    // dispatch(setCommonPopup({...commonPopup, historyPopup: true}))
   }
 
   const closeLevelPop = (e) => {
@@ -139,7 +145,7 @@ const Remypage = () => {
           <Header title={'MY'} />
           <section className='mypageTop'>
             <div className="myInfo" onClick={goProfile}>
-              <MyInfo data={profile} openLevelPop={openLevelPop} />
+              <MyInfo data={profile} openLevelPop={openLevelPop} openStarDJLogPop={openStarDJHistoryPop}/>
             </div>
             <div className='mydalDetail'>
               <div className="dalCount">
@@ -170,7 +176,7 @@ const Remypage = () => {
                 <span className="myDataType">서비스 설정</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/notice')}>
-                <span className={`icon notice ${!noticeNew ? "new" : ""}`}></span>
+                <span className={`icon notice ${noticeNew ? "new" : ""}`}></span>
                 <span className="myDataType">공지사항</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/customer')}>
@@ -181,7 +187,7 @@ const Remypage = () => {
           </section>
           <section className='bannerWrap'>
             <BannerSlide type={18}/>
-          </section>            
+          </section>
           {isHybrid() &&
             <section className="versionInfo">
               <span className="title">버전정보</span>
@@ -190,7 +196,7 @@ const Remypage = () => {
           }
           <button className='logout' onClick={logout}>로그아웃</button>
 
-          {commonPopup.commonPopup &&
+          {commonPopup.slidePopup &&
             <PopSlide title="내 레벨">
               <section className="myLevelInfo">
                 <div className="infoItem">
@@ -206,6 +212,8 @@ const Remypage = () => {
               </section>
             </PopSlide>
           }
+          {/* 스페셜DJ 약력 팝업 */}
+          {commonPopup.historyPopup && <SpecialHistoryPop profileData={profile} />}
         </div>
       </>
       )

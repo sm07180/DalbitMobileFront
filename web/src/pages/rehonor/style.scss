@@ -441,7 +441,7 @@
         .infoWrap {
           @include flex(center);
           width: 100%;
-          padding: 12px 0;
+          padding-bottom: 12px;
           border-bottom: 1px solid #F2F2F2;
           .gender {
             flex: none;
@@ -467,7 +467,7 @@
         .dataWrap {
           @include flex(flex-start, flex-start, column);
           width: 100%;
-          padding: 12px 0;
+          padding-top: 12px;
           .dataList {
             @include flex(center, space-between);
             width: 100%;
