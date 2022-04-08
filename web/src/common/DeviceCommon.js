@@ -12,8 +12,6 @@ const getDeviceOSTypeChk = () => {
   osName = osName? osName[0] : 'Windows'; // null이면 Desktop으로 세팅
   return osName === 'android webview' ? OS_TYPE['Android'] :
     osName === 'ios webview' ? OS_TYPE['IOS'] :
-      osName === 'iPhone' ? OS_TYPE['IOS'] :
-      osName === 'iPad' ? OS_TYPE['IOS'] :
         osName === 'Windows' ? OS_TYPE['Desktop'] : OS_TYPE['Desktop'];
 };
 
