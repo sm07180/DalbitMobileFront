@@ -165,7 +165,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : feedData.paging.next,
-      pageCnt: feedData.paging.records,
+      pageCnt: isInit? 20: feedData.paging.records,
     }
     Api.myPageFeedSel(apiParams).then((res) => {
       if(res.result === "success") {
@@ -192,7 +192,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
-      records: fanBoardData.paging.records
+      records: isInit? 20: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
@@ -222,7 +222,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       page: isInit ? 1 : clipData.paging.next,
-      records: clipData.paging.records
+      records: isInit? 10: clipData.paging.records
     }
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
@@ -667,15 +667,17 @@ const ProfilePage = () => {
   const profileTabDataCall = () => {
     if(profileTab.tabName === profileTab.tabList[0]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getFeedData(true);
     }else if(profileTab.tabName === profileTab.tabList[1]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getFanBoardData(true);
     }else if(profileTab.tabName === profileTab.tabList[2]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getClipData(true);
     }
-    dispatch(setProfileTabData({...profileTab, isRefresh: true})); // 하단 탭
+    // 탭 유지, 데이터 가져오기
+    getFeedData(true);
+    getFanBoardData(true);
+    getClipData(true);
+
+    dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
   }
 
   /* 하단 탭 기본값으로 초기화 */
