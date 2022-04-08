@@ -24,7 +24,7 @@ const ProfileDetail = (props) => {
   const context = useContext(Context)
   const {token, profile} = context
   const {memNo, type, index} = useParams();
-  const {tmemNo} = profile.memNo;
+  const tmemNo = profile.memNo;
   //memNo :글이 작성되있는 프로필 주인의 memNo
 
   const replyRef = useRef(null);
@@ -580,7 +580,7 @@ const ProfileDetail = (props) => {
         {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
           {replyList.map((item, index) => {
-            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
+            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.tail_mem_no}`) };
             return <ProfileReplyComponent key={item?.replyIdx || item?.tail_no} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
                                           replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
                                           blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}

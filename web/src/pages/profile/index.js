@@ -33,7 +33,7 @@ import {
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState
+  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
@@ -683,9 +683,9 @@ const ProfilePage = () => {
       tabName: profileDefaultTab,
       isReset: true
     }))
-    getNoticeData(true); // 방송공지
-    getNoticeFixData(true); // 방송공지(고정)
-    getFeedData(true); // 피드
+    dispatch(setProfileNoticeData(profileNoticeDefaultState)); // 방송공지
+    dispatch(setProfileNoticeFixData(profileNoticeFixDefaultState)); // 방송공지(고정)
+    dispatch(setProfileFeedNewData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);

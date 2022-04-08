@@ -54,7 +54,8 @@ const NoticePage = () => {
   //알림 클릭시 해당 페이지로 이동
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
-    const { type, memNo, roomNo, link, notice } = (e.currentTarget.dataset);
+    const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
+    console.log(type, memNo, roomNo, link);
     alarmFix = true;
     switch (type) {
       case "1":                                                                             //마이스타 방송 알림
@@ -77,14 +78,40 @@ const NoticePage = () => {
         try {history.push(`/wallet`);}
         catch (e) {console.log(e);}
         break;
+      case "33":                                                                            //피드 새 글 알림
+        try {
+          if(memNo !== "") {
+            if(roomNo !== "") {
+              history.push(`/profileDetail/${memNo}/feed/${roomNo}`)
+            } else {history.push(`/profile/${memNo}`);}
+          }
+        }
+        catch (e) {console.log(e)};
+        break;
+      case "34":
+        try {
+          if(memNo !== "") {
+            if(roomNo !== "") {
+              history.push(`/profileDetail/${memNo}/feed/${roomNo}`)
+            } else {history.push(`/profile/${memNo}`);}
+          }
+        }
+        catch (e) {console.log(e)};
+        break;
       case "35": history.push('/myProfile'); break;                                 //레벨업 알림
       case "36":                                                                           //팬 등록 알림
         try {if(memNo !== "") {history.push(`/profile/${memNo}`);}}
         catch (e) {console.log(e);}
         break;
       case "37": history.push('/customer/inquire'); break;                          //1:1문의 답변 알림
-      case "38":                                                                            //마이 스타 방송 공지 알림
-        try {if(memNo !== "") { history.push(`/profile/${memNo}`);}}
+      case "38":                                                                            //방송 공지 알림
+        try {
+          if(memNo !== "") {
+            if(roomNo !== "") {
+              history.push(`/profileDetail/${memNo}/notice/${roomNo}`);
+            } else {history.push(`/profile/${memNo}`);}
+          }
+        }
         catch (e) {console.log(e);}
         break;
       case "39": history.push(`/rank`); break;                                      //좋아요 랭킹 주간 알림
