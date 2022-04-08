@@ -57,13 +57,13 @@ const FeedLike = (props) => {
       </div>
 
       {type === "notice" && likeType === "fix" ?
-        <button className="fixIcon">
+        <i className="fixIcon">
           <img src={`${IMG_SERVER}/profile/bookmark-on.png`}/>
-        </button>
+        </i>
         : type === "notice" && likeType === "nonFix" &&
-        <button className="fixIcon">
+        <i className="fixIcon">
           <img src={`${IMG_SERVER}/profile/bookmark-off.png`} />
-        </button>
+        </i>
       }
     </>
   );

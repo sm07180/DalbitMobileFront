@@ -125,6 +125,7 @@
       @include flex(center);
       margin-bottom:12px;
       padding:0 16px;
+      cursor:pointer;
       @include font(17px,$Bold,#202020);
       &::after {
         content:"";
@@ -180,6 +181,7 @@
           padding-right:24px;
           line-height:22px;
           word-break: break-all;
+          cursor:pointer;
           @include font(15px,$SemiBold,#202020);
           @include fontLineCut;
         }
@@ -192,6 +194,7 @@
             padding-left:30px;
             line-height:25px;
             font-style:normal;
+            cursor:pointer;
             + i {
               margin-left:10px;
             }
