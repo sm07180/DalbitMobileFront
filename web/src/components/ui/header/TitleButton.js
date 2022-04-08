@@ -147,7 +147,11 @@ export const storeButtonEvent = ({history, memberRdx, payStoreRdx}) => {
 
   const inAppUpdateVersion = isAndroid() ? payStoreRdx.updateVersionInfo.aos : payStoreRdx.updateVersionInfo.ios;
   Utility.compareAppVersion(inAppUpdateVersion, ()=>{
-    history.push('/store');
+    if(isAndroid()){
+      history.push('/store');
+    }else{
+      Hybrid('openInApp', '');
+    }
   }, ()=>{
     if(isAndroid()){
       history.push('/store');
