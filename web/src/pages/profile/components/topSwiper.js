@@ -91,7 +91,7 @@ const TopSwiper = (props) => {
       {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
         {data.specialDjCnt > 0 && type === 'profile' &&
-          <div className="specialBdg" onClick={popupOpen}>
+          <div className={`specialBdg ${data.isSpecial ? 'isSpecial': ''}`} onClick={popupOpen}>
             <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
             <span>{data.specialDjCnt}회</span>
           </div>
@@ -110,11 +110,20 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
-          <div className="liveBdg">
-            <img src={`${IMG_SERVER}/profile/profile_liveBdg-2.png`} alt="LIVE" onClick={roomJoinHandler} />
-          </div>
-        }
+        {/* {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+          <div className='badgeListener' onClick={roomJoinHandler}>                     
+            <span className='headset'>                          
+              <Lottie
+                  options={{
+                    loop: true,
+                    autoPlay: true,
+                    path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                  }}
+                />
+            </span>      
+           <span className='ListenerText'>LIVE</span>
+         </div>
+        } */}
       </div>
       }
     </>

@@ -2,8 +2,8 @@ import { createReducer } from "typesafe-actions";
 import {IProfileTabState, ProfileActions} from "../../types/profileType";
 
 const initialState: IProfileTabState = {
-  tabList: ['방송공지','팬보드','클립'],
-  tabName: '방송공지',
+  tabList: ['피드','팬보드','클립'],
+  tabName: '피드',
   isRefresh: true,
   isReset: true,
 }

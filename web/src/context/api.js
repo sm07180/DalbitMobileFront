@@ -784,6 +784,216 @@ export default class API {
       params: params
     })
   }
+
+
+  /**
+   * 설정 방송공지 조회
+   */
+  static  myPageBroadcastNoticeSel = async (params) => {
+    return await ajax({url: `/mypage/broad/sel`, method: 'GET', params});
+  }
+
+  /**
+   * 설정 방송공지 등록
+   */
+  static myPageBroadcastNoticeIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/add`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 수정
+   */
+  static myPageBroadcastNoticeUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/broad/edit`,
+      method: method || 'POST',
+      data: data
+    });
+  }
+
+  /**
+   * 설정 방송공지 삭제
+   */
+  static myPageBroadcastNoticeDel = async (params) => {
+    return await ajax({
+      url: `/mypage/broad/del`,
+      method: 'DELETE',
+      data: params
+    });
+  }
+
+  /**
+   * 프로필 피드 좋아요
+   */
+  static profileFeedLike = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/like`,
+      method: 'POST',
+      data: params
+    })
+  }
+
+  /**
+   * 프로필 피드 좋아요 취소
+   */
+  static profileFeedLikeCancel = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/cancel`,
+      method: 'POST',
+      data: params
+    })
+  }
+
+  /**
+   * 피드 등록
+   */
+  static myPageFeedIns = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/add`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 조회
+   */
+  static myPageFeedSel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 피드 수정
+   */
+  static myPageFeedUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ... params,
+      url: url || `/mypage/feed/edit`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 삭제
+   */
+  static myPageFeedDel = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed`,
+      method: method || 'DELETE',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 상세 조회
+   */
+  static myPageFeedDetailSel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/detail`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 피드 좋아요
+   */
+  static myPageFeedLike = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/like`,
+      method: 'POST',
+      params
+    })
+  }
+
+  /**
+   * 피드 좋아요 취소
+   */
+  static myPageFeedLikeCancel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/cancel`,
+      method: 'POST',
+      params
+    })
+  }
+
+  /**
+   * 피드 댓글 등록
+   */
+  static myPageFeedReplyAdd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/reply/add`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 댓글 수정
+   */
+  static myPageFeedReplyUpd = async (params) => {
+    const {url, method, data} = params || {}
+    return await ajax({
+      ...params,
+      url: url || `/mypage/feed/reply/upd`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * 피드 댓글 삭제
+   */
+  static myPageFeedReplyDel = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/reply`,
+      method: 'DELETE',
+      params
+    })
+  }
+
+  /**
+   * 피드 댓글 조회
+   */
+  static myPageFeedReplyList = async (params) => {
+    return await ajax({
+      url: `/mypage/feed/reply/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
+  /**
+   * 방송 공지 리스트(고정) 조회
+   */
+  static myPageNoticeFixList = async (params) => {
+    return await ajax({
+      url: `/mypage/notice/fix/sel`,
+      method: 'GET',
+      params
+    })
+  }
+
   /**
    * @brief 마이페이지 공지사항 등록
    * @method "POST""
@@ -1208,6 +1418,9 @@ export default class API {
     return await ajax({url: '/profile/delete/img', method: 'POST', data})
   }
 
+  static profileImageUpdate = async (data) => {
+    return await ajax({url: '/profile/update/img', reqBody:true, method: 'POST', data})
+  }
   /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"
@@ -3383,7 +3596,6 @@ export default class API {
 
   // 추억의 뽑기 이벤트 뽑기
   static putDrawSelect = async (data) => {
-    console.log(data)
     return await ajax({
       url: '/event/draw/select',
       method: 'POST',
