@@ -70,6 +70,7 @@ const TextArea = (props) => {
   const removeList = () => {
     fetchDeleteData();
     setSelect({state: false, val: "", index: -1,});
+    setValueCount(0);
     setList(list.splice(select.index));
   }
 
@@ -83,7 +84,7 @@ const TextArea = (props) => {
 
   useEffect(() => {
     if(type==="방송 공지" && list[0]?.conts) {
-      setSelect({...select, val: list[0]?.conts})
+      setSelect({...select, val: list[0]?.conts, index: list[0]?.auto_no})
       setValueCount(list[0]?.conts.length);
     }
   }, [list]);
@@ -103,12 +104,26 @@ const TextArea = (props) => {
       </InputItems>
       <div className='btnSection'>
         <div className='leftBtn'>
-          {select.state && <button className="deleteBtn" onClick={removeList}>삭제</button>}
+          {type === "방송 공지" && list.length > 0 ?
+            <button className="deleteBtn" onClick={removeList}>삭제</button>
+            : select.state &&
+            <button className="deleteBtn" onClick={removeList}>삭제</button>
+          }
         </div>
         <div className='rightBtn'>
-          {select.state && <button className='cancelBtn' onClick={resetList}>취소</button>}
-          {select.index === -1 ? <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
-            : <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>
+          {type === "방송 공지" && list.length > 0 ?
+            <button className='cancelBtn' onClick={resetList}>취소</button>
+            : select.state &&
+            <button className='cancelBtn' onClick={resetList}>취소</button>
+          }
+          {type === "방송 공지" && list.length > 0 ?
+            <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>
+            : type === "방송 공지" && list.length === 0 ?
+              <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
+              : select.index === -1 ?
+                <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
+                :
+                <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>
           }
         </div>
       </div>

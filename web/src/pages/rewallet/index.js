@@ -202,9 +202,7 @@ const WalletPage = (props) => {
       {(isDesktop || isHybrid()) ?
         <Header type="back" title="내 지갑"/>
         :
-        <header className='back'>
-          <h1 className="title">내 지갑</h1>
-        </header>
+        <Header type="sub" title="내 지갑"/>
       }
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 

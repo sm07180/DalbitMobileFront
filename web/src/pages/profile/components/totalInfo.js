@@ -73,11 +73,6 @@ const TotalInfo = (props) => {
     }
   }, [noticeData, noticeFixData]);
 
-  useEffect(() => {
-    console.log(noticeFixData.fixedFeedList.length)
-    console.log(noticeData.feedList.length);
-  })
-
   return (
     <>
       {badgeTotalCnt !== 0 &&
@@ -187,11 +182,33 @@ const TotalInfo = (props) => {
             }
           </Swiper>
         </div>
-        :
+        : isMyProfile ?
+          <div className="broadcastNotice">
+            <div className="title" onClick={onClick}>방송공지</div>
+            <Swiper {...swiperParams}>
+              {defaultNotice.map((v, idx) => {
+                return (
+                  <div key={idx}>
+                    <div className="noticeBox">
+                      <div className="badge">Notice</div>
+                      <div className="text">{v.contents}</div>
+                      <div className="info">
+                        <i className="likeOff">{v.rcv_like_cnt}</i>
+                        <i className="cmt">{v.replyCnt}</i>
+                      </div>
+                      <button className="fixIcon">
+                        <img src={`${IMG_SERVER}/profile/fixmark-off.png`}/>
+                      </button>
+                    </div>
+                  </div>
+                )
+              })}
+            </Swiper>
+          </div>
+          :
         <>
         </>
       }
-
     </>
   )
 }

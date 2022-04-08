@@ -40,7 +40,7 @@ const Allim = (props) => {
                   <ListRow key={idx} photo={v.profImg.thumb292x292}>
                     {v.newCnt === 1 && <span className="newDot"/>}
                     <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
-                         data-link={v.link} onClick={handleClick}>
+                         data-link={v.link} data-notice={v.notiIdx} onClick={handleClick}>
                       <div className="title">{v.contents}</div>
                       <div className="date">{changeDay(v.regDt)}</div>
                     </div>
