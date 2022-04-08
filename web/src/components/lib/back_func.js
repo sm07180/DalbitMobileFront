@@ -27,6 +27,11 @@ export const backFunc = (context, dispatch) => {
     case 'commonPop':
       dispatch(setCommonPopupOpenData({...backFunction.popupData}))
       break;
+    case 'callback': // 스와이퍼 사진 팝업, 이미지 편집 에서 사용중
+      if (typeof context?.backEventCallback?.callback === 'function') {
+        context?.backEventCallback?.callback();
+      }
+      break;
     default:
       break
   }

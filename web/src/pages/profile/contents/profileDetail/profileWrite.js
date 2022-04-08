@@ -14,16 +14,18 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {setProfileTabData} from "redux/actions/profile";
+import {useDispatch, useSelector} from "react-redux";
 
 const ProfileWrite = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const context = useContext(Context);
+  const profileTab = useSelector((state) => state.profileTab);
+
+  const {token, profile} = context;
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
-
-  //context
-  const context = useContext(Context);
-  const {token, profile} = context;
-
   //수정 : index 필수
   if (action === 'modify' && !index) {
     <Redirect to={{pathname: '/mypage'}}/>
@@ -35,17 +37,13 @@ const ProfileWrite = () => {
 
   const inputRef = useRef(null);
   const photoListSwiperRef = useRef(null);
-  const imageUploading = useRef(false);
 
-  const [item, setItem] = useState(null);
   const [eventObj, setEventObj] = useState(null);
   const [image, setImage] = useState(null);
   const [cropOpen, setCropOpen] = useState(false);
-  const [activeState, setActiveState] = useState(false);//등록 버튼 활성화
 
   //이미지 팝업 슬라이더
   const [showSlide, setShowSlide] = useState({show: false, viewIndex: 0});
-
   const [formState, setFormState] = useState({
     title: '',
     contents: '',
@@ -53,6 +51,10 @@ const ProfileWrite = () => {
     photoInfoList: []
   });
   const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
+
+  const tabResetBlock = () => {
+    dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
+  };
 
   const validChecker = () => {
     let confirm = true;
@@ -275,6 +277,7 @@ const ProfileWrite = () => {
   };
 
   useEffect(() => {
+    tabResetBlock();
     action === 'modify' && getDetailData();
   }, []);
 
