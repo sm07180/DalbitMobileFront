@@ -18,16 +18,16 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankDetailPage = (props) => {
-  const params = useParams()
-  let history = useHistory()
+  const params = useParams();
+  let history = useHistory();
 
   let location = useLocation();
 
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
-  const rankingListType = params.type
+  const rankingListType = params.type;
   //Ranking 종류(DJ, FAN, CUPID)
-  const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : 3);
+  const [rankSlct, setRankSlct] = useState(rankingListType === "DJ" ? 1 : rankingListType === "FAN" ? 2 : rankingListType === "CUPID" ? 3 : 4);
   //Ranking 기간(타임, 일간 등등)
   const [rankType, setRankType] = useState("");
   //Ranking 종류 Title
@@ -61,6 +61,8 @@ const RankDetailPage = (props) => {
     } else if (rankingListType === 'CUPID') {
       setTabList(['일간','주간']);
       setTabName('일간')
+    } else if (rankingListType === 'TEAM') {
+      setTabName('주간')
     }
     setSelect(rankingListType);
   }, [props.match.params.type]);
@@ -287,8 +289,8 @@ const RankDetailPage = (props) => {
         setRankType(tabName === "주간" ? 2 :  1);
         setRankSlct(3);
       } else {
-        setRankType(tabName === "주간" ? 2 :  1);
-        setRankSlct(4);
+        setRankType(2);
+        setRankSlct(3);
       }
     }
   }, [tabName, select]);
@@ -357,6 +359,7 @@ const RankDetailPage = (props) => {
         <div className={`rankCategoryList ${rankingListType === "DJ" ? "active" : ""}`} onClick={() => {changeCategory("DJ")}}>DJ</div>
         <div className={`rankCategoryList ${rankingListType === "FAN" ? "active" : ""}`} onClick={() => {changeCategory("FAN")}}>FAN</div>
         <div className={`rankCategoryList ${rankingListType === "CUPID" ? "active" : ""}`} onClick={() => {changeCategory("CUPID")}}>CUPID</div>
+        <div className={`rankCategoryList ${rankingListType === "TEAM" ? "active" : ""}`} onClick={() => {changeCategory("TEAM")}}>TEAM</div>
         <div className="underline"></div>
       </div>
       <div className='tabWrap'>
