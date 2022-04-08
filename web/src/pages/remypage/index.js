@@ -1,16 +1,17 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
+import React, {useState, useEffect, useContext} from 'react';
+import {useHistory, useParams} from 'react-router-dom';
+import {Context} from 'context';
+import {IMG_SERVER} from 'context/config';
 
-import Api from 'context/api'
+import Api from 'context/api';
 
-import './style.scss'
+import './style.scss';
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
-import Report from "./contents/report/Report"
-import Clip from "./contents/clip/clip"
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide';
+import Report from "./contents/report/Report";
+import Clip from "./contents/clip/clip";
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
 import Team from "pages/team";
@@ -39,7 +40,6 @@ const Remypage = () => {
 
   const [noticeNew, setNoticeNew] = useState(false);
   
-
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
     if (result === 'success') {
@@ -157,11 +157,25 @@ const Remypage = () => {
             </div>
             <div className='myData'>
               <div className='myDataList' onClick={() => history.push('/wallet')}>
-                <span className='icon wallet'></span>
+                <span className='icon wallet' />
                 <span className="myDataType">내 지갑</span>
               </div>
+              <div className='myDataList' onClick={() => history.push('/team')}>
+                <span className='icon team'>
+                  {false ?
+                    <>
+                      <img src={`${IMG_SERVER}/team/parts/E/e007.png`} />
+                      <img src={`${IMG_SERVER}/team/parts/B/b007.png`} />
+                      <img src={`${IMG_SERVER}/team/parts/M/m007.png`} />
+                    </>
+                  :
+                    <span className={true ? 'new' : ''} />
+                  }
+                </span>
+                <span className="myDataType">팀</span>
+              </div>
               <div className='myDataList' onClick={() => history.push('/report')}>
-                <span className='icon report'></span>
+                <span className='icon report' />
                 <span className="myDataType">방송리포트</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/myclip')}>

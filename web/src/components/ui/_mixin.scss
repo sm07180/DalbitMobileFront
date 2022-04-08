@@ -31,6 +31,7 @@ $Medium: 500;
 $SemiBold: 600;
 $Bold: 700;
 $ExtraBold: 800;
+$Heavy: 900;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
