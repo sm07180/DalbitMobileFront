@@ -624,7 +624,7 @@ const App = () => {
         }
       })
 
-      // window.location.href = '/error';
+      window.location.href = '/error';
 
       /*return (
         <section id="error">

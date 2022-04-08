@@ -687,7 +687,9 @@ const ProfilePage = () => {
       tabName: profileDefaultTab,
       isReset: true
     }))
-    getNoticeData(true); // 피드
+    getNoticeData(true); // 방송공지
+    getNoticeFixData(true); // 방송공지(고정)
+    getFeedData(true); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);
