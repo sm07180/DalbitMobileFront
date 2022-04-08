@@ -47,7 +47,6 @@ import {IMG_SERVER} from "context/config";
 
 const ProfilePage = () => {
   const history = useHistory()
-  const location = useLocation();
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
@@ -55,8 +54,7 @@ const ProfilePage = () => {
   const socialRef = useRef();
   const floatingRef = useRef();
 
-  const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
-  const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
+  const [showSlide, setShowSlide] = useState({visible: false, imgList: [], initialSlide: 0}); // 프사 확대 슬라이드
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
@@ -83,7 +81,7 @@ const ProfilePage = () => {
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
 
-  const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 팬보드
+  const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 피드
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
@@ -115,7 +113,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : noticeData.paging.next,
-      pageCnt: noticeData.paging.records,
+      pageCnt: isInit? 20: noticeData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
@@ -142,7 +140,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : noticeFixData.paging.next,
-      pageCnt: noticeFixData.paging.records,
+      pageCnt: isInit? 20: noticeFixData.paging.records,
     }
     Api.myPageNoticeFixList(apiParams).then((res) => {
       if(res.result === "success") {
@@ -166,7 +164,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       pageNo: isInit ? 1 : feedData.paging.next,
-      pageCnt: feedData.paging.records,
+      pageCnt: isInit? 20: feedData.paging.records,
     }
     Api.myPageFeedSel(apiParams).then((res) => {
       if(res.result === "success") {
@@ -193,7 +191,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
-      records: fanBoardData.paging.records
+      records: isInit? 20: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
@@ -223,7 +221,7 @@ const ProfilePage = () => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : context.profile.memNo,
       page: isInit ? 1 : clipData.paging.next,
-      records: clipData.paging.records
+      records: isInit? 10: clipData.paging.records
     }
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
@@ -448,14 +446,17 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide = 0) => {
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide= 0) => {
     const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
 
-    setImgList(list);
-    setShowSlide(true);
-  }
+    setShowSlide({visible: true, imgList: list, initialSlide});
+  };
+
+  const closeShowSlide = useCallback(() => {
+    setShowSlide({visible: false, imgList: [], initialSlide: 0});
+  },[]);
 
   /* 피드 사진(여러장) 확대 */
   const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
@@ -665,15 +666,19 @@ const ProfilePage = () => {
   const profileTabDataCall = () => {
     if(profileTab.tabName === profileTab.tabList[0]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getFeedData(true);
     }else if(profileTab.tabName === profileTab.tabList[1]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getFanBoardData(true);
     }else if(profileTab.tabName === profileTab.tabList[2]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getClipData(true);
     }
-    dispatch(setProfileTabData({...profileTab, isRefresh: true})); // 하단 탭
+    // 탭 유지, 데이터 가져오기
+    getNoticeData(true); // 방송공지
+    getNoticeFixData(true); // 방송공지(고정)
+    getFeedData(true); // 피드
+    getFanBoardData(true);
+    getClipData(true);
+
+    dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
   }
 
   /* 하단 탭 기본값으로 초기화 */
@@ -686,6 +691,8 @@ const ProfilePage = () => {
     getNoticeData(true); // 방송공지
     getNoticeFixData(true); // 방송공지(고정)
     getFeedData(true); // 피드
+    getFanBoardData(true);
+    getClipData(true);
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);
@@ -787,6 +794,8 @@ const ProfilePage = () => {
     getNoticeData(true);
     getNoticeFixData(true);
     getFeedData(true);
+    getFanBoardData(true);
+    getClipData(true);
     /* 프로필 하단 탭 데이터 */
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
@@ -809,7 +818,7 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className="editBtn" onClick={()=>history.replace('/myProfile/edit')}>편집</button>
+            <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>
           </div>
           :
           <div className="buttonGroup">
@@ -832,12 +841,8 @@ const ProfilePage = () => {
       </section>
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
-          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction} />
-          {/*{(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])*/}
-          {/*  && <button onClick={() => {*/}
-          {/*  profileTab.tabName === profileTab.tabList[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo, dispatch, profileTab} );*/}
-          {/*    profileTab.tabName === profileTab.tabList[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo, dispatch, profileTab})*/}
-          {/*}}>등록</button>}*/}
+          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction}
+                   subTextList={[`(${feedData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
         </div>
 
         {/* 피드 */}
@@ -858,7 +863,9 @@ const ProfilePage = () => {
         }
 
         {/* 프로필 사진 확대 */}
-        {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+        {showSlide?.visible &&
+          <ShowSwiper imageList={showSlide?.imgList} popClose={closeShowSlide} swiperParam={{initialSlide: showSlide?.initialSlide}}/>
+        }
 
         {/* 피드 사진 확대 */}
         {feedShowSlide?.visible && <ShowSwiper imageList={feedShowSlide?.imgList || []} popClose={showSlideClear} swiperParam={{initialSlide: feedShowSlide?.initialSlide}}/>}

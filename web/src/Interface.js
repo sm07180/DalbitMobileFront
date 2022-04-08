@@ -1263,7 +1263,7 @@ export default () => {
         document.removeEventListener('native-back-click', update)
       }
     }
-  }, [context.backFunction, context.backState, uLocation.pathname, webView])
+  }, [context.backFunction, context.backState, context.backEventCallback, uLocation.pathname, webView])
 
   return (
     <React.Fragment>

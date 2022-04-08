@@ -91,10 +91,10 @@ const Remypage = () => {
 
   //슬라이드 팝업 열고 닫기
   const openPopFanStar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const {targetType} = e.currentTarget.dataset;
-    e.stopPropagation()
     setOpenFanStarType(targetType)
-    console.log('11');
     dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
   }
 
@@ -213,7 +213,7 @@ const Remypage = () => {
           <Header title={'MY'} />
           <section className='mypageTop'>
             <div className="myInfo" onClick={goProfile}>
-              <MyInfo data={profile} openLevelPop={openLevelPop} />
+              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}/>
             </div>
             <div className='mydalDetail'>
               <div className="dalCount">

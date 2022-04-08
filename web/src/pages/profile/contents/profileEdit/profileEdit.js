@@ -21,6 +21,7 @@ import {authReq} from "pages/self_auth";
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
 
 const ProfileEdit = () => {
   const history = useHistory()
@@ -77,7 +78,7 @@ const ProfileEdit = () => {
     }
   }, [profile])
 
-  const showSlideClear = useCallback((p)=>{
+  const showSlideClear = useCallback(() => {
     setShowSlide({visible: false, imgList: [], initialSlide: 0});
   },[]);
 
@@ -168,7 +169,7 @@ const ProfileEdit = () => {
       const {result, message} = res
       if (result === 'success') {
         getMyInfo(); //프로필 정보 갱신
-        context.action.toast({msg: '이미지 등록 되었습니다.'});
+        context.action.toast({msg: '이미지가 등록 되었습니다.'});
       } else {
         context.action.toast({msg: message});
       }
@@ -226,21 +227,14 @@ const ProfileEdit = () => {
   };
 
   //이미지 팝업 띄우기
-  const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
-    if(!data) return;
-
-    let resultMap = [];
-    if (type === 'profileList') { // 프로필 이미지 리스트, 대표 이미지 눌렀을 때
-      data.map((v, idx) => {
-        if (v?.profImg) {
-          resultMap.push({idx: v.idx, ...v.profImg});
-        }
-      });
-    } else { //배경 이미지 눌렀을때
-      resultMap.push({idx: data.idx, ...data.profImg});
-    }
-
-    setShowSlide({visible:true, imgList: resultMap, initialSlide });
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide= 0) => {
+    let list = [];
+    data.map((v, idx) => {
+      if (v?.profImg) {
+        list.push({idx: v.idx, ...v.profImg});
+      }
+    });
+    setShowSlide({visible: true, imgList: list, initialSlide});
   };
 
   const imageSorting = (imageList = []) => {
@@ -254,11 +248,10 @@ const ProfileEdit = () => {
         .then((res) => {
           const {result, message, data} = res;
           if (result === 'success') {
-            context.action.toast({msg: '성공'});
             closeMoreList();
             getMyInfo();
           } else {
-            context.action.toast({msg: '사진 변경 실패'});
+            context.action.toast({msg: '잠시후에 다시 시도해주세요.'});
           }
         });
     } else {
@@ -294,21 +287,16 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
+            <Header title={'프로필 수정'} type={'back'} >
               <button className='saveBtn'
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
+            <section className='profileTopSwiper'>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profileDataNoReader} disabledBadge={true}
-                           swiperParam={{
-                             on: {
-                               init: function () {
-                                 topSwiperRef.current = this;
-                               }
-                             }
-                           }}
+                <TopSwiper data={profileDataNoReader}
+                           disabledBadge={true}
+                           openShowSlide={openShowSlide}
                 />
                 :
                 <div className="nonePhoto"
@@ -323,10 +311,10 @@ const ProfileEdit = () => {
             <section className="insertPhoto">
               <div className="insertBtn">
                 <div className="photo"
-                     onClick={()=> {
-                       profileInfo?.profImgList.length >0 ?
-                         showImagePopUp(profileInfo?.profImgList, 'profileList') :
-                         inputRef.current.click();
+                     onClick={() => {
+                       profileInfo?.profImgList.length > 0?
+                         openShowSlide(profileInfo?.profImgList,  'y', 'profImg', 0)
+                         : inputRef.current.click();
                      }}>
                   <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
                 </div>
@@ -334,16 +322,18 @@ const ProfileEdit = () => {
 
               <div className="coverPhoto">
                 <div className="title">프로필사진<small>(최대 10장)</small>
-                  {/*{profileInfo?.profImgList?.length > 1 &&*/}
-                  {/*  <button onClick={openMoreList}>순서변경</button>*/}
-                  {/*}*/}
+                  {profileInfo?.profImgList?.length > 1 &&
+                    <button onClick={openMoreList}>순서변경</button>
+                  }
                 </div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
                         <img src={data?.profImg?.thumb292x292} alt=""
-                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
+                             onClick={() => {
+                               openShowSlide(profileInfo?.profImgList, 'y', 'profImg', index)
+                             }}/>
                         <button className="cancelBtn"
                                 onClick={() => {
                                   context.action.confirm({
@@ -419,7 +409,11 @@ const ProfileEdit = () => {
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
                           value={profileInfo?.profMsg || ''}
                           onChange={(e) => {
-                            setProfileInfo({...profileInfo, profMsg: e.target.value});
+                            if(e.target.value?.length> 100) {
+                              e.target.value = profileInfo?.profMsg;
+                            } else {
+                              setProfileInfo({...profileInfo, profMsg: e.target.value});
+                            }
                           }}/>
                 <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
               </InputItems>
