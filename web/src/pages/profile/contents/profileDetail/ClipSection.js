@@ -4,9 +4,9 @@ import React, {useContext} from 'react'
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import NoResult from 'components/ui/noResult/NoResult'
-import {NewClipPlayerJoin} from "common/audio/clip_func";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {playClip} from "pages/clip/components/clip_play_fn";
 
 const ClipSection = (props) => {
   const { profileData, clipData, isMyProfile, webview } = props;
@@ -14,13 +14,23 @@ const ClipSection = (props) => {
   const history = useHistory();
 
   const listenClip = (clipNo,) => {
+    const playListInfoData = {
+      myClipType: 1,
+      page: 1,
+      records: 100,
+      memNo: profileData.memNo,
+      type: 'setting'
+    }
+
     const clipParam = {
-      clipNo: clipNo,
-      gtx: context,
+      clipNo,
+      playList: clipData.list,
+      context,
       history,
       webview,
+      playListInfoData
     }
-    NewClipPlayerJoin(clipParam)
+    playClip(clipParam);
   }
 
   return (

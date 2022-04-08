@@ -14,7 +14,7 @@ import RankingList from '../../components/RankingList'
 import './clipRanking.scss'
 import moment from "moment";
 import {array} from "@storybook/addon-knobs";
-import {ClipPlayFn} from "pages/clip/components/clip_play_fn";
+import {ClipPlayFn, playClip} from "pages/clip/components/clip_play_fn";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
@@ -55,20 +55,52 @@ const ClipRanking = () => {
     setSearchInfo({ ...searchInfo, rankType: targetType, rankingDate: targetDate });
   };
 
-  const playList = (e) => {
+  /*
+   클립 랭킹 재생목록 정책 #7867
+   어제의 TOP3 재생: 어제 1,2,3 + 오늘 1,2,3 + 오늘 4위~
+   오늘의 TOP3 재생, 오늘 4위~ 재생, 오늘 탭 전체듣기: 오늘 1,2,3 + 오늘 4위~
+   지난주의 TOP3 재생: 지난주 1,2,3 + 이번주 1,2,3 + 이번주 4위~
+   이번주의 TOP3 재생, 이번주 4위~ 재생, 이번주 탭 전체듣기: 이번주 1,2,3 + 이번주 4위~
+  */
+  const getPlayList = (playType) => {
+    // playType = "today" | "yesterday" | "thisWeek" | "lastWeek"
+    // 1~3위
+    const top3List = () => {
+      switch (playType) {
+        case 'today':
+        case 'thisWeek':
+          return rankClipInfo.topInfo[1] ? rankClipInfo.topInfo[1].list : rankClipInfo.topInfo[0]?.list;
+        case 'yesterday':
+        case 'lastWeek':
+          return rankClipInfo.topInfo[1] ? [...rankClipInfo.topInfo[0].list, ... rankClipInfo.topInfo[1].list] : rankClipInfo.topInfo[0].list;
+        default:
+          return rankClipInfo.topInfo[1] ? rankClipInfo.topInfo[1].list : rankClipInfo.topInfo[0]?.list;
+      }
+    }
+
+    // 4위 ~
+    const otherList = () => {
+      return rankClipInfo.list;
+    }
+
+    return [...top3List(), ...otherList()];
+  }
+
+  const clipPlayHandler = (e, playType="default") => {
+    // playType = "today" | "yesterday" | "thisWeek" | "lastWeek" | "default"
     e.preventDefault();
     const { clipNo, type } = e.currentTarget.dataset;
     let tempType = type;
     if (type === undefined) tempType = 1;
-    if (clipNo) {
-      const clipParam = { clipNo: clipNo, gtx: context, history, type: 'all' };
-      let playListInfoData = {
-        ...searchInfo,
-        rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate)
-      }
-      localStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfoData));
-      NewClipPlayerJoin(clipParam);
+    let playListInfoData = {
+      ...searchInfo,
+      rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate),
+      type: 'setting'
     }
+
+    const playList = getPlayList(playType); // 1~3위 리스트
+    const clipParam = { clipNo, playList, context, history, playListInfoData };
+    playClip(clipParam);
   };
 
   useEffect(() => {
@@ -80,15 +112,18 @@ const ClipRanking = () => {
       <Header title='클립 랭킹' type='back' />
       <Tabmenu tabList={tabmenu} targetIndex={searchInfo.rankType - 1} changeAction={handleTabmenu}/>
       <div className='rankingContent'>
-        {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} playAction={playList}/>}
+        {rankClipInfo.topInfo.length > 0 && <TopRanker data={rankClipInfo.topInfo} clipPlayHandler={clipPlayHandler}/>}
         {rankClipInfo.paging.total > 3 ?
           <>
             <section className="listWrap">
               <div className="listAll">
                 <span>지금 가장 인기있는 클립을 들어보세요!</span>
-                <button data-clip-no={rankClipInfo.topInfo[1].list[0].clipNo} onClick={playList}>전체듣기<span className="iconPlayAll"/></button>
+                {rankClipInfo.topInfo[1]?.list[0]?.clipNo}
+                <button data-clip-no={rankClipInfo.topInfo[1] ? rankClipInfo.topInfo[1].list[0].clipNo : rankClipInfo.topInfo[0]?.list[0].clipNo}
+                        onClick={clipPlayHandler}>전체듣기<span className="iconPlayAll"/>
+                </button>
               </div>
-              <RankingList data={rankClipInfo.list} playAction={playList}/>
+              <RankingList data={rankClipInfo.list} playAction={clipPlayHandler}/>
             </section>
           </>
           :

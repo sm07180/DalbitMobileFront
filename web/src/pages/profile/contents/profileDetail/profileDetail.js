@@ -477,7 +477,7 @@ export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
   if(!history) return;
   if (type !== 'feed' && type !== 'fanBoard') return;
   
-  dispatch(setProfileTabData({...profileTab, isRefresh: false, isReset: false})); // 프로필 탭 초기화 여부
+  dispatch(setProfileTabData({...profileTab, isRefresh: false, isReset: false})); // 프로필 탭 유지
 
   if (action === 'detail') { //상세 memNo : 프로필 주인의 memNo
       history.push(`/profileDetail/${memNo}/${type}/${index}`);

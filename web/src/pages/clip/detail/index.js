@@ -1,18 +1,23 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useContext} from 'react';
 import Header from "components/ui/header/Header";
 import API from "context/api";
 import Swiper from "react-id-swiper";
 import FilterBtn from "pages/clip/components/FilterBtn";
 import {useSelector} from "react-redux";
 import ClipDetailCore from "pages/clip/components/ClipDetailCore";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
 import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
 import Utility from "components/lib/utility";
+import {playClip} from "pages/clip/components/clip_play_fn";
+import {Context} from "context";
 
 const ClipDetailPage = (props) => {
   const { type } = useParams();
+  const context = useContext(Context);
+  const history = useHistory();
+
   const categoryType = useSelector((state)=> state.clip.categoryType); //
   const termType = useSelector((state)=> state.clip.termType); //
   const subjectType = useSelector((state)=> state.clip.subjectType); //
@@ -106,6 +111,25 @@ const ClipDetailPage = (props) => {
     slidesPerView: 'auto',
   };
 
+  const playClipHandler = (e, subjectType, slctType) => {
+    const playListInfoData = {
+      dateType: 0,
+      page: 1,
+      records: 100,
+      slctType: slctType.index,
+      subjectType:subjectType
+    }
+
+    const playClipParams = {
+      clipNo: e.currentTarget.dataset.clipNo,
+      playList: clipLastInfo.list,
+      context,
+      history,
+      playListInfoData
+    }
+    playClip(playClipParams);
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', scrollEvent);
     return () => {
@@ -142,7 +166,9 @@ const ClipDetailPage = (props) => {
       <section className="detailList">
         {clipLastInfo.list.map((row, index) => {
           return (
-            <ClipDetailCore item={row} key={index} subjectType={searchInfo.subjectType.value} slctType={searchInfo.slctType}/>
+            <ClipDetailCore item={row} key={index} subjectType={searchInfo.subjectType.value} slctType={searchInfo.slctType}
+                            playClipHandler={playClipHandler}
+            />
           );
         })}
       </section>

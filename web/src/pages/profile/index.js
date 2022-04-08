@@ -71,7 +71,6 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
-  const isWebView = useSelector(state => state.common).isWebView;
 
   const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 피드
 

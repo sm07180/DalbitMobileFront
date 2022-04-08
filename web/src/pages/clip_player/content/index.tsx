@@ -41,9 +41,10 @@ export default function ClipContent() {
     const { result, message, data } = await postClipPlay({
       clipNo: clipNo,
     });
+
     if (result === "success") {
       createPlayer(data, "firstStart");
-      sessionStorage.setItem("clip", JSON.stringify(data));
+
       if (!clipInfo?.clipNo || (clipInfo?.clipNo !== data.clipNo && historyState === "firstJoin")) {
         updatePlayList(data);
       }
@@ -53,7 +54,7 @@ export default function ClipContent() {
         content: message,
         callback: playFailHandler,
         cancelCallback: playFailHandler,
-      });
+      })
     }
   };
 
@@ -113,7 +114,15 @@ export default function ClipContent() {
       playListInfo = JSON.parse(localStorage.getItem("clipPlayListInfo")!);
     }
     if (playListInfo === undefined) return null;
-    if (playListInfo.hasOwnProperty("type") && playListInfo.type === "one") {
+
+    if(playListInfo.type === 'setting') {
+      const sessionStorageClip = sessionStorage.getItem("clip");
+      const data = sessionStorageClip && JSON.parse(sessionStorageClip);
+
+      return dispatchClipPlayListTab && dispatchClipPlayListTab({type: "add", data});
+    }
+
+    if ((playListInfo.hasOwnProperty("type") && playListInfo.type === "one")) {
       dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: oneData });
       if (globalState.clipPlayMode !== "shuffle") {
         return dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: oneData });
@@ -171,12 +180,6 @@ export default function ClipContent() {
       });
     }
   };
-
-  useEffect(() => {
-    if (globalState.clipInfo !== null) {
-      sessionStorage.setItem("clip", JSON.stringify(globalState.clipInfo));
-    }
-  }, [globalState.clipInfo]);
 
   useEffect(() => {
     if (sessionStorage.getItem("clip") === null) {
