@@ -596,7 +596,7 @@ const ProfileDetail = (props) => {
         {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
           {replyList.map((item, index) => {
-            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.mem_no}`) };
+            const goProfile = () =>{ history.push(`/profile/${item?.tail_mem_no || item?.writerMemNo}`) };
             return <ProfileReplyComponent key={item?.replyIdx || item?.tail_no} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
                                           replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
                                           blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
