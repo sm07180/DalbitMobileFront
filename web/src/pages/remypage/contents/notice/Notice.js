@@ -55,7 +55,6 @@ const NoticePage = () => {
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
     const { type, memNo, roomNo, link } = (e.currentTarget.dataset);
-    console.log(type, memNo, roomNo, link);
     alarmFix = true;
     switch (type) {
       case "1":                                                                             //마이스타 방송 알림
