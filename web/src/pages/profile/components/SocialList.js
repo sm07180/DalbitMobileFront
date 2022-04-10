@@ -6,7 +6,7 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Context} from "context";
 import Utility from "components/lib/utility";
@@ -21,6 +21,7 @@ const SocialList = (props) => {
   const dispatch = useDispatch();
   const profileTab = useSelector(state => state.profileTab);
   const socialRef = useRef([]);
+  const params = useParams();
 
   const photoClickEvent = (memNo) => {
     if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
@@ -34,8 +35,9 @@ const SocialList = (props) => {
         }
 
         const memNo = type === 'feed' ? profileData.memNo : item?.writerMemNo; //글 작성자
-        const detailPageParam = {history, action: 'detail', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, dispatch, profileTab};
-        const modifyParam = {history, action: 'modify', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, dispatch, profileTab};
+        const detailPageParam = {history, action: 'detail', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo
+          , fromMemNo: params?.memNo ? params.memNo : context.profile.memNo};
+        const modifyParam = {history, action: 'modify', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, };
         return (
           <div className='socialList' key={item.reg_no ? item.reg_no : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}

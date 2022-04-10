@@ -16,7 +16,7 @@ import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import FeedLike from "pages/profile/components/FeedLike";
-import {setProfileDetailData} from "redux/actions/profile";
+import {setProfileDetailData, setProfileTabData} from "redux/actions/profile";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
@@ -59,6 +59,9 @@ const ProfileDetail = (props) => {
   const popup = useSelector(state => state.popup);
   const detailData = useSelector(state => state.detail);
 
+  // 프로필 탭
+  const profileTab = useSelector((state) => state.profileTab);
+
   const swiperFeeds = {
     slidesPerView: 'auto',
     spaceBetween: 8,
@@ -74,6 +77,11 @@ const ProfileDetail = (props) => {
   //내가 작성한 글 여부
   const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === ((type === 'notice' || type === 'feed') ? item?.mem_no : item?.writer_mem_no)?.toString();
   const adminChecker = context?.adminChecker;
+
+  // 탭 유지 시키기
+  const tabResetBlock = () => {
+    dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
+  };
 
   /* 프로필 사진 확대 */
   const openShowSlide = (data, isList = "y", keyName='profImg') => {
@@ -215,6 +223,8 @@ const ProfileDetail = (props) => {
   }, []);
 
   useEffect(() => {
+    const fromMemNo = history?.location?.state?.fromMemNo || 0;
+    fromMemNo === memNo && tabResetBlock();
     getAllData(1, 9999);
   }, []);
 
@@ -574,13 +584,19 @@ const ProfileDetail = (props) => {
                 </div>
                 : <></>
           )}
-          <FeedLike data={detailData.list} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"} />
+          {type === 'fanBoard' ?
+            <div className="info">
+              <i className="cmt">{(replyList?.length) ? Utility.printNumber(replyList?.length) : 0}</i>
+            </div>
+            :
+            <FeedLike data={detailData.list} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"}/>
+          }
         </div>
 
         {/* 댓글 리스트 영역 */}
         <div className='listWrap'>
           {replyList.map((item, index) => {
-            const goProfile = () =>{ history.push(`/profile/${item?.writerMemNo || item?.tail_mem_no}`) };
+            const goProfile = () =>{ history.push(`/profile/${item?.tail_mem_no || item?.writerMemNo}`) };
             return <ProfileReplyComponent key={item?.replyIdx || item?.tail_no} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
                                           replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
                                           blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
@@ -627,17 +643,20 @@ const ProfileDetail = (props) => {
  * targetMemNo : 글주인 memNo
  * */
 export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
-                                      index, memNo}) => {
+                                      index, memNo, fromMemNo}) => {
   if(!history) return;
   if (type !== 'feed' && type !== 'fanBoard' && type !== 'notice') return;
 
   if (action === 'detail') {                                            //상세 memNo : 프로필 주인의 memNo
-    history.push(`/profileDetail/${memNo}/${type}/${index}`);
+    history.push({
+      pathname: `/profileDetail/${memNo}/${type}/${index}`,
+      state: { fromMemNo }
+    });
   } else if (action === 'write') {                                      // 작성
     if(type=='feed') {                                                  // 작성 memNo : 프로필 주인의 memNo
       history.push(`/profileWrite/${memNo}/${type}/write`);
     } else if (type ==='fanBoard') {                                    // 작성 memNo : 프로필 주인의 memNo
-      history.push(`/profileWrite/${memNo}/${type}/write`);
+      //history.push(`/profileWrite/${memNo}/${type}/write`);
     } else if (type === "notice") {
       history.push(`/profileWrite/${memNo}/${type}/write`);
     }
