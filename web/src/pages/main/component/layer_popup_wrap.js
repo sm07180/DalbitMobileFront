@@ -1,6 +1,6 @@
 // 메인 팝업 관리자 wrapper - test
 // 김재오 수정 2020-07-24
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {OS_TYPE} from '../../../context/config'
 import {Hybrid} from 'context/hybrid'
 import {useHistory} from "react-router-dom";
@@ -13,10 +13,14 @@ import 'styles/layerpopup.scss'
 
 export default function LayerPopupWrap({data, setData}) {
   const history = useHistory();
+  const contentRef = useRef();
+  const scrollRef = useRef();
+  const [scroll, setScroll] = useState(false);
+  const [bottomHit, setBottomHit] = useState(false);
   const [checked, setChecked] = useState({
     idx: -1,
     check: false
-  })
+  });
   const customHeader = JSON.parse(Api.customHeader)
 
   const closePopup = () => {
@@ -76,6 +80,18 @@ export default function LayerPopupWrap({data, setData}) {
     }
   }
 
+  const clickLink = (popupData) => {
+    const linkUrl = popupData.linkUrl
+    if(linkUrl.includes('notice')) {
+      history.push({
+        pathname: linkUrl,
+        state: linkUrl.split('/')[2]
+      })
+    } else {
+      history.push(linkUrl)
+    }
+  };
+
   const makeTextInner = (popupData) => {
     return (
       <>
@@ -83,29 +99,20 @@ export default function LayerPopupWrap({data, setData}) {
             popupData.title && popupData.is_title_view === 1 &&
             <h2 className='title'>{popupData.title}</h2>
           }
-          <div className='content'>
-            <p dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
+          <div className="content">
+              <div className="scrollWrap" ref={scrollRef}>
+                <p dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}} ref={contentRef}></p>
+              </div>
+              {scroll && bottomHit === false ? <span className="gradient"></span> : ''}
           </div>
-          {/* <div className="btnGroup">
-            <button
-              className="btn"
-              onClick={() => {
-                {
-                  popupData.is_button_view === 0 && handleDimClick()
-                }
-                {
-                  popupData.is_button_view === 1 && handleRoute(popupData)
-                }
-              }}>
-              {popupData.buttonNm}
-            </button>
-          </div> */}
+          {popupData.is_button_view === 0 ? <></> : <SubmitBtn text={popupData.buttonNm} onClick={() => clickLink(popupData)} /> 
+          }
       </>
     )
   }
 
   const makeImgInner = (popupData) => {
-    const linkUrl = popupData.linkUrl
+    const linkUrl = popupData.linkUrl;
     return (
       <>
         <a>
@@ -124,31 +131,53 @@ export default function LayerPopupWrap({data, setData}) {
     )
   }
 
+  const scrollSize = (popupData) => {
+    const scrollNode = scrollRef.current;
+    const contentNode = contentRef.current;
+
+    if (contentNode && contentNode.clientHeight >= 250) {
+      setScroll(true);
+    }
+
+    if (scrollNode && scrollNode.scrollTop >= contentNode.clientHeight - scrollNode.clientHeight - 5) {
+      setBottomHit(true);
+    } else {
+      setBottomHit(false);
+    }
+  }
+
+  useEffect(() => {
+    if (scrollRef.current !== undefined) {
+      scrollRef.current.addEventListener('scroll', scrollSize);
+      scrollSize();
+      return () => {
+        scrollRef.current.removeEventListener('scroll', scrollSize);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     /* popup떳을시 scroll 막는 코드 */
     document.body.style.overflow = 'hidden'
     return () => {
       document.body.style.overflow = ''
     }
-  }, [])
+  }, []);
 
   return (
     <>
       {
         data.map((v, idx) => {
-          const {popup_type,bannerUrl,linkUrl,is_button_view,buttonNm} = v
+          const {popup_type} = v
           return (
             <div id="eventPop"
                  onClick={closePopup}
                  key={idx}
-                 style={{zIndex: 99 - idx}}
             >
               <div className="popLayer">
                 <div className="popContainer">
                   <div className="popContent" onClick={(e) => e.stopPropagation()}>
                     {popup_type === 0 ? makeImgInner(v) : makeTextInner(v)}
-                    {is_button_view === 0 ? <></> : <SubmitBtn text={buttonNm} onClick={linkUrl} />
-                    }
                   </div>
                 </div>
                 <div className='closeWrap'>
