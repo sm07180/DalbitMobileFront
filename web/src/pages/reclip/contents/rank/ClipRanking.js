@@ -17,6 +17,7 @@ import {playClip} from "pages/clip/components/clip_play_fn";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import NoResult from "components/ui/noResult/NoResult";
+import {isHybrid} from "context/hybrid";
 
 const ClipRanking = () => {
   const tabmenu = ['오늘', '이번주'];
@@ -93,12 +94,21 @@ const ClipRanking = () => {
     let playListInfoData = {
       ...searchInfo,
       rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate),
+      callType: playType === 'yesterday' ? '0' : playType === 'today' ? playType === '1' : playType === 'lastWeek' ? '2' : playType === 'thisWeek' && '3',
       type: 'setting'
     }
 
-    const playList = getPlayList(playType); // 1~3위 리스트
-    const clipParam = { clipNo, playList, context, history, playListInfoData };
-    playClip(clipParam);
+    if(isHybrid()) {
+      Api.getClipRankCombineList({rankType: 1, callType: '0'}).then(res => {
+        const playList = res.data.list;
+        const clipParam = { clipNo, playList, context, history, playListInfoData };
+        playClip(clipParam);
+      })
+    }else {
+      const playList = getPlayList(playType);
+      const clipParam = { clipNo, playList, context, history, playListInfoData };
+      playClip(clipParam);
+    }
   };
 
   useEffect(() => {
