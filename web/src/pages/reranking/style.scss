@@ -66,6 +66,9 @@ $errorMsg : #FF1919;
   .cntTitle {
     width:100%;
     padding:0;
+    button {      
+      @include font(13px,$Regular,#303030);
+    }
     .point {
       max-width: 180px;
       order:-1;
