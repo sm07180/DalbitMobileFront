@@ -18,7 +18,7 @@
     .benefits {
       @include flex(center);
       height: 40px;
-      margin-right: 12px;
+      margin-right: 13px;
       @include font(14px, 400, #666666);
       &::after {
         content: "";
@@ -67,22 +67,30 @@
     background-color: #fff;
     z-index: $TAB-ZINDEX;
     .tabmenu {
+      position: relative;
       @include flex(center);
       width: 100%;
       border-radius: 100px;
       background-color: #F6F6F6;
-      li {
+      .tabList {
         flex: 1;
         @include flex(center, center);
         height: 36px;
         @include font(14px,500,#ACACAC);
         box-sizing: border-box;
-        &.active {
+        z-index: 2;
+        &.tabActive {
           @include font(14px,700,#1A1A1A);
-          border: 1px solid #666666;
-          border-radius: 100px;
-          background-color: #FFF;
         }
+      }
+      #tabUnderline {
+        position: absolute;
+        height: 36px;
+        border: 1px solid #666666;
+        border-radius: 100px;
+        background-color: #FFF;
+        transition: left 0.15s linear;
+        z-index: 1;
       }
     }
   }
@@ -469,9 +477,9 @@
         white-space: pre;
         overflow: hidden;
         span {
-          @include font(13px, 400, #FF6B4B);
+          @include font(13px, 400, #FFC400);
           padding-left: 16px;
-          background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+          background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-yellowCupid.png");
           background-position: left center;
           background-repeat: no-repeat;
           background-size: 16px 16px;
