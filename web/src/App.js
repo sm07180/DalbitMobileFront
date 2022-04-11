@@ -75,13 +75,13 @@ const baseSetting = async (globalCtx, broadcastAction) => {
       newClipPlayer = new ClipPlayerHandler(data)
     };
     newClipPlayer.setGlobalAction?.(globalAction);
-    const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
+    const fileUrlBoolean = data.file?.url === newClipPlayer?.clipAudioTag?.src;
     const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
     if ( fileUrlBoolean && clipNoBoolean ) {
-      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.init(data.file?.url);
       newClipPlayer?.restart();
     } else {
-      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.init(data.file?.url);
     }
     newClipPlayer?.clipNoUpdate(data.clipNo);
 

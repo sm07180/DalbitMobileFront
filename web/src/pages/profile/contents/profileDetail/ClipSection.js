@@ -7,6 +7,7 @@ import NoResult from 'components/ui/noResult/NoResult'
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {playClip} from "pages/clip/components/clip_play_fn";
+import Api from "context/api";
 
 const ClipSection = (props) => {
   const { profileData, clipData, isMyProfile, webview } = props;
@@ -14,23 +15,36 @@ const ClipSection = (props) => {
   const history = useHistory();
 
   const listenClip = (clipNo,) => {
-    const playListInfoData = {
-      myClipType: 1,
-      page: 1,
-      records: 100,
+    const clipParams = {
       memNo: profileData.memNo,
-      type: 'setting'
+      page: 1,
+      records: 100
     }
+    Api.getUploadList(clipParams).then(res => {
+      if (res.result === 'success') {
+        const data= res.data;
 
-    const clipParam = {
-      clipNo,
-      playList: clipData.list,
-      context,
-      history,
-      webview,
-      playListInfoData
-    }
-    playClip(clipParam);
+        const playListInfoData = {
+          myClipType: 1,
+          page: 1,
+          records: 100,
+          memNo: profileData.memNo,
+          type: 'setting'
+        }
+
+        const clipParam = {
+          clipNo,
+          playList: data.list,
+          context,
+          history,
+          webview,
+          playListInfoData
+        }
+        playClip(clipParam);
+      } else {
+        context.action.alert({ msg: res.message })
+      }
+    })
   }
 
   return (

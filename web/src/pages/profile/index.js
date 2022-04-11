@@ -79,7 +79,6 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
-  const isWebView = useSelector(state => state.common).isWebView;
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
 

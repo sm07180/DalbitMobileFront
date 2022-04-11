@@ -11,6 +11,8 @@ export const playClip = ({clipNo, playList, context, history, playListInfoData})
     let playListInfo = playListInfoData ? playListInfoData : { type: 'setting' };
     localStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfo));
 
+    context.globalAction.dispatchClipPlayList &&
+    context.globalAction.dispatchClipPlayList({ type: "add", data: playList });
     Utility.addClipPlayList(playList);
     NewClipPlayerJoin(clipParam);
   }

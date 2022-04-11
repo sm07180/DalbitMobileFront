@@ -13,11 +13,9 @@ import RankingList from '../../components/RankingList'
 
 import './clipRanking.scss'
 import moment from "moment";
-import {array} from "@storybook/addon-knobs";
-import {ClipPlayFn, playClip} from "pages/clip/components/clip_play_fn";
+import {playClip} from "pages/clip/components/clip_play_fn";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import {NewClipPlayerJoin} from "common/audio/clip_func";
 import NoResult from "components/ui/noResult/NoResult";
 
 const ClipRanking = () => {

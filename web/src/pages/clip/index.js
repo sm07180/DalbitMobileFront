@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Context } from "context";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { NewClipPlayerJoin } from "common/audio/clip_func";
-import { IMG_SERVER } from "context/config";
 import { setIsRefresh } from "redux/actions/common";
 import Api from 'context/api';
 import moment from 'moment';

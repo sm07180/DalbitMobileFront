@@ -35,7 +35,7 @@ export class ClipPlayerHandler {
     this.clipNo = info.clipNo;
     this.clipAudioTag = document.createElement("audio");
     this.clipAudioTag.muted = false;
-    this.clipAudioTag.src = info.file.url;
+    this.clipAudioTag.src = info.file?.url;
     this.clipAudioTag.loop = false;
     this.save60seconds = 0;
     this.saveTimer = null;

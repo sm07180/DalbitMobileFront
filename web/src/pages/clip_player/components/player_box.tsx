@@ -12,11 +12,12 @@ import ClipPlayerBanner from "./player_banner";
 import { GlobalContext } from "context";
 
 export default () => {
-  const { globalState } = useContext(GlobalContext);
+  const { globalState, globalAction } = useContext(GlobalContext);
   const { clipInfo, clipPlayMode } = globalState;
   const { clipPlayer } = globalState;
   const { clipAudioTag } = clipPlayer!;
   const clipPlayNo = clipInfo!.clipNo;
+  const history = useHistory();
 
   const createCoverClassName = useCallback((e) => {
     const { classList } = e.currentTarget;
@@ -27,19 +28,31 @@ export default () => {
     }
   }, []);
 
+  // 새로고침했을때 재생목록 ins
+  const listSet = () => {
+    if(globalState.clipPlayList.length === 0) {
+      let savedList = sessionStorage.getItem('clip');
+      savedList = savedList ? JSON.parse(savedList) : [];
+      globalAction.dispatchClipPlayList &&
+      globalAction.dispatchClipPlayList({ type: "add", data: savedList });
+    }
+  }
+
   useEffect(() => {
+    listSet();
+
     window.scrollTo(0, 0);
     return () => {
-      clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
     };
   }, []);
 
   useEffect(() => {
     if (globalState.clipPlayList!.length > 0) {
-      clipAudioTag?.addEventListener("ended", audioEndHandler);
+      clipAudioTag?.addEventListener("ended", () => audioEndHandler({history, globalState}));
     }
     return () => {
-      clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
     };
   }, [globalState.clipPlayList, clipPlayMode]);
 
@@ -69,11 +82,8 @@ export default () => {
 };
 
 
-export const audioEndHandler = async () => {
-  const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
+export const audioEndHandler = async ({history, globalState}) => {
   const { clipPlayer, clipPlayMode } = globalState;
-    console.log("audioEndHandler====>",clipPlayMode,clipPlayer)
   if (globalState.clipPlayList?.length === 0) return null;
   if (globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
     if (clipPlayMode === "allLoop") {

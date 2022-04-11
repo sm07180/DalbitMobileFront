@@ -6,7 +6,6 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
-import {NewClipPlayerJoin} from "common/audio/clip_func";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {playClip} from "pages/clip/components/clip_play_fn";

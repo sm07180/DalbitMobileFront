@@ -45,11 +45,11 @@ const ClipAudioPlayer = ()=>{
 
   useEffect(() => {
     if (clipPlayList.length > 0) {
-      clipPlayer?.clipAudioTag?.addEventListener("ended", audioEndHandler);
+      clipPlayer?.clipAudioTag?.addEventListener("ended", () => audioEndHandler({history, globalState}));
     }
 
     return () => {
-      clipPlayer?.clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipPlayer?.clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
     };
   }, [clipPlayer, clipPlayList]);
 

@@ -36,7 +36,7 @@ const TopRanker = (props) => {
       clipPlayHandler(e, 'yesterday');
     }else if(listTitle === '이번주') { // 이번주 1~3위 + 이번주 4위~
       clipPlayHandler(e, 'thisWeek');
-    }else if(listTitle === '지난주') { // 지난주 1~3위 +
+    }else if(listTitle === '저번주') { // 지난주 1~3위 +
       clipPlayHandler(e, 'lastWeek');
     }
   }
