@@ -30,7 +30,7 @@ export default function ChatInputWrap(props: {
   const { baseData, chatInfo } = globalState;
 
   const { broadcastState } = useContext(BroadcastContext);
-  const { chatFreeze } = broadcastState;
+  const { chatFreeze, chatLimit } = broadcastState;
 
   const { dimLayer, layer, dispatchLayer } = useContext(BroadcastLayerContext);
   const [chatText, setChatText] = useState<string>("");
@@ -49,9 +49,14 @@ export default function ChatInputWrap(props: {
   };
 
   const sendMessage = (message: string) => {
+    if(chatLimit) return;
+
     if (chatInfo !== null) {
       if (chatFreeze === false || roomOwner === true) {
         chatInfo.sendSocketMessage(roomNo, "chat", "", message, (result: boolean) => {
+          /* 채팅 도배방지 */
+          chatInfo.chatLimitCheck();
+
           if (result === false) {
           } else if (result === true) {
             setForceChatScrollDown(true);
@@ -94,6 +99,12 @@ export default function ChatInputWrap(props: {
     }
   }, [chatText]);
 
+  useEffect(() => {
+    if (!chatLimit && MsgRef?.current) {
+      MsgRef.current?.focus();
+    }
+  }, [chatLimit]);
+
   return (
     <div
       className={`chatInputWrap ${dimLayer.status === true && dimLayer.type === "ROULETTE" && "fixed"}`}
@@ -105,8 +116,10 @@ export default function ChatInputWrap(props: {
       <div className="gift-input-wrap">
         <textarea
           typeof="text"
-          placeholder={`${baseData.isLogin === true ? "대화를 입력해 주세요." : "로그인 후, 사용 가능합니다."}`}
+          className={`${chatLimit? 'disabled' : '' }`}
+          placeholder={`${baseData.isLogin === true ? (chatLimit? "3초간 채팅 입력이 제한됩니다." : "대화를 입력해 주세요.") : "로그인 후, 사용 가능합니다."}`}
           value={chatText}
+          disabled={chatLimit}
           onKeyDown={chatKeydownEvent}
           onChange={textOnChangeEvent}
           onFocus={(e) => {
