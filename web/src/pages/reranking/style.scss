@@ -97,7 +97,7 @@ $errorMsg : #FF1919;
       position: absolute;
       top: 16px; right: 16px;
       display: inline-block;
-      @include font(13px, 400, #999999);
+      @include font(13px, 400, #303030);
       line-height: 40px;
     }
     .title {
@@ -172,6 +172,7 @@ $errorMsg : #FF1919;
             height:200px;
             border-radius:8px;
             overflow: hidden;
+            background-color: #FFF;
             cursor: pointer;
             &::after {
               content: "";
@@ -262,11 +263,11 @@ $errorMsg : #FF1919;
       width: calc(100% - 32px); height: 40px;
       border-radius: 100px;
       background-color: #FFF;
-      box-shadow: 0px 1px 4px rgba(#000000,.1);
+      box-shadow: 0px 2px 4px rgba(#000000,.1);
       cursor: pointer;
       &:active{
-        bottom: 26px;
-        left: 15px;
+        transform: scale(0.99, 0.99);
+        box-shadow: inset 0px 2px 3px rgba(#000000,.3);
       }
       .refreshIcon {
         flex: none;
@@ -391,6 +392,7 @@ $errorMsg : #FF1919;
       margin-top: 6px;
       box-sizing:border-box;
       @include tabMenuUnderline(2);
+      cursor: pointer;
       li {
         @include flex(center, center);
         height:48px;

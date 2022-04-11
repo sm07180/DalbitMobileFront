@@ -43,7 +43,8 @@ const Tabmenu = (props) => {
           <TabBtn param={param} key={index}/>
         )
       })}
-      <div className="underline" id='tabUnderline' style={{width: activeWidth, left: activeLeft}}></div>
+      <div className={`underline`}></div>
+      {/* <div className="underline" id='tabUnderline' style={{width: activeWidth, left: activeLeft}}></div> */}
     </ul>
   )
 }
