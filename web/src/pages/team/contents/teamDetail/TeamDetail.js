@@ -177,7 +177,7 @@ const TeamDetail = () => {
             </span>
           </div>
         </section>
-        <CntTitle title="활동 배지" more={'/'}>
+        <CntTitle title="활동 배지" more="team/badge">
           <span className="count"><strong>6</strong></span>
         </CntTitle>
         <section className="badgeList">

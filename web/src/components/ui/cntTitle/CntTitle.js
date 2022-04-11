@@ -7,7 +7,7 @@ const CntTitle = (props) => {
   const {title,more,children} = props
   const history = useHistory();
   const onMoreClick = () => {
-    history.push(`../${more}`)
+    history.push(`../${more}`);
   }
 
   return (
