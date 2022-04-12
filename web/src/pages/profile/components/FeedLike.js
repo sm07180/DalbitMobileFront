@@ -2,13 +2,11 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Utility from "components/lib/utility";
 import {IMG_SERVER} from "context/config";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
-import {isHybrid, isMobileWeb} from "context/hybrid";
 
 const FeedLike = (props) => {
   const {data, fetchHandleLike, type, likeType, detailPageParam, detail} = props;
   const infoRef = useRef();
   const [tooltipEvent, setTooltipEvent] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(true);
 
   /* 좋아요 툴팁 이벤트 */
   const tooltipScrollEvent = useCallback(() => {
@@ -49,9 +47,9 @@ const FeedLike = (props) => {
         }
 
         {detail ?
-          <i className="cmt">{(data?.replyCnt || data?.tail_cnt) ? Utility.printNumber(data.replyCnt || data.tail_cnt) : 0}</i>
+          <i className="cmt">{(data.replyCnt ? data.replyCnt : data.tail_cnt) ? Utility.printNumber(data.replyCnt ? data.replyCnt : data.tail_cnt) : 0}</i>
           :
-          <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{(data.replyCnt || data.tail_cnt) ? Utility.printNumber(data.replyCnt || data.tail_cnt) : 0}</i>
+          <i className="cmt" onClick={() => goProfileDetailPage(detailPageParam)}>{(data.replyCnt ? data.replyCnt : data.tail_cnt) ? Utility.printNumber(data.replyCnt ? data.replyCnt : data.tail_cnt) : 0}</i>
         }
         {type === "notice" && !detail && <span className="time">{Utility.writeTimeDffCalc(data.writeDate)}</span>}
       </div>
