@@ -456,12 +456,12 @@ const GlobalProvider = (props) => {
   const [clipState, setClipState] = useState(false)
   const [clipPlayerState, setClipPlayerState] = useState(null)
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
-  //
   // const [isDevIp, setIsDevIp] = useState(false)
   const [roomType, setRoomType] = useState('')
   //back
   const [backState, setBackState] = useState(null)
   const [backFunction, setBackFunction] = useState({name: []})
+  const [backEventCallback, setBackEventCallback] = useState(null)
   //selfauth
   const [selfAuth, setSelfAuth] = useState(false)
   //splash
@@ -972,6 +972,10 @@ const GlobalProvider = (props) => {
       obj.name === '' ? nameArr.pop() : nameArr.push(obj.name);
       setBackFunction({...obj, name: nameArr});
     },
+    /* 백버튼 누르면 실행되는 함수 */
+    updateBackEventCallback: (callback) => {
+      setBackEventCallback({callback});
+    },
     updateRoomType: (string) => {
       setRoomType(string)
     },
@@ -1125,7 +1129,8 @@ const GlobalProvider = (props) => {
     gganbuTab,
     gotomoonTab,
     intervalId,
-    walletData
+    walletData,
+    backEventCallback
   }
 
   const globalState = {

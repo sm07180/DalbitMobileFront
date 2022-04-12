@@ -10,7 +10,7 @@ const TabBtn = (props) => {
   }
 
   return (
-    <li className={param.tab === param.item ? 'active' : ''} onClick={tabClick}>{param.item}</li>
+    <li className={`tabList ${param.tab === param.item ? 'tabActive' : ''}`} onClick={tabClick}>{param.item}</li>
   )
 }
 

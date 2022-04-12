@@ -5,6 +5,7 @@ import Header from '../new_header'
 import './index.scss'
 import CropImg from './static/ico-crop.png'
 import CropRotation from './static/ico-rotation.png'
+import {isAndroid} from "context/hybrid";
 
 function DalbitCropper(props) {
   const {imgInfo, onClose, onCrop, className} = props
@@ -107,8 +108,23 @@ function DalbitCropper(props) {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+
+    /* 안드로이드 물리 백버튼시 감지용 */
+    if (isAndroid()) {
+      context.action.updateSetBack(true);
+      context.action.updateBackFunction({name: 'callback'});
+      context.action.updateBackEventCallback(onClose);
+    }
     return () => {
       document.body.style.overflow = ''
+
+      if (isAndroid()) {
+        if (context.backFunction.name.length === 1) {
+          context.action.updateSetBack(null);
+        }
+        context.action.updateBackFunction({name: ''});
+        context.action.updateBackEventCallback(null);
+      }
     }
   }, [])
 

@@ -49,11 +49,13 @@ const ClipSection = (props) => {
 
   return (
     <div className="clipSection">
-      <div className="subArea">
+      {/*
+        <div className="subArea">
         <div className="title">
-          {isMyProfile ? '내클립' : `${profileData.nickNm}님 클립`}
+        {isMyProfile ? '내클립' : `${profileData.nickNm}님 클립`}
         </div>
-      </div>
+        </div>
+      */}
       {clipData.list.length > 0 ?
         <div className="clipContent">
           {clipData.list.map((item, index) => {

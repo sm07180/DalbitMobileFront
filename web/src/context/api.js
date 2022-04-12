@@ -1410,6 +1410,7 @@ export default class API {
   static postAddProfileImg = async (data) => {
     return await ajax({url: '/profile/add/img', method: 'POST', data})
   }
+
   static postSetLeaderProfileImg = async (data) => {
     return await ajax({url: '/profile/leader/img', method: 'POST', data})
   }
@@ -1421,6 +1422,7 @@ export default class API {
   static profileImageUpdate = async (data) => {
     return await ajax({url: '/profile/update/img', reqBody:true, method: 'POST', data})
   }
+
   /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"

@@ -31,7 +31,11 @@ const PhotoChange = (props) => {
       <SubmitBtn text="확인" onClick={() => confirm(state)}/>
     </section>
   )
-}
+};
+
+PhotoChange.defaultProps = {
+  confirm: () => {},
+};
 
 PhotoChange.defaultProps = {
   confirm: () => {},

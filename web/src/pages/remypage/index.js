@@ -87,10 +87,10 @@ const Remypage = () => {
 
   //슬라이드 팝업 열고 닫기
   const openPopFanStar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const {targetType} = e.currentTarget.dataset;
-    e.stopPropagation()
     setOpenFanStarType(targetType)
-    console.log('11');
     dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
   }
 
@@ -145,7 +145,7 @@ const Remypage = () => {
   }
 
   // 프로필 페이지로 이동
-  const goProfile = () => history.push('/myProfile');
+  const goProfile = (memNo) => history.push(`/profile/${memNo}`);
 
   // 페이지 셋팅
   useEffect(() => {
@@ -205,8 +205,8 @@ const Remypage = () => {
         <div id="remypage">
           <Header title={'MY'} />
           <section className='mypageTop'>
-            <div className="myInfo" onClick={goProfile}>
-              <MyInfo data={profile} openLevelPop={openLevelPop} />
+            <div className="myInfo" onClick={()=>{history.push('/myProfile')}}>
+              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}/>
             </div>
             <div className='mydalDetail'>
               <div className="dalCount">
