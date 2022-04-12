@@ -41,7 +41,7 @@ import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
+import {setCommonPopupOpenData, setSlidePopupOpen, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
 
@@ -430,12 +430,12 @@ const ProfilePage = () => {
   /* 헤더 더보기 버튼 클릭 */
   const openMoreList = () => {
     setMorePopHidden(false);
-    dispatch(setCommonPopupOpenData({...popup, headerPopup: true}))
+    dispatch(setSlidePopupOpen({...popup, headerPopup: true}))
   }
 
   /* 차단/신고 팝업 열기 (param: {memNo: '', memNick: ''}) */
   const openBlockReportPop = (blockReportInfo) => {
-    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
+    dispatch(setSlidePopupOpen({...popup, blockReportPopup: true}))
     setBlockReportInfo(blockReportInfo);
   }
 
@@ -481,7 +481,7 @@ const ProfilePage = () => {
   const openPopFanStar = (e) => {
     const {targetType} = e.currentTarget.dataset
     setOpenFanStarType(targetType)
-    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+    dispatch(setSlidePopupOpen({...popup, fanStarPopup: true}));
   }
 
   /* 좋아요 슬라이드 팝업 열기/닫기 (tabState는 열고싶은 탭 있을때 파라미터를 넘긴다 탭 순서대로 0부터) */
@@ -489,7 +489,7 @@ const ProfilePage = () => {
     e.preventDefault();
     e.stopPropagation();
     setLikePopTabState(tabState)
-    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+    dispatch(setSlidePopupOpen({...popup, likePopup: true}));
   }
 
   /* 메시지 이동 */
