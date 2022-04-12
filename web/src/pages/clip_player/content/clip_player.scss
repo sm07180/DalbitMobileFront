@@ -7,7 +7,7 @@ $borderLine: 1px solid $lighterGray;
   display: flex;
   justify-content: space-between;
   width: 1368px;
-  height: 100vh;
+  height: calc(100vh - #{$GNB-HEIGHT} - 40px);
   padding: 20px 90px;
   margin: 0 auto;
   box-sizing: border-box;
