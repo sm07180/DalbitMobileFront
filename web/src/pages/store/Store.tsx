@@ -37,11 +37,6 @@ const index = ()=>{
   }, []);
 
   useEffect(() => {
-    // PG사 페이지에서는 뒤로가기 버튼이 없어서 추가됨
-    Hybrid('stateHeader', payStoreRdx.stateHeader);
-  }, [payStoreRdx.stateHeader.visible]);
-
-  useEffect(() => {
     if(payStoreRdx.storeInfo.modeTab === ModeTabType.none){
       return;
     }

@@ -39,10 +39,6 @@ export default function EndApp() {
 
   useEffect(() => {
     dispatch(setStateHeaderVisible(false));
-    Hybrid('stateHeader', {
-      ...payStoreRdx.stateHeader,
-      visible: false
-    });
 
     if(location.state){
       alert("EndApp.js log >> ["+JSON.stringify(location.state)+"]");

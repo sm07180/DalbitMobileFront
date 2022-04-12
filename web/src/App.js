@@ -128,7 +128,9 @@ const App = () => {
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const isDesktop = useSelector((state)=> state.common.isDesktop);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
   const [isFooterPage, setIsFooterPage] = useState(false);
@@ -616,6 +618,11 @@ const App = () => {
     historyListener();
     history.listen(historyListener);
   },[])
+
+  useEffect(() => {
+    // PG사 페이지에서는 뒤로가기 버튼이 없어서 추가됨
+    Hybrid('stateHeader', payStoreRdx.stateHeader);
+  }, [payStoreRdx.stateHeader.visible]);
 
   function ErrorFallback({error, resetErrorBoundary}) {
     if ('ChunkLoadError' === error.name) {
