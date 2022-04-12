@@ -91,24 +91,20 @@ const ClipRanking = () => {
     const { clipNo, type } = e.currentTarget.dataset;
     let tempType = type;
     if (type === undefined) tempType = 1;
+    // 0: 어제 + 오늘, 1: 오늘, 2: 저번주 + 이번주, 3: 이번주
+    const callType = playType === 'yesterday' ? '0' : playType === 'today' ? '1' : playType === 'lastWeek' ? '2' : playType === 'thisWeek' ? '3' : '1';
     let playListInfoData = {
       ...searchInfo,
       rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate),
-      callType: playType === 'yesterday' ? '0' : playType === 'today' ? playType === '1' : playType === 'lastWeek' ? '2' : playType === 'thisWeek' && '3',
+      callType,
       type: 'setting'
     }
 
-    if(isHybrid()) {
-      Api.getClipRankCombineList({rankType: 1, callType: '0'}).then(res => {
-        const playList = res.data.list;
-        const clipParam = { clipNo, playList, context, history, playListInfoData };
-        playClip(clipParam);
-      })
-    }else {
-      const playList = getPlayList(playType);
+    Api.getClipRankCombineList({rankType: searchInfo.rankType, callType}).then(res => {
+      const playList = res.data.list;
       const clipParam = { clipNo, playList, context, history, playListInfoData };
       playClip(clipParam);
-    }
+    })
   };
 
   useEffect(() => {
@@ -126,7 +122,6 @@ const ClipRanking = () => {
             <section className="listWrap">
               <div className="listAll">
                 <span>지금 가장 인기있는 클립을 들어보세요!</span>
-                {rankClipInfo.topInfo[1]?.list[0]?.clipNo}
                 <button data-clip-no={rankClipInfo.topInfo[1] ? rankClipInfo.topInfo[1].list[0].clipNo : rankClipInfo.topInfo[0]?.list[0].clipNo}
                         onClick={clipPlayHandler}>전체듣기<span className="iconPlayAll"/>
                 </button>

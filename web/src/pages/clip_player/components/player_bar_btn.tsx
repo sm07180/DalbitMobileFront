@@ -132,7 +132,7 @@ export default function ClipPlayerBarButton() {
           onClick={() => {
             if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
               history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
-            } else {
+            } else if (clipPlayer?.isPlayingIdx! !== undefined) {
               history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
             }
           }}
