@@ -2,16 +2,10 @@ import React, {useContext, useState} from 'react';
 import {useHistory, useParams} from "react-router-dom";
 import {Context} from 'context';
 // global components
-import ListRow from 'components/ui/listRow/ListRow';
 
 const InviteList = (props) => {
   const history = useHistory();
   const context = useContext(Context);
-  
-
-  const photoClick = (memNo) => {
-    history.push(`/profile/${memNo}`);
-  };
 
   const teamConfirm = (e) => {
     const {targetConfirm} = e.currentTarget.dataset;
@@ -50,7 +44,12 @@ const InviteList = (props) => {
       </div>
       {true ?
         <div className="listWrap">
-          <ListRow photo="" photoClick={() => photoClick()}>
+          <div className="listRow">
+            <div className="photo">
+              <img src="" alt="" />
+              <img src="" alt="" />
+              <img src="" alt="" />
+            </div>
             <div className="listContent">
               <div className="text">🍓딸기딸기🍓</div>
               <div className="listItem">
@@ -65,7 +64,7 @@ const InviteList = (props) => {
                 <button className="accept" data-target-confirm="accept" onClick={teamConfirm}>수락</button>
               </div>
             </div>
-          </ListRow>
+          </div>
         </div>
         :
         <div className="listNone">

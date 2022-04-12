@@ -17,12 +17,19 @@
 .listWrap {
   padding:16px 13px 16px 16px;
   .listRow {
+    @include flex(center);
     margin-bottom:16px;
     .photo {
+      position:relative;
       width:60px;
       height:60px;
       margin-right:8px;
       cursor:pointer;
+      img {
+        @include position-center;
+        width:100%;
+        border:1px solid;
+      }
     }
     .listContent {
       @include flex($fd:column);
