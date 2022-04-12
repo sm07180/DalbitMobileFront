@@ -22,6 +22,7 @@ import { ClipContext } from "context/clip_ctx";
 
 import "./clip_player.scss";
 import "./tab_contents.scss";
+import Utility from "../../../components/lib/utility";
 
 export default function ClipContent() {
   const { clipNo } = useParams<{ clipNo: string }>();
@@ -73,6 +74,9 @@ export default function ClipContent() {
       });
     };
 
+    Utility.addClipPlayList(data);
+    dispatchClipPlayList && dispatchClipPlayList({type: 'add', data});
+
     if (data.file.url === newClipPlayer?.clipAudioTag?.src && data.clipNo !== newClipPlayer!.clipNo) {
       newClipPlayer!.restart();
     }
@@ -114,13 +118,7 @@ export default function ClipContent() {
       playListInfo = JSON.parse(localStorage.getItem("clipPlayListInfo")!);
     }
     if (playListInfo === undefined) return null;
-
-    if(playListInfo.type === 'setting') {
-      const sessionStorageClip = sessionStorage.getItem("clip");
-      const data = sessionStorageClip && JSON.parse(sessionStorageClip);
-
-      return dispatchClipPlayListTab && dispatchClipPlayListTab({type: "add", data});
-    }
+    if(playListInfo.type === 'setting') return;
 
     if ((playListInfo.hasOwnProperty("type") && playListInfo.type === "one")) {
       dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: oneData });

@@ -2,7 +2,6 @@ import React from 'react'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
-import Utility from "../../../components/lib/utility";
 import {NewClipPlayerJoin} from "../../../common/audio/clip_func";
 
 export const playClip = ({clipNo, playList, context, history, playListInfoData}) => {
@@ -11,9 +10,9 @@ export const playClip = ({clipNo, playList, context, history, playListInfoData})
     let playListInfo = playListInfoData ? playListInfoData : { type: 'setting' };
     localStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfo));
 
-    context.globalAction.dispatchClipPlayList &&
-    context.globalAction.dispatchClipPlayList({ type: "add", data: playList });
-    Utility.addClipPlayList(playList);
+    context.globalAction.dispatchClipPlayListTab &&
+    context.globalAction.dispatchClipPlayListTab({type: 'add', data: playList});
+    sessionStorage.setItem("clipList", JSON.stringify(playList));
     NewClipPlayerJoin(clipParam);
   }
 }

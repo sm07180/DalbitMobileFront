@@ -1,10 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Swiper from 'react-id-swiper'
 
 import Api from 'context/api'
 //global components
 import Header from 'components/ui/header/Header'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 // components
 import Tabmenu from '../../components/Tabmenu'
@@ -17,7 +15,6 @@ import {playClip} from "pages/clip/components/clip_play_fn";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import NoResult from "components/ui/noResult/NoResult";
-import {isHybrid} from "context/hybrid";
 
 const ClipRanking = () => {
   const tabmenu = ['오늘', '이번주'];
@@ -25,7 +22,6 @@ const ClipRanking = () => {
   const history = useHistory();
   const [ rankClipInfo, setRankClipInfo ] = useState({ list: [], paging: {}, topInfo: [] });
   const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100});
-  const [ breakNo, setBreakNo ] = useState(47);
 
   const getRankInfo = async () => {
     if (rankClipInfo.list.length > 0) {
@@ -54,13 +50,6 @@ const ClipRanking = () => {
     setSearchInfo({ ...searchInfo, rankType: targetType, rankingDate: targetDate });
   };
 
-  /*
-   클립 랭킹 재생목록 정책 #7867
-   어제의 TOP3 재생: 어제 1,2,3 + 오늘 1,2,3 + 오늘 4위~
-   오늘의 TOP3 재생, 오늘 4위~ 재생, 오늘 탭 전체듣기: 오늘 1,2,3 + 오늘 4위~
-   지난주의 TOP3 재생: 지난주 1,2,3 + 이번주 1,2,3 + 이번주 4위~
-   이번주의 TOP3 재생, 이번주 4위~ 재생, 이번주 탭 전체듣기: 이번주 1,2,3 + 이번주 4위~
-  */
   const getPlayList = (playType) => {
     // playType = "today" | "yesterday" | "thisWeek" | "lastWeek"
     // 1~3위
@@ -85,6 +74,25 @@ const ClipRanking = () => {
     return [...top3List(), ...otherList()];
   }
 
+
+  /*
+   클립 랭킹 재생목록 정책 #7867
+   어제의 TOP3 재생: 어제 1,2,3 + 오늘 1,2,3 + 오늘 4위~
+   오늘의 TOP3 재생, 오늘 4위~ 재생, 오늘 탭 전체듣기: 오늘 1,2,3 + 오늘 4위~
+   지난주의 TOP3 재생: 지난주 1,2,3 + 이번주 1,2,3 + 이번주 4위~
+   이번주의 TOP3 재생, 이번주 4위~ 재생, 이번주 탭 전체듣기: 이번주 1,2,3 + 이번주 4위~
+  */
+  const getCallType = (playType) => {
+    // playType === 'yesterday' ? '0' : playType === 'today' ? '1' : playType === 'lastWeek' ? '2' : playType === 'thisWeek' ? '3' : playType === 'default' ? '' : '1';
+    switch (playType) {
+      case 'yesterday': return '0';
+      case 'today': return '1';
+      case 'lastWeek': return '2';
+      case 'thisWeek': return '3';
+      default: return searchInfo.rankType === 1 ? '1' : '3';
+    }
+  }
+
   const clipPlayHandler = (e, playType="default") => {
     // playType = "today" | "yesterday" | "thisWeek" | "lastWeek" | "default"
     e.preventDefault();
@@ -92,7 +100,7 @@ const ClipRanking = () => {
     let tempType = type;
     if (type === undefined) tempType = 1;
     // 0: 어제 + 오늘, 1: 오늘, 2: 저번주 + 이번주, 3: 이번주
-    const callType = playType === 'yesterday' ? '0' : playType === 'today' ? '1' : playType === 'lastWeek' ? '2' : playType === 'thisWeek' ? '3' : '1';
+    const callType = getCallType(playType);
     let playListInfoData = {
       ...searchInfo,
       rankingDate: (tempType == 0 ? moment(searchInfo.rankingDate).subtract((searchInfo.rankType === 1 ? 1 : 7), 'days').format('YYYY-MM-DD') : searchInfo.rankingDate),

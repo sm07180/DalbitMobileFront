@@ -44,6 +44,15 @@ export default () => {
     // }
   };
 
+  useEffect(() => {
+    if (clipPlayListTab.length === 0) {
+      const temp = sessionStorage.getItem("clipList");
+      const clipList = temp ? JSON.parse(temp) : [];
+      globalAction.dispatchClipPlayListTab &&
+      globalAction.dispatchClipPlayListTab({type: 'add', data: clipList});
+    }
+  }, []);
+
   const createList = () => {
     if (clipPlayListTab === null) return null;
     if (clipPlayListTab.length === 0) return null;

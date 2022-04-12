@@ -28,19 +28,7 @@ export default () => {
     }
   }, []);
 
-  // 새로고침했을때 재생목록 ins
-  const listSet = () => {
-    if(globalState.clipPlayList.length === 0) {
-      let savedList = sessionStorage.getItem('clip');
-      savedList = savedList ? JSON.parse(savedList) : [];
-      globalAction.dispatchClipPlayList &&
-      globalAction.dispatchClipPlayList({ type: "add", data: savedList });
-    }
-  }
-
   useEffect(() => {
-    listSet();
-
     window.scrollTo(0, 0);
     return () => {
       clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
