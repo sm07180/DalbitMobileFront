@@ -42,8 +42,16 @@ const TeamMake = () => {
   };
 
   const clickConfirmPopup = () => {
-    setConfirmPop(!confirmPop);
+    setConfirmPop(true);
   };
+
+  const saveAction=()=>{
+    setConfirmPop(false);
+  }
+
+  const editAction=()=>{
+    setConfirmPop(false);
+  }
 
   const partsSelect = (value) => {
     if (partsName === parts[0]) {
@@ -133,7 +141,9 @@ const TeamMake = () => {
       }
       {confirmPop &&
         <LayerPop setPopup={setConfirmPop} close={false}>
-          <Confirm partsA={partsA} partsB={partsB} partsC={partsC} closePopup={clickConfirmPopup} />
+          <Confirm partsA={partsA} partsB={partsB} partsC={partsC}
+                   saveAction={saveAction} editAction={editAction}
+          />
         </LayerPop>
       }
     </div>

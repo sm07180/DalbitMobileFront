@@ -3996,6 +3996,54 @@ export default class API {
     return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
   }
 
+  // 팀 등록
+  static getTeamIns = async (data) => {
+    return await ajax({url: `/team/teamIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 등록체크
+  static getTeamInsChk = async (data) => {
+    return await ajax({url: `/team/teamChk`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 정보수정
+  static getTeamUpd = async (data) => {
+    return await ajax({url: `/team/teamUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 삭제
+  static getTeamDel = async (data) => {
+    return await ajax({url: `/team/teamDel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입신청/초대
+  static getTeamMemReqIns = async (data) => {
+    return await ajax({url: `/team/memReqIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입 수락
+  static getTeamMemIns = async (data) => {
+    return await ajax({url: `/team/memIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 탈퇴
+  static getTeamMemDel = async (data) => {
+    return await ajax({url: `/team/memDel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 팀장변경
+  static getTeamMasterUpd = async (data) => {
+    return await ajax({url: `/team/masterUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입신청 거절&취소
+  static getTeamMemReqDel = async (data) => {
+    return await ajax({url: `/team/memReqDel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 회원 팀 정보
+  static getTeamSel = async (data) => {
+    return await ajax({url: `/team/teamSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 멤버 정보
+  static getTeamMemSel = async (data) => {
+    return await ajax({url: `/team/teamMemSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 등록체크
+  static getTeamInvitationSel = async (data) => {
+    return await ajax({url: `/team/teamInvitationSel`, method: 'POST', reqBody: true, data: data})
+  }
 }
 
 API.customHeader = null
