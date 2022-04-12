@@ -39,6 +39,8 @@ const Layout = (props) => {
 
   const isLoginPage = location.pathname === '/login'
   const isRulePage = history.location.pathname.startsWith("/rule")
+  const storePage = history.location.pathname.startsWith("/store")
+  const payPage = history.location.pathname.startsWith("/pay")
 
   useEffect(() => {
     if (noAppCheck) {
@@ -71,12 +73,12 @@ const Layout = (props) => {
       </Article>
       {/* (방송방)Player */}
       {
-        !isLoginPage && !isRulePage &&
+        !isLoginPage && !isRulePage && !storePage && !payPage &&
         <NewPlayer {...props} />
       }
       {/* (클립)Player */}
       {
-        !isLoginPage && !isRulePage &&
+        !isLoginPage && !isRulePage && !storePage && !payPage &&
         <ClipPlayer {...props} />
       }
 

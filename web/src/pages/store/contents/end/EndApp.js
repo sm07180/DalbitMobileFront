@@ -4,13 +4,18 @@ import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
 import {Hybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
+import {setStateHeaderVisible} from "redux/actions/payStore";
+import {useDispatch} from "react-redux";
 
 // PG사 취소 후 콜백 페이지
 export default function EndApp() {
   const context = useContext(Context)
   const history = useHistory();
   const location = useLocation();
-  const {cancelType} = qs.parse(location.search)
+  const {cancelType} = qs.parse(location.search);
+  const dispatch = useDispatch();
+
+
   const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
   //창 닫기
   const closeWindow = () =>{
@@ -33,6 +38,8 @@ export default function EndApp() {
   }
 
   useEffect(() => {
+    dispatch(setStateHeaderVisible(false));
+    alert(JSON.stringify(location.state));
     if (cancelType !== undefined) {
       closeWindow();
     } else {

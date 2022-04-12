@@ -22,6 +22,9 @@ const PipPlayer = () => {
   const broadcastPage = history.location.pathname.startsWith("/broadcast");
   const clipPlayerPage = history.location.pathname.startsWith("/clip/");
   const mailboxChatting = history.location.pathname.startsWith("/mailbox");
+  const storePage = history.location.pathname.startsWith("/store");
+  const payPage = history.location.pathname.startsWith("/pay");
+
   const {webview} = qs.parse(location.search)
 
   if (history.location.pathname.startsWith(`/rule`) || webview === 'new') {
@@ -29,11 +32,11 @@ const PipPlayer = () => {
   }
 
   if (rtcInfo) {
-    if (!broadcastPage && !mailboxChatting) {
+    if (!broadcastPage && !mailboxChatting && !storePage && !payPage) {
       return <BroadCastPlayer/>;
     }
   } else if (clipInfo) {
-    if (clipPlayer && !clipPlayerPage && !mailboxChatting) {
+    if (clipPlayer && !clipPlayerPage && !mailboxChatting && !storePage && !payPage) {
       return <ClipAudioPlayer/>;
     }
   }
