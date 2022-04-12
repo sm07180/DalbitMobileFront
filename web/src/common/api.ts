@@ -1,5 +1,6 @@
 import { API_SERVER, PAY_SERVER, PHOTO_SERVER } from "constant/define";
 import { getCookie, setCookie } from "common/utility/cookie";
+import API from "../context/api";
 
 type headerType = {
   authToken: string;
@@ -45,7 +46,7 @@ type newResponseType = {
   message: string;
 };
 
-const ajax = async (method: string, path: string, data?: dataType) => {
+const ajax = async (method: Method, path: string, data?: dataType) => {
   const createDeviceUUid = () => {
     var dt = new Date().getTime();
     var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
@@ -65,17 +66,10 @@ const ajax = async (method: string, path: string, data?: dataType) => {
 
   // Set Header
   const headers: headerType = {
-    authToken: getCookie("authToken") ? getCookie("authToken") : "",
-    "custom-header": JSON.stringify({
-      os: 3,
-      FROM: "@@ COOKIE @@",
-      appVersion: "1.0.1",
-      locale: "ko",
-      deviceId: deviceUUid,
-    }),
+    authToken: API.authToken || '',
+    'custom-header': API.customHeader || '',
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
   };
-
   const option: fetchOption = { method };
   option["headers"] = headers;
   option["credentials"] = "include";
@@ -1968,21 +1962,6 @@ export async function postSleepMemUpd(data): Promise<responseType> {
   return ajax(Method.POST, '/sleep/member/update', data)
 }
 
-export async function getStoreIndexData(): Promise<responseType> {
-  return ajax(Method.POST, '/store/getIndexData')
-}
-export async function getDalPriceList(data): Promise<responseType> {
-  return ajax(Method.POST, '/store/getDalPriceList', data)
-}
-export async function getDalCnt(): Promise<responseType> {
-  return ajax(Method.POST, '/store/getDalCnt')
-}
-export async function payTryAOSInApp(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/rest/pay/aos/try", data);
-}
-export async function payEndAOSInApp(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/rest/pay/aos/end", data);
-}
 
 
 /********************************************/

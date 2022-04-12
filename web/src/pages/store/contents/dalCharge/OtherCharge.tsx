@@ -12,18 +12,21 @@ import SubmitBtn from "../../../../components/ui/submitBtn/SubmitBtn";
 import {Context} from "context";
 import qs from 'query-string'
 import {PAYMENT_LIST} from "../../../../redux/types/pay/storeType";
+import {Hybrid} from "../../../../context/hybrid";
+import {setStateHeaderVisible} from "../../../../redux/actions/payStore";
 
 const OtherCharge = ()=>{
   const history = useHistory();
   const context = useContext(Context);
   const location = useLocation();
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const isDesktop = useSelector((state)=> state.common.isDesktop);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const [selectPayment, setSelectPayment] = useState(-1);
   const formTag = useRef<any>();
   const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search);
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
-
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
     itemNo: itemNo,
@@ -69,8 +72,19 @@ const OtherCharge = ()=>{
     }
   }
 
+  useEffect(() => {
+    // PG사 페이지에서는 뒤로가기 버튼이 없어서 추가됨
+    Hybrid('stateHeader', payStoreRdx.stateHeader);
+  }, [payStoreRdx.stateHeader.visible]);
+
+
   const onSelectMethod = (index, payment) => {
     setSelectPayment(index);
+
+    // 무통장, 간편결제는 헤더가 필요없음
+    if(payment.code !== "coocon" && payment.code !== "simple"){
+      dispatch(setStateHeaderVisible(true));
+    }
 
     if (payment.code === "simple") {  //계좌 간편결제
       Api.self_auth_check().then((response)=>{
@@ -145,6 +159,8 @@ const OtherCharge = ()=>{
           Object.keys(response.data).forEach((key) => {
             payForm?.append(makeHiddenInput(key, response.data[key]))
           })
+          // payForm.CASH_GB.value : CN
+          // payment.fetch: pay_card
           // @ts-ignore
           MCASH_PAYMENT(payForm)
           payForm.innerHTML = ''
@@ -197,7 +213,10 @@ const OtherCharge = ()=>{
 
   return (
     <div id="dalCharge">
-      <Header title="달 충전하기" position="sticky" type="back" />
+      {
+        !payStoreRdx.stateHeader.visible &&
+        <Header title="달 충전하기" position="sticky" type="back" />
+      }
       <section className="purchaseInfo">
         <CntTitle title="구매내역" />
         <div className="infoBox">

@@ -4229,6 +4229,24 @@ export default class API {
     return ajax({url: '/getNationCode', method: 'POST', reqBody: true})
   }
 
+  static getStoreIndexData = () => {
+    return ajax({url: '/store/getIndexData', method: 'POST', reqBody: true})
+  }
+
+  static getDalPriceList = (data) => {
+    return ajax({url: '/store/getDalPriceList', method: 'POST', reqBody: true, params:data})
+  }
+
+  static getDalCnt = () => {
+    return ajax({url: '/store/getDalCnt', method: 'POST', reqBody: true})
+  }
+  static payTryAOSInApp = (data) => {
+    return ajax({url: '/rest/pay/aos/try', method: 'POST', reqBody: true, data:data})
+  }
+
+  static payEndAOSInApp = (data) => {
+    return ajax({url: '/rest/pay/aos/end', method: 'POST', reqBody: true, data:data})
+  }
 }
 
 API.customHeader = null

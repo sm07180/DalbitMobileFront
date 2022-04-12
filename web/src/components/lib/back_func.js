@@ -5,8 +5,8 @@ import {closePopup} from "components/ui/popSlide/PopSlide";
 import {setCommonPopupOpenData} from "redux/actions/common";
 
 export const backFunc = (context, dispatch) => {
-  const {backFunction} = context
-  const nameLength = backFunction.name.length
+  const {backFunction} = context;
+  const nameLength = backFunction.name.length;
   switch (backFunction.name[nameLength-1]) {
     case 'booleanType':
       context.action.updateBackFunction({name: 'booleanType', value: false})

@@ -1,12 +1,11 @@
 import {call, put, select, takeLatest} from "redux-saga/effects";
 import {GET_DAL_CNT, GET_INDEX_DATA, GET_PRICE_LIST, SET_STORE_INFO, SET_STORE_TAB_INFO} from "../../actions/payStore";
-import {getDalCnt, getDalPriceList, getStoreIndexData} from "../../../common/api";
 import {ModeTabType, ModeType, PayStoreStateType, StoreInfoType} from "../../types/pay/storeType";
 import {Action} from "history";
-
+import Api from "../../../context/api";
 function* updateIndexData(param) {
 	try {
-		const res = yield call(getStoreIndexData);
+		const res = yield call(Api.getStoreIndexData);
 		const payload = {
 			dalCnt: res.data.dalCnt,
 			defaultNum: res.data.defaultNum,
@@ -43,7 +42,7 @@ function* updatePriceList(param) {
 		}
 
 		yield put({type: SET_STORE_INFO, payload: {dalPriceList: []}});
-		const res = yield call(getDalPriceList, {platform:param.payload});
+		const res = yield call(Api.getDalPriceList, {platform:param.payload});
 		yield put({type: SET_STORE_INFO, payload: {dalPriceList: res.data.dalPriceList}});
 	} catch (e) {
 		console.error(`getPriceList saga e=>`, e)
@@ -56,7 +55,7 @@ function* updateDalCnt(param) {
 			console.error(`updateDalCnt saga payload =>`, param.payload)
 			return;
 		}
-		const res = yield call(getDalCnt);
+		const res = yield call(Api.getDalCnt);
 		yield put({type: SET_STORE_INFO, payload: {dalCnt: res.data.dalCnt}});
 	} catch (e) {
 		console.error(`updateDalCnt saga e=>`, e)

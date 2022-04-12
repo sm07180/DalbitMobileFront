@@ -24,7 +24,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
 import {getIndexData, setStoreInfo} from "redux/actions/payStore";
-import {payEndAOSInApp, payTryAOSInApp} from "common/api";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -818,7 +817,7 @@ export default () => {
       case 'native-purchase':{
         try{
           const data = Object.assign({}, event.detail);
-          payTryAOSInApp(data).then(({data})=>{
+          Api.payTryAOSInApp(data).then(({data})=>{
             const onPurchaseResultData = {
               result:data.code,
               signature:event.detail.signature,
@@ -839,7 +838,7 @@ export default () => {
       case 'native-consume':{
         try{
           const data = Object.assign({}, event.detail);
-          payEndAOSInApp(data).then(({data})=>{
+          Api.payEndAOSInApp(data).then(({data})=>{
             Hybrid('onConsumeResult', data.code);
             dispatch(getIndexData(history.action));
             dispatch(setStoreInfo({state:"ready"}));

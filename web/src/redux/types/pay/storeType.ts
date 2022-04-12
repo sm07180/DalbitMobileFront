@@ -46,8 +46,12 @@ export type PayStoreStateType = {
   storeInfo: StoreInfoType
   storeTabInfo: Array<StoreTabInfoType>
   updateVersionInfo: UpdateVersionInfoType
+  stateHeader : StateHeaderType
 }
-
+export type StateHeaderType = {
+  title: string,
+  visible: boolean
+}
 export type UpdateVersionInfoType = {
   aos: string
   ios: string

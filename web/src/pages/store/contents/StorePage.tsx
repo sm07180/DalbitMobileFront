@@ -21,8 +21,6 @@ import moment from "moment";
 import { GlobalContext } from "context";
 
 const StorePage = ()=>{
-  // console.log(`@@ storeInfo ->`, storeInfo);
-  // console.log(`@@ storeTabInfo ->`, storeTabInfo);
   const { globalAction } = useContext(GlobalContext);
 
   const history = useHistory();
@@ -98,7 +96,8 @@ const StorePage = ()=>{
         if (isHybrid() && webview && webview === 'new') {
           Hybrid('CloseLayerPopup', undefined);
         }else{
-          history.goBack();
+          // 스토어 페이지는 직접 접근 케이스가 있어 강제 메인으로
+          history.replace('/');
         }
       }}/>
       <section className="myhaveDal">

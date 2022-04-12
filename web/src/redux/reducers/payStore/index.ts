@@ -9,6 +9,10 @@ export const initialState:PayStoreStateType = {
   storeTabInfo:PAYMENT_TAB,
   updateVersionInfo:{
     aos:'', ios:''
+  },
+  stateHeader:{
+    title: '달 충전하기',
+    visible: false
   }
 }
 const payStore = createReducer<PayStoreStateType, PayStoreActions>(initialState,{
@@ -20,6 +24,9 @@ const payStore = createReducer<PayStoreStateType, PayStoreActions>(initialState,
   },
   "payStore/SET_UPDATE_VERSION_INFO" : (state, {payload})=>{
     return {...state, updateVersionInfo:payload}
+  },
+  "payStore/SET_STATE_HEADER_VISIBLE" : (state, {payload})=>{
+    return {...state, stateHeader: {...state.stateHeader, visible: payload}}
   },
 });
 

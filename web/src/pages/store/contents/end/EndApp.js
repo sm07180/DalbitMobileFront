@@ -3,22 +3,22 @@ import React, {useContext, useEffect, useState} from "react";
 import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
 import {Hybrid} from "context/hybrid";
-import Api from "context/api";
 import Utility from "components/lib/utility";
 
+// PG사 취소 후 콜백 페이지
 export default function EndApp() {
   const context = useContext(Context)
   const history = useHistory();
   const location = useLocation();
   const {cancelType} = qs.parse(location.search)
   const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
-
   //창 닫기
   const closeWindow = () =>{
     if (cancelType === 'room') {
       return Hybrid('ClosePayPopup')
     } else {
-      history.push({pathname:"/store"})
+      // PG사 취소 후 params 에 여러 값을 달고 오므로 스토어 페이지로 redirect
+      window.location.replace("/store");
     }
   }
 
