@@ -157,13 +157,16 @@ const TeamDetail = () => {
               <div className="teamName">우주최강슈퍼파월</div>
               <div className="listItem">
                 <div className="iconPoint"></div>
-                <div className="point">{Utility.addComma(123456789)}</div>
+                <div className="pointEx">이번주</div>
+                <div className="point">{Utility.addComma(12389)}</div>
+                <div className="pointEx">누적</div>
+                <div className="point">{Utility.addComma(12345)}</div>
               </div>
             </div>
           </div>
           <div className="teamRank">
-            <div className="count">{Utility.addComma(123456789)}</div>
-            <div className="text">이번 주 TOP</div>
+            <div className="text">이번 주</div>
+            <div className="count"><strong>{Utility.addComma(89)}</strong>위</div>
           </div>
           <div className="teamIntro">
             <span className={`text ${true ? 'open' : 'close'}`}>
@@ -174,21 +177,21 @@ const TeamDetail = () => {
             </span>
           </div>
         </section>
-        <CntTitle title="활동 배지" more={'/'}>
+        <CntTitle title="활동 배지" more="team/badge">
           <span className="count"><strong>6</strong></span>
         </CntTitle>
         <section className="badgeList">
           <div className="badgeItem">
-            <img src={`${IMG_SERVER}/team/teambadge/teamBadge-1.png`} alt="" />
+            <img src={`${IMG_SERVER}/team/badge/a002.png`} alt="" />
           </div>
           <div className="badgeItem">
-            <img src={`${IMG_SERVER}/team/teambadge/teamBadge-2.png`} alt="" />
+            <img src={`${IMG_SERVER}/team/badge/a004.png`} alt="" />
           </div>
           <div className="badgeItem">
-            <img src={`${IMG_SERVER}/team/teambadge/teamBadge-3.png`} alt="" />
+            <img src={`${IMG_SERVER}/team/badge/a006.png`} alt="" />
           </div>
           <div className="badgeItem">
-            <img src={`${IMG_SERVER}/team/teambadge/teamBadge-4.png`} alt="" />
+            <img src={`${IMG_SERVER}/team/badge/a008.png`} alt="" />
           </div>
         </section>
         <CntTitle title="전체 멤버">

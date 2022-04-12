@@ -331,6 +331,12 @@
                 width: 40px; height: 40px;
                 z-index: 2;
               }
+              .listenertag {
+                @include position-top-left();
+                display: inline-block;
+                width: 40px; height: 40px;
+                z-index: 2;
+              }
             }
             p {
               width: 100%;

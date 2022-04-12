@@ -23,231 +23,238 @@
   flex:1;
   @include flex($fd:column);
   height:100%;
-  .myInfo {
-    @include flex;
-    padding:16px;
-    cursor: pointer;
-    .textWrap {
-      @include flex($fd:column);
-      min-width:0;
-      @include font(19px,400,black);
-      .text {
-        @include flex($fd: column);
-        margin-bottom:12px;
-        letter-spacing: -.3px;
-        span{display: flex;}
-        strong {
-          display:inline-block;
-          max-width:200px;
-          font-weight: $Bold;
-          @include fontCut;
-        }
-      }
-      .info {
-        @include flex(center);
-        margin-bottom:12px;
-        .level {
-          @include flex(center);
-          padding: 0 6px 0 4px;
-          cursor:pointer;
-          &::before {
-            content:"";
-            display: inline-block;
-            width:14px;height:14px;
-            margin-right:4px;
-            @include BGIMG("mypage/dalla/levelInfo.png");
+  .mypageTop {
+    width: 100%;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    .myInfo {
+      @include flex;
+      margin-bottom: 12px;
+      cursor: pointer;
+      .textWrap {
+        @include flex($fd:column);
+        min-width:0;
+        @include font(19px,400,black);
+        .text {
+          @include flex($fd: column);
+          margin-bottom:15px;
+          letter-spacing: -.3px;
+          span{display: flex;}
+          strong {
+            display:inline-block;
+            max-width:200px;
+            font-weight: $Bold;
+            @include fontCut;
           }
         }
-        .userId {
-          margin-left:4px;
-          line-height:20px;
-          @include font(13px,$Regular,black);
-        }
-      }
-      .count {
-        line-height: 25px;
-        i {
-          margin-right:4px;
-          line-height:20px;
-          font-style:normal;
-          @include font(15px,$Medium,#5A5A5A);
-        }
-        span {
-          line-height:20px;
-          margin-right:18px;
-          @include font(15px,$Bold,black);
-        }
-      }
-    }
-    .photoWrap {
-      @include flex(center,center,column);
-      margin-left:auto;
-      .photo {
-        position: relative;
-        width:75px;
-        height:75px;
-        &::before {
-          content: "";
-          @include position-top-left;
-          width: 100%; height: 100%;
-          border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-          border-radius:50%;
-          box-sizing: border-box;
-        }
-        img {
-          width:100%;
-          border-radius:50%;
-          object-fit: cover;
-        }
-      }
-      button {
-        width:72px;
-        line-height:23px;
-        margin-top:auto;
-        @include border(#E0E0E0,100px);
-        @include font(12px,$Medium,#5A5A5A);
-      }
-    }
-  }
-  .mydalDetail {
-    @include flex(center);
-    height:60px;
-    margin:0 16px 12px;
-    padding: 20px;
-    border-radius:8px;
-    box-sizing: border-box;
-    box-shadow: 0px 2px 5px rgba($color: #000000, $alpha: 0.1);
-    .dalCount {
-      @include flex(center);
-      height:30px;
-      line-height:30px;
-      @include font(14px,500,#3E3E3E);
-      &:before {
-        display:inline-block;
-        content:"";
-        width:15px;
-        height:15px;
-        margin-right:4px;
-        @include BGIMG('mypage/dalla/icon_dal.png');
-      }
-      span {
-        margin-left: 8px;
-        @include font(16px,700,#FF3C7B);
-      }
-    }
-    .buttonGroup {
-      @include flex(center);
-      height:30px;
-      line-height:30px;
-      margin-left:auto;
-      button {
-        position:relative;
-        height:100%;
-        padding:0 8px;
-        @include font(14px,500,#303030);
-      }
-    }
-  }
-  .myData {
-    @include flex(center, space-around);
-    width: 100%;
-    margin-bottom: 16px;
-    .myDataList {
-      flex: 1;
-      @include flex(center, center, column);
-      cursor: pointer;
-      .walletIcon {
-        display: inline-block;
-        width: 45px; height: 45px;
-        @include BGIMG('mypage/dalla/icon_mypage-wallet.png');
-      }
-      .reportIcon {
-        display: inline-block;
-        width: 45px; height: 45px;
-        @include BGIMG('mypage/dalla/icon_mypage-report.png');
-      }
-      .clipIcon {
-        display: inline-block;
-        width: 45px; height: 45px;
-        @include BGIMG('mypage/dalla/icon_mypage-clip.png');
-      }
-      .myDataType {
-        @include font(13px, 500, #666666);
-      }
-    }
-  }
-  .myMenu {
-    .myMenuWrap {
-      @include flex($fd:column);
-      .myMenuList {
-        flex:1;
-        @include flex(center,space-between);
-        height:55px;
-        line-height:55px;
-        padding:0 16px;
-        text-align:left;
-        @include font(15px,$Medium,#303030);
-        cursor: pointer;
-        .myMenuName {
-          position: relative;
-          &.new {
-            &::after {
-              content: "";
-              @include position-top-right(15px, -10px);
-              width: 6px; height: 6px;
-              border-radius: 50%;
-              background-color: #FF3C7B;
+        .info {
+          @include flex(center);
+          margin-bottom:15px;
+          .level {
+            @include flex(center);
+            padding: 0 6px 0 4px;
+            cursor:pointer;
+            &::before {
+              content:"";
+              display: inline-block;
+              width:14px;height:14px;
+              margin-right:4px;
+              @include BGIMG("mypage/dalla/levelInfo.png");
             }
           }
-        }
-        .teamInfo {
-          @include flex(center);
-          margin-left:auto;
-          @include font(13px,$Medium,#9D9D9D);
-          i {
-            display:inline-block;
-            width:21px;height:21px;
-            line-height:21px;
-            margin-left:6px;
-            margin-right:8px;
-            background-color:#F1F1F1;
-            border-radius:6px;
-            border:1px dashed #9D9D9D;
+          .userId {
+            margin-left:4px;
+            line-height:20px;
+            @include font(12px,$Regular,#999999);
           }
         }
-        .rightArrow {
-          display:inline-block;
-          content:'';
-          width:20px;height:20px;
-          @include BGIMG('common/icoArrow-r.png');
+        .count {
+          line-height: 25px;
+          i {
+            margin-right:4px;
+            line-height:20px;
+            font-style:normal;
+            @include font(14px,300,#333333);
+          }
+          span {
+            line-height:20px;
+            margin-right:15px;
+            @include font(14px,$Bold,#333333);
+          }
+        }
+      }
+      .photoWrap {
+        @include flex(center,center,column);
+        margin-left:auto;
+        .photo {
+          position: relative;
+          width:84px;
+          height:84px;
+          &::before {
+            content: "";
+            @include position-top-left;
+            width: 100%; height: 100%;
+            border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+            border-radius:50%;
+            box-sizing: border-box;
+          }
+          img {
+            width:100%;
+            border-radius:50%;
+            object-fit: cover;
+          }
+        }
+        button {
+          width:84px;
+          line-height:25px;
+          margin-top:auto;
+          border-radius: 100px;
+          @include font(12px,$Regular,#999999);
+          background-color: #F6F6F6;
         }
       }
     }
-    .versionInfo {
-      flex: 1;
-      @include flex(center,space-between);
-      height:55px;
-      padding: 0 16px;
-      line-height: 55px;
-      text-align: left;
-      .title {
-        @include font(15px,$Medium,#303030);
-      }
-      .version {
-        @include font(13px,$Medium,#9D9D9D);
-      }
-    }
-    .logout {
-      flex: 1;
+    .mydalDetail {
       @include flex(center);
       width: 100%;
-      height:55px;
-      padding: 0 16px;
-      line-height: 55px;
-      text-align: left;
-      @include font(15px,$Medium,#303030);
+      padding: 12px 20px;
+      margin-bottom: 12px;
+      border-radius:8px;
+      box-sizing: border-box;
+      background-color: #F8F8F8;
+      .dalCount {
+        flex: 1;
+        @include flex(flex-start, flex-start, column);
+        @include font(14px,500,#3E3E3E);      
+        > span {
+          @include font(12px,400,#666666);
+          margin-bottom: 5px;
+        } 
+        > div {
+          @include flex(center);
+          @include font(16px,400,#202020);
+          &:before {
+            content:"";
+            display:inline-block;
+            width:15px;
+            height:15px;
+            margin-right:11px;
+            @include BGIMG('common/icon/icon_dal.png');
+          }
+          span {
+            @include font(17px,700,#202020);
+            margin-right: 2px;
+          } 
+        }
+      }
+      .buttonGroup {
+        @include flex(center);
+        padding-left: 20px;
+        border-left: 2px solid #ECECEC;
+        margin-left:auto;
+        button {
+          position:relative;
+          line-height: 27px;
+          @include font(14px,600,#202020);
+        }
+      }
+    }
+    .myData {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      grid-template-rows: repeat(2,1fr);
+      grid-gap: 20px 10px;
+      width: 100%;
+      padding: 20px 12px 26px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 5px rgba($color: #000000, $alpha: 0.1);
+      .myDataList {
+        @include flex(center, center, column);
+        cursor: pointer;
+        .icon {
+          position: relative;
+          display: inline-block;
+          width: 40px; height: 40px;
+          &.wallet {@include BGIMG('mypage/dalla/icon_wallet.png');}
+          &.report {@include BGIMG('mypage/dalla/icon_broadcastReport.png');}
+          &.clip {@include BGIMG('mypage/dalla/icon_clip.png');}
+          &.setting {@include BGIMG('mypage/dalla/icon_serviceSetting.png');}
+          &.notice {@include BGIMG('mypage/dalla/icon_notice.png');}
+          &.customer {@include BGIMG('mypage/dalla/icon_customer.png');}
+          &.team {
+            width:26px;height:26px;
+            margin:7px;
+            span {
+              display:inline-block;
+              width:100%;
+              height:100%;
+              border:1px dashed #ACACAC;
+              background-color:#F6F6F6;
+              border-radius:4px;
+              &.new {
+                border-color:#FF6093;
+                background-color:white;
+                &::after {
+                  @include position-bottom-right(-2px,-2px);
+                  content:"N";
+                  display:inline-flex;
+                  align-items:center;
+                  justify-content: center;
+                  width:15px;
+                  height:15px;
+                  border-radius:50%;
+                  background-color:$MAINCOLOR;
+                  @include font(10px,$Heavy,white);
+                }
+              }
+            }
+            img {
+              @include position-top-left(-1px,-1px);
+              width:calc(100% + 2px);
+              height:calc(100% + 2px);
+              border-radius:4px;
+            }
+          }
+          &.new::after {
+            content: "";
+            @include position-top-right(4px, 0px);
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background-color: #FF3C7B;
+          }
+        }
+        .myDataType {
+          @include font(11px, 300, #202020);
+        }
+      }
     }
   }
+  .versionInfo {
+    @include flex(center,space-between);
+    width: 100%;
+    height:55px;
+    margin-top: 4px;
+    padding: 0 16px;
+    line-height: 55px;
+    text-align: left;
+    .title {
+      @include font(15px,$Regular,#999999);
+    }
+    .version {
+      @include font(13px,$Regular,#333333);
+    }
+  }
+  .logout {
+    @include flex(center, center);
+    height: 48px;
+    margin: auto  16px 23px;
+    line-height: 46px;
+    border: 1px solid #D5D5D5;
+    border-radius: 100px;
+    @include font(16px,$Regular,#666666);
+  }
+
   #popSlide {
     .myLevelInfo {
       width:100%;
@@ -290,6 +297,30 @@
       .submitBtn {
         width:100%;
         margin-top:20px;
+      }
+    }
+  }
+}
+
+.pcType {
+  #remypage {
+    .mypageTop {
+      .myInfo {
+        .textWrap {
+          .count {
+            i {
+              font-weight: 400;
+            }
+          }
+        }
+      }
+      .myData {
+        .myDataList {
+          .myDataType {
+            font-size: 13px;
+            font-weight: 400;
+          }
+        }
       }
     }
   }

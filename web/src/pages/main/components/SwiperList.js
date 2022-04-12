@@ -91,6 +91,21 @@ const SwiperList = (props) => {
                         />
                     </div>
                 }
+                {/* {
+                  item.listenRoomNo &&
+                    <div className='listenertag' onClick={(e) => {
+                      e.stopPropagation();
+                      RoomValidateFromClipMemNo(item.listenRoomNo, item.memNo,context, locationStateHistory, item.nickNm);
+                    }}>
+                      <Lottie
+                          options={{
+                            loop: true,
+                            autoPlay: true,
+                            path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
+                          }}
+                        />
+                    </div>                            
+                } */}
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>

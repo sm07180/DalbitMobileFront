@@ -8,7 +8,9 @@
   .right-side {
     width: 362px;
     min-width: 362px;
-    height: 100%;
+    height: 750px;
+    border-radius: 10px;
+    overflow: hidden;
 
     .tabBox {
       display: flex;
@@ -49,7 +51,7 @@
     .tabContent {
       display: flex;
       flex-direction: column;
-      height: calc(100% - 55px);
+      height: calc(100% - 51px);
       background-color: $white;
       border-radius: 0 0 10px 10px;
     }
@@ -940,7 +942,7 @@
     flex-direction: column;
     justify-content: space-between;
     // overflow: hidden;
-    min-width: 362px;
+    min-width: 362px; height: 750px;
     background-color: $white;
     border-radius: 10px;
 
@@ -1364,7 +1366,9 @@
         }
 
         .fan-badge img {
-          height: 26px;
+          margin-left: -4px;
+          height: 22px;
+          margin-right: 2px;
         }
         .fan-badge span {
           display: inline-block;
