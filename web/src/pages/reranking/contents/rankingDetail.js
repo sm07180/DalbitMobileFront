@@ -350,7 +350,7 @@ const RankDetailPage = (props) => {
         <div className="underline"></div>
       </div>
       <div className='tabWrap'>
-        <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
+        <Tabmenu data={tabList} tab={tabName} setTab={setTabName}/>
       </div>      
       <div className="rankingContent">
         <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
