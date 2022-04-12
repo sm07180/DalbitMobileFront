@@ -25,6 +25,7 @@ import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
 import {getIndexData, setStoreInfo} from "redux/actions/payStore";
 import {payEndAOSInApp, payTryAOSInApp} from "common/api";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -101,6 +102,15 @@ export default () => {
         })
       }
     }
+  }
+
+  const listenClip = (clipNo) => {
+    const clipParam = {
+      clipNo: clipNo,
+      gtx: context,
+      history
+    }
+    NewClipPlayerJoin(clipParam);
   }
 
   async function pushClick(pushIdx) {
@@ -930,7 +940,7 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no, board_idx, redirect_url
+    let room_no, mem_no, board_idx, redirect_url, feed_no, title, notice_no
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
@@ -955,7 +965,7 @@ export default () => {
         mem_no = pushMsg.mem_no
         if (mem_no != undefined) {
           if (isLogin) {
-            history.push(`/profile/${context.profile.memNo}?tab=1`)
+            history.push(`/profile/${mem_no}`)
           }
         }
         break
@@ -1002,47 +1012,51 @@ export default () => {
       case '37': //-----------------1:1 문의 답변
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          if (isLogin) window.location.href = `/customer/qnaList`
+          if (isLogin) window.location.href = `/customer/inquire`
         }
         break
       case '38': //-----------------스타의 방송공지
-        mem_no = pushMsg.mem_no
-        if (mem_no !== undefined) {
-          // if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
-          if (isLogin) {
-            history.push(`/profile/${mem_no}?tab=0`)
-          }
+        mem_no = pushMsg.mem_no;
+        feed_no = pushMsg.contents.substr(7); //feed_no가져오기
+        notice_no = pushMsg.contents.substr(9);
+        title = pushMsg.title.slice(4,6) //피드, 방송 구분
+        if(title === "피드") {
+          history.push(`/profileDetail/${mem_no}/feed/${feed_no}`);
+        } else if(title === "방송") {
+          history.push(`/profileDetail/${mem_no}/notice/${notice_no}`);
+        } else {
+          history.push(`/profile/${mem_no}`);
         }
         break
       case '39': //-----------------좋아요
-        if (isLogin) window.location.href = `/rank?rankType=3&dateType=2`
+        if (isLogin) window.location.href = `/rank`
         break
       case '40': //-----------------좋아요 랭킹 일간
-        if (isLogin) window.location.href = `/rank?rankType=3&dateType=1`
+        if (isLogin) window.location.href = `/rank`
         break
       case '41': //-----------------랭킹 > DJ > 일간
-        if (isLogin) window.location.href = `/rank?rankType=1&dateType=1`
+        if (isLogin) window.location.href = `/rank`
         break
       case '42': //-----------------랭킹 > DJ > 주간
-        if (isLogin) window.location.href = `/rank?rankType=1&dateType=2`
+        if (isLogin) window.location.href = `/rank`
         break
       case '43': //-----------------랭킹 > FAN > 일간
-        if (isLogin) window.location.href = `/rank?rankType=2&dateType=1`
+        if (isLogin) window.location.href = `/rank`
         break
       case '44': //-----------------랭킹 > FAN > 주간
-        if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
+        if (isLogin) window.location.href = `/rank`
         break
       case '45': //-----------------Clip PLay
         room_no = pushMsg.room_no
-        if (room_no) clipPlay(room_no)
+        if (room_no) listenClip(room_no);
         break
       case '46': //-----------------Clip PLay
         room_no = pushMsg.room_no
-        if (room_no) clipPlay(room_no)
+        if (room_no) listenClip(room_no);
         break
       case '47': //-----------------Clip PLay
         room_no = pushMsg.room_no
-        if (room_no) clipPlay(room_no)
+        if (room_no) listenClip(room_no);
         break
       case '48': //-----------------마이클립
         if (isLogin) {

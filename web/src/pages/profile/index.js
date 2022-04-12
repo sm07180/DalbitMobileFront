@@ -33,7 +33,7 @@ import {
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState
+  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
 import {MailboxContext} from "context/mailbox_ctx";
@@ -47,6 +47,7 @@ import {IMG_SERVER} from "context/config";
 
 const ProfilePage = () => {
   const history = useHistory()
+  const location = useLocation();
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
@@ -666,8 +667,10 @@ const ProfilePage = () => {
   const profileTabDataCall = () => {
     if(profileTab.tabName === profileTab.tabList[0]) {
       document.addEventListener('scroll', profileScrollEvent);
+      getFeedData(true);
     }else if(profileTab.tabName === profileTab.tabList[1]) {
       document.addEventListener('scroll', profileScrollEvent);
+      getFanBoardData(true);
     }else if(profileTab.tabName === profileTab.tabList[2]) {
       document.addEventListener('scroll', profileScrollEvent);
     }
@@ -688,11 +691,9 @@ const ProfilePage = () => {
       tabName: profileDefaultTab,
       isReset: true
     }))
-    getNoticeData(true); // 방송공지
-    getNoticeFixData(true); // 방송공지(고정)
-    getFeedData(true); // 피드
-    getFanBoardData(true);
-    getClipData(true);
+    dispatch(setProfileNoticeData(profileNoticeDefaultState)); // 방송공지
+    dispatch(setProfileNoticeFixData(profileNoticeFixDefaultState)); // 방송공지(고정)
+    dispatch(setProfileFeedNewData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);

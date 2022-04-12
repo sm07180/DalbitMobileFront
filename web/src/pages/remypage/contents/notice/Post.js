@@ -15,7 +15,7 @@ const Post = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
-  const [postPageInfo, setPostPageInfo] = useState({noticeType: 0, page: 1, records: 20}); //페이지 스크롤
+  const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
   const isDesktop = useSelector((state)=> state.common.isDesktop)
 
