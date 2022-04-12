@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setNoticeData, setNoticeTab} from "redux/actions/notice";
 import API from "context/api";
 import {RoomJoin} from "context/room";
+import {NewClipPlayerJoin} from "common/audio/clip_func";
 
 let alarmFix = false;
 let postFix = false;
@@ -51,6 +52,15 @@ const NoticePage = () => {
       }}
   }
 
+  const listenClip = (clipNo) => {
+    const clipParam = {
+      clipNo: clipNo,
+      gtx: context,
+      history
+    }
+    NewClipPlayerJoin(clipParam);
+  }
+
   //알림 클릭시 해당 페이지로 이동
   const handleClick = (e) => {
     //type: 알림 타입, memNo: 회원 번호, roomNo: 방송방 번호, link: 이동 URL
@@ -71,7 +81,7 @@ const NoticePage = () => {
         break;
       case "31":                                                                           //팬보드 새 글 알림
         if (context.profile.memNo === roomNo) {history.push(`/myProfile?tab=1`)}
-        else {history.push(`/profile/${memNo}?tab=1`)}
+        else {history.push(`/myProfile`)}
         break;
       case "32":                                                                            //내 지갑
         try {history.push(`/wallet`);}
@@ -119,9 +129,9 @@ const NoticePage = () => {
       case "42": history.push(`/rank`); break;                                      //DJ 랭킹 주간 알림
       case "43": history.push(`/rank`); break;                                      //FAN 랭킹 일간 알림
       case "44": history.push(`/rank`); break;                                      //FAN 랭킹 주간 알림
-      case "45": history.push(`/clip/${roomNo}`); break;                            //마이 스타 클립 알림, 내 클립 선물 알림, 3 = pc 클립을 틀 수 있는 새로운 방법이 필요함
-      case "46": history.push(`/clip/${roomNo}`); break;                            //내 클립 댓글 알림
-      case "47": history.push(`/clip/${roomNo}`); break;                            //클립 알림
+      case "45": listenClip(roomNo);break;                                                  //마이 스타 클립 알림, 내 클립 선물 알림, 3 = pc 클립을 틀 수 있는 새로운 방법이 필요함
+      case "46": listenClip(roomNo);break;                                                  //내 클립 댓글 알림
+      case "47": listenClip(roomNo);break;                                                  //클립 알림
       case "48":                                                                            //마이페이지 클립 업로드/청취내역 알림
         try {history.push(`/myclip`);}
         catch (e) {console.log(e);}
