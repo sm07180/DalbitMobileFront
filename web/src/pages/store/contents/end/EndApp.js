@@ -5,7 +5,7 @@ import {Context} from "context";
 import {Hybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 import {setStateHeaderVisible} from "redux/actions/payStore";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 // PG사 취소 후 콜백 페이지
 export default function EndApp() {
@@ -14,7 +14,7 @@ export default function EndApp() {
   const location = useLocation();
   const {cancelType} = qs.parse(location.search);
   const dispatch = useDispatch();
-
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
   //창 닫기
@@ -39,7 +39,15 @@ export default function EndApp() {
 
   useEffect(() => {
     dispatch(setStateHeaderVisible(false));
-    alert(JSON.stringify(location.state));
+    Hybrid('stateHeader', {
+      ...payStoreRdx.stateHeader,
+      visible: false
+    });
+
+    if(location.state){
+      alert("EndApp.js log >> ["+JSON.stringify(location.state)+"]");
+    }
+
     if (cancelType !== undefined) {
       closeWindow();
     } else {
