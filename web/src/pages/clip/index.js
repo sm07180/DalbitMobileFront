@@ -125,7 +125,7 @@ const ClipPage = () => {
   };
 
   const getClipList = () => {
-    Api.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 100, subjectType: subSearchInfo.value }).then(res => {
+    Api.getClipList({ gender: '', djType: 0, slctType: 2, dateType: 0, page: 1, records: 100, subjectType: subSearchInfo.value }).then(res => {
       if (res.code === 'C001') {
         const list = res.data.list;
         const showRecommendClipLength = 5;
