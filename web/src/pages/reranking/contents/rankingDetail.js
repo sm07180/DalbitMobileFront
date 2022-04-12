@@ -15,7 +15,6 @@ import './rankingDetail.scss'
 import {convertDateTimeForamt, convertMonday, convertMonth} from "pages/common/rank/rank_fn";
 import moment from "moment";
 import {useDispatch, useSelector} from "react-redux";
-import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankDetailPage = (props) => {
   const params = useParams()
@@ -240,10 +239,6 @@ const RankDetailPage = (props) => {
         }
       }
     }
-  }
-
-  const bottomSlide = () => {
-    dispatch(setSlidePopupOpen());
   }
 
   const closeSlidePop = () => {

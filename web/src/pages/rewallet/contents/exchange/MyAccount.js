@@ -51,7 +51,7 @@ const MyAccount = (props) => {
 
   // 계좌 추가
   const onClickAddAcount = () => {
-    dispatch(setSlidePopupOpen());
+    dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     setSlideData({})
     setExchangeForm(formInit);          // 추가시 디폴트 폼으로 세팅
     prevState.current = exchangeForm;   //이전 state 유지용
@@ -60,7 +60,7 @@ const MyAccount = (props) => {
 
   // 계좌 수정
   const onClickModifyAcount = (exchangeForm) => {
-    dispatch(setSlidePopupOpen());
+    dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     setSlideData(exchangeForm);
     setExchangeForm(exchangeForm);    //계좌목록중에서 선택한 값 세팅  
     prevState.current = exchangeForm; //이전 state 유지용
@@ -233,7 +233,7 @@ const MyAccount = (props) => {
       }
 
       {/* 수정, 추가시 팝업*/}
-      {popup.commonPopup &&
+      {popup.slidePopup &&
         <PopSlide setPopSlide={()=>{setExchangeForm(prevState.current)}}>
           <section className="addAcount">
             {modifySlidePop === true ?

@@ -40,7 +40,6 @@ const Remypage = () => {
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
   const dispatch = useDispatch();
-  const popup = useSelector(state => state.popup);
 
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
@@ -91,14 +90,14 @@ const Remypage = () => {
     e.stopPropagation();
     const {targetType} = e.currentTarget.dataset;
     setOpenFanStarType(targetType)
-    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+    dispatch(setSlidePopupOpen({...commonPopup, fanStarPopup: true}));
   }
 
   const openPopLike = (e, tabState) => {
     e.preventDefault();
     e.stopPropagation();
     setLikePopTabState(tabState)
-    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+    dispatch(setSlidePopupOpen({...commonPopup, likePopup: true}));
   }
 
   /* 팬 등록 해제 */
@@ -170,7 +169,7 @@ const Remypage = () => {
   const openLevelPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(setSlidePopupOpen());
+    dispatch(setSlidePopupOpen({...commonPopup, levelPopup: true}));
   }
 
   const openStarDJHistoryPop = (e) => {
@@ -263,7 +262,7 @@ const Remypage = () => {
           }
           <button className='logout' onClick={logout}>로그아웃</button>
 
-          {commonPopup.slidePopup &&
+          {commonPopup.levelPopup &&
             <PopSlide title="내 레벨">
               <section className="myLevelInfo">
                 <div className="infoItem">
@@ -283,7 +282,7 @@ const Remypage = () => {
           {commonPopup.historyPopup && <SpecialHistoryPop profileData={profile} />}
 
           {/* 팬 / 스타 */}
-          {popup.fanStarPopup &&
+          {commonPopup.fanStarPopup &&
             <PopSlide>
               <FanStarPopup
                 type={openFanStarType}
@@ -298,7 +297,7 @@ const Remypage = () => {
 
 
           {/* 좋아요 */}
-          {popup.likePopup &&
+          {commonPopup.likePopup &&
             <PopSlide>
               <LikePopup
                 isMyProfile={true}

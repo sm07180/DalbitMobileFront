@@ -50,7 +50,7 @@ const DidLogin = (props) => {
 
   //회원가입 팝업 클릭 처리
   const signPop = () => {
-    dispatch(setSlidePopupOpen());
+    dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
     setBtnActive(false)
   }
 
@@ -256,7 +256,7 @@ const DidLogin = (props) => {
           <div className="linkText" onClick={()=>props.history.push("/password")}>비밀번호 찾기</div>
         </div>
       </section>
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
       <PopSlide>
         <div className='title'>이용약관동의</div>
         <div className="agreeWrap">
