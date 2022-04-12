@@ -1,6 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {useHistory, useParams} from "react-router-dom";
 import {Context} from 'context';
+import {IMG_SERVER} from 'context/config';
 // global components
 
 const InviteList = (props) => {
@@ -46,9 +47,9 @@ const InviteList = (props) => {
         <div className="listWrap">
           <div className="listRow">
             <div className="photo">
-              <img src="" alt="" />
-              <img src="" alt="" />
-              <img src="" alt="" />
+              <img src={`${IMG_SERVER}/team/parts/E/e007.png`} alt="" />
+              <img src={`${IMG_SERVER}/team/parts/B/b007.png`} alt="" />
+              <img src={`${IMG_SERVER}/team/parts/M/m007.png`} alt="" />
             </div>
             <div className="listContent">
               <div className="text">🍓딸기딸기🍓</div>
