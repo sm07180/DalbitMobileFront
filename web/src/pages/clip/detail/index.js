@@ -12,6 +12,7 @@ import '../../../components/ui/listRow/listRow.scss';
 import Utility from "components/lib/utility";
 import {playClip} from "pages/clip/components/clip_play_fn";
 import {Context} from "context";
+import NoResult from "components/ui/noResult/NoResult";
 
 const ClipDetailPage = (props) => {
   const { type } = useParams();
@@ -71,6 +72,8 @@ const ClipDetailPage = (props) => {
         } else {
           setClipLastInfo({ ...res.data, list: tempList, cnt: res.data.paging.total });
         }
+      }else if(res.data.list.length === 0) {
+        setClipLastInfo({...res.data, list: [], cnt: 0})
       }
     });
   };
@@ -164,6 +167,7 @@ const ClipDetailPage = (props) => {
         </div>
       </section>
       <section className="detailList">
+        { clipLastInfo.list. length === 0 && <NoResult ment="조회된 클립이 없습니다" /> }
         {clipLastInfo.list.map((row, index) => {
           return (
             <ClipDetailCore item={row} key={index} subjectType={searchInfo.subjectType.value} slctType={searchInfo.slctType}
