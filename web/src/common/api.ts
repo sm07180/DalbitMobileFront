@@ -1962,6 +1962,11 @@ export async function postSleepMemUpd(data): Promise<responseType> {
   return ajax(Method.POST, '/sleep/member/update', data)
 }
 
-
+export async function payTryAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos/try", data);
+}
+export async function payEndAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos/end", data);
+}
 
 /********************************************/

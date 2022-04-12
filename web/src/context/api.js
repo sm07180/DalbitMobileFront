@@ -4240,13 +4240,6 @@ export default class API {
   static getDalCnt = () => {
     return ajax({url: '/store/getDalCnt', method: 'POST', reqBody: true})
   }
-  static payTryAOSInApp = (data) => {
-    return ajax({url: '/rest/pay/aos/try', method: 'POST', reqBody: true, data:data})
-  }
-
-  static payEndAOSInApp = (data) => {
-    return ajax({url: '/rest/pay/aos/end', method: 'POST', reqBody: true, data:data})
-  }
 }
 
 API.customHeader = null
