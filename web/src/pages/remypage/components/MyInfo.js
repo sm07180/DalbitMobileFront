@@ -54,7 +54,7 @@ const MyInfo = (props) => {
           <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
           {
             data?.starCnt > 0 &&
-              <em className={`starDj ${data.isSpecial ? "active" : ""}`}></em>                
+              <em className={`starDj ${data.isSpecial ? "active" : ""}`} onClick={openStarDJHistoryPop}></em>                
           }
           <span className='userId'>{data?.memId}</span>
         </div>

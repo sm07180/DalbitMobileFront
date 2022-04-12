@@ -176,7 +176,7 @@ const Remypage = () => {
   const openStarDJHistoryPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // dispatch(setCommonPopup({...commonPopup, historyPopup: true}))
+    dispatch(setCommonPopupOpenData({...commonPopup, historyPopup: true}))
   }
 
   const closeLevelPop = (e) => {
@@ -212,7 +212,7 @@ const Remypage = () => {
           <Header title={'MY'} />
           <section className='mypageTop'>
             <div className="myInfo" onClick={goProfile}>
-              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}  openStarDJLogPop={openStarDJHistoryPop}/>
+              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}  openStarDJHistoryPop={openStarDJHistoryPop}/>
             </div>
             <div className='mydalDetail'>
               <div className="dalCount">

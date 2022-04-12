@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Api from "context/api";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupClose} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {Context} from "context";
 import {isAndroid} from "context/hybrid";
