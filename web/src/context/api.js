@@ -23,7 +23,6 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
-import {postSleepMemUpd} from "../common/api";
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -4233,6 +4232,11 @@ export default class API {
   // 와썹맨 회차리스트
   static pEvtWassupManNoList = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
+  }
+
+  //팬랭킹 참여 유무
+  static getRankingApply = async () => {
+    return await ajax({url: "/rank/getRankingApply"})
   }
 
 
