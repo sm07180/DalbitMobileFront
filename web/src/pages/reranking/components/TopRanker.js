@@ -21,7 +21,7 @@ const TopRanker = (props) => {
   const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
-  const [rankSetting, setRankSetting] = useState(false);
+  const [rankSetting, setRankSetting] = useState();
 
   // 스와이퍼
   const swiperParams = {
@@ -36,27 +36,42 @@ const TopRanker = (props) => {
     initialSlide: 2,
     rebuildOnUpdate: true
   };
-  const rankSettingBtn = useCallback((v) => {
-    const fetchRankSetting = (set) => {
-      const params = {
-        isRankData: set,
-      };
-      Api.postRankSetting(params).then((res) => {
-        if (res.result === 'success') {
-          context.action.toast({msg: res.message});
+
+  // 랭킹 패치
+  const fetchRankApply = () => {
+    Api.getRankingApply().then((res) => {
+      if (res.result === 'success') {
+        if (res.data.apply_ranking === 1) {
+          setRankSetting(true);
+        } else {
+          setRankSetting(false);
         }
-      });
+      }
+    });
+  };
+  
+  // 랭킹 버튼 액션
+  const fetchRankSetting = (set) => {
+    const params = {
+      isRankData: set,
     };
-    fetchRankSetting(v);
-  },[rankSetting]);
+    Api.postRankSetting(params).then((res) => {
+      if (res.result === 'success') {
+        context.action.toast({msg: res.message});
+        fetchRankApply();
+      }
+    });
+  };
 
   const clickRankSetting = () => {
     context.action.confirm({
       callback: () => {
-        setRankSetting(!rankSetting);
-        rankSettingBtn(!rankSetting ? true : false);
+        fetchRankSetting(!rankSetting);
       },
-      msg: `${rankSetting ? "랭킹참여 취소" : "랭킹참여 승인"}`
+      msg: `${rankSetting ? `<strong>미참여중</strong>으로 설정되어있는 동안
+      나의 활동이 FAN랭킹에 반영되지 않습니다
+       변경하시겠습니까?` : `지금부터 나의 활동이 FAN랭킹에 반영됩니다.
+      변경하시겠습니까?`}`
     });
   };
 
@@ -101,14 +116,14 @@ const TopRanker = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //   fetchRankSetting(rankSetting);
-  // },[rankSetting]);
+  useEffect(() => {
+    if (rankSlct === "FAN") fetchRankApply();
+  },[rankSlct]);
 
   return (
     <React.Fragment>
       <div className="topItems">
-        {rankSlct === "FAN" &&
+        {context.token.isLogin && rankSlct === "FAN" &&
           <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
