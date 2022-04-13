@@ -4235,6 +4235,10 @@ export default class API {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
   }
 
+  // 클립 랭킹 재생목록 조회 api
+  static getClipRankCombineList = async (params) => {
+    return ajax({url: '/clip/rank/combine/list', method: 'GET', reqBody: false, params})
+  }
 
 }
 
