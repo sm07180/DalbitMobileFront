@@ -164,7 +164,7 @@
         margin-bottom: auto;
         @include BGIMG('mypage/dalla/clip/ico_moreBtn.png');
         cursor: pointer;
-        z-index: 999;
+        z-index: $MORE-ZINDEX;
         div{
           @include position-top-right(40px,0);
           width: 124px;

@@ -86,16 +86,20 @@ const MainPage = () => {
   const fetchMainInfo = () => dispatch(setMainData());
 
   /* 라이브 리스트 */
-  const fetchLiveInfo = useCallback((pageNo) => {
+  const fetchLiveInfo = useCallback(({pageNo, mediaType, djType}) => {
     const callPageNo = pageNo ? pageNo : currentPage
+    if(pageNo !== 1) { // 디폴트 호출이 아닐때
+      mediaType = liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : ''
+      djType = liveListType === '신입DJ' ? 3 : '';
+    }
     const params = {
       page: callPageNo,
-      mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
+      mediaType,
       records: pagePerCnt,
       roomType: '',
       searchType: 1,
       gender: '',
-      djType: liveListType === '신입DJ' ? 3 : ''
+      djType
     }
     Api.broad_list({params}).then((res) => {
       if (res.result === 'success') {
@@ -121,7 +125,7 @@ const MainPage = () => {
   const mainDataReset = () => {
     const randomValue = getRandomIndex();
     fetchMainInfo();
-    fetchLiveInfo(1);
+    fetchLiveInfo({pageNo: 1, mediaType: '', djType: ''});
     setTopRankType(topTenTabMenu[randomValue])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
