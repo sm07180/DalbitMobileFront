@@ -31,7 +31,7 @@ export default function ClipContent() {
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { clipState, clipAction } = useContext(ClipContext);
-  const { clipPlayer, baseData, clipInfo } = globalState;
+  const { clipPlayer, baseData, clipInfo, clipPlayListTab } = globalState;
   const { dispatchClipPlayList, dispatchClipPlayListTab } = globalAction;
 
   const [playState, setPlayState] = useState(false);
@@ -99,13 +99,13 @@ export default function ClipContent() {
       history.goBack();
       return;
     }
-    if (globalState.clipPlayList.length > 0) {
-      if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
+    if (clipPlayListTab.length > 0) {
+      if (clipPlayer?.isPlayingIdx === clipPlayListTab.length - 1) {
         if (globalState.clipPlayMode !== "normal" && globalState.clipPlayMode !== "oneLoop") {
-          history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
+          history.push(`/clip/${clipPlayListTab[0].clipNo}`);
         }
       } else {
-        history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+        history.push(`/clip/${clipPlayListTab[clipPlayer?.isPlayingIdx! + 1].clipNo}`);
       }
     } else {
       history.push(`/clip`);
@@ -248,6 +248,21 @@ export default function ClipContent() {
       clip60secondsConfirm();
     }
   }, [clipInfo]);
+
+  useEffect(() => {
+    if (clipPlayListTab.length === 0) {
+      const temp = sessionStorage.getItem("clipList");
+      if(temp) {
+        try {
+          const clipList = JSON.parse(temp);
+          globalAction.dispatchClipPlayListTab &&
+          globalAction.dispatchClipPlayListTab({type: 'add', data: clipList});
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  }, []);
 
   return (
     <>

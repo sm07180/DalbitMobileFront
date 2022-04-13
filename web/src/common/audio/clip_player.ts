@@ -137,8 +137,8 @@ export class ClipPlayerHandler {
     };
 
     this.findPlayingClip = (clipNo) => {
-      const { clipPlayList } = this.globalState;
-      const playingIdx = clipPlayList.indexOf(clipPlayList.find((item) => item.clipNo === clipNo));
+      const { clipPlayListTab } = this.globalState;
+      const playingIdx = clipPlayListTab.indexOf(clipPlayListTab.find((item) => item.clipNo === clipNo));
       this.isPlayingIdx = playingIdx;
     };
   }

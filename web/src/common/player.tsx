@@ -445,7 +445,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
   // }, []);
 
   useEffect(() => {
-    if (globalState.clipPlayList!.length > 0) {
+    if (globalState.clipPlayListTab.length > 0) {
       clipPlayer?.clipAudioTag?.addEventListener("ended", audioEndHandler);
     }
 

@@ -349,7 +349,7 @@ const ClipPage = () => {
                       playAction={(e)=>{
                         const playListInfoData = {
                           djType: 0,
-                          slctType: 1,
+                          slctType: 2,
                           dateType: 0,
                           page: 1,
                           records: 100,

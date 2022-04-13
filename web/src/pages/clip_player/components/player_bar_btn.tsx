@@ -22,7 +22,7 @@ export default function ClipPlayerBarButton() {
   const { globalState, globalAction } = useContext(GlobalContext);
   const { clipState, clipAction } = useContext(ClipContext);
 
-  const { clipPlayer, clipPlayMode, clipInfo } = globalState;
+  const { clipPlayer, clipPlayMode, clipInfo, clipPlayListTab } = globalState;
   const { setRightTabType, setUserMemNo } = clipAction;
 
   const createModeBtn = useCallback(() => {
@@ -101,12 +101,16 @@ export default function ClipPlayerBarButton() {
           type="button"
           className="playerBtn__prev"
           onClick={() => {
-            if (clipPlayer?.isPlayingIdx === 0) {
-              history.push(`/clip/${globalState.clipPlayList![globalState.clipPlayList!.length - 1].clipNo}`);
-            } else {
-              if (clipPlayer?.isPlayingIdx! !== undefined) {
-                history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! - 1].clipNo}`);
-              } else {
+            if(clipPlayListTab?.length > 1) {
+              const prevIdx = clipPlayer?.isPlayingIdx - 1;
+              const lastIdx = clipPlayListTab.length - 1;
+
+              if(clipPlayer?.isPlayingIdx === undefined) {
+                history.push(`/clip/${clipPlayListTab[0].clipNo}`);
+              }else if(clipPlayer?.isPlayingIdx === 0) {
+                history.push(`/clip/${clipPlayListTab[lastIdx].clipNo}`);
+              }else {
+                history.push(`/clip/${clipPlayListTab[prevIdx].clipNo}`);
               }
             }
           }}
@@ -128,12 +132,15 @@ export default function ClipPlayerBarButton() {
         </button>
         <button
           type="button"
-          className="playerBtn__prev"
+          className="playerBtn__next"
           onClick={() => {
-            if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
-              history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
-            } else if (clipPlayer?.isPlayingIdx! !== undefined) {
-              history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+            const nextIdx = clipPlayer?.isPlayingIdx + 1;
+            if(clipPlayListTab?.length > 1) {
+              if (clipPlayer?.isPlayingIdx! === undefined || clipPlayer?.isPlayingIdx === clipPlayListTab.length - 1) {
+                history.push(`/clip/${clipPlayListTab[0].clipNo}`);
+              }else {
+                history.push(`/clip/${clipPlayListTab[nextIdx].clipNo}`);
+              }
             }
           }}
         >
