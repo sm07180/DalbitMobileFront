@@ -2682,6 +2682,12 @@ export default class API {
       params: params
     })
   }
+  static getOtherPriceList = async () => {
+    return await ajax({
+      url: `/store/getOtherPriceList`,
+      method: 'GET',
+    })
+  }
 
   static new_social_login = async (obj) => {
     return await ajax({
