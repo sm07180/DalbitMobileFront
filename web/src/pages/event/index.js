@@ -50,6 +50,7 @@ import Share from './share'
 import PlatformWar from './platformWar'
 import ContentLab from './contentLab'
 import ContentStar from './contentStar'
+import ContentStarSchedule from './contentStarSchedule'
 import Wassup from './wassup'
 import moment from "moment";
 
@@ -161,6 +162,8 @@ export default (props) => {
         return <Wassup />
       case 'contentstar':
         return <ContentStar />
+      case 'contentstar_schedule':
+        return <ContentStarSchedule />
       default:
         return <></>
         break

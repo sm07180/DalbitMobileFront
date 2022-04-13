@@ -24,7 +24,7 @@ const ProfileDetail = (props) => {
   const context = useContext(Context)
   const {token, profile} = context
   const {memNo, type, index} = useParams();
-  const {tmemNo} = profile.memNo;
+  const tmemNo = profile.memNo;
   //memNo :글이 작성되있는 프로필 주인의 memNo
 
   const replyRef = useRef(null);
@@ -58,7 +58,7 @@ const ProfileDetail = (props) => {
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
   const detailData = useSelector(state => state.detail);
-  
+
   // 프로필 탭
   const profileTab = useSelector((state) => state.profileTab);
 
