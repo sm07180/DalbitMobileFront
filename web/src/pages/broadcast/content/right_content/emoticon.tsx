@@ -15,7 +15,7 @@ type ActionType = {
 export default function Emoticon(props) {
   const { globalAction, globalState } = useContext(GlobalContext);
   const { broadcastState } = useContext(BroadcastContext);
-  const { chatFreeze, chatLimit } = broadcastState;
+  const { chatFreeze, chatLimit, roomInfo } = broadcastState;
   const [emoticon, setEmoticon] = useState<Array<any>>([]);
   const [category, setCategory] = useState<Array<any>>([]);
   const [selectCategory, setSelectCategory] = useState<number>(-1);
@@ -30,8 +30,10 @@ export default function Emoticon(props) {
     if (chatFreeze === false || roomOwner === true) {
       chatInfo !== null &&
         chatInfo.sendSocketMessage(roomNo, "chat", "", emoticonDesc, (result: boolean) => {
-          /* 채팅 도배방지 */
-          chatInfo.chatLimitCheck();
+          /* 채팅 도배방지 (일반 청취자만)*/
+          if(roomInfo?.auth === 0) {
+            chatInfo.chatLimitCheck();
+          }
 
           if (result === false) {
           } else if (result === true) {

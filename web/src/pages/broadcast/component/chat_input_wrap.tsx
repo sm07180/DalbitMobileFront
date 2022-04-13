@@ -54,8 +54,10 @@ export default function ChatInputWrap(props: {
     if (chatInfo !== null) {
       if (chatFreeze === false || roomOwner === true) {
         chatInfo.sendSocketMessage(roomNo, "chat", "", message, (result: boolean) => {
-          /* 채팅 도배방지 */
-          chatInfo.chatLimitCheck();
+          /* 채팅 도배방지 (일반 청취자만)*/
+          if(roomInfo.auth === 0) {
+            chatInfo.chatLimitCheck();
+          }
 
           if (result === false) {
           } else if (result === true) {
