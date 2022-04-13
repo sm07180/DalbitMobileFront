@@ -436,4 +436,10 @@ export default class Utility {
     ];
     Hybrid('eventTracking', {service: firebaseDataArray})
   }
+
+  static addClipPlayList = (data) => {
+    if(data) {
+      sessionStorage.setItem("clip", JSON.stringify(data));
+    }
+  }
 }
