@@ -1,13 +1,7 @@
-import React, {useCallback, useState} from 'react'
+import React, {useState} from 'react'
 
 //global components
-import Api from 'context/api'
 import Header from 'components/ui/header/Header'
-import ListRow from 'components/ui/listRow/ListRow'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
-import GenderItems from 'components/ui/genderItems/GenderItems'
-import TabBtn from 'components/ui/tabBtn/TabBtn'
-import Swiper from 'react-id-swiper'
 
 //components
 import Tabmenu from '../../components/tabmenu'
