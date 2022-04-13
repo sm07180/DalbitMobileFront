@@ -47,7 +47,7 @@ import {IMG_SERVER} from "context/config";
 
 const ProfilePage = () => {
   const history = useHistory()
-  const location = useLocation();
+  // const location = useLocation(); => get parameter 이슈
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
