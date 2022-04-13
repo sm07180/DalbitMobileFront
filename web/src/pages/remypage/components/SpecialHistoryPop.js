@@ -57,7 +57,10 @@ const SpecialHistoryPop = (props) => {
       <section className="honorPopup">
         <div className='title'>
           <span><strong>{specialHistory.nickNm}</strong>님은</span>
-          <span>현재 스페셜DJ입니다.</span>
+          <span>{profileData.isSpecial ? "현재 스타DJ입니다." : "현재 스타DJ가 아닙니다."}</span>
+        </div>
+        <div className='reference'>
+          * 60일 이내에 2시간 이상 방송 시간이 없으면<br/>스타DJ 누적 횟수가 초기화 됩니다.
         </div>
         <div className='table'>
           <div className='summary'>
