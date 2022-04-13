@@ -35,7 +35,7 @@ import Common from "common";
 import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {setUpdateVersionInfo} from "redux/actions/payStore";
 
@@ -125,6 +125,7 @@ const App = () => {
   //본인인증
   const authRef = useRef()
   const history = useHistory()
+  const location = useLocation()
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
@@ -235,16 +236,16 @@ const App = () => {
       roomNo: null,
     };
     if (
-        globalCtx.globalAction.dispatchChatInfo &&
-        globalCtx.globalAction.dispatchMailChatInfo
+      globalCtx.globalAction.dispatchChatInfo &&
+      globalCtx.globalAction.dispatchMailChatInfo
     ) {
       const chatInfo = new ChatSocketHandler(socketUser,null, dispatch);
       chatInfo.setMemNo(memNo);
       // chatInfo.setSplashData(globalState.splashData);
       //deep copy chatInfo
       let cloneMailInfo = Object.assign(
-          Object.create(Object.getPrototypeOf(chatInfo)),
-          chatInfo
+        Object.create(Object.getPrototypeOf(chatInfo)),
+        chatInfo
       );
 
       globalCtx.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
@@ -550,8 +551,8 @@ const App = () => {
     const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
 
     const sessionRtc = sessionWowzaRtc
-        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
-            ? JSON.parse(sessionAgoraRtc) : undefined;
+      ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
+        ? JSON.parse(sessionAgoraRtc) : undefined;
 
     if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
       if(!rtcInfo){
@@ -618,6 +619,20 @@ const App = () => {
     historyListener();
     history.listen(historyListener);
   },[])
+
+  useEffect(()=>{
+    const pay = location.pathname.startsWith('/pay');
+    const store = location.pathname.startsWith('/store');
+    const main = location.pathname === '/';
+
+    if(pay || store || main){
+      Hybrid('stateFloating', {visible:'false'});
+    }else{
+      Hybrid('stateFloating', {visible:'true'});
+    }
+
+  },[location])
+
 
   useEffect(() => {
     // PG사 페이지에서는 뒤로가기 버튼이 없어서 추가됨

@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
 import API from "../../../context/api";
-import {Hybrid, isAndroid, isHybrid, isIos} from "../../../context/hybrid";
+import {Hybrid, isAndroid, isHybrid, isIos, openLayerPopup} from "../../../context/hybrid";
 import {OS_TYPE} from '../../../context/config'
 import moment from "moment";
 import Utility from "../../lib/utility";
@@ -135,6 +135,7 @@ const TitleButton = (props) => {
   }
 }
 
+// 하이브리드앱 스토어 버튼 클릭
 export const storeButtonEvent = ({history, memberRdx, payStoreRdx}) => {
   if(!memberRdx.isLogin){
     history.push('/login');
@@ -149,12 +150,14 @@ export const storeButtonEvent = ({history, memberRdx, payStoreRdx}) => {
   Utility.compareAppVersion(inAppUpdateVersion, ()=>{
     if(isAndroid()){
       history.push('/store');
+      // openLayerPopup({history, url:'/store'});
     }else{
       Hybrid('openInApp', '');
     }
   }, ()=>{
     if(isAndroid()){
       history.push('/store');
+      // openLayerPopup({history, url:'/store'});
     }else{
       Hybrid('openInApp', '');
     }
