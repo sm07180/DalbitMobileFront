@@ -14,8 +14,19 @@
     min-height: calc(100vh - 80px);
   }
   .header-wrap {
+    position: relative;
     background: transparent;
     border-bottom: 0;
+    .btnCloseWhite {
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      width: 36px;
+      height: 36px;
+      background: url("https://image.dalbitlive.com/svg/icon_back_white.svg") center no-repeat;
+      text-indent: -9999px;
+      z-index: 50;
+    }
   }
   .btnBox {
     position: absolute;
