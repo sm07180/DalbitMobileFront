@@ -41,7 +41,6 @@ const pagePerCnt = 50
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48 // pullToRefresh 높이
-let dataRefreshTimeout;
 const SCROLL_TO_DURATION = 500;
 let canHit = true // scroll 안에서는 상태값 갱신 안돼서 추가
 
@@ -427,11 +426,13 @@ const MainPage = () => {
       window.addEventListener('scroll', scrollToEvent)
       pullToRefreshAction();
       /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
-      dataRefreshTimeout = setTimeout(() => {
+      const dataRefreshTimeout = setTimeout(() => {
         window.removeEventListener('scroll', scrollToEvent);
         setDataRefreshPrevent(false);
         canHit = true;
       }, 1000);
+
+      return () => { clearTimeout(dataRefreshTimeout); }
     }
   }, [dataRefreshPrevent]);
 
@@ -479,7 +480,6 @@ const MainPage = () => {
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
-      clearTimeout(dataRefreshTimeout);
       window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
