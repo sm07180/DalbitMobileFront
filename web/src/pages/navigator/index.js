@@ -7,6 +7,10 @@ import qs from 'qs'
 //context
 import {Context} from 'context'
 
+/*
+* 결제가 완료 되었습니다.
+* 휴대폰 결제
+* */
 export default (props) => {
   //---------------------------------------------------------------------
   //context

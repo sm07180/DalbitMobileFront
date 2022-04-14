@@ -62,8 +62,9 @@ const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/pro
 // 프로필 - 피드, 팬보드 (상세)
 const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
-const Store = React.lazy(() => import('pages/store'))
-const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const Store = React.lazy(() => import('pages/store/Store'))
+// const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/OtherCharge'))
 const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
 const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
 const PayEnd = React.lazy(() => import('pages/store/contents/end/End'))
@@ -170,7 +171,7 @@ const Router = () => {
         <Route exact path="/mobileWeb" component={MobileWeb} />
 
         <Route exact path="/eventzip" component={EventZip} />
-        
+
         <Route exact path="/recentStar" component={RecentStar} />
 
         <Route exact path="/rule/" component={ReRule} />

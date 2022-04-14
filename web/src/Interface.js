@@ -23,6 +23,8 @@ import {authReq} from "pages/self_auth";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh, setIsWebView} from "redux/actions/common";
 import {MailboxContext} from "context/mailbox_ctx";
+import {getIndexData, setStoreInfo} from "redux/actions/payStore";
+import {payEndAOSInApp, payTryAOSInApp} from "common/api";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
 
 export const FOOTER_VIEW_PAGES = {
@@ -808,7 +810,6 @@ export default () => {
         console.log(JSON.stringify(event.detail))
         context.action.updateIsMailboxOn(event.detail.isMailboxOn)
         break
-
       case 'native-footer': // native footer 이동
         const type = event.detail.type.toLowerCase();
         const prevPath = location.pathname.toLowerCase();
@@ -823,6 +824,52 @@ export default () => {
           history.push(pushUrl);
         }
         break;
+      // [Native->web] AOS 인앱 결제 결과
+      case 'native-purchase':{
+        try{
+          const data = Object.assign({}, event.detail);
+          payTryAOSInApp(data).then(({data})=>{
+            const onPurchaseResultData = {
+              result:data.code,
+              signature:event.detail.signature,
+              originalJson:event.detail.purchaseData,
+            }
+            Hybrid('onPurchaseResult', onPurchaseResultData);
+          })
+        }catch(e){
+          Hybrid('onPurchaseResult', {
+            result:-1,
+            signature:event.detail.signature,
+            originalJson:event.detail.purchaseData,
+          });
+        }
+        break;
+      }
+      // [Native->web] AOS 인앱 소비 결과
+      case 'native-consume':{
+        try{
+          const data = Object.assign({}, event.detail);
+          payEndAOSInApp(data).then(({data})=>{
+            Hybrid('onConsumeResult', data.code);
+            dispatch(getIndexData(history.action));
+            dispatch(setStoreInfo({state:"ready"}));
+          });
+        }catch(e){
+          Hybrid('onConsumeResult', -1);
+        }
+        break;
+      }
+      // [Native->web] IOS 인앱 결과
+      case 'native-ios-inapp-result':{
+        try{
+          dispatch(setStoreInfo({state:"ready"}));
+          window.location.replace(history.location.pathname+history.location.search);
+        }catch(e){
+          console.error(`native-ios-inapp-result e=>`, e);
+        }
+        break;
+      }
+
       default:
         break
     }
@@ -1152,6 +1199,12 @@ export default () => {
     /* native footer */
     document.addEventListener('native-footer', update)
 
+    /* AOS-inApp */
+    document.addEventListener('native-purchase', update)
+    document.addEventListener('native-consume', update)
+    /* IOS-inApp */
+    document.addEventListener('native-ios-inapp-result', update)
+
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -1192,6 +1245,12 @@ export default () => {
 
       /* native footer */
       document.removeEventListener('native-footer', update)
+
+      document.removeEventListener('native-purchase', update)
+      document.removeEventListener('native-consume', update)
+
+      /* IOS-inApp */
+      document.addEventListener('native-ios-inapp-result', update)
     }
   }, [])
 
