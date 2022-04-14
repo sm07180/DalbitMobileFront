@@ -1,7 +1,8 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
 
-import Lottie from 'react-lottie'
-import Swiper from 'react-id-swiper'
+import Api from 'context/api';
+import Lottie from 'react-lottie';
+import Swiper from 'react-id-swiper';
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
@@ -15,13 +16,12 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 const TopRanker = (props) => {
   const {data, rankSlct, rankType} = props
 
-  const context = useContext(Context);
-
   const history = useHistory();
-
+  const context = useContext(Context);
   const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
+  const [rankSetting, setRankSetting] = useState();
 
   // 스와이퍼
   const swiperParams = {
@@ -35,7 +35,45 @@ const TopRanker = (props) => {
     },
     initialSlide: 2,
     rebuildOnUpdate: true
-  }
+  };
+
+  // 랭킹 패치
+  const fetchRankApply = () => {
+    Api.getRankingApply().then((res) => {
+      if (res.result === 'success') {
+        if (res.data.apply_ranking === 1) {
+          setRankSetting(true);
+        } else {
+          setRankSetting(false);
+        }
+      }
+    });
+  };
+  
+  // 랭킹 버튼 액션
+  const fetchRankSetting = (set) => {
+    const params = {
+      isRankData: set,
+    };
+    Api.postRankSetting(params).then((res) => {
+      if (res.result === 'success') {
+        context.action.toast({msg: res.message});
+        fetchRankApply();
+      }
+    });
+  };
+
+  const clickRankSetting = () => {
+    context.action.confirm({
+      callback: () => {
+        fetchRankSetting(!rankSetting);
+      },
+      msg: `${rankSetting ? `<strong>미참여중</strong>으로 설정되어있는 동안
+      나의 활동이 FAN랭킹에 반영되지 않습니다
+       변경하시겠습니까?` : `지금부터 나의 활동이 FAN랭킹에 반영됩니다.
+      변경하시겠습니까?`}`
+    });
+  };
 
   const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
     if (context.token.isLogin === false) {
@@ -76,25 +114,35 @@ const TopRanker = (props) => {
         }
       }
     }
-  }
+  };
+
+  useEffect(() => {
+    if (rankSlct === "FAN") fetchRankApply();
+  },[rankSlct]);
 
   return (
     <React.Fragment>
-      <span className='questionMark' onClick={() => setPopup(true)}></span>
+      <div className="topItems">
+        {context.token.isLogin && rankSlct === "FAN" &&
+          <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
+        }
+        <span className='questionMark' onClick={() => setPopup(true)}></span>
+      </div>
       {data && data.length > 0 &&    
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
               <div className='rankingTop3' key={index}>
-                <div className='topHeader'>{
-                index === 0 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
-                  :
-                index === 1 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
-                  :
-                  `${index + 1}회차`
-                } TOP3
+                <div className='topHeader'>
+                  {
+                  index === 0 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                    :
+                  index === 1 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                    :
+                    `${index + 1}회차`
+                  } TOP3
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
@@ -208,7 +256,11 @@ const TopRanker = (props) => {
             <>
               <div className='popTitle'>FAN 랭킹 선정 기준</div>
               <div className='popSubTitle'>
-              보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.
+              보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.<br/>
+              </div>
+              <div className='popText'>
+              참여중/미참여중 버튼을 눌러,<br/>
+              나의 FAN랭킹 참여 상태를 변경할 수 있습니다.
               </div>
             </>
 
