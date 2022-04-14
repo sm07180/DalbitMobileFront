@@ -149,14 +149,14 @@ export default (props) => {
       case 0:
         return <></>;
       case 3:
-        return <Header title={'법정대리인(보호자) 동의 완료'} type='back' />
+        return <Header title={'법정대리인(보호자) 동의 완료'} type='back' backEvent={legalAuthBackEvent} />
       case 4:
       case 12:
-        return <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />;
+        return <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
       case 13:
-        return <Header title={'법정대리인(보호자) 동의'} type='back' />
+        return <Header title={'법정대리인(보호자) 동의'} type='back' backEvent={null} />
       default:
-        return <Header title={'본인 인증 완료'} type='back' />
+        return <Header title={'본인 인증 완료'} type='back' backEvent={null} />
     }
   }
 
