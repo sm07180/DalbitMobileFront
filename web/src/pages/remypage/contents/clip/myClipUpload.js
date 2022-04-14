@@ -6,15 +6,12 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 import Swiper from 'react-id-swiper'
 import {useHistory} from "react-router-dom";
-import _ from 'lodash';
 import Utility from "components/lib/utility";
-import {NewClipPlayerJoin} from "common/audio/clip_func";
 import {Context} from "context";
-import Api from "common/api";
 import API from "context/api";
-import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import TabButton from "components/ui/tabBtn/TabButton";
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
+import {playClip} from "pages/clip/components/clip_play_fn";
 
 
 const MyClipUpload = (props) => {
@@ -30,21 +27,18 @@ const MyClipUpload = (props) => {
     slidesPerView: 'auto',
   }
 
-  const playClip = (clipNo, memNo) => {
+  const clipPlayHandler = (clipNo, memNo) => {
     if (searchInfo.myClipType === 0) {
       if (!clipNo) return;
       const playListInfoData = {
         memNo: context.globalState.baseData.memNo,
         page: 1,
-        records: 100
+        records: 100,
+        type: 'setting'
       }
 
-      localStorage.setItem(
-        "clipPlayListInfo",
-        JSON.stringify(playListInfoData)
-      );
-      const clipParam = {clipNo: clipNo, gtx: context, history};
-      NewClipPlayerJoin(clipParam);
+      const clipParam = {clipNo, playList: myClipInfo.list, context, history, playListInfoData};
+      playClip(clipParam)
     } else {
       if (!memNo) return;
       history.push(`/profile/${memNo}`);
@@ -212,7 +206,7 @@ const MyClipUpload = (props) => {
         {myClipInfo.list.map((item, index) => {
           return (
             <div className="listRow" key={index}>
-              <div className="photo" onClick={() => { playClip(item.clipNo, item.memNo) }}>
+              <div className="photo" onClick={() => { clipPlayHandler(item.clipNo, item.memNo) }}>
                 {(searchInfo.myClipType === 0 && item.openType === 0) && <div className="photoLock"/>}
                 <img src={searchInfo.myClipType === 0 ? item.bgImg.thumb292x292 : item.profImg.url} alt="" onError={handleImgError}/>
               </div>

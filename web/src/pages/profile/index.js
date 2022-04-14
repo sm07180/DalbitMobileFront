@@ -47,7 +47,7 @@ import {IMG_SERVER} from "context/config";
 
 const ProfilePage = () => {
   const history = useHistory()
-  const location = useLocation();
+  // const location = useLocation(); => get parameter 이슈
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
@@ -78,7 +78,6 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
-  const isWebView = useSelector(state => state.common).isWebView;
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
 

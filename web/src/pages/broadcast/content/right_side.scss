@@ -275,6 +275,14 @@
         outline: none;
       }
 
+      .disabled{
+        background-color: #aaa;
+
+        &::placeholder{
+          color: #000;
+        }
+      }
+
       .emoji-icon {
         position: absolute;
         right: 0;
