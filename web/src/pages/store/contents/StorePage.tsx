@@ -19,8 +19,12 @@ import qs from 'query-string';
 import moment from "moment";
 
 import { GlobalContext } from "context";
+import Api from "../../../context/api";
+import {parentCertChk} from "../../../common/api";
+import {authReq} from "pages/self_auth";
 
 const StorePage = ()=>{
+  const context = useContext(GlobalContext)
   const { globalAction } = useContext(GlobalContext);
 
   const history = useHistory();
@@ -29,7 +33,7 @@ const StorePage = ()=>{
   const payStoreRdx = useSelector(({payStore})=> payStore);
   const memberRdx = useSelector(({member})=> member);
   const {webview} = qs.parse(location.search)
-  const movePayment = (item:DalPriceType) => {
+  const movePayment = async (item:DalPriceType) => {
     if(payStoreRdx.storeInfo.mode === ModeType.none){
       console.log(`storeInfo.mode none`)
       return;
@@ -49,30 +53,65 @@ const StorePage = ()=>{
       return;
     }
 
-    if(tabInfo.modeTab === ModeTabType.inApp){
-      dispatch(setStoreInfo({state:"progress"}));
-      setTimeout(()=>{
-        dispatch(setStoreInfo({state:"ready"}));
-      }, 2000)
-      if(payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.Android){
-        Hybrid('doBilling', {
-          itemCode: item.itemNo,
-          itemKey: `${memberRdx.memNo}_${moment(moment.now()).format('YYYYMMDDHHmmss')}`
-        });
+    const goPaymentPage = () => {
+      if(tabInfo.modeTab === ModeTabType.inApp){
+        dispatch(setStoreInfo({state:"progress"}));
+        setTimeout(()=>{
+          dispatch(setStoreInfo({state:"ready"}));
+        }, 2000)
+        if(payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.Android){
+          Hybrid('doBilling', {
+            itemCode: item.itemNo,
+            itemKey: `${memberRdx.memNo}_${moment(moment.now()).format('YYYYMMDDHHmmss')}`
+          });
+        }
+        if(payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.IOS){
+          Hybrid('openChargeWithItemCode', {
+            productNm: item.itemNo
+            , productPrice: item.itemPriceDefault
+          });
+        }
+        return;
+      }else{
+        const otherPageLocation = {
+          pathname: '/store/dalcharge',
+          search: `?itemNm=${encodeURIComponent(item.itemNm)}&price=${item.itemPrice}&itemNo=${item.itemNo}&dal=${item.givenDal}`
+        }
+        history.push(otherPageLocation);
       }
-      if(payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.IOS){
-        Hybrid('openChargeWithItemCode', {
-          productNm: item.itemNo
-          , productPrice: item.itemPriceDefault
-        });
+    }
+
+    const {result, data} = await Api.self_auth_check();
+    if(result === 'success') {
+      const parentCert = await parentCertChk();
+      if(parentCert.code === '00000') {
+        if(data.adultYn === 'y' || parentCert.data === 'y') {
+          goPaymentPage();
+        }else {
+          context.action.confirm({
+            title: '보호자의 동의가 필요합니다',
+            msg: `달충전을 하시려면 보호자(법정대리인)의 동의가 필요합니다.`,
+            callback: () => {
+              history.push(`/legalRepresentative`);
+            }
+          })
+        }
+      }else {
+        context.action.alert({
+          msg: `오류가 발생했습니다.`,
+          callback: () => {
+            history.push('/')
+          }
+        })
       }
-      return;
-    }else{
-      const otherPageLocation = {
-        pathname: '/store/dalcharge',
-        search: `?itemNm=${encodeURIComponent(item.itemNm)}&price=${item.itemPrice}&itemNo=${item.itemNo}&dal=${item.givenDal}`
-      }
-      history.push(otherPageLocation);
+    }else {
+      context.action.confirm({
+        title: '본인인증을 완료해주세요',
+        msg: `결제를 하기 위해 본인인증을 완료해주세요.`,
+        callback: () => {
+          authReq({code: '12', formTagRef: context.authRef, context, pushLink: '/store'});
+        }
+      })
     }
   }
 
