@@ -56,7 +56,7 @@ export default function ChatInputWrap(props: {
         chatInfo.sendSocketMessage(roomNo, "chat", "", message, (result: boolean) => {
           /* 채팅 도배방지 (일반 청취자만)*/
           if(roomInfo.auth === 0) {
-            chatInfo.chatLimitCheck();
+            chatInfo.chatLimitCheck(setChatText);
           }
 
           if (result === false) {

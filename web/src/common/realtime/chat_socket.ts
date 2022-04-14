@@ -140,7 +140,7 @@ export class ChatSocketHandler {
     this.broadcastStateChange = {};
   }
 
-  chatLimitCheck(){
+  chatLimitCheck(setStateFn = (v) => {}){
     let chatLimit = false;
     const {timeArray} = this.chatLimit;
     const now = new Date().getTime();
@@ -179,6 +179,13 @@ export class ChatSocketHandler {
           status: true,
           message: "채팅 도배로 인해 3초간 채팅 이용이 제한됩니다.",
         });
+
+        try {
+          // 간헐적으로 채팅 내용이 남아있어서 초기화
+          setStateFn("");
+        } catch (e) {
+          console.warn(e);
+        }
       }
 
       /* this.addMsgElement(
