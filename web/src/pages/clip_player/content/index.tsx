@@ -22,6 +22,7 @@ import { ClipContext } from "context/clip_ctx";
 
 import "./clip_player.scss";
 import "./tab_contents.scss";
+import Utility from "../../../components/lib/utility";
 
 export default function ClipContent() {
   const { clipNo } = useParams<{ clipNo: string }>();
@@ -30,7 +31,7 @@ export default function ClipContent() {
 
   const { globalState, globalAction } = useContext(GlobalContext);
   const { clipState, clipAction } = useContext(ClipContext);
-  const { clipPlayer, baseData, clipInfo } = globalState;
+  const { clipPlayer, baseData, clipInfo, clipPlayListTab } = globalState;
   const { dispatchClipPlayList, dispatchClipPlayListTab } = globalAction;
 
   const [playState, setPlayState] = useState(false);
@@ -41,9 +42,10 @@ export default function ClipContent() {
     const { result, message, data } = await postClipPlay({
       clipNo: clipNo,
     });
+
     if (result === "success") {
       createPlayer(data, "firstStart");
-      sessionStorage.setItem("clip", JSON.stringify(data));
+
       if (!clipInfo?.clipNo || (clipInfo?.clipNo !== data.clipNo && historyState === "firstJoin")) {
         updatePlayList(data);
       }
@@ -53,7 +55,7 @@ export default function ClipContent() {
         content: message,
         callback: playFailHandler,
         cancelCallback: playFailHandler,
-      });
+      })
     }
   };
 
@@ -71,6 +73,9 @@ export default function ClipContent() {
         cancelCallback: () => history.goBack(),
       });
     };
+
+    Utility.addClipPlayList(data);
+    dispatchClipPlayList && dispatchClipPlayList({type: 'add', data});
 
     if (data.file.url === newClipPlayer?.clipAudioTag?.src && data.clipNo !== newClipPlayer!.clipNo) {
       newClipPlayer!.restart();
@@ -94,13 +99,13 @@ export default function ClipContent() {
       history.goBack();
       return;
     }
-    if (globalState.clipPlayList.length > 0) {
-      if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
+    if (clipPlayListTab.length > 0) {
+      if (clipPlayer?.isPlayingIdx === clipPlayListTab.length - 1) {
         if (globalState.clipPlayMode !== "normal" && globalState.clipPlayMode !== "oneLoop") {
-          history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
+          history.push(`/clip/${clipPlayListTab[0].clipNo}`);
         }
       } else {
-        history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+        history.push(`/clip/${clipPlayListTab[clipPlayer?.isPlayingIdx! + 1].clipNo}`);
       }
     } else {
       history.push(`/clip`);
@@ -113,7 +118,9 @@ export default function ClipContent() {
       playListInfo = JSON.parse(localStorage.getItem("clipPlayListInfo")!);
     }
     if (playListInfo === undefined) return null;
-    if (playListInfo.hasOwnProperty("type") && playListInfo.type === "one") {
+    if(playListInfo.type === 'setting') return;
+
+    if ((playListInfo.hasOwnProperty("type") && playListInfo.type === "one")) {
       dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: oneData });
       if (globalState.clipPlayMode !== "shuffle") {
         return dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: oneData });
@@ -171,12 +178,6 @@ export default function ClipContent() {
       });
     }
   };
-
-  useEffect(() => {
-    if (globalState.clipInfo !== null) {
-      sessionStorage.setItem("clip", JSON.stringify(globalState.clipInfo));
-    }
-  }, [globalState.clipInfo]);
 
   useEffect(() => {
     if (sessionStorage.getItem("clip") === null) {
@@ -247,6 +248,21 @@ export default function ClipContent() {
       clip60secondsConfirm();
     }
   }, [clipInfo]);
+
+  useEffect(() => {
+    if (clipPlayListTab.length === 0) {
+      const temp = sessionStorage.getItem("clipList");
+      if(temp) {
+        try {
+          const clipList = JSON.parse(temp);
+          globalAction.dispatchClipPlayListTab &&
+          globalAction.dispatchClipPlayListTab({type: 'add', data: clipList});
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  }, []);
 
   return (
     <>

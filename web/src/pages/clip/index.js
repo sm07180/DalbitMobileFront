@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from 'react'
 import { Context } from "context";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { NewClipPlayerJoin } from "common/audio/clip_func";
-import { IMG_SERVER } from "context/config";
 import { setIsRefresh } from "redux/actions/common";
 import Api from 'context/api';
 import moment from 'moment';
@@ -21,7 +19,7 @@ import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
 
 import './scss/clipPage.scss';
-import {broadcastList} from "common/api";
+import {playClip} from "pages/clip/components/clip_play_fn";
 
 const ClipPage = () => {
   const context = useContext(Context);
@@ -32,17 +30,23 @@ const ClipPage = () => {
 
   const bgColor = ['#DEE7F7', '#EFE9FA', '#FDE0EE', '#FAE7DA', '#FFEED6', '#EBF2DF', '#E0F2EE', '#E2F1F7', '#FAE1E1']; // 떠오른 클립 배경 색상, IMG 오류 나면 뿌려질 색상값.
 
+  const [popularAllInfo, setPopularAllInfo] = useState([]); // 방금 떠오른 클립 전체 리스트
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
-  const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립
+
+  const [hotClipAllInfo, setHotClipAllInfo] = useState([]); // 핫 클립 전체 리스트
+  const [hotClipInfo, setHotClipInfo] = useState({list: [], cnt: 0}); // 핫 클립 1~9위
+
   const [likeClipInfo, setLikeClipInfo] = useState({ list: [], paging: {} }); // 좋아요한 클립
   const [listenClipInfo, setListenClipInfo] = useState({ list: [], paging: {} }); // 최근 들은 클립
+
+  const [subClipAllInfo, setSubClipAllInfo] = useState([]);
   const [subClipInfo, setSubClipInfo] = useState({ list: [], paging: {} }); // 아래 카테고리별 리스트
   const [subSearchInfo, setSubSearchInfo] = useState(subjectType[1]); // 아래 카테고리별 검색 조건
 
   // 조회 Api
   /* 핫 클립 */
   const getHotClipInfo = () => {
-    Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 9 }).then(res => {
+    Api.getClipRankingList({ rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100 }).then(res => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
@@ -60,6 +64,7 @@ const ClipPage = () => {
           }
         }
         setHotClipInfo({ list: tempHotClipList, cnt: res.data.paging.total});
+        setHotClipAllInfo(res.data.list)
       } else {
         if (hotClipInfo.list.length > 0) setHotClipInfo({ list: [], cnt: 0});
       }
@@ -91,13 +96,14 @@ const ClipPage = () => {
 
   // 방금 떠오른 클립 리스트 가져오기
   const getClipLastList = () => {
-    Api.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 9 }).then(res => {
+    Api.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 100 }).then(res => {
       if (res.code === 'C001') {
         let tempHotClipList = [];
         let temp = [];
         let randomColor = bgColor.sort(() => Math.random() - 0.5)
+        let maxCnt = res.data.paging.total < 9 ? res.data.paging.total : 9;
 
-        for (let i = 0; i < res.data.paging.records; i++) {
+        for (let i = 0; i < maxCnt; i++) {
 
 
           if (res.data.paging.records > i) {
@@ -113,14 +119,20 @@ const ClipPage = () => {
         }
 
         setPopularClipInfo(tempHotClipList);
+        setPopularAllInfo(res.data.list)
       }
     });
   };
 
   const getClipList = () => {
-    Api.getClipList({ gender: '', djType: 0, slctType: 1, dateType: 0, page: 1, records: 5, subjectType: subSearchInfo.value }).then(res => {
+    Api.getClipList({ gender: '', djType: 0, slctType: 2, dateType: 0, page: 1, records: 100, subjectType: subSearchInfo.value }).then(res => {
       if (res.code === 'C001') {
-        setSubClipInfo({ list: res.data.list, paging: {...res.data.paging}});
+        const list = res.data.list;
+        const showRecommendClipLength = 5;
+        list.length > showRecommendClipLength ?
+          setSubClipInfo({ list: res.data.list.slice(0, showRecommendClipLength), paging: {...res.data.paging}})
+          : setSubClipInfo({ list: res.data.list.slice(0, list.length), paging: {...res.data.paging}});
+        setSubClipAllInfo(list);
       }
     });
   };
@@ -142,16 +154,6 @@ const ClipPage = () => {
       setSubSearchInfo(subjectType[1]);
     } else {
       setSubSearchInfo(subjectType[target + 1]);
-    }
-  };
-
-  const playClip = (e) => {
-    const { clipNo } = e.currentTarget.dataset;
-
-    if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, gtx: context, history };
-
-      NewClipPlayerJoin(clipParam);
     }
   };
 
@@ -177,6 +179,17 @@ const ClipPage = () => {
 
     dispatch(setIsRefresh(false));
   };
+
+  const clipPlayAction = ({event, playList, playListInfoData}) => {
+    const playClipParams = {
+      clipNo: event.currentTarget.dataset.clipNo,
+      playList,
+      context,
+      history,
+      playListInfoData,
+    }
+    playClip(playClipParams);
+  }
 
   useEffect(() => {
     getHotClipInfo();
@@ -207,20 +220,18 @@ const ClipPage = () => {
                 return (<div key={index}>
                   {row.map((coreRow, coreIndex) => {
                     if (Object.keys(coreRow).length > 0) {
-                      return (<HotClip key={coreIndex} info={coreRow} playAction={(e)=>{
-                        const playListInfoData = {
-                          slctType: 2,
-                          dateType: 0,
-                          page: 1,
-                          records: 100,
-                          type:'one'
-                      }
-                        localStorage.setItem(
-                          "clipPlayListInfo",
-                          JSON.stringify(playListInfoData)
-                        );
-                        playClip(e)
-                      }}/>);
+                      return (<HotClip key={coreIndex} info={coreRow}
+                                       playAction={(e)=>{
+                                         const playListInfoData = {
+                                           rankType: 1,
+                                           rankingDate: moment().format('YYYY-MM-DD'),
+                                           page: 1,
+                                           records: 100,
+                                           type:'setting'
+                                         }
+                                         clipPlayAction({event: e, playList: hotClipAllInfo, playListInfoData})
+                                       }}
+                              />);
                     }
                   })}
                 </div>);
@@ -257,39 +268,35 @@ const ClipPage = () => {
           {listenClipInfo.list.length > 0 &&
           <>
             <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
-            <SwiperList data={listenClipInfo.list} playAction={(e)=>{
-              const playListInfoData = {
-                slctType: 4,
-                dateType: 0,
-                page: 1,
-                records: 100,
-                type:'one'
-              }
-              localStorage.setItem(
-                "clipPlayListInfo",
-                JSON.stringify(playListInfoData)
-              );
-              playClip(e)
-            }} />
+            <SwiperList data={listenClipInfo.list}
+                        playAction={(e)=>{
+                          const playListInfoData = {
+                            slctType: 0,
+                            page: 1,
+                            records: 100,
+                            memNo: context.token.memNo,
+                            type:'setting'
+                          }
+                          clipPlayAction({event: e, playList: listenClipInfo.list, playListInfoData})
+                        }}
+            />
           </>
           }
           {likeClipInfo.list.length > 0 &&
           <div className="mgt24">
             <ClipSubTitle title={'좋아요한 클립'} more={'clip/like/list'}/>
-            <SwiperList data={likeClipInfo.list} playAction={(e)=>{
-              const playListInfoData = {
-                slctType: 3,
-                dateType: 0,
-                page: 1,
-                records: 100,
-                type:'one'
-              }
-              localStorage.setItem(
-                "clipPlayListInfo",
-                JSON.stringify(playListInfoData)
-              );
-              playClip(e)
-            }} />
+            <SwiperList data={likeClipInfo.list}
+                        playAction={(e)=>{
+                          const playListInfoData = {
+                            memNo: context.token.memNo,
+                            slctType: 1,
+                            page: 1,
+                            records: 100,
+                            type:'setting'
+                          }
+                          clipPlayAction({event: e, playList: likeClipInfo.list, playListInfoData})
+                        }}
+            />
           </div>
           }
         </section>
@@ -303,19 +310,19 @@ const ClipPage = () => {
                     <div>
                       {row.map((coreRow, coreIndex) => {
                         if (Object.keys(coreRow).length > 0) {
-                          return (<NowClip key={coreIndex} info={coreRow} playAction={(e)=>{
-                            const playListInfoData = {
-                              dateType: 0,
-                              page: 1,
-                              records: 100,
-                              slctType: 1
-                            }
-                            localStorage.setItem(
-                              "clipPlayListInfo",
-                              JSON.stringify(playListInfoData)
-                            );
-                            playClip(e)
-                          }} />)
+                          return (<NowClip key={coreIndex} info={coreRow}
+                                           playAction={(e)=>{
+                                             const playListInfoData = {
+                                               search: '',
+                                               slctType: 1,
+                                               dateType: 0,
+                                               page: 1,
+                                               records: 100,
+                                               type: 'setting'
+                                             }
+                                             clipPlayAction({event: e, playList: popularAllInfo, playListInfoData})
+                                           }}
+                                  />)
                         } else {
                           return <></>;
                         }
@@ -338,20 +345,20 @@ const ClipPage = () => {
             </h2>
             <button onClick={changeList}>새로고침</button>
           </div>
-          <SwiperList data={subClipInfo.list} playAction={(e)=>{
-            const playListInfoData = {
-              dateType: 0,
-              page: 1,
-              records: 100,
-              slctType: 2,
-              subjectType: ""
-            }
-            localStorage.setItem(
-              "clipPlayListInfo",
-              JSON.stringify(playListInfoData)
-            );
-            playClip(e)
-          }}/>
+          <SwiperList data={subClipInfo.list}
+                      playAction={(e)=>{
+                        const playListInfoData = {
+                          djType: 0,
+                          slctType: 2,
+                          dateType: 0,
+                          page: 1,
+                          records: 100,
+                          subjectType: subSearchInfo.value,
+                          type: 'setting'
+                        }
+                        clipPlayAction({event: e, playList: subClipAllInfo, playListInfoData})
+                      }}
+          />
         </section>
       </div>
     </>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, {useState, useEffect, useReducer, useContext} from 'react'
 
 import Api from 'context/api'
 
@@ -7,19 +7,12 @@ import Header from 'components/ui/header/Header'
 
 import './message.scss'
 import Toast from "components/ui/toast/Toast";
+import {Context} from "context";
 
 const Message = () => {
   const [messageList, setMessageList] = useState([]);
   const [btnActive, setBtnActive] = useState(false);
-  const [toast, setToast] = useState({state : false, msg : ""});
-  
-  //토스트 메시지 출력
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
+  const context = useContext(Context);
 
   //퀵 메시지 조회
   const fetchData = async () => {
@@ -31,8 +24,8 @@ const Message = () => {
   const fetchEditData = async (e) => {
     const idx = e.currentTarget.dataset.idx;
     const res = await Api.member_broadcast_shortcut({method: "POST", data: {...messageList[idx]}})
-    if(res.result === "success") {toastMessage("퀵 메시지를 저장하였습니다."); setBtnActive(false);}
-    else {toastMessage(res.message);
+    if(res.result === "success") {context.action.toast({msg: "퀵 메시지를 저장하였습니다."}); setBtnActive(false);}
+    else {context.action.toast({msg: res.message});
     }
   }
 
@@ -89,7 +82,6 @@ const Message = () => {
           }
         </div>
       </div>
-      {toast.state && <Toast msg={toast.msg}/>}
     </div>
   )
 }

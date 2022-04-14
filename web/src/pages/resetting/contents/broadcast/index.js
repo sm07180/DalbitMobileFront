@@ -16,34 +16,28 @@ import './broadcast.scss'
 import API from "context/api";
 import {Context} from "context";
 import Toast from "components/ui/toast/Toast";
+import Notice from "pages/resetting/contents/broadcast/broadcastNotice";
 
 const SettingBroadcast = () => {
   const params = useParams();
-  const history = useHistory();
   const settingCategory = params.category;
   const [settingData, setSettingData] = useState({});
   const [menuListInfo, setMenuListInfo] = useState([
     {text:'방송 제목', path: '/setting/streaming/title'},
     {text:'DJ 인사말', path: '/setting/streaming/greeting'},
+    {text:'방송방 공지', path: '/setting/streaming/broadcastNotice'},
     {text:'퀵 메시지', path: '/setting/streaming/message'},
     {text:'방송 청취 정보 공개', path: '/setting/streaming/infoOpen'},
     {text:'선물 시 자동 스타 추가', value: false},
     {text:'배지 / 입·퇴장 메시지', path: '/setting/streaming/inOutMessage'},
   ]);
-  const [toast, setToast] = useState({state : false, msg : ""});
-
-  const toastMessage = (text) => {
-    setToast({state: true, msg : text})
-    setTimeout(() => {
-      setToast({state: false})
-    }, 3000)
-  }
+  const context = useContext(Context);
 
   //선물 시 자동 스타 추가 정보 수정
   const fetchData = async (value, index) => {
     const res = await API.modifyBroadcastSetting({giftFanReg: !value})
     if(res.result === "success") {
-      toastMessage(res.message);
+      context.action.toast({msg: res.message});
       setMenuListInfo(menuListInfo.map((v, idx) => {
         if(idx === index) {v.value = !value}
         return v
@@ -56,7 +50,7 @@ const SettingBroadcast = () => {
     const res = await API.getBroadcastSetting();
     if(res.result === "success") {
       setMenuListInfo(menuListInfo.map((v,idx) => {
-        if(idx === 4) {v.value = res.data.giftFanReg}
+        if(idx === 5) {v.value = res.data.giftFanReg}
         return v
       }))
       setSettingData(res.data);
@@ -76,13 +70,14 @@ const SettingBroadcast = () => {
           <div className='menuWrap'>
             {menuListInfo.map((list,index) => {
               return (
-                <MenuList text={list.text} path={list.path} key={index} disabledClick={index === 4 ? true : false}>
+                <MenuList text={list.text} path={list.path} key={index} disabledClick={index === 5 ? true : false}>
                   {index < 2 && <small>최대 3개</small>}
-                  {index === 2 && <small>최대 6개</small>}
-                  {index === 4 &&
+                  {index === 2 && <small>최대 1개</small>}
+                  {index === 3 && <small>최대 6개</small>}
+                  {index === 5 &&
                   <label className="inputLabel" >
-                        <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
-                               onChange={() => fetchData(list.value, index)}/>
+                    <input type="checkbox" className={`blind`} name={"autoAddStar"} checked={list.value}
+                           onChange={() => fetchData(list.value, index)}/>
                     <span className={`switchBtn`}/>
                   </label>
                   }
@@ -98,16 +93,18 @@ const SettingBroadcast = () => {
           settingCategory === "greeting" ?
             <Greeting/>
             :
-            settingCategory === "message" ?
-              <Message/>
+            settingCategory === 'broadcastNotice' ?
+              <Notice />
               :
-              settingCategory === "infoOpen" ?
-                <InfoOpen settingData={settingData} setSettingData={setSettingData}/>
+              settingCategory === "message" ?
+                <Message/>
                 :
-                settingCategory === "inOutMessage" &&
-                <InOutMessage settingData={settingData} setSettingData={setSettingData}/>
+                settingCategory === "infoOpen" ?
+                  <InfoOpen settingData={settingData} setSettingData={setSettingData}/>
+                  :
+                  settingCategory === "inOutMessage" &&
+                  <InOutMessage settingData={settingData} setSettingData={setSettingData}/>
       }
-      {toast.state && <Toast msg={toast.msg}/>}
     </>
   )
 }

@@ -36,6 +36,7 @@ import Alert from "common/alert";
 import MoveToAlert from "common/alert/MoveToAlert";
 import AdminLayerPopup from "pages/common/popup/AdminLayerPopup";
 import {useHistory} from "react-router-dom";
+import {getDeviceOSTypeChk} from "common/DeviceCommon";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -75,13 +76,13 @@ const baseSetting = async (globalCtx, broadcastAction) => {
       newClipPlayer = new ClipPlayerHandler(data)
     };
     newClipPlayer.setGlobalAction?.(globalAction);
-    const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
+    const fileUrlBoolean = data.file?.url === newClipPlayer?.clipAudioTag?.src;
     const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
     if ( fileUrlBoolean && clipNoBoolean ) {
-      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.init(data.file?.url);
       newClipPlayer?.restart();
     } else {
-      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.init(data.file?.url);
     }
     newClipPlayer?.clipNoUpdate(data.clipNo);
 
@@ -209,7 +210,7 @@ const App = () => {
     //앱 업데이트 후 에이전트 받음
     //모바일 웹, PC 웹인 경우
     const createHeader = {
-      os: OS_TYPE['Desktop'], //OS_TYPE['Desktop']
+      os: getDeviceOSTypeChk(), //OS_TYPE['Desktop']
       deviceId: createDeviceUUid(),
       appVersion: '1.0.1',
       locale: 'ko',
@@ -623,7 +624,7 @@ const App = () => {
         }
       })
 
-      // window.location.href = '/error';
+      window.location.href = '/error';
 
       /*return (
         <section id="error">

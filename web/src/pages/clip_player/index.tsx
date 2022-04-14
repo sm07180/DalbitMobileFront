@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useContext } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React from "react";
 
 import { ClipProvider } from "context/clip_ctx";
 import ClipContent from "./content";

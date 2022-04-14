@@ -134,6 +134,16 @@ export default (props) => {
     }
   }
 
+  /* 법정대리 동의 완료 후 뒤로가기 처리 */
+  const legalAuthBackEvent = () => {
+    if(isDesktop()) {
+      window.opener.location.replace('/wallet?exchange');
+      window.close();
+    } else {
+      history.replace('/');
+    }
+  }
+
   const createHeader = () => {
     switch (authState) {
       case 0:
@@ -221,14 +231,7 @@ export default (props) => {
             </p>
             <div className="btn-wrap">
               <button
-                onClick={() => {
-                  if(isDesktop()) {
-                    window.opener.location.href = '/wallet?exchange';
-                    window.close();
-                  }else {
-                    history.push('/wallet?exchange')
-                  }
-                }}>
+                onClick={legalAuthBackEvent}>
                 확인
               </button>
             </div>
@@ -508,7 +511,8 @@ export default (props) => {
                 <div className="img_wrap">
                   <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
                 </div>
-                {authState !== 13 && <h2>본인 인증 완료</h2>}
+                {/* 3: 법정 대리인 동의 완료 */}
+                {(authState !== 3 || authState !== 13) && <h2>본인 인증 완료</h2>}
                 {createResult()}
               </>
             )}
