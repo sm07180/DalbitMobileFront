@@ -1,8 +1,8 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {ModeTabType, ModeType, OsType} from "../../redux/types/pay/storeType";
 import StorePage from "./contents/StorePage";
 import {useDispatch, useSelector} from "react-redux";
-import {getIndexData, getPriceList, setStateHeaderVisible} from "../../redux/actions/payStore";
+import {getIndexData, setStateHeaderVisible} from "../../redux/actions/payStore";
 import {useHistory} from "react-router-dom";
 import {Hybrid, isHybrid} from "../../context/hybrid";
 import {Context} from "context";
@@ -15,7 +15,6 @@ const index = ()=>{
   const payStoreRdx = useSelector(({payStore})=> payStore);
   const context = useContext(Context);
   const {webview} = qs.parse(location.search);
-
   useEffect(() => {
     if(!memberRdx.isLogin){
       history.goBack();
@@ -35,18 +34,6 @@ const index = ()=>{
       }
     });
   }, []);
-
-  useEffect(() => {
-    if(payStoreRdx.storeInfo.modeTab === ModeTabType.none){
-      return;
-    }
-
-    const platform = payStoreRdx.storeTabInfo.find(f=>f.selected);
-    if(!platform || !platform.modeTab){
-      return
-    }
-    dispatch(getPriceList(platform.modeTab));
-  }, [payStoreRdx.storeTabInfo]);
 
   return (
     <>

@@ -14,7 +14,7 @@ import {Hybrid, isHybrid} from "../../../context/hybrid";
 import {OS_TYPE} from "../../../context/config";
 import Tabmenu from "../../broadcast/content/right_content/component/tabmenu";
 import {useDispatch, useSelector} from "react-redux";
-import {setStoreInfo, setStoreTabInfo} from "../../../redux/actions/payStore";
+import {getPriceList, setStoreInfo, setStoreTabInfo} from "../../../redux/actions/payStore";
 import qs from 'query-string';
 import moment from "moment";
 
@@ -123,8 +123,12 @@ const StorePage = ()=>{
         m.selected = m.text === text;
         return m;
       });
+      dispatch(setStoreTabInfo(copy));
+      const sel = copy.find(f=>f.selected);
+      if(sel && sel.modeTab){
+        dispatch(getPriceList(sel.modeTab));
+      }
 
-      dispatch(setStoreTabInfo(copy))
     }
   }
   const nowTab = payStoreRdx.storeTabInfo.find(f=>f.selected);
