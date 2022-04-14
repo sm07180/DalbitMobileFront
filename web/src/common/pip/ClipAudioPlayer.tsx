@@ -45,11 +45,11 @@ const ClipAudioPlayer = ()=>{
 
   useEffect(() => {
     if (clipPlayList.length > 0) {
-      clipPlayer?.clipAudioTag?.addEventListener("ended", audioEndHandler);
+      clipPlayer?.clipAudioTag?.addEventListener("ended", () => audioEndHandler({history, globalState}));
     }
 
     return () => {
-      clipPlayer?.clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipPlayer?.clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
     };
   }, [clipPlayer, clipPlayList]);
 
@@ -97,7 +97,7 @@ const ClipAudioPlayer = ()=>{
       <div id="player">
         <div className="inner-player" onClick={playerBarClickEvent}>
           <div className="inner-player-bg"
-               style={{background: `url("${clipInfo.bgImg.thumb500x500}") center/contain no-repeat`,}} />
+               style={{background: `url("${clipInfo?.bgImg?.thumb500x500}") center/contain no-repeat`,}} />
           <div className="info-wrap">
             <div className="equalizer">
               <Lottie
