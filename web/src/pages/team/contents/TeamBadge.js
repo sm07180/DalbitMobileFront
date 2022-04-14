@@ -12,7 +12,7 @@ import BadgeInfo from '../components/popup/BadgeInfo';
 // scss
 import '../scss/teamBadge.scss';
 
-const InviteList = (props) => {
+const TeamBadge = (props) => {
   const history = useHistory();
   const context = useContext(Context);
   const [badgePop, setBadgePop] = useState(false);
@@ -70,4 +70,4 @@ const InviteList = (props) => {
   )
 }
 
-export default InviteList;
+export default TeamBadge;

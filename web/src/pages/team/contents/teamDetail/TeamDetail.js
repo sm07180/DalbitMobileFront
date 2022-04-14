@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState,useEffect} from 'react';
 import {useHistory} from "react-router-dom";
 import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
@@ -31,6 +31,12 @@ const TeamDetail = () => {
 
   const [moreShow, setMoreShow] = useState(false);
   const [benefitsPop, setBenefitsPop] = useState(false);
+
+  useEffect(()=>{
+
+  },[])
+
+
 
   // test로 넣음 : 팀리더 여부
   const teamLeader = true;
@@ -143,15 +149,9 @@ const TeamDetail = () => {
         <section className="teamInfo">
           <div className="teamStatus">
             <div className="teamSymbol">
-              <div className="parts-C">
-                <img src={"https://image.dalbitlive.com/team/parts/C-9.png"} />
-                <div className="parts-B">
-                  <img src={"https://image.dalbitlive.com/team/parts/B-7.png"} />
-                </div>
-                <div className="parts-A">
-                  <img src={"https://image.dalbitlive.com/team/parts/A-7.png"} />
-                </div>
-              </div>
+              <img src={"https://image.dalbitlive.com/team/parts/E/e007.png"} />
+              <img src={"https://image.dalbitlive.com/team/parts/B/b009.png"} />
+              <img src={"https://image.dalbitlive.com/team/parts/M/m007.png"} />
             </div>
             <div className="listContent">
               <div className="teamName">우주최강슈퍼파월</div>

@@ -4069,6 +4069,42 @@ export default class API {
   static getTeamInvitationSel = async (data) => {
     return await ajax({url: `/team/teamInvitationSel`, method: 'POST', reqBody: true, data: data})
   }
+  // 팀 가입신청 리스트
+  static getTeamRequestSel = async (data) => {
+    return await ajax({url: `/team/teamRequestSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 출석체크
+  static getTeamAttendanceIns = async (data) => {
+    return await ajax({url: `/team/teamAttendanceIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 활동배지 전체 리스트
+  static getTeamBadgeList = async (data) => {
+    return await ajax({url: `/team/teamBadgeList`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 대표활동배지 리스트
+  static getTeamRepresentBadgeSel = async (data) => {
+    return await ajax({url: `/team/teamRepresentBadgeSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 대표 활동배지 변경
+  static getTeamBadgeUpd = async (data) => {
+    return await ajax({url: `/team/teamBadgeUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 내팀 심볼
+  static getTeamMemMySel = async (data) => {
+    return await ajax({url: `/team/teamMemMySel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 초대/신청내역 읽음처리
+  static getTeamMemReqUpd = async (data) => {
+    return await ajax({url: `/team/teamMemReqUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 랭킹 리스트
+  static getTeamRankWeekList = async (data) => {
+    return await ajax({url: `/team/teamRankWeekList`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 심볼 리스트
+  static getTeamSymbolList = async (data) => {
+    return await ajax({url: `/team/teamSymbolList`, method: 'POST', reqBody: true, data: data})
+  }
 }
 
 API.customHeader = null

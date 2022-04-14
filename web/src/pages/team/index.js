@@ -19,10 +19,9 @@ const TeamPage = () => {
   const [listCnt,setListCnt]=useState(0);
   const [list,setList]=useState([])
   const memberRdx = useSelector((state) => state.member);
-  useEffect(()=>{
-    console.log("memNo",memberRdx.memNo)
-    invitationList()
 
+  useEffect(()=>{
+    invitationList()
   },[])
 
   const invitationList=()=>{

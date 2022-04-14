@@ -55,15 +55,9 @@ const TeamManager = () => {
           수정할 수 있습니다.<span>남은시간 71시간 59분</span></div>
         </section>
         <section className="teamSymbol">
-          <div className="parts-C">
-            <img src={"https://image.dalbitlive.com/team/parts/C-9.png"} />
-            <div className="parts-B">
-              <img src={"https://image.dalbitlive.com/team/parts/B-7.png"} />
-            </div>
-            <div className="parts-A">
-              <img src={"https://image.dalbitlive.com/team/parts/A-7.png"} />
-            </div>
-          </div>
+          <img src={"https://image.dalbitlive.com/team/parts/E/e007.png"} />
+          <img src={"https://image.dalbitlive.com/team/parts/B/b009.png"} />
+          <img src={"https://image.dalbitlive.com/team/parts/M/m007.png"} />
         </section>
         <TeamForm rows={7} />
         <CntTitle title="맴버">
