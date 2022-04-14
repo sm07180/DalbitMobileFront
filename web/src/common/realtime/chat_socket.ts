@@ -173,13 +173,21 @@ export class ChatSocketHandler {
           this.broadcastAction.setChatLimit(false);
         }
       }, 3000);
-      this.addMsgElement(
-        SystemStartMsg({
-          type: "div",
-          text: '채팅 도배로 인해 3초간 채팅 이용이 제한됩니다.',
-          className: "system-start-msg",
-        })
-      );
+
+      if(this.globalAction?.callSetToastStatus){
+        this.globalAction.callSetToastStatus({
+          status: true,
+          message: "채팅 도배로 인해 3초간 채팅 이용이 제한됩니다.",
+        });
+      }
+
+      /* this.addMsgElement(
+         SystemStartMsg({
+           type: "div",
+           text: '채팅 도배로 인해 3초간 채팅 이용이 제한됩니다.',
+           className: "system-start-msg",
+         }));
+       */
     }
 
     return chatLimit;
