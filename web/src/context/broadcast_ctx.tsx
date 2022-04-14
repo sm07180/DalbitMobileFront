@@ -55,6 +55,7 @@ type StateType = {
   isTTSPlaying: boolean;
   settingObj: userBroadcastSettingType | null;
   soundVolume: number;
+  chatLimit: boolean;
 };
 type ActionType = {
   dispatchRoomInfo(action: { type: string; data: any }): void;
@@ -97,6 +98,7 @@ type ActionType = {
   setIsTTSPlaying(data: boolean): void;
   setSettingObj?(data: userBroadcastSettingType): void;
   setSoundVolume?(data: number): void;
+  setChatLimit(data: boolean): void;
 };
 
 type BundleType = {
@@ -312,7 +314,8 @@ const initialData = {
     },
     isTTSPlaying: false,
     settingObj: null,
-    soundVolume: 1  //tts, sound Item 볼륨조절 0 ~ 1
+    soundVolume: 1,  //tts, sound Item 볼륨조절 0 ~ 1
+    chatLimit: false
   },
 
   broadcastAction: {
@@ -348,6 +351,7 @@ const initialData = {
     setTtsActorInfo:()=>{},
     setTtsActionInfo:()=>{},
     setIsTTSPlaying:()=>{},
+    setChatLimit:()=>{},
   },
 };
 
@@ -405,6 +409,10 @@ function BroadcastProvider(props: { children: JSX.Element }) {
   //방송 설정
   const [settingObj, setSettingObj] = useState<userBroadcastSettingType | null>(null);
   const [soundVolume, setSoundVolume] = useState<number>(initialData.broadcastState.soundVolume);
+
+  // 채팅 제한 (채팅 도배)
+  const [chatLimit, setChatLimit] = useState<boolean>(initialData.broadcastState.chatLimit);
+
   const broadcastState: StateType = {
     roomInfo,
     rightTabType,
@@ -443,7 +451,8 @@ function BroadcastProvider(props: { children: JSX.Element }) {
     ttsActionInfo,
     isTTSPlaying,
     settingObj,
-    soundVolume
+    soundVolume,
+    chatLimit
   };
 
   const broadcastAction: ActionType = {
@@ -484,7 +493,8 @@ function BroadcastProvider(props: { children: JSX.Element }) {
     setTtsActionInfo,
     setIsTTSPlaying,
     setSettingObj,
-    setSoundVolume
+    setSoundVolume,
+    setChatLimit
   };
 
   const bundle: BundleType = {
