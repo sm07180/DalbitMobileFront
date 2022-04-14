@@ -57,7 +57,7 @@ const TopRanker = (props) => {
     };
     Api.postRankSetting(params).then((res) => {
       if (res.result === 'success') {
-        context.action.toast({msg: res.message});
+        context.action.toast({msg: `FAN랭킹 참여 상태를 변경했습니다.`});
         fetchRankApply();
       }
     });
