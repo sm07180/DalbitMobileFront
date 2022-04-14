@@ -68,6 +68,9 @@ legend {
     // grid-template-rows: 1fr;
     max-width:800px;
     height:100%;
+    img{
+      image-rendering: -webkit-optimize-contrast;
+    }
     >.content {
       flex:1;
       position:relative;
@@ -145,6 +148,9 @@ legend {
   background-color: white;
   border-bottom:2px solid #E0E0E0;
   z-index: $GNB-ZINDEX;
+  img{
+    image-rendering: -webkit-optimize-contrast;
+  }
   .gnbContainer {
     position: relative;
     @include flex(center);
