@@ -517,7 +517,7 @@ const App = () => {
         tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
         visible: visible
       };
-
+      console.log(`stateFooterParam ... `, stateFooterParam)
       Hybrid('stateFooter', stateFooterParam);
     }
   }
