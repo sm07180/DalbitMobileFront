@@ -12,7 +12,7 @@ export default function EndApp() {
   const context = useContext(Context)
   const history = useHistory();
   const location = useLocation();
-  const {cancelType} = qs.parse(location.search);
+  const {cancelType, webview} = qs.parse(location.search);
   const dispatch = useDispatch();
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
@@ -39,7 +39,7 @@ export default function EndApp() {
 
   useEffect(() => {
     dispatch(setStateHeaderVisible(false));
-
+    alert("EndApp.js log >> ["+JSON.stringify(location)+"]");
     if(location.state){
       alert("EndApp.js log >> ["+JSON.stringify(location.state)+"]");
     }
@@ -59,7 +59,13 @@ export default function EndApp() {
           })
         } else {  // returnType === 'store'
           sessionStorage.setItem('orderId', orderId);
-          return history.push({pathname: "/"});
+          if(webview === 'new'){
+            Hybrid('CloseLayerPopup');
+            Hybrid('ClosePayPopup');
+          }else{
+            history.push({pathname: "/"});
+          }
+          return;
         }
       } else {  // result !== 'success'
         if (returnType === 'room') {
