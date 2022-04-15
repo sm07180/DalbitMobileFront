@@ -1,5 +1,11 @@
 import {call, put, select, takeLatest} from "redux-saga/effects";
-import {GET_DAL_CNT, GET_INDEX_DATA, GET_PRICE_LIST, SET_STORE_INFO, SET_STORE_TAB_INFO} from "../../actions/payStore";
+import {
+	GET_DAL_CNT,
+	GET_INDEX_DATA,
+	GET_PRICE_LIST,
+	SET_STORE_INFO,
+	SET_STORE_TAB_INFO
+} from "../../actions/payStore";
 import {ModeTabType, ModeType, PayStoreStateType, StoreInfoType} from "../../types/pay/storeType";
 import {Action} from "history";
 import Api from "../../../context/api";
@@ -28,6 +34,9 @@ function* updateIndexData(param) {
 
 			return m;
 		});
+		const initPriceListRes = yield call(Api.getDalPriceList, {platform:copy.find(f=>f.selected)?.modeTab});
+		yield put({type: SET_STORE_INFO, payload: {dalPriceList: initPriceListRes.data.dalPriceList}});
+
 		yield put({type: SET_STORE_TAB_INFO, payload: copy});
 	} catch (e) {
 		console.error(`getIndexData saga e=>`, e)

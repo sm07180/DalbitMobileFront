@@ -33,6 +33,8 @@ export const FOOTER_VIEW_PAGES = {
   '/search': 'search',
   '/mypage': 'mypage',
   '/login': 'mypage',
+  '/pay/end/app': 'main',
+  '/navigator': 'main',
 };
 
 export default () => {

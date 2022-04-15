@@ -517,7 +517,7 @@ const App = () => {
         tabName: visible ? FOOTER_VIEW_PAGES[currentPath] : '',
         visible: visible
       };
-
+      console.log(`currentPath:${currentPath}, stateFooterParam ... `, stateFooterParam)
       Hybrid('stateFooter', stateFooterParam);
     }
   }
@@ -617,8 +617,8 @@ const App = () => {
       nativeFooterManager();
     };
     historyListener();
-    history.listen(historyListener);
-  },[])
+    // history.listen(historyListener);
+  },[location])
 
   useEffect(()=>{
     const pay = location.pathname.startsWith('/pay');
