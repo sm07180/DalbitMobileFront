@@ -107,7 +107,7 @@ const ReceiptPop = (props) => {
         </div>
         <div className="receiptList">
           <span>상품명</span>
-          <p>{receipt.payCode} X {receipt.itemAmt}</p>
+          <p>{receipt.payCode}</p>
         </div>
         <div className="receiptList">
           <span>결제수단</span>

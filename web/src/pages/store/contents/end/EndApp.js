@@ -39,6 +39,7 @@ export default function EndApp() {
 
   useEffect(() => {
     dispatch(setStateHeaderVisible(false));
+    //fixme testcode
     alert("EndApp.js log >> ["+JSON.stringify(location)+"]");
     if(location.state){
       alert("EndApp.js log >> ["+JSON.stringify(location.state)+"]");
@@ -60,13 +61,16 @@ export default function EndApp() {
         } else {  // returnType === 'store'
           sessionStorage.setItem('orderId', orderId);
           if(webview === 'new'){
-            Hybrid('CloseLayerPopup');
-            Hybrid('ClosePayPopup');
+            alert(1)
+            history.replace("/");
             setTimeout(()=>{
-              history.push({pathname: "/"});
+              Hybrid('CloseLayerPopup');
+              Hybrid('ClosePayPopup');
             },50)
           }else{
-            history.push({pathname: "/"});
+            alert(2)
+            history.replace("/");
+            // history.push({pathname: "/"});
           }
           return;
         }
