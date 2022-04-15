@@ -16,7 +16,7 @@ export default function EndApp() {
   const dispatch = useDispatch();
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
-  const {result, message, orderId, returnType, webview} = location.state || {result:"", message:"", orderId:"", returnType:"", webview:''};
+  const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
   //창 닫기
   const closeWindow = () =>{
     if (cancelType === 'room') {
@@ -39,8 +39,7 @@ export default function EndApp() {
 
   useEffect(() => {
     dispatch(setStateHeaderVisible(false));
-    //fixme testcode
-    alert("EndApp.js log >> ["+JSON.stringify(location)+"]");
+
     if(location.state){
       alert("EndApp.js log >> ["+JSON.stringify(location.state)+"]");
     }
@@ -60,19 +59,7 @@ export default function EndApp() {
           })
         } else {  // returnType === 'store'
           sessionStorage.setItem('orderId', orderId);
-          if(webview === 'new'){
-            alert(1)
-            history.replace("/");
-            setTimeout(()=>{
-              Hybrid('CloseLayerPopup');
-              Hybrid('ClosePayPopup');
-            },50)
-          }else{
-            alert(2)
-            history.replace("/");
-            // history.push({pathname: "/"});
-          }
-          return;
+          history.replace("/");
         }
       } else {  // result !== 'success'
         if (returnType === 'room') {
@@ -84,12 +71,12 @@ export default function EndApp() {
         } else if (returnType === 'store') {
           context.action.alert({
             msg: message, callback: () => {
-              history.push({pathname: "/store"})
+              history.replace("/store");
             }
           });
         } else {
           Hybrid('ClosePayPopup');
-          history.push({pathname: "/store"});
+          history.replace("/store");
         }
       }
     }
