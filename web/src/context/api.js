@@ -4225,6 +4225,11 @@ export default class API {
   static pEvtWassupManNoSel = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoSel', method: 'POST', reqBody: true})
   }
+  // 와썹맨 마지막 회차정보
+  static pEvtWassupManLastNoSel = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManLastNoSel', method: 'POST', reqBody: true})
+  }
+
   // 와썹맨 회차리스트
   static pEvtWassupManNoList = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
