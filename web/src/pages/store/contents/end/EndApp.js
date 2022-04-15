@@ -39,11 +39,6 @@ export default function EndApp() {
 
   useEffect(() => {
     dispatch(setStateHeaderVisible(false));
-
-    if(location.state){
-      alert("EndApp.js log >> ["+JSON.stringify(location.state)+"]");
-    }
-
     if (cancelType !== undefined) {
       closeWindow();
     } else {
