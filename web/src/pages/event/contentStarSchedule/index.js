@@ -55,6 +55,14 @@ const contentStarSchedule = () => {
         offState:false
       },
       {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7935.png",
+        title:"무진이의 서든어택",
+        date:"4월 24일 17:00",
+        endDay : "20220424 200000",
+        memNo:31605522105416,
+        offState:false
+      },
+      {
         bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7919.png",
         title:"온유의 도전! 골든벨",
         date:"4월 24일 19:00",
@@ -88,7 +96,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-3.png`} alt="4월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-4.png`} alt="4월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
