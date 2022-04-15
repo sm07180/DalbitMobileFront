@@ -511,8 +511,8 @@ export default (props) => {
                 <div className="img_wrap">
                   <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
                 </div>
-                {/* 3: 법정 대리인 동의 완료 */}
-                {(authState !== 3 || authState !== 13) && <h2>본인 인증 완료</h2>}
+                {/* 3: 법정 대리인(환전) 동의 완료, 13: 법정 대리인(결제) 인증 실패 */}
+                {(authState !== 3 && authState !== 13) && <h2>본인 인증 완료</h2>}
                 {createResult()}
               </>
             )}
