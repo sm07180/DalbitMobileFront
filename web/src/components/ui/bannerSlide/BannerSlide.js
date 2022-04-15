@@ -44,7 +44,7 @@ const BannerSlide = (props) => {
       click: (evt) => {
         const {targetUrl} = evt.target.dataset
         if (targetUrl.indexOf("/honor") > -1){
-          dispatch(setHonorTab("스페셜DJ"));
+          dispatch(setHonorTab("스타DJ"));
         }
         openBannerUrl(targetUrl)
       }

@@ -82,7 +82,7 @@ const DalCharge = () => {
     if(commonPopup.commonPopup) {
       closePopup(dispatch);
     }else {
-      dispatch(setSlidePopupOpen());
+      dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
     }
   }
 
@@ -269,7 +269,7 @@ const DalCharge = () => {
         결제문의 <span>1522-0251</span>
       </section>
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"/>
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
       <PopSlide>
         <div className='title'>인증 정보를 확인해주세요!</div>
         <p className='text'>

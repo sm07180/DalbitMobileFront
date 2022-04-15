@@ -19,7 +19,7 @@ const EventRankList = (props) => {
   const globalCtx = useContext(Context)
   const history = useHistory()
 
-  // 프로필 이동 이벤트
+  // 프로필 이동
   const goProfile = (memNo) => {
     if (memNo !== undefined && memNo > 0) {
       history.push(`/profile/${memNo}`)

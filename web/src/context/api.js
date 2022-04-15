@@ -4209,6 +4209,16 @@ export default class API {
     return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
   }
 
+  //메인 슬라이더
+  static getBannerList = async (data) => {
+    return await ajax({url: `/v2/main/getMainSwiper`})
+  }
+
+  //파비 list
+  static getPartnerDjList = async (data) => {
+    return await ajax({url: `/getPartnerDjList`, method: 'POST', reqBody: true, data: data})
+  }
+  
   // 와썹맨 dj 리스트
   static getWhatsUpDjList = async (data) => {
     return ajax({url: '/event/whatsUp/getDjList', method: 'POST', reqBody: true, data: data})

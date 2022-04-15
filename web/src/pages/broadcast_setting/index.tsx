@@ -1,36 +1,28 @@
-import React, {
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-  useRef,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useReducer, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 
 // static
 import {
+  broadcastAllExit,
   broadcastCheck,
   broadcastCreate,
   broadcastExit,
-  getRoomType,
+  getBroadcastSetting,
   postImage,
-  getBroadcastSetting, broadcastInfoNew, broadcastAllExit,
 } from "common/api";
 // others
-import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
+import {AgoraHostRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
-import { Context } from "context";
-import { ModalContext } from "context/modal_ctx";
+import {Context} from "context";
+import {ModalContext} from "context/modal_ctx";
 import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
-import { BroadcastContext } from "../../context/broadcast_ctx";
+import {BroadcastContext} from "../../context/broadcast_ctx";
 import LayerCopyright from "../../common/layerpopup/contents/copyright";
 import LayerTitle from "./content/title";
 import LayerWelcome from "./content/welcome";
-import Layout from "common/layout";
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
 
 declare global {
@@ -1000,7 +992,7 @@ export default function BroadcastSetting() {
           </div>
 
           {/* 스디 실시간 LIVE 사진 노출 영역*/}
-          {globalState.userProfile && globalState.userProfile.badgeSpecial > 0 && (
+          {globalState.userProfile && (globalState.userProfile.badgeSpecial > 0 || globalState.userProfile.badgePartner > 0) && (
             <>
               <div className="title">실시간 LIVE 사진 노출</div>
               <ul className="access">

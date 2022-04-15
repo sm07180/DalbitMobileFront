@@ -229,7 +229,7 @@ const RankPage = () => {
 
   //DJ 랭킹 List 기간 pop
   const selectChart = () => {
-    dispatch(setSlidePopupOpen());
+    dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
   }
 
   const slidePopClose = () => {
@@ -400,7 +400,7 @@ const RankPage = () => {
           }
         </div>
       </section>
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
       <PopSlide>
         <div className='selectWrap'>
           <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>

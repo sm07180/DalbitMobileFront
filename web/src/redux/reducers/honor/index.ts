@@ -2,7 +2,7 @@ import {createReducer} from "typesafe-actions";
 import {HonorActions, HonorState} from "../../types/honorType";
 
 const initialState:HonorState = {
-    tab: "스페셜DJ"
+    tab: "스타DJ"
 }
 
 const honor = createReducer<HonorState, HonorActions>(initialState, {

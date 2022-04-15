@@ -30,7 +30,7 @@ const ProfileCard = (props) => {
   }
 
   const openPresentPop = () => {
-    dispatch(setCommonPopupOpenData({...popup, presentPopup: true}));
+    dispatch(setSlidePopupOpen({...popup, presentPopup: true}));
   }
 
   return (
