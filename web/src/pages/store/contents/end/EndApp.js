@@ -12,11 +12,11 @@ export default function EndApp() {
   const context = useContext(Context)
   const history = useHistory();
   const location = useLocation();
-  const {cancelType, webview} = qs.parse(location.search);
+  const {cancelType} = qs.parse(location.search);
   const dispatch = useDispatch();
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
-  const {result, message, orderId, returnType} = location.state || {result:"", message:"", orderId:"", returnType:""};
+  const {result, message, orderId, returnType, webview} = location.state || {result:"", message:"", orderId:"", returnType:""};
   //창 닫기
   const closeWindow = () =>{
     if (cancelType === 'room') {
