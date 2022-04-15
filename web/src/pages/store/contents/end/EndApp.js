@@ -62,6 +62,9 @@ export default function EndApp() {
           if(webview === 'new'){
             Hybrid('CloseLayerPopup');
             Hybrid('ClosePayPopup');
+            setTimeout(()=>{
+              history.push({pathname: "/"});
+            },50)
           }else{
             history.push({pathname: "/"});
           }
