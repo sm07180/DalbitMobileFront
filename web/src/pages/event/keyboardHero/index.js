@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom'
 import Swiper from 'react-id-swiper'
 
 import {IMG_SERVER} from 'context/config'
@@ -52,6 +53,7 @@ const winningList = [
 ]
 
 const keyboardHero = () => {
+  const history = useHistory()
   const swiperParams = {
     loop: true,
     direction: 'vertical',
@@ -74,29 +76,30 @@ const keyboardHero = () => {
           <div className="content">
             <div className="welcome">축하드립니다!</div>
             {(winningList && winningList.length > 0) ?
-              <Swiper {...swiperParams}>
-                {winningList.map((list, index)=>{
-                  return(
-                    <div key={index}>
-                      <ListRow photo={list.presentImg}>
-                        <div className="listContent">
-                          <div className="present">{list.presentName}</div>
-                          <div className="nick">{list.nick}</div>
-                        </div>
-                      </ListRow>
-                    </div>
-                  )
-                })}
-              </Swiper>
+              <>
+                <Swiper {...swiperParams}>
+                  {winningList.map((list, index)=>{
+                    return(
+                      <div key={index}>
+                        <ListRow photo={list.presentImg}>
+                          <div className="listContent">
+                            <div className="present">{list.presentName}</div>
+                            <div className="nick">{list.nick}</div>
+                          </div>
+                        </ListRow>
+                      </div>
+                    )
+                  })}
+                </Swiper>
+                <button onClick={() => {history.push('/event/keyboardhero_todaywinning')}}>
+                  <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningButton.png`} alt="당첨자보기 및 선물받기" className="listMore"/>
+                </button>
+              </>
               :
-              <div className='listNone'>
-                
-              </div>
+              <img src={`${IMG_SERVER}/event/keyboardHero/listNone.png`} alt="아직 당첨자가 없어요!" />
             }
             
-            <button className="listMore">
-              <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningButton.png`} alt="당첨자보기 및 선물받기" />
-            </button>
+            
           </div>
         </div>
       </section>

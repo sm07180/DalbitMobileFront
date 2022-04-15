@@ -5,6 +5,49 @@ import ListRow from 'components/ui/listRow/ListRow'
 
 import './todayWinning.scss'
 
+const winningList = [
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-1.png',
+    presentName:'10달',
+    nick:'12312312312311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-2.png',
+    presentName:'50달',
+    nick:'헌바라기_하늘이 ✿'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-3.png',
+    presentName:'100달',
+    nick:'헌바라기_하늘이 ✿'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-4.png',
+    presentName:'스타벅스 아메리카노',
+    nick:'헌바라기_하늘이 ✿'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-5.png',
+    presentName:'GS25 상품권 5천원',
+    nick:'헌바라기_하늘이 ✿'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-6.png',
+    presentName:'네이버페이 1만원 포인트',
+    nick:'헌바라기_하늘이 ✿'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-7.png',
+    presentName:'맘스터치 싸이버거 세트',
+    nick:'헌바라기_하늘이 ✿'
+  },
+  {
+    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-8.png',
+    presentName:'배스킨라빈스31 2만원 교환권',
+    nick:'헌바라기_하늘이 ✿'
+  },
+]
+
 const todayWinning = () => {
   return (
     <div id="todayWinning">
@@ -16,24 +59,21 @@ const todayWinning = () => {
         </div>
       </section>
       <section>
-        <ListRow photo={``}>
-          <div className="listContent">
-            <div className="item">10달</div>
-            <div className="item">12312312312311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</div>
-          </div>
-          <div className="listBack">
-            <button>선물받기</button>
-          </div>
-        </ListRow>
-        <ListRow photo={``}>
-          <div className="listContent">
-            <div className="item">10달</div>
-            <div className="item">123123123123</div>
-          </div>
-          <div className="listBack">
-            <button>선물받기</button>
-          </div>
-        </ListRow>
+        {(winningList && winningList.length > 0) &&
+          winningList.map((list, index)=>{
+            return(
+              <ListRow photo={list.presentImg} key={index}>
+                <div className="listContent">
+                  <div className="item">{list.presentName}</div>
+                  <div className="item">{list.nick}</div>
+                </div>
+                <div className="listBack">
+                  <button>선물받기</button>
+                </div>
+              </ListRow>
+            )
+          })
+        }
       </section>
     </div>
   );

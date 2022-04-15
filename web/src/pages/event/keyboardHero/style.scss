@@ -6,7 +6,7 @@
   section{position: relative;}
   .winningWrap{
     padding: 0 16px;
-    margin-top: -65px;
+    margin-top: -18%;
     .winningBox{
       width: 100%;
       border-radius: 16px;
@@ -19,7 +19,7 @@
         width: 100%;
         height: 100%;
         background: #DDE3F5;
-        padding: 16px;
+        padding: 16px 10px;
         .welcome{
           @include flex(center, center);
           width: 100%;
@@ -59,29 +59,30 @@
             width: 100%;
             max-width: calc(100% - 60px);
             @include font(15px, $SemiBold, #303030);
-            .present{
-              width: fit-content;
-              max-width: 100%;
-              background-color: #fff;
-              border-radius: 8px 8px 8px 0;
-              margin: 8px 0;
-              padding: 8px 12px;
-              @include fontCut;
-            }
-            .nick{
-              width: 100%;
-              background-color: #FFF172;
-              border: 1px solid rgba(#A46B08,0.2);
-              border-radius: 8px 8px 0 8px;
-              padding: 8px 12px;
-              @include fontCut;
-            }
           }
+        }
+        .present{
+          width: fit-content;
+          max-width: 100%;
+          background-color: #fff;
+          border-radius: 8px 8px 8px 0;
+          margin: 8px 0;
+          padding: 8px 12px;
+          @include fontCut;
+        }
+        .nick{
+          width: 100%;
+          background-color: #FFF172;
+          border: 1px solid rgba(#A46B08,0.2);
+          border-radius: 8px 8px 0 8px;
+          padding: 8px 12px;
+          @include fontCut;
         }
         .listNone{
           @include flex(center,center);
-          width: 100%;
-          height: 196px;
+          width: 120px;
+          height: 114px;
+          background:url('https://image.dalbitlive.com/event/keyboardHero/listNone.png') no-repeat center / contain;
         }
         .listMore{
           margin-top: 16px;
