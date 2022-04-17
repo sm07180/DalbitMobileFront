@@ -74,9 +74,9 @@ const keyboardHero = () => {
             <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningTitle.png`} alt="오늘의 당첨자" />
           </div>
           <div className="content">
-            <div className="welcome">축하드립니다!</div>
             {(winningList && winningList.length > 0) ?
               <>
+                <div className="welcome">축하드립니다!</div>
                 <Swiper {...swiperParams}>
                   {winningList.map((list, index)=>{
                     return(
