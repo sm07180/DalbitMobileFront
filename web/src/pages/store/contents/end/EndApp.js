@@ -20,7 +20,9 @@ export default function EndApp() {
   //창 닫기
   const closeWindow = () =>{
     if (cancelType === 'room') {
-      return Hybrid('ClosePayPopup')
+      Hybrid('CloseLayerPopup');
+      Hybrid('ClosePayPopup');
+      history.replace("/store");
     } else {
       // PG사 취소 후 params 에 여러 값을 달고 오므로 스토어 페이지로 redirect
       window.location.replace("/store");
