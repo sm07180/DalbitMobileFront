@@ -26,12 +26,13 @@ import moment from "moment";
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
-import {isHybrid, isIos} from "context/hybrid";
+import {Hybrid, isHybrid, isIos} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 import {useHistory} from "react-router-dom";
 
 import smoothscroll from 'smoothscroll-polyfill';
 import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
+import qs from 'query-string'
 
 const topTenTabMenu = ['DJ','FAN','CUPID']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -52,6 +53,7 @@ const MainPage = () => {
   const MainRef = useRef()
   const arrowRefreshRef = useRef()
   const history = useHistory();
+  const {webview} = qs.parse(location.search);
 
   const [topRankType, setTopRankType] = useState('') // 일간 top10 탭 타입
   const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
@@ -136,7 +138,7 @@ const MainPage = () => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
     const overNode = overRef.current
     const headerNode = headerRef.current
-    
+
     if (window.scrollY >= 1) {
       setScrollOn(true)
     } else {
@@ -251,8 +253,8 @@ const MainPage = () => {
 
   /* 결제 */
   const clearReceipt = () => {
-    setReceiptPop(false)
-    sessionStorage.removeItem('orderId')
+    setReceiptPop(false);
+    sessionStorage.removeItem('orderId');
   }
 
   /* 결제 */
@@ -484,6 +486,17 @@ const MainPage = () => {
     }
   }, [])
 
+  useEffect(()=>{
+    if(!receiptPop){
+      if (webview && webview === 'new' && isHybrid()) {
+        Hybrid('CloseLayerPopup')
+        Hybrid('ClosePayPopup')
+      }else{
+        history.push("/")
+      }
+    }
+  }, [receiptPop])
+
   // 페이지 시작
   let MainLayout = <>
     <div className="refresh-wrap"
@@ -552,4 +565,3 @@ const MainPage = () => {
 }
 
 export default MainPage
- 
