@@ -22,6 +22,7 @@ import {OS_TYPE} from 'context/config'
 import MultiImageViewer from '../multi_image_viewer'
 import ReceiptPop from "pages/main/popup/ReceiptPop";
 import {useSelector} from "react-redux";
+import {Hybrid, isHybrid} from "context/hybrid";
 //
 const Layout = (props) => {
   const {children, webview} = props
@@ -81,6 +82,12 @@ const Layout = (props) => {
         {children}
         {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
           //payStoreRdx.receipt
+          if (qsWebview && qsWebview === 'new' && isHybrid()) {
+            Hybrid('CloseLayerPopup')
+            Hybrid('ClosePayPopup')
+          }else{
+            history.replace("/")
+          }
 
         }} />}
       </Article>
