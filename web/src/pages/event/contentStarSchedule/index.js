@@ -104,7 +104,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-4.png`} alt="4월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5.jpg`} alt="4월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
