@@ -23,7 +23,6 @@ import {IMG_SERVER} from "context/config";
 import moment from "moment";
 
 // popup
-import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
 import {Hybrid, isHybrid, isIos} from "context/hybrid";
@@ -62,9 +61,6 @@ const MainPage = () => {
   const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
 
   const [scrollOn, setScrollOn] = useState(false) // 스크롤
-
-  const [payOrderId, setPayOrderId] = useState("") // 결제 관련
-  const [receiptPop, setReceiptPop] = useState(false) // 결제 관련
 
   const [popupData, setPopupData] = useState([]); // 이벤트, 공지 등 메인 팝업
 
@@ -251,20 +247,6 @@ const MainPage = () => {
     touchEndY = null
   }, [reloadInit])
 
-  /* 결제 */
-  const clearReceipt = () => {
-    setReceiptPop(false);
-    sessionStorage.removeItem('orderId');
-  }
-
-  /* 결제 */
-  const getReceipt = () => {
-    if (sessionStorage.getItem('orderId') !== null) {
-      const orderId = sessionStorage.getItem('orderId')
-      setReceiptPop(true);
-      setPayOrderId(orderId);
-    }
-  }
 
   /* 업데이트 확인 */
   const updatePopFetch = async () => {
@@ -459,9 +441,6 @@ const MainPage = () => {
     /* 메인 page api */
     fetchMainInfo();
 
-    /* 결제 관련 */
-    getReceipt();
-
     /* 업데이트 팝업 */
     updatePopFetch();
 
@@ -486,16 +465,6 @@ const MainPage = () => {
     }
   }, [])
 
-  useEffect(()=>{
-    if(!receiptPop){
-      if (webview && webview === 'new' && isHybrid()) {
-        Hybrid('CloseLayerPopup')
-        Hybrid('ClosePayPopup')
-      }else{
-        history.push("/")
-      }
-    }
-  }, [receiptPop])
 
   // 페이지 시작
   let MainLayout = <>
@@ -554,7 +523,6 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
     <AttendEventBtn scrollOn={scrollOn}/>

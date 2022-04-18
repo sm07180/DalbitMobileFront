@@ -79,9 +79,6 @@ const Layout = (props) => {
         `}>
         {children}
         {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
-          //payStoreRdx.receipt
-
-          //payStoreRdx.receipt.returnType === 'room'
           if (payStoreRdx.receipt.returnType === 'room' && isHybrid()) {
             Hybrid('CloseLayerPopup')
             Hybrid('ClosePayPopup')
