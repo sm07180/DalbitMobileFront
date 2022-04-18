@@ -5,10 +5,13 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import './receiptPop.scss'
 
 import {useHistory} from "react-router-dom";
-
+import qs from 'query-string'
+import {Hybrid, isHybrid} from "context/hybrid";
 const ReceiptPop = (props) => {
   const history = useHistory();
   const {payOrderId, clearReceipt} = props;
+  const {webview} = qs.parse(location.search);
+
   console.log(props);
   console.log(payOrderId);
 
@@ -86,7 +89,16 @@ const ReceiptPop = (props) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.overflow = '';
+
+      if (webview && webview === 'new' && isHybrid()) {
+        Hybrid('CloseLayerPopup')
+        Hybrid('ClosePayPopup')
+      }else{
+        history.push("/")
+      }
+
+
     }
   }, [])
 
@@ -119,7 +131,12 @@ const ReceiptPop = (props) => {
         </div>
       </div>
       <SubmitBtn text="확인" onClick={() => {
-        history.push("/")
+        // if (webview && webview === 'new' && isHybrid()) {
+        //   Hybrid('CloseLayerPopup')
+        //   Hybrid('ClosePayPopup')
+        // }else{
+        //   history.push("/")
+        // }
         clearReceipt()
       }}/>
     </section>

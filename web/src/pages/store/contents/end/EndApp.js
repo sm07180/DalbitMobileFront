@@ -44,23 +44,26 @@ export default function EndApp() {
     } else {
       if (result === 'success') {
         payTracking();
-        if (returnType === 'room') {
-          context.action.alert({
-            msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
-            callback: () => {
-              Hybrid('CloseLayerPopup')
-              Hybrid('ClosePayPopup')
-            }
-          })
-        } else {  // returnType === 'store'
-          sessionStorage.setItem('orderId', orderId);
-          history.replace("/");
-        }
+        // if (returnType === 'room') {
+        //   context.action.alert({
+        //     msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
+        //     callback: () => {
+        //       Hybrid('CloseLayerPopup')
+        //       Hybrid('ClosePayPopup')
+        //     }
+        //   })
+        // } else {  // returnType === 'store'
+        //   sessionStorage.setItem('orderId', orderId);
+        //   history.replace("/");
+        // }
+        sessionStorage.setItem('orderId', orderId);
+        history.replace("/");
       } else {  // result !== 'success'
         if (returnType === 'room') {
           context.action.alert({
             msg: message, callback: () => {
-              Hybrid('ClosePayPopup')
+              Hybrid('CloseLayerPopup');
+              Hybrid('ClosePayPopup');
             }
           });
         } else if (returnType === 'store') {
