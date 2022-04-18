@@ -79,6 +79,10 @@ const Layout = (props) => {
         ${playerCls ? "player" : ""}
         `}>
         {children}
+        {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
+          //payStoreRdx.receipt
+
+        }} />}
       </Article>
       {/* (방송방)Player */}
       {
@@ -98,10 +102,7 @@ const Layout = (props) => {
       {/* IP노출 */}
       <Ip {...props} />
 
-      {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
-        //payStoreRdx.receipt
 
-      }} />}
 
       {/*{appPopupState === true && noAppCheck && (*/}
       {/*  <>*/}
