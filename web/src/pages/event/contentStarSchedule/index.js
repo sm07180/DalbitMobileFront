@@ -39,6 +39,14 @@ const contentStarSchedule = () => {
         offState:false
       },
       {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7934.jpg",
+        title:"빠기의 오지리는 게임",
+        date:"4월 21일 21:30",
+        endDay : "20220422 230000",
+        memNo:11592380122241,
+        offState:false
+      },
+      {
         bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7924.png",
         title:"Int팀 이그잼의 the Voice of Dalla",
         date:"4월 22일 20:00",
