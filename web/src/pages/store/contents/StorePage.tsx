@@ -147,24 +147,25 @@ const StorePage = ()=>{
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(payStoreRdx.storeInfo.dalCnt)}</span>
       </section>
-      {
-        payStoreRdx.storeTabInfo.filter(f=>f.active).length === payStoreRdx.storeTabInfo.length &&
-        <section className="storeTabWrap">
+      <section className="storeTabWrap">
+        {
+          payStoreRdx.storeTabInfo.filter(f => f.active).length === payStoreRdx.storeTabInfo.length &&
           <Tabmenu {...tabMenuPros} />
-          {
-            nowTab?.hasTip &&
-            <div className="tipWrap">
-              <div className="title">
-                <i/>결제 TIP
-              </div>
-              <p>PC 또는 {payStoreRdx.storeInfo.deviceInfo?.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
-              <p>
-                www.dallalive.com
-              </p>
+        }
+
+        {
+          nowTab?.hasTip &&
+          <div className="tipWrap">
+            <div className="title">
+              <i/>결제 TIP
             </div>
-          }
-        </section>
-      }
+            <p>PC 또는 {payStoreRdx.storeInfo.deviceInfo?.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
+            <p>
+              www.dallalive.com
+            </p>
+          </div>
+        }
+      </section>
 
       <section className="storeDalList">
         {
