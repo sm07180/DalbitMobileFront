@@ -30,7 +30,7 @@ export default (props) => {
     //title
     const {history} = props
 
-    history.push(queryString.router, {...queryString, type: 'native-navigator'})
+    history.replace(queryString.router, {...queryString, type: 'native-navigator'})
   }, [])
   //---------------------------------------------------------------------
   return <React.Fragment />
