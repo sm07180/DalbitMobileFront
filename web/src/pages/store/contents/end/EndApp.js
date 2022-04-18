@@ -4,7 +4,7 @@ import {useHistory, useLocation} from "react-router-dom";
 import {Context} from "context";
 import {Hybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
-import {setStateHeaderVisible} from "redux/actions/payStore";
+import {setStateHeaderVisible, getReceipt} from "redux/actions/payStore";
 import {useDispatch, useSelector} from "react-redux";
 
 // PG사 취소 후 콜백 페이지
@@ -56,8 +56,10 @@ export default function EndApp() {
         //   sessionStorage.setItem('orderId', orderId);
         //   history.replace("/");
         // }
-        sessionStorage.setItem('orderId', orderId);
-        history.replace("/");
+
+        dispatch(getReceipt({orderId:orderId}));
+        // sessionStorage.setItem('orderId', orderId);
+        // history.replace("/");
       } else {  // result !== 'success'
         if (returnType === 'room') {
           context.action.alert({

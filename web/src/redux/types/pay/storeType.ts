@@ -1,6 +1,18 @@
 import {ActionType} from "typesafe-actions";
 import * as actions from "../../actions/payStore";
 
+export enum PayTypeKor {
+  'simple' = '계좌 간편결제',
+  'kakaoMoney' = '카카오페이 (머니)',
+  'CN' = '카드 결제',
+  'MC' = '휴대폰 결제',
+  'GM' = '문화상품권',
+  'HM' = '해피머니상품권',
+  'kakaopay' = '카카오페이(카드)',
+  'payco' = '페이코',
+  'tmoney' = '티머니',
+  'cashbee' = '캐시비'
+}
 export enum OsType {
   Android = 1,
   IOS = 2,
@@ -47,7 +59,17 @@ export type PayStoreStateType = {
   storeTabInfo: Array<StoreTabInfoType>
   updateVersionInfo: UpdateVersionInfoType
   stateHeader : StateHeaderType
+  receipt: ReceiptType
 }
+export type ReceiptType = {
+  visible: boolean,
+  orderId: string,
+  payWay: string,
+  payAmt: string,
+  itemAmt: string,
+  payCode: string,
+}
+
 export type StateHeaderType = {
   title: string,
   visible: boolean

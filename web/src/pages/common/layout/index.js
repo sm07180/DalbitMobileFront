@@ -16,16 +16,19 @@ import {useHistory, useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
-
+import qs from 'query-string'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import MultiImageViewer from '../multi_image_viewer'
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import {useSelector} from "react-redux";
 //
 const Layout = (props) => {
   const {children, webview} = props
 
-  const context = useContext(Context)
-  const location = useLocation()
+  const context = useContext(Context);
+  const location = useLocation();
+  const payStoreRdx = useSelector(({payStore})=> payStore);
   const history = useHistory();
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
@@ -42,6 +45,8 @@ const Layout = (props) => {
   const storePage = history.location.pathname.startsWith("/store")
   const payPage = history.location.pathname.startsWith("/pay")
 
+  const {qsWebview} = qs.parse(location.search)
+
   useEffect(() => {
     if (noAppCheck) {
       if (Utility.getCookie('AppPopup')) {
@@ -54,7 +59,11 @@ const Layout = (props) => {
 
   useEffect(() => {
     context.action.updateMultiViewer({show: false})
-  }, [location])
+  }, [location]);
+
+  useEffect(()=>{
+
+  }, [payStoreRdx.receipt.visible])
 
   return (
     <>
@@ -88,6 +97,11 @@ const Layout = (props) => {
       {/* <Message {...props} /> */}
       {/* IP노출 */}
       <Ip {...props} />
+
+      {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
+        //payStoreRdx.receipt
+
+      }} />}
 
       {/*{appPopupState === true && noAppCheck && (*/}
       {/*  <>*/}
