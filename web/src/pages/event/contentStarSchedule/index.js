@@ -39,6 +39,14 @@ const contentStarSchedule = () => {
         offState:false
       },
       {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7934.jpg",
+        title:"빠기의 오지리는 게임",
+        date:"4월 21일 21:30",
+        endDay : "20220422 230000",
+        memNo:11592380122241,
+        offState:false
+      },
+      {
         bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7924.png",
         title:"Int팀 이그잼의 the Voice of Dalla",
         date:"4월 22일 20:00",
@@ -96,7 +104,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-4.png`} alt="4월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5.jpg`} alt="4월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
