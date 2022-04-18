@@ -62,7 +62,7 @@ const Layout = (props) => {
   }, [location]);
 
   useEffect(()=>{
-
+    alert("visible ... "+payStoreRdx.receipt.visible )
   }, [payStoreRdx.receipt.visible])
 
   return (
