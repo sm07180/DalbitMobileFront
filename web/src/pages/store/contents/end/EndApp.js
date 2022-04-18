@@ -75,6 +75,7 @@ export default function EndApp() {
             }
           });
         } else {
+          Hybrid('CloseLayerPopup');
           Hybrid('ClosePayPopup');
           history.replace("/store");
         }

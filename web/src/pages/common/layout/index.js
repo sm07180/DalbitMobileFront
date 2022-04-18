@@ -21,14 +21,16 @@ import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import MultiImageViewer from '../multi_image_viewer'
 import ReceiptPop from "pages/main/popup/ReceiptPop";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Hybrid, isHybrid} from "context/hybrid";
+import {initReceipt, setReceipt} from "redux/actions/payStore";
 //
 const Layout = (props) => {
   const {children, webview} = props
 
   const context = useContext(Context);
   const location = useLocation();
+  const dispatch = useDispatch();
   const payStoreRdx = useSelector(({payStore})=> payStore);
   const history = useHistory();
   const playerCls = useMemo(() => {
@@ -62,10 +64,6 @@ const Layout = (props) => {
     context.action.updateMultiViewer({show: false})
   }, [location]);
 
-  useEffect(()=>{
-    alert("visible ... "+payStoreRdx.receipt.visible )
-  }, [payStoreRdx.receipt.visible])
-
   return (
     <>
       {/* Sticker */}
@@ -86,7 +84,8 @@ const Layout = (props) => {
             Hybrid('CloseLayerPopup')
             Hybrid('ClosePayPopup')
           }else{
-            history.replace("/")
+            dispatch(initReceipt());
+            history.replace("/");
           }
 
         }} />}
