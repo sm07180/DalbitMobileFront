@@ -60,24 +60,13 @@ export default function EndApp() {
         // sessionStorage.setItem('orderId', orderId);
         // history.replace("/");
       } else {  // result !== 'success'
-        if (returnType === 'room') {
-          context.action.alert({
-            msg: message, callback: () => {
-              Hybrid('CloseLayerPopup');
-              Hybrid('ClosePayPopup');
-            }
-          });
-        } else if (returnType === 'store') {
-          context.action.alert({
-            msg: message, callback: () => {
-              history.replace("/store");
-            }
-          });
-        } else {
-          Hybrid('CloseLayerPopup');
-          Hybrid('ClosePayPopup');
-          history.replace("/store");
-        }
+        context.action.alert({
+          msg: message, callback: () => {
+            Hybrid('CloseLayerPopup');
+            Hybrid('ClosePayPopup');
+            history.replace("/store");
+          }
+        });
       }
     }
   }, [])
