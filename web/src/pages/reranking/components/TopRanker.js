@@ -49,7 +49,7 @@ const TopRanker = (props) => {
       }
     });
   };
-  
+
   // 랭킹 버튼 액션
   const fetchRankSetting = (set) => {
     const params = {
@@ -128,7 +128,7 @@ const TopRanker = (props) => {
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
       </div>
-      {data && data.length > 0 &&    
+      {data && data.length > 0 &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
@@ -195,7 +195,7 @@ const TopRanker = (props) => {
                                   <div className='badgeLive' onClick={(e) => {
                                     e.stopPropagation();
                                     goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                                    
+                                  }}>
                                     <span className='equalizer'>
                                       <Lottie
                                         options={{
@@ -208,13 +208,13 @@ const TopRanker = (props) => {
                                     <span className='liveText'>LIVE</span>
                                   </div>
                               }
-                              {/* {
+                              {
                                 data.listenRoomNo !== "" &&
                                   <div className='badgeListener' onClick={(e) => {
                                     e.stopPropagation();
                                     goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                     
-                                    <span className='headset'>                          
+                                  }}>
+                                    <span className='headset'>
                                       <Lottie
                                           options={{
                                             loop: true,
@@ -222,10 +222,10 @@ const TopRanker = (props) => {
                                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                                           }}
                                         />
-                                    </span>      
+                                    </span>
                                     <span className='ListenerText'>LIVE</span>
-                                  </div>                                  
-                              } */}
+                                  </div>
+                              }
                             </>
                           }
                         </div>

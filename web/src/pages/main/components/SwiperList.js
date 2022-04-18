@@ -62,8 +62,9 @@ const SwiperList = (props) => {
     if(common.isRefresh && data.length > 0) { // refresh 될때
       swiperRefresh();
     }
-  }, [common.isRefresh]);    
+  }, [common.isRefresh]);
 
+  console.log(data)
   return (
     <>
     {data && data.length > 0 &&
@@ -75,7 +76,7 @@ const SwiperList = (props) => {
               <div className="photo">
                 <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                {item.rank && <div className={`rank-${item.rank}`}></div>}                
+                {item.rank && <div className={`rank-${item.rank}`}></div>}
                 {
                   item.roomNo &&
                     <div className='livetag' onClick={(e) => {
@@ -91,7 +92,7 @@ const SwiperList = (props) => {
                         />
                     </div>
                 }
-                {/* {
+                {
                   item.listenRoomNo &&
                     <div className='listenertag' onClick={(e) => {
                       e.stopPropagation();
@@ -104,8 +105,8 @@ const SwiperList = (props) => {
                             path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
                           }}
                         />
-                    </div>                            
-                } */}
+                    </div>
+                }
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>

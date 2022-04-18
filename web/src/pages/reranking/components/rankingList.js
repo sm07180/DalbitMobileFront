@@ -104,14 +104,14 @@ export default withRouter((props) => {
                 </div>
               </div>
             }
-            {/* {
+            {
               list.listenRoomNo !== "" &&
                 <div className="listBack">
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();
                     goLive(list.roomNo, list.memNo, list.nickNm, list.listenRoomNo);
-                  }}>                     
-                    <span className='headset'>                          
+                  }}>
+                    <span className='headset'>
                       <Lottie
                           options={{
                             loop: true,
@@ -119,11 +119,11 @@ export default withRouter((props) => {
                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                           }}
                         />
-                    </span>      
+                    </span>
                     <span className='ListenerText'>LIVE</span>
-                  </div>  
-                </div>                                
-            } */}
+                  </div>
+                </div>
+            }
           </ListRow>
         )
       })}

@@ -102,7 +102,7 @@ const TopSwiper = (props) => {
           </div>
         }
         {type === 'profile' && webview === '' && data.roomNo !== "" &&
-          <div className='badgeLive' onClick={roomJoinHandler}>                                    
+          <div className='badgeLive' onClick={roomJoinHandler}>
             <span className='equalizer'>
               <Lottie
                 options={{
@@ -115,9 +115,9 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {/* {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
-          <div className='badgeListener' onClick={roomJoinHandler}>                     
-            <span className='headset'>                          
+        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+          <div className='badgeListener' onClick={roomJoinHandler}>
+            <span className='headset'>
               <Lottie
                   options={{
                     loop: true,
@@ -125,10 +125,10 @@ const TopSwiper = (props) => {
                     path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                   }}
                 />
-            </span>      
+            </span>
            <span className='ListenerText'>LIVE</span>
          </div>
-        } */}
+        }
       </div>
       }
     </>
