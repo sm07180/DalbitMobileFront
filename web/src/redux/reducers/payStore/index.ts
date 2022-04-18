@@ -10,6 +10,7 @@ import {
 
 export const initReceipt:ReceiptType = {
   visible: false,
+  returnType:'store',
   orderId: "",
   payWay: "",
   payAmt: "",

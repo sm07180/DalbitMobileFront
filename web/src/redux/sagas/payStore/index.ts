@@ -86,6 +86,7 @@ function* getReceipt(param) {
 		}
 		const receipt: ReceiptType = {
 			visible: true,
+			returnType: param.payload.returnType,
 			orderId: res.data.order_id,
 			payWay: PayTypeKor[res.data.pay_way],
 			payAmt: Utility.addComma(res.data.pay_amt).split('.')[0] + "원 (부가세포함)",

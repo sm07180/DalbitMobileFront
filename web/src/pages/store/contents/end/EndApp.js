@@ -56,8 +56,7 @@ export default function EndApp() {
         //   sessionStorage.setItem('orderId', orderId);
         //   history.replace("/");
         // }
-
-        dispatch(getReceipt({orderId:orderId}));
+        dispatch(getReceipt({orderId:orderId, returnType: returnType}));
         // sessionStorage.setItem('orderId', orderId);
         // history.replace("/");
       } else {  // result !== 'success'

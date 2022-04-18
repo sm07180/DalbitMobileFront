@@ -24,6 +24,6 @@ export const setStoreTabInfo = createAction(SET_STORE_TAB_INFO)<Array<StoreTabIn
 export const setUpdateVersionInfo = createAction(SET_UPDATE_VERSION_INFO)<UpdateVersionInfoType>();
 
 export const setStateHeaderVisible = createAction(SET_STATE_HEADER_VISIBLE)<boolean>();
-export const getReceipt = createAction(GET_RECEIPT)<Pick<ReceiptType, "orderId">>();
+export const getReceipt = createAction(GET_RECEIPT)<Pick<ReceiptType, 'orderId' & 'returnType'>>();
 export const setReceipt = createAction(SET_RECEIPT)<ReceiptType>();
 export const initReceipt = createAction(INIT_RECEIPT)();

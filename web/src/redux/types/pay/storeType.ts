@@ -63,6 +63,7 @@ export type PayStoreStateType = {
 }
 export type ReceiptType = {
   visible: boolean,
+  returnType: 'room' | 'store'
   orderId: string,
   payWay: string,
   payAmt: string,
