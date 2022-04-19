@@ -10,6 +10,35 @@
     margin-bottom:8px;
     padding:0;
   }
+
+  .eventBanner {
+    width: 100%;
+    .bannerImg {
+      width: 100%;
+      cursor: pointer;
+      img {
+        width: 100%;
+      }
+    }
+    .bannerInfo {
+      @include flex(flex-start, flex-start, column);
+      width: 100%;
+      padding: 8px 16px;
+      box-sizing: border-box;
+      .bannerText {
+        @include font(12px, 600, #202020);
+        margin-bottom: 3px;
+        line-height: 15px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        &.point {
+          @include font(12px, 600, #FF1919);
+        }
+      }
+    }
+  }
+
   .purchaseInfo {
     padding:20px 16px 15px;
     border-bottom:9px solid #F2F2F2;
@@ -90,6 +119,16 @@
           background: #e3e3e3;
           color: #fff;
           pointer-events: none;
+        }
+        .bonus {
+          @include flex(center, center);          
+          height: 28px; 
+          padding: 0px 10px;
+          margin-left: 6px;
+          border-radius: 100px;
+          @include font(13px, 600, #FFF);
+          letter-spacing: -1px;
+          background-color: #FF1919;
         }
         &:nth-child(1) {
           width: 100%;
