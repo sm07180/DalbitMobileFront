@@ -74,7 +74,7 @@ const TeamDetail = (props) => {
 
 // 팀 정보
   const teamInfoApi =()=>{
-    Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
+    Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
         console.log("팀정보", res.data)
         setTeamMemList(res.data.teamMemList);
@@ -107,10 +107,10 @@ const TeamDetail = (props) => {
   }
 
   //가입신청
-  const teamMemReqIns=(slct)=>{
+  const teamMemReqIns=(slct,memNo)=>{
     let param ={
       teamNo:teamNo,
-      memNo:memberRdx.memNo,
+      memNo:memNo,
       reqSlct:slct//신청구분 [r:가입신청, i:초대]
     }
 
@@ -400,7 +400,7 @@ const TeamDetail = (props) => {
         </section>
         }
         {(teamMemList.length <5 && statChk === 'n' && teamInfo.req_mem_yn === 'y') &&
-          <section className="buttonWrap" onClick={()=>teamMemReqIns('r')}>
+          <section className="buttonWrap" onClick={()=>teamMemReqIns('r',memberRdx.memNo)}>
             <SubmitBtn text="가입신청" state={(teamInsChk ===-4 || teamInsChk==='y') ? "disabled":"" } />
           </section>
         }
@@ -417,7 +417,7 @@ const TeamDetail = (props) => {
       {/* 초대하기 슬라이드 팝업 */}
       {invitePop &&
       <PopSlide title="팀원 초대" popSlide={invitePop} setPopSlide={setInvitePop}>
-          <Invite closeSlide={closeSecesstion} memNo={memberRdx.memNo}/>
+          <Invite closeSlide={closeSecesstion} memNo={memberRdx.memNo} teamNo={teamNo} btnChk={btnChk} teamMemReqIns={teamMemReqIns}/>
         </PopSlide>
       }
 

@@ -19,6 +19,12 @@ const InvitePop = (props) => {
     }
   },[tabType])
 
+  useEffect(()=>{
+    if(props.btnChk){
+      listApi()
+    }
+  },[props.btnChk])
+
   const listApi=()=>{
     let param={
       memNo:props.memNo,
@@ -34,10 +40,6 @@ const InvitePop = (props) => {
     })
   }
 
-  const reqApi=()=>{
-
-  }
-
   // 페이지 시작
   return (
     <section className="invitePop">
@@ -46,20 +48,25 @@ const InvitePop = (props) => {
         <div className="listWrap">
           {listData.length > 0 &&
           listData.map((data,index)=>{
+            let nickName = tabType ==="스타" ? data.mem_nick_star : data.mem_nick_fan
+            let memNo = tabType ==="스타" ? data.mem_no_star : data.mem_no_fan
+            let reqYn = data.team_req_yn
+
             return(
               <ListRow photo="" photoClick={() => photoClick()} key={index}>
                 <div className="listContent">
-                  <div className="nick">{tabType ==="스타" ? data.mem_nick_star : data.mem_nick_fan}</div>
+                  <div className="nick">{nickName}</div>
                 </div>
                 <div className="listBack">
-                  <button className={data.team_req_yn !=='n'  ? 'complete' : ''} onClick={()=>reqApi()}>
-                    {data.team_req_yn !=='n' ? "완료" : "초대"}
+                  <button className={reqYn !=='n'  ? 'complete' : ''} onClick={()=>props.teamMemReqIns('i',memNo)}>
+                    {reqYn !=='n' ? "완료" : "초대"}
                   </button>
                 </div>
               </ListRow>
             )
           })
           }
+          {listData.length === 0 &&  <NoResult />}
         </div>
       </div>
     </section>

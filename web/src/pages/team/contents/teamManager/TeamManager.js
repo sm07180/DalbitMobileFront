@@ -19,6 +19,8 @@ import {setCommonPopupOpenData} from "redux/actions/common";
 
 import "../../scss/teamManager.scss";
 import Api from "context/api";
+import {Timer} from "pages/broadcast/content/right_content/vote/Timer";
+import moment from "moment";
 
 const TeamManager = (props) => {
   const history = useHistory();
@@ -39,7 +41,14 @@ const TeamManager = (props) => {
   const [medalCode,setMdalCode]=useState("")
   const [edgeCode,setEdgeCode]=useState("")
   const [bgCode,setBgCode]=useState("")
+  const [t,setT]=useState({
+    date: {day: 0, month: 0, year: 0},
+    time: {hour: 0, minute: 0, nano: 0, second: 0}
+  })
+/*  if(t.data.day !==0 )
+    const aa = Timer({endDate:t});
 
+  console.log("aa",aa)*/
   useEffect(()=>{
     if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
       history.goBack();
@@ -61,6 +70,23 @@ const TeamManager = (props) => {
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
       if(res.code === "00000") {
         console.log("팀정보", res.data)
+        console.log("개설일",res.data.teamInfo.ins_date)
+        let aaaa = moment(res.data.teamInfo.ins_date).add(3, 'd')
+        const dd = {
+          date: {
+            day: aaaa.date(),
+            month: aaaa.month()+1,
+            year: aaaa.year()
+          },
+          time: {
+            hour: aaaa.hour(),
+            minute: aaaa.minute(),
+            nano: 0,
+            second: aaaa.second()
+          }
+        }
+        setT(dd)
+
         setTeamMemList(res.data.teamMemList);
         setTeamInfo(res.data.teamInfo);
         setTeamName(res.data.teamInfo.team_name);
