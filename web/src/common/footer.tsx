@@ -45,8 +45,8 @@ export default function Footer() {
         <li className="isBlock">
           <span className="sbj">제휴/이벤트</span>
           <span className="emp">
-            <a href="mailto:help@dalbitlive.com" className="emailLink">
-              help@dalbitlive.com
+            <a href="mailto:help@dallalive.com" className="emailLink">
+              help@dallalive.com
             </a>
           </span>
         </li>
