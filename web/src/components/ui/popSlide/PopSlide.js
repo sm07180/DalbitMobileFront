@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 // css
 import './popslide.scss'
@@ -14,14 +14,14 @@ export const closePopup = (dispatch) => {
   dispatch(setSlidePopupClose());
   slidePopTimeout = setTimeout(() => {
     dispatch(setCommonPopupClose());
-  }, 400)
-}
+  }, 400);
+};
 
 const PopSlide = (props) => {
   const {title, setPopSlide, children, popHidden, closeCallback} = props
   const context = useContext(Context);
-  const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
+  const [slideAction, setSlideAction] = useState(true);
 
   const closePopupDim = (e) => {
     const target = e.target
@@ -35,6 +35,7 @@ const PopSlide = (props) => {
         closeCallback();
       }
       closePopup(dispatch);
+      setSlideAction(false);
     }
   }
 
@@ -59,7 +60,7 @@ const PopSlide = (props) => {
 
   return (
     <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>
-      <div className={`slideLayer ${popupState.slidePopup ? "slideUp" : "slideDown"}`}>
+      <div className={`slideLayer ${slideAction ? "slideUp" : "slideDown"}`}>
         {title && <h3>{title}</h3>}
         {children}
       </div>
