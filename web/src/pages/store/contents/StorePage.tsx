@@ -120,7 +120,7 @@ const StorePage = ()=>{
         }
 
         {
-          nowTab?.hasTip &&
+          nowTab?.hasTip && payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.Android &&
           <div className="tipWrap">
             <div className="title">
               <i/>결제 TIP
