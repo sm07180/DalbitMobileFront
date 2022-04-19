@@ -2,6 +2,13 @@ type broadcastAlertStatusType = {
   status: boolean;
   type: string;
 };
+type teamInfo = {
+  teamName: string,
+  medalUrl: string,
+  borderUrl: string,
+  backgroundUrl: string,
+  pageLink: string,
+};
 
 type userProfileType = {
   auth: number;
@@ -39,4 +46,5 @@ type userProfileType = {
   commonBadgeList: Array<any>;
   isMailboxOn: boolean;
   profImgList: Array<any>;
+  teamInfo: teamInfo,
 };

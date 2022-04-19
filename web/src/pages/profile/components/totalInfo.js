@@ -5,11 +5,15 @@ import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 
 import './totalInfo.scss'
 import Utility from "components/lib/utility";
+import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
 
 const TotalInfo = (props) => {
+  const history = useHistory();
   const {data, goProfile, openPopLike, isMyProfile} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
+  const profileData = useSelector(state => state.profile);
   // 
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
@@ -41,6 +45,15 @@ const TotalInfo = (props) => {
       }
     }
   },[data])
+
+  // 팀 상세 페이지 이동
+  const reqTeamJoin = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    }
+  }
 
   return (
     <>
@@ -95,16 +108,21 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
-      <div className="teamInfo">
-        <img src={`${IMG_SERVER}/profile/teamInfo-title.png`} alt="team" className="title" />
-        <div className="teamSymbol">
-          <img src={"https://image.dalbitlive.com/team/parts/E/e007.png"} />
-          <img src={"https://image.dalbitlive.com/team/parts/B/b009.png"} />
-          <img src={"https://image.dalbitlive.com/team/parts/M/m007.png"} />
+      {(data.teamSymbolvo !== undefined && data.teamSymbolvo.team_no !== 0) &&
+        <div className="teamInfo">
+          <span data-team-no={data.teamSymbolvo.team_no} onClick={reqTeamJoin}>
+            <img src={`${IMG_SERVER}/profile/teamInfo-title.png`} alt="team" className="title" />
+            <div className="teamSymbol">
+              <img src={`${IMG_SERVER}/team/parts/E/${data.teamSymbolvo.team_bg_code}.png`} />
+              <img src={`${IMG_SERVER}/team/parts/B/${data.teamSymbolvo.team_edge_code}.png`} />
+              <img src={`${IMG_SERVER}/team/parts/M/${data.teamSymbolvo.team_medal_code}.png`} />
+            </div>
+            <div className="teamName">{data.teamSymbolvo.team_name}</div>
+          </span>
+          {/* 자신이 가입된 팀이 없고, 상대방 팀과 같지 않다면 가입 신청 버튼 출력 */}
+          {(profileData.teamSymbolvo !== undefined && profileData.teamSymbolvo.team_no !== 0 && data.teamSymbolvo.team_no !== profileData.teamSymbolvo.team_no && profileData.teamSymbolvo.bg_cnt < 5) && <button>가입신청</button>}
         </div>
-        <div className="teamName">asdfasdfasdfasdfasdj;aj;flaj;dfja;ldjfa</div>
-        <button>가입신청</button>
-      </div>
+      }
       {
         data.profMsg &&
           <div className="comment">
