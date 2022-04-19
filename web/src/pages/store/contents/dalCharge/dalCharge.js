@@ -211,22 +211,9 @@ const DalCharge = () => {
     }
   };
 
-  const golink = (path) => {
-    history.push(path);
-}
-
   return (
     <div id="dalCharge">
       <Header title="달 충전하기" position="sticky" type="back" />
-      <section className="eventBanner">
-        <div className="bannerImg" onClick={() => {golink("/notice/617")}}>
-          <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>
-        </div>
-        <div className="bannerInfo">
-          <p className="bannerText point">※ 단, 무통장입금, 계좌이체, 카드결제 방식에 한합니다.</p>
-          <p className="bannerText">※ 실제 보너스 지급은 다음날 지급됩니다. (휴일제외)</p>
-        </div>
-      </section>
       <section className="purchaseInfo">
         <CntTitle title="구매내역" />
         <div className="infoBox">

@@ -191,6 +191,7 @@ legend {
       ul {
         @include flex(center);
         li {
+          position: relative;
           width:44px;height:44px;
           background-color:#ddd;
           + li {
@@ -205,6 +206,15 @@ legend {
             &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-on.png");}
             &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-on.png");}
             &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-on.png");}
+          }
+          .saleStore {
+            @include position-horizon($bottom: 0px);
+            @include flex(center, center);
+            height: 16px;
+            padding: 0px 5px;
+            border-radius: 100px;
+            @include font(11px, 700, #FFF);
+            background-color: #FF1919;
           }
         }
       }
