@@ -32,7 +32,6 @@ import {useHistory} from "react-router-dom";
 
 import smoothscroll from 'smoothscroll-polyfill';
 import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
-import MainTeamRankList from "pages/main/components/MainTeamRankList";
 
 const topTenTabMenu = ['DJ','FAN','TEAM']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
