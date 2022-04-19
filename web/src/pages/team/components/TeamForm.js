@@ -19,7 +19,7 @@ const TeamForm = (props) => {
                   onChange={(e)=>editCnts(e)}
         value={teamConts}
         />
-        <p className="count">{teamConts.length}/150</p>
+        <p className="count">/150</p>
       </InputItems>
     </section>
   )

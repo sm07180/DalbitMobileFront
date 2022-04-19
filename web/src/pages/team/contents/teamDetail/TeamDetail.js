@@ -18,7 +18,7 @@ import Invite from '../../components/popup/Invite';
 import Benefits from '../../components/popup/Benefits';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
@@ -122,7 +122,7 @@ const TeamDetail = (props) => {
 
   // 초대하기 팝업
   const invitePopup = () => {
-    dispatch(setCommonPopupOpenData({...popup, slidePopup: true}));
+    setInvitePop(true);
   };
 
   /***  더보기 관련 ***/
@@ -406,15 +406,15 @@ const TeamDetail = (props) => {
       </CntWrapper>
 
       {/* 팀장이 탈퇴 시 슬라이드 팝업 */}
-      {popup.commonPopup &&
+      {popup.slidePopup &&
         <PopSlide title="다음 팀장은 누구인가요?">
           <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}/>
         </PopSlide>
       }
 
       {/* 초대하기 슬라이드 팝업 */}
-      {popup.slidePopup &&
-        <PopSlide title="팀원 초대">
+      {invitePop &&
+        <PopSlide title="팀원 초대" popSlide={invitePop} setPopSlide={setInvitePop}>
           <Invite closeSlide={closeSecesstion} />
         </PopSlide>
       }

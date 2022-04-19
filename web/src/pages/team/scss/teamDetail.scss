@@ -6,6 +6,7 @@
       .moreBtn {
         @include moreBtnStyle-1;
         width:40px;height:40px;
+        cursor: pointer;
         .isMore {
           .delete {
             color:$MAINCOLOR;
@@ -150,6 +151,7 @@
     margin-bottom:12px;
     .listRow {
       &.invite {
+        cursor: pointer;
         .photo {
           @include flex(center,center);
           background-color:#F6F6F6;

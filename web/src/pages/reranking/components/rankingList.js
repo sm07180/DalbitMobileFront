@@ -16,7 +16,7 @@ import DataCnt from "components/ui/dataCnt/DataCnt";
 // css
 
 export default withRouter((props) => {
-  const {data, children, tab, topRankList} = props;
+  const {data, tab, topRankList} = props;
 
   const context = useContext(Context);
 
@@ -65,24 +65,44 @@ export default withRouter((props) => {
     }
   }
 
+  const goProfile = (value) => {
+    const { profileMemNo } = e.currentTarget.dataset;
+
+    if (profileMemNo !== undefined) {
+      props.history.push(`/profile/${value}`);
+    }
+  }
   return (
     <>
       {data.map((list, index) => {
         return (
           <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{typeof topRankList === "undefined" ? index + 1 : index + 4}</div>
+            <div className="rank">{list.rank}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />
                 <span className="nick">{list.nickNm}</span>
               </div>
               <div className='listItem'>
-                {tab === "DJ" && <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>}
-                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={(e) => {
-                  e.stopPropagation();
-                  tab === "CUPID" && props.history.push(`/profile/${list.djMemNo}`);
-                }}/>
-                <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
+                {tab === "DJ" &&
+                  <>
+                    <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>
+                    <DataCnt type={'djGoodPoint'} value={list.goodPoint} />
+                    <DataCnt type={"listenPoint"} value={list.broadcastPoint}/>
+                  </>
+                }
+                {tab === 'FAN' && <DataCnt type={'starCnt'} value={list.starCnt} clickEvent={(e) => goProfile(list.djMemNo)}/>}
+                {tab === 'CUPID' &&
+                  <>
+                    <DataCnt type={'cupid'} value={list.djNickNm} clickEvent={(e) => goProfile(list.djMemNo)}/>
+                    <DataCnt type={'djGoodPoint'} value={list.goodPoint} />
+                  </>
+                }
+                {tab === 'TEAM' &&
+                  <>
+                    <DataCnt type={'point'} value={list.rank_pt} />
+                  </>
+                }
               </div>
             </div>
             {list.roomNo &&
@@ -92,26 +112,27 @@ export default withRouter((props) => {
                   goLive(list.roomNo, list.memNo,list.nickNm, list.listenRoomNo);
                 }}>
                   <span className='equalizer'>
-                    <Lottie
-                      options={{
-                        loop: true,
-                        autoPlay: true,
-                        path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
-                      }}
-                    />
+                    <Lottie options={{ loop: true, autoPlay: true, path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json` }} />
                   </span>
                   <span className='liveText'>LIVE</span>
                 </div>
               </div>
             }
-            {/* {
+          </ListRow>
+        )
+      })}
+    </>
+  )
+})
+
+{/* 지호대리님 작업본  {
               list.listenRoomNo !== "" &&
                 <div className="listBack">
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();
                     goLive(list.roomNo, list.memNo, list.nickNm, list.listenRoomNo);
-                  }}>                     
-                    <span className='headset'>                          
+                  }}>
+                    <span className='headset'>
                       <Lottie
                           options={{
                             loop: true,
@@ -119,14 +140,8 @@ export default withRouter((props) => {
                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                           }}
                         />
-                    </span>      
+                    </span>
                     <span className='ListenerText'>LIVE</span>
-                  </div>  
-                </div>                                
+                  </div>
+                </div>
             } */}
-          </ListRow>
-        )
-      })}
-    </>
-  )
-})
