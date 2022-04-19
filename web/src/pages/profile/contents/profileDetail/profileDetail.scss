@@ -103,6 +103,7 @@
             background-size:25px;
             .likeTooltip {
               @include position-top-left(33px);
+              z-index: 1;
               width:162px;
               height:43px;
               animation: jello-vertical .9s both, hideAni 2s both;
