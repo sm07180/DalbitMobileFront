@@ -21,6 +21,33 @@
     position:relative;
     width:100%;
   }
+  .eventBanner {
+    width: 100%;
+    .bannerImg {
+      width: 100%;
+      cursor: pointer;
+      img {
+        width: 100%;
+      }
+    }
+    .bannerInfo {
+      @include flex(flex-start, flex-start, column);
+      width: 100%;
+      padding: 8px 16px;
+      box-sizing: border-box;
+      .bannerText {
+        @include font(12px, 600, #202020);
+        margin-bottom: 3px;
+        line-height: 15px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        &.point {
+          @include font(12px, 600, #FF1919);
+        }
+      }
+    }
+  }
   @include purchaseList;
   .storeDalList{
     .icon{

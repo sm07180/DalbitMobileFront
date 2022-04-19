@@ -81,6 +81,10 @@ const StorePage = ()=>{
     }
   }
 
+  const golink = (path) => {
+      history.push(path);
+  }
+
   const tabMenuPros = {
     data: Array.from(payStoreRdx.storeTabInfo, a=>a.text),
     tab: payStoreRdx.storeTabInfo.find(f=>f.selected)?.text,
@@ -109,6 +113,15 @@ const StorePage = ()=>{
           history.replace('/');
         }
       }}/>
+      <section className="eventBanner">
+        <div className="bannerImg" onClick={() => {golink("/notice/617")}}>
+          <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>
+        </div>
+        <div className="bannerInfo">
+          <p className="bannerText point">※ 단, 무통장입금, 계좌이체, 카드결제 방식에 한합니다.</p>
+          <p className="bannerText">※ 실제 보너스 지급은 다음날 지급됩니다. (휴일제외)</p>
+        </div>
+      </section>
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(payStoreRdx.storeInfo.dalCnt)}</span>
