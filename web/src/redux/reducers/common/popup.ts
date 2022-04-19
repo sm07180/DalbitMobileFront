@@ -16,6 +16,9 @@ const initialState: ICommonPopupState = {
   confirmPopup: false, 
   resultPopup: false,
 
+  // 팀 초대하기
+  invitePopup: false,
+
   /* 공통 팝업 */
   commonPopup: false,
 
@@ -25,7 +28,7 @@ const initialState: ICommonPopupState = {
 
 const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   "common/SET_COMMON_POPUP_OPEN_DATA": (state, {payload}) => {
-    return {...payload, slidePopup: true}
+    return {...payload}
   },
   "common/SET_COMMON_POPUP_CLOSE": () => {
     return {...initialState}
