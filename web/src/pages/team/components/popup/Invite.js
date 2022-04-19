@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 // global components
 import ListRow from 'components/ui/listRow/ListRow';
+import NoResult from 'components/ui/noResult/NoResult';
 // components
 import Tabmenu from '../Tabmenu';
 

@@ -82,9 +82,6 @@ export interface ICommonPopupState {
   confirmPopup: boolean;
   resultPopup: boolean;
 
-  // 팀 초대하기
-  invitePopup: boolean,
-
   /* 공통 팝업 */
   commonPopup: boolean;
 
