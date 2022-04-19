@@ -9,11 +9,16 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Swiper from 'react-id-swiper'
 import {common} from '@material-ui/core/colors'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   const history = useHistory()
-  const globalCtx = useContext(Context)
+  const globalCtx = useContext(Context);
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   //-------------------------------------------------------- declare start
   const [splashData, setSplashData] = useState()
   const [point, setPoint] = useState()
@@ -159,21 +164,12 @@ export default (props) => {
                       <em>내가 보유한 달</em>
                       <span>
                         {myDalCnt}
-                        {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                          <button
-                            onClick={() => {
-                              webkit.messageHandlers.openInApp.postMessage('')
-                            }}>
+                        <button onClick={() => {
+                            storeButtonEvent({history, memberRdx, payStoreRdx});
+                            //history.push('/store')
+                          }}>
                             충전
                           </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              history.push('/store')
-                            }}>
-                            충전
-                          </button>
-                        )}
                       </span>
                     </div>
                   </MyPoint>

@@ -21,6 +21,7 @@ import Header from 'components/ui/new_header'
 import NoResult from 'components/ui/noResult'
 import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 
+/** @deprecated */
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -51,19 +52,6 @@ export default (props) => {
     }
   }
 
-  async function getStoreList() {
-    const res = await Api.store_list({})
-    if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.list)
-      setListState(1)
-      setMydal(res.data.dalCnt)
-    } else {
-      setListState(0)
-      context.action.alert({
-        msg: res.message
-      })
-    }
-  }
 
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
@@ -170,7 +158,7 @@ export default (props) => {
   //useEffect
   useEffect(() => {
     fetchAdmin()
-    getStoreList()
+    // getStoreList()
     // fetchMainPopupData(12)
     fetchMainPopupData(4)
   }, [])

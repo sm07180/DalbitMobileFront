@@ -22,6 +22,7 @@ import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import Notice from "pages/remypage/contents/notice/Notice";
 import {useDispatch, useSelector} from "react-redux";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
 import {setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 
 // 프로필 폴더에서 가져옴
@@ -38,6 +39,9 @@ const Remypage = () => {
   const customHeader = JSON.parse(Api.customHeader)
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
 
@@ -160,11 +164,14 @@ const Remypage = () => {
 
   //충전하기 버튼
   const storeAndCharge = () => {
-    if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    } else {
-      history.push('/store')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // } else {
+    //   history.push('/store')
+    // }
   }
 
   const openLevelPop = (e) => {
@@ -182,7 +189,7 @@ const Remypage = () => {
   useEffect(() => {
     if(alarmData.notice > 0){
       setNoticeNew(true)
-    } else {      
+    } else {
       setNoticeNew(false)
     }
   }, [alarmData.notice]);

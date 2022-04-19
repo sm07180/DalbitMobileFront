@@ -39,11 +39,35 @@ const contentStarSchedule = () => {
         offState:false
       },
       {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7940.png",
+        title:"말쑤의 냉혈의 말쑤",
+        date:"4월 20일 22:00",
+        endDay : "20220421 010000",
+        memNo:31639546917221,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7934.jpg",
+        title:"빠기의 오지리는 게임",
+        date:"4월 21일 21:30",
+        endDay : "20220422 003000",
+        memNo:11592380122241,
+        offState:false
+      },
+      {
         bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7924.png",
         title:"Int팀 이그잼의 the Voice of Dalla",
         date:"4월 22일 20:00",
         endDay : "20220422 230000",
         memNo:61611836929345,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7941.png",
+        title:"청이의 리액션 챌린지",
+        date:"4월 22일 22:00",
+        endDay : "20220423 010000",
+        memNo: 31607782195952,
         offState:false
       },
       {
@@ -96,7 +120,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-4.png`} alt="4월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-6.png`} alt="4월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
