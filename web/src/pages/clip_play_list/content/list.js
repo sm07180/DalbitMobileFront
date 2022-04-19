@@ -1,22 +1,24 @@
-import React, {useState, useHistory, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {Context} from 'context'
 import Api from 'context/api'
 
-import {Hybrid} from 'context/hybrid'
 import {PlayListStore} from '../store'
 
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import {OS_TYPE} from 'context/config.js'
-import {DalbitScroll} from "common/ui/dalbit_scroll";
+import {useLocation} from "react-router-dom";
 
 export default () => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
   const customHeader = JSON.parse(Api.customHeader)
+  const location = useLocation();
 
-  const [playClipNo, setPlayClipNo] = useState(sessionStorage.getItem('play_clip_no'))
-  // const [playClipNo, setPlayClipNo] = useState('101604033535194')
   const [totalList, setTotalList] = useState(0)
+
+  // params
+  const [webview, setWebview] = useState('');
+  const [paramClipNo, setParamClipNo] = useState('');
 
   const {isEdit, list, clipType, sortType} = playListCtx
 
@@ -31,7 +33,7 @@ export default () => {
 
   const fetchPlayList = async () => {
     //clipPlayListInfo에 파라미터 값 받아서 여러곡 재생목록 조회해야 할 때
-    const playListInfo = JSON.parse(localStorage.getItem('clipPlayListInfo'))
+    let playListInfo = JSON.parse(localStorage.getItem('clipPlayListInfo'))
 
     if (!playListInfo) {
       //한곡만 재생할때 (푸쉬알람, 알람페이지, 클립 청취목록)
@@ -42,6 +44,8 @@ export default () => {
       if (oneClipPlayList) {
         setTotalList(1)
         return playListCtx.action.updateList([{...oneClipPlayList}])
+      }else {
+        playListInfo = { slctType: 4, dateType: 0, page: 1, records: 100 } // 데이터 없을 경우 대비한 default (최근 들은 클립)
       }
     }
 
@@ -94,12 +98,22 @@ export default () => {
         globalCtx.action.alert({msg: message})
       }
     } else if (playListInfo.hasOwnProperty('rankType')) {
-      const {result, data, message} = await Api.getClipRankingList({...playListInfo})
-      if (result === 'success') {
-        playListCtx.action.updateList(data.list)
-        setTotalList(data.list.length)
-      } else {
-        globalCtx.action.alert({msg: message})
+      if(playListInfo.hasOwnProperty('callType')) {
+        const {result, data, message} = await Api.getClipRankCombineList({...playListInfo})
+        if (result === 'success') {
+          playListCtx.action.updateList(data.list)
+          setTotalList(data.list.length)
+        } else {
+          globalCtx.action.alert({msg: message})
+        }
+      }else {
+        const {result, data, message} = await Api.getClipRankingList({...playListInfo})
+        if (result === 'success') {
+          playListCtx.action.updateList(data.list)
+          setTotalList(data.list.length)
+        } else {
+          globalCtx.action.alert({msg: message})
+        }
       }
     } else {
       //나머지 기본 '/clip/list' 조회(최신, 테마슬라이더, 각 주제별, 서치)
@@ -136,31 +150,32 @@ export default () => {
     }
   }
 
-  useEffect(() => {
-    window.addEventListener('storage', () => {
-      // alert('스토리지변경')
-      setPlayClipNo(sessionStorage.getItem('play_clip_no'))
-    })
-
-    return () => {
-      window.removeEventListener('storage', () => {
-        // alert('스토리지변경')
-        setPlayClipNo(sessionStorage.getItem('play_clip_no'))
-      })
+  const setPageParameters = () => {
+    try {
+      const params = location.search.split('?')[1].split('&');
+      _.forEach(params, (param) => {
+        if(param.includes('webview')) {
+          setWebview(param.split('=')[1]);
+        }else if(param.includes('clipNo')) {
+          setParamClipNo(param.split('=')[1]);
+        }
+      });
+    } catch (e) {
+      console.log(e);
     }
+  }
+
+  useEffect(() => {
+    setPageParameters();
   }, [])
 
   useEffect(() => {
-    console.log('list', list)
     if (list.length > 0 && document.getElementsByClassName('playing')[0]) {
       const currentTop = document.getElementsByClassName('playing')[0].offsetTop
-      // console.log('currentTop', currentTop)
       if (currentTop !== 0) {
         if (customHeader['os'] === OS_TYPE['IOS']) {
-          // console.log('1')
           window.scrollTo(0, currentTop)
         } else {
-          // console.log('2')
           window.scrollTo(0, currentTop)
         }
       }
@@ -172,14 +187,15 @@ export default () => {
     return list.map((item, idx) => {
       const {clipNo, title, nickName, subjectType, filePlayTime, bgImg, gender} = item
       const genderClassName = gender === 'f' ? 'female' : gender === 'm' ? 'male' : ''
+      const nowPlayingClip = clipNo === paramClipNo;
       return (
-        <li id="playListItem" className={`${clipNo === playClipNo ? 'playing' : 'off'}`} key={`${idx}-playList`}>
+        <li id="playListItem" className={`${nowPlayingClip ? 'playing' : 'off'}`} key={`${idx}-playList`}>
           <div
             className="playListItem__thumb"
             onClick={() => {
               clipPlay(clipNo)
             }}>
-            {clipNo === playClipNo && (
+            {nowPlayingClip && (
               <div className="playingbarWrap">
                 <div className="playingbar">
                   <span></span>

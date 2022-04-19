@@ -23,6 +23,25 @@
   flex:1;
   @include flex($fd:column);
   height:100%;
+
+  .buttonGroup {    
+    .store {
+      &.bonus {
+        position: relative;
+        &::after {
+          content: "SALE";
+          @include position-horizon($bottom: 0px);
+          @include flex(center, center);
+          height: 16px;
+          padding: 0px 5px;
+          border-radius: 100px;
+          @include font(11px, 700, #FFF);
+          background-color: #FF1919;
+        }
+      }
+    }
+  }
+
   .mypageTop {
     width: 100%;
     padding: 20px 16px;
@@ -69,6 +88,7 @@
           }
         }
         .count {
+          @include flex;
           line-height: 25px;
           i {
             margin-right:4px;

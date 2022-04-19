@@ -15,6 +15,8 @@ import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 // style
 import 'styles/main.scss'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 let alarmCheckIntervalId = null
 
@@ -26,6 +28,8 @@ export default (props) => {
   const {webview} = props
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   if (webview && webview === 'new') {
     return null
@@ -73,18 +77,20 @@ export default (props) => {
       return false
     }
     if (category === 'store') {
-      if (customHeader.os === OS_TYPE['IOS']) {
-        if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
-          return webkit.messageHandlers.openInApp.postMessage('')
-        } else {
-          globalCtx.action.alert({
-            msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'
-          })
-          return
-        }
-      } else {
-        return history.push(`/pay/${category}`)
-      }
+      storeButtonEvent({history, memberRdx, payStoreRdx});
+      // if (customHeader.os === OS_TYPE['IOS']) {
+      //   if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
+      //     //return webkit.messageHandlers.openInApp.postMessage('')
+      //     return history.push('/store')
+      //   } else {
+      //     globalCtx.action.alert({
+      //       msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'
+      //     })
+      //     return
+      //   }
+      // } else {
+      //   return history.push(`/pay/${category}`)
+      // }
     }
     return history.push(`/menu/${category}`)
   }

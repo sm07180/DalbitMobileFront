@@ -9,9 +9,12 @@ import '../../../components/ui/listRow/listRow.scss';
 import Api from "context/api";
 import {Context} from "context";
 import Utility from "components/lib/utility";
+import {useHistory} from "react-router-dom";
+import {playClip} from "pages/clip/components/clip_play_fn";
 
 const ClipLikePage = (props) => {
   const context = useContext(Context);
+  const history = useHistory();
 
   const [searchInfo, setSearchInfo] = useState({type: 'ALL', page: 1, records: 50 });
   const [clipLikeInfo, setClipLikeInfo] = useState({list: [], paging: {}, cnt: 0 }); // 좋아요 리스트 정보
@@ -46,6 +49,17 @@ const ClipLikePage = (props) => {
     }
   }
 
+  // 재생목록
+  const playClipHandler = (e) => {
+    const playClipParams = {
+      clipNo: e.currentTarget.dataset.clipNo,
+      playList: clipLikeInfo.list,
+      context,
+      history
+    }
+    playClip(playClipParams);
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', scrollEvent);
     return () => {
@@ -63,7 +77,7 @@ const ClipLikePage = (props) => {
       <section className="detailList">
         {clipLikeInfo.list.map((row, index) => {
           return (
-            <ClipLikeCore item={row} key={index}/>
+            <ClipLikeCore item={row} key={index} playClipHandler={playClipHandler} />
           );
         })}
       </section>

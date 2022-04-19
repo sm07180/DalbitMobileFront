@@ -77,13 +77,21 @@ export const profileDefaultState = {
   wasSpecial: false,
 }
 
-/* 피드 default */
-export const profileFeedDefaultState = {
+/* 방송공지 default */
+export const profileNoticeDefaultState = {
   feedList: [],
   // fixedFeedList: [],
   // fixCnt: 0,
   paging: profilePagingDefault,
   isLastPage: false,
+}
+
+/* 방송공지(고정) default */
+export const profileNoticeFixDefaultState = {
+  fixedFeedList: [],
+  fixCnt: 0,
+  paging: profilePagingDefault,
+  isLastPage: false
 }
 
 /* 팬보드 default */
@@ -99,6 +107,18 @@ export const profileClipDefaultState = {
   list: [],
   paging: profileClipPagingDefault,
   isLastPage: false,
+}
+
+/* 피드 default */
+export const profileFeedDefaultState = {
+  feedList: [],
+  paging: profilePagingDefault,
+  isLastPage: false
+}
+
+/* 디테일 default */
+export const profileDetailDefaultState = {
+  list: [],
 }
 
 interface IFanRank {
@@ -254,11 +274,17 @@ export interface IProfileState {
   wasSpecial: boolean;
 }
 
-/* 피드 */
-export interface IProfileFeedState {
+/* 방송공지 */
+export interface IProfileNoticeState {
   feedList: Array<IFeedData>;
-  // fixedFeedList: Array<IFeedData>,
-  // fixCnt: number;
+  paging: IPaging;
+  isLastPage: boolean;
+}
+
+/* 방송공지(고정) */
+export interface IProfileNoticeFixState {
+  fixedFeedList: Array<IFeedData>;
+  fixCnt: number;
   paging: IPaging;
   isLastPage: boolean;
 }
@@ -284,4 +310,16 @@ export interface IProfileTabState {
   tabName: string;
   isRefresh: boolean;
   isReset: boolean;
+}
+
+/* 피드 */
+export interface IProfileFeedState {
+  feedList: Array<IFeedData>;
+  paging: IPaging;
+  isLastPage: boolean;
+}
+
+/* 디테일 */
+export interface IProfileDetailState {
+  list: Array<IFeedData>;
 }

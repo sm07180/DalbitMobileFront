@@ -305,5 +305,6 @@ export const NoticeDisplayStyled = styled.div`
   z-index: 3;
 `;
 export const thumbInlineStyle = (target)=>{
-  return { backgroundImage: `url(${target["thumb120x120"]})` };
+  if(target) return { backgroundImage: `url(${target["thumb120x120"]})` };
+  return {};
 }

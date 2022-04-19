@@ -190,7 +190,7 @@ const FanStarPopup = (props) => {
   },[])
 
   return (
-    <section className="FanStarLike">
+    <section className="fanStarLike">
       <h2>{fanStarLikeState.title}</h2>
       <div className="listContainer">
         {isMyProfile && fanStarLikeState.subTab.length > 0 &&

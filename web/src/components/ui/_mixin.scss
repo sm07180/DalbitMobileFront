@@ -3,6 +3,7 @@
 */
 $MAINCOLOR: #FF3C7B;
 $DOWNCOLOR: #FF6999;
+$DISABLEDCOLOR: #FFD4E1;
 $BLACKBTNCOLOR: #202020;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
@@ -23,6 +24,7 @@ $POPSLIDE-ZINDEX: 80;
 $MORE-ZINDEX: 20;
 $GNB-ZINDEX: 50;
 $NAVIGATION-ZINDEX: 50;
+$PLAYER-ZINDEX: 60;
 $HEADER-ZINDEX: 30;
 
 // SUIT FONT-WEIGHT;
@@ -194,7 +196,7 @@ $Heavy: 900;
   }
   .storeDalList {
     @include flex($fd:column);
-    padding:0 16px;
+    padding:0 16px 30px;
     .item {
       position:relative;
       @include flex(center);
@@ -415,6 +417,7 @@ $Heavy: 900;
   flex-shrink: 0;
   width:30px;
   height:30px;
+  cursor:pointer;
   img {
     width:100%;
   }

@@ -7,8 +7,12 @@ import {useSelector} from "react-redux";
 import {useDispatch} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
 import API from "../../../context/api";
-import {isHybrid} from "../../../context/hybrid";
+import {Hybrid, isAndroid, isHybrid, isIos, openLayerPopup} from "../../../context/hybrid";
 import {OS_TYPE} from '../../../context/config'
+import moment from "moment";
+import Utility from "../../lib/utility";
+
+
 
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
@@ -46,8 +50,13 @@ export const AlarmButton = ({history, dispatch, newAlarmCnt, isLogin, noticeCoun
   }} />
 }
 
-export const StoreButton = ({event}) => {
-  return <button className='store' onClick={event} />
+export const StoreButton = ({history, memberRdx, payStoreRdx}) => {
+  const nowDay = moment().format('YYYYMMDD');
+  
+  return <button className={`store ${!moment(nowDay).isAfter(moment('20220428')) ? "bonus" : ""}`} onClick={()=>{
+
+    storeButtonEvent({history, memberRdx, payStoreRdx})
+  }} />
 }
 
 export const SearchButton = ({history}) => {
@@ -60,6 +69,8 @@ const TitleButton = (props) => {
   const context = useContext(Context);
   const { mailboxState, mailboxAction } = useContext(MailboxContext);
   const alarmData = useSelector(state => state.newAlarm);
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -75,23 +86,11 @@ const TitleButton = (props) => {
     }
   }, []);
 
-  const storeButtonEvent = () => {
-    if(context.token.isLogin){
-      if (context.customHeader['os'] === OS_TYPE['IOS']) {
-        return webkit.messageHandlers.openInApp.postMessage('')
-      } else {
-        history.push('/store')
-      }
-    }else{
-      history.push('/login')
-    }
-  }
-
   switch (props.title) {
     case '메인':
       return (
         <div className="buttonGroup">
-          <StoreButton event={storeButtonEvent}/>
+          <StoreButton history={history} memberRdx={memberRdx} payStoreRdx={payStoreRdx}/>
           <RankingButton history={history} />
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
@@ -118,7 +117,7 @@ const TitleButton = (props) => {
         </div>
       )
     case '랭킹':
-      return (        
+      return (
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push("/rankBenefit")}>
             혜택
@@ -128,7 +127,7 @@ const TitleButton = (props) => {
     case 'MY':
       return (
         <div className="buttonGroup">
-          <StoreButton event={storeButtonEvent} />
+          <StoreButton history={history} memberRdx={memberRdx} payStoreRdx={payStoreRdx}/>
           <MessageButton history={history} context={context} mailboxAction={mailboxAction} mailboxState={mailboxState} />
           <AlarmButton history={history} dispatch={dispatch} newAlarmCnt={alarmData.alarm} noticeCount={alarmData.notice} isLogin={context.profile} />
         </div>
@@ -138,6 +137,35 @@ const TitleButton = (props) => {
         <></>
       )
   }
+}
+
+// 하이브리드앱 스토어 버튼 클릭
+export const storeButtonEvent = ({history, memberRdx, payStoreRdx}) => {
+  if(!memberRdx.isLogin){
+    history.push('/login');
+    return;
+  }
+  if(!isHybrid()){
+    history.push('/store');
+    return;
+  }
+
+  const inAppUpdateVersion = isAndroid() ? payStoreRdx.updateVersionInfo.aos : payStoreRdx.updateVersionInfo.ios;
+  Utility.compareAppVersion(inAppUpdateVersion, ()=>{
+    if(isAndroid()){
+      history.push('/store');
+      // openLayerPopup({history, url:'/store'});
+    }else{
+      Hybrid('openInApp', '');
+    }
+  }, ()=>{
+    if(isAndroid()){
+      history.push('/store');
+      // openLayerPopup({history, url:'/store'});
+    }else{
+      Hybrid('openInApp', '');
+    }
+  });
 }
 
 export default TitleButton;

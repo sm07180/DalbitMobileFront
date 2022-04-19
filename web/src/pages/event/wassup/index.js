@@ -65,7 +65,8 @@ const Wassup = () => {
 
 
   useEffect(()=>{
-    Api.pEvtWassupManNoSel().then((res)=>{
+    // Api.pEvtWassupManNoSel().then((res)=>{
+    Api.pEvtWassupManLastNoSel().then((res)=>{
       if(!res.data.seqNo){
         setTimeout(()=>{
           history.replace("/")

@@ -3,7 +3,7 @@ import React from 'react'
 import './tabBtn.scss'
 
 const TabBtn = (props) => {
-  const {param, tabChangeAction, defaultTab} = props
+  const {param, tabChangeAction, defaultTab, subText} = props
 
   const tabClick = (e) => {
     const {tabTarget} = e.currentTarget.dataset
@@ -17,8 +17,11 @@ const TabBtn = (props) => {
   }
 
   return (
-    <li className={param.tab === param.item ? 'active' : ''} data-tab-target={param.item} onClick={tabClick}>{param.item}</li>
+    <li className={param.tab === param.item ? 'active' : ''} data-tab-target={param.item} onClick={tabClick}>{param.item}{subText}</li>
   )
 }
 
+TabBtn.defaultProps = {
+  subText: null
+};
 export default TabBtn

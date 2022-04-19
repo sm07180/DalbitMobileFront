@@ -3,11 +3,11 @@ import React from 'react';
 import InputItems from 'components/ui/inputItems/InputItems';
 
 const TeamForm = (props) => {
-  const {nextStep,rows,teamConts,editCnts,editName,teamName,cols} = props;
+  const {rows,teamConts,editCnts,editName,teamName,cols} = props;
 
   // 페이지 시작
   return (
-    <section className={`teamForm ${nextStep === true ? 'active' : ''}`}>
+    <section className={`teamForm ${'active'}`}>
       <InputItems title="팀 이름">
         <input type="text" maxLength={10} placeholder="필수입력(최대 10자)"
                onChange={(e)=>editName(e)}

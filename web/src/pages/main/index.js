@@ -23,15 +23,15 @@ import {IMG_SERVER} from "context/config";
 import moment from "moment";
 
 // popup
-import ReceiptPop from "pages/main/popup/ReceiptPop";
 import UpdatePop from "pages/main/popup/UpdatePop";
 import {setIsRefresh} from "redux/actions/common";
-import {isHybrid, isIos} from "context/hybrid";
+import {Hybrid, isHybrid, isIos} from "context/hybrid";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 import {useHistory} from "react-router-dom";
 
 import smoothscroll from 'smoothscroll-polyfill';
 import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
+import qs from 'query-string'
 
 const topTenTabMenu = ['DJ','FAN','TEAM']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -41,7 +41,6 @@ const pagePerCnt = 50
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 48 // pullToRefresh 높이
-let dataRefreshTimeout;
 const SCROLL_TO_DURATION = 500;
 let canHit = true // scroll 안에서는 상태값 갱신 안돼서 추가
 
@@ -53,6 +52,7 @@ const MainPage = () => {
   const MainRef = useRef()
   const arrowRefreshRef = useRef()
   const history = useHistory();
+  const {webview} = qs.parse(location.search);
 
   const [topRankType, setTopRankType] = useState('') // 일간 top10 탭 타입
   const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
@@ -61,9 +61,6 @@ const MainPage = () => {
   const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
 
   const [scrollOn, setScrollOn] = useState(false) // 스크롤
-
-  const [payOrderId, setPayOrderId] = useState("") // 결제 관련
-  const [receiptPop, setReceiptPop] = useState(false) // 결제 관련
 
   const [popupData, setPopupData] = useState([]); // 이벤트, 공지 등 메인 팝업
 
@@ -86,16 +83,20 @@ const MainPage = () => {
   const fetchMainInfo = () => dispatch(setMainData());
 
   /* 라이브 리스트 */
-  const fetchLiveInfo = useCallback((pageNo) => {
+  const fetchLiveInfo = useCallback(({pageNo, mediaType, djType}) => {
     const callPageNo = pageNo ? pageNo : currentPage
+    if(pageNo !== 1) { // 디폴트 호출이 아닐때
+      mediaType = liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : ''
+      djType = liveListType === '신입DJ' ? 3 : '';
+    }
     const params = {
       page: callPageNo,
-      mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
+      mediaType,
       records: pagePerCnt,
       roomType: '',
       searchType: 1,
       gender: '',
-      djType: liveListType === '신입DJ' ? 3 : ''
+      djType
     }
     Api.broad_list({params}).then((res) => {
       if (res.result === 'success') {
@@ -121,7 +122,7 @@ const MainPage = () => {
   const mainDataReset = () => {
     const randomValue = getRandomIndex();
     fetchMainInfo();
-    fetchLiveInfo(1);
+    fetchLiveInfo({pageNo: 1, mediaType: '', djType: ''});
     setTopRankType(topTenTabMenu[randomValue])
     setLiveListType(liveTabMenu[0])
     setHeaderFixed(false);
@@ -133,7 +134,7 @@ const MainPage = () => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
     const overNode = overRef.current
     const headerNode = headerRef.current
-    
+
     if (window.scrollY >= 1) {
       setScrollOn(true)
     } else {
@@ -246,20 +247,6 @@ const MainPage = () => {
     touchEndY = null
   }, [reloadInit])
 
-  /* 결제 */
-  const clearReceipt = () => {
-    setReceiptPop(false)
-    sessionStorage.removeItem('orderId')
-  }
-
-  /* 결제 */
-  const getReceipt = () => {
-    if (sessionStorage.getItem('orderId') !== null) {
-      const orderId = sessionStorage.getItem('orderId')
-      setReceiptPop(true);
-      setPayOrderId(orderId);
-    }
-  }
 
   /* 업데이트 확인 */
   const updatePopFetch = async () => {
@@ -436,11 +423,13 @@ const MainPage = () => {
       window.addEventListener('scroll', scrollToEvent)
       pullToRefreshAction();
       /* 데이터를 다 불러온 후에 false로 바꿔야 되는데 일단 1초 텀을 둠 */
-      dataRefreshTimeout = setTimeout(() => {
+      const dataRefreshTimeout = setTimeout(() => {
         window.removeEventListener('scroll', scrollToEvent);
         setDataRefreshPrevent(false);
         canHit = true;
       }, 1000);
+
+      return () => { clearTimeout(dataRefreshTimeout); }
     }
   }, [dataRefreshPrevent]);
 
@@ -465,9 +454,6 @@ const MainPage = () => {
     /* 메인 page api */
     fetchMainInfo();
 
-    /* 결제 관련 */
-    getReceipt();
-
     /* 업데이트 팝업 */
     updatePopFetch();
 
@@ -488,10 +474,10 @@ const MainPage = () => {
     return () => {
       sessionStorage.removeItem('orderId')
       sessionStorage.setItem('checkUpdateApp', 'otherJoin')
-      clearTimeout(dataRefreshTimeout);
       window.removeEventListener('scroll', scrollToEvent)
     }
   }, [])
+
 
   // 페이지 시작
   let MainLayout = <>
@@ -546,7 +532,6 @@ const MainPage = () => {
         <LiveView data={liveList.list}/>
       </section>
     </div>
-    {receiptPop && <ReceiptPop payOrderId={payOrderId} clearReceipt={clearReceipt} />}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
     <AttendEventBtn scrollOn={scrollOn}/>
@@ -557,4 +542,3 @@ const MainPage = () => {
 }
 
 export default MainPage
- 

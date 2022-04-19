@@ -53,7 +53,7 @@ $errorMsg : #FF1919;
     .benefits {
       @include flex(center);
       height: 40px;
-      margin-right: 10px;
+      margin-right: 13px;
       @include font(14px, 400, #666666);
       &::after {
         content: "";
@@ -66,6 +66,9 @@ $errorMsg : #FF1919;
   .cntTitle {
     width:100%;
     padding:0;
+    button {
+      @include font(13px,$Regular,#303030);
+    }
     .point {
       max-width: 180px;
       order:-1;
@@ -79,25 +82,25 @@ $errorMsg : #FF1919;
     position: relative;
     @include flex(flex-start, flex-start, column);
     width: 100%;
-    padding: 15px 16px 60px;
+    padding: 15px 16px 24px;
     margin: 0;
-    background-image: url("https://image.dalbitlive.com/ranking/dalla/rankingTopBg.png");
+    background-image: url("https://image.dalbitlive.com/ranking/dalla/rankingGradientBg.png");
     background-position: center bottom;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 100% 115px;
     &::before {
-      @include position-bottom-left(125px,-40px);
+      @include position-bottom-left(160px,-52px);
       content: "TOP10";
       @include font(55px,900,#FF3C7B);
       transform: rotate(-90deg);
-      letter-spacing: -2px;
+      line-height: 69px;
       opacity: .24;
     }
     .rankingTopMore {
       position: absolute;
       top: 16px; right: 16px;
       display: inline-block;
-      @include font(13px, 400, #999999);
+      @include font(13px, 400, #303030);
       line-height: 40px;
     }
     .title {
@@ -125,7 +128,7 @@ $errorMsg : #FF1919;
       position: relative;
       @include flex(center);
       width: 92px;
-      margin-top: 8px;
+      margin: 8px 0px 50px 0px;
       padding-left: 4px;
       line-height: 25px;
       @include font(17px,600,#202020);
@@ -156,10 +159,11 @@ $errorMsg : #FF1919;
     .chartSwiper {
       position: relative;
       width: calc(100% + 30px);
-      margin: 30px 0 -20px -15px;
+      margin-left: -15px;
+      margin-bottom: 60px;
       z-index: 3;
       .swiper-container {
-        padding-left: 60px;
+        padding-left: 50px;
         .swiper-slide {
           width:auto;
           margin-right:12px;
@@ -171,6 +175,7 @@ $errorMsg : #FF1919;
             height:200px;
             border-radius:8px;
             overflow: hidden;
+            background-color: #FFF;
             cursor: pointer;
             &::after {
               content: "";
@@ -254,6 +259,44 @@ $errorMsg : #FF1919;
         }
       }
     }
+    .refreshWrap {
+      position: absolute;
+      bottom: 27px; left: 16px;
+      @include flex(center, center);
+      width: calc(100% - 32px); height: 40px;
+      border-radius: 100px;
+      background-color: #FFF;
+      box-shadow: 0px 2px 4px rgba(#000000,.1);
+      cursor: pointer;
+      &:active{
+        transform: scale(0.99, 0.99);
+        box-shadow: inset 0px 2px 3px rgba(#000000,.3);
+      }
+      .refreshIcon {
+        flex: none;
+        display: inline-block;
+        width: 18px; height: 18px;
+        margin-right: 2px;
+        @include BGIMG("/common/icon/icon_refresh.png");
+      }
+      .refreshText {
+        @include font(14px, 500, #202020);
+        margin-right: 4px;
+        strong {
+          @include font(14px, 700, #FF3C7B);
+        }
+      }
+      .refreshNum {
+        @include flex(center, center);
+        width: 35px;
+        @include font(14px, 500, #ACACAC);
+        letter-spacing: 4px;
+        span {
+          @include font(14px, 700, #202020);
+        }
+      }
+    }
+
   }
 
   .myRanking {
@@ -291,7 +334,7 @@ $errorMsg : #FF1919;
       position: relative;
       @include flex(center, space-between);
       width: 100%;
-      padding: 17px 0;
+      padding: 27px 20px;
       background-color: #F6F6F6;
       box-sizing: border-box;
       &::after {
@@ -315,7 +358,7 @@ $errorMsg : #FF1919;
           content: none;
         }
         .rankCategory {
-          @include font(13px,$SemiBold,#303030);
+          @include font(12px,600,#999);
         }
         .rankData {
           margin-top: 4px;
@@ -356,6 +399,7 @@ $errorMsg : #FF1919;
       margin-top: 6px;
       box-sizing:border-box;
       @include tabMenuUnderline(2);
+      cursor: pointer;
       li {
         @include flex(center, center);
         height:48px;
@@ -518,9 +562,9 @@ $errorMsg : #FF1919;
             letter-spacing: -1px;
             overflow: hidden;
             span {
-              @include font(13px, 400, #FF6B4B);
+              @include font(13px, 400, #FFC400);
               padding-left: 16px;
-              background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+              background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-yellowCupid.png");
               background-position: left center;
               background-repeat: no-repeat;
               background-size: 16px 16px;
@@ -534,9 +578,9 @@ $errorMsg : #FF1919;
         text-align: center;
         letter-spacing: -1px;
         span {
-          @include font(13px, 600, #FF6B4B);
+          @include font(13px, 600, #FFC400);
           padding-left: 16px;
-          background-image: url("https://image.dalbitlive.com/ranking/dalla/popup-cupid.png");
+          background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-yellowCupid.png");
           background-position: left center;
           background-repeat: no-repeat;
           background-size: 16px 16px;
