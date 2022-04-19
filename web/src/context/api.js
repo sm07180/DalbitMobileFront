@@ -4109,6 +4109,11 @@ export default class API {
   static getTeamDetailSel = async (data) => {
     return await ajax({url: `/team/teamDetailSel`, method: 'POST', reqBody: true, data: data})
   }
+  // 팀 초대 리스트 호출(팬,스타)
+  static getTeamMemFanstarList = async (data) => {
+    return await ajax({url: `/team/teamMemFanstarList`, method: 'POST', reqBody: true, data: data})
+  }
+
 }
 
 API.customHeader = null
