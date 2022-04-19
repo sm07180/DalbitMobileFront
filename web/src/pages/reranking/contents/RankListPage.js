@@ -99,7 +99,6 @@ const RankListPage = (props) => {
     let result = '';
 
     //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
-    console.log(pageInfo.rankType);
     switch (pageInfo.rankType) {
       case 1:
         result = moment().subtract(1, 'd').format('yyyy-MM-DD'); // 어제 날짜

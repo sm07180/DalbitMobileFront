@@ -14,7 +14,7 @@ import {IMG_SERVER} from 'context/config'
 
 const SwiperList = (props) => {
 
-  const {data, profImgName, type, pullToRefreshPause} = props;
+  const {data, profImgName, type, pullToRefreshPause, topRankType} = props;
   const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
@@ -68,7 +68,7 @@ const SwiperList = (props) => {
     <>
     {data && data.length > 0 &&
     <Swiper {...swiperParams}>
-      {data.map((item,index) => {
+      {topRankType !== 'TEAM' && data.map((item,index) => {
         return (
           <div key={index}>
             <div className="listColumn" onClick={() => onClickAction(item)}>
@@ -91,27 +91,28 @@ const SwiperList = (props) => {
                         />
                     </div>
                 }
-                {/* {
-                  item.listenRoomNo &&
-                    <div className='listenertag' onClick={(e) => {
-                      e.stopPropagation();
-                      RoomValidateFromClipMemNo(item.listenRoomNo, item.memNo,context, locationStateHistory, item.nickNm);
-                    }}>
-                      <Lottie
-                          options={{
-                            loop: true,
-                            autoPlay: true,
-                            path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
-                          }}
-                        />
-                    </div>                            
-                } */}
                 {item.type_media === 'v' && <div className="video" />}
               </div>
               <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
             </div>
           </div>
         )
+      })}
+
+
+      {topRankType === 'TEAM' && data.map((list, index) => {
+        return (
+          <div key={index}>
+            <div className="listColumn" onClick={() => { console.log('디스스탑이즈 왕십리 왕십리역입니다.')}}>
+              <div className="teamSymbol">
+                <img src={`${IMG_SERVER}/team/parts/E/${list.team_bg_code}.png`} alt="" />
+                <img src={`${IMG_SERVER}/team/parts/B/${list.team_edge_code}.png`} alt="" />
+                <img src={`${IMG_SERVER}/team/parts/M/${list.team_medal_code}.png`} alt="" />
+              </div>
+              <span className="nick">{list.team_name}</span>
+            </div>
+          </div>
+        );
       })}
     </Swiper>
     }

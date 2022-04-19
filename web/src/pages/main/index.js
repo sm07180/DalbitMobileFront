@@ -32,6 +32,7 @@ import {useHistory} from "react-router-dom";
 
 import smoothscroll from 'smoothscroll-polyfill';
 import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
+import MainTeamRankList from "pages/main/components/MainTeamRankList";
 
 const topTenTabMenu = ['DJ','FAN','TEAM']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -383,7 +384,11 @@ const MainPage = () => {
           }
         });
       } else if (type === 'TEAM') {
-        console.log('여기 들어오닝?');
+        const realRank = await Api.getTeamRankWeekList({ tDate: moment().format('yyyy-MM-DD'), pageNo: 1, pagePerCnt: 10, memNo: 0});
+        if (realRank.code === '00000') {
+          const { data } = realRank;
+          setRankingList(data.list);
+        }
       } else {
         Api.get_ranking({
           param: {
@@ -407,6 +412,13 @@ const MainPage = () => {
   const getRandomIndex = () => {
     const boundary = 3;
     return Math.floor(Math.random() * boundary); // 0 ~ boundary
+  }
+
+  const topRankTabChange = (value) => {
+    if (value !== undefined) {
+      setRankingList([]);
+      setTopRankType(value);
+    }
   }
 
   /* 로고, 푸터 클릭했을때 */
@@ -517,14 +529,10 @@ const MainPage = () => {
       <section className='top10'>
         <div className="cntTitle">
           <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
-          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
         </div>
-        {rankingList.length>0 &&
-          <SwiperList
-            data={rankingList}
-            profImgName="profImg"
-            type="top10"
-          />
+        {rankingList.length > 0 &&
+          <SwiperList data={rankingList} profImgName="profImg" type="top10" topRankType={topRankType}/>
         }
       </section>
       <section className='bannerWrap'>
