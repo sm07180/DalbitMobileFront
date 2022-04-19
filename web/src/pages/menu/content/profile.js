@@ -32,10 +32,15 @@ import ClipIcon from '../static/menu_cast.svg'
 import '../../mypage/index.scss'
 
 import {OS_TYPE} from 'context/config'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 //------------------------------------------------------------------------------
 const storyIcon = 'https://image.dalbitlive.com/svg/ico_mail_pink.svg'
 export default (props) => {
-  let history = useHistory()
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   // webview & ctx
   const {webview} = qs.parse(location.search)
   const context = useContext(Context)
@@ -282,7 +287,8 @@ export default (props) => {
                             history.push(`/mypage/${profile.memNo}/${type}`)
                           } else if (type === 'store') {
                             e.preventDefault()
-                            StoreLink(globalCtx, props.history)
+                            //StoreLink(globalCtx, props.history);
+                            storeButtonEvent({history, memberRdx, payStoreRdx});
                           } else if (type === 'money_exchange') {
                             e.preventDefault()
                             checkSelfAuth()

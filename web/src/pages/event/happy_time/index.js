@@ -9,9 +9,14 @@ import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header.js'
 
 import {StoreLink} from 'context/link'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 export default () => {
-  let history = useHistory()
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const context = useContext(Context)
   const [eventData, setEventData] = useState('')
   const [osCheck, setOsCheck] = useState(-1)
@@ -48,11 +53,13 @@ export default () => {
   }
 
   const eventBtn = () => {
-    if (osCheck === OS_TYPE['IOS']) {
-      StoreLink(context, history)
-    } else if (eventData.rate === 5 || eventData.rate === 3) {
-      history.push(`/store`)
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if (osCheck === OS_TYPE['IOS']) {
+    //   StoreLink(context, history)
+    // } else if (eventData.rate === 5 || eventData.rate === 3) {
+    //   history.push(`/store`)
+    // }
   }
 
   return (

@@ -114,6 +114,9 @@ export default class API {
   static main_init_data_v2 = async () => {
     return await ajax({url: '/v2/main/page', method: 'GET'})
   }
+  static getEtcData = async () => {
+    return await ajax({url: '/v2/main/etcData', method: 'GET'})
+  }
 
   /**
    * @brief 방송방 리스트 (익명 로그인일때 프로시저 memLogin:0 추가)
@@ -2346,19 +2349,6 @@ export default class API {
   }
 
   //-------------------------------------------------------------스토어, 결제
-  /**
-   * @brief 스토어 구매상품 목록
-   * @method "GET"
-   * @create 이은비 2020.03.24
-   */
-  static store_list = async (obj) => {
-    const {url, method} = obj || {}
-    return await ajax({
-      ...obj,
-      url: url || `/store/charge`,
-      method: method || 'GET'
-    })
-  }
 
   /**
    * @brief 신용카드 결제요청
@@ -2689,6 +2679,12 @@ export default class API {
       url: `/mypage/change/item`,
       method: 'GET',
       params: params
+    })
+  }
+  static getOtherPriceList = async () => {
+    return await ajax({
+      url: `/store/getOtherPriceList`,
+      method: 'GET',
     })
   }
 
@@ -4239,10 +4235,20 @@ export default class API {
   static pEvtWassupManNoSel = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoSel', method: 'POST', reqBody: true})
   }
+  // 와썹맨 마지막 회차정보
+  static pEvtWassupManLastNoSel = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManLastNoSel', method: 'POST', reqBody: true})
+  }
+
   // 와썹맨 회차리스트
   static pEvtWassupManNoList = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
   }
+  // IP 국가 코드 조회 _ KR
+  static getNationCode = async (data) => {
+    return ajax({url: '/getNationCode', method: 'POST', reqBody: true})
+  }
+
   // 클립 랭킹 재생목록 조회 api
   static getClipRankCombineList = async (params) => {
     return ajax({url: '/clip/rank/combine/list', method: 'GET', reqBody: false, params})
@@ -4252,7 +4258,17 @@ export default class API {
     return await ajax({url: "/rank/getRankingApply"})
   }
 
+  static getStoreIndexData = () => {
+    return ajax({url: '/store/getIndexData', method: 'POST', reqBody: true})
+  }
 
+  static getDalPriceList = (data) => {
+    return ajax({url: '/store/getDalPriceList', method: 'POST', reqBody: true, params:data})
+  }
+
+  static getDalCnt = () => {
+    return ajax({url: '/store/getDalCnt', method: 'POST', reqBody: true})
+  }
 }
 
 API.customHeader = null

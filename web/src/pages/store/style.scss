@@ -22,12 +22,87 @@
     width:100%;
   }
   @include purchaseList;
+  .storeDalList{
+    .icon{
+      width: 51px;
+      height: 51px;
+      img{
+        width: 100%;
+      }
+    }
+  }
   .bannerWrap {
     margin-bottom:20px;
     padding:0 16px;
   }
   .submitBtn {
-    margin-top: 32px;
+    margin: 32px 0;
     // margin:auto 16px 50px;
+  }
+  .storeTabWrap{
+    width: 100%;
+    padding: 0 16px;
+    .tabmenu{
+      @include flex(center, center);
+      width: 100%;
+      height: 36px;
+      background: #f6f6f6;
+      margin-bottom: 14px;
+      border-radius: 18px;
+      li{
+        @include flex(center,center);
+        width: 100%;
+        height: 100%;
+        @include font(14px, $Medium, #acacac);
+        &.active{
+          @include border(#666, 18px);
+          background-color: #fff;
+          @include font(14px, Bold, #1a1a1a);
+        }
+      }
+    }
+    .tipWrap{ 
+      @include flex(center,center,column);
+      margin-bottom: 19px;
+      .title{
+        @include flex(center,center);
+        @include font(12px, $SemiBold, $MAINCOLOR);
+        margin-bottom: 5px;
+        i{
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          margin-right: 2px;
+          @include BGIMG('common/icon/exclamationBubble.png');
+        }
+      }
+      p{
+        @include font(12px, $Medium, #666);
+        letter-spacing: -0.5px;
+        word-break: keep-all;
+        text-align: center;
+      }
+    }
+  }
+}
+
+.mobileType{
+  #storePage{
+    .topWrap{
+      position: sticky;
+      top: $HEADER-HEIGHT;
+      background: #fff;
+      z-index: 1;
+    }
+  }
+}
+.pcType{
+  #storePage{
+    .topWrap{
+      position: sticky;
+      top: calc(#{$GNB-HEIGHT + $HEADER-HEIGHT});
+      background: #fff;
+      z-index: 1;
+    }
   }
 }

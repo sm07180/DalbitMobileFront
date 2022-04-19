@@ -6,6 +6,7 @@ import {Context} from 'context'
 
 // static
 import './rankList.scss'
+import {IMG_SERVER} from "context/config";
 
 const EventRankList = (props) => {
   const {
@@ -29,12 +30,12 @@ const EventRankList = (props) => {
 		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
-				{type === 'my' ? 
+				{type === 'my' ?
 					<span className="num">
 						{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}
 						{rankList && rankList.rankNo != 0 ? rankList.rankNo : '-'}
-					</span> 
-					: 
+					</span>
+					:
 					<span className="num">{listNum + 1}</span>
 				}
 				{rankList && rankList.upDown && <p className="rankChange">
@@ -50,8 +51,10 @@ const EventRankList = (props) => {
 				</p>}
 			</div>
 			<div className={`photo size${photoSize}`}>
-				{rankList && rankList.profImg &&
-					<img src={rankList && rankList.profImg && rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
+				{rankList && rankList.profImg && rankList.profImg.thumb292x292 ?
+					<img src={rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
+          :
+          <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
 				}
 			</div>
 			{props.children}

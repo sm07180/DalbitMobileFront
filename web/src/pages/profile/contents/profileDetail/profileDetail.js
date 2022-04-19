@@ -22,7 +22,7 @@ const ProfileDetail = (props) => {
   const history = useHistory()
   //context
   const context = useContext(Context)
-  const {token, profile} = context
+  const {token, profile, globalAction} = context
   const {memNo, type, index} = useParams();
   const tmemNo = profile.memNo;
   //memNo :글이 작성되있는 프로필 주인의 memNo
@@ -106,7 +106,19 @@ const ProfileDetail = (props) => {
             }))
             setItem(data);
           } else {
-            history.goBack();
+            if(globalAction?.setAlertStatus){
+              globalAction.setAlertStatus({
+                status: true,
+                content: '해당 게시글이 존재하지 않습니다.',
+                callback: () => {
+                  history.goBack()
+                },
+                cancelCallback: () => {
+                  history.goBack()
+                },
+              });
+            }
+
           }
         });
     } else if (type === 'fanBoard') {
@@ -117,8 +129,19 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           setItem(data);
         } else {
-          context.action.toast({msg: message});
-          history.goBack();
+          if(globalAction?.setAlertStatus){
+            globalAction.setAlertStatus({
+              status: true,
+              content: '해당 게시글이 존재하지 않습니다.',
+              callback: () => {
+                history.goBack()
+              },
+              cancelCallback: () => {
+                history.goBack()
+              },
+            });
+          }
+
         }
       })
     } else if(type === "feed") {
@@ -135,8 +158,19 @@ const ProfileDetail = (props) => {
           }))
           setItem(data);
         } else {
-          context.action.toast({msg: message});
-          history.goBack();
+          if(globalAction?.setAlertStatus){
+            globalAction.setAlertStatus({
+              status: true,
+              content: '해당 게시글이 존재하지 않습니다.',
+              callback: () => {
+                history.goBack()
+              },
+              cancelCallback: () => {
+                history.goBack()
+              },
+            });
+          }
+
         }
       }).catch((e) => console.log(e));
     }
