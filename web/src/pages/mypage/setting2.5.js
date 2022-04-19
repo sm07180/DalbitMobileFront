@@ -151,7 +151,6 @@ export default (props) => {
             profMsg: profileMsg || profile.profMsg,
             profImg: res.data.path
           }
-          console.log(data)
           const res2 = await Api.profile_edit({data})
 
           if (res2.result === 'success') {
@@ -219,7 +218,6 @@ export default (props) => {
       profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
-    console.log(data)
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})

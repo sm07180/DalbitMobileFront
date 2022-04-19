@@ -1,7 +1,7 @@
 /**
  * @title 방송방입장 및 퇴장 (하이브리드앱전용)
- * @code 
- 
+ * @code
+
     import Room, {RoomJoin} from 'context/room'
 
     //function
@@ -73,7 +73,6 @@ export const RoomJoin = async (obj) => {
     })
   }*/
   /* -------------------------------------- */
-
   const {roomNo, callbackFunc, shadow, mode, memNo, nickNm, listener} = obj
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
@@ -143,7 +142,8 @@ export const RoomJoin = async (obj) => {
         }else {
           // sessionStorage.removeItem('room_active')
           // return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
-          sessionStorage.removeItem('room_active')
+          const ownerSel = await Api.roomOwnerSel(roomNo);
+          sessionStorage.removeItem('room_active');
           return Room.context.action.confirm({
             callback: () => {
               // sessionStorage.removeItem('room_active')
@@ -152,7 +152,9 @@ export const RoomJoin = async (obj) => {
             cancelCallback: () => {
               // sessionStorage.removeItem('room_active')
             },
-            msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
+            msg: memNo !== ownerSel.data.memNo ?
+              `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+              : nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
           })
         }
       }

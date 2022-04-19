@@ -64,7 +64,6 @@ const SwiperList = (props) => {
     }
   }, [common.isRefresh]);
 
-  console.log(data)
   return (
     <>
     {data && data.length > 0 &&

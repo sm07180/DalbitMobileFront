@@ -288,7 +288,7 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
   }
 }
 
-export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
+export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
   const {globalState, globalAction} = gtx;
   if (isDesktop()) {
     if (!globalState.baseData.isLogin) {
@@ -333,10 +333,20 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
             });
           } else {
             if(listenRoomNo !== roomNo) {
+              const ownerSel = await Api.roomOwnerSel(roomNo);
+              if(!ownerSel.data.memNo){
+                globalAction.callSetToastStatus!({
+                  status: true,
+                  message: "종료된 방송입니다.",
+                });
+                return;
+              }
               globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
-                content: `${nickNm ? `${nickNm}님의 ` : ''}방송방에 입장하시겠습니까?`,
+                content: memNo !== ownerSel.data.memNo ?
+                  `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+                  : `${ownerSel.data.memNick ? `${ownerSel.data.memNick}님의 ` : ''}방송방에 입장하시겠습니까?`,
                 callback: () => {
                   history.push(`/broadcast/${roomNo}`);
                 },
