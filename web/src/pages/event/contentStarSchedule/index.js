@@ -39,7 +39,7 @@ const contentStarSchedule = () => {
         offState:false
       },
       {
-        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7940.png",
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_7940-2.png",
         title:"말쑤의 냉혈의 말쑤",
         date:"4월 20일 22:00",
         endDay : "20220421 010000",
