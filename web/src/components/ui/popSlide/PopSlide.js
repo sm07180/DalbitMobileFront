@@ -10,6 +10,9 @@ import {isAndroid} from "context/hybrid";
 let slidePopTimeout;
 
 /* 팝업 닫기 */
+export const closePopup = (dispatch) => {
+  dispatch(setSlidePopupClose());
+}
 
 const PopSlide = (props) => {
   const {title, setPopSlide, children, popHidden, closeCallback} = props

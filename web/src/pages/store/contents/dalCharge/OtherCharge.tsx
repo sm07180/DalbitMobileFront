@@ -68,7 +68,7 @@ const OtherCharge = ()=>{
     if(commonPopup.commonPopup) {
       closePopup(dispatch);
     }else {
-      dispatch(setSlidePopupOpen());
+      dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
     }
   }
 
