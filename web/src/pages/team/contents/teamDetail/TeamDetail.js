@@ -24,6 +24,7 @@ import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
 import Api from "context/api";
 import member from "redux/reducers/member";
+import InvitePop from "../../components/popup/Invite";
 const TeamDetail = (props) => {
   const history = useHistory();
   const context = useContext(Context);
@@ -89,7 +90,7 @@ const TeamDetail = (props) => {
   // 팀 가입신청 리스트
   const teamRequestApi=()=>{
     Api.getTeamRequestSel({teamNo:teamNo,pageNo:1,pagePerCnt:100}).then(res =>{
-      console.log("초대 리스트",res.data)
+      console.log("팀 가입신청 리스트",res.data)
       setTeamRequestCnt(res.data.listCnt)
       setTeamRequestSel(res.data.list);
     });
@@ -417,7 +418,7 @@ const TeamDetail = (props) => {
       {/* 초대하기 슬라이드 팝업 */}
       {popup.invitePopup &&
         <PopSlide title="팀원 초대">
-          <Invite closeSlide={closeSecesstion} />
+          <Invite closeSlide={closeSecesstion} memNo={memberRdx.memNo}/>
         </PopSlide>
       }
 

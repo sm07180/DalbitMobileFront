@@ -82,9 +82,9 @@ const TeamManager = (props) => {
       teamNo:teamNo,
       teamName:teamName,
       teamConts:teamConts,
-      teamMedalCode:"",
-      teamEdgeCode:"",
-      teamBgCode:"",
+      teamMedalCode:medalCode,
+      teamEdgeCode:edgeCode,
+      teamBgCode:bgCode,
       reqMemYn:agree
 
     }
