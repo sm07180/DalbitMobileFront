@@ -1,5 +1,6 @@
 import { API_SERVER, PAY_SERVER, PHOTO_SERVER } from "constant/define";
 import { getCookie, setCookie } from "common/utility/cookie";
+import API from "../context/api";
 
 type headerType = {
   authToken: string;
@@ -45,7 +46,7 @@ type newResponseType = {
   message: string;
 };
 
-const ajax = async (method: string, path: string, data?: dataType) => {
+const ajax = async (method: Method, path: string, data?: dataType) => {
   const createDeviceUUid = () => {
     var dt = new Date().getTime();
     var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
@@ -65,17 +66,10 @@ const ajax = async (method: string, path: string, data?: dataType) => {
 
   // Set Header
   const headers: headerType = {
-    authToken: getCookie("authToken") ? getCookie("authToken") : "",
-    "custom-header": JSON.stringify({
-      os: 3,
-      FROM: "@@ COOKIE @@",
-      appVersion: "1.0.1",
-      locale: "ko",
-      deviceId: deviceUUid,
-    }),
+    authToken: API.authToken || '',
+    'custom-header': API.customHeader || '',
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
   };
-
   const option: fetchOption = { method };
   option["headers"] = headers;
   option["credentials"] = "include";
@@ -270,16 +264,12 @@ export async function getSpecialPoint(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/member/special/point/list", data);
 }
 
-export async function getStoreList(): Promise<responseType> {
-  return await ajax(Method.GET, "/store/charge");
-}
-
 export async function getMyStar(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/profile/star/list/new", data);
 }
-/* 
+/*
 방송방 리스트 & sorting
-searchType //-1,0 or null:전체,1:추천,2:인기,3:신입 
+searchType //-1,0 or null:전체,1:추천,2:인기,3:신입
 */
 
 export async function broadcastList(data: {
@@ -1799,98 +1789,6 @@ export async function parentCertChk(): Promise<newResponseType> {
   return await ajax(Method.GET, "/parent/cert/chk");
 }
 
-// 깐부 이벤트 API
-export async function gganbuMarbleGather(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/marble/gather", data);
-}
-
-export async function getGganbuRankList(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/rank/list", data);
-}
-
-export async function getGganbuSearch(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/member/search", data);
-}
-
-export async function getGganbuFanList(data: dataType): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/search/fan", data);
-}
-
-export async function postGganbuSub(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/relationship/req/ins", data);
-}
-
-export async function postGganbuCancel(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/relationship/req/cancel", data);
-}
-
-export async function postGganbuIns(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/relationship/ins", data);
-}
-
-export async function postGganbuList(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/relationship/list", data);
-}
-
-export async function postGganbuReportList(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/report/list", data);
-}
-
-export async function getGganbuPocket(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/pocket/get", data);
-}
-
-export async function getGganbuPocketOpen(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/pocket/open", data);
-}
-
-export async function getGganbuPocketReport(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/pocket/report/list", data);
-}
-
-export async function getGganbuObtainMarble(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/marble/ins", data);
-}
-
-export async function getGganbuBettingList(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/betting/list", data);
-}
-
-export async function getGganbuBettingData(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/betting/stat/sel", data);
-}
-
-export async function getGganbuMarbleBettingPage(
-    data: dataType
-): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/marble/betting", data);
-}
-
-export async function gganbuInfoSel(data: dataType): Promise<responseType> {
-  return await ajax(Method.POST, "/event/gganbu/relationship/sel", data);
-}
-
-export async function gganbuPocketPage(): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/pocket/page");
-}
-
-export async function gganbuEventDate(): Promise<responseType> {
-  return await ajax(Method.GET, "/event/gganbu/round/info");
-}
 // WELCOME 이벤트
 /*--- 이벤트 자격 여부 */
 export async function getWelcomeAuthInfo(): Promise<responseType> {
@@ -1970,6 +1868,13 @@ export async function getGoodStartFanInfo(data: dataType): Promise<responseType>
 // 휴면 회원 인증
 export async function postSleepMemUpd(data): Promise<responseType> {
   return ajax(Method.POST, '/sleep/member/update', data)
+}
+
+export async function payTryAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos/try", data);
+}
+export async function payEndAOSInApp(data: dataType): Promise<responseType> {
+  return await ajax(Method.POST, "/rest/pay/aos/end", data);
 }
 
 /********************************************/

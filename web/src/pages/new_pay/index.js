@@ -34,7 +34,7 @@ export default () => {
     vmarbleCnt : 0,
     totalmarbleCnt : 0,
   });
-  
+
   const [chargeContent, setChargeContent] = useState("");
 
   const [selected, setSelected] = useState({
@@ -44,7 +44,7 @@ export default () => {
     itemNo: 'A1335',
     event: 0
   })
-  
+
   const androidClosePopup = () => {
     Hybrid('CloseLayerPopup')
     Hybrid('ClosePayPopup')
@@ -83,7 +83,7 @@ export default () => {
 
   return <Layout status="no_gnb">
     {createContent()}
-    
+
     {rewardPop &&
      <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
     />}

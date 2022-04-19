@@ -286,7 +286,7 @@ const DepositInfo = (props) => {
           </>
         }
         <div className="privacyBox">
-          <CheckList text="개인정보 수집 동의" name="privacy"
+          <CheckList text="개인정보 수집 동의" name="privacy" checkState={exchangeForm?.agree}
                      onClick={() => setExchangeForm((state) => {
                        return {...exchangeForm, agree: !state.agree}
                      })}>

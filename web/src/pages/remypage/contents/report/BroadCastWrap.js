@@ -50,7 +50,6 @@ const BroadCastWrap = () => {
       records: 999
     }
     API.report_broad({params}).then((res) => {
-      console.log(res);
       if(res.result === "success") {
         if(!(res.data.list.length > 0)) { //리스트 없을 시 api에서 값 자체를 안넘겨줌 -> 고정값 0
           setBroadListInfo([]);

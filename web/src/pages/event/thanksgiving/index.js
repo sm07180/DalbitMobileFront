@@ -9,12 +9,16 @@ import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 
 import Header from 'components/ui/new_header.js'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 export default () => {
   let history = useHistory()
   const context = useContext(Context)
   const [myDal, setMyDal] = useState(0)
   const [payState, setPayState] = useState(false)
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const setPayPopup = () => {
     setPayState(false)
@@ -49,11 +53,14 @@ export default () => {
   }
 
   const HandleStore = () => {
-    if (context.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    } else {
-      return history.push('/store?event=3')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // } else {
+    //   return history.push('/store?event=3')
+    // }
   }
 
   useEffect(() => {

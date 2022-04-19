@@ -17,11 +17,16 @@ import RankingIcon from '../static/nav/ic_rank_l_p.svg'
 import StoreIcon from '../static/nav/ic_store_l_p.svg'
 import EventIcon from '../static/nav/ic_event_l_p.svg'
 import CSIcon from '../static/nav/ic_cs_l_p.svg'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 export default (props) => {
   //context
   const context = useContext(Context)
-  let history = useHistory()
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
 
   const navList = [
     {active: true, value: 'broadcast', txt: '방송하기', icon: MicIcon},
@@ -54,7 +59,8 @@ export default (props) => {
                     if (value == 'broadcast') {
                       RoomMake(context)
                     } else if (value == 'store') {
-                      StoreLink(context, history)
+                      storeButtonEvent({history, memberRdx, payStoreRdx});
+                      // StoreLink(context, history)
                     } else {
                       history.push(`/${value}`)
                     }

@@ -23,6 +23,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
 import {setNoticeData, setNoticeTab} from "../redux/actions/notice";
 import API from "../context/api";
+import moment from "moment";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -58,6 +59,8 @@ export default function GNB() {
 
   const [isGnb, setIsGnb] = useState(true);
   const alarmData = useSelector(state => state.newAlarm);
+
+  const nowDay = moment().format('YYYYMMDD');
 
   //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
   const gnbOtherPageCheck = useCallback((url) => {
@@ -445,7 +448,7 @@ export default function GNB() {
               {gnbTypes.map((item, index) => {
                 return (
                   <li key={index} data-url={item.url}
-                      className={`${activeType === item.url ? 'active' : activeType === "/rankDetail/DJ" && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
+                      className={`${activeType === item.url ? 'active' : (activeType.indexOf("/rankDetail") > -1 || activeType.indexOf('/rankBenefit') > -1) && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
                       onClick={() => {
                         if(item.isUpdate && activeType === item.url) {
                           dispatch(setIsRefresh(true))
@@ -477,6 +480,7 @@ export default function GNB() {
                             history.push(item.url)
                           }}
                       >
+                        {item.url === '/store' && !moment(nowDay).isAfter(moment('20220428')) && <span className="saleStore">SALE</span>}
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
                         {item.url === '/alarm' && (alarmData.alarm || alarmData.notice) > 0 && <span className="newDot"/>}
                       </li>

@@ -60,18 +60,17 @@ const ListRowComponent = (props) => {
       <div className="listContent">
         <div className='listItem'>
           {item.viewOn === 0 && <div className="lock" />}
-          <div className="nick">{item.nickName}</div>
+          <div className="nick">{item.mem_nick ? item.mem_nick : item.nickName}</div>
         </div>
-        <div className="time">{item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : Utility.writeTimeDffCalc(item.writeDt)}</div>
+        <div className="time">{item.ins_date ? Utility.writeTimeDffCalc(item.ins_date) : item.writeDate ? Utility.writeTimeDffCalc(item.writeDate) : item.writeDt && Utility.writeTimeDffCalc(item.writeDt)}</div>
       </div>
       <div className="listBack">
-        {item.topFix === 1 && <div className="fixIcon" />}
         {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
           <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
           <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-            {(context.profile.memNo === item.mem_no) && <button onClick={modifyEvent}>수정하기</button>}
+            {type !=='fanBoard' && (context.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
             {(isMyProfile || context.profile.memNo === item.mem_no || (type==='feed' && context.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
-            {context.profile.memNo !== item.mem_no && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
+            {context.profile.memNo !== item.mem_no.toString() && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
           </div>
         </div>}
       </div>

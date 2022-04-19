@@ -5,8 +5,8 @@ import {closePopup} from "components/ui/popSlide/PopSlide";
 import {setCommonPopupOpenData} from "redux/actions/common";
 
 export const backFunc = (context, dispatch) => {
-  const {backFunction} = context
-  const nameLength = backFunction.name.length
+  const {backFunction} = context;
+  const nameLength = backFunction.name.length;
   switch (backFunction.name[nameLength-1]) {
     case 'booleanType':
       context.action.updateBackFunction({name: 'booleanType', value: false})
@@ -26,6 +26,11 @@ export const backFunc = (context, dispatch) => {
       break;
     case 'commonPop':
       dispatch(setCommonPopupOpenData({...backFunction.popupData}))
+      break;
+    case 'callback': // 스와이퍼 사진 팝업, 이미지 편집 에서 사용중
+      if (typeof context?.backEventCallback?.callback === 'function') {
+        context?.backEventCallback?.callback();
+      }
       break;
     default:
       break

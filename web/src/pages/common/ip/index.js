@@ -14,12 +14,14 @@ import {OS_TYPE, API_SERVER, PHOTO_SERVER} from 'context/config.js'
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 import {getDeviceOSTypeChk} from '../../../common/DeviceCommon';
+import qs from 'query-string'
 
 export default () => {
   const history = useHistory();
   const customHeader = JSON.parse(Api.customHeader);
   const context = useContext(Context);
   const [redirectList, setRedirectList] = useState([]);
+  const {webview} = qs.parse(location.search);
 
   /** host 주소값으로 리스트에서 같은 값이 있는지 검색
    * @return : undefined or {host, api, photo, socketURL} */
@@ -40,6 +42,9 @@ export default () => {
   const getInnerServerList = async () => {
     const {list, innerChk} = await Api.getInnerServerList();
 
+    if (webview && webview === 'new' && isHybrid()) {
+      return;
+    }
     if (Array.isArray(list) && list.length) {
       setRedirectList(list);
       localStorage.setItem('innerChk', innerChk); //client ip

@@ -12,6 +12,7 @@ import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
+import Refresh from './components/Refresh'
 import RankingList from './components/rankingList'
 import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
@@ -341,6 +342,7 @@ const RankPage = () => {
           </div>
         </div>
         <ChartSwiper data={djRank}/>
+        <Refresh select={select} setSelect={setSelect}/>
       </section>
       {token.isLogin ?
         <section className='myRanking'>

@@ -215,7 +215,7 @@
                     @include font(16px, 500, #FFFFFF);
                     background-color: #FF3C7B;
                     &.disable {
-                        background-color: #FFD4E1;
+                        background-color: $DISABLEDCOLOR;
                         pointer-events: none;
                     }
                 }

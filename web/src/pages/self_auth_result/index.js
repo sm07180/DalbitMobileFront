@@ -36,6 +36,8 @@ export default (props) => {
    */
   const [authState, setAuthState] = useState(0)
   const [dupCheck, setDupCheck] = useState(false);
+  const [resultData, setResultData] = useState(null);
+  const [windowClose, setWindowClose] = useState(false);
 
   const checkAuth = () => {
     async function fetchSelfAuth() {
@@ -81,13 +83,13 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
-    } else if(returntype === '') {
-      setAuthState(10)
     } else if(returntype === '' && url === '11') {
       setAuthState(11)
     } else if(returntype === 'default') {
       setAuthState(12)
-    } else {
+    } else if(returntype === 'parents') {
+      setAuthState(13)
+    }  else {
       checkAuth()
     }
 
@@ -129,6 +131,32 @@ export default (props) => {
       window.close();
     }else {
       history.replace('/');
+    }
+  }
+
+  /* 법정대리 동의 완료 후 뒤로가기 처리 */
+  const legalAuthBackEvent = () => {
+    if(isDesktop()) {
+      window.opener.location.replace('/wallet?exchange');
+      window.close();
+    } else {
+      history.replace('/');
+    }
+  }
+
+  const createHeader = () => {
+    switch (authState) {
+      case 0:
+        return <></>;
+      case 3:
+        return <Header title={'법정대리인(보호자) 동의 완료'} type='back' backEvent={legalAuthBackEvent} />
+      case 4:
+      case 12:
+        return <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
+      case 13:
+        return <Header title={'법정대리인(보호자) 동의'} type='back' backEvent={null} />
+      default:
+        return <Header title={'본인 인증 완료'} type='back' backEvent={null} />
     }
   }
 
@@ -203,14 +231,7 @@ export default (props) => {
             </p>
             <div className="btn-wrap">
               <button
-                onClick={() => {
-                  if(isDesktop()) {
-                    window.opener.location.href = '/wallet?exchange';
-                    window.close();
-                  }else {
-                    history.push('/wallet?exchange')
-                  }
-                }}>
+                onClick={legalAuthBackEvent}>
                 확인
               </button>
             </div>
@@ -344,11 +365,82 @@ export default (props) => {
             </div>
           </div>
         )
+      case 13:
+        if(!windowClose) {
+          setWindowClose(true);
+        }
+        const authFail = () => {
+          return (
+            <div className="auth-wrap">
+              <h4>
+                <span>법정대리인(보호자) 동의를 </span>실패했습니다.
+              </h4>
+              <div className="btn-wrap">
+                <button
+                  onClick={() => {
+                    if(isDesktop()) {
+                      window.close()
+                    }else {
+                      const decodeLink = decodeURIComponent(pushLink);
+                      history.push(decodeLink)
+                    }
+                  }}>
+                  확인
+                </button>
+              </div>
+            </div>
+          )
+        }
+
+        if(resultData?.result === 'success') {
+          if(resultData?.data?.parentAuth?.data === 1) {
+            return (
+              <div className="auth-wrap">
+                <h4>
+                  만 19세 미만 미성년자 이용에 대한
+                  <br />
+                  <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
+                </h4>
+                <p>
+                  ※ 동의 철회를 원하시는 경우, <br />
+                  달라 고객센터에서 철회 신청을 해주시기 바랍니다.
+                </p>
+                <div className="btn-wrap">
+                  <button
+                    onClick={() => {
+                      if(isDesktop()) {
+                        window.close()
+                      }else {
+                        const decodeLink = decodeURIComponent(pushLink);
+                        history.push(decodeLink)
+                      }
+                    }}>
+                    확인
+                  </button>
+                </div>
+              </div>
+            )
+          }else {
+            return authFail();
+          }
+        }else {
+          return authFail();
+        }
       default:
         return <></>
     }
   }
 
+  useEffect(() => {
+    if(windowClose) {
+      if(isDesktop()) {
+        console.log(pushLink);
+        window.opener.location.href = pushLink ? pushLink : '/store';
+      }
+    }
+  }, [windowClose]);
+
+  /* 휴면 해제 처리 */
   useEffect(() => {
     if(dupCheck) {
       if(isDesktop()) {
@@ -398,25 +490,29 @@ export default (props) => {
     }
   }, [dupCheck])
 
+  /* 미성년자 법정대리인 동의 메일 */
+  useEffect(() => {
+    const certResult = sessionStorage.getItem('certItem');
+    if(certResult) {
+      setResultData(JSON.parse(certResult));
+      sessionStorage.removeItem('certItem')
+    }
+  }, []);
+
   //---------------------------------------------------------------------
   return (
     <>
       {authState === 7 ? createResult() :
         <div id="selfAuthResult">
-          {authState === 0 ? (
-              <></>
-            ) :
-            (authState === 4 || authState === 12) ?
-              <Header title={'본인 인증 완료'} type='back' backEvent={phoneAuthAction} />
-              : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} type='back' />
-          }
+          {createHeader()}
           <section className="resultWrap">
             {authState !== 0 && (
               <>
                 <div className="img_wrap">
                   <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
                 </div>
-                <h2>본인 인증 완료</h2>
+                {/* 3: 법정 대리인(환전) 동의 완료, 13: 법정 대리인(결제) 인증 실패 */}
+                {(authState !== 3 && authState !== 13) && <h2>본인 인증 완료</h2>}
                 {createResult()}
               </>
             )}

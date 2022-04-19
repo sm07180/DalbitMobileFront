@@ -7,7 +7,7 @@ import React from 'react'
 import './checkList.scss'
 
 const CheckList = (props) => {
-  const {text,name,children, index, code, beforeCode, setBeforeCode, onClick} = props
+  const {text,name,children, index, code, beforeCode, setBeforeCode, onClick, checkState} = props
 
   const getChecked = (selectedCode, code) => {
     let checkFlag = false;
@@ -34,7 +34,7 @@ const CheckList = (props) => {
     <>
       <div className="infoCheckList">
         <label className="inputLabel">
-          <input type="checkbox" className="blind" checked={beforeCode && getChecked(beforeCode, code)} onChange={(e) => {
+          <input type="checkbox" className="blind" checked={checkState || (beforeCode && getChecked(beforeCode, code))} onChange={(e) => {
             if (code === '0'){
               setBeforeCode('0');
               return;
@@ -63,6 +63,7 @@ const CheckList = (props) => {
 }
 
 CheckList.defaultProps = {
-  onClick:()=>{}
+  onClick:()=>{},
+  checkState: false
 }
 export default CheckList
