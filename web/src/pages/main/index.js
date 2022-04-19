@@ -382,7 +382,9 @@ const MainPage = () => {
             setRankingList(res.data.list)
           }
         });
-      }else {
+      } else if (type === 'TEAM') {
+        console.log('여기 들어오닝?');
+      } else {
         Api.get_ranking({
           param: {
             rankSlct: type === "FAN" ? 2 : 3,
