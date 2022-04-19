@@ -39,7 +39,6 @@ const TeamDetail = () => {
   // 초대하기 팝업
   const invitePopup = () => {
     setInvitePop(true);
-    dispatch(setCommonPopupOpenData({...popup, invitePopup: true}));
   };
 
   /***  더보기 관련 ***/
@@ -55,7 +54,7 @@ const TeamDetail = () => {
   // 탈퇴 팝업
   const clickSecession = () => {
     if (teamLeader === true) {
-      dispatch(setCommonPopupOpenData({...popup, slidePopup: true}));
+      dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     } else {
       context.action.confirm({
         msg: `정말 탈퇴 할까요?`,
@@ -248,8 +247,8 @@ const TeamDetail = () => {
       }
 
       {/* 초대하기 슬라이드 팝업 */}
-      {popup.invitePopup &&
-        <PopSlide title="팀원 초대">
+      {invitePop &&
+        <PopSlide title="팀원 초대" popSlide={invitePop} setPopSlide={setInvitePop}>
           <Invite closeSlide={closeSecesstion} />
         </PopSlide>
       }

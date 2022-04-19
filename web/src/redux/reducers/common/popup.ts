@@ -16,9 +16,6 @@ const initialState: ICommonPopupState = {
   confirmPopup: false, 
   resultPopup: false,
 
-  // 팀 초대하기
-  invitePopup: false,
-
   /* 공통 팝업 */
   commonPopup: false,
 
