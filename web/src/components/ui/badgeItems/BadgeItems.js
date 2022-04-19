@@ -74,7 +74,8 @@ const BadgeItems = (props) => {
       ) : isBadge.contents === true ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>
       ) : isBadge.badgeSpecial === 1 && (
-        <em className="badgeItem specialDj">스페셜DJ</em>
+        // <em className="badgeItem specialDj">스페셜DJ</em>
+        <em className="badgeItem starDj">스페셜DJ</em>
       ))}
       {type === 'isNew' && isNew.new ? 
         <em className='badgeItem newDj'>NEW DJ</em>
