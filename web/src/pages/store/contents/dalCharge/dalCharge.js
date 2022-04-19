@@ -15,16 +15,16 @@ import qs from 'query-string'
 import {setSlidePopupOpen} from "redux/actions/common";
 
 let paymentList = [
-  {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
-  {type: '무통장(계좌이체)', code: 'coocon'},
-  {type: '신용/체크카드', fetch: 'pay_card'},
-  {type: '휴대폰', fetch: 'pay_phone'},
-  {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
-  {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
-  {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
-  {type: '문화상품권', fetch: 'pay_gm'},
-  {type: '해피머니상품권', fetch: 'pay_hm'}
+  {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple', bonus: true},
+  {type: '무통장(계좌이체)', code: 'coocon', bonus: true},
+  {type: '신용/체크카드', fetch: 'pay_card', bonus: true},
+  {type: '휴대폰', fetch: 'pay_phone', bonus: false},
+  {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney', bonus: false},
+  {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay', bonus: false},
+  {type: '페이코', fetch: 'pay_letter', code: 'payco', bonus: false},
+  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney', bonus: false},
+  {type: '문화상품권', fetch: 'pay_gm', bonus: false},
+  {type: '해피머니상품권', fetch: 'pay_hm', bonus: false}
   // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
   // {type: "스마트문상(게임문화상품권)", fetch: 'pay_gg'},
   // {type: "도서문화상품권", fetch: 'pay_gc'},

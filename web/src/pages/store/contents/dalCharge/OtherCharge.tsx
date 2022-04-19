@@ -15,12 +15,17 @@ import {PAYMENT_LIST} from "../../../../redux/types/pay/storeType";
 import {Hybrid} from "../../../../context/hybrid";
 import {setStateHeaderVisible} from "../../../../redux/actions/payStore";
 
+import moment from "moment";
+
 const OtherCharge = ()=>{
   const history = useHistory();
   const context = useContext(Context);
   const location = useLocation();
   const isDesktop = useSelector((state)=> state.common.isDesktop);
   const payStoreRdx = useSelector(({payStore})=> payStore);
+
+  
+  const nowDay = moment().format('YYYYMMDD');
 
   const [selectPayment, setSelectPayment] = useState(-1);
   const formTag = useRef<any>();
@@ -205,11 +210,34 @@ const OtherCharge = ()=>{
     }
   };
 
+  
+  const openBannerUrl = (value) => {
+    if(value.includes('notice')) {
+      history.push({
+        pathname: value,
+        state: value.split('/')[2]
+      })
+    }else {
+      history.push(value)
+    }
+  }
+
   return (
     <div id="dalCharge">
       {
         !payStoreRdx.stateHeader.visible &&
         <Header title="달 충전하기" position="sticky" type="back" />
+      }
+      {!moment(nowDay).isAfter(moment('20220428')) &&
+        <section className="eventBanner">
+          <div className="bannerImg" onClick={() => {openBannerUrl("/notice/661")}}>
+            <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>
+          </div>
+          <div className="bannerInfo">
+            <p className="bannerText">※ 단, 무통장입금, 계좌이체, 카드결제 방식에 한합니다.</p>
+            <p className="bannerText">※ 실제 보너스 지급은 다음날 지급됩니다. (휴일제외)</p>
+          </div>
+        </section>
       }
       <section className="purchaseInfo">
         <CntTitle title="구매내역" />
@@ -236,7 +264,7 @@ const OtherCharge = ()=>{
             <div className="title">총</div>
             <p>
               <span className='totalCnt'>
-                {bonusDal && Utility.addComma((dal * buyItemInfo.itemAmount) + bonusDal)}
+                {bonusDal ? Utility.addComma((dal * buyItemInfo.itemAmount) + bonusDal) : Utility.addComma((dal * buyItemInfo.itemAmount))}
               </span>
               <strong>개</strong>
             </p>
@@ -255,7 +283,13 @@ const OtherCharge = ()=>{
           {PAYMENT_LIST.map((data,index) => {
             return (
               <div key={index} className={`selectItem ${Number(selectPayment) === index ? 'active' : ''} ${paymentLimit(data.type) ? 'disabled' : ''}`}
-                   onClick={()=>{onSelectMethod(index, data)}}>{data.type}</div>
+                   onClick={()=>{onSelectMethod(index, data)}}>{data.type}
+                   {(!moment(nowDay).isAfter(moment('20220428')) && data.bonus && price * buyItemInfo.itemAmount > 50000) ?
+                      <span className="bonus">10% {index > 1 ? "" : "보너스"}</span>
+                      :
+                      <></>
+                    }
+                  </div>
             )
           })}
         </div>
