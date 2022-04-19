@@ -61,9 +61,8 @@ const Remypage = () => {
 
   const teamCheck=async(memNo)=>{
     const {result, data, message, code} = await Api.getTeamMemMySel({memNo: memNo})
-    console.log()
+    console.log(result, data, message, code)
     if (code === '00000') {
-      console.log(result, data, message, code)
       setTeamInfo(data)
     }
   }
@@ -172,20 +171,20 @@ const Remypage = () => {
               </div>
               <div className='myDataList' onClick={() =>{
                 if(teamInfo.team_no > 0){
-                  history.push('/team/detail')
+                  history.push(`/team/detail/${teamInfo.team_no}`)
                 }else{
                   history.push('/team')
                 }
               }}>
                 <span className='icon team'>
-                  {teamInfo.team_bg_code !== undefined ?
-                    <>
-                      <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />
-                      <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />
-                      <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />
-                    </>
-                  :
+                  {teamInfo.team_bg_code === "" ?
                     <span className={teamInfo.req_cnt !== 0 ? 'new' : ''} />
+                  :
+                    <>
+                    {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />}
+                    {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />}
+                    {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
+                    </>
                   }
                 </span>
                 <span className="myDataType">팀</span>

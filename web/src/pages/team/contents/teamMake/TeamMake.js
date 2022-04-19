@@ -54,7 +54,6 @@ const TeamMake = () => {
 
   const saveAction=()=>{
     if(teamName === null || teamName === ""){
-      console.log("팀 이름 입력")
       return false;
     }
     let param ={
@@ -66,8 +65,9 @@ const TeamMake = () => {
       teamBgCode:partsCcode
     }
     Api.getTeamIns(param).then((res) => {
-      if (res.message === 'SUCCESS' && res.data ===1) {
-        history.push(`/mypage/${memberRdx.memNo}`)
+      console.log(res)
+      if (res.message === 'SUCCESS' && res.data.result ===1) {
+        history.push(`/team/detail/${res.data.teamNo}`)
       }else{
         console.log("error");
       }
@@ -123,19 +123,15 @@ const TeamMake = () => {
   }
 
   useEffect(()=>{
-  if(partsName ===""){
-    Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-      console.log("res==>",res)
-    })
-  }
-  },[])
-  useEffect(()=>{
-
-      if( partsName!==""){
+    if(partsName ===""){
+      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
+        if(res.data !== 1){
+          history.push('/myPage')
+        }
+      })
+    }else if( partsName!==""){
         symbolApi()
         }
-
-
   },[partsName])
 
   // 페이지 시작

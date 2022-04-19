@@ -287,9 +287,9 @@ const Router = () => {
 
         <Route exact path="/team" component={Team} />
         <Route exact path="/team/make" component={TeamMake} />
-        <Route exact path="/team/detail" component={TeamDetail} />
-        <Route exact path="/team/manager" component={TeamManager} />
-        <Route exact path="/team/badge" component={TeamBadge} />
+        <Route exact path="/team/detail/:teamNo" component={TeamDetail} />
+        <Route exact path="/team/manager/:teamNo" component={TeamManager} />
+        <Route exact path="/team/badge/:teamNo" component={TeamBadge} />
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />

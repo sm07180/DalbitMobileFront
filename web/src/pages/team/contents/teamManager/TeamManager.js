@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
@@ -18,21 +18,112 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
 
 import "../../scss/teamManager.scss";
+import Api from "context/api";
 
-const TeamManager = () => {
+const TeamManager = (props) => {
   const history = useHistory();
   const context = useContext(Context);
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
+  const teamNo = props.match.params.teamNo;
+  const memberRdx = useSelector((state)=> state.member);
   
   const [confirmPop, setConfirmPop] = useState(false);
 
+  const [teamName,setTeamName]=useState(''); //팀 이름
+  const [teamConts,setTeamConts]=useState(''); //팀소개
+  const [teamMemList, setTeamMemList]=useState([]);
+  const [teamInfo, setTeamInfo]=useState({});
+  const [updateChk, setUpdateChk]=useState(false);
+  const [agree,setAgree]=useState(false);
+  const [medalCode,setMdalCode]=useState("")
+  const [edgeCode,setEdgeCode]=useState("")
+  const [bgCode,setBgCode]=useState("")
+
+  useEffect(()=>{
+    if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
+      history.goBack();
+      return false
+    }else{
+      teamInfoApi();
+    }
+  },[updateChk])
+
+  useEffect(()=>{
+    if(updateChk){
+      teamInfoApi();
+      setUpdateChk(false)
+    }
+  },[updateChk])
+
+// 팀 정보
+  const teamInfoApi =()=>{
+    Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
+      if(res.code === "00000") {
+        console.log("팀정보", res.data)
+        setTeamMemList(res.data.teamMemList);
+        setTeamInfo(res.data.teamInfo);
+        setTeamName(res.data.teamInfo.team_name);
+        setTeamConts(res.data.teamInfo.team_conts);
+        setAgree(res.data.teamInfo.req_mem_yn);
+        setMdalCode(res.data.teamInfo.team_medal_code);
+        setEdgeCode(res.data.teamInfo.team_edge_code);
+        setBgCode(res.data.teamInfo.team_bg_code);
+        if(res.data.teamInfo.req_mem_yn ==='y'){
+          document.getElementsByClassName("blind")[0].checked = true
+        }
+      }
+    });
+  }
+  const updateApi=()=>{
+    let param={
+      memNo:memberRdx.memNo,
+      updSlct:'a',   //-- 수정구분[a:심볼및이름, b:소개수정]
+      teamNo:teamNo,
+      teamName:teamName,
+      teamConts:teamConts,
+      teamMedalCode:"",
+      teamEdgeCode:"",
+      teamBgCode:"",
+      reqMemYn:agree
+
+    }
+    console.log(param)
+/*    Api.getTeamUpd(param).then((res)=>{
+
+      console.log("수정완료",res);
+
+    })*/
+
+  }
+
+  const editCnts=(e)=>{
+    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
+    let rows = text.split('\n').length
+
+    if(rows > 5){
+      alert("5줄 까지만 가능합니다.")
+      return false
+    }
+    setTeamConts(text);
+  }
+  //팀 가입신청 여부
+  const onClickAction = (e) => {
+    if(e.target.checked) {setAgree('y')}
+    else {setAgree('n');}
+  }
+  const editName=(e)=>{
+    let text= e.currentTarget.value.trim();
+    setTeamName(text);
+  }
+
   const clickConfirmPopup = () => {
+    updateApi()
     setConfirmPop(!confirmPop);
   };
   
   // 강퇴하기
-  const teamDelete = () => {
+  const teamDelete = (masterNo,memNo) => {
     context.action.confirm({
       msg: `해당 회원님을 정말 강퇴시킬까요?`,
       buttonText: {
@@ -40,6 +131,19 @@ const TeamManager = () => {
         right: '강퇴'
       },
       callback: () => {
+        let param = {
+          teamNo:teamNo,
+          delSclt:"m",
+          tmMemNo:memNo,
+          masterMemNo:memberRdx.memNo,
+          chrgrName:""
+        }
+        Api.getTeamMemDel(param).then(res=>{
+          console.log("강퇴",res)
+          if(res.code==="00000"){
+            setUpdateChk(true)
+          }
+        })
         console.log('delete');
       }
     });
@@ -55,30 +159,40 @@ const TeamManager = () => {
           수정할 수 있습니다.<span>남은시간 71시간 59분</span></div>
         </section>
         <section className="teamSymbol">
-          <img src={"https://image.dalbitlive.com/team/parts/E/e007.png"} />
-          <img src={"https://image.dalbitlive.com/team/parts/B/b009.png"} />
-          <img src={"https://image.dalbitlive.com/team/parts/M/m007.png"} />
+          {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />}
+          {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />}
+          {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
         </section>
-        <TeamForm rows={7} />
+        <TeamForm rows={10} cols={60} teamConts={teamConts || "" } teamName={teamName || ""}
+                  editCnts={editCnts} editName={editName}
+        />
         <CntTitle title="맴버">
-          <span className="count"><strong>2</strong>/5</span>
+          <span className="count"><strong>{teamMemList.length}</strong>/5</span>
         </CntTitle>
         <section className="memberList">
-          <ListRow photo="" photoClick={() => photoClick()}>
-            <div className="listContent">
-              <div className="listItem">
-                <div className="nick">일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
-                <img src={`${IMG_SERVER}/team/teamLeader.png`} alt="teamLeader" />
-              </div>
-              <div className="listItem">
-                <div className="iconPoint"></div>
-                <div className="point">{Utility.addComma(123456789)}</div>
-              </div>
-            </div>
-            <div className="listBack">
-              <button onClick={teamDelete}>강퇴하기</button>
-            </div>
-          </ListRow>
+          {teamMemList.length >0 &&
+          teamMemList.map((data,index)=>{
+            return(
+              <ListRow photo="" photoClick={() => photoClick()} key={index}>
+                <div className="listContent">
+                  <div className="listItem">
+                    <div className="nick">{data.tm_mem_nick}</div>
+                    {data.team_mem_type === 'm' && <img src={`${IMG_SERVER}/team/teamLeader.png`} alt="teamLeader" />}
+                  </div>
+                  <div className="listItem">
+                    <div className="iconPoint"/>
+                    <div className="point">{Utility.addComma(`${data.tm_mem_score}`)}</div>
+                  </div>
+                </div>
+                {data.team_mem_type !== 'm' &&
+                <div className="listBack">
+                  <button onClick={()=>teamDelete(data.master_mem_no,data.tm_mem_no)}>강퇴하기</button>
+                </div>
+                }
+              </ListRow>
+            )
+          })
+          }
         </section>
         <div className="switchList">
           <div className="titleWrap">
@@ -86,12 +200,12 @@ const TeamManager = () => {
             <span className="subTitle">다른 회원이 우리팀에 가입 신청하는 것을 허용합니다.</span>
           </div>
           <label className="inputLabel">
-            <input type="checkbox" className="blind" />
+            <input type="checkbox" className="blind" onChange={onClickAction}/>
             <span className="switchBtn" />
           </label>
         </div>
-        <section className="buttonWrap">
-          <SubmitBtn text="완료" onClick={clickConfirmPopup} />
+        <section className="buttonWrap" onClick={clickConfirmPopup}>
+          <SubmitBtn text="완료"  />
         </section>
       </CntWrapper>
     </div>

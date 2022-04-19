@@ -4105,6 +4105,10 @@ export default class API {
   static getTeamSymbolList = async (data) => {
     return await ajax({url: `/team/teamSymbolList`, method: 'POST', reqBody: true, data: data})
   }
+  // 팀 정보(상세)
+  static getTeamDetailSel = async (data) => {
+    return await ajax({url: `/team/teamDetailSel`, method: 'POST', reqBody: true, data: data})
+  }
 }
 
 API.customHeader = null
