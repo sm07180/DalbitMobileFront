@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 // global components
 import ListRow from 'components/ui/listRow/ListRow';
+import NoResult from 'components/ui/noResult/NoResult';
 // components
 import Tabmenu from '../Tabmenu';
 
@@ -18,22 +19,18 @@ const InvitePop = (props) => {
       <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
       <div className="listContainer">
         <div className="listWrap">
-          <ListRow photo="" photoClick={() => photoClick()}>
-            <div className="listContent">
-              <div className="nick">일이삼사오육칠팔구십</div>
-            </div>
-            <div className="listBack">
-              <button className={true  ? 'complete' : ''}>완료</button>
-            </div>
-          </ListRow>
-          <ListRow photo="" photoClick={() => photoClick()}>
-            <div className="listContent">
-              <div className="nick">일이삼사오육칠팔구십</div>
-            </div>
-            <div className="listBack">
-              <button>초대</button>
-            </div>
-          </ListRow>
+          {true ? 
+            <ListRow photo="" photoClick={() => photoClick()}>
+              <div className="listContent">
+                <div className="nick">일이삼사오육칠팔구십</div>
+              </div>
+              <div className="listBack">
+                <button className={true  ? 'complete' : ''}>완료</button>
+              </div>
+            </ListRow>
+          :
+            <NoResult />
+          }
         </div>
       </div>
     </section>
