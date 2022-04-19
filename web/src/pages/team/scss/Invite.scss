@@ -10,9 +10,8 @@
       @include tabmenuStyle-1;
     }
     .listContainer {
-      flex:1;
       @include flex($fd:column);
-      max-height:486px;
+      height:486px;
       overflow-y:hidden;
       .listWrap {
         flex:1;
