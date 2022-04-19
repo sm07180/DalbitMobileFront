@@ -33,6 +33,8 @@ const StorePage = ()=>{
   const payStoreRdx = useSelector(({payStore})=> payStore);
   const memberRdx = useSelector(({member})=> member);
   const {webview} = qs.parse(location.search);
+  
+  const nowDay = moment().format('YYYYMMDD');
 
   const movePayment = (item:DalPriceType) => {
     if(payStoreRdx.storeInfo.mode === ModeType.none){
@@ -99,6 +101,17 @@ const StorePage = ()=>{
   }
   const nowTab = payStoreRdx.storeTabInfo.find(f=>f.selected);
 
+  const openBannerUrl = (value) => {
+    if(value.includes('notice')) {
+      history.push({
+        pathname: value,
+        state: value.split('/')[2]
+      })
+    }else {
+      history.push(value)
+    }
+  }
+
   return (
     <div id="storePage">
       <Header title={'스토어'} position="sticky" type="back" backEvent={()=>{
@@ -109,6 +122,18 @@ const StorePage = ()=>{
           history.replace('/');
         }
       }}/>
+      
+      {!moment(nowDay).isAfter(moment('20220428')) &&
+        <section className="eventBanner">
+          <div className="bannerImg" onClick={() => {openBannerUrl("/notice/661")}}>
+            <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>
+          </div>
+          <div className="bannerInfo">
+            <p className="bannerText">※ 단, 무통장입금, 계좌이체, 카드결제 방식에 한합니다.</p>
+            <p className="bannerText">※ 실제 보너스 지급은 다음날 지급됩니다. (휴일제외)</p>
+          </div>
+        </section>
+      }      
       <section className="myhaveDal">
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(payStoreRdx.storeInfo.dalCnt)}</span>
@@ -120,7 +145,7 @@ const StorePage = ()=>{
         }
 
         {
-          nowTab?.hasTip &&
+          nowTab?.hasTip && payStoreRdx.storeInfo.deviceInfo?.os === OS_TYPE.Android &&
           <div className="tipWrap">
             <div className="title">
               <i/>결제 TIP

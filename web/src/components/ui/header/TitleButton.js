@@ -12,6 +12,8 @@ import {OS_TYPE} from '../../../context/config'
 import moment from "moment";
 import Utility from "../../lib/utility";
 
+
+
 export const RankingButton = ({history}) => {
   return <button className='ranking' onClick={() => history.push('/rank')} />
 }
@@ -49,7 +51,9 @@ export const AlarmButton = ({history, dispatch, newAlarmCnt, isLogin, noticeCoun
 }
 
 export const StoreButton = ({history, memberRdx, payStoreRdx}) => {
-  return <button className='store' onClick={()=>{
+  const nowDay = moment().format('YYYYMMDD');
+  
+  return <button className={`store ${!moment(nowDay).isAfter(moment('20220428')) ? "bonus" : ""}`} onClick={()=>{
 
     storeButtonEvent({history, memberRdx, payStoreRdx})
   }} />
