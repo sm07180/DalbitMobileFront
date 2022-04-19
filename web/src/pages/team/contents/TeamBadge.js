@@ -13,6 +13,7 @@ import BadgeInfo from '../components/popup/BadgeInfo';
 // scss
 import '../scss/teamBadge.scss';
 import {useSelector} from "react-redux";
+import {NormalTimer} from "pages/broadcast/content/right_content/vote/Timer";
 
 const TeamBadge = (props) => {
   const history = useHistory();
@@ -26,6 +27,11 @@ const TeamBadge = (props) => {
   const [badgeData, setBadgeData]=useState({})
   const teamNo = props.match.params.teamNo;
   let selectBadgeList =[];
+
+  // const {hour, minute, isTimeOver, time, unitKor} = Timer({endDate:'2022.'});
+  // const tt = NormalTimer('2023.05.30 17:45:00');
+  // console.log(tt.years(), tt.months(), tt.days(), tt.hours(), tt.minutes(), tt.seconds())
+
 
   useEffect(()=>{
     if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
@@ -54,9 +60,9 @@ const TeamBadge = (props) => {
     })
   }
 
-  const selectBadge=(code)=>{
-
-
+  const selectBadge=(bgCode)=>{
+    // const copy = badgeList.map(m => m.bg_code )
+    // bg_achieve_yn
   }
 
   const clickPopup = () => {
@@ -64,11 +70,24 @@ const TeamBadge = (props) => {
   };
 
   const onClickBadge = (data) => {
-    if(changePage) return false
-    setBadgeData(data)
-    setBadgePop(true);
+    console.log(data)
+    // if(changePage) return false
+    // setBadgeData(data)
+    // setBadgePop(true);
   };
-  
+
+  const onClickComplete = async () =>{
+    if(!changePage){
+      return;
+    }
+    setChangePage(false);
+    const res = await Api.updTeamBadge({
+      teamNo:'',  // 팀번호
+      memNo:'',   // 회원번호
+      updSlct:'', // 업데이트구분[y:대표 설정, n:대표해제]
+      bgCode:''   // 배지코드
+    });
+  }
   // 페이지 시작
   return (
     <div id="teamBadge">
@@ -78,7 +97,11 @@ const TeamBadge = (props) => {
           {(statChk === 'm' && !changePage) ?
             <div>
               팀 화면에 보여질 대표배지를 설정할 수 있습니다.
-              <button onClick={()=>setChangePage(true)}>설정</button>
+              <button onClick={()=>{
+                setChangePage(true)
+              }}>
+                설정
+              </button>
             </div>
             :
             changePage ?
@@ -100,13 +123,13 @@ const TeamBadge = (props) => {
           {badgeList.map((data,index)=>{
             return(
               <label className="badgeItem" onClick={()=>onClickBadge(data)} key={index}>
-                {data.bg_achieve_yn === 'n' && <img src={`${data.bg_black_url}`} alt={data.bg_name} />}
-                {data.bg_achieve_yn === 'y' && <img src={`${data.bg_color_url}`} alt={data.bg_name} />}
-                {(statChk === 'm' && changePage) &&
-                <div className="checkboxLabel" onClick={()=>{selectBadge(data.bg_code)}}>
-                  {data.bg_achieve_yn === 'y' && <input type="checkbox" className="blind" />}
-                  <div className="checkBox"/>
-                </div>
+                <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
+                {
+                  (statChk === 'm' && changePage) &&
+                  <div className="checkboxLabel" onClick={()=>{selectBadge(data.bg_code)}}>
+                    {data.bg_achieve_yn === 'y' && <input type="checkbox" className="blind" />}
+                    <div className="checkBox"/>
+                  </div>
                 }
               </label>
             )
@@ -115,7 +138,7 @@ const TeamBadge = (props) => {
         </section>
 
         {(statChk === 'm' && changePage) &&
-          <section className="buttonWrap" onClick={()=>setChangePage(false)}>
+          <section className="buttonWrap" onClick={onClickComplete}>
             <SubmitBtn text="완료"/>
           </section>
         }
