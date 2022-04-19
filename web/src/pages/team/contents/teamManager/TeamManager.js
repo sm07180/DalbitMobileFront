@@ -104,7 +104,7 @@ const TeamManager = (props) => {
   const updateApi=()=>{
     let param={
       memNo:memberRdx.memNo,
-      updSlct:'a',   //-- 수정구분[a:심볼및이름, b:소개수정]
+      updSlct:'b',   //-- 수정구분[a:심볼및이름, b:소개수정]
       teamNo:teamNo,
       teamName:teamName,
       teamConts:teamConts,
@@ -115,11 +115,11 @@ const TeamManager = (props) => {
 
     }
     console.log(param)
-/*    Api.getTeamUpd(param).then((res)=>{
-
-      console.log("수정완료",res);
-
-    })*/
+    Api.getTeamUpd(param).then((res)=>{
+      if(res.code==="00000"){
+        history.replace(`/team/detail/${teamNo}`)
+      }
+    })
 
   }
 

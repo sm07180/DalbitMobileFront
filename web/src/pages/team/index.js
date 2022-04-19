@@ -15,15 +15,34 @@ import Api from "context/api";
 import {useSelector} from "react-redux";
 
 const TeamPage = () => {
-
+  const history = useHistory();
   const [listCnt,setListCnt]=useState(0);
   const [list,setList]=useState([])
+  const [invitationChk , setInvitationChk]=useState(false);
   const memberRdx = useSelector((state) => state.member);
 
   useEffect(()=>{
-    invitationList()
-  },[])
 
+    if(invitationChk===false){
+      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
+        console.log("팀페이지",res)
+        if(res.data !== 1){
+          history.push('/myPage')
+        }else{
+          invitationList()
+          listCheckApi()
+        }
+      })
+
+    }
+  },[]);
+
+  useEffect(()=>{
+    if(invitationChk){
+      invitationList()
+      setInvitationChk(false);
+    }
+  },[invitationChk]);
   const invitationList=()=>{
     let param ={
       memNo:memberRdx.memNo,
@@ -32,13 +51,27 @@ const TeamPage = () => {
     }
     Api.getTeamInvitationSel(param).then((res) => {
       if (res.code === "00000") {
+        console.log("초대리스트",res.data.list)
         setListCnt(res.data.listCnt)
         setList(res.data.list)
       }else{
         console.log("데이터 호출안됨");
       }
     })
+  }
 
+  const listCheckApi=()=>{
+    let param={
+      memNo:memberRdx.memNo,
+      reqSlct:'i'
+    }
+    Api.getTeamMemReqUpd(param).then((res)=>{
+      if (res.code === "00000") {
+        setInvitationChk(true);
+      }else{
+        console.log("데이터 호출안됨");
+      }
+    })
   }
 
   // 페이지 시작
@@ -47,7 +80,7 @@ const TeamPage = () => {
       <Header title="팀" type="back"/>
       <CntWrapper>
         <InfoSlide />
-        <InviteList list={list} listCnt={listCnt} />
+        <InviteList list={list} listCnt={listCnt} memNo={memberRdx.memNo} setInvitationChk={setInvitationChk}/>
         <ButtonWrap />
       </CntWrapper>
     </div>

@@ -5,14 +5,15 @@ import {IMG_SERVER} from 'context/config';
 // global components
 import ListRow from 'components/ui/listRow/ListRow';
 import {PHOTO_SERVER} from "context/config";
+import Api from "context/api";
 
 const InviteList = (props) => {
   const history = useHistory();
   const context = useContext(Context);
 
-  let {list,listCnt}=props;
+  let {list,listCnt,memNo,setInvitationChk}=props;
 
-  const teamConfirm = (e) => {
+  const teamConfirm = (e,teamNo) => {
     const {targetConfirm} = e.currentTarget.dataset;
 
     if (targetConfirm === 'cancel') {
@@ -24,6 +25,7 @@ const InviteList = (props) => {
         },
         callback: () => {
           console.log('cancel');
+          setInvitationChk(true)
         }
       });
     } else if (targetConfirm === 'accept') {
@@ -34,7 +36,17 @@ const InviteList = (props) => {
           right: '수락할게요!'
         },
         callback: () => {
-          console.log('accept');
+          let param={
+            teamNo:teamNo,
+            memNo:memNo,
+          }
+          Api.getTeamMemIns(param).then((res)=>{
+            if(res.code === "00000"){
+              console.log("수락",res)
+              history.push(`/team/detail/${teamNo}`)
+            }
+          })
+
         }
       });
     }
@@ -50,11 +62,11 @@ const InviteList = (props) => {
       {listCnt > 0 ?
         list.map((data,index)=>{
             return(
-            <div className="listWrap">
+            <div className="listWrap" key={index}>
               <div className="listRow">
                 <div className="photo">
-                  <img src={`${IMG_SERVER}/team/parts/E/${data.team_edge_code}.png`} alt="" />
-                  <img src={`${IMG_SERVER}/team/parts/B/${data.team_bg_code}.png`} alt="" />
+                  <img src={`${IMG_SERVER}/team/parts/E/${data.team_bg_code}.png`} alt="" />
+                  <img src={`${IMG_SERVER}/team/parts/B/${data.team_edge_code}.png`} alt="" />
                   <img src={`${IMG_SERVER}/team/parts/M/${data.team_medal_code}.png`} alt="" />
                 </div>
                 <div className="listContent">
@@ -67,8 +79,8 @@ const InviteList = (props) => {
                 </div>
                 <div className="listBack">
                   <div className="buttonGroup">
-                    <button className="cancel" data-target-confirm="cancel" onClick={teamConfirm}>거절</button>
-                    <button className="accept" data-target-confirm="accept" onClick={teamConfirm}>수락</button>
+                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>teamConfirm(e,data.team_no)}>거절</button>
+                    <button className="accept" data-target-confirm="accept" onClick={(e)=>teamConfirm(e,data.team_no)}>수락</button>
                   </div>
                 </div>
               </div>
