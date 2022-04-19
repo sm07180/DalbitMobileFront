@@ -82,7 +82,7 @@ const DalCharge = () => {
     if(commonPopup.commonPopup) {
       closePopup(dispatch);
     }else {
-      dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
+      dispatch(setSlidePopupOpen());
     }
   }
 

@@ -93,7 +93,7 @@ const ProfileEdit = () => {
   };
 
   const openMoreList = () => {
-    dispatch(setSlidePopupOpen({...popup, slidePopup: true}))
+    dispatch(setSlidePopupOpen())
   };
 
   const closeMoreList = () => {

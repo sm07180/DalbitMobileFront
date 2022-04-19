@@ -35,7 +35,7 @@ const HistoryList = (props) => {
   }, [commonPopup.slidePopup]);
 
   const onClickPopSlide = () => {
-    dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
+    dispatch(setSlidePopupOpen());
   }
 
   const popSlideClose = () => {

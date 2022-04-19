@@ -111,7 +111,7 @@ const ListenWrap = () =>{
 
   //조회시 팝업 open
   const openPopup = () => {
-    dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
+    dispatch(setSlidePopupOpen());
   }
 
   //조회시 팝업 close
