@@ -46,7 +46,7 @@ const PopSlide = (props) => {
     }
     return () => {
       document.body.classList.remove('overflowHidden')
-      dispatch(setCommonPopupClose());
+      dispatch(setSlidePopupClose());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {
         if(context.backFunction.name.length === 1) {
