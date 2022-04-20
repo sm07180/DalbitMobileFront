@@ -79,8 +79,12 @@
       background-color:#F6F6F6;
       border-radius:16px;
       .count {
+        @include flex;
+        margin-top:4px;
+        line-height:23px;
         @include font(12px,$Medium,#666);
         strong {
+          margin-right:4px;
           @include font(18px,$Bold,#202020);
         }
       }
@@ -91,18 +95,19 @@
     .teamIntro {
       @include flex(flex-start);
       min-width:0;
+      width:100%;
       line-height:18px;
       margin-bottom:24px;
       .text {
-        flex:1;
+        display:inline-block;
         white-space:pre-wrap;
+        word-break: break-all;
         @include font(13px,$Regular,#303030);
         &.close {
           @include fontLineCut;
         }
         &.open {
           @include fontLineCut(5);
-          word-break: keep-all;
         }
       }
       .arrow {
@@ -110,9 +115,10 @@
         display:inline-block;
         width:30px;
         height:30px;
-        padding:0 5px;
-        margin-left:8px;
+        padding:0 4px 0 8px;
+        margin-left:auto;
         opacity: .7;
+        box-sizing: content-box;
         cursor:pointer;
         img {
           width:100%;
@@ -145,6 +151,9 @@
         width:100%;
       }
     }
+  }
+  .badgeNone {
+    @include font(12px,$Regular,#666);
   }
   .memberList {
     margin-top:16px;
@@ -184,7 +193,6 @@
           margin-bottom:4px;
         }
         .nick {
-          flex:1;
           @include font(14px,$Medium,#303030);
           @include fontCut;
         }
@@ -241,6 +249,7 @@
     position:sticky;
     bottom:0;
     width:100%;
+    margin-top:auto;
     padding:10px 0 30px;
     pointer-events: none;
     .submitBtn {

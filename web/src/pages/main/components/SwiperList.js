@@ -108,7 +108,6 @@ const SwiperList = (props) => {
         )
       })}
 
-
       {topRankType === 'TEAM' && data.map((list, index) => {
         return (
           <div key={index}>
@@ -119,7 +118,7 @@ const SwiperList = (props) => {
                 <img src={`${IMG_SERVER}/team/parts/M/${list.team_medal_code}.png`} alt="" />
                 <div className={`rank-${index + 1}`}></div>
               </div>
-              <span className="nick">{list.team_name}</span>
+              <p className="userNick">{list.team_name}</p>
             </div>
           </div>
         );

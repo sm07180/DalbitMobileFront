@@ -316,16 +316,36 @@ const TeamDetail = (props) => {
               <div className="teamName">{teamInfo.team_name && teamInfo.team_name}</div>
               <div className="listItem">
                 <div className="iconPoint"></div>
-                <div className="pointEx">이번주</div>
-                {teamInfo.rank_pt && <div className="point">{Utility.addComma(`${teamInfo.rank_pt}`)}</div>}
+                <div className="pointEx">이번 주</div>
+                <div className="point">
+                  {teamInfo.rank_pt > 0 ?
+                    Utility.addComma(`${teamInfo.rank_pt}`)
+                    : teamInfo.rank_pt === 0 &&
+                    `-`
+                  }
+                </div>
                 <div className="pointEx">누적</div>
-                {teamInfo.team_tot_score && <div className="point">{Utility.addComma(`${teamInfo.team_tot_score}`)}</div>}
+                <div className="point">
+                  {teamInfo.team_tot_score > 0 ?
+                    Utility.addComma(`${teamInfo.team_tot_score}`)
+                    :
+                    `-`
+                  }
+                </div>
               </div>
             </div>
           </div>
           <div className="teamRank">
             <div className="text">이번 주</div>
-            {teamInfo.rank_no && <div className="count"><strong>{Utility.addComma(`${teamInfo.rank_no}`)}</strong>위</div>}
+            <div className="count">
+              <strong>
+                {teamInfo.rank_no ? 
+                  Utility.addComma(`${teamInfo.rank_no}`)
+                  :
+                  `-`
+                }
+              </strong>위
+            </div>
           </div>
           <div className="teamIntro">
             <span className={`text ${true ? 'open' : 'close'}`}>
@@ -343,7 +363,7 @@ const TeamDetail = (props) => {
             <button onClick={()=>history.push(`/team/badge/${teamNo}`)}>더보기</button>
           </div>
         <section className="badgeList">
-        {teamBageList.length > 0 &&
+        {teamBageList.length > 0 || false ?
           <>
             <div className="badgeItem">
               <img src={`${IMG_SERVER}/team/badge/a002.png`} alt="" />
@@ -358,6 +378,8 @@ const TeamDetail = (props) => {
               <img src={`${IMG_SERVER}/team/badge/a008.png`} alt="" />
             </div>
           </>
+          :
+          <div className="badgeNone">아직 획득한 활동배지가 없습니다.</div>
         }
         </section>
         <CntTitle title="전체 멤버">

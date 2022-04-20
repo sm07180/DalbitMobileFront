@@ -498,6 +498,7 @@
           }
           .teamName {
             @include font(14px,$Regular,black);
+            @include fontCut;
           }
           .rankingList {
             &__warnTxt {

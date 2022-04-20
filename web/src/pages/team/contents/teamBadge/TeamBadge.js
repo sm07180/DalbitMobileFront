@@ -9,22 +9,21 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 import Api from "context/api";
 // components
-import BadgeInfo from '../components/popup/BadgeInfo';
+import BadgeInfo from '../../components/popup/BadgeInfo';
 // scss
-import '../scss/teamBadge.scss';
+import '../../scss/teamBadge.scss';
 import {useSelector} from "react-redux";
-import {NormalTimer} from "pages/broadcast/content/right_content/vote/Timer";
 
 const TeamBadge = (props) => {
   const history = useHistory();
   const context = useContext(Context);
   const memberRdx = useSelector((state)=> state.member);
-  const [badgePop, setBadgePop] = useState(false);
-  const [statChk, setStatChk]=useState(""); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
+  const [badgePop, setBadgePop] = useState(true);
+  const [statChk, setStatChk]=useState(props.data.statChk); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [changePage,setChangePage]=useState(false);
-  const [badgeList,setBadgeList]=useState([]); // 대표활동배지 변경할때 비교용도로 쓰임
-  const [updBadgeList,setUpdBadgeList]=useState([]);
-  const [getCnt,setGetCnt]=useState(0);  // 활동뱃지 얻은 갯수
+  const [badgeList,setBadgeList]=useState(props.data.list); // 대표활동배지 변경할때 비교용도로 쓰임
+  const [updBadgeList,setUpdBadgeList]=useState(props.data.list);
+  const [getCnt,setGetCnt]=useState(props.data.cnt);  // 활동뱃지 얻은 갯수
   const [badgeData, setBadgeData]=useState({})
   const teamNo = props.match.params.teamNo;
 
@@ -72,7 +71,7 @@ const TeamBadge = (props) => {
   };
 
   const onClickBadge = (data) => {
-    setUpdBadgeList(updBadgeList.map(m=>{
+    const copy = updBadgeList.map(m=>{
       if(data.bg_achieve_yn === 'n'){
         return m;
       }
@@ -80,11 +79,9 @@ const TeamBadge = (props) => {
         m.bg_represent_yn = m.bg_represent_yn === 'y' ? 'n' : 'y'
       }
       return m;
-    }))
-    console.log(data)
-    // if(changePage) return false
-    // setBadgeData(data)
-    // setBadgePop(true);
+    })
+
+    setUpdBadgeList(copy)
   };
 
   const onClickComplete = async () =>{
@@ -93,8 +90,9 @@ const TeamBadge = (props) => {
     }
     let cnt = 0, successCnt = 0;
     for (let i = 0; i < updBadgeList.length; i++) {
-      if(updBadgeList[i].bg_represent_yn === badgeList[i].bg_represent_yn){
-        return;
+      if(updBadgeList[i].bg_represent_yn === props.data.list[i].bg_represent_yn){
+        console.log(`i ${updBadgeList[i].bg_represent_yn}, ${props.data.list[i].bg_represent_yn}`)
+        continue;
       }
       cnt++;
       // -3:대표설정 배지수 초과, -2:배지 미달성, -1: 팀장아님, 0: 에러, 1:정상
@@ -114,7 +112,7 @@ const TeamBadge = (props) => {
       // 뭔가 실패
     }
     setChangePage(false);
-    history.goBack();
+    // history.goBack();
   }
   // 페이지 시작
   return (
@@ -149,10 +147,10 @@ const TeamBadge = (props) => {
 
         {
           updBadgeList && updBadgeList.length > 0 &&
-          <section className="badgeList">
+          <section className="badgeWrap">
             {
               updBadgeList.map((data,index)=>
-                <label className="badgeItem" onClick={()=>{onClickBadge(data)}} key={index}>
+                <div className="badgeList" onClick={()=>{onClickBadge(data)}} key={index}>
                   <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
                   {
                     statChk === 'm' && changePage && data.bg_achieve_yn === 'y' &&
@@ -161,7 +159,7 @@ const TeamBadge = (props) => {
                       <div className="checkBox"/>
                     </div>
                   }
-                </label>
+                </div>
               )
             }
           </section>

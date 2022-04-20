@@ -6,7 +6,7 @@ type TimerReturnType = {
   hour: string, minute: string, unitKor: '분'|'초', time: string, isTimeOver: boolean
 }
 // date -> YYYY.MM.DD HH:mm:ss
-export const NormalTimer = (date:string):Duration => {
+export const NormalTimer = (date: moment.Moment):moment.Duration => {
   const momentDate = moment(date);
   const target = {
     date: {
