@@ -4271,6 +4271,11 @@ export default class API {
     return await ajax({url: "/starDjIns"})
   }
 
+  //스타DJ 약력
+  static getStarDjLog = async (data) => {
+    return await ajax({url: "/getStarDjLog", method: 'POST', reqBody: true, data: data})
+  }
+
 
   static getDalPriceList = (data) => {
     return ajax({url: '/store/getDalPriceList', method: 'POST', reqBody: true, params:data})

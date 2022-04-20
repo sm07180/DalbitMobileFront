@@ -54,6 +54,8 @@ const StarDj = (props) => {
             props.history.replace("/");
           }
         }
+      } else if (djInfo.code === "-7"){
+        props.history.replace("/");
       }
     });
   }

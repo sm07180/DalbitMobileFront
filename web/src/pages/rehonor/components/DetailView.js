@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import './detailView.scss'
 import moment from "moment";
@@ -10,26 +10,29 @@ const DetailView = (props) => {
 
   const [lastYn, setLastYn] = useState({next: true, prev: false});
 
+  useEffect(() => {
+    let date = new Date();
+    if (`${date.getFullYear()}-${date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : `${date.getMonth() + 1}`}-01` === "2022-05-01") {
+      setLastYn({next: true, prev: true});
+    }
+  }, []);
 
 
   const prevDate = () => {
     let date = new Date();
     date.setMonth(date.getMonth() - 2);
     date.setDate(1);
-    let lastPrevDate = UtilityCommon.eventDateCheck("20220501") ? moment(date).format("YYYY-MM-DD") : '2020-06-01';
+    let lastPrevDate = UtilityCommon.eventDateCheck("20220501") ? moment(date).format("YYYY-MM-DD") > "2022-05-01" ?  moment(date).format("YYYY-MM-DD") : "2022-05-01" : '2020-06-01';
 
     let prevDate = changeDate(dateVal, "prev");
-
-    if (`${prevDate.year}-${prevDate.month}-01` >= lastPrevDate){
-      setDateVal({...prevDate, title: `${prevDate.year}년 ${prevDate.month}월`});
-      if (`${prevDate.year}-${prevDate.month}-01` === lastPrevDate) {
-        setLastYn({next: false, prev: true});
-      } else {
-        setLastYn({next: false, prev: false});
+      if (`${prevDate.year}-${prevDate.month}-01` >= lastPrevDate){
+        setDateVal({...prevDate, title: `${prevDate.year}년 ${prevDate.month}월`});
+        if (`${prevDate.year}-${prevDate.month}-01` === lastPrevDate) {
+          setLastYn({next: false, prev: true});
+        } else {
+          setLastYn({next: false, prev: false});
+        }
       }
-    }
-
-
   }
 
   const nextDate= () => {

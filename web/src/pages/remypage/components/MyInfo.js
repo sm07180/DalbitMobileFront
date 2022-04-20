@@ -1,9 +1,8 @@
-import React, {useState,useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 // global components
-import BadgeItems from "../../../components/ui/badgeItems/BadgeItems";
 import moment from "moment";
-import Utility from "components/lib/utility";
+import UtilityCommon from "common/utility/utilityCommon";
 
 const greetingComment = [
   {start: '060000', end: '115959', comment: '굿모닝이에요!'},
@@ -53,7 +52,7 @@ const MyInfo = (props) => {
         <div className="info">
           <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
           {
-            data?.specialDjCnt > 0 &&
+            data?.specialDjCnt > 0 && UtilityCommon.eventDateCheck("20220501") &&
               <em className={`starDj ${data.isSpecial ? "active" : ""}`} onClick={openStarDJHistoryPop}></em>                
           }
           <span className='userId'>{data?.memId}</span>

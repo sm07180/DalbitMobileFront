@@ -75,7 +75,7 @@ const BadgeItems = (props) => {
       ) : isBadge.contents === true ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>
       ) : isBadge.badgeSpecial === 1 && (
-          UtilityCommon.eventDateCheck("20220401") ?
+          UtilityCommon.eventDateCheck("20220501") ?
             <em className="badgeItem starDj">스타DJ</em>
             :
             <em className="badgeItem specialDj">스페셜DJ</em>
