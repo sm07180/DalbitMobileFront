@@ -37,16 +37,17 @@
         }
       }
     }
-    .badgeList {
+    .badgeWrap {
       display:grid;
       grid-template-columns: repeat(3,1fr);
       grid-template-rows: repeat(3,1fr);
       gap:14px;
       padding: 0 16px;
-      .badgeItem {
+      .badgeList {
         position: relative;
         img {
           width:100%;
+          height:auto;
         }
         .checkboxLabel {
           @include position-top-left;
