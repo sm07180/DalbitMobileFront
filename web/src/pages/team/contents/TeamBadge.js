@@ -123,12 +123,12 @@ const TeamBadge = (props) => {
           {badgeList.map((data,index)=>{
             return(
               <label className="badgeItem" onClick={()=>onClickBadge(data)} key={index}>
-                {data.bg_achieve_yn === 'n' && <img src={`${data.bg_black_url}`} alt={data.bg_name} />}
-                {data.bg_achieve_yn === 'y' && <img src={`${data.bg_color_url}`} alt={data.bg_name} />}
-                {(statChk === 'm' && changePage) &&
-                <div className="checkboxLabel acitve" onClick={()=>{selectBadge(data.bg_code)}}>
-                  <div className="checkBox"/>
-                </div>
+                <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
+                {
+                  statChk === 'm' && changePage &&
+                  <div className="checkboxLabel acitve" onClick={()=>{selectBadge(data.bg_code)}}>
+                    <div className="checkBox"/>
+                  </div>
                 }
               </label>
             )
