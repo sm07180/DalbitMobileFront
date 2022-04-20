@@ -18,7 +18,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamManager.scss";
-import {Timer} from "pages/broadcast/content/right_content/vote/Timer";
+import {NormalTimer, Timer} from "pages/broadcast/content/right_content/vote/Timer";
 import moment from "moment";
 import photoCommon from "common/utility/photoCommon";
 import Api from "context/api";
@@ -34,7 +34,7 @@ const TeamManager = (props) => {
   const memberRdx = useSelector((state)=> state.member);
 
   const [partsName, setPartsName] = useState('');
-  const [editChk , setEditChk]=useState(true);
+  const [editChk , setEditChk]=useState(true); // 수정가능여부
   const [partsA, setPartsA] = useState('');  //메달URL
   const [partsB, setPartsB] = useState('');  //테두리URL
   const [partsC, setPartsC] = useState('');  //배경URL
@@ -48,10 +48,15 @@ const TeamManager = (props) => {
   const [medalCode,setMdalCode]=useState("")
   const [edgeCode,setEdgeCode]=useState("")
   const [bgCode,setBgCode]=useState("")
-  const [t,setT]=useState({
-    date: {day: 0, month: 0, year: 0},
-    time: {hour: 0, minute: 0, nano: 0, second: 0}
+  const [t,setT]=useState(moment.now())
+  const [defultData , setDefultData]=useState({
+    bgCode:"",
+    medalCode:"",
+    edgeCode:"",
+    teamName:"",
   })
+  const {hour, minute, time, unitKor, isTimeOver} = NormalTimer(t);
+  console.log(hour, minute, time, unitKor, isTimeOver)
   useEffect(()=>{
     if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
       history.goBack();
@@ -72,28 +77,31 @@ const TeamManager = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
       if(res.code === "00000") {
-        let aaaa = moment(res.data.teamInfo.ins_date).add(3, 'd')
+        let dateFormat = moment(res.data.teamInfo.ins_date).add(3, 'd')
         let teamInfo = res.data.teamInfo;
+
         const dd = {
           date: {
-            day: aaaa.date(),
-            month: aaaa.month()+1,
-            year: aaaa.year()
+            day: dateFormat.date(),
+            month: dateFormat.month()+1,
+            year: dateFormat.year()
           },
           time: {
-            hour: aaaa.hour(),
-            minute: aaaa.minute(),
+            hour: dateFormat.hour(),
+            minute: dateFormat.minute(),
             nano: 0,
-            second: aaaa.second()
+            second: dateFormat.second()
           }
         }
-        console.log(res.data);
-        if(teamInfo.team_chnge_cnt > 0){
-          setEditChk(false)
-        }
-
-        setT(dd)
-
+        console.log(res.data)
+        setDefultData({
+          bgCode:teamInfo.team_bg_code,
+          medalCode:teamInfo.team_medal_code,
+          edgeCode:teamInfo.team_edge_code,
+          teamName:res.data.teamInfo.team_name
+        })
+        setT(moment(res.data.teamInfo.ins_date).add(3, 'd').format('YYYY.MM.DD HH:mm:ss'))
+        setEditChk(res.data.editChk)
         setTeamMemList(res.data.teamMemList);
         setTeamName(res.data.teamInfo.team_name);
         setTeamConts(res.data.teamInfo.team_conts);
@@ -109,14 +117,24 @@ const TeamManager = (props) => {
 
         if(res.data.teamInfo.req_mem_yn ==='y'){
           document.getElementsByClassName("blind")[0].checked = true
+        }else{
+          document.getElementsByClassName("blind")[0].checked = false
         }
       }
     });
   }
   const updateApi=()=>{
+
+    let equData = {
+      bgCode:bgCode,
+      medalCode:medalCode,
+      edgeCode:edgeCode,
+      teamName:teamName
+    }
+
     let param={
       memNo:memberRdx.memNo,
-      updSlct:'b',   //-- 수정구분[a:심볼및이름, b:소개수정]
+      updSlct:JSON.stringify(defultData) === JSON.stringify(equData) ? 'b': 'a',   //-- 수정구분[a:심볼및이름, b:소개수정]
       teamNo:teamNo,
       teamName:teamName,
       teamConts:teamConts,
@@ -124,9 +142,8 @@ const TeamManager = (props) => {
       teamEdgeCode:edgeCode,
       teamBgCode:bgCode,
       reqMemYn:agree
-
     }
-    console.log(param)
+
     Api.getTeamUpd(param).then((res)=>{
       if(res.code==="00000"){
         history.replace(`/team/detail/${teamNo}`)
@@ -137,7 +154,6 @@ const TeamManager = (props) => {
 
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
-
     setPartsName(targetName);
     dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
   };
@@ -203,12 +219,10 @@ const TeamManager = (props) => {
           chrgrName:""
         }
         Api.getTeamMemDel(param).then(res=>{
-          console.log("강퇴",res)
           if(res.code==="00000"){
             setUpdateChk(true)
           }
         })
-        console.log('delete');
       }
     });
   };
@@ -290,7 +304,7 @@ const TeamManager = (props) => {
         }
 
         <TeamForm rows={10} cols={60} teamConts={teamConts || "" } teamName={teamName || ""}
-                  editCnts={editCnts} editName={editName}
+                  editCnts={editCnts} editName={editName} editCh={editChk}
         />
         <CntTitle title="맴버">
           <span className="count"><strong>{teamMemList.length}</strong>/5</span>
