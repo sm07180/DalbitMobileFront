@@ -1,6 +1,6 @@
-import TeamBadge from "pages/team/contents/TeamBadge/TeamBadge";
+import React, {useContext, useState, useEffect} from 'react';
+import TeamBadge from "pages/team/contents/teamBadge/TeamBadge";
 import {useSelector} from "react-redux";
-import {useEffect, useState} from "react";
 import Api from "context/api";
 
 const TeamBadgeIndex = (props)=>{

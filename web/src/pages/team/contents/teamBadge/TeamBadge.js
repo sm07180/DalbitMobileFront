@@ -90,8 +90,8 @@ const TeamBadge = (props) => {
     }
     let cnt = 0, successCnt = 0;
     for (let i = 0; i < updBadgeList.length; i++) {
-      if(updBadgeList[i].bg_represent_yn === badgeList[i].bg_represent_yn){
-        console.log(`i ${updBadgeList[i].bg_represent_yn}, ${badgeList[i].bg_represent_yn}`)
+      if(updBadgeList[i].bg_represent_yn === props.data.list[i].bg_represent_yn){
+        console.log(`i ${updBadgeList[i].bg_represent_yn}, ${props.data.list[i].bg_represent_yn}`)
         continue;
       }
       cnt++;
