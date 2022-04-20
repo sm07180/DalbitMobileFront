@@ -134,8 +134,7 @@ const TopRanker = (props) => {
       <span className='questionMark' onClick={() => setPopup(true)}></span>
       <div className="topItems">
         {context.token.isLogin && rankSlct === "FAN" &&
-        <button className={`fanSettingBtn ${rankSetting ? 'active' : ''}`}
-                onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
+          <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
       </div>
@@ -144,15 +143,16 @@ const TopRanker = (props) => {
           {data.map((list, index) => {
             return (
               <div className='rankingTop3' key={index}>
-                <div className='topHeader'>{
-                index === 0 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
-                  :
-                index === 1 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
-                  :
-                  `${index + 1}회차`
-                } TOP3
+                <div className='topHeader'>
+                  {
+                  index === 0 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                    :
+                  index === 1 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                    :
+                    `${index + 1}회차`
+                  } TOP3
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {

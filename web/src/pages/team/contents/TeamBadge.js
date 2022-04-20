@@ -23,6 +23,7 @@ const TeamBadge = (props) => {
   const [statChk, setStatChk]=useState(""); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [changePage,setChangePage]=useState(false);
   const [badgeList,setBadgeList]=useState([]);
+  const [updBadgeList,setUpdBadgeList]=useState([]);
   const [getCnt,setGetCnt]=useState(0);  // 활동뱃지 얻은 갯수
   const [badgeData, setBadgeData]=useState({})
   const teamNo = props.match.params.teamNo;
@@ -54,6 +55,7 @@ const TeamBadge = (props) => {
       if(res.code === "00000"){
         console.log(res)
         setBadgeList(res.data.list);
+        setUpdBadgeList(res.data.list)
         setStatChk(res.data.statChk);
         setGetCnt(res.data.cnt)
       }
@@ -70,6 +72,11 @@ const TeamBadge = (props) => {
   };
 
   const onClickBadge = (data) => {
+    updBadgeList.map(m=>{
+      if(m.bg_code === data.bg_code){
+        m.bg_represent_yn = m.bg_represent_yn === 'y' ? 'n' : 'y'
+      }
+    })
     console.log(data)
     // if(changePage) return false
     // setBadgeData(data)
@@ -120,19 +127,20 @@ const TeamBadge = (props) => {
         }
 
         <section className="badgeList">
-          {badgeList.map((data,index)=>{
-            return(
-              <label className="badgeItem" onClick={()=>onClickBadge(data)} key={index}>
+          {
+            badgeList.map((data,index)=>
+              <label className="badgeItem" onClick={()=>{onClickBadge(data)}} key={index}>
                 <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
                 {
                   statChk === 'm' && changePage &&
-                  <div className="checkboxLabel acitve" onClick={()=>{selectBadge(data.bg_code)}}>
+                  //  checkboxLabel active
+                  <div className="checkboxLabel active" onClick={()=>{selectBadge(data.bg_code)}}>
                     <div className="checkBox"/>
                   </div>
                 }
               </label>
             )
-          })}
+          }
 
         </section>
 
