@@ -12,7 +12,7 @@ const TeamForm = (props) => {
         <input type="text" maxLength={10} placeholder="필수입력(최대 10자)"
                onChange={(e)=>editName(e)}
                value={teamName}
-               disabled={editChk}
+               disabled={!editChk}
         />
       </InputItems>
       <InputItems title="팀 소개" type="textarea">

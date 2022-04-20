@@ -304,7 +304,7 @@ const TeamManager = (props) => {
         }
 
         <TeamForm rows={10} cols={60} teamConts={teamConts || "" } teamName={teamName || ""}
-                  editCnts={editCnts} editName={editName} editCh={editChk}
+                  editCnts={editCnts} editName={editName} editChk={editChk}
         />
         <CntTitle title="맴버">
           <span className="count"><strong>{teamMemList.length}</strong>/5</span>
