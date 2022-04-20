@@ -322,8 +322,8 @@ const TeamManager = (props) => {
           })
           }
         </section>
-        <div className="switchList">
-          <div className="titleWrap">
+        <div className="switchWrap">
+          <div className="wrapBox">
             <span className="title">가입 신청 허용</span>
             <span className="subTitle">다른 회원이 우리팀에 가입 신청하는 것을 허용합니다.</span>
           </div>

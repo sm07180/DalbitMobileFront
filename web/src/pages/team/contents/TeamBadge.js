@@ -126,10 +126,10 @@ const TeamBadge = (props) => {
           <div className="title">활동 뱃지<span><strong>{getCnt}</strong></span></div>
         }
 
-        <section className="badgeList">
+        <section className="badgeWrap">
           {
             badgeList.map((data,index)=>
-              <label className="badgeItem" onClick={()=>{onClickBadge(data)}} key={index}>
+              <div className="badgeList" onClick={()=>{onClickBadge(data)}} key={index}>
                 <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
                 {
                   statChk === 'm' && changePage &&
@@ -138,7 +138,7 @@ const TeamBadge = (props) => {
                     <div className="checkBox"/>
                   </div>
                 }
-              </label>
+              </div>
             )
           }
 

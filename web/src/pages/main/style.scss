@@ -356,6 +356,7 @@
               @include flex(center,center);
               width:116px;
               height:154px;
+              margin-bottom:8px;
               box-shadow: none;
               img {
                 @include position-center;

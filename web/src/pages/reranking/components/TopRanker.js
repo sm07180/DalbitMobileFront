@@ -258,10 +258,12 @@ const TopRanker = (props) => {
                   return (
                     <div className="ranker" key={index} data-team-no={value.team_no} onClick={goTeamDetailPage}>
                       <div className="listColumn" data-type={index}>
-                        <div className="teamSymbol">
-                          <img src={`${IMG_SERVER}/team/parts/E/${value.team_bg_code}.png`} alt="" />
-                          <img src={`${IMG_SERVER}/team/parts/B/${value.team_edge_code}.png`} alt="" />
-                          <img src={`${IMG_SERVER}/team/parts/M/${value.team_medal_code}.png`} alt="" />
+                        <div className="teamWrapBox">
+                          <div className="teamSymbol">
+                            <img src={`${IMG_SERVER}/team/parts/E/${value.team_bg_code}.png`} alt="" />
+                            <img src={`${IMG_SERVER}/team/parts/B/${value.team_edge_code}.png`} alt="" />
+                            <img src={`${IMG_SERVER}/team/parts/M/${value.team_medal_code}.png`} alt="" />
+                          </div>
                           <div className={`rankerRank index${index + 1}`}></div>
                         </div>
                         <div className='rankerNick'>{value.team_name}</div>

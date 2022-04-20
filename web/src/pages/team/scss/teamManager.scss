@@ -109,7 +109,6 @@
           margin-bottom:4px;
         }
         .nick {
-          flex:1;
           @include font(14px,$Medium,#303030);
           @include fontCut;
         }
@@ -142,14 +141,14 @@
       }
     }
   }
-  .switchList {
+  .switchWrap {
     position: relative;
-    @include flex(center, space-between);
+    @include flex(center);
     margin-bottom:30px;
     padding:0 16px;
-    .titleWrap {
-      flex: 1;
+    .wrapBox {
       @include flex(flex-start,center,column);
+      width:100%;
       .title {
         @include font(18px,$SemiBold, #202020);
       }
