@@ -14,7 +14,7 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
 
 const TopRanker = (props) => {
-  const {data, rankSlct, rankType} = props
+  const {data, rankSlct, rankType} = props;
 
   const history = useHistory();
   const context = useContext(Context);
@@ -124,12 +124,13 @@ const TopRanker = (props) => {
     <React.Fragment>
       <span className='questionMark' onClick={() => setPopup(true)}></span>
       {(data && data.length > 0 && rankSlct !== 'TEAM') &&
-      <div className="topItems">
-        {context.token.isLogin && rankSlct === "FAN" &&
-          <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
-        }
-        <span className='questionMark' onClick={() => setPopup(true)}></span>
-      </div>
+        <div className="topItems">
+          {context.token.isLogin && rankSlct === "FAN" &&
+            <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
+          }
+          <span className='questionMark' onClick={() => setPopup(true)}></span>
+        </div>
+      }
       {data && data.length > 0 &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
