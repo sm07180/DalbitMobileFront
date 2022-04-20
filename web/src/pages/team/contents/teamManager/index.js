@@ -13,7 +13,6 @@ const TeamManagerIndex = (props)=>{
   }, [])
 
   const getPageData = ()=>{
-    setTeamDetailData(undefined)
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
       setTeamDetailData(res.data);
     })
