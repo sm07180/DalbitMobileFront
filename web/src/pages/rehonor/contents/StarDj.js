@@ -2,16 +2,14 @@ import React, {useContext, useEffect, useState} from 'react'
 import {Context, GlobalContext} from "context";
 
 import {useHistory, withRouter} from "react-router-dom";
-import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomJoin} from "context/room";
-import { addComma } from "lib/common_fn";
+import {addComma} from "lib/common_fn";
 
 import Api from "context/api";
 import Lottie from 'react-lottie'
-
-import photoCommon from "common/utility/photoCommon";
 import DetailView from '../components/DetailView'
 
 const StarDj = (props) => {
@@ -48,7 +46,9 @@ const StarDj = (props) => {
       if (getDeviceOSTypeChk() === 3){
         RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
       } else {
-        RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm})
+        if (roomNo !== '') {
+          RoomJoin({roomNo: roomNo, memNo: memNo, nickNm: nickNm})
+        }
       }
     }
   }
@@ -64,6 +64,46 @@ const StarDj = (props) => {
   useEffect(() => {
     getSpecialList(dateVal.year, dateVal.month);
   }, []);
+
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick) => {
+    context.action.confirm({
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            fanCallback(memNo);
+            context.action.toast({ msg: res.message })
+          } else if (res.result === 'fail') {
+            context.action.alert({ msg: res.message })
+          }
+        });
+      }
+    })
+  }
+
+  /* 팬 등록 */
+  const addFan = (memNo, memNick) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        fanCallback(memNo);
+        context.action.toast({
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    })
+  }
+
+  const fanCallback = (memNo) => {
+    let editFan = specialList.map((v, i) => {
+      return v.memNo === memNo ? v.fanYn === "y" ? {...v,fanYn: "n" } : {...v, fanYn: "y"} : {...v};
+    })
+    setSpecialList(editFan);
+  }
   
   return (
     <>
@@ -109,14 +149,14 @@ const StarDj = (props) => {
                           </span>
                           <span className='liveText'>LIVE</span>
                         </div>
-                        // : context.token.memNo !== list.memNo ?
-                        //   <span className={`fanButton ${list.fanYn=== "y" ? "active" : ""}`} onClick={(e) => {
-                        //     e.stopPropagation();
-                        //     list.fanYn === "y" ? deleteFan(list.mem_no, list.mem_nick) : addFan(list.mem_no, list.mem_nick);
-                        //   }}>{list.fanYn=== "y" ? "팬" : "+ 팬등록"}</span>
+                        : context.token.memNo !== list.memNo ?
+                          <span className={`fanButton ${list.fanYn=== "y" ? "active" : ""}`} onClick={(e) => {
+                            e.stopPropagation();
+                            list.fanYn === "y" ? deleteFan(list.memNo, list.nickNm) : addFan(list.memNo, list.nickNm);
+                          }}>{list.fanYn=== "y" ? "팬" : "+ 팬등록"}</span>
                         :
-                        // 팬등록 버튼 필요(임시로 디자인 확인을 위해 넣어놓은 코드)
-                        <span className={`fanButton ${list.specialCnt > 1 ? "active" : ""}`}>{list.specialCnt > 1 ? "팬" : "+ 팬등록"}</span>
+                        <>
+                        </>
                     }
                   </div>
                   <div className='userInfoWrap'>

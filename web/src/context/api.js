@@ -4257,6 +4257,16 @@ export default class API {
     return await ajax({url: "/rank/getRankingApply"})
   }
 
+  //스타DJ 점수
+  static getMyStarPoint = async (data) => {
+    return await ajax({url: "/getStarDjScore", method: 'POST', reqBody: true, data: data})
+  }
+
+  //스타DJ 신청
+  static starDjIns = async () => {
+    return await ajax({url: "/starDjIns"})
+  }
+
 
 }
 

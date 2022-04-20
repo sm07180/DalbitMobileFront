@@ -64,7 +64,7 @@ const SpecialHistoryPop = (props) => {
         </div>
         <div className='table'>
           <div className='summary'>
-            <span>스페셜 DJ 약력</span>
+            <span>스타 DJ 약력</span>
             <span>총 {specialHistory.specialDjCnt}회</span>
           </div>
           <div className='tableInfo'>

@@ -1,6 +1,8 @@
 import React, {useState} from 'react'
 
 import './detailView.scss'
+import moment from "moment";
+import UtilityCommon from "common/utility/utilityCommon";
 
 const DetailView = (props) => {
 
@@ -8,9 +10,14 @@ const DetailView = (props) => {
 
   const [lastYn, setLastYn] = useState({next: true, prev: false});
 
-  let lastPrevDate = '2020-06-01';
+
 
   const prevDate = () => {
+    let date = new Date();
+    date.setMonth(date.getMonth() - 2);
+    date.setDate(1);
+    let lastPrevDate = UtilityCommon.eventDateCheck("20220501") ? moment(date).format("YYYY-MM-DD") : '2020-06-01';
+
     let prevDate = changeDate(dateVal, "prev");
 
     if (`${prevDate.year}-${prevDate.month}-01` >= lastPrevDate){

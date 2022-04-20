@@ -1,7 +1,6 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import { addComma } from "lib/common_fn";
-import moment from 'moment'
+import React, {useContext, useEffect, useState} from 'react'
+import {useHistory, withRouter} from 'react-router-dom'
+import {addComma} from "lib/common_fn";
 
 import Header from 'components/ui/header/Header'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
@@ -11,34 +10,53 @@ import Bottom from './component/Bottom'
 
 import './style.scss'
 import {Context} from "context";
-import { IMG_SERVER } from "constant/define";
+import {IMG_SERVER} from "constant/define";
+import Api from "context/api";
+import moment from "moment";
+import UtilityCommon from "common/utility/utilityCommon";
 
-const StarDj = () => {
-  let history = useHistory()
+const StarDj = (props) => {
+  let history = useHistory();
   const context = useContext(Context) 
   const [applyBtn, setApplyBtn] = useState(false); //신청하기 버튼 활성화 상태값
-  const [popup, setPopup] = useState(false); //신청하기 버튼 활성화 상태값
+  const [popup, setPopup] = useState(false); //팝업
 
-  // 최소 신청 제한 조건 
-  const applyCondition = {
-    broadcastTime : 40,
-    totalListener : 500,
-    totalLikeCnt : 1500,
-    totalByeolCnt : 10000
+  //starDj정보
+  const [eventInfo, setEventInfo] = useState({});
+
+  useEffect(() => {
+    getStarInfo();
+  }, []);
+
+  //초기 데이터
+  const getStarInfo = () => {
+    let date = new Date();
+    let year = `${date.getFullYear()}`
+    let month = date.getMonth() + 1;
+    Promise.all([
+      Api.event_specialdj({data: {select_year: year, select_month: month < 10 ? `0${month}` : `${month}`}}),
+      Api.getMyStarPoint({tYear: year, tMonth: month < 10 ? `0${month}` : `${month}`})
+    ]).then(([djInfo, myPoint]) => {
+      if (djInfo.result === "success" && myPoint.result === "success"){
+        if (djInfo.data){
+          let startDate = moment(djInfo.data.eventInfo?.req_start_date.substring(0, 8)).format("YYYYMMDD");
+          let endDate = moment(djInfo.data.eventInfo?.req_end_date.substring(0, 8)).format("YYYYMMDD");
+          let nowDate = moment().format("YYYYMMDD");
+          //신청 기간 아닐땐 메인
+          if (nowDate >= startDate && nowDate <= endDate){
+            //5월 기준 myStarDjPoint프로시저 바뀜
+            if (UtilityCommon.eventDateCheck("20220510")){
+              setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: myPoint.data, already: djInfo.data.specialDjCondition.already});
+            } else {
+              setEventInfo({...djInfo.data.eventInfo, stat: getStat(djInfo.data.eventInfo), myStat: getMyStat(djInfo.data.specialDjCondition.conditionList), already: djInfo.data.specialDjCondition.already});
+            }
+          } else {
+            props.history.replace("/");
+          }
+        }
+      }
+    });
   }
-  // 데이터 집계 기간 임시 데이터
-  const [period, setPeriod] = useState({
-    startDay : "20220228",
-    endDay : "20220330",
-  })
-
-  // 본인이 달성한 신청 조건 임시 데이터
-  const [myApplyData, setMyApplyData] = useState({
-    broadcastTime : 80,
-    totalListener : 420,
-    totalLikeCnt : 10002,
-    totalByeolCnt : 999,
-  })
 
   const golink = (path) => {
     history.push(path);
@@ -50,12 +68,75 @@ const StarDj = () => {
 
   // 신청하기 버튼 활성화 체크
   useEffect(() => {
-    if((myApplyData.broadcastTime >= applyCondition.broadcastTime) && (myApplyData.totalListener >= applyCondition.totalListener) && (myApplyData.totalLikeCnt >= applyCondition.totalLikeCnt) && (myApplyData.totalByeolCnt >= applyCondition.totalByeolCnt)) {
+    if((eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) && (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) && (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) && (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1) {
       setApplyBtn(true)
     } else (
       setApplyBtn(false)
     )
-  }, [myApplyData])
+  }, [eventInfo])
+
+  const getStat = (data) => {
+    let result = {brodTime: 0, viewer: 0, like: 0, star: 0}
+    if (typeof data?.["condition_code1"] !== "undefined"){
+      for (let i = 1; i <= 4; i++){
+        if (data?.[`condition_code${i}`] == 8){
+          result.brodTime = data?.[`condition_data${i}`];
+        } else if (data?.[`condition_code${i}`] == 6) {
+          result.viewer = data?.[`condition_data${i}`];
+        } else if (data?.[`condition_code${i}`] == 3) {
+          result.like = data?.[`condition_data${i}`];
+        } else {
+          result.star = data?.[`condition_data${i}`];
+        }
+      }
+    }
+
+    return result;
+  }
+
+  const getMyStat = (data) => {
+    let result = {play_cnt: 0, like_score_cnt: 0, byeol_cnt	: 0, view_cnt: 0}
+      for (let i = 0; i < data.length; i++){
+        if (data[i].title === "누적방송시간"){
+          result.play_cnt = data[i].point;
+        } else if (data[i].title === "누적 청취자 수") {
+          result.view_cnt = data[i].point;
+        } else if (data[i].title === "받은 좋아요") {
+          result.like_score_cnt = data[i].point;
+        } else {
+          result.byeol_cnt = data[i].point;
+        }
+      }
+    return result;
+  }
+
+  const starDjIns = () => {
+    Api.starDjIns().then(res => {
+      if (res.result === "success"){
+        setApplyBtn(false);
+        context.action.toast({
+          msg: '스타DJ 신청을 완료하였습니다.'
+        })
+      } else {
+        context.action.toast({
+          msg: '스타DJ 신청에 실패했습니다 다시 시도해 주세요'
+        })
+      }
+    })
+  }
+
+  const starDjInsFail = () => {
+    if ((eventInfo.myStat?.play_cnt < eventInfo.stat?.brodTime) || (eventInfo.myStat?.view_cnt < eventInfo.stat?.viewer) || (eventInfo.myStat?.like_score_cnt < eventInfo.stat?.like) || (eventInfo.myStat?.byeol_cnt < eventInfo.stat?.star)){
+      context.action.toast({
+        msg: '최소 신청 조건을 충족하지 못하였습니다.'
+      })
+    } else {
+      context.action.toast({
+        msg: '이미 스타DJ에 지원하셨습니다.'
+      })
+    }
+
+  }
 
   // 페이지 시작
   return (
@@ -69,9 +150,11 @@ const StarDj = () => {
               <span onClick={() => {golink("/starDj/benefits")}}>
                 <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-1.png`} alt=""/>
               </span>
+              {UtilityCommon.eventDateCheck("20220501") &&
               <span onClick={() => {golink("/honor")}}>
                 <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-2.png`} alt=""/>
               </span>
+              }
             </Button>
           </div>
         </div>
@@ -86,58 +169,58 @@ const StarDj = () => {
             <Title name="condition"/>
             <div className='sectionContent'>
               <div className='countPeriod'>
-                데이터 집계 기간 : {moment(period.startDay).format('MM월 DD일')} ~ {moment(period.endDay).format('MM월 DD일')}
+                데이터 집계 기간 : {moment(eventInfo.condition_start_date?.replace(/\./g,'')).format('MM월 DD일')} ~ {moment(eventInfo.condition_end_date?.replace(/\./g,'')).format('MM월 DD일')}
               </div>
               <div className='conditionListWrap'>
                 <div className='conditionList'>
                   <div className='listFront'>
                     <span className='icon broadcastTime'></span>
                     <div className='titleWrap'>
-                      <span className='titleName'>방송시간 {addComma(applyCondition.broadcastTime)}시간</span>
+                      <span className='titleName'>방송시간 {addComma(eventInfo.stat?.brodTime)}시간</span>
                       <span className='titleInfo'>(팬 방송 제외)</span>
                     </div>
                   </div>
-                  <div className={`myCondition ${myApplyData.broadcastTime > applyCondition.broadcastTime ? "achieve" : ""}`}>
-                    <span className='myData'>{addComma(myApplyData.broadcastTime)}시간</span>
-                    <span className='isAchieve'>{myApplyData.broadcastTime > applyCondition.broadcastTime ? "달성" : "미달성"}</span>
+                  <div className={`myCondition ${eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "achieve" : ""}`}>
+                    <span className='myData'>{addComma(eventInfo.myStat?.play_cnt)}시간</span>
+                    <span className='isAchieve'>{eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime ? "달성" : "미달성"}</span>
                   </div>
                 </div>
                 <div className='conditionList'>
                   <div className='listFront'>
                     <span className='icon totalListener'></span>
                     <div className='titleWrap'>
-                      <span className='titleName'>누적 시청자 수 {addComma(applyCondition.totalListener)}명</span>
+                      <span className='titleName'>누적 시청자 수 {addComma(eventInfo.stat?.viewer)}명</span>
                     </div>
                   </div>
-                  <div className={`myCondition ${myApplyData.totalListener > applyCondition.totalListener ? "achieve" : ""}`}>
-                    <span className='myData'>{addComma(myApplyData.totalListener)}명</span>
-                    <span className='isAchieve'>{myApplyData.totalListener > applyCondition.totalListener ? "달성" : "미달성"}</span>
+                  <div className={`myCondition ${eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer ? "achieve" : ""}`}>
+                    <span className='myData'>{addComma(eventInfo.myStat?.view_cnt)}명</span>
+                    <span className='isAchieve'>{eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer ? "달성" : "미달성"}</span>
                   </div>
                 </div>
                 <div className='conditionList'>
                   <div className='listFront'>
                     <span className='icon totalLike'></span>
                     <div className='titleWrap'>
-                      <span className='titleName'>좋아요 수 {addComma(applyCondition.totalLikeCnt)}개</span>
+                      <span className='titleName'>좋아요 수 {addComma(eventInfo.stat?.like)}개</span>
                       <span className='titleInfo'>(유료 부스터 포함)</span>
                     </div>
                   </div>
-                  <div className={`myCondition ${myApplyData.totalLikeCnt > applyCondition.totalLikeCnt ? "achieve" : ""}`}>
-                    <span className='myData'>{addComma(myApplyData.totalLikeCnt)}개</span>
-                    <span className='isAchieve'>{myApplyData.totalLikeCnt > applyCondition.totalLikeCnt ? "달성" : "미달성"}</span>
+                  <div className={`myCondition ${eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like ? "achieve" : ""}`}>
+                    <span className='myData'>{addComma(eventInfo.myStat?.like_score_cnt)}개</span>
+                    <span className='isAchieve'>{eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like ? "달성" : "미달성"}</span>
                   </div>
                 </div>
                 <div className='conditionList'>                
                   <div className='listFront'>
                     <span className='icon totalByeol'></span>
                     <div className='titleWrap'>
-                      <span className='titleName'>받은 별 {addComma(applyCondition.totalByeolCnt)}개</span>
+                      <span className='titleName'>받은 별 {addComma(eventInfo.stat?.star)}개</span>
                       <span className='titleInfo'>(룰렛 포함)</span>
                     </div>
                   </div>
-                  <div className={`myCondition ${myApplyData.totalByeolCnt > applyCondition.totalByeolCnt ? "achieve" : ""}`}>
-                    <span className='myData'>{addComma(myApplyData.totalByeolCnt)}개</span>
-                    <span className='isAchieve'>{myApplyData.totalByeolCnt > applyCondition.totalByeolCnt ? "달성" : "미달성"}</span>
+                  <div className={`myCondition ${eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star ? "achieve" : ""}`}>
+                    <span className='myData'>{addComma(eventInfo.myStat?.byeol_cnt)}개</span>
+                    <span className='isAchieve'>{eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star ? "달성" : "미달성"}</span>
                   </div>
                 </div>
               </div>
@@ -177,11 +260,15 @@ const StarDj = () => {
           <Button height="25%" active={applyBtn}>
             {
               applyBtn ? 
-                <span>
+                <span onClick={() => {
+                  starDjIns();
+                }}>
                   <img src={`${IMG_SERVER}/starDJ/starDJ_btnName-active.png`} alt=""/>
                 </span>
               :         
-                <span>       
+                <span onClick={() => {
+                  starDjInsFail();
+                }}>
                   <img src={`${IMG_SERVER}/starDJ/starDJ_btnName-disabled.png`} alt=""/>
                 </span>
             }
@@ -205,7 +292,7 @@ const StarDj = () => {
           <div className='popTitle'>정량 평가 점수 기준</div>
           <div className='popContent'>
             <div className='period'>
-              데이터 집계 기간 : {moment(period.startDay).format('MM월 DD일')} ~ {moment(period.endDay).format('MM월 DD일')}
+              데이터 집계 기간 : {moment(eventInfo.condition_start_date?.replace(/\./g,'')).format('MM월 DD일')} ~ {moment(eventInfo.condition_end_date?.replace(/\./g,'')).format('MM월 DD일')}
             </div>
             <div className='score'>
               <p><span>방송 점수 (25%) : </span><span>누적 방송 시간 (팬 방송 제외)</span></p>
@@ -239,4 +326,4 @@ const StarDj = () => {
   )
 }
 
-export default StarDj
+export default withRouter(StarDj);

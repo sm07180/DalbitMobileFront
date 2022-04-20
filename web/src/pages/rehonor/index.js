@@ -6,14 +6,14 @@ import Tabmenu from './components/Tabmenu'
 // contents
 import SpecialDj from "./contents/SpecialDj";
 import WeeklyPick from './contents/WeeklyPick'
-import PartnerDj from './contents/PartnerDj'
 import StarDj from './contents/StarDj'
 import {useDispatch, useSelector} from "react-redux";
 
 import './style.scss'
 import {setHonorTab} from "redux/actions/honor";
+import UtilityCommon from "common/utility/utilityCommon";
 
-const honorTabmenu = ["스타DJ", "파트너DJ"]
+const honorTabmenu = UtilityCommon.eventDateCheck("20220501") ? ["스타DJ", "위클리 픽"] : ["스페셜DJ", "위클리 픽"];
 
 const Honor = () => {
   const {tab} = useSelector((state) => state.honor);
@@ -26,9 +26,9 @@ const Honor = () => {
       <Header title="명예의 전당" type="back"/>
       <Tabmenu data={honorTabmenu} tab={tab} setTab={(val) => dispatch(setHonorTab(val))} />
       {tab === honorTabmenu[0] ?
-        <StarDj />
+        UtilityCommon.eventDateCheck("20220501") ? <StarDj /> : <SpecialDj/>
         :
-        <PartnerDj />
+        <WeeklyPick />
       }
    </div>
   )
