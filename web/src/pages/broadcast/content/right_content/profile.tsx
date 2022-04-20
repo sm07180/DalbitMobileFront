@@ -585,7 +585,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                       <img src={`${profileData.teamInfo.borderUrl}`} alt="테두리" />
                       <img src={`${profileData.teamInfo.medalUrl}`} alt="메달" />
                     </div>
-                    <div className="teamName">${profileData.teamInfo.teamName}</div>
+                    <div className="teamName">{profileData.teamInfo.teamName}</div>
                   </div>
                 }
 
