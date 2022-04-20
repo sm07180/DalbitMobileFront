@@ -197,7 +197,7 @@ const TeamManager = (props) => {
       <CntWrapper>
         <section className="teamNotice">
           <div>팀 심볼과 이름은 생성 후 <strong>72시간 이내 최대 1번</strong>만
-          수정할 수 있습니다.<span>남은시간 71시간 59분</span></div>
+          수정할 수 있습니다.<span>남은시간 {remainTime > 0 && remainTime+'시간'} {timer.minutes() > 0 && timer.minutes() + '분'}</span></div>
         </section>
         <section className="teamSymbol">
           <img src={`${partsC}`} />
