@@ -35,6 +35,7 @@ const TeamDetail = (props) => {
 
   const [moreShow, setMoreShow] = useState(false);
   const [benefitsPop, setBenefitsPop] = useState(false);
+  const [invitePop, setInvitePop] = useState(false);
   const [teamMemList, setTeamMemList]=useState([]);
   const [teamInfo, setTeamInfo]=useState({});
   const [teamBageList, setTeamBageList]=useState([]); // 뱃지 리스트
