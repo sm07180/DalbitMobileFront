@@ -21,6 +21,7 @@ import "../../scss/teamManager.scss";
 import Api from "context/api";
 import {Timer} from "pages/broadcast/content/right_content/vote/Timer";
 import moment from "moment";
+import photoCommon from "common/utility/photoCommon";
 
 const TeamManager = (props) => {
   const history = useHistory();
@@ -198,8 +199,10 @@ const TeamManager = (props) => {
         <section className="memberList">
           {teamMemList.length >0 &&
           teamMemList.map((data,index)=>{
+            let photoUrl = data.tm_image_profile
+            let photoServer = "https://devphoto.dalbitlive.com";
             return(
-              <ListRow photo="" photoClick={() => photoClick()} key={index}>
+              <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} key={index}>
                 <div className="listContent">
                   <div className="listItem">
                     <div className="nick">{data.tm_mem_nick}</div>
