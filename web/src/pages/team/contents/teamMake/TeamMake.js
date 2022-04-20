@@ -37,15 +37,15 @@ const TeamMake = () => {
   const [imsiData ,setImsiData]=useState([]) //심볼 리스트용
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
+  const [simBolPop, setSimBolPop]=useState(false); // 심볼 셀렉 관련 팝업
   const nextStepShow = () => {
     setNextStep(!nextStep);
   };
   
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
-
     setPartsName(targetName);
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    setSimBolPop(true)
   };
 
   const clickConfirmPopup = () => {
@@ -65,7 +65,6 @@ const TeamMake = () => {
       teamBgCode:partsCcode
     }
     Api.getTeamIns(param).then((res) => {
-      console.log(res)
       if (res.message === 'SUCCESS' && res.data.result ===1) {
         history.push(`/team/detail/${res.data.teamNo}`)
       }else{
@@ -87,7 +86,7 @@ const TeamMake = () => {
       setPartsC(value);
       setPartsCcode(code)
     }
-    closePopup(dispatch);
+    setSimBolPop(false);
   };
 
   const editCnts=(e)=>{
@@ -114,7 +113,6 @@ const TeamMake = () => {
       pageNo:1,
       pagePerCnt:100
     }
-    console.log(param)
     Api.getTeamSymbolList(param).then((res) => {
       if (res.message === 'SUCCESS') {
         setImsiData(res.data.list)
@@ -131,7 +129,7 @@ const TeamMake = () => {
       })
     }else if( partsName!==""){
         symbolApi()
-        }
+    }
   },[partsName])
 
   // 페이지 시작
@@ -162,27 +160,27 @@ const TeamMake = () => {
                   <button
                     className="acitve"
                     data-target-name={list} 
-                    onClick={openPartsChoice}>
+                    onClick={(e)=>openPartsChoice(e)}>
                     <img src={partsA} alt="" />
                   </button>
                   : index === 1 && partsB !== '' ? 
                   <button
                     className="acitve"
                     data-target-name={list} 
-                    onClick={openPartsChoice}>
+                    onClick={(e)=>openPartsChoice(e)}>
                     <img src={partsB} alt="" />
                   </button>
                   : index === 2 && partsC !== '' ? 
                   <button
                     className="acitve"
                     data-target-name={list} 
-                    onClick={openPartsChoice}>
+                    onClick={(e)=>openPartsChoice(e)}>
                     <img src={partsC} alt="" />
                   </button>
                   : 
                   <button
                     data-target-name={list} 
-                    onClick={openPartsChoice}>
+                    onClick={(e)=>openPartsChoice(e)}>
                     +
                   </button>
                 }
@@ -204,8 +202,8 @@ const TeamMake = () => {
           }
         </div>
       </CntWrapper>
-      {popup.commonPopup &&
-        <PopSlide title={`${partsName} 고르기`}>
+      {simBolPop &&
+        <PopSlide title={`${partsName} 고르기`} popSlide={simBolPop} setPopSlide={setSimBolPop}>
           <PartsPop partsSelect={partsSelect} imsiData={imsiData}/>
         </PopSlide>
       }

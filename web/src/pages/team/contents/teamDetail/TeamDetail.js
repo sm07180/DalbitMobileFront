@@ -18,7 +18,7 @@ import Invite from '../../components/popup/Invite';
 import Benefits from '../../components/popup/Benefits';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
@@ -77,7 +77,6 @@ const TeamDetail = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
-        console.log("팀정보", res.data)
         setTeamMemList(res.data.teamMemList);
         setTeamInfo(res.data.teamInfo);
         setTeamBageList(res.data.badgeList);

@@ -7,6 +7,7 @@ import Tabmenu from '../Tabmenu';
 
 import '../../scss/Invite.scss';
 import Api from "context/api";
+import photoCommon from "common/utility/photoCommon";
 const tabmenu = ['팬','스타'];
 
 const InvitePop = (props) => {
@@ -51,9 +52,18 @@ const InvitePop = (props) => {
             let nickName = tabType ==="스타" ? data.mem_nick_star : data.mem_nick_fan
             let memNo = tabType ==="스타" ? data.mem_no_star : data.mem_no_fan
             let reqYn = data.team_req_yn
+            let photoServer = "https://devphoto.dalbitlive.com";
+            let photoUrl ="";
+            if(tabType ==="스타"){
+              photoUrl =  data.image_profile_star &&  data.image_profile_star   
+            } 
+            if(tabType ==="팬"){
+              photoUrl =  data.image_profile_fan &&  data.image_profile_fan
+            }
+            
 
             return(
-              <ListRow photo="" photoClick={() => photoClick()} key={index}>
+              <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} key={index}>
                 <div className="listContent">
                   <div className="nick">{nickName}</div>
                 </div>

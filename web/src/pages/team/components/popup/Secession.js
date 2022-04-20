@@ -10,43 +10,46 @@ const SecessionPop = (props) => {
   const [teMemNo, setTeMemNo]=useState("");
 
   const teamDel=()=>{
-    closeSlide()
     context.action.confirm({
-      msg: `삭제하면 72시간 이후부터
-      팀을 만들 수 있습니다.`,
-      remsg: `삭제한 이후에는 팀 랭킹 리워드를
-      받을 수 없으며 삭제된 정보는 복구되지 않습니다.`,
+      msg: `정말 탈퇴 할까요?`,
+      remsg: `탈퇴 이후 팀이 랭킹에 오르더라도
+        리워드를 받을 수 없으며, 탈퇴 이후 재가입 할 경우
+        기여도는 복원되지 않습니다.`,
       buttonText: {
         left: '취소',
-        right: '삭제'
+        right: '완료'
       },
       callback: () => {
-        Api.getTeamMasterUpd({teamNo:teamNo,tmMemNo:teMemNo}).then(res=>{
-          if(res.code === "00000"){
-            let param = {
-              teamNo:teamNo,
-              masterMemNo:memNo,
-              chrgrName:"",
-            }
-            Api.getTeamDel(param).then(res=>{
-              if(res.code === "00000"){
-                history.push(`/mypage`)
-              }else {
-                context.action.toast({
-                  msg: res.message
-                })
+        if(teamMemList.length > 0){
+          Api.getTeamMasterUpd({teamNo:teamNo,tmMemNo:teMemNo}).then(res=>{
+            if(res.code === "00000"){
+              let param = {
+                teamNo:teamNo,
+                delSclt:"t",
+                tmMemNo:memNo,
+                masterMemNo:teMemNo,
+                chrgrName:""
               }
-            })
-          }else{
-            context.action.toast({
-              msg: res.message
-            })
-          }
-        })
+              Api.getTeamMemDel(param).then(res=>{
+                if(res.code === "00000"){
+                  history.push("myPage");
+                }else {
+                  context.action.toast({
+                    msg: res.message
+                  })
+                }
+              })
+            }else{
+              context.action.toast({
+                msg: res.message
+              })
+            }
+          })
+        }
+
       },
       cancelCallback: () => {},
     });
-    console.log(memNo);
   }
   const nextLeader =(memNo)=>{
     setTeMemNo(memNo)
