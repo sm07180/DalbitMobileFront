@@ -12,7 +12,7 @@ import PartsPop from '../../components/parts/PartsPop';
 import Confirm from '../../components/popup/Confirm';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
@@ -34,7 +34,7 @@ const TeamMake = () => {
   const [partsCcode, setPartsCcode] = useState('');  //배경Code
   const [nextStep, setNextStep] = useState(false);
   const [confirmPop, setConfirmPop] = useState(false);
-  const [imsiData ,setImsiData]=useState([]) //심볼 리스트용
+  const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
   const nextStepShow = () => {
@@ -45,7 +45,7 @@ const TeamMake = () => {
     const {targetName} = e.currentTarget.dataset;
 
     setPartsName(targetName);
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
   };
 
   const clickConfirmPopup = () => {
@@ -129,13 +129,11 @@ const TeamMake = () => {
     })
   }
   },[])
+
   useEffect(()=>{
-
-      if( partsName!==""){
-        symbolApi()
-        }
-
-
+    if( partsName!==""){
+      symbolApi()
+    }
   },[partsName])
 
   // 페이지 시작

@@ -21,7 +21,51 @@
   }
   .teamSymbol {
     @include teamSymbol;
-    margin: 30px auto;
+    margin: 30px auto 24px;
+  }
+  .partsType {
+    @include flex(center,center);
+    margin-bottom:30px;
+    .typeList {
+      @include flex(center,center,column);
+      margin:0 8px;
+      button {
+        position:relative;
+        @include flex(center,center);
+        width:80px;height:80px;
+        border-radius:16px;
+        overflow:hidden;
+        box-shadow:0 2px 4px rgba(0,0,0,.16);
+        @include font(20px,$Regular,#666);
+        img {
+          width:100%;
+        }
+      }
+      $colors : (#DCDCDC,#E9E9E9,#F6F6F6);
+      @each $color in $colors {
+        $i: index($colors,$color);
+        &:nth-child(#{$i}) {
+          button {
+            background-color:$color;
+            &.acitve {
+              background-color:#999;
+              &::after {
+                @include position-top-right;
+                content:"";
+                display:block;
+                width:22px;height:22px;
+                margin:6px;
+                @include BGIMG('team/partsEdit.png');
+              }
+            }
+          }
+        }
+      }
+      span {
+        margin-top:8px;
+        @include font(15px,$Regular,#666);
+      }
+    }
   }
   .teamForm {
     margin-bottom:24px;
