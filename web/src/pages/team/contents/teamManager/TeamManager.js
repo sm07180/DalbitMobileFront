@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {useHistory} from "react-router-dom";
 import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
@@ -10,18 +10,21 @@ import CntTitle from 'components/ui/cntTitle/CntTitle';
 import ListRow from 'components/ui/listRow/ListRow';
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
-import LayerPop from 'components/ui/layerPopup/LayerPopup'
 // components
 import TeamForm from '../../components/TeamForm';
+import PartsPop from '../../components/parts/PartsPop';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamManager.scss";
 import Api from "context/api";
 import {Timer} from "pages/broadcast/content/right_content/vote/Timer";
 import moment from "moment";
 import photoCommon from "common/utility/photoCommon";
+import Api from "context/api";
+
+const parts = ['메달','테두리','배경'];
 
 const TeamManager = (props) => {
   const history = useHistory();
@@ -30,9 +33,13 @@ const TeamManager = (props) => {
   const popup = useSelector(state => state.popup);
   const teamNo = props.match.params.teamNo;
   const memberRdx = useSelector((state)=> state.member);
-  
-  const [confirmPop, setConfirmPop] = useState(false);
 
+  const [partsName, setPartsName] = useState('');
+  const [partsA, setPartsA] = useState('');  //메달URL
+  const [partsB, setPartsB] = useState('');  //테두리URL
+  const [partsC, setPartsC] = useState('');  //배경URL
+  const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
+  const [confirmPop, setConfirmPop] = useState(false);
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
   const [teamMemList, setTeamMemList]=useState([]);
@@ -124,6 +131,13 @@ const TeamManager = (props) => {
 
   }
 
+  const openPartsChoice = (e) => {
+    const {targetName} = e.currentTarget.dataset;
+
+    setPartsName(targetName);
+    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
+  };
+
   const editCnts=(e)=>{
     let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
     let rows = text.split('\n').length
@@ -149,6 +163,19 @@ const TeamManager = (props) => {
     setConfirmPop(!confirmPop);
   };
   
+  const partsSelect = (value,code) => {
+    if (partsName === parts[0]) {
+      setPartsA(value);
+    }
+    if (partsName === parts[1]) {
+      setPartsB(value);
+    }
+    if (partsName === parts[2]) {
+      setPartsC(value);
+    }
+    closePopup(dispatch);
+  };
+
   // 강퇴하기
   const teamDelete = (masterNo,memNo) => {
     context.action.confirm({
@@ -176,6 +203,36 @@ const TeamManager = (props) => {
     });
   };
 
+  const symbolApi = () =>{
+    //심볼구분 [b:배경, e:테두리, m:메달]
+    let param ={
+      symbolSlct:partsName ==="배경" ? 'b': partsName ==="테두리" ? 'e':partsName ==="메달" ? 'm':'',
+      ordSlct:"c",
+      pageNo:1,
+      pagePerCnt:100
+    }
+    console.log(param)
+    Api.getTeamSymbolList(param).then((res) => {
+      if (res.message === 'SUCCESS') {
+        setImsiData(res.data.list)
+      }
+    });
+  };
+
+  useEffect(() => {
+    if(partsName ===""){
+      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
+        console.log("res==>",res)
+      })
+    }
+  },[])
+
+  useEffect(() => {
+    if( partsName!==""){
+      symbolApi()
+    }
+  },[partsName])
+
   // 페이지 시작
   return (
     <div id="teamManager">
@@ -189,6 +246,43 @@ const TeamManager = (props) => {
           {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />}
           {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />}
           {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
+        </section>
+        <section className="partsType">
+          {parts.map((list,index) => {
+            return (
+              <div className="typeList" key={index}>
+                {index === 0 && partsA !== '' ?
+                  <button
+                    className="acitve"
+                    data-target-name={list}
+                    onClick={openPartsChoice}>
+                    <img src={partsA} alt="" />
+                  </button>
+                  : index === 1 && partsB !== '' ?
+                  <button
+                    className="acitve"
+                    data-target-name={list}
+                    onClick={openPartsChoice}>
+                    <img src={partsB} alt="" />
+                  </button>
+                  : index === 2 && partsC !== '' ?
+                  <button
+                    className="acitve"
+                    data-target-name={list}
+                    onClick={openPartsChoice}>
+                    <img src={partsC} alt="" />
+                  </button>
+                  :
+                  <button
+                    data-target-name={list}
+                    onClick={openPartsChoice}>
+                    +
+                  </button>
+                }
+                <span>{list}</span>
+              </div>
+            )
+          })}
         </section>
         <TeamForm rows={10} cols={60} teamConts={teamConts || "" } teamName={teamName || ""}
                   editCnts={editCnts} editName={editName}
@@ -237,6 +331,11 @@ const TeamManager = (props) => {
           <SubmitBtn text="완료"  />
         </section>
       </CntWrapper>
+      {popup.commonPopup &&
+        <PopSlide title={`${partsName} 고르기`}>
+          <PartsPop partsSelect={partsSelect} imsiData={imsiData}/>
+        </PopSlide>
+      }
     </div>
   )
 }

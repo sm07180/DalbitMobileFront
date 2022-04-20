@@ -12,7 +12,7 @@ import PartsPop from '../../components/parts/PartsPop';
 import Confirm from '../../components/popup/Confirm';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
@@ -34,10 +34,9 @@ const TeamMake = () => {
   const [partsCcode, setPartsCcode] = useState('');  //배경Code
   const [nextStep, setNextStep] = useState(false);
   const [confirmPop, setConfirmPop] = useState(false);
-  const [imsiData ,setImsiData]=useState([]) //심볼 리스트용
+  const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
-  const [simBolPop, setSimBolPop]=useState(false); // 심볼 셀렉 관련 팝업
   const nextStepShow = () => {
     setNextStep(!nextStep);
   };
@@ -45,7 +44,7 @@ const TeamMake = () => {
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
     setPartsName(targetName);
-    setSimBolPop(true)
+    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
   };
 
   const clickConfirmPopup = () => {
@@ -86,7 +85,7 @@ const TeamMake = () => {
       setPartsC(value);
       setPartsCcode(code)
     }
-    setSimBolPop(false);
+    closePopup(dispatch);
   };
 
   const editCnts=(e)=>{
@@ -160,27 +159,27 @@ const TeamMake = () => {
                   <button
                     className="acitve"
                     data-target-name={list} 
-                    onClick={(e)=>openPartsChoice(e)}>
+                    onClick={openPartsChoice}>
                     <img src={partsA} alt="" />
                   </button>
                   : index === 1 && partsB !== '' ? 
                   <button
                     className="acitve"
                     data-target-name={list} 
-                    onClick={(e)=>openPartsChoice(e)}>
+                    onClick={openPartsChoice}>
                     <img src={partsB} alt="" />
                   </button>
                   : index === 2 && partsC !== '' ? 
                   <button
                     className="acitve"
                     data-target-name={list} 
-                    onClick={(e)=>openPartsChoice(e)}>
+                    onClick={openPartsChoice}>
                     <img src={partsC} alt="" />
                   </button>
                   : 
                   <button
                     data-target-name={list} 
-                    onClick={(e)=>openPartsChoice(e)}>
+                    onClick={openPartsChoice}>
                     +
                   </button>
                 }
@@ -202,8 +201,8 @@ const TeamMake = () => {
           }
         </div>
       </CntWrapper>
-      {simBolPop &&
-        <PopSlide title={`${partsName} 고르기`} popSlide={simBolPop} setPopSlide={setSimBolPop}>
+      {popup.commonPopup &&
+        <PopSlide title={`${partsName} 고르기`}>
           <PartsPop partsSelect={partsSelect} imsiData={imsiData}/>
         </PopSlide>
       }
