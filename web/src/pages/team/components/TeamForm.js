@@ -3,7 +3,7 @@ import React from 'react';
 import InputItems from 'components/ui/inputItems/InputItems';
 
 const TeamForm = (props) => {
-  const {rows,teamConts,editCnts,editName,teamName,cols} = props;
+  const {rows,teamConts,editCnts,editName,teamName,cols,editChk} = props;
 
   // 페이지 시작
   return (
@@ -12,6 +12,7 @@ const TeamForm = (props) => {
         <input type="text" maxLength={10} placeholder="필수입력(최대 10자)"
                onChange={(e)=>editName(e)}
                value={teamName}
+               disabled={editChk}
         />
       </InputItems>
       <InputItems title="팀 소개" type="textarea">
@@ -19,7 +20,7 @@ const TeamForm = (props) => {
                   onChange={(e)=>editCnts(e)}
         value={teamConts}
         />
-        <p className="count">/150</p>
+        <p className="count">{teamConts.length}/150</p>
       </InputItems>
     </section>
   )
