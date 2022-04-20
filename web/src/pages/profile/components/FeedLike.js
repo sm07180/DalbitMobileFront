@@ -23,7 +23,7 @@ const FeedLike = (props) => {
   const onClick = (e) => {
     const index = e.currentTarget.dataset.index;
     fetchHandleLike((data.noticeIdx ? data.noticeIdx : data.reg_no), data.mem_no, data.like_yn, likeType, index);
-  }
+  };
 
   useEffect(() => {
     document.addEventListener('scroll', tooltipScrollEvent);
@@ -38,7 +38,7 @@ const FeedLike = (props) => {
         {type !== "fanBoard" && data?.like_yn === "n" ?
           <i className="likeOff" onClick={onClick} data-index={data.noticeIdx ? data.noticeIdx : data.reg_no}>
             {data.rcv_like_cnt ? Utility.printNumber(data.rcv_like_cnt) : 0}
-            {(tooltipEvent && (type === "feed" || type === "notice") && detail) && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip.png`} alt="" /></div>}
+            {(tooltipEvent && (type === "feed" || type === "notice") && detail) && <div className="likeTooltip"><img src={`${IMG_SERVER}/profile/likeTooltip-fix.png`} alt="" /></div>}
           </i>
           : type !== "fanBoard" && data?.like_yn === "y" &&
           <i className="likeOn" onClick={onClick} data-index={data.noticeIdx ? data.noticeIdx : data.reg_no}>
