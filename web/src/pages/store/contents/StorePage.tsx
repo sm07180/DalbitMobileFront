@@ -123,7 +123,7 @@ const StorePage = ()=>{
         }
       }}/>
       
-      {!moment(nowDay).isAfter(moment('20220428')) &&
+      {(context.customHeader['os'] !== OS_TYPE['IOS'] && !moment(nowDay).isAfter(moment('20220428'))) &&
         <section className="eventBanner">
           <div className="bannerImg" onClick={() => {openBannerUrl("/notice/661")}}>
             <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>

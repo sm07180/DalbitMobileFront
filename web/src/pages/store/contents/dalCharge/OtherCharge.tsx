@@ -14,6 +14,7 @@ import qs from 'query-string'
 import {PAYMENT_LIST} from "../../../../redux/types/pay/storeType";
 import {Hybrid} from "../../../../context/hybrid";
 import {setStateHeaderVisible} from "../../../../redux/actions/payStore";
+import {OS_TYPE} from 'context/config.js'
 
 import moment from "moment";
 
@@ -73,7 +74,7 @@ const OtherCharge = ()=>{
     if(commonPopup.commonPopup) {
       closePopup(dispatch);
     }else {
-      dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
+      dispatch(setSlidePopupOpen());
     }
   }
 
@@ -228,7 +229,7 @@ const OtherCharge = ()=>{
         !payStoreRdx.stateHeader.visible &&
         <Header title="달 충전하기" position="sticky" type="back" />
       }
-      {!moment(nowDay).isAfter(moment('20220428')) &&
+      {context.customHeader['os'] !== OS_TYPE['IOS'] && !moment(nowDay).isAfter(moment('20220428')) &&
         <section className="eventBanner">
           <div className="bannerImg" onClick={() => {openBannerUrl("/notice/661")}}>
             <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>
