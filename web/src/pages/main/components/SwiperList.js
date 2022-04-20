@@ -52,6 +52,15 @@ const SwiperList = (props) => {
     swiper?.slideTo(0);
   }
 
+  // 팀 상세 페이지 이동
+  const goTeamDetailPage = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    };
+  };
+
   useEffect(() => {
     if (data?.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
       swiperRefresh();
@@ -103,12 +112,12 @@ const SwiperList = (props) => {
       {topRankType === 'TEAM' && data.map((list, index) => {
         return (
           <div key={index}>
-            <div className="listColumn" onClick={() => { console.log('디스스탑이즈 왕십리 왕십리역입니다.')}}>
+            <div className="listColumn" data-team-no={list.team_no} onClick={goTeamDetailPage}>
               <div className="teamSymbol">
                 <img src={`${IMG_SERVER}/team/parts/E/${list.team_bg_code}.png`} alt="" />
                 <img src={`${IMG_SERVER}/team/parts/B/${list.team_edge_code}.png`} alt="" />
                 <img src={`${IMG_SERVER}/team/parts/M/${list.team_medal_code}.png`} alt="" />
-                <div className={`rank-1`}></div>
+                <div className={`rank-${index + 1}`}></div>
               </div>
               <span className="nick">{list.team_name}</span>
             </div>
