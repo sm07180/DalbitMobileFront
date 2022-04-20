@@ -19,6 +19,7 @@ const SwiperList = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
+  const memberRdx = useSelector(({member})=> member);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   let locationStateHistory = useHistory();
 
@@ -66,55 +67,55 @@ const SwiperList = (props) => {
 
   return (
     <>
-    {data && data.length > 0 &&
-    <Swiper {...swiperParams}>
-      {data.map((item,index) => {
-        return (
-          <div key={index}>
-            <div className="listColumn" onClick={() => onClickAction(item)}>
-              <div className="photo">
-                <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
-                  : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                {item.rank && <div className={`rank-${item.rank}`}></div>}
-                {
-                  item.roomNo &&
+      {data && data.length > 0 &&
+      <Swiper {...swiperParams}>
+        {data.map((item,index) => {
+          return (
+            <div key={index}>
+              <div className="listColumn" onClick={() => onClickAction(item)}>
+                <div className="photo">
+                  <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
+                    : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
+                  {item.rank && <div className={`rank-${item.rank}`}></div>}
+                  {
+                    item.roomNo &&
                     <div className='livetag' onClick={(e) => {
                       e.stopPropagation();
                       RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, locationStateHistory, item.nickNm);
                     }}>
-                       <Lottie
-                          options={{
-                            loop: true,
-                            autoPlay: true,
-                            path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
-                          }}
-                        />
+                      <Lottie
+                        options={{
+                          loop: true,
+                          autoPlay: true,
+                          path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
+                        }}
+                      />
                     </div>
-                }
-                {
-                  item.listenRoomNo &&
+                  }
+                  {
+                    item.listenRoomNo && (item.listenOpen === 0 || item.listenOpen === 1) &&
                     <div className='listenertag' onClick={(e) => {
                       e.stopPropagation();
                       RoomValidateFromClipMemNo(item.listenRoomNo, item.memNo,context, locationStateHistory, item.nickNm);
                     }}>
                       <Lottie
-                          options={{
-                            loop: true,
-                            autoPlay: true,
-                            path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
-                          }}
-                        />
+                        options={{
+                          loop: true,
+                          autoPlay: true,
+                          path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
+                        }}
+                      />
                     </div>
-                }
-                {item.type_media === 'v' && <div className="video" />}
+                  }
+                  {item.type_media === 'v' && <div className="video" />}
+                </div>
+                <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
               </div>
-              <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
             </div>
-          </div>
-        )
-      })}
-    </Swiper>
-    }
+          )
+        })}
+      </Swiper>
+      }
     </>
   )
 }

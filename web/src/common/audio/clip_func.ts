@@ -333,7 +333,15 @@ export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nick
             });
           } else {
             if(listenRoomNo !== roomNo) {
-              const ownerSel = await Api.roomOwnerSel(roomNo);
+              const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
+              if(ownerSel.data.listenOpen !== '1'){
+                if(history.location.pathname.startsWith("/profile")){
+                  return;
+                }
+
+                history.push(`/profile/${memNo}`);
+                return;
+              }
               if(!ownerSel.data.memNo){
                 globalAction.callSetToastStatus!({
                   status: true,
@@ -345,7 +353,7 @@ export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nick
                 status: true,
                 type: "confirm",
                 content: memNo !== ownerSel.data.memNo ?
-                  `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+                  `${nickNm}님이 참여중인 방송방에 입장하시겠습니까?`
                   : `${ownerSel.data.memNick ? `${ownerSel.data.memNick}님의 ` : ''}방송방에 입장하시겠습니까?`,
                 callback: () => {
                   history.push(`/broadcast/${roomNo}`);
@@ -373,6 +381,7 @@ export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nick
       return history.push('/login');
     }
   } else {
+
     RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm})
   }
 }

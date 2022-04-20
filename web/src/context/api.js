@@ -4261,8 +4261,8 @@ export default class API {
   }
 
   // 방장 정보 조회
-  static roomOwnerSel = async (roomNo) => {
-    return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo}})
+  static roomOwnerSel = async (roomNo, memNo) => {
+    return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo, memNo:memNo}})
   }
 }
 

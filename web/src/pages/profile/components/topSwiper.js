@@ -6,7 +6,7 @@ import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
 import {Context} from "context";
-import {RoomValidateFromProfile} from "common/audio/clip_func";
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
@@ -39,18 +39,19 @@ const TopSwiper = (props) => {
     }
   }
 
-  const roomJoinHandler = () => {
-    const params = {
-      roomNo: data.roomNo,
-      memNo : data.memNo,
-      history,
-      context,
-      nickNm: data.nickNm,
-      listenRoomNo: data.listenRoomNo,
-      webview
-    }
-      RoomValidateFromProfile(params);
-  }
+  // const roomJoinHandler = () => {
+  //   const params = {
+  //     roomNo: data.roomNo,
+  //     memNo : data.memNo,
+  //     history,
+  //     context,
+  //     nickNm: data.nickNm,
+  //     listenRoomNo: data.listenRoomNo,
+  //     webview
+  //   }
+  //     RoomValidateFromProfile(params);
+  //   RoomValidateFromClipMemNo(item.listenRoomNo, item.memNo,context, locationStateHistory, item.nickNm);
+  // }
 
 
   /* 스페셜DJ 약력 팝업 생성 */
@@ -102,7 +103,9 @@ const TopSwiper = (props) => {
           </div>
         }
         {type === 'profile' && webview === '' && data.roomNo !== "" &&
-          <div className='badgeLive' onClick={roomJoinHandler}>
+          <div className='badgeLive' onClick={()=>{
+            RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+          }}>
             <span className='equalizer'>
               <Lottie
                 options={{
@@ -116,7 +119,9 @@ const TopSwiper = (props) => {
           </div>
         }
         {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
-          <div className='badgeListener' onClick={roomJoinHandler}>
+          <div className='badgeListener' onClick={()=>{
+            RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
+          }}>
             <span className='headset'>
               <Lottie
                   options={{
