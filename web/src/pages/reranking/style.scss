@@ -358,7 +358,7 @@ $errorMsg : #FF1919;
           content: none;
         }
         .rankCategory {
-          @include font(13px,$SemiBold,#303030);
+          @include font(12px,600,#999);
         }
         .rankData {
           margin-top: 4px;

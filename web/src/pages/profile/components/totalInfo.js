@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef, useContext} from 'react'
 import {IMG_SERVER} from 'context/config'
-import Utility from "components/lib/utility";
 import Swiper from 'react-id-swiper'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
@@ -10,12 +9,18 @@ import './totalInfo.scss'
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {useHistory} from "react-router-dom";
 import FeedLike from "pages/profile/components/FeedLike";
+import {useSelector} from "react-redux";
+import Api from "context/api";
+import {Context} from "context";
+import Utility from 'components/lib/utility';
 
 const TotalInfo = (props) => {
+  const history = useHistory();
   const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
-  const history = useHistory();
+  const profileData = useSelector(state => state.profile);
+  const context = useContext(Context);
   const swiperRef = useRef();
   const defaultNotice = [{
     contents: "방송 공지를 등록해주세요.",
@@ -62,6 +67,50 @@ const TotalInfo = (props) => {
       }
     }
   },[data])
+
+  // 팀 가입신청 버튼 출력 여부
+  const getTeamJoinBtnVisibleYn = () => {
+    let result = false;
+
+    if (data.teamInfo !== undefined &&
+        data.teamInfo.team_no != 0 &&
+        data.teamInfo.bg_cnt < 5 &&
+        data.teamJoinCheck === 1) {
+      //result = true;
+    }
+
+    return result;
+  }
+
+  // 팀 가입신청 요청
+  const reqTeamJoin = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    const param ={
+      teamNo: teamNo,
+      memNo: context.token.memNo,
+      reqSlct: 'r' //신청구분 [r:가입신청, i:초대]
+    };
+
+    Api.getTeamMemReqIns(param).then((res)=>{
+      if(res.code === "00000"){
+        context.action.toast({
+          msg: '팁 가입신청이 완료 되었습니다.'
+        });
+      } else {
+        context.action.toast({ msg: res.message });
+      }
+    })
+  }
+
+  // 팀 상세 페이지 이동
+  const goTeamDetailPage = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    };
+  };
 
   /* 피드 삭제시 스와이퍼 업데이트용 */
   useEffect(() => {
@@ -125,16 +174,21 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
-      <div className="teamInfo">
-        <img src={`${IMG_SERVER}/profile/teamInfo-title.png`} alt="team" className="title" />
-        <div className="teamSymbol">
-          <img src={"https://image.dalbitlive.com/team/parts/E/e007.png"} />
-          <img src={"https://image.dalbitlive.com/team/parts/B/b009.png"} />
-          <img src={"https://image.dalbitlive.com/team/parts/M/m007.png"} />
+      {(data.teamInfo !== undefined && data.teamInfo.team_no !== 0) &&
+        <div className="teamInfo">
+          <div className="wrapBox" data-team-no={data.teamInfo.team_no} onClick={goTeamDetailPage}>
+            <img src={`${IMG_SERVER}/profile/teamInfo-title.png`} alt="team" className="title" />
+            <div className="teamSymbol">
+              <img src={`${IMG_SERVER}/team/parts/E/${data.teamInfo.team_bg_code}.png`} />
+              <img src={`${IMG_SERVER}/team/parts/B/${data.teamInfo.team_edge_code}.png`} />
+              <img src={`${IMG_SERVER}/team/parts/M/${data.teamInfo.team_medal_code}.png`} />
+            </div>
+            <div className="teamName">{data.teamInfo.team_name}</div>
+          </div>
+          {/* 자신이 가입된 팀이 없고, 상대방 팀과 같지 않다면 가입 신청 버튼 출력 */}
+          {getTeamJoinBtnVisibleYn() && <button data-team-no={data.teamInfo.team_no} onClick={reqTeamJoin}>가입신청</button> }
         </div>
-        <div className="teamName">asdfasdfasdfasdfasdj;aj;flaj;dfja;ldjfa</div>
-        <button>가입신청</button>
-      </div>
+      }
       {data.profMsg &&
       <div className="comment">
         <div className="title">코멘트</div>

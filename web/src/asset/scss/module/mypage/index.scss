@@ -490,13 +490,11 @@
             border-top:1px solid white;
           }
           .teamSymbol {
-            position:relative;
-            width:28px;height:28px;
-            margin-right:8px;
-            background-color:red;
-            img {
-              @include position-center;
-            }
+            @include teamSymbol;
+            width:28px;
+            height:28px;
+            margin-right:4px;
+            border-radius:4px;
           }
           .teamName {
             @include font(14px,$Regular,black);

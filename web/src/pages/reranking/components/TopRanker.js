@@ -14,7 +14,7 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
 
 const TopRanker = (props) => {
-  const {data, rankSlct, rankType} = props
+  const {data, rankSlct, rankType} = props;
 
   const history = useHistory();
   const context = useContext(Context);
@@ -116,12 +116,22 @@ const TopRanker = (props) => {
     }
   };
 
+  // 팀 상세 페이지 이동
+  const goTeamDetailPage = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    };
+  };
+
   useEffect(() => {
     if (rankSlct === "FAN") fetchRankApply();
   },[rankSlct]);
 
   return (
     <React.Fragment>
+      <span className='questionMark' onClick={() => setPopup(true)}></span>
       <div className="topItems">
         {context.token.isLogin && rankSlct === "FAN" &&
           <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
@@ -246,7 +256,7 @@ const TopRanker = (props) => {
               <div className='topContent'>
                 {list.map((value,index) => {
                   return (
-                    <div className="ranker" key={index}>
+                    <div className="ranker" key={index} data-team-no={value.team_no} onClick={goTeamDetailPage}>
                       <div className="listColumn" data-type={index}>
                         <div className="teamSymbol">
                           <img src={`${IMG_SERVER}/team/parts/E/${value.team_bg_code}.png`} alt="" />

@@ -22,12 +22,12 @@ const TeamBadge = (props) => {
   const [badgePop, setBadgePop] = useState(false);
   const [statChk, setStatChk]=useState(""); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [changePage,setChangePage]=useState(false);
-  const [badgeList,setBadgeList]=useState([]);
+  const [badgeList,setBadgeList]=useState([]); // 대표활동배지 변경할때 비교용도로 쓰임
   const [updBadgeList,setUpdBadgeList]=useState([]);
   const [getCnt,setGetCnt]=useState(0);  // 활동뱃지 얻은 갯수
   const [badgeData, setBadgeData]=useState({})
   const teamNo = props.match.params.teamNo;
-  let selectBadgeList =[];
+
 
   // const {hour, minute, isTimeOver, time, unitKor} = Timer({endDate:'2022.'});
   // const tt = NormalTimer('2023.05.30 17:45:00');
@@ -72,11 +72,15 @@ const TeamBadge = (props) => {
   };
 
   const onClickBadge = (data) => {
-    updBadgeList.map(m=>{
+    setUpdBadgeList(updBadgeList.map(m=>{
+      if(data.bg_achieve_yn === 'n'){
+        return m;
+      }
       if(m.bg_code === data.bg_code){
         m.bg_represent_yn = m.bg_represent_yn === 'y' ? 'n' : 'y'
       }
-    })
+      return m;
+    }))
     console.log(data)
     // if(changePage) return false
     // setBadgeData(data)
@@ -87,13 +91,30 @@ const TeamBadge = (props) => {
     if(!changePage){
       return;
     }
+    let cnt = 0, successCnt = 0;
+    for (let i = 0; i < updBadgeList.length; i++) {
+      if(updBadgeList[i].bg_represent_yn === badgeList[i].bg_represent_yn){
+        return;
+      }
+      cnt++;
+      // -3:대표설정 배지수 초과, -2:배지 미달성, -1: 팀장아님, 0: 에러, 1:정상
+      const res = await Api.updTeamBadge({
+        teamNo: teamNo,                           // 팀번호
+        memNo: memberRdx.memNo,                   // 회원번호
+        updSlct: updBadgeList[i].bg_represent_yn, // 업데이트구분[y:대표 설정, n:대표해제]
+        bgCode: updBadgeList[i].bg_code           // 배지코드
+      });
+      if(res.data === 1){
+        successCnt++;
+      }
+    }
+    if(cnt === successCnt){
+      // 잘성공함
+    }else{
+      // 뭔가 실패
+    }
     setChangePage(false);
-    const res = await Api.updTeamBadge({
-      teamNo:'',  // 팀번호
-      memNo:'',   // 회원번호
-      updSlct:'', // 업데이트구분[y:대표 설정, n:대표해제]
-      bgCode:''   // 배지코드
-    });
+    history.goBack();
   }
   // 페이지 시작
   return (
@@ -126,23 +147,26 @@ const TeamBadge = (props) => {
           <div className="title">활동 뱃지<span><strong>{getCnt}</strong></span></div>
         }
 
-        <section className="badgeList">
-          {
-            badgeList.map((data,index)=>
-              <label className="badgeItem" onClick={()=>{onClickBadge(data)}} key={index}>
-                <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
-                {
-                  statChk === 'm' && changePage &&
-                  //  checkboxLabel active
-                  <div className="checkboxLabel active" onClick={()=>{selectBadge(data.bg_code)}}>
-                    <div className="checkBox"/>
-                  </div>
-                }
-              </label>
-            )
-          }
+        {
+          updBadgeList && updBadgeList.length > 0 &&
+          <section className="badgeList">
+            {
+              updBadgeList.map((data,index)=>
+                <label className="badgeItem" onClick={()=>{onClickBadge(data)}} key={index}>
+                  <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
+                  {
+                    statChk === 'm' && changePage && data.bg_achieve_yn === 'y' &&
+                    //  checkboxLabel active
+                    <div className={`checkboxLabel ${data.bg_represent_yn === 'y' ? 'active' : ''}`} onClick={()=>{selectBadge(data.bg_code)}}>
+                      <div className="checkBox"/>
+                    </div>
+                  }
+                </label>
+              )
+            }
+          </section>
+        }
 
-        </section>
 
         {(statChk === 'm' && changePage) &&
           <section className="buttonWrap" onClick={onClickComplete}>

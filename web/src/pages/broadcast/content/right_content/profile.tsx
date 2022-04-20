@@ -104,6 +104,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         commonBadgeList: data.commonBadgeList,
         profImgList: data.profImgList,
         isMailboxOn: data.isMailboxOn,
+        teamInfo: data.teamInfo,
       });
       broadcastAction.setIsFan && broadcastAction.setIsFan(data.isFan);
     } else {
@@ -412,6 +413,15 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
     }
   }, [profileData]);
 
+  // 팀 상세페이지 이동
+  const reqTeamJoin = (e) => {
+    const { pageLink } = e.currentTarget.dataset;
+
+    if (pageLink !== undefined) {
+      history.push(pageLink);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
   }, [broadcastState.userMemNo, broadcastState.roomInfo]);
@@ -568,14 +578,16 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
               
               <div className="profile__wrapper">
                 {/* 팀명칭 리스트 */}
-                <div className="profile__rankingList">
-                  <div className="teamSymbol">
-                    <img src="" alt="" />
-                    <img src="" alt="" />
-                    <img src="" alt="" />
+                {profileData.teamInfo !== undefined &&
+                  <div className="profile__rankingList" data-page-link={profileData.teamInfo.pageLink} onClick={reqTeamJoin}>
+                    <div className="teamSymbol">
+                      <img src={`${profileData.teamInfo.backgroundUrl}`} alt="배경" />
+                      <img src={`${profileData.teamInfo.borderUrl}`} alt="테두리" />
+                      <img src={`${profileData.teamInfo.medalUrl}`} alt="메달" />
+                    </div>
+                    <div className="teamName">{profileData.teamInfo.teamName}</div>
                   </div>
-                  <div className="teamName">우주최강슈퍼파워</div>
-                </div>
+                }
 
                 {/* 팬랭킹 리스트 */}
                 {profileData.fanRank && profileData.fanRank.length > 0 ? (
