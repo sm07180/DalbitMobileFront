@@ -243,6 +243,10 @@ const Remypage = () => {
                 <span className='icon setting'></span>
                 <span className="myDataType">서비스 설정</span>
               </div>
+              <div className='myDataList' onClick={() => history.push('/story')}>
+                <span className='icon story'></span>
+                <span className="myDataType">사연 보관함</span>
+              </div>
               <div className='myDataList' onClick={() => history.push('/notice')}>
                 <span className={`icon notice ${noticeNew ? "new" : ""}`}></span>
                 <span className="myDataType">공지사항</span>
