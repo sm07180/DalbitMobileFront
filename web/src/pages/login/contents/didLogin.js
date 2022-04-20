@@ -50,7 +50,7 @@ const DidLogin = (props) => {
 
   //회원가입 팝업 클릭 처리
   const signPop = () => {
-    dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
+    dispatch(setSlidePopupOpen());
     setBtnActive(false)
   }
 

@@ -7,7 +7,21 @@
     width:100%;
     header {
       text-indent:-99999px;
-      .store {background-image:url("#{$IMGSERVER}/common/header/icoStore-w.png");}
+      .store {background-image:url("#{$IMGSERVER}/common/header/icoStore-w.png");
+        &.bonus {
+          position: relative;
+          &::after {
+            content: "SALE";
+            @include position-horizon($bottom: 0px);
+            @include flex(center, center);
+            height: 16px;
+            padding: 0px 5px;
+            border-radius: 100px;
+            @include font(11px, 700, #FFF);
+            background-color: #FF1919;
+          }
+        }
+      }
       .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-w.png");}
       .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-w.png");}
       .alarm {background-image:url("#{$IMGSERVER}/common/header/icoAlarm-w.png");}

@@ -116,7 +116,7 @@
                 margin-right: 8px;
                 border-radius: 16px;
                 @include font(16px, 500, #FFFFFF);
-                background-color: #FFD4E1;
+                background-color: $DISABLEDCOLOR;
                 &.active {
                     background-color: #FF3C7B;
 

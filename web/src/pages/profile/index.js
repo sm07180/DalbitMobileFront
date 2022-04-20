@@ -764,6 +764,13 @@ const ProfilePage = () => {
         if(location.search) {
           parameterManager(); // 주소 뒤에 파라미터 체크
         }
+        
+        // 주소가 바뀐 경우 데이터 불러오기
+        getNoticeData(true);
+        getNoticeFixData(true);
+        getFeedData(true);
+        getFanBoardData(true);
+        getClipData(true);
       }
     }else {
       history.replace('/login');

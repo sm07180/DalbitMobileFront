@@ -3,6 +3,7 @@
 */
 $MAINCOLOR: #FF3C7B;
 $DOWNCOLOR: #FF6999;
+$DISABLEDCOLOR: #FFD4E1;
 $BLACKBTNCOLOR: #202020;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
@@ -194,7 +195,7 @@ $ExtraBold: 800;
   }
   .storeDalList {
     @include flex($fd:column);
-    padding:0 16px;
+    padding:0 16px 30px;
     .item {
       position:relative;
       @include flex(center);

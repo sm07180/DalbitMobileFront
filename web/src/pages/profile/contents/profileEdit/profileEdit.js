@@ -93,7 +93,7 @@ const ProfileEdit = () => {
   };
 
   const openMoreList = () => {
-    dispatch(setSlidePopupOpen({...popup, slidePopup: true}))
+    dispatch(setSlidePopupOpen())
   };
 
   const closeMoreList = () => {
@@ -140,7 +140,7 @@ const ProfileEdit = () => {
 
   /* 본인인증 열기 */
   const getAuth = () => {
-    authReq('5', context.authRef, context);
+    authReq({code: '5', formTagRef: context.authRef, context});
   }
 
   /* 본인인증 여부 */

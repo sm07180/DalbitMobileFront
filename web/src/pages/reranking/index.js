@@ -229,7 +229,7 @@ const RankPage = () => {
 
   //DJ 랭킹 List 기간 pop
   const selectChart = () => {
-    dispatch(setSlidePopupOpen({...commonPopup, slidePopup: true}));
+    dispatch(setSlidePopupOpen());
   }
 
   const slidePopClose = () => {

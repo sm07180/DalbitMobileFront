@@ -241,21 +241,21 @@ const RankDetailPage = (props) => {
     }
   }
 
-  const closeSlidePop = () => {
-    closePopup(dispatch);
-  }
+  // const closeSlidePop = () => {
+  //   closePopup(dispatch);
+  // }
 
-  const optionSelect = (e) => {
-    let text = e.currentTarget.innerText;
-    if(text === "DJ"){
-      history.replace("/rankDetail/DJ");
-    } else if(text === "FAN") {
-      history.replace("/rankDetail/FAN");
-    } else {
-      history.replace("/rankDetail/CUPID");
-    }
-    closeSlidePop();
-  }
+  // const optionSelect = (e) => {
+  //   let text = e.currentTarget.innerText;
+  //   if(text === "DJ"){
+  //     history.replace("/rankDetail/DJ");
+  //   } else if(text === "FAN") {
+  //     history.replace("/rankDetail/FAN");
+  //   } else {
+  //     history.replace("/rankDetail/CUPID");
+  //   }
+  //   closeSlidePop();
+  // }
 
   useEffect(() => {
     if (rankType !== ""){
@@ -359,7 +359,7 @@ const RankDetailPage = (props) => {
         </div>
       </div>
 
-      {commonPopup.commonPopup &&
+      {/* {commonPopup.commonPopup &&
         <PopSlide>
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
@@ -367,7 +367,7 @@ const RankDetailPage = (props) => {
             <div className={`selectOption ${select === "CUPID" ? "active" : ""}`} onClick={optionSelect}>CUPID</div>
           </div>
         </PopSlide>
-      }
+      } */}
     </div>
   )
 }

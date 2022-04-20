@@ -81,6 +81,18 @@ export const Hybrid = (func, info) => {
   }
 }
 
+// 해당 페이지에서 다른 루트로 이동 가능한 url은 입력 ㄴ
+export const openLayerPopup = ({url, history})=>{
+  if(!url){
+    return;
+  }
+  if(url !== '/store'){
+    return;
+  }
+
+  Hybrid('OpenLayerPopup', {url:`${location.origin}${url}`})
+}
+
 export const NewHybrid = (func, type, info) => {
   if (!isHybrid()) return
 

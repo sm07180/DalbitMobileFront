@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useRef} from 'react'
 import {IMG_SERVER} from 'context/config'
 import Utility from "components/lib/utility";
 import Swiper from 'react-id-swiper'
@@ -9,8 +9,6 @@ import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import './totalInfo.scss'
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {useHistory} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import noticeFix from "redux/reducers/profile/noticeFix";
 import FeedLike from "pages/profile/components/FeedLike";
 
 const TotalInfo = (props) => {
@@ -18,6 +16,7 @@ const TotalInfo = (props) => {
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const history = useHistory();
+  const swiperRef = useRef();
   const defaultNotice = [{
     contents: "방송 공지를 등록해주세요.",
     rcv_like_cnt: 0,
@@ -70,11 +69,11 @@ const TotalInfo = (props) => {
 
   /* 피드 삭제시 스와이퍼 업데이트용 */
   useEffect(() => {
-    if((noticeData || noticeFixData) !== undefined) {
-      const swiper = document.querySelector('.swiper-container')?.swiper;
+    if(swiperRef.current) {
+      const swiper = swiperRef.current?.swiper;
       swiper?.update();
-      // swiper.slideTo(0);
     }
+      // swiper.slideTo(0);
   }, [noticeData, noticeFixData]);
 
   return (
@@ -140,7 +139,7 @@ const TotalInfo = (props) => {
       {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
         <div className="broadcastNotice">
           <div className="title" onClick={onClick}>방송공지</div>
-          <Swiper {...swiperParams}>
+          <Swiper {...swiperParams} ref={swiperRef}>
             {noticeFixData?.fixedFeedList.map((v, idx) => {
               const detailPageParam = {history, action:'detail', type: 'notice', index: v.noticeIdx, memNo: v.mem_no};
               return (
@@ -189,7 +188,7 @@ const TotalInfo = (props) => {
         : isMyProfile ?
           <div className="broadcastNotice">
             <div className="title" onClick={onClick}>방송공지</div>
-            <Swiper {...swiperParams}>
+            <Swiper {...swiperParams} ref={swiperRef}>
               {defaultNotice.map((v, idx) => {
                 return (
                   <div key={idx}>
