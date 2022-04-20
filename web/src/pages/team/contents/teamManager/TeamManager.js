@@ -18,7 +18,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamManager.scss";
-import Api from "context/api";
 import {Timer} from "pages/broadcast/content/right_content/vote/Timer";
 import moment from "moment";
 import photoCommon from "common/utility/photoCommon";
@@ -35,6 +34,7 @@ const TeamManager = (props) => {
   const memberRdx = useSelector((state)=> state.member);
 
   const [partsName, setPartsName] = useState('');
+  const [editChk , setEditChk]=useState(true);
   const [partsA, setPartsA] = useState('');  //메달URL
   const [partsB, setPartsB] = useState('');  //테두리URL
   const [partsC, setPartsC] = useState('');  //배경URL
@@ -43,7 +43,6 @@ const TeamManager = (props) => {
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
   const [teamMemList, setTeamMemList]=useState([]);
-  const [teamInfo, setTeamInfo]=useState({});
   const [updateChk, setUpdateChk]=useState(false);
   const [agree,setAgree]=useState(false);
   const [medalCode,setMdalCode]=useState("")
@@ -53,10 +52,6 @@ const TeamManager = (props) => {
     date: {day: 0, month: 0, year: 0},
     time: {hour: 0, minute: 0, nano: 0, second: 0}
   })
-/*  if(t.data.day !==0 )
-    const aa = Timer({endDate:t});
-
-  console.log("aa",aa)*/
   useEffect(()=>{
     if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
       history.goBack();
@@ -77,9 +72,8 @@ const TeamManager = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
       if(res.code === "00000") {
-        console.log("팀정보", res.data)
-        console.log("개설일",res.data.teamInfo.ins_date)
         let aaaa = moment(res.data.teamInfo.ins_date).add(3, 'd')
+        let teamInfo = res.data.teamInfo;
         const dd = {
           date: {
             day: aaaa.date(),
@@ -93,16 +87,26 @@ const TeamManager = (props) => {
             second: aaaa.second()
           }
         }
+        console.log(res.data);
+        if(teamInfo.team_chnge_cnt > 0){
+          setEditChk(false)
+        }
+
         setT(dd)
 
         setTeamMemList(res.data.teamMemList);
-        setTeamInfo(res.data.teamInfo);
         setTeamName(res.data.teamInfo.team_name);
         setTeamConts(res.data.teamInfo.team_conts);
         setAgree(res.data.teamInfo.req_mem_yn);
+
+        setPartsA(`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`)
+        setPartsB(`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`)
+        setPartsC(`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`)
+
         setMdalCode(res.data.teamInfo.team_medal_code);
         setEdgeCode(res.data.teamInfo.team_edge_code);
         setBgCode(res.data.teamInfo.team_bg_code);
+
         if(res.data.teamInfo.req_mem_yn ==='y'){
           document.getElementsByClassName("blind")[0].checked = true
         }
@@ -164,14 +168,20 @@ const TeamManager = (props) => {
   };
   
   const partsSelect = (value,code) => {
+    //메달
     if (partsName === parts[0]) {
       setPartsA(value);
+      setMdalCode(code)
     }
+    //테두리
     if (partsName === parts[1]) {
       setPartsB(value);
+      setEdgeCode(code)
     }
+    //배경
     if (partsName === parts[2]) {
       setPartsC(value);
+      setBgCode(code)
     }
     closePopup(dispatch);
   };
@@ -220,14 +230,6 @@ const TeamManager = (props) => {
   };
 
   useEffect(() => {
-    if(partsName ===""){
-      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-        console.log("res==>",res)
-      })
-    }
-  },[])
-
-  useEffect(() => {
     if( partsName!==""){
       symbolApi()
     }
@@ -243,10 +245,11 @@ const TeamManager = (props) => {
           수정할 수 있습니다.<span>남은시간 71시간 59분</span></div>
         </section>
         <section className="teamSymbol">
-          {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />}
-          {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />}
-          {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
+          <img src={`${partsC}`} />
+          <img src={`${partsB}`} />
+          <img src={`${partsA}`} />
         </section>
+        {editChk &&
         <section className="partsType">
           {parts.map((list,index) => {
             return (
@@ -259,31 +262,33 @@ const TeamManager = (props) => {
                     <img src={partsA} alt="" />
                   </button>
                   : index === 1 && partsB !== '' ?
-                  <button
-                    className="acitve"
-                    data-target-name={list}
-                    onClick={openPartsChoice}>
-                    <img src={partsB} alt="" />
-                  </button>
-                  : index === 2 && partsC !== '' ?
-                  <button
-                    className="acitve"
-                    data-target-name={list}
-                    onClick={openPartsChoice}>
-                    <img src={partsC} alt="" />
-                  </button>
-                  :
-                  <button
-                    data-target-name={list}
-                    onClick={openPartsChoice}>
-                    +
-                  </button>
+                    <button
+                      className="acitve"
+                      data-target-name={list}
+                      onClick={openPartsChoice}>
+                      <img src={partsB} alt="" />
+                    </button>
+                    : index === 2 && partsC !== '' ?
+                      <button
+                        className="acitve"
+                        data-target-name={list}
+                        onClick={openPartsChoice}>
+                        <img src={partsC} alt="" />
+                      </button>
+                      :
+                      <button
+                        data-target-name={list}
+                        onClick={openPartsChoice}>
+                        +
+                      </button>
                 }
                 <span>{list}</span>
               </div>
             )
           })}
         </section>
+        }
+
         <TeamForm rows={10} cols={60} teamConts={teamConts || "" } teamName={teamName || ""}
                   editCnts={editCnts} editName={editName}
         />
