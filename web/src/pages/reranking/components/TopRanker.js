@@ -116,6 +116,15 @@ const TopRanker = (props) => {
     }
   };
 
+  // 팀 상세 페이지 이동
+  const goTeamDetailPage = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    };
+  };
+
   useEffect(() => {
     if (rankSlct === "FAN") fetchRankApply();
   },[rankSlct]);
@@ -247,7 +256,7 @@ const TopRanker = (props) => {
               <div className='topContent'>
                 {list.map((value,index) => {
                   return (
-                    <div className="ranker" key={index}>
+                    <div className="ranker" key={index} data-team-no={value.team_no} onClick={goTeamDetailPage}>
                       <div className="listColumn" data-type={index}>
                         <div className="teamSymbol">
                           <img src={`${IMG_SERVER}/team/parts/E/${value.team_bg_code}.png`} alt="" />

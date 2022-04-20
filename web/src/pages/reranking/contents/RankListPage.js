@@ -49,7 +49,6 @@ const RankListPage = (props) => {
   const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
   const [ topRankInfo, setTopRankInfo ] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
 
-  console.log(tabListInfo[tabType]);
   // 혜택 페이지 이동
   const goRankReward = () => {
     history.push("/rankBenefit");
@@ -219,6 +218,7 @@ const RankListPage = (props) => {
     const { targetTab } = e.currentTarget.dataset;
 
     if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab)) {
+      history.replace(`/rankDetail/${targetTab}`); // 뒤로가기 했을경우를 대비해 링크만 바꿔준다.
       setRankInfo({list: [], paging: {total: 0}});
       setTopRankInfo([]);
       setPageInfo({...pageInfo, page: 1, rankSlct: rankSlctCode[targetTab], rankType: rankTypeCode[tabListInfo[targetTab][0]] });
@@ -247,7 +247,6 @@ const RankListPage = (props) => {
   };
 
   useEffect(() => {
-    console.log(pageInfo.rankSlct);
     if (pageInfo.rankSlct === 4) {
       getTeamRankList();
     } else if (pageInfo.rankSlct === 1 && pageInfo.rankType === 0) {
