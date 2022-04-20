@@ -14,7 +14,7 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // global components
 
 const TopRanker = (props) => {
-  const {data, rankSlct, rankType} = props
+  const {data, rankSlct, rankType} = props;
 
   const history = useHistory();
   const context = useContext(Context);
