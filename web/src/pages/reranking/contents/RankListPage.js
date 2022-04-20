@@ -194,21 +194,15 @@ const RankListPage = (props) => {
     const prevRank = await Api.getTeamRankWeekList({...params, tDate: preDate, pagePerCnt: 3});
     if (realRank.code === '00000') {
       const { data } = realRank;
-      let temp =  [];
-      for (let i = 0; i < 20; i++ ) {
-        temp.push(data.list[0]);
-      }
-      topRankList.push(addEmptyRanker(temp.slice(0, 3)));
-      setRankInfo({list: temp.slice(3), paging: { total: data.listCnt }});
+      topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
+      setRankInfo({list: data.list.slice(3), paging: { total: data.listCnt }});
     }
 
     if (prevRank.code === '00000') {
       const { data } = prevRank;
-      console.log('넌뭐야', data);
       topRankList.push(addEmptyRanker(data.list));
     }
 
-    console.log('여기 안타니?', topRankList);
     setTopRankInfo(topRankList.reverse());
   }
 
