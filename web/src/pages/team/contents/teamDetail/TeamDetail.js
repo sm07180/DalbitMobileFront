@@ -18,13 +18,14 @@ import Invite from '../../components/popup/Invite';
 import Benefits from '../../components/popup/Benefits';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
 import Api from "context/api";
 import member from "redux/reducers/member";
 import InvitePop from "../../components/popup/Invite";
+import photoCommon from "common/utility/photoCommon";
 const TeamDetail = (props) => {
   const history = useHistory();
   const context = useContext(Context);
@@ -36,8 +37,8 @@ const TeamDetail = (props) => {
   const [moreShow, setMoreShow] = useState(false);
   const [benefitsPop, setBenefitsPop] = useState(false);
   const [invitePop, setInvitePop] = useState(false);
-  const [teamMemList, setTeamMemList]=useState([]);
-  const [teamInfo, setTeamInfo]=useState({});
+  const [teamMemList, setTeamMemList]=useState([]); //팀 멤버 리스트
+  const [teamInfo, setTeamInfo]=useState({}); // 팀 정보
   const [teamBageList, setTeamBageList]=useState([]); // 뱃지 리스트
   const [totBadgeCnt, setTotBadgeCnt]=useState(0) // 뱃지 갯수
   const [teamRequestSel, setTeamRequestSel]=useState([]) // 가입신청 리스트
@@ -76,7 +77,6 @@ const TeamDetail = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
-        console.log("팀정보", res.data)
         setTeamMemList(res.data.teamMemList);
         setTeamInfo(res.data.teamInfo);
         setTeamBageList(res.data.badgeList);
@@ -84,6 +84,10 @@ const TeamDetail = (props) => {
         setStatChk(res.data.statChk);
         setCheckIn(res.data.loginYn);
         setTeamInsChk(res.data.reqInsChk);
+      }else {
+        context.action.toast({
+          msg: res.message
+        })
       }
     });
   }
@@ -102,6 +106,10 @@ const TeamDetail = (props) => {
       console.log(res)
       if(res.code === "00000"){
         setCheckIn('y');
+      }else {
+        context.action.toast({
+          msg: res.message
+        })
       }
     });
   }
@@ -117,6 +125,10 @@ const TeamDetail = (props) => {
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
         setTeamInsChk('y');
+      }else {
+        context.action.toast({
+          msg: res.message
+        })
       }
     })
     setBtnChk(true)
@@ -139,7 +151,7 @@ const TeamDetail = (props) => {
 
   // 탈퇴 팝업
   const clickSecession = (masterNo) => {
-    if (statChk === 'm') {
+    if (statChk === 'm' && teamMemList.length > 0) {
       dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     } else {
       context.action.confirm({
@@ -160,8 +172,13 @@ const TeamDetail = (props) => {
             chrgrName:""
           }
           Api.getTeamMemDel(param).then(res=>{
-            console.log(res)
-            history.go(0);
+            if(res.code === "00000"){
+              history.replace("myPage");
+            }else {
+              context.action.toast({
+                msg: res.message
+              })
+            }
           })
           console.log('secession');
         }
@@ -190,8 +207,13 @@ const TeamDetail = (props) => {
           chrgrName:"",
         }
         Api.getTeamDel(param).then(res=>{
-          console.log(res)
-          history.push(`/mypage`)
+          if(res.code === "00000"){
+            history.push(`/mypage`)
+          }else {
+            context.action.toast({
+              msg: res.message
+            })
+          }
         })
       },
       cancelCallback: () => {},
@@ -219,7 +241,10 @@ const TeamDetail = (props) => {
           Api.getTeamMemReqDel(param).then((res)=>{
             if(res.code === "00000"){
               setBtnChk(true)
-              console.log("신청거절",res)
+            }else{
+              context.action.toast({
+                msg: res.message
+              })
             }
           })
         }
@@ -240,13 +265,17 @@ const TeamDetail = (props) => {
             if(res.code === "00000"){
               setBtnChk(true)
               console.log("수락",res)
+            }else{
+              context.action.toast({
+                msg: res.message
+              })
             }
           })
         }
       });
     }
   };
-
+  const goProfile = (memNo) => history.push(`/profile/${memNo}`);
   const getConvertBrTxt=(txt, lastBrYn = 'y')=>{
     if(txt === undefined) return;
     if(txt === null) return;
@@ -337,8 +366,10 @@ const TeamDetail = (props) => {
         <section className="memberList">
           {teamMemList.length >0 &&
             teamMemList.map((data,index)=>{
+              let photoUrl = data.tm_image_profile
+              let photoServer = "https://devphoto.dalbitlive.com";
               return(
-                <ListRow photo="" photoClick={() => photoClick()} key={index}>
+                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>goProfile(data.tm_mem_no)} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -371,7 +402,7 @@ const TeamDetail = (props) => {
           <section className="joinList">
             {teamRequestSel.length > 0 && teamRequestSel.map((data,index)=>{
               return(
-                <ListRow photo="" photoClick={() => photoClick()} key={index}>
+                <ListRow photo="" photoClick={()=>goProfile(data.tm_mem_no)} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -410,7 +441,9 @@ const TeamDetail = (props) => {
       {/* 팀장이 탈퇴 시 슬라이드 팝업 */}
       {popup.slidePopup &&
         <PopSlide title="다음 팀장은 누구인가요?">
-          <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}/>
+          <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}
+                     context={context} memNo={memberRdx.memNo} teamNo={teamNo} histor={history}
+          />
         </PopSlide>
       }
 

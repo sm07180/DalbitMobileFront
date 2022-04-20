@@ -12,7 +12,7 @@ import PartsPop from '../../components/parts/PartsPop';
 import Confirm from '../../components/popup/Confirm';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
@@ -34,7 +34,7 @@ const TeamMake = () => {
   const [partsCcode, setPartsCcode] = useState('');  //배경Code
   const [nextStep, setNextStep] = useState(false);
   const [confirmPop, setConfirmPop] = useState(false);
-  const [imsiData ,setImsiData]=useState([]) //심볼 리스트용
+  const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
   const nextStepShow = () => {
@@ -43,9 +43,8 @@ const TeamMake = () => {
   
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
-
     setPartsName(targetName);
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
   };
 
   const clickConfirmPopup = () => {
@@ -65,7 +64,6 @@ const TeamMake = () => {
       teamBgCode:partsCcode
     }
     Api.getTeamIns(param).then((res) => {
-      console.log(res)
       if (res.message === 'SUCCESS' && res.data.result ===1) {
         history.push(`/team/detail/${res.data.teamNo}`)
       }else{
@@ -114,7 +112,6 @@ const TeamMake = () => {
       pageNo:1,
       pagePerCnt:100
     }
-    console.log(param)
     Api.getTeamSymbolList(param).then((res) => {
       if (res.message === 'SUCCESS') {
         setImsiData(res.data.list)
@@ -131,7 +128,7 @@ const TeamMake = () => {
       })
     }else if( partsName!==""){
         symbolApi()
-        }
+    }
   },[partsName])
 
   // 페이지 시작

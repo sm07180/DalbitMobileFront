@@ -6,6 +6,7 @@ import {IMG_SERVER} from 'context/config';
 import ListRow from 'components/ui/listRow/ListRow';
 import {PHOTO_SERVER} from "context/config";
 import Api from "context/api";
+import moment from "moment";
 
 const InviteList = (props) => {
   const history = useHistory();
@@ -13,7 +14,7 @@ const InviteList = (props) => {
 
   let {list,listCnt,memNo,setInvitationChk}=props;
 
-  const teamConfirm = (e,teamNo) => {
+  const teamConfirm = (e,teamNo,masterNo) => {
     const {targetConfirm} = e.currentTarget.dataset;
 
     if (targetConfirm === 'cancel') {
@@ -24,8 +25,22 @@ const InviteList = (props) => {
           right: '거절할게요'
         },
         callback: () => {
-          console.log('cancel');
-          setInvitationChk(true)
+          let param={
+            teamNo:teamNo,
+            memNo:memNo,
+            masterMemNo:masterNo,
+            chrgrName:""
+          }
+          Api.getTeamMemReqDel(param).then((res)=>{
+            if(res.code === "00000"){
+              setInvitationChk(true)
+            }else{
+              context.action.toast({
+                msg: res.message
+              })
+            }
+          })
+
         }
       });
     } else if (targetConfirm === 'accept') {
@@ -61,6 +76,10 @@ const InviteList = (props) => {
       </div>
       {listCnt > 0 ?
         list.map((data,index)=>{
+            let dateFormat = moment(data.ins_date).format();
+            dateFormat = moment(dateFormat).format("YYYY-MM-DD HH:mm");
+            let teamNo = data.team_no;
+            let masterNo =data.master_mem_no;
             return(
             <div className="listWrap" key={index}>
               <div className="listRow">
@@ -75,12 +94,12 @@ const InviteList = (props) => {
                     <i className="infoRank">{data.team_rank}</i>
                     <i className="infoPerson">{data.team_mem_cnt}</i>
                   </div>
-                  <div className="time">{data.ins_date}에 신청함</div>
+                  <div className="time">{dateFormat}에 신청함</div>
                 </div>
                 <div className="listBack">
                   <div className="buttonGroup">
-                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>teamConfirm(e,data.team_no)}>거절</button>
-                    <button className="accept" data-target-confirm="accept" onClick={(e)=>teamConfirm(e,data.team_no)}>수락</button>
+                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>teamConfirm(e,teamNo,masterNo)}>거절</button>
+                    <button className="accept" data-target-confirm="accept" onClick={(e)=>teamConfirm(e,teamNo,masterNo)}>수락</button>
                   </div>
                 </div>
               </div>
