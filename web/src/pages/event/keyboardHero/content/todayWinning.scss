@@ -51,6 +51,10 @@
         background: #202020;
         @include font(12px, $SemiBold, #fff);
         text-align: center;
+        &.disabled{
+          background: #e3e3e3;
+          cursor: default;
+        }
       }
     }
   }
