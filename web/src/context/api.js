@@ -4316,7 +4316,7 @@ export default class API {
     return await ajax({url: `/team/teamRepresentBadgeSel`, method: 'POST', reqBody: true, data: data})
   }
   // 팀 대표 활동배지 변경
-  static getTeamBadgeUpd = async (data) => {
+  static updTeamBadge = async (data) => {
     return await ajax({url: `/team/teamBadgeUpd`, method: 'POST', reqBody: true, data: data})
   }
   // 내팀 심볼

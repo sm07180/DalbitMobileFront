@@ -57,8 +57,10 @@
             height:100%;
             @include BGIMG("common/input/checkbox-default.png");
           }
-          input[type=checkbox]:checked + .checkBox {
-            background-image:url("#{$IMGSERVER}/common/input/checkbox-active.png");
+          &.active {
+            .checkBox {
+              background-image:url("#{$IMGSERVER}/common/input/checkbox-active.png");
+            }
           }
         }
       }

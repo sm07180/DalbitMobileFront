@@ -1,9 +1,53 @@
 import React, {useEffect, useState} from 'react'
 import {VoteResultType} from "../../../../../redux/types/voteType";
-import moment from "moment";
+import moment, {Duration} from "moment";
 
 type TimerReturnType = {
   hour: string, minute: string, unitKor: '분'|'초', time: string, isTimeOver: boolean
+}
+// date -> YYYY.MM.DD HH:mm:ss
+export const NormalTimer = (date:string):Duration => {
+  const momentDate = moment(date);
+  const target = {
+    date: {
+      day: momentDate.date(),
+      month: momentDate.month(),
+      year: momentDate.year()
+    },
+    time: {
+      hour: momentDate.hour(),
+      minute: momentDate.minute(),
+      nano: 0,
+      second: momentDate.second()
+    }
+  }
+  const endDateMomentProps = {...target.date, month:target.date.month, ...target.time};
+  const [remainTime, setRemainTime] = useState(Number(
+    moment(endDateMomentProps)
+      .subtract(moment.now())
+  ));
+
+  useEffect(() => {
+    if(target.date.year < 1){
+      return;
+    }
+    if(moment(endDateMomentProps).isSameOrBefore(moment.now())){
+      return;
+    }
+    const unit = 1000;
+    const timer = setInterval(() => {
+      setRemainTime(prevState => {
+        if(prevState - unit < 1){
+          clearInterval(timer);
+          return 0
+        }
+        return prevState - unit
+      })
+    }, unit);
+
+    return () => clearInterval(timer);
+  }, []);
+  return moment.duration(remainTime);
 }
 export const Timer = (props: Pick<VoteResultType, 'endDate'>):TimerReturnType => {
 

@@ -125,6 +125,16 @@ const TotalInfo = (props) => {
           }
         </div>
       </div>
+      <div className="teamInfo">
+        <img src={`${IMG_SERVER}/profile/teamInfo-title.png`} alt="team" className="title" />
+        <div className="teamSymbol">
+          <img src={"https://image.dalbitlive.com/team/parts/E/e007.png"} />
+          <img src={"https://image.dalbitlive.com/team/parts/B/b009.png"} />
+          <img src={"https://image.dalbitlive.com/team/parts/M/m007.png"} />
+        </div>
+        <div className="teamName">asdfasdfasdfasdfasdj;aj;flaj;dfja;ldjfa</div>
+        <button>가입신청</button>
+      </div>
       {data.profMsg &&
       <div className="comment">
         <div className="title">코멘트</div>

@@ -49,7 +49,7 @@ const TopRanker = (props) => {
       }
     });
   };
-  
+
   // 랭킹 버튼 액션
   const fetchRankSetting = (set) => {
     const params = {
@@ -128,7 +128,7 @@ const TopRanker = (props) => {
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
       </div>
-      {data && data.length > 0 &&    
+      {(data && data.length > 0 && rankSlct !== 'TEAM') &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
@@ -213,8 +213,8 @@ const TopRanker = (props) => {
                                   <div className='badgeListener' onClick={(e) => {
                                     e.stopPropagation();
                                     goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                     
-                                    <span className='headset'>                          
+                                  }}>
+                                    <span className='headset'>
                                       <Lottie
                                           options={{
                                             loop: true,
@@ -222,9 +222,9 @@ const TopRanker = (props) => {
                                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                                           }}
                                         />
-                                    </span>      
+                                    </span>
                                     <span className='ListenerText'>LIVE</span>
-                                  </div>                                  
+                                  </div>
                               } */}
                             </>
                           }
@@ -235,6 +235,32 @@ const TopRanker = (props) => {
                 </div>
               </div>
             )
+          })}
+        </Swiper>
+      }
+      {data && data.length > 0 && rankSlct === 'TEAM' &&
+        <Swiper {...swiperParams}>
+          {data.map((list, idex) => {
+            return (<div className='rankingTop3' key={idex}>
+              <div className='topHeader'>{idex === 0 ? '저번주' : '이번주'} TOP3</div>
+              <div className='topContent'>
+                {list.map((value,index) => {
+                  return (
+                    <div className="ranker" key={index}>
+                      <div className="listColumn" data-type={index}>
+                        <div className="teamSymbol">
+                          <img src={`${IMG_SERVER}/team/parts/E/${value.team_bg_code}.png`} alt="" />
+                          <img src={`${IMG_SERVER}/team/parts/B/${value.team_edge_code}.png`} alt="" />
+                          <img src={`${IMG_SERVER}/team/parts/M/${value.team_medal_code}.png`} alt="" />
+                          <div className={`rankerRank index${index + 1}`}></div>
+                        </div>
+                        <div className='rankerNick'>{value.team_name}</div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>);
           })}
         </Swiper>
       }
@@ -274,6 +300,16 @@ const TopRanker = (props) => {
               </div>
               <div className='popText'>
                 <span>HONEY</span>(허니)는 랭커로부터 가장 많은 <br/>좋아요 (부스터 포함)를 받은 유저입니다.
+              </div>
+            </>
+
+          }
+          {
+            rankSlct === "TEAM" &&
+            <>
+              <div className='popTitle'>TEAM 랭킹 선정 기준</div>
+              <div className='popSubTitle'>
+                선물한 달(부스터 포함), 받은 별(부스터 포함),<br/> 신규팬, 방송 시간의 종합 순위입니다.
               </div>
             </>
 

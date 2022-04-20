@@ -1,0 +1,303 @@
+import React, { useState, useEffect } from 'react';
+
+import './rankingDetail.scss';
+import Header from "components/ui/header/Header";
+import Tabmenu from "pages/reranking/components/Tabmenu";
+import TopRanker from "pages/reranking/components/TopRanker";
+import RankingList from "pages/reranking/components/rankingList";
+import TeamRankList from "pages/reranking/components/TeamRankList";
+import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
+import Api from "context/api";
+import moment from "moment/moment";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory, useParams} from "react-router-dom";
+
+const rankSlctCode = {
+  DJ: 1,
+  FAN: 2,
+  CUPID: 3,
+  TEAM: 4,
+};
+
+const tabListInfo = {
+  DJ: ['타임','일간','주간', '월간', '연간'],
+  FAN: ['일간','주간','월간'],
+  CUPID: ['일간','주간'],
+  TEAM: [],
+}
+
+const rankTypeCode = {
+  '타임': 0,
+  '일간': 1,
+  '주간': 2,
+  '월간': 3,
+  '연간': 4
+};
+
+const RankListPage = (props) => {
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const commonPopup = useSelector(state => state.popup);
+  const params = useParams();
+  // rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
+  // rankSlct => 1 - DJ, 2 - FAN, 3 - CUPID, 4 - TEAM
+  const [ pageInfo, setPageInfo ] = useState({ rankSlct: (rankSlctCode[params.type] || 1), rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1), page: 1, records: 500 });
+  const [ tabType, setTabType ] = useState(params.type || 'DJ');
+  const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
+  const [ topRankInfo, setTopRankInfo ] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
+
+  console.log(tabListInfo[tabType]);
+  // 혜택 페이지 이동
+  const goRankReward = () => {
+    history.push("/rankBenefit");
+  };
+
+  // 이전 타임 정보 가져오기
+  const timeCheck = () => {
+    let result = '';
+    // 1회차일 경우, 어제 3회차
+    if (moment().hour() < 10) {
+      result = moment().subtract(1, 'days').hour('19').minute('00').second('00').format('yyyy-MM-DD HH:mm:ss');
+    // 2회차일 경우, 오늘 1회차
+    }  else if (moment().hour() >= 10 && moment().hour() < 19) {
+      result = moment().hour('00').minute('00').second('00').format('yyyy-MM-DD HH:mm:ss');
+    // 3회차일 경우, 오늘 2회차
+    } else {
+      result = moment().hour('10').minute('00').second('00').format('yyyy-MM-DD HH:mm:ss');
+    }
+
+    return result;
+  }
+
+  // DJ 타임 랭킹 가져오기
+  const getDjTimeRank = async () => {
+    let today = moment().format('yyyy-MM-DD HH:mm:ss');
+    let preDate = timeCheck();
+    let topRankList = []; // 상단 탑랭킹 정보
+    const realTimeRank = await Api.getRankTimeList({ rankSlct: rankSlctCode[tabType], ...pageInfo, rankType: 1, rankingDate: today }); // 실시간 랭킹 정보
+    const prevTimeRank = await Api.getRankTimeList({ rankSlct: rankSlctCode[tabType], ...pageInfo, rankType: 1, rankingDate: preDate, page: 1, records: 3 }); // 이전 랭킹 정보
+
+    if (realTimeRank.code === 'C001') {
+      const { data } = realTimeRank;
+      setRankInfo({ ...data, list: data.list.slice(3) });
+      topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
+    }
+
+    if (prevTimeRank.code === 'C001') {
+      const { data } = prevTimeRank;
+      topRankList.push(addEmptyRanker(data.list));
+    } else {
+      topRankList.push(addEmptyRanker([]));
+    }
+
+    setTopRankInfo(topRankList.reverse());
+  };
+
+  // 이전 회차 날짜 파라미터 구하기
+  const getPreDate = () => {
+    let result = '';
+
+    //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
+    switch (pageInfo.rankType) {
+      case 1:
+        result = moment().subtract(1, 'd').format('yyyy-MM-DD'); // 어제 날짜
+        break;
+      case 2:
+        result = moment().subtract(7, 'd').day(1).format('yyyy-MM-DD'); // 지난주 월요일
+        break;
+      case 3:
+        result = moment().subtract(1, 'months').date(1).format('yyyy-MM-DD'); // 지난달 1일
+        break;
+      case 4:
+        result = moment().subtract(1, 'y').month(0).date(1).format('yyyy-MM-DD'); // 지난년 1월 1일
+        break;
+      default:
+        result = moment().subtract(1, 'd').format('yyyy-MM-DD'); // 어제 날짜
+        break;
+    }
+
+    return result;
+  }
+  
+  // 오늘 회차 날짜 데이터 구하기
+  const getCurrentDate = () => {
+    let result = '';
+
+    //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
+    switch (pageInfo.rankType) {
+      case 1:
+        result = moment().format('yyyy-MM-DD'); // 오늘 날짜
+        break;
+      case 2:
+        result = moment().days(1).format('yyyy-MM-DD'); // 이번주 월요일
+        break;
+      case 3:
+        console.log('여기타냐?')
+        result = moment().date(1).format('yyyy-MM-DD'); // 이번달 1일
+        break;
+      case 4:
+        result = moment().month(0).date(1).format('yyyy-MM-DD'); // 이번년 1월 1일
+        break;
+      default:
+        result = moment().format('yyyy-MM-DD'); // 오늘 날짜
+        break;
+    }
+
+    return result;
+  }
+  
+  // DJ(타임 제외), FAN, CUPID 랭킹 정보 가져오기
+  const getRankList = async () => {
+    const today = getCurrentDate();
+    const preDate = getPreDate();
+    let topRankList = []; // 상단 탑랭킹 정보
+    const param = {
+      ...pageInfo,
+      rankingDate: today,
+    }; // API 파라미터
+    const realRank = await Api.get_ranking({param}); // 실시간 랭킹 정보
+    const prevRank = await Api.get_ranking({param: {...param, rankingDate: preDate, records: 3}}); // 이전 회차 랭킹 정보
+
+
+    if (realRank.code === 'C001') {
+      const { data } = realRank;
+      console.log('ㅅㅂㅈㄷㅂㄷ');
+      topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
+      setRankInfo({ ...data, list: data.list.slice(3) });
+    }
+
+    if (prevRank.code === 'C001') {
+      const { data } = prevRank;
+      topRankList.push(addEmptyRanker(data.list));
+    } else {
+      topRankList.push(addEmptyRanker([]));
+    }
+
+    setTopRankInfo(topRankList.reverse());
+  }
+
+  // TEAM 랭킹 정보 가져오기
+  const getTeamRankList = async () => {
+    const today = getCurrentDate();
+    const preDate = getPreDate();
+    const params = {
+      tDate: today,
+      memNo: 0,
+      pageNo: 1,
+      pagePerCnt: 500
+    };
+    let topRankList = [];
+    const realRank = await Api.getTeamRankWeekList(params);
+    const prevRank = await Api.getTeamRankWeekList({...params, tDate: preDate, pagePerCnt: 3});
+    if (realRank.code === '00000') {
+      const { data } = realRank;
+      let temp =  [];
+      for (let i = 0; i < 20; i++ ) {
+        temp.push(data.list[0]);
+      }
+      topRankList.push(addEmptyRanker(temp.slice(0, 3)));
+      setRankInfo({list: temp.slice(3), paging: { total: data.listCnt }});
+    }
+
+    if (prevRank.code === '00000') {
+      const { data } = prevRank;
+      console.log('넌뭐야', data);
+      topRankList.push(addEmptyRanker(data.list));
+    }
+
+    console.log('여기 안타니?', topRankList);
+    setTopRankInfo(topRankList.reverse());
+  }
+
+  // 상단 랭킹 저보 빈값 넣어주는 함수
+  const addEmptyRanker = (list) => {
+    let topList = list;
+    for (let i = 0; i < 3 - list.length; i++){
+      topList = topList.concat({isEmpty: true})
+    }
+    return topList;
+  };
+  
+  const changeTab = (e) => {
+    const { targetTab } = e.currentTarget.dataset;
+
+    if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab)) {
+      setRankInfo({list: [], paging: {total: 0}});
+      setTopRankInfo([]);
+      setPageInfo({...pageInfo, page: 1, rankSlct: rankSlctCode[targetTab], rankType: rankTypeCode[tabListInfo[targetTab][0]] });
+      setTabType(targetTab);
+    }
+  }
+
+  const subTabClick = (e) => {
+    const { subMenu } = e.currentTarget.dataset;
+
+    if (subMenu !== undefined) {
+      setRankInfo({list: [], paging: {total: 0}});
+      setTopRankInfo([]);
+      setPageInfo({...pageInfo, page: 1, rankType: parseInt(subMenu)});
+    }
+  };
+
+  useEffect(() => {
+    console.log(pageInfo.rankSlct);
+    if (pageInfo.rankSlct === 4) {
+      getTeamRankList();
+    } else if (pageInfo.rankSlct === 1 && pageInfo.rankType === 0) {
+      getDjTimeRank();
+    } else {
+      getRankList();
+    }
+  }, [pageInfo]);
+
+  return (
+    <div id="rankingList">
+      <Header position={'sticky'} title={'랭킹 전체'} type={'back'}>
+        <div className='buttonGroup'>
+          <button className='benefits' onClick={goRankReward}>혜택</button>
+        </div>
+      </Header>
+      <div id="rankCategory">
+        <div className={`rankCategoryList ${tabType === "DJ" ? "active" : ""}`} data-target-tab="DJ" onClick={changeTab}>DJ
+          <div className="underline" style={{left: 'auto'}}/>
+        </div>
+        <div className={`rankCategoryList ${tabType === "FAN" ? "active" : ""}`} data-target-tab="FAN" onClick={changeTab}>FAN
+          <div className="underline" style={{left: 'auto'}}/>
+        </div>
+        <div className={`rankCategoryList ${tabType === "CUPID" ? "active" : ""}`} data-target-tab="CUPID" onClick={changeTab}>CUPID
+          <div className="underline" style={{left: 'auto'}}/>
+        </div>
+        <div className={`rankCategoryList ${tabType === "TEAM" ? "active" : ""}`} data-target-tab="TEAM" onClick={changeTab}>TEAM
+          <div className="underline" style={{left: 'auto'}}/>
+        </div>
+
+      </div>
+      <div className='tabWrap'>
+        <ul className="tabmenu">
+          {tabListInfo[tabType].map((menu, index) => {
+            const target = rankTypeCode[menu];
+            return (<li key={index} className={target === pageInfo.rankType ? 'active' : ''} data-sub-menu={target} onClick={subTabClick}>{menu}</li>);
+          })}
+        </ul>
+      </div>
+      <div className="rankingContent">
+        <TopRanker data={topRankInfo} rankSlct={tabType} rankType={pageInfo.rankType}/>
+        {/* 데이터 뿌려주는 키값이 TEAM 랭킹은 기존 랭킹과 상이하기 때문에 컴포넌트 새로 만듬 */}
+        {pageInfo.rankSlct !== 4 ?
+          <>
+            <div className='listWrap'>
+              <RankingList data={rankInfo.list} tab={tabType} topRankList={false}/>
+            </div>
+          </>
+          :
+          <>
+            <TeamRankList data={rankInfo.list}/>
+          </>
+        }
+      </div>
+    </div>
+  );
+};
+
+export default RankListPage;
