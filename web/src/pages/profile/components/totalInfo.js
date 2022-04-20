@@ -9,6 +9,7 @@ import './totalInfo.scss'
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {useHistory} from "react-router-dom";
 import FeedLike from "pages/profile/components/FeedLike";
+import {useSelector} from "react-redux";
 
 const TotalInfo = (props) => {
   const history = useHistory();
