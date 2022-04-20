@@ -18,12 +18,13 @@ import Invite from '../../components/popup/Invite';
 import Benefits from '../../components/popup/Benefits';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
 import Api from "context/api";
 import member from "redux/reducers/member";
+import InvitePop from "../../components/popup/Invite";
 const TeamDetail = (props) => {
   const history = useHistory();
   const context = useContext(Context);
@@ -34,6 +35,7 @@ const TeamDetail = (props) => {
 
   const [moreShow, setMoreShow] = useState(false);
   const [benefitsPop, setBenefitsPop] = useState(false);
+  const [invitePop, setInvitePop] = useState(false);
   const [teamMemList, setTeamMemList]=useState([]);
   const [teamInfo, setTeamInfo]=useState({});
   const [teamBageList, setTeamBageList]=useState([]); // 뱃지 리스트
@@ -72,7 +74,7 @@ const TeamDetail = (props) => {
 
 // 팀 정보
   const teamInfoApi =()=>{
-    Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
+    Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
         console.log("팀정보", res.data)
         setTeamMemList(res.data.teamMemList);
@@ -88,7 +90,7 @@ const TeamDetail = (props) => {
   // 팀 가입신청 리스트
   const teamRequestApi=()=>{
     Api.getTeamRequestSel({teamNo:teamNo,pageNo:1,pagePerCnt:100}).then(res =>{
-      console.log("초대 리스트",res.data)
+      console.log("팀 가입신청 리스트",res.data)
       setTeamRequestCnt(res.data.listCnt)
       setTeamRequestSel(res.data.list);
     });
@@ -105,10 +107,10 @@ const TeamDetail = (props) => {
   }
 
   //가입신청
-  const teamMemReqIns=(slct)=>{
+  const teamMemReqIns=(slct,memNo)=>{
     let param ={
       teamNo:teamNo,
-      memNo:memberRdx.memNo,
+      memNo:memNo,
       reqSlct:slct//신청구분 [r:가입신청, i:초대]
     }
 
@@ -122,7 +124,7 @@ const TeamDetail = (props) => {
 
   // 초대하기 팝업
   const invitePopup = () => {
-    dispatch(setCommonPopupOpenData({...popup, slidePopup: true}));
+    setInvitePop(true);
   };
 
   /***  더보기 관련 ***/
@@ -138,7 +140,7 @@ const TeamDetail = (props) => {
   // 탈퇴 팝업
   const clickSecession = (masterNo) => {
     if (statChk === 'm') {
-      dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+      dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     } else {
       context.action.confirm({
         msg: `정말 탈퇴 할까요?`,
@@ -398,7 +400,7 @@ const TeamDetail = (props) => {
         </section>
         }
         {(teamMemList.length <5 && statChk === 'n' && teamInfo.req_mem_yn === 'y') &&
-          <section className="buttonWrap" onClick={()=>teamMemReqIns('r')}>
+          <section className="buttonWrap" onClick={()=>teamMemReqIns('r',memberRdx.memNo)}>
             <SubmitBtn text="가입신청" state={(teamInsChk ===-4 || teamInsChk==='y') ? "disabled":"" } />
           </section>
         }
@@ -406,16 +408,16 @@ const TeamDetail = (props) => {
       </CntWrapper>
 
       {/* 팀장이 탈퇴 시 슬라이드 팝업 */}
-      {popup.commonPopup &&
+      {popup.slidePopup &&
         <PopSlide title="다음 팀장은 누구인가요?">
           <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}/>
         </PopSlide>
       }
 
       {/* 초대하기 슬라이드 팝업 */}
-      {popup.slidePopup &&
-        <PopSlide title="팀원 초대">
-          <Invite closeSlide={closeSecesstion} />
+      {invitePop &&
+      <PopSlide title="팀원 초대" popSlide={invitePop} setPopSlide={setInvitePop}>
+          <Invite closeSlide={closeSecesstion} memNo={memberRdx.memNo} teamNo={teamNo} btnChk={btnChk} teamMemReqIns={teamMemReqIns}/>
         </PopSlide>
       }
 

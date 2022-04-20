@@ -31,7 +31,7 @@ const TeamPage = () => {
       pagePerCnt:100
     }
     Api.getTeamInvitationSel(param).then((res) => {
-      if (res.result === 'success') {
+      if (res.code === "00000") {
         setListCnt(res.data.listCnt)
         setList(res.data.list)
       }else{

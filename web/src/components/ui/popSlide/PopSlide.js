@@ -1,7 +1,7 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect} from 'react';
 
 // css
-import './popslide.scss'
+import './popslide.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setSlidePopupClose} from "redux/actions/common";
 import {Context} from "context";
@@ -18,13 +18,13 @@ export const closePopup = (dispatch) => {
 }
 
 const PopSlide = (props) => {
-  const {title, setPopSlide, children, popHidden, closeCallback} = props
+  const {title, popSlide, setPopSlide, children, popHidden, closeCallback} = props
   const context = useContext(Context);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
 
   const closePopupDim = (e) => {
-    const target = e.target
+    const target = e.target;
     if (target.id === 'popSlide') {
       e.preventDefault();
       e.stopPropagation();
@@ -36,30 +36,32 @@ const PopSlide = (props) => {
       }
       closePopup(dispatch);
     }
-  }
+  };
+
+  
 
   useEffect(() => {
     document.body.classList.add('overflowHidden')
     if(isAndroid()) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'popClose'})
+      context.action.updateSetBack(true);
+      context.action.updateBackFunction({name: 'popClose'});
     }
     return () => {
-      document.body.classList.remove('overflowHidden')
+      document.body.classList.remove('overflowHidden');
       dispatch(setCommonPopupClose());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {
         if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null)
+          context.action.updateSetBack(null);
         }
-        context.action.updateBackFunction({name: ''})
+        context.action.updateBackFunction({name: ''});
       }
     }
-  }, [])
+  }, []);
 
   return (
     <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>
-      <div className={`slideLayer ${popupState.slidePopup ? "slideUp" : "slideDown"}`}>
+      <div className={`slideLayer ${popupState.slidePopup ? "slideUp" : "slideDown"} ${popSlide ? "slideUp" : ""}`}>
         {title && <h3>{title}</h3>}
         {children}
       </div>
