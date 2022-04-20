@@ -57,7 +57,7 @@ const ReRule = React.lazy(() => import('pages/rerule'))
 const Team = React.lazy(() => import('pages/team'))
 const TeamMake = React.lazy(() => import('pages/team/contents/teamMake/TeamMake'))
 const TeamDetail = React.lazy(() => import('pages/team/contents/teamDetail/TeamDetail'))
-const TeamManager = React.lazy(() => import('pages/team/contents/teamManager/TeamManager'))
+const TeamManager = React.lazy(() => import('pages/team/contents/teamManager'))
 const TeamBadge = React.lazy(() => import('pages/team/contents/TeamBadge'))
 
 // 프로필

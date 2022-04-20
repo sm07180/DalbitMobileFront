@@ -26,6 +26,7 @@ import Api from "context/api";
 const parts = ['메달','테두리','배경'];
 
 const TeamManager = (props) => {
+  console.log(`@@ props`, props)
   const history = useHistory();
   const context = useContext(Context);
   const dispatch = useDispatch();
@@ -34,95 +35,32 @@ const TeamManager = (props) => {
   const memberRdx = useSelector((state)=> state.member);
 
   const [partsName, setPartsName] = useState('');
-  const [editChk , setEditChk]=useState(true); // 수정가능여부
-  const [partsA, setPartsA] = useState('');  //메달URL
-  const [partsB, setPartsB] = useState('');  //테두리URL
-  const [partsC, setPartsC] = useState('');  //배경URL
+  const [editChk , setEditChk]=useState(props.data.editChk); // 수정가능여부
+  const [partsA, setPartsA] = useState(`${IMG_SERVER}/team/parts/M/${props.data.teamInfo.team_medal_code}.png`);  //메달URL
+  const [partsB, setPartsB] = useState(`${IMG_SERVER}/team/parts/B/${props.data.teamInfo.team_edge_code}.png`);  //테두리URL
+  const [partsC, setPartsC] = useState(`${IMG_SERVER}/team/parts/E/${props.data.teamInfo.team_bg_code}.png`);  //배경URL
   const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
   const [confirmPop, setConfirmPop] = useState(false);
-  const [teamName,setTeamName]=useState(''); //팀 이름
-  const [teamConts,setTeamConts]=useState(''); //팀소개
-  const [teamMemList, setTeamMemList]=useState([]);
+  const [teamName,setTeamName]=useState(props.data.teamInfo.team_name); //팀 이름
+  const [teamConts,setTeamConts]=useState(props.data.teamInfo.team_conts); //팀소개
+  const [teamMemList, setTeamMemList]=useState(props.data.teamMemList);
   const [updateChk, setUpdateChk]=useState(false);
-  const [agree,setAgree]=useState(false);
-  const [medalCode,setMdalCode]=useState("")
-  const [edgeCode,setEdgeCode]=useState("")
-  const [bgCode,setBgCode]=useState("")
-  const [t,setT]=useState(moment.now())
+  const [agree,setAgree]=useState(props.data.teamInfo.req_mem_yn);
+  const [medalCode,setMdalCode]=useState(props.data.teamInfo.team_medal_code)
+  const [edgeCode,setEdgeCode]=useState(props.data.teamInfo.team_edge_code)
+  const [bgCode,setBgCode]=useState(props.data.teamInfo.team_bg_code)
   const [defultData , setDefultData]=useState({
-    bgCode:"",
-    medalCode:"",
-    edgeCode:"",
-    teamName:"",
+    bgCode:props.data.teamInfo.team_bg_code,
+    medalCode:props.data.teamInfo.team_medal_code,
+    edgeCode:props.data.teamInfo.team_edge_code,
+    teamName:props.data.teamInfo.team_name
   })
-  const {hour, minute, time, unitKor, isTimeOver} = NormalTimer(t);
-  console.log(hour, minute, time, unitKor, isTimeOver)
+  const timer = NormalTimer(moment(props.data.teamInfo.ins_date).add(3, 'days'));
+  const remainTime = (timer.days() * 24) + timer.hours();
+  console.log(remainTime, timer.minutes())
   useEffect(()=>{
-    if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
-      history.goBack();
-      return false
-    }else{
-      teamInfoApi();
-    }
-  },[updateChk])
-
-  useEffect(()=>{
-    if(updateChk){
-      teamInfoApi();
-      setUpdateChk(false)
-    }
-  },[updateChk])
-
-// 팀 정보
-  const teamInfoApi =()=>{
-    Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo}).then(res =>{
-      if(res.code === "00000") {
-        let dateFormat = moment(res.data.teamInfo.ins_date).add(3, 'd')
-        let teamInfo = res.data.teamInfo;
-
-        const dd = {
-          date: {
-            day: dateFormat.date(),
-            month: dateFormat.month()+1,
-            year: dateFormat.year()
-          },
-          time: {
-            hour: dateFormat.hour(),
-            minute: dateFormat.minute(),
-            nano: 0,
-            second: dateFormat.second()
-          }
-        }
-        console.log(res.data)
-        setDefultData({
-          bgCode:teamInfo.team_bg_code,
-          medalCode:teamInfo.team_medal_code,
-          edgeCode:teamInfo.team_edge_code,
-          teamName:res.data.teamInfo.team_name
-        })
-        setT(moment(res.data.teamInfo.ins_date).add(3, 'd').format('YYYY.MM.DD HH:mm:ss'))
-        setEditChk(res.data.editChk)
-        setTeamMemList(res.data.teamMemList);
-        setTeamName(res.data.teamInfo.team_name);
-        setTeamConts(res.data.teamInfo.team_conts);
-        setAgree(res.data.teamInfo.req_mem_yn);
-
-        setPartsA(`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`)
-        setPartsB(`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`)
-        setPartsC(`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`)
-
-        setMdalCode(res.data.teamInfo.team_medal_code);
-        setEdgeCode(res.data.teamInfo.team_edge_code);
-        setBgCode(res.data.teamInfo.team_bg_code);
-
-        if(res.data.teamInfo.req_mem_yn ==='y'){
-          document.getElementsByClassName("blind")[0].checked = true
-        }else{
-          document.getElementsByClassName("blind")[0].checked = false
-        }
-      }
-    });
-  }
+    document.getElementsByClassName("blind")[0].checked = agree === 'y';
+  }, [agree])
   const updateApi=()=>{
 
     let equData = {
@@ -170,8 +108,11 @@ const TeamManager = (props) => {
   }
   //팀 가입신청 여부
   const onClickAction = (e) => {
-    if(e.target.checked) {setAgree('y')}
-    else {setAgree('n');}
+    if(e.target.checked) {
+      setAgree('y')
+    } else {
+      setAgree('n');
+    }
   }
   const editName=(e)=>{
     let text= e.currentTarget.value.trim();
@@ -182,7 +123,7 @@ const TeamManager = (props) => {
     updateApi()
     setConfirmPop(!confirmPop);
   };
-  
+
   const partsSelect = (value,code) => {
     //메달
     if (partsName === parts[0]) {
@@ -220,7 +161,7 @@ const TeamManager = (props) => {
         }
         Api.getTeamMemDel(param).then(res=>{
           if(res.code==="00000"){
-            setUpdateChk(true)
+            props.getPageData();
           }
         })
       }
