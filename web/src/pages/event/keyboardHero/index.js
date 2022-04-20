@@ -1,69 +1,62 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {useHistory} from 'react-router-dom'
 import Swiper from 'react-id-swiper'
-
 import {IMG_SERVER} from 'context/config'
-
 import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
-
+import Api from "context/api";
 import './style.scss'
-
-const winningList = [
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-1.png',
-    presentName:'10달',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-2.png',
-    presentName:'50달',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-3.png',
-    presentName:'100달',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-4.png',
-    presentName:'스타벅스 아메리카노',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-5.png',
-    presentName:'GS25 상품권 5천원',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-6.png',
-    presentName:'네이버페이 1만원 포인트',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-7.png',
-    presentName:'맘스터치 싸이버거 세트',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-8.png',
-    presentName:'배스킨라빈스31 2만원 교환권',
-    nick:'헌바라기_하늘이 ✿'
-  },
-]
+import {Context} from "context";
 
 const keyboardHero = () => {
   const history = useHistory()
+  const context = useContext(Context)
+
   const swiperParams = {
     loop: true,
     direction: 'vertical',
     slidesPerColumnFill: 'row',
     slidesPerView: 2,
-    // resistanceRatio: 0,
     autoplay: {
       delay: 2500
     }
   }
+
+  //오늘의 당첨자 List State
+  const [list, setList] = useState([]);
+
+  //오늘의 당첨자 API
+  useEffect(()=>{
+    Api.keyboardHero({
+      reqBody: false,
+      params: {memNo: context.profile.memNo ? context.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
+      method: 'GET'
+    }).then((res)=>{
+      setList(res.data);
+    })
+  },[]);
+
+  const imageNum = (preCode) => {
+    switch (preCode){
+      case "r01":
+        return "1"    //10달
+      case "r02":
+        return "2"    //50달
+      case "r03":
+        return "3"    //100달
+      case "k01":
+        return "4"    //스타벅스 아메리카노
+      case "k02":
+        return "5"    //GS25 교환권 5000원
+      case "k04":
+        return "6"    //네이버페이 1만원 포인트
+      case "k03":
+        return "7"    //맘스터치 싸이버거 세트
+      case "k05":
+        return "8"    //배스킨라빈스31 2만원 교환권
+    }
+  }
+
   return (
     <div id="keyboardHero">
       <Header title="키보드 히어로 31" type="back"/>
@@ -74,17 +67,18 @@ const keyboardHero = () => {
             <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningTitle.png`} alt="오늘의 당첨자" />
           </div>
           <div className="content">
-            {(winningList && winningList.length > 0) ?
+            {(list && list.length > 0) ?
               <>
                 <div className="welcome">축하드립니다!</div>
                 <Swiper {...swiperParams}>
-                  {winningList.map((list, index)=>{
+                  {list.map((data, index)=>{
+                    let giftImg = `https://image.dalbitlive.com/event/keyboardHero/present-${imageNum(data.pre_code)}.png`;
                     return(
                       <div key={index}>
-                        <ListRow photo={list.presentImg}>
+                        <ListRow photo={giftImg} key={index}>
                           <div className="listContent">
-                            <div className="present">{list.presentName}</div>
-                            <div className="nick">{list.nick}</div>
+                            <div className="present">{data.code_name}</div>
+                            <div className="nick">{data.mem_nick}</div>
                           </div>
                         </ListRow>
                       </div>
@@ -98,13 +92,11 @@ const keyboardHero = () => {
               :
               <img src={`${IMG_SERVER}/event/keyboardHero/listNone.png`} alt="아직 당첨자가 없어요!" />
             }
-            
-            
           </div>
         </div>
       </section>
       <section className="contentWrap">
-        <img src={`${IMG_SERVER}/event/keyboardHero/mainContent.png`} />
+        <img src={`${IMG_SERVER}/event/keyboardHero/mainContent.png`}  alt="메인콘텐츠"/>
       </section>
       <section className="noticeWrap">
         <img src={`${IMG_SERVER}/event/keyboardHero/notice.png`} alt="주의사항"/>

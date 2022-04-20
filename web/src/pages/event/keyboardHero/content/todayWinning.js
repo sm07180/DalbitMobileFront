@@ -1,54 +1,104 @@
-import React from 'react';
-
+import React, {useContext, useEffect, useState} from 'react';
 import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
-
 import './todayWinning.scss'
-
-const winningList = [
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-1.png',
-    presentName:'10달',
-    nick:'12312312312311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-2.png',
-    presentName:'50달',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-3.png',
-    presentName:'100달',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-4.png',
-    presentName:'스타벅스 아메리카노',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-5.png',
-    presentName:'GS25 상품권 5천원',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-6.png',
-    presentName:'네이버페이 1만원 포인트',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-7.png',
-    presentName:'맘스터치 싸이버거 세트',
-    nick:'헌바라기_하늘이 ✿'
-  },
-  {
-    presentImg:'https://image.dalbitlive.com/event/keyboardHero/present-8.png',
-    presentName:'배스킨라빈스31 2만원 교환권',
-    nick:'헌바라기_하늘이 ✿'
-  },
-]
+import Api from "context/api";
+import {Context} from "context";
+import {useHistory} from "react-router-dom";
 
 const todayWinning = () => {
+  const context = useContext(Context)
+  const history = useHistory();
+
+  //오늘의 당첨자 List State
+  const [list, setList] = useState([]);
+  const [refresh, setRefresh] = useState(true);
+
+  //오늘의 당첨자 API
+  useEffect(()=>{
+    Api.keyboardHero({
+      reqBody: false,
+      params: {memNo: context.profile.memNo ? context.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
+      method: 'GET'
+    }).then((res)=>{
+      console.log(res.data)
+      setList(res.data);
+    })
+  },[refresh]);
+
+  //본인인증
+  const selfAuthCheck = async () =>{
+    const {result, data} = await Api.self_auth_check();
+    if(result === 'success'){
+      return {result : result, phoneNo : data.phoneNo};
+    }else{
+      history.push(`/selfauth?event=/event`)
+    }
+  }
+
+  //선물받기 API
+  const receiveGift = (data) => {
+    selfAuthCheck().then((response) => {
+      if (response.result === 'success') {
+        Api.keyboardHero({
+          reqBody: true,
+          data: {
+            theSeq : data.the_seq,
+            memNo : data.mem_no,
+            preCode : data.pre_code,
+            preSlct : data.pre_slct
+          },
+          method: 'POST'
+        }).then((res)=>{
+          //fixme
+          console.log(res)
+          if(res.code === "C001"){
+            if(res.data === 1){
+              context.action.toast({
+                msg: "선물받기완료"
+              })
+              setRefresh(!refresh);
+            }else if(res.data === -1){
+              context.action.toast({
+                msg: `상품 최대지급수량 초과 <br/> 잠시 후에 다시 시도해주세요.`
+              })
+            }else if(res.data === -2) {
+              context.action.toast({
+                msg: "이미 선물을 받았습니다."
+              })
+            }else {
+              context.action.toast({
+                msg: "잠시 후에 다시 시도해주세요."
+              })
+            }
+          }
+        });
+      }
+    })
+  }
+
+  const imageNum = (preCode) => {
+    switch (preCode){
+      case "r01":
+        return "1"    //10달
+      case "r02":
+        return "2"    //50달
+      case "r03":
+        return "3"    //100달
+      case "k01":
+        return "4"    //스타벅스 아메리카노
+      case "k02":
+        return "5"    //GS25 교환권 5000원
+      case "k04":
+        return "6"    //네이버페이 1만원 포인트
+      case "k03":
+        return "7"    //맘스터치 싸이버거 세트
+      case "k05":
+        return "8"    //배스킨라빈스31 2만원 교환권
+    }
+  }
+
+
   return (
     <div id="todayWinning">
       <Header title="오늘의 당첨자" type="back"/>
@@ -59,17 +109,19 @@ const todayWinning = () => {
         </div>
       </section>
       <section>
-        {(winningList && winningList.length > 0) &&
-          winningList.map((list, index)=>{
+        {(list && list.length > 0) &&
+          list.map((user, index)=>{
+            let giftImg = `https://image.dalbitlive.com/event/keyboardHero/present-${imageNum(user.pre_code)}.png`;
             return(
-              <ListRow photo={list.presentImg} key={index}>
-                <div className="listContent">
-                  <div className="item">{list.presentName}</div>
-                  <div className="item">{list.nick}</div>
+              <ListRow photo={giftImg} key={index}>
+                <div className="listContent" onClick={() => history.push(`/profile/${user.mem_no}`)}>
+                  <div className="item">{user.code_name}</div>
+                  <div className="item">{user.mem_nick}</div>
                 </div>
-                <div className="listBack">
-                  <button>선물받기</button>
-                </div>
+                {(context.token.isLogin && context.token.memNo === user.mem_no) &&
+                // { true &&
+                <div className="listBack"><button className={user.rcv_yn === "y" ? "disabled" : ""} onClick={() => receiveGift(user)}>선물받기</button></div>
+                }
               </ListRow>
             )
           })
