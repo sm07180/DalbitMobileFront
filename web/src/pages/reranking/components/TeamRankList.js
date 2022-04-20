@@ -19,7 +19,7 @@ import DataCnt from "components/ui/dataCnt/DataCnt";
 import '../scss/TeamRankList.scss';
 
 const TeamRankList = (props) => {
-  const {data} = props;
+  const {data, breakNo} = props;
 
   const context = useContext(Context);
 
@@ -35,6 +35,9 @@ const TeamRankList = (props) => {
   return (
     <div className="teamRankList listWrap">
       {data.map((list, index) => {
+        if (breakNo < index + 1) {
+          return (<></>);
+        }
         return (
           <div className="listRow" onClick={goTeamDetailPage} key={index}>
             <div className="teamSymbol">

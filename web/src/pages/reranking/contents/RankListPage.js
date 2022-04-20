@@ -11,6 +11,7 @@ import Api from "context/api";
 import moment from "moment/moment";
 import {useDispatch, useSelector} from "react-redux";
 import {useHistory, useParams} from "react-router-dom";
+import Utility from "components/lib/utility";
 
 const rankSlctCode = {
   DJ: 1,
@@ -43,6 +44,7 @@ const RankListPage = (props) => {
   // rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
   // rankSlct => 1 - DJ, 2 - FAN, 3 - CUPID, 4 - TEAM
   const [ pageInfo, setPageInfo ] = useState({ rankSlct: (rankSlctCode[params.type] || 1), rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1), page: 1, records: 500 });
+  const [ breakNo, setBreakNo ] = useState(47); // 페이징 처리용 state
   const [ tabType, setTabType ] = useState(params.type || 'DJ');
   const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
   const [ topRankInfo, setTopRankInfo ] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
@@ -236,7 +238,17 @@ const RankListPage = (props) => {
     if (subMenu !== undefined) {
       setRankInfo({list: [], paging: {total: 0}});
       setTopRankInfo([]);
+      setBreakNo(47);
       setPageInfo({...pageInfo, page: 1, rankType: parseInt(subMenu)});
+    }
+  };
+
+  const scrollEvent = () => {
+    if (rankInfo.paging.total > breakNo && Utility.isHitBottom()) {
+      setBreakNo(breakNo + 50);
+      window.removeEventListener('scroll', scrollEvent);
+    } else if (rankInfo.paging.total === breakNo) {
+      window.removeEventListener('scroll', scrollEvent);
     }
   };
 
@@ -250,6 +262,13 @@ const RankListPage = (props) => {
       getRankList();
     }
   }, [pageInfo]);
+
+  useEffect(() => {
+      window.addEventListener('scroll', scrollEvent);
+    return () => {
+      window.removeEventListener('scroll', scrollEvent);
+    }
+  }, [rankInfo, breakNo]);
 
   return (
     <div id="rankingList">
@@ -287,12 +306,12 @@ const RankListPage = (props) => {
         {pageInfo.rankSlct !== 4 ?
           <>
             <div className='listWrap'>
-              <RankingList data={rankInfo.list} tab={tabType} topRankList={false}/>
+              <RankingList data={rankInfo.list} tab={tabType} topRankList={false} breakNo={breakNo}/>
             </div>
           </>
           :
           <>
-            <TeamRankList data={rankInfo.list}/>
+            <TeamRankList data={rankInfo.list} breakNo={breakNo}/>
           </>
         }
       </div>

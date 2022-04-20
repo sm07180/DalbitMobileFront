@@ -123,14 +123,14 @@ const TopRanker = (props) => {
   return (
     <React.Fragment>
       <span className='questionMark' onClick={() => setPopup(true)}></span>
-      {(data && data.length > 0 && rankSlct !== 'TEAM') &&
       <div className="topItems">
         {context.token.isLogin && rankSlct === "FAN" &&
-          <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
+        <button className={`fanSettingBtn ${rankSetting ? 'active' : ''}`}
+                onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
       </div>
-      {data && data.length > 0 &&
+      {(data && data.length > 0 && rankSlct !== 'TEAM') &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (

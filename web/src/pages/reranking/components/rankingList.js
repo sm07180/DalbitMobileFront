@@ -16,7 +16,7 @@ import DataCnt from "components/ui/dataCnt/DataCnt";
 // css
 
 export default withRouter((props) => {
-  const {data, tab, topRankList} = props;
+  const {data, tab, topRankList, breakNo} = props;
 
   const context = useContext(Context);
 
@@ -75,6 +75,10 @@ export default withRouter((props) => {
   return (
     <>
       {data.map((list, index) => {
+        if (breakNo < index + 1) {
+          return;
+        }
+
         return (
           <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
             <div className="rank">{list.rank}</div>
@@ -123,25 +127,4 @@ export default withRouter((props) => {
       })}
     </>
   )
-})
-
-{/* 지호대리님 작업본  {
-              list.listenRoomNo !== "" &&
-                <div className="listBack">
-                  <div className='badgeListener' onClick={(e) => {
-                    e.stopPropagation();
-                    goLive(list.roomNo, list.memNo, list.nickNm, list.listenRoomNo);
-                  }}>
-                    <span className='headset'>
-                      <Lottie
-                          options={{
-                            loop: true,
-                            autoPlay: true,
-                            path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
-                          }}
-                        />
-                    </span>
-                    <span className='ListenerText'>LIVE</span>
-                  </div>
-                </div>
-            } */}
+});

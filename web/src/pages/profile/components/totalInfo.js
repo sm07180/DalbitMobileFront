@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef} from 'react'
 import {IMG_SERVER} from 'context/config'
-import Utility from "components/lib/utility";
 import Swiper from 'react-id-swiper'
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
