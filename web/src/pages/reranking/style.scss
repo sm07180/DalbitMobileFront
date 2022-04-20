@@ -291,7 +291,7 @@ $errorMsg : #FF1919;
       position: relative;
       @include flex(center, space-between);
       width: 100%;
-      padding: 27px 0;
+      padding: 17px 0;
       background-color: #F6F6F6;
       box-sizing: border-box;
       &::after {
@@ -315,16 +315,20 @@ $errorMsg : #FF1919;
           content: none;
         }
         .rankCategory {
-          @include font(12px,600,#999);
+          @include font(13px,$SemiBold,#303030);
         }
         .rankData {
-          margin-top: 10px;
+          margin-top: 4px;
+          margin-bottom: 8px;
           @include font(18px,900,#333);
           &::after {
             content: "위";
             @include font(13px,500,#666666);
             margin-left: 2px;
           }
+        }
+        .rankDaily {
+          @include font(12px,$Regular,#AAAAAA);
         }
       }
       .loginText {
