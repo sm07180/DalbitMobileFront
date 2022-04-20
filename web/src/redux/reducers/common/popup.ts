@@ -31,11 +31,11 @@ const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   "common/SET_COMMON_POPUP_CLOSE": () => {
     return {...initialState}
   },
-  "common/SET_SLIDE_POPUP_CLOSE": () => {
-    return {...initialState}
+  "common/SET_SLIDE_POPUP_CLOSE": (state) => {
+    return {...state, slidePopup: false}
   },
   "common/SET_SLIDE_POPUP_OPEN": (state, {payload}) => {
-    return {...payload, slidePopup: true}
+    return {...payload, slidePopup: true, commonPopup: true}
   }
 });
 
