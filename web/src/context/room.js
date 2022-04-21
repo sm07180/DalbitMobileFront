@@ -142,16 +142,16 @@ export const RoomJoin = async (obj) => {
         }else {
           // sessionStorage.removeItem('room_active')
           // return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
-          const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
-          if(ownerSel.data.listenOpen !== '1'){
 
-            if(location.pathname.startsWith("/profile")){
-              return;
-            }
+          // const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
+          // if(ownerSel.data.listenOpen !== '1'){
+          //   if(location.pathname.startsWith("/profile")){
+          //     return;
+          //   }
+          //   window.location.href = `/profile/${memNo}`
+          //   return;
+          // }
 
-            window.location.href = `/profile/${memNo}`
-            return;
-          }
           sessionStorage.removeItem('room_active');
           return Room.context.action.confirm({
             callback: () => {
