@@ -6,7 +6,10 @@ import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
 import {Context} from "context";
-import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromListenerFollow,
+  RoomValidateFromProfile
+} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
@@ -104,7 +107,9 @@ const TopSwiper = (props) => {
         }
         {type === 'profile' && webview === '' && data.roomNo !== "" &&
           <div className='badgeLive' onClick={()=>{
-            RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+            RoomValidateFromProfile({
+              memNo:data.memNo, history, context, nickNm:data.nickNm, roomNo:data.roomNo, webview
+            });
           }}>
             <span className='equalizer'>
               <Lottie
@@ -120,7 +125,9 @@ const TopSwiper = (props) => {
         }
         {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
           <div className='badgeListener' onClick={()=>{
-            RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
+            RoomValidateFromListenerFollow({
+              memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+            });
           }}>
             <span className='headset'>
               <Lottie

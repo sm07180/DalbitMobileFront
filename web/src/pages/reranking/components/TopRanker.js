@@ -6,7 +6,9 @@ import Swiper from 'react-id-swiper';
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
+} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {IMG_SERVER} from 'context/config'
 import {Context, GlobalContext} from "context";
@@ -167,10 +169,13 @@ const TopRanker = (props) => {
                                   </div>
                               }
                               {
-                                data.listenRoomNo && (data.listenOpen === 0 || data.listenOpen === 1) &&
+                                data.listenRoomNo && data.listenOpen !== 2 &&
                                   <div className='badgeListener' onClick={(e) => {
                                     e.stopPropagation();
-                                    RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
+
+                                    RoomValidateFromListenerFollow({
+                                      memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+                                    });
                                   }}>
                                     <span className='headset'>
                                       <Lottie
