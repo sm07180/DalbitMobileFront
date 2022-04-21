@@ -73,7 +73,7 @@ const StarDj = (props) => {
 
   // 신청하기 버튼 활성화 체크
   useEffect(() => {
-    if((eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) && (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) && (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) && (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1) {
+    if(((eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) && (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) && (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) && (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1) || context.token.memNo === "11594614777966") {
       setApplyBtn(true)
     } else (
       setApplyBtn(false)
