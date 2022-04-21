@@ -305,7 +305,7 @@ const StarDj = (props) => {
             <div className='referenceWrap'>
               <span className='referenceTitle'>경고/정지 이력</span>
               <ul className='referenceList'>
-                <li>경고 이력 2건부터 -10점 반영</li>
+                <li>경고 이력 2건부터 -3점 반영</li>
                 <li>정지 시 선발 불가</li>
               </ul>
             </div>
