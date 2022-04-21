@@ -110,7 +110,7 @@ const RecentStar = (props) => {
                   {val.nickNm}
                 </div>
                 <div className="listBack">
-                  {val.roomNo !== "" &&
+                  {val.roomNo !== "0" &&
                     <div className="badgeLive" onClick={(e) => {
                       e.stopPropagation();
                       goLive(val.roomNo, val.memNo,  val.nickNm, "0");
