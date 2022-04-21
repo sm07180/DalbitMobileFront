@@ -190,7 +190,7 @@ const TeamMake = () => {
         </section>
         {nextStep &&
           <TeamForm nextStep={nextStep} rows={10} cols={60} teamConts={teamConts} teamName={teamName}
-                    editCnts={editCnts} editName={editName}
+                    editCnts={editCnts} editName={editName} editChk={true}
           />
         }
         <div className="buttonWrap">

@@ -171,7 +171,7 @@ const TeamDetail = (props) => {
           }
           Api.getTeamMemDel(param).then(res=>{
             if(res.code === "00000"){
-              history.replace("myPage");
+              history.replace("/myPage");
             }else {
               context.action.toast({
                 msg: res.message
