@@ -257,8 +257,8 @@ const Remypage = () => {
                     <span className={teamInfo.req_cnt !== 0 ? 'new' : ''} />
                   :
                     <>
-                    {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />}
-                    {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />}
+                    {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_bg_code}.png`} />}
+                    {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_edge_code}.png`} />}
                     {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
                     </>
                   }
