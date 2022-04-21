@@ -3035,7 +3035,7 @@ export default class API {
       fanBoard: 0,
       dal: 0,
       byeol: 0,
-      notice: '',
+      notice: '0',
       qna: '',
       targetMemNo: targetMemNo
     }

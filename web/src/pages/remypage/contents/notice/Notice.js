@@ -66,9 +66,9 @@ const NoticePage = () => {
           setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
         }
 
-        res.data.list.map((v, idx) => {
-          return v.read_yn === "n" && fetchReadData(v.noticeIdx);
-        })
+        // res.data.list.map((v, idx) => {
+        //   return v.read_yn === "n" && fetchReadData(v.noticeIdx);
+        // })
       } else {
         setPostListInfo({cnt: 0, list: [], totalPage: 0});
         context.action.alert({msg: res.message});
@@ -89,7 +89,6 @@ const NoticePage = () => {
     postListInfo.list.map((v, idx) => {
       return v.read_yn === "n" ? newPostAlarm = true : false;
     })
-    console.log(newPostAlarm);
   }, [postListInfo, newPostAlarm]);
 
   /* 공지사항 클릭 시 읽음 처리 */
