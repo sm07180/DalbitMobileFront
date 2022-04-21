@@ -12,6 +12,10 @@
         @include position-horizon($bottom: 10%);
         @include flex(center, center);
         width: 90%;
+        &.pc {
+          @include position-horizon($bottom: 5%);
+          width: 65%;
+        }
       }
     }
     .starDjBody {
