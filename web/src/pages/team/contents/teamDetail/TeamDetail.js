@@ -77,7 +77,6 @@ const TeamDetail = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
-        console.log(`getTeamDetailSel`, res.data)
         setTeamMemList(res.data.teamMemList);
         setTeamInfo(res.data.teamInfo);
         setTeamBageList(res.data.badgeList);
