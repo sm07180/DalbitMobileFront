@@ -120,7 +120,7 @@
       .standardWrap {
         @include flex(center, center, column);
         width: 100%;
-        padding: 20px 16px 50px;
+        padding: 20px 16px 30px;
         border: 2px solid #F3F3F3;
         border-radius: 6px;
         background-color: #fff;
@@ -152,14 +152,24 @@
             }
           }
           .estimateInfo {
-            margin-bottom: 13px;
+            margin-top: 24px;
             p {
-              &:first-child {
-                @include font(12px, 600, #666666);
+              position: relative;
+              width: 100%;
+              padding-left: 20px;
+              margin-bottom: 7px;
+              @include font(12px, $Regular, #666666);
+              line-height: 15px;
+              &::before {
+                content: "";
+                @include position-top-left(7px, 5px);
+                display: inline-block;
+                width: 3px; height: 3px;
+                border-radius: 50%;
+                background-color: #666666;
               }
               &:last-child {
-                @include font(12px, 400, #666666);
-                letter-spacing: -1px;
+                margin-bottom: 0px;
               }
             }
           }

@@ -267,19 +267,19 @@ const StarDj = (props) => {
           <section className='standardWrap'>
             <Title name="standard"/>
             <div className='sectionContent'>
-              <div className='standard'>정량평가와 가산점을 합한 상위 20명(±α)</div>
+              <div className='standard'>정량평가와 가산점을 합한 상위 19명(±α)</div>
               <div className='estimateWrap'>
                 <div className='estimate'>정량평가</div>
                 <span>+</span>
                 <div className='estimate'>가산점</div>
               </div>
-              <div className='estimateInfo'>
-                <p>정량 평가란?</p>
-                <p>전 달 (방송시간 + 평균 동접 시청자 수 + 좋아요 점수 + 받은 별)</p>
-              </div>
               <Button height="14%">
                 <span onClick={openPopup}>정량 평가 기준 자세히 보기</span>
               </Button>
+              <div className='estimateInfo'>
+                <p>선발하는 스타DJ 수는 월별 신청 건수를 반영하여 결정됩니다.</p>
+                <p>정량평가는 방송 시간과 평균 동접 시청자, 좋아요, 받은 별을 합산하여 산정됩니다</p>
+              </div>
             </div>
           </section>
           <section className='addPickWrap'>
@@ -341,7 +341,7 @@ const StarDj = (props) => {
             <div className='referenceWrap'>
               <span className='referenceTitle'>경고/정지 이력</span>
               <ul className='referenceList'>
-                <li>경고 이력 2건부터 -10점 반영</li>
+                <li>경고 이력 2건부터 -3점 반영</li>
                 <li>정지 시 선발 불가</li>
               </ul>
             </div>
