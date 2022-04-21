@@ -332,6 +332,10 @@ export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nick
               },
             });
           } else {
+            if(!listenRoomNo){
+              history.push(`/broadcast/${roomNo}`);
+              return;
+            }
             if(listenRoomNo !== roomNo) {
               const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
               if(ownerSel.data.listenOpen !== '1'){
