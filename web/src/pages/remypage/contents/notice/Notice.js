@@ -17,11 +17,9 @@ import API from "context/api";
 import {RoomJoin} from "context/room";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
 import {noticePagingDefault} from "redux/types/noticeType";
-import {isHybrid} from "context/hybrid";
 
 let alarmFix = false;
 let postFix = false;
-let newPostAlarm = false;
 const NoticePage = () => {
   const noticeTabmenu = ['알림','공지사항'];
   const {tab} = useSelector((state) => state.notice);
@@ -33,7 +31,6 @@ const NoticePage = () => {
   const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
-  const postData = useSelector(state => state.post);
 
   /* 알림 조회 */
   const fetchData = () => {
@@ -65,10 +62,6 @@ const NoticePage = () => {
         } else {
           setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
         }
-
-        // res.data.list.map((v, idx) => {
-        //   return v.read_yn === "n" && fetchReadData(v.noticeIdx);
-        // })
       } else {
         setPostListInfo({cnt: 0, list: [], totalPage: 0});
         context.action.alert({msg: res.message});
@@ -84,12 +77,6 @@ const NoticePage = () => {
         dispatch(setNoticeData(res.data));
       }}
   }
-
-  useEffect(() => {
-    postListInfo.list.map((v, idx) => {
-      return v.read_yn === "n" ? newPostAlarm = true : false;
-    })
-  }, [postListInfo, newPostAlarm]);
 
   /* 공지사항 클릭 시 읽음 처리 */
   const fetchReadData = async (notiNo) => {
