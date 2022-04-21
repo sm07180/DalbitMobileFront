@@ -187,6 +187,9 @@
       }
       .ranker {
         flex:1;
+        &.none {
+          display: none;
+        }
         .listColumn {
           position:relative;
           @include flex(center, center, column);
