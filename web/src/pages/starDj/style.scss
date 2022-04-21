@@ -282,6 +282,7 @@
                 padding-left: 15px;
                 @include font(13px, $Regular, #202020);
                 line-height: 20px;
+                word-break: keep-all;
                 &::before {
                   content: "";
                   @include position-top-left(8px, 4px);
