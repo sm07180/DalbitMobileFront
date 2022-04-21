@@ -47,7 +47,12 @@ const TeamManager = (props) => {
   const [bgCode,setBgCode]=useState(props.data.teamInfo.team_bg_code)
   const timer = NormalTimer(moment(props.data.teamInfo.ins_date).add(3, 'days'));
   const remainHours = (timer.days() * 24) + timer.hours();
-
+  const [defultData , setDefultData]=useState({
+    bgCode:props.data.teamInfo.team_bg_code,
+    medalCode:props.data.teamInfo.team_medal_code,
+    edgeCode:props.data.teamInfo.team_edge_code,
+    teamName:props.data.teamInfo.team_name,
+  })
   useEffect(()=>{
     // fixme 문대리님 요청해야함 'active 클래스 추가'
     document.getElementsByClassName("blind")[0].checked = agree === 'y';
@@ -61,10 +66,9 @@ const TeamManager = (props) => {
       edgeCode:edgeCode,
       teamName:teamName
     }
-
     let param={
       memNo:memberRdx.memNo,
-      updSlct:JSON.stringify(props.data.teamInfo.team_bg_code) === JSON.stringify(equData) ? 'b': 'a',   //-- 수정구분[a:심볼및이름, b:소개수정]
+      updSlct:(JSON.stringify(defultData) === JSON.stringify(equData)) ? 'b': 'a',   //-- 수정구분[a:심볼및이름, b:소개수정]
       teamNo:teamNo,
       teamName:teamName,
       teamConts:teamConts,
@@ -206,7 +210,7 @@ const TeamManager = (props) => {
         </section>
 
         {
-          props.data.editChk &&
+          (props.data.editChk && (remainHours > 0 || timer.minutes() > 0)) &&
           <section className="partsType">
             {
               parts.map((list,index) => {
