@@ -261,7 +261,7 @@ const NoticePage = () => {
         left: 0,
         // behavior: 'smooth',
       })
-      setTimeout(() => {localStorage.setItem("scroll_position", "0")}, 4000);
+      setTimeout(() => {localStorage.setItem("scroll_position", "0")}, 2500);
     }
   }, [postListInfo]);
 
