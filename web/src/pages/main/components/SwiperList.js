@@ -113,8 +113,8 @@ const SwiperList = (props) => {
           <div key={index}>
             <div className="listColumn" data-team-no={list.team_no} onClick={goTeamDetailPage}>
               <div className="teamSymbol">
-                <img src={`${IMG_SERVER}/team/parts/E/${list.team_bg_code}.png`} alt="" />
-                <img src={`${IMG_SERVER}/team/parts/B/${list.team_edge_code}.png`} alt="" />
+                <img src={`${IMG_SERVER}/team/parts/B/${list.team_bg_code}.png`} alt="" />
+                <img src={`${IMG_SERVER}/team/parts/E/${list.team_edge_code}.png`} alt="" />
                 <img src={`${IMG_SERVER}/team/parts/M/${list.team_medal_code}.png`} alt="" />
                 <div className={`rank-${index + 1}`}></div>
               </div>

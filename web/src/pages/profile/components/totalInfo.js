@@ -179,8 +179,8 @@ const TotalInfo = (props) => {
           <div className="wrapBox" data-team-no={data.teamInfo.team_no} onClick={goTeamDetailPage}>
             <img src={`${IMG_SERVER}/profile/teamInfo-title.png`} alt="team" className="title" />
             <div className="teamSymbol">
-              <img src={`${IMG_SERVER}/team/parts/E/${data.teamInfo.team_bg_code}.png`} />
-              <img src={`${IMG_SERVER}/team/parts/B/${data.teamInfo.team_edge_code}.png`} />
+              <img src={`${IMG_SERVER}/team/parts/B/${data.teamInfo.team_bg_code}.png`} />
+              <img src={`${IMG_SERVER}/team/parts/E/${data.teamInfo.team_edge_code}.png`} />
               <img src={`${IMG_SERVER}/team/parts/M/${data.teamInfo.team_medal_code}.png`} />
             </div>
             <div className="teamName">{data.teamInfo.team_name}</div>

@@ -44,8 +44,8 @@ const TeamRankList = (props) => {
         return (
           <div className="listRow" data-team-no={list.team_no} onClick={goTeamDetailPage} key={index}>
             <div className="teamSymbol">
-              <img src={`${IMG_SERVER}/team/parts/E/${list.team_bg_code}.png`} alt="" />
-              <img src={`${IMG_SERVER}/team/parts/B/${list.team_edge_code}.png`} alt="" />
+              <img src={`${IMG_SERVER}/team/parts/B/${list.team_bg_code}.png`} alt="" />
+              <img src={`${IMG_SERVER}/team/parts/E/${list.team_edge_code}.png`} alt="" />
               <img src={`${IMG_SERVER}/team/parts/M/${list.team_medal_code}.png`} alt="" />
             </div>
             <div className="rank">{index + 4}</div>
