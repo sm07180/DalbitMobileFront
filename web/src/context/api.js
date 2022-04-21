@@ -4259,6 +4259,11 @@ export default class API {
   static getDalCnt = () => {
     return ajax({url: '/store/getDalCnt', method: 'POST', reqBody: true})
   }
+
+  // 방장 정보 조회
+  static roomOwnerSel = async (roomNo, memNo) => {
+    return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo, memNo:memNo}})
+  }
 }
 
 API.customHeader = null
