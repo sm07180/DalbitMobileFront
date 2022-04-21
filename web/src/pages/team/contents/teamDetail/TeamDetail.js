@@ -94,7 +94,6 @@ const TeamDetail = (props) => {
   // 팀 가입신청 리스트
   const teamRequestApi=()=>{
     Api.getTeamRequestSel({teamNo:teamNo,pageNo:1,pagePerCnt:100}).then(res =>{
-      console.log("팀 가입신청 리스트",res.data)
       setTeamRequestCnt(res.data.listCnt)
       setTeamRequestSel(res.data.list);
     });
@@ -103,7 +102,6 @@ const TeamDetail = (props) => {
   //출석체크
   const checkInApi=()=>{
     Api.getTeamAttendanceIns({memNo:memberRdx.memNo}).then(res =>{
-      console.log(res)
       if(res.code === "00000"){
         setCheckIn('y');
       }else {
@@ -180,7 +178,6 @@ const TeamDetail = (props) => {
               })
             }
           })
-          console.log('secession');
         }
       });
     }
@@ -264,7 +261,6 @@ const TeamDetail = (props) => {
           Api.getTeamMemIns(param).then((res)=>{
             if(res.code === "00000"){
               setBtnChk(true)
-              console.log("수락",res)
             }else{
               context.action.toast({
                 msg: res.message
