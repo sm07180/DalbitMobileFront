@@ -448,7 +448,7 @@ const ProfileEdit = () => {
             />
             }
 
-            {popup.slidePopup &&
+            {popup.commonPopup &&
             <PopSlide title="사진 순서 변경">
               <PhotoChange list={profileInfo?.profImgList}
                            confirm={imageSorting}/>
