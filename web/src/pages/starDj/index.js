@@ -259,7 +259,7 @@ const StarDj = (props) => {
       </div>
       <Bottom>
         <div className='buttonPosition'>
-          <Button height="25%" active={applyBtn}>
+          <Button height="18%" active={applyBtn}>
             {
               applyBtn ? 
                 <span onClick={() => {
