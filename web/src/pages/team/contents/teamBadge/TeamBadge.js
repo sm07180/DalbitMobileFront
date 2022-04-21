@@ -1,7 +1,5 @@
 import React, {useState,useContext,useEffect} from 'react';
 import {useHistory} from "react-router-dom";
-import {Context} from 'context';
-import {IMG_SERVER} from 'context/config';
 // global components
 import Header from 'components/ui/header/Header';
 import CntWrapper from 'components/ui/cntWrapper/CntWrapper';
@@ -44,7 +42,6 @@ const TeamBadge = (props) => {
     }
     Api.getTeamBadgeList(param).then((res)=>{
       if(res.code === "00000"){
-        console.log(res)
         // setBadgeList(res.data.list);
         setUpdBadgeList(res.data.list)
         setStatChk(res.data.statChk);
@@ -53,10 +50,6 @@ const TeamBadge = (props) => {
     })
   }
 
-  const selectBadge=(bgCode)=>{
-    // const copy = badgeList.map(m => m.bg_code )
-    // bg_achieve_yn
-  }
 
   const clickPopup = () => {
     setBadgePop(!badgePop);
@@ -88,7 +81,6 @@ const TeamBadge = (props) => {
     let cnt = 0, successCnt = 0;
     for (let i = 0; i < updBadgeList.length; i++) {
       if(updBadgeList[i].bg_represent_yn === props.data.list[i].bg_represent_yn){
-        console.log(`i ${updBadgeList[i].bg_represent_yn}, ${props.data.list[i].bg_represent_yn}`)
         continue;
       }
       cnt++;
@@ -151,7 +143,7 @@ const TeamBadge = (props) => {
                   <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
                   {
                     statChk === 'm' && changePage && data.bg_achieve_yn === 'y' &&
-                    <div className={`checkboxLabel ${data.bg_represent_yn === 'y' ? 'active' : ''}`} onClick={()=>{selectBadge(data.bg_code)}}>
+                    <div className={`checkboxLabel ${data.bg_represent_yn === 'y' ? 'active' : ''}`}>
                       <div className="checkBox"/>
                     </div>
                   }
