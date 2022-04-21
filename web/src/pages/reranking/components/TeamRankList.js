@@ -28,8 +28,11 @@ const TeamRankList = (props) => {
   const history = useHistory();
 
   const goTeamDetailPage = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
 
-    console.log('가자 팀 페이지');
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    };
   }
 
   return (
@@ -39,7 +42,7 @@ const TeamRankList = (props) => {
           return (<></>);
         }
         return (
-          <div className="listRow" onClick={goTeamDetailPage} key={index}>
+          <div className="listRow" data-team-no={list.team_no} onClick={goTeamDetailPage} key={index}>
             <div className="teamSymbol">
               <img src={`${IMG_SERVER}/team/parts/B/${list.team_bg_code}.png`} alt="" />
               <img src={`${IMG_SERVER}/team/parts/E/${list.team_edge_code}.png`} alt="" />
