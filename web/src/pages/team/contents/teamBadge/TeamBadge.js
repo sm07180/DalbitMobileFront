@@ -16,22 +16,14 @@ import {useSelector} from "react-redux";
 
 const TeamBadge = (props) => {
   const history = useHistory();
-  const context = useContext(Context);
   const memberRdx = useSelector((state)=> state.member);
-  const [badgePop, setBadgePop] = useState(true);
+  const [badgePop, setBadgePop] = useState(false);
   const [statChk, setStatChk]=useState(props.data.statChk); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [changePage,setChangePage]=useState(false);
-  const [badgeList,setBadgeList]=useState(props.data.list); // 대표활동배지 변경할때 비교용도로 쓰임
   const [updBadgeList,setUpdBadgeList]=useState(props.data.list);
   const [getCnt,setGetCnt]=useState(props.data.cnt);  // 활동뱃지 얻은 갯수
   const [badgeData, setBadgeData]=useState({})
   const teamNo = props.match.params.teamNo;
-
-
-  // const {hour, minute, isTimeOver, time, unitKor} = Timer({endDate:'2022.'});
-  // const tt = NormalTimer('2023.05.30 17:45:00');
-  // console.log(tt.years(), tt.months(), tt.days(), tt.hours(), tt.minutes(), tt.seconds())
-
 
   useEffect(()=>{
     if(teamNo === undefined || teamNo ==="" || teamNo ===null || memberRdx.memNo ===""){
@@ -53,7 +45,7 @@ const TeamBadge = (props) => {
     Api.getTeamBadgeList(param).then((res)=>{
       if(res.code === "00000"){
         console.log(res)
-        setBadgeList(res.data.list);
+        // setBadgeList(res.data.list);
         setUpdBadgeList(res.data.list)
         setStatChk(res.data.statChk);
         setGetCnt(res.data.cnt)
@@ -71,6 +63,11 @@ const TeamBadge = (props) => {
   };
 
   const onClickBadge = (data) => {
+    setBadgeData(data)
+    if(!changePage){
+      setBadgePop(true);
+    }
+
     const copy = updBadgeList.map(m=>{
       if(data.bg_achieve_yn === 'n'){
         return m;
@@ -112,7 +109,7 @@ const TeamBadge = (props) => {
       // 뭔가 실패
     }
     setChangePage(false);
-    // history.goBack();
+    history.goBack();
   }
   // 페이지 시작
   return (
@@ -154,7 +151,6 @@ const TeamBadge = (props) => {
                   <img src={`${data.bg_achieve_yn === 'n' ? data.bg_black_url : data.bg_color_url}`} alt={data.bg_name} />
                   {
                     statChk === 'm' && changePage && data.bg_achieve_yn === 'y' &&
-                    //  checkboxLabel active
                     <div className={`checkboxLabel ${data.bg_represent_yn === 'y' ? 'active' : ''}`} onClick={()=>{selectBadge(data.bg_code)}}>
                       <div className="checkBox"/>
                     </div>

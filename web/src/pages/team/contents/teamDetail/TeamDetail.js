@@ -77,6 +77,7 @@ const TeamDetail = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
+        console.log(`getTeamDetailSel`, res.data)
         setTeamMemList(res.data.teamMemList);
         setTeamInfo(res.data.teamInfo);
         setTeamBageList(res.data.badgeList);
@@ -339,7 +340,7 @@ const TeamDetail = (props) => {
             <div className="text">이번 주</div>
             <div className="count">
               <strong>
-                {teamInfo.rank_no ? 
+                {teamInfo.rank_no ?
                   Utility.addComma(`${teamInfo.rank_no}`)
                   :
                   `-`
@@ -363,24 +364,18 @@ const TeamDetail = (props) => {
             <button onClick={()=>history.push(`/team/badge/${teamNo}`)}>더보기</button>
           </div>
         <section className="badgeList">
-        {teamBageList.length > 0 || false ?
-          <>
-            <div className="badgeItem">
-              <img src={`${IMG_SERVER}/team/badge/a002.png`} alt="" />
-            </div>
-            <div className="badgeItem">
-              <img src={`${IMG_SERVER}/team/badge/a004.png`} alt="" />
-            </div>
-            <div className="badgeItem">
-              <img src={`${IMG_SERVER}/team/badge/a006.png`} alt="" />
-            </div>
-            <div className="badgeItem">
-              <img src={`${IMG_SERVER}/team/badge/a008.png`} alt="" />
-            </div>
-          </>
-          :
-          <div className="badgeNone">아직 획득한 활동배지가 없습니다.</div>
-        }
+          {
+            teamBageList.length > 0 ?
+              teamBageList.map((badge, idx)=>{
+                return(
+                  <div className={"badgeItem"} key={idx}>
+                    <img src={`${badge.bg_color_url}`} alt={badge.bg_name} />
+                  </div>
+                )
+              })
+              :
+              <div className="badgeNone">아직 획득한 활동배지가 없습니다.</div>
+          }
         </section>
         <CntTitle title="전체 멤버">
           <span className="count"><strong>{teamMemList.length}</strong>/5</span>
