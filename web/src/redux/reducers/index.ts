@@ -21,6 +21,7 @@ import noticeTabList from "./notice/tabList";
 import feed from "./profile/feed";
 import noticeFix from "./profile/noticeFix";
 import detail from "./profile/detail";
+import payStore from './payStore';
 import post from "./notice/post";
 
 const rootReducer = combineReducers({
@@ -46,6 +47,7 @@ const rootReducer = combineReducers({
   , feed
   , noticeFix
   , detail
+  , payStore
   , post
 });
 

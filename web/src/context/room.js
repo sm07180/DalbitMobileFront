@@ -1,7 +1,7 @@
 /**
  * @title 방송방입장 및 퇴장 (하이브리드앱전용)
- * @code 
- 
+ * @code
+
     import Room, {RoomJoin} from 'context/room'
 
     //function
@@ -73,22 +73,21 @@ export const RoomJoin = async (obj) => {
     })
   }*/
   /* -------------------------------------- */
-
   const {roomNo, callbackFunc, shadow, mode, memNo, nickNm, listener} = obj
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
   localStorage.removeItem('prevRoomInfo')
   const sessionRoomActive = sessionStorage.getItem('room_active')
-  if (sessionStorage.getItem('room_active') === 'N') {
-    Room.context.action.alert({
-      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
-    })
-    return false
-  } else {
-    if (sessionStorage.getItem('room_active') === null) {
-      sessionStorage.setItem('room_active', 'N')
-    }
-  }
+  // if (sessionStorage.getItem('room_active') === 'N') {
+  //   Room.context.action.alert({
+  //     msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
+  //   })
+  //   return false
+  // } else {
+  //   if (sessionStorage.getItem('room_active') === null) {
+  //     sessionStorage.setItem('room_active', 'N')
+  //   }
+  // }
 
   if (customHeader['os'] === OS_TYPE['Desktop']) {
     window.location.href = 'https://inforexseoul.page.link/Ws4t'
@@ -143,7 +142,17 @@ export const RoomJoin = async (obj) => {
         }else {
           // sessionStorage.removeItem('room_active')
           // return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
-          sessionStorage.removeItem('room_active')
+          const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
+          if(ownerSel.data.listenOpen !== '1'){
+
+            if(location.pathname.startsWith("/profile")){
+              return;
+            }
+
+            window.location.href = `/profile/${memNo}`
+            return;
+          }
+          sessionStorage.removeItem('room_active');
           return Room.context.action.confirm({
             callback: () => {
               // sessionStorage.removeItem('room_active')
@@ -152,7 +161,9 @@ export const RoomJoin = async (obj) => {
             cancelCallback: () => {
               // sessionStorage.removeItem('room_active')
             },
-            msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
+            msg: memNo !== ownerSel.data.memNo ?
+              `${nickNm}님이 참여중인 방송방에 입장하시겠습니까?`
+              : `${ownerSel.data.memNick ? `${ownerSel.data.memNick}님의 ` : ''}방송방에 입장하시겠습니까?`
           })
         }
       }
@@ -255,7 +266,7 @@ export const RoomJoin = async (obj) => {
         sessionStorage.removeItem('room_active')
         Room.context.action.alert({
           buttonMsg: '로그인',
-          msg: `<div id="nonMemberPopup" style="border:1px solid red"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
           callback: () => {
             window.location.href = '/login'
           }

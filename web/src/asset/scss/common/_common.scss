@@ -68,6 +68,9 @@ legend {
     // grid-template-rows: 1fr;
     max-width:800px;
     height:100%;
+    img{
+      image-rendering: -webkit-optimize-contrast;
+    }
     >.content {
       flex:1;
       position:relative;
@@ -145,6 +148,9 @@ legend {
   background-color: white;
   border-bottom:2px solid #E0E0E0;
   z-index: $GNB-ZINDEX;
+  img{
+    image-rendering: -webkit-optimize-contrast;
+  }
   .gnbContainer {
     position: relative;
     @include flex(center);
@@ -185,6 +191,7 @@ legend {
       ul {
         @include flex(center);
         li {
+          position: relative;
           width:44px;height:44px;
           background-color:#ddd;
           + li {
@@ -199,6 +206,15 @@ legend {
             &:nth-child(2) {@include BGIMG("common/gnb/gnbMail-on.png");}
             &:nth-child(3) {@include BGIMG("common/gnb/gnbStore-on.png");}
             &:nth-child(4) {@include BGIMG("common/gnb/gnbAllim-on.png");}
+          }
+          .saleStore {
+            @include position-horizon($bottom: 0px);
+            @include flex(center, center);
+            height: 16px;
+            padding: 0px 5px;
+            border-radius: 100px;
+            @include font(11px, 700, #FFF);
+            background-color: #FF1919;
           }
         }
       }
@@ -412,13 +428,14 @@ legend {
 }
 #player {
   position: fixed;bottom:0;left:50%;
-  transform:translateX(-50%);z-index: 50;
+  transform:translateX(-50%);
   width: 100%;max-width:480px;
   height: 70px;
   border-radius: 16px 16px 0 0;
   overflow:hidden;
   color: white;
   cursor: pointer;
+  z-index: $PLAYER-ZINDEX;
   .inner-player {
     position: relative;
     @include flex(center,space-between);

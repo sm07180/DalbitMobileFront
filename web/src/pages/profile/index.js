@@ -47,7 +47,7 @@ import {IMG_SERVER} from "context/config";
 
 const ProfilePage = () => {
   const history = useHistory()
-  const location = useLocation();
+  // const location = useLocation(); => get parameter 이슈
   const context = useContext(Context)
   const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
@@ -78,7 +78,6 @@ const ProfilePage = () => {
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
-  const isWebView = useSelector(state => state.common).isWebView;
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
 
@@ -765,6 +764,13 @@ const ProfilePage = () => {
         if(location.search) {
           parameterManager(); // 주소 뒤에 파라미터 체크
         }
+        
+        // 주소가 바뀐 경우 데이터 불러오기
+        getNoticeData(true);
+        getNoticeFixData(true);
+        getFeedData(true);
+        getFanBoardData(true);
+        getClipData(true);
       }
     }else {
       history.replace('/login');

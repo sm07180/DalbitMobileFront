@@ -82,6 +82,48 @@ export const NewClipPlayerJoin = ({clipNo, gtx, history, clipTable, webview, isP
                 isPlaying: isClipPlaying,
               }
 
+              let getPlayListData = localStorage.getItem('clipPlayListInfo');
+              let playListData = getPlayListData ? JSON.parse(getPlayListData) : '';
+              if(!getPlayListData) {
+                playListData = { slctType: 4, dateType: 0, page: 1, records: 100 } // 데이터 없을 경우 대비한 default (최근 들은 클립)
+              }
+              let url = ''
+              let currentType = ''
+              if (playListData) {
+                Object.keys(playListData).forEach((key, idx) => {
+                  if (idx === 0) {
+                    url = url + `${key}=${playListData[key]}`
+                  } else {
+                    url = url + `&${key}=${playListData[key]}`
+                  }
+                })
+                if (playListData.hasOwnProperty('listCnt')) {
+                  if (playListData.hasOwnProperty('subjectType')) {
+                    currentType = 'clip/main/top3/list?'
+                  } else {
+                    currentType = 'clip/main/pop/list?'
+                  }
+                } else if (playListData.hasOwnProperty('memNo')) {
+                  if (playListData.hasOwnProperty('slctType')) {
+                    currentType = 'clip/listen/list?'
+                  } else {
+                    currentType = 'clip/upload/list?'
+                  }
+                } else if (playListData.hasOwnProperty('recDate')) {
+                  currentType = 'clip/recommend/list?'
+                } else if (playListData.hasOwnProperty('rankType')) {
+                  currentType = 'clip/rank?'
+                } else {
+                  currentType = 'clip/list?'
+                }
+
+                url = currentType + url
+                totalData = {
+                  ...totalData,
+                  playListData: {url: encodeURIComponent(url), isPush: isPush === 'push'}
+                }
+              }
+
               Hybrid('ClipPlayerJoinFromWebViewPopup', totalData);
             })
           }
@@ -246,7 +288,7 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
   }
 }
 
-export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
+export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
   const {globalState, globalAction} = gtx;
   if (isDesktop()) {
     if (!globalState.baseData.isLogin) {
@@ -291,10 +333,28 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
             });
           } else {
             if(listenRoomNo !== roomNo) {
+              const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
+              if(ownerSel.data.listenOpen !== '1'){
+                if(history.location.pathname.startsWith("/profile")){
+                  return;
+                }
+
+                history.push(`/profile/${memNo}`);
+                return;
+              }
+              if(!ownerSel.data.memNo){
+                globalAction.callSetToastStatus!({
+                  status: true,
+                  message: "종료된 방송입니다.",
+                });
+                return;
+              }
               globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
-                content: `${nickNm ? `${nickNm}님의 ` : ''}방송방에 입장하시겠습니까?`,
+                content: memNo !== ownerSel.data.memNo ?
+                  `${nickNm}님이 참여중인 방송방에 입장하시겠습니까?`
+                  : `${ownerSel.data.memNick ? `${ownerSel.data.memNick}님의 ` : ''}방송방에 입장하시겠습니까?`,
                 callback: () => {
                   history.push(`/broadcast/${roomNo}`);
                 },
@@ -321,6 +381,7 @@ export function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, l
       return history.push('/login');
     }
   } else {
+
     RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm})
   }
 }

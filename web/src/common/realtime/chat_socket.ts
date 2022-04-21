@@ -84,6 +84,8 @@ export class ChatSocketHandler {
   // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
   public userSettingObj: userBroadcastSettingType | null = null;
 
+  public chatLimit: { cnt: number, timeArray: Array<number | null> } = {cnt: 0, timeArray: []};
+
   constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?: any) {
     this.dispatch = dispatch;
     this.postErrorState =  (window as any)?.postErrorState;
@@ -136,6 +138,66 @@ export class ChatSocketHandler {
     // }
 
     this.broadcastStateChange = {};
+  }
+
+  chatLimitCheck(setStateFn = (v) => {}){
+    let chatLimit = false;
+    const {timeArray} = this.chatLimit;
+    const now = new Date().getTime();
+    const recentTime = timeArray.concat([])[0];
+
+    if(!recentTime || now - recentTime <= 3000) { // 가장 최근 채팅시간이 3초 이내
+      this.chatLimit.cnt ++;
+      this.chatLimit.timeArray.push(now);
+
+      // 채팅 5회 발송
+      if(this.chatLimit.timeArray.length >= 5) {
+        this.chatLimit.timeArray = [];
+      }
+      if(this.chatLimit.cnt >= 5){
+        chatLimit = true;
+        this.chatLimit.cnt = 0;
+      }
+
+    } else if(now - recentTime > 3000) { // 첫번째 요소 시간차이 3초 초과
+      this.chatLimit.cnt = 1;
+      this.chatLimit.timeArray = [];
+      this.chatLimit.timeArray.push(now);
+    }
+
+    if(chatLimit) {
+      this.broadcastAction.setChatLimit(true);
+
+      setTimeout(() => {
+        if(this?.broadcastAction?.setChatLimit) {
+          this.broadcastAction.setChatLimit(false);
+        }
+      }, 3000);
+
+      if(this.globalAction?.callSetToastStatus){
+        this.globalAction.callSetToastStatus({
+          status: true,
+          message: "채팅 도배로 인해 3초간 채팅 이용이 제한됩니다.",
+        });
+
+        try {
+          // 간헐적으로 채팅 내용이 남아있어서 초기화
+          setStateFn("");
+        } catch (e) {
+          console.warn(e);
+        }
+      }
+
+      /* this.addMsgElement(
+         SystemStartMsg({
+           type: "div",
+           text: '채팅 도배로 인해 3초간 채팅 이용이 제한됩니다.',
+           className: "system-start-msg",
+         }));
+       */
+    }
+
+    return chatLimit;
   }
 
   setMemNo(memNo){

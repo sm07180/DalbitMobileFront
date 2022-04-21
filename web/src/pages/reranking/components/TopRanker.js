@@ -1,7 +1,8 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
 
-import Lottie from 'react-lottie'
-import Swiper from 'react-id-swiper'
+import Api from 'context/api';
+import Lottie from 'react-lottie';
+import Swiper from 'react-id-swiper';
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
@@ -15,13 +16,11 @@ import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 const TopRanker = (props) => {
   const {data, rankSlct, rankType} = props
 
+  const history = useHistory();
   const context = useContext(Context);
 
-  const history = useHistory();
-
-  const gtx = useContext(GlobalContext);
-
   const [popup, setPopup] = useState(false);
+  const [rankSetting, setRankSetting] = useState();
 
   // 스와이퍼
   const swiperParams = {
@@ -35,66 +34,73 @@ const TopRanker = (props) => {
     },
     initialSlide: 2,
     rebuildOnUpdate: true
-  }
+  };
 
-  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
-        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-        callback: () => {
-          history.push('/login')
-        }
-      })
-    } else {
-      if (getDeviceOSTypeChk() === 3){
-        if(listenRoomNo){
-          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
+  // 랭킹 패치
+  const fetchRankApply = () => {
+    Api.getRankingApply().then((res) => {
+      if (res.result === 'success') {
+        if (res.data.apply_ranking === 1) {
+          setRankSetting(true);
         } else {
-          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
-        }
-      } else {
-        if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
-        } else {
-          let alertMsg
-          if (isNaN(listenRoomNo)) {
-            alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
-              type: 'alert',
-              msg: alertMsg
-            })
-          } else {
-            alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
-              type: 'confirm',
-              msg: alertMsg,
-              callback: () => {
-                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
-              }
-            })
-          }
+          setRankSetting(false);
         }
       }
-    }
-  }
+    });
+  };
+
+  // 랭킹 버튼 액션
+  const fetchRankSetting = (set) => {
+    const params = {
+      isRankData: set,
+    };
+    Api.postRankSetting(params).then((res) => {
+      if (res.result === 'success') {
+        context.action.toast({msg: `FAN랭킹 참여 상태를 변경했습니다.`});
+        fetchRankApply();
+      }
+    });
+  };
+
+  const clickRankSetting = () => {
+    context.action.confirm({
+      callback: () => {
+        fetchRankSetting(!rankSetting);
+      },
+      msg: `${rankSetting ? `<strong>미참여중</strong>으로 설정되어있는 동안
+      나의 활동이 FAN랭킹에 반영되지 않습니다
+       변경하시겠습니까?` : `지금부터 나의 활동이 FAN랭킹에 반영됩니다.
+      변경하시겠습니까?`}`
+    });
+  };
+
+  useEffect(() => {
+    if (rankSlct === "FAN") fetchRankApply();
+  },[rankSlct]);
 
   return (
     <React.Fragment>
-      <span className='questionMark' onClick={() => setPopup(true)}></span>
-      {data && data.length > 0 &&    
+      <div className="topItems">
+        {context.token.isLogin && rankSlct === "FAN" &&
+          <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
+        }
+        <span className='questionMark' onClick={() => setPopup(true)}></span>
+      </div>
+      {data && data.length > 0 &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (
               <div className='rankingTop3' key={index}>
-                <div className='topHeader'>{
-                index === 0 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
-                  :
-                index === 1 ?
-                  rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
-                  :
-                  `${index + 1}회차`
-                } TOP3
+                <div className='topHeader'>
+                  {
+                  index === 0 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "어제" : rankType === 2 ? "저번주" : rankType === 3 ? "저번달" : "작년"
+                    :
+                  index === 1 ?
+                    rankType === 0 ? `${index + 1}회차` : rankType === 1 ? "오늘" : rankType === 2 ? "이번주" : rankType === 3 ? "이번달" : "올해"
+                    :
+                    `${index + 1}회차`
+                  } TOP3
                 </div>
                 <div className='topContent'>
                   {list.map((data,index) => {
@@ -146,8 +152,8 @@ const TopRanker = (props) => {
                                 data.roomNo &&
                                   <div className='badgeLive' onClick={(e) => {
                                     e.stopPropagation();
-                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                                    
+                                    RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+                                  }}>
                                     <span className='equalizer'>
                                       <Lottie
                                         options={{
@@ -160,13 +166,13 @@ const TopRanker = (props) => {
                                     <span className='liveText'>LIVE</span>
                                   </div>
                               }
-                              {/* {
-                                data.listenRoomNo !== "" &&
+                              {
+                                data.listenRoomNo && (data.listenOpen === 0 || data.listenOpen === 1) &&
                                   <div className='badgeListener' onClick={(e) => {
                                     e.stopPropagation();
-                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                     
-                                    <span className='headset'>                          
+                                    RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
+                                  }}>
+                                    <span className='headset'>
                                       <Lottie
                                           options={{
                                             loop: true,
@@ -174,10 +180,10 @@ const TopRanker = (props) => {
                                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                                           }}
                                         />
-                                    </span>      
+                                    </span>
                                     <span className='ListenerText'>LIVE</span>
-                                  </div>                                  
-                              } */}
+                                  </div>
+                              }
                             </>
                           }
                         </div>
@@ -208,7 +214,11 @@ const TopRanker = (props) => {
             <>
               <div className='popTitle'>FAN 랭킹 선정 기준</div>
               <div className='popSubTitle'>
-              보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.
+              보낸 달과 보낸 좋아요(부스터 포함)의 <br/>종합 순위입니다.<br/>
+              </div>
+              <div className='popText'>
+              참여중/미참여중 버튼을 눌러,<br/>
+              나의 FAN랭킹 참여 상태를 변경할 수 있습니다.
               </div>
             </>
 

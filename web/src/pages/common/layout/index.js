@@ -16,16 +16,22 @@ import {useHistory, useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
-
+import qs from 'query-string'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import MultiImageViewer from '../multi_image_viewer'
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import {useDispatch, useSelector} from "react-redux";
+import {Hybrid, isHybrid} from "context/hybrid";
+import {initReceipt, setReceipt} from "redux/actions/payStore";
 //
 const Layout = (props) => {
   const {children, webview} = props
 
-  const context = useContext(Context)
-  const location = useLocation()
+  const context = useContext(Context);
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const payStoreRdx = useSelector(({payStore})=> payStore);
   const history = useHistory();
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
@@ -39,6 +45,10 @@ const Layout = (props) => {
 
   const isLoginPage = location.pathname === '/login'
   const isRulePage = history.location.pathname.startsWith("/rule")
+  const storePage = history.location.pathname.startsWith("/store")
+  const payPage = history.location.pathname.startsWith("/pay")
+
+  const {qsWebview} = qs.parse(location.search)
 
   useEffect(() => {
     if (noAppCheck) {
@@ -52,7 +62,7 @@ const Layout = (props) => {
 
   useEffect(() => {
     context.action.updateMultiViewer({show: false})
-  }, [location])
+  }, [location]);
 
   return (
     <>
@@ -68,15 +78,25 @@ const Layout = (props) => {
         ${playerCls ? "player" : ""}
         `}>
         {children}
+        {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
+          if (payStoreRdx.receipt.returnType === 'room' && isHybrid()) {
+            Hybrid('CloseLayerPopup')
+            Hybrid('ClosePayPopup')
+          }else{
+            dispatch(initReceipt());
+            history.replace("/");
+          }
+
+        }} />}
       </Article>
       {/* (방송방)Player */}
       {
-        !isLoginPage && !isRulePage &&
+        !isLoginPage && !isRulePage && !storePage && !payPage &&
         <NewPlayer {...props} />
       }
       {/* (클립)Player */}
       {
-        !isLoginPage && !isRulePage &&
+        !isLoginPage && !isRulePage && !storePage && !payPage &&
         <ClipPlayer {...props} />
       }
 
@@ -86,6 +106,8 @@ const Layout = (props) => {
       {/* <Message {...props} /> */}
       {/* IP노출 */}
       <Ip {...props} />
+
+
 
       {/*{appPopupState === true && noAppCheck && (*/}
       {/*  <>*/}

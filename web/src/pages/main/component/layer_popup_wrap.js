@@ -151,7 +151,7 @@ export default function LayerPopupWrap({data, setData}) {
       scrollRef.current.addEventListener('scroll', scrollSize);
       scrollSize();
       return () => {
-        scrollRef.current.removeEventListener('scroll', scrollSize);
+        scrollRef?.current && scrollRef.current.removeEventListener('scroll', scrollSize);
       }
     }
   }, []);
@@ -173,6 +173,7 @@ export default function LayerPopupWrap({data, setData}) {
             <div id="eventPop"
                  onClick={closePopup}
                  key={idx}
+                 style={{zIndex: 99 - idx}}
             >
               <div className="popLayer">
                 <div className="popContainer">

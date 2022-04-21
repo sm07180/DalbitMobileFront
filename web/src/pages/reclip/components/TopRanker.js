@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import NoResult from "components/ui/noResult/NoResult";
 
 const TopRanker = (props) => {
-  const {data, playAction} = props
+  const {data, clipPlayHandler} = props
 
   const [targetPage, setTargetPage] = useState(1);
 
@@ -28,6 +28,19 @@ const TopRanker = (props) => {
     },
   };
 
+  const playAction = (e, listTitle) => {
+    // playType = "today" | "yesterday" | "thisWeek" | "lastWeek"
+    if(listTitle === '오늘') { // 오늘 1~3위 + 4위 ~
+      clipPlayHandler(e, 'today');
+    }else if(listTitle === '어제') { // 어제 1~3위 + 오늘 1~3위 + 4위~
+      clipPlayHandler(e, 'yesterday');
+    }else if(listTitle === '이번주') { // 이번주 1~3위 + 이번주 4위~
+      clipPlayHandler(e, 'thisWeek');
+    }else if(listTitle === '저번주') { // 지난주 1~3위 +
+      clipPlayHandler(e, 'lastWeek');
+    }
+  }
+
   return (
     <>
       <section className="topRanker">
@@ -41,7 +54,8 @@ const TopRanker = (props) => {
                   <div className="rankerWrap">
                     {list.list.map((row, index2) => {
                       return (
-                        <div className="ranker" key={`list-${index2}`} data-clip-no={row.clipNo} data-type={index} onClick={playAction}>
+                        <div className="ranker" key={`list-${index2}`} data-clip-no={row.clipNo} data-type={index}
+                             onClick={(e) => playAction(e, list.title)}>
                           <div className="listColumn">
                             <div className="photo">
                               <img src={row.bgImg.thumb292x292} alt="" />

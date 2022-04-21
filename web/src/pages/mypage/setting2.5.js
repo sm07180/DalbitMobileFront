@@ -151,7 +151,6 @@ export default (props) => {
             profMsg: profileMsg || profile.profMsg,
             profImg: res.data.path
           }
-          console.log(data)
           const res2 = await Api.profile_edit({data})
 
           if (res2.result === 'success') {
@@ -219,7 +218,6 @@ export default (props) => {
       profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
-    console.log(data)
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})
@@ -352,7 +350,7 @@ export default (props) => {
                 <button
                   className="btn__confirm"
                   onClick={() => {
-                    authReq('5', formTag, context)
+                    authReq({code: '5', formTagRef: formTag, context})
                   }}>
                   본인인증
                 </button>

@@ -19,51 +19,7 @@ export default withRouter((props) => {
   const {data, children, tab, topRankList} = props;
 
   const context = useContext(Context);
-
-  const gtx = useContext(GlobalContext);
-
   const history = useHistory();
-
-  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
-        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-        callback: () => {
-          history.push('/login')
-        }
-      })
-    } else {
-      if (getDeviceOSTypeChk() === 3){
-        if(listenRoomNo){
-          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
-        } else {
-          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
-        }
-      } else {
-        if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo,memNo:memNo, nickNm: nickNm})
-        } else {
-          let alertMsg
-          if (isNaN(listenRoomNo)) {
-            alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
-              type: 'alert',
-              msg: alertMsg
-            })
-          } else {
-            alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
-              type: 'confirm',
-              msg: alertMsg,
-              callback: () => {
-                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
-              }
-            })
-          }
-        }
-      }
-    }
-  }
 
   return (
     <>
@@ -89,7 +45,7 @@ export default withRouter((props) => {
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
-                  goLive(list.roomNo, list.memNo,list.nickNm, list.listenRoomNo);
+                  RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, history, list.nickNm);
                 }}>
                   <span className='equalizer'>
                     <Lottie
@@ -104,14 +60,14 @@ export default withRouter((props) => {
                 </div>
               </div>
             }
-            {/* {
-              list.listenRoomNo !== "" &&
+            {
+              list.listenRoomNo && (list.listenOpen === 0 || list.listenOpen === 1) &&
                 <div className="listBack">
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();
-                    goLive(list.roomNo, list.memNo, list.nickNm, list.listenRoomNo);
-                  }}>                     
-                    <span className='headset'>                          
+                    RoomValidateFromClipMemNo(list.listenRoomNo, list.memNo, context, history, list.nickNm);
+                  }}>
+                    <span className='headset'>
                       <Lottie
                           options={{
                             loop: true,
@@ -119,11 +75,11 @@ export default withRouter((props) => {
                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                           }}
                         />
-                    </span>      
+                    </span>
                     <span className='ListenerText'>LIVE</span>
-                  </div>  
-                </div>                                
-            } */}
+                  </div>
+                </div>
+            }
           </ListRow>
         )
       })}
