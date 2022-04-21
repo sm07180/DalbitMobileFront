@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory, withRouter} from 'react-router-dom'
+import {useSelector} from "react-redux";
 import {addComma} from "lib/common_fn";
 
 import Header from 'components/ui/header/Header'
@@ -20,6 +21,8 @@ const StarDj = (props) => {
   const context = useContext(Context) 
   const [applyBtn, setApplyBtn] = useState(false); //신청하기 버튼 활성화 상태값
   const [popup, setPopup] = useState(false); //팝업
+
+  const isDesktop = useSelector((state)=> state.common.isDesktop);
 
   //starDj정보
   const [eventInfo, setEventInfo] = useState({});
@@ -146,19 +149,52 @@ const StarDj = (props) => {
       <Header position={'sticky'} title="스타DJ 신청" type={'back'}/>
       <div className='content'>
         <div className='starDjTop'>
-          <img src={`${IMG_SERVER}/starDJ/starDJ_topImg.png`} alt=""/>
-          <div className='buttonPosition'>
-            <Button height="20%">
-              <span onClick={() => {golink("/starDj/benefits")}}>
-                <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-1.png`} alt=""/>
-              </span>
-              {UtilityCommon.eventDateCheck("20220501") &&
-              <span onClick={() => {golink("/honor")}}>
-                <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-2.png`} alt=""/>
-              </span>
-              }
-            </Button>
-          </div>
+          {
+            isDesktop ?
+            <>
+              <img src={`${IMG_SERVER}/starDJ/starDJ_topImg-PC.png`} alt=""/>
+              <div className='buttonPosition pc'>
+                <Button height="25%">                  
+                  {UtilityCommon.eventDateCheck("20220501") ?
+                    <>
+                      <span onClick={() => {golink("/starDj/benefits")}}>
+                        <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-1.png`} alt=""/>
+                      </span>
+                      <span onClick={() => {golink("/honor")}}>
+                        <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-2.png`} alt=""/>
+                      </span>                    
+                    </>
+                    :
+                    <span onClick={() => {golink("/starDj/benefits")}}>
+                      <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-3.png`} alt=""/>
+                    </span>
+                  }
+                </Button>
+              </div>
+            </>
+            :
+            <>
+              <img src={`${IMG_SERVER}/starDJ/starDJ_topImg.png`} alt=""/>
+              <div className='buttonPosition'>
+                <Button height="20%">                  
+                  {UtilityCommon.eventDateCheck("20220501") ?
+                    <>
+                      <span onClick={() => {golink("/starDj/benefits")}}>
+                        <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-1.png`} alt=""/>
+                      </span>
+                      <span onClick={() => {golink("/honor")}}>
+                        <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-2.png`} alt=""/>
+                      </span>
+                    </>
+                    :
+                    <span onClick={() => {golink("/starDj/benefits")}}>
+                      <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-3.png`} alt=""/>
+                    </span>
+                  }
+                </Button>
+              </div>
+            </> 
+          }
         </div>
         <div className='starDjBody'>
           <section className='scheduleWrap'>
@@ -282,7 +318,7 @@ const StarDj = (props) => {
           </div>
           <ul className='noticeWrap'>
             <li className='noticeList'>60일 이내에 2시간 이상 방송 시간이 없으면 스타DJ 누적 횟수가 초기화 됩니다.</li>
-            <li className='noticeList'>지속적인 권고에도 불구하고 방송인으로서의의무를 다하지 아니할 경우에는 스타DJ 자격을 박탈할 수 있습니다.</li>
+            <li className='noticeList'>지속적인 권고에도 불구하고 방송인으로서의 의무를 다하지 아니할 경우에는 스타DJ 자격을 박탈할 수 있습니다.</li>
             <li className='noticeList'>신입부문 특별 선발 또한 신청한 DJ에 한하여 선발합니다.</li>
             <li className='noticeList'>신청 및 심사에 따라 신입부문 특별 선발 선정이 없을 수도 있습니다.</li>
           </ul>
