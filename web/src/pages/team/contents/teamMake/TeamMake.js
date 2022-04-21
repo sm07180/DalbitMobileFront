@@ -57,7 +57,7 @@ const TeamMake = () => {
     }
     let param ={
       memNo:memberRdx.memNo,
-      teamName:teamName,
+      teamName:teamName.trim(),
       teamConts:teamConts,
       teamMedalCode:partsAcode,
       teamEdgeCode:partsBcode,
@@ -90,18 +90,18 @@ const TeamMake = () => {
 
   const editCnts=(e)=>{
     let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
-    let rows = text.split('\n').length
 
-    if(rows > 5){
-      alert("5줄 까지만 가능합니다.")
-      return false
+    if (text.length <= 150) {
+      setTeamConts(text);
     }
-    setTeamConts(text);
   }
 
   const editName=(e)=>{
-    let text= e.currentTarget.value.trim();
-    setTeamName(text);
+    let text= e.currentTarget.value;
+
+    if (text.length <= 10) {
+      setTeamName(text);
+    }
   }
 
   const symbolApi=()=>{
