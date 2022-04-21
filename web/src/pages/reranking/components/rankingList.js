@@ -43,7 +43,8 @@ export default withRouter((props) => {
                 <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
               </div>
             </div>
-            {list.roomNo &&
+            {
+              !list.listenRoomNo && list.roomNo &&
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
@@ -63,7 +64,7 @@ export default withRouter((props) => {
               </div>
             }
             {
-              list.listenRoomNo && list.listenOpen !== 2 &&
+              !list.roomNo && list.listenRoomNo && list.listenOpen !== 2 &&
                 <div className="listBack">
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();

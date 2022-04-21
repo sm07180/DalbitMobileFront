@@ -80,7 +80,7 @@ const SwiperList = (props) => {
                     : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                   {item.rank && <div className={`rank-${item.rank}`}></div>}
                   {
-                    item.roomNo &&
+                    !item.listenRoomNo && item.roomNo &&
                     <div className='livetag' onClick={(e) => {
                       e.stopPropagation();
                       RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, locationStateHistory, item.nickNm);
@@ -95,7 +95,7 @@ const SwiperList = (props) => {
                     </div>
                   }
                   {
-                    item.listenRoomNo && (item.listenOpen === 0 || item.listenOpen === 1) &&
+                    !item.roomNo && item.listenRoomNo && item.listenOpen !== 2 &&
                     <div className='listenertag' onClick={(e) => {
                       e.stopPropagation();
                       RoomValidateFromListenerFollow({

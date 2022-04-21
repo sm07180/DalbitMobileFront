@@ -105,7 +105,7 @@ const TopSwiper = (props) => {
             <span>{data.specialDjCnt}회</span>
           </div>
         }
-        {type === 'profile' && webview === '' && data.roomNo !== "" &&
+        {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
           <div className='badgeLive' onClick={()=>{
             RoomValidateFromProfile({
               memNo:data.memNo, history, context, nickNm:data.nickNm, roomNo:data.roomNo, webview
@@ -123,7 +123,7 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
           <div className='badgeListener' onClick={()=>{
             RoomValidateFromListenerFollow({
               memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo

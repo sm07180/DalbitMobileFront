@@ -38,7 +38,7 @@ const CardList = (props) => {
                       <div className='rank'>{index + 1}</div>
                     </div>
                     {
-                      list.roomNo &&
+                      !list.listenRoomNo && list.roomNo &&
                         <div className='livetag' onClick={(e) => {
                           e.stopPropagation();
                           RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, locationStateHistory, list.nickNm);
@@ -52,9 +52,8 @@ const CardList = (props) => {
                           />
                         </div>
                     }
-
                     {
-                      list.listenRoomNo && list.listenOpen !== 2 &&
+                      !list.roomNo && list.listenRoomNo && list.listenOpen !== 2 &&
                       <div className='listenertag' onClick={(e) => {
                         e.stopPropagation();
                         RoomValidateFromListenerFollow({
