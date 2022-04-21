@@ -3,6 +3,15 @@ import * as actions from "../actions/notice";
 
 export type NoticeActions = ActionType<typeof actions>;
 
+export const noticePagingDefault = {
+    next: 1,
+    page: 0,
+    prev: 0,
+    records: 20,
+    total: 0,
+    totalPage: 0
+}
+
 export const noticeNewAlarmDefaultState = {
     alarm: 0,
     broadNotice: 0,
@@ -13,6 +22,22 @@ export const noticeNewAlarmDefaultState = {
     newCnt: 0,
     notice: 0,
     qna: 0
+}
+
+export const postDefaultState = {
+    list: [],
+    cnt: 0,
+    paging: noticePagingDefault,
+    isLastPage: false,
+}
+
+interface postData {
+    noticeIdx: number;
+    noticeType: number;
+    title: string;
+    contents: string;
+    read_yn: string;
+    writeDt: string;
 }
 
 export interface NoticeState {
@@ -29,6 +54,15 @@ interface NoticeNewAlarmData {
     newCnt: number;
     notice: number;
     qna: number;
+}
+
+export interface Paging {
+    next: number;
+    page: number;
+    prev: number;
+    records: number;
+    total: number;
+    totalPage: number;
 }
 
 export interface NoticeNewAlarmState {
@@ -48,4 +82,11 @@ export interface NoticeTabListState {
     tabName: string;
     isRefresh: boolean;
     isReset: boolean;
+}
+
+export interface postDataState {
+    list: Array<postData>;
+    cnt: number;
+    paging: Paging;
+    isLastPage: boolean;
 }

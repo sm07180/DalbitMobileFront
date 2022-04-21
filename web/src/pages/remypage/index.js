@@ -27,6 +27,7 @@ import {setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
 // 프로필 폴더에서 가져옴
 import FanStarPopup from "../profile/components/popSlide/FanStarPopup"
 import LikePopup from "../profile/components/popSlide/LikePopup"
+import {setNoticeTab} from "redux/actions/notice";
 
 const Remypage = () => {
   const history = useHistory()
@@ -221,27 +222,30 @@ const Remypage = () => {
             </div>
             <div className='myData'>
               <div className='myDataList' onClick={() => history.push('/wallet')}>
-                <span className='icon wallet'></span>
+                <span className='icon wallet'/>
                 <span className="myDataType">내 지갑</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/report')}>
-                <span className='icon report'></span>
+                <span className='icon report'/>
                 <span className="myDataType">방송리포트</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/myclip')}>
-                <span className='icon clip'></span>
+                <span className='icon clip'/>
                 <span className="myDataType">클립 관리</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/setting')}>
-                <span className='icon setting'></span>
+                <span className='icon setting'/>
                 <span className="myDataType">서비스 설정</span>
               </div>
-              <div className='myDataList' onClick={() => history.push('/notice')}>
-                <span className={`icon notice ${noticeNew ? "new" : ""}`}></span>
+              <div className='myDataList' onClick={() => {
+                dispatch(setNoticeTab("공지사항"))
+                history.push('/notice')
+              }}>
+                <span className={`icon notice ${noticeNew ? "new" : ""}`}/>
                 <span className="myDataType">공지사항</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/customer')}>
-                <span className='icon customer'></span>
+                <span className='icon customer'/>
                 <span className="myDataType">고객센터</span>
               </div>
             </div>
@@ -266,7 +270,7 @@ const Remypage = () => {
                   <p>{profile?.expRate}%</p>
                 </div>
                 <div className="levelGauge">
-                  <span className="gaugeBar" style={{width:`${profile?.expRate}%`}}></span>
+                  <span className="gaugeBar" style={{width:`${profile?.expRate}%`}}/>
                 </div>
                 <div className="exp">다음 레벨까지 {profile?.expNext} EXP 남음</div>
                 <SubmitBtn text="확인" onClick={closeLevelPop} />
