@@ -35,8 +35,8 @@ const TeamManager = (props) => {
 
   const [partsName, setPartsName] = useState('');
   const [partsA, setPartsA] = useState(`${IMG_SERVER}/team/parts/M/${props.data.teamInfo.team_medal_code}.png`);  //메달URL
-  const [partsB, setPartsB] = useState(`${IMG_SERVER}/team/parts/B/${props.data.teamInfo.team_edge_code}.png`);  //테두리URL
-  const [partsC, setPartsC] = useState(`${IMG_SERVER}/team/parts/E/${props.data.teamInfo.team_bg_code}.png`);  //배경URL
+  const [partsB, setPartsB] = useState(`${IMG_SERVER}/team/parts/E/${props.data.teamInfo.team_edge_code}.png`);  //테두리URL
+  const [partsC, setPartsC] = useState(`${IMG_SERVER}/team/parts/B/${props.data.teamInfo.team_bg_code}.png`);  //배경URL
   const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
   const [confirmPop, setConfirmPop] = useState(false);
   const [teamName,setTeamName]=useState(props.data.teamInfo.team_name); //팀 이름

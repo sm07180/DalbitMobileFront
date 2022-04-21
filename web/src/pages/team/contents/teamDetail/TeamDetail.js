@@ -77,7 +77,6 @@ const TeamDetail = (props) => {
   const teamInfoApi =()=>{
     Api.getTeamDetailSel({teamNo:teamNo,memNo:memberRdx.memNo,reqSlct:'r'}).then(res =>{
       if(res.code === "00000") {
-        console.log(`getTeamDetailSel`, res.data)
         setTeamMemList(res.data.teamMemList);
         setTeamInfo(res.data.teamInfo);
         setTeamBageList(res.data.badgeList);
@@ -305,8 +304,8 @@ const TeamDetail = (props) => {
         <section className="teamInfo">
           <div className="teamStatus">
             <div className="teamSymbol">
-              {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_bg_code}.png`} />}
-              {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_edge_code}.png`} />}
+              {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_bg_code}.png`} />}
+              {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_edge_code}.png`} />}
               {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
             </div>
             <div className="listContent">

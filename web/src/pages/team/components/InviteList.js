@@ -84,8 +84,8 @@ const InviteList = (props) => {
             <div className="listWrap" key={index}>
               <div className="listRow">
                 <div className="photo">
-                  <img src={`${IMG_SERVER}/team/parts/E/${data.team_bg_code}.png`} alt="" />
-                  <img src={`${IMG_SERVER}/team/parts/B/${data.team_edge_code}.png`} alt="" />
+                  <img src={`${IMG_SERVER}/team/parts/B/${data.team_bg_code}.png`} alt="" />
+                  <img src={`${IMG_SERVER}/team/parts/E/${data.team_edge_code}.png`} alt="" />
                   <img src={`${IMG_SERVER}/team/parts/M/${data.team_medal_code}.png`} alt="" />
                 </div>
                 <div className="listContent">

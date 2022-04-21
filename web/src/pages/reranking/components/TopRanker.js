@@ -260,8 +260,8 @@ const TopRanker = (props) => {
                       <div className="listColumn" data-type={index}>
                         <div className="teamWrapBox">
                           <div className="teamSymbol">
-                            <img src={`${IMG_SERVER}/team/parts/E/${value.team_bg_code}.png`} alt="" />
-                            <img src={`${IMG_SERVER}/team/parts/B/${value.team_edge_code}.png`} alt="" />
+                            <img src={`${IMG_SERVER}/team/parts/B/${value.team_bg_code}.png`} alt="" />
+                            <img src={`${IMG_SERVER}/team/parts/E/${value.team_edge_code}.png`} alt="" />
                             <img src={`${IMG_SERVER}/team/parts/M/${value.team_medal_code}.png`} alt="" />
                           </div>
                           <div className={`rankerRank index${index + 1}`}></div>
