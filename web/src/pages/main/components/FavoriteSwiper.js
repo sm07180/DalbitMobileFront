@@ -68,7 +68,7 @@ const SwiperList = (props) => {
         return (
           <div key={index}>
             <div className="listColumn">
-              {item.roomNo !== "0" ?
+              {item.roomNo !== "" ?
                 <div className="photo" onClick={() => {goLive(item)}}>
                   <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
                     : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
