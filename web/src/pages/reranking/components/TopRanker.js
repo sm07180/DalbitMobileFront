@@ -256,7 +256,7 @@ const TopRanker = (props) => {
               <div className='topContent'>
                 {list.map((value,index) => {
                   if (value.isEmpty) {
-                    return (<div className="ranker none" key={index} />);
+                    return (<div className="ranker" key={index}><div className="listColumn none" data-type={index}/></div>);
                   }
                   return (
                     <div className="ranker" key={index} data-team-no={value.team_no} onClick={goTeamDetailPage}>
