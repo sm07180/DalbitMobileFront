@@ -827,7 +827,10 @@ export class ChatSocketHandler {
                     // }
                   }
                   case "reqGiftImg": {
-                    const { items, levelUp, boost } = this.splashData;
+                    let { items, levelUp, boost } = this.splashData;
+                    // items : 시그니처 아이템 추가
+                    items = items.concat(this.roomInfo?.signatureItem?.items || []);
+
                     const { user, reqGiftImg, recvMsg } = data;
                     const { nk, image, memNo, auth, fan } = user;
                     const {

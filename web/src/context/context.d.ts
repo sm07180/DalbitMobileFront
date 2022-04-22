@@ -213,6 +213,10 @@ type roomInfoType = {
   eventInfoMap?: { imgURL ?: string; pageLink ?: string; positionX ?: number; positionY ?: number; visible : boolean;} | null;
 
   isListenerUpdate: boolean
+
+  // 시그니처 아이템
+  signatureItem: any | null;
+
   // state: boolean;
 
   // bjMemNo: string;

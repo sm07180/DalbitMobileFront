@@ -57,11 +57,19 @@ export default function SendGift(props: {
 
   const common = useMemo(() => {
     if (splashData !== null) {
-      return splashData;
+      // 시그니처 아이템 추가하기 ( 탭, 아이템 )
+      const itemCategories = roomInfo?.signatureItem?.itemCategories || [];
+      const items = roomInfo?.signatureItem?.items || [];
+
+      return {
+        ...splashData,
+        itemCategories: splashData.itemCategories.concat(itemCategories),
+        items: splashData.items.concat(items)
+      };
     } else {
       return {};
     }
-  }, [splashData]);
+  }, [splashData, roomInfo]);
 
   const profile = useMemo(() => {
     if (globalState.userProfile !== null) {
@@ -315,6 +323,7 @@ export default function SendGift(props: {
     try {
       if (giftListScroll?.active && itemListRef.current && itemListRef.current[giftListScroll?.itemNo]) {
         const innerRef = scrollInnerRef.current?.getInnerRef();
+        console.log("@@@@", giftListScroll)
         innerRef?.scrollTo(0, itemListRef.current[giftListScroll?.itemNo]?.offsetTop);
 
         giftListScroll = {active: false, itemNo: ''};
