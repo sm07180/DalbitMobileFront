@@ -12,7 +12,6 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide';
 import LayerPop from 'components/ui/layerPopup/LayerPopup';
 // components
-import BadgeLive from '../../components/BadgeLive';
 import Secession from '../../components/popup/Secession';
 import Invite from '../../components/popup/Invite';
 import Benefits from '../../components/popup/Benefits';
@@ -23,9 +22,9 @@ import {setSlidePopupOpen} from "redux/actions/common";
 import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
 import Api from "context/api";
-import member from "redux/reducers/member";
-import InvitePop from "../../components/popup/Invite";
 import photoCommon from "common/utility/photoCommon";
+import {Hybrid, isHybrid} from "context/hybrid";
+import qs from 'query-string'
 const TeamDetail = (props) => {
   const history = useHistory();
   const context = useContext(Context);
@@ -34,6 +33,7 @@ const TeamDetail = (props) => {
   const teamNo = props.match.params.teamNo;
   const popup = useSelector(state => state.popup);
   const memberRdx = useSelector((state)=> state.member);
+  const {webview} = qs.parse(location.search);
 
   const [moreShow, setMoreShow] = useState(false);
   const [benefitsPop, setBenefitsPop] = useState(false);
@@ -47,9 +47,10 @@ const TeamDetail = (props) => {
   const [statChk, setStatChk]=useState(""); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [checkIn,setCheckIn]=useState(""); // 출석 상태 여부
   const [teamInsChk ,setTeamInsChk]=useState(""); // 가입신청 상태 체크
-  const [btnChk, setBtnChk]=useState(false);
-  const [textAreaOpen, setTextAreaOpen]=useState(false);
-  const [textAreaOpenBtn, setTextAreaOpenBtn]=useState(false);
+  const [textAreaOpen, setTextAreaOpen]=useState(false); // 팀소개 오픈 체크 용
+  const [textAreaOpenBtn, setTextAreaOpenBtn]=useState(false); // 팀소개 버튼 용
+  const [btnChk, setBtnChk]=useState(false); // 버튼 액션 감지 용
+  const [teamChk , setTeamChk]=useState(false) //팀 가입신청이 가능한지 체크용
 
 
   // 팀정보 호출
@@ -61,6 +62,7 @@ const TeamDetail = (props) => {
       }else{
         teamInfoApi();
         teamRequestApi();
+        teamCheck();
       }
     }
   },[])
@@ -73,7 +75,17 @@ const TeamDetail = (props) => {
     }
   },[btnChk,checkIn])
 
-
+//팀 가입가능 여부 체크
+  const teamCheck = ()=>{
+    Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
+      console.log(res)
+      if(res.data === 1 || res.data === -3){
+        setTeamChk(true)
+      }else{
+        setTeamChk(false)
+      }
+    })
+  }
 
 
 // 팀 정보
@@ -106,6 +118,9 @@ const TeamDetail = (props) => {
   const checkInApi=()=>{
     Api.getTeamAttendanceIns({memNo:memberRdx.memNo}).then(res =>{
       if(res.code === "00000"){
+        context.action.toast({
+          msg: '활동배지 출석점수 +1!'
+        })
         setCheckIn('y');
       }else {
         context.action.toast({
@@ -126,6 +141,9 @@ const TeamDetail = (props) => {
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
         setTeamInsChk('y');
+        context.action.toast({
+          msg: "가입신청이 되었습니다."
+        })
       }else {
         context.action.toast({
           msg: res.message
@@ -152,7 +170,8 @@ const TeamDetail = (props) => {
 
   // 탈퇴 팝업
   const clickSecession = (masterNo) => {
-    if (statChk === 'm' && teamMemList.length > 0) {
+    console.log(teamMemList.length)
+    if (statChk === 'm' && teamMemList.length > 1) {
       dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     } else {
       context.action.confirm({
@@ -165,22 +184,40 @@ const TeamDetail = (props) => {
           right: '완료'
         },
         callback: () => {
-          let param = {
-            teamNo:teamNo,
-            delSclt:"t",
-            tmMemNo:memberRdx.memNo,
-            masterMemNo:masterNo,
-            chrgrName:""
-          }
-          Api.getTeamMemDel(param).then(res=>{
-            if(res.code === "00000"){
-              history.replace("myPage");
-            }else {
-              context.action.toast({
-                msg: res.message
-              })
+          if (statChk === 'm'){
+            let param = {
+              teamNo:teamNo,
+              masterMemNo:memberRdx.memNo,
+              chrgrName:"",
             }
-          })
+            Api.getTeamDel(param).then(res=>{
+              if(res.code === "00000"){
+                history.replace(`/mypage`)
+              }else {
+                context.action.toast({
+                  msg: res.message
+                })
+              }
+            })
+
+          }else{
+            let param = {
+              teamNo:teamNo,
+              delSclt:"t",
+              tmMemNo:memberRdx.memNo,
+              masterMemNo:masterNo,
+              chrgrName:""
+            }
+            Api.getTeamMemDel(param).then(res=>{
+              if(res.code === "00000"){
+                history.replace("/myPage");
+              }else {
+                context.action.toast({
+                  msg: res.message
+                })
+              }
+            })
+          }
         }
       });
     }
@@ -299,10 +336,18 @@ const TeamDetail = (props) => {
   useEffect(() => {
     textAreaInfo();
   },[getConvertBrTxt])
+
+  const goBack = () => {
+    if(isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      history.goBack();
+    }
+  };
   // 페이지 시작
   return (
     <div id="teamDetail">
-      <Header title="팀" type="back">
+      <Header title="팀" type="back" backEvent={goBack}>
         <div className="buttonGroup">
           {(statChk === 'm' ||statChk === 't') &&
           <div className="moreBtn" onClick={clickMoreBtn}>
@@ -435,8 +480,10 @@ const TeamDetail = (props) => {
         </CntTitle>
           <section className="joinList">
             {teamRequestSel.length > 0 && teamRequestSel.map((data,index)=>{
+              let photoUrl = data.tm_image_profile
+              let photoServer = "https://devphoto.dalbitlive.com";
               return(
-                <ListRow photo="" photoClick={()=>goProfile(data.tm_mem_no)} key={index}>
+                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>goProfile(data.tm_mem_no)} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -464,9 +511,9 @@ const TeamDetail = (props) => {
           <SubmitBtn text="출석체크"/>
         </section>
         }
-        {(teamMemList.length <5 && statChk === 'n' && teamInfo.req_mem_yn === 'y') &&
+        {(teamMemList.length <5 && statChk === 'n' && teamInfo.req_mem_yn === 'y' && teamChk) &&
           <section className="buttonWrap" onClick={()=>teamMemReqIns('r',memberRdx.memNo)}>
-            <SubmitBtn text="가입신청" state={(teamInsChk ===-4 || teamInsChk==='y') ? "disabled":"" } />
+            <SubmitBtn text={(teamInsChk ===-4 || teamInsChk==='y') ?"가입신청 완료" : "가입신청"} state={(teamInsChk ===-4 || teamInsChk==='y') ? "disabled":"" } />
           </section>
         }
 
@@ -476,7 +523,7 @@ const TeamDetail = (props) => {
       {popup.slidePopup &&
         <PopSlide title="다음 팀장은 누구인가요?">
           <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}
-                     context={context} memNo={memberRdx.memNo} teamNo={teamNo} histor={history}
+                     context={context} memNo={memberRdx.memNo} teamNo={teamNo} history={history}
           />
         </PopSlide>
       }

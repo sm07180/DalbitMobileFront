@@ -59,7 +59,7 @@ const TeamManager = (props) => {
   }, [agree])
 
   const updateApi=()=>{
-
+    console.log("???")
     let equData = {
       bgCode:bgCode,
       medalCode:medalCode,
@@ -79,8 +79,12 @@ const TeamManager = (props) => {
     }
 
     Api.getTeamUpd(param).then((res)=>{
-      if(res.code==="00000"){
+      if(res.code==="00000") {
         history.replace(`/team/detail/${teamNo}`)
+      }else{
+        context.action.toast({
+          msg: res.message
+        })
       }
     })
 
@@ -194,7 +198,7 @@ const TeamManager = (props) => {
           <div>
             팀 심볼과 이름은 생성 후 <strong>72시간 이내 최대 1번</strong>만 수정할 수 있습니다.
             {
-              timer.asMilliseconds() > 0 &&
+              (timer.asMilliseconds() > 0 && props.data.editChk) &&
               <span>
                 남은시간 {remainHours > 0 && remainHours + '시간'} {timer.minutes() > 0 && timer.minutes() + '분'}
               </span>

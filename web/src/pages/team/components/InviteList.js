@@ -109,11 +109,10 @@ const InviteList = (props) => {
         :
         <div className="listNone">
           아직 나를 초대한 팀이 없어요.<br/>어떤 팀이 있는지 볼까요?
-          <button>팀 랭킹 보기</button>
+          <button onClick={()=>{history.push("/rankDetail/TEAM")}}>팀 랭킹 보기</button>
         </div>
       }
     </>
   )
 }
-
 export default InviteList;

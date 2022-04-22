@@ -40,7 +40,7 @@ const MyRanking = (props) => {
       </li>
       <li data-target="TEAM" onClick={goRankingDetailPage}>
         <p className='rankCategory'>TEAM</p>
-        <p className='rankData'>{data.cupid !== 0 ? data.cupid : "-"}</p>
+        <p className='rankData'>{data.team !== 0 ? data.team : "-"}</p>
         <p className='rankDaily'>weekly</p>
       </li>
     </ul>

@@ -16,6 +16,7 @@ import {useSelector} from "react-redux";
 
 const TeamPage = () => {
   const history = useHistory();
+  const context = useContext(Context);
   const [listCnt,setListCnt]=useState(0);
   const [list,setList]=useState([])
   const [invitationChk , setInvitationChk]=useState(false);
@@ -24,13 +25,16 @@ const TeamPage = () => {
   useEffect(()=>{
 
     if(invitationChk===false){
+      invitationList()
+      listCheckApi()
       Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-        console.log("팀페이지",res)
-        if(res.data !== 1){
+        if(res.data === -1){
+          context.action.toast({
+            msg: res.message
+          })
           history.push('/myPage')
         }else{
-          invitationList()
-          listCheckApi()
+
         }
       })
 
@@ -51,11 +55,12 @@ const TeamPage = () => {
     }
     Api.getTeamInvitationSel(param).then((res) => {
       if (res.code === "00000") {
-        console.log("초대리스트",res.data.list)
         setListCnt(res.data.listCnt)
         setList(res.data.list)
       }else{
-        console.log("데이터 호출안됨");
+        context.action.toast({
+          msg: res.message
+        })
       }
     })
   }
@@ -69,7 +74,9 @@ const TeamPage = () => {
       if (res.code === "00000") {
         setInvitationChk(true);
       }else{
-        console.log("데이터 호출안됨");
+        context.action.toast({
+          msg: res.message
+        })
       }
     })
   }

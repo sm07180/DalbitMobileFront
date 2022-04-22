@@ -215,6 +215,9 @@
           height:128px;
           margin:0 auto;
           cursor: pointer;
+          &.none {
+            display: none;
+          }
           .teamWrapBox {
             position:relative;
             margin-top:auto;

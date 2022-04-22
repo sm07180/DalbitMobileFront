@@ -96,11 +96,13 @@ const RankListPage = (props) => {
   };
 
   // 이전 회차 날짜 파라미터 구하기
-  const getPreDate = () => {
+  const getPreDate = (type) => {
     let result = '';
 
+    let rankType = type || pageInfo.rankType;
+
     //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
-    switch (pageInfo.rankType) {
+    switch (rankType) {
       case 1:
         result = moment().subtract(1, 'd').format('yyyy-MM-DD'); // 어제 날짜
         break;
@@ -122,11 +124,13 @@ const RankListPage = (props) => {
   }
   
   // 오늘 회차 날짜 데이터 구하기
-  const getCurrentDate = () => {
+  const getCurrentDate = (type) => {
     let result = '';
 
+    let rankType = type || pageInfo.rankType;
+
     //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
-    switch (pageInfo.rankType) {
+    switch (type) {
       case 1:
         result = moment().format('yyyy-MM-DD'); // 오늘 날짜
         break;
@@ -180,8 +184,8 @@ const RankListPage = (props) => {
 
   // TEAM 랭킹 정보 가져오기
   const getTeamRankList = async () => {
-    const today = getCurrentDate();
-    const preDate = getPreDate();
+    const today = getCurrentDate(2);
+    const preDate = getPreDate(2);
     const params = {
       tDate: today,
       memNo: 0,
@@ -197,7 +201,7 @@ const RankListPage = (props) => {
       setRankInfo({list: data.list.slice(3), paging: { total: data.listCnt }});
     }
 
-    if (prevRank.code === '00000') {
+    if (prevRank.code === '00000' && prevRank.data.list > 0) {
       const { data } = prevRank;
       topRankList.push(addEmptyRanker(data.list));
     }
