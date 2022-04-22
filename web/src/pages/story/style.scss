@@ -24,6 +24,7 @@
           @include photoStyle(40px, 40px, 50%);
           margin: 5px 6px 0px 0px;
           overflow: hidden;
+          cursor: pointer;
           img {
             width: 100%;
           }
@@ -42,14 +43,42 @@
             border-bottom: 1px solid #DFDFDF;
             .infoWrap {
               flex: 1;
+              .userNick {
+                position: relative;
+                @include font(13px, $Medium, #303030);
+                margin-bottom: 4px;
+                cursor: pointer;
+                &::before {
+                  content: "from.";
+                  margin-right: 4px;
+                  @include font(13px, 500, #ACACAC);
+                  font-family: "Roboto";
+                  font-style: italic;
+                }
+              }
+              .writeTime {
+                @include font(12px, 300, #707070);
+              }
             }
             .delBtnWrap {
               flex: none;
+              .delBtn {
+                @include flex(center, center);
+                width: 63px; height: 30px;
+                border: 1px solid #D9D9DB;
+                border-radius: 100px;
+                @include font(12px, $Medium, #666666);
+                background-color: #FFF;
+                box-sizing: border-box;
+                cursor: pointer;
+              }
             }
           }
           .messageWrap {
             padding-top: 16px;
-
+            @include font(13px, $Regular, #202020);
+            line-height: 18px;
+            white-space: pre-wrap;
           }
         }
       }
