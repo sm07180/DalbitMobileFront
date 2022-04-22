@@ -17,14 +17,39 @@
       .storyList {
         @include flex(flex-start);
         width: 100%;
+        margin-bottom: 16px;
         .thumbnail {
           flex: none;
           display: inline-block;
-          width: 40px; height: 40px;
-          border-radius: 50%;
+          @include photoStyle(40px, 40px, 50%);
+          margin: 5px 6px 0px 0px;
           overflow: hidden;
           img {
             width: 100%;
+          }
+        }
+        .listContent {
+          flex: 1;
+          @include flex($fd: column);
+          width: 100%;
+          padding: 16px 20px;
+          border-radius: 5px;
+          background-color: #F6F6F6;
+          box-sizing: border-box;
+          .dataInfo {
+            @include flex(center);
+            padding-bottom: 8px;
+            border-bottom: 1px solid #DFDFDF;
+            .infoWrap {
+              flex: 1;
+            }
+            .delBtnWrap {
+              flex: none;
+            }
+          }
+          .messageWrap {
+            padding-top: 16px;
+
           }
         }
       }
