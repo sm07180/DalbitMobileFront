@@ -6,7 +6,10 @@ import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
 import {Context} from "context";
-import {RoomValidateFromProfile} from "common/audio/clip_func";
+import {
+  RoomValidateFromListenerFollow,
+  RoomValidateFromProfile
+} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
@@ -39,18 +42,19 @@ const TopSwiper = (props) => {
     }
   }
 
-  const roomJoinHandler = () => {
-    const params = {
-      roomNo: data.roomNo,
-      memNo : data.memNo,
-      history,
-      context,
-      nickNm: data.nickNm,
-      listenRoomNo: data.listenRoomNo,
-      webview
-    }
-      RoomValidateFromProfile(params);
-  }
+  // const roomJoinHandler = () => {
+  //   const params = {
+  //     roomNo: data.roomNo,
+  //     memNo : data.memNo,
+  //     history,
+  //     context,
+  //     nickNm: data.nickNm,
+  //     listenRoomNo: data.listenRoomNo,
+  //     webview
+  //   }
+  //     RoomValidateFromProfile(params);
+  //   RoomValidateFromClipMemNo(item.listenRoomNo, item.memNo,context, locationStateHistory, item.nickNm);
+  // }
 
 
   /* 스페셜DJ 약력 팝업 생성 */
@@ -95,14 +99,12 @@ const TopSwiper = (props) => {
       }
       {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
-        {data.specialDjCnt > 0 && type === 'profile' &&
-          <div className={`specialBdg ${data.isSpecial ? 'isSpecial': ''}`} onClick={popupOpen}>
-            <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
-            <span>{data.specialDjCnt}회</span>
-          </div>
-        }
-        {type === 'profile' && webview === '' && data.roomNo !== "" &&
-          <div className='badgeLive' onClick={roomJoinHandler}>                                    
+        {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
+          <div className='badgeLive' onClick={()=>{
+            RoomValidateFromProfile({
+              memNo:data.memNo, history, context, nickNm:data.nickNm, roomNo:data.roomNo, webview
+            });
+          }}>
             <span className='equalizer'>
               <Lottie
                 options={{
@@ -115,9 +117,13 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {/* {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
-          <div className='badgeListener' onClick={roomJoinHandler}>                     
-            <span className='headset'>                          
+        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
+          <div className='badgeListener' onClick={()=>{
+            RoomValidateFromListenerFollow({
+              memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+            });
+          }}>
+            <span className='headset'>
               <Lottie
                   options={{
                     loop: true,
@@ -125,10 +131,10 @@ const TopSwiper = (props) => {
                     path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                   }}
                 />
-            </span>      
+            </span>
            <span className='ListenerText'>LIVE</span>
          </div>
-        } */}
+        }
       </div>
       }
     </>
@@ -136,7 +142,7 @@ const TopSwiper = (props) => {
 }
 TopSwiper.defaultProps = {
   openShowSlide: () => {},
-  disabledBadge: false,  // 뱃지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
+  disabledBadge: false,  // 배지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
   swiperParam: {} // 스와이퍼 추가옵션이 필요한 경우
 }
 export default TopSwiper;

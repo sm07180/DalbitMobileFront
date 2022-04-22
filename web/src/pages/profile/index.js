@@ -932,13 +932,6 @@ const ProfilePage = () => {
         </PopSlide>
       }
 
-      {/* 선물하기 */}
-      {/* {popup.presentPopup &&
-        <PopSlide>
-          <Present profileData={profileData} closePopupAction={closePopupAction} />
-        </PopSlide>
-      } */}
-
       {/* 좋아요 -> ? 아이콘 */}
       {popup.questionMarkPopup && <ProfileNoticePop />}
 

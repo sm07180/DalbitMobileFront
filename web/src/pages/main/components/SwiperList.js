@@ -7,7 +7,9 @@ import Lottie from 'react-lottie'
 // components
 // css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
+} from "common/audio/clip_func";
 import {Context, GlobalContext} from "context";
 import {useSelector} from "react-redux";
 import {IMG_SERVER} from 'context/config'
@@ -19,6 +21,7 @@ const SwiperList = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
+  const memberRdx = useSelector(({member})=> member);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   let locationStateHistory = useHistory();
 
@@ -71,7 +74,7 @@ const SwiperList = (props) => {
     if(common.isRefresh && data.length > 0) { // refresh 될때
       swiperRefresh();
     }
-  }, [common.isRefresh]);    
+  }, [common.isRefresh]);
 
   return (
     <>
@@ -86,19 +89,36 @@ const SwiperList = (props) => {
                   : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
                 {item.rank && <div className={`rank-${item.rank}`}></div>}
                 {
-                  item.roomNo &&
+                  !item.listenRoomNo && item.roomNo &&
                     <div className='livetag' onClick={(e) => {
                       e.stopPropagation();
                       RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, locationStateHistory, item.nickNm);
                     }}>
-                       <Lottie
-                          options={{
-                            loop: true,
-                            autoPlay: true,
-                            path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
-                          }}
-                        />
+                      <Lottie
+                        options={{
+                          loop: true,
+                          autoPlay: true,
+                          path: `${IMG_SERVER}/dalla/ani/live_icon_ranking.json`
+                        }}
+                      />
                     </div>
+                }
+                {
+                  !item.roomNo && item.listenRoomNo && item.listenOpen !== 2 &&
+                  <div className='listenertag' onClick={(e) => {
+                    e.stopPropagation();
+                    RoomValidateFromListenerFollow({
+                      memNo:item.memNo, history:locationStateHistory, context, nickNm:item.nickNm, listenRoomNo:item.listenRoomNo
+                    });
+                  }}>
+                    <Lottie
+                      options={{
+                        loop: true,
+                        autoPlay: true,
+                        path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
+                      }}
+                    />
+                  </div>
                 }
                 {item.type_media === 'v' && <div className="video" />}
               </div>

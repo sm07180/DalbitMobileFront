@@ -19,7 +19,7 @@ const TeamBadge = (props) => {
   const [statChk, setStatChk]=useState(props.data.statChk); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [changePage,setChangePage]=useState(false);
   const [updBadgeList,setUpdBadgeList]=useState(props.data.list);
-  const [getCnt,setGetCnt]=useState(props.data.cnt);  // 활동뱃지 얻은 갯수
+  const [getCnt,setGetCnt]=useState(props.data.cnt);  // 활동배지 얻은 갯수
   const [badgeData, setBadgeData]=useState({})
   const teamNo = props.match.params.teamNo;
 
@@ -106,7 +106,7 @@ const TeamBadge = (props) => {
   // 페이지 시작
   return (
     <div id="teamBadge">
-      <Header title="뱃지리스트" type="back" />
+      <Header title="배지리스트" type="back" />
       <CntWrapper>
         {(statChk === 'm' && !changePage) ?
           <div className="text">
@@ -131,9 +131,9 @@ const TeamBadge = (props) => {
           <></>
         }
         {changePage ?
-        <div className="title">대표 뱃지<span><strong>0</strong>/4</span></div>
+        <div className="title">대표 배지<span><strong>0</strong>/4</span></div>
           :
-          <div className="title">활동 뱃지<span><strong>{getCnt}</strong></span></div>
+          <div className="title">활동 배지<span><strong>{getCnt}</strong></span></div>
         }
 
         {

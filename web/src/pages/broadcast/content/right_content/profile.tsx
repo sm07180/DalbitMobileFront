@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 
 // Api
 import {
-  deleteFan,
-  getBroadcastMemberInfo,
-  postAddFan,
-  broadManagerSet,
-  broadManagerDelete,
   broadKickOut,
+  broadManagerDelete,
+  broadManagerSet,
+  getBroadcastMemberInfo,
   MypageBlackListAdd,
   postBroadFanAdd,
   postBroadFanRemove,
@@ -16,17 +14,17 @@ import {
 
 // lib
 import Swiper from "react-id-swiper";
-import { CHAT_CONFIG, IMG_SERVER } from "constant/define";
+import {CHAT_CONFIG} from "constant/define";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
-import { printNumber, addComma } from "lib/common_fn";
-import { mailBoxJoin } from "common/mailbox/mail_func";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GlobalContext} from "context";
+import {MailboxContext} from "context/mailbox_ctx";
+import {addComma, printNumber} from "lib/common_fn";
+import {mailBoxJoin} from "common/mailbox/mail_func";
 // constant
-import { tabType } from "pages/broadcast/constant";
-import { AuthType } from "constant";
-import { MANAGER_TYPE } from "./constant";
+import {tabType} from "pages/broadcast/constant";
+import {AuthType} from "constant";
+import {MANAGER_TYPE} from "./constant";
 import BadgeList from "../../../../common/badge_list";
 import 'asset/scss/module/mypage/index.scss'
 
@@ -257,13 +255,6 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
             viewSpecialList(profileData.memNo);
           }}
         >
-          <div className="specialIcon">
-            {profileData.specialDjCnt && profileData.specialDjCnt > 0 ? (
-              <em className="specialIcon__count">{profileData.specialDjCnt}</em>
-            ) : (
-              <></>
-            )}
-          </div>
         </div>
       );
     } else if (profileData.isNew === true) {
@@ -428,7 +419,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
   useEffect(() => {
     if (profileData !== null) {
-      /* 좌측 프로필 탭 - 스와이퍼 뱃지 리스트의 text값이 ''이면 제외 */
+      /* 좌측 프로필 탭 - 스와이퍼 배지 리스트의 text값이 ''이면 제외 */
       setBadgeList(profileData.commonBadgeList.concat([]).filter((v) => v?.text !== ''));
       let expCal = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
       let expPerc = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
