@@ -275,19 +275,14 @@ const RankListPage = (props) => {
         </div>
       </Header>
       <div id="rankCategory">
-        <div className={`rankCategoryList ${tabType === "DJ" ? "active" : ""}`} data-target-tab="DJ" onClick={changeTab}>DJ
-          <div className="underline" style={{left: 'auto'}}/>
+        <div className="rankCategoryWrapbox">
+          <div className={`rankCategoryList ${tabType === "DJ" ? "active" : ""}`} data-target-tab="DJ" onClick={changeTab}>DJ</div>
+          <div className={`rankCategoryList ${tabType === "FAN" ? "active" : ""}`} data-target-tab="FAN" onClick={changeTab}>FAN</div>
+          <div className={`rankCategoryList ${tabType === "CUPID" ? "active" : ""}`} data-target-tab="CUPID" onClick={changeTab}>CUPID</div>
+          <div className={`rankCategoryList ${tabType === "TEAM" ? "active" : ""}`} data-target-tab="TEAM" onClick={changeTab}>TEAM</div>
+          <div className="wrapboxBg"/>
+          <div className="underline"/>
         </div>
-        <div className={`rankCategoryList ${tabType === "FAN" ? "active" : ""}`} data-target-tab="FAN" onClick={changeTab}>FAN
-          <div className="underline" style={{left: 'auto'}}/>
-        </div>
-        <div className={`rankCategoryList ${tabType === "CUPID" ? "active" : ""}`} data-target-tab="CUPID" onClick={changeTab}>CUPID
-          <div className="underline" style={{left: 'auto'}}/>
-        </div>
-        <div className={`rankCategoryList ${tabType === "TEAM" ? "active" : ""}`} data-target-tab="TEAM" onClick={changeTab}>TEAM
-          <div className="underline" style={{left: 'auto'}}/>
-        </div>
-
       </div>
       <div className='tabWrap'>
         <ul className="tabmenu">

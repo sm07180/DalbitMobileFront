@@ -55,7 +55,7 @@
             margin-left:4px;
           }
           .iconPoint {
-            width:16px;height:16px;
+            width:18px;height:18px;
             @include BGIMG("team/ico_teampoint.png");
           }
           .pointEx {
@@ -105,16 +105,17 @@
         @include font(13px,$Regular,#303030);
         &.close {
           @include fontLineCut;
+          max-height:36px;
         }
         &.open {
-          @include fontLineCut(5);
+          max-height:100%;
         }
       }
       .arrow {
         flex-shrink:0;
         display:inline-block;
-        width:30px;
-        height:30px;
+        width:20px;
+        height:20px;
         padding:0 4px 0 8px;
         margin-left:auto;
         opacity: .7;
@@ -136,15 +137,15 @@
       }
     }
   }
-  .badgeList {
+  .badgeWrap {
     @include flex(center);
     margin-top:12px;
     margin-bottom:24px;
-    .badgeItem {
+    .badgeList {
       width:74px;
       height:74px;
       background-color:white;
-      + .badgeItem {
+      + .badgeList {
         margin-left:10px;
       }
       img {

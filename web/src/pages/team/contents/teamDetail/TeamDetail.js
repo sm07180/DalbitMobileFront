@@ -1,4 +1,4 @@
-import React, {useContext, useState,useEffect} from 'react';
+import React, {useContext, useState, useEffect, useRef} from 'react';
 import {useHistory} from "react-router-dom";
 import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
@@ -28,6 +28,7 @@ import qs from 'query-string'
 const TeamDetail = (props) => {
   const history = useHistory();
   const context = useContext(Context);
+  const teamIntroRef = useRef();
   const dispatch = useDispatch();
   const teamNo = props.match.params.teamNo;
   const popup = useSelector(state => state.popup);
@@ -46,6 +47,8 @@ const TeamDetail = (props) => {
   const [statChk, setStatChk]=useState(""); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]
   const [checkIn,setCheckIn]=useState(""); // 출석 상태 여부
   const [teamInsChk ,setTeamInsChk]=useState(""); // 가입신청 상태 체크
+  const [textAreaOpen, setTextAreaOpen]=useState(false); // 팀소개 오픈 체크 용
+  const [textAreaOpenBtn, setTextAreaOpenBtn]=useState(false); // 팀소개 버튼 용
   const [btnChk, setBtnChk]=useState(false); // 버튼 액션 감지 용
   const [teamChk , setTeamChk]=useState(false) //팀 가입신청이 가능한지 체크용
 
@@ -315,7 +318,24 @@ const TeamDetail = (props) => {
     return txt.split('\n').map( (line, index) => {
       return (<React.Fragment key={index}>{line}{lastBrYn === 'y' && <br />}</React.Fragment>)
     })
+  };
+
+  const textAreaInfo = () => {
+    const teamIntroNode = teamIntroRef.current;
+
+    console.log(teamIntroNode, teamIntroNode.clientHeight);
+
+    if (teamIntroNode.clientHeight > 36) {
+      setTextAreaOpenBtn(true)
+      console.log(1);
+    }
   }
+  const textAreaOpenFnc = () => {
+    setTextAreaOpen(!textAreaOpen)
+  }
+  useEffect(() => {
+    textAreaInfo();
+  },[getConvertBrTxt])
 
   const goBack = () => {
     if(isHybrid() && webview && webview === 'new') {
@@ -388,14 +408,16 @@ const TeamDetail = (props) => {
               </strong>위
             </div>
           </div>
-          <div className="teamIntro">
-            <span className={`text ${true ? 'open' : 'close'}`}>
-             {getConvertBrTxt(teamInfo.team_conts && teamInfo.team_conts)}
-            </span>
-            <span className="arrow">
-              <img src={`${IMG_SERVER}/common/arrow/grayArrow-${true ? 'up' : 'down'}.png`} alt="" />
-            </span>
-          </div>
+            <div className="teamIntro">
+              <span className={`text ${!textAreaOpenBtn ? '' : textAreaOpen ? 'open' : 'close'}`} ref={teamIntroRef}>
+              {getConvertBrTxt(teamInfo.team_conts && teamInfo.team_conts)}
+              </span>
+              {textAreaOpenBtn &&
+                <span className="arrow" onClick={textAreaOpenFnc}>
+                  <img src={`${IMG_SERVER}/common/arrow/grayArrow-${textAreaOpen ? 'up' : 'down'}.png`} alt="" />
+                </span>
+              }
+            </div>
         </section>
 
           <div className="cntTitle">
@@ -403,12 +425,12 @@ const TeamDetail = (props) => {
             <span className="count"><strong>{totBadgeCnt}</strong></span>
             <button onClick={()=>history.push(`/team/badge/${teamNo}`)}>더보기</button>
           </div>
-        <section className="badgeList">
+        <section className="badgeWrap">
           {
             teamBageList.length > 0 ?
               teamBageList.map((badge, idx)=>{
                 return(
-                  <div className={"badgeItem"} key={idx}>
+                  <div className={"badgeList"} key={idx}>
                     <img src={`${badge.bg_color_url}`} alt={badge.bg_name} />
                   </div>
                 )

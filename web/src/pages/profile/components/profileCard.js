@@ -9,10 +9,10 @@ import './profileCard.scss'
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStar, openPopLike, fanToggle, popup} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStar, setSlidePopNo, openPopLike, fanToggle, popup} = props
   const dispatch = useDispatch();
 
   /* fan toggle 데이터 변경 */
@@ -30,8 +30,9 @@ const ProfileCard = (props) => {
   }
 
   const openPresentPop = () => {
-    dispatch(setCommonPopupOpenData({...popup, presentPopup: true}));
-  }
+    dispatch(setSlidePopupOpen());
+    setSlidePopNo("present");
+  };
 
   return (
     <div className="cardWrap">

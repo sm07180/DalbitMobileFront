@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 // global components
 import '../../scss/partsPop.scss';
-import Api from "context/api";
 
 
 const PartsPop = (props) => {

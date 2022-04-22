@@ -9,6 +9,7 @@ import './style.scss';
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
+import MyLevel from "pages/remypage/components/MyLevel";
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide';
 import Report from "./contents/report/Report";
 import Clip from "./contents/clip/clip";
@@ -20,12 +21,10 @@ import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 import {OS_TYPE} from "context/config";
 import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
-import LevelItems from "components/ui/levelItems/LevelItems";
-import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import Notice from "pages/remypage/contents/notice/Notice";
 import {useDispatch, useSelector} from "react-redux";
 import {storeButtonEvent} from "components/ui/header/TitleButton";
-import {setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
 
 // 프로필 폴더에서 가져옴
 import FanStarPopup from "../profile/components/popSlide/FanStarPopup"
@@ -50,6 +49,7 @@ const Remypage = () => {
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
 
+  const [slidePopNo, setSlidePopNo] = useState("");
   const [noticeNew, setNoticeNew] = useState(false);
 
 
@@ -106,14 +106,16 @@ const Remypage = () => {
     e.stopPropagation();
     const {targetType} = e.currentTarget.dataset;
     setOpenFanStarType(targetType)
-    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+    setSlidePopNo("fanStar")
+    dispatch(setSlidePopupOpen());
   }
 
   const openPopLike = (e, tabState) => {
     e.preventDefault();
     e.stopPropagation();
     setLikePopTabState(tabState)
-    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+    setSlidePopNo("like")
+    dispatch(setSlidePopupOpen());
   }
 
   /* 팬 등록 해제 */
@@ -189,13 +191,14 @@ const Remypage = () => {
   const openLevelPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    setSlidePopNo("level");
     dispatch(setSlidePopupOpen());
   }
 
   const closeLevelPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    closePopup(dispatch);
+    dispatch(setSlidePopupClose());
   }
 
   useEffect(() => {
@@ -298,50 +301,36 @@ const Remypage = () => {
           }
           <button className='logout' onClick={logout}>로그아웃</button>
 
-          {commonPopup.commonPopup &&
-            <PopSlide title="내 레벨">
-              <section className="myLevelInfo">
-                <div className="infoItem">
-                  <LevelItems data={profile?.level} />
-                  <span>{profile?.grade}</span>
-                  <p>{profile?.expRate}%</p>
-                </div>
-                <div className="levelGauge">
-                  <span className="gaugeBar" style={{width:`${profile?.expRate}%`}}></span>
-                </div>
-                <div className="exp">다음 레벨까지 {profile?.expNext} EXP 남음</div>
-                <SubmitBtn text="확인" onClick={closeLevelPop} />
-              </section>
-            </PopSlide>
-          }
-
-          {/* 팬 / 스타 */}
-          {popup.fanStarPopup &&
+          
+          {popup.slidePopup &&
             <PopSlide>
-              <FanStarPopup
-                type={openFanStarType}
-                isMyProfile={true}
-                fanToggle={fanToggle}
-                profileData={profile}
-                goProfile={goProfile}
-                myMemNo={profile.memNo}
-                closePopupAction={closePopupAction} />
-            </PopSlide>
-          }
-
-
-          {/* 좋아요 */}
-          {popup.likePopup &&
-            <PopSlide>
-              <LikePopup
-                isMyProfile={true}
-                fanToggle={fanToggle}
-                profileData={profile}
-                goProfile={goProfile}
-                myMemNo={profile.memNo}
-                likePopTabState={likePopTabState}
-                closePopupAction={closePopupAction}
-              />
+              {// 팬, 스타
+                slidePopNo === "fanStar" ? 
+                <FanStarPopup
+                  type={openFanStarType}
+                  isMyProfile={true}
+                  fanToggle={fanToggle}
+                  profileData={profile}
+                  goProfile={goProfile}
+                  myMemNo={profile.memNo}
+                  closePopupAction={closePopupAction}/>
+              : // 좋아요
+                slidePopNo === "like" ?
+                <LikePopup
+                  isMyProfile={true}
+                  fanToggle={fanToggle}
+                  profileData={profile}
+                  goProfile={goProfile}
+                  myMemNo={profile.memNo}
+                  likePopTabState={likePopTabState}
+                  closePopupAction={closePopupAction}/>
+              : // 좋아요
+                slidePopNo === "level" &&
+                <MyLevel
+                  isMyProfile={true}
+                  profileData={profile}
+                  closePopupAction={closeLevelPop}/>
+              }
             </PopSlide>
           }
         </div>

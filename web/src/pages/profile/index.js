@@ -41,7 +41,7 @@ import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
+import {setSlidePopupOpen, setSlidePopupClose, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
 
@@ -70,6 +70,8 @@ const ProfilePage = () => {
   const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
   const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
   const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
+
+  const [slidePopNo, setSlidePopNo] = useState(""); // 슬라이드 팝업 종류
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -424,18 +426,20 @@ const ProfilePage = () => {
 
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
-    closePopup(dispatch);
+    dispatch(setSlidePopupClose());
   }
 
   /* 헤더 더보기 버튼 클릭 */
   const openMoreList = () => {
     setMorePopHidden(false);
-    dispatch(setCommonPopupOpenData({...popup, headerPopup: true}))
+    dispatch(setSlidePopupOpen())
+    setSlidePopNo("header");
   }
 
   /* 차단/신고 팝업 열기 (param: {memNo: '', memNick: ''}) */
   const openBlockReportPop = (blockReportInfo) => {
-    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
+    dispatch(setSlidePopupOpen())
+    setSlidePopNo("block");
     setBlockReportInfo(blockReportInfo);
   }
 
@@ -481,7 +485,8 @@ const ProfilePage = () => {
   const openPopFanStar = (e) => {
     const {targetType} = e.currentTarget.dataset
     setOpenFanStarType(targetType)
-    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+    setSlidePopNo("fanStar")
+    dispatch(setSlidePopupOpen());
   }
 
   /* 좋아요 슬라이드 팝업 열기/닫기 (tabState는 열고싶은 탭 있을때 파라미터를 넘긴다 탭 순서대로 0부터) */
@@ -489,7 +494,8 @@ const ProfilePage = () => {
     e.preventDefault();
     e.stopPropagation();
     setLikePopTabState(tabState)
-    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+    setSlidePopNo("like")
+    dispatch(setSlidePopupOpen());
   }
 
   /* 메시지 이동 */
@@ -838,7 +844,7 @@ const ProfilePage = () => {
                    webview={webview} type="profile"/>
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle} setSlidePopNo={setSlidePopNo}
                      openPopFanStar={openPopFanStar} openPopLike={openPopLike} popup={popup}
         />
       </section>
@@ -897,53 +903,41 @@ const ProfilePage = () => {
         }
       </section>
 
-      {/* 더보기 */}
-      {popup.headerPopup &&
-        <PopSlide popHidden={morePopHidden}>
+      {/* 슬라이드 팝업 */}
+      {popup.slidePopup &&
+        <PopSlide>
+          {slidePopNo === "header" ?
           <section className='profileMore'>
             <div className="moreList" onClick={goMailAction}>메세지</div>
             {!profileData.isFan && <div className="moreList" onClick={editAlarm}>방송 알림 {profileData.isReceive ? 'OFF' : 'ON'}</div>}
             <div className="moreList"
-                 onClick={() => {
-                   setMorePopHidden(true);
-                   openBlockReportPop({memNo: profileData.memNo, memNick: profileData.nickNm});
-                 }}>차단/신고</div>
+                onClick={() => {
+                  openBlockReportPop({memNo: profileData.memNo, memNick: profileData.nickNm});
+                }}>차단/신고</div>
           </section>
-        </PopSlide>
-      }
-
-      {/* 팬 / 스타 */}
-      {popup.fanStarPopup &&
-        <PopSlide>
+          : slidePopNo === "fanStar" ?
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
                        goProfile={goProfile} myMemNo={context.profile.memNo}
                        closePopupAction={closePopupAction}
           />
-        </PopSlide>
-      }
-
-      {/* 좋아요 */}
-      {popup.likePopup &&
-        <PopSlide>
+          : slidePopNo === "like" ?
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
                      myMemNo={context.profile.memNo} likePopTabState={likePopTabState} closePopupAction={closePopupAction}
           />
-        </PopSlide>
-      }
-
-      {/* 차단 */}
-      {popup.blockReportPopup &&
-        <PopSlide>
+          : slidePopNo === "block" ?
           <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
+          : slidePopNo === "present" &&
+          <Present profileData={profileData} closePopupAction={closePopupAction} />
+          }
         </PopSlide>
       }
 
       {/* 선물하기 */}
-      {popup.presentPopup &&
+      {/* {popup.presentPopup &&
         <PopSlide>
           <Present profileData={profileData} closePopupAction={closePopupAction} />
         </PopSlide>
-      }
+      } */}
 
       {/* 좋아요 -> ? 아이콘 */}
       {popup.questionMarkPopup && <ProfileNoticePop />}
