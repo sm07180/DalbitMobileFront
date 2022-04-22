@@ -223,8 +223,8 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
   }
 }
 
-/* 방송 따라가기 있는 경우 */
-export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm, listenRoomNo, webview}) => {
+/* 프로필 스와이퍼 영역에 LIVE 클릭 시 */
+export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm, webview}) => {
   if(!context.token.isLogin) {
     return history.push('/login')
   }
@@ -232,44 +232,11 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
   if(isDesktop()) {
     if(roomNo) {
       return RoomValidateFromClipMemNo(roomNo,memNo, context, history, nickNm);
-    }else if(listenRoomNo) {
-      if(isNaN(listenRoomNo)) {
-        return context.action.alert({
-          type: 'alert',
-          msg: `${nickNm} 님이 어딘가에서 청취중입니다. \n위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-        })
-      }else {
-        context.action.confirm({
-          type: 'confirm',
-          msg: `해당 청취자가 있는 방송으로 입장하시겠습니까?`,
-          callback: () => {
-            return RoomValidateFromClipMemNo(listenRoomNo,memNo, context, history, nickNm);
-          }
-        })
-      }
     }
   }else if(isHybrid()){
     const roomEnterAction = () => {
       if(roomNo) {
         return RoomJoin({roomNo:roomNo, memNo:memNo,nickNm:nickNm,})
-      }else {
-        let alertMsg
-        if (isNaN(listenRoomNo)) {
-          alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. \n위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-          context.action.alert({
-            type: 'alert',
-            msg: alertMsg
-          })
-        } else {
-          alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-          context.action.confirm({
-            type: 'confirm',
-            msg: alertMsg,
-            callback: () => {
-              return RoomJoin({roomNo: listenRoomNo, memNo:memNo,nickNm:nickNm,listener: 'listener'})
-            }
-          })
-        }
       }
     }
 
@@ -286,6 +253,33 @@ export const RoomValidateFromProfile = ({roomNo, memNo, history, context, nickNm
   }else {
     context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
   }
+}
+
+/* 청취자 따라가기 아이콘 클릭 시
+* 메인페이지 랭킹영역, 랭킹페이지, 프로필페이지에서 사용
+*  */
+export async function RoomValidateFromListenerFollow({listenRoomNo, memNo, nickNm, history, context}) {
+  const {globalState, globalAction} = context;
+  const ownerSel = await Api.roomOwnerSel(listenRoomNo, memNo);
+
+  if(ownerSel.data.listenOpen === '0'){
+    if(history.location.pathname.startsWith("/profile")){
+      return;
+    }
+    history.push(`/profile/${memNo}`);
+    return;
+  }else if(ownerSel.data.listenOpen === '2'){
+    return;
+  }
+
+  globalAction.setAlertStatus!({
+    status: true,
+    type: "confirm",
+    content: `${nickNm}님이 참여중인 방송방에 입장하시겠습니까?`,
+    callback: () => {
+      RoomValidateFromClipMemNo(listenRoomNo, memNo, context, history, nickNm, 'listener')
+    },
+  });
 }
 
 export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nickNm?, listener?) {
@@ -332,33 +326,11 @@ export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nick
               },
             });
           } else {
-            if(!listenRoomNo){
-              history.push(`/broadcast/${roomNo}`);
-              return;
-            }
             if(listenRoomNo !== roomNo) {
-              const ownerSel = await Api.roomOwnerSel(roomNo, memNo);
-              if(ownerSel.data.listenOpen !== '1'){
-                if(history.location.pathname.startsWith("/profile")){
-                  return;
-                }
-
-                history.push(`/profile/${memNo}`);
-                return;
-              }
-              if(!ownerSel.data.memNo){
-                globalAction.callSetToastStatus!({
-                  status: true,
-                  message: "종료된 방송입니다.",
-                });
-                return;
-              }
               globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
-                content: memNo !== ownerSel.data.memNo ?
-                  `${nickNm}님이 참여중인 방송방에 입장하시겠습니까?`
-                  : `${ownerSel.data.memNick ? `${ownerSel.data.memNick}님의 ` : ''}방송방에 입장하시겠습니까?`,
+                content: `${nickNm ? `${nickNm}님의 ` : ''}방송방에 입장하시겠습니까?`,
                 callback: () => {
                   history.push(`/broadcast/${roomNo}`);
                 },
@@ -385,8 +357,7 @@ export async function RoomValidateFromClipMemNo(roomNo, memNo,gtx, history, nick
       return history.push('/login');
     }
   } else {
-
-    RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm})
+    RoomJoin({roomNo: roomNo,  memNo:memNo, nickNm: nickNm === "noName" ? "" : nickNm, listener})
   }
 }
 

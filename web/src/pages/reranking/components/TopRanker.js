@@ -6,7 +6,9 @@ import Swiper from 'react-id-swiper';
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
+} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {IMG_SERVER} from 'context/config'
 import {Context, GlobalContext} from "context";
@@ -136,7 +138,8 @@ const TopRanker = (props) => {
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
-                          {rankSlct === "CUPID" && data.djProfImg ?
+                          {
+                            rankSlct === "CUPID" && data.djProfImg &&
                             <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
                               <div className='cupidHeader'>HONEY</div>
                               <div className='cupidContent'>
@@ -146,14 +149,14 @@ const TopRanker = (props) => {
                                 <div className='cupidNick'>{data.djNickNm}</div>
                               </div>
                             </div>
-                            :
-                            <>
-                              {
-                                data.roomNo &&
-                                  <div className='badgeLive' onClick={(e) => {
-                                    e.stopPropagation();
-                                    RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
-                                  }}>
+                          }
+                          <>
+                            {
+                              !data.listenRoomNo && data.roomNo &&
+                              <div className='badgeLive' onClick={(e) => {
+                                e.stopPropagation();
+                                RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+                              }}>
                                     <span className='equalizer'>
                                       <Lottie
                                         options={{
@@ -163,29 +166,31 @@ const TopRanker = (props) => {
                                         }}
                                       />
                                     </span>
-                                    <span className='liveText'>LIVE</span>
-                                  </div>
-                              }
-                              {
-                                data.listenRoomNo && (data.listenOpen === 0 || data.listenOpen === 1) &&
-                                  <div className='badgeListener' onClick={(e) => {
-                                    e.stopPropagation();
-                                    RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
-                                  }}>
+                                <span className='liveText'>LIVE</span>
+                              </div>
+                            }
+                            {
+                              !data.roomNo && data.listenRoomNo && data.listenOpen !== 2 &&
+                              <div className='badgeListener' onClick={(e) => {
+                                e.stopPropagation();
+
+                                RoomValidateFromListenerFollow({
+                                  memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+                                });
+                              }}>
                                     <span className='headset'>
                                       <Lottie
-                                          options={{
-                                            loop: true,
-                                            autoPlay: true,
-                                            path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
-                                          }}
-                                        />
+                                        options={{
+                                          loop: true,
+                                          autoPlay: true,
+                                          path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                                        }}
+                                      />
                                     </span>
-                                    <span className='ListenerText'>LIVE</span>
-                                  </div>
-                              }
-                            </>
-                          }
+                                <span className='ListenerText'>LIVE</span>
+                              </div>
+                            }
+                          </>
                         </div>
                       )
                     }
