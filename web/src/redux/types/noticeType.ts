@@ -4,8 +4,8 @@ import * as actions from "../actions/notice";
 export type NoticeActions = ActionType<typeof actions>;
 
 export const noticePagingDefault = {
-    next: 1,
-    page: 0,
+    next: 2,
+    page: 1,
     prev: 0,
     records: 20,
     total: 0,

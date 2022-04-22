@@ -26,11 +26,12 @@ const NoticePage = () => {
   const dispatch = useDispatch();
   const history = useHistory()
   const context = useContext(Context)
-  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
-  const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
-  const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const postData = useSelector(state => state.post);
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
+  const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
+  const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
 
   /* 알림 조회 */
   const fetchData = () => {
@@ -53,18 +54,27 @@ const NoticePage = () => {
         if(postPageInfo.page !== 1) {
           let temp = []
           res.data.list.forEach((value) => {
-            if(postListInfo.list.findIndex((target) => target.noticeIdx === value.noticeIdx) === -1) { //list의 인덱스가 현재 noticeIdx-1일경우 그 값을 temp에 담아줌
+            if(postData.list.findIndex((target) => target.noticeIdx === value.noticeIdx) === -1) { //list의 인덱스가 현재 noticeIdx-1일경우 그 값을 temp에 담아줌
               temp.push(value);
             }
           })
           //cnt: noticeIdx, list: 스크롤시 출력되는 list, totalPage: 전체 페이지
-          setPostListInfo({cnt: res.data.list.noticeIdx, list: postListInfo.list.concat(temp), totalPage: res.data.paging.totalPage});
+          // setPostListInfo({cnt: res.data.list.noticeIdx, list: postListInfo.list.concat(temp), totalPage: res.data.paging.totalPage});
+          dispatch(setPostData({
+            ...postData,
+            list: postData.list.concat(temp),
+            paging: res.data.paging ? res.data.paging : noticePagingDefault,
+            isLastPage: res.data.list.length > 0 ? res.data.paging.totalPage === res.data.paging?.page : true
+          }))
         } else {
-          setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
+          // setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
+          dispatch(setPostData({
+            ...postData,
+            list: res.data.list,
+            paging: res.data.paging ? res.data.paging : noticePagingDefault,
+            isLastPage: res.data.list.length > 0 ? res.data.paging.totalPage === res.data.paging?.page : true
+          }))
         }
-      } else {
-        setPostListInfo({cnt: 0, list: [], totalPage: 0});
-        context.action.alert({msg: res.message});
       }
     }).catch((e) => console.log(e));
   };
@@ -86,6 +96,10 @@ const NoticePage = () => {
     }
     await Api.noticeRead(params).then((res) => {
       if(res.result === "success") {
+        let tempIndex = postData.list.findIndex(value => value.noticeIdx === parseInt(notiNo));
+        let temp = postData.list.concat([]);
+        temp[tempIndex].read_yn = "y";
+        dispatch(setPostData({...postData, list: temp}));
       }
     }).catch((e) => console.log(e));
   };
@@ -190,8 +204,6 @@ const NoticePage = () => {
   const onClick = (e) => {
     const num = e.currentTarget.dataset.num;
     const read = e.currentTarget.dataset.read;
-    const scrollHeightPosition = (document.documentElement && document.documentElement.scrollTop) || document.body.scrollTop;
-    localStorage.setItem("scroll_position", JSON.stringify(scrollHeightPosition));
     if(read === "n") {
       fetchReadData(num);
       history.push({pathname: `/notice/${num}`, state: num});
@@ -209,10 +221,10 @@ const NoticePage = () => {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset;
 
-    if(postListInfo.totalPage > postPageInfo.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+    if(postData.paging.totalPage > postPageInfo.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
       setPostPageInfo({...postPageInfo, page: postPageInfo.page+1});
       window.removeEventListener("scroll", scrollEvt);
-    } else if(postListInfo.list.noticeIdx === postListInfo.list.length) {
+    } else if(postData.list.noticeIdx === postData.list.length) {
       window.removeEventListener("scroll", scrollEvt);
     }
   }
@@ -251,19 +263,7 @@ const NoticePage = () => {
     return () => {
       window.removeEventListener("scroll", scrollEvt);
     }
-  }, [postListInfo]);
-
-  useEffect(() => {
-    const scrollLoad = parseInt(localStorage.getItem("scroll_position"));
-    if(scrollLoad !== 0) {
-      window.scrollTo({
-        top: scrollLoad,
-        left: 0,
-        // behavior: 'smooth',
-      })
-      setTimeout(() => {localStorage.setItem("scroll_position", "0")}, 2500);
-    }
-  }, [postListInfo]);
+  }, [postData]);
 
   return (
     <div id="notice">
@@ -284,7 +284,7 @@ const NoticePage = () => {
         {tab === noticeTabmenu[0] ?
           <Allim alarmList={alarmList} handleClick={handleClick}/>
           :
-          <Post onClick={onClick} postListInfo={postListInfo}/>
+          <Post onClick={onClick} postListInfo={postData}/>
         }
       </section>
     </div>
