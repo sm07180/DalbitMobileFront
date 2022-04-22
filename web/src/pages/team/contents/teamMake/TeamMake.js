@@ -138,7 +138,7 @@ const TeamMake = () => {
           context.action.toast({
             msg: res.message
           })
-          history.push('/myPage')
+          history.replace('/myPage')
         }
       })
     }else if( partsName!==""){

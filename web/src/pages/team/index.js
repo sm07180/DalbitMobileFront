@@ -88,7 +88,7 @@ const TeamPage = () => {
       <CntWrapper>
         <InfoSlide />
         <InviteList list={list} listCnt={listCnt} memNo={memberRdx.memNo} setInvitationChk={setInvitationChk}/>
-        <ButtonWrap />
+        <ButtonWrap memNo={memberRdx.memNo} context={context}/>
       </CntWrapper>
     </div>
   )
