@@ -75,10 +75,14 @@ const TeamDetail = (props) => {
     }
   },[btnChk,checkIn])
 
-//팀 가입가능 여부 체크
+/**팀 가입가능 여부 체크 
+  *팀을 가입한 생태이거나 만든 상태일땐 신청을 못하도록 체크하기위한 프로시져 호출
+ -4:팀가입 되어 있음, -3:재생성 시간 미경과, -2: 이미생성됨, -1: 레벨미달, 0: 에러, 1:정상
+ 가입 레벨은 5인데 생성 조건은 15렙이라 렙이 미달일경우 가입은 가능하다.
+ **/
   const teamCheck = ()=>{
     Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-      if(res.data === 1 || res.data === -3){
+      if(res.data === 1 || res.data === -3 || res.data === -1){
         setTeamChk(true)
       }else{
         setTeamChk(false)
