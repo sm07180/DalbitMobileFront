@@ -323,7 +323,6 @@ export default function SendGift(props: {
     try {
       if (giftListScroll?.active && itemListRef.current && itemListRef.current[giftListScroll?.itemNo]) {
         const innerRef = scrollInnerRef.current?.getInnerRef();
-        console.log("@@@@", giftListScroll)
         innerRef?.scrollTo(0, itemListRef.current[giftListScroll?.itemNo]?.offsetTop);
 
         giftListScroll = {active: false, itemNo: ''};
