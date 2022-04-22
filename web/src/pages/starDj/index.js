@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory, withRouter} from 'react-router-dom'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addComma} from "lib/common_fn";
 
 import Header from 'components/ui/header/Header'
@@ -333,10 +333,10 @@ const StarDj = (props) => {
               데이터 집계 기간 : {moment(eventInfo.condition_start_date?.replace(/\./g,'')).format('MM월 DD일')} ~ {moment(eventInfo.condition_end_date?.replace(/\./g,'')).format('MM월 DD일')}
             </div>
             <div className='score'>
-              <p><span>방송 점수 (25%) : </span><span>누적 방송 시간 (팬 방송 제외)</span></p>
-              <p><span>시청자 점수 (25%) : </span><span>평균 시청자 수</span></p>
-              <p><span>좋아요 점수 (25%) : </span><span>받은 좋아요 수<br/>(유료 부스터 포함,무료 제외)</span></p>
-              <p><span>선물 점수 (25%) : </span><span>받은 선물 수 (룰렛 포함)</span></p>
+              <p><span>방송 점수 (25%) : </span><span>방송 일수 및 누적 방송 시간<br/>(팬 방송 제외)</span></p>
+              <p><span>시청자 점수 (25%) : </span><span>누적/평균 시청자 수</span></p>
+              <p><span>좋아요 점수 (25%) : </span><span>받은 좋아요 수 (무료 부스터제외)</span></p>
+              <p><span>선물 점수 (25%) : </span><span>방송방 내 받은 선물 수 (룰렛 포함)</span></p>
             </div>
             <div className='referenceWrap'>
               <span className='referenceTitle'>경고/정지 이력</span>
