@@ -44,6 +44,10 @@ const InvitePop = (props) => {
   // 페이지 시작
   return (
     <section className="invitePop">
+      <h3>
+        <span>팀원 초대</span>
+        <small>팀 가입이 가능한 5레벨 이상의 사용자입니다.</small>
+      </h3>
       <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
       <div className="listContainer">
         <div className="listWrap">

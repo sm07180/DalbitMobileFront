@@ -528,7 +528,7 @@ const TeamDetail = (props) => {
 
       {/* 초대하기 슬라이드 팝업 */}
       {invitePop &&
-      <PopSlide title="팀원 초대" popSlide={invitePop} setPopSlide={setInvitePop}>
+      <PopSlide popSlide={invitePop} setPopSlide={setInvitePop}>
           <Invite closeSlide={closeSecesstion} memNo={memberRdx.memNo} teamNo={teamNo} btnChk={btnChk} teamMemReqIns={teamMemReqIns}/>
         </PopSlide>
       }
