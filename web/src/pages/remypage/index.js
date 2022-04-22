@@ -307,7 +307,7 @@ const Remypage = () => {
           <button className='logout' onClick={logout}>로그아웃</button>
 
 
-          {popup.slidePopup &&
+          {commonPopup.slidePopup &&
             <PopSlide>
               {// 팬, 스타
                 slidePopNo === "fanStar" ?
