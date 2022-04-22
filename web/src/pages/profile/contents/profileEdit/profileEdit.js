@@ -20,7 +20,7 @@ import PasswordChange from "pages/password";
 import {authReq} from "pages/self_auth";
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupClose, setSlidePopupOpen} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
 
 const ProfileEdit = () => {
@@ -93,11 +93,11 @@ const ProfileEdit = () => {
   };
 
   const openMoreList = () => {
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}))
+    dispatch(setSlidePopupOpen())
   };
 
   const closeMoreList = () => {
-    dispatch(setCommonPopupClose());
+    dispatch(setSlidePopupClose());
   };
 
   //대표 이미지 지정

@@ -1137,7 +1137,7 @@ const RoomBadgeWrap = styled.div`
     border-radius: 14px;
     line-height: 28px;
     color: #fff;
-    font-size: 12px;
+    font-size: 14px;
     &.new {
       background-color: rgba(69, 147, 236, 1);
     }
@@ -1188,8 +1188,8 @@ const RoomBadgeWrap = styled.div`
   .fan-badge img {
     width: auto;
     margin-left: -4px;
-    height: 22px;
     margin-right: 2px;
+    height: 22px;
   }
   .fan-badge span {
     display: inline-block;

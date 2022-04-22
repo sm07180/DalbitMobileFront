@@ -29,10 +29,10 @@ const HistoryList = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (commonPopup.commonPopup){
+    if (commonPopup.slidePopup){
       setBeforeCode(selectedCode);
     }
-  }, [commonPopup.commonPopup]);
+  }, [commonPopup.slidePopup]);
 
   const onClickPopSlide = () => {
     dispatch(setSlidePopupOpen());

@@ -9,7 +9,7 @@ import './profileCard.scss'
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setSlidePopupOpen} from "redux/actions/common";
 
 const ProfileCard = (props) => {
   const {data, isMyProfile, openShowSlide, openPopFanStar, openPopLike, fanToggle, popup} = props
@@ -30,7 +30,7 @@ const ProfileCard = (props) => {
   }
 
   const openPresentPop = () => {
-    dispatch(setCommonPopupOpenData({...popup, presentPopup: true}));
+    dispatch(setSlidePopupOpen({...popup, presentPopup: true}));
   }
 
   return (

@@ -29,7 +29,7 @@ export const setSlidePopupClose = createAction(SET_SLIDE_POPUP_CLOSE)<void>();
 
 /* 공통(이름) 슬라이드 팝업 열기 */
 const SET_SLIDE_POPUP_OPEN = 'common/SET_SLIDE_POPUP_OPEN';
-export const setSlidePopupOpen = createAction(SET_SLIDE_POPUP_OPEN)<void>();
+export const setSlidePopupOpen = createAction(SET_SLIDE_POPUP_OPEN)<ICommonPopupState>();
 // -----------------------------------------------------------------------
 
 /* 웹뷰 체크 */
