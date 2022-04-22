@@ -40,8 +40,8 @@ const TeamDetail = (props) => {
   const [invitePop, setInvitePop] = useState(false);
   const [teamMemList, setTeamMemList]=useState([]); //팀 멤버 리스트
   const [teamInfo, setTeamInfo]=useState({}); // 팀 정보
-  const [teamBageList, setTeamBageList]=useState([]); // 뱃지 리스트
-  const [totBadgeCnt, setTotBadgeCnt]=useState(0) // 뱃지 갯수
+  const [teamBageList, setTeamBageList]=useState([]); // 배지 리스트
+  const [totBadgeCnt, setTotBadgeCnt]=useState(0) // 배지 갯수
   const [teamRequestSel, setTeamRequestSel]=useState([]) // 가입신청 리스트
   const [teamRequestCnt, setTeamRequestCnt]=useState(0) // 가입신청 수
   const [statChk, setStatChk]=useState(""); // 권한 체크용 [m: 마스터 , t: 일반회원 , n: 미가입자]

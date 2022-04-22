@@ -428,7 +428,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
   useEffect(() => {
     if (profileData !== null) {
-      /* 좌측 프로필 탭 - 스와이퍼 뱃지 리스트의 text값이 ''이면 제외 */
+      /* 좌측 프로필 탭 - 스와이퍼 배지 리스트의 text값이 ''이면 제외 */
       setBadgeList(profileData.commonBadgeList.concat([]).filter((v) => v?.text !== ''));
       let expCal = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
       let expPerc = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);

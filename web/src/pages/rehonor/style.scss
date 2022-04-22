@@ -11,7 +11,7 @@
 }
 
 #honor {
-  // 뱃지 아이콘 mixin
+  // 배지 아이콘 mixin
   @mixin specialCnt {
     @include flex(center, center);
     min-width: 52px;

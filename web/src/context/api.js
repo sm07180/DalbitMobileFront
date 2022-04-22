@@ -3655,7 +3655,7 @@ export default class API {
     })
   }
 
-  // 깐부 현황 N 뱃지 갱신
+  // 깐부 현황 N 배지 갱신
   static getGganbuBadge = async (data) => {
     return await ajax({
       url: `/event/gganbu/badge/upd`,

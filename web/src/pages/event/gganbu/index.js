@@ -56,7 +56,7 @@ export default () => {
       console.log(message)
     }
   }
-  // 깐부 현황 N뱃지
+  // 깐부 현황 N배지
   const fetchGganbuBadge = async () => {
     const param = {
       gganbuNo: 1,
