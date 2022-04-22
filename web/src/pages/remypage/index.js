@@ -8,6 +8,7 @@ import './style.scss'
 import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
+import SpecialHistoryPop from "pages/remypage/components/SpecialHistoryPop";
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import Report from "./contents/report/Report"
 import Clip from "./contents/clip/clip"
@@ -44,13 +45,11 @@ const Remypage = () => {
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const dispatch = useDispatch();
-  const popup = useSelector(state => state.popup);
 
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
 
   const [noticeNew, setNoticeNew] = useState(false);
-
 
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
@@ -96,14 +95,14 @@ const Remypage = () => {
     e.stopPropagation();
     const {targetType} = e.currentTarget.dataset;
     setOpenFanStarType(targetType)
-    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+    dispatch(setSlidePopupOpen({...commonPopup, fanStarPopup: true}));
   }
 
   const openPopLike = (e, tabState) => {
     e.preventDefault();
     e.stopPropagation();
     setLikePopTabState(tabState)
-    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+    dispatch(setSlidePopupOpen({...commonPopup, likePopup: true}));
   }
 
   /* 팬 등록 해제 */
@@ -178,7 +177,13 @@ const Remypage = () => {
   const openLevelPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(setSlidePopupOpen());
+    dispatch(setSlidePopupOpen({...commonPopup, levelPopup: true}));
+  }
+
+  const openStarDJHistoryPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setCommonPopupOpenData({...commonPopup, historyPopup: true}))
   }
 
   const closeLevelPop = (e) => {
@@ -214,7 +219,7 @@ const Remypage = () => {
           <Header title={'MY'} />
           <section className='mypageTop'>
             <div className="myInfo" onClick={()=>{history.push('/myProfile')}}>
-              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}/>
+              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}  openStarDJHistoryPop={openStarDJHistoryPop}/>
             </div>
             <div className='mydalDetail'>
               <div className="dalCount">
@@ -268,7 +273,7 @@ const Remypage = () => {
           }
           <button className='logout' onClick={logout}>로그아웃</button>
 
-          {commonPopup.commonPopup &&
+          {commonPopup.levelPopup &&
             <PopSlide title="내 레벨">
               <section className="myLevelInfo">
                 <div className="infoItem">
@@ -284,9 +289,11 @@ const Remypage = () => {
               </section>
             </PopSlide>
           }
+          {/* 스페셜DJ 약력 팝업 */}
+          {commonPopup.historyPopup && <SpecialHistoryPop profileData={profile} />}
 
           {/* 팬 / 스타 */}
-          {popup.fanStarPopup &&
+          {commonPopup.fanStarPopup &&
             <PopSlide>
               <FanStarPopup
                 type={openFanStarType}
@@ -301,7 +308,7 @@ const Remypage = () => {
 
 
           {/* 좋아요 */}
-          {popup.likePopup &&
+          {commonPopup.likePopup &&
             <PopSlide>
               <LikePopup
                 isMyProfile={true}

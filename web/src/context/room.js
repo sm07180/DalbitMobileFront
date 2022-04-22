@@ -79,15 +79,13 @@ export const RoomJoin = async (obj) => {
   const sessionRoomNo = sessionStorage.getItem('room_no')
   localStorage.removeItem('prevRoomInfo')
   const sessionRoomActive = sessionStorage.getItem('room_active')
-  if (sessionStorage.getItem('room_active') === 'N') {
+  if (sessionRoomActive === 'N') {
     Room.context.action.alert({
       msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
     })
     return false
-  } else {
-    if (sessionStorage.getItem('room_active') === null) {
-      sessionStorage.setItem('room_active', 'N')
-    }
+  } else if (sessionRoomActive === null) {
+    sessionStorage.setItem('room_active', 'N')
   }
 
   if (customHeader['os'] === OS_TYPE['Desktop']) {

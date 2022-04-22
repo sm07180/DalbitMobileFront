@@ -6,7 +6,10 @@ import Swiper from 'react-id-swiper'
 
 import './topSwiper.scss'
 import {Context} from "context";
-import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromListenerFollow,
+  RoomValidateFromProfile
+} from "common/audio/clip_func";
 import {useHistory} from "react-router-dom";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
@@ -96,15 +99,11 @@ const TopSwiper = (props) => {
       }
       {!disabledBadge &&
       <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
-        {data.specialDjCnt > 0 && type === 'profile' &&
-          <div className={`specialBdg ${data.isSpecial ? 'isSpecial': ''}`} onClick={popupOpen}>
-            <img src={`${IMG_SERVER}/profile/profile_specialBdg.png`} alt="" />
-            <span>{data.specialDjCnt}회</span>
-          </div>
-        }
-        {type === 'profile' && webview === '' && data.roomNo !== "" &&
+        {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
           <div className='badgeLive' onClick={()=>{
-            RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+            RoomValidateFromProfile({
+              memNo:data.memNo, history, context, nickNm:data.nickNm, roomNo:data.roomNo, webview
+            });
           }}>
             <span className='equalizer'>
               <Lottie
@@ -118,9 +117,11 @@ const TopSwiper = (props) => {
             <span className='liveText'>LIVE</span>
           </div>
         }
-        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 &&
+        {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
           <div className='badgeListener' onClick={()=>{
-            RoomValidateFromClipMemNo(data.listenRoomNo, data.memNo, context, history, data.nickNm);
+            RoomValidateFromListenerFollow({
+              memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+            });
           }}>
             <span className='headset'>
               <Lottie

@@ -14,7 +14,7 @@ import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import BlockReport from "pages/profile/components/popSlide/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 import FeedLike from "pages/profile/components/FeedLike";
 import {setProfileDetailData, setProfileTabData} from "redux/actions/profile";
 
@@ -556,7 +556,8 @@ const ProfileDetail = (props) => {
 
   /* 차단/신고 팝업 열기 */
   const openBlockReportPop = (blockReportInfo) => {
-    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
+    console.log('report info',blockReportInfo);
+    dispatch(setSlidePopupOpen({...popup, blockReportPopup: true}))
     setBlockReportInfo(blockReportInfo);
   }
 

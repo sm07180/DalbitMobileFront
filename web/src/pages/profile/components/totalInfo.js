@@ -51,6 +51,10 @@ const TotalInfo = (props) => {
       badgeLength++
       setBadgeTotalCnt(badgeLength)
     }
+    if(data.badgePartner) {
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
+    }
     if(data.isSpecial) {
       badgeLength++
       setBadgeTotalCnt(badgeLength)
