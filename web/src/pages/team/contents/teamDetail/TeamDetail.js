@@ -313,7 +313,9 @@ const TeamDetail = (props) => {
       });
     }
   };
-  const goProfile = (memNo) => history.push(`/profile/${memNo}`);
+  const goProfile = (memNo) => {
+    history.push(`/profile/${memNo}`)
+  };
   const getConvertBrTxt=(txt, lastBrYn = 'y')=>{
     if(txt === undefined) return;
     if(txt === null) return;
@@ -353,8 +355,8 @@ const TeamDetail = (props) => {
             {moreShow &&
             <div className="isMore">
               <button onClick={clickBenefits}>팀 혜택</button>
-              {statChk === 'm' && <button onClick={()=>history.push(`/team/manager/${teamNo}`)}>팀 관리</button>}
-              <button onClick={()=>clickSecession(teamInfo.master_mem_no)}>팀 탈퇴하기</button>
+              {statChk === 'm' && <button onClick={()=>{history.push(`/team/manager/${teamNo}`)}}>팀 관리</button>}
+              <button onClick={()=>{clickSecession(teamInfo.master_mem_no)}}>팀 탈퇴하기</button>
               {statChk === 'm' && <button className="delete" onClick={teamDelete}>팀 삭제하기</button>}
             </div>
             }
@@ -421,7 +423,7 @@ const TeamDetail = (props) => {
           <div className="cntTitle">
             <h2>활동 배지</h2>
             <span className="count"><strong>{totBadgeCnt}</strong></span>
-            <button onClick={()=>history.push(`/team/badge/${teamNo}`)}>더보기</button>
+            <button onClick={()=>{history.push(`/team/badge/${teamNo}`)}}>더보기</button>
           </div>
         <section className="badgeWrap">
           {
@@ -446,7 +448,7 @@ const TeamDetail = (props) => {
               let photoUrl = data.tm_image_profile
               let photoServer = "https://devphoto.dalbitlive.com";
               return(
-                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>goProfile(data.tm_mem_no)} key={index}>
+                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -481,7 +483,7 @@ const TeamDetail = (props) => {
               let photoUrl = data.tm_image_profile
               let photoServer = "https://devphoto.dalbitlive.com";
               return(
-                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>goProfile(data.tm_mem_no)} key={index}>
+                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -492,8 +494,8 @@ const TeamDetail = (props) => {
                     </div>
                     <div className="listBack">
                       <div className="buttonGroup">
-                      <button className="cancel" data-target-confirm="cancel" onClick={(e)=>teamConfirm(e,data.tm_mem_no)}>거절</button>
-                      <button className="accept" data-target-confirm="accept" onClick={(e)=>teamConfirm(e,data.tm_mem_no)}>수락</button>
+                      <button className="cancel" data-target-confirm="cancel" onClick={(e)=>{teamConfirm(e,data.tm_mem_no)}}>거절</button>
+                      <button className="accept" data-target-confirm="accept" onClick={(e)=>{teamConfirm(e,data.tm_mem_no)}}>수락</button>
                     </div>
                   </div>
                 </ListRow>
@@ -510,7 +512,7 @@ const TeamDetail = (props) => {
         </section>
         }
         {(teamMemList.length <5 && statChk === 'n' && teamInfo.req_mem_yn === 'y' && teamChk) &&
-          <section className="buttonWrap" onClick={()=>teamMemReqIns('r',memberRdx.memNo)}>
+          <section className="buttonWrap" onClick={()=>{teamMemReqIns('r',memberRdx.memNo)}}>
             <SubmitBtn text={(teamInsChk ===-4 || teamInsChk==='y') ?"가입신청 완료" : "가입신청"} state={(teamInsChk ===-4 || teamInsChk==='y') ? "disabled":"" } />
           </section>
         }

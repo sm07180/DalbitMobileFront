@@ -70,7 +70,7 @@ const InvitePop = (props) => {
                   <div className="nick">{nickName}</div>
                 </div>
                 <div className="listBack">
-                  <button className={reqYn !=='n'  ? 'complete' : ''} onClick={()=>props.teamMemReqIns('i',memNo)}>
+                  <button className={reqYn !=='n'  ? 'complete' : ''} onClick={()=>{props.teamMemReqIns('i',memNo)}}>
                     {reqYn !=='n' ? "완료" : "초대"}
                   </button>
                 </div>
@@ -84,6 +84,5 @@ const InvitePop = (props) => {
     </section>
   )
 }
-
 export default InvitePop;
 

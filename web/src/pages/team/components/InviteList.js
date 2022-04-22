@@ -98,8 +98,8 @@ const InviteList = (props) => {
                 </div>
                 <div className="listBack">
                   <div className="buttonGroup">
-                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>teamConfirm(e,teamNo,masterNo)}>거절</button>
-                    <button className="accept" data-target-confirm="accept" onClick={(e)=>teamConfirm(e,teamNo,masterNo)}>수락</button>
+                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>{teamConfirm(e,teamNo,masterNo)}}>거절</button>
+                    <button className="accept" data-target-confirm="accept" onClick={(e)=>{teamConfirm(e,teamNo,masterNo)}}>수락</button>
                   </div>
                 </div>
               </div>
