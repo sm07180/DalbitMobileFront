@@ -55,11 +55,17 @@ const TeamMake = () => {
 
   const saveAction=()=>{
     if(teamName === null || teamName === ""){
+      context.action.alert({ visible: true, type: 'alert', msg: `팀 이름을 입력해주세요.` });
       return false;
     }
+    if (teamConts === null || teamConts === '') {
+      context.action.alert({ visible: true, type: 'alert', msg: `팀 소개를 입력해주세요.` });
+      return false;
+    }
+
     let param ={
       memNo:memberRdx.memNo,
-      teamName:teamName,
+      teamName:teamName.trim(),
       teamConts:teamConts,
       teamMedalCode:partsAcode,
       teamEdgeCode:partsBcode,
@@ -67,6 +73,7 @@ const TeamMake = () => {
     }
     Api.getTeamIns(param).then((res) => {
       if (res.message === 'SUCCESS' && res.data.result ===1) {
+        context.action.toast({ msg: `팀 생성이 완료 되었습니다.` });
         history.push(`/team/detail/${res.data.teamNo}`)
       }else{
         context.action.toast({
@@ -93,13 +100,19 @@ const TeamMake = () => {
   };
 
   const editCnts=(e)=>{
-    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
-    setTeamConts(text);
+    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, ''); // 빈 스페이스로 입력 시작하는 것을 막기 위함
+
+    if (text.length <= 150) {
+      setTeamConts(text);
+    }
   }
 
   const editName=(e)=>{
-    let text= e.currentTarget.value.trim();
-    setTeamName(text);
+    let text= e.currentTarget.value;
+
+    if (text.length <= 10) {
+      setTeamName(text);
+    }
   }
 
   const symbolApi=()=>{

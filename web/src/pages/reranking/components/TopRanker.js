@@ -252,9 +252,12 @@ const TopRanker = (props) => {
         <Swiper {...swiperParams}>
           {data.map((list, idex) => {
             return (<div className='rankingTop3' key={idex}>
-              <div className='topHeader'>{idex === 0 ? '저번주' : '이번주'} TOP3</div>
+              <div className='topHeader'>{(idex === 0 && data.length > 1) ? '저번주' : '이번주'} TOP3</div>
               <div className='topContent'>
                 {list.map((value,index) => {
+                  if (value.isEmpty) {
+                    return (<div className="ranker none" key={index} />);
+                  }
                   return (
                     <div className="ranker" key={index} data-team-no={value.team_no} onClick={goTeamDetailPage}>
                       <div className="listColumn" data-type={index}>
@@ -331,6 +334,6 @@ const TopRanker = (props) => {
       </>
     </React.Fragment>
   )
-}
+};
 
 export default withRouter(TopRanker);
