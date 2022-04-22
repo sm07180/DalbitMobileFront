@@ -108,8 +108,8 @@ const TeamBadge = (props) => {
     <div id="teamBadge">
       <Header title="뱃지리스트" type="back" />
       <CntWrapper>
-        <div className="text">
-          {(statChk === 'm' && !changePage) ?
+        {(statChk === 'm' && !changePage) ?
+          <div className="text">
             <div>
               팀 화면에 보여질 대표배지를 설정할 수 있습니다.
               <button onClick={()=>{
@@ -118,16 +118,18 @@ const TeamBadge = (props) => {
                 설정
               </button>
             </div>
-            :
-            changePage ?
+          </div>
+          :
+          changePage ?
+          <div className="text">
             <div className="set">
               우리팀을 대표할 배지를 선택하세요.(최대 4개)<br/>
               대표배지는 선택된 순서로 노출됩니다.
             </div>
-              :
-           <></>
-          }
-        </div>
+          </div>
+            :
+          <></>
+        }
         {changePage ?
         <div className="title">대표 뱃지<span><strong>0</strong>/4</span></div>
           :

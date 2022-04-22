@@ -31,34 +31,55 @@
   #rankCategory {
     position:sticky;
     top: $MOBILE-TABTOP;
-    @include flex(center);
-    transition: all .2s ease-in-out;
-    background: linear-gradient(to right, #AF6FF5 0%, #F675CE 100% );
-    background-size: 400%;
     z-index: $TAB-ZINDEX;
-    .rankCategoryList {
-      flex: 1;
-      position: relative;
-      @include flex(center, center);
-      height: 48px;
-      @include font(18px,800,rgba(255,255,255,0.6));
-      box-sizing: border-box;
-      cursor: pointer;
-      &.active {
-        @include font(18px,800,#FFF);
-        .underline {
-          display: block;
+    .rankCategoryWrapbox {
+      position:relative;
+      @include flex(center);
+      overflow-x:hidden;
+      .wrapboxBg {
+        @include position-top-left;
+        left:0;
+        z-index: -1;
+        width:400%;
+        height:100%;
+        transition: left .2s ease-in-out;
+        background: linear-gradient(to right, #AF6FF5 0%, #CD79F1 24%, #CE7AF2 25%, #EB84EE 49%, #EB84EE 50%, #F574CD 74%, #F675CE 75%, #FF64AC 100%);
+        background-size: 100%;
+      }
+      .underline {
+        position: absolute;
+        bottom: 0;
+        left:12.5%;
+        transform: translateX(-50%);
+        width: 25px; height: 5px;
+        border-radius: 100px;
+        transition: left .2s ease-in-out;
+        background-color: rgba($color: #FFFFFF, $alpha: 0.8);
+      }
+      .rankCategoryList {
+        flex: 1;
+        position: relative;
+        @include flex(center, center);
+        height: 48px;
+        @include font(18px,800,rgba(255,255,255,0.6));
+        box-sizing: border-box;
+        cursor: pointer;
+        &.active {
+          @include font(18px,800,#FFF);
         }
-      }      
-    }
-    .underline {
-      position: absolute;
-      display: none;
-      bottom: 0;
-      width: 25px; height: 5px;
-      border-radius: 100px;
-      // transition: all .2s ease-in-out;
-      background-color: rgba($color: #FFFFFF, $alpha: 0.8);
+        @for $i from 1 to 5 {
+          &:nth-child(#{$i}) {
+            &.active {
+              ~ .wrapboxBg {
+                left: calc(-100% * #{$i} + 100%);
+              }
+              ~ .underline {
+                left: calc(25% * #{$i} - 12.5%);
+              }
+            }
+          }
+        }
+      }
     }
   }
   .tabWrap {

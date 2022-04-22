@@ -348,6 +348,7 @@ $errorMsg : #FF1919;
         position: relative;
         flex: 1;
         @include flex(center,center,column);
+        cursor:pointer;
         &::after {
           content: "";
           @include position-top-right(10px);

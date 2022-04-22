@@ -12,7 +12,7 @@ import PartsPop from '../../components/parts/PartsPop';
 import Confirm from '../../components/popup/Confirm';
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setSlidePopupOpen} from "redux/actions/common";
+import {setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
@@ -37,6 +37,7 @@ const TeamMake = () => {
   const [imsiData ,setImsiData]=useState([]); //심볼 리스트용
   const [teamName,setTeamName]=useState(''); //팀 이름
   const [teamConts,setTeamConts]=useState(''); //팀소개
+
   const nextStepShow = () => {
     setNextStep(!nextStep);
   };
@@ -44,7 +45,7 @@ const TeamMake = () => {
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
     setPartsName(targetName);
-    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
+    dispatch(setSlidePopupOpen({...popup, commonPopup:true}));
   };
 
   const clickConfirmPopup = () => {
@@ -85,7 +86,7 @@ const TeamMake = () => {
       setPartsC(value);
       setPartsCcode(code)
     }
-    closePopup(dispatch);
+    dispatch(setSlidePopupClose());
   };
 
   const editCnts=(e)=>{
@@ -201,7 +202,7 @@ const TeamMake = () => {
           }
         </div>
       </CntWrapper>
-      {popup.commonPopup &&
+      {popup.slidePopup &&
         <PopSlide title={`${partsName} 고르기`}>
           <PartsPop partsSelect={partsSelect} imsiData={imsiData}/>
         </PopSlide>

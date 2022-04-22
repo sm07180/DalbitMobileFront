@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 
 // css
 import './popslide.scss';
@@ -11,17 +11,19 @@ let slidePopTimeout;
 
 /* 팝업 닫기 */
 export const closePopup = (dispatch) => {
-  dispatch(setSlidePopupClose());
   slidePopTimeout = setTimeout(() => {
+    dispatch(setSlidePopupClose());
     dispatch(setCommonPopupClose());
-  }, 400)
-}
+  }, 400);
+};
 
 const PopSlide = (props) => {
-  const {title, popSlide, setPopSlide, children, popHidden, closeCallback} = props
+  const {title, popSlide, setPopSlide, children, popHidden, closeCallback} = props;
   const context = useContext(Context);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
+
+  const [popState, setPopState] = useState(popupState.slidePopup);
 
   const closePopupDim = (e) => {
     const target = e.target;
@@ -34,11 +36,10 @@ const PopSlide = (props) => {
       if(closeCallback) {
         closeCallback();
       }
+      setPopState(!popState);
       closePopup(dispatch);
     }
   };
-
-  
 
   useEffect(() => {
     document.body.classList.add('overflowHidden')
@@ -61,7 +62,7 @@ const PopSlide = (props) => {
 
   return (
     <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>
-      <div className={`slideLayer ${popupState.slidePopup ? "slideUp" : "slideDown"} ${popSlide ? "slideUp" : ""}`}>
+      <div className={`slideLayer ${popState ? "slideUp" : "slideDown"} ${popSlide ? "slideUp" : ""}`}>
         {title && <h3>{title}</h3>}
         {children}
       </div>
