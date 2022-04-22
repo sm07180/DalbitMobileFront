@@ -27,9 +27,8 @@ const TeamPage = () => {
     if(invitationChk===false){
       invitationList()
       listCheckApi()
-/*      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-        console.log("팀페이지",res)
-        if(res.data !== 1){
+      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
+        if(res.data === -1){
           context.action.toast({
             msg: res.message
           })
@@ -37,7 +36,7 @@ const TeamPage = () => {
         }else{
 
         }
-      })*/
+      })
 
     }
   },[]);

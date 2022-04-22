@@ -32,7 +32,7 @@ const SecessionPop = (props) => {
               }
               Api.getTeamMemDel(param).then(res=>{
                 if(res.code === "00000"){
-                  history.push("myPage");
+                  history.push("/myPage");
                 }else {
                   context.action.toast({
                     msg: res.message

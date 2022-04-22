@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {useHistory} from "react-router-dom";
 // global components
 import Header from 'components/ui/header/Header';
@@ -16,10 +16,12 @@ import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
+import {Context} from "context";
 
 const parts = ['메달','테두리','배경'];
 
 const TeamMake = () => {
+  const context = useContext(Context);
   const history = useHistory();
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
@@ -67,7 +69,9 @@ const TeamMake = () => {
       if (res.message === 'SUCCESS' && res.data.result ===1) {
         history.push(`/team/detail/${res.data.teamNo}`)
       }else{
-        console.log("error");
+        context.action.toast({
+          msg: res.message
+        })
       }
     });
     setConfirmPop(false);
@@ -90,12 +94,6 @@ const TeamMake = () => {
 
   const editCnts=(e)=>{
     let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
-    let rows = text.split('\n').length
-
-    if(rows > 5){
-      alert("5줄 까지만 가능합니다.")
-      return false
-    }
     setTeamConts(text);
   }
 
@@ -123,6 +121,9 @@ const TeamMake = () => {
     if(partsName ===""){
       Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
         if(res.data !== 1){
+          context.action.toast({
+            msg: res.message
+          })
           history.push('/myPage')
         }
       })
@@ -131,11 +132,14 @@ const TeamMake = () => {
     }
   },[partsName])
 
+
   // 페이지 시작
   return (
     <div id="teamMake" className={`${nextStep === true ? 'nextStep' : ''}`}>
       <Header title="팀 만들기" type="sub">
-        <button className="back" onClick={nextStep ? nextStepShow : () => history.push('/team')} />
+        <button className="back" onClick={()=>{
+          history.goBack();
+        }} />
       </Header>
       <CntWrapper>
         <section className="teamParts">
