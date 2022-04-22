@@ -66,7 +66,7 @@ const Navigation = () => {
             content: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
             callback: () => {
               // TODO : 본인인증 연결필요
-              authReq('9', context.authRef, context);
+              authReq({code: '9', formTagRef: context.authRef, context: context})
             },
           });
 
