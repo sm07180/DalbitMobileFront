@@ -15,7 +15,6 @@ import './rankingDetail.scss'
 import {convertDateTimeForamt, convertMonday, convertMonth} from "pages/common/rank/rank_fn";
 import moment from "moment";
 import {useDispatch, useSelector} from "react-redux";
-import {setSlidePopupOpen} from "redux/actions/common";
 
 const RankDetailPage = (props) => {
   const params = useParams()
@@ -64,6 +63,28 @@ const RankDetailPage = (props) => {
     }
     setSelect(rankingListType);
   }, [props.match.params.type]);
+
+
+  const changeCategory = (category) => {
+    history.replace("/rankDetail/" + category);
+  }
+
+  useEffect(() => {
+    const categoryTab = document.getElementById("rankCategory");
+    const categoryListLength = document.getElementsByClassName('rankCategoryList').length;
+    const childNodes = categoryTab.lastElementChild;
+    let activeIndex = 0;
+
+    for(let i = 0; i < categoryListLength; i++) {
+      if(categoryTab.childNodes[i].classList.contains('active')){
+        activeIndex = i;
+      }      
+    }
+
+    childNodes.style.left = `calc((` + 100/categoryListLength/2 +  `% - 12.5px) + ` + (100/categoryListLength*activeIndex) + `%)`;
+    categoryTab.style.backgroundPositionX = 25 * activeIndex + "%";
+
+  }, [rankingListType])
 
   useEffect(() => {
     if (typeof document !== "undefined"){
@@ -220,25 +241,21 @@ const RankDetailPage = (props) => {
     }
   }
 
-  const bottomSlide = () => {
-    dispatch(setSlidePopupOpen());
-  }
+  // const closeSlidePop = () => {
+  //   closePopup(dispatch);
+  // }
 
-  const closeSlidePop = () => {
-    closePopup(dispatch);
-  }
-
-  const optionSelect = (e) => {
-    let text = e.currentTarget.innerText;
-    if(text === "DJ"){
-      history.replace("/rankDetail/DJ");
-    } else if(text === "FAN") {
-      history.replace("/rankDetail/FAN");
-    } else {
-      history.replace("/rankDetail/CUPID");
-    }
-    closeSlidePop();
-  }
+  // const optionSelect = (e) => {
+  //   let text = e.currentTarget.innerText;
+  //   if(text === "DJ"){
+  //     history.replace("/rankDetail/DJ");
+  //   } else if(text === "FAN") {
+  //     history.replace("/rankDetail/FAN");
+  //   } else {
+  //     history.replace("/rankDetail/CUPID");
+  //   }
+  //   closeSlidePop();
+  // }
 
   useEffect(() => {
     if (rankType !== ""){
@@ -318,8 +335,7 @@ const RankDetailPage = (props) => {
 
   return (
     <div id="rankingList">
-      <Header position={'sticky'} type={'back'}>
-        <h1 className='title' onClick={bottomSlide}>{select.toUpperCase()}<span className='optionSelect'></span></h1>
+      <Header position={'sticky'} title={'랭킹 전체'} type={'back'}>
         <div className='buttonGroup'>
           <button className='benefits' onClick={() => history.push({
             pathname: "/rankBenefit",
@@ -327,16 +343,23 @@ const RankDetailPage = (props) => {
           })}>혜택</button>
         </div>
       </Header>
-      <Tabmenu data={tabList} tab={tabName} setTab={setTabName} />
+      <div id="rankCategory">
+        <div className={`rankCategoryList ${rankingListType === "DJ" ? "active" : ""}`} onClick={() => {changeCategory("DJ")}}>DJ</div>
+        <div className={`rankCategoryList ${rankingListType === "FAN" ? "active" : ""}`} onClick={() => {changeCategory("FAN")}}>FAN</div>
+        <div className={`rankCategoryList ${rankingListType === "CUPID" ? "active" : ""}`} onClick={() => {changeCategory("CUPID")}}>CUPID</div>
+        <div className="underline"></div>
+      </div>
+      <div className='tabWrap'>
+        <Tabmenu data={tabList} tab={tabName} setTab={setTabName}/>
+      </div>      
       <div className="rankingContent">
         <TopRanker data={topRankList} rankSlct={rankSlct === 1 ? "DJ" : rankSlct === 2 ? "FAN" : "CUPID"} rankType={rankType}/>
         <div className='listWrap'>
-          <RankingList data={rankList} tab={select} topRankList={topRankList}>
-          </RankingList>
+          <RankingList data={rankList} tab={select} topRankList={topRankList}/>
         </div>
       </div>
 
-      {commonPopup.commonPopup &&
+      {/* {commonPopup.commonPopup &&
         <PopSlide>
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
@@ -344,7 +367,7 @@ const RankDetailPage = (props) => {
             <div className={`selectOption ${select === "CUPID" ? "active" : ""}`} onClick={optionSelect}>CUPID</div>
           </div>
         </PopSlide>
-      }
+      } */}
     </div>
   )
 }

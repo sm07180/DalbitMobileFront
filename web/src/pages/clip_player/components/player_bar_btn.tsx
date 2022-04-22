@@ -1,7 +1,10 @@
-import React, {useCallback} from "react";
-import {useHistory} from "react-router-dom";
+import React, { useContext, useCallback } from "react";
+import { useHistory } from "react-router-dom";
 
-import {tabType} from "../constant";
+import { tabType } from "../constant";
+
+import { GlobalContext } from "context";
+import { ClipContext } from "context/clip_ctx";
 
 import btnReplay from "../static/replay.svg";
 import btnReplayAll from "../static/replay_b.svg";
@@ -12,19 +15,15 @@ import btnPause from "../static/pause_purple.svg";
 import btnPrev from "../static/skip-back.svg";
 import btnNext from "../static/skip_forward.svg";
 import btnPlayList from "../static/playlist.svg";
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setGlobalCtxClipPlayListAdd,
-  setGlobalCtxClipPlayMode,
-  setGlobalCtxSetToastStatus
-} from "../../../redux/actions/globalCtx";
-import {setClipCtxRightTabType} from "../../../redux/actions/clipCtx";
 
 export default function ClipPlayerBarButton() {
   const history = useHistory();
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const { clipPlayer, clipPlayMode, clipInfo } = globalState;
+
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { clipState, clipAction } = useContext(ClipContext);
+
+  const { clipPlayer, clipPlayMode, clipInfo, clipPlayListTab } = globalState;
+  const { setRightTabType, setUserMemNo } = clipAction;
 
   const createModeBtn = useCallback(() => {
     switch (clipPlayMode) {
@@ -49,42 +48,42 @@ export default function ClipPlayerBarButton() {
     switch (clipPlayMode) {
       case "normal":
         //normal 상태에서 클릭시 한곡 반복으로
-        dispatch(setGlobalCtxSetToastStatus({
+        globalAction.callSetToastStatus!({
           status: true,
           message: "현재 클립을 반복합니다.",
-        }));
-        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"oneLoop"}));
+        });
+        globalAction.setClipPlayMode!("oneLoop");
         clipPlayer!.loopStart();
         break;
 
       case "oneLoop":
         //oneLoop 상태에서 클릭시 전체 반복으로
-        dispatch(setGlobalCtxSetToastStatus({
+        globalAction.callSetToastStatus!({
           status: true,
           message: "전체 클립을 반복합니다.",
-        }));
-        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"allLoop"}));
+        });
+        globalAction.setClipPlayMode!("allLoop");
         clipPlayer!.loopEnd();
         break;
       case "allLoop":
         //allLoop 상태에서 클릭시 셔플 상태로
-        dispatch(setGlobalCtxSetToastStatus({
+        globalAction.callSetToastStatus!({
           status: true,
           message: "클립을 셔플하여 재생합니다.",
-        }));
-        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"shuffle"}));
+        });
+        globalAction.setClipPlayMode!("shuffle");
         const test = globalState.clipPlayList!.sort(() => {
           return Math.round(Math.random()) - 0.5;
         });
-        dispatch(setGlobalCtxClipPlayListAdd(test));
+        globalAction.dispatchClipPlayList && globalAction.dispatchClipPlayList({ type: "add", data: test });
         break;
       case "shuffle":
         //shuffle 상태에서 클릭시 노멀 상태로
-        dispatch(setGlobalCtxSetToastStatus({
+        globalAction.callSetToastStatus!({
           status: true,
           message: "클립을 반복하지 않습니다.",
-        }));
-        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"normal"}));
+        });
+        globalAction.setClipPlayMode!("normal");
         break;
       default:
         break;
@@ -102,12 +101,16 @@ export default function ClipPlayerBarButton() {
           type="button"
           className="playerBtn__prev"
           onClick={() => {
-            if (clipPlayer?.isPlayingIdx === 0) {
-              history.push(`/clip/${globalState.clipPlayList![globalState.clipPlayList!.length - 1].clipNo}`);
-            } else {
-              if (clipPlayer?.isPlayingIdx! !== undefined) {
-                history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! - 1].clipNo}`);
-              } else {
+            if(clipPlayListTab?.length > 1) {
+              const prevIdx = clipPlayer?.isPlayingIdx - 1;
+              const lastIdx = clipPlayListTab.length - 1;
+
+              if(clipPlayer?.isPlayingIdx === undefined) {
+                history.push(`/clip/${clipPlayListTab[0].clipNo}`);
+              }else if(clipPlayer?.isPlayingIdx === 0) {
+                history.push(`/clip/${clipPlayListTab[lastIdx].clipNo}`);
+              }else {
+                history.push(`/clip/${clipPlayListTab[prevIdx].clipNo}`);
               }
             }
           }}
@@ -129,13 +132,15 @@ export default function ClipPlayerBarButton() {
         </button>
         <button
           type="button"
-          className="playerBtn__prev"
+          className="playerBtn__next"
           onClick={() => {
-            // debugger
-            if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
-              history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
-            } else {
-              history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+            const nextIdx = clipPlayer?.isPlayingIdx + 1;
+            if(clipPlayListTab?.length > 1) {
+              if (clipPlayer?.isPlayingIdx! === undefined || clipPlayer?.isPlayingIdx === clipPlayListTab.length - 1) {
+                history.push(`/clip/${clipPlayListTab[0].clipNo}`);
+              }else {
+                history.push(`/clip/${clipPlayListTab[nextIdx].clipNo}`);
+              }
             }
           }}
         >
@@ -147,7 +152,7 @@ export default function ClipPlayerBarButton() {
         type="button"
         className="playerBtnWrap__refresh"
         onClick={() => {
-          dispatch(setClipCtxRightTabType(tabType.PLAY_LIST));
+          setRightTabType && setRightTabType(tabType.PLAY_LIST);
         }}
       >
         <img src={btnPlayList} width={32} alt="PlayList" />

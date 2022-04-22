@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 
 // Api
 import {
-  deleteFan,
-  getBroadcastMemberInfo,
-  postAddFan,
-  broadManagerSet,
-  broadManagerDelete,
   broadKickOut,
+  broadManagerDelete,
+  broadManagerSet,
+  getBroadcastMemberInfo,
   MypageBlackListAdd,
   postBroadFanAdd,
   postBroadFanRemove,
@@ -16,36 +14,29 @@ import {
 
 // lib
 import Swiper from "react-id-swiper";
-import { CHAT_CONFIG, IMG_SERVER } from "constant/define";
-import { printNumber, addComma } from "lib/common_fn";
-import { mailBoxJoin } from "common/mailbox/mail_func";
+import {CHAT_CONFIG} from "constant/define";
+// ctx
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GlobalContext} from "context";
+import {MailboxContext} from "context/mailbox_ctx";
+import {addComma, printNumber} from "lib/common_fn";
+import {mailBoxJoin} from "common/mailbox/mail_func";
 // constant
-import { tabType } from "pages/broadcast/constant";
-import { AuthType } from "constant";
-import { MANAGER_TYPE } from "./constant";
+import {tabType} from "pages/broadcast/constant";
+import {AuthType} from "constant";
+import {MANAGER_TYPE} from "./constant";
 import BadgeList from "../../../../common/badge_list";
 import 'asset/scss/module/mypage/index.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setBroadcastCtxIsFan,
-  setBroadcastCtxRightTabType,
-  setBroadcastCtxUserMemNo,
-  setBroadcastCtxUserNickName
-} from "../../../../redux/actions/broadcastCtx";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxMultiViewer,
-  setGlobalCtxSetToastStatus
-} from "../../../../redux/actions/globalCtx";
 
 export default function Profile(props: { roomInfo: roomInfoType; profile: any; roomNo: string; roomOwner: boolean }) {
   const { roomInfo, profile, roomNo, roomOwner } = props;
   const history = useHistory();
-  const dispatch = useDispatch();
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+
   // ctx
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const { setRightTabType, setUserNickNm, setUserMemNo } = broadcastAction;
 
   const { baseData } = globalState;
   const { isLogin } = baseData;
@@ -71,7 +62,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       // 아무것도 선택되지 않았을때
       return baseData.memNo;
     })();
-    dispatch(setBroadcastCtxUserMemNo(memNo));
+    setUserMemNo && setUserMemNo(memNo);
 
     const { result, data, message } = await getBroadcastMemberInfo({ memNo, roomNo });
     if (result === "success") {
@@ -112,21 +103,21 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         profImgList: data.profImgList,
         isMailboxOn: data.isMailboxOn,
       });
-      dispatch(setBroadcastCtxIsFan(data.isFan));
+      broadcastAction.setIsFan && broadcastAction.setIsFan(data.isFan);
     } else {
-      dispatch(setGlobalCtxAlertStatus({
+      globalAction.setAlertStatus!({
         status: true,
         content: message,
-      }));
+      });
 
-      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
+      setRightTabType!(tabType.LISTENER);
     }
   }
 
   const viewProfile = useCallback(
     (memNo: string) => {
       if (isLogin === true) {
-        dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+        setRightTabType && setRightTabType(tabType.PROFILE);
         fetchProfileData(memNo);
       } else {
         return history.push("/login");
@@ -138,8 +129,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const viewSpecialList = useCallback(
     (memNo: string) => {
       if (isLogin === true) {
-        dispatch(setBroadcastCtxUserMemNo(memNo));
-        dispatch(setBroadcastCtxRightTabType(tabType.SPECIALDJLIST));
+        setUserMemNo!(memNo);
+        setRightTabType && setRightTabType(tabType.SPECIALDJLIST);
       } else {
         return history.push("/login");
       }
@@ -154,11 +145,12 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
       if (result === "success") {
         fetchProfileData(memNo);
-
-        dispatch(setGlobalCtxSetToastStatus({
-          status: true,
-          message: `${nickNm}님의 팬이 되었습니다`,
-        }));
+        if (globalAction.callSetToastStatus) {
+          globalAction.callSetToastStatus({
+            status: true,
+            message: `${nickNm}님의 팬이 되었습니다`,
+          });
+        }
       }
     }
 
@@ -166,26 +158,28 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   }, []);
 
   const cancelFan = useCallback((memNo: string, nickNm: string) => {
-
-    dispatch(setGlobalCtxAlertStatus({
-      status: true,
-      type: "confirm",
-      content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
-      callback: () => {
-        async function DeleteFanFunc() {
-          const { result, message } = await postBroadFanRemove({ memNo, roomNo });
-          if (result === "success") {
-            fetchProfileData(memNo);
-            dispatch(setGlobalCtxSetToastStatus({
-              status: true,
-              message: message,
-            }));
+    globalAction.setAlertStatus &&
+      globalAction.setAlertStatus({
+        status: true,
+        type: "confirm",
+        content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+        callback: () => {
+          async function DeleteFanFunc() {
+            const { result, message } = await postBroadFanRemove({ memNo, roomNo });
+            if (result === "success") {
+              fetchProfileData(memNo);
+              if (globalAction.callSetToastStatus) {
+                globalAction.callSetToastStatus({
+                  status: true,
+                  message: message,
+                });
+              }
+            }
           }
-        }
 
-        DeleteFanFunc();
-      },
-    }));
+          DeleteFanFunc();
+        },
+      });
   }, []);
 
   const defalutRank = [
@@ -260,13 +254,6 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
             viewSpecialList(profileData.memNo);
           }}
         >
-          <div className="specialIcon">
-            {profileData.specialDjCnt && profileData.specialDjCnt > 0 ? (
-              <em className="specialIcon__count">{profileData.specialDjCnt}</em>
-            ) : (
-              <></>
-            )}
-          </div>
         </div>
       );
     } else if (profileData.isNew === true) {
@@ -305,39 +292,42 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         }
       })();
 
-      dispatch(setGlobalCtxAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "알림",
-        content: nickNm + msg,
-        callback: async () => {
-          if (type === MANAGER_TYPE.TEMPORARY && managerType === MANAGER_TYPE.FIXING) {
-            dispatch(setGlobalCtxSetToastStatus({
-              status: true,
-              message: "이미 고정 매니저로 지정되어 있습니다.",
-            }));
+      if (globalAction.setAlertStatus) {
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          title: "알림",
+          content: nickNm + msg,
+          callback: async () => {
+            if (type === MANAGER_TYPE.TEMPORARY && managerType === MANAGER_TYPE.FIXING) {
+              globalAction.callSetToastStatus!({
+                status: true,
+                message: "이미 고정 매니저로 지정되어 있습니다.",
+              });
 
-            return;
-          } else {
-            const res = await managerApi({ roomNo: roomNo, memNo: memNo, managerType: type });
-            if (res.result === "success") {
-              dispatch(setGlobalCtxSetToastStatus({
-                status: true,
-                message: res.message,
-              }));
+              return;
             } else {
-              dispatch(setGlobalCtxAlertStatus({
-                status: true,
-                type: "alert",
-                content: res.message,
-                callback: () => {
-                  return;
-                },
-              }));
+              const res = await managerApi({ roomNo: roomNo, memNo: memNo, managerType: type });
+              if (res.result === "success") {
+                globalAction.callSetToastStatus!({
+                  status: true,
+                  message: res.message,
+                });
+              } else {
+                globalAction.setAlertStatus &&
+                  globalAction.setAlertStatus({
+                    status: true,
+                    type: "alert",
+                    content: res.message,
+                    callback: () => {
+                      return;
+                    },
+                  });
+              }
             }
-          }
-        },
-      }));
+          },
+        });
+      }
     },
     [profileData]
   );
@@ -345,46 +335,50 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const outUser = useCallback(() => {
     if (profileData) {
       const { nickNm, memNo } = profileData;
-      dispatch(setGlobalCtxAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "강제 퇴장",
-        content: nickNm + " 님을 강제퇴장 하시겠습니까?",
-        subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
-        subcontStyle: {
-          color: "gray",
-          lineHeight: "16px",
-          margin: "10px 0 0 0",
-        },
-        callback: async () => {
-          const res = await broadKickOut({ roomNo: roomNo, blockNo: memNo });
-          if (res.result === "success") {
-            KickAfterBan();
-          } else {
-            dispatch(setGlobalCtxAlertStatus({
-              status: true,
-              type: "alert",
-              content: res.message,
-            }));
-          }
-        },
-      }));
+      if (globalAction.setAlertStatus) {
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          title: "강제 퇴장",
+          content: nickNm + " 님을 강제퇴장 하시겠습니까?",
+          subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
+          subcontStyle: {
+            color: "gray",
+            lineHeight: "16px",
+            margin: "10px 0 0 0",
+          },
+          callback: async () => {
+            const res = await broadKickOut({ roomNo: roomNo, blockNo: memNo });
+            if (res.result === "success") {
+              KickAfterBan();
+            } else {
+              globalAction.setAlertStatus &&
+                globalAction.setAlertStatus({
+                  status: true,
+                  type: "alert",
+                  content: res.message,
+                });
+            }
+          },
+        });
+      }
     }
   }, [profileData]);
 
   const KickAfterBan = useCallback(() => {
     if (profileData) {
-      dispatch(setGlobalCtxAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `강제퇴장이 완료되었습니다. 
-         ${profileData.nickNm}님을 
-         차단하시겠습니까?`,
-        callback: () => fetchDataBlock(),
-        cancelCallback: () => {
-          dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
-        },
-      }));
+      globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          content: `강제퇴장이 완료되었습니다. 
+           ${profileData.nickNm}님을 
+           차단하시겠습니까?`,
+          callback: () => fetchDataBlock(),
+          cancelCallback: () => {
+            setRightTabType && setRightTabType(tabType.LISTENER);
+          },
+        });
     }
   }, [profileData]);
   const fetchDataBlock = useCallback(async () => {
@@ -393,18 +387,19 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         memNo: profileData.memNo,
       });
       if (result === "success") {
-        dispatch(setGlobalCtxSetToastStatus({
+        globalAction.callSetToastStatus!({
           status: true,
           message: message,
-        }));
+        });
       } else {
-        dispatch(setGlobalCtxAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-        }));
+        globalAction.setAlertStatus &&
+          globalAction.setAlertStatus({
+            status: true,
+            type: "alert",
+            content: message,
+          });
       }
-      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
+      setRightTabType && setRightTabType(tabType.LISTENER);
     }
   }, [profileData]);
 
@@ -414,13 +409,19 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
   useEffect(() => {
     if (profileData !== null) {
-      setBadgeList(profileData.commonBadgeList);
+      /* 좌측 프로필 탭 - 스와이퍼 뱃지 리스트의 text값이 ''이면 제외 */
+      setBadgeList(profileData.commonBadgeList.concat([]).filter((v) => v?.text !== ''));
       let expCal = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
       let expPerc = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
       setExpData({ expCalc: expCal, expPercent: expPerc });
     }
   }, [profileData]);
 
+  // useEffect(() => {
+  //   return () => {
+  //     setUserMemNo && setUserMemNo(baseData.memNo);
+  //   };
+  // }, []);
 
   //경험치바 퍼센트 정리
   const exBar = profileData && profileData.expRate - 100;
@@ -434,7 +435,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
     globalState.mailChatInfo?.setUserInfo(socketUser);
     globalState.mailChatInfo?.privateChannelDisconnect();
-    mailBoxJoin(memNo, dispatch, history);
+    mailBoxJoin(memNo, mailboxAction, globalAction, history);
   };
   return (
     <>
@@ -449,8 +450,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     <button
                       className="btn__report"
                       onClick={() => {
-                        dispatch(setBroadcastCtxRightTabType(tabType.REPORT));
-                        dispatch(setBroadcastCtxUserNickName(profileData.nickNm));
+                        setRightTabType && setRightTabType(tabType.REPORT);
+                        setUserNickNm && setUserNickNm(profileData.nickNm);
                       }}
                     >
                       <span className="blind">신고하기</span>
@@ -479,10 +480,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   src={profileData.holder}
                   className="holder"
                   onClick={() => {
-                    dispatch(setGlobalCtxMultiViewer({
+                    globalAction.setMultiViewer?.({
                       show: true,
                       list: profileData.profImgList.length ? profileData.profImgList : [{ profImg: profileData.profImg }],
-                    }));
+                    });
                   }}
                 />
               </div>
@@ -562,9 +563,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
                       } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
                       }
                     }}
                   >
@@ -598,9 +599,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
                       } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
                       }
                     }}
                   >
@@ -631,9 +632,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
                       } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
                       }
                     }}
                   >
@@ -654,9 +655,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
                       } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
                       }
                     }}
                   >
@@ -719,8 +720,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <button
                     className="btn btn_gift"
                     onClick={() => {
-                      dispatch(setBroadcastCtxRightTabType(tabType.GIFT_DAL));
-                      dispatch(setBroadcastCtxUserNickName(profileData.nickNm));
+                      setRightTabType && setRightTabType(tabType.GIFT_DAL);
+                      setUserNickNm && setUserNickNm(profileData.nickNm);
                     }}
                   >
                     선물하기

@@ -9,14 +9,12 @@ import EventComment from '../../components/comment'
 import PopupNotice from './PopupNotice'
 import PopupResult from './PopupResult'
 import PopupLetter from './PopupLetter'
+import {Context} from 'context'
 import {authReq} from 'pages/self_auth'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 // 좋아요 트리만들기 Content Component
 const Tree = (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context)
   const history = useHistory()
   const [makePopInfo, setMakePopInfo] = useState(false) // 트리 만드는 법 & 트리 완성 보상 팝업 정보
   const [presentPopInfo, setPresentPopInfo] = useState({open: false}) // 선물 팝업 정보
@@ -31,7 +29,6 @@ const Tree = (props) => {
   }) // 메인 리스트 정보
   const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [], totalPage: 0}) // 사연리스트 정보
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}) // 사연 검색 정보
-
 
   // 메인 리스트 가져오기
   const getMainListInfo = () => {
@@ -81,9 +78,9 @@ const Tree = (props) => {
       .then((res) => {
         if (res.code === '00000') {
           resetStoryList()
-          dispatch(setGlobalCtxMessage({type:"alert",msg: '사연이 등록되었습니다.'}))
+          context.action.alert({msg: '사연이 등록되었습니다.'})
         } else {
-          dispatch(setGlobalCtxMessage({type:"alert",msg: `${res.code !== '99999' ? res.message : '사연 등록에 실패했습니다.'}`}))
+          context.action.alert({msg: `${res.code !== '99999' ? res.message : '사연 등록에 실패했습니다.'}`})
         }
       })
       .catch((e) => console.log(e))
@@ -96,9 +93,9 @@ const Tree = (props) => {
       .then((res) => {
         if (res.code === '00000') {
           resetStoryList()
-          dispatch(setGlobalCtxMessage({type:"alert",msg: '사연을 삭제했습니다.'}))
+          context.action.alert({msg: '사연을 삭제했습니다.'})
         } else {
-          dispatch(setGlobalCtxMessage({type:"alert",msg: `${res.code !== '99999' ? res.message : '사연 삭제에 실패했습니다.'}`}))
+          context.action.alert({msg: `${res.code !== '99999' ? res.message : '사연 삭제에 실패했습니다.'}`})
         }
       })
       .catch((e) => console.log(e))
@@ -110,9 +107,9 @@ const Tree = (props) => {
     Api.likeTreeStoryRptIns(params)
       .then((res) => {
         if (res.code === '00000') {
-          dispatch(setGlobalCtxMessage({type:"alert",msg: '사연을 신고했습니다.'}))
+          context.action.alert({msg: '사연을 신고했습니다.'})
         } else {
-          dispatch(setGlobalCtxMessage({type:"alert",msg: `${res.code !== '99999' ? res.message : '사연 신고 실패했습니다.'}`}))
+          context.action.alert({msg: `${res.code !== '99999' ? res.message : '사연 신고 실패했습니다.'}`})
         }
       })
       .catch((e) => console.log(e))
@@ -133,18 +130,18 @@ const Tree = (props) => {
     const res = await Api.self_auth_check({})
     if (res.result === 'success') {
       // 인증 됨
-      dispatch(setGlobalCtxMessage({type:"confirm",
+      context.action.confirm({
         callback: () => rcvPresent(res.data.phoneNo), // 선물 받기
         cancelCallback: () => {},
         msg: '여러개의 계정을 소유하고 있더라도\n본인의 계정 중 1개의 계정으로만 완료보상을 수령할 수 있습니다.\n현재 계정으로 완료 보상을 수령하시겠습니까?'
-      }))
+      })
     } else {
       // 인증 안됨
-      dispatch(setGlobalCtxMessage({type:"confirm",
-        callback: () => authReq('10', globalState.authRef, dispatch), // 본인 인증 하기
+      context.action.confirm({
+        callback: () => authReq({code: '10', formTagRef: context.authRef, context: context}), // 본인 인증 하기
         cancelCallback: () => {},
         msg: '트리 완성 보상을 받기 위해서는\n본인인증이 필요합니다.'
-      }))
+      })
     }
   }
 
@@ -154,7 +151,7 @@ const Tree = (props) => {
       if (rewardRes.code === '00000') {
         presentPopOpen() // 결과 팝업
       } else {
-        dispatch(setGlobalCtxMessage({type:"alert",msg: rewardRes.message}))
+        context.action.alert({msg: rewardRes.message})
       }
     })
   }
@@ -206,7 +203,7 @@ const Tree = (props) => {
 
   // 사연 자격 미달
   const giftDenied = () => {
-    dispatch(setGlobalCtxMessage({type:"alert",msg: '보상 지급 대상이 아닙니다.'}))
+    context.action.alert({msg: '보상 지급 대상이 아닙니다.'})
   }
 
   useEffect(() => {

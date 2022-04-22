@@ -77,6 +77,7 @@
         @include flex(center);
         flex: none;
         height: 35px;
+        line-height: 35px;
         padding: 0 16px;
       }
     }
@@ -516,6 +517,7 @@
           height: 24px;
           margin-left: auto;
           @include BGIMG('store/dalla/icoGear-g.png');
+          cursor: pointer;
         }
       }
       .addAccountBtn{

@@ -275,6 +275,14 @@
         outline: none;
       }
 
+      .disabled{
+        background-color: #aaa;
+
+        &::placeholder{
+          color: #000;
+        }
+      }
+
       .emoji-icon {
         position: absolute;
         right: 0;
@@ -1366,7 +1374,9 @@
         }
 
         .fan-badge img {
-          height: 26px;
+          margin-left: -4px;
+          height: 22px;
+          margin-right: 2px;
         }
         .fan-badge span {
           display: inline-block;

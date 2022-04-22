@@ -112,7 +112,8 @@ const Exchange = (props) => {
           }))
         }
         const {parentsAgreeYn, adultYn} = res.data
-        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
+        /* 법정대리인 동의 필요! */
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.replace('/exchangeLegalAuth')
         if (myBirth > baseYear) {
           return dispatch(setGlobalCtxMessage({type: "alert",
             msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
@@ -372,14 +373,29 @@ const Exchange = (props) => {
         {!isIOS
           &&
         <div className="infoBox">
-            {profile?.badgeSpecial > 0 && (
+            {
+              profile?.playMakerYn === "y" ?
+              <>
+                <p className={"special"}>회원님은 현재 플레이메이커입니다.</p>
+                <p className={"special"}>환전 수수로 10% 우대 혜택을 받습니다.</p>
+                <p>별 570개 이상부터 환전을 신청할 수 있습니다.</p>
+                <p>별 1개당 KRW70으로 환전됩니다.</p>
+              </>
+              :
+              profile?.badgeSpecial > 0 ?
               <>
                 <p className="special">DJ님은 스페셜 DJ 입니다.</p>
                 <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
+                <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
+                <p>별 1개당 KRW 60으로 환전됩니다.</p>
               </>
-            )}
-            <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
-            <p>별 1개당 KRW 60으로 환전됩니다.</p>
+              :
+              <>
+                <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
+                <p>별 1개당 KRW 60으로 환전됩니다.</p>
+              </>
+            }
+
         </div>
         }
         {!isIOS &&

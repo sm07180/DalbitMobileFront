@@ -199,6 +199,9 @@ export default function SendGift(props: {
           case "text":
             setGiftCategoryItem(3);
             break;
+          case "signature":
+            setGiftCategoryItem(4);
+            break;
         }
 
         const filterList = common.items.filter((v) => {
@@ -353,6 +356,7 @@ export default function SendGift(props: {
       isSecret: isHidden,
       ttsText: roomInfo?.djTtsSound ? ttsText : "",
       actorId: roomInfo?.djTtsSound ? ttsActor : "",
+      ttsYn: showTTSInputField ? 'y' : 'n'
     };
 
     const alertMsg: string = (() => {

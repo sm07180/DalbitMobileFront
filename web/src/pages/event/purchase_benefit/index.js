@@ -1,25 +1,32 @@
-import React from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
+import {Context} from 'context'
 import {StoreLink} from 'context/link'
 import styled from 'styled-components'
-import {useDispatch, useSelector} from "react-redux";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 // 이벤트 적용후 모바일에서 테스트! (방송방,클립 플레이어 적용 꼭확인)
 export default () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
+  const context = useContext(Context)
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   const customHeader = JSON.parse(Api.customHeader)
+
   const linkMove = () => {
-    if (!globalState.token.isLogin) {
+    if (!context.token.isLogin) {
       history.push('/login?redirect=/event/purchaseBenefit')
     } else {
-      if (customHeader['os'] === OS_TYPE['IOS']) {
-        StoreLink({history,globalState,dispatch})
-      } else {
-        history.push(`/store`)
-      }
+      storeButtonEvent({history, memberRdx, payStoreRdx});
+
+      // if (customHeader['os'] === OS_TYPE['IOS']) {
+      //   StoreLink(context, history)
+      // } else {
+      //   history.push(`/store`)
+      // }
     }
   }
 

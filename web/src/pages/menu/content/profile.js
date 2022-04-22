@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {Switch, Route, useParams, Redirect, useHistory} from 'react-router-dom'
+import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -31,22 +32,20 @@ import ClipIcon from '../static/menu_cast.svg'
 import '../../mypage/index.scss'
 
 import {OS_TYPE} from 'context/config'
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setGlobalCtxFanBoardReply,
-  setGlobalCtxFanBoardReplyNum, setGlobalCtxIsMailboxNew,
-  setGlobalCtxMessage,
-  setGlobalCtxToggleState, setGlobalCtxUpdatePopup, setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken
-} from "redux/actions/globalCtx";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 //------------------------------------------------------------------------------
 const storyIcon = 'https://image.dalbitlive.com/svg/ico_mail_pink.svg'
 export default (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  let history = useHistory()
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   // webview & ctx
   const {webview} = qs.parse(location.search)
-  const {token, profile} = globalState
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {token, profile} = globalCtx
   const customHeader = JSON.parse(Api.customHeader)
 
   if (webview && webview === 'new') {
@@ -114,20 +113,20 @@ export default (props) => {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', logoutInfo.data)
         }
-        dispatch(setGlobalCtxUpdateToken(logoutInfo.data));
-        dispatch(setGlobalCtxUpdateProfile(null));
+        globalCtx.action.updateToken(logoutInfo.data)
+        globalCtx.action.updateProfile(null)
         // props.history.push('/')
         window.location.href = '/'
         return
       } else if (logoutInfo.result === 'fail') {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        globalCtx.action.alert({
           title: '로그아웃 실패',
           msg: `${logoutInfo.message}`
-        }))
+        })
         setFetching(false)
       }
     }
-    BeforeLogout(dispatch, fetchLogout)
+    BeforeLogout(globalCtx, fetchLogout)
   }
   const checkSelfAuth = async () => {
     //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
@@ -142,25 +141,25 @@ export default (props) => {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
         if (res.data.company === '기타') {
-          return dispatch(setGlobalCtxMessage({type: "alert",
+          return context.action.alert({
             msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
-          }))
+          })
         }
         const {parentsAgreeYn, adultYn} = res.data
         if (parentsAgreeYn === 'n' && adultYn === 'n') return props.history.push('/selfauth_result')
         if (myBirth > baseYear) {
-          return dispatch(setGlobalCtxMessage({type: "alert",
+          return context.action.alert({
             msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-          }))
+          })
         } else {
           props.history.push('/money_exchange')
         }
       } else if (res.result === 'fail' && res.code === '0') {
         props.history.push('/selfauth')
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     }
     fetchSelfAuth()
@@ -185,16 +184,16 @@ export default (props) => {
     const {memNo} = token
     Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
       if (profileInfo.result === 'success') {
-        dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
+        globalCtx.action.updateProfile(profileInfo.data)
       }
     })
 
     return () => {}
   }, [])
   const locationNav = (type) => {
-    dispatch(setGlobalCtxFanBoardReplyNum(false));
-    dispatch(setGlobalCtxFanBoardReply(false));
-    dispatch(setGlobalCtxToggleState(false));
+    context.action.updateFanboardReplyNum(false)
+    context.action.updateFanboardReply(false)
+    context.action.updateToggleAction(false)
     if (webview && webview === 'new') {
       if (type === 'story') {
         history.push(`/${type}?webview=new`)
@@ -212,11 +211,11 @@ export default (props) => {
 
   const createMailboxMenu = () => {
     let settingClassName = 'arrow'
-    if (globalState.isMailboxNew && globalState.token.isLogin) {
+    if (context.isMailboxNew && context.token.isLogin) {
       settingClassName = 'arrow arrow--active'
     }
 
-    if (globalState.useMailbox) {
+    if (context.useMailbox) {
       if (
         __NODE_ENV === 'dev' ||
         customHeader.os === OS_TYPE['Desktop'] ||
@@ -227,19 +226,19 @@ export default (props) => {
           <button
             className="list"
             onClick={async () => {
-              if (!globalState.myInfo.level) {
+              if (!context.myInfo.level) {
                 const myProfile = await Api.profile({ params: { memNo: token.memNo } })
                 if(myProfile.data.level === 0) {
-                  return dispatch(setGlobalCtxMessage({type: "alert",
+                  return globalCtx.action.alert({
                     msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-                  }))
+                  })
                 }
               }
 
               if (isHybrid()) {
                 Hybrid('OpenMailBoxList')
               } else {
-                dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 5]}));
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
               }
             }}>
             <img className="icon" src={MailboxIcon} alt="메시지" />
@@ -255,14 +254,14 @@ export default (props) => {
     const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        dispatch(setGlobalCtxIsMailboxNew(data.isNew));
+        globalCtx.action.updateIsMailboxNew(data.isNew)
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        globalCtx.action.alert({
           msg: message
-        }))
+        })
       }
     }
-    if (globalState.token.isLogin) isMailboxNewCheck()
+    if (context.token.isLogin) isMailboxNewCheck()
   }, [])
 
   return (
@@ -276,7 +275,7 @@ export default (props) => {
               <div className="menu-box">
                 {walletList.map((value, idx) => {
                   const {type, txt, icon} = value
-                  if (type === 'money_exchange' && globalState.customHeader['os'] === OS_TYPE['IOS']) {
+                  if (type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']) {
                     return <></>
                   } else {
                     return (
@@ -288,7 +287,8 @@ export default (props) => {
                             history.push(`/mypage/${profile.memNo}/${type}`)
                           } else if (type === 'store') {
                             e.preventDefault()
-                            StoreLink({history, globalState, dispatch});
+                            //StoreLink(globalCtx, props.history);
+                            storeButtonEvent({history, memberRdx, payStoreRdx});
                           } else if (type === 'money_exchange') {
                             e.preventDefault()
                             checkSelfAuth()

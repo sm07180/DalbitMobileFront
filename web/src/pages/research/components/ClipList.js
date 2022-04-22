@@ -6,14 +6,13 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
-import {NewClipPlayerJoin} from "common/audio/clip_func";
+import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {playClip} from "pages/clip/components/clip_play_fn";
 
 const ClipList = (props) => {
   const { data } = props;
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context); //context
   const history = useHistory();
 
   const swiperParams = {
@@ -22,22 +21,17 @@ const ClipList = (props) => {
   }
 
   // 클립 듣기
-  const playClip = (e) => {
+  const clipPlayHandler = (e, memNo) => {
     const { clipNo } = e.currentTarget.dataset;
     const playListInfoData = {
-      dateType: 0,
+      myClipType: 1,
       page: 1,
-      records: 10,
-      slctType: 0
+      records: 100,
+      memNo,
+      type:'setting'
     }
-    localStorage.setItem(
-      "clipPlayListInfo",
-      JSON.stringify(playListInfoData)
-    );
-    if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, globalState, dispatch, history };
-      NewClipPlayerJoin(clipParam);
-    }
+    const clipParam = { clipNo, playList: data, context, history, playListInfoData };
+    playClip(clipParam);
   };
 
   return (
@@ -46,7 +40,7 @@ const ClipList = (props) => {
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div key={index} data-clip-no={list.clipNo} onClick={playClip}>
+            <div key={index} data-clip-no={list.clipNo} onClick={(e) => clipPlayHandler(e, list.memNo)}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.bgImg.thumb292x292} />

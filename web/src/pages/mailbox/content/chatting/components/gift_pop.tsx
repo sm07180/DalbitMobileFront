@@ -134,7 +134,7 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
                 </div>
                 <div className="myDalBoxItem">
                   {profile.byeolCnt.toLocaleString()}
-                  <button onClick={() => history.push(`/dal_exchange`)}>
+                  <button onClick={() => history.push(`/wallet?exchange`)}>
                     <img src="https://image.dalbitlive.com/mailbox/ico_exchange.svg" alt="교환" />
                   </button>
                 </div>

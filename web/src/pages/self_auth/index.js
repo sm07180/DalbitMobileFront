@@ -4,16 +4,16 @@ import qs from 'query-string'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 
+//context
+import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 //layout
 import Header from 'components/ui/header/Header'
 
 import './selfAuth.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage, setGlobalCtxWalletIdx} from "redux/actions/globalCtx";
 
-export const openAuthPage = (formTagRef, dispatch) => {
+export const openAuthPage = (formTagRef, context) => {
   var KMCIS_window
   var UserAgent = navigator.userAgent
   /* 모바일 접근 체크*/
@@ -42,9 +42,9 @@ export const openAuthPage = (formTagRef, dispatch) => {
     )
 
     if (KMCIS_window == null) {
-      dispatch(setGlobalCtxMessage({type: "alert",
+      context.action.alert({
         msg: ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
-      }))
+      })
     }
     document.authForm.target = 'KMCISWindow'
   }
@@ -53,13 +53,14 @@ export const openAuthPage = (formTagRef, dispatch) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef, dispatch, pushLink, memNo) => {
+export const authReq = async ({code, formTagRef, context, pushLink='', memNo='', authType='', agreePeriod=''}) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
-      authType: '0',
+      authType: authType ? authType : '0',
       pushLink: pushLink ? encodeURIComponent(pushLink) : 'none',
-      memNo
+      memNo,
+      agreePeriod
     }
   })
   if (res.result == 'success' && res.code == 0) {
@@ -78,12 +79,11 @@ export const authReq = async (code, formTagRef, dispatch, pushLink, memNo) => {
     })
 
     // console.log(authForm)
-    openAuthPage(formTagRef, dispatch)
+    openAuthPage(formTagRef, context)
   } else {
-
-    dispatch(setGlobalCtxMessage({type: "alert",
+    context.action.alert({
       msg: res.message
-    }))
+    })
   }
 }
 
@@ -94,28 +94,28 @@ export default (props) => {
   const {type, event} = qs.parse(location.search)
 
   //---------------------------------------------------------------------
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  //context
+  const context = useContext(Context)
 
   //인증 요청 버튼
   function authClick() {
     if (event) {
       let url = event.split('/').join('DAL')
       url = url.split('_').join('BIT')
-      return authReq(url, globalState.authRef, dispatch)
+      return authReq(url, context.authRef, context)
     }
 
-    if (type === 'create' || type === 'adultCreate') return authReq('6', globalState.authRef, dispatch)
-    if (type === 'adultJoin') return authReq('8', globalState.authRef, dispatch)
+    if (type === 'create' || type === 'adultCreate') return authReq({code: '6', formTagRef: context.authRef, context})
+    if (type === 'adultJoin') return authReq({code: '8', formTagRef: context.authRef, context})
 
-    return authReq('4', globalState.authRef, dispatch)
+    return authReq({code: '4', formTagRef: context.authRef, context})
   }
 
   const goBack = () => {
     //props.history.push(`/mypage/${context.profile.memNo}/wallet`)
     if (type === 'create') return Hybrid('CloseLayerPopup')
     window.history.back()
-    dispatch(setGlobalCtxWalletIdx(1));
+    context.action.updateWalletIdx(1)
   }
 
   const AuthContent = () => {
@@ -162,7 +162,7 @@ export default (props) => {
         </h4>
         <div className="noticeInfo">
           <h3>유의사항</h3>
-          <p>환전 신청은 만 14세 이상의 회원만 가능합니다.</p>
+          <p>환전 신청은 만 14세 이상의 회원만 가능합니다.</p> 
           <p>환전 승인을 위해 최초 1회 본인인증이 필요합니다.</p>
           <p>만 14세~만 19세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.</p>
         </div>

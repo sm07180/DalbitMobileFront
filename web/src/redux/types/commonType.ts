@@ -76,6 +76,7 @@ export interface ICommonPopupState {
   presentPopup: boolean;
   questionMarkPopup: boolean;
   historyPopup: boolean;
+  levelPopup: boolean;
 
   // 달라져스 이벤트
   morePopup: boolean;

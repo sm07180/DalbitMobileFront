@@ -1,9 +1,12 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
+//context
+import {Context} from 'context'
+
 // static
 import './rankList.scss'
-import {useDispatch, useSelector} from "react-redux";
+import {IMG_SERVER} from "context/config";
 
 const EventRankList = (props) => {
   const {
@@ -13,10 +16,10 @@ const EventRankList = (props) => {
 		listNum,
 		index
   } = props
+  const globalCtx = useContext(Context)
   const history = useHistory()
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const dispatch = useDispatch();
-  // 프로필 이동 이벤트
+
+  // 프로필 이동
   const goProfile = (memNo) => {
     if (memNo !== undefined && memNo > 0) {
       history.push(`/profile/${memNo}`)
@@ -24,9 +27,9 @@ const EventRankList = (props) => {
   }
 
   return (
-		<div className={`eventRankList ${type === 'my' && globalState.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
+		<div className={`eventRankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`} key={index} onClick={() => {goProfile(rankList.mem_no)}}>
 			<div className="rankNum">
-				{type === 'my' && globalState.token.isLogin ? <span className='tit'>내순위</span> : <></>}
+				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
 				{type === 'my' ?
 					<span className="num">
 						{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}
@@ -48,8 +51,10 @@ const EventRankList = (props) => {
 				</p>}
 			</div>
 			<div className={`photo size${photoSize}`}>
-				{rankList && rankList.profImg &&
-					<img src={rankList && rankList.profImg && rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
+				{rankList && rankList.profImg && rankList.profImg.thumb292x292 ?
+					<img src={rankList.profImg.thumb292x292} alt={rankList && rankList.mem_nick} />
+          :
+          <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
 				}
 			</div>
 			{props.children}

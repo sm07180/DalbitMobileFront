@@ -1,15 +1,18 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
+import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
+import Refresh from './components/Refresh'
 import RankingList from './components/rankingList'
 import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
@@ -21,14 +24,15 @@ import {setSubTab} from "redux/actions/rank";
 
 const RankPage = () => {
   const history = useHistory();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const {token, profile} = globalState;
+  const context = useContext(Context);
+
+  const {token, profile} = context;
 
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
-  const rankState = useSelector(({rankCtx}) => rankCtx);
+  const rankState = useSelector(state => state.rank);
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
 
@@ -338,6 +342,7 @@ const RankPage = () => {
           </div>
         </div>
         <ChartSwiper data={djRank}/>
+        <Refresh select={select} setSelect={setSelect}/>
       </section>
       {token.isLogin ?
         <section className='myRanking'>
@@ -354,8 +359,14 @@ const RankPage = () => {
             <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
             <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
           </div>
-        </section>
-      }
+        </section>          
+      }      
+      <section className='bannerWrap'>
+        <BannerSlide type={17}/>
+      </section>
+      {/* <section className='rankingBottom' onClick={() => history.push('/honor')}>
+        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
+      </section> */}
       <section className='dailyRankList'>
         <div className="cntTitle">
           <h2>일간 FAN / CUPID</h2>
@@ -388,9 +399,6 @@ const RankPage = () => {
             </>
           }
         </div>
-      </section>
-      <section className='rankingBottom' onClick={() => history.push('/honor')}>
-        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
       </section>
       {commonPopup.commonPopup &&
       <PopSlide>

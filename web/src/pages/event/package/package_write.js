@@ -221,7 +221,6 @@ const packageEventWrite = () => {
 
     new window['daum'].Postcode({
       oncomplete: (data) => {
-        console.log(data)
         setPostCode(data.zonecode)
         setAddress(data.address)
         element_layer.setAttribute('style', 'display: none;')

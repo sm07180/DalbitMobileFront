@@ -4,24 +4,24 @@
  *
  * 변경사항 : 요청 URL API서버로 변경
  */
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useState, useEffect, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //context
+import {Context} from 'context'
 import Api from 'context/api'
-import {OS_TYPE} from 'context/config.js'
+import {OS_TYPE, API_SERVER, PHOTO_SERVER} from 'context/config.js'
 import {Hybrid, isHybrid} from "context/hybrid";
+import Utility from "components/lib/utility";
 import {getDeviceOSTypeChk} from '../../../common/DeviceCommon';
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
+import qs from 'query-string'
 
 export default () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
   const history = useHistory();
   const customHeader = JSON.parse(Api.customHeader);
+  const context = useContext(Context);
   const [redirectList, setRedirectList] = useState([]);
+  const {webview} = qs.parse(location.search);
 
   /** host 주소값으로 리스트에서 같은 값이 있는지 검색
    * @return : undefined or {host, api, photo, socketURL} */
@@ -42,6 +42,9 @@ export default () => {
   const getInnerServerList = async () => {
     const {list, innerChk} = await Api.getInnerServerList();
 
+    if (webview && webview === 'new' && isHybrid()) {
+      return;
+    }
     if (Array.isArray(list) && list.length) {
       setRedirectList(list);
       localStorage.setItem('innerChk', innerChk); //client ip
@@ -50,13 +53,13 @@ export default () => {
 
   //서버 이동 브릿지 호출 함수 : (로그아웃 후 서버 이동 시킴)
   const serverChangeAction = async (host, api, photo, socketURL) => {
-    if (globalState.token.isLogin) {
+    if (context.token.isLogin) {
       const logoutInfo = await Api.member_logout();
       if (logoutInfo.result === 'success') {
         Hybrid('GetLogoutToken', logoutInfo.data);
-        clearInterval(globalState.intervalId);
-        dispatch(setGlobalCtxUpdateToken(logoutInfo.data));
-        dispatch(setGlobalCtxUpdateProfile(null));
+        clearInterval(context.intervalId);
+        context.action.updateToken(logoutInfo.data);
+        context.action.updateProfile(null);
 
         Hybrid('setAppHost', {host, api, photo, socketURL});
       }

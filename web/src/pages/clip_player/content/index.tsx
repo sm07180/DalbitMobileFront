@@ -1,101 +1,96 @@
-import React, {useEffect, useState} from "react";
-import {useHistory, useParams} from "react-router-dom";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { useHistory, useParams } from "react-router-dom";
 
-import {ClipPlayerHandler} from "common/audio/clip_player";
+import { ClipPlayerHandler } from "common/audio/clip_player";
 import {
-  clipPlayConfirm,
-  getClipList,
-  getClipRankingList,
-  getHistoryList,
+  postClipPlay,
   getMainTop3List,
-  getMarketingClipList,
   getPopularList,
   getUploadList,
-  postClipPlay,
+  getHistoryList,
+  getClipList,
+  clipPlayConfirm,
+  getMarketingClipList,
+  getClipRankingList,
 } from "common/api";
 
 import PlayBox from "../components/player_box";
 import ClipRightTabRender from "../components/right_tab_render";
 
+import { GlobalContext } from "context";
+import { ClipContext } from "context/clip_ctx";
+
 import "./clip_player.scss";
 import "./tab_contents.scss";
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxClipInfoAdd,
-  setGlobalCtxClipPlayerInit,
-  setGlobalCtxClipPlayListAdd,
-  setGlobalCtxClipPlayListTabAdd,
-  setGlobalCtxClipPlayMode
-} from "../../../redux/actions/globalCtx";
-import {setClipCtxInfoAdd, setClipCtxIsMyClip} from "../../../redux/actions/clipCtx";
+import Utility from "../../../components/lib/utility";
 
 export default function ClipContent() {
   const { clipNo } = useParams<{ clipNo: string }>();
   const history = useHistory();
   const historyState = history.location.state;
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const clipState = useSelector(({clipCtx}) => clipCtx);
 
-  const { clipPlayer, baseData, clipInfo } = globalState;
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { clipState, clipAction } = useContext(ClipContext);
+  const { clipPlayer, baseData, clipInfo, clipPlayListTab } = globalState;
+  const { dispatchClipPlayList, dispatchClipPlayListTab } = globalAction;
 
   const [playState, setPlayState] = useState(false);
 
   let newClipPlayer = clipPlayer;
 
   const clipPlay = async () => {
-
     const { result, message, data } = await postClipPlay({
       clipNo: clipNo,
     });
-    // debugger
+
     if (result === "success") {
       createPlayer(data, "firstStart");
-      sessionStorage.setItem("clip", JSON.stringify(data));
+
       if (!clipInfo?.clipNo || (clipInfo?.clipNo !== data.clipNo && historyState === "firstJoin")) {
         updatePlayList(data);
       }
     } else {
-      dispatch(setGlobalCtxAlertStatus({
+      globalAction.setAlertStatus!({
         status: true,
         content: message,
         callback: playFailHandler,
         cancelCallback: playFailHandler,
-      }));
+      })
     }
   };
 
   const createPlayer = (data: any, type: string) => {
     if (clipPlayer === null) {
-      newClipPlayer = new ClipPlayerHandler({info:data, dispatch, globalState});
-      if (type !== "restart"){
-        dispatch(setGlobalCtxClipPlayMode({clipPlayMode:"normal"}));
-      }
+      newClipPlayer = new ClipPlayerHandler(data);
+      if (type !== "restart") globalAction.setClipPlayMode!("normal");
     }
+    newClipPlayer!.setGlobalAction(globalAction);
     newClipPlayer!.clipAudioTag!.onerror = () => {
-      dispatch(setGlobalCtxAlertStatus({
+      globalAction.setAlertStatus!({
         status: true,
         content: "오디오 파일을 찾을 수 없습니다.",
         callback: () => history.goBack(),
         cancelCallback: () => history.goBack(),
-      }));
+      });
     };
+
+    Utility.addClipPlayList(data);
+    dispatchClipPlayList && dispatchClipPlayList({type: 'add', data});
 
     if (data.file.url === newClipPlayer?.clipAudioTag?.src && data.clipNo !== newClipPlayer!.clipNo) {
       newClipPlayer!.restart();
     }
     newClipPlayer?.init(data.file.url);
     newClipPlayer?.clipNoUpdate(data.clipNo);
-    dispatch(setGlobalCtxClipPlayerInit(newClipPlayer));
-    const addObj = { ...data, ...{ isPaused: true, isSaved60seconds: false } };
-    dispatch(setGlobalCtxClipInfoAdd(addObj))
-    dispatch(setClipCtxInfoAdd(addObj))
+    globalAction.dispatchClipPlayer!({ type: "init", data: newClipPlayer });
+    const addObj = { type: "add", data: { ...data, ...{ isPaused: true, isSaved60seconds: false } } };
+    globalAction.dispatchClipInfo!(addObj);
+    clipAction.dispatchClipInfo!(addObj);
     newClipPlayer?.start();
     if (globalState.baseData.memNo === data.clipMemNo) {
-      dispatch(setClipCtxIsMyClip(true));
+      clipAction.setIsMyClip!(true);
     } else {
-      dispatch(setClipCtxIsMyClip(false));
+      clipAction.setIsMyClip!(false);
     }
   };
 
@@ -104,13 +99,13 @@ export default function ClipContent() {
       history.goBack();
       return;
     }
-    if (globalState.clipPlayList.length > 0) {
-      if (clipPlayer?.isPlayingIdx === globalState.clipPlayList!.length - 1) {
+    if (clipPlayListTab.length > 0) {
+      if (clipPlayer?.isPlayingIdx === clipPlayListTab.length - 1) {
         if (globalState.clipPlayMode !== "normal" && globalState.clipPlayMode !== "oneLoop") {
-          history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
+          history.push(`/clip/${clipPlayListTab[0].clipNo}`);
         }
       } else {
-        history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+        history.push(`/clip/${clipPlayListTab[clipPlayer?.isPlayingIdx! + 1].clipNo}`);
       }
     } else {
       history.push(`/clip`);
@@ -123,12 +118,14 @@ export default function ClipContent() {
       playListInfo = JSON.parse(localStorage.getItem("clipPlayListInfo")!);
     }
     if (playListInfo === undefined) return null;
-    if (playListInfo.hasOwnProperty("type") && playListInfo.type === "one") {
-      dispatch(setGlobalCtxClipPlayListTabAdd(oneData));
+    if(playListInfo.type === 'setting') return;
+
+    if ((playListInfo.hasOwnProperty("type") && playListInfo.type === "one")) {
+      dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: oneData });
       if (globalState.clipPlayMode !== "shuffle") {
-        return dispatch(setGlobalCtxClipPlayListAdd(oneData))
+        return dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: oneData });
       } else {
-        dispatch(setGlobalCtxClipPlayListAdd(globalState.clipPlayList))
+        dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: globalState.clipPlayList });
       }
     }
     if (playListInfo.hasOwnProperty("listCnt")) {
@@ -168,28 +165,21 @@ export default function ClipContent() {
 
   const insertPlayList = (res) => {
     if (res.result === "success") {
-      dispatch(setGlobalCtxClipPlayListTabAdd(res.data.list));
+      dispatchClipPlayListTab && dispatchClipPlayListTab({ type: "add", data: res.data.list });
       if (globalState.clipPlayMode !== "shuffle") {
-        dispatch(setGlobalCtxClipPlayListAdd(res.data.list));
+        dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: res.data.list });
       } else {
-        dispatch(setGlobalCtxClipPlayListAdd(globalState.clipPlayList));
+        dispatchClipPlayList && dispatchClipPlayList({ type: "add", data: globalState.clipPlayList });
       }
     } else {
-      dispatch(setGlobalCtxAlertStatus({
+      globalAction.setAlertStatus!({
         status: true,
         content: `${res.message}`,
-      }));
+      });
     }
   };
 
   useEffect(() => {
-    if (globalState.clipInfo !== null) {
-      sessionStorage.setItem("clip", JSON.stringify(globalState.clipInfo));
-    }
-  }, [globalState.clipInfo]);
-
-  useEffect(() => {
-    // debugger
     if (sessionStorage.getItem("clip") === null) {
       clipPlay();
       return;
@@ -206,7 +196,8 @@ export default function ClipContent() {
       }
     }
     if (globalState.clipPlayList.length > 0) {
-      newClipPlayer?.findPlayingClip({clipNo:clipNo, clipPlayList:globalState.clipPlayList});
+      newClipPlayer?.setGlobalState(globalState);
+      newClipPlayer?.findPlayingClip(clipNo);
     }
   }, [clipNo]);
 
@@ -221,7 +212,8 @@ export default function ClipContent() {
 
   useEffect(() => {
     if (globalState.clipPlayList.length > 0) {
-      newClipPlayer?.findPlayingClip({clipNo:clipNo, clipPlayList:globalState.clipPlayList});
+      newClipPlayer?.setGlobalState(globalState);
+      newClipPlayer?.findPlayingClip(clipNo);
     }
   }, [globalState.clipPlayList, newClipPlayer, globalState.clipPlayListTab, clipState.isMyClip]);
 
@@ -256,6 +248,22 @@ export default function ClipContent() {
       clip60secondsConfirm();
     }
   }, [clipInfo]);
+
+  useEffect(() => {
+    if (clipPlayListTab.length === 0) {
+      const temp = sessionStorage.getItem("clipList");
+      if(temp) {
+        try {
+          const clipList = JSON.parse(temp);
+          globalAction.dispatchClipPlayListTab &&
+          globalAction.dispatchClipPlayListTab({type: 'add', data: clipList});
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  }, []);
+
   return (
     <>
       {playState && globalState.clipInfo && (

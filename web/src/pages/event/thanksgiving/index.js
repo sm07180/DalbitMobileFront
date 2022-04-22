@@ -1,21 +1,24 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import './thanksgiving.scss'
 import Api from 'context/api'
 import LayerPopupPay from './layer_popup_pay'
 // context
+import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+
+import Header from 'components/ui/new_header.js'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 export default () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
   let history = useHistory()
+  const context = useContext(Context)
   const [myDal, setMyDal] = useState(0)
   const [payState, setPayState] = useState(false)
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const setPayPopup = () => {
     setPayState(false)
@@ -27,16 +30,16 @@ export default () => {
 
     if (res.result === 'success') {
       if (5000 <= myDal) {
-        return dispatch(setGlobalCtxMessage({type: "alert", msg: '추가 보너스 250달이 지급되었습니다'}))
+        return context.action.alert({msg: '추가 보너스 250달이 지급되었습니다'})
       } else if (2000 <= myDal <= 4999) {
-        return dispatch(setGlobalCtxMessage({type: "alert", msg: '추가 보너스 80달이 지급되었습니다'}))
+        return context.action.alert({msg: '추가 보너스 80달이 지급되었습니다'})
       } else if (500 <= myDal <= 1999) {
-        return dispatch(setGlobalCtxMessage({type: "alert", msg: '추가 보너스 15달이 지급되었습니다'}))
+        return context.action.alert({msg: '추가 보너스 15달이 지급되었습니다'})
       } else {
-        return dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
+        return context.action.alert({msg: res.message})
       }
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
+      context.action.alert({msg: res.message})
     }
   }
 
@@ -45,34 +48,37 @@ export default () => {
     if (res.result === 'success') {
       setMyDal(res.data.purchaseDal.purchaseDal)
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
+      context.action.alert({msg: res.message})
     }
   }
 
   const HandleStore = () => {
-    if (globalState.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    } else {
-      return history.push('/store?event=3')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // } else {
+    //   return history.push('/store?event=3')
+    // }
   }
 
   useEffect(() => {
-    if (globalState.token.isLogin) fetchMyPurchase()
-    dispatch(setGlobalCtxBackState(true))
-    dispatch(setGlobalCtxBackFunction({name: 'event'}))
+    if (context.token.isLogin) fetchMyPurchase()
+    context.action.updateSetBack(true)
+    context.action.updateBackFunction({name: 'event'})
     if (sessionStorage.getItem('pay_info') !== null) {
       const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
       setPayState(payInfo)
     }
     return () => {
-      dispatch(setGlobalCtxBackState(null))
+      context.action.updateSetBack(null)
     }
   }, [])
 
   useEffect(() => {
-    if (!globalState.token.isLogin) history.push('/login?redirect=/event/thanksgiving')
-  }, [globalState.token.isLogin])
+    if (!context.token.isLogin) history.push('/login?redirect=/event/thanksgiving')
+  }, [context.token.isLogin])
 
   return (
     <>

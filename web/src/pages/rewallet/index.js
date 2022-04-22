@@ -20,6 +20,7 @@ import {
   setGlobalCtxWalletInitData
 } from "redux/actions/globalCtx";
 import {isHybrid, isIos} from "context/hybrid";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
 
 const WalletPage = (props) => {
   const history = useHistory();
@@ -29,6 +30,9 @@ const WalletPage = (props) => {
 
   const {walletData, token} = globalState;
   const tabMenuRef = useRef(null);  //우편번호 팝업 위치 설정용...
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   //아이폰 앱에서 달교환 버튼 클릭시 새창 띄움
   const isIOS = useMemo(() => {
     const agent = window.navigator.userAgent.match(/(ios webview)/gi);
@@ -184,11 +188,14 @@ const WalletPage = (props) => {
 
   // 스토어로 이동
   const goStoreHandler = () => {
-    if(isIos()) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    }else {
-      history.push('/store')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if(isIos()) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // }else {
+    //   history.push('/store')
+    // }
   }
 
   return (
@@ -196,9 +203,7 @@ const WalletPage = (props) => {
       {(isDesktop || isHybrid()) ?
         <Header type="back" title="내 지갑"/>
         :
-        <header className='back'>
-          <h1 className="title">내 지갑</h1>
-        </header>
+        <Header type="sub" title="내 지갑"/>
       }
       <Tabmenu data={walletTabMenu} tab={walletType} setTab={setTabType} tabMenuRef={tabMenuRef}/>
 

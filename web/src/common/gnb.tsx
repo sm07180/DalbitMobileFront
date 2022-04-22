@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
 import {
   broadcastCheck,
@@ -10,6 +10,9 @@ import {
   selfAuthCheck
 } from "common/api";
 
+// context
+import {GlobalContext} from "context";
+import {MailboxContext} from "context/mailbox_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import LayerPopupCommon from "../common/layerpopup/index";
@@ -20,13 +23,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "../redux/actions/common";
 import {setNoticeData, setNoticeTab} from "../redux/actions/notice";
 import API from "../context/api";
-import {setMailBoxIsMailBoxNew} from "../redux/actions/mailBox";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxBroadClipDim,
-  setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxRtcInfoInit
-} from "../redux/actions/globalCtx";
+import moment from "moment";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -45,10 +42,10 @@ const gntSubTypes = [
 ]
 
 export default function GNB() {
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const context = useContext(GlobalContext);
+  const { globalState, globalAction } = context;
   const { baseData, clipPlayer, chatInfo, rtcInfo } = globalState;
-  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+  const { mailboxState, mailboxAction } = useContext(MailboxContext);
 
   const history = useHistory();
   const member = useSelector((state)=> state.member)
@@ -62,6 +59,8 @@ export default function GNB() {
 
   const [isGnb, setIsGnb] = useState(true);
   const alarmData = useSelector(state => state.newAlarm);
+
+  const nowDay = moment().format('YYYYMMDD');
 
   //gnbTypes, gntSubTypes : url값 중 해당 페이지의 하위페이지의 조건을 추가하고 싶은 경우에 사용
   const gnbOtherPageCheck = useCallback((url) => {
@@ -84,22 +83,24 @@ export default function GNB() {
     const doAuthCheck = () => {
       certificationCheck().then(res => {
         if(res.data === 'y') {
-          dispatch(setGlobalCtxAlertStatus({
+          globalAction.setAlertStatus &&
+          globalAction.setAlertStatus({
             status: true,
             type: "confirm",
             title: "본인인증을 완료해주세요",
             content: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
             callback: () => {
               // TODO : 본인인증 연결필요
-              authReq('9', globalState.authRef, dispatch);
+              authReq('9', context.authRef, context);
             },
-          }));
+          });
 
         }else {
-          dispatch(setGlobalCtxAlertStatus({
+          globalAction.setAlertStatus &&
+          globalAction.setAlertStatus({
             status: true,
             content: '본인인증을 이미 완료했습니다.<br/>1일 1회만 가능합니다.',
-          }));
+          });
         }
       });
     }
@@ -130,7 +131,8 @@ export default function GNB() {
         }
         if (rtcInfo !== null && rtcInfo.getPeerConnectionCheck()) {
           return (
-            dispatch(setGlobalCtxAlertStatus({
+              globalAction.setAlertStatus &&
+              globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
                 content: `현재 ${rtcInfo.userType === UserType.HOST ? "방송" : "청취"} 중인 방송방이 있습니다. ${msgText}`,
@@ -139,7 +141,7 @@ export default function GNB() {
                     chatInfo.privateChannelDisconnect();
                     rtcInfo.socketDisconnect();
                     rtcInfo.stop();
-                    dispatch(setGlobalCtxRtcInfoEmpty());
+                    globalAction.dispatchRtcInfo && globalAction.dispatchRtcInfo({ type: "empty" });
                     rtcSessionClear();
                   }
 
@@ -147,16 +149,17 @@ export default function GNB() {
                   if ("broadcast_setting" === category) {
                     checkBroadcast(category);
                   } else {
-                    dispatch(setGlobalCtxBroadClipDim(false));
+                    globalAction.setBroadClipDim!(false);
                     history.push(`/${category}`);
                   }
                 },
               })
-          ));
+          );
         }
         if (clipPlayer !== null) {
           return (
-            dispatch(setGlobalCtxAlertStatus({
+              globalAction.setAlertStatus &&
+              globalAction.setAlertStatus({
                 status: true,
                 type: "confirm",
                 content: `현재 재생 중인 클립이 있습니다. ${msgText}`,
@@ -166,19 +169,19 @@ export default function GNB() {
                   if ("broadcast_setting" === category) {
                     checkBroadcast(category);
                   } else {
-                    dispatch(setGlobalCtxBroadClipDim(false))
+                    globalAction.setBroadClipDim!(false);
                     history.push(`/${category}`);
                   }
                 },
               })
-          ));
+          );
         }
 
         scrollToTop();
         if ("broadcast_setting" === category) {
           checkBroadcast(category);
         } else {
-          dispatch(setGlobalCtxBroadClipDim(false))
+          globalAction.setBroadClipDim!(false);
           history.push(`/${category}`);
         }
       }
@@ -192,20 +195,21 @@ export default function GNB() {
         if (chatInfo && chatInfo !== null) {
           chatInfo.privateChannelDisconnect();
           if (rtcInfo !== null) rtcInfo!.stop();
-          dispatch(setGlobalCtxRtcInfoEmpty())
+          globalAction.dispatchRtcInfo!({ type: "empty" });
           rtcSessionClear();
         }
-        dispatch(setGlobalCtxBroadClipDim(false))
+        globalAction.setBroadClipDim!(false);
         history.push(`/${category}`);
       } else {
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
           status: true,
           type: "confirm",
           content: exitRes.message,
           callback: () => {
-            dispatch(setGlobalCtxBroadClipDim(false))
+            globalAction.setBroadClipDim!(false);
           },
-        }));
+        });
       }
     };
 
@@ -223,9 +227,10 @@ export default function GNB() {
 
       const newRtcInfo = new HostRtc(UserType.HOST, webRtcUrl, webRtcAppName, webRtcStreamName, roomNo, false, videoConstraints);
       newRtcInfo.setRoomInfo(roomInfo);
-      dispatch(setGlobalCtxRtcInfoInit(newRtcInfo));
+      globalAction.dispatchRtcInfo && globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
       sessionStorage.setItem("room_no", roomNo);
-      dispatch(setGlobalCtxBroadClipDim(false));
+
+      globalAction.setBroadClipDim!(false);
       history.push(`/broadcast/${roomNo}`);
     };
 
@@ -233,21 +238,23 @@ export default function GNB() {
     if (result === "success") {
       if (code === "1") {
         // 진행중인 방송 존재
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
           status: true,
           type: "confirm",
           content: message,
           confirmText: "방송종료",
           cancelCallback: () => {
-            dispatch(setGlobalCtxBroadClipDim(false))
+            globalAction.setBroadClipDim!(false);
           },
           callback: () => {
             roomExit(data.roomNo);
           },
-        }));
+        });
       } else if (code === "2") {
         //비정상된 방이 있음 => 이어하기와 동일하게 수정
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
           status: true,
           type: "confirm",
           content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
@@ -262,14 +269,15 @@ export default function GNB() {
               if (infoRes.result === "success") {
                 broadcastMove(infoRes.data);
               } else {
-                dispatch(setGlobalCtxAlertStatus({
+                globalAction.setAlertStatus &&
+                globalAction.setAlertStatus({
                   status: true,
                   type: "alert",
                   content: infoRes.message,
                   callback: () => {
-                    dispatch(setGlobalCtxBroadClipDim(false))
+                    globalAction.setBroadClipDim!(false);
                   },
-                }));
+                });
               }
             })();
           },
@@ -277,10 +285,11 @@ export default function GNB() {
           callback: () => {
             roomExit(data.roomNo);
           },
-        }));
+        });
       } else if (code === "C100") {
         // 이어하기 가능
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
           status: true,
           type: "confirm",
           content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
@@ -295,36 +304,38 @@ export default function GNB() {
               if (continueRes.result === "success") {
                 broadcastMove(continueRes.data);
               } else {
-                dispatch(setGlobalCtxAlertStatus({
+                globalAction.setAlertStatus &&
+                globalAction.setAlertStatus({
                   status: true,
                   type: "alert",
                   content: continueRes.message,
                   callback: () => {
-                    dispatch(setGlobalCtxBroadClipDim(false))
+                    globalAction.setBroadClipDim!(false);
                   },
-                }));
+                });
               }
             })();
           },
           //새로방송하기
           callback: () => {
-            dispatch(setGlobalCtxBroadClipDim(false))
+            globalAction.setBroadClipDim!(false);
             history.push(`/${category}`);
           },
-        }));
+        });
       } else {
-        dispatch(setGlobalCtxBroadClipDim(false))
+        globalAction.setBroadClipDim!(false);
         history.push(`/${category}`);
       }
     } else {
-      dispatch(setGlobalCtxAlertStatus({
+      globalAction.setAlertStatus &&
+      globalAction.setAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {
-          dispatch(setGlobalCtxBroadClipDim(false))
+          globalAction.setBroadClipDim!(false);
         },
-      }));
+      });
     }
   };
 
@@ -333,17 +344,17 @@ export default function GNB() {
       history.push('/login');
     }else if(location.pathname.includes('customer')) {
       if (event.detail.result == "success" && event.detail.code == "0") {
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus!({
           status: true,
           content: "본인인증 완료되었습니다.",
           callback: () => location.replace("/"),
           cancelCallback: () => location.reload(),
-        }));
+        });
       } else {
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus!({
           status: true,
           content: event.detail.message,
-        }));
+        });
       }
     }
   };
@@ -359,11 +370,9 @@ export default function GNB() {
 
   useEffect(() => {
     if(isDesktop) {
-      fetchMypageNewCntData(globalState.profile.memNo);
+      fetchMypageNewCntData(context.profile.memNo);
     }
-    return () => {
-      dispatch(setGlobalCtxBroadClipDim(false))
-    }
+    return () => globalAction.setBroadClipDim!(false);
   }, []);
 
   useEffect(() => {
@@ -387,19 +396,20 @@ export default function GNB() {
     const mailboxNewCheck = async () => {
       const { result, data, message } = await checkIsMailboxNew({});
       if (result === "success") {
-        dispatch(setMailBoxIsMailBoxNew(data.isNew));
+        mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(data.isNew);
       } else {
-        dispatch(setGlobalCtxAlertStatus({
+        globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        }));
+        });
       }
     };
     if (globalState.baseData.isLogin) {
       mailboxNewCheck();
     } else {
-      dispatch(setMailBoxIsMailBoxNew(false))
+      mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(false);
     }
   }, [globalState.baseData.isLogin]);
 
@@ -438,7 +448,7 @@ export default function GNB() {
               {gnbTypes.map((item, index) => {
                 return (
                   <li key={index} data-url={item.url}
-                      className={`${activeType === item.url ? 'active' : activeType === "/rankDetail/DJ" && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
+                      className={`${activeType === item.url ? 'active' : (activeType.indexOf("/rankDetail") > -1 || activeType.indexOf('/rankBenefit') > -1) && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
                       onClick={() => {
                         if(item.isUpdate && activeType === item.url) {
                           dispatch(setIsRefresh(true))
@@ -470,6 +480,7 @@ export default function GNB() {
                             history.push(item.url)
                           }}
                       >
+                        {item.url === '/store' && !moment(nowDay).isAfter(moment('20220428')) && <span className="saleStore">SALE</span>}
                         {item.url === '/mailbox' && mailboxState.isMailboxNew && <span className="newDot"/>}
                         {item.url === '/alarm' && (alarmData.alarm || alarmData.notice) > 0 && <span className="newDot"/>}
                       </li>
@@ -479,7 +490,7 @@ export default function GNB() {
                 <button className="plusButton" onClick={()=>{
                   if (baseData.isLogin === true) {
                     scrollToTop();
-                    return dispatch(setGlobalCtxBroadClipDim(true))
+                    return globalAction.setBroadClipDim!(true);
                   }
                 }}>만들기</button>
               </>
@@ -491,9 +502,7 @@ export default function GNB() {
       </aside>
       }
       {globalState.broadClipDim && (
-        <div id="dim-layer" onClick={() => {
-          dispatch(setGlobalCtxBroadClipDim(false))
-        }}>
+        <div id="dim-layer" onClick={() => globalAction.setBroadClipDim!(false)}>
           <div className="broadcast-menu">
             <div className="broadcast-menu__links">
               <button className="broad" onClick={() => dimLink("broadcast_setting")} />

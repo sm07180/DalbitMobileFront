@@ -12,6 +12,7 @@ import Utility from 'components/lib/utility'
 import qs from 'query-string'
 
 //context
+import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN} from 'context/color'
 
@@ -19,13 +20,12 @@ import {COLOR_MAIN} from 'context/color'
 import Header from 'components/ui/new_header'
 import NoResult from 'components/ui/noResult'
 import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
+/** @deprecated */
 export default (props) => {
   //---------------------------------------------------------------------
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context)
+  const {profile} = context
   const history = useHistory()
 
   let {event} = qs.parse(location.search)
@@ -52,19 +52,6 @@ export default (props) => {
     }
   }
 
-  async function getStoreList() {
-    const res = await Api.store_list({})
-    if (res.result === 'success' && _.hasIn(res, 'data')) {
-      setList(res.data.list)
-      setListState(1)
-      setMydal(res.data.dalCnt)
-    } else {
-      setListState(0)
-      dispatch(setGlobalCtxMessage({type:"alert",
-        msg: res.message
-      }))
-    }
-  }
 
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
@@ -79,9 +66,12 @@ export default (props) => {
         setTopbannerData(data)
       }
     } else {
-      dispatch(setGlobalCtxMessage({type:"alert",
+      context.action.alert({
         msg: message,
-      }))
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
   }
   //---------------------------------------------------------------------
@@ -120,19 +110,19 @@ export default (props) => {
 
   function chargeClick() {
     const {name, price, itemNo} = selected
-    if (globalState.token.isLogin) {
+    if (context.token.isLogin) {
       if (selected !== -1) {
         history.push({
           pathname: '/pay/charge',
           search: `?name=${name}&price=${price}&itemNo=${itemNo}&event=${event}`
         })
       } else {
-        dispatch(setGlobalCtxMessage({type:"alert",
+        context.action.alert({
           msg: '충전할 상품을 선택해주세요.',
           callback: () => {
             return
           }
-        }))
+        })
       }
     } else {
       history.push('/login')
@@ -168,7 +158,7 @@ export default (props) => {
   //useEffect
   useEffect(() => {
     fetchAdmin()
-    getStoreList()
+    // getStoreList()
     // fetchMainPopupData(12)
     fetchMainPopupData(4)
   }, [])

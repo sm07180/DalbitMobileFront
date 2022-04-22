@@ -154,21 +154,21 @@ export default function chatInput(props) {
               setCropOpen(true);
             }}
           />
-        </div>
-        {cropOpen && eventObj !== null && (
-          <DalbitCropper
-            imgInfo={eventObj}
-            onClose={() => {
-              setCropOpen(false);
-            }}
-            onCrop={(value) => setImage(value)}
-            type={"chatting"}
-          />
-        )}
+        </div>        
         {/* <button>
           <img src="https://image.dalbitlive.com/mailbox/ico_camera_w.svg" alt="사진찍기" />
         </button> */}
       </div>
+      {cropOpen && eventObj !== null && (
+        <DalbitCropper
+          imgInfo={eventObj}
+          onClose={() => {
+            setCropOpen(false);
+          }}
+          onCrop={(value) => setImage(value)}
+          type={"chatting"}
+        />
+      )}
     </>
   );
 }

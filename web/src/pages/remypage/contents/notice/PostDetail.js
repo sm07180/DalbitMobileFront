@@ -67,7 +67,7 @@ const PostDetail = () => {
     <>
       <div id="notice">
         <div className="postDetail">
-          <Header title={'공지사항'} type={'back'} />
+          <Header title={'공지사항'} type={'back'}/>
           <section className="detailView">
             <div className="titleWrap">
               <div className="title">{postDetailInfo.title}</div>

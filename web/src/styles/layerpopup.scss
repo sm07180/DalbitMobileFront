@@ -1284,16 +1284,12 @@
 }
 
 #eventPop {
-  position: fixed;
-  top: 0;right: 0;bottom: 0;left: 0;
-  @include flex(center, center, column);
-  background: rgba(0, 0, 0, 0.7);
-  z-index: $POPUP-ZINDEX;
+  @include popupDefaultStyle(center,$POPUP-ZINDEX);
   .popLayer {
     position: relative;
     .popContainer {
       @include flex(center, center, column);
-      width: 328px; min-height: 400px;
+      width: 328px;
       border-radius: 24px;
       background: #fff;
       overflow: hidden;
@@ -1312,25 +1308,39 @@
         .title {
           flex: none;
           width: 100%;
-          padding: 20px 20px 0px;
-          margin-bottom: 20px;
-          @include font(24px, 700, #333333);
+          line-height:48px;
+          margin: 20px 0 14px;
+          @include font(16px,$Bold,#202020);
           text-align: center;
           word-break: keep-all;
         }
         .content {
+          position: relative;
           flex: 1;
           width: 100%;
-          padding: 20px;
-          margin-bottom: 20px;
-          @include font(18px, 400, #666666);
+          @include font(14px,$Regular,#202020);
+          .scrollWrap {
+            max-height:250px;
+            overflow-y: overlay;
+            padding:0;
+          }
+          .gradient {
+            @include position-bottom-left;
+            display:inline-block;
+            width:320px;
+            height:50px;
+            background: linear-gradient(to bottom,rgba(255,255,255,0),white);
+          }
           p {
+            line-height:20px;
+            padding: 0 24px 16px;
             text-align: center;
           }
         }
-        .btnGroup {
-          @include flex(center, center);
-          width: 100%; height: 50px;
+        .submitBtn {
+          flex:1;
+          width:calc(100% - 32px);
+          margin:0 16px 24px;
         }
       }
     }

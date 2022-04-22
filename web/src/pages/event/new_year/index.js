@@ -1,21 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
+import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 import styled from 'styled-components'
 
 import LayerPopupPay from './layer_popup_pay'
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 export default () => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
   let history = useHistory()
+  const context = useContext(Context)
   const [myDal, setMyDal] = useState(0)
   const [payState, setPayState] = useState(false)
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const setPayPopup = () => {
     setPayState(false)
@@ -27,32 +28,22 @@ export default () => {
 
     if (res.result === 'success') {
       if (myDal >= 20000) {
-        return dispatch(setGlobalCtxMessage({
-          type: "alert",
+        return context.action.alert({
           msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 70개, 부스터 10개가 지급되었습니다`
-        }))
+        })
       } else if (myDal >= 10000 && myDal < 20000) {
-        return dispatch(setGlobalCtxMessage({
-          type: "alert",
-          msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 70개가 지급되었습니다`
-        }))
+        return context.action.alert({msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 70개가 지급되었습니다`})
       } else if (myDal >= 5000 && myDal < 10000) {
-        return dispatch(setGlobalCtxMessage({
-          type: "alert",
-          msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 30개가 지급되었습니다`
-        }))
+        return context.action.alert({msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 30개가 지급되었습니다`})
       } else if (myDal >= 1000 && myDal < 5000) {
-        return dispatch(setGlobalCtxMessage({
-          type: "alert",
-          msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 5개가 지급되었습니다`
-        }))
+        return context.action.alert({msg: `추가 보너스 ${res.data.bonusDal.dal}달과 룰렛이용권 5개가 지급되었습니다`})
       } else if (myDal < 1000) {
-        return dispatch(setGlobalCtxMessage({type: "alert", msg: '조건 미달로 보너스를 받을 수 없습니다'}))
+        return context.action.alert({msg: '조건 미달로 보너스를 받을 수 없습니다'})
       } else {
-        return dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
+        return context.action.alert({msg: res.message})
       }
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
+      context.action.alert({msg: res.message})
     }
   }
 
@@ -61,35 +52,36 @@ export default () => {
     if (res.result === 'success') {
       setMyDal(res.data.purchaseDal.purchaseDal)
     } else {
-      dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
+      context.action.alert({msg: res.message})
     }
   }
 
   const HandleStore = () => {
-    if (globalState.customHeader['os'] === OS_TYPE['IOS']) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    } else {
-      return history.push('/store?event=3')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+    // if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // } else {
+    //   return history.push('/store?event=3')
+    // }
   }
 
   useEffect(() => {
-    if (globalState.token.isLogin) fetchMyPurchase()
-
-    dispatch(setGlobalCtxBackState(true));
-    dispatch(setGlobalCtxBackFunction({name: 'event'}));
+    if (context.token.isLogin) fetchMyPurchase()
+    context.action.updateSetBack(true)
+    context.action.updateBackFunction({name: 'event'})
     if (sessionStorage.getItem('pay_info') !== null) {
       const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
       setPayState(payInfo)
     }
     return () => {
-      dispatch(setGlobalCtxBackState(null));
+      context.action.updateSetBack(null)
     }
   }, [])
 
   useEffect(() => {
-    if (!globalState.token.isLogin) history.push('/login?redirect=/event/new_year')
-  }, [globalState.token.isLogin])
+    if (!context.token.isLogin) history.push('/login?redirect=/event/new_year')
+  }, [context.token.isLogin])
 
   return (
     <Content>

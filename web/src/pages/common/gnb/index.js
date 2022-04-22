@@ -1,29 +1,35 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
+import styled from 'styled-components'
+import Lottie from 'react-lottie'
+
+import {Context} from 'context'
+import {RoomMake} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
+
+// static image
+//import Logo from './static/logo@2x.png'
 import Logo from './static/logo_w_no_symbol.svg'
 import Alarm from './static/alarm_w.svg'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
+// style
 import 'styles/main.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setGlobalCtxIsMailboxNew,
-  setGlobalCtxLogoChange,
-  setGlobalCtxMessage,
-  setGlobalCtxUpdatePopup
-} from "redux/actions/globalCtx";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 let alarmCheckIntervalId = null
 
 export default (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-
-  const {logoChange, token} = globalState
+  //context
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {logoChange, token} = globalCtx
   const {webview} = props
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
 
   if (webview && webview === 'new') {
     return null
@@ -54,35 +60,37 @@ export default (props) => {
       }
     }
     if (category === 'mailbox') {
-      if (!globalState.myInfo.level) {
+      if (!context.myInfo.level) {
         const myProfile = await Api.profile({ params: { memNo: token.memNo } })
         if(myProfile.data.level === 0) {
-          return dispatch(setGlobalCtxMessage({type: "alert",
+          return globalCtx.action.alert({
             msg: '메시지는 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-          }))
+          })
         }
       }
 
       if (isHybrid()) {
         Hybrid('OpenMailBoxList')
       } else {
-        dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 5]}))
+        context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
       }
       return false
     }
     if (category === 'store') {
-      if (customHeader.os === OS_TYPE['IOS']) {
-        if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
-          return webkit.messageHandlers.openInApp.postMessage('')
-        } else {
-          dispatch(setGlobalCtxMessage({type: "alert",
-            msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'
-          }))
-          return
-        }
-      } else {
-        return history.push(`/pay/${category}`)
-      }
+      storeButtonEvent({history, memberRdx, payStoreRdx});
+      // if (customHeader.os === OS_TYPE['IOS']) {
+      //   if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
+      //     //return webkit.messageHandlers.openInApp.postMessage('')
+      //     return history.push('/store')
+      //   } else {
+      //     globalCtx.action.alert({
+      //       msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'
+      //     })
+      //     return
+      //   }
+      // } else {
+      //   return history.push(`/pay/${category}`)
+      // }
     }
     return history.push(`/menu/${category}`)
   }
@@ -91,9 +99,9 @@ export default (props) => {
     const gnbHeight = 48
 
     if (!logoChange && window.scrollY >= gnbHeight) {
-      dispatch(setGlobalCtxLogoChange(true));
+      globalCtx.action.updateLogoChange(true)
     } else if (logoChange && window.scrollY < gnbHeight) {
-      dispatch(setGlobalCtxLogoChange(false));
+      globalCtx.action.updateLogoChange(false)
     }
   }
 
@@ -135,18 +143,18 @@ export default (props) => {
     const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        dispatch(setGlobalCtxIsMailboxNew(data.isNew));
+        globalCtx.action.updateIsMailboxNew(data.isNew)
       } else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        globalCtx.action.alert({
           msg: message
-        }))
+        })
       }
     }
-    if (globalState.token.isLogin) isMailboxNewCheck()
+    if (context.token.isLogin) isMailboxNewCheck()
   }, [])
 
   const createMailboxIcon = () => {
-    if (!globalState.isMailboxOn && globalState.token.isLogin) {
+    if (!globalCtx.isMailboxOn && globalCtx.token.isLogin) {
       return (
         <button
           className="alarmSize"
@@ -154,7 +162,7 @@ export default (props) => {
             if (isHybrid()) {
               moveToLogin('mailbox')
             } else {
-              dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 5]}))
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
             }
           }}>
           <img src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg" alt="메시지" />
@@ -162,7 +170,7 @@ export default (props) => {
       )
     }
 
-    if (globalState.isMailboxNew && globalState.token.isLogin) {
+    if (globalCtx.isMailboxNew && globalCtx.token.isLogin) {
       return (
         <button
           className="alarmSize"
@@ -170,7 +178,7 @@ export default (props) => {
             if (isHybrid()) {
               moveToLogin('mailbox')
             } else {
-              dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 5]}))
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
             }
           }}>
           <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="메시지" />
@@ -184,7 +192,7 @@ export default (props) => {
             if (isHybrid()) {
               moveToLogin('mailbox')
             } else {
-              dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 5]}))
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
             }
           }}>
           <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="메시지" />

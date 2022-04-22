@@ -12,22 +12,18 @@ import {
 } from "common/api";
 // others
 import {AgoraHostRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
+// context
+import {Context} from "context";
+import {ModalContext} from "context/modal_ctx";
 import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
+import {BroadcastContext} from "../../context/broadcast_ctx";
 import LayerCopyright from "../../common/layerpopup/contents/copyright";
 import LayerTitle from "./content/title";
 import LayerWelcome from "./content/welcome";
 import {MediaType} from "pages/broadcast/constant";
 import AgoraRTC from 'agora-rtc-sdk-ng';
-import {useDispatch, useSelector} from "react-redux";
-import {setBroadcastCtxExtendTime} from "../../redux/actions/broadcastCtx";
-import {
-  setGlobalCtxAlertStatus,
-  setGlobalCtxMessage, setGlobalCtxRtcInfoEmpty,
-  setGlobalCtxRtcInfoInit,
-  setGlobalCtxSetToastStatus
-} from "../../redux/actions/globalCtx";
 
 declare global {
   interface Window {
@@ -148,11 +144,12 @@ let constraint = {
 export default function BroadcastSetting() {
   const history = useHistory();
   const titleInputRef = useRef<any>();
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const context = useContext(Context)
+  const { globalState, globalAction } = useContext(Context);
   const { chatInfo, rtcInfo } = globalState;
-  const modalState = useSelector(({modalCtx}) => modalCtx);
-  const [state, dispatchWithoutAction] = useReducer(reducer, {
+  const { modalState } = useContext(ModalContext);
+  const { broadcastAction } = useContext(BroadcastContext);
+  const [state, dispatch] = useReducer(reducer, {
     micState: false,
     videoState: false,
     entryType: 0,
@@ -188,44 +185,44 @@ export default function BroadcastSetting() {
 
   // dispatch function
   const setMicState = (status: boolean) =>
-    dispatchWithoutAction({ type: "SET_MICSTATE", micState: status });
+    dispatch({ type: "SET_MICSTATE", micState: status });
   const setVideoState = (status: boolean) =>
-    dispatchWithoutAction({ type: "SET_VIDEOSTATE", videoState: status });
+    dispatch({ type: "SET_VIDEOSTATE", videoState: status });
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
-    dispatchWithoutAction({ type: "SET_ENTRY", entryType: access_type });
+    dispatch({ type: "SET_ENTRY", entryType: access_type });
   }, []);
 
   const setMicForm = useCallback((micFormType: string) => {
-    dispatchWithoutAction({ type: "SET_MICFORM", micFormType: micFormType });
+    dispatch({ type: "SET_MICFORM", micFormType: micFormType });
   }, []);
 
   const setCamForm = useCallback((camFormType: string) => {
-    dispatchWithoutAction({ type: "SET_CAMFORM", camFormType: camFormType });
+    dispatch({ type: "SET_CAMFORM", camFormType: camFormType });
   }, []);
 
   const setRoomType = useCallback(
     (value) =>
-      dispatchWithoutAction({
+      dispatch({
         type: "SET_ROOMTYPE",
         roomType: value,
       }),
     []
   );
   const setBgChange = (value) =>
-    dispatchWithoutAction({
+    dispatch({
       type: "SET_BGCHANGE",
       bgChange: value,
     });
   const setTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (value.length > 20) return;
-    dispatchWithoutAction({ type: "SET_TITLECHANGE", titleChange: value });
+    dispatch({ type: "SET_TITLECHANGE", titleChange: value });
   };
   const setWelcomeMsg = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (value.length > 100) return;
-    dispatchWithoutAction({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
+    dispatch({ type: "SET_WELCOMEMSG", welcomeMsgChange: value });
   };
 
   //배경 사진 업로드 관련
@@ -247,10 +244,10 @@ export default function BroadcastSetting() {
       return alert("jpg, png, gif 이미지만 사용 가능합니다.");
     }
     if (fileExtension === "gif" && fileSize > 5000000) {
-      dispatch(setGlobalCtxSetToastStatus({
+      globalAction.callSetToastStatus!({
         status: true,
         message: "GIF 파일 크기는 최대 5MB를 넘을 수 없습니다.",
-      }));
+      });
       return;
     }
     reader.onload = async () => {
@@ -265,17 +262,19 @@ export default function BroadcastSetting() {
             setBroadBg(reader.result);
             setBgChange(data.path);
           } else {
-            dispatch(setGlobalCtxAlertStatus({
+            globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
               status: true,
               content: "이미지 업로드에 실패하였습니다.\n다시 시도해주세요",
-            }));
+            });
             return;
           }
         } else {
-          dispatch(setGlobalCtxAlertStatus({
+          globalAction.setAlertStatus &&
+          globalAction.setAlertStatus({
             status: true,
             content: message,
-          }));
+          });
         }
       }
     };
@@ -288,24 +287,25 @@ export default function BroadcastSetting() {
         titleInputRef.current.focus();
       }
 
-      return dispatch(setGlobalCtxSetToastStatus({
-        status: true,
-        message: "방송 제목을 3자 이상 입력해주세요",
-      }));
+      if (globalAction.callSetToastStatus)
+        return globalAction.callSetToastStatus({
+          status: true,
+          message: "방송 제목을 3자 이상 입력해주세요",
+        });
     }
 
     if (state.micState === false) {
-      return dispatch(setGlobalCtxAlertStatus({
+      return globalAction.setAlertStatus!({
         status: true,
         content: `마이크 연결 상태를 확인해주세요.`,
-      }));
+      });
     }
 
     if (state.mediaType === MediaType.VIDEO && state.videoState === false) {
-      return dispatch(setGlobalCtxAlertStatus({
+      return globalAction.setAlertStatus!({
         status: true,
         content: "캠 연결 상태를 확인해주세요.",
-      }));
+      });
     }
 
     if (state.micState === true && state.titleChange.length > 2) {
@@ -362,10 +362,10 @@ export default function BroadcastSetting() {
           );
           newRtcInfo.setRoomInfo({...data, micState: true,});
           newRtcInfo.publish();
-          dispatch(setGlobalCtxRtcInfoInit(newRtcInfo));
+          globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
           sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:newRtcInfo.roomInfo, userType:newRtcInfo.userType}));
           sessionStorage.setItem("room_no", data.roomNo);
-          dispatch(setBroadcastCtxExtendTime(false));
+          broadcastAction.setExtendTime!(false);
           try {
             if (window.fbq) window.fbq("track", "RoomMake");
             if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
@@ -381,7 +381,7 @@ export default function BroadcastSetting() {
           const dispatchRtcInfo = new AgoraHostRtc(UserType.HOST, data.webRtcUrl, data.webRtcAppName, data.webRtcStreamName, data.roomNo, false, videoConstraints);
           dispatchRtcInfo.setRoomInfo(data);
           dispatchRtcInfo.join(data).then(()=>{
-            dispatch(setGlobalCtxRtcInfoInit(dispatchRtcInfo));
+            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
             sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
           });
           try {
@@ -396,16 +396,18 @@ export default function BroadcastSetting() {
       } else if (result === "fail") {
         if (code === "-6") {
           return (
-            dispatch(setGlobalCtxAlertStatus({
+            globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
               status: true,
               content: message,
               callback: () => {
                 history.push("/self_auth/self?type=create");
               },
             })
-          ));
+          );
         }
-        dispatch(setGlobalCtxAlertStatus({ status: true, content: message }));
+        globalAction.setAlertStatus &&
+        globalAction.setAlertStatus({ status: true, content: message });
       }
     };
 
@@ -422,7 +424,7 @@ export default function BroadcastSetting() {
           }
           if (rtcInfo && rtcInfo !== null) {
             rtcInfo!.stop();
-            dispatch(setGlobalCtxRtcInfoEmpty());
+            globalAction.dispatchRtcInfo!({ type: "empty" });
           }
           return makeRoom();
         }
@@ -522,9 +524,9 @@ export default function BroadcastSetting() {
           message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
             " 다른 캡처 장치를 선택해주세요"
         }
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: message
-        }))
+        })
         if(currentCam !== undefined){
           sessionStorage.setItem("cam", JSON.stringify(currentCam.deviceId));
           localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack({ encoderConfig: {
@@ -596,9 +598,9 @@ export default function BroadcastSetting() {
           //장치 연결 관련 팝업
           let message = "현재 다른 응용 프로그램에서 해당 장치를 \n사용중입니다." +
             " 다른 캡처 장치를 선택해주세요"
-          dispatch(setGlobalCtxMessage({type: "alert",
+          context.action.alert({
             msg: message
-          }))
+          })
         }
       });
     }
@@ -706,7 +708,8 @@ export default function BroadcastSetting() {
 
   useEffect(() => {
     if (rtcInfo !== null) {
-      dispatch(setGlobalCtxAlertStatus({
+      globalAction.setAlertStatus &&
+      globalAction.setAlertStatus({
         status: true,
         type: "confirm",
         title: "알림",
@@ -718,7 +721,8 @@ export default function BroadcastSetting() {
             chatInfo.privateChannelDisconnect();
             rtcInfo.socketDisconnect();
             rtcInfo.stop();
-            dispatch(setGlobalCtxRtcInfoEmpty());
+            globalAction.dispatchRtcInfo &&
+            globalAction.dispatchRtcInfo({ type: "empty" });
             rtcSessionClear();
             broadcastAllExit();
           }
@@ -726,7 +730,7 @@ export default function BroadcastSetting() {
         cancelCallback: () => {
           history.goBack();
         },
-      }));
+      });
     }
   }, []);
 
@@ -743,7 +747,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.title !== "" &&
       modalState.broadcastOption.title
     ) {
-      dispatchWithoutAction({
+      dispatch({
         type: "SET_TITLECHANGE",
         titleChange: modalState.broadcastOption.title,
       });
@@ -752,7 +756,7 @@ export default function BroadcastSetting() {
       modalState.broadcastOption.welcome !== "" &&
       modalState.broadcastOption.welcome
     ) {
-      dispatchWithoutAction({
+      dispatch({
         type: "SET_WELCOMEMSG",
         welcomeMsgChange: modalState.broadcastOption.welcome,
       });
@@ -776,7 +780,7 @@ export default function BroadcastSetting() {
   }, [popupState]);
 
   const setMediaType = (mediaType:BROAD_TYPE)=>{
-    dispatchWithoutAction({type: "SET_MEDIATYPE", mediaType: mediaType});
+    dispatch({type: "SET_MEDIATYPE", mediaType: mediaType});
     //broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data:{platform:mediaType === BROAD_TYPE.AUDIO ? 'wowza' : 'agora'}})
   }
 
@@ -911,10 +915,12 @@ export default function BroadcastSetting() {
                     onClick={() => {
                       setEntry(item.id);
                       if (item.id === ACCESS_TYPE.ADULT) {
-                        dispatch(setGlobalCtxSetToastStatus({
-                          status: true,
-                          message: "20세 이상 청취 하실 수 있습니다",
-                        }));
+                        if (globalAction.callSetToastStatus) {
+                          globalAction.callSetToastStatus({
+                            status: true,
+                            message: "20세 이상 청취 하실 수 있습니다",
+                          });
+                        }
                       }
                     }}
                     className={
@@ -931,11 +937,11 @@ export default function BroadcastSetting() {
           </ul>
 
           {/* 방송주제 라디오박스영역 */}
-          {globalState.splash?.roomType.length > 0 && (
+          {globalState.splashData?.roomType.length > 0 && (
             <>
               <div className="title">방송주제</div>
               <ul className="category">
-                {globalState.splash?.roomType.map(
+                {globalState.splashData?.roomType.map(
                   (item: { cdNm: string; value: string }, idx: number) => {
                     return (
                       <li
@@ -986,7 +992,7 @@ export default function BroadcastSetting() {
           </div>
 
           {/* 스디 실시간 LIVE 사진 노출 영역*/}
-          {globalState.userProfile && globalState.userProfile.badgeSpecial > 0 && (
+          {globalState.userProfile && (globalState.userProfile.badgeSpecial > 0 || globalState.userProfile.badgePartner > 0) && (
             <>
               <div className="title">실시간 LIVE 사진 노출</div>
               <ul className="access">
@@ -996,7 +1002,7 @@ export default function BroadcastSetting() {
                       <li
                         key={item.id}
                         onClick={() => {
-                          dispatchWithoutAction({
+                          dispatch({
                             type: "SET_IMAGETYPE",
                             imageType: item.id,
                           });

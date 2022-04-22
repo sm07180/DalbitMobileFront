@@ -1,21 +1,18 @@
-import React, {useState,useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 
 // global components
-import LevelItems from '../../../components/ui/levelItems/LevelItems'
-import SubmitBtn from '../../../components/ui/submitBtn/SubmitBtn'
-import PopSlide from "../../../components/ui/popSlide/PopSlide";
 import moment from "moment";
-import Utility from "components/lib/utility";
+import UtilityCommon from "common/utility/utilityCommon";
 
 const greetingComment = [
   {start: '060000', end: '115959', comment: '굿모닝이에요!'},
-  {start: '120000', end: '175959', comment: '점심 메뉴는 뭐였어요?'},
+  {start: '120000', end: '175959', comment: '식곤증에는 역시 달라죠!'},
   {start: '180000', end: '235959', comment: '신나는 저녁이에요!'},
-  {start: '000000', end: '055959', comment: '일찍 일어났네요?'},
+  {start: '000000', end: '055959', comment: '오늘 하루도 달라와 함께해요!'},
 ]
 
 const MyInfo = (props) => {
-  const {data, openLevelPop} = props
+  const {data, openLevelPop, openPopFanStar, openPopLike, openStarDJHistoryPop} = props
   const [nowComment, setNowComment] = useState('');
 
   /* time: HH:mm:ss */
@@ -54,15 +51,25 @@ const MyInfo = (props) => {
         </div>
         <div className="info">
           <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
+          {
+            data?.specialDjCnt > 0 && UtilityCommon.eventDateCheck("20220501") &&
+              <em className={`starDj ${data.isSpecial ? "active" : ""}`} onClick={openStarDJHistoryPop}></em>                
+          }
           <span className='userId'>{data?.memId}</span>
         </div>
         <div className="count">
-          <i>팬</i>
-          <span>{data?.fanCnt}</span>
-          <i>스타</i>
-          <span>{data?.starCnt}</span>
-          <i>좋아요</i>
-          <span>{data?.likeTotCnt}</span>
+          <div data-target-type="fan" onClick={openPopFanStar}>
+            <i>팬</i>
+            <span>{data?.fanCnt}</span>
+          </div>
+          <div data-target-type="star" onClick={openPopFanStar}>
+            <i>스타</i>
+            <span>{data?.starCnt}</span>
+          </div>
+          <div data-target-type="like" onClick={openPopLike}>
+            <i>좋아요</i>
+            <span>{data?.likeTotCnt}</span>
+          </div>
         </div>
       </div>
       <div className="photoWrap">

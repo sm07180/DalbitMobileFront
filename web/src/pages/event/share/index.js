@@ -11,21 +11,20 @@ import {setSlidePopupOpen} from "redux/actions/common";
 import UseInput from "common/useInput/useInput";
 import API from "context/api";
 import Api from "context/api";
+import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {isDesktop} from "lib/agent";
 import {Hybrid, isHybrid} from "context/hybrid";
 import {authReq} from "pages/self_auth";
 import axios from "axios";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Share = () => {
-    const globalState = useSelector(({globalCtx}) => globalCtx);
-
     const [popup, setPopup] = useState(false);
     const [urlInfo, setUrlInfo] = useState('')
     const commonPopup = useSelector(state => state.popup);
     const dispatch = useDispatch();
     const urlInputRef = useRef();
+    const context = useContext(Context);
     const history = useHistory();
     const [isAuth, setIsAuth] = useState(false);
 
@@ -62,8 +61,8 @@ const Share = () => {
     }
 
     const popSlideOpen = () => {
-      if (globalState?.token) {
-        if(!globalState.token.isLogin) {
+      if (context?.token) {
+        if(!context.token.isLogin) {
           history.push('/login')
         }else if(isAuth) {
           dispatch(setSlidePopupOpen());
@@ -73,12 +72,12 @@ const Share = () => {
               setIsAuth(true);
               dispatch(setSlidePopupOpen());
             }else {
-              dispatch(setGlobalCtxMessage({type: "confirm",
+              context.action.confirm({
                 msg: `이벤트에 참여하기 위해 본인인증을 완료해 주세요.`,
                 callback: () => {
-                  authReq('12', globalState.authRef, dispatch, '/event/share');
+                  authReq({code: '12',formTagRef: context.authRef, context: context, pushLink: '/event/share'});
                 }
-              }))
+              })
             }
           })
         }
@@ -92,7 +91,7 @@ const Share = () => {
 
     /* 등록 api */
     const eventInsApi = () => {
-      const {profile} = globalState;
+      const {profile} = context;
       const memNo = profile.memNo;
       const loginMedia = isDesktop() ? 'w' : isHybrid() ? 's' : 'x'
       const insParam = {
@@ -106,18 +105,18 @@ const Share = () => {
       API.shareTailIns(insParam).then(res => {
         const code = res.code;
         if(code === '0') {
-          dispatch(setGlobalCtxMessage({type: "alert",
+          context.action.alert({
             msg: '등록이 완료되었습니다.'
-          }))
+          })
           popSlideClose();
         }else if(code === '-2') { // 이미 등록
-          dispatch(setGlobalCtxMessage({type: "alert",
+          context.action.alert({
             msg: '이미 등록된 URL입니다.<br/>확인 후 다시 등록해주세요.'
-          }))
+          })
         }else { // 등록 실패
-          dispatch(setGlobalCtxMessage({type: "alert",
+          context.action.alert({
             msg: res.message
-          }))
+          })
         }
       });
     }
@@ -128,9 +127,9 @@ const Share = () => {
       if(regex.test(urlInfo)) {
         eventInsApi();
       }else {
-        dispatch(setGlobalCtxMessage({type: "alert",
+        context.action.alert({
           msg: '유효하지 않은 URL 입니다.'
-        }))
+        })
       }
     }
 
@@ -149,7 +148,7 @@ const Share = () => {
 
     return (
         <>
-            <div id="share">
+            <div id="share">        
                 <Header position={'sticky'} title={'이벤트'} type={'back'}/>
                 <div className='content'>
                     <div className='imageBox'>
@@ -243,8 +242,8 @@ const Share = () => {
                 </PopSlide>
             }
         </>
-
-    )
+        
+    ) 
 }
 
 export default Share

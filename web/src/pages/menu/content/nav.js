@@ -1,8 +1,9 @@
-import React from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {RoomMake} from 'context/room'
 //context
+import {Context} from 'context'
 import {StoreLink} from 'context/link'
 // component
 import Header from '../component/header.js'
@@ -14,13 +15,18 @@ import MicIcon from '../static/nav/ic_mike_l_w.svg'
 import LiveIcon from '../static/nav/ic_live_l_p.svg'
 import RankingIcon from '../static/nav/ic_rank_l_p.svg'
 import StoreIcon from '../static/nav/ic_store_l_p.svg'
+import EventIcon from '../static/nav/ic_event_l_p.svg'
 import CSIcon from '../static/nav/ic_cs_l_p.svg'
-import {useDispatch, useSelector} from "react-redux";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 export default (props) => {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  let history = useHistory()
+  //context
+  const context = useContext(Context)
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
 
   const navList = [
     {active: true, value: 'broadcast', txt: '방송하기', icon: MicIcon},
@@ -51,9 +57,10 @@ export default (props) => {
                 <NavBtnWrap
                   onClick={() => {
                     if (value == 'broadcast') {
-                      RoomMake(dispatch, globalState)
+                      RoomMake(context)
                     } else if (value == 'store') {
-                      StoreLink({history,dispatch,globalState})
+                      storeButtonEvent({history, memberRdx, payStoreRdx});
+                      // StoreLink(context, history)
                     } else {
                       history.push(`/${value}`)
                     }

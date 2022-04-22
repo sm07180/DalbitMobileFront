@@ -5,6 +5,10 @@
 import React, {useEffect, useMemo, useState, useContext} from 'react'
 import qs from 'qs'
 
+/*
+* 결제가 완료 되었습니다.
+* 휴대폰 결제
+* */
 export default (props) => {
   //queryString
   const queryString = useMemo(() => {
@@ -21,7 +25,7 @@ export default (props) => {
     //title
     const {history} = props
 
-    history.push(queryString.router, {...queryString, type: 'native-navigator'})
+    history.replace(queryString.router, {...queryString, type: 'native-navigator'})
   }, [])
   //---------------------------------------------------------------------
   return <React.Fragment />

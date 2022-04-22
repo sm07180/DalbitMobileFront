@@ -4,7 +4,7 @@ import member from './member';
 import main from './main/index';
 import live from './main/live';
 import profile from './profile/index';
-import feed from './profile/feed';
+import brdcst from './profile/brdcst';
 import fanBoard from './profile/fanBoard';
 import profileClip from './profile/clip';
 import clip from './clip/clip';
@@ -13,17 +13,15 @@ import notice from './notice/index';
 import inquire from "./inquire";
 import newAlarm from "./notice/newAlarm";
 import popup from "./common/popup";
+import rank from "./rank/index";
 import vote from './vote';
 import broadcast from './broadcast';
 import profileTab from './profile/tab';
 import noticeTabList from "./notice/tabList";
-import rankCtx from "./rankCtx"
-import broadcastCtx from './broadcastCtx';
-import globalCtx from './globalCtx';
-import mailBoxCtx from './mailBoxCtx';
-import modalCtx from './modalCtx';
-import clipRankCtx from './clipRankCtx';
-import clipCtx from './clipCtx';
+import feed from "./profile/feed";
+import noticeFix from "./profile/noticeFix";
+import detail from "./profile/detail";
+import payStore from './payStore';
 
 const rootReducer = combineReducers({
   common
@@ -31,7 +29,7 @@ const rootReducer = combineReducers({
   , main
   , live
   , profile
-  , feed
+  , brdcst
   , fanBoard
   , profileClip
   , clip
@@ -41,16 +39,14 @@ const rootReducer = combineReducers({
   , popup
   , newAlarm
   , vote
+  , rank
   , broadcast
   , profileTab
   , noticeTabList
-  , rankCtx
-  , broadcastCtx
-  , globalCtx
-  , mailBoxCtx
-  , modalCtx
-  , clipRankCtx
-  , clipCtx
+  , feed
+  , noticeFix
+  , detail
+  , payStore
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

@@ -1,43 +1,21 @@
-import React, {useContext, useEffect, useState} from "react";
+import React from "react";
 import GenderItems from "components/ui/genderItems/GenderItems";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 import clip from '../static/clip.svg';
-import {NewClipPlayerJoin} from "common/audio/clip_func";
-import {useHistory} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 
 const ClipDetailCore = (props) => {
-  const { item,subjectType,slctType } = props;
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const history = useHistory();
+  const { item,subjectType,slctType, playClipHandler } = props;
 
   const handleImgError = (e) => {
     e.currentTarget.src = clip;
   };
 
-  const playClip = (e) => {
-    const { clipNo } = e.currentTarget.dataset;
-    const playListInfoData = {
-      dateType: 0,
-      page: 1,
-      records: 100,
-      slctType: slctType.index,
-      subjectType:subjectType
-    }
-    localStorage.setItem(
-      "clipPlayListInfo",
-      JSON.stringify(playListInfoData)
-    );
-    if (clipNo !== undefined) {
-      const clipParam = { clipNo: clipNo, globalState, dispatch, history };
-
-      NewClipPlayerJoin(clipParam);
-    }
-  };
+  const clipClick = (e) => {
+    playClipHandler(e, subjectType, slctType);
+  }
 
   return (
-    <div className="listRow" data-clip-no={item.clipNo} onClick={playClip}>
+    <div className="listRow" data-clip-no={item.clipNo} onClick={clipClick}>
       <div className="photo">
         <img src={item.bgImg.thumb292x292} alt={`${item.nickName}`} onError={handleImgError}/>
       </div>

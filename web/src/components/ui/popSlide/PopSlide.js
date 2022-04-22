@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 // css
 import './popslide.scss'
@@ -22,7 +22,7 @@ const PopSlide = (props) => {
 
   const {title, setPopSlide, children, popHidden, closeCallback} = props
   const popupState = useSelector(state => state.popup);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch();  
 
   const closePopupDim = (e) => {
     const target = e.target
@@ -47,7 +47,7 @@ const PopSlide = (props) => {
     }
     return () => {
       document.body.classList.remove('overflowHidden')
-      dispatch(setCommonPopupClose());
+      dispatch(setSlidePopupClose());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {
         if(globalState.backFunction.name.length === 1) {

@@ -26,10 +26,13 @@
       border-bottom: 2px solid #F2F2F2;
       @include font(16px,600,#ACACAC);
       box-sizing: border-box;
-      &.active {
+      &.tabActive {
         @include font(16px,700,#202020);
         border-bottom: 2px solid #202020;
       }
+    }
+    #tabUnderline {
+      display: none;
     }
   }
   .subContent {

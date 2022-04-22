@@ -1,16 +1,21 @@
 import React, { useContext, useState, useEffect } from "react";
+import { GlobalContext } from "context";
+import { BroadcastContext } from "context/broadcast_ctx";
 
 import { getEmoticon } from "common/api";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
-import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
+
+type ActionType = {
+  type: string;
+  val: any;
+  idx?: number;
+};
 
 export default function Emoticon(props) {
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { chatFreeze } = broadcastState;
+  const { globalAction, globalState } = useContext(GlobalContext);
+  const { broadcastState } = useContext(BroadcastContext);
+  const { chatFreeze, chatLimit, roomInfo } = broadcastState;
   const [emoticon, setEmoticon] = useState<Array<any>>([]);
   const [category, setCategory] = useState<Array<any>>([]);
   const [selectCategory, setSelectCategory] = useState<number>(-1);
@@ -19,20 +24,27 @@ export default function Emoticon(props) {
   const { chatInfo } = globalState;
   const { roomNo, setForceChatScrollDown, roomOwner } = props;
   const sendMessage = async (obj: any) => {
+    if(chatLimit) return;
+
     const { emoticonDesc, idx } = obj;
     if (chatFreeze === false || roomOwner === true) {
       chatInfo !== null &&
         chatInfo.sendSocketMessage(roomNo, "chat", "", emoticonDesc, (result: boolean) => {
+          /* 채팅 도배방지 (일반 청취자만)*/
+          if(roomInfo?.auth === 0) {
+            chatInfo.chatLimitCheck();
+          }
+
           if (result === false) {
           } else if (result === true) {
             setForceChatScrollDown(true);
           }
         });
     } else {
-      dispatch(setGlobalCtxSetToastStatus({
+      globalAction.callSetToastStatus!({
         status: true,
         message: "채팅 얼리기 중에는 채팅 입력이 불가능합니다.",
-      }));
+      });
     }
   };
 

@@ -1,27 +1,24 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
+import {Context} from 'context'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {useHistory} from 'react-router-dom'
 
-import {COLOR_MAIN, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER} from 'context/config'
-import {useDispatch, useSelector} from "react-redux";
-import {
-  setGlobalCtxClosePresent,
-  setGlobalCtxMessage,
-  setGlobalCtxMyInfo,
-  setGlobalCtxUpdatePopup,
-  setGlobalCtxUpdateProfile,
-  setGlobalCtxVisible
-} from "redux/actions/globalCtx";
+import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Swiper from 'react-id-swiper'
+import {common} from '@material-ui/core/colors'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useSelector} from "react-redux";
 
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
-  const dispatch = useDispatch();
-
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
+  const globalCtx = useContext(Context);
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   //-------------------------------------------------------- declare start
   const [splashData, setSplashData] = useState()
   const [point, setPoint] = useState()
@@ -29,12 +26,13 @@ export default (props) => {
   const [active, setActive] = useState(false)
   const [send, setSend] = useState(false)
   const [directDalCnt, setDirectDalCnt] = useState(0)
+  const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const [allFalse, setAllFalse] = useState(false)
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
-  let myDalCnt = globalState.myInfo.dalCnt
+  let myDalCnt = context.myInfo.dalCnt
   myDalCnt = myDalCnt.toLocaleString()
   //-------------------------------------------------------- func start
   const handleChangeInput = (event) => {
@@ -60,7 +58,7 @@ export default (props) => {
     } else {
       setPoint(param)
       setActive(false)
-      setDirectDalCnt(globalState.splash.giftDal[param])
+      setDirectDalCnt(globalCtx.splash.giftDal[param])
       setText('')
     }
     setSend(true)
@@ -74,7 +72,7 @@ export default (props) => {
       dalcount = parseInt(text)
     }
 
-    if (dalcount >= globalState.splash.giftDalMin) {
+    if (dalcount >= globalCtx.splash.giftDalMin) {
       const res = await Api.member_gift_dal({
         data: {
           memNo: props.profile.memNo,
@@ -82,30 +80,26 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        dispatch(setGlobalCtxMessage({
-          type: "alert",
+        context.action.alert({
           callback: () => {
             setText(dalcount)
-            dispatch(setGlobalCtxClosePresent(false))
-
+            context.action.updateClosePresent(false)
             async function updateMyPofile() {
-              const profileInfo = await Api.profile({params: {memNo: globalState.profile.memNo}})
+              const profileInfo = await Api.profile({params: {memNo: context.profile.memNo}})
               if (profileInfo.result === 'success') {
-                dispatch(setGlobalCtxUpdateProfile(profileInfo.data))
+                context.action.updateProfile(profileInfo.data)
               }
               const myInfoRes = await Api.mypage()
               if (myInfoRes.result === 'success') {
-                dispatch(setGlobalCtxMyInfo(myInfoRes.data));
+                context.action.updateMyInfo(myInfoRes.data)
               }
             }
-
             updateMyPofile()
           },
           msg: res.message
-        }))
+        })
       } else if (res.result === 'fail' && res.code === '-4') {
-        dispatch(setGlobalCtxMessage({
-          type: "confirm",
+        context.action.confirm({
           msg: res.message,
           buttonText: {
             right: '충전하기'
@@ -113,21 +107,19 @@ export default (props) => {
           callback: () => {
             history.push('/store')
           }
-        }))
+        })
       } else {
-        dispatch(setGlobalCtxMessage({
-          type: "alert",
+        context.action.alert({
           msg: res.message
-        }))
+        })
       }
     } else {
-      dispatch(setGlobalCtxMessage({
-        type: "alert",
+      context.action.alert({
         callback: () => {
           return
         },
-        msg: `직접입력 선물은 최소 ${globalState.splash.giftDalMin}달 부터 선물이 가능합니다.`
-      }))
+        msg: `직접입력 선물은 최소 ${globalCtx.splash.giftDalMin}달 부터 선물이 가능합니다.`
+      })
       return
     }
   }
@@ -139,17 +131,16 @@ export default (props) => {
     let totalPrice = unitDalprice * (directDalCnt > 0 ? directDalCnt : text)
     let calc = totalPrice * rate
     let iosPrice = totalPrice + calc
-    dispatch(setGlobalCtxUpdatePopup({
-      popup: ['CHARGE', {
-        name: directDalCnt > 0 ? `달 ${directDalCnt}` : `달 ${text}`,
-        price: osType === 2 ? iosPrice : totalPrice
-      }]
-    }));
+
+    context.action.updatePopup('CHARGE', {
+      name: directDalCnt > 0 ? `달 ${directDalCnt}` : `달 ${text}`,
+      price: osType === 2 ? iosPrice : totalPrice
+    })
   }
 
   useEffect(() => {
-    dispatch(setGlobalCtxUpdatePopup({popup: ['CHARGE']}));
-    dispatch(setGlobalCtxVisible(false))
+    context.action.updatePopup('CHARGE')
+    context.action.updatePopupVisible(false)
   }, [])
   //-------------------------------------------------------- components start
   return (
@@ -157,9 +148,7 @@ export default (props) => {
       <HoleWrap>
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
-            <button className="close" onClick={() => {
-              dispatch(setGlobalCtxClosePresent(false));
-            }}></button>
+            <button className="close" onClick={() => context.action.updateClosePresent(false)}></button>
             <div className="scrollWrap">
               <Container>
                 <h2>선물하기</h2>
@@ -167,7 +156,7 @@ export default (props) => {
                   <MyPoint>
                     <div className="nameTitle">
                       <b>{props.profile.nickNm}</b>님에게
-                      <br/>
+                      <br />
                       달을 선물하시겠습니까?
                     </div>
 
@@ -175,40 +164,31 @@ export default (props) => {
                       <em>내가 보유한 달</em>
                       <span>
                         {myDalCnt}
-                        {globalState.customHeader['os'] === OS_TYPE['IOS'] ? (
-                          <button
-                            onClick={() => {
-                              webkit.messageHandlers.openInApp.postMessage('')
-                            }}>
+                        <button onClick={() => {
+                            storeButtonEvent({history, memberRdx, payStoreRdx});
+                            //history.push('/store')
+                          }}>
                             충전
                           </button>
-                        ) : (
-                          <button
-                            onClick={() => {
-                              history.push('/store')
-                            }}>
-                            충전
-                          </button>
-                        )}
                       </span>
                     </div>
                   </MyPoint>
 
                   <div className="pointList">
-                    {globalState.splash &&
-                    globalState.splash.giftDal.map((data, idx) => {
-                      return (
-                        <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                          {Number(data).toLocaleString()}
-                        </PointButton>
-                      )
-                    })}
+                    {globalCtx.splash &&
+                      globalCtx.splash.giftDal.map((data, idx) => {
+                        return (
+                          <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                            {Number(data).toLocaleString()}
+                          </PointButton>
+                        )
+                      })}
                   </div>
 
                   <TextArea>
-                    {globalState.splash.giftDalDirect === true && (
+                    {globalCtx.splash.giftDalDirect === true && (
                       <PointInput
-                        placeholder={`달은 ${globalState.splash.giftDalMin}개부터 선물할 수 있습니다.`}
+                        placeholder={`달은 ${globalCtx.splash.giftDalMin}개부터 선물할 수 있습니다.`}
                         type="number"
                         maxLength="10"
                         value={text}
@@ -220,10 +200,7 @@ export default (props) => {
                     <p>※ 달 선물하기는 100% 전달됩니다.</p>
                   </TextArea>
                   <ButtonArea>
-                    <button onClick={() => {
-                      dispatch(setGlobalCtxClosePresent(false))
-                    }}>취소
-                    </button>
+                    <button onClick={() => context.action.updateClosePresent(false)}>취소</button>
                     <button onClick={() => giftSend()} disabled={directDalCnt == 0 ? true : false}>
                       선물
                     </button>
@@ -234,7 +211,7 @@ export default (props) => {
           </div>
         </FixedBg>
       </HoleWrap>
-      <Dim onClick={() => dispatch(setGlobalCtxClosePresent(false))}></Dim>
+      <Dim onClick={() => context.action.updateClosePresent(false)}></Dim>
     </>
   )
 }

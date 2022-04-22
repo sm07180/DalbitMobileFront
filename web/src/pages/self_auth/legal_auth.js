@@ -6,7 +6,7 @@ import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Layout from 'pages/common/layout'
-import Header from 'components/ui/new_header'
+import Header from 'components/ui/header/Header';
 
 //static
 import icNotice from './static/ic_notice.svg'
@@ -191,7 +191,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
-      <Header title="미성년자 법정대리인(보호자)동의 신청" goBack={goBack} />
+      <Header title="미성년자 법정대리인(보호자)동의 신청" goBack={goBack} type={'back'}/>
       <Content>
         <p className="txt">
           부모 또는 지정후견인의 동의를 위해 <br />
