@@ -70,7 +70,7 @@ const TeamManager = (props) => {
       memNo:memberRdx.memNo,
       updSlct:(JSON.stringify(defultData) === JSON.stringify(equData)) ? 'b': 'a',   //-- 수정구분[a:심볼및이름, b:소개수정]
       teamNo:teamNo,
-      teamName:teamName,
+      teamName:teamName.trim(),
       teamConts:teamConts,
       teamMedalCode:medalCode,
       teamEdgeCode:edgeCode,
@@ -97,14 +97,11 @@ const TeamManager = (props) => {
   };
 
   const editCnts=(e)=>{
-    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
-    let rows = text.split('\n').length
+    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, ''); // 빈 스페이스로 입력 시작하는 것을 막기 위함
 
-    if(rows > 5){
-      alert("5줄 까지만 가능합니다.")
-      return false
+    if (text.length <= 150) {
+      setTeamConts(text);
     }
-    setTeamConts(text);
   }
   //팀 가입신청 여부
   const onClickAction = (e) => {
@@ -115,8 +112,11 @@ const TeamManager = (props) => {
     }
   }
   const editName=(e)=>{
-    let text= e.currentTarget.value.trim();
-    setTeamName(text);
+    let text= e.currentTarget.value;
+
+    if (text.length <= 10) {
+      setTeamName(text);
+    }
   }
 
   const clickConfirmPopup = () => {
