@@ -517,6 +517,7 @@
           height: 24px;
           margin-left: auto;
           @include BGIMG('store/dalla/icoGear-g.png');
+          cursor: pointer;
         }
       }
       .addAccountBtn{

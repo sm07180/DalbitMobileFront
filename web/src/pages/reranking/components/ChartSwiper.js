@@ -6,7 +6,9 @@ import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
+} from "common/audio/clip_func";
 import {IMG_SERVER} from 'context/config'
 
 const CardList = (props) => {
@@ -26,7 +28,7 @@ const CardList = (props) => {
 
   return (
     <div className='chartSwiper'>
-      {data && data.length > 0 &&  
+      {data && data.length > 0 &&
         <Swiper {...swiperParams}>
             {data.map((list, index) => {
               return (
@@ -36,7 +38,7 @@ const CardList = (props) => {
                       <div className='rank'>{index + 1}</div>
                     </div>
                     {
-                      list.roomNo &&
+                      !list.listenRoomNo && list.roomNo &&
                         <div className='livetag' onClick={(e) => {
                           e.stopPropagation();
                           RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, locationStateHistory, list.nickNm);
@@ -49,6 +51,23 @@ const CardList = (props) => {
                             }}
                           />
                         </div>
+                    }
+                    {
+                      !list.roomNo && list.listenRoomNo && list.listenOpen !== 2 &&
+                      <div className='listenertag' onClick={(e) => {
+                        e.stopPropagation();
+                        RoomValidateFromListenerFollow({
+                          memNo:list.memNo, history:locationStateHistory, context, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
+                        });
+                      }}>
+                        <Lottie
+                          options={{
+                            loop: true,
+                            autoPlay: true,
+                            path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
+                          }}
+                        />
+                      </div>
                     }
                     <div className='infoWrap'>
                       <div className='userNick'>{list.nickNm}</div>

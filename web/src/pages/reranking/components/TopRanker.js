@@ -6,7 +6,9 @@ import Swiper from 'react-id-swiper';
 
 import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
+} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {IMG_SERVER} from 'context/config'
 import {Context, GlobalContext} from "context";
@@ -18,7 +20,6 @@ const TopRanker = (props) => {
 
   const history = useHistory();
   const context = useContext(Context);
-  const gtx = useContext(GlobalContext);
 
   const [popup, setPopup] = useState(false);
   const [rankSetting, setRankSetting] = useState();
@@ -73,47 +74,6 @@ const TopRanker = (props) => {
        변경하시겠습니까?` : `지금부터 나의 활동이 FAN랭킹에 반영됩니다.
       변경하시겠습니까?`}`
     });
-  };
-
-  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
-        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-        callback: () => {
-          history.push('/login')
-        }
-      })
-    } else {
-      if (getDeviceOSTypeChk() === 3){
-        if(listenRoomNo){
-          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
-        } else {
-          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
-        }
-      } else {
-        if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo, memNo:memNo,nickNm: nickNm})
-        } else {
-          let alertMsg
-          if (isNaN(listenRoomNo)) {
-            alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
-              type: 'alert',
-              msg: alertMsg
-            })
-          } else {
-            alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
-              type: 'confirm',
-              msg: alertMsg,
-              callback: () => {
-                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
-              }
-            })
-          }
-        }
-      }
-    }
   };
 
   // 팀 상세 페이지 이동
@@ -188,7 +148,8 @@ const TopRanker = (props) => {
                             </div>
                             <div className='rankerNick'>{data.nickNm}</div>
                           </div>
-                          {rankSlct === "CUPID" && data.djProfImg ?
+                          {
+                            rankSlct === "CUPID" && data.djProfImg &&
                             <div className='cupidWrap' onClick={() => props.history.push(`/profile/${data.djMemNo}`)}>
                               <div className='cupidHeader'>HONEY</div>
                               <div className='cupidContent'>
@@ -198,14 +159,14 @@ const TopRanker = (props) => {
                                 <div className='cupidNick'>{data.djNickNm}</div>
                               </div>
                             </div>
-                            :
-                            <>
-                              {
-                                data.roomNo &&
-                                  <div className='badgeLive' onClick={(e) => {
-                                    e.stopPropagation();
-                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>                                    
+                          }
+                          <>
+                            {
+                              !data.listenRoomNo && data.roomNo &&
+                              <div className='badgeLive' onClick={(e) => {
+                                e.stopPropagation();
+                                RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+                              }}>
                                     <span className='equalizer'>
                                       <Lottie
                                         options={{
@@ -215,29 +176,31 @@ const TopRanker = (props) => {
                                         }}
                                       />
                                     </span>
-                                    <span className='liveText'>LIVE</span>
-                                  </div>
-                              }
-                              {/* {
-                                data.listenRoomNo !== "" &&
-                                  <div className='badgeListener' onClick={(e) => {
-                                    e.stopPropagation();
-                                    goLive(data.roomNo, data.memNo, data.nickNm, data.listenRoomNo);
-                                  }}>
+                                <span className='liveText'>LIVE</span>
+                              </div>
+                            }
+                            {
+                              !data.roomNo && data.listenRoomNo && data.listenOpen !== 2 &&
+                              <div className='badgeListener' onClick={(e) => {
+                                e.stopPropagation();
+
+                                RoomValidateFromListenerFollow({
+                                  memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+                                });
+                              }}>
                                     <span className='headset'>
                                       <Lottie
-                                          options={{
-                                            loop: true,
-                                            autoPlay: true,
-                                            path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
-                                          }}
-                                        />
+                                        options={{
+                                          loop: true,
+                                          autoPlay: true,
+                                          path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
+                                        }}
+                                      />
                                     </span>
-                                    <span className='ListenerText'>LIVE</span>
-                                  </div>
-                              } */}
-                            </>
-                          }
+                                <span className='ListenerText'>LIVE</span>
+                              </div>
+                            }
+                          </>
                         </div>
                       )
                     }

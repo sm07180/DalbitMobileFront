@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
 import './badgeItems.scss'
+import UtilityCommon from "common/utility/utilityCommon";
 
 const BadgeItems = (props) => {
   const {data, type} = props
@@ -13,7 +14,8 @@ const BadgeItems = (props) => {
     recommend: data.isRecomm,
     new: data.isNew,
     contents: data.isConDj,
-    badgeSpecial: data.badgeSpecial
+    badgeSpecial: data.badgeSpecial,
+    badgePartner:data.badgePartner
   }
   const isNew = {
     new: data.isNew,
@@ -25,17 +27,18 @@ const BadgeItems = (props) => {
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
-          <React.Fragment key={index}>
-            <em
-              className={`badgeItem`}
-              key={index}
-              style={{
-                background: `linear-gradient(to right, ${startColor}, ${endColor}`
-              }}>
-              {icon !== '' && <img src={icon} alt="배지아이콘" />}
-              <span>{text}</span>
-            </em>
-          </React.Fragment>
+          text !== "Partner" &&
+            <React.Fragment key={index}>
+              <em
+                className={`badgeItem`}
+                key={index}
+                style={{
+                  background: `linear-gradient(to right, ${startColor}, ${endColor}`
+                }}>
+                {icon !== '' && <img src={icon} alt="배지아이콘" />}
+                <span>{text}</span>
+              </em>
+            </React.Fragment>
         )
       })}
       {type === 'liveBadgeList' && liveBadgeList.map((list, index) => {
@@ -65,12 +68,17 @@ const BadgeItems = (props) => {
         </em>
       }
       {type === 'isBadge' && (
-        isBadge.badgeSpecial == 2 ? (
+        isBadge.badgePartner == 1 ? (
+        <em className="badgeItem partnerDj">파트너DJ</em>
+      ) : isBadge.badgeSpecial == 2 ? (
         <em className="badgeItem bestDj">베스트DJ</em>
       ) : isBadge.contents === true ? (
         <em className="badgeItem contentsDj">콘텐츠DJ</em>
       ) : isBadge.badgeSpecial === 1 && (
-        <em className="badgeItem specialDj">스페셜DJ</em>
+          UtilityCommon.eventDateCheck("20220501") ?
+            <em className="badgeItem starDj">스타DJ</em>
+            :
+            <em className="badgeItem specialDj">스페셜DJ</em>
       ))}
       {type === 'isNew' && isNew.new ? 
         <em className='badgeItem newDj'>NEW DJ</em>

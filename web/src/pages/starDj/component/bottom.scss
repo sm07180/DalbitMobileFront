@@ -1,0 +1,103 @@
+@import "components/ui/_mixin.scss";
+
+.starDjBottom {
+  position: relative;
+  width: 100%;
+  padding: 45% 16px 20%;
+  background: url("https://image.dalbitlive.com/starDJ/starDJ_bottom-logo.png") #7A5CE1;
+  background-position: bottom 20px center;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  z-index: 0; 
+  .buttonPosition {
+    @include position-horizon($top: 18%);
+    @include flex(center, center);
+    width: calc(100% - 32px);
+    .buttonOuter {
+      position: relative;
+      width: 100%;
+      cursor: auto;
+      &::before {
+        content: "";
+        @include position-top-left;
+        width: calc(100% + 6px); height: calc(100% + 8px);
+        border-radius: 19px;
+        background-color: #535353;
+      }
+      &.active {
+        cursor: pointer;
+        &::before {
+          content: "";
+          @include position-top-left;
+          width: calc(100% + 6px); height: calc(100% + 8px);
+          border-radius: 19px;
+          background-color: #582EE6;
+        }
+        .buttonInner {
+          .buttonWrap {
+            border: 1px solid #E0D6FF;
+          }
+        }
+      }
+      .buttonInner {
+        @include position-top-left;
+        width: 100%; height: 100%;
+        padding: 3px;
+        border-radius: 13px;
+        background-color: #FFFFFF;
+        .buttonWrap {
+          position: relative;
+          @include flex(center);
+          width: 100%; height: 100%;
+          padding: 5px 10px;
+          border: 1px solid #C2C2C2;
+          border-radius: 11px;
+          span {
+            flex: 1;
+            @include flex(center, center);
+            width: 100%; height: 100%;
+            padding: 12px 0px 5px;
+            box-sizing: border-box;
+            img {
+              height: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+  .notice {
+    @include flex(flex-start, flex-start, column);
+    width: 100%;
+    .noticeTitle {
+      flex: none;
+      display: inline-block;
+      width: auto; height: 19px;
+      margin-bottom: 14px;
+      img {
+        height: 100%;
+      }
+    }
+    .noticeWrap {
+      .noticeList {
+        position: relative;
+        padding-left: 10px;
+        @include font(12px, $Regular, #FFF);
+        line-height: 15px;
+        margin-bottom: 7px;
+        word-break: keep-all;
+        &::before {
+          content: "";
+          @include position-top-left(6px, 0px);
+          display: inline-block;
+          width: 3px; height: 3px;
+          border-radius: 50%;
+          background-color: #FFF;
+        }
+        &:last-child {
+          margin-bottom: 0px;
+        }
+      }
+    }
+  }            
+}

@@ -223,6 +223,12 @@ $errorMsg : #FF1919;
               width: 40px; height: 40px;
               z-index: 2;
             }
+            .listenertag {
+              @include position-top-right();
+              display: inline-block;
+              width: 40px; height: 40px;
+              z-index: 2;
+            }
             .infoWrap {
               position: absolute;
               bottom: 0; left: 0; right: 0;

@@ -1,16 +1,16 @@
 /**
  * @title 방송방입장 및 퇴장 (하이브리드앱전용)
- * @code 
- 
-    import Room, {RoomJoin} from 'context/room'
+ * @code
 
-    //function
-    RoomJoin(roomNo + '', () => {
+ import Room, {RoomJoin} from 'context/room'
+
+ //function
+ RoomJoin(roomNo + '', () => {
         clicked = false
     })
 
-    //render추가
-    return (   <Room />   )
+ //render추가
+ return (   <Room />   )
  */
 import React, {useEffect, useState, useContext} from 'react'
 
@@ -79,15 +79,13 @@ export const RoomJoin = async (obj) => {
   const sessionRoomNo = sessionStorage.getItem('room_no')
   localStorage.removeItem('prevRoomInfo')
   const sessionRoomActive = sessionStorage.getItem('room_active')
-  if (sessionStorage.getItem('room_active') === 'N') {
+  if (sessionRoomActive === 'N') {
     Room.context.action.alert({
       msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
     })
     return false
-  } else {
-    if (sessionStorage.getItem('room_active') === null) {
-      sessionStorage.setItem('room_active', 'N')
-    }
+  } else if (sessionRoomActive === null) {
+    sessionStorage.setItem('room_active', 'N')
   }
 
   if (customHeader['os'] === OS_TYPE['Desktop']) {

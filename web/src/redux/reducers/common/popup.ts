@@ -10,6 +10,7 @@ const initialState: ICommonPopupState = {
   presentPopup: false, // 선물하기
   questionMarkPopup: false, // 물음표 버튼
   historyPopup: false, //
+  levelPopup: false, //
 
   // 달라져스 이벤트
   morePopup: false,
@@ -25,7 +26,7 @@ const initialState: ICommonPopupState = {
 
 const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   "common/SET_COMMON_POPUP_OPEN_DATA": (state, {payload}) => {
-    return {...payload}
+    return {...payload, commonPopup: true}
   },
   "common/SET_COMMON_POPUP_CLOSE": () => {
     return {...initialState}
@@ -33,8 +34,8 @@ const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   "common/SET_SLIDE_POPUP_CLOSE": (state) => {
     return {...state, slidePopup: false}
   },
-  "common/SET_SLIDE_POPUP_OPEN": (state) => {
-    return {...state, slidePopup: true, commonPopup: true}
+  "common/SET_SLIDE_POPUP_OPEN": (state, {payload}) => {
+    return {...payload, slidePopup: true, commonPopup: true}
   }
 });
 

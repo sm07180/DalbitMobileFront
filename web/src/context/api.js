@@ -4205,6 +4205,16 @@ export default class API {
     return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
   }
 
+  //메인 슬라이더
+  static getBannerList = async (data) => {
+    return await ajax({url: `/v2/main/getMainSwiper`})
+  }
+
+  //파비 list
+  static getPartnerDjList = async (data) => {
+    return await ajax({url: `/getPartnerDjList`, method: 'POST', reqBody: true, data: data})
+  }
+
   // 와썹맨 dj 리스트
   static getWhatsUpDjList = async (data) => {
     return ajax({url: '/event/whatsUp/getDjList', method: 'POST', reqBody: true, data: data})
@@ -4251,6 +4261,21 @@ export default class API {
   static getStoreIndexData = () => {
     return ajax({url: '/store/getIndexData', method: 'POST', reqBody: true})
   }
+  //스타DJ 점수
+  static getMyStarPoint = async (data) => {
+    return await ajax({url: "/getStarDjScore", method: 'POST', reqBody: true, data: data})
+  }
+
+  //스타DJ 신청
+  static starDjIns = async () => {
+    return await ajax({url: "/starDjIns"})
+  }
+
+  //스타DJ 약력
+  static getStarDjLog = async (data) => {
+    return await ajax({url: "/getStarDjLog", method: 'POST', reqBody: true, data: data})
+  }
+
   // 팀 등록
   static getTeamIns = async (data) => {
     return await ajax({url: `/team/teamIns`, method: 'POST', reqBody: true, data: data})
@@ -4350,6 +4375,11 @@ export default class API {
 
   static getDalCnt = () => {
     return ajax({url: '/store/getDalCnt', method: 'POST', reqBody: true})
+  }
+
+  // 방장 정보 조회
+  static roomOwnerSel = async (roomNo, memNo) => {
+    return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo, memNo:memNo}})
   }
 }
 

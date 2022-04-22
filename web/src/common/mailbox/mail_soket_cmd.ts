@@ -7,7 +7,6 @@ export function mailSoketCmd(data: any) {
       const { user, recvMsg } = data;
       const { nk, memNo } = user;
       const { msg, type } = recvMsg;
-      console.log(data);
 
       return NormalMsgFormat({
         type: "div",

@@ -10,9 +10,10 @@ import Header from "components/ui/header/Header";
 import MyInfo from "pages/remypage/components/MyInfo";
 import MyMenu from "pages/remypage/components/MyMenu";
 import MyLevel from "pages/remypage/components/MyLevel";
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide';
-import Report from "./contents/report/Report";
-import Clip from "./contents/clip/clip";
+import SpecialHistoryPop from "pages/remypage/components/SpecialHistoryPop";
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import Report from "./contents/report/Report"
+import Clip from "./contents/clip/clip"
 import Setting from "pages/resetting";
 import Customer from "pages/recustomer";
 import Team from "pages/team";
@@ -24,7 +25,7 @@ import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import Notice from "pages/remypage/contents/notice/Notice";
 import {useDispatch, useSelector} from "react-redux";
 import {storeButtonEvent} from "components/ui/header/TitleButton";
-import {setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
+import {setSlidePopupOpen, setSlidePopupClose, setCommonPopupOpenData} from "redux/actions/common";
 
 // 프로필 폴더에서 가져옴
 import FanStarPopup from "../profile/components/popSlide/FanStarPopup"
@@ -44,7 +45,6 @@ const Remypage = () => {
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
   const dispatch = useDispatch();
-  const popup = useSelector(state => state.popup);
 
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
@@ -201,6 +201,12 @@ const Remypage = () => {
     dispatch(setSlidePopupClose());
   }
 
+  const openStarDJHistoryPop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setCommonPopupOpenData({...commonPopup, historyPopup: true}))
+  }
+
   useEffect(() => {
     if(alarmData.notice > 0){
       setNoticeNew(true)
@@ -230,7 +236,7 @@ const Remypage = () => {
           <Header title={'MY'} />
           <section className='mypageTop'>
             <div className="myInfo" onClick={()=>{history.push('/myProfile')}}>
-              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}/>
+              <MyInfo data={profile} openPopFanStar={openPopFanStar} openPopLike={openPopLike} openLevelPop={openLevelPop}  openStarDJHistoryPop={openStarDJHistoryPop}/>
             </div>
             <div className='mydalDetail'>
               <div className="dalCount">
@@ -301,11 +307,11 @@ const Remypage = () => {
           }
           <button className='logout' onClick={logout}>로그아웃</button>
 
-          
+
           {popup.slidePopup &&
             <PopSlide>
               {// 팬, 스타
-                slidePopNo === "fanStar" ? 
+                slidePopNo === "fanStar" ?
                 <FanStarPopup
                   type={openFanStarType}
                   isMyProfile={true}
@@ -333,6 +339,10 @@ const Remypage = () => {
               }
             </PopSlide>
           }
+
+          {/* 스페셜DJ 약력 팝업 */}
+          {commonPopup.historyPopup && <SpecialHistoryPop profileData={profile} />}
+
         </div>
       </>
       )
