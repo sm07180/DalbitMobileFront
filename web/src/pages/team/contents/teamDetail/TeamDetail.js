@@ -5,7 +5,7 @@ import {IMG_SERVER} from 'context/config';
 import Utility from 'components/lib/utility';
 // global components
 import Header from 'components/ui/header/Header';
-import CntWrapper from 'components/ui/cntWrapper/CntWrapper';
+import CntWrapper from 'components/ui/cntWrapper/cntWrapper';
 import CntTitle from 'components/ui/cntTitle/CntTitle';
 import ListRow from 'components/ui/listRow/ListRow';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';

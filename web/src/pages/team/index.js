@@ -3,7 +3,7 @@ import {useHistory, useParams} from "react-router-dom";
 import {Context} from 'context';
 // global components
 import Header from 'components/ui/header/Header';
-import CntWrapper from 'components/ui/cntWrapper/CntWrapper';
+import CntWrapper from 'components/ui/cntWrapper/cntWrapper';
 // components
 import InfoSlide from './components/InfoSlide';
 import InviteList from './components/InviteList';

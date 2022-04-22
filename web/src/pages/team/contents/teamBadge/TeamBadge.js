@@ -2,7 +2,7 @@ import React, {useState,useContext,useEffect} from 'react';
 import {useHistory} from "react-router-dom";
 // global components
 import Header from 'components/ui/header/Header';
-import CntWrapper from 'components/ui/cntWrapper/CntWrapper';
+import CntWrapper from 'components/ui/cntWrapper/cntWrapper';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
 import Api from "context/api";
