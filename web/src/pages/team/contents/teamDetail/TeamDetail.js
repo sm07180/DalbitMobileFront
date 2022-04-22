@@ -78,7 +78,6 @@ const TeamDetail = (props) => {
 //팀 가입가능 여부 체크
   const teamCheck = ()=>{
     Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-      console.log(res)
       if(res.data === 1 || res.data === -3){
         setTeamChk(true)
       }else{
@@ -142,7 +141,7 @@ const TeamDetail = (props) => {
       if(res.code === "00000"){
         setTeamInsChk('y');
         context.action.toast({
-          msg: "가입신청이 되었습니다."
+          msg: slct==='r' ? "가입신청이 되었습니다." : "초대를 완료했습니다."
         })
       }else {
         context.action.toast({
@@ -170,7 +169,6 @@ const TeamDetail = (props) => {
 
   // 탈퇴 팝업
   const clickSecession = (masterNo) => {
-    console.log(teamMemList.length)
     if (statChk === 'm' && teamMemList.length > 1) {
       dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     } else {
@@ -322,12 +320,8 @@ const TeamDetail = (props) => {
 
   const textAreaInfo = () => {
     const teamIntroNode = teamIntroRef.current;
-
-    console.log(teamIntroNode, teamIntroNode.clientHeight);
-
     if (teamIntroNode.clientHeight > 36) {
       setTextAreaOpenBtn(true)
-      console.log(1);
     }
   }
   const textAreaOpenFnc = () => {

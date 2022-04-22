@@ -23,21 +23,20 @@ const TeamPage = () => {
   const memberRdx = useSelector((state) => state.member);
 
   useEffect(()=>{
-
+    if(!(context.token.isLogin)) {
+      history.push("/login");
+    }
+    Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
+      if(res.data !== 1 && res.data !== -3 && res.data !== -1 ){
+       /* context.action.toast({
+          msg: res.message
+        })*/
+        history.replace('/myPage')
+      }
+    })
     if(invitationChk===false){
       invitationList()
       listCheckApi()
-      Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
-        if(res.data === -1){
-          context.action.toast({
-            msg: res.message
-          })
-          history.push('/myPage')
-        }else{
-
-        }
-      })
-
     }
   },[]);
 

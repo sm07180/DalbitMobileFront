@@ -75,7 +75,7 @@ const TeamMake = () => {
     Api.getTeamIns(param).then((res) => {
       if (res.message === 'SUCCESS' && res.data.result ===1) {
         context.action.toast({ msg: `팀 생성이 완료 되었습니다.` });
-        history.push(`/team/detail/${res.data.teamNo}`)
+        history.replace(`/team/detail/${res.data.teamNo}`)
       }else{
         context.action.toast({
           msg: res.message

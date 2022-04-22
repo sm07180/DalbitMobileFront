@@ -75,7 +75,6 @@ const Remypage = () => {
 
   const teamCheck=async(memNo)=>{
     const {result, data, message, code} = await Api.getTeamMemMySel({memNo: memNo})
-    console.log(result, data, message, code)
     if (code === '00000') {
       setTeamInfo(data)
     }

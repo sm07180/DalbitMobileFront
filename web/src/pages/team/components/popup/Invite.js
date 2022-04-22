@@ -34,8 +34,8 @@ const InvitePop = (props) => {
       pagePerCnt:100
     }
       Api.getTeamMemFanstarList(param).then((res)=>{
-        console.log("초대리스트",res)
         if(res.code=== "00000"){
+          setListData([]);
           setListData(res.data.list)
         }
     })
@@ -60,8 +60,6 @@ const InvitePop = (props) => {
             if(tabType ==="팬"){
               photoUrl =  data.image_profile_fan &&  data.image_profile_fan
             }
-            
-
             return(
               <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} key={index}>
                 <div className="listContent">
