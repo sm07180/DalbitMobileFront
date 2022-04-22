@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {useHistory} from "react-router-dom";
 // global components
 import Header from 'components/ui/header/Header';
@@ -16,6 +16,7 @@ import {setSlidePopupOpen} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
+import {Context} from "context";
 
 const parts = ['메달','테두리','배경'];
 
@@ -24,6 +25,7 @@ const TeamMake = () => {
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
   const memberRdx = useSelector((state) => state.member);
+  const context = useContext(Context);
 
   const [partsName, setPartsName] = useState('');
   const [partsA, setPartsA] = useState('');  //메달URL
@@ -53,8 +55,14 @@ const TeamMake = () => {
 
   const saveAction=()=>{
     if(teamName === null || teamName === ""){
+      context.action.alert({ visible: true, type: 'alert', msg: `팀 이름을 입력해주세요.` });
       return false;
     }
+    if (teamConts === null || teamConts === '') {
+      context.action.alert({ visible: true, type: 'alert', msg: `팀 소개를 입력해주세요.` });
+      return false;
+    }
+
     let param ={
       memNo:memberRdx.memNo,
       teamName:teamName.trim(),
@@ -65,6 +73,7 @@ const TeamMake = () => {
     }
     Api.getTeamIns(param).then((res) => {
       if (res.message === 'SUCCESS' && res.data.result ===1) {
+        context.action.toast({ msg: `팀 생성이 완료 되었습니다.` });
         history.push(`/team/detail/${res.data.teamNo}`)
       }else{
         console.log("error");
@@ -89,7 +98,7 @@ const TeamMake = () => {
   };
 
   const editCnts=(e)=>{
-    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, '');
+    let text= e.currentTarget.value.replace(/(^\s*)|(\s*$)/, ''); // 빈 스페이스로 입력 시작하는 것을 막기 위함
 
     if (text.length <= 150) {
       setTeamConts(text);
