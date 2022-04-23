@@ -16,9 +16,6 @@ import {
 import Swiper from "react-id-swiper";
 import {CHAT_CONFIG} from "constant/define";
 // ctx
-import {BroadcastContext} from "context/broadcast_ctx";
-import {GlobalContext} from "context";
-import {MailboxContext} from "context/mailbox_ctx";
 import {addComma, printNumber} from "lib/common_fn";
 import {mailBoxJoin} from "common/mailbox/mail_func";
 // constant
@@ -28,15 +25,27 @@ import {MANAGER_TYPE} from "./constant";
 import BadgeList from "../../../../common/badge_list";
 import 'asset/scss/module/mypage/index.scss'
 
+import {
+  setBroadcastCtxIsFan,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxUserMemNo,
+  setBroadcastCtxUserNickName
+} from "../../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxMultiViewer,
+  setGlobalCtxSetToastStatus
+} from "../../../../redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
+
 export default function Profile(props: { roomInfo: roomInfoType; profile: any; roomNo: string; roomOwner: boolean }) {
   const { roomInfo, profile, roomNo, roomOwner } = props;
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
-  const { setRightTabType, setUserNickNm, setUserMemNo } = broadcastAction;
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   const { baseData } = globalState;
   const { isLogin } = baseData;
@@ -62,8 +71,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
       // 아무것도 선택되지 않았을때
       return baseData.memNo;
     })();
-    setUserMemNo && setUserMemNo(memNo);
 
+    dispatch(setBroadcastCtxUserMemNo(memNo));
     const { result, data, message } = await getBroadcastMemberInfo({ memNo, roomNo });
     if (result === "success") {
       setProfileData({
@@ -103,21 +112,21 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         profImgList: data.profImgList,
         isMailboxOn: data.isMailboxOn,
       });
-      broadcastAction.setIsFan && broadcastAction.setIsFan(data.isFan);
+      dispatch(setBroadcastCtxIsFan(data.isFan));
     } else {
-      globalAction.setAlertStatus!({
+
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
-
-      setRightTabType!(tabType.LISTENER);
+      }));
+      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
     }
   }
 
   const viewProfile = useCallback(
     (memNo: string) => {
       if (isLogin === true) {
-        setRightTabType && setRightTabType(tabType.PROFILE);
+        dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
         fetchProfileData(memNo);
       } else {
         return history.push("/login");
@@ -129,8 +138,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const viewSpecialList = useCallback(
     (memNo: string) => {
       if (isLogin === true) {
-        setUserMemNo!(memNo);
-        setRightTabType && setRightTabType(tabType.SPECIALDJLIST);
+        dispatch(setBroadcastCtxUserMemNo(memNo));
+        dispatch(setBroadcastCtxRightTabType(tabType.SPECIALDJLIST));
       } else {
         return history.push("/login");
       }
@@ -145,12 +154,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
       if (result === "success") {
         fetchProfileData(memNo);
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({
-            status: true,
-            message: `${nickNm}님의 팬이 되었습니다`,
-          });
-        }
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: `${nickNm}님의 팬이 되었습니다`,
+        }));
       }
     }
 
@@ -158,28 +165,25 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   }, []);
 
   const cancelFan = useCallback((memNo: string, nickNm: string) => {
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
-        callback: () => {
-          async function DeleteFanFunc() {
-            const { result, message } = await postBroadFanRemove({ memNo, roomNo });
-            if (result === "success") {
-              fetchProfileData(memNo);
-              if (globalAction.callSetToastStatus) {
-                globalAction.callSetToastStatus({
-                  status: true,
-                  message: message,
-                });
-              }
-            }
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function DeleteFanFunc() {
+          const { result, message } = await postBroadFanRemove({ memNo, roomNo });
+          if (result === "success") {
+            fetchProfileData(memNo);
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: message,
+            }));
           }
+        }
 
-          DeleteFanFunc();
-        },
-      });
+        DeleteFanFunc();
+      },
+    }));
   }, []);
 
   const defalutRank = [
@@ -292,42 +296,39 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         }
       })();
 
-      if (globalAction.setAlertStatus) {
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          title: "알림",
-          content: nickNm + msg,
-          callback: async () => {
-            if (type === MANAGER_TYPE.TEMPORARY && managerType === MANAGER_TYPE.FIXING) {
-              globalAction.callSetToastStatus!({
-                status: true,
-                message: "이미 고정 매니저로 지정되어 있습니다.",
-              });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "confirm",
+        title: "알림",
+        content: nickNm + msg,
+        callback: async () => {
+          if (type === MANAGER_TYPE.TEMPORARY && managerType === MANAGER_TYPE.FIXING) {
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: "이미 고정 매니저로 지정되어 있습니다.",
+            }));
 
-              return;
+            return;
+          } else {
+            const res = await managerApi({ roomNo: roomNo, memNo: memNo, managerType: type });
+            if (res.result === "success") {
+              dispatch(setGlobalCtxSetToastStatus({
+                status: true,
+                message: res.message,
+              }));
             } else {
-              const res = await managerApi({ roomNo: roomNo, memNo: memNo, managerType: type });
-              if (res.result === "success") {
-                globalAction.callSetToastStatus!({
-                  status: true,
-                  message: res.message,
-                });
-              } else {
-                globalAction.setAlertStatus &&
-                  globalAction.setAlertStatus({
-                    status: true,
-                    type: "alert",
-                    content: res.message,
-                    callback: () => {
-                      return;
-                    },
-                  });
-              }
+              dispatch(setGlobalCtxAlertStatus({
+                status: true,
+                type: "alert",
+                content: res.message,
+                callback: () => {
+                  return;
+                },
+              }));
             }
-          },
-        });
-      }
+          }
+        },
+      }));
     },
     [profileData]
   );
@@ -335,50 +336,46 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   const outUser = useCallback(() => {
     if (profileData) {
       const { nickNm, memNo } = profileData;
-      if (globalAction.setAlertStatus) {
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          title: "강제 퇴장",
-          content: nickNm + " 님을 강제퇴장 하시겠습니까?",
-          subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
-          subcontStyle: {
-            color: "gray",
-            lineHeight: "16px",
-            margin: "10px 0 0 0",
-          },
-          callback: async () => {
-            const res = await broadKickOut({ roomNo: roomNo, blockNo: memNo });
-            if (res.result === "success") {
-              KickAfterBan();
-            } else {
-              globalAction.setAlertStatus &&
-                globalAction.setAlertStatus({
-                  status: true,
-                  type: "alert",
-                  content: res.message,
-                });
-            }
-          },
-        });
-      }
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "confirm",
+        title: "강제 퇴장",
+        content: nickNm + " 님을 강제퇴장 하시겠습니까?",
+        subcont: `* 강퇴당한 회원은 입장이 불가능하며 다음 방송부터 정상적으로 입장이 가능합니다."`,
+        subcontStyle: {
+          color: "gray",
+          lineHeight: "16px",
+          margin: "10px 0 0 0",
+        },
+        callback: async () => {
+          const res = await broadKickOut({ roomNo: roomNo, blockNo: memNo });
+          if (res.result === "success") {
+            KickAfterBan();
+          } else {
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: res.message,
+            }));
+          }
+        },
+      }));
     }
   }, [profileData]);
 
   const KickAfterBan = useCallback(() => {
     if (profileData) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          content: `강제퇴장이 완료되었습니다. 
-           ${profileData.nickNm}님을 
-           차단하시겠습니까?`,
-          callback: () => fetchDataBlock(),
-          cancelCallback: () => {
-            setRightTabType && setRightTabType(tabType.LISTENER);
-          },
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "confirm",
+        content: `강제퇴장이 완료되었습니다. 
+         ${profileData.nickNm}님을 
+         차단하시겠습니까?`,
+        callback: () => fetchDataBlock(),
+        cancelCallback: () => {
+          dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
+        },
+      }));
     }
   }, [profileData]);
   const fetchDataBlock = useCallback(async () => {
@@ -387,19 +384,18 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         memNo: profileData.memNo,
       });
       if (result === "success") {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: message,
-        });
+        }));
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: message,
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          type: "alert",
+          content: message,
+        }));
       }
-      setRightTabType && setRightTabType(tabType.LISTENER);
+      dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
     }
   }, [profileData]);
 
@@ -435,7 +431,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
 
     globalState.mailChatInfo?.setUserInfo(socketUser);
     globalState.mailChatInfo?.privateChannelDisconnect();
-    mailBoxJoin(memNo, mailboxAction, globalAction, history);
+    mailBoxJoin(memNo, dispatch, history, history);
   };
   return (
     <>
@@ -450,8 +446,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     <button
                       className="btn__report"
                       onClick={() => {
-                        setRightTabType && setRightTabType(tabType.REPORT);
-                        setUserNickNm && setUserNickNm(profileData.nickNm);
+                        dispatch(setBroadcastCtxRightTabType(tabType.REPORT));
+                        dispatch(setBroadcastCtxUserNickName(profileData.nickNm));
                       }}
                     >
                       <span className="blind">신고하기</span>
@@ -480,10 +476,10 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   src={profileData.holder}
                   className="holder"
                   onClick={() => {
-                    globalAction.setMultiViewer?.({
+                    dispatch(setGlobalCtxMultiViewer({
                       show: true,
                       list: profileData.profImgList.length ? profileData.profImgList : [{ profImg: profileData.profImg }],
-                    });
+                    }))
                   }}
                 />
               </div>
@@ -563,9 +559,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -599,9 +595,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -632,9 +628,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -655,9 +651,9 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                     className="rankingList__linkBtn"
                     onClick={() => {
                       if (profile.memNo === profileData.memNo) {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_MY);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
                       } else {
-                        setRightTabType && setRightTabType(tabType.FAN_RANK_USER);
+                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
                       }
                     }}
                   >
@@ -720,8 +716,8 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <button
                     className="btn btn_gift"
                     onClick={() => {
-                      setRightTabType && setRightTabType(tabType.GIFT_DAL);
-                      setUserNickNm && setUserNickNm(profileData.nickNm);
+                      dispatch(setBroadcastCtxRightTabType(tabType.GIFT_DAL));
+                      dispatch(setBroadcastCtxUserNickName(profileData.nickNm));
                     }}
                   >
                     선물하기

@@ -113,6 +113,7 @@ export const SET_MAIL_BLOCK_USER 				= 'global/ctx/SET_MAIL_BLOCK_USER';
 export const SET_AGE_DATA 					    = 'global/ctx/SET_AGE_DATA';
 export const SET_AUTH_FORM_REF 					= 'global/ctx/SET_AUTH_FORM_REF';
 export const SET_USER_REPORT_INFO 			= 'global/ctx/SET_USER_REPORT_INFO';
+export const SET_BACK_EVENT_CALLBACK 		= 'global/ctx/SET_BACK_EVENT_CALLBACK';
 
 // ctx_reducer
 export const LAYER_STATUS_OPEN_RIGHT_SIDE_USER 			= 'global/ctx/LAYER_STATUS_OPEN_RIGHT_SIDE_USER';
@@ -257,6 +258,7 @@ export const setGlobalCtxMailBlockUser = createAction(SET_MAIL_BLOCK_USER)<any>(
 export const setGlobalCtxAgeData = createAction(SET_AGE_DATA)<any>();
 export const setGlobalCtxAuthFormRef = createAction(SET_AUTH_FORM_REF)<any>();
 export const setGlobalCtxUserReportInfo = createAction(SET_USER_REPORT_INFO)<any>();
+export const setGlobalCtxBackEventCallback = createAction(SET_BACK_EVENT_CALLBACK)<any>();
 
 export const setGlobalCtxLayerStatusOpenRightSideUser = createAction(LAYER_STATUS_OPEN_RIGHT_SIDE_USER)();
 export const setGlobalCtxLayerStatusOpenRightSideNav = createAction(LAYER_STATUS_OPEN_RIGHT_SIDE_NAV)();

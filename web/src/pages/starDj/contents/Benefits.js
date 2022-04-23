@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
 
 import Header from 'components/ui/header/Header'
 
@@ -7,7 +6,6 @@ import Bottom from '../component/Bottom'
 import './benefits.scss'
 
 
-import {Context} from "context";
 import { IMG_SERVER } from "constant/define";
 
 const StarDjBenefits = () => {
@@ -45,9 +43,6 @@ const StarDjBenefits = () => {
       benefitsName : "첫 선정 기념 달비굿즈 지급"
     },
   ]
-
-  let history = useHistory()
-  const context = useContext(Context) 
 
   // 페이지 시작
   return (

@@ -54,7 +54,7 @@ const NoticePage = () => {
   const listenClip = (clipNo) => {
     const clipParam = {
       clipNo: clipNo,
-      gtx: context,
+      globalState, dispatch,
       history
     }
     NewClipPlayerJoin(clipParam);

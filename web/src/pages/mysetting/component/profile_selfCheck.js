@@ -32,7 +32,9 @@ const ProfileSelfCheck = (props) => {
           본인인증
         </label>
         <input type="text" placeholder="본인인증을 해주세요." id="sign" className="writeInput" readOnly defaultValue={phone} />
-        <button type="button" className="requestBtn" onClick={() => authReq('5', globalState.authRef, dispatch)}>
+        <button type="button" className="requestBtn" onClick={() => {
+          authReq({code: '5', formTagRef: globalState.authRef, dispatch});
+        }}>
           본인인증
         </button>
       </div>

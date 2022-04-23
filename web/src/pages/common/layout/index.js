@@ -2,7 +2,6 @@
  *
  */
 //context
-import {Context} from 'context'
 import Gnb from 'pages/common/gnb'
 import Ip from 'pages/common/ip'
 import Message from 'pages/common/message'
@@ -24,17 +23,18 @@ import ReceiptPop from "pages/main/popup/ReceiptPop";
 import {useDispatch, useSelector} from "react-redux";
 import {Hybrid, isHybrid} from "context/hybrid";
 import {initReceipt, setReceipt} from "redux/actions/payStore";
+import {setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
 //
 const Layout = (props) => {
   const {children, webview} = props
 
-  const context = useContext(Context);
   const location = useLocation();
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const payStoreRdx = useSelector(({payStore})=> payStore);
   const history = useHistory();
   const playerCls = useMemo(() => {
-    return context.player || context.clipState ? 'player_show' : ''
+    return globalState.player || globalState.clipState ? 'player_show' : ''
   })
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
@@ -61,13 +61,13 @@ const Layout = (props) => {
   }, [noAppCheck])
 
   useEffect(() => {
-    context.action.updateMultiViewer({show: false})
+    dispatch(setGlobalCtxMultiViewer({show:false}))
   }, [location]);
 
   return (
     <>
       {/* Sticker */}
-      {context.sticker && <Sticker />}
+      {globalState.sticker && <Sticker />}
       {/* GNB */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
@@ -115,7 +115,7 @@ const Layout = (props) => {
       {/*  </>*/}
       {/*)}*/}
 
-      {context.multiViewer.show && <MultiImageViewer />}
+      {globalState.multiViewer.show && <MultiImageViewer />}
     </>
   )
 }

@@ -1,12 +1,13 @@
 import React, {useContext, useEffect, useMemo, useRef} from 'react';
 import {IMG_SERVER} from "context/config";
 import ListRow from "components/ui/listRow/ListRow";
-import {Context} from "context";
 import Utility from "components/lib/utility";
+import {useDispatch, useSelector} from "react-redux";
 
 const ListRowComponent = (props) => {
   const {type, item, isMyProfile, index, photoClick, openBlockReportPop, disableMoreButton, modifyEvent, deleteEvent } = props;
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const moreRef = useRef([]);
 
   /* 더보기 박스 열기 */
@@ -68,9 +69,9 @@ const ListRowComponent = (props) => {
         {disableMoreButton && <div className='moreBtn' onClick={() => moreBoxClick(index)}>
           <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
           <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-            {type !=='fanBoard' && (context.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
-            {(isMyProfile || context.profile.memNo === item.mem_no || (type==='feed' && context.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
-            {context.profile.memNo !== item.mem_no.toString() && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
+            {type !=='fanBoard' && (globalState.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
+            {(isMyProfile || globalState.profile.memNo === item.mem_no || (type==='feed' && globalState.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
+            {globalState.profile.memNo !== item.mem_no.toString() && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
           </div>
         </div>}
       </div>

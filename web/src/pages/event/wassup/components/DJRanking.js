@@ -1,18 +1,18 @@
 import React, {useState, useContext} from 'react';
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
-import {Context} from 'context'
 
 // global components
 import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 import RankList from '../../components/rankList/RankList'
 import Utility from "components/lib/utility";
+import {useDispatch, useSelector} from "react-redux";
 
 const RankingWrap = (props) => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const context = useContext(Context);
-  const {token} = context;
+  const {token} = globalState;
 
   return (
     <>

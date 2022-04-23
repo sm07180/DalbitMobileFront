@@ -125,6 +125,7 @@ export type GlobalCtxStateType = {
   gganbuTab: "" | "collect" | "betting"
   goToMoonTab: "" | "info" | "rank"
   walletData: WalletDataType
+  backEventCallback: any
 }
 
 export type WalletDataType = {
@@ -176,11 +177,13 @@ export type UserProfileType = {
   birth: string
   dalCnt: number
   byeolCnt: number
+  badgePartner: number
 }
 
 export type MessageType = {
   title?: string,
   type: '' | 'alert' | 'layerPop' | 'alert_no_close' | 'toast' | 'confirm' | 'confirm_admin'
+  buttonMsg?: string
   buttonText?:ButtonTextType
   msg?: string
   remsg?: string

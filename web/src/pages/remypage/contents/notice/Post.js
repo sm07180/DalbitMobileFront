@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef, useReducer, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // components
@@ -8,14 +7,16 @@ import moment from "moment";
 import './notice.scss'
 import TabBtn from "components/ui/tabBtn/TabBtn";
 import Header from "components/ui/header/Header";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Post = (props) => {
   const {onClick} = props
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
-  const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: 1, records: 20}); //페이지 스크롤
+  const [postPageInfo, setPostPageInfo] = useState({mem_no: globalState.profile.memNo, noticeType: 0, page: 1, records: 20}); //페이지 스크롤
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
   const isDesktop = useSelector((state)=> state.common.isDesktop)
 
@@ -52,7 +53,7 @@ const Post = (props) => {
         }
       } else {
         setPostListInfo({cnt: 0, list: [], totalPage: 0});
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -85,7 +86,7 @@ const Post = (props) => {
   };
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
     fetchData();
   }, [postPageInfo]);
 

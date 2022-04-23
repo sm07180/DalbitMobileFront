@@ -169,6 +169,7 @@ const initialState: BroadcastCtxStateType = {
   settingObj: null,
   soundVolume: 1,  //tts, sound Item 볼륨조절 0 ~ 1
   heartActive: false,
+  chatLimit: false
 };
 
 const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initialState, {

@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {RoomMake} from 'context/room'
 //context
-import {Context} from 'context'
 import {StoreLink} from 'context/link'
 // component
 import Header from '../component/header.js'
@@ -18,11 +17,11 @@ import StoreIcon from '../static/nav/ic_store_l_p.svg'
 import EventIcon from '../static/nav/ic_event_l_p.svg'
 import CSIcon from '../static/nav/ic_cs_l_p.svg'
 import {storeButtonEvent} from "components/ui/header/TitleButton";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export default (props) => {
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory();
   const memberRdx = useSelector((state)=> state.member);
   const payStoreRdx = useSelector(({payStore})=> payStore);
@@ -57,7 +56,7 @@ export default (props) => {
                 <NavBtnWrap
                   onClick={() => {
                     if (value == 'broadcast') {
-                      RoomMake(context)
+                      RoomMake({dispatch, globalState})
                     } else if (value == 'store') {
                       storeButtonEvent({history, memberRdx, payStoreRdx});
                       // StoreLink(context, history)

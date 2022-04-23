@@ -13,8 +13,8 @@ import Popup from 'components/ui/popup'
 import Common from "common";
 import Modal from "common/modal";
 import Alert from "common/alert";
-import {Context} from "context";
 import {route} from "express/lib/router";
+import {useSelector} from "react-redux";
 
 // import Main from 'pages/main'
 //----- dalla -----//
@@ -157,7 +157,8 @@ const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromot
 const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
 const Router = () => {
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   return (
     <React.Suspense
       fallback={
@@ -232,7 +233,7 @@ const Router = () => {
         <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
         <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
                render={({location, match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const targetMemNo = match.params.memNo
                  const searchData = location.search
                  if(myMemNo === targetMemNo) {
@@ -245,9 +246,9 @@ const Router = () => {
         {/*피드, 팬보드 등록*/}
         <Route exact path={"/profileWrite/:memNo/:type/:action"} main={ProfileContentsWrite}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const {memNo, type, action} = match.params;
-                 if(!context.token?.isLogin){
+                 if(!globalState.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if((type ==='feed' && myMemNo !== memNo) || action === 'modify'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
@@ -258,12 +259,12 @@ const Router = () => {
         {/*피드 수정 (팬보드 수정 삭제) */}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const {memNo, type, action} = match.params;
                  if(type==='fanBoard' && action==='modify'){
                    return <Redirect to={{ pathname: `/profile/${memNo}` }} />
                  }
-                 if(!context.token?.isLogin){
+                 if(!globalState.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if(action === 'write'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
@@ -276,7 +277,7 @@ const Router = () => {
                render={({ match}) => {
                  const {memNo, type, index} = match.params;
 
-                 if(!context.token?.isLogin){
+                 if(!globalState.token?.isLogin){
 
                    return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
                  } else {
@@ -351,7 +352,7 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
-        
+
         <Route exact path="/partnerDj" component={PartnerDj} />
         <Route exact path="/starDj" component={StarDj} />
         <Route exact path="/starDj/benefits" component={StarDjBenefits} />

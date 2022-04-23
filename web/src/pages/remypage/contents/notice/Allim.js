@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -9,10 +8,13 @@ import moment from "moment";
 import {RoomJoin} from "context/room";
 // components
 import './notice.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const Allim = (props) => {
-  const {alarmList, setAlarmList, handleClick} = props
-  const context = useContext(Context);
+  const {alarmList, setAlarmList, handleClick} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
 
   //요일 데이터 가공
@@ -26,7 +28,7 @@ const Allim = (props) => {
   };
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (

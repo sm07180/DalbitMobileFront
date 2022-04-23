@@ -4,16 +4,17 @@ import React, {useContext} from 'react'
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import NoResult from 'components/ui/noResult/NoResult'
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {playClip} from "pages/clip/components/clip_play_fn";
 import Api from "context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ClipSection = (props) => {
   const { profileData, clipData, isMyProfile, webview } = props;
-  const context = useContext(Context);
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const listenClip = (clipNo,) => {
     const clipParams = {
       memNo: profileData.memNo,
@@ -35,14 +36,14 @@ const ClipSection = (props) => {
         const clipParam = {
           clipNo,
           playList: data.list,
-          context,
+          globalState, dispatch,
           history,
           webview,
           playListInfoData
         }
         playClip(clipParam);
       } else {
-        context.action.alert({ msg: res.message })
+        dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
       }
     })
   }

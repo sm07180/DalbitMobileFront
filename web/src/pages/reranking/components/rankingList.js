@@ -8,21 +8,21 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {IMG_SERVER} from 'context/config'
 import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
 import {
   RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
 } from "common/audio/clip_func";
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
+import {useDispatch, useSelector} from "react-redux";
 // components
 // css
 
 export default withRouter((props) => {
   const {data, children, tab, topRankList} = props;
 
-  const context = useContext(Context);
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   return (
     <>
       {data.map((list, index) => {
@@ -48,7 +48,7 @@ export default withRouter((props) => {
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
-                  RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, history, list.nickNm);
+                  RoomValidateFromClipMemNo(list.roomNo, list.memNo, dispatch, globalState, history, list.nickNm);
                 }}>
                   <span className='equalizer'>
                     <Lottie
@@ -69,7 +69,7 @@ export default withRouter((props) => {
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();
                     RoomValidateFromListenerFollow({
-                      memNo:list.memNo, history, context, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
+                      memNo:list.memNo, history, globalState, dispatch, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
                     });
                   }}>
                     <span className='headset'>

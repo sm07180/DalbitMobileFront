@@ -11,16 +11,17 @@ import {
 } from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
 import {IMG_SERVER} from 'context/config'
-import {Context, GlobalContext} from "context";
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // global components
 
 const TopRanker = (props) => {
   const {data, rankSlct, rankType} = props
 
   const history = useHistory();
-  const context = useContext(Context);
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [popup, setPopup] = useState(false);
   const [rankSetting, setRankSetting] = useState();
 
@@ -58,14 +59,14 @@ const TopRanker = (props) => {
     };
     Api.postRankSetting(params).then((res) => {
       if (res.result === 'success') {
-        context.action.toast({msg: `FAN랭킹 참여 상태를 변경했습니다.`});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: `FAN랭킹 참여 상태를 변경했습니다.`}));
         fetchRankApply();
       }
     });
   };
 
   const clickRankSetting = () => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       callback: () => {
         fetchRankSetting(!rankSetting);
       },
@@ -73,7 +74,7 @@ const TopRanker = (props) => {
       나의 활동이 FAN랭킹에 반영되지 않습니다
        변경하시겠습니까?` : `지금부터 나의 활동이 FAN랭킹에 반영됩니다.
       변경하시겠습니까?`}`
-    });
+    }));
   };
 
   useEffect(() => {
@@ -83,7 +84,7 @@ const TopRanker = (props) => {
   return (
     <React.Fragment>
       <div className="topItems">
-        {context.token.isLogin && rankSlct === "FAN" &&
+        {globalState.token.isLogin && rankSlct === "FAN" &&
           <button className={`fanSettingBtn ${rankSetting ? 'active': ''}`} onClick={() => clickRankSetting()}>{`${rankSetting ? '랭킹 참여중' : '미참여중'}`}</button>
         }
         <span className='questionMark' onClick={() => setPopup(true)}></span>
@@ -155,7 +156,7 @@ const TopRanker = (props) => {
                               !data.listenRoomNo && data.roomNo &&
                               <div className='badgeLive' onClick={(e) => {
                                 e.stopPropagation();
-                                RoomValidateFromClipMemNo(data.roomNo, data.memNo, context, history, data.nickNm);
+                                RoomValidateFromClipMemNo(data.roomNo, data.memNo, dispatch, globalState, history, data.nickNm);
                               }}>
                                     <span className='equalizer'>
                                       <Lottie
@@ -175,7 +176,7 @@ const TopRanker = (props) => {
                                 e.stopPropagation();
 
                                 RoomValidateFromListenerFollow({
-                                  memNo:data.memNo, history, context, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+                                  memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
                                 });
                               }}>
                                     <span className='headset'>

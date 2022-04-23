@@ -4,14 +4,15 @@ import {isDesktop} from "lib/agent";
 import {IMG_SERVER} from "context/config";
 import Header from "components/ui/header/Header";
 import {useHistory} from 'react-router-dom';
-import {Context} from "context";
 
 import './selfAuthResult.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 // 법정대리인 동의 필요 안내페이지
 const ExchangeLegalAuth = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const context = useContext(Context)
 
   /**
    * authState
@@ -33,12 +34,12 @@ const ExchangeLegalAuth = () => {
          history.goBack();
         }
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
             goWalletExchange();
           }
-        })
+        }))
       }
     }
     fetchSelfAuth()
@@ -46,10 +47,10 @@ const ExchangeLegalAuth = () => {
 
   useEffect(() => {
     checkAuth();
-    context.action.updateSetBack(true);
-    context.action.updateBackFunction({name: 'selfauth'});
+    dispatch(setGlobalCtxBackState(true))
+    dispatch(setGlobalCtxBackFunction({name: 'selfauth'}))
     return () => {
-      context.action.updateSetBack(null);
+      dispatch(setGlobalCtxBackState(null))
     }
   }, []);
 
@@ -63,9 +64,9 @@ const ExchangeLegalAuth = () => {
     }
 
     if (myBirth > baseYear) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({type:'alert',
         msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-      })
+      }))
     }
 
     history.replace(`/legalauth`)

@@ -57,7 +57,7 @@ const CardList = (props) => {
                       <div className='listenertag' onClick={(e) => {
                         e.stopPropagation();
                         RoomValidateFromListenerFollow({
-                          memNo:list.memNo, history:locationStateHistory, context, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
+                          memNo:list.memNo, history:locationStateHistory, globalState, dispatch, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
                         });
                       }}>
                         <Lottie

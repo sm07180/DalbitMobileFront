@@ -6,13 +6,14 @@ import Header from 'components/ui/header/Header'
 
 import './infoOpen.scss'
 import API from "context/api";
-import Toast from "components/ui/toast/Toast";
-import {Context} from "context";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
 
 const InfoOpen = (props) => {
   const [checkState, setCheckState] = useState(false);
   const {settingData, setSettingData} = props;
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+
   const localOpen = [{path: -1, name: "방송 청취 정보 공개", value: 0}, {path: 1, name: "공개", value: 0}, {path: 0, name: "비공개", value: 0}]
 
   //토글 클릭시
@@ -41,7 +42,7 @@ const InfoOpen = (props) => {
       const res = await API.modifyBroadcastSetting({listenOpen: slctedVal})
       if(res.result === "success") {
         setSettingData({...settingData, listenOpen: slctedVal})
-        context.action.toast({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
       }
     }
   }

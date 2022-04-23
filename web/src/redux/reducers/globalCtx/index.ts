@@ -46,7 +46,8 @@ const initUserProfile = {
   age: 0,
   birth: '',
   dalCnt: 0,
-  byeolCnt: 0
+  byeolCnt: 0,
+  badgePartner: 0,
 }
 const initWalletData:WalletDataType = {
   walletType: '달 내역',
@@ -202,7 +203,8 @@ const initialState: GlobalCtxStateType = {
   gganbuTab: "collect",
   goToMoonTab: "info",
   walletData:initWalletData,
-  popup:[]
+  popup:[],
+  backEventCallback: null
 };
 
 

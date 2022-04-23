@@ -41,7 +41,7 @@ export type BroadcastCtxStateType = {
   settingObj: userBroadcastSettingType | null
   soundVolume: number
   heartActive: boolean
-
+  chatLimit: boolean
 }
 
 export type GiftStateType = {

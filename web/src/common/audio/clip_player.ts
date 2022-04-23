@@ -1,3 +1,9 @@
+import {
+  setGlobalCtxClipInfoAdd,
+  setGlobalCtxClipInfoEmpty,
+  setGlobalCtxClipPlayerEmpty
+} from "../../redux/actions/globalCtx";
+
 export class ClipPlayerHandler {
   public clipAudioTag?: HTMLAudioElement | null;
   public restart: () => void;
@@ -14,7 +20,6 @@ export class ClipPlayerHandler {
   public isPaused: boolean | undefined;
   public isLoop: boolean | undefined;
   private ended: () => void;
-  public globalAction: any | null;
   public globalState: any | null;
   public clipExit: () => void;
   public clipNoUpdate: (clipNo) => void;
@@ -23,15 +28,12 @@ export class ClipPlayerHandler {
   public save60seconds: number;
   private saveTimer: any;
   public initSave60seconds: () => void;
+  private readonly dispatch : any;
 
-  setGlobalAction(action: any) {
-    this.globalAction = action;
-  }
-  setGlobalState(state: any) {
-    this.globalState = state;
-  }
+  constructor({info, dispatch, globalState}) {
+    this.globalState = globalState;
+    this.dispatch = dispatch;
 
-  constructor(info: any) {
     this.clipNo = info.clipNo;
     this.clipAudioTag = document.createElement("audio");
     this.clipAudioTag.muted = false;
@@ -55,10 +57,9 @@ export class ClipPlayerHandler {
       this.clipAudioTag!.loop = false;
     };
     this.clipAudioTag.addEventListener("loadedmetadata", (e) => {});
-    this.globalAction = null;
 
     this.ended = () => {
-      this.globalAction.dispatchClipInfo({ type: "add", data: { isPaused: true, isSaved60seconds: false } });
+      this.dispatch(setGlobalCtxClipInfoAdd({ isPaused: true, isSaved60seconds: false }));
       clearInterval(this.saveTimer);
     };
     this.clipAudioTag.addEventListener("ended", this.ended);
@@ -68,13 +69,13 @@ export class ClipPlayerHandler {
       if (playPromise !== undefined) {
         playPromise
           .then((_) => {
-            this.globalAction.dispatchClipInfo({ type: "add", data: { isPaused: false, isSaved60seconds: false } });
+            this.dispatch(setGlobalCtxClipInfoAdd({ isPaused: false, isSaved60seconds: false }));
             if (this.save60seconds < 59) {
               clearInterval(this.saveTimer);
               this.saveTimer = setInterval(() => {
                 if (this.save60seconds >= 59) {
                   clearInterval(this.saveTimer);
-                  this.globalAction.dispatchClipInfo({ type: "add", data: { isSaved60seconds: true } });
+                  this.dispatch(setGlobalCtxClipInfoAdd({ isSaved60seconds: true }));
                 } else {
                   this.save60seconds = this.save60seconds + 1;
                 }
@@ -123,14 +124,14 @@ export class ClipPlayerHandler {
 
     this.stop = () => {
       this.clipAudioTag?.pause();
-      this.globalAction.dispatchClipInfo({ type: "add", data: { isPaused: true, isSaved60seconds: false } });
+      this.dispatch(setGlobalCtxClipInfoAdd({ isPaused: true, isSaved60seconds: false }));
       clearInterval(this.saveTimer);
     };
 
     this.clipExit = () => {
       this.stop();
-      this.globalAction.dispatchClipInfo({ type: "empty", data: {} });
-      this.globalAction.dispatchClipPlayer({ type: "empty", data: {} });
+      this.dispatch(setGlobalCtxClipInfoEmpty());
+      this.dispatch(setGlobalCtxClipPlayerEmpty());
       this.clipAudioTag = null;
       sessionStorage.removeItem("clip");
       clearInterval(this.saveTimer);
