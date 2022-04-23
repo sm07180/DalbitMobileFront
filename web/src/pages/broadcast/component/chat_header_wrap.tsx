@@ -637,7 +637,7 @@ export default function ChatHeaderWrap(prop: any) {
         <MoonComponent roomNo={roomNo} roomInfo={roomInfo} />
       </div>
       {/* 달라져스 버튼 & 애니메이션 영역 */}
-      {roomInfo?.stoneEventInfo.visible &&
+      {roomInfo?.stoneEventInfo && roomInfo?.stoneEventInfo.visible &&
         <DallagersTopSection roomNo={roomNo}/>
       }
 

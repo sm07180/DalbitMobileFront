@@ -34,6 +34,7 @@ export const SET_IS_TTS_PLAYING                     = 'broadcast/ctx/SET_IS_TTS_
 export const SET_SETTING_OBJECT                     = 'broadcast/ctx/SET_SETTING_OBJECT';
 export const SET_SOUND_VOLUME                       = 'broadcast/ctx/SET_SOUND_VOLUME';
 export const SET_HEART_ACTIVE                       = 'broadcast/ctx/SET_HEART_ACTIVE';
+export const SET_CHAT_LIMIT                         = 'broadcast/ctx/SET_CHAT_LIMIT';
 // ctx_reducer
 export const SET_ROOM_INFO_SETTING_UPDATE           = 'broadcast/ctx/SET_ROOM_INFO_SETTING_UPDATE';
 export const SET_ROOM_INFO_BOOSTER_ON               = 'broadcast/ctx/SET_ROOM_INFO_BOOSTER_ON';
@@ -84,6 +85,7 @@ export const setBroadcastCtxIsTtsPlaying = createAction(SET_IS_TTS_PLAYING)<bool
 export const setBroadcastCtxSettingObject = createAction(SET_SETTING_OBJECT)<userBroadcastSettingType | null>();
 export const setBroadcastCtxSoundVolume = createAction(SET_SOUND_VOLUME)<number>();
 export const setBroadcastCtxHeartActive = createAction(SET_HEART_ACTIVE)<boolean>();
+export const setBroadcastCtxChatLimit = createAction(SET_CHAT_LIMIT)<boolean>();
 
 export const setBroadcastCtxRoomInfoSettingUpdate = createAction(SET_ROOM_INFO_SETTING_UPDATE)<any>();
 export const setBroadcastCtxRoomInfoBoosterOn = createAction(SET_ROOM_INFO_BOOSTER_ON)();

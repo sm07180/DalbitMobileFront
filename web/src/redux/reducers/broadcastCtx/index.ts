@@ -263,6 +263,9 @@ const mailBox = createReducer<BroadcastCtxStateType, BroadcastCtxActions>(initia
   "broadcast/ctx/SET_HEART_ACTIVE": (state, {payload}) => {
     return {...state, heartActive: payload}
   },
+  "broadcast/ctx/SET_CHAT_LIMIT": (state, {payload}) => {
+    return {...state, chatLimit: payload}
+  },
   "broadcast/ctx/SET_ROOM_INFO_SETTING_UPDATE": (state, {payload}) => {
     return {...state, roomInfo: {...state.roomInfo, ...payload}};
   },

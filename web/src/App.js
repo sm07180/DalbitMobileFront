@@ -51,6 +51,7 @@ import {
   setGlobalCtxUpdateProfile,
   setGlobalCtxUpdateToken, setGlobalCtxUseMailbox
 } from "redux/actions/globalCtx";
+import {setBroadcastCtxRoomInfoReset} from "redux/actions/broadcastCtx";
 
 function setNativeClipInfo(isJsonString, dispatch) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -102,7 +103,7 @@ const baseSetting = async (dispatch, globalState) => {
   const broadcastData = sessionStorage.getItem("broadcast_data");
   if (broadcastData !== null) {
     const data = JSON.parse(broadcastData);
-    broadcastAction.dispatchRoomInfo({type: "reset", data: data});
+    dispatch(setBroadcastCtxRoomInfoReset(data));
   }
 }
 

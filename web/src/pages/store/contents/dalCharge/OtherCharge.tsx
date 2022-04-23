@@ -124,7 +124,7 @@ const OtherCharge = ()=>{
         ci: undefined,
       }
     }).then((response) => {
-      if (response.result === 'success') {
+      if (response && response.result === 'success') {
         if (payment.fetch === "pay_simple" || payment.fetch === "pay_letter" || payment.fetch === "pay_km") { //계좌 간편결제, 카카카오페이, 페이코, 티머니/캐시비
           if(isDesktop){
             if (response.data.hasOwnProperty("pcUrl") || response.data.hasOwnProperty("url")) {

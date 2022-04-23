@@ -3,7 +3,11 @@ import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import {NewClipPlayerJoin} from "../../../common/audio/clip_func";
-import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "../../../redux/actions/globalCtx";
+import {
+  setGlobalCtxClipPlayListTabAdd,
+  setGlobalCtxMessage,
+  setGlobalCtxUpdatePopup
+} from "../../../redux/actions/globalCtx";
 
 export const playClip = ({clipNo, playList, globalState, dispatch, history, playListInfoData}) => {
   if(clipNo) {
@@ -11,8 +15,7 @@ export const playClip = ({clipNo, playList, globalState, dispatch, history, play
     let playListInfo = playListInfoData ? playListInfoData : { type: 'setting' };
     localStorage.setItem("clipPlayListInfo", JSON.stringify(playListInfo));
 
-    context.globalAction.dispatchClipPlayListTab &&
-    context.globalAction.dispatchClipPlayListTab({type: 'add', data: playList});
+    dispatch(setGlobalCtxClipPlayListTabAdd(playList));
     sessionStorage.setItem("clipList", JSON.stringify(playList));
     NewClipPlayerJoin(clipParam);
   }
