@@ -369,7 +369,7 @@ export default function GNB() {
   }
 
   useEffect(() => {
-    if(isDesktop) {
+    if(isDesktop && context.token.isLogin) {
       fetchMypageNewCntData(context.profile.memNo);
     }
     return () => globalAction.setBroadClipDim!(false);
