@@ -202,7 +202,7 @@ export default (props) => {
               </div>
               <div className="myAcount__line">
                 <p>{profile.byeolCnt.toLocaleString()}</p>
-                <button className="exchange" onClick={() => history.push("/dal_exchange")}>
+                <button className="exchange" onClick={() => history.push("/wallet/exchange")}>
                   교환
                 </button>
               </div>
