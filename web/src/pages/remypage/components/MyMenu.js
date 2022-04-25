@@ -22,6 +22,9 @@ const MyMenu = (props) => {
           return (
             <div className={`myMenuList`} key={index} onClick={()=>{golink(list.path)}}>
               <span className={`myMenuName ${list.isNew ? "new" : ""}`}>{list.menuNm}</span>
+              {index === 1 &&
+                <span className="teamInfo">팀에 가입해보세요! <i></i></span>
+              }
               <span className='rightArrow'></span>
             </div>
           )

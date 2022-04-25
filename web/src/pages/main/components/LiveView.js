@@ -61,7 +61,7 @@ const LiveView = (props) => {
       {data && data.length > 0 ?
         <>
           {data.map((list,index) => {
-            //타임뱃지만 출력
+            //타임배지만 출력
             const timeBadge = list.liveBadgeList.filter((data)=> data?.text.indexOf('타임')>-1 );
             const timeRank = timeBadge[0]?.text;
             const cupidData = list.goodMem;

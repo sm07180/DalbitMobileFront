@@ -141,7 +141,7 @@ const TopSwiper = (props) => {
 }
 TopSwiper.defaultProps = {
   openShowSlide: () => {},
-  disabledBadge: false,  // 뱃지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
+  disabledBadge: false,  // 배지영역 사용안함 여부 [true: 사용 x, false : 사용 o ]
   swiperParam: {} // 스와이퍼 추가옵션이 필요한 경우
 }
 export default TopSwiper;

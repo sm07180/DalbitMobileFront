@@ -13,7 +13,7 @@
 #honor {
   @include flex($fd:column);
   width: 100%; min-height: calc(100vh - #{$GNB-HEIGHT});
-  // 뱃지 아이콘 mixin
+  // 배지 아이콘 mixin
   @mixin specialCnt {
     @include flex(center, center);
     min-width: 52px;
@@ -275,7 +275,7 @@
         width: 100%;
         padding: 18px;
         .userData {
-          @include flex(center, center); 
+          @include flex(center, center);
           width: 100%;
           overflow: hidden;
           .male {
@@ -372,7 +372,7 @@
           width: 100%;
         }
       }
-    }    
+    }
   }
   .starDjWrap {
     flex: 1;
@@ -433,7 +433,7 @@
           }
         }
       }
-      
+
       .userInfoWrap {
         flex: 1;
         @include flex(flex-start, flex-start, column);
@@ -474,7 +474,7 @@
             margin-bottom: 4px;
             &:last-child {
               margin-bottom: 0px;
-            }              
+            }
             .dataTitle {
               position: relative;
               @include flex(center);
@@ -496,7 +496,7 @@
             }
           }
         }
-      }      
+      }
     }
   }
 

@@ -291,6 +291,9 @@
                   background-color: #202020;
                 }
               }
+            }            
+            .reference {
+              @include font(13px, $Regular, #202020);
             }
           }
         }

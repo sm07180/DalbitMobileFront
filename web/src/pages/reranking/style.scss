@@ -66,7 +66,7 @@ $errorMsg : #FF1919;
   .cntTitle {
     width:100%;
     padding:0;
-    button {      
+    button {
       @include font(13px,$Regular,#303030);
     }
     .point {
@@ -354,6 +354,7 @@ $errorMsg : #FF1919;
         position: relative;
         flex: 1;
         @include flex(center,center,column);
+        cursor:pointer;
         &::after {
           content: "";
           @include position-top-right(10px);
@@ -367,13 +368,17 @@ $errorMsg : #FF1919;
           @include font(12px,600,#999);
         }
         .rankData {
-          margin-top: 10px;
+          margin-top: 4px;
+          margin-bottom: 8px;
           @include font(18px,900,#333);
           &::after {
             content: "위";
             @include font(13px,500,#666666);
             margin-left: 2px;
           }
+        }
+        .rankDaily {
+          @include font(12px,$Regular,#AAAAAA);
         }
       }
       .loginText {
@@ -484,20 +489,7 @@ $errorMsg : #FF1919;
           flex: none;
           @include flex(center, center);
           .badgeLive {
-            @include flex(center, center);
-            width:62px;height:28px;
-            background-color: #FFE9E9;
-            border-radius: 100px;
-            cursor: pointer;
-            .equalizer {
-              display: inline-block;
-              width: 12px;
-              margin-top: -2px;
-              margin-right: 4px;
-            }
-            .liveText {
-              @include font(12px, 900, #FF3C7B);
-            }
+            @include badgeLive;
           }
           .badgeListener {
             @include flex(center, center);

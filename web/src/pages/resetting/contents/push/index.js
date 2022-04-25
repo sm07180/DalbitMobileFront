@@ -35,7 +35,8 @@ const SettingPush = () => {
     {key: 'isReceive', value: 0, text: '알림받기 방송시작 알림', msg: '알림받기를 통한 방송시작<br>', path: false,
       callback: function () {},
       buttonText: '회원관리 바로가기'
-    }
+    },
+    {key: 'isTeam', value: 0, text: '팀 제도 알림', msg: '팀제도 관련 알림<br>', path: false}
   ])
 
   //알림 설정 조회

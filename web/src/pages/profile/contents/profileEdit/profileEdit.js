@@ -19,7 +19,7 @@ import PasswordChange from "pages/password";
 import {authReq} from "pages/self_auth";
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setSlidePopupClose, setSlidePopupOpen} from "redux/actions/common";
+import {setCommonPopupClose, setCommonPopupOpenData, setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
 import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
@@ -446,7 +446,7 @@ const ProfileEdit = () => {
             />
             }
 
-            {popup.commonPopup &&
+            {popup.slidePopup &&
             <PopSlide title="사진 순서 변경">
               <PhotoChange list={profileInfo?.profImgList}
                            confirm={imageSorting}/>

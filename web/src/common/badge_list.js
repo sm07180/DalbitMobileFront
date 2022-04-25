@@ -15,7 +15,7 @@ const BadgeList = (props) => {
               style={{
                 background: `linear-gradient(to right, ${startColor}, ${endColor}`
               }}>
-              {icon !== '' && <img src={icon} alt="뱃지아이콘" className="img" />}
+              {icon !== '' && <img src={icon} alt="배지아이콘" className="img" />}
               <span>{text}</span>
             </em>
           </React.Fragment>

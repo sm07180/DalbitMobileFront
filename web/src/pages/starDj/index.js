@@ -340,8 +340,8 @@ const StarDj = (props) => {
             </div>
             <div className='score'>
               <p><span>방송 점수 (25%) : </span><span>누적 방송 시간 (팬 방송 제외)</span></p>
-              <p><span>시청자 점수 (25%) : </span><span>평균 시청자 수</span></p>
-              <p><span>좋아요 점수 (25%) : </span><span>받은 좋아요 수<br/>(유료 부스터 포함,무료 제외)</span></p>
+              <p><span>시청자 점수 (25%) : </span><span>누적/평균 시청자 수</span></p>
+              <p><span>좋아요 점수 (25%) : </span><span>받은 좋아요 수 (유료 부스터포함)</span></p>
               <p><span>선물 점수 (25%) : </span><span>받은 선물 수 (룰렛 포함)</span></p>
             </div>
             <div className='referenceWrap'>
@@ -356,11 +356,20 @@ const StarDj = (props) => {
               <ul className='referenceList'>
                 <li>1위 : 1.5점 / 2위 : 0.5점 / 3위 : 0.3점</li>
               </ul>
+              <p className='reference'>※ 최대 10점까지만 반영</p>
             </div>
             <div className='referenceWrap'>
-              <span className='referenceTitle'>기획 방송 가산점</span>
+              <span className='referenceTitle'>운영자 평가 가산점</span>
               <ul className='referenceList'>
-                <li>데이터 집계 기간 내 진행한 기획 방송을 통해 운영자 가산점 반영</li>
+                <li>데이터 집계 기간 내 진행한 기획방송이나 기본적인 방송 퀄리티를 평가한 운영자 가산점 반영</li>
+              </ul>
+            </div>
+            <div className='referenceWrap'>
+              <span className='referenceTitle'>조건 상세 설명</span>
+              <ul className='referenceList'>
+                <li>누적 방송 시간은 하루 최대 4시간만 반영.</li>
+                <li>무료 부스터는 좋아요 점수로 반영되지 않음.</li>
+                <li>선물은 방송방 내에서 받은 선물만 반영.</li>
               </ul>
             </div>
           </div>

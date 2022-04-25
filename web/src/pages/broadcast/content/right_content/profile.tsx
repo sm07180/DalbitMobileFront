@@ -111,6 +111,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
         commonBadgeList: data.commonBadgeList,
         profImgList: data.profImgList,
         isMailboxOn: data.isMailboxOn,
+        teamInfo: data.teamInfo,
       });
       dispatch(setBroadcastCtxIsFan(data.isFan));
     } else {
@@ -399,13 +400,22 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
     }
   }, [profileData]);
 
+  // 팀 상세페이지 이동
+  const reqTeamJoin = (e) => {
+    const { pageLink } = e.currentTarget.dataset;
+
+    if (pageLink !== undefined) {
+      history.push(pageLink);
+    }
+  };
+
   useEffect(() => {
     fetchProfileData();
   }, [broadcastState.userMemNo, broadcastState.roomInfo]);
 
   useEffect(() => {
     if (profileData !== null) {
-      /* 좌측 프로필 탭 - 스와이퍼 뱃지 리스트의 text값이 ''이면 제외 */
+      /* 좌측 프로필 탭 - 스와이퍼 배지 리스트의 text값이 ''이면 제외 */
       setBadgeList(profileData.commonBadgeList.concat([]).filter((v) => v?.text !== ''));
       let expCal = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
       let expPerc = Math.floor(((profileData.exp - profileData.expBegin) / (profileData.expNext - profileData.expBegin)) * 100);
@@ -553,123 +563,139 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                 )}
               </div>
 
-              {profileData.fanRank && profileData.fanRank.length > 0 ? (
-                <div className="profile__rankingList">
-                  <button
-                    className="rankingList__linkBtn"
-                    onClick={() => {
-                      if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
-                      } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
-                      }
-                    }}
-                  >
-                    팬랭킹
-                  </button>
-                  {/* Ranking Maps */}
-                  {profileData.fanRank.map((rankItem, idx) => {
-                    const { memNo, profImg } = rankItem;
-                    return (
-                      <div
-                        key={idx + "rankList"}
-                        className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
-                        onClick={() => {
-                          viewProfile(memNo);
-                        }}
-                      >
-                        <img src={profImg.thumb62x62} className="rankingList__item--img" alt={`rankProfileImg` + idx} />
-                      </div>
-                    );
-                  })}
-                  {globalState.baseData.memNo !== profileData.memNo && (
-                    <button
-                      className="rankingList__goFanboardBtn"
-                      onClick={() => history.push(`/profile/${profileData.memNo}?tab=1`)}
-                    />
-                  )}
-                </div>
-              ) : (
-                <div className="profile__rankingList">
-                  <button
-                    className="rankingList__linkBtn"
-                    onClick={() => {
-                      if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
-                      } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
-                      }
-                    }}
-                  >
-                    팬랭킹
-                  </button>
-                  {/*Default Ranking Maps */}
-                  {defalutRank.map((defalutRankItem, idx) => {
-                    return (
-                      <div
-                        key={idx + "defalutRankList"}
-                        className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
-                      >
-                        <img
-                          src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
-                          className="rankingList__item--img"
-                          alt={`defalutrankProfileImg` + idx}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+              <div className="profile__wrapper">
+                {/* 팀명칭 리스트 */}
+                {profileData.teamInfo !== undefined &&
+                  <div className="profile__rankingList" data-page-link={profileData.teamInfo.pageLink} onClick={reqTeamJoin}>
+                    <div className="teamSymbol">
+                      <img src={`${profileData.teamInfo.backgroundUrl}`} alt="배경" />
+                      <img src={`${profileData.teamInfo.borderUrl}`} alt="테두리" />
+                      <img src={`${profileData.teamInfo.medalUrl}`} alt="메달" />
+                    </div>
+                    <div className="teamName">{profileData.teamInfo.teamName}</div>
+                  </div>
+                }
 
-              {/* 큐피트 영역 */}
-              {profileData.cupidNickNm === "" ? (
-                <div className="profile__rankingList profileCupid">
-                  <button
-                    className="rankingList__linkBtn"
-                    onClick={() => {
-                      if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
-                      } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
-                      }
-                    }}
-                  >
-                    CUPID
-                  </button>
-                  <div className={`rankingList__item `}>
-                    <img
-                      src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
-                      className="rankingList__item--img"
-                      alt={`defalutrankProfileImg`}
-                    />
+                {/* 팬랭킹 리스트 */}
+                {profileData.fanRank && profileData.fanRank.length > 0 ? (
+                  <div className="profile__rankingList">
+                    <button
+                      className="rankingList__linkBtn"
+                      onClick={() => {
+                        if (profile.memNo === profileData.memNo) {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        } else {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        }
+                      }}
+                    >
+                      팬랭킹
+                    </button>
+                    {/* Ranking Maps */}
+                    {profileData.fanRank.map((rankItem, idx) => {
+                      const { memNo, profImg } = rankItem;
+                      return (
+                        <div
+                          key={idx + "rankList"}
+                          className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
+                          onClick={() => {
+                            viewProfile(memNo);
+                          }}
+                        >
+                          <img src={profImg.thumb62x62} className="rankingList__item--img" alt={`rankProfileImg` + idx} />
+                        </div>
+                      );
+                    })}
+                    {globalState.baseData.memNo !== profileData.memNo && (
+                      <button
+                        className="rankingList__goFanboardBtn"
+                        onClick={() => history.push(`/profile/${profileData.memNo}?tab=1`)}
+                      />
+                    )}
                   </div>
-                  <span className="rankingList__warnTxt">(좋아요 보낸 회원없음)</span>
-                </div>
-              ) : (
-                <div className="profile__rankingList profileCupid">
-                  <button
-                    className="rankingList__linkBtn"
-                    onClick={() => {
-                      if (profile.memNo === profileData.memNo) {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
-                      } else {
-                        dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
-                      }
-                    }}
-                  >
-                    CUPID
-                  </button>
-                  <div
-                    className={`rankingList__item`}
-                    onClick={() => {
-                      viewProfile(profileData.cupidMemNo);
-                    }}
-                  >
-                    <img src={profileData.cupidProfImg.thumb62x62} className="rankingList__item--img" alt={`cupidDefaultImg`} />
+                ) : (
+                  <div className="profile__rankingList">
+                    <button
+                      className="rankingList__linkBtn"
+                      onClick={() => {
+                        if (profile.memNo === profileData.memNo) {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        } else {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        }
+                      }}
+                    >
+                      팬랭킹
+                    </button>
+                    {/*Default Ranking Maps */}
+                    {defalutRank.map((defalutRankItem, idx) => {
+                      return (
+                        <div
+                          key={idx + "defalutRankList"}
+                          className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
+                        >
+                          <img
+                            src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                            className="rankingList__item--img"
+                            alt={`defalutrankProfileImg` + idx}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
-                  <span className="rankingList__warnTxt">{profileData.cupidNickNm}</span>
-                </div>
-              )}
+                )}
+
+                {/* 큐피트 영역 */}
+                {profileData.cupidNickNm === "" ? (
+                  <div className="profile__rankingList">
+                    <button
+                      className="rankingList__linkBtn"
+                      onClick={() => {
+                        if (profile.memNo === profileData.memNo) {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        } else {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        }
+                      }}
+                    >
+                      CUPID
+                    </button>
+                    <div className={`rankingList__item `}>
+                      <img
+                        src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                        className="rankingList__item--img"
+                        alt={`defalutrankProfileImg`}
+                      />
+                    </div>
+                    <span className="rankingList__warnTxt">(좋아요 보낸 회원없음)</span>
+                  </div>
+                ) : (
+                  <div className="profile__rankingList">
+                    <button
+                      className="rankingList__linkBtn"
+                      onClick={() => {
+                        if (profile.memNo === profileData.memNo) {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_MY));
+                        } else {
+                          dispatch(setBroadcastCtxRightTabType(tabType.FAN_RANK_USER));
+                        }
+                      }}
+                    >
+                      CUPID
+                    </button>
+                    <div
+                      className={`rankingList__item`}
+                      onClick={() => {
+                        viewProfile(profileData.cupidMemNo);
+                      }}
+                    >
+                      <img src={profileData.cupidProfImg.thumb62x62} className="rankingList__item--img" alt={`cupidDefaultImg`} />
+                    </div>
+                    <span className="rankingList__warnTxt">{profileData.cupidNickNm}</span>
+                  </div>
+                )}
+              </div>
+
               <div className="profile__count">
                 {createCountList("fan", profileData.fanCnt)}
                 {createCountList("star", profileData.starCnt)}
