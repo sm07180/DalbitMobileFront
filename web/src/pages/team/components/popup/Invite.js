@@ -56,7 +56,7 @@ const InvitePop = (props) => {
             let nickName = tabType ==="스타" ? data.mem_nick_star : data.mem_nick_fan
             let memNo = tabType ==="스타" ? data.mem_no_star : data.mem_no_fan
             let reqYn = data.team_req_yn
-            let photoServer = "https://devphoto.dalbitlive.com";
+            let photoServer = "https://photo.dalbitlive.com";
             let photoUrl ="";
             if(tabType ==="스타"){
               photoUrl =  data.image_profile_star &&  data.image_profile_star   

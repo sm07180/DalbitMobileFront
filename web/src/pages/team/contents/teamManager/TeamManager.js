@@ -256,7 +256,7 @@ const TeamManager = (props) => {
             props.data.teamMemList.length >0 &&
             props.data.teamMemList.map((data,index)=>{
               const photoUrl = data.tm_image_profile;
-              const photoServer = "https://devphoto.dalbitlive.com";
+              const photoServer = "https://photo.dalbitlive.com";
               const photo = photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120");
               return(
                 <ListRow photo={photo} key={index}>
