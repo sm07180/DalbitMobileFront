@@ -160,6 +160,9 @@
     margin-top:16px;
     margin-bottom:12px;
     .listRow {
+      .photo {
+        cursor: pointer;
+      }
       &.invite {
         cursor: pointer;
         .photo {
@@ -255,6 +258,7 @@
     pointer-events: none;
     .submitBtn {
       width:100%;
+      box-shadow: 0 1px 4px rgba(0,0,0,.16);
       pointer-events:initial;
       &.disabled {
         opacity: 1;

@@ -19,5 +19,12 @@
         object-fit: cover;
       }
     }
+    .listContent {
+      .listItem {
+        .nick {
+          margin-left:0 !important;
+        }
+      }
+    }
   }
 }

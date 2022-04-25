@@ -83,7 +83,7 @@ const SecessionPop = (props) => {
       </div>
       <div className="buttonGroup">
         <button onClick={closeSlide}>취소</button>
-        <button onClick={()=>teamDel()}>다음</button>
+        <button onClick={()=>{teamDel()}}>다음</button>
       </div>
     </section>
   )

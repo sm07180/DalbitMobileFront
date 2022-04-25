@@ -74,6 +74,9 @@
       + .inputItems {
         margin-top:16px;
       }
+      input:disabled {
+        color:#999;
+      }
     }
     p.count {
       text-align:right;
@@ -198,6 +201,7 @@
     padding: 12px 16px 30px;
     .submitBtn {
       width:100%;
+      box-shadow: 0 1px 4px rgba(0,0,0,.16);
     }
   }
 }

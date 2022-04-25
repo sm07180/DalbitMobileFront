@@ -148,7 +148,7 @@ const TotalInfo = (props) => {
           <div className="photoGroup">
             {data.fanRank.map((item, index) => {
               return (
-                <div className="photo" key={index} onClick={() => goProfile(item.memNo)}>
+                <div className="photo cursor" key={index} onClick={() => goProfile(item.memNo)}>
                   <img src={item.profImg.thumb62x62} alt="" />
                   <span className='badge'>{index+1}</span>
                 </div>

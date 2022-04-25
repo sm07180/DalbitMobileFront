@@ -3,6 +3,21 @@
 #popSlide {
   // 팬 스타 좋아요 보기
   .invitePop {
+    h3 {
+      @include flex(center,center,column);
+      height:54px;
+      line-height:auto;
+      box-sizing: content-box;
+      span {
+        line-height: 20px;
+        @include font(16px,$Bold,#202020);
+      }
+      small {
+        margin-top:2px;
+        line-height: 16px;
+        @include font(13px,$Regular,#666);
+      }
+    }
     @include flex($fd:column);
     width:100%;
     > .tabmenu {
