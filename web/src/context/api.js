@@ -4291,13 +4291,13 @@ export default class API {
   }
 
   // 사연 보관함 조회
-  static getStoryBoxList = async (pageNo, pagePerCnt) => {
+  static getStoryBoxList = async ({pageNo, pagePerCnt}) => {
     return ajax({url: '/mypage/story/history', method: 'GET', reqBody: true, params: {pageNo:pageNo, pagePerCnt:pagePerCnt}})
   }
 
   // 사연 보관함 삭제
-  static getStoryBoxDel = async (roomNo, storyIdx) => {
-    return ajax({url: '/broad/story', method: 'DELETE', reqBody: true, params: {roomNo:roomNo, storyIdx:storyIdx}})
+  static getStoryBoxDel = async ({roomNo, storyIdx}) => {
+    return ajax({url: '/broad/story', method: 'DELETE', reqBody: true, params: {roomNo:`${roomNo}`, storyIdx:storyIdx}})
   }
 }
 

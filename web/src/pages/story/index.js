@@ -15,46 +15,62 @@ export default () => {
   const history = useHistory()
   const globalCtx = useContext(Context)
 
-  const [currentPage, setCurrentPage] = useState(0);
-  const [storyList, setStoryList] = useState(0);
+  const [storyList, setStoryList] = useState([]);
+  const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
 
   let totalPage = 1
-  let pagePerCnt = 20
   // 깐부 랭킹 리스트
   const getList = useCallback(async () => {
     const param = {
-      pageNo: currentPage,
-      pagePerCnt: pagePerCnt
+      pageNo: storyPageInfo.pageNo,
+      pagePerCnt: storyPageInfo.pagePerCnt
     }
     const {data, result} = await Api.getStoryBoxList(param)
-    if (result  === 'SUCCESS') {
-      totalPage = Math.ceil(data.list.length / pagePerCnt)
-      if (currentPage > 1) {
+    if (result  === 'success') {
+      totalPage = Math.ceil(data.paing.total / storyPageInfo.pagePerCnt)
+      if (storyPageInfo.pageNo > 1) {
         setStoryList(storyList.concat(data.list))
       } else {
         setStoryList(data.list)
       }
     } else {
-      console.log(result)
     }
-  }, [currentPage])
+  }, [storyPageInfo.pageNo])
+
+  function delList(roomNo, storyIdx) {
+    Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
+      const {result, message} = res
+      if (result === 'success') {
+        const filtered = storyList.filter((story) => story.storyIdx !== storyIdx)
+        setStoryList(filtered)
+        setTotalCnt(totalCnt - 1)
+      } else {
+        globalCtx.action.alert({title: 'Error', msg: message})
+      }
+    })
+  }
+
+  const delAction = (roomNo, storyIdx) => {
+    delList(roomNo, storyIdx);
+  }
 
   const scrollEvtHdr = () => {
-    if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
+    if (totalPage > storyPageInfo.pageNo && Utility.isHitBottom()) {
+      console.log("132123");
+      setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1} )
     }
   }
+
   useLayoutEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [currentPage])
+  }, [storyPageInfo.pageNo])
 
   useEffect(() => {
-    if (currentPage > 0) getList()
-  }, [currentPage])
+    if (storyPageInfo.pageNo > 1) getList()
+  }, [storyPageInfo.pageNo])
 
   const goLink = (memNo) => {    
     history.push(`/profile/${memNo}`)
@@ -81,17 +97,17 @@ export default () => {
                   storyList.map((data, index) => {
                     return (
                       <div className='storyList' key={index}>
-                        <div className='thumbnail' onClick={() => {goLink(`${data.memNo}`)}}>
-                          <img src={data.profImg} alt=""/>
+                        <div className='thumbnail' onClick={() => {goLink(`${data.writer_mem_id}`)}}>
+                          <img src={data.writer_mem_profile} alt=""/>
                         </div>
                         <div className='listContent'>
                           <div className='dataInfo'>
                             <div className='infoWrap'>
-                              <div className='userNick' onClick={() => {goLink(`${data.memNo}`)}}>{data.nickNm}</div>
-                              <div className='writeTime'>{moment(data.writeDt).format('YYYY.MM.DD hh:mm')}</div>
+                              <div className='userNick' onClick={() => {goLink(`${data.writer_mem_id}`)}}>{data.writer_mem_nick}</div>
+                              <div className='writeTime'>{moment(data.write_date).format('YYYY.MM.DD hh:mm')}</div>
                             </div>
                             <div className='delBtnWrap'>
-                              <span className='delBtn'>삭제</span>
+                              <span className='delBtn' onClick={() => {delAction(data.room_no, data.writer_no)}}>삭제</span>
                             </div>
                           </div>
                           <div className='messageWrap'>

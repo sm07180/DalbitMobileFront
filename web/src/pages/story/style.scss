@@ -79,6 +79,7 @@
             @include font(13px, $Regular, #202020);
             line-height: 18px;
             white-space: pre-wrap;
+            word-break: break-all;
           }
         }
       }
