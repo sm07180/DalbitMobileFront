@@ -3,7 +3,7 @@ import React, {useState, useContext, useEffect} from 'react';
 // css
 import './popslide.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupClose, setSlidePopupClose} from "redux/actions/common";
+import {setCommonPopupClose, setSlidePopupClose, setSlideReset, setSlideClose} from "redux/actions/common";
 import {Context} from "context";
 import {isAndroid} from "context/hybrid";
 
@@ -11,8 +11,8 @@ let slidePopTimeout;
 
 /* 팝업 닫기 */
 export const closePopup = (dispatch) => {
+  dispatch(setSlideClose());
   slidePopTimeout = setTimeout(() => {
-    dispatch(setSlidePopupClose());
     dispatch(setCommonPopupClose());
   }, 400);
 };
@@ -22,8 +22,6 @@ const PopSlide = (props) => {
   const context = useContext(Context);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
-
-  const [popState, setPopState] = useState(popupState.slidePopup);
 
   const closePopupDim = (e) => {
     const target = e.target;
@@ -36,7 +34,6 @@ const PopSlide = (props) => {
       if(closeCallback) {
         closeCallback();
       }
-      setPopState(!popState);
       closePopup(dispatch);
     }
   };
@@ -50,6 +47,7 @@ const PopSlide = (props) => {
     return () => {
       document.body.classList.remove('overflowHidden');
       dispatch(setCommonPopupClose());
+      dispatch(setSlideReset());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {
         if(context.backFunction.name.length === 1) {
@@ -62,7 +60,7 @@ const PopSlide = (props) => {
 
   return (
     <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>
-      <div className={`slideLayer ${popState ? "slideUp" : "slideDown"} ${popSlide ? "slideUp" : ""}`}>
+      <div className={`slideLayer ${popupState.slideAction === false ? "slideDown" : "slideUp"}`}>
         {title && <h3>{title}</h3>}
         {children}
       </div>

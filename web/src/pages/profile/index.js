@@ -41,7 +41,7 @@ import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setSlidePopupOpen, setSlidePopupClose, setIsWebView} from "redux/actions/common";
+import {setSlidePopupOpen, setSlidePopupClose, setIsWebView, setSlideClose} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
 
@@ -426,7 +426,7 @@ const ProfilePage = () => {
 
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
-    dispatch(setSlidePopupClose());
+    closePopup(dispatch);
   }
 
   /* 헤더 더보기 버튼 클릭 */
