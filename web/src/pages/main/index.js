@@ -403,7 +403,7 @@ const MainPage = () => {
   }
 
   const topRankTabChange = (value) => {
-    if (value !== undefined) {
+    if (value !== undefined && value !== topRankType) {
       setRankingList([]);
       setTopRankType(value);
     }
