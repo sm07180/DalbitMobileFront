@@ -21,7 +21,6 @@ const SwiperList = (props) => {
   const context = useContext(Context);
   const history = useHistory();
   const common = useSelector(state => state.common);
-  const memberRdx = useSelector(({member})=> member);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   let locationStateHistory = useHistory();
 
