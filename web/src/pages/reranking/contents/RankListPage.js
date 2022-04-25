@@ -35,6 +35,8 @@ const rankTypeCode = {
   '연간': 4
 };
 
+let loading = false;
+
 const RankListPage = (props) => {
 
   const history = useHistory();
@@ -48,7 +50,7 @@ const RankListPage = (props) => {
   const [ tabType, setTabType ] = useState(params.type || 'DJ');
   const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
   const [ topRankInfo, setTopRankInfo ] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
-
+  
   // 혜택 페이지 이동
   const goRankReward = () => {
     history.push("/rankBenefit");
@@ -93,6 +95,7 @@ const RankListPage = (props) => {
     }
 
     setTopRankInfo(topRankList.reverse());
+    loading = false;
   };
 
   // 이전 회차 날짜 파라미터 구하기
@@ -166,7 +169,6 @@ const RankListPage = (props) => {
 
     if (realRank.code === 'C001') {
       const { data } = realRank;
-      console.log('ㅅㅂㅈㄷㅂㄷ');
       topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
       setRankInfo({ ...data, list: data.list.slice(3) });
     }
@@ -179,6 +181,7 @@ const RankListPage = (props) => {
     }
 
     setTopRankInfo(topRankList.reverse());
+    loading = false;
   }
 
   // TEAM 랭킹 정보 가져오기
@@ -206,6 +209,7 @@ const RankListPage = (props) => {
     }
 
     setTopRankInfo(topRankList.reverse());
+    loading = false;
   }
 
   // 상단 랭킹 저보 빈값 넣어주는 함수
@@ -220,7 +224,10 @@ const RankListPage = (props) => {
   const changeTab = (e) => {
     const { targetTab } = e.currentTarget.dataset;
 
-    if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab)) {
+    console.log('loading value', loading);
+
+    if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab) && !loading) {
+      loading = true;
       history.replace(`/rankDetail/${targetTab}`); // 뒤로가기 했을경우를 대비해 링크만 바꿔준다.
       setRankInfo({list: [], paging: {total: 0}});
       setTopRankInfo([]);
@@ -232,7 +239,8 @@ const RankListPage = (props) => {
   const subTabClick = (e) => {
     const { subMenu } = e.currentTarget.dataset;
 
-    if (subMenu !== undefined) {
+    if (subMenu !== undefined && !loading) {
+      loading = true;
       setRankInfo({list: [], paging: {total: 0}});
       setTopRankInfo([]);
       setBreakNo(47);
