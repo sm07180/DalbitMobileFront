@@ -446,7 +446,7 @@ const TeamDetail = (props) => {
           {teamMemList.length >0 &&
             teamMemList.map((data,index)=>{
               let photoUrl = data.tm_image_profile
-              let photoServer = "https://devphoto.dalbitlive.com";
+              let photoServer = "https://photo.dalbitlive.com";
               return(
                 <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">
@@ -481,7 +481,7 @@ const TeamDetail = (props) => {
           <section className="joinList">
             {teamRequestSel.length > 0 && teamRequestSel.map((data,index)=>{
               let photoUrl = data.tm_image_profile
-              let photoServer = "https://devphoto.dalbitlive.com";
+              let photoServer = "https://photo.dalbitlive.com";
               return(
                 <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">

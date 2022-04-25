@@ -62,7 +62,7 @@ const SecessionPop = (props) => {
         {teamMemList.length > 0 && teamMemList.map((data,index)=>{
           let tmemNo = data.tm_mem_no
           let photoUrl = data.tm_image_profile
-          let photoServer = "https://devphoto.dalbitlive.com";
+          let photoServer = "https://photo.dalbitlive.com";
           return(
             <label className="listRow" key={index}>
               <div className="photo">
