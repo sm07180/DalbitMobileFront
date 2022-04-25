@@ -45,7 +45,7 @@ const RankListPage = (props) => {
   const params = useParams();
   // rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
   // rankSlct => 1 - DJ, 2 - FAN, 3 - CUPID, 4 - TEAM
-  const [ pageInfo, setPageInfo ] = useState({ rankSlct: (rankSlctCode[params.type] || 1), rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1), page: 1, records: 500 });
+  const [ pageInfo, setPageInfo ] = useState({ rankSlct: (rankSlctCode[params.type] || 1), rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1), page: 1, records: 150 });
   const [ breakNo, setBreakNo ] = useState(47); // 페이징 처리용 state
   const [ tabType, setTabType ] = useState(params.type || 'DJ');
   const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
