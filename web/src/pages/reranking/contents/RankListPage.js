@@ -35,6 +35,8 @@ const rankTypeCode = {
   '연간': 4
 };
 
+let loading = false;
+
 const RankListPage = (props) => {
 
   const history = useHistory();
@@ -43,12 +45,12 @@ const RankListPage = (props) => {
   const params = useParams();
   // rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
   // rankSlct => 1 - DJ, 2 - FAN, 3 - CUPID, 4 - TEAM
-  const [ pageInfo, setPageInfo ] = useState({ rankSlct: (rankSlctCode[params.type] || 1), rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1), page: 1, records: 500 });
+  const [ pageInfo, setPageInfo ] = useState({ rankSlct: (rankSlctCode[params.type] || 1), rankType: (rankTypeCode[tabListInfo[params.type][0]] || 1), page: 1, records: 150 });
   const [ breakNo, setBreakNo ] = useState(47); // 페이징 처리용 state
   const [ tabType, setTabType ] = useState(params.type || 'DJ');
   const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
   const [ topRankInfo, setTopRankInfo ] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
-
+  
   // 혜택 페이지 이동
   const goRankReward = () => {
     history.push("/rankBenefit");
@@ -59,13 +61,13 @@ const RankListPage = (props) => {
     let result = '';
     // 1회차일 경우, 어제 3회차
     if (moment().hour() < 10) {
-      result = moment().subtract(1, 'days').hour('19').minute('00').second('00').format('yyyy-MM-DD HH:mm:ss');
+      result = moment().subtract(1, 'days').hour('19').minute('00').second('00').format('YYYY-MM-DD HH:mm:ss');
     // 2회차일 경우, 오늘 1회차
     }  else if (moment().hour() >= 10 && moment().hour() < 19) {
-      result = moment().hour('00').minute('00').second('00').format('yyyy-MM-DD HH:mm:ss');
+      result = moment().hour('00').minute('00').second('00').format('YYYY-MM-DD HH:mm:ss');
     // 3회차일 경우, 오늘 2회차
     } else {
-      result = moment().hour('10').minute('00').second('00').format('yyyy-MM-DD HH:mm:ss');
+      result = moment().hour('10').minute('00').second('00').format('YYYY-MM-DD HH:mm:ss');
     }
 
     return result;
@@ -73,7 +75,7 @@ const RankListPage = (props) => {
 
   // DJ 타임 랭킹 가져오기
   const getDjTimeRank = async () => {
-    let today = moment().format('yyyy-MM-DD HH:mm:ss');
+    let today = moment().format('YYYY-MM-DD HH:mm:ss');
     let preDate = timeCheck();
     let topRankList = []; // 상단 탑랭킹 정보
     const realTimeRank = await Api.getRankTimeList({ rankSlct: rankSlctCode[tabType], ...pageInfo, rankType: 1, rankingDate: today }); // 실시간 랭킹 정보
@@ -93,6 +95,7 @@ const RankListPage = (props) => {
     }
 
     setTopRankInfo(topRankList.reverse());
+    loading = false;
   };
 
   // 이전 회차 날짜 파라미터 구하기
@@ -104,19 +107,19 @@ const RankListPage = (props) => {
     //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
     switch (rankType) {
       case 1:
-        result = moment().subtract(1, 'd').format('yyyy-MM-DD'); // 어제 날짜
+        result = moment().subtract(1, 'd').format('YYYY-MM-DD'); // 어제 날짜
         break;
       case 2:
-        result = moment().subtract(7, 'd').day(1).format('yyyy-MM-DD'); // 지난주 월요일
+        result = moment().subtract(7, 'd').day(1).format('YYYY-MM-DD'); // 지난주 월요일
         break;
       case 3:
-        result = moment().subtract(1, 'months').date(1).format('yyyy-MM-DD'); // 지난달 1일
+        result = moment().subtract(1, 'months').date(1).format('YYYY-MM-DD'); // 지난달 1일
         break;
       case 4:
-        result = moment().subtract(1, 'y').month(0).date(1).format('yyyy-MM-DD'); // 지난년 1월 1일
+        result = moment().subtract(1, 'y').month(0).date(1).format('YYYY-MM-DD'); // 지난년 1월 1일
         break;
       default:
-        result = moment().subtract(1, 'd').format('yyyy-MM-DD'); // 어제 날짜
+        result = moment().subtract(1, 'd').format('YYYY-MM-DD'); // 어제 날짜
         break;
     }
 
@@ -132,20 +135,19 @@ const RankListPage = (props) => {
     //rankType => 0 - 타임, 1 - 일간, 2- 주간, 3- 월간, 4 - 연간
     switch (type) {
       case 1:
-        result = moment().format('yyyy-MM-DD'); // 오늘 날짜
+        result = moment().format('YYYY-MM-DD'); // 오늘 날짜
         break;
       case 2:
-        result = moment().days(1).format('yyyy-MM-DD'); // 이번주 월요일
+        result = moment().days(1).format('YYYY-MM-DD'); // 이번주 월요일
         break;
       case 3:
-        console.log('여기타냐?')
-        result = moment().date(1).format('yyyy-MM-DD'); // 이번달 1일
+        result = moment().date(1).format('YYYY-MM-DD'); // 이번달 1일
         break;
       case 4:
-        result = moment().month(0).date(1).format('yyyy-MM-DD'); // 이번년 1월 1일
+        result = moment().month(0).date(1).format('YYYY-MM-DD'); // 이번년 1월 1일
         break;
       default:
-        result = moment().format('yyyy-MM-DD'); // 오늘 날짜
+        result = moment().format('YYYY-MM-DD'); // 오늘 날짜
         break;
     }
 
@@ -167,7 +169,6 @@ const RankListPage = (props) => {
 
     if (realRank.code === 'C001') {
       const { data } = realRank;
-      console.log('ㅅㅂㅈㄷㅂㄷ');
       topRankList.push(addEmptyRanker(data.list.slice(0, 3)));
       setRankInfo({ ...data, list: data.list.slice(3) });
     }
@@ -180,6 +181,7 @@ const RankListPage = (props) => {
     }
 
     setTopRankInfo(topRankList.reverse());
+    loading = false;
   }
 
   // TEAM 랭킹 정보 가져오기
@@ -207,6 +209,7 @@ const RankListPage = (props) => {
     }
 
     setTopRankInfo(topRankList.reverse());
+    loading = false;
   }
 
   // 상단 랭킹 저보 빈값 넣어주는 함수
@@ -221,7 +224,10 @@ const RankListPage = (props) => {
   const changeTab = (e) => {
     const { targetTab } = e.currentTarget.dataset;
 
-    if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab)) {
+    console.log('loading value', loading);
+
+    if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab) && !loading) {
+      loading = true;
       history.replace(`/rankDetail/${targetTab}`); // 뒤로가기 했을경우를 대비해 링크만 바꿔준다.
       setRankInfo({list: [], paging: {total: 0}});
       setTopRankInfo([]);
@@ -233,7 +239,8 @@ const RankListPage = (props) => {
   const subTabClick = (e) => {
     const { subMenu } = e.currentTarget.dataset;
 
-    if (subMenu !== undefined) {
+    if (subMenu !== undefined && !loading) {
+      loading = true;
       setRankInfo({list: [], paging: {total: 0}});
       setTopRankInfo([]);
       setBreakNo(47);

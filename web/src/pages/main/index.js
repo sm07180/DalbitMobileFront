@@ -372,7 +372,7 @@ const MainPage = () => {
           }
         });
       } else if (type === 'TEAM') {
-        const realRank = await Api.getTeamRankWeekList({ tDate: moment().format('yyyy-MM-DD'), pageNo: 1, pagePerCnt: 10, memNo: 0});
+        const realRank = await Api.getTeamRankWeekList({ tDate: moment().format('YYYY-MM-DD'), pageNo: 1, pagePerCnt: 10, memNo: 0});
         if (realRank.code === '00000') {
           const { data } = realRank;
           setRankingList(data.list);
