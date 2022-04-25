@@ -1,6 +1,5 @@
 import React, {useContext, useState, useEffect, useRef} from 'react';
 import {useHistory} from "react-router-dom";
-import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
 import Utility from 'components/lib/utility';
 // global components
@@ -25,9 +24,9 @@ import Api from "context/api";
 import photoCommon from "common/utility/photoCommon";
 import {Hybrid, isHybrid} from "context/hybrid";
 import qs from 'query-string'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 const TeamDetail = (props) => {
   const history = useHistory();
-  const context = useContext(Context);
   const teamIntroRef = useRef();
   const dispatch = useDispatch();
   const teamNo = props.match.params.teamNo;
@@ -75,7 +74,7 @@ const TeamDetail = (props) => {
     }
   },[btnChk,checkIn])
 
-/**팀 가입가능 여부 체크 
+/**팀 가입가능 여부 체크
   *팀을 가입한 생태이거나 만든 상태일땐 신청을 못하도록 체크하기위한 프로시져 호출
  -4:팀가입 되어 있음, -3:재생성 시간 미경과, -2: 이미생성됨, -1: 레벨미달, 0: 에러, 1:정상
  가입 레벨은 5인데 생성 조건은 15렙이라 렙이 미달일경우 가입은 가능하다.
@@ -103,9 +102,9 @@ const TeamDetail = (props) => {
         setCheckIn(res.data.loginYn);
         setTeamInsChk(res.data.reqInsChk);
       }else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     });
   }
@@ -121,14 +120,14 @@ const TeamDetail = (props) => {
   const checkInApi=()=>{
     Api.getTeamAttendanceIns({memNo:memberRdx.memNo}).then(res =>{
       if(res.code === "00000"){
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: '활동배지 출석점수 +1!'
-        })
+        }))
         setCheckIn('y');
       }else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     });
   }
@@ -144,13 +143,13 @@ const TeamDetail = (props) => {
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
         setTeamInsChk('y');
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: slct==='r' ? "가입신청이 되었습니다." : "초대를 완료했습니다."
-        })
+        }))
       }else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     })
     setBtnChk(true)
@@ -176,7 +175,7 @@ const TeamDetail = (props) => {
     if (statChk === 'm' && teamMemList.length > 1) {
       dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
     } else {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `정말 탈퇴 할까요?`,
         remsg: `탈퇴 이후 팀이 랭킹에 오르더라도
         리워드를 받을 수 없으며, 탈퇴 이후 재가입 할 경우
@@ -196,9 +195,9 @@ const TeamDetail = (props) => {
               if(res.code === "00000"){
                 history.replace(`/mypage`)
               }else {
-                context.action.toast({
+                dispatch(setGlobalCtxMessage({type:'toast',
                   msg: res.message
-                })
+                }))
               }
             })
 
@@ -214,14 +213,14 @@ const TeamDetail = (props) => {
               if(res.code === "00000"){
                 history.replace("/myPage");
               }else {
-                context.action.toast({
+                dispatch(setGlobalCtxMessage({type:'toast',
                   msg: res.message
-                })
+                }))
               }
             })
           }
         }
-      });
+      }));
     }
   };
   const closeSecesstion = () => {
@@ -230,7 +229,7 @@ const TeamDetail = (props) => {
 
   // 팀 삭제
   const teamDelete = () => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `삭제하면 72시간 이후부터
       팀을 만들 수 있습니다.`,
       remsg: `삭제한 이후에는 팀 랭킹 리워드를
@@ -249,14 +248,14 @@ const TeamDetail = (props) => {
           if(res.code === "00000"){
             history.push(`/mypage`)
           }else {
-            context.action.toast({
+            dispatch(setGlobalCtxMessage({type:'toast',
               msg: res.message
-            })
+            }))
           }
         })
       },
       cancelCallback: () => {},
-    });
+    }));
   };
 
   // 가입신청 수락 거절
@@ -264,7 +263,7 @@ const TeamDetail = (props) => {
     const {targetConfirm} = e.currentTarget.dataset;
 
     if (targetConfirm === 'cancel') {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `정말 거절 할까요?`,
         buttonText: {
           left: '취소',
@@ -281,15 +280,15 @@ const TeamDetail = (props) => {
             if(res.code === "00000"){
               setBtnChk(true)
             }else{
-              context.action.toast({
+              dispatch(setGlobalCtxMessage({type:'toast',
                 msg: res.message
-              })
+              }))
             }
           })
         }
-      });
+      }));
     } else if (targetConfirm === 'accept') {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `수락을 누르면 팀원으로 가입합니다.`,
         buttonText: {
           left: '취소',
@@ -304,13 +303,13 @@ const TeamDetail = (props) => {
             if(res.code === "00000"){
               setBtnChk(true)
             }else{
-              context.action.toast({
+              dispatch(setGlobalCtxMessage({type:'toast',
                 msg: res.message
-              })
+              }))
             }
           })
         }
-      });
+      }));
     }
   };
   const goProfile = (memNo) => {
@@ -523,7 +522,7 @@ const TeamDetail = (props) => {
       {popup.slidePopup &&
         <PopSlide title="다음 팀장은 누구인가요?">
           <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}
-                     context={context} memNo={memberRdx.memNo} teamNo={teamNo} history={history}
+                     memNo={memberRdx.memNo} teamNo={teamNo} history={history}
           />
         </PopSlide>
       }

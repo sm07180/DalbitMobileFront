@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header.js'
 
-import {StoreLink} from 'context/link'
 import {storeButtonEvent} from "components/ui/header/TitleButton";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";

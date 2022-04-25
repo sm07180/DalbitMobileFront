@@ -148,14 +148,14 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
     if (editedImg !== null) {
       if (editedImg.status === false) {
         if (editedImg.content) {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
             status: true,
             type: 'alert',
             content: image.content,
             callback: () => {
               return
             }
-          })
+          }))
         }
       } else {
         uploadImageToServer()

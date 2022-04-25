@@ -15,7 +15,7 @@ import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {COLOR_MAIN} from 'context/color'
 import {isAndroid} from "context/hybrid";
 //
@@ -57,16 +57,18 @@ const Alert = (props) => {
     document.body.style.overflow = 'hidden'
     refBtn.current.focus()
     if(isAndroid()) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'alertClose'})
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'alertClose'}));
     }
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null)
+        dispatch(setGlobalCtxBackState(null));
+
+        if(globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
         }
-        context.action.updateBackFunction({name: ''})
+        dispatch(setGlobalCtxBackFunction({name: ''}));
       }
     }
   }, [])

@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
-import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
 import Utility from 'components/lib/utility';
 // global components
@@ -22,14 +21,15 @@ import {NormalTimer} from "pages/broadcast/content/right_content/vote/Timer";
 import moment from "moment";
 import photoCommon from "common/utility/photoCommon";
 import Api from "context/api";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const parts = ['메달','테두리','배경'];
 
 const TeamManager = (props) => {
   const history = useHistory();
-  const context = useContext(Context);
   const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
+
   const teamNo = props.match.params.teamNo;
   const memberRdx = useSelector((state)=> state.member);
 
@@ -82,9 +82,9 @@ const TeamManager = (props) => {
       if(res.code==="00000") {
         history.replace(`/team/detail/${teamNo}`)
       }else{
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     })
 
@@ -145,7 +145,7 @@ const TeamManager = (props) => {
 
   // 강퇴하기
   const teamDelete = (data) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `해당 회원님을 정말 강퇴시킬까요?`,
       buttonText: {
         left: '취소',
@@ -165,7 +165,7 @@ const TeamManager = (props) => {
           }
         })
       }
-    });
+    }));
   };
 
   const symbolApi = () =>{

@@ -3,9 +3,12 @@ import {useHistory} from "react-router-dom";
 // global components
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import Api from "context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ButtonWrap = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   // 팀 만들기 버튼
   const makeTeamBtn = () => {
@@ -13,9 +16,9 @@ const ButtonWrap = (props) => {
       if(res.data === 1){
         history.push('/team/make');
       }else{
-        props.context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     })
 

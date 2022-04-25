@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {RoomMake} from 'context/room'
 //context
-import {StoreLink} from 'context/link'
 // component
 import Header from '../component/header.js'
 

@@ -4,7 +4,7 @@ import {Hybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
 import {clipExit} from 'pages/common/clipPlayer/clip_func'
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setGlobalCtxMessage, setGlobalCtxPlayer} from "redux/actions/globalCtx";
 
 export const BeforeLogout = (dispatch, fetch) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
@@ -34,7 +34,7 @@ export const BeforeLogout = (dispatch, fetch) => {
         Utility.setCookie('listen_room_no', null)
         Hybrid('ExitRoom', '')
         Utility.setCookie('native-player-info', '', -1)
-        context.action.updatePlayer(false)
+        dispatch(setGlobalCtxPlayer(false));
         setTimeout(() => {
           fetch()
         }, 300)

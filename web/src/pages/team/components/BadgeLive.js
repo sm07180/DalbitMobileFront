@@ -4,22 +4,24 @@ import Lottie from 'react-lottie';
 import {useHistory} from "react-router-dom";
 import {IMG_SERVER} from 'context/config';
 import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 // global components
 
 const BadgeLive = (props) => {
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      })
+      }))
     } else {
       if (getDeviceOSTypeChk() === 3){
         RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
@@ -30,19 +32,19 @@ const BadgeLive = (props) => {
           let alertMsg
           if (isNaN(listenRoomNo)) {
             alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
               type: 'alert',
               msg: alertMsg
-            })
+            }))
           } else {
             alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
+            dispatch(setGlobalCtxMessage({
               type: 'confirm',
               msg: alertMsg,
               callback: () => {
                 return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
               }
-            })
+            }))
           }
         }
       }
