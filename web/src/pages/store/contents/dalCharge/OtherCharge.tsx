@@ -74,8 +74,7 @@ const OtherCharge = ()=>{
     if(commonPopup.commonPopup) {
       closePopup(dispatch);
     }else {
-      //todo 박지호
-      //dispatch(setSlidePopupOpen());
+      dispatch(setSlidePopupOpen());
     }
   }
 

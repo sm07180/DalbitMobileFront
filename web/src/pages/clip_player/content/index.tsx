@@ -89,8 +89,9 @@ export default function ClipContent() {
     newClipPlayer?.init(data.file.url);
     newClipPlayer?.clipNoUpdate(data.clipNo);
     dispatch(setGlobalCtxClipPlayerInit(newClipPlayer))
-    const addObj = { type: "add", data: { ...data, ...{ isPaused: true, isSaved60seconds: false } } };
-    dispatch(setGlobalCtxClipInfoAdd(addObj));
+    const addObj = { type: "add", data: { ...data, isPaused: true, isSaved60seconds: false } };
+    dispatch(setGlobalCtxClipInfoAdd({ ...data, isPaused: true, isSaved60seconds: false }));
+    // dispatch(setGlobalCtxClipInfoAdd(addObj));
     clipAction.dispatchClipInfo!(addObj);
     newClipPlayer?.start();
     if (globalState.baseData.memNo === data.clipMemNo) {
