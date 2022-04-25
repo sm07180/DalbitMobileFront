@@ -1,0 +1,269 @@
+@import "components/ui/_mixin.scss";
+
+#teamDetail {
+  header {
+    .buttonGroup {
+      .moreBtn {
+        @include moreBtnStyle-1;
+        width:40px;height:40px;
+        cursor: pointer;
+        .isMore {
+          .delete {
+            color:$MAINCOLOR;
+          }
+        }
+      }
+      .question {
+        width:20px;
+        line-height:20px;
+        border-radius:50%;
+        background-color:#666;
+        @include font(11px,$Medium,white);
+      }
+    }
+  }
+  .teamInfo {
+    .teamStatus {
+      @include flex;
+      margin-bottom:12px;
+      .teamSymbol {
+        @include teamSymbol;
+        margin-right:16px;
+      }
+      .listContent {
+        flex:1;
+        @include flex(flex-start,center,column);
+        min-width:0;
+        .teamName {
+          margin-bottom:8px;
+          @include font(20px,$SemiBold,black);
+          @include fontCut;
+        }
+        .listItem {
+          @include flex(center);
+          + .listItem {
+            margin-top:2px;
+          }
+          .nick {
+            flex:1;
+            @include font(14px,$Medium,#303030);
+            @include fontCut;
+          }
+          img {
+            flex-shrink: 0;
+            width: 14px;
+            margin-left:4px;
+          }
+          .iconPoint {
+            width:18px;height:18px;
+            @include BGIMG("team/ico_teampoint.png");
+          }
+          .pointEx {
+            margin-left:4px;
+            line-height:16px;
+            @include font(14px,$Medium,#666);
+          }
+          .point {
+            margin-left:4px;
+            margin-right:4px;
+            line-height:16px;
+            @include font(16px,$SemiBold,black);
+          }
+        }
+      }
+    }
+    .teamRank {
+      @include flex(center,center,column);
+      height:66px;
+      margin-bottom:16px;
+      background-color:#F6F6F6;
+      border-radius:16px;
+      .count {
+        @include flex;
+        margin-top:4px;
+        line-height:23px;
+        @include font(12px,$Medium,#666);
+        strong {
+          margin-right:4px;
+          @include font(18px,$Bold,#202020);
+        }
+      }
+      .text {
+        @include font(14px,$Regular,#666);
+      }
+    }
+    .teamIntro {
+      @include flex(flex-start);
+      min-width:0;
+      width:100%;
+      line-height:18px;
+      margin-bottom:24px;
+      .text {
+        display:inline-block;
+        white-space:pre-wrap;
+        word-break: break-all;
+        @include font(13px,$Regular,#303030);
+        &.close {
+          @include fontLineCut;
+          max-height:36px;
+        }
+        &.open {
+          max-height:100%;
+        }
+      }
+      .arrow {
+        flex-shrink:0;
+        display:inline-block;
+        width:20px;
+        height:20px;
+        padding:0 4px 0 8px;
+        margin-left:auto;
+        opacity: .7;
+        box-sizing: content-box;
+        cursor:pointer;
+        img {
+          width:100%;
+        }
+      }
+    }
+  }
+  .cntTitle {
+    padding:0;
+    span.count {
+      margin-left:4px;
+      @include font(16px,$Regular,#666);
+      strong {
+        @include font(18px,$SemiBold,$MAINCOLOR);
+      }
+    }
+  }
+  .badgeWrap {
+    @include flex(center);
+    margin-top:12px;
+    margin-bottom:24px;
+    .badgeList {
+      width:74px;
+      height:74px;
+      background-color:white;
+      + .badgeList {
+        margin-left:10px;
+      }
+      img {
+        width:100%;
+      }
+    }
+  }
+  .badgeNone {
+    @include font(12px,$Regular,#666);
+  }
+  .memberList {
+    margin-top:16px;
+    margin-bottom:12px;
+    .listRow {
+      .photo {
+        cursor: pointer;
+      }
+      &.invite {
+        cursor: pointer;
+        .photo {
+          @include flex(center,center);
+          background-color:#F6F6F6;
+          @include font(20px,$Regular,#666);
+        }
+        .text {
+          @include font(14px,$Medium,#303030);
+        }
+      }
+    }
+  }
+  .joinList {
+    margin-top:12px;
+    margin-bottom:16px;
+  }  
+  .listRow {
+    margin-bottom:12px;
+    .photo {
+      @include photoStyle(60px,60px,50%);
+      margin-right:8px;
+      overflow:hidden;
+    }
+    .listContent {
+      flex:1;
+      @include flex($fd: column);
+      min-width:0;
+      .listItem {
+        @include flex(center);
+        &:first-child {
+          margin-bottom:4px;
+        }
+        .nick {
+          @include font(14px,$Medium,#303030);
+          @include fontCut;
+        }
+        .time {
+          @include font(12px,$Regular,#999);
+          @include fontCut;
+        }
+        img {
+          flex-shrink: 0;
+          width: 14px;
+          margin-left:4px;
+        }
+        .iconPoint {
+          width:16px;height:16px;
+          margin-right:4px;
+          @include BGIMG("team/ico_teampoint.png");
+        }
+        .point {
+          @include font(13px,$Medium,black);
+        }
+      }
+    }
+    .listBack {
+      flex-shrink: 0;
+      margin-left:auto;
+      padding-left:8px;
+      box-sizing: content-box;
+      .badgeLive {
+        @include badgeLive;
+      }
+      .buttonGroup {
+        @include flex(center);
+        button {
+          width:50px;
+          line-height:28px;
+          border-radius:100px;
+          @include font(12px,$Medium,#303030);
+          + button {
+            margin-left:4px;
+          }
+          &.cancel {
+            @include border(#E3E3E3,100px);
+          }
+          &.accept {
+            background-color:#202020;
+            @include border(#202020,100px);
+            color:white;
+          }
+        }
+      }
+    }
+  }
+  .buttonWrap {
+    position:sticky;
+    bottom:0;
+    width:100%;
+    margin-top:auto;
+    padding:10px 0 30px;
+    pointer-events: none;
+    .submitBtn {
+      width:100%;
+      box-shadow: 0 1px 4px rgba(0,0,0,.16);
+      pointer-events:initial;
+      &.disabled {
+        opacity: 1;
+        background-color:#FFD4E1;
+      }
+    }
+  }
+}

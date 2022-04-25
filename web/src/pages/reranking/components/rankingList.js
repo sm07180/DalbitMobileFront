@@ -18,29 +18,57 @@ import DataCnt from "components/ui/dataCnt/DataCnt";
 // css
 
 export default withRouter((props) => {
-  const {data, children, tab, topRankList} = props;
+  const {data, tab, topRankList, breakNo} = props;
 
   const context = useContext(Context);
   const history = useHistory();
 
+  const goProfile = (value) => {
+    if (value !== undefined) {
+      props.history.push(`/profile/${value}`);
+    }
+  };
+
   return (
     <>
       {data.map((list, index) => {
+        if (breakNo < index + 1) {
+          return;
+        }
+
         return (
           <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{typeof topRankList === "undefined" ? index + 1 : index + 4}</div>
+            <div className="rank">{index + 4}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />
                 <span className="nick">{list.nickNm}</span>
               </div>
               <div className='listItem'>
-                {tab === "DJ" && <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>}
-                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={(e) => {
-                  e.stopPropagation();
-                  tab === "CUPID" && props.history.push(`/profile/${list.djMemNo}`);
-                }}/>
-                <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
+                {tab === "DJ" &&
+                  <>
+                    <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>
+                    <DataCnt type={'djGoodPoint'} value={list.goodPoint} />
+                    <DataCnt type={"listenPoint"} value={list.broadcastPoint}/>
+                  </>
+                }
+                {tab === 'FAN' &&
+                  <>
+                    <DataCnt type={'starCnt'} value={list.starCnt} clickEvent={(e) => goProfile(list.djMemNo)}/>
+                    <DataCnt type={"listenPoint"} value={list.listenPoint}/>
+                  </>
+                }
+                {tab === 'CUPID' &&
+                  <>
+                    <DataCnt type={'cupid'} value={list.djNickNm} clickEvent={(e) => goProfile(list.djMemNo)}/>
+                    <DataCnt type={'djGoodPoint'} value={list.djGoodPoint} />
+                  </>
+                }
+                {tab === 'TEAM' &&
+                  <>
+                    <DataCnt type={'point'} value={list.rank_pt} />
+                  </>
+                }
               </div>
             </div>
             {
@@ -51,13 +79,7 @@ export default withRouter((props) => {
                   RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, history, list.nickNm);
                 }}>
                   <span className='equalizer'>
-                    <Lottie
-                      options={{
-                        loop: true,
-                        autoPlay: true,
-                        path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
-                      }}
-                    />
+                    <Lottie options={{ loop: true, autoPlay: true, path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json` }} />
                   </span>
                   <span className='liveText'>LIVE</span>
                 </div>
@@ -90,4 +112,4 @@ export default withRouter((props) => {
       })}
     </>
   )
-})
+});

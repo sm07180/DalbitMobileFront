@@ -27,7 +27,7 @@ export default () => {
    * @return : undefined or {host, api, photo, socketURL} */
   const readDevInfoData = useCallback((selectHost = '') => redirectList.find((v, i) => (v.host === selectHost)), [redirectList]);
 
-  /** 요청 전에 내부서버 아이피 확인
+  /** 요청 전에 내부    아이피 확인
    * @param : string (ex : '192.168.0.1')
    * @return : boolean */
   const innerIpChk = (ip = '') => {

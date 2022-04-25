@@ -36,7 +36,7 @@ const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/ClipRa
 
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
-const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankListPage = React.lazy(() => import('pages/reranking/contents/RankListPage'))
 const RankingBenefit = React.lazy(() => import('pages/reranking/contents/RankingBenefit'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
@@ -52,6 +52,13 @@ const ReHonor = React.lazy(() => import('pages/rehonor'))
 const ReCustomer = React.lazy(() => import('pages/recustomer'))
 // 운영정책
 const ReRule = React.lazy(() => import('pages/rerule'))
+
+// 팀
+const Team = React.lazy(() => import('pages/team'))
+const TeamMake = React.lazy(() => import('pages/team/contents/teamMake/TeamMake'))
+const TeamDetail = React.lazy(() => import('pages/team/contents/teamDetail/TeamDetail'))
+const TeamManager = React.lazy(() => import('pages/team/contents/teamManager'))
+const TeamBadge = React.lazy(() => import('pages/team/contents/teamBadge'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
@@ -182,7 +189,7 @@ const Router = () => {
         <Route exact path="/rule/:category" component={ReRule} />
 
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rankDetail/:type" component={RankingDetail} />
+        <Route exact path="/rankDetail/:type" component={RankListPage} />
         <Route exact path="/rankBenefit" component={RankingBenefit} />
         <Route exact path="/rank/:type" component={RankingGuide} />
 
@@ -290,6 +297,12 @@ const Router = () => {
 
 
         {/*<Route exact path="/profile/:memNo/write" component={ProfileWrite} />*/}
+
+        <Route exact path="/team" component={Team} />
+        <Route exact path="/team/make" component={TeamMake} />
+        <Route exact path="/team/detail/:teamNo" component={TeamDetail} />
+        <Route exact path="/team/manager/:teamNo" component={TeamManager} />
+        <Route exact path="/team/badge/:teamNo" component={TeamBadge} />
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />

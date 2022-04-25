@@ -59,7 +59,7 @@ export default (props) => {
         <button
           className="button"
           onClick={() => {
-            authReq('7', context.authRef, context, 'none', memNo);
+            authReq({code: '7', formTagRef: context.authRef, context, pushLink: 'none', memNo});
           }}
         >
           본인인증 후 휴면 해제하기

@@ -22,6 +22,7 @@ import feed from "./profile/feed";
 import noticeFix from "./profile/noticeFix";
 import detail from "./profile/detail";
 import payStore from './payStore';
+import post from "./notice/post";
 
 const rootReducer = combineReducers({
   common
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   , noticeFix
   , detail
   , payStore
+  , post
 });
 
 export type AppState = ReturnType<typeof rootReducer>;

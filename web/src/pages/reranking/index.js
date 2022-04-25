@@ -55,7 +55,7 @@ const RankPage = () => {
   const [cupidRank, setCupidRank] = useState([]);
 
   //내 순위 정보
-  const [myRank, setMyRank] = useState({dj: 0, fan: 0, cupid: 0});
+  const [myRank, setMyRank] = useState({dj: 0, fan: 0, cupid: 0, team: 0});
 
   //하단 FAN/CUPID탭
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
@@ -209,20 +209,29 @@ const RankPage = () => {
   const getMyRank = async () => {
     await Api.getMyRank().then((res) => {
       if (res.result === "success"){
-        let djRank = 0;
-        let fanRank = 0;
-        let cupidRank = 0;
-
+        let rankInfo = {
+          dj: 0,
+          fan: 0,
+          cupid: 0,
+          team: 0
+        }
         res.data.map((res) => {
-          if (res.s_rankSlct === "DJ"){
-            djRank = res.s_rank;
-          } else if (res.s_rankSlct === "FAN") {
-            fanRank = res.s_rank;
-          } else {
-            cupidRank = res.s_rank;
+          switch (res.s_rankSlct) {
+            case 'DJ':
+              rankInfo.dj = res.s_rank;
+              break;
+            case 'FAN':
+              rankInfo.fan = res.s_rank;
+              break;
+            case 'LOVER':
+              rankInfo.cupid = res.s_rank;
+              break;
+            case 'TEAM':
+              rankInfo.team = res.s_rank;
+              break;
           }
         });
-        setMyRank({dj: djRank, fan: fanRank, cupid: cupidRank});
+        setMyRank(rankInfo);
       }
     });
   }
@@ -353,8 +362,7 @@ const RankPage = () => {
         </section>
           :
         <section className='myRanking'>
-          <CntTitle title={'나의 순위는?'}>
-          </CntTitle>
+          <CntTitle title={'나의 순위는?'} />
           <div className='rankBox'>
             <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
             <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>

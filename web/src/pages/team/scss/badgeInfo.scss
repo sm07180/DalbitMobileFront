@@ -1,0 +1,54 @@
+@import "components/ui/_mixin.scss";
+
+#layerPop {
+  .popLayer {
+    .popContainer {
+      padding:16px;
+      text-align:center;
+      .popOverTopImg {
+        @include position-horizon;
+        top:0;
+        height:0;
+        .teamBadge {
+          transform:translateY(-50%);
+          width:160px;
+          height:160px;
+          img {
+            width:100%;
+          }
+        }
+      }
+      .textBox {
+        .textWrap {
+          padding: 16px 0;
+        }
+        .text1 {
+          margin-top:56px;
+          line-height:20px;
+          @include font(16px,$Bold,#202020);
+        }
+        .text2 {
+          margin-bottom:4px;
+          line-height:16px;
+          @include font(15px,$Medium,#202020);
+          span {
+            font-weight:$SemiBold;
+            color:$MAINCOLOR;
+          }
+        }
+        .text3 {
+          line-height:16px;
+          @include font(12px,$Regular,#666);
+        }
+      }
+      .text1 {
+        line-height:48px;
+        @include font(16px,$SemiBold,#202020);
+      }
+      .text2 {
+        line-height:20px;
+        @include font(14px,$Regular,#666);
+      }
+    }
+  }
+}

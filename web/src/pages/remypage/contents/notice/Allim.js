@@ -11,7 +11,7 @@ import {RoomJoin} from "context/room";
 import './notice.scss'
 
 const Allim = (props) => {
-  const {alarmList, setAlarmList, handleClick} = props
+  const {alarmList, handleClick} = props
   const context = useContext(Context);
   const history = useHistory();
 

@@ -32,6 +32,14 @@ const SET_SLIDE_POPUP_OPEN = 'common/SET_SLIDE_POPUP_OPEN';
 export const setSlidePopupOpen = createAction(SET_SLIDE_POPUP_OPEN)<ICommonPopupState>();
 // -----------------------------------------------------------------------
 
+/* 슬라이드 팝업 애니메이션 처리 state 초기화 부분 */
+const SET_SLIDE_RESET = 'common/SET_SLIDE_RESET';
+export const setSlideReset = createAction(SET_SLIDE_RESET)<void>();
+
+/* 슬라이드 팝업 애니메이션 닫기 */
+const SET_SLIDE_CLOSE = 'common/SET_SLIDE_CLOSE';
+export const setSlideClose = createAction(SET_SLIDE_CLOSE)<void>();
+
 /* 웹뷰 체크 */
 const SET_IS_WEBVIEW = 'common/SET_IS_WEBVIEW';
 export const setIsWebView = createAction(SET_IS_WEBVIEW)<string>();
