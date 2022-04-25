@@ -80,9 +80,11 @@ const TopRanker = (props) => {
   const goTeamDetailPage = (e) => {
     const { teamNo } = e.currentTarget.dataset;
 
-    if (teamNo !== undefined) {
+    if (!context.token.isLogin) {
+      history.push('/login');
+    } else if (teamNo !== undefined) {
       history.push(`/team/detail/${teamNo}`);
-    };
+    }
   };
 
   useEffect(() => {

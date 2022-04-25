@@ -224,8 +224,6 @@ const RankListPage = (props) => {
   const changeTab = (e) => {
     const { targetTab } = e.currentTarget.dataset;
 
-    console.log('loading value', loading);
-
     if (targetTab !== undefined && rankSlctCode.hasOwnProperty(targetTab) && !loading) {
       loading = true;
       history.replace(`/rankDetail/${targetTab}`); // 뒤로가기 했을경우를 대비해 링크만 바꿔준다.
