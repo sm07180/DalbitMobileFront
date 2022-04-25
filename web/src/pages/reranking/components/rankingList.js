@@ -24,11 +24,9 @@ export default withRouter((props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const goProfile = (value, e) => {
-    const { profileMemNo } = e.currentTarget.dataset;
-
-    if (profileMemNo !== undefined) {
-      history.push(`/profile/${value}`);
+  const goProfile = (value) => {
+    if (value !== undefined) {
+      props.history.push(`/profile/${value}`);
     }
   };
 

@@ -11,7 +11,7 @@ import './notice.scss'
 import {useDispatch, useSelector} from "react-redux";
 
 const Allim = (props) => {
-  const {alarmList, setAlarmList, handleClick} = props;
+  const {alarmList, handleClick} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 

@@ -58,7 +58,7 @@ const ListRowComponent = (props) => {
 
   return (
     <ListRow photo={item.profImg?.thumb292x292} photoClick={photoClick}>
-      <div className="listContent">
+      <div className="listContent" onClick={photoClick}>
         <div className='listItem'>
           {item.viewOn === 0 && <div className="lock" />}
           <div className="nick">{item.mem_nick ? item.mem_nick : item.nickName}</div>

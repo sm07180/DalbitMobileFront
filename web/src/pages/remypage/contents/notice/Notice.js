@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
@@ -11,10 +11,11 @@ import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeData, setNoticeTab} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab, setPostData} from "redux/actions/notice";
 import API from "context/api";
 import {RoomJoin} from "context/room";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
+import {noticePagingDefault} from "redux/types/noticeType";
 
 let alarmFix = false;
 let postFix = false;
@@ -24,9 +25,13 @@ const NoticePage = () => {
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
-  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
+
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const postData = useSelector(state => state.post);
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
+  const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
+  const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
 
   /* 알림 조회 */
   const fetchData = () => {
@@ -42,6 +47,38 @@ const NoticePage = () => {
     }).catch((e) => console.log(e));
   }
 
+  /* 공지사항 조회 */
+  const fetchPostData = () => {
+    Api.noticeList(postPageInfo).then((res) => {
+      if(res.result === "success") {
+        if(postPageInfo.page !== 1) {
+          let temp = []
+          res.data.list.forEach((value) => {
+            if(postData.list.findIndex((target) => target.noticeIdx === value.noticeIdx) === -1) { //list의 인덱스가 현재 noticeIdx-1일경우 그 값을 temp에 담아줌
+              temp.push(value);
+            }
+          })
+          //cnt: noticeIdx, list: 스크롤시 출력되는 list, totalPage: 전체 페이지
+          // setPostListInfo({cnt: res.data.list.noticeIdx, list: postListInfo.list.concat(temp), totalPage: res.data.paging.totalPage});
+          dispatch(setPostData({
+            ...postData,
+            list: postData.list.concat(temp),
+            paging: res.data.paging ? res.data.paging : noticePagingDefault,
+            isLastPage: res.data.list.length > 0 ? res.data.paging.totalPage === res.data.paging?.page : true
+          }))
+        } else {
+          // setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
+          dispatch(setPostData({
+            ...postData,
+            list: res.data.list,
+            paging: res.data.paging ? res.data.paging : noticePagingDefault,
+            isLastPage: res.data.list.length > 0 ? res.data.paging.totalPage === res.data.paging?.page : true
+          }))
+        }
+      }
+    }).catch((e) => console.log(e));
+  };
+
   /* 알림, 공지사항 New 조회 */
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -50,6 +87,22 @@ const NoticePage = () => {
         dispatch(setNoticeData(res.data));
       }}
   }
+
+  /* 공지사항 클릭 시 읽음 처리 */
+  const fetchReadData = async (notiNo) => {
+    const params = {
+      memNo: context.profile.memNo,
+      notiNo: notiNo
+    }
+    await Api.noticeRead(params).then((res) => {
+      if(res.result === "success") {
+        let tempIndex = postData.list.findIndex(value => value.noticeIdx === parseInt(notiNo));
+        let temp = postData.list.concat([]);
+        temp[tempIndex].read_yn = "y";
+        dispatch(setPostData({...postData, list: temp}));
+      }
+    }).catch((e) => console.log(e));
+  };
 
   const listenClip = (clipNo) => {
     const clipParam = {
@@ -149,10 +202,32 @@ const NoticePage = () => {
 
   //공지사항 세부페이지 이동
   const onClick = (e) => {
-    const {num} = e.currentTarget.dataset
-    history.push({pathname: `/notice/${num}`, state: num});
+    const num = e.currentTarget.dataset.num;
+    const read = e.currentTarget.dataset.read;
+    if(read === "n") {
+      fetchReadData(num);
+      history.push({pathname: `/notice/${num}`, state: num});
+    } else if(read === "y") {
+      history.push({pathname: `/notice/${num}`, state: num});
+    }
     postFix = true;
   };
+
+  //스크롤 이벤트
+  const scrollEvt = () => {
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const body = document.body
+    const html = document.documentElement
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if(postData.paging.totalPage > postPageInfo.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+      setPostPageInfo({...postPageInfo, page: postPageInfo.page+1});
+      window.removeEventListener("scroll", scrollEvt);
+    } else if(postData.list.noticeIdx === postData.list.length) {
+      window.removeEventListener("scroll", scrollEvt);
+    }
+  }
 
   useEffect(() => {
     if(isDesktop) {
@@ -162,13 +237,8 @@ const NoticePage = () => {
 
   // 로그인 토큰값 확인
   useEffect(() => {
-    if(!(globalState.token.isLogin)) {
-      history.push("/login")
-    }
+    if(!(globalState.token.isLogin)) {history.push("/login")}
     fetchData();
-  }, []);
-
-  useEffect(() => {
     if(alarmFix) {
       dispatch(setNoticeTab("알림"));
       alarmFix = false;
@@ -183,6 +253,17 @@ const NoticePage = () => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    fetchPostData();
+  }, [postPageInfo]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", scrollEvt);
+    return () => {
+      window.removeEventListener("scroll", scrollEvt);
+    }
+  }, [postData]);
 
   return (
     <div id="notice">
@@ -201,9 +282,9 @@ const NoticePage = () => {
           <div className="underline"/>
         </ul>
         {tab === noticeTabmenu[0] ?
-          <Allim alarmList={alarmList} setAlarmList={setAlarmList} handleClick={handleClick}/>
+          <Allim alarmList={alarmList} handleClick={handleClick}/>
           :
-          <Post onClick={onClick}/>
+          <Post onClick={onClick} postListInfo={postData}/>
         }
       </section>
     </div>

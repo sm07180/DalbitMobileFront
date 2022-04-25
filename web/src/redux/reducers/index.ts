@@ -21,6 +21,7 @@ import feed from "./profile/feed";
 import noticeFix from "./profile/noticeFix";
 import detail from "./profile/detail";
 import payStore from './payStore';
+import post from "./notice/post";
 
 /* 기존 context */
 import rankCtx from "./rankCtx"
@@ -54,6 +55,7 @@ const rootReducer = combineReducers({
   , noticeFix
   , detail
   , payStore
+  , post
 
   , rankCtx
   , broadcastCtx

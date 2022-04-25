@@ -32,6 +32,12 @@ const TitleButton = (props) => {
       }}
   }
 
+  useEffect(() => {
+    if(isHybrid() && globalState.token.isLogin) {
+      fetchMypageNewCntData(globalState.profile.memNo);
+    }
+  }, []);
+
   const goMailAction = () => {
     const goMailParams = {
       dispatch,
@@ -43,7 +49,6 @@ const TitleButton = (props) => {
 
     goMail(goMailParams);
   }
-
   const AlarmButton = () => {
     return <button className={`alarm ${memberRdx.isLogin && (alarmData.alarm || alarmData.notice) > 0 ? 'new' : ''}`} onClick={() => {
       if(alarmData.notice === 0) {
@@ -54,6 +59,7 @@ const TitleButton = (props) => {
       history.push('/notice');
     }} />
   }
+
 
   switch (props.title) {
     case '메인':

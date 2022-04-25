@@ -28,6 +28,7 @@ import {setSlidePopupOpen, setSlidePopupClose, setCommonPopupOpenData} from "red
 // 프로필 폴더에서 가져옴
 import FanStarPopup from "../profile/components/popSlide/FanStarPopup"
 import LikePopup from "../profile/components/popSlide/LikePopup"
+import {setNoticeTab} from "redux/actions/notice";
 import {setGlobalCtxMessage, setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
 
 const Remypage = () => {
@@ -273,23 +274,26 @@ const Remypage = () => {
                 <span className="myDataType">팀</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/report')}>
-                <span className='icon report' />
+                <span className='icon report'/>
                 <span className="myDataType">방송리포트</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/myclip')}>
-                <span className='icon clip'></span>
+                <span className='icon clip'/>
                 <span className="myDataType">클립 관리</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/setting')}>
-                <span className='icon setting'></span>
+                <span className='icon setting'/>
                 <span className="myDataType">서비스 설정</span>
               </div>
-              <div className='myDataList' onClick={() => history.push('/notice')}>
-                <span className={`icon notice ${noticeNew ? "new" : ""}`}></span>
+              <div className='myDataList' onClick={() => {
+                dispatch(setNoticeTab("공지사항"))
+                history.push('/notice')
+              }}>
+                <span className={`icon notice ${noticeNew ? "new" : ""}`}/>
                 <span className="myDataType">공지사항</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/customer')}>
-                <span className='icon customer'></span>
+                <span className='icon customer'/>
                 <span className="myDataType">고객센터</span>
               </div>
             </div>

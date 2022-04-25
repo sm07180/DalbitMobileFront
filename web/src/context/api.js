@@ -2250,6 +2250,14 @@ export default class API {
     })
   };
 
+  static noticeRead = async (param) => {
+    return await ajax({
+      url: `/center/notice/read`,
+      method: 'POST',
+      params: param
+    })
+  };
+
   /**
    * @brief 고객센터 공지사항 상세 목록 조회
    * @method "GET"
@@ -3027,7 +3035,7 @@ export default class API {
       fanBoard: 0,
       dal: 0,
       byeol: 0,
-      notice: '',
+      notice: '0',
       qna: '',
       targetMemNo: targetMemNo
     }

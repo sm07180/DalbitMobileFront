@@ -560,6 +560,10 @@ const ProfileDetail = (props) => {
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
+  const photoClickEvent = (memNo) => {
+    history.push(`/profile/${memNo}`)
+  }
+
   useEffect(() => {
     document.addEventListener('scroll', tooltipScrollEvent);
     return () => {
@@ -591,7 +595,9 @@ const ProfileDetail = (props) => {
       <section className='detailWrap'>
         {/* 피드, 팬보드 게시글 영역 */}
         <div className="detail">
-          {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
+          {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
+                                     photoClick={() => {photoClickEvent(item?.mem_no ? item.mem_no : item?.writer_mem_no)}}
+                                     disableMoreButton={false}/>}
           <pre className="text">{item?.feed_conts ? item.feed_conts : item?.contents}</pre>
           {(type === 'notice' || type === 'feed') && (item?.photoInfoList?.length > 1 ?
               <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>

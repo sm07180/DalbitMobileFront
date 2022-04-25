@@ -359,7 +359,7 @@ export default function GNB() {
   }
 
   useEffect(() => {
-    if(isDesktop) {
+    if(isDesktop && globalState.token.isLogin) {
       fetchMypageNewCntData(globalState.profile.memNo);
     }
     return () => {
