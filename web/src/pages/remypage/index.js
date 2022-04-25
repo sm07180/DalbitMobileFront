@@ -275,15 +275,15 @@ const Remypage = () => {
                 <span className="myDataType">팀</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/report')}>
-                <span className='icon report'></span>
+                <span className='icon report'/>
                 <span className="myDataType">방송리포트</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/myclip')}>
-                <span className='icon clip'></span>
+                <span className='icon clip'/>
                 <span className="myDataType">클립 관리</span>
               </div>
               <div className='myDataList' onClick={() => history.push('/setting')}>
-                <span className='icon setting'></span>
+                <span className='icon setting'/>
                 <span className="myDataType">서비스 설정</span>
               </div>
               <div className='myDataList' onClick={() => {

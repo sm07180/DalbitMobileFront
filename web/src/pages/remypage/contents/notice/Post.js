@@ -8,14 +8,12 @@ import moment from "moment";
 import './notice.scss'
 import TabBtn from "components/ui/tabBtn/TabBtn";
 import Header from "components/ui/header/Header";
-import {useSelector} from "react-redux";
 
 const Post = (props) => {
   const {onClick, postListInfo} = props
   const context = useContext(Context);
   const history = useHistory();
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
 
   //요일 데이터 가공
   const changeDay = (date) => {
