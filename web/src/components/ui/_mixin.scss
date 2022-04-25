@@ -13,8 +13,8 @@ $NAVIGATION-HEIGHT: 50px;
 $GNB-HEIGHT: 68px;
 
 //scroll 시 tab 고정 TOP값 (PC)
-$PC-TABTOP : 120px;
-$MOBILE-TABTOP : 52px;
+$PC-TABTOP : $HEADER-HEIGHT + $GNB-HEIGHT;
+$MOBILE-TABTOP : $HEADER-HEIGHT;
 $TAB-ZINDEX : 15;
 
 // z-inde 관리
@@ -33,6 +33,7 @@ $Medium: 500;
 $SemiBold: 600;
 $Bold: 700;
 $ExtraBold: 800;
+$Heavy: 900;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
@@ -437,6 +438,36 @@ $ExtraBold: 800;
         border-top:1px solid #F2F2F2;;
       }
     }
+  }
+}
+
+@mixin badgeLive {
+  @include flex(center, center);
+  width:62px;height:28px;
+  background-color: #FFE9E9;
+  border-radius: 100px;
+  cursor: pointer;
+  .equalizer {
+    display: inline-block;
+    width: 12px;
+    margin-top: -2px;
+    margin-right: 4px;
+  }
+  .liveText {
+    @include font(12px, 900, #FF3C7B);
+  }
+}
+
+@mixin teamSymbol {
+  position:relative;
+  width:80px;
+  height:80px;
+  border-radius:16px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.16);
+  overflow:hidden;
+  img {
+    @include position-center;
+    width:100%;
   }
 }
 

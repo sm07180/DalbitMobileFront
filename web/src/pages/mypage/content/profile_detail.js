@@ -253,7 +253,7 @@ export default (props) => {
     slidesPerView: 'auto',
     resistanceRatio: 0
   }
-  //뱃지
+  //배지
   const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
     const {text, icon, startColor, endColor} = item
@@ -266,7 +266,7 @@ export default (props) => {
           style={{
             background: `linear-gradient(to right, ${startColor}, ${endColor}`
           }}>
-          {icon !== '' && <img src={icon} alt="뱃지아이콘" className="icon-badge" />}
+          {icon !== '' && <img src={icon} alt="배지아이콘" className="icon-badge" />}
           <span>{text}</span>
         </span> */}
         {text === '콘텐츠 DJ' && <em className={`icon_wrap icon_contentsdj_profile`}></em>}
@@ -277,7 +277,7 @@ export default (props) => {
             style={{
               background: `linear-gradient(to right, ${startColor}, ${endColor}`
             }}>
-            {icon !== '' && <img src={icon} alt="뱃지아이콘" className="img" />}
+            {icon !== '' && <img src={icon} alt="배지아이콘" className="img" />}
             <span>{text}</span>
           </em>
         )}

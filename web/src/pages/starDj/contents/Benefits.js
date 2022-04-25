@@ -92,7 +92,7 @@ const StarDjBenefits = () => {
           </div>
           <div className='rewardList'>
             <span className='selectedCount'>10회</span>
-            <span className='selectedReward'>4,000달 + 달 무드등 굿즈 + 부스터 30개<br/>+ 시그니처 아이템</span>
+            <span className='selectedReward'>4,000달 + 부스터 30개<br/>+ 시그니처 아이템</span>
           </div>
           <div className='rewardList'>
             <span className='selectedCount'>11~14회</span>

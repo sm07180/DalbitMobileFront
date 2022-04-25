@@ -475,21 +475,30 @@
           color: #424242;
           box-sizing: border-box;
         }
+        &__wrapper {
+          margin-top:10px;
+          border-radius:15px;
+          overflow:hidden;
+        }
         &__rankingList {
+          @include flex(center,center);
           width: 328px;
-          background-color: red;
-          margin-top: 10px;
+          height:40px;
           padding: 4px 0;
-          box-sizing: border-box;
-          border-top-left-radius: 12px;
-          border-top-right-radius: 12px;
           background-color: #f5f5f5;
-          &.profileCupid {
-            margin-top: 2px;
-            border-top-left-radius: 0;
-            border-top-right-radius: 0;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
+          + .profile__rankingList {
+            border-top:1px solid white;
+          }
+          .teamSymbol {
+            @include teamSymbol;
+            width:28px;
+            height:28px;
+            margin-right:4px;
+            border-radius:4px;
+          }
+          .teamName {
+            @include font(14px,$Regular,black);
+            @include fontCut;
           }
           .rankingList {
             &__warnTxt {

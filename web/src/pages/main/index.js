@@ -35,7 +35,7 @@ import smoothscroll from 'smoothscroll-polyfill';
 import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
 import qs from 'query-string'
 
-const topTenTabMenu = ['DJ','FAN','CUPID']
+const topTenTabMenu = ['DJ','FAN','TEAM']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
 let totalPage = 1
 const pagePerCnt = 50
@@ -371,7 +371,13 @@ const MainPage = () => {
             setRankingList(res.data.list);
           }
         });
-      }else {
+      } else if (type === 'TEAM') {
+        const realRank = await Api.getTeamRankWeekList({ tDate: moment().format('YYYY-MM-DD'), pageNo: 1, pagePerCnt: 10, memNo: 0});
+        if (realRank.code === '00000') {
+          const { data } = realRank;
+          setRankingList(data.list);
+        }
+      } else {
         Api.get_ranking({
           param: {
             rankSlct: type === "FAN" ? 2 : 3,
@@ -394,6 +400,13 @@ const MainPage = () => {
   const getRandomIndex = () => {
     const boundary = 3;
     return Math.floor(Math.random() * boundary); // 0 ~ boundary
+  }
+
+  const topRankTabChange = (value) => {
+    if (value !== undefined && value !== topRankType) {
+      setRankingList([]);
+      setTopRankType(value);
+    }
   }
 
   /* 로고, 푸터 클릭했을때 */
@@ -505,14 +518,10 @@ const MainPage = () => {
       <section className='top10'>
         <div className="cntTitle">
           <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
-          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
         </div>
-        {rankingList.length>0 &&
-          <SwiperList
-            data={rankingList}
-            profImgName="profImg"
-            type="top10"
-          />
+        {rankingList.length > 0 &&
+          <SwiperList data={rankingList} profImgName="profImg" type="top10" topRankType={topRankType}/>
         }
       </section>
       <section className='bannerWrap'>

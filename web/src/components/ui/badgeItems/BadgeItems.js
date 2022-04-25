@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 import './badgeItems.scss'
 import UtilityCommon from "common/utility/utilityCommon";
@@ -27,18 +27,18 @@ const BadgeItems = (props) => {
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
-            text !== "Partner" &&
-              <React.Fragment key={index}>
-                <em
-                  className={`badgeItem`}
-                  key={index}
-                  style={{
-                    background: `linear-gradient(to right, ${startColor}, ${endColor}`
-                  }}>
-                  {icon !== '' && <img src={icon} alt="뱃지아이콘" />}
-                  <span>{text}</span>
-                </em>
-              </React.Fragment>          
+          text !== "Partner" &&
+            <React.Fragment key={index}>
+              <em
+                className={`badgeItem`}
+                key={index}
+                style={{
+                  background: `linear-gradient(to right, ${startColor}, ${endColor}`
+                }}>
+                {icon !== '' && <img src={icon} alt="배지아이콘" />}
+                <span>{text}</span>
+              </em>
+            </React.Fragment>
         )
       })}
       {type === 'liveBadgeList' && liveBadgeList.map((list, index) => {
@@ -51,7 +51,7 @@ const BadgeItems = (props) => {
               style={{
                 background: `linear-gradient(to right, ${startColor}, ${endColor}`
               }}>
-              {icon !== '' && <img src={icon} alt="뱃지아이콘" />}
+              {icon !== '' && <img src={icon} alt="배지아이콘" />}
               <span>{text}</span>
             </em>
           </React.Fragment>
@@ -63,7 +63,7 @@ const BadgeItems = (props) => {
           style={{
             background: `linear-gradient(to right, ${fanBadge.startColor}, ${fanBadge.endColor}`
           }}>
-          {fanBadge.icon !== '' && <img src={fanBadge.icon} alt="뱃지아이콘" />}
+          {fanBadge.icon !== '' && <img src={fanBadge.icon} alt="배지아이콘" />}
           <span>{fanBadge.text}</span>
         </em>
       }

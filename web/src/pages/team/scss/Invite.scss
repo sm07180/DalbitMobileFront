@@ -1,0 +1,67 @@
+@import "components/ui/_mixin.scss";
+
+#popSlide {
+  // 팬 스타 좋아요 보기
+  .invitePop {
+    h3 {
+      @include flex(center,center,column);
+      height:54px;
+      line-height:auto;
+      box-sizing: content-box;
+      span {
+        line-height: 20px;
+        @include font(16px,$Bold,#202020);
+      }
+      small {
+        margin-top:2px;
+        line-height: 16px;
+        @include font(13px,$Regular,#666);
+      }
+    }
+    @include flex($fd:column);
+    width:100%;
+    > .tabmenu {
+      padding:0 16px;
+      @include tabmenuStyle-1;
+    }
+    .listContainer {
+      @include flex($fd:column);
+      height:486px;
+      overflow-y:hidden;
+      .listWrap {
+        flex:1;
+        padding:20px 16px;
+        overflow-y:auto;
+        .listRow {
+          position:relative;
+          margin-bottom:12px;
+          .photo {
+            @include photoStyle(60px,60px,50%);
+          }
+          .listContent {
+            min-width:0;
+            .nick {
+              @include font(13px,500,#303030);
+              @include fontCut;
+            }
+          }
+          .listBack {
+            margin-left:auto;
+            button {
+              width:62px;
+              line-height: 30px;
+              background-color: $BLACKBTNCOLOR;
+              @include border($BLACKBTNCOLOR,100px);
+              @include font(12px,500,white);
+              &.complete {
+                background-color: white;
+                @include border(#E3E3E3,100px);
+                @include font(12px,500,#303030);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

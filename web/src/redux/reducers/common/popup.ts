@@ -15,13 +15,15 @@ const initialState: ICommonPopupState = {
   // 달라져스 이벤트
   morePopup: false,
   confirmPopup: false, 
-  resultPopup: false, 
+  resultPopup: false,
 
   /* 공통 팝업 */
   commonPopup: false,
 
   /* 애니메이션 액션 팝업 */
   slidePopup: false,
+
+  slideAction: true,
 }
 
 const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
@@ -36,7 +38,13 @@ const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   },
   "common/SET_SLIDE_POPUP_OPEN": (state, {payload}) => {
     return {...payload, slidePopup: true, commonPopup: true}
-  }
+  },
+  "common/SET_SLIDE_RESET" : (state) => {
+    return {...state, slideAction: true};
+  },
+  "common/SET_SLIDE_CLOSE" : (state) => {
+    return {...state, slideAction: false};
+  },
 });
 
 export default popup;

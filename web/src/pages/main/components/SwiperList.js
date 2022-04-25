@@ -16,7 +16,7 @@ import {IMG_SERVER} from 'context/config'
 
 const SwiperList = (props) => {
 
-  const {data, profImgName, type, pullToRefreshPause} = props;
+  const {data, profImgName, type, pullToRefreshPause, topRankType} = props;
   const { globalState } = useContext(GlobalContext);
   const context = useContext(Context);
   const history = useHistory();
@@ -55,6 +55,15 @@ const SwiperList = (props) => {
     swiper?.slideTo(0);
   }
 
+  // 팀 상세 페이지 이동
+  const goTeamDetailPage = (e) => {
+    const { teamNo } = e.currentTarget.dataset;
+
+    if (teamNo !== undefined) {
+      history.push(`/team/detail/${teamNo}`);
+    };
+  };
+
   useEffect(() => {
     if (data?.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
       swiperRefresh();
@@ -69,18 +78,18 @@ const SwiperList = (props) => {
 
   return (
     <>
-      {data && data.length > 0 &&
-      <Swiper {...swiperParams}>
-        {data.map((item,index) => {
-          return (
-            <div key={index}>
-              <div className="listColumn" onClick={() => onClickAction(item)}>
-                <div className="photo">
-                  <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
-                    : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                  {item.rank && <div className={`rank-${item.rank}`}></div>}
-                  {
-                    !item.listenRoomNo && item.roomNo &&
+    {data && data.length > 0 &&
+    <Swiper {...swiperParams}>
+      {topRankType !== 'TEAM' && data.map((item,index) => {
+        return (
+          <div key={index}>
+            <div className="listColumn" onClick={() => onClickAction(item)}>
+              <div className="photo">
+                <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
+                  : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
+                {item.rank && <div className={`rank-${item.rank}`}></div>}
+                {
+                  !item.listenRoomNo && item.roomNo &&
                     <div className='livetag' onClick={(e) => {
                       e.stopPropagation();
                       RoomValidateFromClipMemNo(item.roomNo, item.memNo,context, locationStateHistory, item.nickNm);
@@ -93,33 +102,49 @@ const SwiperList = (props) => {
                         }}
                       />
                     </div>
-                  }
-                  {
-                    !item.roomNo && item.listenRoomNo && item.listenOpen !== 2 &&
-                    <div className='listenertag' onClick={(e) => {
-                      e.stopPropagation();
-                      RoomValidateFromListenerFollow({
-                        memNo:item.memNo, history:locationStateHistory, context, nickNm:item.nickNm, listenRoomNo:item.listenRoomNo
-                      });
-                    }}>
-                      <Lottie
-                        options={{
-                          loop: true,
-                          autoPlay: true,
-                          path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
-                        }}
-                      />
-                    </div>
-                  }
-                  {item.type_media === 'v' && <div className="video" />}
-                </div>
-                <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
+                }
+                {
+                  !item.roomNo && item.listenRoomNo && item.listenOpen !== 2 &&
+                  <div className='listenertag' onClick={(e) => {
+                    e.stopPropagation();
+                    RoomValidateFromListenerFollow({
+                      memNo:item.memNo, history:locationStateHistory, context, nickNm:item.nickNm, listenRoomNo:item.listenRoomNo
+                    });
+                  }}>
+                    <Lottie
+                      options={{
+                        loop: true,
+                        autoPlay: true,
+                        path: `${IMG_SERVER}/dalla/ani/main_headset_icon.json`
+                      }}
+                    />
+                  </div>
+                }
+                {item.type_media === 'v' && <div className="video" />}
               </div>
+              <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
             </div>
-          )
-        })}
-      </Swiper>
-      }
+          </div>
+        )
+      })}
+
+      {topRankType === 'TEAM' && data.map((list, index) => {
+        return (
+          <div key={index}>
+            <div className="listColumn" data-team-no={list.team_no} onClick={goTeamDetailPage}>
+              <div className="teamSymbol">
+                <img src={`${IMG_SERVER}/team/parts/B/${list.team_bg_code}.png`} alt="" />
+                <img src={`${IMG_SERVER}/team/parts/E/${list.team_edge_code}.png`} alt="" />
+                <img src={`${IMG_SERVER}/team/parts/M/${list.team_medal_code}.png`} alt="" />
+                <div className={`rank-${index + 1}`}></div>
+              </div>
+              <p className="userNick">{list.team_name}</p>
+            </div>
+          </div>
+        );
+      })}
+    </Swiper>
+    }
     </>
   )
 }
