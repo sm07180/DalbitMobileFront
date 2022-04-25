@@ -71,7 +71,7 @@ const MainPage = () => {
     storeUrl: '',
   });
 
-  const [rankingList , setRankingList]=useState([]);
+  const [rankingListInfo , setRankingListInfo]=useState({list: [], listCnt: 0, type: ''});
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);  // pullToRefresh 할때 (모바일)
   const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false); // 로고, 헤더, 푸터 등 메인 페이지 리로드할때
 
@@ -368,14 +368,18 @@ const MainPage = () => {
           rankingDate: convertDateTimeForamt(new Date() , "-")
         }).then(res => {
           if (res.result === "success") {
-            setRankingList(res.data.list);
+            const list = res.data.list;
+            const listCnt = res.data.listCnt;
+            setRankingListInfo({ list, listCnt, type });
           }
         });
       } else if (type === 'TEAM') {
         const realRank = await Api.getTeamRankWeekList({ tDate: moment().format('YYYY-MM-DD'), pageNo: 1, pagePerCnt: 10, memNo: 0});
         if (realRank.code === '00000') {
           const { data } = realRank;
-          setRankingList(data.list);
+          const list = data.list;
+          const listCnt = data.listCnt;
+          setRankingListInfo({ list, listCnt, type });
         }
       } else {
         Api.get_ranking({
@@ -388,9 +392,11 @@ const MainPage = () => {
           }
         }).then(res=> {
           if(res.result === "success"){
-            setRankingList(res.data.list);
+            const list = res.data.list;
+            const listCnt = res.data.listCnt;
+            setRankingListInfo({ list, listCnt, type });
           }else{
-            setRankingList([]);
+            setRankingListInfo({ list: [], listCnt: 0, type });
           }
         });
       }
@@ -404,7 +410,6 @@ const MainPage = () => {
 
   const topRankTabChange = (value) => {
     if (value !== undefined && value !== topRankType) {
-      setRankingList([]);
       setTopRankType(value);
     }
   }
@@ -520,8 +525,8 @@ const MainPage = () => {
           <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
         </div>
-        {rankingList.length > 0 &&
-          <SwiperList data={rankingList} profImgName="profImg" type="top10" topRankType={topRankType}/>
+        {rankingListInfo.list.length > 0 &&
+          <SwiperList data={rankingListInfo.list} profImgName="profImg" type="top10" topRankType={rankingListInfo.type}/>
         }
       </section>
       <section className='bannerWrap'>
