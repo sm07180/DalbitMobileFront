@@ -76,7 +76,7 @@ export default (props) => {
     refBtn.current.focus()
     return () => {
       document.body.style.overflow = ''
-      if(context.adminChecker) {
+      if(globalState.adminChecker) {
         sessionStorage.removeItem('room_active')
       }
     }

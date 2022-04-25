@@ -231,7 +231,7 @@ const Write = (props) => {
       {popup &&
       <LayerPopup setPopup={setPopup}>
         <div className='popTitle'>개인정보 수집 및 이용에 동의</div>
-        {!context.token.isLogin ?
+        {!globalState.token.isLogin ?
           <div className='popContent'>
             <ul className='dashList'>
               <li>수집 및 이용 항목 : 휴대전화번호</li>

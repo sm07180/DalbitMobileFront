@@ -3,7 +3,6 @@ import {Switch, Route, useParams, Redirect, useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
-import {StoreLink} from 'context/link'
 // components
 import MyProfile from './myProfile'
 import {BeforeLogout} from 'common/logout_func'

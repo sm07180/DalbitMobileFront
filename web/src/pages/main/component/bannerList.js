@@ -36,7 +36,7 @@ export default React.forwardRef((props, ref) => {
           const room_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
           RoomJoin({roomNo: room_no})
         }else{
-          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+          dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
         }
       } else {
         if (isHybrid()) {
@@ -66,7 +66,7 @@ export default React.forwardRef((props, ref) => {
             const room_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
             RoomJoin({roomNo: room_no})
           }else{
-            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
           }
         } else {
           history.push(linkUrl)

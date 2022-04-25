@@ -1,5 +1,10 @@
 import { useEffect, useRef } from "react";
 import {isAndroid} from "../../context/hybrid";
+import {
+  setGlobalCtxBackEventCallback,
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackState
+} from "../../redux/actions/globalCtx";
 
 export function usePrevious(value: any) {
   const ref = useRef();
@@ -10,21 +15,21 @@ export function usePrevious(value: any) {
   return ref.current;
 }
 
-export const useAddBackEvent = (context, name= '', callback = () => {} ) => {
+export const useAddBackEvent = (dispatch, globalState, name= '', callback = () => {} ) => {
   useEffect(() => {
-    if(isAndroid() && context) {
-      context.action.updateSetBack(true);
-      context.action.updateBackFunction({name: 'callback'});
-      context.action.updateBackEventCallback(callback);
+    if(isAndroid() && dispatch) {
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'callback'}));
+      dispatch(setGlobalCtxBackEventCallback(callback));
     }
 
     return () => {
-      if (isAndroid() && context) {
-        if (context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null);
+      if (isAndroid() && dispatch) {
+        if (globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
         }
-        context.action.updateBackFunction({name: ''});
-        context.action.updateBackEventCallback(null);
+        dispatch(setGlobalCtxBackFunction({name: ''}));
+        dispatch(setGlobalCtxBackEventCallback(null));
       }
     }
   },[]);
