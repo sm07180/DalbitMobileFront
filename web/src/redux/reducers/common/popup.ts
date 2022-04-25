@@ -22,6 +22,8 @@ const initialState: ICommonPopupState = {
 
   /* 애니메이션 액션 팝업 */
   slidePopup: false,
+
+  slideAction: true,
 }
 
 const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
@@ -36,7 +38,13 @@ const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   },
   "common/SET_SLIDE_POPUP_OPEN": (state, {payload}) => {
     return {...payload, slidePopup: true, commonPopup: true}
-  }
+  },
+  "common/SET_SLIDE_RESET" : (state) => {
+    return {...state, slideAction: true};
+  },
+  "common/SET_SLIDE_CLOSE" : (state) => {
+    return {...state, slideAction: false};
+  },
 });
 
 export default popup;
