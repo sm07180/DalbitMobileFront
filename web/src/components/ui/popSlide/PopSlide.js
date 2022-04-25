@@ -11,8 +11,8 @@ let slidePopTimeout;
 
 /* 팝업 닫기 */
 export const closePopup = (dispatch) => {
+  dispatch(setSlideClose());
   slidePopTimeout = setTimeout(() => {
-    dispatch(setSlidePopupClose());
     dispatch(setCommonPopupClose());
   }, 400);
 };
@@ -34,7 +34,6 @@ const PopSlide = (props) => {
       if(closeCallback) {
         closeCallback();
       }
-      dispatch(setSlideClose());
       closePopup(dispatch);
     }
   };

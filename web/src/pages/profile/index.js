@@ -426,10 +426,7 @@ const ProfilePage = () => {
 
   /* 팝업 닫기 공통 */
   const closePopupAction = () => {
-    dispatch(setSlideClose());
-    setTimeout(() => {
-      dispatch(setSlidePopupClose());
-    }, 400);
+    closePopup(dispatch);
   }
 
   /* 헤더 더보기 버튼 클릭 */
