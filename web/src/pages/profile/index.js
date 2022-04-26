@@ -79,6 +79,7 @@ const ProfilePage = () => {
   const profileTab = useSelector(state => state.profileTab);
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
+  const member = useSelector(state => state.member);
 
   const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 피드
 
@@ -93,7 +94,7 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
-    let targetMemNo = params.memNo ? params.memNo : globalState.profile.memNo;
+    let targetMemNo = params.memNo ? params.memNo : member.memNo;
 
     Api.profile({params: {memNo: targetMemNo }}).then(res => {
       if(res.code === '0') {
@@ -110,7 +111,7 @@ const ProfilePage = () => {
   /* 방송공지 데이터 호출 */
   const getNoticeData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       pageNo: isInit ? 1 : noticeData.paging.next,
       pageCnt: isInit? 20: noticeData.paging.records,
       topFix: 0,
@@ -137,7 +138,7 @@ const ProfilePage = () => {
   /* 방송공지(고정) 데이터 호출 */
   const getNoticeFixData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       pageNo: isInit ? 1 : noticeFixData.paging.next,
       pageCnt: isInit? 20: noticeFixData.paging.records,
     }
@@ -161,7 +162,7 @@ const ProfilePage = () => {
   /* 피드 데이터 */
   const getFeedData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       pageNo: isInit ? 1 : feedData.paging.next,
       pageCnt: isInit? 20: feedData.paging.records,
     }
@@ -188,7 +189,7 @@ const ProfilePage = () => {
   /* 팬보드 데이터 */
   const getFanBoardData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
       records: isInit? 20: fanBoardData.paging.records
     }
@@ -218,7 +219,7 @@ const ProfilePage = () => {
   /* 클립 데이터 */
   const getClipData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       page: isInit ? 1 : clipData.paging.next,
       records: isInit? 10: clipData.paging.records
     }
