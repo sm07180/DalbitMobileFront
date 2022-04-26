@@ -1,0 +1,60 @@
+@import "components/ui/_mixin.scss";
+  
+.favorites {
+  margin-bottom:0;
+  .swiper-wrapper {
+    padding-left:16px;
+    margin-bottom:28px;
+    .swiper-slide {
+      width:auto;
+      margin-right:10px;
+      &:last-child {
+        margin-right:28px;
+      }
+      .listColumn {
+        width:80px;
+        cursor: pointer;
+        .photo {
+          @include flex(center,center);
+          height:80px;
+          margin-bottom:4px;
+          background-image: linear-gradient(to bottom,#FF3C7B,#FF8565) !important;
+          background-origin: border-box;
+          background-clip: border-box;
+          overflow:hidden;
+          @include border(transparent,50%,2px);
+          img {
+            width:70px;
+            height:70px;
+            object-fit: cover;
+            background-color: white;
+            @include border(white,50%,3px);
+          }
+          &.off {
+            background:#ccc !important;
+          }
+        }
+        p {
+          width: 100%;
+          line-height:16px;
+          padding: 0 8px;
+          text-align:center;
+          @include font(12px,$Regular,#303030);
+          @include fontCut;
+        }
+      }
+      .listMoreBox{
+        @include flex(center, center);
+        width:80px;
+        height: 80px;
+        background-color: #f6f6f6;
+        @include border(white,50%,5px);
+        @include font(20px, $Bold, #acacac);
+        cursor: pointer;
+      }
+    }
+  }
+  .empty {
+    display:none;
+  }
+}

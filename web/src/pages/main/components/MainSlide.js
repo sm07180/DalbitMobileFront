@@ -1,18 +1,21 @@
-import React, {useContext, useEffect, useState} from 'react'
-import Swiper from 'react-id-swiper'
+import React, {useContext, useEffect, useState, useRef} from 'react';
 
+import Api from 'context/api';
+import Swiper from 'react-id-swiper';
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
+import UtilityCommon from "common/utility/utilityCommon";
+import photoCommon from "common/utility/photoCommon";
+
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {Context} from "context";
-import Api from 'context/api'
-import photoCommon from "common/utility/photoCommon";
 
 const MainSlide = (props) => {
-  const {data, common, pullToRefreshPause} = props
+  const {data, common, ref, pullToRefreshPause} = props;
 
+  const commonRef = useRef(ref);
   const context = useContext(Context);
   const history = useHistory();
 
@@ -40,7 +43,6 @@ const MainSlide = (props) => {
           } else {
             RoomValidateFromClipMemNo(target.room_no, target.mem_no, context, history, target.mem_nick); // 방송방으로 이동
           }
-
         }
       },
     }
