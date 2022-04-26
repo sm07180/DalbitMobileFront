@@ -77,11 +77,15 @@ export interface NoticeNewAlarmState {
     qna: number;
 }
 
+type noticeTabNameType = "알림" | "공지사항" | "1:1문의";
+type inquireTabType = "문의하기" | "나의문의내역";
 export interface NoticeTabListState {
     tabList: Array<string>;
-    tabName: string;
+    tabName: noticeTabNameType;
     isRefresh: boolean;
     isReset: boolean;
+    inquireTabList: Array<string>;
+    inquireTab: inquireTabType, // 1:1문의 하위 탭
 }
 
 export interface postDataState {

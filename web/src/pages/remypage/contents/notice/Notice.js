@@ -15,7 +15,7 @@ import Tabmenu from "pages/remypage/components/Tabmenu";
 import InquireWrite from "pages/recustomer/contents/inquire/InquireWrite";
 import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeData, setNoticeTab, setPostData} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab, setPostData, setNoticeTabList} from "redux/actions/notice";
 import API from "context/api";
 import {RoomJoin} from "context/room";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
@@ -32,6 +32,8 @@ const NoticePage = () => {
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const postData = useSelector(state => state.post);
+  const noticeTab = useSelector(state => state.noticeTabList);
+  
   const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
   const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
@@ -206,6 +208,10 @@ const NoticePage = () => {
     }
   }
 
+  const inquireTabChange = (index) => {
+    dispatch(setNoticeTabList({...noticeTab, inquireTab: noticeTab.inquireTabList[index]}))
+  };
+  
   const createContent = () => {
     switch (tab) {
       case '알림':
@@ -215,8 +221,14 @@ const NoticePage = () => {
       case '1:1문의':
         return (
           <div className='inquiry'>
-            <Tabmenu data={inquireTabmenu} tab={inquire} setTab={setInquire} />
-            {inquire === '문의하기' ?
+            <ul className='tabmenu'>
+              {noticeTab.inquireTabList.map((item, index) => {
+                return (
+                  <li className={`${noticeTab.inquireTab === item ? 'active' : ""}`} key={index} onClick={() => {inquireTabChange(index)}}>{item}</li>
+                )
+              })}
+            </ul>
+            {noticeTab.inquireTab === "문의하기" ?
               <InquireWrite setInquire={setInquire}/>
               :
               <InquireLog/>
