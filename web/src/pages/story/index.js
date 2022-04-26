@@ -43,7 +43,6 @@ export default () => {
       if (result === 'success') {
         const filtered = storyList.filter((story) => story.storyIdx !== storyIdx)
         setStoryList(filtered)
-        setTotalCnt(totalCnt - 1)
       } else {
         globalCtx.action.alert({title: 'Error', msg: message})
       }
@@ -56,7 +55,6 @@ export default () => {
 
   const scrollEvtHdr = () => {
     if (totalPage > storyPageInfo.pageNo && Utility.isHitBottom()) {
-      console.log("132123");
       setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1} )
     }
   }
@@ -94,24 +92,25 @@ export default () => {
               <p className='reference'>※ 최근 3개월 내역만 볼 수 있습니다.</p>
               <div className='storyWrap'>
                 {
-                  storyList.map((data, index) => {
+                  storyList.map((story, index) => {
+                    const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents} = story
                     return (
                       <div className='storyList' key={index}>
-                        <div className='thumbnail' onClick={() => {goLink(`${data.writer_mem_id}`)}}>
-                          <img src={data.writer_mem_profile} alt=""/>
+                        <div className='thumbnail' onClick={() => {goLink(`${writer_mem_id}`)}}>
+                          <img src={writer_mem_profile} alt=""/>
                         </div>
                         <div className='listContent'>
                           <div className='dataInfo'>
                             <div className='infoWrap'>
-                              <div className='userNick' onClick={() => {goLink(`${data.writer_mem_id}`)}}>{data.writer_mem_nick}</div>
-                              <div className='writeTime'>{moment(data.write_date).format('YYYY.MM.DD hh:mm')}</div>
+                              <div className='userNick' onClick={() => {goLink(`${writer_mem_id}`)}}>{writer_mem_nick}</div>
+                              <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD hh:mm')}</div>
                             </div>
                             <div className='delBtnWrap'>
-                              <span className='delBtn' onClick={() => {delAction(data.room_no, data.writer_no)}}>삭제</span>
+                              <span className='delBtn' onClick={() => {delAction(room_no, writer_no)}}>삭제</span>
                             </div>
                           </div>
                           <div className='messageWrap'>
-                            {data.contents}
+                            {contents}
                           </div>
                         </div>
                       </div>
