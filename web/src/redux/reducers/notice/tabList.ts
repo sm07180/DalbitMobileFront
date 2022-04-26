@@ -2,7 +2,7 @@ import { createReducer } from "typesafe-actions";
 import { NoticeTabListState, NoticeActions } from "../../types/noticeType";
 
 const initialState: NoticeTabListState = {
-    tabList: ["알림", "공지사항"],
+    tabList: ["알림", "공지사항", "1:1문의"],
     tabName: "공지사항",
     isRefresh: true,
     isReset: true
