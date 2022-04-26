@@ -12,7 +12,11 @@ const ButtonWrap = (props) => {
     Api.getTeamInsChk({memNo:props.memNo}).then((res) => {
       if(res.data === 1){
         history.push('/team/make');
-      }else{
+      }else if(res.data === -1){
+        props.context.action.toast({
+          msg: '15레벨부터 팀을 만들 수 있습니다.'
+        })
+      } else{
         props.context.action.toast({
           msg: res.message
         })
