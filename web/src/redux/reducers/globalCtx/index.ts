@@ -514,7 +514,7 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, tooltipStatus: payload}
   },
   "global/ctx/SET_USER_PROFILE": (state, {payload}) => {
-    return {...state, userProfile: payload}
+    return {...state, userProfile: payload, profile: payload}
   },
   "global/ctx/SET_BROAD_CLIP_DIM": (state, {payload}) => {
     return {...state, broadClipDim: payload}
