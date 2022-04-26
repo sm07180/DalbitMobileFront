@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="level_g_s" width="16" height="16" viewBox="0 0 16 16">
-    <g id="like_g_s">
-        <path id="사각형_41" fill="none" d="M0 0H16V16H0z" data-name="사각형 41"/>
-    </g>
-    <circle id="타원_515" cx="6" cy="6" r="6" fill="#757575" data-name="타원 515" transform="translate(2 2)"/>
-    <text id="L" fill="#fff" font-family="NanumSquareB, NanumSquare" font-size="9px" letter-spacing="-0.025em" transform="translate(5.5 10.8)">
-        <tspan x="0" y="0">L</tspan>
-    </text>
-</svg>

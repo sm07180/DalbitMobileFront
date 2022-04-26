@@ -3,17 +3,13 @@
  * @brief Router 목록들
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
-import ScrollToTop from 'components/lib/ScrollToTop'
 import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
 import Popup from 'components/ui/popup'
 
-import Common from "common";
 import Modal from "common/modal";
-import Alert from "common/alert";
-import {route} from "express/lib/router";
 import {useSelector} from "react-redux";
 
 // import Main from 'pages/main'
@@ -97,7 +93,6 @@ const legalRepresentative = React.lazy(() => import('pages/legalRepresentative')
 
 //----- dalla -----//
 
-const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
 const Exchange = React.lazy(() => import('pages/reExchange'))
 const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
@@ -114,9 +109,6 @@ const EventPage = React.lazy(() => import('pages/event_page'))
 const EventPcService = React.lazy(() => import('pages/event_pc_service'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
-const Proofshot = React.lazy(() => import('pages/event_proofshot'))
-const Package = React.lazy(() => import('pages/event_package'))
-const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
@@ -133,7 +125,6 @@ const Agree = React.lazy(() => import('pages/agree'))
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
-const TempPage = React.lazy(() => import('pages/temp'))
 
 const PartnerDj = React.lazy(() => import('pages/partnerDj'))
 const StarDj = React.lazy(() => import('pages/starDj'))
@@ -173,11 +164,9 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <ScrollToTop />
       <Popup />
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
 
         <Route exact path="/mobileWeb" component={MobileWeb} />
@@ -315,7 +304,6 @@ const Router = () => {
         <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-        <Route exact path="/temp_page" component={TempPage} />
         <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />

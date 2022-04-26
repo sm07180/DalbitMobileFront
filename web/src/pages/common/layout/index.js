@@ -2,7 +2,6 @@
  *
  */
 //context
-import Gnb from 'pages/common/gnb'
 import Ip from 'pages/common/ip'
 import Message from 'pages/common/message'
 import NewPlayer from 'pages/common/newPlayer'
@@ -68,8 +67,6 @@ const Layout = (props) => {
     <>
       {/* Sticker */}
       {globalState.sticker && <Sticker />}
-      {/* GNB */}
-      {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <Article
         className={`content-article mobileType ${

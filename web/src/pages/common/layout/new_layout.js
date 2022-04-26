@@ -6,7 +6,6 @@ import styled from 'styled-components'
 //context
 
 //layout
-import Gnb from 'pages/common/gnb'
 import NewPlayer from 'pages/common/newPlayer'
 import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
@@ -29,8 +28,6 @@ const Layout = (props) => {
     <React.Fragment>
       {/* Sticker */}
       {globalState.sticker && <Sticker/>}
-      {/* GNB */}
-      {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {props.header !== undefined && <Header title={props.header} />}
       {/* 탑버튼 */}
       <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
