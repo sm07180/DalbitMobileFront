@@ -446,6 +446,7 @@ const TeamDetail = (props) => {
             teamMemList.map((data,index)=>{
               let photoUrl = data.tm_image_profile
               let photoServer = "https://photo.dalbitlive.com";
+              let memNoChk= Number(data.tm_mem_no) === Number(memberRdx.memNo)
               return(
                 <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">
@@ -453,10 +454,12 @@ const TeamDetail = (props) => {
                       <div className="nick">{data.tm_mem_nick}</div>
                       {data.team_mem_type === 'm' && <img src={`${IMG_SERVER}/team/teamLeader.png`} alt="teamLeader" />}
                     </div>
+                    {(statChk === 'm' ||(statChk === 't' && memNoChk)) &&
                     <div className="listItem">
                       <div className="iconPoint"/>
                       <div className="point">{Utility.addComma(`${data.tm_mem_score}`)}</div>
                     </div>
+                    }
                   </div>
       {/*            <div className="listBack">
                     <BadgeLive />
