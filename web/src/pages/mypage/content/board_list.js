@@ -2,19 +2,27 @@
  * @file /mypage/content/fan-board.js
  * @brief 마이페이지 팬보드2.5v
  */
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 // modules
-import {useLocation, useHistory} from 'react-router-dom'
+import {useLocation} from 'react-router-dom'
 // context
-import {Context} from 'context'
 import Api from 'context/api'
 // component
 import BoardItem from './board_item'
 import WriteBoard from './board_write'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBoardIdx,
+  setGlobalCtxBoardModifyInfo,
+  setGlobalCtxFanBoardReply,
+  setGlobalCtxFanBoardReplyNum,
+  setGlobalCtxReplyIdx,
+  setGlobalCtxToggleState
+} from "redux/actions/globalCtx";
 //--------------------------------------------------------------------------
 export default (props) => {
-  // context && location
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let location = useLocation()
   let urlrStr = location.pathname.split('/')[2]
   //전체 댓글리스트(props)
@@ -27,26 +35,27 @@ export default (props) => {
 
   //정보 댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
-    context.action.updateReplyIdx(boardIdx)
+    dispatch(setGlobalCtxReplyIdx(boardIdx))
     setReplyWriteState(true)
     //drill reply fetch
     fetchDataReplyList(boardIdx)
     //분기 체크
-    if (context.fanboardReplyNum === boardIdx) {
-      context.action.updateFanboardReplyNum(-1)
+    if (globalState.fanboardReplyNum === boardIdx) {
+
+      dispatch(setGlobalCtxFanBoardReplyNum(-1))
     } else {
-      context.action.updateFanboardReplyNum(boardIdx)
+      dispatch(setGlobalCtxFanBoardReplyNum(boardIdx))
     }
-    context.action.updateFanboardReply(item)
-    context.action.updateToggleAction(true)
+    dispatch(setGlobalCtxFanBoardReply(item))
+    dispatch(setGlobalCtxToggleState(true))
     //초기화
-    context.action.updateBoardIdx(0)
-    context.action.updateBoardModifyInfo(null)
+    dispatch(setGlobalCtxBoardIdx(0))
+    dispatch(setGlobalCtxBoardModifyInfo(null))
     // window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
   //대댓글 클릭시 포커스
   useEffect(() => {
-    if (context.fanboardReplyNum && context.fanboardReplyNum !== -1) {
+    if (globalState.fanboardReplyNum && globalState.fanboardReplyNum !== -1) {
       if (document.getElementsByClassName('list-item on')[0]) {
         let listTop = document.getElementsByClassName('list-item on')[0].offsetTop
         if (props.boardType === 'userprofile') {
@@ -57,7 +66,7 @@ export default (props) => {
         }
       }
     }
-  }, [context.fanboardReplyNum])
+  }, [globalState.fanboardReplyNum])
   // 팬보드 댓글 조회
   async function fetchDataReplyList(boardIdx) {
     const res = await Api.member_fanboard_reply({
@@ -75,7 +84,7 @@ export default (props) => {
     if (value === true) {
       props.set(true)
       if (writeType !== 'clip_board') {
-        fetchDataReplyList(context.fanboardReplyNum)
+        fetchDataReplyList(globalState.fanboardReplyNum)
       }
     }
   }
@@ -96,8 +105,8 @@ export default (props) => {
               const {replyCnt, replyIdx} = item
               return (
                 <React.Fragment key={index}>
-                  <div className={`list-item ${replyIdx === context.fanboardReplyNum && 'on'}`}>
-                    {item && <BoardItem key={`board-${index}`} data={item} set={props.set} type={boardType} />}
+                  <div className={`list-item ${replyIdx === globalState.fanboardReplyNum && 'on'}`}>
+                    {item && <BoardItem key={`board-${index}`} data={item} set={props.set} type={boardType}/>}
                     {boardType !== 'clip_board' && (
                       <div className="list-item__bottom">
                         <button className="btn__reply" onClick={() => ReplyInfoTransfer(replyIdx, item)}>
@@ -111,32 +120,32 @@ export default (props) => {
                         </button>
                       </div>
                     )}
-                    {replyIdx === context.fanboardReplyNum &&
-                      boardReplyList &&
-                      boardReplyList !== false &&
-                      boardReplyList.map((item1, index1) => {
-                        return (
-                          <div
-                            className={
-                              item1.replyIdx === (context.boardModifyInfo && context.boardModifyInfo.replyIdx)
-                                ? `reply-list modify`
-                                : `reply-list `
-                            }
+                    {replyIdx === globalState.fanboardReplyNum &&
+                    boardReplyList &&
+                    boardReplyList !== false &&
+                    boardReplyList.map((item1, index1) => {
+                      return (
+                        <div
+                          className={
+                            item1.replyIdx === (globalState.boardModifyInfo && globalState.boardModifyInfo.replyIdx)
+                              ? `reply-list modify`
+                              : `reply-list `
+                          }
                             key={index1}>
-                            <BoardItem
-                              key={`reply-${index1}`}
-                              data={item1}
-                              set={setAction}
-                              isViewOn={context.fanboardReply.viewOn}
-                              replyShowIdx={context.fanboardReplyNum}
-                              titleReplyInfo={context.fanboardReply}
-                            />
-                          </div>
-                        )
-                      })}
-                    {replyIdx === context.fanboardReplyNum && replyWriteState && (
+                          <BoardItem
+                            key={`reply-${index1}`}
+                            data={item1}
+                            set={setAction}
+                            isViewOn={globalState.fanboardReply.viewOn}
+                            replyShowIdx={globalState.fanboardReplyNum}
+                            titleReplyInfo={globalState.fanboardReply}
+                          />
+                        </div>
+                      )
+                    })}
+                    {replyIdx === globalState.fanboardReplyNum && replyWriteState && (
                       <WriteBoard
-                        isViewOn={context.fanboardReply.viewOn}
+                        isViewOn={globalState.fanboardReply.viewOn}
                         replyWriteState={replyWriteState}
                         set={setAction}
                         type={'reply'}

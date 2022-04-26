@@ -1,18 +1,17 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-import {ClipRankContext} from 'context/clip_rank_ctx'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
 import {DATE_TYPE} from '../../constant'
 import '../../index.scss'
-import DalbitTextArea from 'pages/mypage/content/textarea'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Receive = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
-  const [winMsg, setWinMsg] = useState('')
-  const {clipRankState} = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {formState} = clipRankState
   const [rankingList, setRankingList] = useState([])
   const [myProfile, setMyProfile] = useState([])
@@ -38,7 +37,7 @@ const Receive = () => {
   // const validation = () => {
   //   if (formState.dateType === DATE_TYPE.WEEK) {
   //     if (!winMsg) {
-  //       context.action.alert({
+  //       dispatch(setGlobalCtxMessage({type:"alert",
   //         msg:
   //           '소감작성을 완료하여 주세요.<br />소감 작성은 주간 클립TOP3에게만 주어지는 혜택으로 회원님만의 매력을 어필할 수 있습니다.'
   //       })
@@ -49,7 +48,7 @@ const Receive = () => {
   //     }
   //     clipWinMsg()
   //   } else {
-  //     context.action.alert({
+  //     dispatch(setGlobalCtxMessage({type:"alert",
   //       msg: '보상지급이 완료되었습니다.<br />보상달은 > 내 지갑에서 확인할 수 있습니다.',
   //       callback: () => {
   //         history.replace('/clip_rank')
@@ -59,12 +58,13 @@ const Receive = () => {
   // }
 
   const validation = () => {
-    context.action.alert({
+    dispatch(setGlobalCtxMessage({
+      type: "alert",
       msg: '보상지급이 완료되었습니다.',
       callback: () => {
         history.replace('/clip_rank')
       }
-    })
+    }))
   }
 
   // const clipWinMsg = async () => {
@@ -72,7 +72,7 @@ const Receive = () => {
   //     winMsg: winMsg
   //   })
   //   if (res.result === 'success') {
-  //     context.action.alert({
+  //     dispatch(setGlobalCtxMessage({type:"alert",
   //       msg:
   //         '소감작성 및 보상지급이 완료되었습니다.<br />보상달은 > 내 지갑에서,<br />보상배지는 > 프로필에서 확인할 수 있습니다.',
   //       title: '',
@@ -81,7 +81,7 @@ const Receive = () => {
   //       }
   //     })
   //   } else {
-  //     context.action.alert({
+  //     dispatch(setGlobalCtxMessage({type:"alert",
   //       msg: `${res.message}`,
   //       callback: () => {
   //         history.replace('/clip_rank')
@@ -100,10 +100,10 @@ const Receive = () => {
 
   useEffect(() => {
     const createMyRank = () => {
-      if (context.token.isLogin) {
+      if (globalState.token.isLogin) {
         const settingProfileInfo = async (memNo) => {
           const profileInfo = await Api.profile({
-            params: {memNo: context.token.memNo}
+            params: {memNo: globalState.token.memNo}
           })
           if (profileInfo.result === 'success') {
             setMyProfile(profileInfo.data)

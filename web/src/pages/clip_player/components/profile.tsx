@@ -1,27 +1,29 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-import { GlobalContext } from "context";
-import { ClipContext } from "context/clip_ctx";
-import { ModalContext } from "context/modal_ctx";
 import { printNumber, addComma } from "lib/common_fn";
-
 import { getProfile, postAddFan, deleteFan, MypageBlackListAdd } from "common/api";
 import { tabType } from "../constant";
 // lib
 import Swiper from "react-id-swiper";
 import GiftDalPop from "./gift_dal_pop";
-import { BroadcastContext } from "context/broadcast_ctx";
 import BadgeList from "../../../common/badge_list";
 import "../../../asset/scss/module/mypage/index.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxUserMemNo} from "../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxMultiViewer,
+  setGlobalCtxSetToastStatus
+} from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType, setClipCtxUserMemNo} from "../../../redux/actions/clipCtx";
 
 let Profile = () => {
   const history = useHistory();
-  const { broadcastAction } = useContext(BroadcastContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
-  const { clipState, clipAction } = useContext(ClipContext);
-  const { setUserMemNo } = clipAction;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
+
   const { baseData, clipInfo, clipPlayer } = globalState;
   const { isLogin } = baseData;
 
@@ -56,21 +58,21 @@ let Profile = () => {
     if (result === "success") {
       setProfileData(data);
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
         callback: () => {
           history.goBack();
           clipPlayer!.clipExit();
         },
-      });
+      }));
     }
   }
 
   const viewProfile = useCallback(
       (memNo: string) => {
         if (isLogin === true) {
-          clipAction.setRightTabType && clipAction.setRightTabType(tabType.PROFILE);
+          dispatch(setClipCtxRightTabType(tabType.PROFILE))
           fetchProfileData(memNo);
         } else {
           return history.push("/login");
@@ -82,9 +84,9 @@ let Profile = () => {
   const viewSpecialList = useCallback(
       (memNo: string) => {
         if (isLogin === true) {
-          setUserMemNo!(memNo);
-          broadcastAction.setUserMemNo!(memNo);
-          clipAction.setRightTabType && clipAction.setRightTabType(tabType.SPECIALDJLIST);
+          dispatch(setClipCtxUserMemNo(memNo));
+          dispatch(setBroadcastCtxUserMemNo(memNo));
+          dispatch(setClipCtxRightTabType(tabType.SPECIALDJLIST))
         } else {
           return history.push("/login");
         }
@@ -101,12 +103,10 @@ let Profile = () => {
         fetchProfileData(memNo);
         if (fanState === 0) {
           setFanState && setFanState(-1);
-          if (globalAction.callSetToastStatus) {
-            globalAction.callSetToastStatus({
-              status: true,
-              message: `${nickNm}님의 팬이 되었습니다`,
-            });
-          }
+          dispatch(setGlobalCtxSetToastStatus({
+            status: true,
+            message: `${nickNm}님의 팬이 되었습니다`,
+          }));
         }
       }
     }
@@ -114,8 +114,7 @@ let Profile = () => {
   };
 
   const cancelFan = (memNo: string, nickNm: string) => {
-    globalAction.setAlertStatus &&
-    globalAction.setAlertStatus({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
@@ -124,12 +123,10 @@ let Profile = () => {
           const { result, message } = await deleteFan({ memNo: memNo });
           if (result === "success") {
             fetchProfileData(memNo);
-            if (globalAction.callSetToastStatus) {
-              globalAction.callSetToastStatus({
-                status: true,
-                message: message,
-              });
-            }
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: message,
+            }));
 
             if (fanState === 0) {
               setFanState && setFanState(-1);
@@ -141,7 +138,7 @@ let Profile = () => {
 
         DeleteFanFunc();
       },
-    });
+    }));
   };
 
   const defalutRank = [
@@ -240,17 +237,16 @@ let Profile = () => {
         memNo: profileData.memNo,
       });
       if (result === "success") {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: message,
-        });
+        }));
       } else {
-        globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
       // setRightTabType && setRightTabType(tabType.LISTENER);
     }
@@ -302,10 +298,10 @@ let Profile = () => {
                           src={profileData.holder}
                           className="holder"
                           onClick={() => {
-                            globalAction.setMultiViewer?.({
+                            dispatch(setGlobalCtxMultiViewer({
                               show: true,
                               list: profileData.profImgList.length ? profileData.profImgList : [{ profImg: profileData.profImg }],
-                            });
+                            }));
                           }}
                       />
                     </div>
@@ -379,11 +375,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -416,11 +412,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -450,11 +446,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -474,11 +470,11 @@ let Profile = () => {
                           <button
                               className="rankingList__linkBtn"
                               onClick={() => {
-                                setUserMemNo!(profileData.memNo);
+                                dispatch(setClipCtxUserMemNo(profileData.memNo));
                                 if (baseData.memNo === profileData.memNo) {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_MY);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_MY))
                                 } else {
-                                  clipAction.setRightTabType && clipAction.setRightTabType(tabType.FAN_RANK_USER);
+                                  dispatch(setClipCtxRightTabType(tabType.FAN_RANK_USER))
                                 }
                               }}
                           >
@@ -507,7 +503,7 @@ let Profile = () => {
                               className="btn btn_gift"
                               onClick={() => {
                                 // giftDal();
-                                clipAction.setRightTabType && clipAction.setRightTabType(tabType.GIFT_GIVE);
+                                dispatch(setClipCtxRightTabType(tabType.GIFT_GIVE))
                                 // setUserNickNm && setUserNickNm(profileData.nickNm);
                               }}
                           >

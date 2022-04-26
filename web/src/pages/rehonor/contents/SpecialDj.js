@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {Context, GlobalContext} from 'context'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -13,12 +12,15 @@ import {useHistory, withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SpecialDj = (props) => {
-  const context = useContext(Context);
-  const gtx = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
-  const {token, profile} = context;
+  const {token, profile} = globalState;
   const [specialList, setSpecialList] = useState([]);
   const [specialHistory, setSpecialHistory] = useState([]);
   const [specialLog, setSpecialLog] = useState([]);
@@ -59,10 +61,10 @@ const SpecialDj = (props) => {
         setSpecialHistory(res.data)
         setSpecialLog(res.data.list)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {},
           msg: res.message
-        })
+        }))
       }
     });
   }
@@ -77,16 +79,16 @@ const SpecialDj = (props) => {
   }
 
   const goLive = (roomNo, memNo, nickNm) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      })
+      }))
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo, memNo, dispatch, globalState, history, nickNm);
       } else {
         RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm})
       }
@@ -162,9 +164,9 @@ const SpecialDj = (props) => {
                       <div className='tbodyList' key={index}>
                         <span>{list.selectionDate}</span>
                         <span>{list.roundNo}</span>
-                      </div>  
+                      </div>
                     )
-                  })}             
+                  })}
                 </div>
               </div>
             </div>

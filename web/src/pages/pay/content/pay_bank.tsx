@@ -1,23 +1,21 @@
-import React, { useContext, useEffect, useState, useRef } from "react";
-import { ModalContext } from "context/modal_ctx";
-import { GlobalContext } from "context";
-import { useHistory } from "react-router-dom";
-import { DalbitScroll } from "common/ui/dalbit_scroll";
-import { payCoocon } from "common/api";
-
-import BackBtn from "../static/ic_back.svg";
+import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
+import {payCoocon} from "common/api";
 
 import "./pay.scss";
 // components
 import Header from "common/ui/header";
-import Layout from "common/layout";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
+import {setPayInfo} from "../../../redux/actions/modal";
 
 export default function Payment() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
-  const { modalState, modalAction } = useContext(ModalContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { payInfo } = modalState;
-  const { itemName, itemPrice, itemNo, itemCnt } = payInfo;
+  const {payInfo} = modalState;
+  const {itemName, itemPrice, itemNo, itemCnt} = payInfo;
 
   const [receiptType, setReceiptType] = useState(0);
   const [name, setName] = useState("");
@@ -150,7 +148,7 @@ export default function Payment() {
     });
 
     if (result === "success") {
-      modalAction.setPayInfo!({
+      dispatch(setPayInfo({
         itemName: data.Prdtnm,
         itemPrice: data.Prdtprice,
         itemNo: data.itemNo,
@@ -158,13 +156,13 @@ export default function Payment() {
         bankNo: data.accountNo,
         phone: data.phoneNo,
         itemCnt: itemCnt,
-      });
+      }));
       history.push("/payment/bank_wait");
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   };
 
@@ -172,44 +170,44 @@ export default function Payment() {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g;
 
     if (name.length < 2) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `이름은 필수입력 값입니다.`,
-      });
+      }));
     }
 
     if (!phone) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `휴대폰 번호는 필수입력 값입니다.`,
-      });
+      }));
     }
 
     if (!rgEx.test(phone)) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: `올바른 휴대폰 번호가 아닙니다.`,
-      });
+      }));
     }
 
     if (receiptType === 1) {
       if (receiptOptionType === "0" && receiptOption.length < 13) {
-        return globalAction.setAlertStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: `현금영수증 발급을 위하여 \n 주민번호를 입력해주세요.`,
-        });
+        }));
       } else if (receiptOptionType === "1" && !receiptOption) {
-        return globalAction.setAlertStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: `현금영수증 발급을 위하여 \n 휴대폰번호를 입력해주세요.`,
-        });
+        }));
       }
     } else if (receiptType === 2) {
       if (receiptOption.length < 10) {
-        return globalAction.setAlertStatus!({
+        return dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: `현금영수증 발급을 위하여 \n 사업자번호를 입력해주세요.`,
-        });
+        }));
       }
     }
     getDepositInfo();

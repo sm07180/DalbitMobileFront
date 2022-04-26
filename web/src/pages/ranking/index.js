@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState, useCallback, useRef} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 
 //components
@@ -9,17 +8,18 @@ import RankListWrap from './rankListWrap'
 import LevelList from './levelList'
 import LikeList from './likeList'
 import LayerPopup from './layer_popup'
-import RankGuide from './guide/rank_guide'
 import MyProfile from './components/MyProfile'
 import RankDateBtn from './components/ranking_date_btn'
 import RankHandleDateBtn from './components/ranking_handle_date_btn'
 import Header from 'components/ui/new_header'
 // constant
-import {RANK_TYPE, DATE_TYPE} from './constant'
+import {DATE_TYPE, RANK_TYPE} from './constant'
 
 //static
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './ranking.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
@@ -28,9 +28,11 @@ let touchEndY = null
 
 // let isFixed = false
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {profile, logoChange} = globalCtx
+  const {profile, logoChange} = globalState
 
   const [rankType, setRankType] = useState(RANK_TYPE.DJ)
   const [dateType, setDateType] = useState(DATE_TYPE.DAY)
@@ -274,9 +276,10 @@ export default (props) => {
 
         return data.list
       } else if (result === 'fail') {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
       setScrollBottomFinish(true)
       return null
@@ -304,9 +307,10 @@ export default (props) => {
         }
         return data.list
       } else if (result === 'fail') {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
       setScrollBottomFinish(true)
       return null
@@ -433,7 +437,7 @@ export default (props) => {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
         }
-        if (globalCtx.token.isLogin) {
+        if (globalState.token.isLogin) {
           if (listWrapRef.current.classList.length === 1) {
             listWrapRef.current.className = 'listFixed more'
           }
@@ -444,7 +448,7 @@ export default (props) => {
         }
       } else {
         fixedWrapRef.current.className = ''
-        if (globalCtx.token.isLogin) {
+        if (globalState.token.isLogin) {
           listWrapRef.current.className = 'more'
         } else {
           listWrapRef.current.className = ''
@@ -517,7 +521,7 @@ export default (props) => {
         {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
         {rankType === RANK_TYPE.LIKE && <LikeList likeList={likeList} />}
         {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
-          <div ref={listWrapRef} className={`${globalCtx.token.isLogin && 'more'}`}>
+          <div ref={listWrapRef} className={`${globalState.token.isLogin && 'more'}`}>
             <RankListWrap
               rankType={rankType}
               dateType={dateType}

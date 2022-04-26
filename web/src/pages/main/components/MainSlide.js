@@ -6,16 +6,16 @@ import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
-import {Context} from "context";
 import Api from 'context/api'
 import photoCommon from "common/utility/photoCommon";
+import {useDispatch, useSelector} from "react-redux";
 
 const MainSlide = (props) => {
   const {data, common, pullToRefreshPause} = props
 
-  const context = useContext(Context);
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [swiperList, setSwiperList] =  useState({photoSvrUrl: "", swiperList: []});
 
   const swiperParams = {
@@ -38,7 +38,7 @@ const MainSlide = (props) => {
           if (target.room_no === "0") {
             goProfile(target.mem_no);
           } else {
-            RoomValidateFromClipMemNo(target.room_no, target.mem_no, context, history, target.mem_nick); // 방송방으로 이동
+            RoomValidateFromClipMemNo(target.room_no, target.mem_no, dispatch, globalState, history, target.mem_nick); // 방송방으로 이동
           }
 
         }

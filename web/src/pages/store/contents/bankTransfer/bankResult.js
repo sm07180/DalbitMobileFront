@@ -1,11 +1,7 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
+import React from 'react'
 import Utility from 'components/lib/utility'
 
 // global components
-import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents

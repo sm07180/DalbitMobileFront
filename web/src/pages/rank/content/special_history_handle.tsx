@@ -1,25 +1,20 @@
 import React, { useContext, useEffect, useState, useCallback } from "react";
 
-import { RankContext } from "context/rank_ctx";
-
 import { changeDate } from "lib/rank_fn";
+import {useDispatch, useSelector} from "react-redux";
+import {setRankFormDate} from "../../../redux/actions/rank";
 
 export default function SpecialHistoryHandle() {
-  const { rankState, rankAction } = useContext(RankContext);
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState } = rankState;
-
-  const formDispatch = rankAction.formDispatch!;
 
   const [dateTitle, setDateTitle] = useState("이번달");
 
   const handleDate = (type) => {
     const handle = changeDate(type, 3, formState[formState.pageType].currentDate);
-
-    formDispatch({
-      type: "DATE",
-      val: handle,
-    });
+    dispatch(setRankFormDate(handle));
   };
 
   const formatDate = useCallback(() => {

@@ -1,12 +1,15 @@
 import React, {useContext, useRef, useEffect, useState} from 'react';
 import Api from "context/api";
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 
 //Step 1. 휴대폰 인증
 const PhoneAuth = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let {signForm, onChange, setStep, setSignForm} = props;
-  const context = useContext(Context);
   const [authCheck, setAuthCheck] = useState(false);
   const [authBtnValue,setAuthBtnValue] = useState("인증요청")
   const [nextButton, setNextButton] = useState(false);
@@ -57,7 +60,7 @@ const PhoneAuth = (props) => {
           requestNumRef.current.disabled = false;
           setAuthBtnValue("재발송");
         }else{
-          context.action.alert({msg: res.message});
+          dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
         }
       });
     }

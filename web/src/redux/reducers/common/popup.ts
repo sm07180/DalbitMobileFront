@@ -14,7 +14,7 @@ const initialState: ICommonPopupState = {
 
   // 달라져스 이벤트
   morePopup: false,
-  confirmPopup: false, 
+  confirmPopup: false,
   resultPopup: false,
 
   /* 공통 팝업 */
@@ -37,7 +37,7 @@ const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
     return {...state, slidePopup: false}
   },
   "common/SET_SLIDE_POPUP_OPEN": (state, {payload}) => {
-    return {...payload, slidePopup: true, commonPopup: true}
+    return {...state, ...payload, slidePopup: true, commonPopup: true}
   },
   "common/SET_SLIDE_RESET" : (state) => {
     return {...state, slideAction: true};

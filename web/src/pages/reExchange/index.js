@@ -1,12 +1,8 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
-
-import Api from 'context/api'
+import React, {useState} from 'react'
 import Utility from 'components/lib/utility'
 
 // global components
 import Header from 'components/ui/header/Header'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 // css
@@ -22,7 +18,6 @@ const dalPrice = [
 ]
 
 const StorePage = () => {
-  const context = useContext(Context);
   const [select, setSelect] = useState(3);
 
   // 조회 Api
@@ -30,7 +25,7 @@ const StorePage = () => {
   // 결재단위 셀렉트
   const onSelectDal = (e) => {
     const {targetIndex} = e.currentTarget.dataset
-    
+
     setSelect(targetIndex)
   }
 

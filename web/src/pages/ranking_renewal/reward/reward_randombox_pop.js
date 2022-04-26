@@ -1,17 +1,18 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 
-import {RankContext} from 'context/rank_ctx'
 
 import Api from 'context/api'
 import Lottie from 'react-lottie'
+import {useDispatch, useSelector} from "react-redux";
+import {setRankMyInfo} from "redux/actions/rank";
 
 export default (props) => {
-  const {rankState, rankAction} = useContext(RankContext)
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {formState, myInfo} = rankState
 
-  const setMyInfo = rankAction.setMyInfo
 
   const {setRandomPopup, setPopup} = props
   const [randomPoint, setRandomPoint] = useState({
@@ -21,10 +22,10 @@ export default (props) => {
   const closePopup = () => {
     setRandomPopup(false)
     setPopup(false)
-    setMyInfo({
+    dispatch(setRankMyInfo({
       ...myInfo,
       isReward: false
-    })
+    }))
   }
 
   setTimeout(closePopup, 5000)

@@ -1,9 +1,10 @@
 import React, { useEffect, useReducer, useContext } from "react";
-import { GlobalContext } from "context";
 
 import { postImage } from "common/api";
 import DalbitCheckbox from "common/ui/dalbit_checkbox";
 import SelectBox from "common/ui/dalbit_selectbox";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../../../../redux/actions/globalCtx";
 
 type StateType = {
   isOpen: boolean;
@@ -39,16 +40,17 @@ const selectReducer = (state: StateType, action: ActionType) => {
   }
 };
 
-export default function MakeFormWrap({ state, dispatch, inspection }) {
+export default function MakeFormWrap({ state, formDispatch, inspection }) {
   const [selectState, selectDispatch] = useReducer(selectReducer, initVal);
-  const { globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+
   const searchAddr = (e) => {
     const element_layer: HTMLElement | null = document.getElementById("layer");
 
     new window["daum"].Postcode({
       oncomplete: (data) => {
-        dispatch({ type: "fAddress", val: data.address });
-        dispatch({ type: "zoneCode", val: data.zonecode });
+        formDispatch({ type: "fAddress", val: data.address });
+        formDispatch({ type: "zoneCode", val: data.zonecode });
         element_layer?.setAttribute("style", "display: none;");
       },
       width: "100%",
@@ -100,11 +102,10 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
       return list.includes(ext);
     };
     if (!extValidator(fileExtension)) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "jpg, png 이미지만 사용 가능합니다.",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "jpg, png 이미지만 사용 가능합니다.",
+      }));
       return;
     }
     reader.readAsDataURL(target.files[0]);
@@ -123,20 +124,19 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
             }
           });
 
-          dispatch({ type: "file", val: arr });
+          formDispatch({ type: "file", val: arr });
         } else {
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              content: "사진 업로드에 실패하였습니다.\n다시 시도해주세요.",
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            content: "사진 업로드에 실패하였습니다.\n다시 시도해주세요.",
+          }));
         }
       }
     };
   };
 
   useEffect(() => {
-    dispatch({ type: "bank", val: bankList[selectState.selectIdx].value });
+    formDispatch({ type: "bank", val: bankList[selectState.selectIdx].value });
   }, [selectState.selectIdx]);
 
   useEffect(() => {
@@ -154,7 +154,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
     if (e.target.value.length > 20) {
       return false;
     } else {
-      dispatch(obj);
+      formDispatch(obj);
     }
   };
   return (
@@ -192,7 +192,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
               type="tel"
               value={state.account}
               className="formData__input--text"
-              onChange={(e) => dispatch({ type: "account", val: e.target.value })}
+              onChange={(e) => formDispatch({ type: "account", val: e.target.value })}
               placeholder="계좌번호를 입력해주세요 (숫자)"
             />
           </div>
@@ -204,7 +204,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
               type="tel"
               value={state.fSocialNo}
               className="formData__input--text"
-              onChange={(e) => dispatch({ type: "fSocial", val: e.target.value })}
+              onChange={(e) => formDispatch({ type: "fSocial", val: e.target.value })}
               placeholder="숫자만 입력"
             />
             <span className="formData__input--line">-</span>
@@ -213,7 +213,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
               value={state.bSocialNo}
               id="bsocialNo"
               className="formData__input--text"
-              onChange={(e) => dispatch({ type: "bSocial", val: e.target.value })}
+              onChange={(e) => formDispatch({ type: "bSocial", val: e.target.value })}
               placeholder="숫자만 입력"
             />
           </div>
@@ -225,7 +225,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
               type="tel"
               value={state.phone}
               className="formData__input--text"
-              onChange={(e) => dispatch({ type: "phone", val: e.target.value })}
+              onChange={(e) => formDispatch({ type: "phone", val: e.target.value })}
               placeholder="-없이 숫자만 입력해주세요"
             />
           </div>
@@ -254,7 +254,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
                 className="formData__input--text"
                 placeholder="상세주소를 입력해주세요"
                 onChange={(e) => {
-                  dispatch({ type: "bAddress", val: e.target.value });
+                  formDispatch({ type: "bAddress", val: e.target.value });
                 }}
               />
             </div>
@@ -333,7 +333,7 @@ export default function MakeFormWrap({ state, dispatch, inspection }) {
         )}
         <div className="privacy">
           <div className="privacy__title">
-            <DalbitCheckbox status={state.check} callback={() => dispatch({ type: "check", val: !state.check })} />
+            <DalbitCheckbox status={state.check} callback={() => formDispatch({ type: "check", val: !state.check })} />
             {/* <img src={state.check ? checkOn : checkOff} onClick={() => setCheck(!check)} className="privacy__checkBox" /> */}
             <span style={{ marginLeft: "10px" }}>개인정보 수집 및 이용에 동의합니다.</span>
           </div>

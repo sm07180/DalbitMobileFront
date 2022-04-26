@@ -1,10 +1,6 @@
 // React
 import React, { useContext } from "react";
 
-// Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-
 // static
 import OriginalImg from "../../static/img_originalbox.svg";
 import DailyImg from "../../static/img_makeup_daily.jpg";
@@ -12,6 +8,8 @@ import PinkImg from "../../static/img_makeup_pink.jpg";
 import CoralImg from "../../static/img_makeup_coral.jpg";
 import OrangeImg from "../../static/img_makeup_orange.jpg";
 import WineImg from "../../static/img_makeup_wine.jpg";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxVideoEffect} from "../../../../redux/actions/broadcastCtx";
 
 const makeUpArray = [
   { img: OriginalImg, title: "Original" },
@@ -23,9 +21,10 @@ const makeUpArray = [
 ];
 
 const MakeUp = () => {
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   const changeMakeUp = () => {
     if (globalState.rtcInfo) {
@@ -50,7 +49,7 @@ const MakeUp = () => {
                 makeUp: v.title,
               };
 
-              broadcastAction.setVideoEffect && broadcastAction.setVideoEffect(newEffectValue);
+              dispatch(setBroadcastCtxVideoEffect(newEffectValue));
               sessionStorage.setItem("videoEffect", JSON.stringify(newEffectValue));
 
               changeMakeUp();

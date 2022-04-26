@@ -1,23 +1,38 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
 import Api from 'context/api'
 
 import {IMG_SERVER} from 'context/config'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-export default (props) => {  
-  const globalCtx = useContext(Context)
-  const {setBettingPop, bettingVal, setBettingVal, setBettingAbled, myMarble ,setMyMarble,setParticipantList,setMyBettingLogList, completePopup, gganbuNo, setSuccessVal} = props
+export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {
+    setBettingPop,
+    bettingVal,
+    setBettingVal,
+    setBettingAbled,
+    myMarble,
+    setMyMarble,
+    setParticipantList,
+    setMyBettingLogList,
+    completePopup,
+    gganbuNo,
+    setSuccessVal
+  } = props
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
   const [marbleNum, setMarbleNum] = useState(0);
   const [resultVal, setResultVal] = useState({
-    rResult : "",
-    yResult : "",
-    bResult : "",
-    pResult : "",
+    rResult: "",
+    yResult: "",
+    bResult: "",
+    pResult: "",
   });
   const [participant, setParticipant] = useState({
     oddParticipant : "",
@@ -44,7 +59,7 @@ export default (props) => {
         yMarble: data.yellow_marble,
         bMarble: data.blue_marble,
         pMarble: data.violet_marble,
-      })    
+      })
     }
   }
 
@@ -56,7 +71,7 @@ export default (props) => {
       setBettingVal({rBetting: 0, yBetting: 0, bBetting: 0, pBetting: 0})
       setBettingAbled(data.bettingYn);
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
     }
   }
 
@@ -73,7 +88,7 @@ export default (props) => {
         evenWinPercent : data.evenWinProbability,
       })
     } else {
-      globalCtx.action.alert({msg: "베팅을 할 수 없습니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "베팅을 할 수 없습니다."}))
       setBettingPop(false)
     }
   }
@@ -91,23 +106,23 @@ export default (props) => {
     const res = await Api.getGganbuObtainMarble(param);
     if (res.s_return === 1) {
     } else if (res.s_return === -4) {
-      globalCtx.action.alert({msg: "베팅할 구슬이 부족합니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "베팅할 구슬이 부족합니다."}))
       setBettingPop(false)
     } else if (res.s_return === -3) {
-      globalCtx.action.alert({msg: "이미 지급되었습니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "이미 지급되었습니다."}))
       setBettingPop(false)
     } else if (res.s_return === -2) {
-      globalCtx.action.alert({msg: "깐부가 없습니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "깐부가 없습니다."}))
       setBettingPop(false)
     } else if (res.s_return === -1) {
-      globalCtx.action.alert({msg: "이벤트 기간이 아닙니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "이벤트 기간이 아닙니다."}))
       setBettingPop(false)
-    } 
-  }  
+    }
+  }
 
   const closePopup = () => {
     setBettingPop(false)
-  }   
+  }
 
   // const wrapClick = (e) => {
   //   const target = e.target
@@ -125,7 +140,7 @@ export default (props) => {
     const selectValue = document.querySelector('input[name="bettingType"]:checked').value;
     const marbleLength = Math.floor(Math.random() * 4) + 1;
     let resultType = "";
-    
+
     setMarbleNum(marbleLength);
     setPopResult(true);
 
@@ -139,7 +154,7 @@ export default (props) => {
       setTypeSelect("홀수");
     } else {
       setTypeSelect("짝수");
-    }    
+    }
 
     if(selectValue === resultType) {
       setWinOrLose('w');
@@ -147,7 +162,7 @@ export default (props) => {
       resultVal.yResult = myMarble.yMarble + bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble + bettingVal.bBetting;
       resultVal.pResult = myMarble.pMarble + bettingVal.pBetting;
-      setMyMarble({        
+      setMyMarble({
         rMarble: resultVal.rResult,
         yMarble: resultVal.yResult,
         bMarble: resultVal.bResult,
@@ -159,14 +174,14 @@ export default (props) => {
       resultVal.yResult = myMarble.yMarble - bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble - bettingVal.bBetting;
       resultVal.pResult = myMarble.pMarble - bettingVal.pBetting;
-      setMyMarble({        
+      setMyMarble({
         rMarble: resultVal.rResult,
         yMarble: resultVal.yResult,
         bMarble: resultVal.bResult,
         pMarble: resultVal.pResult,
       })
     }
-        
+
     gapVal.rGap = resultVal.rResult - myMarble.rMarble;
     gapVal.yGap = resultVal.yResult - myMarble.yMarble;
     gapVal.bGap = resultVal.bResult - myMarble.bMarble;
@@ -178,9 +193,9 @@ export default (props) => {
       fetchBettingComplete();
     }
   }, [winOrLose]);
-  
+
   useEffect(() => {
-    fetchBettingData();    
+    fetchBettingData();
   }, [])
 
 
@@ -189,9 +204,9 @@ export default (props) => {
       <div className="contentWrap">
         <div className="title">홀짝 게임</div>
         <div className="content">
-          <div className="bettingAni">           
+          <div className="bettingAni">
             {popResult ?
-              <div id="bettingAni">                
+              <div id="bettingAni">
                 <Lottie
                   options={{
                     loop: false,
@@ -199,7 +214,7 @@ export default (props) => {
                     path: `${IMG_SERVER}/event/gganbu/ani/odd_even_game_0${marbleNum}.json`
                   }}
                 />
-                {winOrLose === "w" ? 
+                {winOrLose === "w" ?
                   <div className="resultToast">
                     이겼다!
                   </div>
@@ -217,17 +232,17 @@ export default (props) => {
           {!popResult &&
             <div className="bettingInfo">
             <label className={`selectMenu ${valueType === "a" ? "active" : ""}`} onClick={selectVal}>
-              <input type="radio" name="bettingType" value="a" className="bettingSelect" />
+              <input type="radio" name="bettingType" value="a" className="bettingSelect"/>
               <div className="selectRow">
                 <span className="selectType">홀수</span>
                 <span className="selectRadio"></span>
-              </div>   
+              </div>
               <div className="selectRow">
                 <span className="participantIcon"></span>
                 <span className="participantTitle">총 투표자</span>
                 <span className="participantTotal">{participant.oddParticipant}</span>
                 <span className="participantUnit">명</span>
-              </div> 
+              </div>
               <div className="selectRow">
                 <span className="percentIcon"></span>
                 <span className="percentTitle">이긴확률</span>
@@ -240,13 +255,13 @@ export default (props) => {
               <div className="selectRow">
                 <span className="selectType">짝수</span>
                 <span className="selectRadio"></span>
-              </div>   
+              </div>
               <div className="selectRow">
                 <span className="participantIcon"></span>
                 <span className="participantTitle">총 투표자</span>
                 <span className="participantTotal">{participant.evenParticipant}</span>
                 <span className="participantUnit">명</span>
-              </div> 
+              </div>
               <div className="selectRow">
                 <span className="percentIcon"></span>
                 <span className="percentTitle">이긴확률</span>
@@ -254,14 +269,14 @@ export default (props) => {
                 <span className="percentUnit">%</span>
               </div>
             </label>
-          </div>
-          }   
-          <div className="bettingMyInfo">                  
+            </div>
+          }
+          <div className="bettingMyInfo">
             {popResult &&
-              <div className="bettingType"> 
-                  <div className="bettingTitle">나의 베팅</div>
-                  <div className="bettingMy">{typeSelect}</div>
-              </div>
+            <div className="bettingType">
+              <div className="bettingTitle">나의 베팅</div>
+              <div className="bettingMy">{typeSelect}</div>
+            </div>
             }
             <div className={`bettingMarble ${popResult ? "result" : ""}`}>
               <div className="bettingTitle">{popResult ? "구슬 현황" : "내가 베팅한 구슬"}</div>
@@ -274,10 +289,10 @@ export default (props) => {
                         <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
                           {winOrLose === "w" ? `+${gapVal.rGap}` : `-${gapVal.rGap * -1}`}
                         </span>
-                      </span>  
-                      :                   
+                      </span>
+                      :
                       <span className="marbleCount">{bettingVal.rBetting}</span>
-                    }                 
+                    }
                 </div>
                 <div className="marbleData">
                   <span className="marbleIcon yellow"></span>
@@ -287,10 +302,10 @@ export default (props) => {
                         <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
                           {winOrLose === "w" ? `+${gapVal.yGap}` : `-${gapVal.yGap * -1}`}
                         </span>
-                      </span>  
-                      :                   
+                      </span>
+                      :
                       <span className="marbleCount">{bettingVal.yBetting}</span>
-                    }     
+                    }
                 </div>
                 <div className="marbleData">
                   <span className="marbleIcon blue"></span>
@@ -300,10 +315,10 @@ export default (props) => {
                         <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
                           {winOrLose === "w" ? `+${gapVal.bGap}` : `-${gapVal.bGap * -1}`}
                         </span>
-                      </span>  
-                      :                   
+                      </span>
+                      :
                       <span className="marbleCount">{bettingVal.bBetting}</span>
-                    }  
+                    }
                 </div>
                 <div className="marbleData">
                   <span className="marbleIcon purple"></span>
@@ -313,26 +328,26 @@ export default (props) => {
                         <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
                           {winOrLose === "w" ? `+${gapVal.pGap}` : `-${gapVal.pGap * -1}`}
                         </span>
-                      </span>  
-                      :                   
+                      </span>
+                      :
                       <span className="marbleCount">{bettingVal.pBetting}</span>
-                    }      
+                    }
                 </div>
               </div>
-            </div>            
-          </div> 
+            </div>
+          </div>
         </div>
-        <div className="bottom">        
-            {popResult ?
-              <button className="bettingBtn active" onClick={completePopup}>확인</button>
-              :
-              <button className={`bettingBtn ${valueType === "" ? "" : "active"}`} onClick={betting}>예측하기</button>
-            }
-        </div>        
+        <div className="bottom">
+          {popResult ?
+            <button className="bettingBtn active" onClick={completePopup}>확인</button>
+            :
+            <button className={`bettingBtn ${valueType === "" ? "" : "active"}`} onClick={betting}>예측하기</button>
+          }
+        </div>
         {!popResult &&
-          <button className="close" onClick={closePopup}>
-            <img src="https://image.dalbitlive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기"/>
-          </button>
+        <button className="close" onClick={closePopup}>
+          <img src="https://image.dalbitlive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기"/>
+        </button>
         }
       </div>
     </PopupWrap>

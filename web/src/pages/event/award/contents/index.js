@@ -4,7 +4,6 @@ import {useHistory, useParams} from 'react-router-dom'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
-import Layout from 'pages/common/layout'
 import CommentTab from './tab_comment'
 import GuideTab from './tab_guide'
 import VoteTab from './tab_vote'

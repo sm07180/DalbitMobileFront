@@ -1,14 +1,14 @@
 // tab navigation
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { useHistory, useParams } from "react-router-dom";
 // api
 import { getFanList, postAddFan, deleteFan } from "common/api";
 import "./mypage_modal.scss";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {useSelector} from "react-redux";
 
 export default (props) => {
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   const [list, setList] = useState([
     {

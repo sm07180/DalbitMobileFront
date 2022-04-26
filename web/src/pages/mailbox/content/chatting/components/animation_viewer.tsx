@@ -4,17 +4,19 @@
  */
 import React, { useRef, useContext, useEffect } from "react";
 // ctx
-import { MailboxContext } from "context/mailbox_ctx";
 // modules
 import LottiePlayer from "lottie-web";
 import styled from "styled-components";
 // gfunc
 import { createElement } from "lib/create_element";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxGiftItemInfo} from "../../../../../redux/actions/mailBox";
 // var
 let animationCount = 0;
 export default function() {
   //ctx
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   //ref
   const lottieDisplayRef = useRef<any>(null);
   const lottieDisplayWrapRef = useRef<any>(null);
@@ -117,7 +119,7 @@ export default function() {
       const LottieDestroy = () => {
         lottieAnimation.removeEventListener("complete", LottieComplete);
         lottieAnimation.removeEventListener("loopComplete", LottieLoopComplete);
-        mailboxAction.setGiftItemInfo!(null);
+        dispatch(setMailBoxGiftItemInfo(null));
       };
 
       lottieAnimation.addEventListener("complete", LottieComplete);

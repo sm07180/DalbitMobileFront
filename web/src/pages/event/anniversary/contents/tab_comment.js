@@ -1,22 +1,25 @@
 import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import API from 'context/api'
 import {OS_TYPE, IMG_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 import Comment from '../../components/comment'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default function awardEventComment(props) {
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token} = globalState
   const history = useHistory()
 
   //댓글 state
   const [commentList, setCommentList] = useState([])
   const [commentTxt, setCommentTxt] = useState('')
   const [commentNo, setCommentNo] = useState('')
-  const [totalCommentCnt, setTotalCommentCnt] = useState(0)
+  const [totalCommentCnt, setTotalCommentCnt] = useState(0  )
   const [currentPage, setCurrentPage] = useState(0)
   const [loginMedia, setLoginMedia] = useState('')
 
@@ -49,27 +52,27 @@ export default function awardEventComment(props) {
       if (result === 'success') {
         setCurrentPage(0)
         setWriteState(false)
-        globalCtx.action.toast({msg: message})
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
       } else {
-        globalCtx.action.toast({msg: message})
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
       }
     }
     if (token.isLogin) {
       if (commentTxt === '') {
-        globalCtx.action.toast({
+        dispatch(setGlobalCtxMessage({type:"toast",
           msg: '내용을 입력해주세요.'
-        })
+        }))
       } else {
         setCommentTxt('')
         AddComment(commentTxt)
       }
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push(`/login?redirect=/event/anniversary?tab=comment`)
         }
-      })
+      }))
     }
   }
   // 댓글삭제
@@ -78,15 +81,15 @@ export default function awardEventComment(props) {
       const {result, message} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
         setCurrentPage(0)
-        globalCtx.action.toast({msg: message})
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
       } else {
-        globalCtx.action.toast({
+        dispatch(setGlobalCtxMessage({type:"toast",
           msg: message
-        })
+        }))
       }
     }
-    if (globalCtx.adminChecker) {
-      globalCtx.action.confirm({
+    if (globalState.adminChecker) {
+      dispatch(setGlobalCtxMessage({type:"confirm",
         msg: '정말 삭제하시겠습니까?',
         callback: () => {
           DeleteComment(tail_no, tail_mem_no)
@@ -95,14 +98,14 @@ export default function awardEventComment(props) {
           left: '취소',
           right: '삭제'
         }
-      })
+      }))
     } else {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({type:"confirm",
         msg: '등록된 댓글을 삭제하시겠습니까?',
         callback: () => {
           DeleteComment(tail_no, tail_mem_no)
         }
-      })
+      }))
     }
   }
   // 댓글수정
@@ -114,28 +117,28 @@ export default function awardEventComment(props) {
         tailLoginMedia: loginMedia
       })
       if (result === 'success') {
-        globalCtx.action.toast({msg: message})
+        dispatch(setGlobalCtxMessage({type:"toast",msg: message}))
         setCurrentPage(0)
       } else {
-        globalCtx.action.toast({
+        dispatch(setGlobalCtxMessage({type:"toast",
           msg: message
-        })
+        }))
       }
       setWriteState(false)
       setModifyState(false)
     }
     if (commentTxt === '') {
-      globalCtx.action.toast({
+      dispatch(setGlobalCtxMessage({type:"toast",
         msg: '내용을 입력해주세요.'
-      })
+      }))
     } else {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({type:"confirm",
         msg: '등록된 댓글을 수정하시겠습니까?',
         callback: () => {
           UpdateComment(commentNo, commentTxt)
           setCommentTxt('')
         }
-      })
+      }))
     }
   }
   const scrollEvtHdr = () => {

@@ -1,24 +1,24 @@
-import React, {useState, useContext, useCallback, useEffect} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 
 import Api from 'context/api'
 
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
-import {Context} from 'context'
-
 import {useHistory} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const records = 9999
 
 let timer
 
 const NoticeDetail = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {yourMemNo, detailItem, noticeList, setNoticeList} = props
 
   const history = useHistory()
-
-  const context = useContext(Context)
 
   const [zoom, setZoom] = useState(false)
 
@@ -41,7 +41,7 @@ const NoticeDetail = (props) => {
           }
         })
         if (result === 'success') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
             visible: true,
             type: 'confirm',
             msg: `게시글을 삭제 하시겠습니까?`,
@@ -57,13 +57,13 @@ const NoticeDetail = (props) => {
                 history.goBack()
               }, 100)
             }
-          })
+          }))
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
             visible: true,
             type: 'alert',
             msg: message
-          })
+          }))
         }
       }
       deleteNoiceContent()
@@ -112,9 +112,10 @@ const NoticeDetail = (props) => {
       if (res.code === '0') {
         setReplyList(res.data.list)
       } else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '댓글 조회에 실패하였습니다'
-        })
+        }))
       }
     }
   }, [yourMemNo, replyPage, detailItem.noticeIdx, replyList])
@@ -126,9 +127,10 @@ const NoticeDetail = (props) => {
       contents: replyText
     })
     if (res.result === 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
       fetchReply()
 
       setNoticeList(
@@ -142,9 +144,10 @@ const NoticeDetail = (props) => {
 
       setReplyToggle(true)
     } else {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     }
     resetState()
   }, [replyText, yourMemNo, detailItem.noticeIdx, noticeList])
@@ -157,9 +160,10 @@ const NoticeDetail = (props) => {
       })
 
       if (res.result === 'success') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: res.message
-        })
+        }))
 
         fetchReply()
 
@@ -172,9 +176,10 @@ const NoticeDetail = (props) => {
           })
         )
       } else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: res.message
-        })
+        }))
       }
     },
     [yourMemNo, noticeList]
@@ -188,14 +193,16 @@ const NoticeDetail = (props) => {
     })
 
     if (res.result === 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
       fetchReply()
     } else {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
     }
   }, [replyModifyText, replyModifyIdx, yourMemNo])
 
@@ -372,7 +379,7 @@ const NoticeDetail = (props) => {
                               <p className="infoBox__name">{v.nickName}</p>
                               <span className="infoBox__date">{Utility.timeFormat(v.writeDt)}</span>
                             </div>
-                            {(v.writerMemNo === context.token.memNo || yourMemNo === context.token.memNo) && (
+                            {(v.writerMemNo === globalState.token.memNo || yourMemNo === globalState.token.memNo) && (
                               <>
                                 <button
                                   className="btnMore"
@@ -388,7 +395,7 @@ const NoticeDetail = (props) => {
                                 </button>
 
                                 <div className={`moreList ${replyMoreIdx === v.replyIdx && 'active'}`}>
-                                  {v.writerMemNo === context.token.memNo && (
+                                  {v.writerMemNo === globalState.token.memNo && (
                                     <button
                                       onClick={() => {
                                         setReplyModifyText(v.contents)
@@ -427,13 +434,13 @@ const NoticeDetail = (props) => {
                 setReplyWriteToggle(true)
               }}>
               <div className="writeHeader">
-                <img src={context.profile.profImg.thumb62x62} className="writeHeader__thumb" alt="프로필 이미지" />
+                <img src={globalState.profile.profImg.thumb62x62} className="writeHeader__thumb" alt="프로필 이미지"/>
                 {replyWriteToggle === false ? (
                   <p>
                     답글쓰기 <span className="gray">최대 100자</span>
                   </p>
                 ) : (
-                  <p className="writeHeader__nick">{context.profile.nickNm}</p>
+                  <p className="writeHeader__nick">{globalState.profile.nickNm}</p>
                 )}
               </div>
               {replyWriteToggle === true && (
@@ -450,7 +457,8 @@ const NoticeDetail = (props) => {
             {replyWriteToggle === true && (
               <div className="writeBottom">
                 <div className="countBox">
-                  <div className="countBox__count" style={{marginLeft: context.token.memNo === yourMemNo ? 'auto' : ''}}>
+                  <div className="countBox__count"
+                       style={{marginLeft: globalState.token.memNo === yourMemNo ? 'auto' : ''}}>
                     <span>{replyText.length}</span> / 100
                   </div>
                 </div>
@@ -466,7 +474,7 @@ const NoticeDetail = (props) => {
               </button>
             )} */}
           </div>
-          {yourMemNo === context.token.memNo && (
+          {yourMemNo === globalState.token.memNo && (
             <div className="noticeDetail__button">
               <button
                 onClick={() => {

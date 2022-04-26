@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -21,17 +20,18 @@ import {noticePagingDefault} from "redux/types/noticeType";
 let alarmFix = false;
 let postFix = false;
 const NoticePage = () => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const noticeTabmenu = ['알림','공지사항'];
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
-  const context = useContext(Context)
+
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const postData = useSelector(state => state.post);
   const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
-  const [postPageInfo, setPostPageInfo] = useState({mem_no: context.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
+  const [postPageInfo, setPostPageInfo] = useState({mem_no: globalState.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
 
   /* 알림 조회 */
   const fetchData = () => {
@@ -91,7 +91,7 @@ const NoticePage = () => {
   /* 공지사항 클릭 시 읽음 처리 */
   const fetchReadData = async (notiNo) => {
     const params = {
-      memNo: context.profile.memNo,
+      memNo: globalState.profile.memNo,
       notiNo: notiNo
     }
     await Api.noticeRead(params).then((res) => {
@@ -107,7 +107,7 @@ const NoticePage = () => {
   const listenClip = (clipNo) => {
     const clipParam = {
       clipNo: clipNo,
-      gtx: context,
+      globalState, dispatch,
       history
     }
     NewClipPlayerJoin(clipParam);
@@ -132,7 +132,7 @@ const NoticePage = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if(context.profile.memNo === roomNo) {
+        if(globalState.profile.memNo === roomNo) {
             history.push(`/myProfile`);
           } else {
             history.push(`/profile/${roomNo}`);
@@ -231,13 +231,13 @@ const NoticePage = () => {
 
   useEffect(() => {
     if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
+      fetchMypageNewCntData(globalState.profile.memNo);
     }
   }, [alarmData.newCnt]);
 
   // 로그인 토큰값 확인
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
     fetchData();
     if(alarmFix) {
       dispatch(setNoticeTab("알림"));

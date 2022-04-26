@@ -3,23 +3,32 @@
  * @brief 마이페이지 팬보드2.5v
  */
 
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 // modules
 import qs from 'query-string'
-import {useLocation, useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 // context
-import {Context} from 'context'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import BoardModify from './board_write'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBoardIdx,
+  setGlobalCtxBoardModifyInfo,
+  setGlobalCtxFanBoardBigIdx,
+  setGlobalCtxMessage,
+  setGlobalCtxUserReport
+} from "redux/actions/globalCtx";
+
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let params = useParams()
   const LocationClip = params.clipNo
   let location = useLocation()
   const history = useHistory()
   var urlrStr = location.pathname.split('/')[2]
-  //ctx
-  const context = useContext(Context)
   const {webview} = qs.parse(location.search)
   //state
   const [writeState, setWriteState] = useState(false)
@@ -36,20 +45,20 @@ export default (props) => {
   }
   //토글 모어버튼
   const moreToggle = (boardIdx, contents) => {
-    if (boardIdx === context.boardIdx) {
-      context.action.updateBoardIdx(0)
+    if (boardIdx === globalState.boardIdx) {
+      dispatch(setGlobalCtxBoardIdx(0));
     } else {
-      context.action.updateBoardIdx(boardIdx)
+      dispatch(setGlobalCtxBoardIdx(boardIdx));
     }
   }
   //수정하기 토글
   const editToggle = (contents, boardIdx) => {
     setModifyState(true)
-    context.action.updateBoardModifyInfo({
+    dispatch(setGlobalCtxBoardModifyInfo({
       clipNo: LocationClip,
       contents: contents,
       replyIdx: boardIdx
-    })
+    }))
     if (writeState === false) {
       setModifyMsg(contents)
     }
@@ -67,10 +76,10 @@ export default (props) => {
           props.set(true)
           Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
         } else if (res.result === 'fail') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type:"alert",
             callback: () => {},
             msg: res.message
-          })
+          }))
         }
       }
       fetchDataDelete()
@@ -83,13 +92,13 @@ export default (props) => {
           }
         })
         if (res.result === 'success') {
-          context.action.updateFanBoardBigIdxMsg(boardIdx)
+          dispatch(setGlobalCtxFanBoardBigIdx(boardIdx));
           props.set(true)
         } else if (res.result === 'fail') {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type:"alert",
             callback: () => {},
             msg: res.message
-          })
+          }))
         }
       }
       fetchDataDelete()
@@ -97,7 +106,7 @@ export default (props) => {
   }
   //접기 버튼
   const modifyCancel = () => {
-    context.action.updateBoardIdx(0)
+    dispatch(setGlobalCtxBoardIdx(0))
     setModifyState(false)
   }
   const setCancelModify = () => {
@@ -106,10 +115,10 @@ export default (props) => {
 
   const Link = () => {
     if (props.data.memId === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         callback: () => {},
         msg: '탈퇴한 회원입니다.'
-      })
+      }))
     } else {
       if (props.type === 'clip_board') {
         history.push(`/profile/${props.data.writerMemNo}?webview=${webview}&tab=2`)
@@ -125,20 +134,20 @@ export default (props) => {
       targetNickName: props.data.nickName
     };
 
-    context.action.updateBoardIdx(0)
-    context.action.updateUserReport(reportParam);
+    dispatch(setGlobalCtxBoardIdx(0))
+    dispatch(setGlobalCtxUserReport(reportParam))
   }
 
   useEffect(() => {
     return () => {
-      context.action.updateBoardIdx(0)
+      dispatch(setGlobalCtxBoardIdx(0))
     }
   }, [])
   useEffect(() => {
-    if (context.boardModifyInfo && context.boardModifyInfo.replyIdx !== props.data.replyIdx) {
+    if (globalState.boardModifyInfo && globalState.boardModifyInfo.replyIdx !== props.data.replyIdx) {
       setModifyState(false)
     }
-  }, [context.boardModifyInfo])
+  }, [globalState.boardModifyInfo])
   //render----------------------------------
   return (
     <>
@@ -146,16 +155,16 @@ export default (props) => {
         <>
           <div className="list-item__header">
             <button className="btn__more" onClick={() => moreToggle(props.data.replyIdx, props.data.contents)}></button>
-            <div className={context.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>
-              {props.data.writerMemNo === context.token.memNo && (
+            <div className={globalState.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>
+              {props.data.writerMemNo === globalState.token.memNo && (
                 <button onClick={() => editToggle(props.data.contents, props.data.replyIdx)}>수정하기</button>
               )}
-              {(urlrStr === context.token.memNo ||
-              props.data.writerMemNo === context.token.memNo ||
-              props.data.clipMemNo === context.token.memNo) &&
+              {(urlrStr === globalState.token.memNo ||
+              props.data.writerMemNo === globalState.token.memNo ||
+              props.data.clipMemNo === globalState.token.memNo) &&
               <button onClick={() => deleteBoard(props.data.replyIdx, props.data.clipMemNo)}>삭제하기</button>
               }
-              {props.data.writerMemNo !== context.token.memNo && props.data.clipMemNo !== context.token.memNo &&
+              {props.data.writerMemNo !== globalState.token.memNo && props.data.clipMemNo !== globalState.token.memNo &&
                 <button onClick={userReport}>신고하기</button>
               }
             </div>
@@ -174,7 +183,7 @@ export default (props) => {
         </>
       )}
       {/* 수정하기 */}
-      {modifyState === true && context.boardModifyInfo && context.boardModifyInfo.replyIdx === props.data.replyIdx && (
+      {modifyState === true && globalState.boardModifyInfo && globalState.boardModifyInfo.replyIdx === props.data.replyIdx && (
         <BoardModify
           type="modify"
           setCancelModify={setCancelModify}

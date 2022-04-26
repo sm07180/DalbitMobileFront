@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useRef, useCallback, useLayoutEffect, useContext} from 'react'
+import React, {useCallback, useEffect, useLayoutEffect, useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -9,10 +8,14 @@ import Swiper from 'react-id-swiper'
 import moment from 'moment'
 
 import BettingPop from './bettingPop'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 
 export default (props) => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {tabContent, gganbuNo} = props
   const [currentPage, setCurrentPage] = useState(0)
   const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
@@ -69,7 +72,7 @@ export default (props) => {
       setParticipantList(data.bettingListInfo.list)
       setBettingAbled(data.bettingYn)
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: message}))
     }
   }
 
@@ -146,7 +149,7 @@ export default (props) => {
     if(inputRef.keyCode < 48 || inputRef.keyCode > 57) {
       targetVal = 0;
     } else {
-      targetVal = Number(inputRef.current.value);      
+      targetVal = Number(inputRef.current.value);
     }
     const toast1 = '구슬 개수를 확인해주세요'
     const toast2 = "베팅 가능한 최대 개수는 10개입니다";
@@ -160,8 +163,8 @@ export default (props) => {
     const bMarbleInputVal = Number(bMarbleRef.current.value)
     const pMarbleInputVal = Number(pMarbleRef.current.value)
     let comparisonMarble
-    let thisEl = inputRef.current.id 
-    
+    let thisEl = inputRef.current.id
+
     if (thisEl === 'rMarbleRef') {
       comparisonMarble = rMyMarble
     } else if (thisEl === 'yMarbleRef') {
@@ -204,7 +207,7 @@ export default (props) => {
             setSuccessVal({...successVal, pSuccess: pMyMarble})
             setBettingVal({...bettingVal, pBetting: 0})
           }
-          globalCtx.action.toast({msg: toast1})
+          dispatch(setGlobalCtxMessage({type: "toast", msg: toast1}))
         } else if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 100) {
           inputRef.current.value = "";
           if (thisEl === "rMarbleRef") {
@@ -220,7 +223,7 @@ export default (props) => {
             setSuccessVal({ ...successVal, pSuccess: pMyMarble });
             setBettingVal({...bettingVal, pBetting: 0});
           }
-          globalCtx.action.toast({msg: toast3})
+          dispatch(setGlobalCtxMessage({type: "toast", msg: toast3}))
         } else {
           if (thisEl === 'rMarbleRef') {
             setBettingVal({...bettingVal, rBetting: targetVal})
@@ -269,7 +272,7 @@ export default (props) => {
             setSuccessVal({...successVal, pSuccess: pMyMarble})
             setBettingVal({...bettingVal, pBetting: 0})
           }
-          globalCtx.action.toast({msg: toast1})
+          dispatch(setGlobalCtxMessage({type: "toast", msg: toast1}))
         } else if (targetVal > 10) {
           inputRef.current.value = ''
           if (thisEl === 'rMarbleRef') {
@@ -285,7 +288,7 @@ export default (props) => {
             setSuccessVal({...successVal, pSuccess: pMyMarble})
             setBettingVal({...bettingVal, pBetting: 0})
           }
-          globalCtx.action.toast({msg: toast2})
+          dispatch(setGlobalCtxMessage({type: "toast", msg: toast2}))
         } else if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 10) {
           inputRef.current.value = ''
           if (thisEl === 'rMarbleRef') {
@@ -301,7 +304,7 @@ export default (props) => {
             setSuccessVal({...successVal, pSuccess: pMyMarble})
             setBettingVal({...bettingVal, pBetting: 0})
           }
-          globalCtx.action.toast({msg: toast2})
+          dispatch(setGlobalCtxMessage({type: "toast", msg: toast2}))
         } else {
           if (thisEl === 'rMarbleRef') {
             setBettingVal({...bettingVal, rBetting: targetVal})
@@ -319,7 +322,7 @@ export default (props) => {
             pSuccess: pMyMarble + pMarbleInputVal
           })
         }
-      }      
+      }
     }
   }
 
@@ -369,7 +372,7 @@ export default (props) => {
     if (bettingAbled === 'y') {
       setBettingPop(true)
     } else {
-      globalCtx.action.toast({msg: `베팅 가능한 횟수는 하루에 두 번 입니다.`})
+      dispatch(setGlobalCtxMessage({type: "toast", msg: `베팅 가능한 횟수는 하루에 두 번 입니다.`}))
     }
   }
 

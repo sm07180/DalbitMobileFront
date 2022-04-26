@@ -1,11 +1,12 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 // components
 import './faq.scss'
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Faq = () => {
   const [totalList, setTotalList] = useState({cnt: 0, normalList: [], broadcastList: [], paymentList: [], accountList: [], otherList: []});
@@ -15,7 +16,8 @@ const Faq = () => {
   const [currentSearch, setCurrentSearch] = useState(""); //검색할 text
   const [focus, setFocus] = useState(false);
   const [fetchOn, setFetchOn] = useState(false);
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   //FAQ 내역 조회
   const fetchData = () => {
@@ -39,7 +41,9 @@ const Faq = () => {
           accountList: listFilter(res.data.list, 98),
           otherList: listFilter(res.data.list, 5)
         })
-      } else {context.action.alert({msg: res.message});}
+      } else {
+        dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
+      }
     }).catch((e) => console.log(e));
   }
 

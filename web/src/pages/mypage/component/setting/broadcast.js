@@ -1,6 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
-
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 
 import {SETTING_TYPE} from '../../constant'
@@ -13,6 +11,8 @@ import BC_SettingListen from './setting_broadcast/listen'
 import BC_SettingJoinClose from './setting_broadcast/join_close'
 
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const BroadSettingArray = [
   {value: SETTING_TYPE.TITLE, text: '방송 제목', subText: '최대 3개'},
@@ -24,8 +24,9 @@ const BroadSettingArray = [
 ]
 
 function BroadCastSetting(props) {
-  const {subContents, setSubContents} = props
-  const context = useContext(Context)
+  const {subContents, setSubContents} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [list, setList] = useState(BroadSettingArray)
   const [settingData, setSettingData] = useState({})
@@ -33,9 +34,9 @@ function BroadCastSetting(props) {
   const makeContents = () => {
     switch (subContents) {
       case SETTING_TYPE.TITLE:
-        return <BC_SettingTitle />
+        return <BC_SettingTitle/>
       case SETTING_TYPE.WELCOME:
-        return <BC_SettingWelcome />
+        return <BC_SettingWelcome/>
       case SETTING_TYPE.SHORT_MSG:
         return <BC_SettingQuickMsg />
       case SETTING_TYPE.LISTEN:
@@ -51,9 +52,10 @@ function BroadCastSetting(props) {
     })
 
     if (res.result === 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: res.message
-      })
+      }))
 
       setList(
         list.map((v, index) => {

@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {useEffect, useState} from "react";
 
-import { getProfile, postGiftDal, splash, postSendGift } from "common/api";
-import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
-import { ClipProvider, ClipContext } from "context/clip_ctx";
-import { useHistory } from "react-router-dom";
+import {getProfile, postGiftDal, postSendGift} from "common/api";
+import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 export default function GiftDal(props) {
   const { setPopupState, clipProfile } = props;
-  const { modalState, modalAction } = useContext(ModalContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
-  const { splashData } = globalState;
-  const { clipState, clipAction } = useContext(ClipContext);
+  const { splash } = globalState;
 
   const [giftInfo, setGiftInfo] = useState<any>([]);
   const [giftCount, setGiftCount] = useState<any>([]);
@@ -65,18 +64,18 @@ export default function GiftDal(props) {
         dal: dal,
       });
       if (result === "success") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "선물이 성공적으로 발송되었습니다.",
           callback: () => setPopupState(false),
-        });
+        }));
       } else if (result === "fail") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
 
@@ -89,18 +88,18 @@ export default function GiftDal(props) {
         isSecret: false,
       });
       if (result === "success") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "선물이 성공적으로 발송되었습니다.",
           callback: () => setPopupState(false),
-        });
+        }));
       } else if (result === "fail") {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
 
@@ -111,21 +110,20 @@ export default function GiftDal(props) {
         const { roomNo, memNo, itemNo } = modalState.mypageInfo;
         sendDirectDal(roomNo, memNo, itemNo, dal);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: `직접입력 선물은 최소 ${dalMin}달 부터 선물이 가능합니다.`,
           callback: () => {},
-        });
+        }));
       }
     }
   };
 
   useEffect(() => {
-    // console.log(splashData);
-    if (splashData) {
-      setDalMin(splashData.giftDalMin);
-      setGiftCount(splashData.giftDal);
+    if (splash) {
+      setDalMin(splash.giftDalMin);
+      setGiftCount(splash.giftDal);
     }
   }, [dalMin]);
   //-----------------------------------------------------
@@ -193,7 +191,7 @@ export default function GiftDal(props) {
                     );
                   })}
                 </div>
-                {splashData?.giftDalDirect && (
+                {splash?.giftDalDirect && (
                   <input
                     type="number"
                     className="dalList__input"

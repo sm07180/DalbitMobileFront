@@ -1,20 +1,20 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState} from 'react'
 
 // global components
 // components
 import API from "context/api";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import ImageUpload from "pages/recustomer/components/ImageUpload";
-import CheckList from "pages/recustomer/components/CheckList";
-import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Write = (props) => {
-  const {setInquire} = props
-  const context = useContext(Context);
+  const {setInquire} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [inputData, setInputData] = useState({
     phone: "",
     title: "",
@@ -52,20 +52,20 @@ const Write = (props) => {
       questionFileName3: imageFileName[2],
       phone: inputData.phone !== "" ? inputData.phone : "",
       email: "",
-      nickName: context.profile.nickName !== undefined ? context.profile.nickName : "미선택"
+      nickName: globalState.profile.nickName !== undefined ? globalState.profile.nickName : "미선택"
     }
     setIsFetchFalse(true);
     API.center_qna_add({params}).then((res) => {
       setIsFetchFalse(false);
       if(res.result === "success") {
-        context.action.alert({msg: "1:1문의가 등록되었습니다."})
-        if(!context.token.isLogin) {
+        dispatch(setGlobalCtxMessage({type: "alert", msg: "1:1문의가 등록되었습니다."}))
+        if(!globalState.token.isLogin) {
           history.goBack();
         } else {
           setInquire("나의 문의내역");
         }
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -129,7 +129,7 @@ const Write = (props) => {
       return list.includes(ext);
     };
     if (!extValidator(fileExtension)) {
-      context.action.alert({msg: "jpg, png 이미지만 사용 가능합니다."})
+      dispatch(setGlobalCtxMessage({type: "alert", msg: "jpg, png 이미지만 사용 가능합니다."}))
     }
     reader.readAsDataURL(target.files[0]);
     reader.onload = async () => {
@@ -146,9 +146,9 @@ const Write = (props) => {
         }
       } else {
         if(fileSize > 10000000) {
-          context.action.alert({msg: "최대 10MB까지 첨부 가능합니다."})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: "최대 10MB까지 첨부 가능합니다."}));
         } else {
-          context.action.alert({msg: "최대 3장까지 첨부 가능합니다."})
+          dispatch(setGlobalCtxMessage({type: "alert", msg: "최대 3장까지 첨부 가능합니다."}));
         }
       }}
   };
@@ -166,18 +166,20 @@ const Write = (props) => {
 
   //등록시 예외 조건 확인
   const validator = () => {
-    if(!context.token.isLogin) {
+    if(!globalState.token.isLogin) {
       if((inputData.phone !== "" && inputData.phone.length >= 10 && onlyNum(inputData.phone)) && inputData.faqType !== 0 && inputData.contents !== "" && agree === true) {
         if(isDisabled === true) {
-          if(isFetchFalse === false) {fetchData();}
+          if(isFetchFalse === false) {
+            fetchData();
+          }
         } else {
           setIsDisabled(false);
         }
       } else {
         if(!onlyNum(inputData.phone) || inputData.phone.length < 10) {
-          context.action.alert({msg: "올바른 연락처를 입력해주세요."});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: "올바른 연락처를 입력해주세요."}))
         } else {
-          context.action.alert({msg: "필수 항목을 모두 입력해주세요."});
+          dispatch(setGlobalCtxMessage({type: "alert", msg: "필수 항목을 모두 입력해주세요."}))
         }
       }
     } else {
@@ -188,14 +190,14 @@ const Write = (props) => {
           setIsDisabled(false);
         }
       } else {
-        context.action.alert({msg: "필수 항목을 모두 입력해주세요."})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: "필수 항목을 모두 입력해주세요."}))
       }
     }
   }
 
   return (
     <div id='inquireWrite'>
-      {!context.token.isLogin &&
+      {!globalState.token.isLogin &&
       <InputItems title="연락처">
         <input type="tel" placeholder="연락처를 입력해주세요." name="phone" minLength="10" maxLength="11" onChange={onChange}/>
       </InputItems>
@@ -229,7 +231,7 @@ const Write = (props) => {
       {popup &&
       <LayerPopup setPopup={setPopup}>
         <div className='popTitle'>개인정보 수집 및 이용에 동의</div>
-        {!context.token.isLogin ?
+        {!globalState.token.isLogin ?
           <div className='popContent'>
             <ul className='dashList'>
               <li>수집 및 이용 항목 : 휴대전화번호</li>

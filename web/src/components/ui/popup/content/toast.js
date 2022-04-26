@@ -6,16 +6,18 @@
 import React, {useRef, useContext, useEffect, useState, useMemo} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const lifeTime = 2800 // milisec
 let msgArray = []
 let copyArray = []
 
 export default () => {
-  const context = useContext(Context)
-  const {msg} = context.message
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {msg} = globalState.message
 
   const [last, setLast] = useState(false)
 
@@ -69,9 +71,11 @@ export default () => {
 
   useEffect(() => {
     if (last === true && msgData.length === 0) {
-      context.action.toast({
-        message: ''
-      })
+
+      dispatch(setGlobalCtxMessage({
+        type:"toast",
+        msg: ''
+      }))
       setLast(false)
     }
   }, [last, msgData])

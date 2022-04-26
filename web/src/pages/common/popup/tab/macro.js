@@ -1,18 +1,20 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import Navi from './navibar'
 import {LButton} from './bot-button'
 import Api from 'context/api'
 import {BroadCastStore} from '../../store'
-import {Context} from 'context'
-import {Scrollbars} from 'react-custom-scrollbars'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default props => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //------------------------------------------------------ declare start
   const [edit, setEdit] = useState(false)
   const [shortcut, setShortcut] = useState([])
   const store = useContext(BroadCastStore)
-  const context = useContext(Context)
   const scrollbars = useRef(null)
   //------------------------------------------------------ func start
 
@@ -29,13 +31,14 @@ export default props => {
       method: 'POST'
     })
     if (res.result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           console.log('callback처리')
         },
         // title: '달라',
         msg: '빠른 말이 수정되었습니다.'
-      })
+      }))
       selectShortcut() // 빠른 말 수정 완료 후 조회
     }
   }
@@ -101,19 +104,19 @@ export default props => {
 const MacroInput = props => {
   //------------------------------------------------------ declare start
   const [text, setText] = useState('')
-  const context = useContext(Context)
   //------------------------------------------------------ func start
   const handleChangeInput = param => {
     const {value, maxLength, name} = event.target
     let numberOfLines = (value.match(/\n/g) || []).length + 1
     if (numberOfLines === 5) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           console.log()
         },
         // title: '달라라디오',
         msg: '입력 가능한 수를 초과했습니다.'
-      })
+      }))
     }
     setText(value)
   }

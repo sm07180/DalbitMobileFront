@@ -1,21 +1,17 @@
 // React
-import React, {useEffect, useState, useContext} from 'react'
+import React from 'react'
 
 import Swiper from 'react-id-swiper'
-
-import { postImage } from "common/api";
-import { GlobalContext } from "context";
 
 import './imageUpload.scss'
 
 const ImageUpload = (props) => {
   const {title, subTitle, onChange, onClick, imgFile} = props
-  const { globalAction } = useContext(GlobalContext);
 
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 8,
-  }  
+  }
 
   return (
     <div className='imageUpload'>
@@ -36,7 +32,7 @@ const ImageUpload = (props) => {
                     <button type="button" className='removeFile' data-idx={index} onClick={onClick}/>
                   </div>
                 )
-              })}    
+              })}
             </Swiper>
           </div>
 

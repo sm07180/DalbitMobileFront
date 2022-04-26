@@ -1,6 +1,5 @@
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import API from 'context/api'
-import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
@@ -10,15 +9,19 @@ import './attend.scss'
 import AttendList from './attend_list'
 import Notice from '../notice'
 import AttendPop from './popAttend'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function AttendTab() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const {token} = globalState
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, authCheckYn} = eventAttendState
   const [popup, setPopup] = useState(false)
-  const eventDate = {nowDate: moment().format('YYYYMMDD') , endDate : '20211228'}
+  const eventDate = {nowDate: moment().format('YYYYMMDD'), endDate: '20211228'}
 
   async function fetchEventAttendDate() {
     const {result, data} = await API.postEventAttend()
@@ -44,7 +47,8 @@ export default function AttendTab() {
     isAttendClick = true
 
     if (!token.isLogin) {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           history.push({
             pathname: '/login',
@@ -54,15 +58,16 @@ export default function AttendTab() {
           })
         },
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.'
-      })
+      }))
     } else {
-      if (authCheckYn === 'Y' && globalCtx.selfAuth === false) {
-        globalCtx.action.alert({
+      if (authCheckYn === 'Y' && globalState.selfAuth === false) {
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `본인인증 후 참여해주세요.`,
           callback: () => {
             history.push('/selfauth?event=/event/attend_event')
           }
-        })
+        }))
       } else {
         const fetchEventAttendDateIn = async () => {
           const {result, data, message} = await API.postEventAttendIn()
@@ -74,9 +79,10 @@ export default function AttendTab() {
             // 성공
             setPopup(true)
           } else {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: message
-            })
+            }))
           }
         }
         fetchEventAttendDateIn()
@@ -92,18 +98,18 @@ export default function AttendTab() {
     <div className="attendTab">
       <div className="topBanner">
         {
-          eventDate.nowDate > eventDate.endDate ? 
-            <img src={`${IMG_SERVER}/event/attend/210610/event_img_01_1@2x.png`} alt=" 최대 19달 + 경험치 매일 출석 check" /> 
-          : 
-            <img src={`${IMG_SERVER}/event/attend/211203/tabAttendTop.png`} alt="기간한정 최대 24달 + 경험치 매일 출석 check" />
+          eventDate.nowDate > eventDate.endDate ?
+            <img src={`${IMG_SERVER}/event/attend/210610/event_img_01_1@2x.png`} alt=" 최대 19달 + 경험치 매일 출석 check"/>
+            :
+            <img src={`${IMG_SERVER}/event/attend/211203/tabAttendTop.png`} alt="기간한정 최대 24달 + 경험치 매일 출석 check"/>
         }
         {statusList.check_gift === '1' ? (
           <button type="button" className="attend" onClick={() => attendDateIn()}>
-            <img src={`${IMG_SERVER}/event/attend/201019/btn_check@2x.png`} alt="출석체크 하기" />
+            <img src={`${IMG_SERVER}/event/attend/201019/btn_check@2x.png`} alt="출석체크 하기"/>
           </button>
         ) : (
           <button type="button" className="attend">
-            <img src={`${IMG_SERVER}/event/attend/201019/btn_check_disabled@2x.png`} alt="출석체크 완료" />
+            <img src={`${IMG_SERVER}/event/attend/201019/btn_check_disabled@2x.png`} alt="출석체크 완료"/>
           </button>
         )}
       </div>

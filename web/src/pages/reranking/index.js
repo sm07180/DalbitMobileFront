@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
@@ -25,14 +24,14 @@ import {setSubTab} from "redux/actions/rank";
 const RankPage = () => {
   const history = useHistory();
 
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const {token, profile} = context;
+  const {token, profile} = globalState;
 
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
-  const rankState = useSelector(state => state.rank);
+  const rankState = useSelector(state => state.rankCtx);
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
 
@@ -367,8 +366,8 @@ const RankPage = () => {
             <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
             <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
           </div>
-        </section>          
-      }      
+        </section>
+      }
       <section className='bannerWrap'>
         <BannerSlide type={17}/>
       </section>

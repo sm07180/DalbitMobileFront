@@ -2,16 +2,17 @@
 import { deleteFan, getFanList, postAddFan } from "common/api";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
 import React, { useContext, useEffect, useState } from "react";
 // constant
 import { tabType } from "../../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
 
 export default function FanList(props: { profile: any }) {
   const { profile } = props;
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   // ctx
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { setRightTabType, setUserMemNo } = broadcastAction;
   const { userMemNo } = broadcastState;
   const [fanList, setFanList] = useState<any>([]);
 
@@ -39,9 +40,9 @@ export default function FanList(props: { profile: any }) {
     DeleteFanFunc();
   };
   const viewProfile = (memNo?: any) => {
-    setRightTabType && setRightTabType(tabType.PROFILE);
+    dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
     if (memNo) {
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     }
   };
   async function fetchData() {

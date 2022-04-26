@@ -1,27 +1,26 @@
-import React, {useEffect, useState, useContext, useCallback} from 'react'
+import React, {useEffect, useState} from 'react'
 //styled
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import {PROFILE_REPORT_TAB} from './constant'
 import Caution from '../static/caution.png'
+import 'styles/layerpopup.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxMyPageReport} from "redux/actions/globalCtx";
 
 // import CloseBtn from '../../menu/static/ic_closeBtn.svg'
 const CloseBtn = 'https://image.dalbitlive.com/images/api/close_w_l.svg'
-import 'styles/layerpopup.scss'
 
 export default (props) => {
-  //context------------------------------------------
-  const context = useContext(Context)
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
-  const myProfileNo = ctx.profile.memNo
+  const myProfileNo = globalState.profile.memNo
   let history = useHistory()
   //state
   const [select, setSelect] = useState('')
@@ -38,26 +37,29 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: message
-      })
+      }))
     } else if (code === '-3') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: message
-      })
+      }))
     } else if (code === 'C006') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: '이미 블랙리스트로 등록된\n회원입니다.'
-      })
+      }))
     }
   }
 
@@ -71,20 +73,22 @@ export default (props) => {
     })
     if (res.result === 'success') {
       //console.log(res)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: profile.nickNm + '님을 신고 하였습니다.'
-      })
+      }))
     } else {
       // console.log(res)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
-          context.action.updateMypageReport(false)
+          dispatch(setGlobalCtxMyPageReport(false));
         },
         msg: '이미 신고한 회원 입니다.'
-      })
+      }))
     }
 
     return
@@ -148,7 +152,7 @@ export default (props) => {
   })
   //리포트클로즈
   const closePopup = () => {
-    context.action.updateMypageReport(false)
+    dispatch(setGlobalCtxMyPageReport(false));
   }
   //버튼map
   const Reportmap = BTNInfo.map((live, index) => {
@@ -172,16 +176,20 @@ export default (props) => {
   }
   const validateReport = () => {
     if (select === '') {
-      context.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: '신고 사유를 선택해주세요.'
-      })
+      }))
     }
     if (select !== '' && reportReason.length < 10) {
-      context.action.alert({
-        callback: () => {},
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        callback: () => {
+        },
         msg: '신고 사유를 10자 이상 입력해주세요.'
-      })
+      }))
     }
 
     if (reportReason.length >= 10 && select !== '') {
@@ -191,7 +199,7 @@ export default (props) => {
 
   useEffect(() => {
     window.onpopstate = (e) => {
-      context.action.updateMypageReport(false)
+      dispatch(setGlobalCtxMyPageReport(false));
     }
   }, [])
   //------------------------------------------------------------

@@ -1,10 +1,11 @@
 import React, {useEffect, useState, useContext} from 'react'
 import Api from 'context/api'
 import {authReq} from 'pages/self_auth'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
 
 const ProfileSelfCheck = (props) => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [authState, setAuthState] = useState(false)
   const [phone, setPhone] = useState('')
 
@@ -31,7 +32,9 @@ const ProfileSelfCheck = (props) => {
           본인인증
         </label>
         <input type="text" placeholder="본인인증을 해주세요." id="sign" className="writeInput" readOnly defaultValue={phone} />
-        <button type="button" className="requestBtn" onClick={() => authReq({code: '5', formTagRef: globalCtx.authRef, context: globalCtx})}>
+        <button type="button" className="requestBtn" onClick={() => {
+          authReq({code: '5', formTagRef: globalState.authRef, dispatch});
+        }}>
           본인인증
         </button>
       </div>

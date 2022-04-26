@@ -1,5 +1,4 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {Context} from 'context'
 import Api from 'context/api'
 
 import {PlayListStore} from '../store'
@@ -7,12 +6,15 @@ import {PlayListStore} from '../store'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import {OS_TYPE} from 'context/config.js'
 import {useLocation} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
-  const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
   const customHeader = JSON.parse(Api.customHeader)
   const location = useLocation();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [totalList, setTotalList] = useState(0)
 
@@ -27,7 +29,7 @@ export default () => {
     if (result === 'success') {
       playListCtx.action.updateClipType(data)
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
     }
   }
 
@@ -57,7 +59,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
         }
       } else {
         //추천(인기)
@@ -66,7 +68,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
         }
       }
     } else if (playListInfo.hasOwnProperty('memNo')) {
@@ -77,7 +79,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
         }
       } else {
         //마이페이지 업로드목록
@@ -86,7 +88,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
         }
       }
     } else if (playListInfo.hasOwnProperty('recDate')) {
@@ -95,7 +97,7 @@ export default () => {
         playListCtx.action.updateList(data.list)
         setTotalList(data.list.length)
       } else {
-        globalCtx.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
       }
     } else if (playListInfo.hasOwnProperty('rankType')) {
       if(playListInfo.hasOwnProperty('callType')) {
@@ -104,7 +106,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
         }
       }else {
         const {result, data, message} = await Api.getClipRankingList({...playListInfo})
@@ -112,7 +114,7 @@ export default () => {
           playListCtx.action.updateList(data.list)
           setTotalList(data.list.length)
         } else {
-          globalCtx.action.alert({msg: message})
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
         }
       }
     } else {
@@ -122,7 +124,7 @@ export default () => {
         playListCtx.action.updateList(data.list)
         setTotalList(data.list.length)
       } else {
-        globalCtx.action.alert({msg: message})
+        dispatch(setGlobalCtxMessage({type:'alert',msg: message}))
       }
     }
   }
@@ -135,9 +137,9 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, globalCtx, 'new')
+      clipJoin(data, dispatch, globalState, 'new')
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: message,
         callback: () => {
           if (list[nextClipIdx + 1] !== undefined) {
@@ -146,7 +148,7 @@ export default () => {
             clipPlay(list[0].clipNo)
           }
         }
-      })
+      }))
     }
   }
 

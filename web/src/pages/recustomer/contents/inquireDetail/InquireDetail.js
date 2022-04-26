@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 
 import Api from 'context/api'
@@ -8,16 +8,18 @@ import Swiper from 'react-id-swiper'
 import Header from 'components/ui/header/Header'
 // components
 import './inquireDetail.scss'
-import {Context} from "context";
 import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const InquireDetail = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const params = useParams();
   const qnaIdx = Number(params.num);
   const [qnaDetail, setQnaDetail] = useState({});
   const [addFile, setAddFile] = useState([]);
   const history = useHistory();
-  const context = useContext(Context);
 
   const fetchInquireLog = async () => {
     let params = {
@@ -31,7 +33,7 @@ const InquireDetail = () => {
             setQnaDetail(res.data.list[i]);
           }}
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
       }
     }).catch((e) => console.log(e));
   }
@@ -45,15 +47,19 @@ const InquireDetail = () => {
       params: {qnaIdx: qnaIdx}
     })
     if(res.result === "success") {
-      context.action.alert({msg: res.message, callback : () => {
-          context.action.alert({visible: false});
+      dispatch(setGlobalCtxMessage({
+        type: "alert", msg: res.message, callback: () => {
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}));
           history.goBack();
-        }})
+        }
+      }))
     } else {
-      context.action.alert({msg: res.message, callback: () => {
-          context.action.alert({visible: false});
+      dispatch(setGlobalCtxMessage({
+        type: "alert", msg: res.message, callback: () => {
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}));
           history.goBack();
-        }})
+        }
+      }))
     }
   }
 

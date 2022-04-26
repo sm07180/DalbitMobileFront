@@ -1,6 +1,4 @@
-import React, { useContext, useReducer, useEffect, useRef } from "react";
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
+import React, {useContext, useReducer, useEffect, useRef, DispatchWithoutAction} from "react";
 
 import { getBroadcastShortCut, broadcastShortCutModify } from "common/api";
 
@@ -10,6 +8,9 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 import { tabType } from "pages/broadcast/constant";
 
 import MsgContent from "./msg_short_item";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxMsgShortCut} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 type ActionType = {
   type: string;
   val: any;
@@ -40,10 +41,9 @@ const reducer = (state: Array<any>, action: ActionType) => {
 };
 
 export default function MsgShort() {
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-
-  const [state, dispatch] = useReducer(reducer, []);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const [state, dispatchWithoutAction] = useReducer(reducer, []);
 
   const modifyState = async (idx: number) => {
     if (state[idx] instanceof Object) {
@@ -58,16 +58,14 @@ export default function MsgShort() {
 
       if (res.result === "success") {
         if (res.data instanceof Array) {
-          broadcastAction.setMsgShortCut && broadcastAction.setMsgShortCut(res.data);
+          dispatch(setBroadcastCtxMsgShortCut(res.data));
         } else {
-          broadcastAction.setMsgShortCut && broadcastAction.setMsgShortCut(res.data.list);
+          dispatch(setBroadcastCtxMsgShortCut(res.data.list));
         }
-
-        globalAction.callSetToastStatus &&
-          globalAction.callSetToastStatus({
-            status: true,
-            message: res.message,
-          });
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: res.message,
+        }));
       }
     }
   };
@@ -78,11 +76,11 @@ export default function MsgShort() {
       if (res.result === "success") {
         if (res.data instanceof Array) {
           if (broadcastState.msgShortCut !== res.data) {
-            dispatch({ type: "init", val: res.data });
+            dispatchWithoutAction({ type: "init", val: res.data });
           }
         } else {
           if (broadcastState.msgShortCut !== res.data.list) {
-            dispatch({ type: "init", val: res.data.list });
+            dispatchWithoutAction({ type: "init", val: res.data.list });
           }
         }
       }
@@ -103,7 +101,7 @@ export default function MsgShort() {
                 state.map((item, idx) => {
                   return (
                     <div className="msgContents__wrap" key={idx}>
-                      <MsgContent item={item} idx={idx} state={state} dispatch={dispatch} modifyState={modifyState} />
+                      <MsgContent item={item} idx={idx} state={state} dispatch={dispatchWithoutAction} modifyState={modifyState} />
                     </div>
                   );
                 })}

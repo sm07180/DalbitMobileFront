@@ -82,7 +82,9 @@ const MainPage = () => {
   const common = useSelector(state => state.common);
 
   // page 조회 API
-  const fetchMainInfo = () => dispatch(setMainData());
+  const fetchMainInfo = () => {
+    dispatch(setMainData());
+  }
 
   /* 라이브 리스트 */
   const fetchLiveInfo = useCallback(({pageNo, mediaType, djType}) => {

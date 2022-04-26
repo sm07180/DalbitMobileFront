@@ -1,15 +1,17 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react'
 import Cropper from 'react-cropper'
-import {Context} from 'context'
 import Header from '../new_header'
 import './index.scss'
 import CropImg from './static/ico-crop.png'
 import CropRotation from './static/ico-rotation.png'
 import {isAndroid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBackEventCallback, setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
 
 function DalbitCropper(props) {
-  const {imgInfo, onClose, onCrop, className} = props
-  const context = useContext(Context)
+  const {imgInfo, onClose, onCrop, className} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //state
   const [state, setState] = useState({
     status: true,
@@ -111,25 +113,25 @@ function DalbitCropper(props) {
 
     /* 안드로이드 물리 백버튼시 감지용 */
     if (isAndroid()) {
-      context.action.updateSetBack(true);
-      context.action.updateBackFunction({name: 'callback'});
-      context.action.updateBackEventCallback(onClose);
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'callback'}));
+      dispatch(setGlobalCtxBackEventCallback(onClose));
     }
     return () => {
       document.body.style.overflow = ''
 
       if (isAndroid()) {
-        if (context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null);
+        if (globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
         }
-        context.action.updateBackFunction({name: ''});
-        context.action.updateBackEventCallback(null);
+        dispatch(setGlobalCtxBackFunction({name: ''}));
+        dispatch(setGlobalCtxBackEventCallback(null));
       }
     }
   }, [])
 
   return (
-    <div className={`croperWrap ${className} ${context.player || context.clipState ? 'gutter' : ''}`}>
+    <div className={`croperWrap ${className} ${globalState.player || globalState.clipState ? 'gutter' : ''}`}>
       <Header>
         <button className="croperClose" onClick={() => onClose()} type="button">
           크롭퍼 닫기

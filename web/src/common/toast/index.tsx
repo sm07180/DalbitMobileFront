@@ -1,14 +1,15 @@
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import styled from "styled-components";
 
-// context
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../redux/actions/globalCtx";
 
 const lifeTime = 2800; // milisec
 let msgArray: string[] = [];
 let copyArray: string[] = [];
 export default function ToastUI() {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { message } = globalState.toastStatus;
 
   const [last, setLast] = useState(false);
@@ -54,9 +55,7 @@ export default function ToastUI() {
   }, [msgData]);
   useEffect(() => {
     if (last === true && msgData.length === 0) {
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({ status: false });
-      }
+      dispatch(setGlobalCtxSetToastStatus({ status: false }));
       setLast(false);
     }
   }, [last, msgData]);

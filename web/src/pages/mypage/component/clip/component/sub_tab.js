@@ -2,8 +2,9 @@ import React, {useContext} from 'react'
 import Swiper from 'react-id-swiper'
 
 import Util from 'components/lib/utility.js'
-import {Context} from 'context'
 import {UPLOAD_SUBTAB_TYPE} from 'pages/mypage/content/constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxClipTab} from "redux/actions/globalCtx";
 
 const buttonList = [
   {buttonValue: UPLOAD_SUBTAB_TYPE.SUBTAB_MY, text: '마이 클립', cName: 'swiper-button-prev'},
@@ -13,18 +14,19 @@ const buttonList = [
 ]
 
 export default function UploadSubTab(props) {
-  const {totalData, contextClipTab, contextClipTabAction} = props
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {totalData, contextClipTab} = props
 
   const swiperParams = {
     spaceBetween: 2,
     slidesPerView: 'auto',
     resistanceRatio: 0,
-    initialSlide: context.clipTab
+    initialSlide: globalState.clipTab
   }
 
   const onClickHandler = (e) => {
-    contextClipTabAction(+e.target.value)
+    dispatch(setGlobalCtxClipTab(+e.target.value));
   }
 
   const renderSubText = () => {
@@ -61,7 +63,7 @@ export default function UploadSubTab(props) {
 
   return (
     <section className="subTab_box">
-      <Swiper {...swiperParams} activeSlideKey={`${context.clipTab < 1 ? 0 : context.clipTab > 2 ? 3 : ''}`}>
+      <Swiper {...swiperParams} activeSlideKey={`${globalState.clipTab < 1 ? 0 : globalState.clipTab > 2 ? 3 : ''}`}>
         {buttonList.map((btn, idx) => (
           <button
             key={idx}

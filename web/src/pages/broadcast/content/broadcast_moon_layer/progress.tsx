@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import styled from "styled-components";
 
-import { GlobalContext } from "context";
-
 import { broadMoon } from "common/api";
 import HelpLayer from "./help";
 
 import HintIcon from "../../static/ic_hint.svg";
 
 import "./index.scss";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 type PropsType = {
   roomNo: string;
   toggle(bool: boolean): void;
@@ -21,8 +21,7 @@ type PropsType = {
 
 function ProgressLayer(props: PropsType) {
   const { roomNo, toggle, helpToggle, moonInfo, setMoonInfo } = props;
-
-  const { globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,10 +30,10 @@ function ProgressLayer(props: PropsType) {
       if (result === "success") {
         setMoonInfo(data);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: message,
-        });
+        }));
       }
     };
 

@@ -2,7 +2,8 @@ import React, { useState, useContext, useEffect, useReducer } from "react";
 import styled from "styled-components";
 import SelectBox from "common/ui/dalbit_selectbox";
 import CloseBtn from "../../static/close_w_l.svg";
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../../../../redux/actions/globalCtx";
 type ActionType = {
   type: string;
   idx?: number;
@@ -105,7 +106,7 @@ export default function detailPopup(props) {
       { text: "SK증권", value: 266 },
     ],
   };
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
   const [popurState, popurDispatch] = useReducer(selectReducer, popurInit);
 
   const [addName, setAddName] = useState("");
@@ -119,41 +120,37 @@ export default function detailPopup(props) {
     setSettingPopup(false);
   };
   const deletePopup = () => {
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: "선택하신 환전 계좌정보를 삭제하시겠습니까?",
-        callback: () => {
-          setSettingPopup(false);
-          props.setDeleteState({
-            state: true,
-            modifyIdx: addIdx,
-            beforeAccount: beforeAccount,
-          });
-          props.setModiBool(true);
-        },
-      });
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: "선택하신 환전 계좌정보를 삭제하시겠습니까?",
+      callback: () => {
+        setSettingPopup(false);
+        props.setDeleteState({
+          state: true,
+          modifyIdx: addIdx,
+          beforeAccount: beforeAccount,
+        });
+        props.setModiBool(true);
+      },
+    }));
   };
   const applyClick = () => {
     if (addName === "") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "예금주명을 입력해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "예금주명을 입력해주세요",
+      }));
     } else if (addBank === "" || addBank == 0) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "은행을 선택해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "은행을 선택해주세요",
+      }));
     } else if (addAccountNumber === "" || addAccountNumber.length < 9) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "계좌번호를 확인해주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "계좌번호를 확인해주세요",
+      }));
     } else {
       setSettingPopup(false);
       props.setModiInfo({

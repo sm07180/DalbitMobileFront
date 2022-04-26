@@ -1,16 +1,17 @@
 import React, {useContext, useState} from 'react';
 import {useHistory, useParams} from "react-router-dom";
-import {Context} from 'context';
 import {IMG_SERVER} from 'context/config';
 // global components
 import ListRow from 'components/ui/listRow/ListRow';
 import {PHOTO_SERVER} from "context/config";
 import Api from "context/api";
 import moment from "moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const InviteList = (props) => {
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
 
   let {list,listCnt,memNo,setInvitationChk}=props;
 
@@ -18,7 +19,7 @@ const InviteList = (props) => {
     const {targetConfirm} = e.currentTarget.dataset;
 
     if (targetConfirm === 'cancel') {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `정말 거절 할까요?`,
         buttonText: {
           left: '취소',
@@ -35,16 +36,16 @@ const InviteList = (props) => {
             if(res.code === "00000"){
               setInvitationChk(true)
             }else{
-              context.action.toast({
+              dispatch(setGlobalCtxMessage({type:'toast',
                 msg: res.message
-              })
+              }))
             }
           })
 
         }
-      });
+      }));
     } else if (targetConfirm === 'accept') {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `수락을 누르면 팀원으로 가입합니다.`,
         buttonText: {
           left: '취소',
@@ -63,10 +64,10 @@ const InviteList = (props) => {
           })
 
         }
-      });
+      }));
     }
   };
-  
+
   // 페이지 시작
   return (
     <>

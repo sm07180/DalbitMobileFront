@@ -2,26 +2,27 @@
  * @file /mlive/index.js
  * @brief 라이브방송
  */
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 //context
 import Api from 'context/api'
-import {Context} from 'context'
 import {Store} from './index'
 import NoResult from 'components/ui/noResult'
 //room
 import Room, {RoomJoin} from 'context/room'
 //components
 import List from './live-list'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 //
 const LiveIndex = () => {
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //let
   let clicked = false
   //interface
-  LiveIndex.context = context
   //-----------------------------------------------------------
   // 방송방 리스트 조회
   const getBroadList = async (mode) => {
@@ -38,10 +39,11 @@ const LiveIndex = () => {
         Store().action.updateBroadList(res.data)
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         title: res.messageKey,
         msg: res.message
-      })
+      }))
     }
   }
   //update

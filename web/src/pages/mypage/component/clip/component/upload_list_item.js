@@ -1,13 +1,14 @@
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import qs from 'query-string'
 import _ from 'lodash'
 import {OS_TYPE} from 'context/config.js'
 
-import {Context} from 'context'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import {PUBLICITY_TYPE, UPLOAD_SUBTAB_TYPE} from 'pages/mypage/content/constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default function UploadClip(props) {
   const {dataList, setDataList, slctedBtnIdx, setSlctedBtnIdx, fetchDataPlay} = props
@@ -16,7 +17,8 @@ export default function UploadClip(props) {
 
   const {PRIVATE, PUBLIC} = PUBLICITY_TYPE // 0 | 1 in order
   const {SUBTAB_MY, SUBTAB_LISTEN, SUBTAB_LIKE, SUBTAB_GIFT} = UPLOAD_SUBTAB_TYPE // 0 | 1 | 2 | 3 in order
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const editDetailAPI = async (idx) => {
     const chosenItem = dataList.list[idx]
@@ -31,20 +33,22 @@ export default function UploadClip(props) {
       clonedDataList[idx].openType = data.openType
       setDataList({isLoading: false, list: clonedDataList})
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
   const toggleConfirmModal = (idx) => {
     const chosenOpenType = dataList.list[idx].openType
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: chosenOpenType === 0 ? '공개정보를 공개로 변경하시겠습니까?' : '공개정보를 비공개로 변경하시겠습니까?',
       callback: () => {
         editDetailAPI(idx)
       }
-    })
+    }));
   }
 
   const openButtonHandler = (e, idx) => {
@@ -55,11 +59,11 @@ export default function UploadClip(props) {
   const closeButtonHandler = () => setSlctedBtnIdx(null)
 
   const renderIcon = (item) => {
-    switch (context.clipTab) {
+    switch (globalState.clipTab) {
       case SUBTAB_LISTEN:
         return (
           <span>
-            <em className="icon_play" />
+            <em className="icon_play"/>
             {Utility.printNumber(item.countPlay)}
           </span>
         )
@@ -89,10 +93,14 @@ export default function UploadClip(props) {
 
   const eventClipPlayHandler = (clipNo, idx) => {
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      context.action.updatePopup('APPDOWN', 'appDownAlrt', 3)
+      dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 3]}));
     } else {
       if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
-        return context.action.alert({msg: '선택한 클립 재생은 청취중인 방송을 \n 종료 한 후 가능합니다.'})
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          msg: '선택한 클립 재생은 청취중인 방송을 \n 종료 한 후 가능합니다.'
+        }));
+        return;
       }
       fetchDataPlay(clipNo, idx)
     }
@@ -109,11 +117,11 @@ export default function UploadClip(props) {
   return (
     <ul className="upload_list">
       {dataList.list.map((item, idx) => {
-        return context.clipTab === SUBTAB_MY ? (
+        return globalState.clipTab === SUBTAB_MY ? (
           // [ 마이 클립 ]
           <li key={`upload_list-${idx}`} className="my_clip_item" onClick={() => closeButtonHandler(idx)}>
             <div className="thumb" onClick={() => eventClipPlayHandler(item.clipNo, idx)}>
-              <img className="image_prof" src={item.bgImg['thumb120x120']} alt="profile image" />
+              <img className="image_prof" src={item.bgImg['thumb120x120']} alt="profile image"/>
               <img
                 className={`image_lock${item.openType === PRIVATE ? ' visible' : ''}`}
                 src="https://image.dalbitlive.com/svg/lock_circle_g.svg"

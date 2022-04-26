@@ -1,16 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { GlobalContext } from "context";
 import { getClipGift } from "common/api";
 import { dateFormat } from "lib/common_fn";
 import NoResult from "common/ui/no_result";
 
 import { printNumber, addComma } from "lib/common_fn";
 
-import { ClipProvider, ClipContext } from "context/clip_ctx";
+import {useDispatch, useSelector} from "react-redux";
 
 export default (props) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [giftData, setGiftData] = useState<any>({});
   const [giftList, setGiftList] = useState<any>({});
 

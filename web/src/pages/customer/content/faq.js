@@ -6,7 +6,6 @@
 // import React, {useState, useContext, useEffect} from 'react'
 // //context
 // import {Store} from './index'
-// import {Context} from 'context'
 // import Api from 'context/api'
 // import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 // import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'

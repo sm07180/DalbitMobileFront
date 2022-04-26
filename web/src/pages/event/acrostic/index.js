@@ -7,19 +7,21 @@ import EventComment from '../components/comment'
 
 import './acrostic.scss'
 import Api from "context/api";
-import {Context} from "context";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import _ from "lodash";
 import {useHistory} from "react-router-dom";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Acrostic = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const [popup, setPopup] = useState(false);
   const [poem, setPoem] = useState({
-    tailMemNo: context.profile && context.profile.memNo,
-    tailMemId: context.profile && context.profile.memId,
-    tailMemSex: context.profile && context.profile.gender,
+    tailMemNo: globalState.profile && globalState.profile.memNo,
+    tailMemId: globalState.profile && globalState.profile.memId,
+    tailMemSex: globalState.profile && globalState.profile.gender,
     tailMemIp: "",
     tailConts: "",
     tailLoginMedia: useSelector((state) => state.common.isDesktop) ? "w" : "s",
@@ -39,7 +41,7 @@ const Acrostic = () => {
   const getPoemList = () => {
     Api.poem({
       reqBody: false,
-      params: {memNo: myCommentView ? context.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
+      params: {memNo: myCommentView ? globalState.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
       method: 'GET'
     }).then((response) => {
       setPoemInfo({
@@ -68,7 +70,7 @@ const Acrostic = () => {
           method: 'POST'
         }).then((response)=>{
           if(response.code === "C003"){
-            context.action.alert({msg: '댓글이 등록되었습니다.'});
+            dispatch(setGlobalCtxMessage({type: "alert",msg: '댓글이 등록되었습니다.'}));
             getPoemList()
           }
         })
@@ -97,7 +99,7 @@ const Acrostic = () => {
       method: 'DELETE'
     }).then((response)=>{
       if(response.code === "C004"){
-        context.action.alert({msg: '댓글이 삭제되었습니다.'});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: '댓글이 삭제되었습니다.'}));
         getPoemList();
       }
     })

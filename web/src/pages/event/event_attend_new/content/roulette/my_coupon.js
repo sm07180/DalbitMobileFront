@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import API from 'context/api'
-import Layout from 'pages/common/layout'
 
 import Header from 'components/ui/header/Header'
 //components
