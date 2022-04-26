@@ -81,7 +81,7 @@ const TitleButton = (props) => {
   }
 
   useEffect(() => {
-    if(isHybrid()) {
+    if(isHybrid() && context.token.isLogin) {
       fetchMypageNewCntData(context.profile.memNo);
     }
   }, []);

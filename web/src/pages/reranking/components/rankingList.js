@@ -24,9 +24,7 @@ export default withRouter((props) => {
   const history = useHistory();
 
   const goProfile = (value) => {
-    const { profileMemNo } = e.currentTarget.dataset;
-
-    if (profileMemNo !== undefined) {
+    if (value !== undefined) {
       props.history.push(`/profile/${value}`);
     }
   };
