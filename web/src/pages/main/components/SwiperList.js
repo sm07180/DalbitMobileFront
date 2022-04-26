@@ -57,7 +57,9 @@ const SwiperList = (props) => {
   const goTeamDetailPage = (e) => {
     const { teamNo } = e.currentTarget.dataset;
 
-    if (teamNo !== undefined) {
+    if (!globalState.baseData.isLogin) {
+      history.push('/login');
+    } else if (teamNo !== undefined) {
       history.push(`/team/detail/${teamNo}`);
     }
   }
