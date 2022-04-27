@@ -10,7 +10,7 @@ import CntTitle from '../../components/ui/cntTitle/CntTitle';
 import BannerSlide from '../../components/ui/bannerSlide/BannerSlide';
 import UtilityCommon from "../../common/utility/utilityCommon";
 // components
-import Tabmenu from './components/Tabmenu';
+import Tabmenu from './components/tabmenu';
 import SubTabmenu from './components/SubTabmenu';
 import MainSlide from './components/MainSlide';
 import PrevMainSlide from './components/PrevMainSlide';
