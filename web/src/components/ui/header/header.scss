@@ -14,11 +14,6 @@ header {
   height:$HEADER-HEIGHT;
   padding-left: 16px;
   padding-right: 6px;
-  .title {
-    @include flex(center,center);
-    height:100%;
-    @include font(24px,700,#202020);
-  }
   &.fixed {
     position:fixed;
     top:0;
@@ -43,6 +38,11 @@ header {
       pointer-events: none;
       @include font(18px,$SemiBold,#202020);
     }
+  }
+  .title {
+    @include flex(center,center);
+    height:100%;
+    @include font(24px,700,#202020);
   }
   .buttonGroup {
     @include flex(center);

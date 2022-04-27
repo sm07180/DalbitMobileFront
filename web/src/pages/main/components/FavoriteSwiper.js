@@ -1,39 +1,35 @@
-import React, {useContext, useEffect, useMemo} from 'react'
+import React, {useContext, useEffect, useMemo} from 'react';
 
-import Swiper from 'react-id-swiper'
-
+import Swiper from 'react-id-swiper';
 // global components
 // components
-// css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
 
-const SwiperList = (props) => {
-
-  const {data, profImgName, type, pullToRefreshPause, myStarCnt} = props;
+const FavoriteSwiper = (props) => {
+  const {data, type, pullToRefreshPause, myStarCnt} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const common = useSelector(state => state.common);
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
-  let locationStateHistory = useHistory();
 
   const swiperParams = useMemo(() => {
     let tempResult = { slidesPerView: 'auto'}
-    if (isDesktop) {
-      tempResult.navigation = {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      };
-    }
     return tempResult;
   }, []);
 
+  // myStar 가 방송중일 때
   const goLive = (item) => {
     const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
     RoomValidateFromClipMemNo(item.roomNo, item.memNo, dispatch, globalState, history, memNick);
   }
+  // myStar 가 방송중이 아닐 때
+  const goProfile = (memNo) => {
+    if (memNo !== undefined && memNo > 0) {
+      history.push(`/profile/${memNo}`)
+    }
+  };
 
   const swiperRefresh = () => {
     const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
@@ -53,51 +49,43 @@ const SwiperList = (props) => {
     }
   }, [common.isRefresh]);
 
-  const goProfile = (memNo) => {
-    if (memNo !== undefined && memNo > 0) {
-      history.push(`/profile/${memNo}`)
-    }
-  }
-
   return (
-    <>
+    <section className='favorites'>
     {data && data.length > 0 &&
-    <Swiper {...swiperParams}>
-      {data.map((item,index) => {
-        return (
-          <div key={index}>
-            <div className="listColumn">
-              {item.roomNo !== "0" ?
-                <div className="photo" onClick={() => {goLive(item)}}>
-                  <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
-                    : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                </div>
-               :
-                <div className="photo off" onClick={() => {goProfile(item.memNo)}}>
-                  <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
-                    : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                </div>
-              }
-              <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
+      <Swiper {...swiperParams}>
+        {data.map((item,index) => {
+          return (
+            <div key={index}>
+              <div className="listColumn">
+                {item.roomNo !== "0" ?
+                  <div className="photo" onClick={() => {goLive(item)}}>
+                    <img src={item['profImg'].thumb292x292 ? item['profImg'].thumb292x292
+                      : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
+                  </div>
+                :
+                  <div className="photo off" onClick={() => {goProfile(item.memNo)}}>
+                    <img src={item['profImg'].thumb292x292 ? item['profImg'].thumb292x292
+                      : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
+                  </div>
+                }
+                <p>{item.nickNm}</p>
+              </div>
             </div>
-          </div>
-        )
-      })}
-      {myStarCnt > 10 &&
-        <div className='listColumn' onClick={() => {
-          history.push('/recentstar')
-        }}>
-          <div className="listMoreBox">
-            <div className="listMore">
+          )
+        })}
+        {myStarCnt > 10 &&
+          <div>
+            <div className="listMoreBox" onClick={() => {
+              history.push('/recentstar')
+            }}>
               +{myStarCnt - 10}
             </div>
           </div>
-        </div>
-      }
-    </Swiper>
+        }
+      </Swiper>
     }
-    </>
+    </section>
   )
 }
 
-export default SwiperList;
+export default FavoriteSwiper;
