@@ -110,7 +110,6 @@ const StorePage = ()=>{
       history.push(value)
     }
   }
-
   return (
     <div id="storePage">
       <Header title={'스토어'} position="sticky" type="back" backEvent={()=>{
@@ -137,6 +136,11 @@ const StorePage = ()=>{
         <div className="title">내가 보유한 달</div>
         <span className="dal">{Utility.addComma(payStoreRdx.storeInfo.dalCnt)}</span>
       </section>
+      <section className="discountInfo">
+        {payStoreRdx.storeInfo.deviceInfo?.os === OsType.Desktop && 
+          <div>인앱구매와 비교해 <span>최대 18% 할인</span></div>
+        }
+      </section>
       <section className="storeTabWrap">
         {
           payStoreRdx.storeTabInfo.filter(f => f.active).length === payStoreRdx.storeTabInfo.length &&
@@ -149,7 +153,7 @@ const StorePage = ()=>{
             <div className="title">
               <i/>결제 TIP
             </div>
-            <p>PC 또는 {payStoreRdx.storeInfo.deviceInfo?.os === OsType.IOS ? '사파리를':'크롬을'} 통해 달 구입시, 훨씬 더 많은 달을 받을 수 있습니다.</p>
+            <p>PC 또는 웹에서 결제시 최대 18% 즉시할인</p>
             <p>
               www.dallalive.com
             </p>

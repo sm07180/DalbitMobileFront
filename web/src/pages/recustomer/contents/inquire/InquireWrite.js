@@ -3,16 +3,18 @@ import React, {useState} from 'react'
 // global components
 // components
 import API from "context/api";
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import './inquireWrite.scss'
 import InputItems from "components/ui/inputItems/InputItems";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import ImageUpload from "pages/recustomer/components/ImageUpload";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setNoticeTabList} from "redux/actions/notice";
 
 const Write = (props) => {
   const {setInquire} = props;
+  const params = useParams();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const [inputData, setInputData] = useState({
@@ -37,6 +39,7 @@ const Write = (props) => {
   const [isFetchFalse, setIsFetchFalse] = useState(false);
   const history = useHistory();
 
+  const noticeTab = useSelector(state => state.noticeTabList);
   //문의하기 등록
   const fetchData = () => {
     let params = {
@@ -58,12 +61,15 @@ const Write = (props) => {
     API.center_qna_add({params}).then((res) => {
       setIsFetchFalse(false);
       if(res.result === "success") {
-        dispatch(setGlobalCtxMessage({type: "alert", msg: "1:1문의가 등록되었습니다."}))
-        if(!globalState.token.isLogin) {
-          history.goBack();
-        } else {
-          setInquire("나의 문의내역");
-        }
+        dispatch(setGlobalCtxMessage({type: "alert", msg: "1:1문의가 등록되었습니다.", callback: () => {
+          if(!globalState.token.isLogin) {
+            history.goBack();
+          } else {
+              setInquire("나의 문의내역");
+              dispatch(setNoticeTabList({...noticeTab, inquireTab: '나의 문의내역'}));
+          }
+        }}))
+        
       } else {
         dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}));
       }

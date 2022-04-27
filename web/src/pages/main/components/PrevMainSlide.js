@@ -9,10 +9,11 @@ import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
 
 const PrevMainSlide = (props) => {
-  const {data, common, pullToRefreshPause} = props
+  const {data, swiperRefresh, pullToRefreshPause} = props
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const common = useSelector(state => state.common);
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const swiperParams = {
     loop: true,
@@ -39,9 +40,7 @@ const PrevMainSlide = (props) => {
 
   useEffect(() => {
     if((common.isRefresh || !pullToRefreshPause) && data.length > 0) { // refresh 될때 슬라이드 1번으로
-      const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
-      swiper?.update();
-      swiper?.slideTo(1);
+      swiperRefresh();
     }
   }, [common.isRefresh, pullToRefreshPause]);
 
@@ -72,7 +71,8 @@ const PrevMainSlide = (props) => {
             )
           })}
         </Swiper>
-        : <div className="empty" />
+        :
+        <div className="empty" />
       }
     </>
   )

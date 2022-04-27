@@ -49,6 +49,21 @@
     }
   }
   @include purchaseList;
+  .myhaveDal{
+    padding-bottom: 12px;
+  }
+  .discountInfo{
+    padding: 0 16px;
+    div{
+      width: 100%;
+      @include font(13px, $SemiBold, #303030);
+      border-top: 1px solid #e3e3e3;
+      padding: 8px 0 16px 0;
+      span{
+        color: #f52460;
+      }
+    }
+  }
   .storeDalList{
     .icon{
       width: 51px;
