@@ -13,9 +13,9 @@ const InviteList = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  let {list,listCnt,memNo,setInvitationChk}=props;
+  let {list,listCnt,memNo,setInvitationChk,memName}=props;
 
-  const teamConfirm = (e,teamNo,masterNo) => {
+  const teamConfirm = (e,teamNo,masterNo,teamName) => {
     const {targetConfirm} = e.currentTarget.dataset;
 
     if (targetConfirm === 'cancel') {
@@ -28,9 +28,12 @@ const InviteList = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
+            teamNam:teamName,
             memNo:memNo,
+            memName:memName,
             masterMemNo:masterNo,
-            chrgrName:""
+            chrgrName:"",
+            reqSlct:'i'//신청구분 [r:가입신청, i:초대]
           }
           Api.getTeamMemReqDel(param).then((res)=>{
             if(res.code === "00000"){
@@ -54,7 +57,9 @@ const InviteList = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
+            teamNam:teamName,
             memNo:memNo,
+            reqSlct:'i'//신청구분 [r:가입신청, i:초대]
           }
           Api.getTeamMemIns(param).then((res)=>{
             if(res.code === "00000"){
@@ -80,6 +85,7 @@ const InviteList = (props) => {
             dateFormat = moment(dateFormat).format("YYYY-MM-DD HH:mm");
             let teamNo = data.team_no;
             let masterNo =data.master_mem_no;
+            let teamName = data.team_name;
             return(
             <div className="listWrap" key={index}>
               <div className="listRow">
@@ -98,8 +104,8 @@ const InviteList = (props) => {
                 </div>
                 <div className="listBack">
                   <div className="buttonGroup">
-                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>{teamConfirm(e,teamNo,masterNo)}}>거절</button>
-                    <button className="accept" data-target-confirm="accept" onClick={(e)=>{teamConfirm(e,teamNo,masterNo)}}>수락</button>
+                    <button className="cancel" data-target-confirm="cancel" onClick={(e)=>{teamConfirm(e,teamNo,masterNo,teamName)}}>거절</button>
+                    <button className="accept" data-target-confirm="accept" onClick={(e)=>{teamConfirm(e,teamNo,masterNo,teamName)}}>수락</button>
                   </div>
                 </div>
               </div>

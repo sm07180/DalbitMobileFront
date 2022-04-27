@@ -25,6 +25,9 @@ import photoCommon from "common/utility/photoCommon";
 import {Hybrid, isHybrid} from "context/hybrid";
 import qs from 'query-string'
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
+
+let teamMemNoList =[]; // 회원번호 리스트 담기용
 const TeamDetail = (props) => {
   const history = useHistory();
   const teamIntroRef = useRef();
@@ -242,6 +245,7 @@ const TeamDetail = (props) => {
       callback: () => {
         let param = {
           teamNo:teamNo,
+          memNoList:teamMemNoList,
           masterMemNo:memberRdx.memNo,
           chrgrName:"",
         }
@@ -273,6 +277,7 @@ const TeamDetail = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
+            teamName:teamInfo.team_name,
             memNo:memNo,
             masterMemNo:memberRdx.memNo,
             chrgrName:""
@@ -298,7 +303,9 @@ const TeamDetail = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
+            teamName:teamInfo.team_name,
             memNo:memNo,
+            reqSlct:'r'//신청구분 [r:가입신청, i:초대]
           }
           Api.getTeamMemIns(param).then((res)=>{
             if(res.code === "00000"){
@@ -448,6 +455,10 @@ const TeamDetail = (props) => {
               let photoUrl = data.tm_image_profile
               let photoServer = "https://photo.dalbitlive.com";
               let memNoChk= Number(data.tm_mem_no) === Number(memberRdx.memNo)
+              if (!teamMemNoList.includes(data.tm_mem_no)) {
+                teamMemNoList.push(data.tm_mem_no);
+              }
+
               return(
                 <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">

@@ -20,7 +20,7 @@ const TotalInfo = (props) => {
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const memberRdx = useSelector((state)=> state.member);
   const profileData = useSelector(state => state.profile);
   const dispatch = useDispatch();
   const swiperRef = useRef();
@@ -94,6 +94,7 @@ const TotalInfo = (props) => {
 
     const param ={
       teamNo: teamNo,
+      memName:memberRdx.data.nickNm,
       memNo: globalState.token.memNo,
       reqSlct: 'r' //신청구분 [r:가입신청, i:초대]
     };

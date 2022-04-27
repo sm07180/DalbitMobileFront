@@ -59,7 +59,6 @@ const TeamManager = (props) => {
   }, [agree])
 
   const updateApi=()=>{
-    console.log("???")
     let equData = {
       bgCode:bgCode,
       medalCode:medalCode,
@@ -156,6 +155,7 @@ const TeamManager = (props) => {
           teamNo: teamNo,
           delSclt: "m",
           tmMemNo: data.tm_mem_no,
+          masterName:memberRdx.data.nickNm,
           masterMemNo: memberRdx.memNo,
           chrgrName: ""
         }
