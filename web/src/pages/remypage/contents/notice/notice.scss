@@ -15,31 +15,35 @@
 
 #notice {
   position:relative;
-  .tabmenu {
-    position: sticky;
-    @include tabmenuStyle-1;
-    padding: 0 16px;
-    background-color: #FFF;
-    z-index: $TAB-ZINDEX;
-    li {
-      position:relative;
-      cursor:pointer;
-      &.new {
-        span {
-          position: relative;
-          &::after {
-            content: "";
-            position: absolute;
-            top: 0px; right: -8px;
-            display: inline-block;
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background-color: #FF3C7B;
-          }
-        }        
+  .noticeWrap {
+    > .tabmenu {
+      position: sticky;
+      @include tabmenuStyle-1;
+      top: $HEADER-HEIGHT;
+      padding: 0 16px;
+      background-color: #FFF;
+      z-index: $TAB-ZINDEX;
+      li {
+        position:relative;
+        cursor:pointer;
+        &.new {
+          span {
+            position: relative;
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0px; right: -8px;
+              display: inline-block;
+              width: 6px; height: 6px;
+              border-radius: 50%;
+              background-color: #FF3C7B;
+            }
+          }        
+        }
       }
     }
   }
+  
 
   .allim, .post {
     padding-top:15px;
@@ -153,6 +157,28 @@
         }
         img {
           width: 100% !important;
+        }
+      }
+    }
+  }
+  .inquiry {
+    .tabmenu {
+      @include flex(center);
+      width: 100%;
+      padding: 11px 16px;
+      box-sizing: border-box;
+      li {
+        flex: none;
+        @include flex(center, center);
+        padding: 0px 16px;
+        margin-right: 4px;
+        border-radius: 100px;
+        @include font(13px, $Regular, #ACACAC);
+        line-height: 36px;
+        background-color: #F2F2F2;
+        &.active {
+          @include font(13px, $Medium, #FFFFFF);
+          background-color: #202020;
         }
       }
     }

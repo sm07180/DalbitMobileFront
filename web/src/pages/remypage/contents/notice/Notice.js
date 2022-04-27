@@ -10,8 +10,11 @@ import TabBtn from '../../components/TabBtn'
 import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
+import Tabmenu from "pages/remypage/components/Tabmenu";
+import InquireWrite from "pages/recustomer/contents/inquire/InquireWrite";
+import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeData, setNoticeTab, setPostData} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab, setPostData, setNoticeTabList} from "redux/actions/notice";
 import API from "context/api";
 import {RoomJoin} from "context/room";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
@@ -20,8 +23,8 @@ import {noticePagingDefault} from "redux/types/noticeType";
 let alarmFix = false;
 let postFix = false;
 const NoticePage = () => {
+  const noticeTabmenu = ['알림','공지사항','1:1문의'];
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const noticeTabmenu = ['알림','공지사항'];
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
@@ -29,9 +32,14 @@ const NoticePage = () => {
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const postData = useSelector(state => state.post);
+  const noticeTab = useSelector(state => state.noticeTabList);
+  
   const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
   const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
   const [postPageInfo, setPostPageInfo] = useState({mem_no: globalState.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
+
+  const inquireTabmenu = ['문의하기','나의 문의내역']
+  const [inquire, setInquire] = useState(inquireTabmenu[0])
 
   /* 알림 조회 */
   const fetchData = () => {
@@ -200,6 +208,41 @@ const NoticePage = () => {
     }
   }
 
+  const inquireTabChange = (index) => {
+    dispatch(setNoticeTabList({...noticeTab, inquireTab: noticeTab.inquireTabList[index]}))
+  };
+  
+  const createContent = () => {
+    switch (tab) {
+      case '알림':
+        return <Allim alarmList={alarmList} handleClick={handleClick}/>
+      case '공지사항':
+        return <Post onClick={onClick} postListInfo={postData}/>
+      case '1:1문의':
+        return (
+          <div className='inquiry'>
+            <ul className='tabmenu'>
+              {noticeTab.inquireTabList.map((item, index) => {
+                return (
+                  <li className={`${noticeTab.inquireTab === item ? 'active' : ""}`} key={index} onClick={() => {inquireTabChange(index)}}>{item}</li>
+                )
+              })}
+            </ul>
+            {noticeTab.inquireTab === "문의하기" ?
+              <InquireWrite setInquire={setInquire}/>
+              :
+              <InquireLog/>
+            }
+          </div>
+        )
+        
+        
+      default:
+        return <></>
+        break
+    }
+  }
+
   //공지사항 세부페이지 이동
   const onClick = (e) => {
     const num = e.currentTarget.dataset.num;
@@ -267,25 +310,25 @@ const NoticePage = () => {
 
   return (
     <div id="notice">
-      <Header title="알림/공지사항" type="back"/>
+      <Header title="알림/공지사항/1:1문의" type="back"/>
       <section className="noticeWrap">
         <ul className="tabmenu">
           {noticeTabmenu.map((data,index) => {
             const param = {item: data, tab: tab, setTab: (val) => dispatch(setNoticeTab(val))}
             let newTage = false;
-            if(data === "알림") {alarmData.alarm > 0 ? newTage = true : false}
-            else {alarmData.notice > 0 ? newTage = true : false}
+            if(data === "알림") {
+              alarmData.alarm > 0 ? newTage = true : false
+            } else if(data === "공지사항") {
+              alarmData.notice > 0 ? newTage = true : false
+            } else {
+              newTage = false
+            }
             return (
               <TabBtn param={param} key={index} newTage={newTage}/>
             )
           })}
-          <div className="underline"/>
-        </ul>
-        {tab === noticeTabmenu[0] ?
-          <Allim alarmList={alarmList} handleClick={handleClick}/>
-          :
-          <Post onClick={onClick} postListInfo={postData}/>
-        }
+        </ul>        
+        {createContent()}
       </section>
     </div>
   )
