@@ -549,4 +549,4 @@ const MainPage = () => {
   return MainLayout;
 }
 
-export default MainPage
+export default MainPage;
