@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
@@ -12,6 +11,7 @@ import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
 // components
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
+import Refresh from './components/Refresh'
 import RankingList from './components/rankingList'
 import {convertDateTimeForamt, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup';
@@ -24,14 +24,14 @@ import {setSubTab} from "redux/actions/rank";
 const RankPage = () => {
   const history = useHistory();
 
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const {token, profile} = context;
+  const {token, profile} = globalState;
 
   const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
 
-  const rankState = useSelector(state => state.rank);
+  const rankState = useSelector(state => state.rankCtx);
   //하단 FAN/CUPID탭 array
   const dayTabmenu = ['FAN','CUPID']
 
@@ -54,7 +54,7 @@ const RankPage = () => {
   const [cupidRank, setCupidRank] = useState([]);
 
   //내 순위 정보
-  const [myRank, setMyRank] = useState({dj: 0, fan: 0, cupid: 0});
+  const [myRank, setMyRank] = useState({dj: 0, fan: 0, cupid: 0, team: 0});
 
   //하단 FAN/CUPID탭
   const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
@@ -208,20 +208,29 @@ const RankPage = () => {
   const getMyRank = async () => {
     await Api.getMyRank().then((res) => {
       if (res.result === "success"){
-        let djRank = 0;
-        let fanRank = 0;
-        let cupidRank = 0;
-
+        let rankInfo = {
+          dj: 0,
+          fan: 0,
+          cupid: 0,
+          team: 0
+        }
         res.data.map((res) => {
-          if (res.s_rankSlct === "DJ"){
-            djRank = res.s_rank;
-          } else if (res.s_rankSlct === "FAN") {
-            fanRank = res.s_rank;
-          } else {
-            cupidRank = res.s_rank;
+          switch (res.s_rankSlct) {
+            case 'DJ':
+              rankInfo.dj = res.s_rank;
+              break;
+            case 'FAN':
+              rankInfo.fan = res.s_rank;
+              break;
+            case 'LOVER':
+              rankInfo.cupid = res.s_rank;
+              break;
+            case 'TEAM':
+              rankInfo.team = res.s_rank;
+              break;
           }
         });
-        setMyRank({dj: djRank, fan: fanRank, cupid: cupidRank});
+        setMyRank(rankInfo);
       }
     });
   }
@@ -341,6 +350,7 @@ const RankPage = () => {
           </div>
         </div>
         <ChartSwiper data={djRank}/>
+        <Refresh select={select} setSelect={setSelect}/>
       </section>
       {token.isLogin ?
         <section className='myRanking'>
@@ -351,14 +361,13 @@ const RankPage = () => {
         </section>
           :
         <section className='myRanking'>
-          <CntTitle title={'나의 순위는?'}>
-          </CntTitle>
+          <CntTitle title={'나의 순위는?'} />
           <div className='rankBox'>
             <p className='loginText'>로그인하여 내 순위를 확인해보세요!</p>
             <button className='loginBtn' onClick={() => {golink("/login")}}>로그인</button>
           </div>
-        </section>          
-      }      
+        </section>
+      }
       <section className='bannerWrap'>
         <BannerSlide type={17}/>
       </section>

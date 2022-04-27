@@ -23,6 +23,25 @@
   flex:1;
   @include flex($fd:column);
   height:100%;
+
+  .buttonGroup {    
+    .store {
+      &.bonus {
+        position: relative;
+        &::after {
+          content: "SALE";
+          @include position-horizon($bottom: 0px);
+          @include flex(center, center);
+          height: 16px;
+          padding: 0px 5px;
+          border-radius: 100px;
+          @include font(11px, 700, #FFF);
+          background-color: #FF1919;
+        }
+      }
+    }
+  }
+
   .mypageTop {
     width: 100%;
     padding: 20px 16px;
@@ -61,6 +80,12 @@
               margin-right:4px;
               @include BGIMG("mypage/dalla/levelInfo.png");
             }
+          }
+          .starDj {
+            display: inline-block;
+            width: 46.5px; height: 20px;
+            @include BGIMG("badge/dalla/badge_starDJ-off.png");
+            &.active {@include BGIMG("badge/dalla/badge_starDJ-on.png");}
           }
           .userId {
             margin-left:4px;
@@ -182,6 +207,40 @@
           &.setting {@include BGIMG('mypage/dalla/icon_serviceSetting.png');}
           &.notice {@include BGIMG('mypage/dalla/icon_notice.png');}
           &.customer {@include BGIMG('mypage/dalla/icon_customer.png');}
+          &.team {
+            width:26px;height:26px;
+            margin:7px;
+            span {
+              display:inline-block;
+              width:100%;
+              height:100%;
+              border:1px dashed #ACACAC;
+              background-color:#F6F6F6;
+              border-radius:4px;
+              &.new {
+                border-color:#FF6093;
+                background-color:white;
+                &::after {
+                  @include position-bottom-right(-2px,-2px);
+                  content:"N";
+                  display:inline-flex;
+                  align-items:center;
+                  justify-content: center;
+                  width:15px;
+                  height:15px;
+                  border-radius:50%;
+                  background-color:$MAINCOLOR;
+                  @include font(10px,$Heavy,white);
+                }
+              }
+            }
+            img {
+              @include position-top-left(-1px,-1px);
+              width:calc(100% + 2px);
+              height:calc(100% + 2px);
+              border-radius:4px;
+            }
+          }
           &.new::after {
             content: "";
             @include position-top-right(4px, 0px);
@@ -264,6 +323,86 @@
       .submitBtn {
         width:100%;
         margin-top:20px;
+      }
+    }
+  }
+
+  #layerPop {
+    .popContainer {
+      padding:0;
+    }
+    .honorPopup {
+      width:100%;
+      height:440px;
+      padding: 20px 0 0;
+      .title {
+        @include flex(center,center,column);
+        height:72px;
+        @include font(16px,$Medium,#202020);
+        strong {
+          display: inline-block;
+          max-width: 200px;
+          @include font(16px,$Bold,$MAINCOLOR);
+          @include fontCut;
+        }
+        span {
+          @include flex(center, center);
+          text-align: center;
+        }
+      }
+      .reference {
+        margin: 4px 0 23px;
+        @include font(12px,$Regular,#666666);
+        text-align: center;
+      }
+      .table {
+        width: 100%;
+        margin-top: 10px;
+        .summary {
+          @include flex(center, space-between);
+          margin-bottom: 8px;
+          padding: 0 22px;
+          @include font(12px,$Medium,$MAINCOLOR);
+        }
+        .tableInfo {
+          .thead {
+            @include flex(center);
+            line-height:26px;
+            margin: 0 22px;
+            border-top: 1px solid $MAINCOLOR;
+            border-bottom: 1px solid $MAINCOLOR;
+            @include font(12px,$Medium,$MAINCOLOR);
+          }
+          .tbody {
+            max-height: 200px;
+            @include font(13px,$Regular,#202020);
+            overflow-y: auto;
+            .tbodyList {
+              @include flex(center);
+              margin: 0 22px;
+              line-height:26px;
+              + .tbodyList {
+                border-top: 1px solid #F2F2F2;
+              }
+            }
+          }
+          span {
+            flex:1;
+            text-align:center;
+          }
+        }
+      }
+    }
+    .profileRankNotice {
+      height:280px;
+      text-align:center;
+      .title {
+        margin-bottom:6px;
+        @include font(16px,$SemiBold,$MAINCOLOR);
+      }
+      .text {
+        margin-bottom:22px;
+        @include font(12px,$Regular,#666);
       }
     }
   }

@@ -1,7 +1,8 @@
 import React, {useContext} from 'react'
-import {RankContext} from 'context/rank_ctx'
 
 import {RANK_TYPE, PAGE_TYPE} from '../constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setRankFormRankType} from "redux/actions/rank";
 
 const btnArray = [
   {val: RANK_TYPE.DJ, text: 'DJ'},
@@ -16,12 +17,11 @@ const fameArray = [
   {val: RANK_TYPE.SECOND, text: '15초'}
 ]
 export default function RankBtnWrap({fetching}) {
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
+  const dispatch = useDispatch();
 
   const {formState} = rankState
 
-  const formDispatch = rankAction.formDispatch
-  const setRankTimeData = rankAction.setRankTimeData
 
   const syncScroll = () => {
     window.scrollTo(0, 0)
@@ -40,11 +40,7 @@ export default function RankBtnWrap({fetching}) {
                   if (!fetching) {
                     if (formState[PAGE_TYPE.RANKING].rankType !== v.val) {
                       await syncScroll()
-
-                      formDispatch({
-                        type: 'RANK_TYPE',
-                        val: v.val
-                      })
+                      dispatch(setRankFormRankType(v.val));
                     }
                   }
                 }}>
@@ -64,10 +60,7 @@ export default function RankBtnWrap({fetching}) {
                   if (!fetching) {
                     if (formState[PAGE_TYPE.FAME].rankType !== v.val) {
                       await syncScroll()
-                      formDispatch({
-                        type: 'RANK_TYPE',
-                        val: v.val
-                      })
+                      dispatch(setRankFormRankType(v.val));
                     }
                   }
                 }}>

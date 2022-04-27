@@ -275,6 +275,14 @@
         outline: none;
       }
 
+      .disabled{
+        background-color: #aaa;
+
+        &::placeholder{
+          color: #000;
+        }
+      }
+
       .emoji-icon {
         position: absolute;
         right: 0;
@@ -2852,7 +2860,7 @@
       }
     }
   }
-  // 스디 뱃지
+  // 스디 배지
   .checkBadge {
     position: absolute;
     top: 0;

@@ -23,7 +23,6 @@ import axios from 'axios'
 //context
 import {API_SERVER, PAY_SERVER, PHOTO_SERVER} from 'context/config'
 import qs from 'qs'
-import {postSleepMemUpd} from "../common/api";
 
 export default class API {
   //---------------------------------------------------------------------방송관련
@@ -114,6 +113,9 @@ export default class API {
 
   static main_init_data_v2 = async () => {
     return await ajax({url: '/v2/main/page', method: 'GET'})
+  }
+  static getEtcData = async () => {
+    return await ajax({url: '/v2/main/etcData', method: 'GET'})
   }
 
   /**
@@ -1410,6 +1412,7 @@ export default class API {
   static postAddProfileImg = async (data) => {
     return await ajax({url: '/profile/add/img', method: 'POST', data})
   }
+
   static postSetLeaderProfileImg = async (data) => {
     return await ajax({url: '/profile/leader/img', method: 'POST', data})
   }
@@ -1421,6 +1424,7 @@ export default class API {
   static profileImageUpdate = async (data) => {
     return await ajax({url: '/profile/update/img', reqBody:true, method: 'POST', data})
   }
+
   /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"
@@ -2246,6 +2250,14 @@ export default class API {
     })
   };
 
+  static noticeRead = async (param) => {
+    return await ajax({
+      url: `/center/notice/read`,
+      method: 'POST',
+      params: param
+    })
+  };
+
   /**
    * @brief 고객센터 공지사항 상세 목록 조회
    * @method "GET"
@@ -2345,19 +2357,6 @@ export default class API {
   }
 
   //-------------------------------------------------------------스토어, 결제
-  /**
-   * @brief 스토어 구매상품 목록
-   * @method "GET"
-   * @create 이은비 2020.03.24
-   */
-  static store_list = async (obj) => {
-    const {url, method} = obj || {}
-    return await ajax({
-      ...obj,
-      url: url || `/store/charge`,
-      method: method || 'GET'
-    })
-  }
 
   /**
    * @brief 신용카드 결제요청
@@ -2688,6 +2687,12 @@ export default class API {
       url: `/mypage/change/item`,
       method: 'GET',
       params: params
+    })
+  }
+  static getOtherPriceList = async () => {
+    return await ajax({
+      url: `/store/getOtherPriceList`,
+      method: 'GET',
     })
   }
 
@@ -3030,7 +3035,7 @@ export default class API {
       fanBoard: 0,
       dal: 0,
       byeol: 0,
-      notice: '',
+      notice: '0',
       qna: '',
       targetMemNo: targetMemNo
     }
@@ -3658,7 +3663,7 @@ export default class API {
     })
   }
 
-  // 깐부 현황 N 뱃지 갱신
+  // 깐부 현황 N 배지 갱신
   static getGganbuBadge = async (data) => {
     return await ajax({
       url: `/event/gganbu/badge/upd`,
@@ -4208,6 +4213,16 @@ export default class API {
     return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
   }
 
+  //메인 슬라이더
+  static getBannerList = async (data) => {
+    return await ajax({url: `/v2/main/getMainSwiper`})
+  }
+
+  //파비 list
+  static getPartnerDjList = async (data) => {
+    return await ajax({url: `/getPartnerDjList`, method: 'POST', reqBody: true, data: data})
+  }
+
   // 와썹맨 dj 리스트
   static getWhatsUpDjList = async (data) => {
     return ajax({url: '/event/whatsUp/getDjList', method: 'POST', reqBody: true, data: data})
@@ -4228,12 +4243,152 @@ export default class API {
   static pEvtWassupManNoSel = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoSel', method: 'POST', reqBody: true})
   }
+  // 와썹맨 마지막 회차정보
+  static pEvtWassupManLastNoSel = async () => {
+    return ajax({url: '/event/whatsUp/pEvtWassupManLastNoSel', method: 'POST', reqBody: true})
+  }
+
   // 와썹맨 회차리스트
   static pEvtWassupManNoList = async () => {
     return ajax({url: '/event/whatsUp/pEvtWassupManNoList', method: 'POST', reqBody: true})
   }
+  // IP 국가 코드 조회 _ KR
+  static getNationCode = async (data) => {
+    return ajax({url: '/getNationCode', method: 'POST', reqBody: true})
+  }
 
+  // 클립 랭킹 재생목록 조회 api
+  static getClipRankCombineList = async (params) => {
+    return ajax({url: '/clip/rank/combine/list', method: 'GET', reqBody: false, params})
+  }
+  //팬랭킹 참여 유무
+  static getRankingApply = async () => {
+    return await ajax({url: "/rank/getRankingApply"})
+  }
 
+  static getStoreIndexData = () => {
+    return ajax({url: '/store/getIndexData', method: 'POST', reqBody: true})
+  }
+  //스타DJ 점수
+  static getMyStarPoint = async (data) => {
+    return await ajax({url: "/getStarDjScore", method: 'POST', reqBody: true, data: data})
+  }
+
+  //스타DJ 신청
+  static starDjIns = async () => {
+    return await ajax({url: "/starDjIns"})
+  }
+
+  //스타DJ 약력
+  static getStarDjLog = async (data) => {
+    return await ajax({url: "/getStarDjLog", method: 'POST', reqBody: true, data: data})
+  }
+
+  // 팀 등록
+  static getTeamIns = async (data) => {
+    return await ajax({url: `/team/teamIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 등록체크
+  static getTeamInsChk = async (data) => {
+    return await ajax({url: `/team/teamChk`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 정보수정
+  static getTeamUpd = async (data) => {
+    return await ajax({url: `/team/teamUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 삭제
+  static getTeamDel = async (data) => {
+    return await ajax({url: `/team/teamDel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입신청/초대
+  static getTeamMemReqIns = async (data) => {
+    return await ajax({url: `/team/memReqIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입 수락
+  static getTeamMemIns = async (data) => {
+    return await ajax({url: `/team/memIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 탈퇴
+  static getTeamMemDel = async (data) => {
+    return await ajax({url: `/team/memDel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 팀장변경
+  static getTeamMasterUpd = async (data) => {
+    return await ajax({url: `/team/masterUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입신청 거절&취소
+  static getTeamMemReqDel = async (data) => {
+    return await ajax({url: `/team/memReqDel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 회원 팀 정보
+  static getTeamSel = async (data) => {
+    return await ajax({url: `/team/teamSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 멤버 정보
+  static getTeamMemSel = async (data) => {
+    return await ajax({url: `/team/teamMemSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 등록체크
+  static getTeamInvitationSel = async (data) => {
+    return await ajax({url: `/team/teamInvitationSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 가입신청 리스트
+  static getTeamRequestSel = async (data) => {
+    return await ajax({url: `/team/teamRequestSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 출석체크
+  static getTeamAttendanceIns = async (data) => {
+    return await ajax({url: `/team/teamAttendanceIns`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 활동배지 전체 리스트
+  static getTeamBadgeList = async (data) => {
+    return await ajax({url: `/team/teamBadgeList`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 대표활동배지 리스트
+  static getTeamRepresentBadgeSel = async (data) => {
+    return await ajax({url: `/team/teamRepresentBadgeSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 대표 활동배지 변경
+  static updTeamBadge = async (data) => {
+    return await ajax({url: `/team/teamBadgeUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 내팀 심볼
+  static getTeamMemMySel = async (data) => {
+    return await ajax({url: `/team/teamMemMySel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 초대/신청내역 읽음처리
+  static getTeamMemReqUpd = async (data) => {
+    return await ajax({url: `/team/teamMemReqUpd`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 랭킹 리스트
+  static getTeamRankWeekList = async (data) => {
+    return await ajax({url: `/team/teamRankWeekList`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 심볼 리스트
+  static getTeamSymbolList = async (data) => {
+    return await ajax({url: `/team/teamSymbolList`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 정보(상세)
+  static getTeamDetailSel = async (data) => {
+    return await ajax({url: `/team/teamDetailSel`, method: 'POST', reqBody: true, data: data})
+  }
+  // 팀 초대 리스트 호출(팬,스타)
+  static getTeamMemFanstarList = async (data) => {
+    return await ajax({url: `/team/teamMemFanstarList`, method: 'POST', reqBody: true, data: data})
+  }
+
+  static getDalPriceList = (data) => {
+    return ajax({url: '/store/getDalPriceList', method: 'POST', reqBody: true, params:data})
+  }
+
+  static getDalCnt = () => {
+    return ajax({url: '/store/getDalCnt', method: 'POST', reqBody: true})
+  }
+
+  // 방장 정보 조회
+  static roomOwnerSel = async (roomNo, memNo) => {
+    return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo, memNo:memNo}})
+  }
 }
 
 API.customHeader = null

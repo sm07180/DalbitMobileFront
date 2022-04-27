@@ -4,7 +4,6 @@ import API from 'context/api'
 import {IMG_SERVER} from 'context/config'
 
 //ctx
-import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
 
 import {GIFT_CON_TYPE, GIFT_ROTATION_TYPE} from '../../constant'
@@ -14,7 +13,6 @@ import PopGifticon from './popGifticon'
 let timeout
 
 export default () => {
-  const globalCtx = useContext(Context)
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {itemNo} = eventAttendState
 

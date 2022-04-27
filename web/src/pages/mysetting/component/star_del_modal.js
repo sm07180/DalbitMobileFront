@@ -1,11 +1,13 @@
 import React, {useState, forwardRef, useImperativeHandle, useContext} from 'react'
-import {Context} from 'context'
 import Api from 'context/api'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const OperationModal = forwardRef((props, ref) => {
   const {imgInfo} = props
-  const globalCtx = useContext(Context)
-  const {profile} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {profile} = globalState
   const [open, setOpen] = useState(false)
   useImperativeHandle(ref, () => ({
     handleOpen: () => {
@@ -18,19 +20,16 @@ const OperationModal = forwardRef((props, ref) => {
   }
 
   const alertMessage = (message) => {
-    globalCtx.action.alert({
+    dispatch(setGlobalCtxMessage({type:"alert",
       msg: message,
-      callback: () => {
-        globalCtx.action.alert({visible: false})
-      }
-    })
+    }))
   }
 
   const getProfileAcount = () => {
     Api.profile({params: {memNo: profile.memNo}}).then((res) => {
       const {result, message, data} = res
       if (result === 'success') {
-        globalCtx.action.updateProfile(data)
+        dispatch(setGlobalCtxUpdateProfile(data));
       } else {
         alertMessage(message)
       }
@@ -43,9 +42,9 @@ const OperationModal = forwardRef((props, ref) => {
         const {result, message} = res
         if (result === 'success') {
           getProfileAcount()
-          globalCtx.action.toast({
+          dispatch(setGlobalCtxMessage({type:"toast",
             msg: '선택 이미지로 대표 이미지가 변경되었습니다.'
-          })
+          }))
           handleClose()
         } else {
           alertMessage(message)
@@ -55,11 +54,11 @@ const OperationModal = forwardRef((props, ref) => {
   }
 
   const onDelClick = () => {
-    globalCtx.action.confirm({
+    dispatch(setGlobalCtxMessage({type:"confirm",
       title: '프로필 이미지 삭제',
       msg: '선택하신 이미지를 삭제하시겠습니까?<br/>삭제한 프로필 이미지는 복구 할 수 없습니다.',
       callback: deleteImage
-    })
+    }))
   }
 
   const deleteImage = () => {

@@ -5,17 +5,18 @@ import Tabmenu from '../components/Tabmenu'
 import BenefitDj from '../components/BenefitDj'
 import BenefitFan from '../components/BenefitFan'
 import BenefitLover from '../components/BenefitLover'
+import BenefitTeam from '../components/BenefitTeam'
 
 // components
 //static
 import './rankingBenefit.scss'
 import {useLocation} from "react-router-dom";
 
+const tabList = ["DJ", "FAN", "CUPID",'TEAM'];
+
 const RankingBenefit = () => {
   let location = useLocation();
-
-  //탭 목록
-  const [tabList, setTabList] = useState(["DJ", "FAN", "CUPID"]);
+  
   //현재 선택된 탭 이름
   const [tabName, setTabName] = useState(location.state === "FAN" ? "FAN" : location.state === "CUPID" ? "CUPID" : "DJ");
 
@@ -35,6 +36,10 @@ const RankingBenefit = () => {
         {
           tabName === "CUPID" &&
             <BenefitLover/>
+        }
+        {
+          tabName === "TEAM" &&
+            <BenefitTeam/>
         }
       </div>
     </div>

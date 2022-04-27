@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
 
-import {Context} from 'context'
-
 import NoResult from 'components/ui/noResult/NoResult'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -10,9 +8,11 @@ import Api from "context/api";
 
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const InviteRank = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
@@ -36,7 +36,7 @@ const InviteRank = () => {
     Api.inviteList({
       reqBody: true,
       data:{
-        "memNo": context.token.memNo,
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       setData({
@@ -50,7 +50,7 @@ const InviteRank = () => {
     Api.inviteMyRank({
       reqBody: true,
       data:{
-        "memNo": context.token.memNo,
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       console.log(response.data);
@@ -75,7 +75,7 @@ const InviteRank = () => {
         <div className='imageBox'>
           <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-benefit.png" alt="초대왕에게 드리는 놀라운 혜택!" className='fullImage'/>
           <button className='noticePopBtn' onClick={popupOpen}>유의사항</button>
-        </div>      
+        </div>
         <div className='imageBox'>
             <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-title.png" alt="초대왕 랭킹" className='fullImage'/>
           </div>
@@ -83,7 +83,7 @@ const InviteRank = () => {
           {
             data.cnt > 0 ?
             <>
-              {context.token.isLogin &&
+              {globalState.token.isLogin &&
               <div className='inviteMyRank'>
                 <div className='listFront'>
                   <span className='myrankText'>내순위</span>
@@ -133,7 +133,7 @@ const InviteRank = () => {
             <div className='listNone'>
               <NoResult ment="랭킹 내역이 없어요." />
             </div>
-          }        
+          }
         </div>
       </div>
       {

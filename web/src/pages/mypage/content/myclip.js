@@ -1,8 +1,6 @@
 // Api
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 // context
-import {Context} from 'context'
-import Api from 'context/api'
 import {HISTORY_TAB_TYPE} from 'pages/mypage/content/constant'
 // router
 import {useHistory, useLocation} from 'react-router-dom'
@@ -14,11 +12,13 @@ import MyPageClipUpload from '../component/clip/mypage_clip_upload'
 import ClipHistory from '../component/clip/clip_history'
 import Header from '../component/header.js'
 import qs from 'query-string'
+import {useDispatch, useSelector} from "react-redux";
 // ----------------------------------------------------------------------
 export default function Clip(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   // history
   let history = useHistory()
-  const context = useContext(Context)
   const location = useLocation()
   const {tab} = qs.parse(location.search)
 
@@ -27,13 +27,13 @@ export default function Clip(props) {
   // divide components
   const createContents = () => {
     // props.type is "userprofile" when navigated from /mypage/memNo - clip tab
-    if (props.type === 'userprofile' && context.urlStr !== context.profile.memNo) {
-      return <MyPageClipUpload />
+    if (props.type === 'userprofile' && globalState.urlStr !== globalState.profile.memNo) {
+      return <MyPageClipUpload/>
     }
     if (localClipTab === HISTORY_TAB_TYPE.UPLOAD) {
-      return <ClipUpload />
+      return <ClipUpload/>
     } else {
-      return <ClipHistory />
+      return <ClipHistory/>
     }
   }
   //toggle tab
@@ -42,8 +42,8 @@ export default function Clip(props) {
   // render---------------------------------------------------------
   return (
     <div id="mypageClip">
-      {!props.type && <Header title="클립" />}
-      {context.urlStr === context.profile.memNo && (
+      {!props.type && <Header title="클립"/>}
+      {globalState.urlStr === globalState.profile.memNo && (
         <div className="header">
           <div className="header__tab">
             <button

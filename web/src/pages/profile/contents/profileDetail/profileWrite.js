@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 import Api from 'context/api'
 
@@ -14,16 +13,19 @@ import CheckList from '../../components/CheckList'
 import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+import {setProfileTabData} from "redux/actions/profile";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileWrite = () => {
   const history = useHistory();
+  const profileTab = useSelector((state) => state.profileTab);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile} = globalState;
   // type : feed, fanBoard / action : create, update / index 글번호
   const {memNo, type, action, index} = useParams();
-
-  //context
-  const context = useContext(Context);
-  const {token, profile} = context;
-
   //수정 : index 필수
   if (action === 'modify' && !index) {
     <Redirect to={{pathname: '/mypage'}}/>
@@ -35,17 +37,13 @@ const ProfileWrite = () => {
 
   const inputRef = useRef(null);
   const photoListSwiperRef = useRef(null);
-  const imageUploading = useRef(false);
 
-  const [item, setItem] = useState(null);
   const [eventObj, setEventObj] = useState(null);
   const [image, setImage] = useState(null);
   const [cropOpen, setCropOpen] = useState(false);
-  const [activeState, setActiveState] = useState(false);//등록 버튼 활성화
 
   //이미지 팝업 슬라이더
   const [showSlide, setShowSlide] = useState({show: false, viewIndex: 0});
-
   const [formState, setFormState] = useState({
     title: '',
     contents: '',
@@ -53,6 +51,10 @@ const ProfileWrite = () => {
     photoInfoList: []
   });
   const globalPhotoInfoListRef = useRef([]); // formState.photoInfoList 값 갱신용
+
+  const tabResetBlock = () => {
+    dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: false}));
+  };
 
   const validChecker = () => {
     let confirm = true;
@@ -70,7 +72,7 @@ const ProfileWrite = () => {
     }
 
     if(!confirm)
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
 
     return confirm;
   };
@@ -92,7 +94,7 @@ const ProfileWrite = () => {
         }
       }).then((res) => {
         const {data, message, result } = res;
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
 
         if (result === 'success') {
           history.goBack();
@@ -107,7 +109,7 @@ const ProfileWrite = () => {
           photoInfoList
         }
       }).then((res) => {
-        context.action.toast({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
         if(res.result === "success") {
           history.goBack();
         }
@@ -133,7 +135,7 @@ const ProfileWrite = () => {
           chrgrName: profile?.nickName,
         }
       });
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       if (result === 'success') {
         history.goBack();
       }
@@ -150,10 +152,10 @@ const ProfileWrite = () => {
       });
 
       if (result === 'success') {
-        context.action.toast({msg: '팬보드를 수정했습니다.'});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: '팬보드를 수정했습니다.'}));
         history.goBack();
       } else {
-        context.action.alert({msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'}));
       }
     } else if (type === 'feed') {
       const {data, result, message} = await Api.myPageFeedUpd({
@@ -167,10 +169,10 @@ const ProfileWrite = () => {
         }
       });
       if(result === 'success') {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
         history.goBack();
       } else {
-        context.action.alert({msg: "피드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요."});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: "피드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요."}));
       }
     }
   }
@@ -193,7 +195,7 @@ const ProfileWrite = () => {
       setImage(null);
 
     } else {
-      context.action.alert({msg: '사진 업로드를 실패하였습니다.'});
+      dispatch(setGlobalCtxMessage({type:'alert',msg: '사진 업로드를 실패하였습니다.'}));
     }
   };
 
@@ -205,13 +207,13 @@ const ProfileWrite = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
           status: true,
           type: 'alert',
           content: image.content,
           callback: () => {
           }
-        })
+        }))
       } else {
         noticePhotoUpload();
       }
@@ -252,7 +254,7 @@ const ProfileWrite = () => {
       Api.myPageFeedDetailSel({
         feedNo: index,
         memNo: memNo,
-        viewMemNo: context.profile.memNo
+        viewMemNo: profile.memNo
       }).then((res) => {
         const {data, result, message} = res;
         let newPhotoInfoList = [];
@@ -275,6 +277,7 @@ const ProfileWrite = () => {
   };
 
   useEffect(() => {
+    tabResetBlock();
     action === 'modify' && getDetailData();
   }, []);
 

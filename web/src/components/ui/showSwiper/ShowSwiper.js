@@ -1,13 +1,17 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 
 import Swiper from 'react-id-swiper'
 
 import './showSwiper.scss'
+import {isAndroid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBackEventCallback, setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
 
 const ShowSwiper = (props) => {
   const {imageList, popClose, imageKeyName, imageParam, initialSlide,
     showTopOptionSection, readerButtonAction, deleteButtonAction, swiperParam} = props
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [swiper, setSwiper] = useState();
 
   const swiperParams = {
@@ -41,6 +45,27 @@ const ShowSwiper = (props) => {
       }
     }
   }, [imageList]);
+
+  /* 안드로이드 물리 백버튼시 감지용 */
+  useEffect(() => {
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackState(true))
+      dispatch(setGlobalCtxBackFunction({name: 'callback'}))
+      dispatch(setGlobalCtxBackEventCallback(() => {
+        popClose(false)
+      }));
+    }
+
+    return () => {
+      if (isAndroid()) {
+        if (globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null))
+        }
+        dispatch(setGlobalCtxBackFunction({name: ''}))
+        dispatch(setGlobalCtxBackEventCallback(null));
+      }
+    }
+  },[]);
 
   return (
     <div id="popShowSwiper">

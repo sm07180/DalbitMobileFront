@@ -1,9 +1,9 @@
 import React, {useContext} from "react"
-import {GlobalContext} from "context";
 import BroadCastPlayer from "./BroadCastPlayer";
 import ClipAudioPlayer from "./ClipAudioPlayer";
 import qs from 'query-string'
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 /**
  * index - 클립, 방송 라우팅
@@ -15,13 +15,17 @@ import {useHistory} from "react-router-dom";
  */
 const PipPlayer = () => {
   const history = useHistory();
-  const {globalState} = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const {clipPlayer, clipInfo, rtcInfo} = globalState;
 
   const broadcastPage = history.location.pathname.startsWith("/broadcast");
   const clipPlayerPage = history.location.pathname.startsWith("/clip/");
   const mailboxChatting = history.location.pathname.startsWith("/mailbox");
+  const storePage = history.location.pathname.startsWith("/store");
+  const payPage = history.location.pathname.startsWith("/pay");
+
   const {webview} = qs.parse(location.search)
 
   if (history.location.pathname.startsWith(`/rule`) || webview === 'new') {
@@ -29,11 +33,11 @@ const PipPlayer = () => {
   }
 
   if (rtcInfo) {
-    if (!broadcastPage && !mailboxChatting) {
+    if (!broadcastPage && !mailboxChatting && !storePage && !payPage) {
       return <BroadCastPlayer/>;
     }
   } else if (clipInfo) {
-    if (clipPlayer && !clipPlayerPage && !mailboxChatting) {
+    if (clipPlayer && !clipPlayerPage && !mailboxChatting && !storePage && !payPage) {
       return <ClipAudioPlayer/>;
     }
   }

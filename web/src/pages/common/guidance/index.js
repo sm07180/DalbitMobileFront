@@ -1,10 +1,11 @@
-import React, {useContext} from 'react'
-
-import {Context} from 'context'
+import React from 'react'
 
 import './index.scss'
-export default function Guidance({state, dispatch}) {
-  const context = useContext(Context)
+import {useDispatch} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
+
+export default function Guidance() {
+  const dispatch = useDispatch();
   return (
     <div onClick={(e) => e.stopPropagation()} id="guidanceWrap">
       <div className="guidanceWrap__header">
@@ -12,7 +13,7 @@ export default function Guidance({state, dispatch}) {
         <span
           className="guidanceWrap__header--button"
           onClick={() => {
-            context.action.updatePopupVisible(false)
+            dispatch(setGlobalCtxVisible(false));
           }}
         />
       </div>

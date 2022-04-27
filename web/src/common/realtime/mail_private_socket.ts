@@ -3,6 +3,17 @@ import { CHAT_CONFIG } from "constant/define";
 // constant
 
 import { splash } from "common/api";
+import {
+  setMailBoxImgSliderAddDeleteImg,
+  setMailBoxPushChatInfo,
+  setMailBoxUserCount
+} from "../../redux/actions/mailBox";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxChatInfoInit,
+  setGlobalCtxCurrentChatDataEmpty,
+  setGlobalCtxIsShowPlayer
+} from "../../redux/actions/globalCtx";
 
 // lib
 const socketClusterClient = require("socketcluster-client");
@@ -17,6 +28,7 @@ export class MailChatSocketHandler {
   public broadcastAction: any | null;
   public mailboxAction: any | null;
   public guestAction: any | null;
+  public dispatch: any | null;
 
   private publicChannelNo: string;
   public publicChannelHandle: any;
@@ -37,7 +49,8 @@ export class MailChatSocketHandler {
 
   public chatCnt: number;
 
-  constructor(userInfo: chatUserInfoType, reConnectHandler?: any) {
+  constructor(userInfo: chatUserInfoType, reConnectHandler?: any, dispatch?:any) {
+    this.dispatch = dispatch;
     this.socket = null;
     this.chatUserInfo = userInfo;
     this.roomOwner = false;
@@ -46,7 +59,7 @@ export class MailChatSocketHandler {
 
     this.isConnect = false;
     this.reConnect =
-      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo) : reConnectHandler;
+      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo, dispatch) : reConnectHandler;
 
     this.publicChannelNo = "";
     this.publicChannelHandle = null;
@@ -200,10 +213,7 @@ export class MailChatSocketHandler {
           if (isReConnect === false) {
             this.reConnect.setPrivateChannelNo(this.privateChannelNo);
           }
-
-          if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-            this.globalAction.dispatchCurrentChatData({ type: "empty" });
-          }
+          this.dispatch(setGlobalCtxCurrentChatDataEmpty());
         }
       }
     };
@@ -241,9 +251,7 @@ export class MailChatSocketHandler {
   }
 
   privateChannelDisconnect() {
-    if (this.globalAction && this.globalAction.setIsShowPlayer) {
-      this.globalAction.setIsShowPlayer(false);
-    }
+    this.dispatch(setGlobalCtxIsShowPlayer(false));
 
     if (this.privateChannelHandle !== null) {
       this.privateChannelHandle.unsubscribe();
@@ -252,9 +260,7 @@ export class MailChatSocketHandler {
       this.privateChannelNo = "";
       this.reConnect.setPrivateChannelNo(this.privateChannelNo);
 
-      if (this.globalAction && this.globalAction.dispatchCurrentChatData) {
-        this.globalAction.dispatchCurrentChatData({ type: "empty" });
-      }
+      this.dispatch(setGlobalCtxCurrentChatDataEmpty());
     }
   }
 
@@ -302,24 +308,19 @@ export class MailChatSocketHandler {
                 case "mailBoxConnect": {
                   const { count } = data;
                   const { userCount, maxUserCount } = count;
-                  if (this.mailboxAction !== null) {
-                    if (userCount > 1) {
-                      this.mailboxAction.setUserCount(true);
-                    }
+                  if (userCount > 1) {
+                    this.dispatch(setMailBoxUserCount(true));
                   }
                   return null;
                 }
                 case "mailBoxChat": {
-                  if (this.mailboxAction !== null) {
-                    this.mailboxAction.setPushChatInfo({
-                      ...mailBoxChat,
-                    });
-                  }
+                  this.dispatch(setMailBoxPushChatInfo({
+                    ...mailBoxChat,
+                  }));
                   return null;
                 }
                 case "reqMailBoxImageChatDelete": {
-                  this.mailboxAction.dispathImgSliderInfo &&
-                    this.mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: reqMailBoxImageChatDelete.msgIdx });
+                  this.dispatch(setMailBoxImgSliderAddDeleteImg(reqMailBoxImageChatDelete.msgIdx));
                   return null;
                 }
               }
@@ -495,8 +496,10 @@ export class ReConnectChat {
   private mailMsgListWrapRef: any;
   public roomOwner: boolean;
   public broadcastAction: any | null;
+  public dispatch: any | null;
 
-  constructor(userInfo: chatUserInfoType) {
+  constructor(userInfo: chatUserInfoType, dispatch:any) {
+    this.dispatch = dispatch;
     this.chatUserInfo = userInfo;
     this.reTryCnt = 0;
     this.isRetry = false;
@@ -562,22 +565,18 @@ export class ReConnectChat {
       this.lastRetryTime = now;
       if (this.isRetry == true && this.reTryCnt < 21) {
         this.reTryCnt++;
-        const chatInfo = new MailChatSocketHandler(this.chatUserInfo, this);
-        console.log("dd", chatInfo);
-        this.globalAction &&
-          this.globalAction.dispatchChatInfo &&
-          this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+        const chatInfo = new MailChatSocketHandler(this.chatUserInfo, this, this.dispatch);
+        this.dispatch(setGlobalCtxChatInfoInit(chatInfo));
       } else {
         if (this.isRetryFinish == false) {
-          this.globalAction.setAlertStatus &&
-            this.globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
-              callback: () => {
-                window.location.href = "/";
-              },
-            });
+          this.dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
+            callback: () => {
+              window.location.href = "/";
+            },
+          }));
         }
         this.isRetryFinish = true;
       }

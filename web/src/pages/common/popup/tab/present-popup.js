@@ -1,22 +1,25 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import {Context} from 'context'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 export default props => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //----------------------------------------------- declare
-  const context = useContext(Context)
 
   //----------------------------------------------- func
 
   //----------------------------------------------- components
+
   return (
     <Container>
       <Main>
         <Title>몰래 온 선물</Title>
         <Info>
-          <img src={`${IMG_SERVER}/images/api/ic_moon4@2x.png`} width={48} height={48} />
-          <img src={`${IMG_SERVER}/images/api/ic_multiplication_p@2x.png`} width={18} height={18} />
+          <img src={`${IMG_SERVER}/images/api/ic_moon4@2x.png`} width={48} height={48}/>
+          <img src={`${IMG_SERVER}/images/api/ic_multiplication_p@2x.png`} width={18} height={18}/>
           10
         </Info>
         <Contents>
@@ -25,7 +28,7 @@ export default props => {
           </div>
         </Contents>
       </Main>
-      <Confirm onClick={() => context.action.updatePopupVisible(false)}>확인</Confirm>
+      <Confirm onClick={() => dispatch(setGlobalCtxVisible(false))}>확인</Confirm>
     </Container>
   )
 }

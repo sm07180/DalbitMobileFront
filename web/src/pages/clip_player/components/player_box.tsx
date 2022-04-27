@@ -9,14 +9,16 @@ import ClipPlayerBar from "./player_bar";
 import ClipPlayerBarBtn from "./player_bar_btn";
 import ClipPlayerBanner from "./player_banner";
 
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 export default () => {
-  const { globalState } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipInfo, clipPlayMode } = globalState;
   const { clipPlayer } = globalState;
   const { clipAudioTag } = clipPlayer!;
   const clipPlayNo = clipInfo!.clipNo;
+  const history = useHistory();
 
   const createCoverClassName = useCallback((e) => {
     const { classList } = e.currentTarget;
@@ -30,16 +32,16 @@ export default () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     return () => {
-      clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
     };
   }, []);
 
   useEffect(() => {
     if (globalState.clipPlayList!.length > 0) {
-      clipAudioTag?.addEventListener("ended", audioEndHandler);
+      clipAudioTag?.addEventListener("ended", () => audioEndHandler({history, globalState}));
     }
     return () => {
-      clipAudioTag?.removeEventListener("ended", audioEndHandler);
+      clipAudioTag?.removeEventListener("ended", () => audioEndHandler({history, globalState}));
     };
   }, [globalState.clipPlayList, clipPlayMode]);
 
@@ -69,19 +71,17 @@ export default () => {
 };
 
 
-export const audioEndHandler = async () => {
-  const history = useHistory();
-  const { globalState } = useContext(GlobalContext);
-  const { clipPlayer, clipPlayMode } = globalState;
-    console.log("audioEndHandler====>",clipPlayMode,clipPlayer)
-  if (globalState.clipPlayList?.length === 0) return null;
-  if (globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
+export const audioEndHandler = async ({history, globalState}) => {
+  const { clipPlayer, clipPlayMode, clipPlayListTab } = globalState;
+  const nextPlayIndex = clipPlayer?.isPlayingIdx! + 1;
+  if (clipPlayListTab?.length === 0) return null;
+  if (clipPlayListTab[nextPlayIndex] === undefined) { // 다음곡 없을때
     if (clipPlayMode === "allLoop") {
-      return history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
+      return history.push(`/clip/${clipPlayListTab[0].clipNo}`);
     } else {
       return console.log("마지막곡입니다");
     }
   }
   const isNotClipPlayerPage = window.location.pathname.indexOf("/clip/") === -1;
-  if (!isNotClipPlayerPage) history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
+  if (!isNotClipPlayerPage) history.push(`/clip/${clipPlayListTab![nextPlayIndex].clipNo}`);
 };

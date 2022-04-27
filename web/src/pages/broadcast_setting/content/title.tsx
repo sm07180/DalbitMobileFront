@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
-
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
+import {setBroadcastOption} from "../../../redux/actions/modal";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 function BroadcastSettingTitle(props: any) {
   const { setPopupState } = props;
 
@@ -22,9 +22,9 @@ function BroadcastSettingTitle(props: any) {
   };
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
 
   const [list, setList] = useState<Array<any>>([]);
   const [title, setTitle] = useState<string>("");
@@ -45,15 +45,11 @@ function BroadcastSettingTitle(props: any) {
 
   const modifyTitle = useCallback(async () => {
     if (title === "" || title.length < 2) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "제목을 2자 이상 입력하세요.",
-      });
-      // globalAction.callSetToastStatus!({
-      //   status: true,
-      //   message: "제목을 2자 이상 입력하세요.",
-      // });
+      }));
       return;
     }
 
@@ -70,15 +66,11 @@ function BroadcastSettingTitle(props: any) {
 
   const insertTitle = useCallback(async () => {
     if (title === "" || title.length < 2) {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "제목을 2자 이상 입력하세요.",
-      });
-      // globalAction.callSetToastStatus!({
-      //   status: true,
-      //   message: "제목을 2자 이상 입력하세요.",
-      // });
+      }));
     } else {
       const res = await insertBroadcastOption({
         optionType: 1,
@@ -97,18 +89,18 @@ function BroadcastSettingTitle(props: any) {
     });
 
     if (findItem) {
-      modalAction.setBroadcastOption!({
+      dispatch(setBroadcastOption({
         ...modalState,
         title: findItem.contents,
-      });
+      }))
 
       closePopup();
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: "적용할 제목을 선택하세요.",
-      });
+      }));
     }
   }, [deleteIdx, list]);
 

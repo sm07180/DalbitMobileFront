@@ -1,6 +1,5 @@
 import React, {useContext} from 'react'
 import {IMG_SERVER} from 'context/config'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import moment from 'moment'
 
@@ -11,12 +10,15 @@ import RankList from '../../components/rankList/RankList'
 // contents
 // css
 import '../style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const RoundList = (props) => {
   const {myRankInfo, rankInfo, lodingTime, moreRank, eventFixDate} = props
   const history = useHistory()
-  const context = useContext(Context)
-  const {token} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token} = globalState
 
   const nowTime = moment().format('MMDDHH')
   const roundEnd = moment(eventFixDate.end).format('MMDDHH')
@@ -39,7 +41,7 @@ const RoundList = (props) => {
                 <i className="a">{myRankInfo.ins_a_cnt}</i>
                 <i className="l">{myRankInfo.ins_l_cnt}</i>
               </div>
-            }            
+            }
           </div>
           <div className="listBack">
             <img src={`${IMG_SERVER}/event/rebranding/dalla_logo.png`} alt="dalla" />

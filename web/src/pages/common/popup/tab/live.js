@@ -1,8 +1,8 @@
 /**
  * @title 라이브탭 컨텐츠
  */
-import React, {useEffect, useState, useContext, useRef} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import React, {useContext, useEffect, useRef, useState} from 'react'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import styled from 'styled-components'
 //components-------------------------------------------------------------
@@ -12,7 +12,6 @@ import Refresh from './live-refresh'
 import Api from 'context/api'
 import {broadcastLive} from 'constant/broadcast'
 import {BroadCastStore} from 'pages/broadcast/store'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import {Scrollbars} from 'react-custom-scrollbars'
 
@@ -20,7 +19,6 @@ import {Scrollbars} from 'react-custom-scrollbars'
 export default (props) => {
   //context
   const store = useContext(BroadCastStore)
-  const context = useContext(Context)
   const history = useHistory()
   //ref
   const settingArea = useRef(null) //세팅 스크롤 영역 선택자

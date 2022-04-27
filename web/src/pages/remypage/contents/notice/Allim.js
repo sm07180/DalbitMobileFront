@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -9,10 +8,13 @@ import moment from "moment";
 import {RoomJoin} from "context/room";
 // components
 import './notice.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const Allim = (props) => {
-  const {alarmList, setAlarmList, handleClick} = props
-  const context = useContext(Context);
+  const {alarmList, handleClick} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
 
   //요일 데이터 가공
@@ -26,7 +28,7 @@ const Allim = (props) => {
   };
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (
@@ -39,8 +41,8 @@ const Allim = (props) => {
                 return (
                   <ListRow key={idx} photo={v.profImg.thumb292x292}>
                     {v.newCnt === 1 && <span className="newDot"/>}
-                    <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo} data-room-no={v.roomNo}
-                         data-link={v.link} data-notice={v.notiIdx} onClick={handleClick}>
+                    <div className="listContent" data-type={v.notiType} data-mem-no={v.memNo ? v.memNo : ""} data-room-no={v.roomNo ? v.roomNo : ""}
+                         data-link={v.link} onClick={handleClick}>
                       <div className="title">{v.contents}</div>
                       <div className="date">{changeDay(v.regDt)}</div>
                     </div>

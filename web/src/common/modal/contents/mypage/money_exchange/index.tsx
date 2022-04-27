@@ -46,7 +46,7 @@ export default function MoneyExchange() {
         <button className="closeBtn" onClick={() => history.goBack()} />
         <DalbitScroll width={400} height={700}>
           <div className="exchangeWrap">
-            {exchangeState.status === 0 && <DoExchange state={exchangeState} dispatch={exchangeDispatch} />}
+            {exchangeState.status === 0 && <DoExchange state={exchangeState} exchangeDispatch={exchangeDispatch} />}
             {exchangeState.status === 1 && <Guidance state={exchangeState} dispatch={exchangeDispatch} />}
             {exchangeState.status === 2 && <Result state={exchangeState} dispatch={exchangeDispatch} />}
           </div>

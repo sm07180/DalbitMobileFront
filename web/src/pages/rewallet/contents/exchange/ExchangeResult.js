@@ -1,5 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
+import React, {useEffect, useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -11,10 +10,9 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // contents
 // css
 import './exchangeResult.scss'
-import {useHistory, useLocation, useParams} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
 
 const ExchangeResult = () => {
-  const context = useContext(Context);
   const history = useHistory();
   const location = useLocation();
 
@@ -23,7 +21,7 @@ const ExchangeResult = () => {
   const [realCash, setRealCash] = useState(location.state?.realCash || 0);
 
   useEffect(() => {
-    
+
     //환전 계산 하지 않고 환전 신청한 경우에 별갯수로 환전금액 계산하기
     if(!realCash){
 

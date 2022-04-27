@@ -2,7 +2,6 @@ import React, {useContext, useState, useEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 
-import {Context} from 'context'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
 
@@ -10,12 +9,14 @@ import hitIcon from '../static/ico_hit_g.svg'
 
 import './recommendDj.scss'
 import NoResult from "components/ui/noResult/NoResult";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const RecommendDj = () => {
   const history = useHistory()
 
-  const context = useContext(Context)
-
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const [fetchedList, setFetchedList] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [memList, setMemList] = useState([])
@@ -33,9 +34,10 @@ const RecommendDj = () => {
       setFetchedList(data.list.slice(0, 6))
       setMemList(memNoList)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         msg: message
-      })
+      }))
     }
 
     setTimeout(() => {
@@ -86,7 +88,7 @@ const RecommendDj = () => {
   }
 
   useEffect(() => {
-    const {token, profile} = context
+    const {token, profile} = globalState
 
     if (!token.isLogin) {
       history.push({
@@ -96,7 +98,7 @@ const RecommendDj = () => {
         }
       })
     }
-  }, [context.profile, context.token.isLogin])
+  }, [globalState.profile, globalState.token.isLogin])
 
   useEffect(() => {
     fetchRecommendedDJList()
@@ -163,7 +165,7 @@ const RecommendDj = () => {
               시작하기
             </button>
           </div>
-        </div>        
+        </div>
       </div>
     </div>
   )

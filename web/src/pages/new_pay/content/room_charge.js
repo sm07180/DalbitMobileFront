@@ -10,11 +10,10 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isAndroid} from 'context/hybrid'
 
 //static
 import dalIcon from '../static/ic_moon_s.svg'
@@ -22,25 +21,45 @@ import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
 import GganbuReward from '../../event/gganbu/content/gganbuReward'
-
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+  const [versionFlag, setVersionFlag] = useState('');
+
+  useEffect(()=>{
+    /* nowVersion(현재 다운로드된 앱 버전)이 타겟버전 이상이면 successCallback 아니면 failCallback */
+    Utility.compareAppVersion(payStoreRdx.updateVersionInfo.aos, ()=>{
+      setVersionFlag('up');
+    }, ()=>{
+      setVersionFlag('down');
+    });
+    // 버전 체크
+  }, [])
+
+  return <>
+    {
+      versionFlag !== '' &&
+      <RoomChargePage {...props} versionFlag={versionFlag}/>
+    }
+  </>
+}
+
+
+export const RoomChargePage = (props)=>{
+
   //---------------------------------------------------------------------
-  const context = useContext(Context)
-  const {profile} = context
-  let {tabType} = props
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  let {tabType, versionFlag} = props;
   if (tabType === undefined || (tabType !== 'charge' && tabType !== 'change')) tabType = 'charge'
 
   //useState
   const [chargeList, setChargeList] = useState(false)
   const [exchangeList, setExchangeList] = useState(false)
-  const [selected, setSelected] = useState({
-    num: 1,
-    dal: "100",
-    name: '달 100',
-    price: "11000",
-    itemNo: 'A1335',
-  })
+  const [selected, setSelected] = useState(-1)
   const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
   const [myByeol, setMyByeol] = useState('')
@@ -56,15 +75,16 @@ export default (props) => {
 
   //---------------------------------------------------------------------
 
+
   async function getStoreList() {
-    const res = await Api.store_list({})
+    const res = await Api.getOtherPriceList()
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setChargeList(res.data.list.slice(0, 9))
       setMyDal(Utility.addComma(res.data.dalCnt))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -74,9 +94,9 @@ export default (props) => {
       setExchangeList(res.data.list)
       setMyByeol(Utility.addComma(res.data.byeolCnt))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -174,12 +194,12 @@ export default (props) => {
           gganbuData = await Api.getGganbuObtainMarble(param)
         }
 
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
             if(gganbuData) {
               const data = gganbuData.data;
-            
+
               if (data.s_return === 1) {
                 setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
                 setRewardPop(true);
@@ -197,23 +217,23 @@ export default (props) => {
               Hybrid('CloseLayerPopup')
             }
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
             Hybrid('CloseLayerPopup')
           }
-        })
+        }))
       }
     }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange()
       }
-    })
+    }))
   }
 
   const tabClick = (type) => {
@@ -235,17 +255,29 @@ export default (props) => {
     getChangeList()
   }, [])
 
-  //---------------------------------------------------------------------
   return (
     <Content>
-      <TabItem>
-        <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
-        <button className={`${selectedItem === 'change' && 'true'}`} onClick={() => {tabClick('change')}}>달 교환</button>
-      </TabItem>
-      <div className="cnt-wrap">
-        <p className={`my-cnt-text dal ${selectedItem === 'charge' && 'on'}`}>{myDal}</p>
-        <p className={`my-cnt-text byeol ${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
-      </div>
+      {
+        versionFlag === 'up' &&
+        <div className="topWrap">
+          <button className={`${selectedItem === 'change' && 'true'}`} >달 교환</button>
+          <p className={`${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
+        </div>
+      }
+      {
+        versionFlag === 'down' &&
+          <>
+            <TabItem>
+              <button className={`${selectedItem === 'charge' && 'true'}`} onClick={() => {tabClick('charge')}}>달 충전</button>
+              <button className={`${selectedItem === 'change' && 'true'}`} onClick={() => {tabClick('change')}}>달 교환</button>
+            </TabItem>
+            <div className="cnt-wrap" style={{paddingTop:'20px'}}>
+              <p className={`my-cnt-text dal ${selectedItem === 'charge' && 'on'}`}>{myDal}</p>
+              <p className={`my-cnt-text byeol ${selectedItem === 'change' && 'on'}`}>{myByeol}</p>
+            </div>
+          </>
+      }
+
       {selectedItem === 'charge' ? (
         <>
           {chargeList ? (
@@ -360,6 +392,25 @@ const Content = styled.section`
     font-weight: bold;
   }
 
+  .topWrap {
+    display:flex;
+    align-items:center;
+    margin-bottom:20px;
+    button {
+      font-size:20px;
+      font-weight:800;
+      color:${COLOR_MAIN};
+    }
+    p {
+      margin-left:auto;
+      padding-left:24px;
+      font-size:14px;
+      font-weight:bold;
+      background: url(${starIcon}) left center no-repeat;
+      background-size: 20px;
+    }
+  }
+
   .cnt-wrap {
     display: flex;
     padding-bottom: 9px;
@@ -456,7 +507,7 @@ const Content = styled.section`
 
   @media (max-width: 1060px) {
     width: 100%;
-    padding: 44px 12px 0 12px;
+    padding: 20px 12px 0 12px;
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {

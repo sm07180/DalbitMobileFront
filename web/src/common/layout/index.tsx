@@ -1,18 +1,19 @@
-import React, {useContext, useEffect, useMemo, useState} from "react";
-import {GlobalContext} from "context";
+import React, {useEffect, useMemo, useState} from "react";
 
 import Footer from "../../common/footer";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const Layout = (props) => {
-  const { children } = props;
-  const { globalState } = useContext(GlobalContext);
+  const {children} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const locationStateHistory = useHistory();
   const pathName = window.location.pathname;
   const mailboxChattingUrl = pathName.startsWith("/mailbox");
   const makeFooter = useMemo(() => {
     if (pathName === "/") {
-      return <Footer />;
+      return <Footer/>;
     }
   }, [pathName]);
 

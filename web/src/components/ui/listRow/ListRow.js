@@ -1,10 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-import './listRow.scss'
+import './listRow.scss';
 import errorImg from "pages/broadcast/static/img_originalbox.svg";
 
 const ListRow = (props) => {
-  const {photo, children, onClick, photoClick} = props
+  const {photo, children, onClick, photoClick} = props;
 
   const handleImgError = (e) => {
     e.currentTarget.src = errorImg;

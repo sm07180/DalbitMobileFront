@@ -2,13 +2,14 @@
 import React, { useContext } from "react";
 
 // Context
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import OriginalImg from "../../static/img_originalbox.svg";
 import SepiaImg from "../../static/img_filter_sepia.jpg";
 import GrayImg from "../../static/img_filter_gray.jpg";
 import SaturateImg from "../../static/img_filter_saturate.jpg";
 import BrightImg from "../../static/img_filter_bright.jpg";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxVideoEffect} from "../../../../redux/actions/broadcastCtx";
 
 const videoFilterArray = [
   { img: OriginalImg, title: "Normal" },
@@ -19,7 +20,8 @@ const videoFilterArray = [
 ];
 
 const VideoFilter = () => {
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
 
   return (
     <div className="effectList">
@@ -34,8 +36,7 @@ const VideoFilter = () => {
                 ...broadcastState.videoEffect,
                 filter: v.title,
               };
-              broadcastAction.setVideoEffect && broadcastAction.setVideoEffect(newEffectValue);
-
+              dispatch(setBroadcastCtxVideoEffect(newEffectValue));
               sessionStorage.setItem("videoEffect", JSON.stringify(newEffectValue));
             }}
           >

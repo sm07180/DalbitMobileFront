@@ -2,7 +2,6 @@ import React, {useEffect, useState, useRef, useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import {authReq} from 'pages/self_auth'
-import {Context} from 'context'
 import moment from 'moment'
 import qs from 'query-string'
 
@@ -16,11 +15,14 @@ import PopupChoice from './content/popupChoice'
 import './style.scss'
 import PopupItems from "pages/event/welcome/content/popupItems";
 import {Hybrid, isHybrid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const EventWelcome = () => {
   const history = useHistory()
-  const context = useContext(Context)
   const {webview} = qs.parse(location.search)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
@@ -121,33 +123,33 @@ const EventWelcome = () => {
       return
     }
 
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login')
       return
     }
 
     if (eventAuth.check === false) {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('9', context.authRef, context)
+          authReq({code: '9', formTagRef: globalState.authRef, dispatch})
         }
-      })
+      }))
       return
     }
 
     if (eventAuth.adultYn === 'n') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: `시청자 선물은 19세 이상인 회원님만 받을 수 있습니다.`
-      })
+      }))
       return
     }
 
     if (tabContent.quality === 'n') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type:'toast',
         msg: `이벤트 참여대상이 아닙니다.
               신입회원님들을 위한 이벤트이니 양해 부탁드립니다.`
-      })
+      }))
       return
     }
     const temp = stepItemInfo.find((row) => row.stepNo == targetNum)
@@ -155,7 +157,7 @@ const EventWelcome = () => {
     if (temp.dalCnt >= temp.maxDalCnt && temp.likeCnt >= temp.maxLikeCnt && temp.memTime >= temp.maxMemTime) {
       setChoicePopInfo({...choicePopInfo, open: true, stepNo: targetNum, list: temp.itemList})
     } else {
-      context.action.toast({msg: `조건을 만족하지 못했습니다.`})
+      dispatch(setGlobalCtxMessage({type:'toast',msg: `조건을 만족하지 못했습니다.`}))
     }
   }
 
@@ -178,11 +180,11 @@ const EventWelcome = () => {
     }
 
     if(giftStepNo == 3) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: `축하드립니다!
               ALL CLEAR 선물에 자동으로 응모되었습니다.
               결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
-      })
+      }))
     }
     setResultItemPopInfo({ open: false, giftInfo: {} });
   };

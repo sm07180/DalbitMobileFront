@@ -1,5 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
+import React, {useState} from 'react'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -9,15 +8,17 @@ import InputItems from '../../../../components/ui/inputItems/InputItems';
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import './bankTransfer.scss'
 import {useHistory, useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const BankTransfer = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const location = useLocation()
   const history = useHistory()
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const isDesktop = useSelector((state) => state.common.isDesktop)
   const {prdtNm, prdtPrice, itemNo, itemAmt, webview} = location.state
 
-  const context = useContext(Context)
   const [userInfo, setUserInfo] = useState({
     name: "",
     phone: "",
@@ -30,29 +31,34 @@ const BankTransfer = () => {
   const clickDeposit = () => {
     const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
     if (userInfo.name.length < 2) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `입금자명을 입력해주세요.`
-      })
+      }))
     }
     if (!userInfo.phone) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `휴대폰번호를 입력해주세요.`
-      })
+      }))
     }
     if (!rgEx.test(userInfo.phone)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `올바른 휴대폰번호가 아닙니다.`
-      })
+      }))
     }
     if (userInfo.receiptCode === 'i' && !userInfo.receiptPhone) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `현금영수증 발급을 위하여 \n 주민번호 또는 휴대폰번호를 입력해주세요.`
-      })
+      }))
     }
     if (userInfo.receiptCode === 'b' && !userInfo.receiptBiz) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `현금영수증 발급을 위하여 \n 사업자번호를 입력해주세요.`
-      })
+      }))
     }
 
     getDepositInfo()
@@ -86,9 +92,10 @@ const BankTransfer = () => {
         }
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 

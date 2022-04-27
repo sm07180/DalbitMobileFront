@@ -1,8 +1,7 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react'
-import Utility ,{addComma} from 'components/lib/utility'
+import React, {useEffect, useMemo, useState} from 'react'
+import Utility from 'components/lib/utility'
 
 // global components
-import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import Tabmenu from '../../components/tabmenu'
@@ -13,8 +12,9 @@ import MyAccount from './MyAccount'
 import ExchangeNoticePop from './ExchangeNoticePop'
 import {useHistory} from "react-router-dom";
 import Api from "context/api";
-import {Context} from "context";
 import {Hybrid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile, setGlobalCtxWalletAddData} from "redux/actions/globalCtx";
 
 const Exchange = (props) => {
   const {isIOS, tabMenuRef} = props;
@@ -23,8 +23,10 @@ const Exchange = (props) => {
 
   const [depositType, setDepositType] = useState(origin_depositTabmenu[0]);
   const history = useHistory();
-  const context = useContext(Context);
-  const {profile, walletData} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile, walletData} = globalState;
   const {byeolTotCnt, dalTotCnt} = walletData;
   const [calcFormShow, setCalcFormShow] = useState(false);
   const [popup, setPopup] = useState(false);
@@ -34,7 +36,7 @@ const Exchange = (props) => {
   }
 
   //부모님 동의서 파일첨부란 필요 여부
-  const [parentAgree, setParentAgree] = useState(false);  
+  const [parentAgree, setParentAgree] = useState(false);
 
   //환전 신청할 별 갯수 및 환전 금액계산수치 (reqByeolCnt만 씀,  realCash)
   const [exchangeCalcData, setExchangeCalcData] = useState({reqByeolCnt: 0, realCash:0});
@@ -105,17 +107,17 @@ const Exchange = (props) => {
       const res = await Api.self_auth_check({});
       if (res.result === 'success') {
         if (res.data.company === '기타') {
-          return context.action.alert({
+          return dispatch(setGlobalCtxMessage({type: "alert",
             msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
-          })
+          }))
         }
         const {parentsAgreeYn, adultYn} = res.data
         /* 법정대리인 동의 필요! */
-        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/exchangeLegalAuth')
+        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.replace('/exchangeLegalAuth')
         if (myBirth > baseYear) {
-          return context.action.alert({
+          return dispatch(setGlobalCtxMessage({type: "alert",
             msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-          })
+          }))
         } else { //성공
 
           //부모님 동의 대상자 체크
@@ -126,9 +128,9 @@ const Exchange = (props) => {
       } else if (res.result === 'fail' && res.code === '0') {
         history.push('/selfauth')
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
     fetchSelfAuth()
@@ -162,23 +164,23 @@ const Exchange = (props) => {
       });
     }
   };
-  
+
   //환전 계산하기
   const exchangeCalc = async (sendByeolCnt = 0) => {
     if (sendByeolCnt < 570) {
-      context.action.alert({msg: '환전 신청 별을\n570개 이상 입력해야 합니다.'});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: '환전 신청 별을\n570개 이상 입력해야 합니다.'}));
     } else if (sendByeolCnt > byeolTotCnt) {
-      context.action.alert({msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'})
+      dispatch(setGlobalCtxMessage({type: "alert",msg: '환전 신청별은\n보유 별보다 같거나 작아야 합니다.'}))
       return;
     } else {
-      
+
       //본인인증 먼저 체크
       await checkSelfAuth();
 
       const res = await Api.exchangeCalc({
         data: {byeol: sendByeolCnt}
       })
-      // context.action.alert({msg:res.message});
+      // dispatch(setGlobalCtxMessage({type: "alert",msg:res.message}));
 
       if (res.result === 'success') {
         //result :
@@ -210,12 +212,12 @@ const Exchange = (props) => {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert",visible: false}))
         }
-      });
+      }));
       return;
     }
     reader.readAsDataURL(target.files[0]);
@@ -236,17 +238,17 @@ const Exchange = (props) => {
           // })
           // dispatch({type: 'file', val: arr})
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type: "alert",
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
             callback: () => {
-              context.action.alert({visible: false})
+              dispatch(setGlobalCtxMessage({type: "alert",visible: false}))
             }
-          })
+          }))
         }
       }
     };
   }
-  
+
   //환전 신청하기
   const exchangeSubmit = async () => {
     // param
@@ -275,7 +277,7 @@ const Exchange = (props) => {
     const {result, data, message} = await Api.exchangeApply({data: {...paramData}});
 
     if (result === 'success') {
-      context.action.toast({msg:message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg:message}));
       history.push({
         pathname:'/wallet/result',
         state:{
@@ -287,7 +289,7 @@ const Exchange = (props) => {
         }
       });
     } else {
-      context.action.alert({msg: message});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: message}));
     }
   }
 
@@ -318,7 +320,7 @@ const Exchange = (props) => {
     const {result, message, data} = await Api.exchangeReApply({data: {...paramData}});
 
     if (result === 'success') {
-      context.action.toast({msg:message});
+      dispatch(setGlobalCtxMessage({type: "toast",msg:message}));
       history.push({
         pathname:'/wallet/result',
         state:{
@@ -330,14 +332,14 @@ const Exchange = (props) => {
         }
       });
     } else {
-      context.action.alert({msg: message});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: message}));
     }
   }
   const getByeolCnt = async () => {
     const {result, message, data} = await Api.profile({memNo: profile?.memNo});
 
     if(result ==='success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data))
     }
   }
 
@@ -349,10 +351,7 @@ const Exchange = (props) => {
 
   useEffect(() => {
     if(byeolTotCnt === 0 || dalTotCnt ===0) {
-      context.globalAction.dispatchWalletData({
-        type: 'ADD_DATA',
-        data: {dalTotCnt: profile?.dalCnt || 0, byeolTotCnt: profile?.byeolCnt || 0}
-      });
+      dispatch(setGlobalCtxWalletAddData({dalTotCnt: profile?.dalCnt || 0, byeolTotCnt: profile?.byeolCnt || 0}));
     }
   },[profile]);
 

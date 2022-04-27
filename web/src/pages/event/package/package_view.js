@@ -1,13 +1,15 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import API from 'context/api'
 
 import './package.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const packageEventView = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
   const [eventState, setEventState] = useState('')
 
   const eventJoin = () => {
@@ -16,8 +18,9 @@ const packageEventView = () => {
       if (res.result === 'success') {
         setEventState(res.data)
       } else {
-        if (!context.token.isLogin) {
-          context.action.alert({
+        if (!globalState.token.isLogin) {
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: res.message,
             callback: () => {
               history.push({
@@ -27,12 +30,14 @@ const packageEventView = () => {
                 }
               })
             }
-          })
+          }))
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: res.message,
-            callback: () => {}
-          })
+            callback: () => {
+            }
+          }))
         }
       }
     }
@@ -42,10 +47,12 @@ const packageEventView = () => {
   useEffect(() => {
     if (eventState.isOk === 0) {
       //참여불가능
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `<div class="packageEventAlertColor">지원신청을 위해서는 방송시간이<br/>10시간 이상이어야 합니다.<br/><span >누적 방송 시간 : ${eventState.airTimeStr}</span></div>`,
-        callback: () => {}
-      })
+        callback: () => {
+        }
+      }))
     } else if (eventState.isOk === 1) {
       //참여 가능
       history.push('/event/package/write')
@@ -63,13 +70,13 @@ const packageEventView = () => {
         alt="진행일정: 1월 27일 ~ 2월 1일 / 결과 발표 : 2월 2일 목요일"
       />
 
-      {!context.token.isLogin ? (
+      {!globalState.token.isLogin ? (
         <button onClick={() => eventJoin()}>
-          <img src="https://image.dalbitlive.com/event/package/20210127/button_off.jpg" alt="지원신청 비활성화" />
+          <img src="https://image.dalbitlive.com/event/package/20210127/button_off.jpg" alt="지원신청 비활성화"/>
         </button>
       ) : (
         <button onClick={() => eventJoin()}>
-          <img src="https://image.dalbitlive.com/event/package/20210127/button_on.jpg" alt="지원신청" />
+          <img src="https://image.dalbitlive.com/event/package/20210127/button_on.jpg" alt="지원신청"/>
         </button>
       )}
     </div>

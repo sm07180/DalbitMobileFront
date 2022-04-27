@@ -1,25 +1,25 @@
-import React, { useState, useContext, useCallback } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, {useCallback} from "react";
+import {Link, useHistory} from "react-router-dom";
 
-import { tabType } from "../constant";
+import {tabType} from "../constant";
 
-import { GlobalContext } from "context";
-import { ClipContext } from "context/clip_ctx";
-
-import { postClipGood, getClipShare } from "common/api";
+import {getClipShare, postClipGood} from "common/api";
 
 import btnGift from "../static/ic_gift.svg";
 import btnHeart from "../static/ic_heart_g.svg";
 import btnHeartActive from "../static/ic_heart.svg";
 import btnMessage from "../static/ic_message_g.svg";
 import btnShare from "../static/ic_share_g.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxClipInfoAdd, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType} from "../../../redux/actions/clipCtx";
 
 export default function ClipPlayerIconBox() {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
 
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { clipState, clipAction } = useContext(ClipContext);
-  const { setRightTabType } = clipAction;
   const { baseData, clipInfo } = globalState;
 
   async function fetchClipGood() {
@@ -28,15 +28,12 @@ export default function ClipPlayerIconBox() {
       good: clipInfo!.isGood ? 0 : 1,
     });
     if (result === "success") {
-      globalAction.dispatchClipInfo!({ type: "add", data: { isGood: data.isGood, goodCnt: data.goodCnt } });
+      dispatch(setGlobalCtxClipInfoAdd({ isGood: data.isGood, goodCnt: data.goodCnt }));
     }
-
-    if (globalAction.callSetToastStatus) {
-      globalAction.callSetToastStatus({
-        status: true,
-        message: message,
-      });
-    }
+    dispatch(setGlobalCtxSetToastStatus({
+      status: true,
+      message: message,
+    }));
   }
 
   async function fetchClipShare() {
@@ -51,19 +48,15 @@ export default function ClipPlayerIconBox() {
       textarea.setSelectionRange(0, 9999);
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: message,
-        });
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: message,
+      }));
     } else {
-      if (globalAction.callSetToastStatus) {
-        globalAction.callSetToastStatus({
-          status: true,
-          message: message,
-        });
-      }
+      dispatch(setGlobalCtxSetToastStatus({
+        status: true,
+        message: message,
+      }));
     }
   }
 
@@ -73,15 +66,16 @@ export default function ClipPlayerIconBox() {
       if (baseData.isLogin) {
         switch (name) {
           case "gift":
+
             clipState.isMyClip
-              ? setRightTabType && setRightTabType(tabType.GIFT_LIST)
-              : setRightTabType && setRightTabType(tabType.GIFT_GIVE);
+              ? dispatch(setClipCtxRightTabType(tabType.GIFT_LIST))
+              : dispatch(setClipCtxRightTabType(tabType.GIFT_GIVE));
             break;
           case "good":
             fetchClipGood();
             break;
           case "reply":
-            setRightTabType && setRightTabType(tabType.REPLY);
+            dispatch(setClipCtxRightTabType(tabType.REPLY))
             break;
           case "share":
             fetchClipShare();

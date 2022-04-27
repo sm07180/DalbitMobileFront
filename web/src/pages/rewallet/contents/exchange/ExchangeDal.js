@@ -1,5 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {Context} from "context";
+import React, {useEffect, useState} from 'react'
 import {useHistory} from "react-router-dom";
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -12,11 +11,15 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // css
 import './exchangeDal.scss'
 import _ from "lodash";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ExchangeDal = () => {
   const history = useHistory();
-  const context = useContext(Context);
-  const {profile, token} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile, token} = globalState;
 
   if(!token?.isLogin) history.push('/login');
 
@@ -53,9 +56,9 @@ const ExchangeDal = () => {
       if (data?.byeolCnt) setMyByeol(data.byeolCnt);
     } else {
       setError(true);
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -69,29 +72,29 @@ const ExchangeDal = () => {
       })
       if (res.result === 'success' && _.hasIn(res, 'data')) {
         setMyByeol(res.data.byeolCnt);
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type: "toast",
           msg: res.message
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
 
     //별 부족
     if (select.byeol > myByeol) {
-      return context.action.confirm({
+      return dispatch(setGlobalCtxMessage({type: "confirm",
         msg: `달 교환은 50별부터 가능합니다.`
-      })
+      }))
     }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: `별 ${select.byeol}을 달 ${select.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange();
       }
-    })
+    }))
   }
 
   return (

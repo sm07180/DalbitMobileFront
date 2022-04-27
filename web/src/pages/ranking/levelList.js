@@ -1,19 +1,20 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
-
-import Room, {RoomJoin} from 'context/room'
 import NoResult from 'components/ui/noResult'
 // context
-import {Context} from 'context'
 
 //static
 import guideIcon from './static/guide_s.png'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 import people from './static/people_g_s.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const {levelList} = props
   return (
@@ -24,7 +25,7 @@ export default (props) => {
           <img
             src={guideIcon}
             onClick={() => {
-              context.action.updatePopup('RANK_POP', 'level')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['RANK_POP', 'level']}))
             }}
           />
         </li>

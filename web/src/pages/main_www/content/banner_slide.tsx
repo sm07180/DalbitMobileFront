@@ -5,14 +5,12 @@ import Swiper from "react-id-swiper";
 import { getBanner } from "common/api";
 
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "context";
 
 let interval;
 let intervalOver;
 
 export default function bannerSlide(props: any) {
   const { ref } = props;
-  const gtx = useContext(GlobalContext);
   const history = useHistory();
   const SwiperRef = useRef<any>(null);
 

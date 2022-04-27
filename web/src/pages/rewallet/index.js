@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState, useMemo, useRef} from 'react'
-import {useSelector} from "react-redux";
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
@@ -13,15 +12,27 @@ import Exchange from './contents/exchange/Exchange'
 // css
 import './style.scss'
 import {useHistory, useLocation} from "react-router-dom";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxMessage,
+  setGlobalCtxWalletAddData,
+  setGlobalCtxWalletAddHistory,
+  setGlobalCtxWalletInitData
+} from "redux/actions/globalCtx";
 import {isHybrid, isIos} from "context/hybrid";
+import {storeButtonEvent} from "components/ui/header/TitleButton";
 
 const WalletPage = (props) => {
   const history = useHistory();
   const location = useLocation();
-  const context = useContext(Context);
-  const {walletData, token} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {walletData, token} = globalState;
   const tabMenuRef = useRef(null);  //우편번호 팝업 위치 설정용...
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+
   //아이폰 앱에서 달교환 버튼 클릭시 새창 띄움
   const isIOS = useMemo(() => {
     const agent = window.navigator.userAgent.match(/(ios webview)/gi);
@@ -53,7 +64,7 @@ const WalletPage = (props) => {
   let pagePerCnt = 20;
 
   //달, 별 내역 조회하기
-  //상세조건 옵션리스트, 지갑 내역 리스트 조회 
+  //상세조건 옵션리스트, 지갑 내역 리스트 조회
   const getWalletHistory = (pageNo, code) => {
     //환전하기 return;
     if(walletType === walletTabMenu[2]) return;
@@ -82,25 +93,19 @@ const WalletPage = (props) => {
             popHistoryCnt += v?.cnt;
           })
 
-          context.globalAction.dispatchWalletData({
-            type: 'ADD_DATA',
-            data: {
-              ...byeolAndDal,
-              listHistory: pageNo === 1 ? listRes.data?.list : walletData.listHistory.concat(listRes.data?.list),
-              popHistory: popRes.data?.list,
-              popHistoryCnt
-            }
-          });
+          dispatch(setGlobalCtxWalletAddData({
+            ...byeolAndDal,
+            listHistory: pageNo === 1 ? listRes.data?.list : walletData.listHistory.concat(listRes.data?.list),
+            popHistory: popRes.data?.list,
+            popHistoryCnt
+          }));
           setIsLoading(false);
         } else if (listRes.message === "사용내역이 없습니다.") {
-          context.globalAction.dispatchWalletData({
-            type: 'ADD_HISTORY',
-            data: {
-              listHistory: [],
-              popHistory: popRes.data?.list,
-              popHistoryCnt: 0
-            }
-          });
+          dispatch(setGlobalCtxWalletAddHistory({
+            listHistory: [],
+            popHistory: popRes.data?.list,
+            popHistoryCnt: 0
+          }));
         }
 
       });
@@ -121,7 +126,7 @@ const WalletPage = (props) => {
 
   //tab 이동
   const setTabType = (walletType) => {
-    context.globalAction.dispatchWalletData({type:'ADD_DATA', data: {walletType}})
+    dispatch(setGlobalCtxWalletAddData({walletType}));
   }
 
   useEffect(() => {
@@ -152,7 +157,7 @@ const WalletPage = (props) => {
     }
 
     return () => {
-      context.globalAction.dispatchWalletData({type:'INIT'});
+      dispatch(setGlobalCtxWalletInitData());
     };
   },[]);
 
@@ -164,30 +169,33 @@ const WalletPage = (props) => {
       })
       if (result === 'success') {
         getWalletHistory(1, walletType === walletTabMenu[0] ? 1 : 0);
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           title: '환전 취소가 완료되었습니다.',
           msg: message
-        });
+        }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: message,
-        })
+        }))
       }
     }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: '환전신청을 취소 하시겠습니까?',
       callback
-    });
+    }));
   }
 
   // 스토어로 이동
   const goStoreHandler = () => {
-    if(isIos()) {
-      return webkit.messageHandlers.openInApp.postMessage('')
-    }else {
-      history.push('/store')
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if(isIos()) {
+    //   // return webkit.messageHandlers.openInApp.postMessage('')
+    //   return history.push('/store')
+    // }else {
+    //   history.push('/store')
+    // }
   }
 
   return (

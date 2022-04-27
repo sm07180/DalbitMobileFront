@@ -1,15 +1,16 @@
-import React, {useEffect, useState, useContext} from 'react'
-
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 
 import {useHistory} from 'react-router-dom'
 import qs from 'query-string'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default ({setSendPop}) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   const parameter = qs.parse(location.search)
-  const context = useContext(Context)
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
 
@@ -34,30 +35,33 @@ export default ({setSendPop}) => {
 
   function alertValidation() {
     if (name === '') {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '이름을 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
     }
     if (phone === '') {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '휴대폰 번호는 필수입력 값입니다',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
     }
 
     const rgEx = /(01[0123456789])(\d{3}|\d{4})\d{4}$/g
     if (!rgEx.test(phone) || phone.length < 11) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '올바른 휴대폰 번호가 아닙니다.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
     }
 
     specialdjUpload()
@@ -75,14 +79,16 @@ export default ({setSendPop}) => {
 
     const {result} = res
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '스페셜 DJ 신청 및 접수가 \n 완료됐습니다.',
         callback: () => history.push('/')
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 

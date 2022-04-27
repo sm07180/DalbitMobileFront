@@ -1,16 +1,16 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {RankContext} from 'context/rank_ctx'
-
 import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth, dateTimeConvert} from 'pages/common/rank/rank_fn'
 import {DATE_TYPE, RANK_TYPE} from '../constant'
+import {useDispatch, useSelector} from "react-redux";
+
+import { setRankFormDate } from "redux/actions/rank";
 
 function RankHandleDateBtn({fetching}) {
   const history = useHistory()
-  const {rankState, rankAction} = useContext(RankContext)
-
-  const formDispatch = rankAction.formDispatch
+  const rankState = useSelector(({rankCtx}) => rankCtx);
+  const dispatch = useDispatch();
 
   const {formState, myInfo, rankTimeData} = rankState
 
@@ -45,10 +45,7 @@ function RankHandleDateBtn({fetching}) {
           formState[formState.pageType].dateType,
           formState[formState.pageType].currentDate
         )
-        formDispatch({
-          type: 'DATE',
-          val: dateCode
-        })
+        dispatch(setRankFormDate(dateCode));
       } else {
         const dateCode = liveBoxchangeDate(
           some,
@@ -56,19 +53,13 @@ function RankHandleDateBtn({fetching}) {
           formState[formState.pageType].currentDate
         )
 
-        formDispatch({
-          type: 'DATE',
-          val: dateCode
-        })
+        dispatch(setRankFormDate(dateCode));
 
         // return handle
       }
     } else {
       const handle = liveBoxchangeDate(some, formState[formState.pageType].dateType, formState[formState.pageType].currentDate)
-      formDispatch({
-        type: 'DATE',
-        val: handle
-      })
+      dispatch(setRankFormDate(handle));
     }
   }
 

@@ -1,8 +1,7 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //globalCtx
-import {Context} from 'context'
 import Api from 'context/api'
 
 //component
@@ -11,10 +10,14 @@ import LayerDetail from './content/layer_detail'
 import LayerGift from './content/layer_gift'
 import LayerWinner from './content/layer_winner'
 import List from './content/list'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function VideoOpenEvent() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const [eventType, setEventType] = useState(1) // star, fan
   const [popupType, setPopupType] = useState(0) // star, fan
   // const [eventRound, setEventRound] = useState(0);
@@ -64,9 +67,10 @@ export default function VideoOpenEvent() {
         giftDesc: data.giftDesc
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -79,9 +83,10 @@ export default function VideoOpenEvent() {
     if (result === 'success') {
       setVideoWinnerInfo(data.list)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
   const refreshList = () => {

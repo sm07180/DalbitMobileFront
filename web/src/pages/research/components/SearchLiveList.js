@@ -8,12 +8,13 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import '../scss/resultCnt.scss'
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const SearchLiveList = (props) => {
   const {data, pagingInfo} = props;
-  const context = useContext(Context); //context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
 
@@ -22,7 +23,7 @@ const SearchLiveList = (props) => {
     const { roomNo, bjNickNm , bjMemNo } = e.currentTarget.dataset;
 
     if (roomNo !== undefined && bjNickNm !== undefined) {
-      RoomValidateFromClipMemNo(roomNo, bjMemNo,  context, history, bjNickNm)
+      RoomValidateFromClipMemNo(roomNo, bjMemNo, dispatch, globalState, history, bjNickNm)
     }
   };
 

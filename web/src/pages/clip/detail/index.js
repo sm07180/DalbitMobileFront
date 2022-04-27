@@ -1,18 +1,23 @@
-import React, {useEffect, useState, useMemo} from 'react';
+import React, {useEffect, useState, useMemo, useContext} from 'react';
 import Header from "components/ui/header/Header";
 import API from "context/api";
 import Swiper from "react-id-swiper";
 import FilterBtn from "pages/clip/components/FilterBtn";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ClipDetailCore from "pages/clip/components/ClipDetailCore";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
 import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
 import Utility from "components/lib/utility";
+import {playClip} from "pages/clip/components/clip_play_fn";
+import NoResult from "components/ui/noResult/NoResult";
 
 const ClipDetailPage = (props) => {
   const { type } = useParams();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const categoryType = useSelector((state)=> state.clip.categoryType); //
   const termType = useSelector((state)=> state.clip.termType); //
   const subjectType = useSelector((state)=> state.clip.subjectType); //
@@ -66,6 +71,8 @@ const ClipDetailPage = (props) => {
         } else {
           setClipLastInfo({ ...res.data, list: tempList, cnt: res.data.paging.total });
         }
+      }else if(res.data.list.length === 0) {
+        setClipLastInfo({...res.data, list: [], cnt: 0})
       }
     });
   };
@@ -106,6 +113,25 @@ const ClipDetailPage = (props) => {
     slidesPerView: 'auto',
   };
 
+  const playClipHandler = (e, subjectType, slctType) => {
+    const playListInfoData = {
+      dateType: 0,
+      page: 1,
+      records: 100,
+      slctType: slctType.index,
+      subjectType:subjectType
+    }
+
+    const playClipParams = {
+      clipNo: e.currentTarget.dataset.clipNo,
+      playList: clipLastInfo.list,
+      globalState, dispatch,
+      history,
+      playListInfoData
+    }
+    playClip(playClipParams);
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', scrollEvent);
     return () => {
@@ -133,16 +159,19 @@ const ClipDetailPage = (props) => {
             </Swiper>
           }
       </div>
-      <section className="filterWrap">        
+      <section className="filterWrap">
         <div className="filterGroup">
           <FilterBtn data={searchInfo.slctType} list={categoryType} handleSelect={handleCategorySelect}/>
           <FilterBtn data={searchInfo.dateType} list={termType} handleSelect={handleTermSelect}/>
         </div>
       </section>
       <section className="detailList">
+        { clipLastInfo.list. length === 0 && <NoResult ment="조회된 클립이 없습니다" /> }
         {clipLastInfo.list.map((row, index) => {
           return (
-            <ClipDetailCore item={row} key={index} subjectType={searchInfo.subjectType.value} slctType={searchInfo.slctType}/>
+            <ClipDetailCore item={row} key={index} subjectType={searchInfo.subjectType.value} slctType={searchInfo.slctType}
+                            playClipHandler={playClipHandler}
+            />
           );
         })}
       </section>

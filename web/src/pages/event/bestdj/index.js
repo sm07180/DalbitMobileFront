@@ -1,24 +1,25 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {IMG_SERVER} from 'context/config'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from 'components/ui/header/Header'
 
 import './bestdj.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxBestDjData} from "redux/actions/globalCtx";
 
 export default function bestdj() {
-  const history = useHistory()
-  const globalCtx = useContext(Context)
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [ bestDjMemNumber, setBestDjMemNumber ] = useState([]);
   const [ fanRank, setFanRank ] = useState([]);
 
   const fetchBestdjInfo = async () => {
     const res = await Api.bestdj_info([]);
-
-    globalCtx.action.updateBestDjState(res.data);
+    dispatch(setGlobalCtxBestDjData(res.data));
 
     // if (res.result === 'success') {
     //   let fanRankList = [];
@@ -55,7 +56,7 @@ export default function bestdj() {
           className="img__full"
           />
           <div className="listWrap">
-            {globalCtx.bestDjData.map((item, index) => {
+            {globalState.bestDjData.map((item, index) => {
                 return (
                   <div className="list" key={index}>
                     <img
@@ -63,13 +64,13 @@ export default function bestdj() {
                     alt="베스트DJ"
                     className="img__full"
                     />
-                    <div className="clickArea" id={`${item.bestDjMemNo}`} 
+                    <div className="clickArea" id={`${item.bestDjMemNo}`}
                          onClick={() => {history.push(`/profile/${item.bestDjMemNo}`)}}/>
                     <div className="fanRank">
                       <ul className="fanRankListWrap">
                       {item.fanRankList.length > 0 ?
                         item.fanRankList.map((rankData, idx) => {
-                          return (                            
+                          return (
                             <li className="fanRankList"
                                 id={`${rankData.memNo}`}
                                 onClick={() => {history.push(`/profile/${rankData.memNo}`)}}
@@ -91,7 +92,7 @@ export default function bestdj() {
                   </div>
                 )
               })
-            }            
+            }
           </div>
           <div className="footer">
             <img

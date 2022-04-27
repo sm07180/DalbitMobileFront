@@ -2,8 +2,6 @@
  *
  */
 //context
-import {Context} from 'context'
-import Gnb from 'pages/common/gnb'
 import Ip from 'pages/common/ip'
 import Message from 'pages/common/message'
 import NewPlayer from 'pages/common/newPlayer'
@@ -16,19 +14,26 @@ import {useHistory, useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
-
+import qs from 'query-string'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
 import MultiImageViewer from '../multi_image_viewer'
+import ReceiptPop from "pages/main/popup/ReceiptPop";
+import {useDispatch, useSelector} from "react-redux";
+import {Hybrid, isHybrid} from "context/hybrid";
+import {initReceipt, setReceipt} from "redux/actions/payStore";
+import {setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
 //
 const Layout = (props) => {
   const {children, webview} = props
 
-  const context = useContext(Context)
-  const location = useLocation()
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
   const history = useHistory();
   const playerCls = useMemo(() => {
-    return context.player || context.clipState ? 'player_show' : ''
+    return globalState.player || globalState.clipState ? 'player_show' : ''
   })
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
@@ -39,6 +44,10 @@ const Layout = (props) => {
 
   const isLoginPage = location.pathname === '/login'
   const isRulePage = history.location.pathname.startsWith("/rule")
+  const storePage = history.location.pathname.startsWith("/store")
+  const payPage = history.location.pathname.startsWith("/pay")
+
+  const {qsWebview} = qs.parse(location.search)
 
   useEffect(() => {
     if (noAppCheck) {
@@ -51,15 +60,13 @@ const Layout = (props) => {
   }, [noAppCheck])
 
   useEffect(() => {
-    context.action.updateMultiViewer({show: false})
-  }, [location])
+    dispatch(setGlobalCtxMultiViewer({show:false}))
+  }, [location]);
 
   return (
     <>
       {/* Sticker */}
-      {context.sticker && <Sticker />}
-      {/* GNB */}
-      {props.status !== 'no_gnb' && <Gnb webview={webview} />}
+      {globalState.sticker && <Sticker />}
       {/* 탑버튼 */}
       <Article
         className={`content-article mobileType ${
@@ -68,15 +75,25 @@ const Layout = (props) => {
         ${playerCls ? "player" : ""}
         `}>
         {children}
+        {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
+          if (payStoreRdx.receipt.returnType === 'room' && isHybrid()) {
+            Hybrid('CloseLayerPopup')
+            Hybrid('ClosePayPopup')
+          }else{
+            dispatch(initReceipt());
+            history.replace("/");
+          }
+
+        }} />}
       </Article>
       {/* (방송방)Player */}
       {
-        !isLoginPage && !isRulePage &&
+        !isLoginPage && !isRulePage && !storePage && !payPage &&
         <NewPlayer {...props} />
       }
       {/* (클립)Player */}
       {
-        !isLoginPage && !isRulePage &&
+        !isLoginPage && !isRulePage && !storePage && !payPage &&
         <ClipPlayer {...props} />
       }
 
@@ -87,13 +104,15 @@ const Layout = (props) => {
       {/* IP노출 */}
       <Ip {...props} />
 
+
+
       {/*{appPopupState === true && noAppCheck && (*/}
       {/*  <>*/}
       {/*    <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />*/}
       {/*  </>*/}
       {/*)}*/}
 
-      {context.multiViewer.show && <MultiImageViewer />}
+      {globalState.multiViewer.show && <MultiImageViewer />}
     </>
   )
 }

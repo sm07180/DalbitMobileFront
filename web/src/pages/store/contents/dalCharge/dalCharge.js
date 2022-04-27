@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory, useLocation} from "react-router-dom";
-import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -13,18 +12,19 @@ import './dalCharge.scss'
 import {useDispatch, useSelector} from "react-redux";
 import qs from 'query-string'
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let paymentList = [
-  {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
-  {type: '무통장(계좌이체)', code: 'coocon'},
-  {type: '신용/체크카드', fetch: 'pay_card'},
-  {type: '휴대폰', fetch: 'pay_phone'},
-  {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
-  {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
-  {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
-  {type: '문화상품권', fetch: 'pay_gm'},
-  {type: '해피머니상품권', fetch: 'pay_hm'}
+  {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple', bonus: true},
+  {type: '무통장(계좌이체)', code: 'coocon', bonus: true},
+  {type: '신용/체크카드', fetch: 'pay_card', bonus: true},
+  {type: '휴대폰', fetch: 'pay_phone', bonus: false},
+  {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney', bonus: false},
+  {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay', bonus: false},
+  {type: '페이코', fetch: 'pay_letter', code: 'payco', bonus: false},
+  {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney', bonus: false},
+  {type: '문화상품권', fetch: 'pay_gm', bonus: false},
+  {type: '해피머니상품권', fetch: 'pay_hm', bonus: false}
   // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
   // {type: "스마트문상(게임문화상품권)", fetch: 'pay_gg'},
   // {type: "도서문화상품권", fetch: 'pay_gc'},
@@ -32,7 +32,8 @@ let paymentList = [
 
 const DalCharge = () => {
   const history = useHistory();
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [selectPayment, setSelectPayment] = useState(-1);
@@ -59,12 +60,12 @@ const DalCharge = () => {
         }
       });
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: message,
         callback:()=>{
           history.push("/store");
         }
-      })
+      }))
     }
   };
 
@@ -166,7 +167,7 @@ const DalCharge = () => {
           payForm.innerHTML = ''
         }
       } else {
-        context.action.alert({msg: response.message})
+        dispatch(setGlobalCtxMessage({type: "alert",msg: response.message}))
       }
     });
   }
@@ -174,10 +175,10 @@ const DalCharge = () => {
   //상품수량 +,-
   const calcBuyItem = (type) => {
     if(type === '+'){
-      if (buyItemInfo.itemAmount === 10) return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 10) return dispatch(setGlobalCtxMessage({type: "toast", msg: '최대 10개까지 구매 가능합니다.' }))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount+1})
     }else if(type === '-'){
-      if (buyItemInfo.itemAmount === 1) return context.action.toast({ msg: '최소 1개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 1) return dispatch(setGlobalCtxMessage({type: "toast", msg: '최소 1개까지 구매 가능합니다.' }))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount-1})}
   }
 

@@ -13,8 +13,6 @@ import {getProfile, getTTSActorList, postSendGift} from "common/api";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 import { GuestContext } from "context/guest_ctx";
 
@@ -22,6 +20,13 @@ import SoundIcon from "../../static/ic_sound_badge.svg";
 import {ttsActorCookieNaming, ttsContentMaxLength} from "constant";
 import UseInput from '../../../../common/useInput/useInput';
 import {getCookie, setCookie} from "../../../../common/utility/cookie";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxTtsActorInfo} from "../../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../redux/actions/globalCtx";
 
 let preventClick = false;
 let giftListScroll = {active: false, itemNo: '',}; // giftList effect
@@ -37,11 +42,10 @@ export default function SendGift(props: {
   roomOwner: boolean | null;
 }) {
   const { roomInfo, roomNo, roomOwner } = props;
-
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const { splashData, chatInfo } = globalState;
-
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+  const { splash, chatInfo } = globalState;
 
   // settingObj : 유저방송 설정 ( ttsSound, normalSound : 아이템 사용여부 send_gift.tsx 에서는 2개만 사용중)
   const {settingObj} = broadcastState;
@@ -56,12 +60,12 @@ export default function SendGift(props: {
   const scrollInnerRef = useRef<any>();
 
   const common = useMemo(() => {
-    if (splashData !== null) {
-      return splashData;
+    if (splash !== null) {
+      return splash;
     } else {
       return {};
     }
-  }, [splashData]);
+  }, [splash]);
 
   const profile = useMemo(() => {
     if (globalState.userProfile !== null) {
@@ -99,12 +103,11 @@ export default function SendGift(props: {
     if (itemNo === selectItem.itemNo) {
       if (count === 1000) {
         return (
-          globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             type: "alert",
             content: "콤보 선물은 최대 1,000개까지 가능합니다.",
-          })
+          }))
         );
       }
 
@@ -141,10 +144,10 @@ export default function SendGift(props: {
   const ttsInputValidator = value => {
     const result = value.length <= ttsContentMaxLength;
     if(!result && !globalState.toastStatus.status) {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "최대 30자까지 입력할 수 있습니다.",
-      });
+      }));
     }
 
     return result;
@@ -154,7 +157,7 @@ export default function SendGift(props: {
     if(broadcastState.ttsActorInfo.length === 0) {
       const res = await getTTSActorList();
       if(res.code === '00000') {
-        broadcastAction.setTtsActorInfo!(res.data);
+        dispatch(setBroadcastCtxTtsActorInfo(res.data));
       }
     }
   };
@@ -195,6 +198,9 @@ export default function SendGift(props: {
             break;
           case "text":
             setGiftCategoryItem(3);
+            break;
+          case "signature":
+            setGiftCategoryItem(4);
             break;
         }
 
@@ -332,11 +338,10 @@ export default function SendGift(props: {
     const ttsText = ttsInputRef.current ? ttsInputRef.current.value : "";
 
     if(isHidden && ttsText.length !== 0) { // tts 메시지가 있을때는 몰래보내기 안됨
-      globalAction.callSetToastStatus &&
-      globalAction.callSetToastStatus({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: '메시지가 입력되지 않은 상태에서 몰래 보낼 수 있습니다.',
-      });
+      }));
       setIsLoading(false);
       return;
     }
@@ -351,6 +356,7 @@ export default function SendGift(props: {
       isSecret: isHidden,
       ttsText: roomInfo?.djTtsSound ? ttsText : "",
       actorId: roomInfo?.djTtsSound ? ttsActor : "",
+      ttsYn: showTTSInputField ? 'y' : 'n'
     };
 
     const alertMsg: string = (() => {
@@ -364,22 +370,21 @@ export default function SendGift(props: {
     })();
 
     if (item < 0) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: "아이템을 선택해 주세요",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: "아이템을 선택해 주세요",
+      }));
       setIsLoading(false);
       return false;
     }
 
     if (guestConnectStatus === true && selectMember.memNo === "") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "선물할 사용자를 선택해 주세요.",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: "선물할 사용자를 선택해 주세요.",
+      }));
       setIsLoading(false);
       return false;
     }
@@ -388,16 +393,15 @@ export default function SendGift(props: {
     const sendGiftRes = await postSendGift(params);
 
     if (sendGiftRes.result === "success") {
-      globalAction.callSetToastStatus &&
-      globalAction.callSetToastStatus({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: sendGiftRes.data ? sendGiftRes.data.message : alertMsg
-      });
+      }));
 
       /* 누적 선물 달에 선물한 달 더하기 */
       const item = giftList.find(v => v?.itemNo === itemNo);
       chatInfo?.addRoomInfoDalCnt(item?.cost * count);
-      
+
       setItem(-1);
       setCount(0);
       setIsLoading(false);
@@ -409,20 +413,17 @@ export default function SendGift(props: {
 
       // profile 업데이트
       const { result, data } = await getProfile({
-        memNo: profile.memNo,
+        memNo: globalState.userProfile.memNo,
       });
       if (result === "success") {
-        if (globalAction.setUserProfile) {
-          globalAction.setUserProfile(data);
-        }
+        dispatch(setGlobalCtxUserProfile(data));
       }
     } else if (sendGiftRes.result === "fail") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: sendGiftRes.message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        type: "alert",
+        content: sendGiftRes.message,
+      }));
       dispatchLayer({
         type: "INIT",
       });
@@ -488,24 +489,24 @@ export default function SendGift(props: {
                   </div>
                 )}
               <div className="myLelvel">
-                <strong>LEVEL {profile.level}</strong>
+                <strong>LEVEL {globalState.profile.level}</strong>
                 <div className="graph">
                   <span
                     className="fill"
                     style={{
                       width: `${
-                        profile.expRate < 101 ? `${profile.expRate}` : "100"
+                        globalState.profile.expRate < 101 ? `${globalState.profile.expRate}` : "100"
                       }%`,
                     }}
                   >
-                    {profile.expRate}%
+                    {globalState.profile.expRate}%
                   </span>
                 </div>
               </div>
               <div className="myDal">
                 <div className="myAcount">
                   <div className="myAcount__line">
-                    <p>{profile.dalCnt.toLocaleString()}</p>
+                    <p>{globalState.profile.dalCnt.toLocaleString()}</p>
                     <button
                       className="charge"
                       onClick={() => history.push("/store")}
@@ -514,7 +515,7 @@ export default function SendGift(props: {
                     </button>
                   </div>
                   <div className="myAcount__line">
-                    <p>{profile.byeolCnt.toLocaleString()}</p>
+                    <p>{globalState.profile.byeolCnt.toLocaleString()}</p>
                     <button
                       className="exchange"
                       onClick={() => history.push("/wallet/exchange")}

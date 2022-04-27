@@ -6,13 +6,13 @@ import RadioList from 'pages/resetting/components/radioList'
 import './title.scss'
 import API from "context/api";
 import TextArea from "pages/resetting/components/textArea";
-import Toast from "components/ui/toast/Toast";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const BroadcastTitle = () => {
   const [titleList, setTitleList] = useState([])
   const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
-  const context = useContext(Context);
+  const dispatch = useDispatch();
 
   //등록된 제목 버튼 클릭시 해당 정보 가져오기
   const selectTitle = (e) => {
@@ -32,10 +32,10 @@ const BroadcastTitle = () => {
       contents: titleSelect.val
     })
     if(titleSelect.val === "") {
-      context.action.toast({msg: "입력 된 방송제목이 없습니다. \n방송제목을 입력하세요."});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "입력 된 방송제목이 없습니다. \n방송제목을 입력하세요."}));
     } else {
       if (res.result === "success") {
-        context.action.toast({msg: "방송제목이 등록 되었습니다."})
+        dispatch(setGlobalCtxMessage({type:'toast',msg: "방송제목이 등록 되었습니다."}))
         setTitleList(res.data.list);
         setTitleSelect({...titleSelect, val: ""});
       }
@@ -49,7 +49,7 @@ const BroadcastTitle = () => {
       idx: titleSelect.index
     })
     if(res.result === "success") {
-      context.action.toast({msg: "방송제목이 삭제 되었습니다."})
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "방송제목이 삭제 되었습니다."}))
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }
@@ -71,7 +71,7 @@ const BroadcastTitle = () => {
       contents: titleSelect.val
     })
     if(res.result === "success") {
-      context.action.toast({msg: "방송제목이 수정 되었습니다."})
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "방송제목이 수정 되었습니다."}))
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }

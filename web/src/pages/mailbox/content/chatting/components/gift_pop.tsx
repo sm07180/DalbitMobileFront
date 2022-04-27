@@ -4,18 +4,18 @@
  */
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-// context
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 // component
 import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxGiftItemInfo} from "../../../../../redux/actions/mailBox";
+import {setGlobalCtxAlertStatus} from "../../../../../redux/actions/globalCtx";
 // global var
 let selectObj = {};
 export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction } = useContext(MailboxContext);
-  const { splashData } = globalState;
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
+  const { splash } = globalState;
   const history = useHistory();
   // profileInfo
   const profile: any = globalState.userProfile;
@@ -47,7 +47,7 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   };
   // 아이템 선택하기
   const selectItem = (idx: number, itemNo: string, selectItem) => {
-    mailboxAction.setGiftItemInfo!(null);
+    dispatch(setMailBoxGiftItemInfo(null));
     selectObj = selectItem;
     if (item != idx) {
       setItem(idx);
@@ -56,13 +56,12 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
       if (selectItem.type === "sticker") {
         if (count >= 10) {
           if (count >= 100) {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "alert",
-                content: "콤보 선물은 최대 100개까지 가능합니다.",
-                callback: () => {},
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "alert",
+              content: "콤보 선물은 최대 100개까지 가능합니다.",
+              callback: () => {},
+            }));
             return;
           }
           setCount(count + 10);
@@ -71,13 +70,12 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
         }
       } else {
         if (count >= 10) {
-          globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              type: "alert",
-              content: "콤보 선물은 최대 10개까지 가능합니다.",
-              callback: () => {},
-            });
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            type: "alert",
+            content: "콤보 선물은 최대 10개까지 가능합니다.",
+            callback: () => {},
+          }));
         }
         if (count + 1 == 11) return false;
         setCount(count + 1);
@@ -105,9 +103,9 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
   };
   //초기 데이터 세팅
   useEffect(() => {
-    if (splashData) {
-      setGiftCategoryItem(splashData.itemCategories);
-      setGiftList(splashData.items);
+    if (splash) {
+      setGiftCategoryItem(splash.itemCategories);
+      setGiftList(splash.items);
     }
   }, []);
   // 카테고리 필터링
@@ -136,7 +134,7 @@ export default function giftPop({ setGiftPop, giftPop, sendGift }) {
                 </div>
                 <div className="myDalBoxItem">
                   {profile.byeolCnt.toLocaleString()}
-                  <button onClick={() => history.push(`/dal_exchange`)}>
+                  <button onClick={() => history.push(`/wallet/exchange`)}>
                     <img src="https://image.dalbitlive.com/mailbox/ico_exchange.svg" alt="교환" />
                   </button>
                 </div>

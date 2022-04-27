@@ -3,16 +3,21 @@ import {useHistory} from 'react-router-dom'
 import API from 'context/api'
 import {OS_TYPE} from 'context/config'
 import styled from 'styled-components'
-import {Context} from 'context'
 //layout
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header.js'
 
-import {StoreLink} from 'context/link'
+import {storeButtonEvent} from "components/ui/header/TitleButton";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
-  let history = useHistory()
-  const context = useContext(Context)
+  let history = useHistory();
+  const memberRdx = useSelector((state)=> state.member);
+  const payStoreRdx = useSelector(({payStore})=> payStore);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [eventData, setEventData] = useState('')
   const [osCheck, setOsCheck] = useState(-1)
 
@@ -22,12 +27,12 @@ export default () => {
     if (res.result === 'success') {
       setEventData(res.data)
     } else if (res.result === 'fail') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: '이벤트 참여 기간이 아닙니다.',
         callback: () => {
           history.push(`/`)
         }
-      })
+      }))
     }
   }
 
@@ -48,11 +53,13 @@ export default () => {
   }
 
   const eventBtn = () => {
-    if (osCheck === OS_TYPE['IOS']) {
-      StoreLink(context, history)
-    } else if (eventData.rate === 5 || eventData.rate === 3) {
-      history.push(`/store`)
-    }
+    storeButtonEvent({history, memberRdx, payStoreRdx});
+
+    // if (osCheck === OS_TYPE['IOS']) {
+    //   StoreLink(context, history)
+    // } else if (eventData.rate === 5 || eventData.rate === 3) {
+    //   history.push(`/store`)
+    // }
   }
 
   return (

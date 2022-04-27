@@ -1,22 +1,23 @@
 // tab navigation
 // api
-import { GlobalContext } from "context";
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import "./join.scss";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxShadowAdmin} from "../../../../redux/actions/globalCtx";
 export default (props) => {
   let location = useLocation();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
   const history = useHistory();
   //clip Link
   const broadCastLink = (type: string) => {
     if (type === "admin") {
-      globalAction.setShadowAdmin!(1);
+      dispatch(setGlobalCtxShadowAdmin(1));
       setTimeout(() => {
         history.push(`/broadcast/${location.state}`);
       }, 10);
     } else {
-      globalAction.setShadowAdmin!(0);
+      dispatch(setGlobalCtxShadowAdmin(0));
       setTimeout(() => {
         console.log(location.state);
         console.log("ac");

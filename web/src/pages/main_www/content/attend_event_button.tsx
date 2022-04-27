@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import { getEventAttendCheck } from "common/api";
-import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 import { IMG_SERVER } from "constant/define";
+import {useDispatch, useSelector} from "react-redux";
 
 export default (props: any) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { baseData, splashData } = globalState;
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const { baseData } = globalState;
   const [attendCheck, setAttendCheck] = useState(-1);
   const history = useHistory();
   async function fetchEventAttendCheck() {

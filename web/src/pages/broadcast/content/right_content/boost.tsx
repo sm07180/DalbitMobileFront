@@ -1,10 +1,14 @@
-import React, { useState, useEffect, useContext, useReducer, useCallback } from "react";
-// ctx
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GlobalContext } from "context";
+import React, {useCallback, useContext, useEffect, useReducer, useState} from "react";
 // Api
-import { getBroadcastBoost, postBroadcastBoost, getProfile } from "common/api";
-import { tabType } from "pages/broadcast/constant";
+import {getBroadcastBoost, getProfile, postBroadcastBoost} from "common/api";
+import {tabType} from "pages/broadcast/constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUseBoost} from "../../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxSetToastStatus,
+  setGlobalCtxUserProfile
+} from "../../../../redux/actions/globalCtx";
 
 let preventClick = false;
 
@@ -26,14 +30,14 @@ function counterReducer(state, action) {
 export default function Profile(props: { roomNo: string; roomOwner: boolean; roomInfo: any }) {
   const { roomNo, roomOwner, roomInfo } = props;
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const { chatInfo } = globalState;
   // state
   const [boostList, setBoostList] = useState<any>({});
   const [myTimer, setMyTimer] = useState<any>();
   const [timer, setTimer] = useState<string>("00:00");
-  const [boostCount, dispatch] = useReducer(counterReducer, 1);
+  const [boostCount, dispatchWithoutAction] = useReducer(counterReducer, 1);
 
   let time = 0;
   let addFlag = false;
@@ -60,9 +64,9 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
     if (type === "decrementState") {
       if (boostCount > 1) {
         if (boostCount === 5) {
-          dispatch({ type: "DECREMENT__Divide2.5" });
+          dispatchWithoutAction({ type: "DECREMENT__Divide2.5" });
         } else {
-          dispatch({ type: "DECREMENT__Divide" });
+          dispatchWithoutAction({ type: "DECREMENT__Divide" });
         }
       } else {
         return false;
@@ -70,9 +74,9 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
     } else if (type === "incrementState") {
       if (boostCount < 10) {
         if (boostCount === 2) {
-          dispatch({ type: "INCREMENT__Multifly2.5" });
+          dispatchWithoutAction({ type: "INCREMENT__Multifly2.5" });
         } else {
-          dispatch({ type: "INCREMENT__Double" });
+          dispatchWithoutAction({ type: "INCREMENT__Double" });
         }
       } else {
         return false;
@@ -113,13 +117,13 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
       let myTime = boostList.boostTime;
 
       const interval = setInterval(() => {
-        if (broadcastAction.setUseBoost) broadcastAction.setUseBoost(true);
+        dispatch(setBroadcastCtxUseBoost(true));
         myTime -= 1;
         let m = Math.floor(myTime / 60) + ":" + ((myTime % 60).toString().length > 1 ? myTime % 60 : "0" + (myTime % 60)); // 받아온 값을 mm:ss 형태로 변경
         setTimer(m);
         if (myTime === 0) {
           clearInterval(interval); // 부스트 시간이 끝나면 stop
-          if (broadcastAction.setUseBoost) broadcastAction.setUseBoost(false);
+          dispatch(setBroadcastCtxUseBoost(false));
         }
         if (time >= BcEndTime) return;
       }, 1000);
@@ -158,94 +162,35 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
         memNo: roomInfo.bjMemNo
       });
       if (res.result === "success") {
-        if (broadcastAction.setUseBoost) broadcastAction.setUseBoost(true);
+        dispatch(setBroadcastCtxUseBoost(true));
         const stop = clearInterval(myTimer);
         // localStorage.setItem("myDate", JSON.stringify(new Date()));
         setMyTimer(stop);
         addTimer(1800); //부스터 사용 ( 30분 연장 )
         fetchData(); // 부스트 사용 후 다시 조회
 
-        globalAction.callSetToastStatus && globalAction.callSetToastStatus({ status: true, message: "부스터가 사용되었습니다" });
+        dispatch(setGlobalCtxSetToastStatus({ status: true, message: "부스터가 사용되었습니다" }));
 
         /* 누적 선물 달에 선물한 달 더하기 */
         if(!useItem) chatInfo?.addRoomInfoDalCnt(boostCount * 10);
 
         const { result, data } = await getProfile({ memNo: globalState.baseData.memNo });
         if (result === "success") {
-          globalAction.setUserProfile!(data);
+          dispatch(setGlobalCtxUserProfile(data));
         }
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: res.message,
-            callback: () => {
-              return;
-            },
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          type: "alert",
+          content: res.message,
+          callback: () => {
+            return;
+          },
+        }));
       }
       preventClick = false;
     }
     fetchBoostData();
-    // if (globalAction.setAlertStatus) {
-    //   globalAction.setAlertStatus({
-    //     status: true,
-    //     type: "confirm",
-    //     title: useItem ? "부스터 아이템 사용" : "부스터 사용",
-    //     titleStyle: {
-    //       paddingBottom: "10px",
-    //       borderBottom: "1px solid #e0e0e0",
-    //     },
-    //     content: msg,
-    //     subcont: subCont,
-    //     subcontStyle: {
-    //       color: "red",
-    //       lineHeight: "16px",
-    //       margin: "10px 0 0 0",
-    //       wordBreak: "break-all",
-    //       fontSize: "11px",
-    //       whiteSpace: "pre-wrap",
-    //     },
-    //     confirmText: "사용",
-    //     callback: async () => {
-    //       preventClick = true;
-    //       const res = await postBroadcastBoost({
-    //         roomNo: roomNo,
-    //         itemNo: "U1447", // 부스트 사용 시 아이템 선택 없음 문의 필요
-    //         itemCnt: boostCount,
-    //         isItemUse: useItem,
-    //       });
-    //       if (res.result === "success") {
-    //         if (broadcastAction.setUseBoost) broadcastAction.setUseBoost(true);
-    //         const stop = clearInterval(myTimer);
-    //         // localStorage.setItem("myDate", JSON.stringify(new Date()));
-    //         setMyTimer(stop);
-    //         addTimer(1800); //부스터 사용 ( 30분 연장 )
-    //         fetchData(); // 부스트 사용 후 다시 조회
-
-    //         globalAction.callSetToastStatus &&
-    //           globalAction.callSetToastStatus({ status: true, message: "부스터가 사용되었습니다" });
-
-    //         const { result, data } = await getProfile({ memNo: globalState.baseData.memNo });
-    //         if (result === "success") {
-    //           globalAction.setUserProfile!(data);
-    //         }
-    //       } else {
-    //         globalAction.setAlertStatus &&
-    //           globalAction.setAlertStatus({
-    //             status: true,
-    //             type: "alert",
-    //             content: res.message,
-    //             callback: () => {
-    //               return;
-    //             },
-    //           });
-    //       }
-    //       preventClick = false;
-    //     },
-    //   });
-    // }
   };
 
   useEffect(() => {
@@ -259,7 +204,7 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
         <button
           className="tabTitle__back"
           onClick={() => {
-            broadcastAction.setRightTabType!(tabType.LISTENER);
+            dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
           }}
         ></button>
       </h3>

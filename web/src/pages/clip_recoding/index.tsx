@@ -4,7 +4,6 @@ import MicRecorder from "mic-recorder-to-mp3";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { useLastLocation } from "react-router-last-location";
-import { GlobalContext } from "context";
 import { selfAuthCheck } from "common/api";
 import moment from "moment";
 // components
@@ -14,6 +13,8 @@ import CircleTimer from "./circle_timer";
 import { secToDateConvertorMinute, dateTimeFormat } from "lib/common_fn";
 //scss
 import "./record.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../redux/actions/globalCtx";
 //media flag
 let mediaRecorder;
 let chunks = [];
@@ -22,7 +23,8 @@ export default function castRecoding(props: any) {
   //history
   let history = useHistory();
   const lastLocation = useLastLocation();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //ref
   const audioRef = useRef<HTMLAudioElement>(null);
   //uesCounter element
@@ -76,7 +78,7 @@ export default function castRecoding(props: any) {
 
   // RESET FUNC
   const reRerecording = () => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: "다시 녹음하시겠습니까? \n  현재 녹음된 내용은 저장되지 않습니다.",
@@ -85,7 +87,7 @@ export default function castRecoding(props: any) {
         setPlayState(false);
         reset();
       },
-    });
+    }));
     // stopRecording();
     //-- reset record
     // startRecording();
@@ -98,12 +100,12 @@ export default function castRecoding(props: any) {
       startRecording();
     } else if (recordState === 0) {
       if (count < 30) {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "30초 이상 녹음해주세요.",
           callback: () => {},
-        });
+        }));
       } else if (count > 29) {
         stopRecording();
       }
@@ -135,7 +137,7 @@ export default function castRecoding(props: any) {
       chunks = [];
       const onErr = () => {
         setMicState(0);
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: "마이크 연결을 확인해주세요!",
@@ -146,7 +148,7 @@ export default function castRecoding(props: any) {
               history.goBack();
             }
           },
-        });
+        }));
       };
       const onSuccess = (stream) => {
         // const MicRecorder = require("mic-recorder-to-mp3");

@@ -24,11 +24,11 @@ const getUseInput = (value, setValue, validator) => {
 * @설명  : validator: onChange 시킬지 검증 함수
 **********************************************************************************************/
 export const UseInput = (props) => {
-  const { value, setValue, validator, className, forwardedRef, placeholder, name, onFocus, onBlur, autoComplete } = props;
+  const { value, setValue, validator, className, forwardedRef, placeholder, name, onFocus, onBlur, autoComplete, type } = props;
   const useInput = getUseInput(value, setValue, validator);
   return (
     <input {...useInput}
-           type="text"
+           type={type}
            className={className}
            name={name}
            ref={forwardedRef}
@@ -42,6 +42,7 @@ export const UseInput = (props) => {
 UseInput.defaultProps = {
   onFocus: () => {},
   onBlur: () => {},
-  autoComplete: 'off'
+  autoComplete: 'off',
+  type: 'text',
 };
 export default UseInput;

@@ -1,13 +1,15 @@
-import React, {useState, useCallback, useEffect, useContext, useRef} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function NoticeInsertCompnent(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {memNo, fetchData, setPhotoUploading} = props
-  const context = useContext(Context)
   const history = useHistory()
 
   const inputRef = useRef()
@@ -44,17 +46,17 @@ function NoticeInsertCompnent(props) {
 
   const insettNorice = useCallback(async () => {
     if (formState.title === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         visible: true,
         type: 'alert',
         msg: `제목을 입력해주세요.`
-      })
+      }))
     } else if (formState.contents === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         visible: true,
         type: 'alert',
         msg: `내용을 입력해주세요.`
-      })
+      }))
     }
 
     const {result, data, message} = await Api.mypage_notice_upload({
@@ -66,14 +68,14 @@ function NoticeInsertCompnent(props) {
     })
 
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         visible: true,
         type: 'alert',
         msg: message,
         callback: () => {
           history.goBack()
         }
-      })
+      }))
 
       fetchData()
     }
@@ -94,14 +96,14 @@ function NoticeInsertCompnent(props) {
   useEffect(() => {
     if (image !== null) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
           status: true,
           type: 'alert',
           content: image.content,
           callback: () => {
             return
           }
-        })
+        }))
       } else {
         setPhotoUploading(true)
         const imageUpload = async () => {
@@ -117,11 +119,11 @@ function NoticeInsertCompnent(props) {
             setImage(null)
             setPhotoUploading(false)
           } else {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
               visible: true,
               type: 'alert',
               msg: message
-            })
+            }))
           }
         }
         imageUpload()

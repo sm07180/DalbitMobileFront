@@ -3,7 +3,6 @@ import {useParams} from 'react-router-dom'
 import {EventAttendProvider} from './event_attend_new/attend_ctx'
 
 //component
-import Layout from 'pages/common/layout'
 import ThxGiving from './thanksgiving'
 import ClipEventNative from './clip_event'
 import ClipGiftEvent from './clip_gift_event'
@@ -50,6 +49,7 @@ import Share from './share'
 import PlatformWar from './platformWar'
 import ContentLab from './contentLab'
 import ContentStar from './contentStar'
+import ContentStarSchedule from './contentStarSchedule'
 import Wassup from './wassup'
 import moment from "moment";
 
@@ -161,6 +161,8 @@ export default (props) => {
         return <Wassup />
       case 'contentstar':
         return <ContentStar />
+      case 'contentstar_schedule':
+        return <ContentStarSchedule />
       default:
         return <></>
         break

@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
-// context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // component
@@ -15,6 +12,8 @@ import { tabType } from "pages/broadcast/constant";
 // others
 import { UserType } from "common/realtime/rtc_socket";
 import {IconWrap} from "./icon_wrap";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 export default function ChatInputWrap(props: {
   roomNo: string;
@@ -25,12 +24,14 @@ export default function ChatInputWrap(props: {
   const { roomNo, roomInfo, roomOwner, setForceChatScrollDown } = props;
 
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo } = globalState;
 
-  const { broadcastState } = useContext(BroadcastContext);
-  const { chatFreeze } = broadcastState;
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+
+  const { chatFreeze, chatLimit } = broadcastState;
 
   const { dimLayer, layer, dispatchLayer } = useContext(BroadcastLayerContext);
   const [chatText, setChatText] = useState<string>("");
@@ -49,19 +50,26 @@ export default function ChatInputWrap(props: {
   };
 
   const sendMessage = (message: string) => {
+    if(chatLimit) return;
+
     if (chatInfo !== null) {
       if (chatFreeze === false || roomOwner === true) {
         chatInfo.sendSocketMessage(roomNo, "chat", "", message, (result: boolean) => {
+          /* 채팅 도배방지 (일반 청취자만)*/
+          if(roomInfo.auth === 0) {
+            chatInfo.chatLimitCheck(setChatText);
+          }
+
           if (result === false) {
           } else if (result === true) {
             setForceChatScrollDown(true);
           }
         });
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "채팅 얼리기 중에는 채팅 입력이 불가능합니다.",
-        });
+        }))
       }
     }
   };
@@ -94,6 +102,12 @@ export default function ChatInputWrap(props: {
     }
   }, [chatText]);
 
+  useEffect(() => {
+    if (!chatLimit && MsgRef?.current) {
+      MsgRef.current?.focus();
+    }
+  }, [chatLimit]);
+
   return (
     <div
       className={`chatInputWrap ${dimLayer.status === true && dimLayer.type === "ROULETTE" && "fixed"}`}
@@ -105,8 +119,10 @@ export default function ChatInputWrap(props: {
       <div className="gift-input-wrap">
         <textarea
           typeof="text"
-          placeholder={`${baseData.isLogin === true ? "대화를 입력해 주세요." : "로그인 후, 사용 가능합니다."}`}
+          className={`${chatLimit? 'disabled' : '' }`}
+          placeholder={`${baseData.isLogin === true ? (chatLimit? "3초간 채팅 입력이 제한됩니다." : "대화를 입력해 주세요.") : "로그인 후, 사용 가능합니다."}`}
           value={chatText}
+          disabled={chatLimit}
           onKeyDown={chatKeydownEvent}
           onChange={textOnChangeEvent}
           onFocus={(e) => {

@@ -9,6 +9,7 @@ import {isHybrid, Hybrid, isAndroid} from 'context/hybrid'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
 import moment from 'moment'
+import {setGlobalCtxUpdatePopup} from "../../redux/actions/globalCtx";
 
 export default class Utility {
   /**
@@ -260,16 +261,18 @@ export default class Utility {
    * 공지사항, faq, 1:1문의 시에 a링크 찾아서 하이브리드 일때 외부 브라우저 실행
    *
    * @param event
+   * @param globalState
+   * @param dispatch
    * @returns {boolean}
    */
-  static contentClickEvent = (event, context) => {
+  static contentClickEvent = (event, globalState, dispatch) => {
     if (event.target.closest('A')) {
       const link = event.target.closest('A')
       const clipUrl = /\/clip\/[0-9]*$/
       if (isHybrid()) {
         if (clipUrl.test(link.href)) {
           const clip_no = link.href.substring(link.href.lastIndexOf('/') + 1)
-          clipJoinApi(clip_no, context)
+          clipJoinApi(clip_no, globalState)
         } else if (
           link.href.indexOf('dalbitlive.com') > -1 ||
           (!link.href.startsWith('https://') && !link.href.startsWith('http://'))
@@ -281,7 +284,7 @@ export default class Utility {
         event.preventDefault()
         return false
       } else if (clipUrl.test(link.href)) {
-        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+        dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 4]}));
         event.preventDefault()
         return false
       }
@@ -435,5 +438,11 @@ export default class Utility {
       { type : "facebook", key : cmd, value: {} },
     ];
     Hybrid('eventTracking', {service: firebaseDataArray})
+  }
+
+  static addClipPlayList = (data) => {
+    if(data) {
+      sessionStorage.setItem("clip", JSON.stringify(data));
+    }
   }
 }

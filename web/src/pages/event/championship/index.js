@@ -1,8 +1,7 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //globalCtx
-import {Context} from 'context'
 import Api from 'context/api'
 
 //component
@@ -13,10 +12,14 @@ import Status from './components/status/status'
 
 import './index.scss'
 import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
 
   const [eventMainType, setEventMainType] = useState(1) // main, points -> 1,2
   const [eventSubType, setEventSubType] = useState(1) // dj, fan -> 1,2
@@ -78,9 +81,10 @@ export default () => {
         giftDesc: data.giftDesc
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 

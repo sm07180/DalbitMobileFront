@@ -10,16 +10,17 @@ import React, {
 import Swiper from "react-id-swiper";
 
 import { useHistory } from "react-router-dom";
-import { GlobalContext } from "context";
 import { RoomValidateFromClip } from "common/audio/clip_func";
 import BadgeList from "../../../common/badge_list";
+import {useDispatch, useSelector} from "react-redux";
 
 let interval;
 let intervalOver;
 
 export default function MainSlide(props: any) {
   const { slideList } = props;
-  const gtx = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const history = useHistory();
   const SwiperRef = useRef<any>(null);
 
@@ -50,13 +51,13 @@ export default function MainSlide(props: any) {
         } else {
           if (broadUrl.test(roomNo)) {
             const room_no = roomNo.substring(roomNo.lastIndexOf("/") + 1);
-            RoomValidateFromClip(room_no, gtx, history, "noName");
+            RoomValidateFromClip(room_no, dispatch, globalState, history, "noName");
           } else {
             window.open(`${roomNo}`);
           }
         }
       } else {
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
       }
     }
   };
@@ -77,13 +78,13 @@ export default function MainSlide(props: any) {
         } else {
           if (broadUrl.test(roomNo)) {
             const room_no = roomNo.substring(roomNo.lastIndexOf("/") + 1);
-            RoomValidateFromClip(room_no, gtx, history, "noName");
+            RoomValidateFromClip(room_no, dispatch, globalState, history, "noName");
           } else {
             window.open(`${roomNo}`);
           }
         }
       } else {
-        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
       }
     }
   };
@@ -203,18 +204,13 @@ export default function MainSlide(props: any) {
                             const room_no = roomNo.substring(
                               roomNo.lastIndexOf("/") + 1
                             );
-                            RoomValidateFromClip(
-                              room_no,
-                              gtx,
-                              history,
-                              "noName"
-                            );
+                            RoomValidateFromClip(room_no, dispatch, globalState, history, "noName");
                           } else {
                             window.open(`${roomNo}`);
                           }
                         }
                       } else {
-                        RoomValidateFromClip(roomNo, gtx, history, nickNm);
+                        RoomValidateFromClip(roomNo, dispatch, globalState, history, nickNm);
                       }
                     }
                   }}

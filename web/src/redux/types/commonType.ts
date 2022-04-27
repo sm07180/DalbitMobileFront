@@ -76,6 +76,7 @@ export interface ICommonPopupState {
   presentPopup: boolean;
   questionMarkPopup: boolean;
   historyPopup: boolean;
+  levelPopup: boolean;
 
   // 달라져스 이벤트
   morePopup: boolean;
@@ -87,4 +88,6 @@ export interface ICommonPopupState {
 
   /* 애니메이션 액션 팝업 */
   slidePopup: boolean;
+
+  slideAction: boolean;
 }

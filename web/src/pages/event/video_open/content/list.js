@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
-import {Context} from 'context'
 import NoResult from 'components/ui/noResult'
+import {useDispatch, useSelector} from "react-redux";
 
 // static
 const GoldMedal = 'https://image.dalbitlive.com/svg/medal_gold_b.svg'
@@ -11,7 +11,8 @@ const BronzeMedal = 'https://image.dalbitlive.com/svg/medal_bronze_m.svg'
 
 export default function VideoEventList({videoRankList}) {
   const history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   return (
     <div className="event_list">
       {Array.isArray(videoRankList) && videoRankList.length > 0 ? (
@@ -31,7 +32,7 @@ export default function VideoEventList({videoRankList}) {
                 <div
                   className="thumb"
                   onClick={() => {
-                    if (context.token.isLogin) {
+                    if (globalState.token.isLogin) {
                       history.push(`/profile/${memNo}`)
                     } else {
                       history.push(`/login`)
@@ -47,7 +48,7 @@ export default function VideoEventList({videoRankList}) {
                   <p
                     className="nick"
                     onClick={() => {
-                      if (context.token.isLogin) {
+                      if (globalState.token.isLogin) {
                         history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)

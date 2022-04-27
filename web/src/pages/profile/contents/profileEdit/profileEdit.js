@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useMemo, useContext, useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
@@ -20,21 +19,21 @@ import PasswordChange from "pages/password";
 import {authReq} from "pages/self_auth";
 // redux
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupClose, setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupClose, setCommonPopupOpenData, setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const ProfileEdit = () => {
   const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
 
   const swiperParams = {
     slidesPerView: 'auto',
   }
 
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popup = useSelector(state => state.popup);
-
+  const {token, profile} = globalState
   //이미지 크로퍼
   const inputRef = useRef(null);
   const [eventObj, setEventObj] = useState(null);
@@ -77,26 +76,26 @@ const ProfileEdit = () => {
     }
   }, [profile])
 
-  const showSlideClear = useCallback((p)=>{
+  const showSlideClear = useCallback(() => {
     setShowSlide({visible: false, imgList: [], initialSlide: 0});
   },[]);
 
   const getMyInfo = async () => {
     const {result, data, message} = await Api.profile({
-      params: {memNo: context.token.memNo}
+      params: {memNo: globalState.token.memNo}
     })
     showSlideClear();
     if (result === 'success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data));
     }
   };
 
   const openMoreList = () => {
-    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}))
+    dispatch(setSlidePopupOpen())
   };
 
   const closeMoreList = () => {
-    dispatch(setCommonPopupClose());
+    dispatch(setSlidePopupClose());
   };
 
   //대표 이미지 지정
@@ -106,9 +105,9 @@ const ProfileEdit = () => {
     if (result === 'success') {
       showSlideClear();
       getMyInfo();
-      context.action.toast({msg: '선택 이미지로 대표 이미지가 변경되었습니다.'});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: '선택 이미지로 대표 이미지가 변경되었습니다.'}));
     } else {
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     }
   }
 
@@ -127,19 +126,19 @@ const ProfileEdit = () => {
     const {result, data, message} = await Api.profile_edit({data: param});
 
     if (result === 'success') {
-      context.action.updateProfile({...profile, ...data});
-      context.action.alert({
+      dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: `저장되었습니다.`,
         callback: finished ? () => history.replace('/myProfile') : () => {}
-      });
+      }));
     } else {
-      context.action.alert({title: 'Error', msg: message});
+      dispatch(setGlobalCtxMessage({type:'alert',title: 'Error', msg: message}));
     }
   }
 
   /* 본인인증 열기 */
   const getAuth = () => {
-    authReq('5', context.authRef, context);
+    authReq({code: '5', formTagRef: globalState.authRef, dispatch});
   }
 
   /* 본인인증 여부 */
@@ -168,9 +167,9 @@ const ProfileEdit = () => {
       const {result, message} = res
       if (result === 'success') {
         getMyInfo(); //프로필 정보 갱신
-        context.action.toast({msg: '이미지 등록 되었습니다.'});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: '이미지가 등록 되었습니다.'}));
       } else {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       }
     })
   };
@@ -180,7 +179,7 @@ const ProfileEdit = () => {
     if (imgIdx !== null) {
       Api.postDeleteProfileImg({idx: imgIdx}).then((res) => {
         const {result, message} = res;
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
 
         showSlideClear();
         if (result === 'success') {
@@ -217,30 +216,23 @@ const ProfileEdit = () => {
         }
 
       } else {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       }
     } catch(e) { //image upload Error
-      context.action.toast({msg: '이미지 업로드 실패'});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: '이미지 업로드 실패'}));
       setImage(null);
     };
   };
 
   //이미지 팝업 띄우기
-  const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
-    if(!data) return;
-
-    let resultMap = [];
-    if (type === 'profileList') { // 프로필 이미지 리스트, 대표 이미지 눌렀을 때
-      data.map((v, idx) => {
-        if (v?.profImg) {
-          resultMap.push({idx: v.idx, ...v.profImg});
-        }
-      });
-    } else { //배경 이미지 눌렀을때
-      resultMap.push({idx: data.idx, ...data.profImg});
-    }
-
-    setShowSlide({visible:true, imgList: resultMap, initialSlide });
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide= 0) => {
+    let list = [];
+    data.map((v, idx) => {
+      if (v?.profImg) {
+        list.push({idx: v.idx, ...v.profImg});
+      }
+    });
+    setShowSlide({visible: true, imgList: list, initialSlide});
   };
 
   const imageSorting = (imageList = []) => {
@@ -254,11 +246,10 @@ const ProfileEdit = () => {
         .then((res) => {
           const {result, message, data} = res;
           if (result === 'success') {
-            context.action.toast({msg: '성공'});
             closeMoreList();
             getMyInfo();
           } else {
-            context.action.toast({msg: '사진 변경 실패'});
+            dispatch(setGlobalCtxMessage({type:'toast',msg: '잠시후에 다시 시도해주세요.'}));
           }
         });
     } else {
@@ -270,9 +261,9 @@ const ProfileEdit = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: '지원하지 않는 파일입니다.'
-        })
+        }))
       } else {
         photoUpload();// 사진 업로드
       }
@@ -294,21 +285,16 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} backEvent={()=>history.replace('/myProfile')}>
+            <Header title={'프로필 수정'} type={'back'} >
               <button className='saveBtn'
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='profileTopSwiper' onClick={() => showImagePopUp(profileDataNoReader?.profImgList, 'profileList', topSwiperRef.current?.activeIndex)}>
+            <section className='profileTopSwiper'>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profileDataNoReader} disabledBadge={true}
-                           swiperParam={{
-                             on: {
-                               init: function () {
-                                 topSwiperRef.current = this;
-                               }
-                             }
-                           }}
+                <TopSwiper data={profileDataNoReader}
+                           disabledBadge={true}
+                           openShowSlide={openShowSlide}
                 />
                 :
                 <div className="nonePhoto"
@@ -323,10 +309,10 @@ const ProfileEdit = () => {
             <section className="insertPhoto">
               <div className="insertBtn">
                 <div className="photo"
-                     onClick={()=> {
-                       profileInfo?.profImgList.length >0 ?
-                         showImagePopUp(profileInfo?.profImgList, 'profileList') :
-                         inputRef.current.click();
+                     onClick={() => {
+                       profileInfo?.profImgList.length > 0?
+                         openShowSlide(profileInfo?.profImgList,  'y', 'profImg', 0)
+                         : inputRef.current.click();
                      }}>
                   <img src={profile && profile.profImg && profile.profImg.thumb292x292} alt=""/>
                 </div>
@@ -334,22 +320,24 @@ const ProfileEdit = () => {
 
               <div className="coverPhoto">
                 <div className="title">프로필사진<small>(최대 10장)</small>
-                  {/*{profileInfo?.profImgList?.length > 1 &&*/}
-                  {/*  <button onClick={openMoreList}>순서변경</button>*/}
-                  {/*}*/}
+                  {profileInfo?.profImgList?.length > 1 &&
+                    <button onClick={openMoreList}>순서변경</button>
+                  }
                 </div>
                 <Swiper {...swiperParams}>
                   {profileInfo?.profImgList?.map((data, index) =>{
                     return <div key={data?.idx}>
                       <label onClick={(e)=>e.preventDefault()}>
                         <img src={data?.profImg?.thumb292x292} alt=""
-                             onClick={()=> showImagePopUp(profileInfo?.profImgList, 'profileList', index)}/>
+                             onClick={() => {
+                               openShowSlide(profileInfo?.profImgList, 'y', 'profImg', index)
+                             }}/>
                         <button className="cancelBtn"
                                 onClick={() => {
-                                  context.action.confirm({
+                                  dispatch(setGlobalCtxMessage({type:'confirm',
                                     msg: '정말로 삭제하시겠습니까?',
                                     callback: ()=> deleteProfileImage(data?.idx)
-                                  })
+                                  }))
                                 }}/>
                       </label>
                     </div>})
@@ -419,7 +407,11 @@ const ProfileEdit = () => {
                 <textarea rows="4" maxLength="100" placeholder='입력해주세요.'
                           value={profileInfo?.profMsg || ''}
                           onChange={(e) => {
-                            setProfileInfo({...profileInfo, profMsg: e.target.value});
+                            if(e.target.value?.length> 100) {
+                              e.target.value = profileInfo?.profMsg;
+                            } else {
+                              setProfileInfo({...profileInfo, profMsg: e.target.value});
+                            }
                           }}/>
                 <div className="textCount">{profileInfo?.profMsg?.length || 0}/100</div>
               </InputItems>
@@ -449,12 +441,12 @@ const ProfileEdit = () => {
             <ShowSwiper imageList={showSlide?.imgList || []} popClose={showSlideClear} showTopOptionSection={true}
                         readerButtonAction={readerImageEdit}
                         deleteButtonAction={(idx) =>
-                          context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
+                          dispatch(setGlobalCtxMessage({type:'confirm',msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)}))}
                         swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
             }
 
-            {popup.commonPopup &&
+            {popup.slidePopup &&
             <PopSlide title="사진 순서 변경">
               <PhotoChange list={profileInfo?.profImgList}
                            confirm={imageSorting}/>

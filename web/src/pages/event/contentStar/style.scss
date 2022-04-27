@@ -1,4 +1,20 @@
 @import 'components/ui/_mixin.scss';
+.pcType.player{
+  #contentStar{
+    .applyBtn{
+      height: 130px;
+      padding-bottom: 70px;
+    }
+  }
+}
+.mobileType.player{
+  #contentStar{
+    .applyBtn{
+      height: 130px;
+      padding-bottom: 70px;
+    }
+  }
+}
 
 #contentStar{
   position: relative;

@@ -14,9 +14,10 @@ import InOutMessage from 'pages/resetting/contents/broadcast/inOutMessage'
 
 import './broadcast.scss'
 import API from "context/api";
-import {Context} from "context";
 import Toast from "components/ui/toast/Toast";
 import Notice from "pages/resetting/contents/broadcast/broadcastNotice";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SettingBroadcast = () => {
   const params = useParams();
@@ -31,13 +32,15 @@ const SettingBroadcast = () => {
     {text:'선물 시 자동 스타 추가', value: false},
     {text:'배지 / 입·퇴장 메시지', path: '/setting/streaming/inOutMessage'},
   ]);
-  const context = useContext(Context);
-
+  const dispatch = useDispatch();
   //선물 시 자동 스타 추가 정보 수정
   const fetchData = async (value, index) => {
     const res = await API.modifyBroadcastSetting({giftFanReg: !value})
     if(res.result === "success") {
-      context.action.toast({msg: res.message});
+      dispatch(setGlobalCtxMessage({
+        type: 'toast',
+        msg: res.message
+      }))
       setMenuListInfo(menuListInfo.map((v, idx) => {
         if(idx === index) {v.value = !value}
         return v

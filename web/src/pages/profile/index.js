@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import './style.scss'
 import Api from 'context/api'
 // global components
@@ -33,30 +32,26 @@ import {
   profileClipDefaultState,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState
+  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
-import {MailboxContext} from "context/mailbox_ctx";
 import LikePopup from "pages/profile/components/popSlide/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setCommonPopupOpenData, setIsWebView} from "redux/actions/common";
+import {setSlidePopupOpen, setSlidePopupClose, setIsWebView, setSlideClose} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfilePage = () => {
   const history = useHistory()
-  const location = useLocation();
-  const context = useContext(Context)
-  const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
   const tabmenuRef = useRef();
   const socialRef = useRef();
   const floatingRef = useRef();
 
-  const [showSlide, setShowSlide] = useState(false); // 프사 확대 슬라이드
-  const [imgList, setImgList] = useState([]); // 프사 확대 슬라이드 이미지 정보
+  const [showSlide, setShowSlide] = useState({visible: false, imgList: [], initialSlide: 0}); // 프사 확대 슬라이드
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''}); // 차단/신고 팝업 유저 정보
@@ -72,18 +67,21 @@ const ProfilePage = () => {
   const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
   const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
 
+  const [slidePopNo, setSlidePopNo] = useState(""); // 슬라이드 팝업 종류
+
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const profileData = useSelector(state => state.profile);
   const noticeData = useSelector(state => state.brdcst);
   const fanBoardData = useSelector(state => state.fanBoard);
   const clipData = useSelector(state => state.profileClip);
   const popup = useSelector(state => state.popup);
   const profileTab = useSelector(state => state.profileTab);
-  const isWebView = useSelector(state => state.common).isWebView;
   const feedData = useSelector(state => state.feed);
   const noticeFixData = useSelector(state => state.noticeFix);
+  const member = useSelector(state => state.member);
 
-  const profileDefaultTab = profileTab.tabList[0]; // 프로필 디폴트 탭 - 팬보드
+  const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 피드
 
   /* 상단 스와이퍼에서 사용하는 profileData (대표사진 제외한 프로필 이미지만 넣기) */
   const profileDataNoReader = useMemo(() => {
@@ -96,16 +94,16 @@ const ProfilePage = () => {
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
-    let targetMemNo = params.memNo ? params.memNo : context.profile.memNo;
+    let targetMemNo = params.memNo ? params.memNo : member.memNo;
 
     Api.profile({params: {memNo: targetMemNo }}).then(res => {
       if(res.code === '0') {
         dispatch(setProfileData(res.data))
       }else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           callback: () => history.goBack(),
           msg: res.message
-        })
+        }))
       }
     })
   };
@@ -113,9 +111,9 @@ const ProfilePage = () => {
   /* 방송공지 데이터 호출 */
   const getNoticeData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       pageNo: isInit ? 1 : noticeData.paging.next,
-      pageCnt: noticeData.paging.records,
+      pageCnt: isInit? 20: noticeData.paging.records,
       topFix: 0,
     }
     Api.mypage_notice_sel(apiParams).then(res => {
@@ -130,9 +128,9 @@ const ProfilePage = () => {
           isLastPage,
         }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -140,9 +138,9 @@ const ProfilePage = () => {
   /* 방송공지(고정) 데이터 호출 */
   const getNoticeFixData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       pageNo: isInit ? 1 : noticeFixData.paging.next,
-      pageCnt: noticeFixData.paging.records,
+      pageCnt: isInit? 20: noticeFixData.paging.records,
     }
     Api.myPageNoticeFixList(apiParams).then((res) => {
       if(res.result === "success") {
@@ -156,7 +154,7 @@ const ProfilePage = () => {
           isLastPage
         }));
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -164,9 +162,9 @@ const ProfilePage = () => {
   /* 피드 데이터 */
   const getFeedData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       pageNo: isInit ? 1 : feedData.paging.next,
-      pageCnt: feedData.paging.records,
+      pageCnt: isInit? 20: feedData.paging.records,
     }
     Api.myPageFeedSel(apiParams).then((res) => {
       if(res.result === "success") {
@@ -183,7 +181,7 @@ const ProfilePage = () => {
           removeScrollEvent();
         }
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
       }
     }).catch((e) => console.log(e));
   };
@@ -191,9 +189,9 @@ const ProfilePage = () => {
   /* 팬보드 데이터 */
   const getFanBoardData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
-      records: fanBoardData.paging.records
+      records: isInit? 20: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
@@ -211,9 +209,9 @@ const ProfilePage = () => {
           removeScrollEvent();
         }
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -221,9 +219,9 @@ const ProfilePage = () => {
   /* 클립 데이터 */
   const getClipData = (isInit) => {
     const apiParams = {
-      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      memNo: params.memNo ? params.memNo : member.memNo,
       page: isInit ? 1 : clipData.paging.next,
-      records: clipData.paging.records
+      records: isInit? 10: clipData.paging.records
     }
     Api.getUploadList(apiParams).then(res => {
       if (res.result === 'success') {
@@ -240,7 +238,7 @@ const ProfilePage = () => {
           removeScrollEvent();
         }
       } else {
-        context.action.alert({ msg: res.message })
+        dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
       }
     })
   }
@@ -255,32 +253,32 @@ const ProfilePage = () => {
     Api.fan_change({data: {memNo}}).then(res => {
       if (res.result === 'success') {
         if(typeof callback === 'function') callback();
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     })
   }
 
   /* 팬 해제 */
   const deleteFan = (memNo, memNick, callback) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             if(typeof callback === 'function') callback();
-            context.action.toast({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
           } else if (res.result === 'fail') {
-            context.action.alert({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
           }
         });
       }
-    })
+    }))
   }
 
   /* 방송시작 알림 설정 api */
@@ -296,11 +294,11 @@ const ProfilePage = () => {
           isReceive
         }))
 
-        context.action.alert({title, msg})
+        dispatch(setGlobalCtxMessage({type:'alert',title, msg}))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     });
   }, [profileData.memNo, profileData.isReceive])
@@ -311,14 +309,14 @@ const ProfilePage = () => {
     // setPopSlide(false);
     closePopupAction();
     if(isReceive) {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
         callback: () => {
           editAlarms('', '설정해제가 완료되었습니다.', !isReceive)
         }
-      })
+      }))
     }else {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({type:'confirm',
         title: '알림받기 설정',
         msg: `팬으로 등록하지 않아도 🔔알림받기를 설정하면 방송시작에 대한 알림 메시지를 받을 수 있습니다.`,
         buttonText: {right: '설정하기'},
@@ -329,7 +327,7 @@ const ProfilePage = () => {
             !isReceive
           )
         }
-      })
+      }))
     }
   },[profileData.memNo, profileData.isReceive])
 
@@ -337,7 +335,7 @@ const ProfilePage = () => {
   const goProfile = memNo => {
     if(memNo) {
       if(isMyProfile) {
-        if(context.profile.memNo !== memNo) {
+        if(globalState.profile.memNo !== memNo) {
           history.push(`/profile/${memNo}`)
         }
       }else {
@@ -353,7 +351,7 @@ const ProfilePage = () => {
     const params = {
       regNo: regNo,
       mMemNo: mMemNo,
-      vMemNo: context.profile.memNo
+      vMemNo: globalState.profile.memNo
     };
     if(like === "n") {
       await Api.profileFeedLike(params).then((res) => {
@@ -399,7 +397,7 @@ const ProfilePage = () => {
     const params = {
       feedNo: feedNo,
       mMemNo: mMemNo,
-      vMemNo: context.profile.memNo
+      vMemNo: globalState.profile.memNo
     };
     if(like === "n") {
       await Api.myPageFeedLike(params).then((res) => {
@@ -432,12 +430,14 @@ const ProfilePage = () => {
   /* 헤더 더보기 버튼 클릭 */
   const openMoreList = () => {
     setMorePopHidden(false);
-    dispatch(setCommonPopupOpenData({...popup, headerPopup: true}))
+    dispatch(setSlidePopupOpen())
+    setSlidePopNo("header");
   }
 
   /* 차단/신고 팝업 열기 (param: {memNo: '', memNick: ''}) */
   const openBlockReportPop = (blockReportInfo) => {
-    dispatch(setCommonPopupOpenData({...popup, blockReportPopup: true}))
+    dispatch(setSlidePopupOpen())
+    setSlidePopNo("block");
     setBlockReportInfo(blockReportInfo);
   }
 
@@ -448,14 +448,17 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide = 0) => {
+  const openShowSlide = (data, isList = "y", keyName='profImg', initialSlide= 0) => {
     const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
 
-    setImgList(list);
-    setShowSlide(true);
-  }
+    setShowSlide({visible: true, imgList: list, initialSlide});
+  };
+
+  const closeShowSlide = useCallback(() => {
+    setShowSlide({visible: false, imgList: [], initialSlide: 0});
+  },[]);
 
   /* 피드 사진(여러장) 확대 */
   const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
@@ -480,7 +483,8 @@ const ProfilePage = () => {
   const openPopFanStar = (e) => {
     const {targetType} = e.currentTarget.dataset
     setOpenFanStarType(targetType)
-    dispatch(setCommonPopupOpenData({...popup, fanStarPopup: true}));
+    setSlidePopNo("fanStar")
+    dispatch(setSlidePopupOpen());
   }
 
   /* 좋아요 슬라이드 팝업 열기/닫기 (tabState는 열고싶은 탭 있을때 파라미터를 넘긴다 탭 순서대로 0부터) */
@@ -488,14 +492,15 @@ const ProfilePage = () => {
     e.preventDefault();
     e.stopPropagation();
     setLikePopTabState(tabState)
-    dispatch(setCommonPopupOpenData({...popup, likePopup: true}));
+    setSlidePopNo("like")
+    dispatch(setSlidePopupOpen());
   }
 
   /* 메시지 이동 */
   const goMailAction = () => {
     const goMailParams = {
-      context,
-      mailboxAction,
+      dispatch,
+      globalState,
       targetMemNo: profileData.memNo,
       history,
       targetMemLevel: profileData.level
@@ -615,7 +620,7 @@ const ProfilePage = () => {
           const noticeList = noticeData.feedList.concat([]).filter((notice, _index) => notice.noticeIdx !== index);
           dispatch(setProfileNoticeData({...noticeData, noticeList}));
         } else {
-          context.action.toast({msg: message});
+          dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
         }
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
         const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
@@ -624,7 +629,7 @@ const ProfilePage = () => {
         if (result === 'success') {
           dispatch(setProfileFanBoardData({...fanBoardData, list}));
         } else {
-          context.action.toast({msg: message});
+          dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
         }
       } else if (type === "feed") {
         const feedList = feedData.feedList.concat([]).filter((feedNew, _index) => feedNew.reg_no !== index);
@@ -638,15 +643,15 @@ const ProfilePage = () => {
             dispatch(setProfileFeedNewData({...feedData, feedList}));
             getFeedData(true);
           } else {
-            context.action.toast({msg: res.message});
+            dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
           }
         }).catch((e) => console.log(e));
       }
     }
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: '정말 삭제 하시겠습니까?',
       callback
-    });
+    }));
   }
 
   const headerBackEvent = () => {
@@ -671,9 +676,15 @@ const ProfilePage = () => {
       getFanBoardData(true);
     }else if(profileTab.tabName === profileTab.tabList[2]) {
       document.addEventListener('scroll', profileScrollEvent);
-      getClipData(true);
     }
-    dispatch(setProfileTabData({...profileTab, isRefresh: true})); // 하단 탭
+    // 탭 유지, 데이터 가져오기
+    getNoticeData(true); // 방송공지
+    getNoticeFixData(true); // 방송공지(고정)
+    getFeedData(true); // 피드
+    getFanBoardData(true);
+    getClipData(true);
+
+    dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
   }
 
   /* 하단 탭 기본값으로 초기화 */
@@ -683,9 +694,9 @@ const ProfilePage = () => {
       tabName: profileDefaultTab,
       isReset: true
     }))
-    getNoticeData(true); // 방송공지
-    getNoticeFixData(true); // 방송공지(고정)
-    getFeedData(true); // 피드
+    dispatch(setProfileNoticeData(profileNoticeDefaultState)); // 방송공지
+    dispatch(setProfileNoticeFixData(profileNoticeFixDefaultState)); // 방송공지(고정)
+    dispatch(setProfileFeedNewData(profileFeedDefaultState)); // 피드
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState)); // 팬보드
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);
@@ -750,13 +761,20 @@ const ProfilePage = () => {
 
   /* 페이지 이동 */
   useEffect(() => {
-    if(context.token.isLogin) {
+    if(globalState.token.isLogin) {
       if(profileReady) {
         getProfileData(); // 프로필 상단 데이터
         profileTabInit();
         if(location.search) {
           parameterManager(); // 주소 뒤에 파라미터 체크
         }
+
+        // 주소가 바뀐 경우 데이터 불러오기
+        getNoticeData(true);
+        getNoticeFixData(true);
+        getFeedData(true);
+        getFanBoardData(true);
+        getClipData(true);
       }
     }else {
       history.replace('/login');
@@ -780,13 +798,15 @@ const ProfilePage = () => {
   },[])
 
   useEffect(() => {
-    if(!context.token.isLogin) {
+    if(!globalState.token.isLogin) {
       return history.replace('/login');
     }
     getProfileData(); // 프로필 상단 데이터
     getNoticeData(true);
     getNoticeFixData(true);
     getFeedData(true);
+    getFanBoardData(true);
+    getClipData(true);
     /* 프로필 하단 탭 데이터 */
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
@@ -809,7 +829,7 @@ const ProfilePage = () => {
       <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
-            <button className="editBtn" onClick={()=>history.replace('/myProfile/edit')}>편집</button>
+            <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>
           </div>
           :
           <div className="buttonGroup">
@@ -822,7 +842,7 @@ const ProfilePage = () => {
                    webview={webview} type="profile"/>
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle}
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle} setSlidePopNo={setSlidePopNo}
                      openPopFanStar={openPopFanStar} openPopLike={openPopLike} popup={popup}
         />
       </section>
@@ -832,12 +852,8 @@ const ProfilePage = () => {
       </section>
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
-          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction} />
-          {/*{(profileTab.tabName === profileTab.tabList[0] && isMyProfile || profileTab.tabName === profileTab.tabList[1])*/}
-          {/*  && <button onClick={() => {*/}
-          {/*  profileTab.tabName === profileTab.tabList[0] && goProfileDetailPage({history, action:'write', type:'feed', memNo:profileData.memNo, dispatch, profileTab} );*/}
-          {/*    profileTab.tabName === profileTab.tabList[1] && goProfileDetailPage({history, action:'write', type:'fanBoard', memNo:profileData.memNo, dispatch, profileTab})*/}
-          {/*}}>등록</button>}*/}
+          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction}
+                   subTextList={[`(${feedData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
         </div>
 
         {/* 피드 */}
@@ -858,7 +874,9 @@ const ProfilePage = () => {
         }
 
         {/* 프로필 사진 확대 */}
-        {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
+        {showSlide?.visible &&
+          <ShowSwiper imageList={showSlide?.imgList} popClose={closeShowSlide} swiperParam={{initialSlide: showSlide?.initialSlide}}/>
+        }
 
         {/* 피드 사진 확대 */}
         {feedShowSlide?.visible && <ShowSwiper imageList={feedShowSlide?.imgList || []} popClose={showSlideClear} swiperParam={{initialSlide: feedShowSlide?.initialSlide}}/>}
@@ -883,51 +901,32 @@ const ProfilePage = () => {
         }
       </section>
 
-      {/* 더보기 */}
-      {popup.headerPopup &&
-        <PopSlide popHidden={morePopHidden}>
+      {/* 슬라이드 팝업 */}
+      {popup.slidePopup &&
+        <PopSlide>
+          {slidePopNo === "header" ?
           <section className='profileMore'>
             <div className="moreList" onClick={goMailAction}>메세지</div>
             {!profileData.isFan && <div className="moreList" onClick={editAlarm}>방송 알림 {profileData.isReceive ? 'OFF' : 'ON'}</div>}
             <div className="moreList"
-                 onClick={() => {
-                   setMorePopHidden(true);
-                   openBlockReportPop({memNo: profileData.memNo, memNick: profileData.nickNm});
-                 }}>차단/신고</div>
+                onClick={() => {
+                  openBlockReportPop({memNo: profileData.memNo, memNick: profileData.nickNm});
+                }}>차단/신고</div>
           </section>
-        </PopSlide>
-      }
-
-      {/* 팬 / 스타 */}
-      {popup.fanStarPopup &&
-        <PopSlide>
+          : slidePopNo === "fanStar" ?
           <FanStarLike type={openFanStarType} isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData}
-                       goProfile={goProfile} myMemNo={context.profile.memNo}
+                       goProfile={goProfile} myMemNo={globalState.profile.memNo}
                        closePopupAction={closePopupAction}
           />
-        </PopSlide>
-      }
-
-      {/* 좋아요 */}
-      {popup.likePopup &&
-        <PopSlide>
+          : slidePopNo === "like" ?
           <LikePopup isMyProfile={isMyProfile} fanToggle={fanToggle} profileData={profileData} goProfile={goProfile}
-                     myMemNo={context.profile.memNo} likePopTabState={likePopTabState} closePopupAction={closePopupAction}
+                     myMemNo={globalState.profile.memNo} likePopTabState={likePopTabState} closePopupAction={closePopupAction}
           />
-        </PopSlide>
-      }
-
-      {/* 차단 */}
-      {popup.blockReportPopup &&
-        <PopSlide>
+          : slidePopNo === "block" ?
           <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
-        </PopSlide>
-      }
-
-      {/* 선물하기 */}
-      {popup.presentPopup &&
-        <PopSlide>
+          : slidePopNo === "present" &&
           <Present profileData={profileData} closePopupAction={closePopupAction} />
+          }
         </PopSlide>
       }
 

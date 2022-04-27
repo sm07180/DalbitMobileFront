@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 // Api
 import { postStory, getStory, deleteStory } from "common/api";
-import { GlobalContext } from "context";
 import { TimeFormat } from "lib/common_fn";
 // component
 import NoResult from "common/ui/no_result";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
+import {useDispatch} from "react-redux";
 
 export default function StoryList(props: any) {
+  const dispatch = useDispatch();
   const { roomOwner, roomNo } = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
   //state
   const [timer, setTimer] = useState("");
   const [storyMsg, setStoryMsg] = useState<string>("");
@@ -35,17 +36,18 @@ export default function StoryList(props: any) {
       });
       if (result === "success") {
         setStoryMsg("");
-        globalAction.callSetToastStatus &&
-          globalAction.callSetToastStatus({
-            status: true,
-            message: "사연이 등록되었습니다",
-          });
-      } else
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: "사연이 등록되었습니다",
+        }));
+      } else {
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
+      }
+
     }
     fetchStoryFunc();
   };

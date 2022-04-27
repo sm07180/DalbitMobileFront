@@ -1,17 +1,18 @@
-import React, {useState, useEffect,useContext, useMemo, useRef} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import CheckList from '../../components/CheckList'
+import {useDispatch, useSelector} from "react-redux";
 
 const DepositInfo = (props) => {
   const {exchangeForm, setExchangeForm, exchangeSubmit, uploadSingleFile, parentAgree, tabMenuRef} = props;
-  //context
-  const context = useContext(Context);
-  const {profile, splash} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {profile, splash} = globalState;
 
   //은행 선택 값 (단순 화면 표기용)
   const [selectBank, setSelectBank] = useState(false);
@@ -286,7 +287,7 @@ const DepositInfo = (props) => {
           </>
         }
         <div className="privacyBox">
-          <CheckList text="개인정보 수집 동의" name="privacy"
+          <CheckList text="개인정보 수집 동의" name="privacy" checkState={exchangeForm?.agree}
                      onClick={() => setExchangeForm((state) => {
                        return {...exchangeForm, agree: !state.agree}
                      })}>

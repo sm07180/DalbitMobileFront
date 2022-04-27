@@ -1,12 +1,12 @@
-import React, {useRef, useState, useContext} from 'react'
+import React, {useRef, useState} from 'react'
 import Swiper from 'react-id-swiper'
-import {Context} from 'context'
 import OperationModal from './star_del_modal'
 import {IMAGE_THUMB} from '../constant'
+import {useSelector} from "react-redux";
 
 const ProfileAvatarList = ({onImgClick}) => {
-  const globalCtx = useContext(Context)
-  const {profile} = globalCtx
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {profile} = globalState
   const [imgInfo, setImgInfo] = useState('')
   const operationMoalRef = useRef()
 

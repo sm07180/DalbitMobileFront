@@ -1,21 +1,22 @@
-import React, {useState, useLayoutEffect, useContext, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
-import {Context} from 'context'
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {useHistory} from "react-router-dom";
 
 import Api from 'context/api'
 
-import Utility, {addComma , isHitBottom} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 import {PHOTO_SERVER} from 'context/config'
 
 import moment from "moment";
 import ListNone from 'components/ui/listNone/ListNone'
 
 import "../style.scss";
+import {useSelector} from "react-redux";
 
 export default function GotoMoonRanking(props) {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {moonNumber, endDate} = props
   const history = useHistory();
-  const globalCtx = useContext(Context)
 
   const [eventEnding, setEventEnding] = useState(false);
   const [currentPage, setCurrentPage] = useState(1)
@@ -25,13 +26,13 @@ export default function GotoMoonRanking(props) {
   const totalPage = useRef(1);
   const myMemNo = useRef(0);
   const pagePerCnt = useRef(30);
-  const listLength = useRef(0);  
+  const listLength = useRef(0);
   const goMyRankFlag = useRef({do:false, link: ""});
 
   let todayIs = new Date;
   let todayDate = moment(todayIs).format("YYYY-MM-DD");
-  let eventEnd = moment(endDate).format("YYYY-MM-DD");  
-  
+  let eventEnd = moment(endDate).format("YYYY-MM-DD");
+
   const gotomoonEventMyRank = async () => {
     if(moonNumber !== 0) {
       const { data, message } = await Api.getMoonLandMyRank({
@@ -41,9 +42,9 @@ export default function GotoMoonRanking(props) {
         setMyRank(data);
         myMemNo.current = data.mem_no;
       }
-    }    
+    }
   };
-  
+
   const gotomoonEventRankingList = async () => {
     if(moonNumber !== 0) {
       const { data, message } = await Api.getMoonLandRankList({
@@ -56,7 +57,7 @@ export default function GotoMoonRanking(props) {
         listLength.current = data.cnt;
         setRankingList(data.list);
       }
-    }    
+    }
   };
 
   let totalRankingList = rankingList.slice(0, (currentPage * 10));
@@ -85,22 +86,22 @@ export default function GotoMoonRanking(props) {
     }
   }, [moonNumber, endDate])
 
-  const goMyRankList = (event) => {    
+  const goMyRankList = (event) => {
     const link = event.target.dataset.link;
     if(myRank.my_rank_no !== 0){
-      setCurrentPage(Math.ceil(myRank.my_rank_no / 10));      
+      setCurrentPage(Math.ceil(myRank.my_rank_no / 10));
     } else {
       setCurrentPage(1);
     }
-    totalRankingList = rankingList.slice(0, (currentPage * 10));  
-    setTimeout(() => {  
+    totalRankingList = rankingList.slice(0, (currentPage * 10));
+    setTimeout(() => {
       const scrollTo = document.getElementById(link);
       if(scrollTo) {
         scrollTo.scrollIntoView({ behavior: "smooth", block: "center"});
       } else {
-        totalRankingList = rankingList.slice(0, 1);  
+        totalRankingList = rankingList.slice(0, 1);
       }
-    })     
+    })
   }
 
   return (
@@ -117,7 +118,7 @@ export default function GotoMoonRanking(props) {
               ${myRank.image_profile ?
                 `${PHOTO_SERVER}${myRank.image_profile}?120x120`
                 :
-                `${PHOTO_SERVER}/profile_3/profile_${globalCtx.profile.gender === "m" ? "m" : "f"}_200327.jpg`
+                  `${PHOTO_SERVER}/profile_3/profile_${globalState.profile.gender === "m" ? "m" : "f"}_200327.jpg`
               })`
               }}/>
             </div>
@@ -142,7 +143,7 @@ export default function GotoMoonRanking(props) {
             <span className="scoreGoal">/ {Utility.addComma(myRank.tot_score)}</span>
           </div>
           {
-            myRank.rank_step !== 0 ? 
+            myRank.rank_step !== 0 ?
               <div className="rewardWrap">
                 <span className="rewardText">다음보상</span>
                 <div className="rewardBox">
@@ -153,7 +154,7 @@ export default function GotoMoonRanking(props) {
               </div>
               :
               <></>
-          }          
+          }
         </div>
       </div>
 
@@ -192,7 +193,7 @@ export default function GotoMoonRanking(props) {
                                 <strong>{Utility.addComma(eventReward)}달</strong>지급 {eventEnding ? "완료!" : "예정!"}
                               </span>
                             </div>
-                          }                      
+                          }
                           <div className="listRow">
                             <div className="badgeGroup">
                               <span className={`${mem_sex === "m" ? "badgeMale" : "badgeFemale"}`}></span>
@@ -207,13 +208,13 @@ export default function GotoMoonRanking(props) {
                       </div>
                     );
                 })
-              } 
+              }
             </div>
-            :            
+            :
             <div className="rankingWrap">
               <ListNone/>
             </div>
-          }        
+          }
       </div>
     </div>
   );

@@ -1,28 +1,31 @@
 /**
  * @brief 마이페이지 팬보드 쓰기
  */
-import React, {useEffect, useState, useContext, useRef} from 'react'
-import {useParams} from 'react-router-dom'
-import {useLocation, useHistory} from 'react-router-dom'
-import {backFunc} from 'pages/common/clipPlayer/clip_func'
+import React, {useEffect, useState} from 'react'
+import {useLocation, useParams} from 'react-router-dom'
 //modules
-import qs from 'query-string'
-
 // context
-import {Context} from 'context'
 //api
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackState,
+  setGlobalCtxBoardIdx,
+  setGlobalCtxBoardModifyInfo,
+  setGlobalCtxFanBoardReplyNum,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 //layout
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let location = useLocation()
   let params = useParams()
   const LocationClip = params.clipNo
-  //context
-  const ctx = useContext(Context)
-  const context = useContext(Context)
-  const {profile} = ctx
+  const {profile} = globalState
   //urlNumber
   let urlrStr = location.pathname.split('/')[2]
   //state
@@ -43,12 +46,12 @@ export default (props) => {
   const writeToggle = (arg) => {
     if (writeState === false) {
       setWriteState(true)
-      context.action.updateBoardIdx(0)
-      context.action.updateBoardModifyInfo(null)
+      dispatch(setGlobalCtxBoardIdx(0));
+      dispatch(setGlobalCtxBoardModifyInfo(null));
     } else {
       setWriteState(false)
-      context.action.updateBoardIdx(0)
-      context.action.updateBoardModifyInfo(null)
+      dispatch(setGlobalCtxBoardIdx(0));
+      dispatch(setGlobalCtxBoardModifyInfo(null));
     }
     if (props.type === 'modify') {
       props.setCancelModify()
@@ -71,7 +74,7 @@ export default (props) => {
         depth: 2,
         contents: textChange,
         viewOn: isScreet === true ? 0 : 1,
-        parentGroupIdx: context.fanboardReplyNum
+        parentGroupIdx: globalState.fanboardReplyNum
       }
       msg = '내용을 입력해 주세요.'
     }
@@ -95,14 +98,14 @@ export default (props) => {
       })
       if (res.result === 'success') {
         props.set(true, writeType)
-        context.action.updateBoardIdx(0)
-        context.action.updateBoardModifyInfo(null)
+        dispatch(setGlobalCtxBoardIdx(0));
+        dispatch(setGlobalCtxBoardModifyInfo(null));
         writeToggle()
         setTextChange('')
         setIsScreet(false)
         if (list instanceof Array) {
           let findIdx = list.findIndex((v) => {
-            return v.boardIdx === context.fanboardReplyNum
+            return v.boardIdx === globalState.fanboardReplyNum
           })
           if (findIdx !== -1) {
             list[findIdx].replyCnt++
@@ -110,10 +113,12 @@ export default (props) => {
         }
       } else if (res.result === 'fail') {
         if (textChange.length === 0) {
-          context.action.alert({
-            callback: () => {},
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
+            callback: () => {
+            },
             msg: msg
-          })
+          }))
         }
       }
     }
@@ -144,14 +149,16 @@ export default (props) => {
       if (res.result === 'success') {
         props.setCancelModify()
         props.set(true)
-        context.action.updateBoardIdx(0)
-        context.action.updateBoardModifyInfo(null)
+        dispatch(setGlobalCtxBoardIdx(0));
+        dispatch(setGlobalCtxBoardModifyInfo(null));
         //Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
       } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     } else if (editType === 'clipEdit') {
       const res = await Api.postClipReplyEdit({
@@ -162,21 +169,24 @@ export default (props) => {
       if (res.result === 'success') {
         props.setCancelModify()
         props.set(true)
-        context.action.updateBoardIdx(0)
-        context.action.updateBoardModifyInfo(null)
+        dispatch(setGlobalCtxBoardIdx(0));
+        dispatch(setGlobalCtxBoardModifyInfo(null));
         Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
         props.set(true)
       } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
+          callback: () => {
+          },
           msg: res.message
-        })
+        }))
       }
     }
   }
   const createWriteBtn = () => {
     return (
-      <button onClick={() => writeToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
+      <button onClick={() => writeToggle()}
+              className={[`write-btn ${urlrStr === globalState.profile.memNo ? 'on' : 'on'}`]}>
         쓰기
       </button>
     )
@@ -184,10 +194,10 @@ export default (props) => {
 
   // 댓글마다 인덱스 번호 입력시 큰댓글 접힘
   useEffect(() => {
-    if (props.type !== 'modify' && context.boardIdx !== 0) {
+    if (props.type !== 'modify' && globalState.boardIdx !== 0) {
       setWriteState(false)
     }
-  }, [context.boardIdx])
+  }, [globalState.boardIdx])
   // 수정하기 초기 메세지값 초기화및 설정
   useEffect(() => {
     if (props.type === 'modify') {
@@ -210,43 +220,43 @@ export default (props) => {
     } else {
       setIsOther(true)
     }
-    if (props.type !== 'clip_board' && context.token.memNo === profile.memNo) {
+    if (props.type !== 'clip_board' && globalState.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
   }, [])
   //팬보드 안드로이드 접기 로직
   useEffect(() => {
-    if (context.backFunction.name === 'booleanType' && !context.backFunction.value) {
+    if (globalState.backFunction.name === 'booleanType' && !globalState.backFunction.value) {
       //글쓰기
-      setWriteState(context.backFunction.value)
+      setWriteState(globalState.backFunction.value)
       //댓글닫기
-      context.action.updateFanboardReplyNum(-1)
+      dispatch(setGlobalCtxFanBoardReplyNum(-1))
       //수정하기 취소
       if (props.type === 'modify') {
         props.setCancelModify()
       }
       //초기화
-      context.action.updateBackFunction({
+      dispatch(setGlobalCtxBackFunction({
         name: ''
-      })
-      context.action.updateSetBack(null)
+      }))
+      dispatch(setGlobalCtxBackState(null))
     }
-  }, [context.backFunction])
+  }, [globalState.backFunction])
   useEffect(() => {
     //안드로이드 백 이니셜 분기
-    if (writeState || context.fanboardReplyNum !== -1 || context.fanboardReplyNum !== false) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({
+    if (writeState || globalState.fanboardReplyNum !== -1 || globalState.fanboardReplyNum !== false) {
+      dispatch(setGlobalCtxBackState(true))
+      dispatch(setGlobalCtxBackFunction({
         name: 'booleanType',
         value: true
-      })
+      }))
     } else {
-      context.action.updateSetBack(null)
+      dispatch(setGlobalCtxBackState(null))
     }
     return () => {
-      context.action.updateSetBack(null)
+      dispatch(setGlobalCtxBackState(null))
     }
-  }, [writeState, context.fanboardReplyNum])
+  }, [writeState, globalState.fanboardReplyNum])
 
   //재조회 및 초기조회
   useEffect(() => {
@@ -257,14 +267,14 @@ export default (props) => {
     } else if (props.type === 'clip_board') {
       setWriteType('clip_board')
     }
-  }, [writeState, ctx.fanBoardBigIdx])
+  }, [writeState, globalState.fanBoardBigIdx])
   useEffect(() => {
-    setCurrentProfileMemNo(urlrStr)    
+    setCurrentProfileMemNo(urlrStr)
   },[urlrStr])
   //--------------------------------------------------
   return (
     <>
-    { currentProfileMemNo !== '10000000000000' && 
+      {currentProfileMemNo !== '10000000000000' &&
       <div className="writeWrap">
         <div className="writeWrap__top">
           <div
@@ -272,7 +282,7 @@ export default (props) => {
             onClick={() => {
               writeToggle(writeState)
             }}>
-            <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
+            <img src={profile.profImg.thumb62x62} alt={profile.nickNm}/>
             {writeState === false && (
               <span>
                 글쓰기 <span className="gray">최대 100자</span>
@@ -324,7 +334,7 @@ export default (props) => {
             className="writeWrap__btn"
             onClick={() => {
               if (writeType === 'reply') {
-                context.action.updateFanboardReplyNum(-1)
+                dispatch(setGlobalCtxFanBoardReplyNum(-1))
               }
               writeToggle(writeState)
             }}>

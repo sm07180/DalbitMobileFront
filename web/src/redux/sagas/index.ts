@@ -4,6 +4,7 @@ import main from './main';
 import member from "./member";
 import vote from "./vote";
 import broadcast from "./broadcast";
+import payStore from "./payStore";
 
 export default function* rootSagas() {
   yield all([
@@ -12,5 +13,6 @@ export default function* rootSagas() {
     ,...member
     ,...vote
     ,...broadcast
+    ,...payStore
   ]);
 }

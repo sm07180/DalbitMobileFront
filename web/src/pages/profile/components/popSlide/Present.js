@@ -5,16 +5,19 @@ import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
 import './style.scss'
 import {useHistory} from "react-router-dom";
-import {Context} from "context";
 import UseInput from "common/useInput/useInput";
 import Api from "context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const dalList = [50, 100, 500, 1000, 2000, 3000, 5000, 10000];
 const MIN_DAL_CNT = 10;
 
 const Present = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const { profileData, closePopupAction } = props
-  const context = useContext(Context);
   const history = useHistory();
   const [selected, setSelected] = useState(0);
   const [inputValue, setInputValue] = useState('');
@@ -63,36 +66,36 @@ const Present = (props) => {
       dalGiftApiAction(inputValue);
       closePopupAction();
     }else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: `달은 ${MIN_DAL_CNT}개 이상부터 선물이 가능합니다.`
-      })
+      }))
     }
   }
 
   /* 선물하기 api */
   const dalGiftApiAction = (dalCount) => {
     const targetMemNo = profileData.memNo;
-    const myMemNo = context.profile.memNo;
+    const myMemNo = globalState.profile.memNo;
     const data = {
       memNo: targetMemNo,
       dal: dalCount
     }
     Api.member_gift_dal({data}).then(res => {
       if (res.result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {
             async function updateMyPofile() {
               const profileInfo = await Api.profile({params: {memNo: myMemNo}})
               if (profileInfo.result === 'success') {
-                context.action.updateProfile(profileInfo.data)
+                dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
               }
             }
             updateMyPofile()
           },
           msg: res.message
-        })
+        }))
       } else if (res.result === 'fail' && res.code === '-4') {
-        context.action.confirm({
+        dispatch(setGlobalCtxMessage({type: "confirm",
           msg: res.message,
           buttonText: {
             right: '충전하기'
@@ -100,11 +103,11 @@ const Present = (props) => {
           callback: () => {
             history.push('/store')
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -119,7 +122,7 @@ const Present = (props) => {
       <div className="payBox">
         <div className="possess">
           <span>내가 보유한 달</span>
-          <div className="count">{Utility.addComma(context.profile.dalCnt)}</div>
+          <div className="count">{Utility.addComma(globalState.profile.dalCnt)}</div>
         </div>
         <button onClick={goCharge}>충전하기</button>
       </div>

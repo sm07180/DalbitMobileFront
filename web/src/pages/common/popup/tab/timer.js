@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 
 import {BroadCastStore} from 'pages/broadcast/store'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
 
 let time = 0
 let hour = 0
@@ -15,9 +15,9 @@ let addFlag = false
 let BcEndTime = 7200 //방송방 기본 시간 ( 2시간 -> 7200)
 
 const getTimeStamp = () => {
-  const context = Timer.context()
-  console.log('recv 방송 시간 = ' + context.broadcastTotalInfo.startDt)
-  const broadcastStTime = context.broadcastTotalInfo.startDt
+  const globalState = Timer.globalState
+  console.log('recv 방송 시간 = ' + globalState.broadcastTotalInfo.startDt)
+  const broadcastStTime = globalState.broadcastTotalInfo.startDt
 
   var year = broadcastStTime.substring(0, 4)
   var month = broadcastStTime.substring(4, 6)
@@ -125,9 +125,9 @@ const timeloop = () => {
   }
 }
 const Timer = props => {
-  const context = useContext(Context)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const store = useContext(BroadCastStore)
-  Timer.context = () => context
+  Timer.globalState = globalState
   Timer.store = () => store
 
   useEffect(() => {

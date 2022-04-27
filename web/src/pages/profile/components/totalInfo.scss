@@ -78,6 +78,9 @@
         margin-right:10px;
         border-radius:50%;
         background-color:#fff;
+        &.cursor {
+          cursor:pointer;
+        }
         &::before {
           content: "";
           @include position-top-left;
@@ -106,6 +109,44 @@
           @include font(10px,600,white);
         }
       }
+    }
+  }
+  .teamInfo {
+    width:100%;
+    margin-top:8px;
+    padding:0 16px;
+    .wrapBox {
+      @include flex(center);
+      height:58px;
+      border-radius:8px;
+      background-color:#F6F6F6;
+      cursor:pointer;
+      .title {
+        width:41px;
+        height:22px;
+        margin-left:8px;
+      }
+      .teamSymbol {
+        flex-shrink: 0;
+        @include teamSymbol;
+        width:40px;height:40px;
+        margin:0 8px 0 7px;
+        border-radius:8px;
+        box-shadow: none;
+      }
+      .teamName {
+        @include font(14px,$Medium,black);
+        @include fontCut;
+      }
+    button {
+      flex-shrink: 0;
+      width:62px;height:26px;
+      margin-right:12px;
+      margin-left:auto;
+      border-radius: 100px;
+      background-color:#202020;
+      @include font(12px,$SemiBold,white);
+    }
     }
   }
   .comment {
