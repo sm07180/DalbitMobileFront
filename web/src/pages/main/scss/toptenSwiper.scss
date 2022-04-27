@@ -1,0 +1,131 @@
+@import "components/ui/_mixin.scss";
+  
+.topTen {
+  margin-top: 24px;
+  .cntTitle {
+    padding: 0 8px 0 16px;
+    margin-bottom:12px;
+    h2 {cursor: pointer;}
+  }
+  .swiper-container {
+    .swiper-button-next, .swiper-button-prev {
+      display: inline-block;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      &.swiper-button-disabled {
+        display: none;
+      }
+    }
+    .swiper-button-prev {
+      background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-prev.png");
+    }
+    .swiper-button-next {
+      background-image: url("https://image.dalbitlive.com/common/icon/swiper-button-next.png");
+    }
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        width:auto;
+        margin-right:8px;
+        &:last-child {
+          margin-right:28px;
+        }
+        .listColumn {
+          width:116px;
+          cursor: pointer;
+          @mixin photoOutline {
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:8px;
+              box-sizing: border-box;
+            }
+            &::after {
+              content:"";
+              @include position-bottom-left;
+              width:100%;
+              height:55px;
+              background-image:linear-gradient(to top,rgba(0,0,0,1),rgba(0,0,0,0));
+              opacity: .5;
+            }
+          }
+          @mixin RANKIMG($value) {
+            @include position-bottom-right;
+            z-index: 1;
+            width:100%;
+            height:55px;
+            padding: 0 8px 8px;
+            @include BGIMG("#{$value}");
+            background-size:49px 47px;
+            background-position:calc(100% - 8px) top;
+          }
+          @for $i from 1 through 10 {
+            .rank-#{$i} {
+              @include RANKIMG('main/dalla/number_W-#{$i}.png');
+            }
+          }
+          .photo {
+            position:relative;
+            height:154px;
+            margin-bottom:8px;
+            border-radius:8px;
+            overflow:hidden;
+            @include photoOutline;
+            img {
+              height:100%;
+              object-fit: cover;
+            }
+            .livetag {
+              @include position-top-left();
+              display: inline-block;
+              width: 40px; height: 40px;
+              z-index: 2;
+            }
+            .listenertag {
+              @include position-top-left();
+              display: inline-block;
+              width: 40px; height: 40px;
+              z-index: 2;
+            }
+          }
+          .teamSymbol {
+            @include teamSymbol;
+            @include flex(center,center);
+            width:116px;
+            height:154px;
+            margin-bottom:8px;
+            box-shadow: none;
+            @include photoOutline;
+            img {
+              @include position-center;
+              width:100%;
+              &:first-child {
+                height:100%;
+                object-fit: cover;
+              }
+            }
+          }
+          p {
+            width: 100%;
+            line-height:22px;
+            padding: 0 8px;
+            text-align: center;
+            @include font(15px,$Regular,#303030);
+            @include fontCut;
+          }
+        }
+      }
+    }
+  }
+  .empty {
+    width:100%;
+    height:60px;
+    text-indent:20px;
+    @include font(15px,400,#999);
+  }
+}
