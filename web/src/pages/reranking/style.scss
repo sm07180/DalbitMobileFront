@@ -131,6 +131,7 @@ $errorMsg : #FF1919;
       margin: 8px 0px 50px 0px;
       padding-left: 4px;
       line-height: 25px;
+      white-space: nowrap;
       @include font(17px,600,#202020);
       &.text{
         width: 70px;
