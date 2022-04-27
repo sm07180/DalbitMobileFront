@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 
 import Swiper from 'react-id-swiper';
 import Lottie from 'react-lottie';
@@ -9,24 +9,13 @@ import {RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,} from "common
 import {useDispatch, useSelector} from "react-redux";
 
 const ToptenSwiper = (props) => {
-  const {data, type, pullToRefreshPause, topRankType, children} = props;
+  const {data, swiperRefresh, pullToRefreshPause, topRankType, children} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const common = useSelector(state => state.common);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   let locationStateHistory = useHistory();
-
-  const swiperParams = useMemo(() => {
-    let tempResult = { slidesPerView: 'auto' }
-    if (isDesktop) {
-      tempResult.navigation = {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      };
-    }
-    return tempResult;
-  }, []);
   
   /* NOW TOP 10 Link */
   const nowTopLink = () => {
@@ -59,11 +48,17 @@ const ToptenSwiper = (props) => {
     }
   };
 
-  const swiperRefresh = () => {
-    const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
-    swiper?.update();
-    swiper?.slideTo(0);
-  };
+  // 스와이퍼 리플레쉬 액션
+  const swiperParams = useMemo(() => {
+    let tempResult = { slidesPerView: 'auto' }
+    if (isDesktop) {
+      tempResult.navigation = {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev'
+      };
+    }
+    return tempResult;
+  }, []);
 
   useEffect(() => {
     if (data?.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
@@ -78,7 +73,7 @@ const ToptenSwiper = (props) => {
   }, [common.isRefresh]);
 
   return (
-    <section className='top10'>
+    <section className='topTen'>
       <div className="cntTitle">
         <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
         {children}

@@ -47,118 +47,13 @@
       margin-bottom:0px;
     }
   }
-  .topSwiper {
-    max-width:480px;
-    height:360px;
-    margin-bottom:0px;
-    + .favorites {
-      margin-top: 16px;
-    }
-    + .top10 {
-      margin-top: 24px;
-    }
-    .swiper-slide {
-      cursor:pointer;
-      &:active {
-        cursor:grab;
-      }
-      .listColumn {
-        @include flex(center,center);
-        width:100%;
-        .photo {
-          position:relative;
-          @include flex(center,center);
-          width:100%;
-          height:360px;
-          @mixin whiteScreen {
-            position:absolute;
-            left:0;
-            display:block;
-            content:'';
-            width:100%;
-            height:100%;
-          }
-          &::after {
-            @include whiteScreen;
-            bottom:0;
-            background-image:linear-gradient(to top,
-             rgba(255,255,255,1) 0%,
-             rgba(255,255,255,0.98) 5%,
-             rgba(255,255,255,0.92) 10%,
-             rgba(255,255,255,0.85) 15%,
-             rgba(255,255,255,0.75) 20%,
-             rgba(255,255,255,0.65) 25%,
-             rgba(255,255,255,0.5) 30%,
-             rgba(255,255,255,0.35) 35%,
-             rgba(255,255,255,0.2) 40%,
-             rgba(255,255,255,0.14) 43%,
-              rgba(255,255,255,0) 100%);
-          }
-          &::before{display:none;}
-          img {
-            width:100%;
-            height:100%;
-            object-fit: cover;
-          }
-        }
-        .info {
-          @include position-bottom-left;
-          @include flex(flex-start,flex-end,column);
-          width:100%;
-          height: 50%;
-          padding: 0px 16px 12px;
-          background-image:url("#{$IMGSERVER}/images/mainmask.png");
-          .animation {
-            width: 100%;
-          }
-          .badgeGroup {
-            @include flex(center);
-            margin-bottom: 8px;
-            height:16px;
-          }
-          .title {
-            width:72%;
-            line-height:30px;
-            margin-bottom:6px;
-            word-break: keep-all;
-            @include font(24px,$SemiBold,#202020);
-            @include fontLineCut;
-          }
-          .nick {
-            width:72%;
-            line-height:24px;
-            opacity:.7;
-            @include font(15px,$Regular,#202020);
-            @include fontCut;
-          }
-        }
-      }
-    }
-    .swiper-pagination {
-      position: absolute;
-      left: auto;
-      right: 0;
-      width: auto;
-      height: 20px;
-      line-height: 20px;
-      padding: 0 8px 0 10px;
-      border-radius: 100px 0 0 100px;
-      font-size: 12px;
-      font-weight: 400;
-      color: white;
-      background-color: rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-    }
-    .empty {
-      width:100%;
-      height:100%;
-      background-color:#f5f5f5;
-    }
-  }
   // 탭메뉴 
   @import "./scss/tabmenu.scss";
   // 서브 탭메뉴
   @import "./scss/subTabmenu.scss";
+  
+  // 메인슬라이드
+  @import "./scss/mainSwiper.scss";
   // 마이스타 
   @import "./scss/favoriteSwiper.scss";
   // 탑 10
@@ -166,72 +61,9 @@
   // 라이브
   @import "./scss/liveContents.scss";
 }
-.floatingEvent {
-  position: fixed;
-  bottom: 15%;
-  width: 100%; max-width: 480px;
-  z-index: 20;
-  .floatingWrap {
-    position: relative;
-    .fixedButton {
-      position: absolute;
-      right: 10px;
-      z-index: 13;
-      width: 48px;
-      .attendStampActive {
-        width: 48px;
-        height: 48px;
-        cursor: pointer;
-        margin: 5px 0 0;
-    
-        &.basic {
-          background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
-            center no-repeat;
-          background-size: 100%;
-        }
-    
-        &.motion {
-          width: 48px;
-          height: 48px;
-          position: relative;
-    
-          &::after {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            overflow: hidden;
-            content: "";
-            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png")
-              center no-repeat;
-            background-size: 48px;
-            animation: rotate_image 1s linear infinite;
-            transform-origin: 50% 50%;
-            @keyframes rotate_image {
-              100% {
-                transform: rotate(360deg);
-              }
-            }
-          }
-          &::before {
-            content: "";
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 48px;
-            height: 48px;
-            z-index: 1;
-            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png")
-              center no-repeat;
-            background-size: 60px;
-          }
-        }
-      }
-    }
-  }  
-}
+
+// 플로팅 버튼 (출석체크 버튼)
+@import "./scss/floatingBtn.scss";
 
 // 반응형 스타일
 /* 피씨일때 헤더 없애기 */
@@ -246,11 +78,14 @@
       max-width:480px;
     }
   }
+  #floatingEvent {
+    max-width:480px;
+  }
 }
 // 방송방 들어갔다 뒤로가기 하면 Swiper 에서 slide를 화면 100%잡아서 max-width:480px 을 주고, 모바일은 태블릿에서 볼때를 대비해 max-width:100%를 따로 줌
 .mobileType {
   #mainPage {
-    .topSwiper {
+    .mainSwiper {
       max-width:100%;
     }
   }

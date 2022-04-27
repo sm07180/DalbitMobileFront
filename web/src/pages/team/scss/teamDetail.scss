@@ -26,7 +26,8 @@
   .teamInfo {
     .teamStatus {
       @include flex;
-      margin-bottom:12px;
+      margin-top:24px;
+      margin-bottom:16px;
       .teamSymbol {
         @include teamSymbol;
         margin-right:16px;

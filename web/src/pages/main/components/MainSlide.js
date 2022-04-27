@@ -12,10 +12,11 @@ import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
 
 const MainSlide = (props) => {
-  const {data, common, pullToRefreshPause} = props;
+  const {data, swiperRefresh, pullToRefreshPause} = props;
 
   const history = useHistory();
   const dispatch = useDispatch();
+  const common = useSelector(state => state.common);
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const [swiperList, setSwiperList] =  useState({photoSvrUrl: "", swiperList: []});
 
@@ -55,18 +56,14 @@ const MainSlide = (props) => {
   }, []);
 
   useEffect(() => {
-    if((common.isRefresh || !pullToRefreshPause) && data.length > 0) { // refresh 될때 슬라이드 1번으로
-      const swiper = document.querySelector(`.topSwiper .swiper-container`)?.swiper;
-      swiper?.update();
-      swiper?.slideTo(1);
+    if(common.isRefresh || !pullToRefreshPause) { // refresh 될때 슬라이드 1번으로
+      swiperRefresh();
     }
   }, [common.isRefresh, pullToRefreshPause]);
 
   // 프로필 이동
   const goProfile = (memNo) => {
-    if (memNo !== undefined && memNo > 0) {
-      history.push(`/profile/${memNo}`)
-    }
+    if (memNo !== undefined && memNo > 0) history.push(`/profile/${memNo}`)
   }
 
   return (
@@ -95,7 +92,8 @@ const MainSlide = (props) => {
             )
           })}
         </Swiper>
-        : <div className="empty" />
+        :
+        <div className="empty" />
       }
     </>
   )
