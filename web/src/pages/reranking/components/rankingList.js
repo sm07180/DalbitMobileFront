@@ -39,7 +39,7 @@ export default withRouter((props) => {
 
         return (
           <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{index + 4}</div>
+            <div className="rank">{tab !== 'TEAM' ? list.rank : index + 4}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />
