@@ -6,14 +6,15 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 
 import './message.scss'
-import Toast from "components/ui/toast/Toast";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Message = () => {
   const [messageList, setMessageList] = useState([]);
   const [btnActive, setBtnActive] = useState(false);
-  const context = useContext(Context);
 
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //퀵 메시지 조회
   const fetchData = async () => {
     const res = await Api.member_broadcast_shortcut({method: 'GET'})
@@ -24,8 +25,11 @@ const Message = () => {
   const fetchEditData = async (e) => {
     const idx = e.currentTarget.dataset.idx;
     const res = await Api.member_broadcast_shortcut({method: "POST", data: {...messageList[idx]}})
-    if(res.result === "success") {context.action.toast({msg: "퀵 메시지를 저장하였습니다."}); setBtnActive(false);}
-    else {context.action.toast({msg: res.message});
+    if(res.result === "success") {
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "퀵 메시지를 저장하였습니다."}));
+      setBtnActive(false);
+    }else {
+      dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
     }
   }
 

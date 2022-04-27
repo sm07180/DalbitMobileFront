@@ -1,15 +1,8 @@
-import React, {useState, useContext, useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import React from 'react'
 
 // context
-import {Context} from 'context'
-import {OS_TYPE} from 'context/config.js'
-
-import Header from 'components/ui/new_header.js'
 
 export default () => {
-  let history = useHistory()
-  const context = useContext(Context)
 
   return (
     <>

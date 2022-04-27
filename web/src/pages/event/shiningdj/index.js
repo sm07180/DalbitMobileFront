@@ -2,7 +2,6 @@ import React from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 //layout
-import Layout from 'pages/common/layout'
 
 export default () => {
   let history = useHistory()

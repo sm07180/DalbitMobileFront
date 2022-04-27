@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from 'react'
-import { ClipRankContext } from 'context/clip_rank_ctx'
+import React, { useEffect } from 'react'
 
 import { DATE_TYPE } from '../constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setFormDateType} from "redux/actions/clipRank";
 
 export default function ClipRankDateBtn() {
-  const { clipRankState, clipRankAction } = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const { formState } = clipRankState
-  const formDispatch = clipRankAction.formDispatch
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -17,13 +18,13 @@ export default function ClipRankDateBtn() {
       <div className="todayList">
         <button
           className={`todayList__btn ${formState.dateType === DATE_TYPE.DAY ? 'todayList__btn--active' : ''}`}
-          onClick={() => {formDispatch({type: 'DATE_TYPE', val: DATE_TYPE.DAY});}}>
+          onClick={() => {dispatch(setFormDateType(DATE_TYPE.DAY));}}>
           일간
         </button>
 
         <button
           className={`todayList__btn ${formState.dateType === DATE_TYPE.WEEK ? 'todayList__btn--active' : ''}`}
-          onClick={() => {formDispatch({type: 'DATE_TYPE', val: DATE_TYPE.WEEK})}}>
+          onClick={() => {dispatch(setFormDateType(DATE_TYPE.WEEK));}}>
           주간
         </button>
       </div>

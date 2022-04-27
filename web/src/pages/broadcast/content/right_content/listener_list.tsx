@@ -7,8 +7,6 @@ import { getBroadcastListeners } from "common/api";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { GuestContext } from "context/guest_ctx";
 
 // constant
@@ -21,6 +19,7 @@ import {thumbInlineStyle} from "../../../../common/pip/PlayerStyle";
 import {useDispatch, useSelector} from "react-redux";
 import {getList, nextList, prevList, setListParam} from "../../../../redux/actions/broadcast/listener";
 import {initialState} from "../../../../redux/reducers/broadcast";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
 
 export default function ListenerList(props: { roomInfo: any; roomOwner: boolean; roomNo: string; profile: any }) {
   const { roomInfo, roomOwner, roomNo, profile } = props;
@@ -30,12 +29,11 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
   const dispatch = useDispatch();
   const broadcastRdx = useSelector(({broadcast})=> broadcast);
   // ctx
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { guestState } = useContext(GuestContext);
   const { isLogin } = globalState.baseData;
   const { userCount } = broadcastState;
-  const { setRightTabType, setUserMemNo, setListenerList } = broadcastAction;
   const { guestConnectStatus, guestObj } = guestState;
   // state
   const [pageInfo, setPageInfo] = useState({
@@ -45,8 +43,8 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
   // 프로필 보기
   const viewProfile = useCallback((memNo: string) => {
     if (isLogin === true) {
-      setRightTabType && setRightTabType(tabType.PROFILE);
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     } else {
       return history.push("/login");
     }

@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
@@ -8,9 +7,6 @@ import {withRouter} from "react-router-dom";
 // components
 
 const WeeklyPick = (props) => {
-  const context = useContext(Context);
-
-  const {token, profile} = context;
 
   const [listData, setListData] = useState({lastPageNo: 0, list: []});
 

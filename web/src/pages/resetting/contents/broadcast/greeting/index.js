@@ -7,13 +7,13 @@ import RadioList from 'pages/resetting/components/radioList'
 
 import './greeting.scss'
 import API from "context/api";
-import Toast from "components/ui/toast/Toast";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Greeting = () => {
   const [titleList, setTitleList] = useState([])
   const [titleSelect, setTitleSelect] = useState({state: false, val: "", index: -1})
-  const context = useContext(Context);
+  const dispatch = useDispatch();
 
   //등록된 인사말 버튼 클릭시 정보 조회
   const selectGreeting = (e) => {
@@ -33,10 +33,10 @@ const Greeting = () => {
       contents: titleSelect.val
     })
     if(titleSelect.val === "") {
-      context.action.toast({msg: "입력 된 인사말이 없습니다. \n인사말을 입력하세요."})
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "입력 된 인사말이 없습니다. \n인사말을 입력하세요."}))
     } else {
       if(res.result === "success") {
-        context.action.toast({msg: "DJ 인사말이 등록 되었습니다."});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: "DJ 인사말이 등록 되었습니다."}));
         setTitleList(res.data.list);
         setTitleSelect({...titleSelect, val: ""});
       }
@@ -50,7 +50,7 @@ const Greeting = () => {
       idx: titleSelect.index
     })
     if(res.result === "success") {
-      context.action.toast({msg: "DJ 인사말이 삭제 되었습니다."});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "DJ 인사말이 삭제 되었습니다."}));
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }
@@ -70,7 +70,7 @@ const Greeting = () => {
       contents: titleSelect.val
     })
     if(res.result === "success") {
-      context.action.toast({msg: "DJ 인사말이 수정 되었습니다."});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: "DJ 인사말이 수정 되었습니다."}));
       setTitleList(res.data.list);
       setTitleSelect({state: false, val: "", index: -1});
     }

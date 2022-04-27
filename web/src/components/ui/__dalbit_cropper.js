@@ -1,20 +1,23 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import styled from 'styled-components'
 import Header from './new_header'
 import Cropper from 'react-cropper'
 import './scss/dalbit_cropper.scss'
 import ImageRotation from '../../images/ico-rotation.png'
 import ImageCrop from '../../images/ico-crop.png'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxEditImage} from "redux/actions/globalCtx";
 
 const dalbitCropper = (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {editorOpen, setEditorOpen, srcUrl, setSrcUrl} = props
 
   const defaultSrc = srcUrl
 
   let history = useHistory()
-  const context = useContext(Context)
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState('#')
   const [cropper, setCropper] = useState(null)
@@ -42,7 +45,7 @@ const dalbitCropper = (props) => {
   const submit = () => {
     if (typeof cropper !== 'undefined') {
       // setBase(cropper.getCroppedCanvas().toDataURL())
-      context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
+      dispatch(setGlobalCtxEditImage(cropper.getCroppedCanvas().toDataURL()));
 
       setEditorOpen(false)
     }

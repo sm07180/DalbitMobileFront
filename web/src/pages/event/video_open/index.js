@@ -1,8 +1,7 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //globalCtx
-import {Context} from 'context'
 import Api from 'context/api'
 
 //component
@@ -10,10 +9,14 @@ import './index.scss'
 import LayerDetail from './content/layer_detail'
 import LayerGift from './content/layer_gift'
 import List from './content/list'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function VideoOpenEvent() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const [eventType, setEventType] = useState(1) // star, fan
   // const [eventRound, setEventRound] = useState(0);
   const [videoRankList, setVideoRankList] = useState([
@@ -56,9 +59,10 @@ export default function VideoOpenEvent() {
         giftDesc: data.giftDesc
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 

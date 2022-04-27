@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {Context, GlobalContext} from "context";
 
 import {useHistory, withRouter} from "react-router-dom";
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
@@ -9,12 +8,13 @@ import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import Api from "context/api";
 import Lottie from 'react-lottie'
 import photoCommon from "common/utility/photoCommon";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const PartnerDj = (props) => {
-  const context = useContext(Context);
-  const gtx = useContext(GlobalContext);
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [listData, setListData] = useState({cnt: 0, list: []});
 
   const [scrollParam, setScrollParam] = useState({loading: false, pageNo: 1, pagePerCnt: 100});
@@ -59,16 +59,16 @@ const PartnerDj = (props) => {
   }
 
   const goLive = (roomNo, memNo, nickNm) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      })
+      }))
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo,memNo, dispatch, globalState, history, nickNm);
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm})
@@ -86,32 +86,32 @@ const PartnerDj = (props) => {
     Api.fan_change({data: {memNo}}).then(res => {
       if (res.result === 'success') {
         fanCallback(memNo);
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     })
   }
 
   /* 팬 해제 */
   const deleteFan = (memNo, memNick) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             fanCallback(memNo);
-            context.action.toast({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
           } else if (res.result === 'fail') {
-            context.action.alert({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
           }
         });
       }
-    })
+    }))
   }
 
   const fanCallback = (memNo) => {
@@ -120,7 +120,7 @@ const PartnerDj = (props) => {
     })
     setListData({...listData, list: editFan});
   }
-  
+
   return (
     <>
       <div className='partnerDjInfo'>
@@ -151,7 +151,7 @@ const PartnerDj = (props) => {
                       typeof list.room_no === "undefined" || list.room_no === null || list.room_no !== "" ?
                         <div className="badgeLive" onClick={(e) => {
                             e.stopPropagation();
-                            if (context.token.memNo !== list.mem_no){
+                            if (globalState.token.memNo !== list.mem_no){
                               goLive(list.room_no, list.mem_no, list.mem_nick);
                             }
                           }}>
@@ -166,7 +166,7 @@ const PartnerDj = (props) => {
                           </span>
                           <span className='liveText'>LIVE</span>
                         </div>
-                        : context.token.memNo !== list.mem_no ?
+                        : globalState.token.memNo !== list.mem_no ?
                         <span className={`fanButton ${list.fanYn=== "y" ? "active" : ""}`} onClick={(e) => {
                           e.stopPropagation();
                           list.fanYn === "y" ? deleteFan(list.mem_no, list.mem_nick) : addFan(list.mem_no, list.mem_nick);

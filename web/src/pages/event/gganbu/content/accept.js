@@ -1,14 +1,17 @@
-import React, {useState, useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 import Api from 'context/api'
 
 import './search.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {gganbuNumber, memberNumber, memberNick, ptrNick, acceptType, closeAlert, closePopup, searchStateCheck} = props
 
-  console.log(context.globalGganbuState)
+  console.log(globalState.globalGganbuState)
   // 깐부 신청
   const postGganbuSub = async () => {
     const param = {
@@ -18,21 +21,23 @@ export default (props) => {
     }
     const {data, message} = await Api.postGganbuSub(param)
     if (data === 1) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '신청 완료',
         callback: () => {
           closeAlert()
           searchStateCheck()
         }
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
         callback: () => {
           closeAlert()
           searchStateCheck()
         }
-      })
+      }))
     }
   }
   // 깐부 수락 버튼
@@ -44,14 +49,15 @@ export default (props) => {
     }
     const {data, message} = await Api.postGganbuIns(param)
     if (data === 1) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `<div class="alertUserId"><span><strong>${ptrNick}</strong>님과</span><span>깐부를 맺었습니다.</span></div>`,
         callback: () => {
           closeAlert()
           closePopup()
-          context.action.updateGlobalGganbuState(gganbuNumber)
+          globalState.action.updateGlobalGganbuState(gganbuNumber)
         }
-      })
+      }))
     } else {
       console.log(message)
     }

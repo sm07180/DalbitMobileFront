@@ -1,8 +1,7 @@
 // React
-import React, {useContext, useState, useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 
 // Context
-import {Context} from 'context'
 
 // Api
 import Api from 'context/api'
@@ -14,9 +13,11 @@ import {convertDateFormat} from 'components/lib/dalbit_moment'
 import NoResult from 'components/ui/noResult'
 
 import './index.scss'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const PushMembers = () => {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
 
   const [pushMembers, setPushMembers] = useState(null)
 
@@ -35,9 +36,10 @@ const PushMembers = () => {
       memNo
     })
     if (result === 'success') {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '삭제가 완료되었습니다.'
-      })
+      }))
       fetchData()
     } else {
       callToast(message)
@@ -45,20 +47,22 @@ const PushMembers = () => {
   }, [])
 
   const callDeleteConfirm = useCallback((memNo) => {
-    globalCtx.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `선택한 회원을 삭제하면
       방송시작에 대한 알림을 받을 수 없습니다.`,
       remsg: '삭제하시겠습니까?',
       callback: () => {
         deleteMembers(memNo)
       }
-    })
+    }))
   }, [])
 
   const callToast = useCallback((message) => {
-    globalCtx.action.toast({
+    dispatch(setGlobalCtxMessage({
+      type: "toast",
       msg: message
-    })
+    }))
   }, [])
 
   React.useEffect(() => {

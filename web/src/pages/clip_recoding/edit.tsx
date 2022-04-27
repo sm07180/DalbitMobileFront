@@ -1,17 +1,18 @@
 import React, { useState, useRef, useEffect, useContext, useMemo, useCallback } from "react";
-import { GlobalContext } from "context";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { postImage, postAudio, getClipType, postAudioEdit, postClipPlay, postAudioDelete } from "common/api";
 import "./upload.scss";
 import LayerCopyright from "../../common/layerpopup/contents/copyright";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../redux/actions/globalCtx";
 export default function Cast() {
   const history = useHistory();
   const location = useLocation();
   const { clipNo } = useParams();
 
   const imgInput = useRef<HTMLInputElement>(null);
-
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [audioPath, setAudioPath] = useState("");
   const [audioName, setAudioName] = useState("");
@@ -51,10 +52,10 @@ export default function Cast() {
       if (result === "success") {
         setThemeList(data);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: message,
-        });
+        }));
       }
     };
     fetchDataClipType();
@@ -99,10 +100,10 @@ export default function Cast() {
     const file = target.files[0];
 
     if (!/\.(|jpg|jpeg|png|PNG)$/i.test(file.name)) {
-      return globalAction.setAlertStatus!({
+      return dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "jpg, png 이미지만 사용 가능합니다.",
-      });
+      }));
     }
 
     reader.readAsDataURL(target.files[0]);
@@ -116,10 +117,10 @@ export default function Cast() {
           setImgSrc(data.url);
           setImgPath(data.path);
         } else {
-          globalAction.setAlertStatus!({
+          dispatch(setGlobalCtxAlertStatus({
             status: true,
             content: "사진 업로드에 실패하였습니다.\n다시 시도해주세요.",
-          });
+          }));
         }
       }
     };
@@ -141,18 +142,18 @@ export default function Cast() {
 
     const { result, data, message } = await postAudioEdit({ ...param });
     if (result === "success") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "클립 수정에 성공하였습니다.",
         callback: () => {
           history.push(`/clip/${data.clipNo}`);
         },
-      });
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   };
 
@@ -161,18 +162,18 @@ export default function Cast() {
       clipNo: clipNo,
     });
     if (result === "success") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: "클립을 삭제했습니다.",
         callback: () => {
           history.push(`/clip`);
         },
-      });
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   };
 
@@ -183,10 +184,10 @@ export default function Cast() {
           key={idx}
           onClick={() => {
             if (idx === 2 && globalState.userProfile!.age < 20) {
-              return globalAction.setAlertStatus!({
+              return dispatch(setGlobalCtxAlertStatus({
                 status: true,
                 content: "20세 이상 회원이 아닙니다.",
-              });
+              }));
             }
             setListenType(idx);
           }}
@@ -358,7 +359,7 @@ export default function Cast() {
         }}
       />
 
-      
+
 
       <div className="subTitle">공개 설정</div>
       <div className="publicTypeBtn">
@@ -394,12 +395,12 @@ export default function Cast() {
           type="button"
           className="btnDel"
           onClick={() =>
-            globalAction.setAlertStatus!({
+            dispatch(setGlobalCtxAlertStatus({
               status: true,
               type: "confirm",
               content: `정말 삭제하시겠습니까?`,
               callback: () => clipDelete(),
-            })
+            }))
           }
         >
           삭제

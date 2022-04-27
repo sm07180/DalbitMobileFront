@@ -4,8 +4,8 @@ import React, {useState, useContext, useEffect} from 'react';
 import './popslide.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setSlidePopupClose, setSlideReset, setSlideClose} from "redux/actions/common";
-import {Context} from "context";
 import {isAndroid} from "context/hybrid";
+import {setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
 
 let slidePopTimeout;
 
@@ -19,7 +19,7 @@ export const closePopup = (dispatch) => {
 
 const PopSlide = (props) => {
   const {title, popSlide, setPopSlide, children, popHidden, closeCallback} = props;
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
 
@@ -36,13 +36,13 @@ const PopSlide = (props) => {
       }
       closePopup(dispatch);
     }
-  };
+  }
 
   useEffect(() => {
     document.body.classList.add('overflowHidden')
     if(isAndroid()) {
-      context.action.updateSetBack(true);
-      context.action.updateBackFunction({name: 'popClose'});
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'popClose'}));
     }
     return () => {
       document.body.classList.remove('overflowHidden');
@@ -50,13 +50,13 @@ const PopSlide = (props) => {
       dispatch(setSlideReset());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {
-        if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null);
+        if(globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
         }
-        context.action.updateBackFunction({name: ''});
+        dispatch(setGlobalCtxBackFunction({name:''}))
       }
     }
-  }, []);
+  }, [])
 
   return (
     <div id="popSlide" onClick={closePopupDim} style={{display: `${popHidden ? 'none': ''}`}}>

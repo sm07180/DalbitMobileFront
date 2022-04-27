@@ -1,24 +1,24 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 
-import { tabType } from "../constant";
+import {tabType} from "../constant";
 
-import { GlobalContext } from "context";
-import { ClipContext } from "context/clip_ctx";
-
-import { postAddFan, deleteFan, getProfile, getClipType } from "common/api";
+import {deleteFan, getClipType, getProfile, postAddFan} from "common/api";
 
 import iconFemale from "../static/female.svg";
 import iconMale from "../static/male.svg";
 import iconSp from "../static/slabel_circle_s.svg";
 import iconClip from "../static/clip_w_s.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
+import {setClipCtxRightTabType, setClipCtxUserMemNo} from "../../../redux/actions/clipCtx";
 
 export default function ClipPlayerIconBox() {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
 
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { clipState, clipAction } = useContext(ClipContext);
-  const { setRightTabType, setUserMemNo } = clipAction;
   const { clipInfo, baseData } = globalState;
 
   const [fanState, setFanState] = useState(0);
@@ -54,12 +54,10 @@ export default function ClipPlayerIconBox() {
     if (result === "success") {
       if (fanState === 0) {
         setFanState && setFanState(-1);
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({
-            status: true,
-            message: `${clipInfo?.nickName}님의 팬이 되었습니다`,
-          });
-        }
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: `${clipInfo?.nickName}님의 팬이 되었습니다`,
+        }));
         getProfileinfo();
       } else {
         setFanState && setFanState(0);
@@ -68,34 +66,32 @@ export default function ClipPlayerIconBox() {
   };
 
   const cancelFan = () => {
-    globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        content: `${globalState.clipInfo?.nickName} 님의 팬을 취소 하시겠습니까?`,
-        callback: () => {
-          async function DeleteFanFunc() {
-            const { result, message } = await deleteFan({ memNo: globalState.clipInfo?.clipMemNo! });
-            if (result === "success") {
-              if (globalAction.callSetToastStatus) {
-                globalAction.callSetToastStatus({
-                  status: true,
-                  message: message,
-                });
-              }
 
-              if (fanState === 0) {
-                setFanState && setFanState(-1);
-              } else {
-                setFanState && setFanState(0);
-              }
-              getProfileinfo();
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      content: `${globalState.clipInfo?.nickName} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function DeleteFanFunc() {
+          const { result, message } = await deleteFan({ memNo: globalState.clipInfo?.clipMemNo! });
+          if (result === "success") {
+            dispatch(setGlobalCtxSetToastStatus({
+              status: true,
+              message: message,
+            }));
+
+            if (fanState === 0) {
+              setFanState && setFanState(-1);
+            } else {
+              setFanState && setFanState(0);
             }
+            getProfileinfo();
           }
+        }
 
-          DeleteFanFunc();
-        },
-      });
+        DeleteFanFunc();
+      },
+    }));
   };
 
   const getProfileinfo = async () => {
@@ -119,12 +115,12 @@ export default function ClipPlayerIconBox() {
       if (result === "success") {
         setClipType(data);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: `${message}`,
           callback: () => {},
-        });
+        }));
       }
     };
     getDataClipType();
@@ -186,8 +182,8 @@ export default function ClipPlayerIconBox() {
                         style={{ backgroundImage: `url("${value.profImg.thumb62x62}")` }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setUserMemNo && setUserMemNo(value.memNo);
-                          setRightTabType && setRightTabType(tabType.PROFILE);
+                          dispatch(setClipCtxUserMemNo(value.memNo));
+                          dispatch(setClipCtxRightTabType(tabType.PROFILE));
                         }}
                       >
                         <span className="blind">닉네임</span>
@@ -200,7 +196,7 @@ export default function ClipPlayerIconBox() {
                     className="rankItem__more"
                     onClick={(e) => {
                       e.stopPropagation();
-                      setRightTabType && setRightTabType(tabType.GIFT_RANK);
+                      dispatch(setClipCtxRightTabType(tabType.GIFT_RANK));7
                     }}
                   >
                     <span className="blind">팬랭킹 더보기</span>

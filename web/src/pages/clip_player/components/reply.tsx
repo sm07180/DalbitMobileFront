@@ -1,17 +1,18 @@
 import React, { useState, useCallback, useContext, useEffect } from "react";
 
-import { GlobalContext } from "context";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
-import { ClipContext } from "context/clip_ctx";
 import ReplyItem from "./reply_item";
 
 import { getClipReplyList, postClipReplyAdd, postClipReplyEdit } from "common/api";
 
 import { tabType } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxClipInfoAdd} from "../../../redux/actions/globalCtx";
+import {setClipCtxReplyIdx} from "../../../redux/actions/clipCtx";
 
 export default (props) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { clipState, clipAction } = useContext(ClipContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const [registToggle, setRegistToggle] = useState<boolean>(false);
   const [contentValue, setContentValue] = useState("");
   const [replyList, setReplyList] = useState([]);
@@ -37,7 +38,7 @@ export default (props) => {
 
   const RegistBtnToggle = () => {
     if (registToggle) {
-      clipAction.setClipReplyIdx!(0);
+      dispatch(setClipCtxReplyIdx(0));
       setRegistToggle(false);
       setContentValue("");
       setReplyIdx(-1);
@@ -57,15 +58,15 @@ export default (props) => {
       setReplyList(data.list);
       setReplyPaging(data.paging);
       if (data.paging) {
-        globalAction.dispatchClipInfo!({ type: "add", data: { replyCnt: data.paging.total } });
+        dispatch(setGlobalCtxClipInfoAdd({replyCnt: data.paging.total}))
       }
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {},
-      });
+      }));
     }
   }
 
@@ -77,14 +78,14 @@ export default (props) => {
       });
       if (result === "success") {
         setRegistToggle(false);
-        clipAction.setClipReplyIdx!(0);
+        dispatch(setClipCtxReplyIdx(0));
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
           callback: () => {},
-        });
+        }));
       }
     }
     fetchReplyAdd();
@@ -106,15 +107,15 @@ export default (props) => {
 
       if (result === "success") {
         setReplyIdx(-1);
-        clipAction.setClipReplyIdx!(0);
+        dispatch(setClipCtxReplyIdx(0));
         setRegistToggle(false);
       } else {
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
           callback: () => {},
-        });
+        }));
       }
     }
     fetchReplyEdit();

@@ -10,11 +10,13 @@ import moment from "moment";
 // css
 import '../../style.scss'
 import "./notice.scss"
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const PostDetail = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation();
-  const context = useContext(Context);
   const history = useHistory();
   const noticeIdx = location.state;
   const [postDetailInfo, setPostDetailInfo] = useState([]);
@@ -32,7 +34,7 @@ const PostDetail = () => {
   };
 
   const contentsClicked = (event) => {
-    Utility.contentClickEvent(event, context)
+    Utility.contentClickEvent(event, globalState, dispatch)
   }
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const PostDetail = () => {
   }, []);
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (

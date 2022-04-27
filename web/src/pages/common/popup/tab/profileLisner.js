@@ -1,19 +1,19 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
 import Navi from './navibar'
 import Api from 'context/api'
-import {Context} from 'context'
 import Ranking from './ranking'
 import {BroadCastStore} from '../../store'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default props => {
   //console.log(props)
-
-  const [roomInfo, setRoomInfo] = useState({...props.location.state})
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   //----------------------------------------------context
-  const context = useContext(Context)
   const store = useContext(BroadCastStore)
   //0.프로필인포 state정의------------------------------------------
   const [PInfo, setPInfo] = useState(props.Info)
@@ -36,7 +36,7 @@ export default props => {
     const res = await Api.broad_fan_insert({
       data: {
         memNo: objProfileInfo.memNo,
-        roomNo: context.broadcastTotalInfo.roomNo
+        roomNo: globalState.broadcastTotalInfo.roomNo
       },
       method: methodType
     })
@@ -47,12 +47,13 @@ export default props => {
         store.action.updateBroadcastProfileInfo({isFan: false})
       }
 
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           //console.log('callback처리')
         },
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -62,15 +63,17 @@ export default props => {
     const methodType = isFan === false ? 'POST' : 'DELETE'
     // 팬이 아니여서 팬등록 가능 상태
     if (isFan === true) {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({
+        type: "confirm",
         //콜백처리
         callback: () => {
           broadFanChangeFetch(methodType)
         },
         //캔슬콜백처리
-        cancelCallback: () => {},
+        cancelCallback: () => {
+        },
         msg: `${objProfileInfo.nickNm} 님의 팬을 취소하시겠습니까?`
-      })
+      }))
     } else {
       broadFanChangeFetch(methodType)
     }
@@ -81,7 +84,7 @@ export default props => {
     const methodType = type === 1 ? 'DELETE' : 'POST'
     const res = await Api.broad_manager({
       data: {
-        roomNo: context.broadcastTotalInfo.roomNo,
+        roomNo: globalState.broadcastTotalInfo.roomNo,
         memNo: objProfileInfo.memNo
       },
       method: methodType
@@ -93,10 +96,11 @@ export default props => {
       } else {
         store.action.updateBroadcastProfileInfo({auth: 1})
       }
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         //콜백처리
         msg: `${objProfileInfo.nickNm} 님이 매니저 ${type === 1 ? '해제' : '등록'} 되었습니다.`
-      })
+      }))
     } else {
       console.log('broadManager  res = ' + res)
     }
@@ -106,17 +110,18 @@ export default props => {
   async function broadkickout() {
     const res = await Api.broad_kickout({
       data: {
-        roomNo: context.broadcastTotalInfo.roomNo,
+        roomNo: globalState.broadcastTotalInfo.roomNo,
         blockNo: objProfileInfo.memNo
       },
       method: 'POST'
     })
     //Error발생시
     if (res.result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         //콜백처리
         msg: `${objProfileInfo.nickNm} 님이 강제 퇴장 되었습니다.`
-      })
+      }))
     }
   }
 
@@ -135,15 +140,16 @@ export default props => {
   }, [store.broadcastProfileInfo])
 
   const managerStatusChange = () => {
-    if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
-    if (context.broadcastTotalInfo.auth === 1 && objProfileInfo.auth <= 1) return //같은 매니저 이거나 선택자가 청취자 일때
-    if (context.broadcastTotalInfo.auth === 0 && objProfileInfo.auth > 0) return //같은 매니저 이거나 선택자가 청취자 일때
+    if (globalState.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
+    if (globalState.broadcastTotalInfo.auth === 1 && objProfileInfo.auth <= 1) return //같은 매니저 이거나 선택자가 청취자 일때
+    if (globalState.broadcastTotalInfo.auth === 0 && objProfileInfo.auth > 0) return //같은 매니저 이거나 선택자가 청취자 일때
     return (
       <React.Fragment>
         <div className="managerBtn">
           <button
             onClick={() => {
-              context.action.confirm({
+              dispatch(setGlobalCtxMessage({
+                type: "confirm",
                 //콜백처리
                 callback: () => {
                   broadManager(store.broadcastProfileInfo.auth)
@@ -155,7 +161,7 @@ export default props => {
                 msg: `${objProfileInfo.nickNm} 님을 매니저에서 ${
                   store.broadcastProfileInfo.auth == 1 ? '해임' : '등록'
                 } 하시겠습니까?`
-              })
+              }))
             }}></button>
           <p>{store.broadcastProfileInfo.auth == 1 ? '매니저 해임' : '매니저 등록'}</p>
         </div>
@@ -163,8 +169,8 @@ export default props => {
     )
   }
   const makeKickout = () => {
-    if (context.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
-    if (context.broadcastTotalInfo.auth === 0 && objProfileInfo.auth > 0) return //같은 매니저 이거나 선택자가 청취자 일때
+    if (globalState.broadcastTotalInfo.auth == objProfileInfo.auth) return //방장이면서 프로필도 방장이면 안보여줌)
+    if (globalState.broadcastTotalInfo.auth === 0 && objProfileInfo.auth > 0) return //같은 매니저 이거나 선택자가 청취자 일때
     return (
       <React.Fragment>
         <div className="functionWrap">
@@ -172,7 +178,8 @@ export default props => {
           <div className="KickBtn">
             <button
               onClick={() => {
-                context.action.confirm({
+                dispatch(setGlobalCtxMessage({
+                  type: "confirm",
                   //콜백처리
                   callback: () => {
                     broadkickout()
@@ -182,7 +189,7 @@ export default props => {
                     //alert('confirm callback 취소하기')
                   },
                   msg: `${objProfileInfo.nickNm} 님을 강제 퇴장 하시겠습니까?`
-                })
+                }))
               }}></button>
             <p>강퇴하기</p>
           </div>
@@ -196,7 +203,7 @@ export default props => {
     store.action.updateTab(4) //선물하기 탭 이동
   }
   const userTypeContents = () => {
-    if (context.token.memNo === objProfileInfo.memNo) return
+    if (globalState.token.memNo === objProfileInfo.memNo) return
     return (
       <React.Fragment>
         {makeKickout()}

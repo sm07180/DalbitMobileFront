@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { ModalContext } from "context/modal_ctx";
 import { useHistory } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
@@ -10,10 +9,11 @@ import "./pay.scss";
 // components
 import Header from "common/ui/header";
 import Layout from "common/layout";
+import {useSelector} from "react-redux";
 
 export default function Payment() {
   const history = useHistory();
-  const { modalState } = useContext(ModalContext);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const { payInfo } = modalState;
   const { itemPrice, name, bankNo, phone } = payInfo;
 

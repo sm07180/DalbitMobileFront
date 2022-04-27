@@ -1,18 +1,20 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 
 import './detail.scss'
 import Utility from 'components/lib/utility'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+
 export default function Detail() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
 
   const noticeIdx = history.location.pathname.split('/')[3]
 
   const [noticeDetail, setNoticeDetail] = useState(false)
-  const context = useContext(Context)
 
   const fetchData = async function () {
     const res = await Api.notice_list_detail({
@@ -44,7 +46,7 @@ export default function Detail() {
   }
 
   const contentsClicked = (event) => {
-    Utility.contentClickEvent(event, context)
+    Utility.contentClickEvent(event, globalState, dispatch)
   }
 
   useEffect(() => {

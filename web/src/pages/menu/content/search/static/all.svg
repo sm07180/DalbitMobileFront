@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 16">
-    <g transform="translate(-65 -468)">
-        <rect width="24" height="16" fill="#66b12e" opacity="0.5" rx="8" transform="translate(65 468)"/>
-        <text fill="#fff" font-family="NanumSquareEB, NanumSquare" font-size="9px" letter-spacing="-0.025em" transform="translate(69.5 479)">
-            <tspan x="0" y="0">ALL</tspan>
-        </text>
-    </g>
-</svg>

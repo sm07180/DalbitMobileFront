@@ -1,18 +1,19 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxExitMarbleInfo} from "../../../redux/actions/globalCtx";
 
 export default () => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { exitMarbleInfo } = globalState;
   const history = useHistory();
   const closePopup = () => {
-    globalAction.setExitMarbleInfo &&
-      globalAction.setExitMarbleInfo({
-        ...exitMarbleInfo,
-        showState: false,
-      });
+    dispatch(setGlobalCtxExitMarbleInfo({
+      ...exitMarbleInfo,
+      showState: false,
+    }));
   };
   const closePopupDim = (e) => {
     const target = e.target;

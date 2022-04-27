@@ -1,8 +1,7 @@
 import React, {useContext, useRef, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {ClipRankContext} from 'context/clip_rank_ctx'
-
+import {setClipRankList, setMyInfo} from "redux/actions/clipRank";
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 import NoResult from 'components/ui/new_noResult'
@@ -13,16 +12,16 @@ import ClipRankHandleDateBtn from './components/clip_ranking_handle_date_btn'
 import ClipRankingMyRank from './components/clip_ranking_my_rank'
 import ClipRankingListTop3 from './components/clip_ranking_list_top3'
 import ClipRankingList from './components/clip_ranking_list'
+import {useDispatch, useSelector} from "react-redux";
 
 const records = 100
 let topBoxHeight
 
 function CilpRank() {
   const history = useHistory()
-  const {clipRankState, clipRankAction} = useContext(ClipRankContext)
+  const dispatch = useDispatch()
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {formState, clipRankList} = clipRankState
-  const setClipRankList = clipRankAction.setClipRankList
-  const setMyInfo = clipRankAction.setMyInfo
   const [loading, setLoading] = useState(false)
   const [empty, setEmpty] = useState(false)
 
@@ -44,17 +43,17 @@ function CilpRank() {
     if (res.result === 'success') {
       setLoading(false)
       if (res.data.list.length > 5) {
-        setClipRankList(res.data.list)
+        dispatch(setClipRankList(res.data.list))
         setEmpty(false)
       } else {
-        setClipRankList([])
+        dispatch(setClipRankList([]))
         setEmpty(true)
       }
-      setMyInfo(res.data)
+      dispatch(setMyInfo(res.data));
     } else {
       setLoading(true)
-      setMyInfo({})
-      setClipRankList([])
+      dispatch(setMyInfo({}));
+      dispatch(setClipRankList([]))
     }
   }
 

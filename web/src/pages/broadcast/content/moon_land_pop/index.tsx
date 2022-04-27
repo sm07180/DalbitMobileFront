@@ -2,13 +2,16 @@ import React, {useState, useMemo, useContext} from 'react';
 
 // Context
 // import {BroadcastContext} from "context/broadcast_ctx";
-import {GlobalContext} from "context";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
 import "./index.scss";
 import {addComma} from "../../../../lib/common_fn";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 const MoonLandPop = (props: any) => {
-  const {globalAction} = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {dispatchLayer, dispatchDimLayer} = useContext(BroadcastLayerContext);
   const {roomOwner, data} = props;
 
@@ -44,10 +47,10 @@ const MoonLandPop = (props: any) => {
   };
 
   const switchToggle = () => {
-    globalAction?.callSetToastStatus({
+    dispatch(setGlobalCtxSetToastStatus({
       status: true,
       message: aniSwitch?'방송방에 코인이 출현하지 않습니다.' : '방송방에 코인이 출현합니다.'
-    });
+    }))
     setAniSwitch(!aniSwitch);
     if(typeof window !== 'undefined'){
       localStorage.setItem("toTheMoonOnOff", `${!aniSwitch}`);
@@ -80,7 +83,7 @@ const MoonLandPop = (props: any) => {
                 </div>
               )
             })
-          }          
+          }
         </div>
         <div className='itemInfo'>
           <p>모든 아이템을 선물하면 <strong>보너스 코인</strong> 등장!</p>

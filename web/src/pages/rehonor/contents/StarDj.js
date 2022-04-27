@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {Context, GlobalContext} from "context";
 
 import {useHistory, withRouter} from "react-router-dom";
 import {IMG_SERVER} from 'context/config'
@@ -11,17 +10,18 @@ import {addComma} from "lib/common_fn";
 import Api from "context/api";
 import Lottie from 'react-lottie'
 import DetailView from '../components/DetailView'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const StarDj = (props) => {
-  const context = useContext(Context);
-  const gtx = useContext(GlobalContext);
   const history = useHistory();
-  const {token, profile} = context;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [specialList, setSpecialList] = useState([]);
 
   let date = new Date();
 
-  const [dateVal, setDateVal] = useState({year: date.getFullYear(), month: date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1, title: "이번달"}); 
+  const [dateVal, setDateVal] = useState({year: date.getFullYear(), month: date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1, title: "이번달"});
 
   const getSpecialList = (year, month) => {
       Api.getSpecialDjHistory({
@@ -35,16 +35,16 @@ const StarDj = (props) => {
   }
 
   const goLive = (roomNo, memNo, nickNm) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push('/login')
         }
-      })
+      }))
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+        RoomValidateFromClipMemNo(roomNo,memNo, dispatch, globalState, history, nickNm);
       } else {
         if (roomNo !== '') {
           RoomJoin({roomNo: roomNo, memNo: memNo, nickNm: nickNm})
@@ -60,26 +60,26 @@ const StarDj = (props) => {
   useEffect(() => {
     getSpecialList(dateVal.year, dateVal.month);
   }, [dateVal]);
-  
+
   useEffect(() => {
     getSpecialList(dateVal.year, dateVal.month);
   }, []);
 
   /* 팬 해제 */
   const deleteFan = (memNo, memNick) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             fanCallback(memNo);
-            context.action.toast({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
           } else if (res.result === 'fail') {
-            context.action.alert({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
           }
         });
       }
-    })
+    }))
   }
 
   /* 팬 등록 */
@@ -87,13 +87,13 @@ const StarDj = (props) => {
     Api.fan_change({data: {memNo}}).then(res => {
       if (res.result === 'success') {
         fanCallback(memNo);
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -104,10 +104,10 @@ const StarDj = (props) => {
     })
     setSpecialList(editFan);
   }
-  
+
   return (
     <>
-      <div className='starDjInfo'>        
+      <div className='starDjInfo'>
         <DetailView dateVal={dateVal} setDateVal={setDateVal}/>
         <div className='starDjTop'>
           <div className='infoText'>
@@ -118,7 +118,7 @@ const StarDj = (props) => {
           <div className='infoDecoration'>
             <img src='https://image.dalbitlive.com/honor/starDj/honor_starDj-topBadge.png' alt='스타DJ 훈장 이미지'/>
           </div>
-        </div>        
+        </div>
       </div>
       <div className='starDjWrap'>
         {
@@ -134,7 +134,7 @@ const StarDj = (props) => {
                       typeof list.roomNo === "undefined" || list.roomNo === null || list.roomNo !== "" ?
                         <div className="badgeLive" onClick={(e) => {
                             e.stopPropagation();
-                            if (context.token.memNo !== list.memNo){
+                            if (globalState.token.memNo !== list.memNo){
                               goLive(list.roomNo, list.memNo, list.nickNm);
                             }
                           }}>
@@ -149,7 +149,7 @@ const StarDj = (props) => {
                           </span>
                           <span className='liveText'>LIVE</span>
                         </div>
-                        : context.token.memNo !== list.memNo ?
+                        : globalState.token.memNo !== list.memNo ?
                           <span className={`fanButton ${list.fanYn=== "y" ? "active" : ""}`} onClick={(e) => {
                             e.stopPropagation();
                             list.fanYn === "y" ? deleteFan(list.memNo, list.nickNm) : addFan(list.memNo, list.nickNm);

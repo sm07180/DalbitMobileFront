@@ -1,20 +1,23 @@
-import React, {useHistory, useContext} from 'react'
+import React from 'react'
 import Header from 'components/ui/new_header.js'
-import {Context} from 'context'
 import Layout from 'pages/common/layout'
 import './clipopen.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default () => {
-  const global_ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   return (
     <Layout status="no_gnb">
       <div id="clipOpen">
-        <Header title="클립 오픈 안내" />
+        <Header title="클립 오픈 안내"/>
         <div className="content">
           <button
             className="clipButton"
             onClick={() => {
-              global_ctx.action.updatePopup('CLIP_OPEN')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['CLIP_OPEN']}))
             }}>
             클립 등록 유의사항
           </button>
@@ -22,7 +25,7 @@ export default () => {
           <button
             className="eventButton"
             onClick={() => {
-              global_ctx.action.updatePopup('CLIP_EVENT')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['CLIP_EVENT']}))
             }}>
             이벤트 유의사항
           </button>

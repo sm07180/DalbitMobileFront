@@ -1,15 +1,7 @@
 import React, {useContext} from 'react'
 
-import Lottie from 'react-lottie'
-
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
-import GenderItems from 'components/ui/genderItems/GenderItems'
-import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {IMG_SERVER} from 'context/config'
-import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 
@@ -17,20 +9,19 @@ import DataCnt from "components/ui/dataCnt/DataCnt";
 
 // css
 import '../scss/TeamRankList.scss';
+import {useSelector} from "react-redux";
 
 const TeamRankList = (props) => {
   const {data, breakNo} = props;
 
-  const context = useContext(Context);
-
-  const gtx = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory();
 
   const goTeamDetailPage = (e) => {
     const { teamNo } = e.currentTarget.dataset;
 
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login');
     } else if (teamNo !== undefined) {
       history.push(`/team/detail/${teamNo}`);

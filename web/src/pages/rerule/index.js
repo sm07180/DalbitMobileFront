@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
@@ -11,14 +10,15 @@ import Terms from './contents/terms/Terms'
 import Secession from './contents/secession/Secession'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const Rule = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
   const params = useParams();
 
-  const globalCtx = useContext(Context)
-  const context = useContext(Context);
-  const {token, profile} = globalCtx
+  const {token, profile} = globalState
   const category = params.category;
 
   const golink = (path) => {
@@ -29,7 +29,7 @@ const Rule = () => {
     <div id='rule'>
       {!category ?
         <>
-          <Header position={'sticky'} title={`${context.token.isLogin ? "운영 정책 / 회원탈퇴" : "운영 정책"}`} type={'back'}/>
+          <Header position={'sticky'} title={`${globalState.token.isLogin ? "운영 정책 / 회원탈퇴" : "운영 정책"}`} type={'back'}/>
           <div className='content'>
             <div className='menuWrap'>
               <div className='menuList' onClick={() => {golink("termsT")}}>
@@ -49,7 +49,7 @@ const Rule = () => {
                 <span className='arrow'></span>
               </div>
               {
-                context.token.isLogin &&
+                globalState.token.isLogin &&
                 <>
                   <div className='menuList' onClick={() => {golink("secession")}}>
                     <div className='menuName'>회원탈퇴</div>

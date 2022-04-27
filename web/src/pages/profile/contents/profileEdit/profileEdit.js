@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useMemo, useContext, useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
@@ -22,20 +21,19 @@ import {authReq} from "pages/self_auth";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupClose, setCommonPopupOpenData, setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const ProfileEdit = () => {
   const history = useHistory()
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
 
   const swiperParams = {
     slidesPerView: 'auto',
   }
 
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popup = useSelector(state => state.popup);
-
+  const {token, profile} = globalState
   //이미지 크로퍼
   const inputRef = useRef(null);
   const [eventObj, setEventObj] = useState(null);
@@ -84,11 +82,11 @@ const ProfileEdit = () => {
 
   const getMyInfo = async () => {
     const {result, data, message} = await Api.profile({
-      params: {memNo: context.token.memNo}
+      params: {memNo: globalState.token.memNo}
     })
     showSlideClear();
     if (result === 'success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data));
     }
   };
 
@@ -107,9 +105,9 @@ const ProfileEdit = () => {
     if (result === 'success') {
       showSlideClear();
       getMyInfo();
-      context.action.toast({msg: '선택 이미지로 대표 이미지가 변경되었습니다.'});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: '선택 이미지로 대표 이미지가 변경되었습니다.'}));
     } else {
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     }
   }
 
@@ -128,19 +126,19 @@ const ProfileEdit = () => {
     const {result, data, message} = await Api.profile_edit({data: param});
 
     if (result === 'success') {
-      context.action.updateProfile({...profile, ...data});
-      context.action.alert({
+      dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: `저장되었습니다.`,
         callback: finished ? () => history.replace('/myProfile') : () => {}
-      });
+      }));
     } else {
-      context.action.alert({title: 'Error', msg: message});
+      dispatch(setGlobalCtxMessage({type:'alert',title: 'Error', msg: message}));
     }
   }
 
   /* 본인인증 열기 */
   const getAuth = () => {
-    authReq({code: '5', formTagRef: context.authRef, context});
+    authReq({code: '5', formTagRef: globalState.authRef, dispatch});
   }
 
   /* 본인인증 여부 */
@@ -169,9 +167,9 @@ const ProfileEdit = () => {
       const {result, message} = res
       if (result === 'success') {
         getMyInfo(); //프로필 정보 갱신
-        context.action.toast({msg: '이미지가 등록 되었습니다.'});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: '이미지가 등록 되었습니다.'}));
       } else {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       }
     })
   };
@@ -181,7 +179,7 @@ const ProfileEdit = () => {
     if (imgIdx !== null) {
       Api.postDeleteProfileImg({idx: imgIdx}).then((res) => {
         const {result, message} = res;
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
 
         showSlideClear();
         if (result === 'success') {
@@ -218,10 +216,10 @@ const ProfileEdit = () => {
         }
 
       } else {
-        context.action.toast({msg: message});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       }
     } catch(e) { //image upload Error
-      context.action.toast({msg: '이미지 업로드 실패'});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: '이미지 업로드 실패'}));
       setImage(null);
     };
   };
@@ -251,7 +249,7 @@ const ProfileEdit = () => {
             closeMoreList();
             getMyInfo();
           } else {
-            context.action.toast({msg: '잠시후에 다시 시도해주세요.'});
+            dispatch(setGlobalCtxMessage({type:'toast',msg: '잠시후에 다시 시도해주세요.'}));
           }
         });
     } else {
@@ -263,9 +261,9 @@ const ProfileEdit = () => {
   useEffect(() => {
     if (image) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: '지원하지 않는 파일입니다.'
-        })
+        }))
       } else {
         photoUpload();// 사진 업로드
       }
@@ -336,10 +334,10 @@ const ProfileEdit = () => {
                              }}/>
                         <button className="cancelBtn"
                                 onClick={() => {
-                                  context.action.confirm({
+                                  dispatch(setGlobalCtxMessage({type:'confirm',
                                     msg: '정말로 삭제하시겠습니까?',
                                     callback: ()=> deleteProfileImage(data?.idx)
-                                  })
+                                  }))
                                 }}/>
                       </label>
                     </div>})
@@ -443,7 +441,7 @@ const ProfileEdit = () => {
             <ShowSwiper imageList={showSlide?.imgList || []} popClose={showSlideClear} showTopOptionSection={true}
                         readerButtonAction={readerImageEdit}
                         deleteButtonAction={(idx) =>
-                          context.action.confirm({msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)})}
+                          dispatch(setGlobalCtxMessage({type:'confirm',msg: '정말로 삭제하시겠습니까?', callback: () => deleteProfileImage(idx)}))}
                         swiperParam={{initialSlide: showSlide?.initialSlide}}
             />
             }

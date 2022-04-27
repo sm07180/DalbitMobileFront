@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useContext } from "react";
 
-import { RankContext } from "context/rank_ctx";
 
 import { convertMonday, convertMonth, changeDate, convertDateToText, liveBoxchangeDate, dateTimeConvert } from "lib/rank_fn";
 
 import { DATE_TYPE, RANK_TYPE } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setRankFormDate, setRankFormPageType} from "../../../redux/actions/rank";
 
 export default function TimeBtnWrap() {
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState, myInfo, rankTimeData } = rankState;
 
-  const formDispatch = rankAction.formDispatch!;
+  const dispatch = useDispatch();
 
   const [dateTitle, setDateTitle] = useState({
     header: "오늘",
@@ -158,28 +159,18 @@ export default function TimeBtnWrap() {
           formState[formState.pageType].dateType,
           formState[formState.pageType].currentDate
         );
-        formDispatch({
-          type: "DATE",
-          val: dateCode,
-        });
+        dispatch(setRankFormDate(dateCode));
       } else {
         const dateCode = liveBoxchangeDate(
           some,
           formState[formState.pageType].dateType,
           formState[formState.pageType].currentDate
         );
-
-        formDispatch({
-          type: "DATE",
-          val: dateCode,
-        });
+        dispatch(setRankFormDate(dateCode));
       }
     } else {
       const handle = changeDate(some, formState[formState.pageType].dateType, formState[formState.pageType].currentDate);
-      formDispatch({
-        type: "DATE",
-        val: handle,
-      });
+      dispatch(setRankFormDate(handle));
     }
   };
 

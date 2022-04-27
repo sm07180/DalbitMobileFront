@@ -1,11 +1,12 @@
-import React, { useRef, useContext, useEffect, useCallback } from "react";
+import React, {useEffect, useRef} from "react";
 import styled from "styled-components";
 import LottiePlayer from "lottie-web";
-import { ClipContext } from "context/clip_ctx";
-import { createElement } from "lib/create_element";
+import {createElement} from "lib/create_element";
+import {useSelector} from "react-redux";
 
 export default function ClipAnimationViewer() {
-  const { clipState } = useContext(ClipContext);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
+
   const { lottie } = clipState;
 
   const lottieDisplayRef = useRef<any>(null);

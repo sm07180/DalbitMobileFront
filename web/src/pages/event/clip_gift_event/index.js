@@ -1,21 +1,17 @@
-import React, {useState, useContext, useEffect, useRef} from 'react'
+import React, {useRef, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 // context
-import {Context} from 'context'
-import {OS_TYPE} from 'context/config.js'
 import styled from 'styled-components'
 import qs from 'query-string'
 import {Hybrid} from 'context/hybrid'
 
 import Header from 'components/ui/new_header.js'
-import arrowIconDown from './static/ico_arrow_down.svg'
-import arrowIconUp from './static/ico_arrow_down.svg'
+
 const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
 
 export default () => {
   let history = useHistory()
-  const context = useContext(Context)
   const [noticeView, setNoticeView] = useState(false)
   const {webview} = qs.parse(location.search)
 

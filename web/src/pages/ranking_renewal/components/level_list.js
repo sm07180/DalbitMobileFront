@@ -1,19 +1,18 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
-// context
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 
 import NoResult from 'components/ui/new_noResult'
 //static
 import guideIcon from '../static/guide_s.png'
-import fanIcon from '../static/ic_circle_fan_s_dkgr.svg'
-import people from '../static/people_g_s.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
+
 function LevelList({empty}) {
   const history = useHistory()
-  const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {levelList} = rankState
 
@@ -24,7 +23,7 @@ function LevelList({empty}) {
         <img
           src={guideIcon}
           onClick={() => {
-            context.action.updatePopup('RANK_POP', 'level')
+            dispatch(setGlobalCtxUpdatePopup({popup: ['RANK_POP', 'level']}))
             // context.action.updatePopup('RANK_POP', 'level')
           }}
         />
@@ -56,7 +55,7 @@ function LevelList({empty}) {
                   <div
                     className="thumbBox"
                     onClick={() => {
-                      if (context.token.isLogin) {
+                      if (globalState.token.isLogin) {
                         history.push(`/profile/${memNo}`)
                       } else {
                         history.push(`/login`)
@@ -80,7 +79,7 @@ function LevelList({empty}) {
                       <span
                         className="bestFanBox__nickname"
                         onClick={() => {
-                          if (context.token.isLogin) {
+                          if (globalState.token.isLogin) {
                             history.push(`/profile/${fanMemNo}`)
                           } else {
                             history.push(`/login`)

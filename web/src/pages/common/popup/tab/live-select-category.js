@@ -1,11 +1,9 @@
 import React, {useState, useContext, useEffect} from 'react'
-import {Context} from 'context'
 import Api from 'context/api'
 import {BroadCastStore} from 'pages/broadcast/store'
 import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 export default props => {
-  const context = useContext(Context)
   const store = useContext(BroadCastStore)
   //------------------------------------------------------------------
   //0.케테고리맵..배열 호출 state---------------------------------------

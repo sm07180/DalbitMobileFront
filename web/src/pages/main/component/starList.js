@@ -9,11 +9,9 @@ import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 
 import RankArrow from '../static/arrow_right_w.svg'
 const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
-import {Context} from 'context'
 export default (props) => {
   const history = useHistory()
   const {list} = props
-  const ctx = useContext(Context)
 
   if (list === undefined) {
     return null

@@ -38,11 +38,6 @@ module.exports = (_, options) => {
             chunks: ['app'],
             showErrors: false // 에러 발생시 메세지가 브라우저 화면에 노출 된다.
         }),
-        new HtmlWebPackPlugin({
-            template: './public/html/login.html',
-            filename: 'login.html',
-            chunks: ['login']
-        }),
         new CopyWebpackPlugin([{from: './public/static'}]),
 
         new webpack.DefinePlugin({
@@ -67,7 +62,6 @@ module.exports = (_, options) => {
     const config = {
         entry: {
             app: './src/index.js',
-            login: './src/html/login.js'
         },
         output: {
             path: path.resolve(__dirname, 'dist'),

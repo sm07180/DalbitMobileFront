@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef, useReducer, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // components
@@ -8,10 +7,15 @@ import moment from "moment";
 import './notice.scss'
 import TabBtn from "components/ui/tabBtn/TabBtn";
 import Header from "components/ui/header/Header";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Post = (props) => {
-  const {onClick, postListInfo} = props
-  const context = useContext(Context);
+  const {onClick, postListInfo} = props;
+
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const imgFile = {noticeImg: "ico_notice", eventImg: "ico_event", showImg: "ico_show"} //아이콘 이미지
 
@@ -27,7 +31,7 @@ const Post = (props) => {
   };
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (

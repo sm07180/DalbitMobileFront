@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
-import { GlobalContext } from "context";
-import { ModalContext } from "context/modal_ctx";
-
 import { getBroadcastOption, deleteBroadcastOption, insertBroadcastOption, modifyBroadcastOption } from "common/api";
 
 import "./index.scss";
+import {setBroadcastOption} from "../../../../redux/actions/modal";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 function BroadcastSettingWelcome() {
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const { globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
 
   const [title, setTitle] = useState("");
   const [list, setList] = useState<Array<any>>([]);
@@ -20,10 +20,10 @@ function BroadcastSettingWelcome() {
 
   const insertTitle = useCallback(async () => {
     if (title === "" || title.length < 10) {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "인사말을 10자 이상 입력하세요.",
-      });
+      }));
     } else {
       const res = await insertBroadcastOption({
         optionType: 2,
@@ -51,10 +51,10 @@ function BroadcastSettingWelcome() {
 
   const modifyTitle = useCallback(async () => {
     if (title === "" || title.length < 10) {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "인사말을 10자 이상 입력하세요.",
-      });
+      }));
       return;
     }
 
@@ -75,17 +75,17 @@ function BroadcastSettingWelcome() {
     });
 
     if (findItem) {
-      modalAction.setBroadcastOption!({
+      dispatch(setBroadcastOption({
         ...modalState,
         welcome: findItem.contents,
-      });
+      }));
 
       history.goBack();
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "적용할 인사말을 선택하세요.",
-      });
+      }));
     }
   }, [deleteIdx, list]);
 

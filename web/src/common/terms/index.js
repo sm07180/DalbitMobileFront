@@ -3,13 +3,10 @@
  * @brief 공통 약관 페이지
  * @use context.action.updatePopup('TERMS', '약관종류')
  */
-import React, {useEffect, useContext, useState, useRef} from 'react'
+import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import {Scrollbars} from 'react-custom-scrollbars'
 //context
-import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 //component
 import Service from './content/service'
 import Privacy from './content/privacy'
@@ -22,16 +19,18 @@ import RisingEventDetail from './content/rising_event_detail'
 import RisingEventGiftDetail from './content/rising_event_gift_detail'
 import RisingEventDetail2 from './content/rising_event_detail2'
 import RisingEventGiftDetail2 from './content/rising_event_gift_detail2'
+import {useDispatch, useSelector} from "react-redux";
 
 ////---------------------------------------------------------------------
 export default (props) => {
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //ref
   const termsArea = useRef(null)
   //   레이어팝업컨텐츠
   const makeTermsContents = () => {
-    switch (context.popup_code[1]) {
+    switch (globalState.popup[1]) {
       case 'service': //---------------------------------------서비스 이용약관
         return <Service {...props} />
       case 'privacy': //---------------------------------------개인정보 취급방침

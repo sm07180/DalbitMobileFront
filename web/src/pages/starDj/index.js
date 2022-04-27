@@ -10,18 +10,18 @@ import Title from './component/Title'
 import Bottom from './component/Bottom'
 
 import './style.scss'
-import {Context} from "context";
 import {IMG_SERVER} from "constant/define";
 import Api from "context/api";
 import moment from "moment";
 import UtilityCommon from "common/utility/utilityCommon";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const StarDj = (props) => {
   let history = useHistory();
-  const context = useContext(Context) 
   const [applyBtn, setApplyBtn] = useState(false); //신청하기 버튼 활성화 상태값
   const [popup, setPopup] = useState(false); //팝업
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const isDesktop = useSelector((state)=> state.common.isDesktop);
 
   //starDj정보
@@ -73,7 +73,13 @@ const StarDj = (props) => {
 
   // 신청하기 버튼 활성화 체크
   useEffect(() => {
-    if(((eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) && (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) && (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) && (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1) || context.token.memNo === "11594614777966") {
+    const applyBtnFlag =
+      (eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) &&
+      (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) &&
+      (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) &&
+      (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1;
+
+    if( applyBtnFlag || globalState.token.memNo === "11594614777966") {
       setApplyBtn(true)
     } else (
       setApplyBtn(false)
@@ -119,26 +125,26 @@ const StarDj = (props) => {
     Api.starDjIns().then(res => {
       if (res.result === "success"){
         setApplyBtn(false);
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: '스타DJ 신청을 완료하였습니다.'
-        })
+        }))
       } else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: '스타DJ 신청에 실패했습니다 다시 시도해 주세요'
-        })
+        }))
       }
     })
   }
 
   const starDjInsFail = () => {
     if ((eventInfo.myStat?.play_cnt < eventInfo.stat?.brodTime) || (eventInfo.myStat?.view_cnt < eventInfo.stat?.viewer) || (eventInfo.myStat?.like_score_cnt < eventInfo.stat?.like) || (eventInfo.myStat?.byeol_cnt < eventInfo.stat?.star)){
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type:'toast',
         msg: '최소 신청 조건을 충족하지 못하였습니다.'
-      })
+      }))
     } else {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type:'toast',
         msg: '이미 스타DJ에 지원하셨습니다.'
-      })
+      }))
     }
 
   }
@@ -154,7 +160,7 @@ const StarDj = (props) => {
             <>
               <img src={`${IMG_SERVER}/starDJ/starDJ_topImg-PC.png`} alt=""/>
               <div className='buttonPosition pc'>
-                <Button height="25%">                  
+                <Button height="25%">
                   {UtilityCommon.eventDateCheck("20220501") ?
                     <>
                       <span onClick={() => {golink("/starDj/benefits")}}>
@@ -162,7 +168,7 @@ const StarDj = (props) => {
                       </span>
                       <span onClick={() => {golink("/honor")}}>
                         <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-2.png`} alt=""/>
-                      </span>                    
+                      </span>
                     </>
                     :
                     <span onClick={() => {golink("/starDj/benefits")}}>
@@ -176,7 +182,7 @@ const StarDj = (props) => {
             <>
               <img src={`${IMG_SERVER}/starDJ/starDJ_topImg.png`} alt=""/>
               <div className='buttonPosition'>
-                <Button height="20%">                  
+                <Button height="20%">
                   {UtilityCommon.eventDateCheck("20220501") ?
                     <>
                       <span onClick={() => {golink("/starDj/benefits")}}>
@@ -193,7 +199,7 @@ const StarDj = (props) => {
                   }
                 </Button>
               </div>
-            </> 
+            </>
           }
         </div>
         <div className='starDjBody'>
@@ -248,7 +254,7 @@ const StarDj = (props) => {
                     <span className='isAchieve'>{eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like ? "달성" : "미달성"}</span>
                   </div>
                 </div>
-                <div className='conditionList'>                
+                <div className='conditionList'>
                   <div className='listFront'>
                     <span className='icon totalByeol'></span>
                     <div className='titleWrap'>
@@ -291,19 +297,19 @@ const StarDj = (props) => {
                 운영자 심사를 통해 추가 선발합니다.</p>
             </div>
           </section>
-        </div>      
+        </div>
       </div>
       <Bottom>
         <div className='buttonPosition'>
           <Button height="18%" active={applyBtn}>
             {
-              applyBtn ? 
+              applyBtn ?
                 <span onClick={() => {
                   starDjIns();
                 }}>
                   <img src={`${IMG_SERVER}/starDJ/starDJ_btnName-active.png`} alt=""/>
                 </span>
-              :         
+              :
                 <span onClick={() => {
                   starDjInsFail();
                 }}>
@@ -368,7 +374,7 @@ const StarDj = (props) => {
             </div>
           </div>
         </LayerPopup>
-      }  
+      }
     </div>
   )
 }

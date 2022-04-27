@@ -2,15 +2,14 @@
  * @file /mypage/component/banWord.js
  * @brief 마이페이지 방송설정 - 금지어 설정
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 import _ from 'lodash'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {WIDTH_MOBILE, WIDTH_TABLET_S} from 'context/config'
 
 import useChange from 'components/hooks/useChange'
 // svg
@@ -18,10 +17,13 @@ import BlackPlusIcon from '../black_plus.svg'
 import BackIcon from '../black_plus.svg'
 
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
 export default (props) => {
-  //-----------------------------------------------------------------------------
-  //contenxt
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //state
   const [word, setWord] = useState(false)
   const [list, setList] = useState(false)
@@ -53,9 +55,10 @@ export default (props) => {
       wordIndex++
     })
     if (banWords == '' && type != 'remove')
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `금지어를 입력해주세요.`
-      })
+      }))
     const res = await Api.mypage_banword_write({
       data: {
         banWord: banWords
@@ -69,14 +72,16 @@ export default (props) => {
       }
       setChanges([''])
       if (!(type == 'remove')) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -90,9 +95,10 @@ export default (props) => {
         setChanges([''])
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
   const focusState = (index) => {
@@ -138,7 +144,8 @@ export default (props) => {
   }
 
   const removeInput = (index) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: `금지어를 삭제하시겠습니까?`,
       callback: () => {
         let words = word
@@ -150,7 +157,7 @@ export default (props) => {
         }
         fetchWrite('remove')
       }
-    })
+    }))
   }
 
   const writeValidate = () => {

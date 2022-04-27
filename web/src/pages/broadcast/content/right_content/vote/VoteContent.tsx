@@ -14,11 +14,10 @@ import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 import SubmitBtn from "../../../../../components/ui/submitBtn/SubmitBtn";
 import {VoteResultType, VoteSlctKor} from "../../../../../redux/types/voteType";
 import {initVoteSel} from "../../../../../redux/reducers/vote";
-import {GlobalContext} from "context";
 
 const VoteContent = ({roomOwner}) => {
   const dispatch = useDispatch();
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const memberRdx = useSelector((state) => state.member);
   const voteRdx = useSelector(({vote})=> vote);
 
