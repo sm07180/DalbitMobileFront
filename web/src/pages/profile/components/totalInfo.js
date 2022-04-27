@@ -99,7 +99,7 @@ const TotalInfo = (props) => {
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
         context.action.toast({
-          msg: '팁 가입신청이 완료 되었습니다.'
+          msg: '팀 가입신청이 완료 되었습니다.'
         });
       } else {
         context.action.toast({ msg: res.message });

@@ -137,6 +137,7 @@ const TeamDetail = (props) => {
   const teamMemReqIns=(slct,memNo)=>{
     let param ={
       teamNo:teamNo,
+      teamName:teamInfo.team_name,
       memNo:memNo,
       reqSlct:slct//신청구분 [r:가입신청, i:초대]
     }

@@ -57,7 +57,6 @@ const InviteList = (props) => {
           }
           Api.getTeamMemIns(param).then((res)=>{
             if(res.code === "00000"){
-              console.log("수락",res)
               history.push(`/team/detail/${teamNo}`)
             }
           })
