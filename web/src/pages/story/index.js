@@ -1,7 +1,8 @@
 import React, {useState, useContext, useEffect, useCallback, useLayoutEffect} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
-import {Context} from 'context'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
 
 import Api from "context/api";
 import moment from "moment";
@@ -13,7 +14,8 @@ import './style.scss'
 
 export default () => {
   const history = useHistory()
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [storyList, setStoryList] = useState([]);
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
@@ -44,7 +46,11 @@ export default () => {
         const filtered = storyList.filter((story) => story.storyIdx !== storyIdx)
         setStoryList(filtered)
       } else {
-        globalCtx.action.alert({title: 'Error', msg: message})
+        
+        dispatch(setGlobalCtxMessage({type:"alert",
+          title: 'Error',
+          msg: message
+        }))
       }
     })
   }
@@ -75,7 +81,7 @@ export default () => {
   }
 
   useEffect(() => {
-    if (!globalCtx.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login');
     } else {
       getList();
