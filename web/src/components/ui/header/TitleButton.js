@@ -50,14 +50,16 @@ const TitleButton = (props) => {
     goMail(goMailParams);
   }
   const AlarmButton = () => {
-    return <button className={`alarm ${memberRdx.isLogin && (alarmData.alarm || alarmData.notice) > 0 ? 'new' : ''}`} onClick={() => {
-      if(alarmData.notice === 0) {
-        dispatch(setNoticeTab("알림"));
-      } else {
-        dispatch(setNoticeTab("공지사항"));
-      }
-      history.push('/notice');
-    }} />
+    return <button 
+      className={`alarm ${memberRdx.isLogin && (alarmData.alarm || alarmData.notice) > 0 ? 'new' : ''}`} 
+      onClick={() => {
+        if(alarmData.notice === 0) {
+          dispatch(setNoticeTab("알림"));
+        } else {
+          dispatch(setNoticeTab("공지사항"));
+        }
+        history.push('/notice');
+      }} />
   }
 
 

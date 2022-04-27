@@ -20,7 +20,7 @@
   .underline {
     @include position-bottom-left;
     bottom:6px;
-    width:15px;
+    width:30px;
     height:4px;
     border-radius:100px;
     background-color:$MAINCOLOR;

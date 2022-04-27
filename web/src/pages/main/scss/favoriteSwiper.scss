@@ -1,10 +1,10 @@
 @import "components/ui/_mixin.scss";
   
 .favorites {
-  margin-bottom:0;
+  margin-top: 16px;
+  margin-bottom:28px;
   .swiper-wrapper {
     padding-left:16px;
-    margin-bottom:28px;
     .swiper-slide {
       width:auto;
       margin-right:10px;
@@ -53,8 +53,5 @@
         cursor: pointer;
       }
     }
-  }
-  .empty {
-    display:none;
   }
 }

@@ -61,11 +61,18 @@ export default function SendGift(props: {
 
   const common = useMemo(() => {
     if (splash !== null) {
-      return splash;
+      const itemCategories = roomInfo?.signatureItem?.itemCategories || [];
+      const items = roomInfo?.signatureItem?.items || [];
+
+      return {
+        ...splash,
+        itemCategories: splash.itemCategories.concat(itemCategories),
+        items: splash.items.concat(items)
+      };
     } else {
       return {};
     }
-  }, [splash]);
+  }, [splash, roomInfo]);
 
   const profile = useMemo(() => {
     if (globalState.userProfile !== null) {
