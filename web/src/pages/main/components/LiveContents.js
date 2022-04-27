@@ -1,16 +1,16 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
 // global components
-import BadgeItems from 'components/ui/badgeItems/BadgeItems'
-import GenderItems from 'components/ui/genderItems/GenderItems'
-import NoResult from 'components/ui/noResult/NoResult'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
+import BadgeItems from 'components/ui/badgeItems/BadgeItems';
+import GenderItems from 'components/ui/genderItems/GenderItems';
+import NoResult from 'components/ui/noResult/NoResult';
+import DataCnt from 'components/ui/dataCnt/DataCnt';
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
 
 const LiveContents = (props) => {
-  const {data, children} = props
+  const {data, children} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const timeRankRef = useRef([]);
