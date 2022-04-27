@@ -10,7 +10,6 @@ import TabBtn from '../../components/TabBtn'
 import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
-import Tabmenu from "pages/remypage/components/Tabmenu";
 import InquireWrite from "pages/recustomer/contents/inquire/InquireWrite";
 import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
 import {useDispatch, useSelector} from "react-redux";
