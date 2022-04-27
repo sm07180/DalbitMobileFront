@@ -17,12 +17,12 @@ import PrevMainSlide from './components/PrevMainSlide';
 import FavoriteSwiper from './components/FavoriteSwiper';
 import ToptenSwiper from './components/ToptenSwiper';
 import LiveContents from './components/LiveContents';
-import AttendEventBtn from './component/AttendEventBtn';
+import FloatEventBtn from './popup/FloatEventBtn';
 
 import './style.scss';
 
 // popup
-import UpdatePop from "pages/main/popup/UpdatePop";
+import UpdatePop from "../../pages/main/popup/UpdatePop";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
 
 import {setIsRefresh} from "redux/actions/common";
@@ -405,6 +405,13 @@ const MainPage = () => {
     }
   }
 
+  // 스와이퍼 공용 함수
+  const swiperRefresh = (value) => {
+    const swiper = document.querySelector(`.${value} .swiper-container`)?.swiper;
+    swiper?.update();
+    swiper?.slideTo(0);
+  }
+
   /* 로고, 푸터 클릭했을때 */
   useEffect(() => {
     if(common.isRefresh && pullToRefreshPause && !dataRefreshPrevent) {
@@ -443,25 +450,14 @@ const MainPage = () => {
   }, [currentPage, liveListType]);
 
   useEffect(() => {
-    /* 메인 page api */
-    fetchMainInfo();
+    fetchMainInfo();                // 메인 page api
+    fetchMainPopupData('6');        // 메인 팝업
+    updatePopFetch();               // 업데이트 팝업
+    redirectPage();                 // redirect 체크
 
-    /* 업데이트 팝업 */
-    updatePopFetch();
-
-    /* 메인 팝업 */
-    fetchMainPopupData('6');
-
-    /* redirect 체크 */
-    redirectPage();
-
-    /* ios scrollTo 대응 */
-    if(isIos()) {
-      smoothscroll?.polyfill();
-    }
-
-    /* now top10 랜덤 */
-    setTopRankType(topTenTabMenu[getRandomIndex()]);
+    setTopRankType(topTenTabMenu[getRandomIndex()]); // now top10 랜덤
+    
+    if(isIos()) smoothscroll?.polyfill(); // ios scrollTo 대응
 
     return () => {
       sessionStorage.removeItem('orderId')
@@ -505,17 +501,24 @@ const MainPage = () => {
       </div>
 
       {/* 메인 탑 스와이퍼 */}
-      <section className="topSwiper" ref={overRef}>
-        {UtilityCommon.eventDateCheck("20220501") ? <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} /> :
-          <PrevMainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
+      <section className="mainSwiper" ref={overRef}>
+        {UtilityCommon.eventDateCheck("20220501") ? <MainSlide data={mainState.topBanner} swiperRefresh={() => swiperRefresh("mainSwiper")} pullToRefreshPause={pullToRefreshPause} /> :
+          <PrevMainSlide data={mainState.topBanner} swiperRefresh={() => swiperRefresh("mainSwiper")} pullToRefreshPause={pullToRefreshPause} />
         }
       </section>
 
       {/* 마이스타 */}
-      <FavoriteSwiper data={mainState.myStar} myStarCnt={mainState.myStarCnt} type="favorites" pullToRefreshPause={pullToRefreshPause} />
+      <FavoriteSwiper
+        data={mainState.myStar}
+        swiperRefresh={() => swiperRefresh("favorites")}
+        myStarCnt={mainState.myStarCnt}
+        pullToRefreshPause={pullToRefreshPause} />
       
       {/* 탑 10 */}
-      <ToptenSwiper data={rankingListInfo.list} type="top10" topRankType={rankingListInfo.type}>
+      <ToptenSwiper
+        data={rankingListInfo.list}
+        swiperRefresh={() => swiperRefresh("topTen")}
+        topRankType={rankingListInfo.type}>
         <SubTabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
       </ToptenSwiper>
 
@@ -534,12 +537,15 @@ const MainPage = () => {
           defaultTab={1} />
       </LiveContents>
     </div>
+
+    {/* 업데이트 확인 팝업 */}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
-    <AttendEventBtn scrollOn={scrollOn}/>
-
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
-  </>;
+
+    {/* 플로팅 버튼(출석체크) */}
+    {scrollOn && <FloatEventBtn />}
+  </>
   return MainLayout;
 }
 
