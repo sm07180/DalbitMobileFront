@@ -16,8 +16,6 @@ const LiveContents = (props) => {
   const timeRankRef = useRef([]);
   let locationStateHistory = useHistory();
 
-  const [timeRankValue, setTimeRankValue] = useState("");
-
   const timeRankFnc = (value) => {
     const timeRankTop = value?.getBoundingClientRect().top;
     if(timeRankTop < 700 && timeRankTop > 200) {
@@ -53,20 +51,19 @@ const LiveContents = (props) => {
             const timeBadge = list.liveBadgeList.filter((data)=> data?.text.indexOf('타임')>-1 );
             const cupidData = list.goodMem;
             const timeRank = timeBadge[0]?.text;
-            console.log(timeRank);
             let timeRankClass = "";
             switch (timeRank) {
               case "타임 1위" :
-                setTimeRankValue("timeRank-1");
+                timeRankClass = "timeRank-1";
                 break;
               case "타임 2위" :
-                setTimeRankValue("timeRank-2");
+                timeRankClass = "timeRank-2";
                 break;
               case "타임 3위" :
-                setTimeRankValue("timeRank-3");
+                timeRankClass = "timeRank-3";
                 break;
               default : 
-                timeRankValue;
+                timeRankClass = "";
                 break;
             }
             return (
