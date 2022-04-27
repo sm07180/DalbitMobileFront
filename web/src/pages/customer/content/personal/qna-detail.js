@@ -1,21 +1,19 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
-import {Context} from 'context'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-
-import SelectBoxs from 'components/ui/selectBox.js'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function Detail(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
   if (props.location && props.location.state) {
   } else {
     history.push('/customer/qnaList')
   }
-  const context = useContext(Context)
-  const {token} = context
-
   const {qna} = props.location.state
   const {
     contents,
@@ -69,29 +67,27 @@ export default function Detail(props) {
     })
 
     if (res.result === 'fail') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
-        callbakc: () => {
-          context.action.alert({
-            visible: false
-          })
-        }
-      })
+      }))
     } else if (res.result === 'success') {
-      context.action.confirm({
+      dispatch(setGlobalCtxMessage({
+        type: "confirm",
         msg: '1:1 문의를 등록하시겠습니까?',
         callback: () => {
           //alert
           setTimeout(() => {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: '1:1 문의 등록을 완료하였습니다.',
               callback: () => {
                 history.push('/')
               }
-            })
+            }))
           }, 0)
         }
-      })
+      }))
     }
   }
 
@@ -121,13 +117,11 @@ export default function Detail(props) {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         title: '',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
+      }))
     }
     reader.readAsDataURL(target.files[0])
     reader.onload = async () => {
@@ -152,13 +146,11 @@ export default function Detail(props) {
             })
           )
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
             title: '',
-            callback: () => {
-              context.action.alert({visible: false})
-            }
-          })
+          }))
         }
       }
     }
@@ -167,7 +159,8 @@ export default function Detail(props) {
   const deleteFile = (event, idx) => {
     event.preventDefault()
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '첨부파일을 삭제하시겠습니까?\n삭제된 파일은 복원되지 않습니다.',
       callback: () => {
         const questionFileClone = questionFile
@@ -185,34 +178,34 @@ export default function Detail(props) {
         questionFileClone.length === 0
           ? setQuestionFile([false, false, false])
           : setQuestionFile(
-              questionFileClone
-                .map((v, i, self) => {
-                  if (self.length - 1 === i) {
-                    if (self.length < 3) {
-                      if (self.length === 1) {
-                        return [v, false, false]
-                      } else if (self.length === 2) {
-                        return [v, false]
-                      }
-                    } else {
-                      return v
-                    }
-                  } else {
-                    return v
+          questionFileClone
+            .map((v, i, self) => {
+              if (self.length - 1 === i) {
+                if (self.length < 3) {
+                  if (self.length === 1) {
+                    return [v, false, false]
+                  } else if (self.length === 2) {
+                    return [v, false]
                   }
-                })
-                .flat()
-            )
-        context.action.confirm({visible: false})
+                } else {
+                  return v
+                }
+              } else {
+                return v
+              }
+            })
+            .flat()
+          )
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       cancelCallback: () => {
-        context.action.confirm({visible: false})
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       buttonText: {
         left: '취소',
         right: '삭제'
       }
-    })
+    }))
   }
 
   const typeActive = (value) => {
@@ -233,43 +226,44 @@ export default function Detail(props) {
     })
 
     if (res.result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
         callback: () => {
-          context.action.alert({visible: false})
           history.push('/mypage')
         }
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message,
         callback: () => {
-          context.action.alert({visible: false})
           history.push('/mypage')
         }
-      })
+      }))
     }
   }
 
   const deleteConfirmQna = () => {
     // api 정의필요
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '작성한 게시글을 삭제하시겠습니까?\n삭제된 게시글은 복원되지 않습니다.',
       callback: () => {
         deleteQna()
       },
       cancelCallback: () => {
-        context.action.confirm({visible: false})
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       buttonText: {
         left: '취소',
         right: '삭제'
       }
-    })
+    }))
   }
 
   const contentsClicked = (event) => {
-    Utility.contentClickEvent(event, context)
+    Utility.contentClickEvent(event, globalState, dispatch)
   }
 
   useEffect(() => {

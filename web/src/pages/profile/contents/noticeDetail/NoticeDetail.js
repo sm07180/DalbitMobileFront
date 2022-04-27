@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory, useLocation, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 import Header from 'components/ui/header/Header'
@@ -14,14 +13,15 @@ import {profilePagingDefault} from "redux/types/profileType";
 import Api from "context/api";
 import FeedLike from "pages/profile/components/FeedLike";
 import NoResult from "components/ui/noResult/NoResult";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const NoticeDetail = () => {
   const history = useHistory()
   const location = useLocation();
   const {data, isMyProfile} = location.state;
   //context
-  const context = useContext(Context)
-  const {token} = context
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
   const dispatch = useDispatch();
   const noticeData = useSelector(state => state.brdcst);
   const noticeFixData = useSelector(state => state.noticeFix);
@@ -45,7 +45,7 @@ const NoticeDetail = () => {
           isLastPage
         }));
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
       }
     }).catch((e) => console.log(e));
   }
@@ -69,7 +69,7 @@ const NoticeDetail = () => {
           isLastPage
         }));
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
       }
     }).catch((e) => console.log(e));
   }
@@ -78,7 +78,7 @@ const NoticeDetail = () => {
     const params = {
       regNo: regNo,
       mMemNo: mMemNo,
-      vMemNo: context.profile.memNo
+      vMemNo: globalState.profile.memNo
     };
     if(like === "n") {
       await Api.profileFeedLike(params).then((res) => {

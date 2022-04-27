@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useCallback } from "react";
-import { MailboxContext } from "context/mailbox_ctx";
 import { useKeenSlider } from "keen-slider/react";
+import {useDispatch, useSelector} from "react-redux";
+import {setMailBoxImgSliderChangeCurrent} from "../../../../../redux/actions/mailBox";
 
 export default (props) => {
   let { imgList, setSlider } = props;
 
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
   const { imgSliderInfo } = mailboxState;
   const { deletedImgArray } = mailboxState.imgSliderInfo;
   const initialImgIdx = imgList.findIndex((item) => item.msgIdx === imgSliderInfo.startImgIdx);
@@ -16,8 +18,7 @@ export default (props) => {
     slideChanged: (slider) => {
       const currentImgIdx = slider.details().absoluteSlide;
       if (imgList[currentImgIdx]) {
-        mailboxAction.dispathImgSliderInfo &&
-          mailboxAction.dispathImgSliderInfo({ type: "changeCurrnet", data: imgList[currentImgIdx].msgIdx });
+        dispatch(setMailBoxImgSliderChangeCurrent(imgList[currentImgIdx].msgIdx))
       }
     },
   });

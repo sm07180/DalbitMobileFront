@@ -1,11 +1,11 @@
 import React, { useEffect, useContext } from "react";
 
-import { RankContext } from "context/rank_ctx";
 
 import { DalbitScroll } from "common/ui/dalbit_scroll";
+import {useSelector} from "react-redux";
 
 export default ({ setPopState }) => {
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const closePopupDim = (e) => {
     const target = e.target;
     if (target.id === "layerPopup") {

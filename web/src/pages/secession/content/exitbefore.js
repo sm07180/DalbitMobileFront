@@ -1,20 +1,26 @@
-import React, {useState, useEffect, useContext, useReducer} from 'react'
+import React, {useReducer, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Api from 'context/api'
-import {Context} from 'context'
 import Checkbox from './checkbox'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxGnbVisible,
+  setGlobalCtxMessage,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 
 //
 const Exit = (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   //---------------------------------------------------------------------
   const reducer = (state, action) => ({...state, ...action})
@@ -29,21 +35,22 @@ const Exit = (props) => {
     if (res.result === 'success') {
       //console.log(res)
       async function secfun(obj) {
-        const res = await Api.member_logout({data: context.token.authToken})
+        const res = await Api.member_logout({data: globalState.token.authToken})
         if (res.result === 'success') {
           //로그아웃성공
           //쿠키삭제
           Utility.setCookie('custom-header', '', -1)
           Hybrid('GetLogoutToken', res.data)
-          context.action.updateToken(res.data)
-          context.action.updateGnbVisible(false)
-          context.action.updateProfile(null)
-          context.action.alert({
+          dispatch(setGlobalCtxUpdateToken(res.data));
+          dispatch(setGlobalCtxGnbVisible(false));
+          dispatch(setGlobalCtxUpdateProfile(null));
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '회원 탈퇴가 완료 되었습니다.',
             callback: () => {
               history.push(`/`)
             }
-          })
+          }))
         }
       }
       if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
@@ -52,21 +59,23 @@ const Exit = (props) => {
         secfun()
       } else {
         console.log(res)
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message
-        })
+        }))
       }
     }
   }
   const Validate = () => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '정말 회원탈퇴 하시겠습니까 ?',
       callback: () => {
         if (all === true) {
           FethData()
         }
       }
-    })
+    }))
   }
 
   const clearFilter = () => {

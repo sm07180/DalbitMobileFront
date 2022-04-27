@@ -7,18 +7,19 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import NoResult from 'components/ui/noResult/NoResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const LiveView = (props) => {
   const {data} = props
   let locationStateHistory = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const scrollEvent = () => {
     const timeRank1 = document.getElementById('timeRankwer1st');
     const timeRank2 = document.getElementById('timeRankwer2nd');
     const timeRank3 = document.getElementById('timeRankwer3rd');
-    
+
     if(timeRank1){
       const timeRank1Top = timeRank1?.getBoundingClientRect().top;
       if(timeRank1Top < 700 && timeRank1Top > 200) {
@@ -69,7 +70,7 @@ const LiveView = (props) => {
                 id={`${timeRank === "타임 1위" ? "timeRankwer1st" : timeRank === "타임 2위" ? "timeRankwer2nd" : timeRank === "타임 3위" ? "timeRankwer3rd" : ""}`}
                 key={index}
                 onClick={() => {
-                  RoomValidateFromClipMemNo(list.roomNo, list.bjMemNo, context, locationStateHistory, list.bjNickNm);
+                  RoomValidateFromClipMemNo(list.roomNo, list.bjMemNo, dispatch, globalState, locationStateHistory, list.bjNickNm);
                 }}
               >
                 <div className="photo">

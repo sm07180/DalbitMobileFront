@@ -11,6 +11,8 @@ import AwardsWinnersList from './components/awards_winners_list'
 import AwardsTab from './components/awards_tab'
 import TabDJ from './tab_dj'
 import TabFan from './tab_fan'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function awardEvent() {
   const history = useHistory()
@@ -19,7 +21,7 @@ export default function awardEvent() {
   const [awardsHonorsFanList, setAwardsHonorsFanList] = useState([])
   const [pageType, setPageType] = useState(AWARD_PAGE_TYPE.DJTOP)
   const [selectedDJIndex, setSelectedDJIndex] = useState(0)
-
+  const dispatch = useDispatch();
   const fetchDataListLatest = useCallback(
     async (pageType) => {
       if (awardsHonorsDJList.length > 0 && awardsHonorsFanList.length > 0) return // prevents from calling api unnecessarily
@@ -38,9 +40,10 @@ export default function awardEvent() {
           setAwardsHonorsFanList(list)
         }
       } else {
-        context.action.alert({
+
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: message
-        })
+        }))
       }
     },
     [awardsHonorsDJList, awardsHonorsFanList]

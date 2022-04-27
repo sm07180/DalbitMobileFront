@@ -5,15 +5,14 @@ import NoResult from 'components/ui/noResult/NoResult';
 // components
 import CheckList from '../../components/CheckList';
 import SocialList from '../../components/SocialList';
-import Utility from "components/lib/utility";
-import {Context} from "context";
 import API from "context/api";
-import {useHistory, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const FanboardSection = (props) => {
   const { fanBoardData, isMyProfile, deleteContents, profileData, openBlockReportPop, getFanBoardData, params } = props;
-  const context = useContext(Context)
-  const memNo = context.profile.memNo;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [formState, setFormState] = useState({
     contents: "",
     others: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
@@ -32,7 +31,7 @@ const FanboardSection = (props) => {
       confirm = false;
     }
     if(!confirm) {
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     }
     return confirm;
   };
@@ -43,13 +42,13 @@ const FanboardSection = (props) => {
     const {contents, others} = formState;
     const {data, result, message} = await API.member_fanboard_add({
       data: {
-        memNo: params.memNo ? params.memNo : context.profile.memNo,
+        memNo: params.memNo ? params.memNo : globalState.profile.memNo,
         depth: 1,
         contents,
         viewOn: others
       }
     });
-    context.action.toast({msg: message});
+    dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     if(result === "success") {
       getFanBoardData(1);
       setFormState({...formState, contents: ""});

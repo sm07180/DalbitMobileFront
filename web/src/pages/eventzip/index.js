@@ -5,11 +5,14 @@ import Header from 'components/ui/header/Header'
 
 import './style.scss'
 import moment from "moment";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const EventZip = () => {
   let history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const nowDay = moment().format('YYYYMMDD');
   const [ingEvent, setIngEvent] = useState([]);
   const [endEvent, setEndEvent] = useState([]);
@@ -87,14 +90,14 @@ const EventZip = () => {
         eventInfo[i].endState = false;
         ingList.push(eventInfo[i]);
       }
-    }    
+    }
     setIngEvent(ingList);
     setEndEvent(endList);
   }, [nowDay]);
 
   const golink = (path, endDay, num) => {
     if(endDay){
-      context.action.alert({msg: "해당 이벤트는 종료되었습니다."})
+      dispatch(setGlobalCtxMessage({type: "alert",msg: "해당 이벤트는 종료되었습니다."}))
     }else{
       if(num !== undefined) {
         //golink("path(/notice)", endDay, num(공지사항번호)) => 공지사항 번호를 state값으로 같이 넘겨줘야함
@@ -110,7 +113,7 @@ const EventZip = () => {
    <div id='eventZip'>
     <Header position={'sticky'} title="리브랜딩 이벤트 모음.zip" type={'back'}/>
     <div className='content'>
-      <div className='eventWrap'>        
+      <div className='eventWrap'>
         <div id='ingWrap'>
           {
             ingEvent.map((list, index) => {
@@ -124,7 +127,7 @@ const EventZip = () => {
                     </div>
                   </div>
                 </div>
-              )      
+              )
             })
           }
         </div>
@@ -147,10 +150,10 @@ const EventZip = () => {
                     <div className='eventDate'>{moment(list.startDay).format('MM.DD')} - {moment(list.endDay).format('MM.DD')}</div>
                   </div>
                 </div>
-              )              
+              )
             })
           }
-        </div>  
+        </div>
       </div>
     </div>
    </div>

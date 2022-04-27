@@ -16,14 +16,14 @@ import {setSlidePopupOpen, setSlidePopupClose} from "redux/actions/common";
 
 import "../../scss/teamMake.scss";
 import Api from "context/api";
-import {Context} from "context";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const parts = ['메달','테두리','배경'];
 
 const TeamMake = () => {
-  const context = useContext(Context);
   const history = useHistory();
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popup = useSelector(state => state.popup);
   const memberRdx = useSelector((state) => state.member);
 
@@ -43,7 +43,7 @@ const TeamMake = () => {
   const nextStepShow = () => {
     setNextStep(!nextStep);
   };
-  
+
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
     setPartsName(targetName);
@@ -56,11 +56,11 @@ const TeamMake = () => {
 
   const saveAction=()=>{
     if(teamName === null || teamName === ""){
-      context.action.alert({ visible: true, type: 'alert', msg: `팀 이름을 입력해주세요.` });
+      dispatch(setGlobalCtxMessage({visible: true, type: 'alert', msg: `팀 이름을 입력해주세요.` }));
       return false;
     }
     if (teamConts === null || teamConts === '') {
-      context.action.alert({ visible: true, type: 'alert', msg: `팀 소개를 입력해주세요.` });
+      dispatch(setGlobalCtxMessage({visible: true, type: 'alert', msg: `팀 소개를 입력해주세요.` }));
       return false;
     }
 
@@ -74,12 +74,12 @@ const TeamMake = () => {
     }
     Api.getTeamIns(param).then((res) => {
       if (res.message === 'SUCCESS' && res.data.result ===1) {
-        context.action.toast({ msg: `팀 생성이 완료 되었습니다.` });
+        dispatch(setGlobalCtxMessage({type:'toast', msg: `팀 생성이 완료 되었습니다.` }));
         history.replace(`/team/detail/${res.data.teamNo}`)
       }else{
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     });
     setConfirmPop(false);
@@ -135,9 +135,9 @@ const TeamMake = () => {
     if(partsName ===""){
       Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
         if(res.data !== 1){
-          context.action.toast({
+          dispatch(setGlobalCtxMessage({type:'toast',
             msg: res.message
-          })
+          }))
           history.replace('/myPage')
         }
       })
@@ -173,30 +173,30 @@ const TeamMake = () => {
           {parts.map((list,index) => {
             return (
               <div className="typeList" key={index}>
-                {index === 0 && partsA !== '' ? 
+                {index === 0 && partsA !== '' ?
                   <button
                     className="acitve"
-                    data-target-name={list} 
+                    data-target-name={list}
                     onClick={openPartsChoice}>
                     <img src={partsA} alt="" />
                   </button>
-                  : index === 1 && partsB !== '' ? 
+                  : index === 1 && partsB !== '' ?
                   <button
                     className="acitve"
-                    data-target-name={list} 
+                    data-target-name={list}
                     onClick={openPartsChoice}>
                     <img src={partsB} alt="" />
                   </button>
-                  : index === 2 && partsC !== '' ? 
+                  : index === 2 && partsC !== '' ?
                   <button
                     className="acitve"
-                    data-target-name={list} 
+                    data-target-name={list}
                     onClick={openPartsChoice}>
                     <img src={partsC} alt="" />
                   </button>
-                  : 
+                  :
                   <button
-                    data-target-name={list} 
+                    data-target-name={list}
                     onClick={openPartsChoice}>
                     +
                   </button>
@@ -212,7 +212,7 @@ const TeamMake = () => {
           />
         }
         <div className="buttonWrap">
-          {nextStep ? 
+          {nextStep ?
             <SubmitBtn text="완료" onClick={clickConfirmPopup} />
             :
             <SubmitBtn text="다음" onClick={nextStepShow} state={(partsA && partsB && partsC) !== '' ? '' : 'disabled'} />

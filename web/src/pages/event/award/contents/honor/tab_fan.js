@@ -1,14 +1,14 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
 
 export default function TabFan(props) {
   const {
     eachFan: {joinDt, listenTime, goodPoint, memNo, profImg, nickNm, fanTitle}
   } = props
   const history = useHistory()
-  const context = useContext(Context)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const renderList = [
     {
@@ -26,7 +26,7 @@ export default function TabFan(props) {
   ]
 
   const directUser = () => {
-    !context.token.isLogin
+    !globalState.token.isLogin
       ? history.push({
           pathname: '/login',
           state: {state: 'event/award/2020'}

@@ -1,16 +1,17 @@
-import React, {useEffect, useContext} from 'react'
-import styled from 'styled-components'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 // static
 import closeBtn from './static/ic_back.svg'
-import {Store} from './index'
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
 
   const goBack = () => {
-    if (context.noticeIndexNum.split('/')[3] !== undefined) {
+    if (globalState.noticeIndexNum.split('/')[3] !== undefined) {
       return history.push('/')
     } else {
       return history.goBack()

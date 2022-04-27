@@ -8,20 +8,21 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {IMG_SERVER} from 'context/config'
 import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
 import {
   RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
 } from "common/audio/clip_func";
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
+import {useDispatch, useSelector} from "react-redux";
 // components
 // css
 
 export default withRouter((props) => {
   const {data, tab, topRankList, breakNo} = props;
 
-  const context = useContext(Context);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const goProfile = (value) => {
     if (value !== undefined) {
@@ -54,13 +55,13 @@ export default withRouter((props) => {
                 }
                 {tab === 'FAN' &&
                   <>
-                    <DataCnt type={'starCnt'} value={list.starCnt} clickEvent={(e) => goProfile(list.djMemNo)}/>
+                    <DataCnt type={'starCnt'} value={list.starCnt} clickEvent={(e) => goProfile(list.djMemNo, e)}/>
                     <DataCnt type={"listenPoint"} value={list.listenPoint}/>
                   </>
                 }
                 {tab === 'CUPID' &&
                   <>
-                    <DataCnt type={'cupid'} value={list.djNickNm} clickEvent={(e) => goProfile(list.djMemNo)}/>
+                    <DataCnt type={'cupid'} value={list.djNickNm} clickEvent={(e) => goProfile(list.djMemNo, e)}/>
                     <DataCnt type={'djGoodPoint'} value={list.djGoodPoint} />
                   </>
                 }
@@ -76,7 +77,7 @@ export default withRouter((props) => {
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
-                  RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, history, list.nickNm);
+                  RoomValidateFromClipMemNo(list.roomNo, list.memNo, dispatch, globalState, history, list.nickNm);
                 }}>
                   <span className='equalizer'>
                     <Lottie options={{ loop: true, autoPlay: true, path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json` }} />
@@ -91,7 +92,7 @@ export default withRouter((props) => {
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();
                     RoomValidateFromListenerFollow({
-                      memNo:list.memNo, history, context, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
+                      memNo:list.memNo, history, globalState, dispatch, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
                     });
                   }}>
                     <span className='headset'>

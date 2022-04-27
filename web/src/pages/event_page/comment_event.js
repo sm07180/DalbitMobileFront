@@ -1,7 +1,6 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 
 //context
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
 // static
@@ -9,15 +8,18 @@ import refreshIcon from './static/refresh.svg'
 import deleteIcon from './static/close.svg'
 
 import API from 'context/api'
-import {Hybrid} from '../../context/hybrid'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function CommentEvent() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [eventIndex, setEventIndex] = useState(1)
   const [commentTxt, setCommentTxt] = useState('')
   const [commentList, setCommentList] = useState([])
 
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const {token} = globalState
   const history = useHistory()
 
   const timeFormat = (strFormatFromServer) => {
@@ -78,20 +80,22 @@ export default function CommentEvent() {
             }
             if (token.isLogin) {
               if (commentTxt === '') {
-                globalCtx.action.alert({
+                dispatch(setGlobalCtxMessage({
+                  type: "alert",
                   msg: '내용을 입력해주세요.'
-                })
+                }))
               } else {
                 setCommentTxt('')
                 AddComment(token.memNo, eventIndex, 1, commentTxt)
               }
             } else {
-              globalCtx.action.alert({
+              dispatch(setGlobalCtxMessage({
+                type: "alert",
                 msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                 callback: () => {
                   history.push(`/login?redirect=/event_page`)
                 }
-              })
+              }))
             }
           }}>
           등록
@@ -139,12 +143,14 @@ export default function CommentEvent() {
                           fetchCommentData()
                         }
                       }
-                      globalCtx.action.confirm({
+
+                      dispatch(setGlobalCtxMessage({
+                        type: "confirm",
                         msg: '댓글을 삭제하시겠습니까?',
                         callback: () => {
                           DeleteComment(replyIdx, eventIndex)
                         }
-                      })
+                      }))
                     }}>
                     <img src={deleteIcon}></img>
                   </button>

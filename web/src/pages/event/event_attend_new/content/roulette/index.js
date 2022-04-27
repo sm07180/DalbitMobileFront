@@ -1,20 +1,22 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 
 import API from 'context/api'
-import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
 
 import './roulette.scss'
 import Notice from '../notice'
 import PopRoulette from './popRoulette'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function RouletteTab() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const {token} = globalState
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {popRoulette, authCheckYn} = eventAttendState
 
@@ -67,7 +69,8 @@ export default function RouletteTab() {
 
   const startIn = () => {
     if (!token.isLogin) {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         callback: () => {
           history.push({
             pathname: '/login',
@@ -77,23 +80,25 @@ export default function RouletteTab() {
           })
         },
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.'
-      })
+      }))
     } else {
-      if (globalCtx.selfAuth === false) {
-        globalCtx.action.alert({
+      if (globalState.selfAuth === false) {
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '본인인증 후 참여해주세요.',
 
           callback: () => {
             history.push('/selfauth?event=/event/attend_event/roulette')
           }
-        })
+        }))
       } else {
         if (eventAttendState.couponCnt !== 0 || eventAttendState.eventCouponCnt !== 0) {
           eventAttendAction.setPopRoulette(popRoulette ? false : true)
         } else if (eventAttendState.couponCnt === 0 && eventAttendState.eventCouponCnt === 0) {
-          globalCtx.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: '응모권을 획득 후 참여해주세요!'
-          })
+          }))
         }
       }
     }

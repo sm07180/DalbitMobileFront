@@ -9,18 +9,20 @@ import './totalInfo.scss'
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {useHistory} from "react-router-dom";
 import FeedLike from "pages/profile/components/FeedLike";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Api from "context/api";
-import {Context} from "context";
 import Utility from 'components/lib/utility';
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TotalInfo = (props) => {
   const history = useHistory();
   const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const profileData = useSelector(state => state.profile);
-  const context = useContext(Context);
+  const dispatch = useDispatch();
   const swiperRef = useRef();
   const defaultNotice = [{
     contents: "방송 공지를 등록해주세요.",
@@ -92,17 +94,17 @@ const TotalInfo = (props) => {
 
     const param ={
       teamNo: teamNo,
-      memNo: context.token.memNo,
+      memNo: globalState.token.memNo,
       reqSlct: 'r' //신청구분 [r:가입신청, i:초대]
     };
 
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: '팀 가입신청이 완료 되었습니다.'
-        });
+        }));
       } else {
-        context.action.toast({ msg: res.message });
+        dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }));
       }
     })
   }

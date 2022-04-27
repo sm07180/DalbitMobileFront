@@ -3,15 +3,15 @@ import Api from "context/api";
 import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import {setCommonPopupClose} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
-import {Context} from "context";
 import {isAndroid} from "context/hybrid";
+import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
   const {profileData} = props;
   const [specialHistory, setSpecialHistory] = useState({cnt: 0, list: [], isLoading: false, pageNo: 1}); // 해당유저의 스페셜DJ 데이터
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popup = useSelector(state => state.popup);
-  const context = useContext(Context);
   let pagePerCnt = 100;
 
   /* 스페셜DJ 약력 조회 */
@@ -24,10 +24,10 @@ const SpecialHistoryPop = (props) => {
       if (res.result === 'success') {
         setSpecialHistory({cnt: res.data[0], list: specialHistory.list.concat(res.data[1]), isLoading: false, pageNo: pageNo});
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           callback: () => {},
           msg: res.message
-        })
+        }))
       }
     });
   }
@@ -60,17 +60,17 @@ const SpecialHistoryPop = (props) => {
     fetchSpecialHistory(1);
 
     if(isAndroid()) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'commonPop', popupData: {...popup, historyPopup: false}})
+      dispatch(setGlobalCtxBackState(true))
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop', popupData: {...popup, historyPopup: false}}))
     }
 
     return () => {
       closePop();
       if(isAndroid()) {
-        if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null)
+        if(globalState.backFunction.name.length === 1) {
+          dispatch(setGlobalCtxBackState(null))
         }
-        context.action.updateBackFunction({name: ''})
+        dispatch(setGlobalCtxBackFunction({name: ''}))
       }
     }
   },[]);

@@ -4,18 +4,18 @@ import Lottie from 'react-lottie'
 // global components
 import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {
   RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
 } from "common/audio/clip_func";
 import {IMG_SERVER} from 'context/config'
-
+import {useDispatch, useSelector} from "react-redux";
 const CardList = (props) => {
   const {data} = props
 
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   let locationStateHistory = useHistory();
 
@@ -41,7 +41,7 @@ const CardList = (props) => {
                       !list.listenRoomNo && list.roomNo &&
                         <div className='livetag' onClick={(e) => {
                           e.stopPropagation();
-                          RoomValidateFromClipMemNo(list.roomNo, list.memNo, context, locationStateHistory, list.nickNm);
+                          RoomValidateFromClipMemNo(list.roomNo, list.memNo, dispatch, globalState, locationStateHistory, list.nickNm);
                         }}>
                           <Lottie
                             options={{
@@ -57,7 +57,7 @@ const CardList = (props) => {
                       <div className='listenertag' onClick={(e) => {
                         e.stopPropagation();
                         RoomValidateFromListenerFollow({
-                          memNo:list.memNo, history:locationStateHistory, context, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
+                          memNo:list.memNo, history:locationStateHistory, globalState, dispatch, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
                         });
                       }}>
                         <Lottie

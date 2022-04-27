@@ -2,19 +2,21 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 // Api
 import { getNoticeList, postNoticeWrite, deleteNoticeWrite } from "common/api";
 import API from "context/api";
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 // component
 import NoResult from "common/ui/no_result";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 import {BROAD_NOTICE_LENGTH} from "../../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
 
 let isModify = false;
 export default function NoticeList(props: any) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //ctx
-  const { globalAction, globalState } = useContext(GlobalContext);
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+
   const { roomOwner, roomNo } = props;
   //state
   const [loadNoticeMsg, setLoadNoticeMsg] = useState<string>("");
@@ -47,9 +49,7 @@ export default function NoticeList(props: any) {
       });
       if (result === "success") {
         searchNotice(roomNo);
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({ status: true, message: message });
-        }
+        dispatch(setGlobalCtxSetToastStatus({ status: true, message: message }));
       }
     }
     fetchNoticeFunc();
@@ -88,9 +88,7 @@ export default function NoticeList(props: any) {
       if(result === "success") {
         searchNotice(roomNo);
         isModify = false;
-        if (globalAction.callSetToastStatus) {
-          globalAction.callSetToastStatus({ status: true, message: message });
-        }
+        dispatch(setGlobalCtxSetToastStatus({ status: true, message: message }));
       }
     }
     fetchNoticeModifyFunc();
@@ -118,14 +116,14 @@ export default function NoticeList(props: any) {
 
   const DeleteNotice = (e) => {
     const {noticeIdx} = e.currentTarget.dataset;
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: "공지사항을 삭제하시겠습니까?",
       callback: () => {
         fetchNoticeDelete(roomNo, noticeIdx);
       },
-    });
+    }));
   };
 
   return (

@@ -17,9 +17,11 @@ import {MiniGameType, tabType, rouletteOptions} from "../../../constant";
 
 // Static
 import CloseIcon from "../../../static/ic_close_round_fill.svg";
+import {setBroadcastCtxRightTabType} from "../../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../../redux/actions/globalCtx";
 
 export default function RouletteTabEdit (props) {
-  const { roomNo, globalAction, broadcastAction, broadcastState, isFree, setIsFree, price, setPrice,
+  const { roomNo, dispatch, broadcastState, isFree, setIsFree, price, setPrice,
     options, setOptions, toggleCaption, setToggleCaption, createAuto, setCreateAuto, setMiniGameInfo
   } = props;
 
@@ -79,11 +81,10 @@ export default function RouletteTabEdit (props) {
 
   const checkInspection = useCallback(() => {
     if (inspection.status === false) {
-      globalAction.callSetToastStatus &&
-      globalAction.callSetToastStatus({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: inspection.msg,
-      });
+      }));
     } else {
       if (broadcastState.miniGameInfo.status === true) {
         modifyRoulette();
@@ -115,11 +116,10 @@ export default function RouletteTabEdit (props) {
 
       changeRightTabListener();
     } else {
-      globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   }, [isFree, options, price, createAuto]);
 
@@ -145,24 +145,22 @@ export default function RouletteTabEdit (props) {
 
       changeRightTabListener();
     } else {
-      globalAction.setAlertStatus &&
-      globalAction.setAlertStatus({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         content: message,
-      });
+      }));
     }
   }, [isFree, options, price, createAuto]);
 
   const callToastMessage = useCallback((msg) => {
-    globalAction.callSetToastStatus &&
-    globalAction.callSetToastStatus({
+    dispatch(setGlobalCtxSetToastStatus({
       status: true,
       message: msg,
-    });
+    }));
   }, []);
 
   const changeRightTabListener = useCallback(() => {
-    broadcastAction.setRightTabType && broadcastAction.setRightTabType(tabType.LISTENER);
+    dispatch(setBroadcastCtxRightTabType(tabType.LISTENER));
   }, []);
 
   useEffect(() => {

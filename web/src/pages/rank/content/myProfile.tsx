@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
-import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
+import {useHistory} from "react-router-dom";
+import {printNumber} from "lib/common_fn";
 
-import { useHistory } from "react-router-dom";
-import { printNumber } from "lib/common_fn";
+import {getRankReward, postRankSetting} from "common/api";
+import {convertDateToText} from "lib/rank_fn";
 
-import { getRankReward, postRankSetting } from "common/api";
-import { convertMonday, convertMonth, convertDateToText, convertSetSpecialDate } from "lib/rank_fn";
-
-import { DATE_TYPE, RANK_TYPE } from "../constant";
+import {DATE_TYPE, RANK_TYPE} from "../constant";
 
 import trophyImg from "../static/rankingtop_back@2x.png";
 import likeIcon from "../static/like_g_s.svg";
@@ -18,12 +15,15 @@ import likeRedIcon from "../static/like_red_m.svg";
 import RewardPop from "./reward";
 import ResetPointPop from "./reset_point_pop";
 import BadgeList from "../../../common/badge_list";
-import { Stats } from "fs";
+import {useDispatch, useSelector} from "react-redux";
+import {setRankData} from "../../../redux/actions/rank";
+import {setGlobalCtxAlertStatus} from "../../../redux/actions/globalCtx";
 
 export default function MyProfile() {
   const history = useHistory();
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { rankState, rankAction } = useContext(RankContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const { formState, myInfo, rankTimeData, rankData } = rankState;
   const [myProfile, setMyProfile] = useState<any>(false);
   const [rewardProfile, setRewardProfile] = useState({
@@ -66,11 +66,10 @@ export default function MyProfile() {
         //   myInfo: myInfo,
         // });
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: "랭킹 보상을 받을 수 있는\n기간이 지났습니다.",
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: "랭킹 보상을 받을 수 있는\n기간이 지났습니다.",
+        }));
       }
     }
     feachrankingReward();
@@ -151,29 +150,25 @@ export default function MyProfile() {
         </p>
         <button
           onClick={() => {
-            globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                type: "confirm",
-                content: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #FF3C7B;">반영하시겠습니까?</span>`,
-                callback: () => {
-                  globalAction.setAlertStatus &&
-                    globalAction.setAlertStatus({
-                      status: true,
-                      content: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
-                      callback: () => {
-                        rankSettingBtn(true);
-                        setRankSetting(true);
-
-                        rankAction.setRankData &&
-                          rankAction.setRankData({
-                            ...rankState.rankData,
-                            isRankData: true,
-                          });
-                      },
-                    });
-                },
-              });
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              type: "confirm",
+              content: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #FF3C7B;">반영하시겠습니까?</span>`,
+              callback: () => {
+                dispatch(setGlobalCtxAlertStatus({
+                  status: true,
+                  content: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
+                  callback: () => {
+                    rankSettingBtn(true);
+                    setRankSetting(true);
+                    dispatch(setRankData({
+                      ...rankState.rankData,
+                      isRankData: true,
+                    }))
+                  },
+                }));
+              },
+            }));
           }}
         >
           <img src="https://image.dalbitlive.com/ranking/ico_circle_x_g@2x.png" alt="icon" /> 반영하기
@@ -284,7 +279,7 @@ export default function MyProfile() {
                         </div>
 
                         {/* <div className="countBox">
-                      
+
                     </div> */}
                         <div className="bestFanBox">
                           <span className="bestFanBox__label">심쿵유발자</span>

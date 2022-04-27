@@ -3,7 +3,8 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import WinnerInfo from './winner_info'
 import {winnerInspection} from './validation_fn'
-import {Context} from 'context'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const FormDataReducer = (state, action) => {
   switch (action.type) {
@@ -81,7 +82,7 @@ const initData = {
 export default function WinnerInfoForm() {
   const history = useHistory()
   const [formData, formDispatch] = useReducer(FormDataReducer, initData)
-  const context = useContext(Context)
+  const dispatch = useDispatch();
 
   const submitWinnerForm = () => {
     async function fetchData() {
@@ -102,21 +103,18 @@ export default function WinnerInfoForm() {
         }
       })
       if (result === 'success') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             return window.location.href='/'
           }
-        })
+        }));
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
-          callback: () => {
-            context.action.alert({
-              visible: false
-            })
-          }
-        })
+        }));
       }
     }
     fetchData()
@@ -127,9 +125,10 @@ export default function WinnerInfoForm() {
     if (result['status']) {
       submitWinnerForm()
     } else {
-      context.action.alert({
-        msg: result.content
-      })
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
+        msg: result.content,
+      }));
     }
   }
 

@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router-dom";
 
-import { GlobalContext } from "context";
-
 import {
   selfAuthCheck,
   getExchangeHistory,
@@ -29,6 +27,8 @@ import MakeRepplyWrap from "./subcontent/do_exchange_repply";
 import MakeAddWrap from "./subcontent/do_exchange_add";
 import AddPop from "./subcontent/do_exchange_add_pop";
 import SettingPop from "./subcontent/do_exchange_setting_pop";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../../../redux/actions/globalCtx";
 type FormType = {
   byeolCnt: number;
   name: string;
@@ -184,8 +184,9 @@ const formInit = {
   consent: false,
 };
 
-export default function DoExchange({ state, dispatch }) {
-  const { globalState, globalAction } = useContext(GlobalContext);
+export default function DoExchange({ state, exchangeDispatch }) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [badgeSpecial, setBadgeSpecial] = useState<number>(0);
   const [currentByeol, setCurrentByeol] = useState<number>(0);
@@ -238,13 +239,12 @@ export default function DoExchange({ state, dispatch }) {
     const res = await exchangeApply({ ...paramData });
 
     if (res.result === "success") {
-      dispatch({ type: "result", value: { ...res.data } });
+      exchangeDispatch({ type: "result", value: { ...res.data } });
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: res.message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: res.message,
+      }));
     }
   };
 
@@ -268,13 +268,12 @@ export default function DoExchange({ state, dispatch }) {
     const res = await exchangeReApply({ ...paramData });
 
     if (res.result === "success") {
-      dispatch({ type: "result", value: { ...res.data } });
+      exchangeDispatch({ type: "result", value: { ...res.data } });
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: res.message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: res.message,
+      }));
     }
   };
 
@@ -289,22 +288,20 @@ export default function DoExchange({ state, dispatch }) {
     } else {
       if (result.skip !== undefined && result.skip === true) {
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: result["content"],
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: result["content"],
+        }));
       }
     }
   };
 
   const fnExchangeCalc = async () => {
     if (formData.byeolCnt < 570) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "환전 신청별은\n570개 이상이어야 합니다.",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "환전 신청별은\n570개 이상이어야 합니다.",
+      }));
     } else {
       const res = await getExchangeCalc({
         byeol: formData.byeolCnt,
@@ -337,11 +334,10 @@ export default function DoExchange({ state, dispatch }) {
     if (result === "success") {
       setAddList(data.list);
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   async function fetchAddAccount() {
@@ -354,17 +350,15 @@ export default function DoExchange({ state, dispatch }) {
     const { result, data, message } = res;
     setAddBool(false);
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   async function fetchModiAccount() {
@@ -381,17 +375,15 @@ export default function DoExchange({ state, dispatch }) {
     setModiInfo("");
     setModiBool(false);
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   async function fetchDeleteAccount() {
@@ -404,20 +396,18 @@ export default function DoExchange({ state, dispatch }) {
     setModiInfo("");
     setModiBool(false);
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-          callback: () => {
-            setDeleteState("");
-          },
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+        callback: () => {
+          setDeleteState("");
+        },
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   useEffect(() => {
@@ -511,7 +501,7 @@ export default function DoExchange({ state, dispatch }) {
             <div
               className="doExchangeWrap__contentsHeader--info"
               onClick={(e) => {
-                dispatch({ type: "status", value: 1 });
+                exchangeDispatch({ type: "status", value: 1 });
               }}
             >
               <span>환전안내</span>
@@ -596,7 +586,7 @@ export default function DoExchange({ state, dispatch }) {
             </button>
           )}
         </div>
-        {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} />}
+        {radioCheck === 0 && <MakeFormWrap state={formData} formDispatch={formDispatch} inspection={checkInspection} />}
         {radioCheck === 1 && (
           <MakeRepplyWrap
             state={exchangeHistory.value}

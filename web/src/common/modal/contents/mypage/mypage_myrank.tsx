@@ -1,7 +1,5 @@
 // tab navigation
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
-import { GlobalContext } from "context";
 import { useHistory, useParams } from "react-router-dom";
 // api
 import { getFanRankList, getGoodRankList, postAddFan, deleteFan } from "common/api";
@@ -17,10 +15,12 @@ import bronzeMedal from "./static/medal_bronze_m@2x.png";
 import dalIcon from "./static/ic_moon_s@2x.png";
 import goodIcon from "./static/like_red_m@2x.png";
 import hintIcon from "./static/hint.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 export default (props) => {
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [detailPopup, setDetailPopup] = useState(false);
   const [rankingType, setRankingType] = useState("fan"); // fan, all
@@ -75,11 +75,11 @@ export default (props) => {
             fetchFanGood();
           }
         }
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     AddFanFunc();
@@ -100,11 +100,11 @@ export default (props) => {
           }
         }
 
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     DeleteFanFunc();

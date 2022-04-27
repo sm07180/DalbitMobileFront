@@ -1,13 +1,15 @@
-import React, {useEffect, useCallback, useState, useContext, useMemo, useRef} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import Api from 'context/api'
-import {Context} from 'context'
 import DalbitCropper from 'components/ui/dalbit_cropper'
 import ProfileAvatarList from './profile_avatarList'
 import {IMAGE_THUMB} from '../constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxMultiViewer, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 const ProfileAvatar = ({setCurrentAvatar}) => {
-  const globalCtx = useContext(Context)
-  const {profile, token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {profile, token} = globalState
   const inputRef = useRef(null)
   const avatarInputRef = useRef(null)
   const [img, setImg] = useState('https://image.dalbitlive.com/mypage/ico_profile.svg')
@@ -29,12 +31,12 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
   }, [profile?.profImgList])
 
   const alertMessage = (message) => {
-    globalCtx.action.alert({
+    dispatch(setGlobalCtxMessage({
+      type: "alert",
       msg: message,
       callback: () => {
-        globalCtx.action.alert({visible: false})
       }
-    })
+    }))
   }
 
   const clearInputValue = useCallback(() => {
@@ -48,11 +50,11 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
 
   const onProfileClick = () => {
     if (indexOfMainProfile !== -1) {
-      globalCtx.action.updateMultiViewer({
+      dispatch(setGlobalCtxMultiViewer({
         show: true,
         list: profile.profImgList.length ? profile.profImgList : [{profImg: profile.profImg}],
         initSlide: indexOfMainProfile
-      })
+      }));
     }
   }
   const onProfileChange = (e) => {
@@ -65,7 +67,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
     Api.profile({params: {memNo: profile.memNo}}).then((res) => {
       const {result, message, data} = res
       if (result === 'success') {
-        globalCtx.action.updateProfile(data)
+        dispatch(setGlobalCtxUpdateProfile(data));
       } else {
         alertMessage(message)
       }
@@ -78,9 +80,10 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
       if (result === 'success') {
         getProfileAcount()
         setLoading(false)
-        globalCtx.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '이미지 등록 되었습니다.'
-        })
+        }))
       } else {
         alertMessage(message)
       }
@@ -107,31 +110,32 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
         }
       } else {
         setLoading(false)
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
           title: '',
           callback: () => {
-            globalCtx.action.alert({visible: false})
           }
-        })
+        }))
       }
     })
   }, [editedImg, hasPhotoList, clearInputValue])
 
   const onAddProfileClick = () => {
     if (profile?.profImgList && profile?.profImgList.length >= 10) {
-      globalCtx.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type: "toast",
         msg: '프로필 사진은 최대 10장까지 등록 가능합니다.'
-      })
+      }))
     }
   }
 
   const onImgClick = (index) => {
-    globalCtx.action.updateMultiViewer({
+    dispatch(setGlobalCtxMultiViewer({
       show: true,
       list: profile.profImgList.length ? profile.profImgList : [{profImg: profile.profImg}],
       initSlide: index
-    })
+    }));
   }
 
   useEffect(() => {
@@ -144,14 +148,14 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
     if (editedImg !== null) {
       if (editedImg.status === false) {
         if (editedImg.content) {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
             status: true,
             type: 'alert',
             content: image.content,
             callback: () => {
               return
             }
-          })
+          }))
         }
       } else {
         uploadImageToServer()

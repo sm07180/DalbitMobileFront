@@ -1,20 +1,22 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 
 import Api from 'context/api'
 
 import './popup.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const PopupChoice = (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {onClose, stepNo, list, phoneNo, onSuccess} = props
   const [giftCheck, setGiftCheck] = useState(-1)
 
   // 0. 선물 받기
   const welcomeGiftRcv = async () => {
     if (giftCheck === -1) {
-      context.action.toast({msg: '선물을 선택해 주세요.'})
+      dispatch(setGlobalCtxMessage({type: "toast", msg: '선물을 선택해 주세요.'}))
       return;
     }
 
@@ -35,7 +37,7 @@ const PopupChoice = (props) => {
     if (res.code === '00000') {
       onSuccess({ giftCode, giftName, giftStepNo });
     } else if (res.code !== '99999') {
-      context.action.toast({msg: res.message})
+      dispatch(setGlobalCtxMessage({type: "toast", msg: res.message}))
     } else {
       console.log(res.code);
     }

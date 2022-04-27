@@ -1,6 +1,5 @@
 import React, {useContext, useState,useEffect} from 'react';
 import {useHistory, useParams} from "react-router-dom";
-import {Context} from 'context';
 // global components
 import Header from 'components/ui/header/Header';
 import CntWrapper from 'components/ui/cntWrapper/cntWrapper';
@@ -12,23 +11,25 @@ import ButtonWrap from './components/ButtonWrap';
 
 import './index.scss';
 import Api from "context/api";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TeamPage = () => {
   const history = useHistory();
-  const context = useContext(Context);
   const [listCnt,setListCnt]=useState(0);
   const [list,setList]=useState([])
   const [invitationChk , setInvitationChk]=useState(false);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const memberRdx = useSelector((state) => state.member);
 
   useEffect(()=>{
-    if(!(context.token.isLogin)) {
+    if(!(globalState.token.isLogin)) {
       history.push("/login");
     }
     Api.getTeamInsChk({memNo:memberRdx.memNo}).then((res) => {
       if(res.data !== 1 && res.data !== -3 && res.data !== -1 ){
-       /* context.action.toast({
+       /* dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
         })*/
         history.replace('/myPage')
@@ -57,9 +58,9 @@ const TeamPage = () => {
         setListCnt(res.data.listCnt)
         setList(res.data.list)
       }else{
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -73,9 +74,9 @@ const TeamPage = () => {
       if (res.code === "00000") {
         setInvitationChk(true);
       }else{
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: res.message
-        })
+        }))
       }
     })
   }
@@ -87,7 +88,7 @@ const TeamPage = () => {
       <CntWrapper>
         <InfoSlide />
         <InviteList list={list} listCnt={listCnt} memNo={memberRdx.memNo} setInvitationChk={setInvitationChk}/>
-        <ButtonWrap memNo={memberRdx.memNo} context={context}/>
+        <ButtonWrap memNo={memberRdx.memNo}/>
       </CntWrapper>
     </div>
   )

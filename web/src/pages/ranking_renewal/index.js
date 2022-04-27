@@ -1,19 +1,36 @@
-import React, {useState, useEffect, useContext, useCallback, useRef, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {useHistory} from 'react-router-dom'
-
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
 import {
   convertDateFormat,
-  convertSetSpecialDate,
+  convertDateTimeForamt,
+  convertDateToText,
   convertMonday,
   convertMonth,
-  convertDateToText,
-  convertDateTimeForamt
+  convertSetSpecialDate
 } from 'pages/common/rank/rank_fn'
+
+import {
+  setRankData,
+  setRankFormInit,
+  setRankFormPage,
+  setRankFormPageType,
+  setRankFormSearch,
+  setRankLevelList,
+  setRankLikeList,
+  setRankList,
+  setRankMyInfo,
+  setRankScrollY,
+  setRankSecondList,
+  setRankSpecialList,
+  setRankSpecialPoint,
+  setRankSpecialPointList,
+  setRankTimeData,
+  setRankTotalPage,
+  setRankWeeklyList
+} from "redux/actions/rank";
 
 //components
 import Layout from 'pages/common/layout'
@@ -37,42 +54,43 @@ import LikeListTop from './components/like_list_top'
 import MonthlyDJ from './components/monthlyDJ'
 
 //constant
-import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
-
-const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
+import {DATE_TYPE, PAGE_TYPE, RANK_TYPE} from './constant'
 import './index.scss'
 import level from 'pages/level'
 
 import benefitIcon from './static/benefit@3x.png'
 import hallOfFameIcon from './static/ic_fame.svg'
 import rankingPageIcon from './static/ic_ranking_page.svg'
-import awardIcon from './static/ic_award.png'
+import {useDispatch, useSelector} from "react-redux";
+
+const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 
 let timer
 let touchStartY = null
 let touchEndY = null
 let initial = true
 const records = 50
+
 function Ranking() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
-  const {formState, myInfo, rankList, levelList, likeList, totalPage, rankTimeData, rankData, weeklyList, secondList} = rankState
+  const {
+    formState,
+    myInfo,
+    rankList,
+    levelList,
+    likeList,
+    totalPage,
+    rankTimeData,
+    rankData,
+    weeklyList,
+    secondList
+  } = rankState
 
-  const formDispatch = rankAction.formDispatch
-  const setMyInfo = rankAction.setMyInfo
-  const setRankList = rankAction.setRankList
-  const setRankData = rankAction.setRankData
-  const setLevelList = rankAction.setLevelList
-  const setLikeList = rankAction.setLikeList
-  const setTotalPage = rankAction.setTotalPage
-  const setSpecialList = rankAction.setSpecialList
-  const setWeeklyList = rankAction.setWeeklyList
-  const setSecondList = rankAction.setSecondList
-  const setRankTimeData = rankAction.setRankTimeData
-
-  const setScrollY = rankAction.setScrollY
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
   const [fetching, setFetching] = useState(false)
@@ -165,9 +183,7 @@ function Ranking() {
           }, 17)
 
           if (formState.pageType === PAGE_TYPE.RANKING) {
-            formDispatch({
-              type: 'INIT'
-            })
+            dispatch(setRankFormInit());
           }
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
@@ -212,8 +228,8 @@ function Ranking() {
     })
 
     if (result === 'success') {
-      rankAction.setSpecialPoint(data)
-      rankAction.setSpecialPointList(data.list)
+      dispatch(setRankSpecialPoint(data));
+      dispatch(setRankSpecialPointList(data.list));
     } else {
       //실패
     }
@@ -244,7 +260,7 @@ function Ranking() {
             formState[formState.pageType].rankType === RANK_TYPE.FAN ||
             formState[formState.pageType].rankType === RANK_TYPE.LIKE
           ) {
-            if (context.token.isLogin) {
+            if (globalState.token.isLogin) {
               if (listWrapRef.current.classList.length === 1) {
                 listWrapRef.current.className = 'listFixed more'
               }
@@ -266,7 +282,7 @@ function Ranking() {
             formState[formState.pageType].rankType === RANK_TYPE.DJ ||
             formState[formState.pageType].rankType === RANK_TYPE.FAN
           ) {
-            if (context.token.isLogin) {
+            if (globalState.token.isLogin) {
               listWrapRef.current.className = 'more'
             } else {
               listWrapRef.current.className = ''
@@ -302,14 +318,11 @@ function Ranking() {
       // 초기화.
       initial = false
 
-      formDispatch({
-        type: 'SEARCH',
-        val: {
-          rankType: searchRankType,
-          dateType: searchDateType,
-          currentDate: searchCurrentDate
-        }
-      })
+      dispatch(setRankFormSearch({
+        rankType: searchRankType,
+        dateType: searchDateType,
+        currentDate: searchCurrentDate
+      }));
     } else {
       if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
         fetchSpecial()
@@ -324,12 +337,12 @@ function Ranking() {
       }
 
       if (formState[formState.pageType].dateType !== DATE_TYPE.TIME) {
-        setRankTimeData({
+        dispatch(setRankTimeData({
           prevDate: '',
           nextDate: '',
           rankRound: 0,
           titleText: ''
-        })
+        }));
       }
     }
 
@@ -342,11 +355,11 @@ function Ranking() {
       })
       if (res.result === 'success') {
         if (res.data.list.length > 0) {
-          setSpecialList(res.data.list)
+          dispatch(setRankSpecialList(res.data.list));
           setEmpty(false)
         } else {
           setEmpty(true)
-          setSpecialList([])
+          dispatch(setRankSpecialList([]));
         }
       }
 
@@ -361,14 +374,14 @@ function Ranking() {
       })
       if (res.result === 'success') {
         if (formState.page > 1) {
-          setWeeklyList(weeklyList.concat(res.data.list))
+          dispatch(setRankWeeklyList(weeklyList.concat(res.data.list)));
         } else {
-          setWeeklyList(res.data.list)
+          dispatch(setRankWeeklyList(res.data.list));
         }
-        setTotalPage(res.data.paging.totalPage)
+        dispatch(setRankTotalPage(res.data.paging.totalPage));
         setEmpty(false)
       } else {
-        setWeeklyList([])
+        dispatch(setRankWeeklyList([]));
         setEmpty(true)
       }
       setFetching(false)
@@ -382,14 +395,14 @@ function Ranking() {
       })
       if (res.result === 'success') {
         if (formState.page > 1) {
-          setSecondList(secondList.concat(res.data.list))
+          dispatch(setRankSecondList(secondList.concat(res.data.list)));
         } else {
-          setSecondList(res.data.list)
+          dispatch(setRankSecondList(res.data.list));
         }
-        setTotalPage(res.data.paging.totalPage)
+        dispatch(setRankTotalPage(res.data.paging.totalPage));
         setEmpty(false)
       } else {
-        setSecondList([])
+        dispatch(setRankSecondList([]));
         setEmpty(true)
       }
       setFetching(false)
@@ -409,41 +422,40 @@ function Ranking() {
       const {data} = res
       const {isRankData} = data
       if (res.result === 'success') {
-        setRankTimeData({
+        dispatch(setRankTimeData({
           ...rankTimeData,
           ...res.data
-        })
+        }));
+
         if (formState.page > 1) {
-          setRankList(rankList.concat(res.data.list))
-          setRankTimeData({
+          dispatch(setRankList(rankList.concat(res.data.list)));
+          dispatch(setRankTimeData({
             ...rankTimeData,
             ...res.data
-          })
+          }));
         } else {
           if (formState.page > 1) {
-            setRankList(rankList.concat(res.data.list))
+            dispatch(setRankList(rankList.concat(res.data.list)));
             setEmpty(false)
           } else {
             if (res.data.list.length < 6) {
               setEmpty(true)
             } else {
               setEmpty(false)
-              setRankList(res.data.list)
-              setRankData({
-                isRankData
-              })
+              dispatch(setRankList(res.data.list));
+              dispatch(setRankData({isRankData}));
             }
           }
-          setLevelList([])
-          setLikeList([])
-          setTotalPage(res.data.paging.totalPage)
-          setMyInfo({
+          dispatch(setRankLevelList([]));
+          dispatch(setRankLikeList([]));
+          dispatch(setRankTotalPage(res.data.paging.totalPage));
+          dispatch(setRankMyInfo({
             myInfo,
             ...res.data
-          })
+          }))
         }
       } else {
-        setRankList([])
+        dispatch(setRankList([]));
         setEmpty(true)
       }
       setFetching(false)
@@ -497,57 +509,52 @@ function Ranking() {
             if (formState[formState.pageType].rankType === RANK_TYPE.LEVEL) {
               // level
               if (formState.page > 1) {
-                setLevelList(levelList.concat(res.data.list))
+                dispatch(setRankLevelList(levelList.concat(res.data.list)));
               } else {
-                setLevelList(res.data.list)
+                dispatch(setRankLevelList(res.data.list));
               }
-              setRankList([])
-              setLikeList([])
-              setTotalPage(res.data.paging.totalPage)
+              dispatch(setRankList([]));
+              dispatch(setRankLikeList([]));
+              dispatch(setRankTotalPage(res.data.paging.totalPage));
               setEmpty(false)
             } else {
               // dj, fan, like
               const {data} = res
               const {isRankData} = data
               if (formState.page > 1) {
-                setRankList(rankList.concat(res.data.list))
-                setRankData({
-                  isRankData
-                })
+                dispatch(setRankList(rankList.concat(res.data.list)));
+                dispatch(setRankData({isRankData}));
                 setEmpty(false)
               } else {
                 if (res.data.list.length < 6) {
                   setEmpty(true)
                 } else {
                   setEmpty(false)
-                  setRankList(res.data.list)
+                  dispatch(setRankList(res.data.list));
                 }
-
-                setRankData({
-                  isRankData
-                })
+                dispatch(setRankData({isRankData}));
               }
-              setLevelList([])
-              setLikeList([])
-              setTotalPage(res.data.paging.totalPage)
-              setMyInfo({
+              dispatch(setRankLevelList([]));
+              dispatch(setRankLikeList([]));
+              dispatch(setRankTotalPage(res.data.paging.totalPage));
+              dispatch(setRankMyInfo({
                 myInfo,
                 ...res.data
-              })
+              }))
             }
           } else {
             setEmpty(true)
-            setRankList([])
-            setLevelList([])
-            setLikeList([])
-            setMyInfo({...myInfo})
+            dispatch(setRankList([]));
+            dispatch(setRankLevelList([]));
+            dispatch(setRankLikeList([]));
+            dispatch(setRankMyInfo(myInfo));
           }
         } else {
           setEmpty(true)
-          setRankList([])
-          setLevelList([])
-          setLikeList([])
-          setMyInfo({...myInfo})
+          dispatch(setRankList([]));
+          dispatch(setRankLevelList([]));
+          dispatch(setRankLikeList([]));
+          dispatch(setRankMyInfo(myInfo));
         }
 
         setFetching(false)
@@ -557,7 +564,7 @@ function Ranking() {
     return () => {
       didFetch = true
     }
-  }, [formState, context.token.isLogin])
+  }, [formState, globalState.token.isLogin])
 
   useEffect(() => {
     let didFetch = false
@@ -591,7 +598,7 @@ function Ranking() {
             formState[formState.pageType].rankType === RANK_TYPE.FAN ||
             formState[formState.pageType].rankType === RANK_TYPE.LIKE
           ) {
-            if (context.token.isLogin) {
+            if (globalState.token.isLogin) {
               listWrapRef.current.className = 'listFixed more'
             } else {
               listWrapRef.current.className = 'listFixed'
@@ -615,7 +622,7 @@ function Ranking() {
               formState[formState.pageType].rankType === RANK_TYPE.FAN ||
               formState[formState.pageType].rankType === RANK_TYPE.LIKE
             ) {
-              if (context.token.isLogin) {
+              if (globalState.token.isLogin) {
                 listWrapRef.current.className = 'more'
               } else {
                 listWrapRef.current.className = ''
@@ -633,7 +640,7 @@ function Ranking() {
       if (timer) window.clearTimeout(timer)
       timer = window.setTimeout(function () {
         //스크롤
-        setScrollY(window.scrollY)
+        dispatch(setRankScrollY(window.scrollY));
         const diff = document.body.scrollHeight / (formState.page + 1)
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
@@ -652,23 +659,17 @@ function Ranking() {
                     (formState.page < 40 && formState[formState.pageType].dateType === DATE_TYPE.MONTH) ||
                     (formState.page < 60 && formState[formState.pageType].dateType === DATE_TYPE.YEAR)
                   ) {
-                    formDispatch({
-                      type: 'PAGE'
-                    })
+                    dispatch(setRankFormPage());
                   }
                 } else if (
                   formState[formState.pageType].rankType === RANK_TYPE.LEVEL ||
                   formState[formState.pageType].rankType === RANK_TYPE.LIKE
                 ) {
                   if (formState.page < 4) {
-                    formDispatch({
-                      type: 'PAGE'
-                    })
+                    dispatch(setRankFormPage());
                   }
                 } else {
-                  formDispatch({
-                    type: 'PAGE'
-                  })
+                  dispatch(setRankFormPage());
                 }
               }
             }
@@ -693,13 +694,13 @@ function Ranking() {
             <button
               className="benefitSize"
               onClick={() => {
-                setRankTimeData({
+                dispatch(setRankTimeData({
                   prevDate: '',
                   nextDate: '',
                   rankRound: 0,
                   titleText: '',
                   isRankData: false
-                })
+                }));
                 history.push({
                   pathname: `/rank/benefit`,
                   state: {
@@ -713,16 +714,13 @@ function Ranking() {
             <button
               className="benefitSize"
               onClick={() => {
-                setRankTimeData({
+                dispatch(setRankTimeData({
                   prevDate: '',
                   nextDate: '',
                   rankRound: 0,
                   titleText: ''
-                })
-                formDispatch({
-                  type: 'PAGE_TYPE',
-                  val: PAGE_TYPE.RANKING
-                })
+                }));
+                dispatch(setRankFormPageType(PAGE_TYPE.RANKING));
               }}>
               <img src={rankingPageIcon} alt="랭킹" />
             </button>
@@ -731,16 +729,13 @@ function Ranking() {
             <button
               className="hallOfFame"
               onClick={() => {
-                setRankTimeData({
+                dispatch(setRankTimeData({
                   prevDate: '',
                   nextDate: '',
                   rankRound: 0,
                   titleText: ''
-                })
-                formDispatch({
-                  type: 'PAGE_TYPE',
-                  val: PAGE_TYPE.FAME
-                })
+                }));
+                dispatch(setRankFormPageType(PAGE_TYPE.FAME));
               }}>
               <img src={hallOfFameIcon} alt="명예의 전당" />
             </button>

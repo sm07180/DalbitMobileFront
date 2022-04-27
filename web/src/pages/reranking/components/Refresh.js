@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react'
 import Lottie from 'react-lottie'
 // global components
 import Swiper from 'react-id-swiper'
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {IMG_SERVER} from 'context/config'
@@ -27,7 +26,7 @@ const Refresh = (props) => {
       setSelect("time")
     }
   }
-  
+
   useEffect(() => {
     if(select === "time") {
       setRefreshText("일간 랭킹");

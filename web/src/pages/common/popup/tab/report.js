@@ -1,27 +1,22 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {WIDTH_TABLET_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import {BroadCastStore} from 'pages/broadcast/store'
 import Navi from './navibar'
 import Api from 'context/api'
-import {Context} from 'context'
 import qs from 'query-string'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
 export default (props) => {
-  //console.log(props.selectidx)
-  //context------------------------------------------
+  const dispatch = useDispatch();
   const store = useContext(BroadCastStore)
-  const context = useContext(Context)
-  //console.log(store.reportData)
-  const {broadcastTotalInfo} = context
-  const {roomNo} = qs.parse(location.search)
   //0.신고하기 Data state --------------------------------------
   //1.selected 초기state ---------------------------------------
   //2.버튼 active 비지빌리티--------------------------------------
-  const [ReportInfo, setReportInfo] = useState(props.Info)
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
-  const btnIndex = useRef('')
   //3.버튼info 배열 --------------------------------------
   //api
   const fetchData = async () => {
@@ -35,13 +30,15 @@ export default (props) => {
     })
     if (res.result === 'success') {
       console.log(res)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: store.reportData.nickNm + '님을 신고 하였습니다.'
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '이미 신고한 회원 입니다.'
-      })
+      }))
     }
 
     return

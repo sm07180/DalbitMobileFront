@@ -2,7 +2,6 @@ import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //globalCtx
-import {Context} from 'context'
 import Api from 'context/api'
 
 // component
@@ -11,10 +10,13 @@ import LayerTable from './layer_table'
 import LayerPresent from './layer_present'
 
 import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function Status() {
   const history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [layerPresent, setLayerPresent] = useState(false)
   const [layerPointTable, setLayerPointTable] = useState(false)
@@ -44,9 +46,9 @@ export default function Status() {
       setScoreData(data.list)
       setMyScoreData(data)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -92,13 +94,13 @@ export default function Status() {
     const {result, message} = await Api.postChampionshipGift({})
 
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: message
-      })
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -145,7 +147,7 @@ export default function Status() {
             <button
               className="receive_btn"
               onClick={() => {
-                context.token.isLogin
+                globalState.token.isLogin
                   ? checkPresent()
                   : history.push({
                       pathname: '/login',

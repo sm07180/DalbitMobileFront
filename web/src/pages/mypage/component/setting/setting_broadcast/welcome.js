@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useCallback, useContext} from 'react'
 
-import {Context} from 'context'
 import Api from 'context/api'
 
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 function BC_SettingWelcome() {
-  const context = useContext(Context)
-
+  const dispatch = useDispatch();
   const [title, setTitle] = useState('')
   const [list, setList] = useState([])
   const [deleteIdx, setDeleteIdx] = useState(-1)
@@ -14,18 +14,21 @@ function BC_SettingWelcome() {
 
   const insertTitle = useCallback(async () => {
     if (title === '') {
-      context.action.toast({
+
+      dispatch(setGlobalCtxMessage({
+        type:"toast",
         msg: '입력 된 인사말이 없습니다.\n인사말을 입력하세요.'
-      })
+      }))
     } else {
       const res = await Api.insertBroadcastOption({
         optionType: 2,
         contents: title
       })
       if (res.result === 'success') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type:"toast",
           msg: 'DJ 인사말이 등록 되었습니다.'
-        })
+        }))
 
         setList(res.data.list)
       }
@@ -39,9 +42,10 @@ function BC_SettingWelcome() {
     })
 
     if (res.result === 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type:"toast",
         msg: 'DJ 인사말이 삭제 되었습니다.'
-      })
+      }))
       setTitle('')
       setList(res.data.list)
       setDeleteIdx(-1)
@@ -56,9 +60,10 @@ function BC_SettingWelcome() {
     })
 
     if (res.result === 'success') {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({
+        type:"toast",
         msg: 'DJ 인사말이 수정 되었습니다.'
-      })
+      }))
 
       setList(res.data.list)
     }

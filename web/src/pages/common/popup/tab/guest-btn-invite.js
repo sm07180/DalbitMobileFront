@@ -1,16 +1,12 @@
 /**
  * @title 청취자
  */
-import React, {useState, useEffect, useContext} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import React, {useEffect, useState} from 'react'
+import {IMG_SERVER} from 'context/config'
 import styled from 'styled-components'
-import {Context} from 'context'
-import API from 'context/api'
 //components--------------------------------------------------
 
 export default props => {
-  //context---------------------------------------------------------
-  const context = useContext(Context)
   //----------------------------------------------------------------
   //0.매니저정보 info스테이트----------------------------------------
 
@@ -38,7 +34,7 @@ export default props => {
       <EVENTBTN value={checkVisibility} onClick={ToggleEvent}></EVENTBTN>
       {/* {checkVisibility}
       임시로 백그라운트 클릭이나 소규모 팝업생성했었는데 컨텍스트 레이어팝업 확정된거같아 이벤트 뺴놓습니다
-      
+
       <BackGround onClick={AllFalse} className={checkVisibility === true ? 'on' : ''} /> */}
     </Wrapper>
   )

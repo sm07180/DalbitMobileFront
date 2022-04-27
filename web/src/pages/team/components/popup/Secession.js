@@ -4,13 +4,16 @@ import React, {useEffect, useState} from 'react';
 import '../../scss/secession.scss';
 import Api from "context/api";
 import photoCommon from "common/utility/photoCommon";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SecessionPop = (props) => {
-  const {closeSlide,teamMemList,context,memNo,teamNo,history} = props;
+  const {closeSlide,teamMemList,memNo,teamNo,history} = props;
   const [teMemNo, setTeMemNo]=useState("");
+  const dispatch = useDispatch();
 
   const teamDel=()=>{
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `정말 탈퇴 할까요?`,
       remsg: `탈퇴 이후 팀이 랭킹에 오르더라도
         리워드를 받을 수 없으며, 탈퇴 이후 재가입 할 경우
@@ -34,22 +37,22 @@ const SecessionPop = (props) => {
                 if(res.code === "00000"){
                   history.push("/myPage");
                 }else {
-                  context.action.toast({
+                  dispatch(setGlobalCtxMessage({type:'toast',
                     msg: res.message
-                  })
+                  }))
                 }
               })
             }else{
-              context.action.toast({
+              dispatch(setGlobalCtxMessage({type:'toast',
                 msg: res.message
-              })
+              }))
             }
           })
         }
 
       },
       cancelCallback: () => {},
-    });
+    }));
   }
   const nextLeader =(memNo)=>{
     setTeMemNo(memNo)

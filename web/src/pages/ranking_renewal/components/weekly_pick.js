@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {RankContext} from 'context/rank_ctx'
 import NoResult from 'components/ui/new_noResult'
 import ProfileImage from 'components/ui/profileImage'
 import '../index.scss'
+import {useSelector} from "react-redux";
 
 function WeeklyPick({empty}) {
   const history = useHistory()
-  const {rankState} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const {weeklyList} = rankState
 
   return (

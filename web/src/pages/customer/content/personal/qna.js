@@ -1,14 +1,14 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config'
 import SelectBoxs from 'components/ui/selectBox.js'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
-import headsetIcon from '../static/ic_headset.svg'
 let msgTitle
 let msgContents
 export default function Qna() {
@@ -26,7 +26,8 @@ export default function Qna() {
     {value: 99, text: '기타'}
   ]
 
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const customHeader = JSON.parse(Api.customHeader)
   const [name, setName] = useState('')
   const [faqNum, setFaqNum] = useState(0)
@@ -45,7 +46,8 @@ export default function Qna() {
   const [isBanner, setIsBanner] = useState([])
 
   async function fetchData() {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '1:1 문의를 등록하시겠습니까?',
       callback: async () => {
         const res = await Api.center_qna_add({
@@ -69,29 +71,26 @@ export default function Qna() {
         msgContents = res.data.contents
         if (res.result === 'success') {
           setTimeout(() => {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: `<div><span style='display:block;margin-bottom:10px;font-size:20px;font-weight:bold;'>${msgTitle}</span><p>${msgContents}</p></div>`,
               callback: () => {
-                if(!context.token.isLogin) {
+                if (!globalState.token.isLogin) {
                   history.push('/')
                 } else {
                   history.push('/customer/qnaList')
                 }
               }
-            })
+            }))
           }, 0)
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: res.message,
-            callback: () => {
-              context.action.alert({
-                visible: false
-              })
-            }
-          })
+          }))
         }
       }
-    })
+    }))
 
     // const res = await Api.center_qna_add({
     //   data: {
@@ -111,21 +110,21 @@ export default function Qna() {
     //   }
     // })
     // if (res.result === 'fail') {
-    //   context.action.alert({
+    //   dispatch(setGlobalCtxMessage({type:"alert",
     //     msg: res.message,
     //     callback: () => {
-    //       context.action.alert({
+    //       dispatch(setGlobalCtxMessage({type:"alert",
     //         visible: false
     //       })
     //     }
     //   })
     // } else if (res.result === 'success') {
-    //   context.action.confirm({
+    //   dispatch(setGlobalCtxMessage({type:"confirm",
     //     msg: '1:1 문의를 등록하시겠습니까?',
     //     callback: () => {
     //       //alert
     //       setTimeout(() => {
-    //         context.action.alert({
+    //         dispatch(setGlobalCtxMessage({type:"alert",
     //           msg: '1:1 문의 등록을 완료하였습니다.',
     //           callback: () => {
     //             history.push('/')
@@ -151,13 +150,11 @@ export default function Qna() {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.',
         title: '',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
+      }))
     }
     reader.readAsDataURL(target.files[0])
     reader.onload = async () => {
@@ -182,13 +179,11 @@ export default function Qna() {
             })
           )
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
+            type: "alert",
             msg: res.message,
             title: '',
-            callback: () => {
-              context.action.alert({visible: false})
-            }
-          })
+          }))
         }
       }
     }
@@ -226,19 +221,18 @@ export default function Qna() {
         contents = '개인정보 수집 및 이용에\n동의해주세요.'
       }
 
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: contents,
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
+      }))
     }
   }
 
   const deleteFile = (event, idx) => {
     event.preventDefault()
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '첨부파일을 삭제하시겠습니까?\n삭제된 파일은 복원되지 않습니다.',
       callback: () => {
         const questionFileClone = questionFile
@@ -273,17 +267,17 @@ export default function Qna() {
                   }
                 })
                 .flat()
-            )
-        context.action.confirm({visible: false})
+          )
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       cancelCallback: () => {
-        context.action.confirm({visible: false})
+        dispatch(setGlobalCtxMessage({type: "confirm", visible: false}))
       },
       buttonText: {
         left: '취소',
         right: '삭제'
       }
-    })
+    }))
   }
 
   const phoneCallWrap = () => {
@@ -355,7 +349,7 @@ export default function Qna() {
   const createSliderList = () => {
     if (!isBanner) return null
     return isBanner.map((banner, idx) => {
-      const {bannerUrl, linkUrl, title, linkType} = banner
+      const {bannerUrl, title} = banner
 
       return (
         <div className="qnaInfoBanner" key={`banner-${idx}`} onClick={() => history.push('/customer/qna_info')}>
@@ -389,23 +383,23 @@ export default function Qna() {
   }, [faqNum, email, title, content, name, phone, agree, checks])
 
   useEffect(() => {
-    if (checks[0] === false && checks[1] === false && !context.token.isLogin) {
-      context.action.alert({
+    if (checks[0] === false && checks[1] === false && !globalState.token.isLogin) {
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         visible: true,
         msg: '답변 유형 선택은 필수입니다.',
         callback: () => {
           setChecks([false, true])
-          context.action.alert({visible: false})
         }
-      })
+      }))
     }
   }, [checks])
 
   useEffect(() => {
-    if (context.profile) {
-      setName(context.profile.nickNm)
+    if (globalState.profile) {
+      setName(globalState.profile.nickNm)
     }
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       setChecks([false, false])
     }
   }, [])
@@ -422,7 +416,7 @@ export default function Qna() {
         className="personalAddWrap__input"
         value={name}
         autoComplete="off"
-        disabled={context.token.isLogin}
+        disabled={globalState.token.isLogin}
         placeholder="이름 또는 닉네임을 입력하세요."
         onChange={(e) => {
           if (e.target.value.length < 21) {
@@ -494,7 +488,7 @@ export default function Qna() {
           )
         })}
         <div className="personalAddWrap__caption">※ jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</div>
-        {context.token.isLogin === false && (
+        {globalState.token.isLogin === false && (
           <div className="personalAddWrap__answerWrap">
             <div className="personalAddWrap__checkboxWrap">
               <div className="personalAddWrap__checkboxWrap--check">
@@ -564,7 +558,7 @@ export default function Qna() {
           <span
             className="personalAddWrap__agreeWrap--deep"
             onClick={() => {
-              context.action.updatePopup('AGREEDETAIL')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['AGREEDETAIL']}));
             }}>
             자세히
           </span>

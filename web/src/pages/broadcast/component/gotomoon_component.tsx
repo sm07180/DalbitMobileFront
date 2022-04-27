@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useCallback, useState } from "react";
 
-import { BroadcastContext } from "context/broadcast_ctx";
 
 import ProgressLayer from "../content/broadcast_moon_layer/progress";
 import HelpLayer from "../content/broadcast_moon_layer/help";
@@ -24,7 +23,6 @@ function MoonComponent(props: PropsType) {
 
   const { dlgTitle, dlgText } = moonCheck;
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
 
   const [progressLayerToggle, setProgressLayerToggle] = useState<boolean>(false);
   const [helpLayerToggle, setHelpLayerToggle] = useState<boolean>(false);

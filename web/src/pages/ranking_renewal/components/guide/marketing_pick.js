@@ -1,12 +1,15 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
 import '../../../customer/content/notice/detail'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function WeekPickDetail() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const weeklyIdx = history.location.search.split('idx=')[1];
   const [detail, setDetail] = useState([]);
 
@@ -14,12 +17,13 @@ export default function WeekPickDetail() {
     const {result, data, message} = await Api.getMarketingDetail({
       idx: weeklyIdx
     })
-    if(result === 'success') {
+    if (result === 'success') {
       setDetail(data.detail)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
-      })
+      }))
     }
   }
 

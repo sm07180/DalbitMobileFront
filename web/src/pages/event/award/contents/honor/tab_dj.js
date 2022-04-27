@@ -1,14 +1,16 @@
 import React, {useState, useEffect, useCallback, useContext} from 'react'
 import Api from 'context/api'
-import {Context} from 'context'
 
 import AwardsDetail from './components/awards_detail'
 import AwardsScore from './components/awards_score'
 import AwardsBtmBtn from './components/awards_btm_btn'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function TabDJ(props) {
   const {djMemNo} = props
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [selectedDJ, setSelectedDJ] = useState(null)
   const [isFan, setIsFan] = useState(false)
 
@@ -23,9 +25,9 @@ export default function TabDJ(props) {
         setSelectedDJ({...neededProperties})
         setIsFan(neededProperties.isFan)
       } else {
-        context.action.alert_no_close({
+        dispatch(setGlobalCtxMessage({type:"alert_no_close",
           msg: message
-        })
+        }))
       }
     },
     [selectedDJ]

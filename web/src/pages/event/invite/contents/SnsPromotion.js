@@ -1,13 +1,15 @@
 import React, {useContext, useEffect, useState} from 'react'
 
 import '../invite.scss'
-import {Context} from "context";
 import {OS_TYPE} from "context/config";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {useHistory} from "react-router-dom";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SnsPromotion = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   const code = location.pathname.split('/')[2]
   const [osCheck, setOsCheck] = useState(-1)
@@ -31,7 +33,10 @@ const SnsPromotion = () => {
     textarea.select();
     document.execCommand("copy");
     document.body.removeChild(textarea);
-    context.action.alert({msg: `초대코드가 복사되었습니다.`});
+    dispatch(setGlobalCtxMessage({
+      type: "alert",
+      msg: '초대코드가 복사되었습니다.'
+    }))
   };
 
   const appDownload = () => {
@@ -81,7 +86,7 @@ const SnsPromotion = () => {
           <span className='btnName' onClick={() => doCopy(code)}>초대코드 복사하기</span>
         </button>
         {
-          (!context.token.isLogin && isDesktop) &&
+          (!globalState.token.isLogin && isDesktop) &&
             <button className={`signBtn`}>
               <span className='btnName' onClick={() => golink("/login/start")}>1분 뚝딱 가입하기</span>
             </button>

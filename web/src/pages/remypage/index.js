@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {useHistory, useParams} from 'react-router-dom';
-import {Context} from 'context';
+import React, {useState, useEffect, useContext} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config';
-
 import Api from 'context/api';
 
 import './style.scss';
@@ -31,15 +29,15 @@ import {setSlidePopupOpen, setSlidePopupClose, setCommonPopupOpenData} from "red
 import FanStarPopup from "../profile/components/popSlide/FanStarPopup"
 import LikePopup from "../profile/components/popSlide/LikePopup"
 import {setNoticeTab} from "redux/actions/notice";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile, setGlobalCtxUpdateToken} from "redux/actions/globalCtx";
 
 const Remypage = () => {
   const history = useHistory()
   const params = useParams()
   const settingCategory = params.category;
-  //context
-  const context = useContext(Context)
-  const {splash, token, profile} = context;
+
   const customHeader = JSON.parse(Api.customHeader)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const commonPopup = useSelector(state => state.popup);
   const alarmData = useSelector(state => state.newAlarm);
   const memberRdx = useSelector((state)=> state.member);
@@ -47,6 +45,7 @@ const Remypage = () => {
 
   const dispatch = useDispatch();
 
+  const {splash, token, profile} = globalState;
   const [openFanStarType, setOpenFanStarType] = useState(''); // 팬스타 팝업용 타입
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
 
@@ -58,18 +57,18 @@ const Remypage = () => {
   const settingProfileInfo = async (memNo) => {
     const {result, data, message, code} = await Api.profile({params: {memNo: memNo}})
     if (result === 'success') {
-      context.action.updateProfile(data);
+      dispatch(setGlobalCtxUpdateProfile(data));
     } else {
       if (code === '-5') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           callback: () => history.goBack(),
           msg: message
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           callback: () => history.goBack(),
           msg: '회원정보를 찾을 수 없습니다.'
-        })
+        }))
       }
     }
   }
@@ -87,15 +86,15 @@ const Remypage = () => {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', res.data)
         }
-        context.action.updateToken(res.data)
-        context.action.updateProfile(null)
+        dispatch(setGlobalCtxUpdateToken(res.data));
+        dispatch(setGlobalCtxUpdateProfile(null));
         // props.history.push('/')
         window.location.href = '/'
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           title: '로그아웃 실패',
           msg: `${res.message}`
-        })
+        }))
       }
     });
   }
@@ -128,32 +127,32 @@ const Remypage = () => {
     Api.fan_change({data: {memNo}}).then(res => {
       if (res.result === 'success') {
         if(typeof callback === 'function') callback();
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        })
+        }))
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message
-        })
+        }))
       }
     })
   }
 
   /* 팬 해제 */
   const deleteFan = (memNo, memNick, callback) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             if(typeof callback === 'function') callback();
-            context.action.toast({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
           } else if (res.result === 'fail') {
-            context.action.alert({ msg: res.message })
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
           }
         });
       }
-    })
+    }))
   }
 
   /* 팝업 닫기 공통 */

@@ -1,16 +1,23 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 //api
 import { getChatImageList, postChatImageDelete, postReportImg } from "common/api";
 
 //component
 import Slider from "./img_slider";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setMailBoxImgSliderAddDeleteImg,
+  setMailBoxImgSliderInit,
+  setMailBoxImgSliderPopupClose
+} from "../../../../../redux/actions/mailBox";
+import {setGlobalCtxAlertStatus} from "../../../../../redux/actions/globalCtx";
 
 export default (props) => {
   const { startMemNo } = props;
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
+
   const [sliderState, setSliderState] = useState(false);
   const [imgList, setImgList] = useState([]);
   const [slider, setSlider] = useState<any>({});
@@ -27,14 +34,14 @@ export default (props) => {
       setImgList(data.list);
       setSliderState(true);
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
         callback: () => {
-          mailboxAction.dispathImgSliderInfo && mailboxAction.dispathImgSliderInfo({ type: "popupClose" });
+          dispatch(setMailBoxImgSliderPopupClose());
         },
-      });
+      }));
     }
   };
 
@@ -60,16 +67,12 @@ export default (props) => {
   };
 
   const actionImgDelete = (list, currentSlide) => {
-    mailboxAction.dispathImgSliderInfo && mailboxAction.dispathImgSliderInfo({ type: "popupClose" });
+    dispatch(setMailBoxImgSliderPopupClose());
     if (list.length > 1) {
-      mailboxAction.dispathImgSliderInfo &&
-        mailboxAction.dispathImgSliderInfo({
-          type: "init",
-          data: {
-            memNo: currentSlide.memNo,
-            idx: currentSlide.msgIdx,
-          },
-        });
+      dispatch(setMailBoxImgSliderInit({
+        memNo: currentSlide.memNo,
+        idx: currentSlide.msgIdx,
+      }));
     }
   };
 
@@ -79,16 +82,15 @@ export default (props) => {
       msgIdx: mailboxState.imgSliderInfo.currentImgIdx,
     });
     if (result === "success") {
-      mailboxAction.dispathImgSliderInfo &&
-        mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: mailboxState.imgSliderInfo.currentImgIdx });
+      dispatch(setMailBoxImgSliderAddDeleteImg(mailboxState.imgSliderInfo.currentImgIdx));
       settingDeletedImgList(imgList);
       actionImgDelete(imgList, settingCurrentSlideIdx(imgList));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     }
   };
 
@@ -103,29 +105,29 @@ export default (props) => {
       imagePath: currentImgPath,
     });
     if (result === "sccess") {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     } else {
-      globalAction.setAlertStatus!({
+      dispatch(setGlobalCtxAlertStatus({
         status: true,
         type: "alert",
         content: message,
-      });
+      }));
     }
   };
 
   const handleReportIconClick = () => {
-    globalAction.setAlertStatus!({
+    dispatch(setGlobalCtxAlertStatus({
       status: true,
       type: "confirm",
       content: "현재 이미지를 부적절한 이미지로 <br/> 신고하시겠습니까?",
       callback: () => {
         postImageReport();
       },
-    });
+    }));
   };
 
   const settingCurrentSlideNum = () => {
@@ -169,7 +171,7 @@ export default (props) => {
           <button
             className="close"
             onClick={() => {
-              mailboxAction.dispathImgSliderInfo && mailboxAction.dispathImgSliderInfo({ type: "popupClose" });
+              dispatch(setMailBoxImgSliderPopupClose());
             }}
           >
             닫기
@@ -195,15 +197,14 @@ export default (props) => {
             <button
               className="delet"
               onClick={() => {
-                globalAction.setAlertStatus &&
-                  globalAction.setAlertStatus({
-                    status: true,
-                    type: "confirm",
-                    content: `업로드된 이미지를 <br/> 삭제하시겠습니까?`,
-                    callback: () => {
-                      postImgDelete();
-                    },
-                  });
+                dispatch(setGlobalCtxAlertStatus({
+                  status: true,
+                  type: "confirm",
+                  content: `업로드된 이미지를 <br/> 삭제하시겠습니까?`,
+                  callback: () => {
+                    postImgDelete();
+                  },
+                }));
               }}
             >
               삭제

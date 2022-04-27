@@ -1,14 +1,16 @@
-import React, {useState, useEffect, useContext, useCallback} from 'react'
-import {Context} from 'context/index.js'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 import NoResult from 'components/ui/new_noResult'
 import Accept from './accept'
 
 import './search.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const {setPopupStatus, gganbuNumber} = props
-  const context = useContext(Context)
+  const {setPopupStatus, gganbuNumber} = props;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [tabBtn, setTabBtn] = useState('r')
   const [memberNumber, setMemberNumber] = useState()
@@ -54,7 +56,8 @@ export default (props) => {
 
   // 취소 버튼
   const cancelBtn = (ptr_mem_no) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       msg: '정말 신청 취소하시겠습니까?',
       callback: () => {
         const ptrMemNo = ptr_mem_no
@@ -73,7 +76,7 @@ export default (props) => {
         }
         goCancelBtn()
       }
-    })
+    }))
   }
 
   useEffect(() => {
@@ -125,7 +128,7 @@ export default (props) => {
                         </div>
                         <button
                           className="accept"
-                          onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm, mem_nick)}>
+                          onClick={(e) => acceptBtn(mem_no, 'acceptance', globalState.profile.nickNm, mem_nick)}>
                           수락
                         </button>
                       </div>

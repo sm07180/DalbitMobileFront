@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
 
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import qs from 'query-string'
@@ -8,12 +7,15 @@ import qs from 'query-string'
 import speacialOn from './static/ic_success.svg'
 import speacialOff from './static/ic_unsuccess.svg'
 import './specialdj.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
 
   const parameter = qs.parse(location.search)
-  const context = useContext(Context)
   const [conditionData, setconditionData] = useState('')
   const [imageData, setImageData] = useState('')
   const [infoData, setInfoData] = useState('')
@@ -31,12 +33,12 @@ export default () => {
     let eventMonth = today.getMonth() + 1 < 10 ? `0${today.getMonth() + 1}` : today.getMonth() + 1;
 
     if (parameter.select_year + parameter.select_month !== eventYear.toString() + eventMonth.toString()) {
-      context.action.alert_no_close({
+      dispatch(setGlobalCtxMessage({type:"alert_no_close",
         msg: `이벤트 기간이 아닙니다.`,
         callback: () => {
           goBack()
         }
-      })
+      }))
     }
   }
   async function specialdjCheck() {
@@ -55,12 +57,12 @@ export default () => {
       setInfoData(data.eventInfo)
       setImageData(data.eventInfo.contentList)
     } else {
-      context.action.alert_no_close({
+      dispatch(setGlobalCtxMessage({type:"alert_no_close",
         msg: `이벤트 기간이 아닙니다.`,
         callback: () => {
           goBack()
         }
-      })
+      }))
     }
   }
 
@@ -124,7 +126,7 @@ export default () => {
   useEffect(() => {
     eventCheck()
     specialdjCheck()
-  }, [context.token.isLogin])
+  }, [globalState.token.isLogin])
 
   useEffect(() => {
     console.log('rendering')
@@ -141,7 +143,7 @@ export default () => {
           <button
             className="startingPopup"
             onClick={() => {
-              context.action.updatePopup('SPECIAL_DJ_STARTING')
+              dispatch(setGlobalCtxUpdatePopup({popup:['SPECIAL_DJ_STARTING']}));
             }}>
             <img src="https://image.dalbitlive.com/event/specialdj/20201223/selection_button.png" alt="선발 방식" />
           </button>
@@ -149,14 +151,14 @@ export default () => {
           <button
             className="goodsPopup"
             onClick={() => {
-              context.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
+              dispatch(setGlobalCtxUpdatePopup({popup:['SPECIAL_DJ_GOODS_DETAIL']}));
             }}>
             <img src="https://image.dalbitlive.com/event/specialdj/20201223/goobs_button.png" alt="굿즈 더보기" />
           </button>
           {imgItem()}
         </div>
 
-        {context.token.isLogin === true ? (
+        {globalState.token.isLogin === true ? (
           <>
             <img src="https://image.dalbitlive.com/event/specialdj/20201223/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
@@ -314,7 +316,7 @@ export default () => {
             </div>
           </>
         )}
-        {context.token.isLogin === true ? (
+        {globalState.token.isLogin === true ? (
           <img
             src="https://image.dalbitlive.com/event/specialdj/20201223/new_bottom_img.jpg"
             className="imgResize"

@@ -10,7 +10,6 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_MOBILE} from 'context/config'
@@ -22,7 +21,8 @@ import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
 import GganbuReward from '../../event/gganbu/content/gganbuReward'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
   const payStoreRdx = useSelector(({payStore})=> payStore);
@@ -50,8 +50,9 @@ export default (props) => {
 export const RoomChargePage = (props)=>{
 
   //---------------------------------------------------------------------
-  const context = useContext(Context)
-  const {profile} = context
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   let {tabType, versionFlag} = props;
   if (tabType === undefined || (tabType !== 'charge' && tabType !== 'change')) tabType = 'charge'
 
@@ -81,9 +82,9 @@ export const RoomChargePage = (props)=>{
       setChargeList(res.data.list.slice(0, 9))
       setMyDal(Utility.addComma(res.data.dalCnt))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -93,9 +94,9 @@ export const RoomChargePage = (props)=>{
       setExchangeList(res.data.list)
       setMyByeol(Utility.addComma(res.data.byeolCnt))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -193,7 +194,7 @@ export const RoomChargePage = (props)=>{
           gganbuData = await Api.getGganbuObtainMarble(param)
         }
 
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
             if(gganbuData) {
@@ -216,23 +217,23 @@ export const RoomChargePage = (props)=>{
               Hybrid('CloseLayerPopup')
             }
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
             Hybrid('CloseLayerPopup')
           }
-        })
+        }))
       }
     }
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange()
       }
-    })
+    }))
   }
 
   const tabClick = (type) => {

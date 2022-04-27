@@ -1,6 +1,5 @@
 //context
-import {Context} from 'context'
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 
 import API from 'context/api'
@@ -8,7 +7,6 @@ import API from 'context/api'
 import LayerPopup from './layer_popup'
 
 export default (props) => {
-  const globalCtx = useContext(Context)
   const {dateList, summaryList, statusList, setStatusList, setSummaryList} = props
   const [popup, setPopup] = useState(false)
 

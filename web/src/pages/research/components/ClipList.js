@@ -6,15 +6,15 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import {playClip} from "pages/clip/components/clip_play_fn";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipList = (props) => {
   const { data } = props;
-  const context = useContext(Context); //context
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 8,
@@ -30,7 +30,7 @@ const ClipList = (props) => {
       memNo,
       type:'setting'
     }
-    const clipParam = { clipNo, playList: data, context, history, playListInfoData };
+    const clipParam = { clipNo, playList: data, globalState, dispatch, history, playListInfoData };
     playClip(clipParam);
   };
 

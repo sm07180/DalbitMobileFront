@@ -1,16 +1,16 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
-
-import {IMG_SERVER} from 'context/config'
 import '../../../customer/content/notice/detail'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 //static
 
 export default function secondDetail() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const history = useHistory()
-  const context = useContext(Context)
   const secondIdx = history.location.search.split('idx=')[1];
   const [detail, setDetail] = useState([]);
 
@@ -18,12 +18,13 @@ export default function secondDetail() {
     const {result, data, message} = await Api.getMarketingDetail({
       idx: secondIdx
     })
-    if(result === 'success') {
+    if (result === 'success') {
       setDetail(data.detail)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message,
-      })
+      }))
     }
   }
 

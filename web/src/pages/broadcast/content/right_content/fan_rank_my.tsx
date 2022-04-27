@@ -1,11 +1,8 @@
 // api
 import { getFanRankList, getGoodRankList, postAddFan, deleteFan } from "common/api";
-import { useHistory, useParams } from "react-router-dom";
-import { GlobalContext } from "context";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import { BroadcastContext } from "context/broadcast_ctx";
 import React, { useContext, useEffect, useState } from "react";
 // constant
 import { tabType } from "../../constant";
@@ -20,14 +17,14 @@ import bronzeMedal from "../../../../common/modal/contents/mypage/static/medal_b
 import dalIcon from "../../../../common/modal/contents/mypage/static/ic_moon_s@2x.png";
 import goodIcon from "../../../../common/modal/contents/mypage/static/like_red_m@2x.png";
 import hintIcon from "../../../../common/modal/contents/mypage/static/hint.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setBroadcastCtxRightTabType, setBroadcastCtxUserMemNo} from "../../../../redux/actions/broadcastCtx";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 export default function FanList(props: { profile: any }) {
   const { profile } = props;
-  // ctx
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { setRightTabType, setUserMemNo } = broadcastAction;
-  const { userMemNo } = broadcastState;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [popupState, setPopupState] = useState(false);
   const [popup, setPopup] = useState(false);
@@ -83,11 +80,11 @@ export default function FanList(props: { profile: any }) {
             fetchFanGood();
           }
         }
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     AddFanFunc();
@@ -108,11 +105,11 @@ export default function FanList(props: { profile: any }) {
           }
         }
 
-        globalAction.setAlertStatus!({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           type: "alert",
           content: message,
-        });
+        }));
       }
     }
     DeleteFanFunc();
@@ -156,9 +153,9 @@ export default function FanList(props: { profile: any }) {
   }
 
   const viewProfile = (memNo?: any) => {
-    setRightTabType && setRightTabType(tabType.PROFILE);
+    dispatch(setBroadcastCtxRightTabType(tabType.PROFILE));
     if (memNo) {
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setBroadcastCtxUserMemNo(memNo));
     }
   };
 

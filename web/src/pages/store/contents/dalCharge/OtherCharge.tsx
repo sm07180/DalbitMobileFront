@@ -9,7 +9,6 @@ import Api from "../../../../context/api";
 import Header from "../../../../components/ui/header/Header";
 import Utility from "../../../../components/lib/utility";
 import SubmitBtn from "../../../../components/ui/submitBtn/SubmitBtn";
-import {Context} from "context";
 import qs from 'query-string'
 import {PAYMENT_LIST} from "../../../../redux/types/pay/storeType";
 import {Hybrid} from "../../../../context/hybrid";
@@ -17,21 +16,22 @@ import {setStateHeaderVisible} from "../../../../redux/actions/payStore";
 import {OS_TYPE} from 'context/config.js'
 
 import moment from "moment";
+import {setGlobalCtxMessage} from "../../../../redux/actions/globalCtx";
 
 const OtherCharge = ()=>{
   const history = useHistory();
-  const context = useContext(Context);
   const location = useLocation();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const isDesktop = useSelector((state)=> state.common.isDesktop);
   const payStoreRdx = useSelector(({payStore})=> payStore);
 
-  
+
   const nowDay = moment().format('YYYYMMDD');
 
   const [selectPayment, setSelectPayment] = useState(-1);
   const formTag = useRef<any>();
   const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search);
-  const dispatch = useDispatch();
   const commonPopup = useSelector(state => state.popup);
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
@@ -51,12 +51,12 @@ const OtherCharge = ()=>{
         }
       });
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: message,
         callback:()=>{
           history.push("/store");
         }
-      })
+      }))
     }
   };
 
@@ -123,7 +123,7 @@ const OtherCharge = ()=>{
         ci: undefined,
       }
     }).then((response) => {
-      if (response.result === 'success') {
+      if (response && response.result === 'success') {
         if (payment.fetch === "pay_simple" || payment.fetch === "pay_letter" || payment.fetch === "pay_km") { //계좌 간편결제, 카카카오페이, 페이코, 티머니/캐시비
           if(isDesktop){
             if (response.data.hasOwnProperty("pcUrl") || response.data.hasOwnProperty("url")) {
@@ -166,7 +166,7 @@ const OtherCharge = ()=>{
           payForm.innerHTML = ''
         }
       } else {
-        context.action.alert({msg: response.message})
+        dispatch(setGlobalCtxMessage({type:'alert',msg: response.message}))
       }
     });
   }
@@ -174,10 +174,10 @@ const OtherCharge = ()=>{
   //상품수량 +,-
   const calcBuyItem = (type) => {
     if(type === '+'){
-      if (buyItemInfo.itemAmount === 10) return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 10) return dispatch(setGlobalCtxMessage({type:'toast', msg: '최대 10개까지 구매 가능합니다.' }))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount+1})
     }else if(type === '-'){
-      if (buyItemInfo.itemAmount === 1) return context.action.toast({ msg: '최소 1개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 1) return dispatch(setGlobalCtxMessage({type:'toast', msg: '최소 1개까지 구매 가능합니다.' }))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount-1})}
   }
 
@@ -211,7 +211,7 @@ const OtherCharge = ()=>{
     }
   };
 
-  
+
   const openBannerUrl = (value) => {
     if(value.includes('notice')) {
       history.push({
@@ -229,7 +229,7 @@ const OtherCharge = ()=>{
         !payStoreRdx.stateHeader.visible &&
         <Header title="달 충전하기" position="sticky" type="back" />
       }
-      {context.customHeader['os'] !== OS_TYPE['IOS'] && !moment(nowDay).isAfter(moment('20220428')) &&
+      {globalState.customHeader['os'] !== OS_TYPE['IOS'] && !moment(nowDay).isAfter(moment('20220428')) &&
         <section className="eventBanner">
           <div className="bannerImg" onClick={() => {openBannerUrl("/notice/661")}}>
             <img src="https://image.dalbitlive.com/store/banner/store_banner-7951.png" alt=""/>

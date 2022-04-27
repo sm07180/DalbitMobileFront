@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext, useMemo, useRef} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {useHistory, useLocation} from "react-router-dom";
-import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -13,6 +12,7 @@ import './dalCharge.scss'
 import {useDispatch, useSelector} from "react-redux";
 import qs from 'query-string'
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let paymentList = [
   {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple', bonus: true},
@@ -32,7 +32,8 @@ let paymentList = [
 
 const DalCharge = () => {
   const history = useHistory();
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation();
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [selectPayment, setSelectPayment] = useState(-1);
@@ -59,12 +60,12 @@ const DalCharge = () => {
         }
       });
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: message,
         callback:()=>{
           history.push("/store");
         }
-      })
+      }))
     }
   };
 
@@ -166,7 +167,7 @@ const DalCharge = () => {
           payForm.innerHTML = ''
         }
       } else {
-        context.action.alert({msg: response.message})
+        dispatch(setGlobalCtxMessage({type: "alert",msg: response.message}))
       }
     });
   }
@@ -174,10 +175,10 @@ const DalCharge = () => {
   //상품수량 +,-
   const calcBuyItem = (type) => {
     if(type === '+'){
-      if (buyItemInfo.itemAmount === 10) return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 10) return dispatch(setGlobalCtxMessage({type: "toast", msg: '최대 10개까지 구매 가능합니다.' }))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount+1})
     }else if(type === '-'){
-      if (buyItemInfo.itemAmount === 1) return context.action.toast({ msg: '최소 1개까지 구매 가능합니다.' })
+      if (buyItemInfo.itemAmount === 1) return dispatch(setGlobalCtxMessage({type: "toast", msg: '최소 1개까지 구매 가능합니다.' }))
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount-1})}
   }
 

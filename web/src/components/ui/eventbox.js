@@ -1,10 +1,7 @@
-import React, {useState, useContext} from 'react'
-import {WIDTH_MOBILE} from 'context/config'
+import React from 'react'
 import styled from 'styled-components'
-import {Context} from 'context'
 
 export default props => {
-  const context = useContext(Context)
   return (
     <>
       <Event>

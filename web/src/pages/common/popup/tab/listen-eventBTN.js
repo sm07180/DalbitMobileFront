@@ -1,16 +1,13 @@
 /**
  * @title 청취자탭 ...버튼 (클릭 이벤트 드롭다운 팝업)
  */
-import React, {useState, useEffect, useContext} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import React, {useContext, useState} from 'react'
+import {IMG_SERVER} from 'context/config'
 import styled from 'styled-components'
-import {Context} from 'context'
 import {BroadCastStore} from 'pages/broadcast/store'
-import Api from 'context/api'
 import Events from './listener-event'
+
 export default props => {
-  //context---------------------------------------------------------
-  const context = useContext(Context)
   const store = useContext(BroadCastStore)
   //state
   const [eventCheck, setEventCheck] = useState(false)

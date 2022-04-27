@@ -1,12 +1,10 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 //global components
 import InputItems from 'components/ui/inputItems/InputItems'
 // components
-
 import './report.scss'
 import API from "context/api";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
 import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
@@ -15,9 +13,11 @@ import ReportTabMenu from "pages/remypage/components/ReportTabMenu";
 import DatePickerPage from "pages/remypage/contents/report/DatePicker";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const BroadCastWrap = () => {
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory();
   //조회 기간설정
   const tabmenu = ['오늘', '어제', '주간', '월간']
@@ -69,7 +69,8 @@ const BroadCastWrap = () => {
           })
         }
       } else {
-        context.action.alert({msg: res.message});
+
+        dispatch(setGlobalCtxMessage({type:"alert",msg: res.message}));
       }
     }).catch((e) => console.log(e));
   }
@@ -131,7 +132,7 @@ const BroadCastWrap = () => {
   }
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {
+    if(!(globalState.token.isLogin)) {
       history.push("/login");
     }
   }, []);

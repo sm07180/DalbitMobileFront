@@ -1,12 +1,14 @@
 import React, {useEffect, useContext} from 'react'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 
 import NoResult from 'components/ui/new_noResult'
+import {useDispatch, useSelector} from "react-redux";
 
 export default function LayerWinner({setLayerWinner, list, popupType, setPopupType}) {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
   const closePopup = () => {
@@ -46,7 +48,7 @@ export default function LayerWinner({setLayerWinner, list, popupType, setPopupTy
                     <div
                       className="thumbnail_box"
                       onClick={() => {
-                        if (context.token.isLogin) {
+                        if (globalState.token.isLogin) {
                           history.push(`/profile/${memNo}`)
                         } else {
                           history.push(`/login`)
@@ -66,7 +68,7 @@ export default function LayerWinner({setLayerWinner, list, popupType, setPopupTy
                       <span
                         className="nickname"
                         onClick={() => {
-                          if (context.token.isLogin) {
+                          if (globalState.token.isLogin) {
                             history.push(`/profile/${memNo}`)
                           } else {
                             history.push(`/login`)

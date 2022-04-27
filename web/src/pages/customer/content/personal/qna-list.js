@@ -5,8 +5,6 @@ import Api from 'context/api'
 
 import NoResult from 'components/ui/noResult'
 
-import SelectBoxComponent from 'components/ui/selectBoxComponent'
-import SignalingHandler from 'components/lib/copysh'
 
 export default function QnaList() {
   const history = useHistory()

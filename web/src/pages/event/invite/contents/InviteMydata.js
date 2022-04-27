@@ -5,11 +5,12 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 import Api from "context/api";
 import '../invite.scss'
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 const InviteMydata = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [popup, setPopup] = useState(false);
   const [data, setData] = useState({
@@ -25,7 +26,7 @@ const InviteMydata = () => {
     Api.inviteMyList({
       reqBody: true,
       data:{
-        "memNo": context.token.memNo,
+        "memNo": globalState.token.memNo,
       }
     }).then((response)=>{
       setData({
@@ -39,7 +40,7 @@ const InviteMydata = () => {
     setPopup(true)
   }
 
-  return (    
+  return (
     <>
       <div className='inviteMydata'>
         <div className='inviteData'>
@@ -75,7 +76,7 @@ const InviteMydata = () => {
                           <span className='since'>가입일 {member.rcv_mem_join_date}</span>
                         </div>
                       </div>
-                    </div> 
+                    </div>
                   )
                 })
               }
@@ -84,7 +85,7 @@ const InviteMydata = () => {
             :
             <NoResult ment={`초대 내역이 없어요 :( \n 친구를 초대하고 초대왕이 되어보세요!`} />
           }
-        </div>    
+        </div>
       </div>
       {
         popup &&

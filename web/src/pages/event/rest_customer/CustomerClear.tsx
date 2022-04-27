@@ -2,12 +2,13 @@ import React, {useContext, useEffect, useState} from "react";
 import Header from "components/ui/header/Header";
 import { useHistory } from "react-router-dom";
 import {authReq} from 'pages/self_auth'
-import {Context} from 'context'
 import "./style.scss";
+import {useDispatch, useSelector} from "react-redux";
 
 export default (props) => {
   const history = useHistory();
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [memNo, setMemNo] = useState(props.memNo);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default (props) => {
         <button
           className="button"
           onClick={() => {
-            authReq({code: '7', formTagRef: context.authRef, context, pushLink: 'none', memNo});
+            authReq({code: '7', formTagRef: globalState.authRef, dispatch, memNo, pushLink:'none'});
           }}
         >
           본인인증 후 휴면 해제하기

@@ -1,13 +1,15 @@
 import React, {useState, useContext, useEffect} from 'react'
 import API from 'context/api'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Comment from '../../components/comment'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function awardEventComment() {
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
   const history = useHistory()
 
   //댓글 state
@@ -33,20 +35,20 @@ export default function awardEventComment() {
     }
     if (token.isLogin) {
       if (commentTxt === '') {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: '내용을 입력해주세요.'
-        })
+        }))
       } else {
         setCommentTxt('')
         AddComment(token.memNo, eventIndex, 1, commentTxt)
       }
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push(`/login?redirect=/event/award`)
         }
-      })
+      }))
     }
   }
 
@@ -57,12 +59,12 @@ export default function awardEventComment() {
         fetchCommentData()
       }
     }
-    globalCtx.action.confirm({
+    dispatch(setGlobalCtxMessage({type:"confirm",
       msg: '댓글을 삭제하시겠습니까?',
       callback: () => {
         DeleteComment(replyIdx, eventIndex)
       }
-    })
+    }))
   }
 
   useEffect(() => {

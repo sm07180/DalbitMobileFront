@@ -4,14 +4,13 @@ import React, {useState, useEffect, useContext} from 'react'
 import InputItems from '../../../components/ui/inputItems/InputItems';
 // css
 import './textArea.scss'
-import {Context} from "context";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TextArea = (props) => {
   const { max, list, type, setList, select, setSelect, fetchAddData, fetchDeleteData, fetchModifyData } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("");
-  const context = useContext(Context);
 
   const textChange = (e) => {
     let textVal = e.target.value;
@@ -47,7 +46,7 @@ const TextArea = (props) => {
         setValueCount(0);
         fetchAddData();
       } else {
-        context.action.toast({msg: "더 이상 추가하실 수 없습니다."});
+        dispatch(setGlobalCtxMessage({type:'toast',msg: "더 이상 추가하실 수 없습니다."}));
       }
     } else {
       if(list.length < 3){
@@ -56,7 +55,7 @@ const TextArea = (props) => {
         setValueCount(0);
         fetchAddData();
       } else {
-        context.action.alert({msg: "더 이상 추가하실 수 없습니다."})
+        dispatch(setGlobalCtxMessage({type:'alert',msg: "더 이상 추가하실 수 없습니다."}))
       }
     }
   }
