@@ -65,11 +65,8 @@ const Write = (props) => {
           if(!globalState.token.isLogin) {
             history.goBack();
           } else {
-            if(params.title === "inquire") {
               setInquire("나의 문의내역");
-            } else {
               dispatch(setNoticeTabList({...noticeTab, inquireTab: '나의 문의내역'}));
-            }
           }
         }}))
         
