@@ -816,6 +816,8 @@ const ProfilePage = () => {
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     setProfileReady(true);
 
+    // 스크롤 위치를 기억하는 경우가 있어서 0으로 초기화 해준다.
+    window.scrollTo(0, 0);
     return () => {
       resetProfileData();
       removeScrollEvent();
