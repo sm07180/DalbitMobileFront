@@ -137,9 +137,7 @@ const StorePage = ()=>{
         <span className="dal">{Utility.addComma(payStoreRdx.storeInfo.dalCnt)}</span>
       </section>
       <section className="discountInfo">
-        {payStoreRdx.storeInfo.deviceInfo?.os === OsType.Android ?
-          <></>
-        :
+        {payStoreRdx.storeInfo.deviceInfo?.os === OsType.Desktop && 
           <div>인앱구매와 비교해 <span>최대 18% 할인</span></div>
         }
       </section>
