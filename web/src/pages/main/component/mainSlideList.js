@@ -1,18 +1,21 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 
-import Room, {RoomJoin} from 'context/room'
+import {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config.js'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 
 import BadgeList from 'common/badge_list'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxNoticeIndexNum, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const customHeader = JSON.parse(Api.customHeader)
   const {list} = props
@@ -49,22 +52,22 @@ export default (props) => {
                       const clipUrl = /\/clip\/[0-9]*$/
                       const broadUrl = /\/broadcast\/[0-9]*$/
                       if (roomType === 'link') {
-                        context.action.updatenoticeIndexNum(roomNo)
+                        dispatch(setGlobalCtxNoticeIndexNum(roomNo));
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
                           window.location.href = `${roomNo}`
                         } else if (clipUrl.test(roomNo)) {
                           if (isHybrid()) {
                             const clip_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
-                            clipJoinApi(clip_no, context)
+                            clipJoinApi(clip_no)
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                           }
                         } else if (broadUrl.test(roomNo)) {
                           if (isHybrid()) {
                             const room_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             RoomJoin({roomNo: room_no})
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                           }
                         } else {
                           history.push(`${roomNo}`)
@@ -73,7 +76,7 @@ export default (props) => {
                         if (clipUrl.test(roomNo)) {
                           if (isHybrid()) {
                             const clip_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
-                            clipJoinApi(clip_no, context)
+                            clipJoinApi(clip_no)
                           } else {
                             Hybrid('openUrl', `${roomNo}`)
                           }
@@ -82,11 +85,11 @@ export default (props) => {
                             const room_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             RoomJoin({roomNo: room_no})
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                           }
                         } else {
                           if (clipUrl.test(roomNo)) {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 4]}));
                           } else {
                             window.open(`${roomNo}`)
                           }
@@ -94,15 +97,16 @@ export default (props) => {
                       }
                     } else {
                       if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
+                        if (globalState.token.isLogin === false) {
+                          dispatch(setGlobalCtxMessage({
+                            type: "alert",
                             msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                             callback: () => {
                               history.push('/login')
                             }
-                          })
+                          }))
                         } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                          dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 2]}));
                         }
                       } else {
                         RoomJoin({roomNo: roomNo, nickNm: nickNm})

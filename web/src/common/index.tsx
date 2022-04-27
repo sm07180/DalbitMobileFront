@@ -1,10 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 import { useLocation } from "react-router-dom";
 
-// context
-import { GlobalContext } from "context";
-
-import "../asset/scss/index.scss";
 import Footer from "./footer";
 import GNB from "./gnb";
 import Guide from "./guide";
@@ -16,12 +12,13 @@ import PipPlayer from "./pip/index";
 import Player from "./player";
 import Navigation from "./navigation";
 import {isDesktop, isDesktopViewRouter} from "../lib/agent";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMultiViewer} from "../redux/actions/globalCtx";
 
 const common = () => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { toastStatus, realtimeBroadStatus } = globalState;
-  const { clipPlayer, clipInfo } = globalState;
-  const { setImgViewerPath } = globalAction;
   const location = useLocation();
 
   const broadcastPage = window.location.pathname.startsWith("/broadcast");
@@ -36,7 +33,8 @@ const common = () => {
   const event = window.location.pathname.startsWith("/event");
 
   useEffect(() => {
-    globalAction.setMultiViewer?.({ show: false }); // when location change set multiviewer hide
+    // when location change set multiviewer hide
+    dispatch(setGlobalCtxMultiViewer({ show: false }));
   }, [location]);
   const [ pcMenuState , setPcMenuState ] = useState(false);
 
@@ -48,7 +46,7 @@ const common = () => {
         <GNB/>
         {/*{pcMenuState && <Guide />}*/}
         <PipPlayer/>
-        {globalState.imgViewerPath !== ""  && <ImageViewer path={globalState.imgViewerPath} setImgViewerPath={setImgViewerPath} />}
+        {globalState.imgViewerPath !== ""  && <ImageViewer path={globalState.imgViewerPath} />}
         {globalState.multiViewer.show && <MultiImageViewer />}
         {/* {makeFooter()} */}
         {toastStatus.status === true && <ToastUI />}

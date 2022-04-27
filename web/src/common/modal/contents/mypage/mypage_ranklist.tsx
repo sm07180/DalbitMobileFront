@@ -1,19 +1,18 @@
 import React, { useContext, useState, useEffect } from "react";
-import { ModalContext } from "context/modal_ctx";
-import { GlobalContext } from "context";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 // api
 import { getFanRankList, postAddFan, deleteFan, getLikeRank } from "common/api";
 // scss
 import "./mypage_modal.scss";
+import {useSelector} from "react-redux";
 
 export default (props) => {
   let location = useLocation();
   let checkSearch = location.search.split("?")[1];
   // ctx && commons
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { modalState, modalAction } = useContext(ModalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const modalState = useSelector(({modalCtx}) => modalCtx);
   const history = useHistory();
   // state
   const [tabType, setTabType] = useState<string>(

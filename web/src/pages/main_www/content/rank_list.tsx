@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
-import { GlobalContext } from "context";
 import { useHistory } from "react-router-dom";
 
 import Swiper from "react-id-swiper";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUrlInfo} from "../../../redux/actions/globalCtx";
 // static
 const GoldMedal = `https://image.dalbitlive.com/main/200714/ico-ranking-gold.png`;
 const SilverMedal = `https://image.dalbitlive.com/main/200714/ico-ranking-silver.png`;
@@ -18,18 +19,15 @@ export default function RealTimeRank(props: any) {
   const history = useHistory();
   const { list, type } = props;
 
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const { baseData } = globalState;
   const { isLogin } = baseData;
   const goMypage = (memNo: string) => {
     if (isLogin) {
       history.push(`/profile/${memNo}`);
     } else if (isLogin === false) {
-      globalAction.setUrlInfo!((prevState) => ({
-        ...prevState,
-        type: `mypage`,
-        memNo: memNo,
-      }));
+      dispatch(setGlobalCtxUrlInfo({...globalState.urlInfo, type: `mypage`, memNo: memNo,}))
       history.push("/login");
     }
   };

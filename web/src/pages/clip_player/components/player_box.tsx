@@ -9,10 +9,11 @@ import ClipPlayerBar from "./player_bar";
 import ClipPlayerBarBtn from "./player_bar_btn";
 import ClipPlayerBanner from "./player_banner";
 
-import { GlobalContext } from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 export default () => {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { clipInfo, clipPlayMode } = globalState;
   const { clipPlayer } = globalState;
   const { clipAudioTag } = clipPlayer!;

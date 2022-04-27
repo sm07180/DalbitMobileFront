@@ -38,36 +38,6 @@ type AlertStatusType = {
   cancelCallback?(): void;
 };
 
-type ToastStatusType = {
-  status: boolean;
-  message?: string;
-};
-type TooltipStatusType = {
-  status: boolean;
-  message?: string;
-  callback?(): void;
-  cancelCallback?(): void;
-  style?: {
-    [key: string]: any;
-  };
-  type?: string;
-};
-
-type LayerStatusType = {
-  rightSide: boolean;
-  rightSideType: string;
-  searchSide: boolean;
-};
-
-type UserInfo = {
-  authToken: string | null;
-  isLogin: boolean;
-  memNo: string;
-};
-type SplashDataInfo = {
-  [key: string]: any;
-} | null;
-
 /** broadcast context type */
 type chatAnimationType = {
   status: boolean;
@@ -90,12 +60,6 @@ type chatAnimationType = {
   ttsItemInfo?: any;
   isTTSItem?: boolean;
   soundOffLocationFlag?: string | null;
-};
-
-type userCountType = {
-  current: number;
-  history: number;
-  newFanCnt: number;
 };
 
 type realTimeType = {
@@ -213,94 +177,11 @@ type roomInfoType = {
   eventInfoMap?: { imgURL ?: string; pageLink ?: string; positionX ?: number; positionY ?: number; visible : boolean;} | null;
 
   isListenerUpdate: boolean
-  // state: boolean;
 
-  // bjMemNo: string;
-
-  // title: string;
-  // bgImage: any;
-  // bjImage: any;
-
-  // bjMemId: string;
-  // bjStreamId: string;
-  // bjPubToken?: string;
-  // bjPlayToken?: string;
-
-  // link?: string;
-  // likes: number;
-  // isLike: boolean;
-  // isFan: boolean;
-  // useBoost: boolean;
-  // isNew: boolean;
-  // isPop: boolean;
-  // isRecomm: boolean;
-  // isSpecial: boolean;
-  // auth: number;
-
-  // commonBadgeList: Array<any>;
-
-  // roomType: string;
-  // entryType: number;
-  // welcomMsg: string;
-
-  // startDt?: string;
-
-  // /** Wowza */
-  // webRtcUrl?: string;
-  // webRtcAppName?: string;
-  // webRtcStreamName?: string;
-
-  // micState: boolean | true;
-  // isAttendCheck?: boolean | false;
-
-  // rank?: number;
-  // fanRank?: Array<any>;
-  // likes?: number;
-
-  // isFreeze?: boolean;
-  // isExtend?: boolean;
-
-  // imageType?: number;
-
-  // badgeFrame: {
-  //   frameAni: string;
-  //   frameChat: string;
-  //   frameTop: string;
-  // };
-
-  // randomMsgList: Array<{ [key: string]: any }>;
-  // moonStep: number;
-  // moonStepAniFileNm: string;
+  // 시그니처 아이템
+  signatureItem: any | null;
 };
 
-type NormalChatDataType = {
-  fan: boolean;
-  image: string;
-  memNo: string;
-  bj: boolean;
-  auth: number;
-  fanBadge: any;
-  badgeLists: Array<any>;
-  nk: string;
-  msg: string;
-};
-
-type ClipPlayListType = {
-  clipNo: string;
-  subjectType: string;
-  title: string;
-  bgImg: Array<any>;
-  filePlay?: string;
-  filePlayTime?: string;
-  memNo: string;
-  nickName: string;
-  gender: string;
-  playCnt: number;
-  goodCnt: number;
-  byeolCnt: number;
-  insDt: string;
-  insTs: number;
-};
 
 type ComboAnimationType = {
   status: boolean;
@@ -318,25 +199,6 @@ type GiftStateType = {
   itemNo: string;
   cnt: number;
   guestClicked?: boolean;
-};
-
-type RealtimeBroadStatusType = {
-  message: string;
-  roomNo: string;
-  profImg?: {
-    [key: string]: string;
-  };
-  type: string;
-  time: string;
-  nickNm: string;
-  memNo: string;
-  status: boolean;
-};
-
-type MultiViewType = {
-  show: boolean;
-  list?: Array<any>;
-  initSlide?: number;
 };
 
 type rouletteHistoryDataType = {

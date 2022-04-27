@@ -1,13 +1,14 @@
-import React, {useEffect, useRef, useState, useReducer, useContext} from 'react'
+import React, {useEffect, useReducer, useRef, useState} from 'react'
 // static
 import CloseBtn from '../../menu/static/close_w_l.svg'
 import 'styles/layerpopup.scss'
 import DatePicker from './datepicker'
 import Api from 'context/api'
-import {Context} from 'context'
 
 import IcoFemale from '../static/ico_female.svg'
 import IcoMale from '../static/ico_male.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const formInit = {
   birth: '20200101',
@@ -34,10 +35,10 @@ const FormDataReducer = (state, action) => {
 }
 
 export default (props) => {
-  const {setInputPopup} = props
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  //context
-  const globalCtx = useContext(Context)
+  const {setInputPopup} = props
 
   const [formData, formDispatch] = useReducer(FormDataReducer, formInit)
 
@@ -63,26 +64,26 @@ export default (props) => {
     const baseYear = new Date().getFullYear() - 11
 
     if (formData.birth === '20200101' || myBirth > baseYear) {
-      return globalCtx.action.toast({msg: '생년월일을 정확하게 입력해주세요'})
+      return dispatch(setGlobalCtxMessage({type: "toast", msg: '생년월일을 정확하게 입력해주세요'}))
     }
 
-    if (formData.gender === 'n') return globalCtx.action.toast({msg: '성별을 선택해주세요'})
+    if (formData.gender === 'n') return dispatch(setGlobalCtxMessage({type: "toast", msg: '성별을 선택해주세요'}))
 
     const saveProfile = async () => {
       const res = await Api.profile_edit({
         data: {
           gender: formData.gender,
           birth: formData.birth,
-          nickNm: globalCtx.profile.nickNm,
-          profMsg: globalCtx.profile.profMsg,
-          profImg: globalCtx.profile.profImg.path
+          nickNm: globalState.profile.nickNm,
+          profMsg: globalState.profile.profMsg,
+          profImg: globalState.profile.profImg.path
         }
       })
       if (res.result === 'success') {
-        globalCtx.action.toast({msg: '회원정보가 변경되었습니다.'})
+        dispatch(setGlobalCtxMessage({type: "toast", msg: '회원정보가 변경되었습니다.'}))
         closePopup()
       } else {
-        globalCtx.action.alert({msg: res.message})
+        dispatch(setGlobalCtxMessage({type: "alert", msg: res.message}))
       }
     }
     saveProfile()

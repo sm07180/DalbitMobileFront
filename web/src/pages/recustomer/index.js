@@ -6,7 +6,6 @@
 
 import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 
 import Header from 'components/ui/header/Header'
 //Content
@@ -15,14 +14,14 @@ import './style.scss'
 import InquireDetail from "pages/recustomer/contents/inquireDetail/InquireDetail";
 import Faq from "pages/recustomer/contents/faq/Faq";
 import Inquire from "pages/recustomer/contents/inquire/Inquire";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setInquireTab} from "redux/actions/inquire";
 
 const Customer = () => {
   const history = useHistory()
   const params = useParams();
-  const context = useContext(Context);
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [categoryList, setCategory] = useState([
     {name : "FAQ", file : "customerMainList-faq", path : "/customer/faq"},
     {name : "운영정책", file : "customerMainList-policy", path : "/rule"},
@@ -44,10 +43,10 @@ const Customer = () => {
           <Header position={'sticky'} type={'back'}/>
           <div className='content'>
             <div className='mainText'>
-              {!context.token.isLogin ?
+              {!globalState.token.isLogin ?
                 <span>안녕하세요!</span>
                 :
-                <span><strong>{context.profile.nickNm}</strong>님,</span>
+                <span><strong>{globalState.profile.nickNm}</strong>님,</span>
               }
               <span>궁금한게 있으시다구요?</span>
             </div>

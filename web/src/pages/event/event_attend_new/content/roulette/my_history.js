@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import Layout from 'pages/common/layout'
 import Header from 'components/ui/header/Header'
 import API from 'context/api'
 //components

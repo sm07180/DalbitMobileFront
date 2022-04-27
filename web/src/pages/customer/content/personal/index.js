@@ -1,6 +1,5 @@
-import React, {useContext} from 'react'
-import {Switch, Route, useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React from 'react'
+import {Route, Switch, useHistory} from 'react-router-dom'
 
 import Qna from './qna'
 import QnaList from './qna-list'
@@ -8,10 +7,13 @@ import QnaDetail from './qna-detail'
 import NoticeTab from 'pages/common/noticeTab'
 
 import './index.scss'
-export default function Personal(props) {
-  const history = useHistory()
+import {useDispatch, useSelector} from "react-redux";
 
-  const context = useContext(Context)
+export default function Personal(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const history = useHistory()
 
   const {path} = props.match
 
@@ -21,9 +23,10 @@ export default function Personal(props) {
 
   return (
     <>
-      <NoticeTab />
-      {context.token.isLogin && (
-        <button onClick={() => handleHistory('qnaList')} className={`btnMyList ${path.includes('qnaList') ? 'on' : ''}`}>
+      <NoticeTab/>
+      {globalState.token.isLogin && (
+        <button onClick={() => handleHistory('qnaList')}
+                className={`btnMyList ${path.includes('qnaList') ? 'on' : ''}`}>
           내역보기
         </button>
       )}

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory, withRouter} from 'react-router-dom'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {addComma} from "lib/common_fn";
 
 import Header from 'components/ui/header/Header'
@@ -10,18 +10,18 @@ import Title from './component/Title'
 import Bottom from './component/Bottom'
 
 import './style.scss'
-import {Context} from "context";
 import {IMG_SERVER} from "constant/define";
 import Api from "context/api";
 import moment from "moment";
 import UtilityCommon from "common/utility/utilityCommon";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const StarDj = (props) => {
   let history = useHistory();
-  const context = useContext(Context) 
   const [applyBtn, setApplyBtn] = useState(false); //신청하기 버튼 활성화 상태값
   const [popup, setPopup] = useState(false); //팝업
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const isDesktop = useSelector((state)=> state.common.isDesktop);
 
   //starDj정보
@@ -73,7 +73,13 @@ const StarDj = (props) => {
 
   // 신청하기 버튼 활성화 체크
   useEffect(() => {
-    if(((eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) && (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) && (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) && (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1) || context.token.memNo === "11594614777966") {
+    const applyBtnFlag =
+      (eventInfo.myStat?.play_cnt >= eventInfo.stat?.brodTime) &&
+      (eventInfo.myStat?.view_cnt >= eventInfo.stat?.viewer) &&
+      (eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like) &&
+      (eventInfo.myStat?.byeol_cnt >= eventInfo.stat?.star) && eventInfo.already < 1;
+
+    if( applyBtnFlag || globalState.token.memNo === "11594614777966") {
       setApplyBtn(true)
     } else (
       setApplyBtn(false)
@@ -119,26 +125,26 @@ const StarDj = (props) => {
     Api.starDjIns().then(res => {
       if (res.result === "success"){
         setApplyBtn(false);
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: '스타DJ 신청을 완료하였습니다.'
-        })
+        }))
       } else {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({type:'toast',
           msg: '스타DJ 신청에 실패했습니다 다시 시도해 주세요'
-        })
+        }))
       }
     })
   }
 
   const starDjInsFail = () => {
     if ((eventInfo.myStat?.play_cnt < eventInfo.stat?.brodTime) || (eventInfo.myStat?.view_cnt < eventInfo.stat?.viewer) || (eventInfo.myStat?.like_score_cnt < eventInfo.stat?.like) || (eventInfo.myStat?.byeol_cnt < eventInfo.stat?.star)){
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type:'toast',
         msg: '최소 신청 조건을 충족하지 못하였습니다.'
-      })
+      }))
     } else {
-      context.action.toast({
+      dispatch(setGlobalCtxMessage({type:'toast',
         msg: '이미 스타DJ에 지원하셨습니다.'
-      })
+      }))
     }
 
   }
@@ -154,7 +160,7 @@ const StarDj = (props) => {
             <>
               <img src={`${IMG_SERVER}/starDJ/starDJ_topImg-PC.png`} alt=""/>
               <div className='buttonPosition pc'>
-                <Button height="25%">                  
+                <Button height="25%">
                   {UtilityCommon.eventDateCheck("20220501") ?
                     <>
                       <span onClick={() => {golink("/starDj/benefits")}}>
@@ -162,7 +168,7 @@ const StarDj = (props) => {
                       </span>
                       <span onClick={() => {golink("/honor")}}>
                         <img src={`${IMG_SERVER}/starDJ/starDJ_topBtn-2.png`} alt=""/>
-                      </span>                    
+                      </span>
                     </>
                     :
                     <span onClick={() => {golink("/starDj/benefits")}}>
@@ -176,7 +182,7 @@ const StarDj = (props) => {
             <>
               <img src={`${IMG_SERVER}/starDJ/starDJ_topImg.png`} alt=""/>
               <div className='buttonPosition'>
-                <Button height="20%">                  
+                <Button height="20%">
                   {UtilityCommon.eventDateCheck("20220501") ?
                     <>
                       <span onClick={() => {golink("/starDj/benefits")}}>
@@ -193,7 +199,7 @@ const StarDj = (props) => {
                   }
                 </Button>
               </div>
-            </> 
+            </>
           }
         </div>
         <div className='starDjBody'>
@@ -248,7 +254,7 @@ const StarDj = (props) => {
                     <span className='isAchieve'>{eventInfo.myStat?.like_score_cnt >= eventInfo.stat?.like ? "달성" : "미달성"}</span>
                   </div>
                 </div>
-                <div className='conditionList'>                
+                <div className='conditionList'>
                   <div className='listFront'>
                     <span className='icon totalByeol'></span>
                     <div className='titleWrap'>
@@ -291,19 +297,19 @@ const StarDj = (props) => {
                 운영자 심사를 통해 추가 선발합니다.</p>
             </div>
           </section>
-        </div>      
+        </div>
       </div>
       <Bottom>
         <div className='buttonPosition'>
           <Button height="18%" active={applyBtn}>
             {
-              applyBtn ? 
+              applyBtn ?
                 <span onClick={() => {
                   starDjIns();
                 }}>
                   <img src={`${IMG_SERVER}/starDJ/starDJ_btnName-active.png`} alt=""/>
                 </span>
-              :         
+              :
                 <span onClick={() => {
                   starDjInsFail();
                 }}>
@@ -334,8 +340,8 @@ const StarDj = (props) => {
             </div>
             <div className='score'>
               <p><span>방송 점수 (25%) : </span><span>누적 방송 시간 (팬 방송 제외)</span></p>
-              <p><span>시청자 점수 (25%) : </span><span>평균 시청자 수</span></p>
-              <p><span>좋아요 점수 (25%) : </span><span>받은 좋아요 수<br/>(유료 부스터 포함,무료 제외)</span></p>
+              <p><span>시청자 점수 (25%) : </span><span>누적/평균 시청자 수</span></p>
+              <p><span>좋아요 점수 (25%) : </span><span>받은 좋아요 수 (유료 부스터포함)</span></p>
               <p><span>선물 점수 (25%) : </span><span>받은 선물 수 (룰렛 포함)</span></p>
             </div>
             <div className='referenceWrap'>
@@ -350,16 +356,25 @@ const StarDj = (props) => {
               <ul className='referenceList'>
                 <li>1위 : 1.5점 / 2위 : 0.5점 / 3위 : 0.3점</li>
               </ul>
+              <p className='reference'>※ 최대 10점까지만 반영</p>
             </div>
             <div className='referenceWrap'>
-              <span className='referenceTitle'>기획 방송 가산점</span>
+              <span className='referenceTitle'>운영자 평가 가산점</span>
               <ul className='referenceList'>
-                <li>데이터 집계 기간 내 진행한 기획 방송을 통해 운영자 가산점 반영</li>
+                <li>데이터 집계 기간 내 진행한 기획방송이나 기본적인 방송 퀄리티를 평가한 운영자 가산점 반영</li>
+              </ul>
+            </div>
+            <div className='referenceWrap'>
+              <span className='referenceTitle'>조건 상세 설명</span>
+              <ul className='referenceList'>
+                <li>누적 방송 시간은 하루 최대 4시간만 반영.</li>
+                <li>무료 부스터는 좋아요 점수로 반영되지 않음.</li>
+                <li>선물은 방송방 내에서 받은 선물만 반영.</li>
               </ul>
             </div>
           </div>
         </LayerPopup>
-      }  
+      }
     </div>
   )
 }

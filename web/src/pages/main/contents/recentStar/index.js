@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 import Lottie from 'react-lottie'
 
@@ -14,7 +14,7 @@ import {withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const RecentStar = (props) => {
   let pagePerCnt = 50;
@@ -22,10 +22,8 @@ const RecentStar = (props) => {
   let [listParam, setListParam] = useState({cnt: 0, list: [], photoServerUrl: ""});
 
   let [pagingParam, setPagingParam] = useState({loading: false, pageNo: 1});
-
-  const context = useContext(Context);
-
-  const gtx = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const mainState = useSelector((state) => state.main);
   useEffect(() => {
@@ -48,16 +46,16 @@ const RecentStar = (props) => {
   }
 
   const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
+    if (globalState.token.isLogin === false) {
+      dispatch(setGlobalCtxMessage({type: "alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           props.history.push('/login')
         }
-      })
+      }))
     } else {
       if (getDeviceOSTypeChk() === 3){
-        RoomValidateFromClipMemNo(roomNo === "0" ? listenRoomNo : roomNo, memNo,gtx, props.history, nickNm);
+        RoomValidateFromClipMemNo(roomNo === "0" ? listenRoomNo : roomNo, memNo, dispatch, globalState, props.history, nickNm);
       } else {
         if (roomNo !== "0") {
           RoomJoin({roomNo: roomNo, memNo:memNo, nickNm: nickNm});
@@ -89,7 +87,7 @@ const RecentStar = (props) => {
       }
     }
   }
-  
+
   return (
     <div id="recentStar">
       <Header title="최근 접속한 스타" type="back"/>

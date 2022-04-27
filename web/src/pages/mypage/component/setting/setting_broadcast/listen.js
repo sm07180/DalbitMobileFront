@@ -1,8 +1,8 @@
-import React, {useContext} from 'react'
-
-import {Context} from 'context'
+import React from 'react'
 import Api from 'context/api'
 import {BROAD_SETTING} from '../constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const radioButtons = [
   {
@@ -20,8 +20,10 @@ const radioButtons = [
 ]
 
 export default function BC_SettingListen(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {settingData, setSettingData} = props
-  const context = useContext(Context)
 
   const listenSettingAPIHandler = async (slctedVal) => {
     if (settingData !== null) {
@@ -45,9 +47,10 @@ export default function BC_SettingListen(props) {
   }
 
   const displayModalMsg = (msg) => {
-    context.action.toast({
+    dispatch(setGlobalCtxMessage({
+      type: "toast",
       msg
-    })
+    }))
   }
 
   return (

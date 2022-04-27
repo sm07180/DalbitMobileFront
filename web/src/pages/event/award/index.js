@@ -1,7 +1,6 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
 
-import Layout from 'pages/common/layout'
 import AwardMain from './contents'
 import AwardResult from './contents/result/result'
 import Award2020 from './contents/honor/2020'

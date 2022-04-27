@@ -208,6 +208,40 @@
           &.story {@include BGIMG('mypage/dalla/icon_story.png');}
           &.notice {@include BGIMG('mypage/dalla/icon_notice.png');}
           &.customer {@include BGIMG('mypage/dalla/icon_customer.png');}
+          &.team {
+            width:26px;height:26px;
+            margin:7px;
+            span {
+              display:inline-block;
+              width:100%;
+              height:100%;
+              border:1px dashed #ACACAC;
+              background-color:#F6F6F6;
+              border-radius:4px;
+              &.new {
+                border-color:#FF6093;
+                background-color:white;
+                &::after {
+                  @include position-bottom-right(-2px,-2px);
+                  content:"N";
+                  display:inline-flex;
+                  align-items:center;
+                  justify-content: center;
+                  width:15px;
+                  height:15px;
+                  border-radius:50%;
+                  background-color:$MAINCOLOR;
+                  @include font(10px,$Heavy,white);
+                }
+              }
+            }
+            img {
+              @include position-top-left(-1px,-1px);
+              width:calc(100% + 2px);
+              height:calc(100% + 2px);
+              border-radius:4px;
+            }
+          }
           &.new::after {
             content: "";
             @include position-top-right(4px, 0px);

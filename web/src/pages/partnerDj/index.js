@@ -1,14 +1,10 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
 
 import Header from 'components/ui/header/Header'
 
 import './style.scss'
-import {Context} from "context";
 
 const PartnerDj = () => {
-  let history = useHistory()
-  const context = useContext(Context)  
 
   // 페이지 시작
   return (

@@ -1,8 +1,11 @@
-import React, {useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
+
 export default function AgreeDetail() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   return (
     <div id="agreeDetailWrap">
       <div className="title">개인정보 수집 및 이용에 동의</div>
@@ -12,7 +15,10 @@ export default function AgreeDetail() {
         <span>- 보유및 이용 기간 : 6개월</span>
         <span>- 회사는 문의에 대한 답변을 위한 목적으로 관계법령에 따라 개인정보 수집 및 이용에 동의를 얻어 수집합니다.</span>
       </div>
-      <button onClick={() => context.action.updatePopupVisible(false)}>확인</button>
+      <button onClick={() => {
+        dispatch(setGlobalCtxVisible(false))
+      }}>확인
+      </button>
     </div>
   )
 }

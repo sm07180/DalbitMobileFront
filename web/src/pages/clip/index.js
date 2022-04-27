@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { Context } from "context";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { setIsRefresh } from "redux/actions/common";
@@ -22,9 +21,9 @@ import './scss/clipPage.scss';
 import {playClip} from "pages/clip/components/clip_play_fn";
 
 const ClipPage = () => {
-  const context = useContext(Context);
   const history = useHistory();
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const common = useSelector(state => state.common);
   const subjectType = useSelector((state)=> state.clip.subjectType); // 검색 조건
 
@@ -73,9 +72,9 @@ const ClipPage = () => {
 
   // 좋아요 누른 클립 리스트 가져오기
   const getClipLikeList = () => {
-    if (context.token.memNo === undefined) return;
+    if (globalState.token.memNo === undefined) return;
 
-    Api.getHistoryList({ memNo: context.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: globalState.token.memNo, slctType: 1, page: 1, records: 100, }).then(res => {
       if (res.code === 'C001') {
         setLikeClipInfo(res.data);
       }
@@ -85,9 +84,9 @@ const ClipPage = () => {
 
   // 최근들은 클립 리스트 가져오기
   const getClipListenList = () => {
-    if (context.token.memNo === undefined) return;
+    if (globalState.token.memNo === undefined) return;
 
-    Api.getHistoryList({ memNo: context.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
+    Api.getHistoryList({ memNo: globalState.token.memNo, slctType: 0, page: 1, records: 100, }).then(res => {
       if (res.code === 'C001') {
         setListenClipInfo(res.data);
       }
@@ -184,7 +183,7 @@ const ClipPage = () => {
     const playClipParams = {
       clipNo: event.currentTarget.dataset.clipNo,
       playList,
-      context,
+      globalState, dispatch,
       history,
       playListInfoData,
     }
@@ -262,7 +261,7 @@ const ClipPage = () => {
         <section className="clipDrawer">
           {(listenClipInfo.list.length > 0 || likeClipInfo.list.length > 0 ) &&
           <div className="cntTitle">
-            <h2><span className="nickName">{context.profile.nickNm}</span>님의 클립서랍</h2>
+            <h2><span className="nickName">{globalState.profile.nickNm}</span>님의 클립서랍</h2>
           </div>
           }
           {listenClipInfo.list.length > 0 &&
@@ -274,7 +273,7 @@ const ClipPage = () => {
                             slctType: 0,
                             page: 1,
                             records: 100,
-                            memNo: context.token.memNo,
+                            memNo: globalState.token.memNo,
                             type:'setting'
                           }
                           clipPlayAction({event: e, playList: listenClipInfo.list, playListInfoData})
@@ -288,7 +287,7 @@ const ClipPage = () => {
             <SwiperList data={likeClipInfo.list}
                         playAction={(e)=>{
                           const playListInfoData = {
-                            memNo: context.token.memNo,
+                            memNo: globalState.token.memNo,
                             slctType: 1,
                             page: 1,
                             records: 100,

@@ -14,10 +14,24 @@ import {
 } from "common/api";
 
 // Context
-import {GlobalContext} from "context";
-import {BroadcastContext} from "context/broadcast_ctx";
 import {GuestContext} from "context/guest_ctx";
 import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
+
+import {
+  setBroadcastCtxChatFreeze, setBroadcastCtxHeartActive,
+  setBroadcastCtxLikeClicked,
+  setBroadcastCtxMsgShortCut,
+  setBroadcastCtxRightTabType,
+  setBroadcastCtxRoomInfoMicState,
+  setBroadcastCtxRoomInfoVideoState,
+  setBroadcastCtxSettingObject,
+  setBroadcastCtxSoundVolume
+} from "../../../redux/actions/broadcastCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxGuestInfoEmpty,
+  setGlobalCtxRtcInfoEmpty, setGlobalCtxSetToastStatus
+} from "../../../redux/actions/globalCtx";
 
 // Module
 import _ from "lodash";
@@ -52,7 +66,7 @@ import VideoFlipIcon from "../static/ic_mirrormode_m.svg";
 import VideoEffectIcon from "../static/ic_videoeffect_m.svg";
 import MiniGameIcon from "../static/ic_roulette_g.svg";
 import {moveVoteListStep} from "../../../redux/actions/vote";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export const IconWrap = (props: {
   roomOwner: boolean | null;
@@ -66,10 +80,10 @@ export const IconWrap = (props: {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { rtcInfo, baseData, guestInfo, chatInfo } = globalState;
 
-  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
   const { rightTabType, likeClicked, msgShortCut, chatFreeze, settingObj } = broadcastState;
 
   const { guestState } = useContext(GuestContext);
@@ -100,19 +114,15 @@ export const IconWrap = (props: {
       if (broadcastState.heartActive) {
         const { result, message } = await broadcastLike({ roomNo, memNo: roomInfo.bjMemNo});
         if (result === "fail") {
-          if (globalAction.setAlertStatus) {
-            globalAction.setAlertStatus({ status: true, content: message });
-          }
+          dispatch(setGlobalCtxAlertStatus({ status: true, content: message }));
         } else if (result === "success") {
-          broadcastAction.setLikeClicked!(false);
+          dispatch(setBroadcastCtxLikeClicked(false));
         }
       } else {
-        if (globalAction.setAlertStatus) {
-          globalAction.setAlertStatus({
-            status: true,
-            content: "좋아요는 방송청취 60초 후에 가능합니다.",
-          });
-        }
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: "좋아요는 방송청취 60초 후에 가능합니다.",
+        }));
       }
     } else if (baseData.isLogin == false) {
       history.push("/login");
@@ -120,13 +130,11 @@ export const IconWrap = (props: {
   };
 
   const boostIconClickHandler = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.BOOST);
+    dispatch(setBroadcastCtxRightTabType(tabType.BOOST));
   }, []);
 
   const msgSettingHandler = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.SHORT);
+    dispatch(setBroadcastCtxRightTabType(tabType.SHORT));
   }, []);
 
   const volumeBarOnChange = useCallback(
@@ -135,7 +143,7 @@ export const IconWrap = (props: {
         if (rtcInfo.audioTag) {
           rtcInfo.audioTag.volume = value;
           //tts, sound 아이템에 사운드 볼륨적용하기
-          broadcastAction?.setSoundVolume && broadcastAction.setSoundVolume(value);
+          dispatch(setBroadcastCtxSoundVolume(value));
         }
       }
 
@@ -150,7 +158,7 @@ export const IconWrap = (props: {
         });
       }
     },
-    [rtcInfo, guestInfo, broadcastAction]
+    [rtcInfo, guestInfo]
   );
 
   const sendShortCut = (idx: number) => {
@@ -158,8 +166,7 @@ export const IconWrap = (props: {
   };
 
   const emoticonIconClickHandler = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.EMOTICON);
+    dispatch(setBroadcastCtxRightTabType(tabType.EMOTICON));
   }, []);
 
   const togglController = useCallback(
@@ -192,18 +199,17 @@ export const IconWrap = (props: {
       isFreeze: !chatFreeze,
     });
     if (result === "success") {
-      broadcastAction.setChatFreeze!(data.isFeeze);
+      dispatch(setBroadcastCtxChatFreeze(data.isFeeze));
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
+      }));
     }
   }, [chatFreeze]);
 
   const broadcastEdit = useCallback(() => {
-    broadcastAction.setRightTabType &&
-      broadcastAction.setRightTabType(tabType.SETTING);
+    dispatch(setBroadcastCtxRightTabType(tabType.SETTING));
   }, []);
 
   const broadcastShareClick = useCallback(async () => {
@@ -220,59 +226,57 @@ export const IconWrap = (props: {
       document.execCommand("copy");
       document.body.removeChild(textarea);
 
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "링크를 복사하였습니다!",
-      });
+      }));
     } else {
-      globalAction.callSetToastStatus!({
+      dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: message,
-      });
+      }));
     }
   }, []);
 
   const broadcastOffClick = useCallback(() => {
     // togglController();
-    if (globalAction.setAlertStatus) {
-      globalAction.setAlertStatus({
-        status: true,
-        type: "confirm",
-        title: "알림",
-        content: `방송을 정말 ${
-          roomOwner === true ? "종료하" : "나가"
-        }시겠습니까?`,
-        callback: async () => {
-          const { data, result } = await broadcastExit({ roomNo });
-          if (result === "success") {
-            if (roomNo && chatInfo !== null) {
-              chatInfo.privateChannelDisconnect();
-            }
-            if (rtcInfo !== null) {
-              rtcInfo.socketDisconnect();
-              rtcInfo.stop();
-              globalAction.dispatchRtcInfo({ type: "empty" });
-              disconnectGuest();
-              await rtcInfo.stop();
-              rtcSessionClear();
-              if (roomOwner === true) {
-                dispatchDimLayer({
-                  type: "BROAD_END",
-                  others: {
-                    roomOwner: true,
-                    roomNo: roomNo,
-                  },
-                });
-              } else {
-                setTimeout(() => {
+    dispatch(setGlobalCtxAlertStatus({
+      status: true,
+      type: "confirm",
+      title: "알림",
+      content: `방송을 정말 ${
+        roomOwner === true ? "종료하" : "나가"
+      }시겠습니까?`,
+      callback: async () => {
+        const { data, result } = await broadcastExit({ roomNo });
+        if (result === "success") {
+          if (roomNo && chatInfo !== null) {
+            chatInfo.privateChannelDisconnect();
+          }
+          if (rtcInfo !== null) {
+            rtcInfo.socketDisconnect();
+            rtcInfo.stop();
+            dispatch(setGlobalCtxRtcInfoEmpty());
+            disconnectGuest();
+            await rtcInfo.stop();
+            rtcSessionClear();
+            if (roomOwner === true) {
+              dispatchDimLayer({
+                type: "BROAD_END",
+                others: {
+                  roomOwner: true,
+                  roomNo: roomNo,
+                },
+              });
+            } else {
+              setTimeout(() => {
                 history.push("/");
               });
-              }
             }
           }
-        },
-      });
-    }
+        }
+      },
+    }));
   }, [chatInfo, rtcInfo, guestState.guestObj]);
 
   const disconnectGuest = () => {
@@ -282,9 +286,7 @@ export const IconWrap = (props: {
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
           guestInfo[v].stop?.();
-          globalAction.dispatchGuestInfo!({
-            type: "EMPTY",
-          });
+          dispatch(setGlobalCtxGuestInfoEmpty());
         });
       }
     }
@@ -304,15 +306,15 @@ export const IconWrap = (props: {
     }
   };
 
-/*  const broadcastVideoController = async () => {
-    if (!broadcastState.isTTSPlaying) {
-      if (!videoActive) {
-        await startBroadcastVideo();
-      } else {
-        await stopBroadcastVideo();
+  /*  const broadcastVideoController = async () => {
+      if (!broadcastState.isTTSPlaying) {
+        if (!videoActive) {
+          await startBroadcastVideo();
+        } else {
+          await stopBroadcastVideo();
+        }
       }
-    }
-  };*/
+    };*/
 
   const stopBroadcastVideo = useCallback(async () => {
     const result = await callModifyBroadcastState({
@@ -414,13 +416,13 @@ export const IconWrap = (props: {
     if (rtcInfo?.userType === UserType.HOST && savedMicState && videoActive) {
       if (broadcastState.isTTSPlaying) {
         await stopBroadcastMic();
-        globalAction.callSetToastStatus &&
-          globalAction.callSetToastStatus({
-            status: true,
-            message: broadcastState.ttsActionInfo.ttsText
-              ? "목소리가 재생되는 동안 마이크가 OFF됩니다."
-              : "사운드 아이템이 재생되는 동안 마이크가 OFF됩니다.",
-          });
+
+        dispatch(setGlobalCtxSetToastStatus({
+          status: true,
+          message: broadcastState.ttsActionInfo.ttsText
+            ? "목소리가 재생되는 동안 마이크가 OFF됩니다."
+            : "사운드 아이템이 재생되는 동안 마이크가 OFF됩니다.",
+        }));
       } else {
         await startBroadcastMic();
       }
@@ -431,7 +433,7 @@ export const IconWrap = (props: {
     let timeoutId: number | null = null;
     if (baseData.isLogin === true && likeClicked === true) {
       timeoutId = setTimeout(() => {
-        broadcastAction.setHeartActive(true);
+        dispatch(setBroadcastCtxHeartActive(true));
       }, 1000 * 60);
     }
 
@@ -445,17 +447,17 @@ export const IconWrap = (props: {
   useEffect(() => {
     async function getShortcut() {
       const res = await getBroadcastShortCut();
-      if (res.result === "success" && broadcastAction.setMsgShortCut) {
+      if (res.result === "success") {
         if (res.data instanceof Array) {
-          broadcastAction.setMsgShortCut(res.data);
+          dispatch(setBroadcastCtxMsgShortCut(res.data));
         } else {
-          broadcastAction.setMsgShortCut(res.data.list);
+          dispatch(setBroadcastCtxMsgShortCut(res.data.list));
         }
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: res.message,
-        });
+        }));
       }
     }
     if (msgShortCut.length === 0) {
@@ -465,11 +467,7 @@ export const IconWrap = (props: {
 
   useEffect(() => {
     if (rtcInfo !== null) {
-      broadcastAction.dispatchRoomInfo &&
-        broadcastAction.dispatchRoomInfo({
-          type: "videoState",
-          data: videoActive,
-        });
+      dispatch(setBroadcastCtxRoomInfoVideoState(videoActive));
       if (videoActive === true) {
         rtcInfo.addTrackToPeerStream("video");
       } else {
@@ -480,11 +478,7 @@ export const IconWrap = (props: {
 
   useEffect(() => {
     if (rtcInfo !== null) {
-      broadcastAction.dispatchRoomInfo &&
-        broadcastAction.dispatchRoomInfo({
-          type: "micState",
-          data: micActive,
-        });
+      dispatch(setBroadcastCtxRoomInfoMicState(micActive));
       if (micActive === true) {
         rtcInfo.addTrackToPeerStream();
       } else {
@@ -503,7 +497,7 @@ export const IconWrap = (props: {
   // TTS, 사운드 아이템 on/off 설정
   useEffect(() => {
     if(layer && layer?.status && layer?.type && layer.status && layer.type === 'GIFT'){
-        togglController();
+      togglController();
     }
   },[layer]);
 
@@ -530,11 +524,7 @@ export const IconWrap = (props: {
   //설정값이 바뀔 때 broadcastState에 저장하는 함수
   const setSettingObj = (param) => {
     //설정 값 global State에 저장
-    if(broadcastAction?.setSettingObj) {
-      broadcastAction.setSettingObj(param);
-    } else {
-      console.error('icon_wrap.tsx => broadcastAction.setSettingObj null')
-    }
+    dispatch(setBroadcastCtxSettingObject(param));
   };
 
   useEffect(() => {
@@ -732,7 +722,7 @@ export const IconWrap = (props: {
             <img
               src={VideoEffectIcon}
               onClick={(e) => {
-                broadcastAction.setRightTabType!(tabType.MAKE_UP);
+                dispatch(setBroadcastCtxRightTabType(tabType.MAKE_UP));
               }}
               alt="화면 필터"
             />
@@ -790,7 +780,7 @@ export const IconWrap = (props: {
                   , memNo: roomInfo.bjMemNo
                   , voteSlct: 's'
                 }))
-                broadcastAction.setRightTabType(tabType.VOTE);
+                dispatch(setBroadcastCtxRightTabType(tabType.VOTE));
               }}
             >
               <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon-fix.png' alt="투표" />
@@ -802,15 +792,13 @@ export const IconWrap = (props: {
               className="icon"
               onClick={() => {
                 if (broadcastState.miniGameInfo.status === true) {
-                  globalAction.callSetToastStatus &&
-                    globalAction.callSetToastStatus({
-                      status: true,
-                      message:
-                        "이미 진행중인 게임이 있습니다.\n종료 후 다시 시도해주세요.",
-                    });
+                  dispatch(setGlobalCtxSetToastStatus({
+                    status: true,
+                    message:
+                      "이미 진행중인 게임이 있습니다.\n종료 후 다시 시도해주세요.",
+                  }));
                 } else {
-                  broadcastAction.setRightTabType &&
-                    broadcastAction.setRightTabType(tabType.ROULETTE);
+                  dispatch(setBroadcastCtxRightTabType(tabType.ROULETTE));
                 }
               }}
             >

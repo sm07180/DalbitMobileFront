@@ -2,22 +2,20 @@
  * @file /mypage/context/appAlarm.js
  * @brief 마이페이지 어플알람 2.5v
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Header from '../component/header.js'
 //room
-import Room, {RoomJoin} from 'context/room'
 //component
-import NoResult from 'components/ui/noResult'
 //icon
 import alarmOn from '../component/ic_alarmtoggleon.svg'
 import alarmOff from '../component/ic_alarmtoggleoff.svg'
 import GuideIcon from '../static/guide.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
+
 let currentPage = 1
 let first = true
 
@@ -35,10 +33,11 @@ const AlarmArray = [
 ]
 
 export default (props) => {
-  //-----------------------------------------------------------------------------
-  //contenxt
-  const context = useContext(Context)
-  const myMemNo = context.profile.memNo
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const myMemNo = globalState.profile.memNo
+
   //api.
   async function fetchDataList() {
     const res = await Api.appNotify_list({
@@ -126,7 +125,7 @@ export default (props) => {
   }
 
   const openPopup = (key) => {
-    context.action.updatePopup('ALARM', key)
+    dispatch(setGlobalCtxUpdatePopup({popup: ['ALARM', key]}))
   }
 
   //---------------------------------------
@@ -216,7 +215,7 @@ export default (props) => {
             </div>
           )
         })}
-        {/* 
+        {/*
         <div>
           <span className="guide" />
           <div>

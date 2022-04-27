@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useContext, useCallback, useRef, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 
-// context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // component
@@ -15,6 +12,8 @@ import { tabType } from "pages/broadcast/constant";
 // others
 import { UserType } from "common/realtime/rtc_socket";
 import {IconWrap} from "./icon_wrap";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus} from "../../../redux/actions/globalCtx";
 
 export default function ChatInputWrap(props: {
   roomNo: string;
@@ -25,11 +24,13 @@ export default function ChatInputWrap(props: {
   const { roomNo, roomInfo, roomOwner, setForceChatScrollDown } = props;
 
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo } = globalState;
 
-  const { broadcastState } = useContext(BroadcastContext);
+  const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
+
   const { chatFreeze, chatLimit } = broadcastState;
 
   const { dimLayer, layer, dispatchLayer } = useContext(BroadcastLayerContext);
@@ -65,10 +66,10 @@ export default function ChatInputWrap(props: {
           }
         });
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "채팅 얼리기 중에는 채팅 입력이 불가능합니다.",
-        });
+        }))
       }
     }
   };

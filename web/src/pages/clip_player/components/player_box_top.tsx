@@ -1,29 +1,27 @@
-import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
+import {useHistory} from "react-router-dom";
 
-import { tabType } from "../constant";
+import {tabType} from "../constant";
 
-import { printNumber, addComma } from "lib/common_fn";
-
-import { GlobalContext } from "context";
-import { ClipContext } from "context/clip_ctx";
+import {addComma, printNumber} from "lib/common_fn";
 
 import iconPlay from "../static/play_g_s.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setClipCtxRightTabType, setClipCtxUserMemNo} from "../../../redux/actions/clipCtx";
 
 export default function ClipPlayerTop() {
   const history = useHistory();
-
-  const { globalState } = useContext(GlobalContext);
-  const { clipState, clipAction } = useContext(ClipContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx})=> globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
   const { clipInfo, clipPlayer } = globalState;
-  const { setRightTabType, setUserMemNo } = clipAction;
   const { isMyClip } = clipState;
 
   const ReportLoginCheck = () => {
     if (!globalState.baseData.isLogin) {
       history.push("/login");
     } else {
-      setRightTabType && setRightTabType(tabType.REPORT);
+      dispatch(setClipCtxRightTabType(tabType.REPORT));
     }
   };
 
@@ -49,8 +47,8 @@ export default function ClipPlayerTop() {
             className="playerTop__nick"
             onClick={(e) => {
               e.stopPropagation();
-              setRightTabType && setRightTabType(tabType.PROFILE);
-              setUserMemNo && setUserMemNo(clipInfo.clipMemNo);
+              dispatch(setClipCtxUserMemNo(clipInfo.clipMemNo));
+              dispatch(setClipCtxRightTabType(tabType.PROFILE));
             }}
           >
             {clipInfo.nickName}

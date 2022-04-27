@@ -10,11 +10,13 @@ import moment from "moment";
 // css
 import '../../style.scss'
 import "./notice.scss"
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 const PostDetail = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation();
-  const context = useContext(Context);
   const history = useHistory();
   const noticeIdx = location.state;
   const [postDetailInfo, setPostDetailInfo] = useState([]);
@@ -32,25 +34,7 @@ const PostDetail = () => {
   };
 
   const contentsClicked = (event) => {
-    Utility.contentClickEvent(event, context)
-  }
-
-  //해당 공지사항 내용 조회시 공지사항 idx를 로컬에 저장 -> post에서 불어옴
-  if (new Date().getMilliseconds() / 1000 - postDetailInfo.writeTs < 7 * 24 * 3600) {
-    let mypageNewStg = localStorage.getItem('mypageNew')
-    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
-      mypageNewStg = {}
-    } else {
-      mypageNewStg = JSON.parse(mypageNewStg)
-    }
-  if (mypageNewStg.notice === undefined || mypageNewStg.notice === null || mypageNewStg.notice === '') {
-    mypageNewStg.notice = [parseInt(noticeIdx)]
-  } else {
-    if (mypageNewStg.notice.find((e) => e === noticeIdx) === undefined) {
-      mypageNewStg.notice.push(parseInt(noticeIdx))
-    }
-  }
-  localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
+    Utility.contentClickEvent(event, globalState, dispatch)
   }
 
   useEffect(() => {
@@ -58,7 +42,7 @@ const PostDetail = () => {
   }, []);
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {history.push("/login")}
+    if(!(globalState.token.isLogin)) {history.push("/login")}
   }, []);
 
   return (

@@ -1,0 +1,19 @@
+@import "components/ui/_mixin.scss";
+
+#cntWrapper {
+  @include flex($fd: column);
+  min-height:calc(100vh - #{$HEADER-HEIGHT});
+  padding:0 16px;
+  &.fix {
+    height:calc(100vh - #{$HEADER-HEIGHT});
+  }
+}
+
+.pcType {
+  #cntWrapper {
+    min-height:calc(100vh - #{$HEADER-HEIGHT} - #{$GNB-HEIGHT});
+    &.fix {
+      height:calc(100vh - #{$HEADER-HEIGHT} - #{$GNB-HEIGHT});
+    }
+  }
+}

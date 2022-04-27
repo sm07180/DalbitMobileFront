@@ -1,17 +1,17 @@
-import React, {useEffect, useState, useRef, useContext} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
-import {Context} from 'context'
 //context
 import {useHistory} from 'react-router-dom'
 import Room, {RoomJoin} from 'context/room'
 // component
 import CustomSwiper from 'components/ui/swiper.js'
-import {IMG_SERVER} from 'context/config'
-import {Hybrid, isHybrid} from 'context/hybrid'
+import {isHybrid} from 'context/hybrid'
 // static
 import animationData from '../static/ic_live.json'
 import EventIcon from '../static/ic_event.png'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxNoticeIndexNum} from "redux/actions/globalCtx";
 
 let touchStartX = null
 let touchEndX = null
@@ -19,10 +19,9 @@ let touchStartStatus = false
 let direction = null
 
 export default (props) => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
   const {list} = props
   const history = useHistory()
-  // const context = useContext(Context)
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
 
@@ -169,14 +168,12 @@ export default (props) => {
   const prevBIdx = selectedBIdx - 1 >= 0 ? selectedBIdx - 1 : list.length - 1
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
-  const {customHeader, token} = context || Room.context
   const clickSlideDisplay = (data) => {
     const {roomType, roomNo} = data
 
     if (roomType === 'link') {
       const {roomNo} = data
-
-      context.action.updatenoticeIndexNum(roomNo)
+      dispatch(setGlobalCtxNoticeIndexNum(roomNo));
       if (roomNo !== '' && !roomNo.startsWith('http')) {
         history.push(`${roomNo}`)
       } else if (roomNo !== '' && roomNo.startsWith('http')) {

@@ -1,12 +1,13 @@
-import React, {useContext} from 'react'
-import {Context} from 'context'
-import {RankContext} from 'context/rank_ctx'
+import React from 'react'
 
 import {convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 
 import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 import guideIcon from '../static/guide_s.png'
+import {useDispatch, useSelector} from "react-redux";
+import {setRankFormDateType} from "redux/actions/rank";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 const btnArray = [
   {val: DATE_TYPE.TIME, text: '타임'},
@@ -17,11 +18,11 @@ const btnArray = [
 ]
 
 function DateBtnWrap({fetching}) {
-  const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
+
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {formState} = rankState
-  const formDispatch = rankAction.formDispatch
 
   const createBtnArray = () => {
     let type
@@ -42,7 +43,7 @@ function DateBtnWrap({fetching}) {
           <img
             src={guideIcon}
             onClick={() => {
-              context.action.updatePopup('RANK_POP', 'like')
+              dispatch(setGlobalCtxUpdatePopup({popup: ['RANK_POP', 'like']}))
             }}
           />
         </div>
@@ -67,13 +68,10 @@ function DateBtnWrap({fetching}) {
                   window.scrollTo(0, 0)
                   const someDate = v.val === 2 ? convertMonday() : v.val === 3 ? convertMonth() : new Date()
 
-                  formDispatch({
-                    type: 'DATE_TYPE',
-                    val: {
-                      dateType: v.val,
-                      date: someDate
-                    }
-                  })
+                  dispatch(setRankFormDateType({
+                    dateType: v.val,
+                    date: someDate
+                  }))
                 }
               }
             }}>

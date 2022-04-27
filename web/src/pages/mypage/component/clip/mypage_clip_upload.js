@@ -1,7 +1,6 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
+import React, {useCallback, useEffect, useState} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
@@ -10,16 +9,19 @@ import {OS_TYPE} from 'context/config.js'
 //svg
 import LikeIcon from '../clip_like.svg'
 import MessageIcon from './message_w.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 //flag
 let currentPage = 1
 let timer
 let moreState = false
 export default function MyPageClipUpload() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   let history = useHistory()
   let {memNo, category} = useParams()
   const customHeader = JSON.parse(Api.customHeader)
 
-  const context = useContext(Context)
   const {webview} = qs.parse(location.search)
 
   const [uploadList, setUploadList] = useState([])
@@ -35,7 +37,7 @@ export default function MyPageClipUpload() {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.getUploadList({
-      memNo: context.urlStr,
+      memNo: globalState.urlStr,
       page: currentPage,
       records: 10
     })
@@ -57,9 +59,10 @@ export default function MyPageClipUpload() {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -71,24 +74,26 @@ export default function MyPageClipUpload() {
     if (result === 'success') {
       const nowPage = getPageFormIdx(idx)
       const playListInfoData = {
-        memNo: context.urlStr,
+        memNo: globalState.urlStr,
         page: nowPage,
         records: 100
       }
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      clipJoin(data, context, webview)
+      clipJoin(data, dispatch, globalState, webview)
     } else {
       if (code === '-99') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message,
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
   }
@@ -121,22 +126,23 @@ export default function MyPageClipUpload() {
 
   const eventGoClipHandler = (type, clipNo, idx) => {
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      if (context.token.isLogin === false) {
-        context.action.alert({
+      if (globalState.token.isLogin === false) {
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
           callback: () => {
             history.push('/login')
           }
-        })
+        }))
       } else {
-        context.action.updatePopup('APPDOWN', 'appDownAlrt', 3)
+        dispatch(setGlobalCtxUpdatePopup({popup: ['APPDOWN', 'appDownAlrt', 3]}));
       }
     } else {
       let alrtText = '클립 업로드는 청취중인 방송을 \n종료 한 후 가능합니다.'
       if (type === 'goClip') alrtText = '클립 청취는 청취중인 방송을 \n 종료 한 후 가능합니다.'
       if (type === 'play') alrtText = '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'
       if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
-        return context.action.alert({msg: alrtText})
+        return dispatch(setGlobalCtxMessage({type: "alert", msg: alrtText}))
       }
       switch (type) {
         case 'upload':
@@ -154,7 +160,7 @@ export default function MyPageClipUpload() {
 
   useEffect(() => {
     fetchDataList()
-  }, [context.urlStr])
+  }, [globalState.urlStr])
 
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
@@ -169,9 +175,9 @@ export default function MyPageClipUpload() {
         <div className="noResult">
           <span className="noResult__guideTxt">
             등록된 클립이 없습니다.
-            <br /> {context.urlStr === context.profile.memNo && '클립을 업로드해 보세요.'}
+            <br/> {globalState.urlStr === globalState.profile.memNo && '클립을 업로드해 보세요.'}
           </span>
-          {context.urlStr === context.profile.memNo ? (
+          {globalState.urlStr === globalState.profile.memNo ? (
             <button
               className="noResult__uploadBtn"
               onClick={() => {
@@ -237,9 +243,9 @@ export default function MyPageClipUpload() {
     <div
       className="uploadWrap"
       style={{
-        padding: context.profile.memNo !== context.urlStr && '0',
-        minHeight: context.profile.memNo !== context.urlStr && '300px',
-        backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
+        padding: globalState.profile.memNo !== globalState.urlStr && '0',
+        minHeight: globalState.profile.memNo !== globalState.urlStr && '300px',
+        backgroundColor: globalState.profile.memNo !== globalState.urlStr && '#eeeeee'
       }}>
       {uploadListLoding && createContents()}
     </div>

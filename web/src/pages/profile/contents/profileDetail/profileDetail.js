@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 import Api from 'context/api'
@@ -17,12 +16,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 import FeedLike from "pages/profile/components/FeedLike";
 import {setProfileDetailData, setProfileTabData} from "redux/actions/profile";
+import {setGlobalCtxAlertStatus, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileDetail = (props) => {
   const history = useHistory()
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //context
-  const context = useContext(Context)
-  const {token, profile, globalAction} = context
+  const {token, profile} = globalState
   const {memNo, type, index} = useParams();
   const tmemNo = profile.memNo;
   //memNo :글이 작성되있는 프로필 주인의 memNo
@@ -55,7 +56,6 @@ const ProfileDetail = (props) => {
 
   //차단 / 신고하기
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
-  const dispatch = useDispatch();
   const popup = useSelector(state => state.popup);
   const detailData = useSelector(state => state.detail);
 
@@ -76,7 +76,7 @@ const ProfileDetail = (props) => {
 
   //내가 작성한 글 여부
   const isMyContents = (token?.isLogin) && item && profile?.memNo?.toString() === ((type === 'notice' || type === 'feed') ? item?.mem_no : item?.writer_mem_no)?.toString();
-  const adminChecker = context?.adminChecker;
+  const adminChecker = globalState?.adminChecker;
 
   // 탭 유지 시키기
   const tabResetBlock = () => {
@@ -106,18 +106,16 @@ const ProfileDetail = (props) => {
             }))
             setItem(data);
           } else {
-            if(globalAction?.setAlertStatus){
-              globalAction.setAlertStatus({
-                status: true,
-                content: '해당 게시글이 존재하지 않습니다.',
-                callback: () => {
-                  history.goBack()
-                },
-                cancelCallback: () => {
-                  history.goBack()
-                },
-              });
-            }
+            dispatch(setGlobalCtxAlertStatus({
+              status: true,
+              content: '해당 게시글이 존재하지 않습니다.',
+              callback: () => {
+                history.goBack()
+              },
+              cancelCallback: () => {
+                history.goBack()
+              },
+            }));
 
           }
         });
@@ -129,18 +127,16 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           setItem(data);
         } else {
-          if(globalAction?.setAlertStatus){
-            globalAction.setAlertStatus({
-              status: true,
-              content: '해당 게시글이 존재하지 않습니다.',
-              callback: () => {
-                history.goBack()
-              },
-              cancelCallback: () => {
-                history.goBack()
-              },
-            });
-          }
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            content: '해당 게시글이 존재하지 않습니다.',
+            callback: () => {
+              history.goBack()
+            },
+            cancelCallback: () => {
+              history.goBack()
+            },
+          }));
 
         }
       })
@@ -148,7 +144,7 @@ const ProfileDetail = (props) => {
       Api.myPageFeedDetailSel({
         feedNo: index,
         memNo: memNo,
-        viewMemNo: context.profile.memNo
+        viewMemNo: globalState.profile.memNo
       }).then((res) => {
         const {data, result, message} = res;
         if(result === "success") {
@@ -158,19 +154,16 @@ const ProfileDetail = (props) => {
           }))
           setItem(data);
         } else {
-          if(globalAction?.setAlertStatus){
-            globalAction.setAlertStatus({
-              status: true,
-              content: '해당 게시글이 존재하지 않습니다.',
-              callback: () => {
-                history.goBack()
-              },
-              cancelCallback: () => {
-                history.goBack()
-              },
-            });
-          }
-
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            content: '해당 게시글이 존재하지 않습니다.',
+            callback: () => {
+              history.goBack()
+            },
+            cancelCallback: () => {
+              history.goBack()
+            },
+          }));
         }
       }).catch((e) => console.log(e));
     }
@@ -283,7 +276,7 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           history.goBack();
         } else {
-          context.action.alert({msg: message});
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
         }
 
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
@@ -291,7 +284,7 @@ const ProfileDetail = (props) => {
         if (result === 'success') {
           history.goBack();
         } else {
-          context.action.alert({msg: message});
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
         }
       } else if(type === "feed") {
         const {result, data, message} = await Api.myPageFeedDel({
@@ -303,14 +296,14 @@ const ProfileDetail = (props) => {
         if(result === "success") {
           history.goBack();
         } else {
-          context.action.alert({msg: message});
+          dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
         }
       }
     }
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: '정말 삭제 하시겠습니까?',
       callback
-    });
+    }));
   };
 
   const validChecker = () => {
@@ -327,7 +320,7 @@ const ProfileDetail = (props) => {
     }
 
     if(!confirm)
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
 
     return confirm;
   };
@@ -343,7 +336,7 @@ const ProfileDetail = (props) => {
         contents: text
       });
 
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       if (result === 'success') {
         setText('');
         if (replyRef.current) {
@@ -361,7 +354,7 @@ const ProfileDetail = (props) => {
           contents: text
         }});
 
-      context.action.toast({msg: message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       if (result === 'success') {
         setText('');
         if (replyRef.current) {
@@ -383,7 +376,7 @@ const ProfileDetail = (props) => {
           if(replyRef.current) {
             replyRef.current.innerText = "";
           }
-          context.action.toast({msg: res.message});
+          dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
           getAllData(1, 9999);
         } else {}
       }).catch((e) => console.log(e));
@@ -413,14 +406,14 @@ const ProfileDetail = (props) => {
       );
 
       if (result === 'success') {
-        context.action.toast({msg: '댓글이 수정되었습니다.'})
+        dispatch(setGlobalCtxMessage({type:'toast',msg: '댓글이 수정되었습니다.'}))
 
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       } else {
-        context.action.alert({msg: message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
       }
 
     } else if (type === 'fanBoard') {
@@ -431,14 +424,14 @@ const ProfileDetail = (props) => {
         }});
 
       if(result === 'success'){
-        context.action.toast({msg: '댓글이 수정되었습니다.'})
+        dispatch(setGlobalCtxMessage({type:'toast',msg: '댓글이 수정되었습니다.'}))
 
         getAllData(1, 9999);
         setText('');
         replyRef.current.innerText = '';
         setInputModeAction('add');
       }else{
-        context.action.alert({msg: message});
+        dispatch(setGlobalCtxMessage({type:'alert',msg: message}));
       }
 
     } else if(type === "feed") {
@@ -447,13 +440,13 @@ const ProfileDetail = (props) => {
           tmemConts: contents
         }}).then((res) => {
         if(res.result === "success") {
-          context.action.toast({msg: '댓글이 수정되었습니다.'});
+          dispatch(setGlobalCtxMessage({type:'toast',msg: '댓글이 수정되었습니다.'}));
           getAllData(1, 9999);
           setText("");
           replyRef.current.innerText = "";
           setInputModeAction("add");
         } else {
-          context.action.alert({msg: res.message});
+          dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}));
         }
       }).catch((e) => console.log(e));
     }
@@ -493,10 +486,10 @@ const ProfileDetail = (props) => {
       }
     };
 
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type:'confirm',
       msg: '정말 삭제 하시겠습니까?',
       callback: () => callback(replyIdx)
-    });
+    }));
   };
 
   /* 좋아요 */
@@ -505,7 +498,7 @@ const ProfileDetail = (props) => {
       const params = {
         regNo: regNo,
         mMemNo: mMemNo,
-        vMemNo: context.profile.memNo
+        vMemNo: globalState.profile.memNo
       };
       if(like === "n") {
         await Api.profileFeedLike(params).then((res) => {
@@ -530,7 +523,7 @@ const ProfileDetail = (props) => {
       const params = {
         feedNo: regNo,
         mMemNo: mMemNo,
-        vMemNo: context.profile.memNo
+        vMemNo: globalState.profile.memNo
       };
       if(like === "n") {
         await Api.myPageFeedLike(params).then((res) => {
@@ -567,6 +560,10 @@ const ProfileDetail = (props) => {
     setBlockReportInfo({memNo: '', memNick: ''});
   }
 
+  const photoClickEvent = (memNo) => {
+    history.push(`/profile/${memNo}`)
+  }
+
   useEffect(() => {
     document.addEventListener('scroll', tooltipScrollEvent);
     return () => {
@@ -598,7 +595,9 @@ const ProfileDetail = (props) => {
       <section className='detailWrap'>
         {/* 피드, 팬보드 게시글 영역 */}
         <div className="detail">
-          {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
+          {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
+                                     photoClick={() => {photoClickEvent(item?.mem_no ? item.mem_no : item?.writer_mem_no)}}
+                                     disableMoreButton={false}/>}
           <pre className="text">{item?.feed_conts ? item.feed_conts : item?.contents}</pre>
           {(type === 'notice' || type === 'feed') && (item?.photoInfoList?.length > 1 ?
               <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>

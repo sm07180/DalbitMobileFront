@@ -1,11 +1,7 @@
 @import "components/ui/_mixin.scss";
 
 #layerPop {
-  position: fixed;
-  top: 0;right: 0;bottom: 0;left: 0;
-  @include flex(center, center, column);
-  background: rgba(0, 0, 0, 0.7);
-  z-index: $POPUP-ZINDEX;
+  @include popupDefaultStyle(center,$POPUP-ZINDEX);
   .popLayer {
     position: relative;
     .popContainer {
@@ -43,6 +39,13 @@
         flex: 1;
         @include flex(center, center);
         @include font(16px, 500, #FFFFFF);        
+      }
+    }
+  }
+  &.defaultAlert {
+    .popLayer {
+      .popContainer {
+        width:328px;
       }
     }
   }

@@ -3,7 +3,6 @@ import {useParams} from 'react-router-dom'
 import {EventAttendProvider} from './event_attend_new/attend_ctx'
 
 //component
-import Layout from 'pages/common/layout'
 import ThxGiving from './thanksgiving'
 import ClipEventNative from './clip_event'
 import ClipGiftEvent from './clip_gift_event'

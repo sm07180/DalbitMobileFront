@@ -1,14 +1,17 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 import Api from 'context/api'
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function noticeTab() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
-  const {token, profile} = context
+  const {token, profile} = globalState
   const [alarmActive, setAlarmActive] = useState(false)
   const [noticeActive, setNoticeActive] = useState(false)
   const [personalActive, setPersonalActive] = useState(false)
@@ -40,9 +43,10 @@ export default function noticeTab() {
           setPersonalCount(data.qna)
         }
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
     if (profile && profile.memNo !== null) fetchData()

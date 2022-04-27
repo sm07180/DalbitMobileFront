@@ -3,18 +3,14 @@
  * @brief Router 목록들
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
-import ScrollToTop from 'components/lib/ScrollToTop'
 import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
 import Popup from 'components/ui/popup'
 
-import Common from "common";
 import Modal from "common/modal";
-import Alert from "common/alert";
-import {Context} from "context";
-import {route} from "express/lib/router";
+import {useSelector} from "react-redux";
 
 // import Main from 'pages/main'
 //----- dalla -----//
@@ -36,7 +32,7 @@ const ClipRankGuide = React.lazy(() => import('pages/reclip/contents/rank/ClipRa
 
 // 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
-const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
+const RankListPage = React.lazy(() => import('pages/reranking/contents/RankListPage'))
 const RankingBenefit = React.lazy(() => import('pages/reranking/contents/RankingBenefit'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 
@@ -52,6 +48,13 @@ const ReHonor = React.lazy(() => import('pages/rehonor'))
 const ReCustomer = React.lazy(() => import('pages/recustomer'))
 // 운영정책
 const ReRule = React.lazy(() => import('pages/rerule'))
+
+// 팀
+const Team = React.lazy(() => import('pages/team'))
+const TeamMake = React.lazy(() => import('pages/team/contents/teamMake/TeamMake'))
+const TeamDetail = React.lazy(() => import('pages/team/contents/teamDetail/TeamDetail'))
+const TeamManager = React.lazy(() => import('pages/team/contents/teamManager'))
+const TeamBadge = React.lazy(() => import('pages/team/contents/teamBadge'))
 
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
@@ -90,7 +93,6 @@ const legalRepresentative = React.lazy(() => import('pages/legalRepresentative')
 
 //----- dalla -----//
 
-const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
 const Exchange = React.lazy(() => import('pages/reExchange'))
 const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
@@ -107,9 +109,6 @@ const EventPage = React.lazy(() => import('pages/event_page'))
 const EventPcService = React.lazy(() => import('pages/event_pc_service'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
-const Proofshot = React.lazy(() => import('pages/event_proofshot'))
-const Package = React.lazy(() => import('pages/event_package'))
-const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
@@ -126,7 +125,6 @@ const Agree = React.lazy(() => import('pages/agree'))
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
-const TempPage = React.lazy(() => import('pages/temp'))
 
 const PartnerDj = React.lazy(() => import('pages/partnerDj'))
 const StarDj = React.lazy(() => import('pages/starDj'))
@@ -157,7 +155,8 @@ const InviteSns = React.lazy(() => import("pages/event/invite/contents/SnsPromot
 const BroadNoticeDetail = React.lazy(() => import("pages/profile/contents/noticeDetail/NoticeDetail"));
 
 const Router = () => {
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   return (
     <React.Suspense
       fallback={
@@ -165,11 +164,9 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <ScrollToTop />
       <Popup />
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
 
         <Route exact path="/mobileWeb" component={MobileWeb} />
@@ -182,7 +179,7 @@ const Router = () => {
         <Route exact path="/rule/:category" component={ReRule} />
 
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rankDetail/:type" component={RankingDetail} />
+        <Route exact path="/rankDetail/:type" component={RankListPage} />
         <Route exact path="/rankBenefit" component={RankingBenefit} />
         <Route exact path="/rank/:type" component={RankingGuide} />
 
@@ -232,7 +229,7 @@ const Router = () => {
         <Route exact path="/myProfile/:webView?/:tab?" component={Profile} />
         <Route exact path="/profile/:memNo/:webView?/:tab?" main={Profile}
                render={({location, match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const targetMemNo = match.params.memNo
                  const searchData = location.search
                  if(myMemNo === targetMemNo) {
@@ -245,9 +242,9 @@ const Router = () => {
         {/*피드, 팬보드 등록*/}
         <Route exact path={"/profileWrite/:memNo/:type/:action"} main={ProfileContentsWrite}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const {memNo, type, action} = match.params;
-                 if(!context.token?.isLogin){
+                 if(!globalState.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if((type ==='feed' && myMemNo !== memNo) || action === 'modify'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
@@ -258,12 +255,12 @@ const Router = () => {
         {/*피드 수정 (팬보드 수정 삭제) */}
         <Route exact path={"/profileWrite/:memNo/:type/:action/:index"} main={ProfileContentsWrite}
                render={({ match}) => {
-                 const myMemNo = context.profile.memNo;
+                 const myMemNo = globalState.profile.memNo;
                  const {memNo, type, action} = match.params;
                  if(type==='fanBoard' && action==='modify'){
                    return <Redirect to={{ pathname: `/profile/${memNo}` }} />
                  }
-                 if(!context.token?.isLogin){
+                 if(!globalState.token?.isLogin){
                    return <Redirect to={{ pathname: '/login' }} />
                  } else if(action === 'write'){
                    return <Redirect to={{ pathname: '/myProfile' }} />
@@ -276,7 +273,7 @@ const Router = () => {
                render={({ match}) => {
                  const {memNo, type, index} = match.params;
 
-                 if(!context.token?.isLogin){
+                 if(!globalState.token?.isLogin){
 
                    return <Redirect to={{ pathname: '/login', search:`?redirect=/profileDetail/${memNo}/${type}/${index}` }} />
                  } else {
@@ -291,6 +288,12 @@ const Router = () => {
 
         {/*<Route exact path="/profile/:memNo/write" component={ProfileWrite} />*/}
 
+        <Route exact path="/team" component={Team} />
+        <Route exact path="/team/make" component={TeamMake} />
+        <Route exact path="/team/detail/:teamNo" component={TeamDetail} />
+        <Route exact path="/team/manager/:teamNo" component={TeamManager} />
+        <Route exact path="/team/badge/:teamNo" component={TeamBadge} />
+
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={ReCustomer} />
@@ -301,7 +304,6 @@ const Router = () => {
         <Route exact path="/navigator" component={Navigator} />
         <Route exact path="/agree" component={Agree} />
         <Route exact path="/agree/:title" component={Agree} />
-        <Route exact path="/temp_page" component={TempPage} />
         <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
@@ -351,7 +353,7 @@ const Router = () => {
         <Route exact path="/myclip" component={MyClip} />
         <Route exact path="/invite/:code" component={InviteSns} />
         <Route exact path="/alarm" component={Notice} />
-        
+
         <Route exact path="/partnerDj" component={PartnerDj} />
         <Route exact path="/starDj" component={StarDj} />
         <Route exact path="/starDj/benefits" component={StarDjBenefits} />

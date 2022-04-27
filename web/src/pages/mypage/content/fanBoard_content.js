@@ -3,34 +3,26 @@
  * @brief 마이페이지 팬보드2.5v
  */
 
-import React, {useEffect, useState, useContext, useRef} from 'react'
-// modules
+import React, {useState} from 'react'
 import qs from 'query-string'
 import styled from 'styled-components'
-import {useLocation, useHistory} from 'react-router-dom'
-// context
-import {Context} from 'context'
-import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
+import {useHistory, useLocation} from 'react-router-dom'
+import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
-// component
-import Header from 'components/ui/new_header'
-import ReplyList from './fanBoard_reply'
 import BoardItem from './board_item'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
-//svg
-import BJicon from '../component/bj.svg'
-import ReplyIcon from '../static/reply_g.svg'
 import closeBtn from '../component/ic_back.svg'
-import MoreBtnIcon from '../static/ic_new_more.svg'
-import LockIcon from '../static/lock_g.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxFanBoardBigIdx, setGlobalCtxMessage, setGlobalCtxReplyIdx} from "redux/actions/globalCtx";
 //--------------------------------------------------------------------------
 export default (props) => {
   console.log(props)
   // context && location
   const history = useHistory()
   let location = useLocation()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   var urlrStr = location.pathname.split('/')[2]
   const {webview} = qs.parse(location.search)
   //전체 댓글리스트(props)
@@ -72,18 +64,6 @@ export default (props) => {
       setWriteState(false)
     }
   }
-  //정보 대댓글로 전달
-  const ReplyInfoTransfer = (boardIdx, item) => {
-    //setTitleReplyInfo(item)
-    if (context.fanboardReplyNum === boardIdx) {
-      context.action.updateFanboardReplyNum(-1)
-    } else {
-      context.action.updateFanboardReplyNum(boardIdx)
-    }
-    context.action.updateFanboardReply(item)
-    context.action.updateToggleAction(true)
-    // window.scrollTo({top: 0, left: 0, behavior: 'auto'})
-  }
   //댓글 등록 온체인지
   const BigChangeContent = (e) => {
     const target = e.currentTarget
@@ -100,7 +80,7 @@ export default (props) => {
       setDonstChange(false)
     }
     if (ReplyWriteState === false) {
-      context.action.updateReplyIdx(boardIdx)
+      dispatch(setGlobalCtxReplyIdx(boardIdx));
       setReplyWriteState(true)
     } else {
       setTextChange('')
@@ -125,15 +105,15 @@ export default (props) => {
     if (res.result === 'success') {
       setWriteState(false)
       setModifyMsg('')
-      context.action.updateFanBoardBigIdxMsg(modifyMsg)
+      dispatch(setGlobalCtxFanBoardBigIdx(modifyMsg))
     } else if (res.result === 'fail') {
       if (modifyMsg.length === 0) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {},
           msg: '수정 내용을 입력해주세요.'
-        })
+        }))
       }
-      // context.action.alert({
+      // dispatch(setGlobalCtxMessage({type: "alert",
       //   cancelCallback: () => {},
       //   msg: res.message
       // })
@@ -149,13 +129,13 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.updateFanBoardBigIdxMsg(boardIdx)
+        dispatch(setGlobalCtxFanBoardBigIdx(boardIdx))
         setThisBigIdx(0)
       } else if (res.result === 'fail') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {},
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataDelete()
@@ -167,24 +147,23 @@ export default (props) => {
         memNo: urlrStr,
         depth: 2,
         content: textChange,
-        boardNo: context.replyIdx,
+        boardNo: globalState.replyIdx,
         viewOn: isScreet === true ? 0 : 1
       }
     })
     if (res.result === 'success') {
-      context.action.updateReplyIdx(false)
+      dispatch(setGlobalCtxReplyIdx(false))
       setTextChange('')
-
-      context.action.updateFanBoardBigIdxMsg(textChange)
+      dispatch(setGlobalCtxFanBoardBigIdx(textChange))
       setReplyWriteState(false)
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {},
           msg: '답글 내용을 입력해주세요.'
-        })
+        }))
       }
-      // context.action.alert({
+      // dispatch(setGlobalCtxMessage({type: "alert",
       //   callback: () => {},
       //   msg: res.message
       // })
@@ -213,9 +192,9 @@ export default (props) => {
               }
               return (
                 <>
-                  <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
+                  <div className={`list-item ${boardIdx === globalState.fanboardReplyNum && 'on'}`}>
                     <BoardItem key={index} data={item} set={props.set} />
-                    {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
+                    {globalState.fanboardReplyNum && globalState.toggleState && boardIdx === globalState.fanboardReplyNum && (
                       // <ReplyList
                       //   isViewOn={viewOn}
                       //   replyShowIdx={context.fanboardReplyNum}
@@ -227,8 +206,8 @@ export default (props) => {
                         data={item}
                         set={props.set}
                         isViewOn={viewOn}
-                        replyShowIdx={context.fanboardReplyNum}
-                        titleReplyInfo={context.fanboardReply}
+                        replyShowIdx={globalState.fanboardReplyNum}
+                        titleReplyInfo={globalState.fanboardReply}
                         set={props.set}
                       />
                     )}

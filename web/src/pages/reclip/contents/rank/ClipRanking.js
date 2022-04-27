@@ -12,17 +12,17 @@ import RankingList from '../../components/RankingList'
 import './clipRanking.scss'
 import moment from "moment";
 import {playClip} from "pages/clip/components/clip_play_fn";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import NoResult from "components/ui/noResult/NoResult";
+import {useDispatch, useSelector} from "react-redux";
 
 const ClipRanking = () => {
   const tabmenu = ['오늘', '이번주'];
-  const context = useContext(Context);
   const history = useHistory();
   const [ rankClipInfo, setRankClipInfo ] = useState({ list: [], paging: {}, topInfo: [] });
   const [ searchInfo, setSearchInfo ] = useState( { rankType: 1, rankingDate: moment().format('YYYY-MM-DD'), page: 1, records: 100});
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const getRankInfo = async () => {
     if (rankClipInfo.list.length > 0) {
       setRankClipInfo({ list: [], paging: {}, topInfo: [] });
@@ -110,7 +110,7 @@ const ClipRanking = () => {
 
     Api.getClipRankCombineList({rankType: searchInfo.rankType, callType}).then(res => {
       const playList = res.data.list;
-      const clipParam = { clipNo, playList, context, history, playListInfoData };
+      const clipParam = { clipNo, playList, globalState, dispatch, history, playListInfoData };
       playClip(clipParam);
     })
   };
@@ -140,7 +140,7 @@ const ClipRanking = () => {
           :
           <NoResult ment="클립 랭킹 순위가 만들어지고 있어요." />
         }
-      </div>      
+      </div>
     </div>
   );
 };

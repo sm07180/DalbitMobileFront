@@ -1,10 +1,15 @@
 import LayerPopup from "../../../components/ui/layerPopup/LayerPopup";
 import React, {useContext, useState} from "react";
-import {Context, GlobalContext} from 'context'
 import AdminMessage from "./adminMessage";
 import { useForm } from 'react-hook-form';
 import moment from 'moment';
 import API from "../../../context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    setGlobalCtxAlertStatus,
+    setGlobalCtxBroadcastAdminLayer,
+    setGlobalCtxMessage
+} from "../../../redux/actions/globalCtx";
 
 function SanctionList({ value, type,text, name, register, children }) {
     let inputText = text === 'input';
@@ -56,9 +61,8 @@ const reportDetailList =[
 ]
 
 export function ReportPopup({ popup}) {
-
-    const context = useContext(Context);
-    const { globalState, globalAction } = useContext(GlobalContext);
+    const dispatch = useDispatch();
+    const globalState = useSelector(({globalCtx}) => globalCtx);
 
     const {
         register,
@@ -68,18 +72,19 @@ export function ReportPopup({ popup}) {
 
     let onClick = (data , notificationYn)=>{
         if(!data.declaration_slctType){
-            globalAction.setAlertStatus({
+            dispatch(setGlobalCtxAlertStatus({
                 status: true,
                 type: "alert",
                 content: "제재조치를 선택하세요.",
-            });
+            }))
             return false;
         }else if(!data.declaration_message){
-            globalAction.setAlertStatus({
+            dispatch(setGlobalCtxAlertStatus({
                 status: true,
                 type: "alert",
                 content: "제재사유를 한 가지 이상 선택하세요.",
-            });
+            }))
+
             return false;
         }
         let opCode = data.declaration_slctType[0];
@@ -161,17 +166,17 @@ export function ReportPopup({ popup}) {
                 }
                 await API.adminDeclarationOperate(form);
                 popup(false);
-                globalAction.setBroadcastAdminLayer!((prevState) => ({
-                    ...prevState,
+                dispatch(setGlobalCtxBroadcastAdminLayer({
+                    ...globalState.broadcastAdminLayer,
                     status: false,
                     roomNo: "",
                     memNo: "",
                     nickNm: "",
-                }));
+                }))
             }
         };
         sessionStorage.removeItem('room_active')
-        context.action.confirm(message1)
+        dispatch(setGlobalCtxMessage({type: "confirm", ...message1}))
     };
     return <LayerPopup title="신고조치" setPopup={popup}>
         <form>

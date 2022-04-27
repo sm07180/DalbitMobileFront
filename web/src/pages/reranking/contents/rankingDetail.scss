@@ -31,31 +31,55 @@
   #rankCategory {
     position:sticky;
     top: $MOBILE-TABTOP;
-    @include flex(center);
-    transition: all .2s ease-in-out;
-    background: linear-gradient(to right, #AF6FF5 0%, #F675CE 100% );
-    background-size: 400%;
     z-index: $TAB-ZINDEX;
-    .rankCategoryList {
-      flex: 1;
-      position: relative;
-      @include flex(center, center);
-      height: 48px;
-      @include font(18px,800,rgba(255,255,255,0.6));
-      box-sizing: border-box;
-      cursor: pointer;
-      &.active {
-        @include font(18px,800,#FFF);
-      }      
-    }
-    .underline {
-      position: absolute;
-      bottom: 0;
-      left: 0%;
-      width: 25px; height: 5px;
-      border-radius: 100px;
-      // transition: all .2s ease-in-out;
-      background-color: rgba($color: #FFFFFF, $alpha: 0.8);
+    .rankCategoryWrapbox {
+      position:relative;
+      @include flex(center);
+      overflow-x:hidden;
+      .wrapboxBg {
+        @include position-top-left;
+        left:0;
+        z-index: -1;
+        width:400%;
+        height:100%;
+        transition: left .2s ease-in-out;
+        background: linear-gradient(to right, #AF6FF5 0%, #CD79F1 24%, #CE7AF2 25%, #EB84EE 49%, #EB84EE 50%, #F574CD 74%, #F675CE 75%, #FF64AC 100%);
+        background-size: 100%;
+      }
+      .underline {
+        position: absolute;
+        bottom: 0;
+        left:12.5%;
+        transform: translateX(-50%);
+        width: 25px; height: 5px;
+        border-radius: 100px;
+        transition: left .2s ease-in-out;
+        background-color: rgba($color: #FFFFFF, $alpha: 0.8);
+      }
+      .rankCategoryList {
+        flex: 1;
+        position: relative;
+        @include flex(center, center);
+        height: 48px;
+        @include font(18px,800,rgba(255,255,255,0.6));
+        box-sizing: border-box;
+        cursor: pointer;
+        &.active {
+          @include font(18px,800,#FFF);
+        }
+        @for $i from 1 to 5 {
+          &:nth-child(#{$i}) {
+            &.active {
+              ~ .wrapboxBg {
+                left: calc(-100% * #{$i} + 100%);
+              }
+              ~ .underline {
+                left: calc(25% * #{$i} - 12.5%);
+              }
+            }
+          }
+        }
+      }
     }
   }
   .tabWrap {
@@ -72,14 +96,14 @@
       width: 100%;
       border-radius: 100px;
       background-color: #F6F6F6;
-      .tabList {
+      li {
         flex: 1;
         @include flex(center, center);
         height: 36px;
         @include font(14px,500,#ACACAC);
         box-sizing: border-box;
         z-index: 2;
-        &.tabActive {
+        &.active {
           width: 100%; height: 36px;
           border: 1px solid #666666;
           border-radius: 100px;
@@ -180,69 +204,50 @@
       .topContent{
         @include flex(flex-start, space-between);
         width: 100%;
+        margin-top:4px;
       }
       .ranker {
         flex:1;
-        &:nth-child(1) {
-          order:2;
-          .listColumn {
-            width:100px;
-            .photo {
-              width: 100px; height: 100px;
-            }
-          }
-        }
-        &:nth-child(2) {
-          order:1;
-          .photo {
-            width: 84px; height: 84px;
-          }
-        }
-        &:nth-child(3) {
-          order:3;
-          .photo {
-            width: 84px; height: 84px;
-          }
-        }
         .listColumn {
+          position:relative;
           @include flex(center, center, column);
           width:84px;
           height:128px;
           margin:0 auto;
           cursor: pointer;
-          .photo {
-            position: relative;
-            @include flex(flex-end, center);
-            width:100%;
+          &.none {
+            display: none;
+          }
+          .teamWrapBox {
+            position:relative;
             margin-top:auto;
-            &::before {
-              content: "";
-              @include position-top-left;
-              width: 100%; height: 100%;
-              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
-              border-radius:50%;
-              box-sizing: border-box;
+            .teamSymbol {
+              @include teamSymbol;
             }
-
+          }
+          .photo {
+            @include photoStyle(100%,84px,50%);
+            margin-top:auto;
             img {
               width:100%;
-              border-radius: 50%;
+              border-radius:50%;
+              object-fit: cover;
             }
-            .rankerRank {
-              @include position-top-left(0px, -4px);
-              @include flex(center, center);
-              &.index1 {
-                width: 40px; height: 50px;
-                @include BGIMG("ranking/dalla/rankDetail_1st.png");
-              }
-              &.index2 {
-                width: 30px; height: 40px;
-                @include BGIMG("ranking/dalla/rankDetail_2nd.png");
-              }
-              &.index3 {
-                width: 30px; height: 40px;
-                @include BGIMG("ranking/dalla/rankDetail_3rd.png");
-              }
+          }
+          .rankerRank {
+            @include position-top-left(0px, -4px);
+            @include flex(center, center);
+            &.index1 {
+              width: 40px; height: 50px;
+              @include BGIMG("ranking/dalla/rankDetail_1st.png");
+            }
+            &.index2 {
+              width: 30px; height: 40px;
+              @include BGIMG("ranking/dalla/rankDetail_2nd.png");
+            }
+            &.index3 {
+              width: 30px; height: 40px;
+              @include BGIMG("ranking/dalla/rankDetail_3rd.png");
             }
           }
           .rankerNick {
@@ -287,6 +292,19 @@
             @include font(12px, 900, #9A78FF);
           }
         }
+        &:nth-child(1) {
+          order:2;
+          .photo {
+            width:100px;height:100px;
+          }
+          .teamWrapBox {
+            .teamSymbol {
+              width:100px;height:100px;
+            }
+          }
+        }
+        &:nth-child(2) {order:1;}
+        &:nth-child(3) {order:3;}
       }
       .cupidWrap {
         position: relative;
@@ -525,6 +543,12 @@
         }
       } 
     }     
+  }
+  .tabmenu {
+    li {
+      position:relative;
+      cursor:pointer;
+    }
   }
 }
 

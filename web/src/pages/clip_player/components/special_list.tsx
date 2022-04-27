@@ -1,22 +1,21 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useParams, useLocation } from "react-router-dom";
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { ClipProvider, ClipContext } from "context/clip_ctx";
 // api
 import { getSpecialList, getProfile } from "common/api";
 // scss
 // constant
 import { tabType } from "../constant";
+import {useDispatch, useSelector} from "react-redux";
+import {setClipCtxRightTabType, setClipCtxUserMemNo} from "../../../redux/actions/clipCtx";
 
 export default (props) => {
   // ctx && commons
 
-  const { clipState, clipAction } = useContext(ClipContext);
-  const { setRightTabType, setUserMemNo } = clipAction;
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipState = useSelector(({clipCtx}) => clipCtx);
   const { userMemNo } = clipState;
 
+  const dispatch = useDispatch();
   const history = useHistory();
   // state
   const [list, setList] = useState<any>("");
@@ -27,8 +26,8 @@ export default (props) => {
   // 프로필 보기
   const viewProfile = useCallback((memNo: string) => {
     if (globalState.baseData.isLogin === true) {
-      setRightTabType!(tabType.PROFILE);
-      setUserMemNo && setUserMemNo(memNo);
+      dispatch(setClipCtxRightTabType(tabType.PROFILE));
+      dispatch(setClipCtxUserMemNo(memNo));
     } else {
       return history.push("/login");
     }

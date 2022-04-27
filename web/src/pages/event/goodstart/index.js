@@ -1,7 +1,6 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
-import {Context} from 'context'
 import moment from 'moment'
 
 import Api from 'context/api'
@@ -16,13 +15,16 @@ import PopupNotice from './content/PopupNotice'
 import PopupExp from '../../mypage/content/layer_popup_exp'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
 
 const tabmenu1 = 'dj'
 const tabmenu2 = 'fan'
 
 const GoodStart = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const context = useContext(Context)
   const [djRankInfo, setDjRankInfo] = useState([])
   const [tabContent, setTabContent] = useState({name: tabmenu1}) // dj, fan
 
@@ -60,13 +62,13 @@ const GoodStart = () => {
 
   // 페이지 셋팅
   useEffect(() => {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push('/login')
     } else {
       fetchGoodStartDjInfo()
     }
   }, [])
-  
+
   // 페이지 시작
   return (
     <div id="goodStart">

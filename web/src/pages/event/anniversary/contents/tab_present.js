@@ -1,37 +1,39 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 import PresentPop from './pop_present'
 import LayerPopupExp from './layer_popup_exp'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function anniversaryEventPresnet(props) {
   const {noticeData} = props
   const [presentPop, setPresentPop] = useState(false)
   const [popupExp, setPopupExp] = useState(false)
   const [rcvDalCnt, setRcvDalCnt] = useState(0)
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
   const history = useHistory()
 
   async function eventOneYearCheck() {
-    const {result, message, code} = await Api.postEventOneYearCheck({memLevel: globalCtx.profile.level})
+    const {result, message, code} = await Api.postEventOneYearCheck({memLevel: globalState.profile.level})
     if (result === 'success') {
       eventOneYearInsert()
     } else {
       if (code === '-3') {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: message,
           callback: () => {
             history.push('/selfauth?event=/event/anniversary')
           }
-        })
+        }))
       } else {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: message
-        })
+        }))
       }
     }
   }
@@ -47,7 +49,7 @@ export default function anniversaryEventPresnet(props) {
   }
   const onReceivePresent = () => {
     if (!token.isLogin) {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push({
@@ -57,7 +59,7 @@ export default function anniversaryEventPresnet(props) {
             }
           })
         }
-      })
+      }))
     } else {
       eventOneYearCheck()
     }

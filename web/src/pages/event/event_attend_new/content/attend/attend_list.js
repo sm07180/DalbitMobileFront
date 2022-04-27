@@ -4,12 +4,16 @@ import {AttendContext} from '../../attend_ctx'
 import {IMG_SERVER} from 'context/config'
 
 import BonusPop from './popBonus'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default (props) => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
   const [popup, setPopup] = useState(false)
-  const {eventDate} = props
+  const {eventDate} = props;
+
+  const dispatch = useDispatch();
 
   const createCheckIn = (check_ok) => {
     if (check_ok === 1) {
@@ -70,9 +74,9 @@ export default (props) => {
         eventAttendAction.setDateList(dateList)
         setPopup(popup ? false : true)
       } else {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:'alert',
           msg: message
-        })
+        }))
       }
     }
     fetchEventAttendGift()

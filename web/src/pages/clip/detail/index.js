@@ -3,7 +3,7 @@ import Header from "components/ui/header/Header";
 import API from "context/api";
 import Swiper from "react-id-swiper";
 import FilterBtn from "pages/clip/components/FilterBtn";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import ClipDetailCore from "pages/clip/components/ClipDetailCore";
 import {useHistory, useParams} from "react-router-dom";
 
@@ -11,14 +11,13 @@ import '../scss/clipDetail.scss';
 import '../../../components/ui/listRow/listRow.scss';
 import Utility from "components/lib/utility";
 import {playClip} from "pages/clip/components/clip_play_fn";
-import {Context} from "context";
 import NoResult from "components/ui/noResult/NoResult";
 
 const ClipDetailPage = (props) => {
   const { type } = useParams();
-  const context = useContext(Context);
   const history = useHistory();
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const categoryType = useSelector((state)=> state.clip.categoryType); //
   const termType = useSelector((state)=> state.clip.termType); //
   const subjectType = useSelector((state)=> state.clip.subjectType); //
@@ -126,7 +125,7 @@ const ClipDetailPage = (props) => {
     const playClipParams = {
       clipNo: e.currentTarget.dataset.clipNo,
       playList: clipLastInfo.list,
-      context,
+      globalState, dispatch,
       history,
       playListInfoData
     }
@@ -160,7 +159,7 @@ const ClipDetailPage = (props) => {
             </Swiper>
           }
       </div>
-      <section className="filterWrap">        
+      <section className="filterWrap">
         <div className="filterGroup">
           <FilterBtn data={searchInfo.slctType} list={categoryType} handleSelect={handleCategorySelect}/>
           <FilterBtn data={searchInfo.dateType} list={termType} handleSelect={handleTermSelect}/>

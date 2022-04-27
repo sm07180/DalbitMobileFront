@@ -7,13 +7,15 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import '../../style.scss'
 import './forbid.scss'
 import useChange from "components/hooks/useChange";
-import Toast from "components/ui/toast/Toast";
 import _ from 'lodash'
-import {Context} from "context";
 import Api from "context/api";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SettingForbid = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const [word, setWord] = useState(false)
   const [button, setButton] = useState("삭제");
   const [focus, setFocus] = useState(false);
@@ -36,15 +38,15 @@ const SettingForbid = () => {
       wordIndex++
     })
     if (banWords == '' && type != 'remove')
-      return context.action.alert({msg: `금지어를 입력해주세요.`})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: `금지어를 입력해주세요.`}))
     const res = await Api.mypage_banword_write({data: {banWord: banWords}})
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       if (res.data.banWordCnt) {setWord(res.data.banWord.split('|'))}
       else {setWord(false)}
       setChanges([''])
-      if (!(type == 'remove')) {context.action.alert({msg: res.message})}
+      if (!(type == 'remove')) {dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}))}
     } else {
-      context.action.alert({msg: res.message})
+      dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}))
     }
   }
 
@@ -59,7 +61,7 @@ const SettingForbid = () => {
         setChanges([''])
       }
     } else {
-      context.action.alert({msg: res.message})
+      dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}))
     }
   }
 
@@ -78,7 +80,7 @@ const SettingForbid = () => {
 
   //삭제 클릭시
   const removeInput = (index) => {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: `금지어를 삭제하시겠습니까?`,
       callback: () => {
         let words = word
@@ -90,7 +92,7 @@ const SettingForbid = () => {
         }
         fetchWrite('remove')
       }
-    })
+    }))
   }
 
   //input 태그 클릭시 포커스처리

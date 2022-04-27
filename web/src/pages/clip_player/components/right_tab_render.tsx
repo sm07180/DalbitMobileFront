@@ -2,8 +2,6 @@ import React, { useContext, useCallback } from "react";
 
 import { tabType } from "../constant";
 
-import { ClipContext } from "context/clip_ctx";
-
 import Profile from "../components/profile";
 import GiftGive from "../components/gift_give";
 import PlayList from "../components/play_list";
@@ -14,9 +12,12 @@ import Report from "../components/report";
 import FanRankMy from "../components/fan_rank_my";
 import FanRankUser from "../components/fan_rank_user";
 import SpecialDjList from "../components/special_list";
+import {useDispatch, useSelector} from "react-redux";
+import {setClipCtxRightTabType} from "../../../redux/actions/clipCtx";
 
 export default function ClipRightTabRender() {
-  const { clipState, clipAction } = useContext(ClipContext);
+  const dispatch = useDispatch();
+  const clipState = useSelector(({clipCtx}) => clipCtx);
   const { rightTabType } = clipState;
 
   const tabBundle = (() => {
@@ -166,7 +167,9 @@ export default function ClipRightTabRender() {
             return (
               <div
                 className={`tabBox__btnTab ${rightTabType === type ? " tabBox__btnTab--active" : ""}`}
-                onClick={() => clipAction.setRightTabType && clipAction.setRightTabType(type)}
+                onClick={() => {
+                  dispatch(setClipCtxRightTabType(type))
+                }}
                 key={`tab-${idx}`}
               >
                 {value}

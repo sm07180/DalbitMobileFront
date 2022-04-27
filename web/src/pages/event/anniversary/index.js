@@ -7,6 +7,8 @@ import qs from 'query-string'
 import PresentTab from './contents/tab_present'
 import CommentTab from './contents/tab_comment'
 import './anniversary.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function anniversaryEvent() {
   const history = useHistory()
@@ -17,6 +19,7 @@ export default function anniversaryEvent() {
   const [noticeData, setNoticeData] = useState(false)
   const [eventDate, setEventDate] = useState('')
 
+  const dispatch = useDispatch();
   const dateFormatterKor = (num, type) => {
     if (!num) return ''
     var formatNum = ''
@@ -40,9 +43,10 @@ export default function anniversaryEvent() {
       setNoticeData(data.detailDesc)
       setEventDate(dateFormatterKor(data.startDt) + ' ~ ' + dateFormatterKor(data.endDt))
     } else {
-      context.action.alert({
+
+      dispatch(setGlobalCtxMessage({type:'alert',
         msg: message
-      })
+      }))
     }
   }
 

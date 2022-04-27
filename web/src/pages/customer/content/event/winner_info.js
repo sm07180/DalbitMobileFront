@@ -2,12 +2,14 @@ import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import Utility, {addComma} from 'components/lib/utility'
-import {Context} from 'context'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
   const history = useHistory()
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [winnerCertifiInfo, setWinnerCertifiInfo] = useState({})
   const [emailFocusState, setEmailFocusState] = useState(false)
   const [addrFocusState, setAddrFocusState] = useState(false)
@@ -19,7 +21,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
   const prizeIdx = history.location.state.prizeIdx
   const minorYn = history.location.state.minorYn
   const state_ = history.location.state.state_
-  const memNo = context.token.memNo
+  const memNo = globalState.token.memNo
 
   const closeDaumPostCode = () => {
     const element_layer = document.getElementById('layer')
@@ -77,12 +79,9 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         msg: 'jpg, png 이미지만 사용 가능합니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
+      }))
       return
     }
     reader.readAsDataURL(target.files[0])
@@ -101,12 +100,9 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
           })
           formDispatch({type: 'file', val: arr})
         } else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
-            callback: () => {
-              context.action.alert({visible: false})
-            }
-          })
+          }));
         }
       }
     }
@@ -147,12 +143,12 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
 
       setSelectFetching(valueAble)
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         msg: message,
         callback: async () => {
           window.location.href='/'
         }
-      })
+      }));
     }
   }
 
@@ -167,18 +163,18 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
         check: false
       })
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         msg: message,
         callback: async () => {
           window.location.href='/'
         }
-      })
+      }));
     }
   }
 
   useEffect(() => {
-    if (!context.token.isLogin) history.push('/')
-  }, [context.token])
+    if (!globalState.token.isLogin) history.push('/')
+  }, [globalState.token])
 
   useEffect(() => {
     if (formatFetching !== null && selectFetching !== null) {

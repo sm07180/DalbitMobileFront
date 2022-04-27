@@ -7,20 +7,22 @@ import Header from 'components/ui/header/Header'
 import './inOutMessage.scss'
 import API from "context/api";
 import InfoSwitchList from "pages/resetting/components/InfoSwitchList";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const InOutMessage = (props) => {
   /**
    * liveBadgeView 실시간 팬 배지 djListenerIn DJ 입장 메시지, djListenerOut DJ 퇴장 메시지, listenerIn 청취자 입장 메시지, listenerOut 청취자 퇴장 메시지 => true, false
    * */
   const {settingData, setSettingData} = props;
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const fetchData = async (type) => {
     const res = await API.modifyBroadcastSetting({[type]: !settingData[type]});
     if(res.result === "success") {
       setSettingData({...settingData, [type]: !settingData[type]})
-      context.action.toast({msg: res.message});
+      dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
     }
   }
 
