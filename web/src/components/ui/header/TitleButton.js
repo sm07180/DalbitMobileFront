@@ -1,12 +1,15 @@
 import React, {useEffect} from 'react';
 import {useHistory} from "react-router-dom";
+import {NODE_ENV} from "../../../constant/define";
+import {isDesktop} from "../../../lib/agent";
 import {goMail} from "common/mailbox/mail_func";
 import {useDispatch, useSelector} from "react-redux";
 import {setNoticeData, setNoticeTab} from "../../../redux/actions/notice";
-import API from "../../../context/api";
 import {Hybrid, isAndroid, isHybrid} from "../../../context/hybrid";
+import API from "../../../context/api";
 import moment from "moment";
 import Utility from "../../lib/utility";
+import AdminIcon from "../../../pages/menu/static/ic_home_admin.svg";
 
 const TitleButton = (props) => {
   const history = useHistory();
@@ -38,6 +41,22 @@ const TitleButton = (props) => {
     }
   }, []);
 
+  const goAdmin = () => {
+    if(isDesktop()) {
+      if (NODE_ENV === "dev") {
+        window.open("https://devm.dalbitlive.com/admin/question", "_blank");
+      } else {
+        window.open("https://m.dalbitlive.com/admin/question", "_blank");
+      }
+    }else {
+      if (NODE_ENV === "dev") {
+        location.href = "https://devm.dalbitlive.com/admin/question";
+      } else {
+        location.href = "https://m.dalbitlive.com/admin/question";
+      }
+    }
+  };
+
   const goMailAction = () => {
     const goMailParams = {
       dispatch,
@@ -48,7 +67,8 @@ const TitleButton = (props) => {
     }
 
     goMail(goMailParams);
-  }
+  };
+
   const AlarmButton = () => {
     return <button 
       className={`alarm ${memberRdx.isLogin && (alarmData.alarm || alarmData.notice) > 0 ? 'new' : ''}`} 
@@ -60,8 +80,7 @@ const TitleButton = (props) => {
         }
         history.push('/notice');
       }} />
-  }
-
+  };
 
   switch (props.title) {
     case '메인':
@@ -105,13 +124,20 @@ const TitleButton = (props) => {
       )
     case 'MY':
       return (
-        <div className="buttonGroup">
-          <button className={`store ${!moment(nowDay).isAfter(moment('20220428')) ? "bonus" : ""}`} onClick={()=>{
-            storeButtonEvent({history, memberRdx, payStoreRdx})
-          }} />
-          <button className={`message ${mailboxState.isMailboxNew ? 'new' : ''}`} onClick={goMailAction} />
-          <AlarmButton/>
-        </div>
+        <>
+          {globalState.adminChecker && 
+            <a onClick={goAdmin}>
+              <img src={AdminIcon} alt="관리자아이콘" />
+            </a>
+          }
+          <div className="buttonGroup">
+            <button className={`store ${!moment(nowDay).isAfter(moment('20220428')) ? "bonus" : ""}`} onClick={()=>{
+              storeButtonEvent({history, memberRdx, payStoreRdx})
+            }} />
+            <button className={`message ${mailboxState.isMailboxNew ? 'new' : ''}`} onClick={goMailAction} />
+            <AlarmButton/>
+          </div>
+        </>
       )
     default :
       return (

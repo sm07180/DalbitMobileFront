@@ -31,7 +31,6 @@
 .tabmenu {
   position:relative;
   @include flex(center);
-  background-color:white;
   @include tabmenuUnderline(4);
   li {
     line-height:48px;
