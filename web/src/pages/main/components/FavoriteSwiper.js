@@ -1,51 +1,59 @@
-import React, {useContext, useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo} from 'react';
 
-import Swiper from 'react-id-swiper'
+import Swiper from 'react-id-swiper';
 
-// global components
-// components
-// css
 import {useHistory} from "react-router-dom";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
 
-const SwiperList = (props) => {
-
-  const {data, profImgName, type, pullToRefreshPause, myStarCnt} = props;
+const FavoriteSwiper = (props) => {
+  const {data, swiperRefresh, pullToRefreshPause, myStarCnt} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const common = useSelector(state => state.common);
-  const isDesktop = useSelector((state)=> state.common.isDesktop)
-  let locationStateHistory = useHistory();
 
+  // 스와이퍼 포토 내부 컴포넌트
+  const SwiperPhotoComponent = (props) => {
+    const {list} = props;
+    // myStar 가 방송중일 때
+    const goLive = (item) => {
+      RoomValidateFromClipMemNo(item.roomNo, item.memNo, dispatch, globalState, history, item.nickNm);
+    }
+    // myStar 가 방송중이 아닐 때
+    const goProfile = (memNo) => {
+      if (memNo !== undefined && memNo > 0) history.push(`/profile/${memNo}`)
+    }
+    return (
+      <div className="listColumn">
+        <div
+          className={`photo ${list.roomNo !== "0" ? "" : "off"}`}
+          onClick={() => {
+            if (list.roomNo !== "0") goLive(list)
+            else goProfile(list.memNo)
+          }}>
+          <img src={list['profImg'] ?
+            list['profImg'].thumb292x292
+            : 
+            'https://image.dalbitlive.com/images/listNone-userProfile.png'}
+          />
+        </div>
+        <p>{list.nickNm}</p>
+      </div>
+    )
+  };
+  
+  // 스와이퍼 리플레쉬 액션
   const swiperParams = useMemo(() => {
     let tempResult = { slidesPerView: 'auto'}
-    if (isDesktop) {
-      tempResult.navigation = {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev'
-      };
-    }
     return tempResult;
   }, []);
 
-  const goLive = (item) => {
-    const memNick = type === 'daldungs' ? item.bj_nickName : item.nickNm
-    RoomValidateFromClipMemNo(item.roomNo, item.memNo, dispatch, globalState, history, memNick);
-  }
-
-  const swiperRefresh = () => {
-    const swiper = document.querySelector(`.${type} .swiper-container`)?.swiper;
-    swiper?.update();
-    swiper?.slideTo(0);
-  }
-
   useEffect(() => {
-    if (data?.length > 0 && !pullToRefreshPause) { // 데이터 변경될때(탭 이동)
+    if (!pullToRefreshPause) { // 데이터 변경될때(탭 이동)
       swiperRefresh();
     }
-  }, [data, pullToRefreshPause]);
+  }, [pullToRefreshPause]);
 
   useEffect(() => {
     if(common.isRefresh && data.length > 0) { // refresh 될때
@@ -53,51 +61,28 @@ const SwiperList = (props) => {
     }
   }, [common.isRefresh]);
 
-  const goProfile = (memNo) => {
-    if (memNo !== undefined && memNo > 0) {
-      history.push(`/profile/${memNo}`)
-    }
-  }
-
   return (
-    <>
+    <section className="favorites">
     {data && data.length > 0 &&
-    <Swiper {...swiperParams}>
+      <Swiper {...swiperParams}>
       {data.map((item,index) => {
         return (
           <div key={index}>
-            <div className="listColumn">
-              {item.roomNo !== "0" ?
-                <div className="photo" onClick={() => {goLive(item)}}>
-                  <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
-                    : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                </div>
-               :
-                <div className="photo off" onClick={() => {goProfile(item.memNo)}}>
-                  <img src={item[profImgName].thumb292x292 ? item[profImgName].thumb292x292
-                    : 'https://image.dalbitlive.com/images/listNone-userProfile.png'} />
-                </div>
-              }
-              <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
-            </div>
+            <SwiperPhotoComponent list={item} />
           </div>
         )
       })}
       {myStarCnt > 10 &&
-        <div className='listColumn' onClick={() => {
-          history.push('/recentstar')
-        }}>
-          <div className="listMoreBox">
-            <div className="listMore">
-              +{myStarCnt - 10}
-            </div>
+        <div>
+          <div className="listMoreBox" onClick={() => {history.push('/recentstar')}}>
+            +{myStarCnt - 10}
           </div>
         </div>
       }
-    </Swiper>
+      </Swiper>
     }
-    </>
+    </section>
   )
 }
 
-export default SwiperList;
+export default FavoriteSwiper;

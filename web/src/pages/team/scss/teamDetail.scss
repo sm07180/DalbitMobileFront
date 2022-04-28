@@ -16,6 +16,7 @@
       .question {
         width:20px;
         line-height:20px;
+        margin:10px;
         border-radius:50%;
         background-color:#666;
         @include font(11px,$Medium,white);
@@ -25,7 +26,8 @@
   .teamInfo {
     .teamStatus {
       @include flex;
-      margin-bottom:12px;
+      margin-top:24px;
+      margin-bottom:16px;
       .teamSymbol {
         @include teamSymbol;
         margin-right:16px;
