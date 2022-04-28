@@ -61,7 +61,7 @@ const WeeklyPick = (props) => {
   return (
     <>
       <div className='weeklyPickTop'>
-        <p>위클리 픽!</p>
+        <span>위클리 픽!</span>
         <p>이번 주,<br/>달둥이들의 마음을<br/>취.향.저.격.한 DJ를 소개합니다.</p>
       </div>
       <section className="weeklyPickWrap">
