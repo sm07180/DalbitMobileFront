@@ -26,7 +26,7 @@ const Honor = () => {
       <Header title="명예의 전당" type="back"/>
       <Tabmenu data={honorTabmenu} tab={tab} setTab={(val) => dispatch(setHonorTab(val))} />
       {tab === honorTabmenu[0] ?
-        !UtilityCommon.eventDateCheck("20220501") ? <StarDj /> : <SpecialDj/>
+        UtilityCommon.eventDateCheck("20220501") ? <StarDj /> : <SpecialDj/>
         :
         <WeeklyPick />
       }
