@@ -500,6 +500,79 @@
     }
   }
 
+  .weeklyPickTop {
+    @include flex($fd:column);
+    width: 100%;
+    padding: 54px 20px 28px;
+    height: 193px;
+    background: url("https://image.dalbitlive.com/honor/weeklyPick/honor_weeklyPick-topBg.png");
+    background-position: right center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    p {
+      &:first-child {
+        @include font(26px, $Bold, #303030);
+        margin-bottom: 20px;
+      }
+      &:last-child {
+        @include font(15px, $Medium, #303030);
+        line-height: 20px;
+      }
+    }
+  }
+  .weeklyPickWrap {
+    padding:12px 16px 30px;    
+    .listWrap {      
+      position: relative;
+      .listRow {
+        position: relative;
+        @include flex(center);
+        margin-bottom: 12px;padding: 14px 16px;
+        border-radius: 8px;
+        background-color: #FAFAFA;
+        overflow: hidden;
+        cursor: pointer;
+        .photo {
+          @include photoStyle(75px, 75px, 50%);
+          overflow: hidden;
+        }
+        .listContent {
+          flex: 1;
+          @include flex($fd:column);
+          min-width:0;
+          margin: 0px 60px 0px 16px;
+          .round {
+            margin-bottom:10px;
+            @include font(12px,$Regular,#666);
+            &.thisweekPick {
+              @include font(12px,$SemiBold,#FF3C7B);
+            }
+          }
+          .memNick {
+            @include font(15px, 500, #202020);
+            @include fontCut;
+          }
+        }
+        .back {
+          .rightArrow {
+            display: inline-block;
+            width: 20px; height: 20px;
+            @include BGIMG("common/arrow/rightArrow-757575.png");
+          }
+        }
+        .newTag {
+          @include position-top-right(-27px, -27px);
+          @include flex(flex-end, center);
+          width: 54px; height: 54px;
+          padding-bottom: 2px;
+          @include font(11px, $Regular, #FFF);
+          transform: rotate(45deg);
+          background-color: #202020;
+        }
+      }
+    }
+  }
+
   #layerPop {
     .popContainer {
       padding:0;
