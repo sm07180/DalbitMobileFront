@@ -126,7 +126,10 @@ export default () => {
               </div>              
             </>
            :
-            <></>
+            <div className='listNone'>
+              <p className='mainText'>받은 사연이 없어요</p>
+              <p className='subText'>최근 3개월 내역만 볼 수 있어요</p>
+            </div>
         }
       </div>
     </div>

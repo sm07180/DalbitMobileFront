@@ -84,5 +84,17 @@
         }
       }
     }
+    .listNone {
+      @include flex(center, center, column);
+      width: 100%;
+      padding: 100px 0;
+      .mainText {
+        @include font(15px, $Medium, #303030);
+        margin-bottom: 6px;
+      }
+      .subText {
+        @include font(13px, $Regular, #666666);
+      }
+    }
   }
 }
