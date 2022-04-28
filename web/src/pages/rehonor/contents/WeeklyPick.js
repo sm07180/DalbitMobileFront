@@ -62,7 +62,7 @@ const WeeklyPick = (props) => {
     <>
       <div className='weeklyPickTop'>
         <span>위클리 픽!</span>
-        <p>이번 주,<br/>달둥이들의 마음을<br/>취.향.저.격.한 DJ를 소개합니다.</p>
+        <p>이번 주,<br/>달라의 마음을<br/>취.향.저.격.한 DJ를 소개합니다.</p>
       </div>
       <section className="weeklyPickWrap">
       {listData.list.length > 0 &&
@@ -82,10 +82,8 @@ const WeeklyPick = (props) => {
                         <span className='rightArrow'></span>
                       </div>
                       {
-                        index === 0 ? 
+                        index === 0 &&
                         <span className='newTag'>new</span>
-                        :
-                        <></>
                       }
                     </ListRow>
                   )
