@@ -63,7 +63,7 @@ const DoExchange = () => {
         <div className="infoBox">
             {/* {badgeSpecial > 0 && (
               <>
-                <p className="special">DJ님은 스페셜 DJ 입니다.</p>
+                <p className="special">DJ님은 스타 DJ 입니다.</p>
                 <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
               </>
             )} */}

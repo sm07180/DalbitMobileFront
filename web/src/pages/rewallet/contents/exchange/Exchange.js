@@ -384,7 +384,7 @@ const Exchange = (props) => {
               :
               profile?.badgeSpecial > 0 ?
               <>
-                <p className="special">DJ님은 스페셜 DJ 입니다.</p>
+                <p className="special">DJ님은 스타 DJ 입니다.</p>
                 <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
                 <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
                 <p>별 1개당 KRW 60으로 환전됩니다.</p>
