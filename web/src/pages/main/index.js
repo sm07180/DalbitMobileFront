@@ -87,7 +87,7 @@ const MainPage = () => {
     dispatch(setMainData());
   }
 
-  /* 메인 랭킹 10위 목록 API */
+  /* 메인 랭킹 10위 리스트 API */
   const fetchRankDataTop10 = async (type) => {
     if(type !=="" || type!==null){
       if(type === topTenTabMenu[0]) {
@@ -133,7 +133,7 @@ const MainPage = () => {
     }
   };
 
-  /* 라이브 리스트 */
+  /* 라이브 리스트 API */
   const fetchLiveInfo = useCallback(({pageNo, mediaType, djType}) => {
     const callPageNo = pageNo ? pageNo : currentPage
     if(pageNo !== 1) { // 디폴트 호출이 아닐때
@@ -180,7 +180,7 @@ const MainPage = () => {
     setCurrentPage(1);
   }
 
-  // scroll
+  /* scroll event */
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
     const overNode = overRef.current;
@@ -218,7 +218,6 @@ const MainPage = () => {
     },
     [reloadInit]
   )
-
   /* pullToRefresh */
   const mainTouchMove = useCallback((e) => {
     if (reloadInit === true || window.scrollY !== 0) return
@@ -238,7 +237,6 @@ const MainPage = () => {
       }
     }
   }, [reloadInit])
-
   /* pullToRefresh */
   const mainTouchEnd = useCallback(async (e) => {
     if (reloadInit === true) return
@@ -291,22 +289,16 @@ const MainPage = () => {
     touchStartY = null
     touchEndY = null
   }, [reloadInit])
-
-
-  /* 업데이트 확인 */
-  const updatePopFetch = async () => {
-    if (isHybrid()) {
-      if (sessionStorage.getItem('checkUpdateApp') === null) {
-        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
-      }
-
-      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
-        Api.verisionCheck().then(res => {
-          const isUpdate = res.data.isUpdate
-          const storeUrl = res.data.storeUrl
-          setUpdatePopInfo({showPop: isUpdate, storeUrl})
-        })
-      }
+  /* pullToRefresh 아이콘 보기 */
+  const showPullToRefreshIcon = ({duration = 300}) => {
+    const refreshWrap = iconWrapRef.current;
+    if(refreshWrap) {
+      refreshWrap.style.height = `${refreshDefaultHeight + 80}px`;
+      setPullToRefreshPause(false);
+      setTimeout(() => {
+        refreshWrap.style.height = `${refreshDefaultHeight}px`;
+        setPullToRefreshPause(true);
+      }, duration);
     }
   }
 
@@ -333,6 +325,23 @@ const MainPage = () => {
     }
   }
 
+  /* 업데이트 확인 */
+  const updatePopFetch = async () => {
+    if (isHybrid()) {
+      if (sessionStorage.getItem('checkUpdateApp') === null) {
+        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
+      }
+
+      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
+        Api.verisionCheck().then(res => {
+          const isUpdate = res.data.isUpdate
+          const storeUrl = res.data.storeUrl
+          setUpdatePopInfo({showPop: isUpdate, storeUrl})
+        })
+      }
+    }
+  }
+
   /* 리다이렉트할 페이지 있는지 체크 */
   const redirectPage = useCallback(() => {
     try {
@@ -352,19 +361,6 @@ const MainPage = () => {
     dispatch(setIsRefresh(true));
   }
 
-  /* pullToRefresh 아이콘 보기 */
-  const showPullToRefreshIcon = ({duration = 300}) => {
-    const refreshWrap = iconWrapRef.current;
-    if(refreshWrap) {
-      refreshWrap.style.height = `${refreshDefaultHeight + 80}px`;
-      setPullToRefreshPause(false);
-      setTimeout(() => {
-        refreshWrap.style.height = `${refreshDefaultHeight}px`;
-        setPullToRefreshPause(true);
-      }, duration);
-    }
-  }
-
   /* scrollTo action */
   const scrollToEvent = () => {
     if(window.scrollY === 0) {
@@ -374,17 +370,6 @@ const MainPage = () => {
       }else {
         window.removeEventListener('scroll', scrollToEvent);
       }
-    }
-  }
-
-  /* 로고, 헤더, 푸터 등 클릭해서 페이지 리프레시할때 액션 */
-  const pullToRefreshAction = () => {
-    if(window.scrollY !== 0) {
-      mainDataReset();
-      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
-    }else {
-      showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
-      mainDataReset();
     }
   }
 
@@ -399,18 +384,30 @@ const MainPage = () => {
     return Math.floor(Math.random() * boundary); // 0 ~ boundary
   }
 
+  /* props로 넘기는 함수 */
+  // 탑 10 랭킹 탭 메뉴 변경
   const topRankTabChange = (value) => {
     if (value !== undefined && value !== topRankType) {
       setTopRankType(value);
     }
   }
-
-  // 스와이퍼 공용 함수
+  // 스와이퍼 리플레쉬 공용 함수
   const swiperRefresh = (value) => {
     const swiper = document.querySelector(`.${value} .swiper-container`)?.swiper;
     const refreshSlideNum = value === 'mainSwiper' ? 1 : 0 // 메인 탑 스와이퍼 1번 슬라이드로 이동해야 번호가 맞음 ㅠㅠ
     swiper?.update();
     swiper?.slideTo(refreshSlideNum);
+  }
+
+  /* 로고, 헤더, 푸터 등 클릭해서 페이지 리프레시할때 액션 */
+  const pullToRefreshAction = () => {
+    if(window.scrollY !== 0) {
+      mainDataReset();
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
+    }else {
+      showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
+      mainDataReset();
+    }
   }
 
   /* 로고, 푸터 클릭했을때 */
@@ -439,22 +436,12 @@ const MainPage = () => {
     }
   }, [dataRefreshPrevent]);
 
-  /* 라이브 리스트 페이징, 탭 변경 */
+  /* 메인 페이지 기본 호출 */
   useEffect(() => {
-    if(!dataRefreshPrevent) {
-      fetchLiveInfo(currentPage)
-    }
-    document.addEventListener('scroll', scrollEvent);
-    return () => {
-      document.removeEventListener('scroll', scrollEvent)
-    }
-  }, [currentPage, liveListType]);
-
-  useEffect(() => {
-    fetchMainInfo();                // 메인 page api
-    fetchMainPopupData('6');        // 메인 팝업
-    updatePopFetch();               // 업데이트 팝업
-    redirectPage();                 // redirect 체크
+    fetchMainInfo();                   // 메인 page api
+    fetchMainPopupData('6');           // 메인 팝업
+    updatePopFetch();                  // 업데이트 팝업
+    redirectPage();                    // redirect 체크
 
     setTopRankType(topTenTabMenu[getRandomIndex()]); // now top10 랜덤
     
@@ -467,9 +454,21 @@ const MainPage = () => {
     }
   }, []);
 
+  /* 라이브 리스트 페이징, 탭 변경 */
+  useEffect(() => {
+    if(!dataRefreshPrevent) {
+      fetchLiveInfo(currentPage)
+    }
+    document.addEventListener('scroll', scrollEvent);
+    return () => {
+      document.removeEventListener('scroll', scrollEvent)
+    }
+  }, [currentPage, liveListType]);
+
+  /* NOW TOP 10 랜덤 탭 변경 */
   useEffect(() => {
     if(topRankType) {
-      fetchRankDataTop10(topRankType);
+      fetchRankDataTop10(topRankType); // 메인 랭킹 10 api
     }
   },[topRankType]);
 
@@ -498,7 +497,7 @@ const MainPage = () => {
 
       {/* 헤더 */}
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
+        <Header title="메인" position="relative" titleClick={fixedHeaderLogoClick} />
       </div>
 
       {/* 메인 탑 스와이퍼 */}
@@ -545,7 +544,7 @@ const MainPage = () => {
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
 
     {/* 플로팅 버튼(출석체크) */}
-    {scrollOn && <FloatEventBtn />}
+    <FloatEventBtn scrollOn={scrollOn} />
   </>
   return MainLayout;
 }

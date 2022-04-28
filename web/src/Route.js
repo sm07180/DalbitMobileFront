@@ -20,7 +20,7 @@ const MobileWeb = React.lazy(() => import('pages/mobileWeb'))
 // 이벤트 모음 Zip
 const EventZip = React.lazy(() => import('pages/eventzip'))
 // 최근 접속한 스타
-const RecentStar = React.lazy(() => import('pages/main/contents/recentStar'))
+const RecentStar = React.lazy(() => import('pages/main/contents/recentStar/RecentStar'))
 
 // 클립
 const Clip = React.lazy(() => import('pages/clip'));

@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import '../scss/floatingBtn.scss';
 
-const FloatEventBtn = () => {
+const FloatEventBtn = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -70,7 +70,7 @@ const FloatEventBtn = () => {
     <div id='floatingEvent'>
       <div className='floatingWrap'>
         <div className="fixedButton">
-          {urlrStr !== '/rank' && attendStampState()}
+          {props.scrollOn && urlrStr !== '/rank' && attendStampState()}
         </div>
       </div>
     </div>
