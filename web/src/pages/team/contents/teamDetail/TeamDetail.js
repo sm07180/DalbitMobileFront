@@ -18,7 +18,6 @@ import Benefits from '../../components/popup/Benefits';
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
 
-import "../../scss/inviteList.scss";
 import "../../scss/teamDetail.scss";
 import Api from "context/api";
 import photoCommon from "common/utility/photoCommon";
