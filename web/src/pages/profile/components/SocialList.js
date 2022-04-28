@@ -11,6 +11,7 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileD
 import Utility from "components/lib/utility";
 import {useDispatch, useSelector} from "react-redux";
 import FeedLike from "pages/profile/components/FeedLike";
+import * as Util from "util";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
@@ -41,7 +42,7 @@ const SocialList = (props) => {
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
                               openBlockReportPop={openBlockReportPop}
                               modifyEvent={() => {
-                                memNo === globalState.memNo && goProfileDetailPage(modifyParam)
+                                memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)
                               }}
                               deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, profileData.memNo)}
                               photoClick={() => {
