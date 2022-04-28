@@ -1,34 +1,30 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {useDispatch, useSelector} from "react-redux";
+import React, {useEffect, useState} from 'react';
 
-import Lottie from 'react-lottie'
-
-import Header from 'components/ui/header/Header'
-import ListRow from 'components/ui/listRow/ListRow'
-
-import {IMG_SERVER} from 'context/config'
-import './style.scss'
-import Api from 'context/api'
+import Api from 'context/api';
+import Lottie from 'react-lottie';
 import photoCommon from "common/utility/photoCommon";
+
+import Utility from '../../../../components/lib/utility';
+import Header from '../../../../components/ui/header/Header';
+import ListRow from '../../../../components/ui/listRow/ListRow';
+
+import './recentStar.scss';
+import {IMG_SERVER} from 'context/config';
 import {withRouter} from "react-router-dom";
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {RoomJoin} from "context/room";
+import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const RecentStar = (props) => {
-  let pagePerCnt = 50;
-
-  let [listParam, setListParam] = useState({cnt: 0, list: [], photoServerUrl: ""});
-
-  let [pagingParam, setPagingParam] = useState({loading: false, pageNo: 1});
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-
-  const mainState = useSelector((state) => state.main);
-  useEffect(() => {
-    getList(1);
-  }, []);
+  
+  const [listParam, setListParam] = useState({cnt: 0, list: [], photoServerUrl: ""});
+  const [pagingParam, setPagingParam] = useState({loading: false, pageNo: 1});
+  
+  let pagePerCnt = 50;
 
   const getList = (pageNo) => {
     let param = {
@@ -43,7 +39,7 @@ const RecentStar = (props) => {
         }
       }
     })
-  }
+  };
 
   const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
     if (globalState.token.isLogin === false) {
@@ -64,29 +60,29 @@ const RecentStar = (props) => {
         }
       }
     }
-  }
+  };
+
+  const scrollEvent = () => {
+    if (!pagingParam.loading){
+      if (Utility.isHitBottom() && pagingParam.pageNo < Math.ceil(listParam.cnt / pagePerCnt)) {
+        setPagingParam({...pagingParam, loading: true});
+        getList(pagingParam.pageNo + 1);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getList(pagingParam.pageNo);
+  }, []);
 
   useEffect(() => {
     if (typeof document !== "undefined"){
       document.addEventListener("scroll", scrollEvent);
     }
-
     return () => {
       document.removeEventListener("scroll", scrollEvent);
     }
   }, [listParam, pagingParam]);
-
-  const scrollEvent = () => {
-    if (!pagingParam.loading){
-      let scrollHeight = document.documentElement.scrollHeight;
-      let offsetHeight = document.documentElement.offsetHeight;
-      let scrollTop = document.documentElement.scrollTop;
-      if (scrollHeight - 10 <= offsetHeight + scrollTop && pagingParam.pageNo < Math.ceil(listParam.cnt / pagePerCnt)){
-        setPagingParam({...pagingParam, loading: true});
-        getList(pagingParam.pageNo + 1);
-      }
-    }
-  }
 
   return (
     <div id="recentStar">
@@ -104,9 +100,7 @@ const RecentStar = (props) => {
                   props.history.push(`/profile/${val.memNo}`);
                 }
               }}>
-                <div className="userNick">
-                  {val.nickNm}
-                </div>
+                <div className="userNick">{val.nickNm}</div>
                 <div className="listBack">
                   {val.roomNo !== "0" &&
                     <div className="badgeLive" onClick={(e) => {
