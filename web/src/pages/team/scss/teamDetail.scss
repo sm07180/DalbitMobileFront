@@ -1,6 +1,7 @@
 @import "components/ui/_mixin.scss";
 
 #teamDetail {
+  @import "./inviteList.scss";
   header {
     .buttonGroup {
       .moreBtn {
@@ -268,4 +269,5 @@
       }
     }
   }
+  
 }
