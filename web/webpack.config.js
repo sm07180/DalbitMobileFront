@@ -75,14 +75,28 @@ module.exports = (_, options) => {
         },
         module: {
             rules: [
+                // {
+                //     test: /\.(js|jsx|ts|tsx)$/,
+                //     loader: 'esbuild-loader',
+                //     options:{
+                //         loader:'tsx',
+                //         target: 'es2015',
+                //         tsconfigRaw: require('./tsconfig.json')
+                //     },
+                // },
                 {
                     test: /\.(js|jsx|ts|tsx)$/,
-                    loader: 'esbuild-loader',
-                    options:{
-                        loader:'tsx',
-                        target: 'es2015',
-                        tsconfigRaw: require('./tsconfig.json')
-                    },
+                    exclude: /(node_modules)|(dist)/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            env: {
+                                development: {
+                                    compact: false
+                                }
+                            }
+                        }
+                    }
                 },
                 {
                     test: /\.html$/,
