@@ -24,7 +24,9 @@ export default withRouter((props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const goProfile = (value) => {
+  const goProfile = (value, e) => {
+    e.stopPropagation();
+
     if (value !== undefined) {
       props.history.push(`/profile/${value}`);
     }
@@ -38,8 +40,8 @@ export default withRouter((props) => {
         }
 
         return (
-          <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{index + 4}</div>
+          <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => props.history.push(`/profile/${list.memNo}`)} photoClick={() => props.history.push(`/profile/${list.memNo}`)}>
+            <div className="rank">{tab !== 'TEAM' ? list.rank : index + 4}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />
@@ -55,7 +57,7 @@ export default withRouter((props) => {
                 }
                 {tab === 'FAN' &&
                   <>
-                    <DataCnt type={'starCnt'} value={list.starCnt} clickEvent={(e) => goProfile(list.djMemNo, e)}/>
+                    <DataCnt type={'starCnt'} value={list.starCnt}/>
                     <DataCnt type={"listenPoint"} value={list.listenPoint}/>
                   </>
                 }

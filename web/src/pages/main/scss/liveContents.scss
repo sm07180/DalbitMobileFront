@@ -1,0 +1,113 @@
+@import "components/ui/_mixin.scss";
+
+// 타임 랭킹 스타일 믹스인
+@mixin timeRankStyle($i) {
+  &::after {
+    content: "";
+    @include position-top-left(-7px, -200px);
+    display: inline-block;
+    width: 175px; height: 90px;
+    @include BGIMG("main/dalla/broadcastList_timeRanker-#{$i}.png");
+  }
+  &.show::after {animation: timeRankerShow 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;}
+  &.hide::after {animation: timeRankerHide 0.4s cubic-bezier(0.6,-0.3, 0.4, 1.3) forwards;}
+}
+
+.liveContents {
+  .cntTitle {
+    margin-bottom:4px;
+  }
+  .tabmenuWrap {
+    position:sticky;
+    top: calc(#{$HEADER-HEIGHT} - 1px);
+    z-index: 10;
+    width:100%;
+    height:48px;
+    padding:0 16px;
+    background-color:white;
+  }
+  .liveListWrap {
+    min-height:360px;
+    padding: 12px 16px 16px;
+    overflow: hidden;
+    .listRow {
+      position: relative;
+      @include flex(center);
+      height:110px;
+      margin-bottom:12px;
+      cursor: pointer;
+      @for $i from 1 through 3 {
+        &.timeRank-#{$i} {
+          @include timeRankStyle(#{$i});
+        }
+      }
+      .cupidRanker {
+        display: inline-block;
+        width: 18px; height: 18px;
+        margin-right: 2px;
+        @for $i from 1 through 3 {
+          &.cupidRanker-#{$i} {
+            @include BGIMG("main/dalla/broadcastList_cupid-#{$i}.png");
+          }
+        }
+      }
+      .photo {
+        @include photoStyle(110px,110px,8px);
+        img {
+          width:100%;
+          border-radius:8px;
+        }
+        .guest {
+          @include position-bottom-right;
+          width:48px;
+          height:48px;
+          @include border(white,8px,2px);
+        }
+        .video {
+          @include position-top-right;
+          width:40px;
+          height:40px;
+          @include BGIMG("common/icon/icon_videoTag.png");
+        }
+      }
+      .listContent {
+        flex: 1;
+        @include flex($fd:column);
+        min-width:0;
+        height:100%;
+        padding: 8px 0;
+        margin-left:12px;
+        box-sizing: border-box;
+        .listItem {
+          @include flex(center);
+          min-height:2px;
+          margin-bottom:2px;
+          &:nth-child(1) {margin-bottom:3px;}
+          &:nth-child(3) {margin-top: auto;}
+          .title {
+            @include font(15px,700,#303030);
+            @include fontCut;
+          }
+          .nickNm {
+            margin-left:4px;
+            @include font(13px,400,#666);
+            @include fontCut;
+          }
+          .state {
+            @include font(13px,400,#999);
+          }
+        }
+      }
+    }      
+  }
+}
+
+// 애니메이션 키프레임
+@keyframes timeRankerShow {
+  0% {left: -200px;}
+  100% {left: -45px;}
+}
+@keyframes timeRankerHide {
+  0% {left: -45px;}
+  100% {left: -200px;}
+}

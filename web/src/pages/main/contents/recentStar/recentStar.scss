@@ -8,10 +8,9 @@
       cursor: pointer;
       margin-bottom: 12px;
       .photo{
-        width: 58px;
-        height: 58px;
+        @include photoStyle(58px,58px,50%);
         margin-right: 8px;
-        img{border-radius: 100%;}
+        overflow:hidden;
       }
       .userNick{
         width: 100%;
@@ -19,7 +18,7 @@
         @include fontCut;
       }
       .listBack {
-        flex: none;
+        flex-shrink: 0;
         @include flex(center, center);
         margin-left: 15px;
         .badgeLive {
