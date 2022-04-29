@@ -24,6 +24,9 @@ import photoCommon from "common/utility/photoCommon";
 import {Hybrid, isHybrid} from "context/hybrid";
 import qs from 'query-string'
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+
+
+let teamMemNoList =[]; // 회원번호 리스트 담기용
 const TeamDetail = (props) => {
   const history = useHistory();
   const teamIntroRef = useRef();
@@ -135,10 +138,12 @@ const TeamDetail = (props) => {
   const teamMemReqIns=(slct,memNo)=>{
     let param ={
       teamNo:teamNo,
+      masterMemNo: teamInfo.master_mem_no,
+      teamName: teamInfo.team_name,
       memNo:memNo,
+      name: memberRdx.data.nickNm,
       reqSlct:slct//신청구분 [r:가입신청, i:초대]
-    }
-
+    };
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
         setTeamInsChk('y');
@@ -240,9 +245,11 @@ const TeamDetail = (props) => {
       callback: () => {
         let param = {
           teamNo:teamNo,
+          teamName:teamInfo.team_name,
+          memNoList:teamMemNoList,
           masterMemNo:memberRdx.memNo,
           chrgrName:"",
-        }
+        };
         Api.getTeamDel(param).then(res=>{
           if(res.code === "00000"){
             history.push(`/mypage`)
@@ -258,7 +265,7 @@ const TeamDetail = (props) => {
   };
 
   // 가입신청 수락 거절
-  const teamConfirm = (e,memNo) => {
+  const teamConfirm = (e,memNo, memName = '') => {
     const {targetConfirm} = e.currentTarget.dataset;
 
     if (targetConfirm === 'cancel') {
@@ -271,10 +278,13 @@ const TeamDetail = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
+            teamName:teamInfo.team_name,
             memNo:memNo,
             masterMemNo:memberRdx.memNo,
-            chrgrName:""
-          }
+            name: memberRdx.data.nickNm,
+            chrgrName:"",
+            reqSlct:'r'
+          };
           Api.getTeamMemReqDel(param).then((res)=>{
             if(res.code === "00000"){
               setBtnChk(true)
@@ -296,8 +306,11 @@ const TeamDetail = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
+            teamName:teamInfo.team_name,
             memNo:memNo,
-          }
+            name: memName,
+            reqSlct:'r'//신청구분 [r:가입신청, i:초대]
+          };
           Api.getTeamMemIns(param).then((res)=>{
             if(res.code === "00000"){
               setBtnChk(true)
@@ -444,10 +457,13 @@ const TeamDetail = (props) => {
           {teamMemList.length >0 &&
             teamMemList.map((data,index)=>{
               let photoUrl = data.tm_image_profile
-              let photoServer = "https://photo.dalbitlive.com";
               let memNoChk= Number(data.tm_mem_no) === Number(memberRdx.memNo)
+              if (!teamMemNoList.includes(data.tm_mem_no)) {
+                teamMemNoList.push(data.tm_mem_no);
+              }
+
               return(
-                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
+                <ListRow photo={photoCommon.getPhotoUrl(photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -482,9 +498,8 @@ const TeamDetail = (props) => {
           <section className="joinList">
             {teamRequestSel.length > 0 && teamRequestSel.map((data,index)=>{
               let photoUrl = data.tm_image_profile
-              let photoServer = "https://photo.dalbitlive.com";
               return(
-                <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
+                <ListRow photo={photoCommon.getPhotoUrl(photoUrl, "120x120")} photoClick={()=>{goProfile(data.tm_mem_no)}} key={index}>
                   <div className="listContent">
                     <div className="listItem">
                       <div className="nick">{data.tm_mem_nick}</div>
@@ -496,7 +511,7 @@ const TeamDetail = (props) => {
                     <div className="listBack">
                       <div className="buttonGroup">
                       <button className="cancel" data-target-confirm="cancel" onClick={(e)=>{teamConfirm(e,data.tm_mem_no)}}>거절</button>
-                      <button className="accept" data-target-confirm="accept" onClick={(e)=>{teamConfirm(e,data.tm_mem_no)}}>수락</button>
+                      <button className="accept" data-target-confirm="accept" onClick={(e)=>{teamConfirm(e,data.tm_mem_no, data.tm_mem_nick)}}>수락</button>
                     </div>
                   </div>
                 </ListRow>
