@@ -9,11 +9,12 @@ import MydalDetail from "./components/MydalDetail";
 import MyMenu from "./components/MyMenu";
 import MyBottom from "./components/MyBottom";
 import SlidepopZip from "./components/popup/SlidepopZip";
+import LayerPopup, {closeLayerPopup} from "../../components/ui/layerPopup/LayerPopup2";
 import SpecialHistoryPop from "./components/popup/SpecialHistoryPop";
 // scss
 import './style.scss';
 
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
@@ -30,7 +31,7 @@ const Remypage = () => {
   const [teamInfo, setTeamInfo] = useState({teamNo: 0, new: 0, bgCode: "", edgeCode: "", medalCode: ""}); // 팀 정보
   const [slidePopInfo, setSlidePopInfo] = useState({
     data: profileData, memNo: profileData.memNo, type: "", fanStarType: "", likeType: 0
-  });
+  }); // 슬라이드 팝업 정보
 
   {/* 기본 프로필 Api */}
   const settingProfileInfo = async (memNo) => {
@@ -82,10 +83,15 @@ const Remypage = () => {
     dispatch(setSlidePopupOpen());
   }
 
-  const openStarDJHistoryPop = (e) => {
+  const openLayerPop = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    dispatch(setCommonPopupOpenData({...commonPopup, historyPopup: true}))
+    dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
+  }
+
+  const closePopupAction = () => {
+    closeLayerPopup(dispatch)
+    console.log('3');
   }
 
   // 페이지 셋팅
@@ -106,7 +112,7 @@ const Remypage = () => {
       <Header title="MY" />
       <section className="mypageTop">
         {/* 간략 프로필 */}
-        <MyInfo data={profileData} openSlidePop={openSlidePop} openStarDJHistoryPop={openStarDJHistoryPop}/>
+        <MyInfo data={profileData} openSlidePop={openSlidePop} openStarDJHistoryPop={openLayerPop}/>
 
         {/* 달 지갑 정보 */}
         <MydalDetail />
@@ -127,7 +133,13 @@ const Remypage = () => {
       {commonPopup.slidePopup && <SlidepopZip slideData={slidePopInfo} />}
 
       {/* 스페셜DJ 약력 팝업 */}
-      {commonPopup.commonPopup && <SpecialHistoryPop profileData={profileData} />}
+      {commonPopup.commonPopup &&
+        <LayerPopup>
+          <SpecialHistoryPop
+            profileData={profileData}
+            closePopupAction={closePopupAction}/>
+        </LayerPopup>
+      }
     </div>
   )
 }

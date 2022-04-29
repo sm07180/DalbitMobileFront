@@ -57,7 +57,7 @@ const FanBtn = (props) => {
       if(isFan) { // 팬 해제 후
         dispatch(setProfileData({...profileData, starCnt: profileData.starCnt -1}));
       }else { // 팬 등록 후
-        dispatch(setProfileData({...profileData, starCnt: profileData.starCnt}));
+        dispatch(setProfileData({...profileData, starCnt: profileData.starCnt +1}));
       }
     }
     setShowList(showList);

@@ -22,7 +22,6 @@ const initialState: ICommonPopupState = {
 
   /* 애니메이션 액션 팝업 */
   slidePopup: false,
-
   slideAction: true,
 }
 
