@@ -76,7 +76,7 @@ const MainSlide = (props) => {
                 {list.idx > 0 ?
                   <ListColumn photo={list.image_profile} index={index}/>
                   :
-                  <ListColumn photo={photoCommon.getPhotoUrl(swiperList.photoSvrUrl, list.image_profile, "700X700")} index={index}>
+                  <ListColumn photo={photoCommon.getPhotoUrl(list.image_profile, "700X700")} index={index}>
                     <div className='info'>
                       <div className='animation' data-swiper-parallax="-100" >
                         <div className="badgeGroup">

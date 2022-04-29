@@ -158,7 +158,7 @@ const TeamManager = (props) => {
           masterName:memberRdx.data.nickNm,
           masterMemNo: memberRdx.memNo,
           chrgrName: ""
-        }
+        };
         Api.getTeamMemDel(param).then(res=>{
           if(res.code==="00000"){
             props.getPageData();
@@ -256,8 +256,7 @@ const TeamManager = (props) => {
             props.data.teamMemList.length >0 &&
             props.data.teamMemList.map((data,index)=>{
               const photoUrl = data.tm_image_profile;
-              const photoServer = "https://photo.dalbitlive.com";
-              const photo = photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120");
+              const photo = photoCommon.getPhotoUrl(photoUrl, "120x120");
               return(
                 <ListRow photo={photo} key={index}>
                   <div className="listContent">

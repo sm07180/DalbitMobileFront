@@ -28,9 +28,9 @@ const InviteList = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
-            teamNam:teamName,
+            teamName:teamName,
             memNo:memNo,
-            memName:memName,
+            name:memName,
             masterMemNo:masterNo,
             chrgrName:"",
             reqSlct:'i'//신청구분 [r:가입신청, i:초대]
@@ -57,8 +57,10 @@ const InviteList = (props) => {
         callback: () => {
           let param={
             teamNo:teamNo,
-            teamNam:teamName,
+            teamName:teamName,
+            masterMemNo:masterNo,
             memNo:memNo,
+            name:memName,
             reqSlct:'i'//신청구분 [r:가입신청, i:초대]
           }
           Api.getTeamMemIns(param).then((res)=>{
