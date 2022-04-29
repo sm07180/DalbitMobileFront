@@ -11,7 +11,6 @@ import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileD
 import Utility from "components/lib/utility";
 import {useDispatch, useSelector} from "react-redux";
 import FeedLike from "pages/profile/components/FeedLike";
-import * as Util from "util";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
@@ -21,9 +20,35 @@ const SocialList = (props) => {
   const profileTab = useSelector(state => state.profileTab);
   const socialRef = useRef([]);
   const params = useParams();
+  const [limit, setLimit] = useState(100);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(Array(socialList.length).fill(false));
 
   const photoClickEvent = (memNo) => {
     if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
+  }
+
+  const toggleEllipsis = (str, limit) => {
+    return {
+      string: str.slice(0, limit),
+      isShowMore: str.length > limit
+    }
+  };
+
+  const onClick = (index, isBoolean) => {
+    if(isBoolean === "false") {
+      if(index === parseInt(socialRef.current[index].dataset.num)) {
+        let temp = isClicked.concat([]);
+        temp[index] = true;
+        setIsClicked(temp);
+      }
+    } else if(isBoolean === "true") {
+      if(index === parseInt(socialRef.current[index].dataset.num)) {
+        let temp = isClicked.concat([]);
+        temp[index] = false;
+        setIsClicked(temp);
+      }
+    }
   }
 
   return (
@@ -50,11 +75,28 @@ const SocialList = (props) => {
                               }}
             />
             <div className="socialContent">
-              <div className={type === "feed" && socialRef.current[index]?.offsetHeight >= 64 ? "socialText lineCut-4" : "socialText"}
-                   onClick={() => goProfileDetailPage(detailPageParam)}
-                   ref={el => socialRef.current[index] = el}
-                   dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
-              />
+              {!isClicked[index] && type === "feed" ?
+                <>
+                  <div className="socialText"
+                       onClick={() => goProfileDetailPage(detailPageParam)}
+                       ref={el => socialRef.current[index] = el}
+                       data-num={index}
+                       dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents).substr(0, 100)}}
+                  />
+                  {toggleEllipsis(item.feed_conts ? item.feed_conts : item.contents, limit).isShowMore &&
+                  <button onClick={() => {onClick(index, "false")}}><span>··· 더보기</span></button>}
+                </>
+                : isClicked[index] && type === "feed" &&
+                <>
+                  <div className="socialText"
+                       onClick={() => goProfileDetailPage(detailPageParam)}
+                       ref={el => socialRef.current[index] = el}
+                       data-num={index}
+                       dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
+                  />
+                  <button onClick={() => {onClick(index, "true")}}><span>간략히</span></button>
+                </>
+              }
 
               {type === 'feed' && item.photoInfoList.length > 0 &&
               <div className="swiperPhoto">
