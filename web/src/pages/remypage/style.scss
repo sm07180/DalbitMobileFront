@@ -90,7 +90,7 @@
           .userId {
             margin-left:4px;
             line-height:20px;
-            @include font(12px,$Regular,#999999);
+            @include font(12px,$Medium,#666666);
           }
         }
         .count {
@@ -100,7 +100,7 @@
             margin-right:4px;
             line-height:20px;
             font-style:normal;
-            @include font(14px,300,#333333);
+            @include font(14px,$Medium,#666666);
           }
           span {
             line-height:20px;
@@ -135,7 +135,7 @@
           line-height:25px;
           margin-top:auto;
           border-radius: 100px;
-          @include font(12px,$Regular,#999999);
+          @include font(12px,$SemiBold,#666666);
           background-color: #F6F6F6;
         }
       }
@@ -153,7 +153,7 @@
         @include flex(flex-start, flex-start, column);
         @include font(14px,500,#3E3E3E);      
         > span {
-          @include font(12px,400,#666666);
+          @include font(12px,$Medium,#666666);
           margin-bottom: 5px;
         } 
         > div {
@@ -251,7 +251,7 @@
           }
         }
         .myDataType {
-          @include font(11px, 300, #202020);
+          @include font(12px, $Medium, #202020);
         }
       }
     }
@@ -265,10 +265,10 @@
     line-height: 55px;
     text-align: left;
     .title {
-      @include font(15px,$Regular,#999999);
+      @include font(15px,$Medium,#666666);
     }
     .version {
-      @include font(13px,$Regular,#333333);
+      @include font(13px,$Medium,#333333);
     }
   }
   .logout {
@@ -278,7 +278,7 @@
     line-height: 46px;
     border: 1px solid #D5D5D5;
     border-radius: 100px;
-    @include font(16px,$Regular,#666666);
+    @include font(16px,$SemiBold,#666666);
   }
 
   #popSlide {
@@ -424,7 +424,7 @@
         .myDataList {
           .myDataType {
             font-size: 13px;
-            font-weight: 400;
+            font-weight: $Medium;
           }
         }
       }

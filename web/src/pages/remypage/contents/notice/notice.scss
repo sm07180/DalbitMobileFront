@@ -24,6 +24,7 @@
       background-color: #FFF;
       z-index: $TAB-ZINDEX;
       li {
+        @include font(16px, $Medium, #575757);
         position:relative;
         cursor:pointer;
         &.new {
@@ -173,7 +174,7 @@
         padding: 0px 16px;
         margin-right: 4px;
         border-radius: 100px;
-        @include font(13px, $Regular, #ACACAC);
+        @include font(13px, $Medium, #666666);
         line-height: 36px;
         background-color: #F2F2F2;
         &.active {

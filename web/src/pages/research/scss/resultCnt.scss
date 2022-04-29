@@ -24,15 +24,15 @@
         @include flex(center);
         .subject {
           flex: none;
-          @include font(12px, 400, #999999);
+          @include font(12px, $Regular, #303030);
           margin-right: 6px;
         }
         .title {
-          @include font(16px, 700, #303030);
+          @include font(14px, $SemiBold, #202020);
         }           
         .nickNm {
           margin-left:4px;
-          @include font(13px, 400, #303030);
+          @include font(13px, $Regular, #666666);
         }
         .userId {
           @include font(12px, 400, #A4A4A4);
@@ -50,7 +50,7 @@
     }
   }
   .searchNoResult {
-    min-height:120px;
-    @include font(14px,400,#999);
+    min-height:48px;
+    @include font(14px,$Regular,#666666);
   }
 }

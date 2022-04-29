@@ -19,7 +19,7 @@
       @include flex(center);
       height: 40px;
       margin-right: 13px;
-      @include font(14px, 400, #666666);
+      @include font(14px, $Medium, #303030);
       &::after {
         content: "";
         display: inline-block;
@@ -100,7 +100,7 @@
         flex: 1;
         @include flex(center, center);
         height: 36px;
-        @include font(14px,500,#ACACAC);
+        @include font(14px,$Medium,#666666);
         box-sizing: border-box;
         z-index: 2;
         &.active {
