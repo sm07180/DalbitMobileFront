@@ -44,7 +44,7 @@
       .userId {
         margin-left:4px;
         line-height:20px;
-        @include font(12px,$Regular,#999999);
+        @include font(12px,$Medium,#666666);
       }
     }
     .count {
@@ -54,7 +54,7 @@
         margin-right:4px;
         line-height:20px;
         font-style:normal;
-        @include font(14px,300,#333333);
+        @include font(14px,$Medium,#666666);
       }
       span {
         line-height:20px;
@@ -89,7 +89,7 @@
       line-height:25px;
       margin-top:auto;
       border-radius: 100px;
-      @include font(12px,$Regular,#999999);
+      @include font(12px,$SemiBold,#666666);
       background-color: #F6F6F6;
     }
   }

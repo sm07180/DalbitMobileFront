@@ -64,7 +64,7 @@
       }
     }
     .name {
-      @include font(11px, 300, #202020);
+      @include font(12px, $Medium, #202020);
     }
   }
 }

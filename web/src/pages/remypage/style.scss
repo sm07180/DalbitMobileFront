@@ -65,10 +65,10 @@
       line-height: 55px;
       text-align: left;
       .title {
-        @include font(15px,$Regular,#999999);
+        @include font(15px,$Medium,#666666);
       }
       .version {
-        @include font(13px,$Regular,#333333);
+        @include font(13px,$Medium,#333333);
       }
     }
     .submitBtn {
@@ -77,7 +77,7 @@
       border: 1px solid #D5D5D5;
       background-color:white;
       border-radius: 100px;
-      @include font(16px,$Regular,#666666);
+      @include font(16px,$SemiBold,#303030);
     }
   }
 
