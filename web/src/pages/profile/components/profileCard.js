@@ -11,7 +11,7 @@ import {isIos} from "context/hybrid";
 import {setSlidePopupOpen} from "redux/actions/common";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStar, setSlidePopNo, openPopLike, fanToggle, popup} = props
+  const {data, isMyProfile, openSlidePop, openShowSlide, openPopFanStar, setSlidePopNo, openPopLike, fanToggle, popup} = props
   const dispatch = useDispatch();
 
   /* fan toggle 데이터 변경 */

@@ -3,7 +3,7 @@ import React, {useState, useEffect, useRef, useCallback} from 'react'
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
+import ListRow from '../../../../components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import NoResult from 'components/ui/noResult/NoResult'
 import FanBtn from '../../../../components/ui/fanBtn/FanBtn'
@@ -11,6 +11,7 @@ import FanBtn from '../../../../components/ui/fanBtn/FanBtn'
 
 import './style.scss'
 import {useDispatch} from "react-redux";
+import {useHistory} from 'react-router-dom';
 import {setProfileData} from "redux/actions/profile";
 import Utility from "components/lib/utility";
 
@@ -39,6 +40,7 @@ const pagePerCnt = 20;
 const FanStarPopup = (props) => {
   const {type, isMyProfile, fanToggle, profileData, goProfile, myMemNo, closePopupAction} = props
   const dispatch = useDispatch();
+  const history = useHistory();
   const fanStarContainerRef = useRef();
   const [showList, setShowList] = useState([]);
   const [fanStarLikeState, setFanStarLikeState] = useState({type: '', title: '', subTab: []});

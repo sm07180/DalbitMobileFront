@@ -1,215 +1,43 @@
 @import "components/ui/_mixin.scss";
 
-/* 피씨일때 헤더 없애기 */
-#root {
-  .container {
-    .totalWrap {
-      #remypage {
-        header {
-          .buttonGroup {
-            display:none;
-          }
-        }
-      }
-    }
-  }
-  .content-article {
-    height: auto;
-    min-height:calc(100vh - #{$NAVIGATION-HEIGHT});
-  }
-}
-
 #remypage {
   flex:1;
   @include flex($fd:column);
   height:100%;
-  header {
-    .buttonGroup {    
-      .store {
-        &.bonus {
-          position: relative;
-          &::after {
-            content: "SALE";
-            @include position-horizon($bottom: 0px);
-            @include flex(center, center);
-            height: 16px;
-            padding: 0px 5px;
-            border-radius: 100px;
-            @include font(11px, 700, #FFF);
-            background-color: #FF1919;
-          }
-        }
-      }
-    }
-  }
+  // 마이페이지 헤더
+  @import "./scss/headerStyle.scss";
+  // 마이페이지 상단
   .mypageTop {
     width: 100%;
     padding: 20px 16px;
     // 내 정보
     @import "./scss/myInfo.scss";
-    // 내 정보
+    // 내 달 정보
     @import "./scss/mydalDetail.scss";
     // 메뉴 모음
     @import "./scss/myMneu.scss";
   }
-  .mypageBottom {
-    @include flex($fd: column);
-    margin:auto 0 24px;
-    padding-top:16px;
-    .versionInfo {
-      @include flex(center,space-between);
-      width: 100%;
-      height:55px;
-      margin-top: 4px;
-      padding: 0 16px;
-      line-height: 55px;
-      text-align: left;
-      .title {
-        @include font(15px,$Medium,#666666);
-      }
-      .version {
-        @include font(13px,$Medium,#333333);
-      }
-    }
-    .submitBtn {
-      flex:1;
-      margin: 0 16px;
-      border: 1px solid #D5D5D5;
-      background-color:white;
-      border-radius: 100px;
-      @include font(16px,$SemiBold,#303030);
-    }
-  }
+  // 마이페이지 하단
+  @import "./scss/myBottom.scss";
 
   #popSlide {
-    .myLevelInfo {
-      width:100%;
-      padding: 0 16px 32px;
-      .infoItem {
-        @include flex(center);
-        line-height:25px;
-        margin-bottom:8px;
-        .level {
-          line-height:25px;
-          @include font(16px,$Medium,white);
-        }
-        span {
-          @include font(17px,$SemiBold,#303030);
-        }
-        p {
-          margin-left:auto;
-          @include font(15px,$SemiBold,$MAINCOLOR);
-        }
-      }
-      .levelGauge {
-        position: relative;
-        height:13px;
-        margin-bottom:8px;
-        border-radius:100px;
-        background-color:#E8E8E8;
-        .gaugeBar {
-          @include position-top-left;
-          display:inline-block;
-          width:0;
-          height:100%;
-          border-radius:100px;
-          background-image: linear-gradient(to right,#FF8565,$MAINCOLOR);
-          transition:width 1s ease;
-        }
-      }
-      .exp {
-        @include font(13px,$Medium,#303030);
-      }
-      .submitBtn {
-        width:100%;
-        margin-top:20px;
-      }
-    }
+    // 레벨 슬라이드 팝업
+    @import "./scss/levelPop.scss";
   }
 
   #layerPop {
-    .popContainer {
-      padding:0;
-    }
-    .honorPopup {
-      width:100%;
-      height:440px;
-      padding: 20px 0 0;
-      .title {
-        @include flex(center,center,column);
-        height:72px;
-        @include font(16px,$Medium,#202020);
-        strong {
-          display: inline-block;
-          max-width: 200px;
-          @include font(16px,$Bold,$MAINCOLOR);
-          @include fontCut;
-        }
-        span {
-          @include flex(center, center);
-          text-align: center;
-        }
-      }
-      .reference {
-        margin: 4px 0 23px;
-        @include font(12px,$Regular,#666666);
-        text-align: center;
-      }
-      .table {
-        width: 100%;
-        margin-top: 10px;
-        .summary {
-          @include flex(center, space-between);
-          margin-bottom: 8px;
-          padding: 0 22px;
-          @include font(12px,$Medium,$MAINCOLOR);
-        }
-        .tableInfo {
-          .thead {
-            @include flex(center);
-            line-height:26px;
-            margin: 0 22px;
-            border-top: 1px solid $MAINCOLOR;
-            border-bottom: 1px solid $MAINCOLOR;
-            @include font(12px,$Medium,$MAINCOLOR);
-          }
-          .tbody {
-            max-height: 200px;
-            @include font(13px,$Regular,#202020);
-            overflow-y: auto;
-            .tbodyList {
-              @include flex(center);
-              margin: 0 22px;
-              line-height:26px;
-              + .tbodyList {
-                border-top: 1px solid #F2F2F2;
-              }
-            }
-          }
-          span {
-            flex:1;
-            text-align:center;
-          }
-        }
-      }
-    }
-    .profileRankNotice {
-      height:280px;
-      text-align:center;
-      .title {
-        margin-bottom:6px;
-        @include font(16px,$SemiBold,$MAINCOLOR);
-      }
-      .text {
-        margin-bottom:22px;
-        @include font(12px,$Regular,#666);
-      }
-    }
+    // 스페셜 히스토리 팝업
+    @import "./scss/specialHistoryPop.scss";
   }
 }
 
 .pcType {
   #remypage {
+    header {
+      .buttonGroup {
+        display:none;
+      }
+    }
     .mypageTop {
       .myMenu {
         .myMenuList {
@@ -221,4 +49,9 @@
       }
     }
   }
+}
+
+.mobileType {
+  height: auto;
+  min-height:calc(100vh - #{$NAVIGATION-HEIGHT});
 }
