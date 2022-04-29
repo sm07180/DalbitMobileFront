@@ -211,18 +211,9 @@
 .pcType {
   #remypage {
     .mypageTop {
-      .myInfo {
-        .textWrap {
-          .count {
-            i {
-              font-weight: 400;
-            }
-          }
-        }
-      }
-      .myData {
-        .myDataList {
-          .myDataType {
+      .myMenu {
+        .myMenuList {
+          .name {
             font-size: 13px;
             font-weight: $Medium;
           }
