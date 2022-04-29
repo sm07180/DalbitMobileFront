@@ -56,7 +56,6 @@ const InvitePop = (props) => {
             let nickName = tabType ==="스타" ? data.mem_nick_star : data.mem_nick_fan
             let memNo = tabType ==="스타" ? data.mem_no_star : data.mem_no_fan
             let reqYn = data.team_req_yn
-            let photoServer = "https://photo.dalbitlive.com";
             let photoUrl ="";
             if(tabType ==="스타"){
               photoUrl =  data.image_profile_star &&  data.image_profile_star   
@@ -65,7 +64,7 @@ const InvitePop = (props) => {
               photoUrl =  data.image_profile_fan &&  data.image_profile_fan
             }
             return(
-              <ListRow photo={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} key={index}>
+              <ListRow photo={photoCommon.getPhotoUrl(photoUrl, "120x120")} key={index}>
                 <div className="listContent">
                   <div className="nick">{nickName}</div>
                 </div>
