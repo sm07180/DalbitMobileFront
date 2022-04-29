@@ -50,6 +50,8 @@ const TeamDetail = (props) => {
   const [btnChk, setBtnChk]=useState(false); // 버튼 액션 감지 용
   const [teamChk , setTeamChk]=useState(false) //팀 가입신청이 가능한지 체크용
 
+  const [slidePopNo, setSlidepopNo] = useState("");
+
 
   // 팀정보 호출
   useEffect(()=>{
@@ -155,8 +157,12 @@ const TeamDetail = (props) => {
   }
 
   // 초대하기 팝업
-  const invitePopup = () => {
-    setInvitePop(true);
+  const invitePopup = (e) => {
+    const {popType} = e.currentTarget.dataset;
+    if (popType === "invite") {
+      dispatch(setSlidePopupOpen());
+      setSlidepopNo(popType)
+    }
   };
 
   /***  더보기 관련 ***/
@@ -170,9 +176,13 @@ const TeamDetail = (props) => {
   // 관리 팝업
 
   // 탈퇴 팝업
-  const clickSecession = (masterNo) => {
+  const clickSecession = (e,masterNo) => {
+    const {popType} = e.currentTarget.dataset;
     if (statChk === 'm' && teamMemList.length > 1) {
-      dispatch(setSlidePopupOpen({...popup, slidePopup: true}));
+      if (popType === "secession") {
+        dispatch(setSlidePopupOpen());
+        setSlidepopNo(popType)
+      }
     } else {
       dispatch(setGlobalCtxMessage({type:'confirm',
         msg: `정말 탈퇴 할까요?`,
@@ -354,7 +364,7 @@ const TeamDetail = (props) => {
             <div className="isMore">
               <button onClick={clickBenefits}>팀 혜택</button>
               {statChk === 'm' && <button onClick={()=>{history.push(`/team/manager/${teamNo}`)}}>팀 관리</button>}
-              <button onClick={()=>{clickSecession(teamInfo.master_mem_no)}}>팀 탈퇴하기</button>
+              <button data-pop-Type="secession" onClick={(e)=>{clickSecession(e,teamInfo.master_mem_no)}}>팀 탈퇴하기</button>
               {statChk === 'm' && <button className="delete" onClick={teamDelete}>팀 삭제하기</button>}
             </div>
             }
@@ -468,7 +478,7 @@ const TeamDetail = (props) => {
             })
           }
           {(statChk === 'm' && teamMemList.length <5) &&
-          <div className="listRow invite" onClick={invitePopup}>
+          <div className="listRow invite" data-pop-type="invite" onClick={invitePopup}>
             <div className="photo">+</div>
             <div className="text">초대하기</div>
           </div>
@@ -522,17 +532,18 @@ const TeamDetail = (props) => {
 
       {/* 팀장이 탈퇴 시 슬라이드 팝업 */}
       {popup.slidePopup &&
-        <PopSlide title="다음 팀장은 누구인가요?">
-          <Secession closeSlide={closeSecesstion} teamMemList={teamMemList}
-                     memNo={memberRdx.memNo} teamNo={teamNo} history={history}
+        <PopSlide>
+          {slidePopNo === "secession" ?
+          <Secession
+            closeSlide={closeSecesstion}
+            teamMemList={teamMemList}
+            memNo={memberRdx.memNo}
+            teamNo={teamNo}
+            history={history}
           />
-        </PopSlide>
-      }
-
-      {/* 초대하기 슬라이드 팝업 */}
-      {invitePop &&
-      <PopSlide popSlide={invitePop} setPopSlide={setInvitePop}>
+          :slidePopNo === "invite" &&
           <Invite closeSlide={closeSecesstion} memNo={memberRdx.memNo} teamNo={teamNo} btnChk={btnChk} teamMemReqIns={teamMemReqIns}/>
+          }
         </PopSlide>
       }
 

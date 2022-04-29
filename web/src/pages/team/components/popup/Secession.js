@@ -61,6 +61,7 @@ const SecessionPop = (props) => {
   // 페이지 시작
   return (
     <section className="secession">
+      <h3>다음 팀장은 누구인가요?</h3>
       <div className="teamList">
         {teamMemList.length > 0 && teamMemList.map((data,index)=>{
           let tmemNo = data.tm_mem_no
