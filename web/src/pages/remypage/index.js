@@ -261,14 +261,14 @@ const Remypage = () => {
                 }
               }}>
                 <span className='icon team'>
-                  {teamInfo.team_bg_code === "" ?
-                    <span className={teamInfo.req_cnt !== 0 ? 'new' : ''} />
-                  :
+                  {teamInfo.team_no > 0 ?
                     <>
-                    {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_bg_code}.png`} />}
-                    {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_edge_code}.png`} />}
-                    {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
+                      {teamInfo.team_bg_code && <img src={`${IMG_SERVER}/team/parts/B/${teamInfo.team_bg_code}.png`} />}
+                      {teamInfo.team_edge_code && <img src={`${IMG_SERVER}/team/parts/E/${teamInfo.team_edge_code}.png`} />}
+                      {teamInfo.team_medal_code && <img src={`${IMG_SERVER}/team/parts/M/${teamInfo.team_medal_code}.png`} />}
                     </>
+                  :
+                    <span className={teamInfo.req_cnt > 0 ? 'new' : ''} />
                   }
                 </span>
                 <span className="myDataType">팀</span>
