@@ -24,7 +24,7 @@
     @include BGIMG("badge/dalla/#{$image}.png");
   }
   &.bestDj {@include bcsBadge(47px,'bdg_best-2');}
-  &.contentsDj {@include bcsBadge(71px,'bdg_contents-2');}
+  &.contentsDj {@include bcsBadge(66.5px,'bdg_contents-3');}
   &.specialDj {@include bcsBadge(63.5px,'bdg_special-2');}
   &.starDj {@include bcsBadge(46.5px,'bdg_star-2');}
   &.partnerDj {@include bcsBadge(64px,'bdg_partner-1');}
