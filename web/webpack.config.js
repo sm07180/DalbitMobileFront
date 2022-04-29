@@ -7,6 +7,8 @@ const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 const fs = require('fs')
 const Dotenv = require("dotenv-webpack")
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const {ESBuildMinifyPlugin} = require("esbuild-loader");
 
 module.exports = (_, options) => {
     const {env, mode} = options
@@ -59,7 +61,9 @@ module.exports = (_, options) => {
         });
         spreadElements.push(localWebHtmlPack);
     }
-    const config = {
+    const smp = new SpeedMeasurePlugin();
+
+    const config = smp.wrap({
         entry: {
             app: './src/index.js',
         },
@@ -73,18 +77,27 @@ module.exports = (_, options) => {
             rules: [
                 {
                     test: /\.(js|jsx|ts|tsx)$/,
-                    exclude: /(node_modules)|(dist)/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            env: {
-                                development: {
-                                    compact: false
-                                }
-                            }
-                        }
-                    }
+                    loader: 'esbuild-loader',
+                    options:{
+                        loader:'tsx',
+                        target: 'es2015',
+                        tsconfigRaw: require('./tsconfig.json')
+                    },
                 },
+                // {
+                //     test: /\.(js|jsx|ts|tsx)$/,
+                //     exclude: /(node_modules)|(dist)/,
+                //     use: {
+                //         loader: 'babel-loader',
+                //         options: {
+                //             env: {
+                //                 development: {
+                //                     compact: false
+                //                 }
+                //             }
+                //         }
+                //     }
+                // },
                 {
                     test: /\.html$/,
                     use: [
@@ -127,7 +140,7 @@ module.exports = (_, options) => {
             //new LoadablePlugin(), new MiniCssExtractPlugin(),
             ...spreadElements
         ]
-    }
+    })
     if (mode === 'development') {
         config.devtool = 'source-map'
         config.devServer = {
@@ -160,7 +173,12 @@ module.exports = (_, options) => {
         config.optimization = {
             minimize: !isDev,
             minimizer:
-                isDev ? [] : [
+                isDev ? [
+                  new ESBuildMinifyPlugin({
+                      target: 'es2015',
+                      css: true  // Apply minification to CSS assets
+                  })
+                ] : [
                     new TerserPlugin({
                         terserOptions: {
                             compress: {
