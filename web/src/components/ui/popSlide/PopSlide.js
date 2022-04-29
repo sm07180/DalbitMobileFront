@@ -3,7 +3,7 @@ import React, {useState, useContext, useEffect} from 'react';
 // css
 import './popslide.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupClose, setSlidePopupClose, setSlideReset, setSlideClose} from "redux/actions/common";
+import {setSlidePopupClose, setSlideClose} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
 import {setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
 
@@ -13,7 +13,7 @@ let slidePopTimeout;
 export const closePopup = (dispatch) => {
   dispatch(setSlideClose());
   slidePopTimeout = setTimeout(() => {
-    dispatch(setCommonPopupClose());
+    dispatch(setSlidePopupClose());
   }, 400);
 };
 
@@ -46,8 +46,8 @@ const PopSlide = (props) => {
     }
     return () => {
       document.body.classList.remove('overflowHidden');
-      dispatch(setCommonPopupClose());
-      dispatch(setSlideReset());
+      dispatch(setSlidePopupClose());
+      dispatch(setSlideClose());
       clearTimeout(slidePopTimeout);
       if(isAndroid()) {
         if(globalState.backFunction.name.length === 1) {

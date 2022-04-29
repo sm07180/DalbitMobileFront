@@ -177,6 +177,7 @@
         @include font(13px, $Medium, #666666);
         line-height: 36px;
         background-color: #F2F2F2;
+        cursor:pointer;
         &.active {
           @include font(13px, $Medium, #FFFFFF);
           background-color: #202020;

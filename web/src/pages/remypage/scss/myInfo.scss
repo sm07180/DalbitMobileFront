@@ -1,0 +1,96 @@
+@import "components/ui/_mixin.scss";
+
+.myInfo {
+  @include flex;
+  margin-bottom: 12px;
+  cursor: pointer;
+  .textWrap {
+    @include flex($fd:column);
+    min-width:0;
+    @include font(19px,400,black);
+    .text {
+      @include flex($fd: column);
+      margin-bottom:15px;
+      letter-spacing: -.3px;
+      span{display: flex;}
+      strong {
+        display:inline-block;
+        max-width:200px;
+        font-weight: $Bold;
+        @include fontCut;
+      }
+    }
+    .info {
+      @include flex(center);
+      margin-bottom:15px;
+      .level {
+        @include flex(center);
+        padding: 0 6px 0 4px;
+        cursor:pointer;
+        &::before {
+          content:"";
+          display: inline-block;
+          width:14px;height:14px;
+          margin-right:4px;
+          @include BGIMG("mypage/dalla/levelInfo.png");
+        }
+      }
+      .starDj {
+        display: inline-block;
+        width: 46.5px; height: 20px;
+        @include BGIMG("badge/dalla/badge_starDJ-off.png");
+        &.active {@include BGIMG("badge/dalla/badge_starDJ-on.png");}
+      }
+      .userId {
+        margin-left:4px;
+        line-height:20px;
+        @include font(12px,$Regular,#999999);
+      }
+    }
+    .count {
+      @include flex;
+      line-height: 25px;
+      i {
+        margin-right:4px;
+        line-height:20px;
+        font-style:normal;
+        @include font(14px,300,#333333);
+      }
+      span {
+        line-height:20px;
+        margin-right:15px;
+        @include font(14px,$Bold,#333333);
+      }
+    }
+  }
+  .photoWrap {
+    @include flex(center,center,column);
+    margin-left:auto;
+    .photo {
+      position: relative;
+      width:84px;
+      height:84px;
+      &::before {
+        content: "";
+        @include position-top-left;
+        width: 100%; height: 100%;
+        border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+        border-radius:50%;
+        box-sizing: border-box;
+      }
+      img {
+        width:100%;
+        border-radius:50%;
+        object-fit: cover;
+      }
+    }
+    button {
+      width:84px;
+      line-height:25px;
+      margin-top:auto;
+      border-radius: 100px;
+      @include font(12px,$Regular,#999999);
+      background-color: #F6F6F6;
+    }
+  }
+}

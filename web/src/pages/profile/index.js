@@ -1,18 +1,19 @@
-import React, {useEffect, useState, useRef, useContext, useCallback, useMemo} from 'react'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
-import './style.scss'
-import Api from 'context/api'
+import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
+
+import Api from 'context/api';
+import {useHistory, useParams} from 'react-router-dom';
+import './style.scss';
 // global components
-import Header from 'components/ui/header/Header'
-import PopSlide, {closePopup} from 'components/ui/popSlide/PopSlide'
+import Header from '../../components/ui/header/Header';
+import PopSlide, {closePopup} from '../../components/ui/popSlide/PopSlide';
 // components
-import TopSwiper from './components/topSwiper'
-import ProfileCard from './components/profileCard'
-import TotalInfo from './components/totalInfo'
-import Tabmenu from './components/Tabmenu'
-import FanStarLike from './components/popSlide/FanStarPopup'
-import BlockReport from './components/popSlide/BlockReport'
-import Present from './components/popSlide/Present'
+import ProfileSwiper from './components/ProfileSwiper';
+import ProfileCard from './components/profileCard';
+import TotalInfo from './components/totalInfo';
+import Tabmenu from './components/Tabmenu';
+import FanStarLike from './components/popup/FanStarPopup';
+import BlockReport from './components/popup/BlockReport';
+import Present from './components/popup/Present';
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import SpecialHistoryList from './components/SpecialHistoryPop';
 // contents
@@ -35,7 +36,7 @@ import {
   profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
 } from "redux/types/profileType";
 import {goMail} from "common/mailbox/mail_func";
-import LikePopup from "pages/profile/components/popSlide/LikePopup";
+import LikePopup from "pages/profile/components/popup/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
@@ -838,45 +839,89 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
-      <section className='profileTopSwiper'>
-        <TopSwiper data={profileDataNoReader} openShowSlide={openShowSlide} listenOpen={profileData.listenOpen}
-                   webview={webview} type="profile"/>
-      </section>
-      <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} fanToggle={fanToggle} setSlidePopNo={setSlidePopNo}
-                     openPopFanStar={openPopFanStar} openPopLike={openPopLike} popup={popup}
-        />
-      </section>
-      <section className='totalInfo'>
-        <TotalInfo data={profileData} goProfile={goProfile} openPopLike={openPopLike} isMyProfile={isMyProfile} noticeData={noticeData} noticeFixData={noticeFixData}
-                   getNoticeData={getNoticeData} getNoticeFixData={getNoticeFixData} fetchHandleLike={fetchHandleLike} />
-      </section>
+
+      {/* 프로필 슬라이더 */}
+      <ProfileSwiper
+        data={profileDataNoReader}
+        openShowSlide={openShowSlide}
+        listenOpen={profileData.listenOpen}
+        webview={webview}
+        type="profile"/>
+
+      {/* 프로필 메인 정보 카드 */}
+      <ProfileCard
+        data={profileData}
+        isMyProfile={isMyProfile}
+        openShowSlide={openShowSlide}
+        fanToggle={fanToggle}
+        setSlidePopNo={setSlidePopNo}
+        openPopFanStar={openPopFanStar}
+        openPopLike={openPopLike}
+        popup={popup}/>
+
+      {/* 프로필 서브 정보 */}
+      <TotalInfo
+        data={profileData}
+        goProfile={goProfile}
+        openPopLike={openPopLike}
+        isMyProfile={isMyProfile}
+        noticeData={noticeData}
+        noticeFixData={noticeFixData}
+        getNoticeData={getNoticeData}
+        getNoticeFixData={getNoticeFixData}
+        fetchHandleLike={fetchHandleLike} />
+      
+      {/* 소셜 영역 */}
       <section className="socialWrap" ref={socialRef}>
         <div className="tabmenuWrap" ref={tabmenuRef}>
-          <Tabmenu data={profileTab.tabList} tab={profileTab.tabName} setTab={setProfileTabName} tabChangeAction={socialTabChangeAction}
-                   subTextList={[`(${feedData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
+          <Tabmenu
+            data={profileTab.tabList}
+            tab={profileTab.tabName}
+            setTab={setProfileTabName}
+            tabChangeAction={socialTabChangeAction}
+            count={[`(${feedData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
         </div>
 
         {/* 피드 */}
         {profileTab.tabName === profileTab.tabList[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} fetchHandleLike={fetchFeedHandleLike} showImagePopUp={showImagePopUp}
-                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} deleteContents={deleteContents}/>
+          <FeedSection
+            profileData={profileData}
+            openShowSlide={openShowSlide}
+            feedData={feedData}
+            fetchHandleLike={fetchFeedHandleLike}
+            showImagePopUp={showImagePopUp}
+            isMyProfile={isMyProfile}
+            openBlockReportPop={openBlockReportPop}
+            deleteContents={deleteContents}/>
         }
 
         {/* 팬보드 */}
         {profileTab.tabName === profileTab.tabList[1] &&
-          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} getFanBoardData={getFanBoardData} params={params}
-                           deleteContents={deleteContents} openBlockReportPop={openBlockReportPop} />
+          <FanboardSection
+            profileData={profileData}
+            fanBoardData={fanBoardData}
+            isMyProfile={isMyProfile}
+            getFanBoardData={getFanBoardData}
+            params={params}
+            deleteContents={deleteContents}
+            openBlockReportPop={openBlockReportPop} />
         }
 
         {/* 클립 */}
         {profileTab.tabName === profileTab.tabList[2] &&
-          <ClipSection profileData={profileData} clipData={clipData} isMyProfile={isMyProfile} webview={webview} />
+          <ClipSection
+            profileData={profileData}
+            clipData={clipData}
+            isMyProfile={isMyProfile}
+            webview={webview} />
         }
 
         {/* 프로필 사진 확대 */}
         {showSlide?.visible &&
-          <ShowSwiper imageList={showSlide?.imgList} popClose={closeShowSlide} swiperParam={{initialSlide: showSlide?.initialSlide}}/>
+          <ShowSwiper
+            imageList={showSlide?.imgList}
+            popClose={closeShowSlide}
+            swiperParam={{initialSlide: showSlide?.initialSlide}}/>
         }
 
         {/* 피드 사진 확대 */}

@@ -35,6 +35,7 @@
           padding:0 15px;
           @include border(#e3e3e3,18px);
           @include font(13px,400,rgb(10, 10, 10));
+          cursor:pointer;
           &.active {
             border-color:black;
             background: black;
