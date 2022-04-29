@@ -68,6 +68,13 @@ $Heavy: 900;
   flex-direction:$fd;
 }
 
+@mixin grid ($cols: null,$rows: null, $gap: null) {
+  display: grid;
+  grid-template-columns: $cols;
+  grid-template-rows: $rows;
+  grid-gap: $gap;
+}
+
 @mixin border ($color: inherit,$radius:null,$size: 1px) {
   border: $size solid $color;
   border-radius:$radius;
@@ -373,7 +380,7 @@ $Heavy: 900;
     text-align: center;
     background-color: #ffffff;
     border-bottom:2px solid #f2f2f2;
-    @include font(16px,500,#acacac);
+    @include font(16px,$SemiBold,#ACACAC);
     &.active {
       @include font(16px,bold,#202020);
       border-bottom: solid 2px #202020;

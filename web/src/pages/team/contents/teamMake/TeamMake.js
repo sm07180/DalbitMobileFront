@@ -47,7 +47,7 @@ const TeamMake = () => {
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
     setPartsName(targetName);
-    dispatch(setSlidePopupOpen({...popup, commonPopup:true}));
+    dispatch(setSlidePopupOpen());
   };
 
   const clickConfirmPopup = () => {

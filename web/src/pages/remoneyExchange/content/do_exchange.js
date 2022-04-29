@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect, useReducer, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
+import UtilityCommon from "common/utility/utilityCommon";
 
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
@@ -63,7 +64,7 @@ const DoExchange = () => {
         <div className="infoBox">
             {/* {badgeSpecial > 0 && (
               <>
-                <p className="special">DJ님은 스페셜 DJ 입니다.</p>
+                <p className="special">DJ님은 {UtilityCommon.eventDateCheck("20220501") ? "스타 DJ" : "스페셜 DJ"} 입니다.</p>
                 <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
               </>
             )} */}

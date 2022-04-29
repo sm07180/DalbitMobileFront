@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router-dom";
+import UtilityCommon from "common/utility/utilityCommon";
 
 import {
   selfAuthCheck,
@@ -192,7 +193,7 @@ export default function DoExchange({ state, exchangeDispatch }) {
   const [currentByeol, setCurrentByeol] = useState<number>(0);
   const [exchangeCalc, setExchangeCalc] = useState({
     basicCash: 0, // 환전예상금액
-    benefitCash: 0, // 스페셜DJ혜택
+    benefitCash: 0, // 스타DJ혜택
     taxCash: 0, // 원천징수세액
     feeCash: 0, // 이체수수료
     realCash: 0, // 환전실수령액
@@ -510,8 +511,8 @@ export default function DoExchange({ state, exchangeDispatch }) {
           </div>
           {badgeSpecial > 0 && (
             <div className="doExchangeWrap__special">
-              <p className="doExchangeWrap__special--title">DJ님은 스페셜 DJ 입니다.</p>
-              <p className="doExchangeWrap__special--point">스페셜 DJ의 경우 환전 실수령액이 5% 추가 됩니다.</p>
+              <p className="doExchangeWrap__special--title">DJ님은 {UtilityCommon.eventDateCheck("20220501") ? "스타 DJ" : "스페셜 DJ"} 입니다.</p>
+              <p className="doExchangeWrap__special--point">{UtilityCommon.eventDateCheck("20220501") ? "스타 DJ" : "스페셜 DJ"}의 경우 환전 실수령액이 5% 추가 됩니다.</p>
             </div>
           )}
           <p className="doExchangeWrap__contentsHeader--notice">

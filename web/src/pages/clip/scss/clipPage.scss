@@ -41,7 +41,7 @@
     button{
       margin-left: auto;
       letter-spacing: -1px;
-      @include font(13px,400,#999);
+      @include font(13px,$Medium,#303030);
     }
   }
   .hotClipWrap{
@@ -156,7 +156,7 @@
         padding: 0 4px;
         line-height: 19px;
         margin-top: 6px;
-        @include font(14px,500,#202020);
+        @include font(14px,$SemiBold,#202020);
         @include fontCut;
         box-sizing: border-box;
       }
@@ -164,7 +164,7 @@
         width:100%;
         padding: 0 4px;
         line-height: 16px;
-        @include font(12px,400,#666);
+        @include font(12px,$Regular,#303030);
         @include fontCut;
         box-sizing: border-box;
       }
@@ -264,11 +264,11 @@
           min-width:0;
           margin-left:12px;
           .title{
-            @include font(14px,500,#202020);
+            @include font(14px,$SemiBold,#202020);
             @include fontCut;
           }
           .nick{
-            @include font(12px,400,#666);
+            @include font(12px,$Regular,#303030);
             @include fontCut;
           }
         }

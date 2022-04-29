@@ -4,7 +4,7 @@ import React, {useRef} from 'react'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,setPage, tabChangeAction, subTextList} = props
+  const {data,tab,setTab,setPage, tabChangeAction, count} = props
   const tabMenuRef = useRef();
 
   return (
@@ -17,13 +17,13 @@ const Tabmenu = (props) => {
           setPage: setPage
         }
         return (
-          <TabBtn param={param} key={index} tabChangeAction={tabChangeAction} subText={subTextList[index]}/>
+          <TabBtn param={param} key={index} tabChangeAction={tabChangeAction} subText={count[index]}/>
         )
       })}
     </ul>
   )
 }
 Tabmenu.defaultProps = {
-  subTextList: []
+  count: []
 }
 export default Tabmenu

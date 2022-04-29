@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 
 //global components
 import Header from 'components/ui/header/Header';
-import BadgeItems from 'components/ui/badgeItems/BadgeItems';
+import BadgeItems from '../../../../components/ui/badgeItems/BadgeItems';
 
 import './clipRankingGuide.scss';
 
