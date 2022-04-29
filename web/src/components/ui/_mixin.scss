@@ -68,6 +68,13 @@ $Heavy: 900;
   flex-direction:$fd;
 }
 
+@mixin grid ($cols: null,$rows: null, $gap: null) {
+  display: grid;
+  grid-template-columns: $cols;
+  grid-template-rows: $rows;
+  grid-gap: $gap;
+}
+
 @mixin border ($color: inherit,$radius:null,$size: 1px) {
   border: $size solid $color;
   border-radius:$radius;

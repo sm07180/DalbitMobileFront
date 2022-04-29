@@ -6,6 +6,7 @@ import Swiper from 'react-id-swiper'
 import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import NoResult from 'components/ui/noResult/NoResult'
+import FanBtn from '../../../../components/ui/fanBtn/FanBtn'
 // components
 
 import './style.scss'
@@ -106,22 +107,6 @@ const FanStarPopup = (props) => {
   // 스와이퍼
   const swiperProps = {
     slidesPerView: 'auto',
-  }
-
-  /* 팬 등록/해제시 값 변경 */
-  const fanToggleCallback = (idx, isFan) => {
-    const assignList = [...showList];
-    assignList[idx].isFan = !isFan;
-
-    /* api에서 조회하지 않고 스크립트로만 스타수 +- 시킴 (팬,스타 리스트 api 조회시에는 각각 갱신함) */
-    if(isMyProfile) {
-      if(isFan) { // 팬 해제 후
-        dispatch(setProfileData({...profileData, starCnt: profileData.starCnt -1}));
-      }else { // 팬 등록 후
-        dispatch(setProfileData({...profileData, starCnt: profileData.starCnt +1}));
-      }
-    }
-    setShowList(assignList);
   }
 
   /* subTab 클릭 */
@@ -232,10 +217,7 @@ const FanStarPopup = (props) => {
                       </div>
                     </div>
                     <div className="back">
-                      <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                        const isFan = list.isFan;
-                        fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                      }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                      <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
                     </div>
                   </>
                   :
@@ -245,10 +227,7 @@ const FanStarPopup = (props) => {
                     </div>
                     {list.memNo !== myMemNo &&
                       <div className="back">
-                        <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                          const isFan = list.isFan;
-                          fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                        }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                        <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
                       </div>
                     }
                   </>

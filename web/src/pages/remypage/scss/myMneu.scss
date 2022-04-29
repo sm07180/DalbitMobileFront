@@ -1,0 +1,70 @@
+@import "components/ui/_mixin.scss";
+
+.myMenu {
+  @include grid(repeat(4,1fr),1fr,20px 10px);
+  width: 100%;
+  padding: 20px 12px 26px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba($color: #000000, $alpha: 0.1);
+  .myMenuList {
+    @include flex(center, center, column);
+    cursor: pointer;
+    .icon {
+      position: relative;
+      width: 40px; height: 40px;
+      &.wallet {@include BGIMG('mypage/dalla/icon_wallet.png');}
+      &.report {@include BGIMG('mypage/dalla/icon_broadcastReport.png');}
+      &.myclip {@include BGIMG('mypage/dalla/icon_clip.png');}
+      &.setting {@include BGIMG('mypage/dalla/icon_serviceSetting.png');}
+      &.customer {@include BGIMG('mypage/dalla/icon_customer.png');}
+      &.team {
+        width:26px;height:26px;
+        margin:7px;
+        box-sizing: content-box;
+        .empty {
+          width:100%;
+          height:100%;
+          border:1px dashed #ACACAC;
+          background-color:#F6F6F6;
+          border-radius:4px;
+          &.new {
+            border-color:#FF6093;
+            background-color:white;
+            &::after {
+              @include position-bottom-right(-2px,-2px);
+              content:"N";
+              display:inline-flex;
+              align-items:center;
+              justify-content: center;
+              width:15px;
+              height:15px;
+              border-radius:50%;
+              background-color:$MAINCOLOR;
+              @include font(10px,$Heavy,white);
+            }
+          }
+        }
+        img {
+          @include position-top-left(-1px,-1px);
+          width:calc(100% + 2px);
+          height:calc(100% + 2px);
+          border-radius:4px;
+        }
+      }
+      &.notice {
+        @include BGIMG('mypage/dalla/icon_notice.png');
+        &.new::after {
+          content: "";
+          @include position-top-right(4px, 0px);
+          display: inline-block;
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          background-color: #FF3C7B;
+        }
+      }
+    }
+    .name {
+      @include font(11px, 300, #202020);
+    }
+  }
+}

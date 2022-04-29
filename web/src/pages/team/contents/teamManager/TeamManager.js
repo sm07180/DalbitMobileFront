@@ -93,7 +93,7 @@ const TeamManager = (props) => {
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
     setPartsName(targetName);
-    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
+    dispatch(setSlidePopupOpen());
   };
 
   const editCnts=(e)=>{
@@ -298,7 +298,7 @@ const TeamManager = (props) => {
         </section>
       </CntWrapper>
       {
-        popup.commonPopup &&
+        popup.slidePopup &&
         <PopSlide title={`${partsName} 고르기`}>
           <PartsPop partsSelect={partsSelect} imsiData={imsiData}/>
         </PopSlide>

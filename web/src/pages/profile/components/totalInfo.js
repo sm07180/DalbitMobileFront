@@ -128,7 +128,7 @@ const TotalInfo = (props) => {
   }, [noticeData, noticeFixData]);
 
   return (
-    <>
+    <section className="totalInfo">
       {badgeTotalCnt !== 0 &&
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">배지</div>
@@ -278,7 +278,7 @@ const TotalInfo = (props) => {
         <>
         </>
       }
-    </>
+    </section>
   )
 }
 
