@@ -30,6 +30,7 @@
       border-bottom:2px solid #F2F2F2;
       @include font(16px,600,#acacac);
       box-sizing: border-box;
+      cursor:pointer;
       &.active {
         @include font(16px,bold,#202020);
         border-bottom: solid 2px #202020;

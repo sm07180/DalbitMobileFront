@@ -281,6 +281,7 @@ $SEARCH-HEADER: 112px;
       margin-bottom: 5px;
       background-color: #F6F6F6;
       @include font(13px, 400, #ACACAC);
+      cursor:pointer;
       &:last-child {
         margin-right: 0px;
       }

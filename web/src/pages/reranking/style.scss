@@ -325,6 +325,7 @@ $errorMsg : #FF1919;
       @include tabMenuUnderline(4);
       li {
         @include font(12px,500,#ccc);
+        cursor:pointer;
         &.active {
           @include font(12px,700,#333);
         }
@@ -414,6 +415,7 @@ $errorMsg : #FF1919;
         border-bottom: 2px solid #F2F2F2;
         @include font(16px,600,#ACACAC);
         box-sizing: border-box;
+        cursor:pointer;
         &.active {
           @include font(16px,700,#FF6999);
         }
