@@ -110,7 +110,7 @@ const RankListPage = (props) => {
         result = moment().subtract(1, 'd').format('YYYY-MM-DD'); // 어제 날짜
         break;
       case 2:
-        result = moment().subtract(7, 'd').day(1).format('YYYY-MM-DD'); // 지난주 월요일
+        result = moment().startOf('isoWeek').subtract(7, 'd').day(1).format('YYYY-MM-DD'); // 지난주 월요일
         break;
       case 3:
         result = moment().subtract(1, 'months').date(1).format('YYYY-MM-DD'); // 지난달 1일
@@ -138,7 +138,7 @@ const RankListPage = (props) => {
         result = moment().format('YYYY-MM-DD'); // 오늘 날짜
         break;
       case 2:
-        result = moment().days(1).format('YYYY-MM-DD'); // 이번주 월요일
+        result = moment().startOf('isoWeek').days(1).format('YYYY-MM-DD'); // 이번주 월요일
         break;
       case 3:
         result = moment().date(1).format('YYYY-MM-DD'); // 이번달 1일
