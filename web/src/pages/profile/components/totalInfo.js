@@ -134,8 +134,8 @@ const TotalInfo = (props) => {
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">배지</div>
         <div className="badgeGroup">
-          <BadgeItems data={data} type="commonBadgeList" />
           <BadgeItems data={data} type="isBadge" />
+          <BadgeItems data={data} type="commonBadgeList" />
         </div>
         {badgeTotalCnt > 3 &&
         <button onClick={onOpenBdage}>열기/닫기</button>
