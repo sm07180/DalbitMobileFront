@@ -392,7 +392,12 @@ const MainPage = () => {
   // 스와이퍼 리플레쉬 공용 함수
   const swiperRefresh = (value) => {
     const swiper = document.querySelector(`.${value} .swiper-container`)?.swiper;
-    const refreshSlideNum = value === 'mainSwiper' ? 1 : 0 // 메인 탑 스와이퍼 1번 슬라이드로 이동해야 번호가 맞음 ㅠㅠ
+    let refreshSlideNum = 0;
+    if(value === 'mainSwiper') { // 메인 탑 스와이퍼
+      swiper?.loopDestroy();
+      swiper?.loopCreate();
+      refreshSlideNum = 1; // 1로 이동해야 첫 슬라이드로 이동됨 why?
+    }
     swiper?.update();
     swiper?.slideTo(refreshSlideNum);
   }
