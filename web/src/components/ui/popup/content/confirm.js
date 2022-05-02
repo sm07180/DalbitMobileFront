@@ -80,7 +80,9 @@ export default (props) => {
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
+        if(globalState.backFunction &&
+          globalState.backFunction.name &&
+          globalState.backFunction.name.length === 1) {
           dispatch(setGlobalCtxBackState(null))
         }
         dispatch(setGlobalCtxBackFunction({name: ''}))

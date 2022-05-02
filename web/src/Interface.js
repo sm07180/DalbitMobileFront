@@ -42,6 +42,7 @@ import {
   setGlobalCtxUpdateToken
 } from "redux/actions/globalCtx";
 import {setMailBoxIsMailBoxNew} from "redux/actions/mailBox";
+import {nativeEnd, nativePlayerShow, nativeStart} from "redux/actions/broadcast/interface";
 
 export const FOOTER_VIEW_PAGES = {
   '/': 'main',
@@ -529,52 +530,16 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        //(BJ)일경우 방송하기:방송중
-        if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
-          dispatch(setGlobalCtxCastState(event.detail.roomNo))
-        }
-        if (event.detail.mediaType !== 'v') {
-          const _ios = JSON.stringify(event.detail)
-          Utility.setCookie('native-player-info', _ios, 100)
-          dispatch(setGlobalCtxPlayer(true))
-          dispatch(setGlobalCtxMediaPlayerStatus(true))
-          dispatch(setGlobalCtxNativePlayer(event.detail))
-        }
+        // alert('native-player-show')
+        dispatch(nativePlayerShow(event.detail));
         break
       case 'native-start': //---------------------------Native player-show (Android & IOS)
-        //시작
-        //App에서 방송종료 알림경우
-        sessionStorage.removeItem('room_active')
-        //(BJ)일경우 방송하기:방송중
-        const isDj = _.hasIn(event.detail, 'auth') && event.detail.auth === 3;
-        if (isDj) {
-          dispatch(setGlobalCtxCastState(event.detail.roomNo))
-          Utility.setCookie('isDj', isDj, 3);
-        }
-
-        if (event.detail.mediaType !== 'v') {
-          const _android = JSON.stringify(event.detail)
-          Utility.setCookie('native-player-info', _android, 100)
-          dispatch(setGlobalCtxPlayer(true))
-          dispatch(setGlobalCtxMediaPlayerStatus(true))
-          dispatch(setGlobalCtxNativePlayer(event.detail))
-        }
+        // alert('native-start')
+        dispatch(nativeStart(event.detail));
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
-        //쿠키삭제
-        Utility.setCookie('native-player-info', '', -1)
-        dispatch(setGlobalCtxPlayer(false))
-        dispatch(setGlobalCtxMediaPlayerStatus(false))
-        //방송종료
-        dispatch(setGlobalCtxCastState(false))
-        //(BJ)일경우 방송하기:방송중
-        dispatch(setGlobalCtxCastState(null))
-        //종료시
-        //App에서 방송종료 알림경우
-        sessionStorage.removeItem('room_no')
-        Utility.setCookie('listen_room_no', null)
-        sessionStorage.removeItem('room_active')
-        Utility.setCookie('isDj', false, 3);
+        // alert('native-end')
+        dispatch(nativeEnd(event.detail));
         break
       case 'native-non-member-end':
         dispatch(setGlobalCtxMessage({type:"confirm",

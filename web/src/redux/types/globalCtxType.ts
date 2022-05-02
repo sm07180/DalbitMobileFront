@@ -4,6 +4,7 @@ import * as actions from "../actions/globalCtx"
 export type GlobalCtxActions = ActionType<typeof actions>
 
 export type GlobalCtxStateType = {
+  nativePlayerState: 'ready' | 'progress'
   nativePlayer?: any
   roomInfo?: any
   customHeader?: any

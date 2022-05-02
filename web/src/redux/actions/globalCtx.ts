@@ -5,7 +5,9 @@ import {userBroadcastSettingType} from "../../common/realtime/chat_socket";
 import {GlobalCtxStateType, MessageType, MultiViewerType} from "../types/globalCtxType";
   // dispatch(setGlobalCtxMessage({type:"alert",
 // ctx_state
+
 export const SET_NATIVE_PLAYER 					= 'global/ctx/SET_NATIVE_PLAYER';
+export const SET_NATIVE_PLAYER_STATE		= 'global/ctx/SET_NATIVE_PLAYER_STATE';
 export const SET_MESSAGE 					      = 'global/ctx/SET_MESSAGE';
 export const SET_ROOM_INFO 				    	= 'global/ctx/SET_ROOM_INFO';
 export const UPDATE_PROFILE 					  = 'global/ctx/UPDATE_PROFILE';
@@ -150,6 +152,7 @@ export const WALLET_ADD_HISTORY 				            = 'global/ctx/WALLET_ADD_HISTORY
 
 
 export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<any>();
+export const setGlobalCtxNativePlayerState = createAction(SET_NATIVE_PLAYER_STATE)<Pick<GlobalCtxStateType, 'nativePlayerState'>>();
 export const setGlobalCtxMessage = createAction(SET_MESSAGE)<MessageType>();
 export const setGlobalCtxRoomInfo = createAction(SET_ROOM_INFO)<any>();
 export const setGlobalCtxUpdateProfile = createAction(UPDATE_PROFILE)<any>();

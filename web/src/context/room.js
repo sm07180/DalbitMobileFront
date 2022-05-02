@@ -75,7 +75,13 @@ export const RoomJoin = async (obj) => {
   }*/
   /* -------------------------------------- */
 
-  const {roomNo, callbackFunc, shadow, mode, memNo, nickNm, listener} = obj
+  const {roomNo, callbackFunc, shadow, mode, memNo, nickNm, listener} = obj;
+
+  //alert("???"+Room.globalState.nativePlayerState)
+  // if(Room.globalState.nativePlayerState === 'progress'){
+  //   return;
+  // }
+
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
   localStorage.removeItem('prevRoomInfo')
@@ -333,8 +339,9 @@ export const RoomJoin = async (obj) => {
       sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Utility.setCookie('listen_room_no', roomNo)
+      // console.log(`RoomJoin data =>`, data)
       Hybrid('RoomJoin', data)
-
+      //alert('@@RoomJoin')
       // RoomJoin 이벤트 (회원 비회원 분리)
       const newRoomJoinCmd = Room.globalState.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
       const oldRoomJoinCmd = 'RoomJoin';
