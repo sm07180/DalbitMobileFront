@@ -75,8 +75,6 @@ const ProfilePage = () => {
   const [likePopTabState, setLikePopTabState] = useState({titleTab: 0, subTab: 0, subTabType: ''});
   const [profileReady, setProfileReady] = useState(false); // 페이지 mount 후 ready
 
-  const [morePopHidden, setMorePopHidden] = useState(false); // slidePop이 unmount 될때 꼬여서 임시로 처방
-
   const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
   const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
   const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
@@ -455,7 +453,6 @@ const ProfilePage = () => {
 
   /* 헤더 더보기 버튼 클릭 */
   const openMoreList = () => {
-    setMorePopHidden(false);
     dispatch(setSlidePopupOpen())
     setSlidePopNo("header");
   }
