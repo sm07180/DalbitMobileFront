@@ -66,6 +66,12 @@ const TotalInfo = (props) => {
       badgeLength++
       setBadgeTotalCnt(badgeLength)
     }
+    /* 컨텐츠 Dj 뱃지 */
+    if(data.isConDj) {
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
+    }
+
     if(data.commonBadgeList.length > 0) {
       for(let i = 0; i < data.commonBadgeList.length; i++){
         badgeLength++
