@@ -71,7 +71,7 @@ const OtherCharge = ()=>{
   }, [selectPayment]);
 
   const slidePopAction = () => {
-    if(commonPopup.commonPopup) {
+    if(commonPopup.slidePopup) {
       closePopup(dispatch);
     }else {
       dispatch(setSlidePopupOpen());
@@ -306,7 +306,7 @@ const OtherCharge = ()=>{
         결제문의 <span>1522-0251</span>
       </section>
       <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"/>
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
       <PopSlide>
         <div className='title'>인증 정보를 확인해주세요!</div>
         <p className='text'>

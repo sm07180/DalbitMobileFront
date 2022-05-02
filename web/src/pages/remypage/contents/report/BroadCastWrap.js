@@ -202,7 +202,7 @@ const BroadCastWrap = () => {
         })}
       </section>
 
-      {popup.commonPopup &&
+      {popup.slidePopup &&
       <PopSlide title="기간 설정">
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>

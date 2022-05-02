@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
+// global components
 import LevelItems from "components/ui/levelItems/LevelItems";
 import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 
-const MyLevel = (props) => {
-  const {isMyProfile, profileData, closePopupAction} = props;
+const LevelPop = (props) => {
+  const {profileData, closePopupAction} = props;
 
   return (
-    <>
-    <h3>내 레벨</h3>
     <section className="myLevelInfo">
+      <h3>내 레벨</h3>
       <div className="infoItem">
         <LevelItems data={profileData.level} />
         <span>{profileData.grade}</span>
@@ -20,8 +20,7 @@ const MyLevel = (props) => {
       <div className="exp">다음 레벨까지 {profileData.expNext} EXP 남음</div>
       <SubmitBtn text="확인" onClick={closePopupAction} />
     </section>
-    </>
   )
 }
 
-export default MyLevel
+export default LevelPop;

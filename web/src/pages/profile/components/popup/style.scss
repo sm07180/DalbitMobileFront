@@ -17,6 +17,9 @@
       margin-bottom:20px;
       padding:0 16px;
       @include tabmenuStyle-1;
+      li {
+        cursor: pointer;
+      }
     }
     .listContainer {
       flex:1;
@@ -38,6 +41,7 @@
           }
         }
         .likeTab {
+          cursor: pointer;
           &:first-child {
             margin-left:16px;
           }
