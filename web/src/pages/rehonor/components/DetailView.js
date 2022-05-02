@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 
-import './detailView.scss'
 import moment from "moment";
 import UtilityCommon from "common/utility/utilityCommon";
 
