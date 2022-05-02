@@ -446,7 +446,7 @@ const ProfilePage = () => {
         dispatch(setIsWebView('new'));
       }else if(paramType === 'tab') {
         if(parseInt(itemSplit[1]) >= 0 && parseInt(itemSplit[1]) <= 2) { // 탭이 범위 안에 있을때(0~2)
-          tabState = parseInt(itemSplit[1])
+          tabState = parseInt(itemSplit[1]);
         }
         hasTabParam = true;
       }
