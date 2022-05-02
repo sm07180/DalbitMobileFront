@@ -5,7 +5,7 @@ import Utility from "components/lib/utility";
 import {useDispatch, useSelector} from "react-redux";
 
 const ListRowComponent = (props) => {
-  const {type, item, isMyProfile, index, photoClick, openBlockReportPop, disableMoreButton, modifyEvent, deleteEvent } = props;
+  const {type, item, isMyProfile, index, photoClick, openSlidePop, disableMoreButton, modifyEvent, deleteEvent } = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const moreRef = useRef([]);
@@ -71,7 +71,7 @@ const ListRowComponent = (props) => {
           <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
             {type !=='fanBoard' && (globalState.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
             {(isMyProfile || globalState.profile.memNo === item.mem_no || (type==='feed' && globalState.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
-            {globalState.profile.memNo !== item.mem_no.toString() && <button onClick={() => openBlockReportPop({memNo: item.mem_no, memNick: item.nickName})}>차단/신고하기</button>}
+            {globalState.profile.memNo !== item.mem_no.toString() && <button data-target-type="block" onClick={openSlidePop}>차단/신고하기</button>}
           </div>
         </div>}
       </div>

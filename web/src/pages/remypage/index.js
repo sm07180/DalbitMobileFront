@@ -91,7 +91,15 @@ const Remypage = () => {
 
   const closePopupAction = () => {
     closeLayerPopup(dispatch)
-    console.log('3');
+  }
+
+  /* 프로필 이동 */
+  const goProfile = memNo => {
+    if(memNo) {
+      if(params.memNo !== memNo) {
+        history.push(`/profile/${memNo}`)
+      }
+    }
   }
 
   // 페이지 셋팅
@@ -130,7 +138,7 @@ const Remypage = () => {
       <MyBottom />
 
       {/* 슬라이드 팝업 모음 */}
-      {commonPopup.slidePopup && <SlidepopZip slideData={slidePopInfo} />}
+      {commonPopup.slidePopup && <SlidepopZip slideData={slidePopInfo} goProfile={goProfile} />}
 
       {/* 스페셜DJ 약력 팝업 */}
       {commonPopup.commonPopup &&

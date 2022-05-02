@@ -27,33 +27,22 @@
     position:relative;
     @include flex($fd:column);
     padding-bottom:40px;
-    .tabmenuWrap {
+    .tabmenu {
       position:-webkit-sticky;
       position:sticky;
       top: $HEADER-HEIGHT;
       z-index: 1;
       @include flex(center);
+      padding: 0 8px;
       background-color:white;
-      .tabmenu {
-        @include flex(center);
-        padding: 0 8px;
-        li {
-          line-height:50px;
-          padding:0 12px;
-          @include font(16px,400,#666);
-          cursor:pointer;
-          &.active {
-            @include font(16px,700,black);
-          }
+      li {
+        line-height:50px;
+        padding:0 12px;
+        @include font(16px,400,#666);
+        cursor:pointer;
+        &.active {
+          @include font(16px,700,black);
         }
-      }
-      button {
-        width:40px;
-        height:40px;
-        margin-left:auto;
-        margin-right:8px;
-        text-indent:-9999px;
-        @include BGIMG("profile/sectionEdit.png");
       }
     }
     .feedSection {}
@@ -287,6 +276,16 @@
       .text {
         margin-bottom:22px;
         @include font(12px,$Regular,#666);
+      }
+    }
+  }
+}
+
+.pcType {
+  #myprofile {
+    .socialWrap {
+      .tabmenu {
+        top: #{$GNB-HEIGHT + $HEADER-HEIGHT};
       }
     }
   }

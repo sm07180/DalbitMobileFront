@@ -14,7 +14,7 @@ import FeedLike from "pages/profile/components/FeedLike";
 import * as Util from "util";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
+  const {socialList, openShowSlide, isMyProfile, type, openSlidePop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -40,7 +40,7 @@ const SocialList = (props) => {
         return (
           <div className='socialList' key={item.reg_no ? item.reg_no : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
-                              openBlockReportPop={openBlockReportPop}
+                              openSlidePop={openSlidePop}
                               modifyEvent={() => {
                                 memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)
                               }}

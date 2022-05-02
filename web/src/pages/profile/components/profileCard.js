@@ -10,11 +10,10 @@ import './profileCard.scss';
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
-import {setSlidePopupOpen} from "redux/actions/common";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openSlidePop, openShowSlide, setSlidePopNo} = props;
+  const {data, isMyProfile, openSlidePop, openShowSlide} = props;
   const dispatch = useDispatch();
 
   /* 팬 버튼 토글 */
@@ -66,11 +65,6 @@ const ProfileCard = (props) => {
     }
   }
 
-  const openPresentPop = () => {
-    dispatch(setSlidePopupOpen());
-    setSlidePopNo("present");
-  };
-
   return (
     <section className="profileCard">
       <div className="cardWrap">
@@ -109,7 +103,7 @@ const ProfileCard = (props) => {
         </div>
         {!isMyProfile &&
           <div className="buttonWrap">
-            {!isIos() && <button className='presentBtn' onClick={openPresentPop}>선물하기</button>}
+            {!isIos() && <button className="presentBtn" data-target-type="present" onClick={openSlidePop}>선물하기</button>}
             <button className={`${data.isFan ? 'isFan' : ''}`}
                     onClick={() => {
                       fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)

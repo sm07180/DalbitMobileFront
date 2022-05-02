@@ -1,14 +1,13 @@
-import React, {useRef} from 'react'
+import React from 'react'
 
 // components
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 
 const Tabmenu = (props) => {
   const {data,tab,setTab,setPage, tabChangeAction, count} = props
-  const tabMenuRef = useRef();
 
   return (
-    <ul className="tabmenu" ref={tabMenuRef}>
+    <ul className="tabmenu">
       {data.map((data,index) => {
         const param = {
           item: data,

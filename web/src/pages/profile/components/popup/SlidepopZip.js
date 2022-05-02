@@ -1,22 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 // global components
 import PopSlide, {closePopup} from "../../../../components/ui/popSlide/PopSlide";
 // components
 import MorePopup from "./MorePopup";
+import BlockReport from "./BlockReport";
 import FanStarPopup from "./FanStarPopup";
 import LikePopup from "./LikePopup";
+import Present from "./Present";
 
 import {useDispatch} from "react-redux";
-import {useHistory} from 'react-router-dom'
 
 const SlidepopZip = (props) => {
-  const {slideData} = props;
+  const {slideData, goProfile, openSlidePop} = props;
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  // 프로필 페이지로 이동
-  const goProfile = (memNo) => history.push(`/profile/${memNo}`);
-
+  
   const closeSlidePop = () => {
     closePopup(dispatch);
   }
@@ -28,6 +25,7 @@ const SlidepopZip = (props) => {
           <MorePopup
             profileData={slideData.data}
             myMemNo={slideData.memNo}
+            openSlidePop={openSlidePop}
             closePopupAction={closeSlidePop} />
         </PopSlide>
       )
@@ -35,7 +33,8 @@ const SlidepopZip = (props) => {
       return (
         <PopSlide>
           <BlockReport
-            blockReportInfo={blockReportInfo}
+            profileData={slideData.data}
+            openSlidePop={openSlidePop}
             closePopupAction={closeSlidePop} />
         </PopSlide>
       )
@@ -60,6 +59,14 @@ const SlidepopZip = (props) => {
             goProfile={goProfile}
             myMemNo={slideData.memNo}
             likePopTabState={slideData.likeType}
+            closePopupAction={closeSlidePop} />
+        </PopSlide>
+      )
+    case "present":
+      return (
+        <PopSlide>
+          <Present
+            profileData={slideData.data}
             closePopupAction={closeSlidePop} />
         </PopSlide>
       )

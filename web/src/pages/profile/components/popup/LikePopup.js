@@ -38,7 +38,7 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, myMemNo, likePopTabState, closePopupAction} = props
+  const {isMyProfile, profileData, goProfile, myMemNo, likePopTabState, closePopupAction} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
   const popup = useSelector(state => state.popup);

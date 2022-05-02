@@ -16,7 +16,7 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TotalInfo = (props) => {
   const history = useHistory();
-  const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
+  const {data, goProfile, openSlidePop, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -167,7 +167,7 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title" style={{cursor: 'pointer'}} onClick={openPopLike}>
+          <div className="title" data-target-type="like" style={{cursor: 'pointer'}} onClick={openSlidePop}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
