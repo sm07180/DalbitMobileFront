@@ -22,7 +22,6 @@ export default () => {
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
 
   let totalPage = 1
-  // 깐부 랭킹 리스트
   const getList = useCallback(async () => {
     const param = {
       pageNo: storyPageInfo.pageNo,
@@ -41,10 +40,6 @@ export default () => {
   }, [storyPageInfo.pageNo])
 
   function delList(roomNo, storyIdx) {
-    console.log(roomNo);
-    console.log(storyIdx);
-    console.log(typeof roomNo);
-    console.log(typeof storyIdx);
     Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
       const {result, message} = res
       if (result === 'success') {
@@ -62,10 +57,7 @@ export default () => {
 
   const delAction = (roomNo, storyIdx) => {
     const TypeChangeRoomNo = String(roomNo);
-    const TypeChangeStoryIdx = Number(storyIdx);
-    console.log("roomNo = " + TypeChangeRoomNo  +", storyIdx = " + TypeChangeStoryIdx); // roomNo = 91651122319885, storyIdx = 41646180421665
-    console.log(typeof TypeChangeRoomNo) //string
-    console.log(typeof TypeChangeStoryIdx) //number
+    const TypeChangeStoryIdx = parseInt(storyIdx);
     delList(TypeChangeRoomNo, TypeChangeStoryIdx);
   }
 
@@ -109,7 +101,7 @@ export default () => {
               <div className='storyWrap'>
                 {
                   storyList.map((story, index) => {
-                    const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents} = story
+                    const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story
                     return (
                       <div className='storyList' key={index}>
                         <div className='thumbnail' onClick={() => {goLink(`${writer_mem_id}`)}}>
@@ -122,7 +114,7 @@ export default () => {
                               <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD HH:mm')}</div>
                             </div>
                             <div className='delBtnWrap'>
-                              <span className='delBtn' onClick={() => {delAction(room_no, writer_no)}}>삭제</span>
+                              <span className='delBtn' onClick={() => {delAction(room_no, idx)}}>삭제</span>
                             </div>
                           </div>
                           <div className='messageWrap'>

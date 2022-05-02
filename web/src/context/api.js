@@ -4397,7 +4397,7 @@ export default class API {
 
   // 사연 보관함 삭제
   static getStoryBoxDel = async ({roomNo, storyIdx}) => {
-    return ajax({url: '/broad/story', method: 'DELETE', data: {roomNo:roomNo, storyIdx:storyIdx}})
+    return ajax({url: '/broad/story', method: 'DELETE', params: {roomNo:roomNo, storyIdx:storyIdx}})
   }
 }
 
