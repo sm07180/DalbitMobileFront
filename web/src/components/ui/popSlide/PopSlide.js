@@ -1,6 +1,5 @@
-import React, {useState, useContext, useEffect} from 'react';
-
-// css
+import React, {useEffect} from 'react';
+// scss
 import './popslide.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupClose, setSlideClose} from "redux/actions/common";
@@ -18,16 +17,16 @@ export const closePopup = (dispatch) => {
 };
 
 const PopSlide = (props) => {
-  const {title, popSlide, setPopSlide, children, popHidden, closeCallback} = props;
+  const {title, setPopSlide, children, popHidden, closeCallback} = props;
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const popupState = useSelector(state => state.popup);
   const dispatch = useDispatch();
 
   const closePopupDim = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const target = e.target;
     if (target.id === 'popSlide') {
-      e.preventDefault();
-      e.stopPropagation();
       if(setPopSlide) {
         setPopSlide(false);
       }
@@ -68,4 +67,4 @@ const PopSlide = (props) => {
   )
 }
 
-export default PopSlide
+export default PopSlide;

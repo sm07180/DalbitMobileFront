@@ -16,10 +16,11 @@ import BlockReport from './components/popup/BlockReport';
 import Present from './components/popup/Present';
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import SpecialHistoryList from './components/SpecialHistoryPop';
+import SlidepopZip from './components/popup/SlidepopZip';
 // contents
-import FeedSection from './contents/profileDetail/FeedSection'
-import FanboardSection from './contents/profileDetail/FanboardSection'
-import ClipSection from './contents/profileDetail/ClipSection'
+import FeedSection from './contents/profileDetail/FeedSection';
+import FanboardSection from './contents/profileDetail/FanboardSection';
+import ClipSection from './contents/profileDetail/ClipSection';
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -40,7 +41,7 @@ import LikePopup from "pages/profile/components/popup/LikePopup";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
-import {setSlidePopupOpen, setSlidePopupClose, setIsWebView, setSlideClose} from "redux/actions/common";
+import {setSlidePopupOpen, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {IMG_SERVER} from "context/config";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
@@ -51,6 +52,18 @@ const ProfilePage = () => {
   const tabmenuRef = useRef();
   const socialRef = useRef();
   const floatingRef = useRef();
+
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const profileData = useSelector(state => state.profile);
+  const noticeData = useSelector(state => state.brdcst);
+  const fanBoardData = useSelector(state => state.fanBoard);
+  const clipData = useSelector(state => state.profileClip);
+  const popup = useSelector(state => state.popup);
+  const profileTab = useSelector(state => state.profileTab);
+  const feedData = useSelector(state => state.feed);
+  const noticeFixData = useSelector(state => state.noticeFix);
+  const member = useSelector(state => state.member);
 
   const [showSlide, setShowSlide] = useState({visible: false, imgList: [], initialSlide: 0}); // 프사 확대 슬라이드
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
@@ -69,18 +82,9 @@ const ProfilePage = () => {
   const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
 
   const [slidePopNo, setSlidePopNo] = useState(""); // 슬라이드 팝업 종류
-
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const profileData = useSelector(state => state.profile);
-  const noticeData = useSelector(state => state.brdcst);
-  const fanBoardData = useSelector(state => state.fanBoard);
-  const clipData = useSelector(state => state.profileClip);
-  const popup = useSelector(state => state.popup);
-  const profileTab = useSelector(state => state.profileTab);
-  const feedData = useSelector(state => state.feed);
-  const noticeFixData = useSelector(state => state.noticeFix);
-  const member = useSelector(state => state.member);
+  const [slidePopInfo, setSlidePopInfo] = useState({
+    data: profileData, memNo: profileData.memNo, type: "", fanStarType: "", likeType: 0
+  }); // 슬라이드 팝업 정보
 
   const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 피드
 
@@ -330,6 +334,28 @@ const ProfilePage = () => {
       }))
     }
   },[profileData.memNo, profileData.isReceive])
+
+  {/* 슬라이드 팝업 오픈 */}
+  const openSlidePop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const {targetType} = e.currentTarget.dataset;
+    switch (targetType) {
+      case "fan":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
+        break;
+      case "star":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
+        break;
+      case "like":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: ""});
+        break;
+      case "level":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "level", fanStarType: ""});
+        break;
+    }
+    dispatch(setSlidePopupOpen());
+  }
 
   /* 프로필 이동 */
   const goProfile = memNo => {
@@ -855,6 +881,7 @@ const ProfilePage = () => {
         openShowSlide={openShowSlide}
         fanToggle={fanToggle}
         setSlidePopNo={setSlidePopNo}
+        openSlidePop={openSlidePop}
         openPopFanStar={openPopFanStar}
         openPopLike={openPopLike}
         popup={popup}/>
@@ -947,6 +974,9 @@ const ProfilePage = () => {
         }
       </section>
 
+      {/* 슬라이드 팝업 모음 */}
+      {/* {popup.slidePopup && <SlidepopZip slideData={slidePopInfo} />} */}
+
       {/* 슬라이드 팝업 */}
       {popup.slidePopup &&
         <PopSlide>
@@ -985,4 +1015,4 @@ const ProfilePage = () => {
   )
 }
 
-export default ProfilePage
+export default ProfilePage;

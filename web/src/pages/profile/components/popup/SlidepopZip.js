@@ -6,10 +6,12 @@ import FanStarPopup from "./FanStarPopup";
 import LikePopup from "./LikePopup";
 
 import {useDispatch} from "react-redux";
+import {useHistory} from 'react-router-dom'
 
 const SlidepopZip = (props) => {
   const {slideData} = props;
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // 프로필 페이지로 이동
   const goProfile = (memNo) => history.push(`/profile/${memNo}`);
@@ -40,15 +42,6 @@ const SlidepopZip = (props) => {
             goProfile={goProfile}
             myMemNo={slideData.memNo}
             likePopTabState={slideData.likeType}
-            closePopupAction={closeSlidePop}/>
-        </PopSlide>
-      )
-    case "level":
-      return (
-        <PopSlide>
-          <LevelPop
-            isMyProfile={true}
-            profileData={slideData.data}
             closePopupAction={closeSlidePop}/>
         </PopSlide>
       )
