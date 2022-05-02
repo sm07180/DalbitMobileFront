@@ -58,6 +58,10 @@ const WeeklyPick = (props) => {
     }
   }
 
+  const goWeekly = (idx) => {
+    props.history.push(`/rank/pick?idx=${idx}`)
+  }
+
   return (
     <>
       <div className='weeklyPickTop'>
@@ -73,7 +77,13 @@ const WeeklyPick = (props) => {
               <React.Fragment key={`weeklyPick-${index}`}>
                 {data.memberList && data.memberList.map((data2, idx) => {
                   return (
-                    <ListRow key={idx} photo={data2.imageInfo.thumb292x292} onClick={() => props.history.push(`/rank/pick?idx=${data.idx}`)}>
+                    <ListRow key={idx} photo={data2.imageInfo.thumb150x150}
+                             onClick={() => {
+                               goWeekly(data.idx);
+                             }}
+                             photoClick={() => {
+                               goWeekly(data.idx);
+                             }}>
                       <div className='listContent'>
                         <div className={`round ${index === 0 ? "thisweekPick" : ""}`}>Pick #{data.round}</div>
                         <div className='memNick'>{data2.memNick ? data2.memNick : "-"}</div>

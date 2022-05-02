@@ -8,12 +8,10 @@ import moment from "moment";
 import Header from '../../components/ui/header/Header';
 import CntTitle from '../../components/ui/cntTitle/CntTitle';
 import BannerSlide from '../../components/ui/bannerSlide/BannerSlide';
-import UtilityCommon from "../../common/utility/utilityCommon";
 // components
 import Tabmenu from './components/tabmenu';
 import SubTabmenu from './components/SubTabmenu';
 import MainSlide from './components/MainSlide';
-import PrevMainSlide from './components/PrevMainSlide';
 import FavoriteSwiper from './components/FavoriteSwiper';
 import ToptenSwiper from './components/ToptenSwiper';
 import LiveContents from './components/LiveContents';
@@ -394,7 +392,12 @@ const MainPage = () => {
   // 스와이퍼 리플레쉬 공용 함수
   const swiperRefresh = (value) => {
     const swiper = document.querySelector(`.${value} .swiper-container`)?.swiper;
-    const refreshSlideNum = value === 'mainSwiper' ? 1 : 0 // 메인 탑 스와이퍼 1번 슬라이드로 이동해야 번호가 맞음 ㅠㅠ
+    let refreshSlideNum = 0;
+    if(value === 'mainSwiper') { // 메인 탑 스와이퍼
+      swiper?.loopDestroy();
+      swiper?.loopCreate();
+      refreshSlideNum = 1; // 1로 이동해야 첫 슬라이드로 이동됨 why?
+    }
     swiper?.update();
     swiper?.slideTo(refreshSlideNum);
   }
@@ -502,9 +505,7 @@ const MainPage = () => {
 
       {/* 메인 탑 스와이퍼 */}
       <section className="mainSwiper" ref={overRef}>
-        {UtilityCommon.eventDateCheck("20220501") ? <MainSlide data={mainState.topBanner} swiperRefresh={() => swiperRefresh("mainSwiper")} pullToRefreshPause={pullToRefreshPause} /> :
-          <PrevMainSlide data={mainState.topBanner} swiperRefresh={() => swiperRefresh("mainSwiper")} pullToRefreshPause={pullToRefreshPause} />
-        }
+        <MainSlide topBannerList={mainState.topBanner} swiperRefresh={swiperRefresh} pullToRefreshPause={pullToRefreshPause}/>
       </section>
 
       {/* 마이스타 */}

@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 
-import Api from 'context/api';
 import Swiper from 'react-id-swiper';
 // global components
 import ListColumn from '../../../components/ui/listColumn/ListColumn';
@@ -12,13 +11,11 @@ import {RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import {useDispatch, useSelector} from "react-redux";
 
 const MainSlide = (props) => {
-  const {data, swiperRefresh, pullToRefreshPause} = props;
+  const {topBannerList, swiperRefresh} = props;
 
   const history = useHistory();
   const dispatch = useDispatch();
-  const common = useSelector(state => state.common);
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const [swiperList, setSwiperList] =  useState({photoSvrUrl: "", swiperList: []});
 
   const swiperParams = {
     loop: true,
@@ -33,7 +30,7 @@ const MainSlide = (props) => {
         evt.preventDefault();
         evt.stopPropagation();
 
-        const target = swiperList.swiperList[parseInt(this.realIndex)];
+        const target = topBannerList[parseInt(this.realIndex)];
         if(target.idx > 0) {
           history.push(target.linkUrl);
         }else {
@@ -47,30 +44,20 @@ const MainSlide = (props) => {
     }
   }
 
-  useEffect(() => {
-    Api.getBannerList().then(res => {
-      if (res.result === "success"){
-        setSwiperList({photoSvrUrl: res.data.photoSvrUrl, swiperList: res.data.swiperList});
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    if(common.isRefresh || !pullToRefreshPause) { // refresh 될때 슬라이드 1번으로
-      swiperRefresh();
-    }
-  }, [common.isRefresh, pullToRefreshPause]);
-
   // 프로필 이동
   const goProfile = (memNo) => {
     if (memNo !== undefined && memNo > 0) history.push(`/profile/${memNo}`)
   }
 
+  useEffect(() => {
+    swiperRefresh('mainSwiper');
+  }, [topBannerList])
+
   return (
     <>
-      {swiperList.swiperList.length > 0 ?
+      {topBannerList.length > 0 ?
         <Swiper {...swiperParams}>
-          {swiperList.swiperList.map((list, index) => {
+          {topBannerList.map((list, index) => {
             return (
               <div key={index}>
                 {list.idx > 0 ?
