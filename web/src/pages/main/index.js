@@ -8,12 +8,10 @@ import moment from "moment";
 import Header from '../../components/ui/header/Header';
 import CntTitle from '../../components/ui/cntTitle/CntTitle';
 import BannerSlide from '../../components/ui/bannerSlide/BannerSlide';
-import UtilityCommon from "../../common/utility/utilityCommon";
 // components
 import Tabmenu from './components/tabmenu';
 import SubTabmenu from './components/SubTabmenu';
 import MainSlide from './components/MainSlide';
-import PrevMainSlide from './components/PrevMainSlide';
 import FavoriteSwiper from './components/FavoriteSwiper';
 import ToptenSwiper from './components/ToptenSwiper';
 import LiveContents from './components/LiveContents';
@@ -502,9 +500,7 @@ const MainPage = () => {
 
       {/* 메인 탑 스와이퍼 */}
       <section className="mainSwiper" ref={overRef}>
-        {UtilityCommon.eventDateCheck("20220501") ? <MainSlide data={mainState.topBanner} swiperRefresh={() => swiperRefresh("mainSwiper")} pullToRefreshPause={pullToRefreshPause} /> :
-          <PrevMainSlide data={mainState.topBanner} swiperRefresh={() => swiperRefresh("mainSwiper")} pullToRefreshPause={pullToRefreshPause} />
-        }
+        <MainSlide topBannerList={mainState.topBanner} swiperRefresh={swiperRefresh} pullToRefreshPause={pullToRefreshPause}/>
       </section>
 
       {/* 마이스타 */}
