@@ -23,10 +23,10 @@ const PopSlide = (props) => {
   const dispatch = useDispatch();
 
   const closePopupDim = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     const target = e.target;
     if (target.id === 'popSlide') {
+      e.preventDefault();
+      e.stopPropagation();
       if(setPopSlide) {
         setPopSlide(false);
       }
