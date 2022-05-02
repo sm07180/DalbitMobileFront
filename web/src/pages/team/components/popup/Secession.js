@@ -61,15 +61,15 @@ const SecessionPop = (props) => {
   // 페이지 시작
   return (
     <section className="secession">
+      <h3>다음 팀장은 누구인가요?</h3>
       <div className="teamList">
         {teamMemList.length > 0 && teamMemList.map((data,index)=>{
           let tmemNo = data.tm_mem_no
           let photoUrl = data.tm_image_profile
-          let photoServer = "https://photo.dalbitlive.com";
           return(
             <label className="listRow" key={index}>
               <div className="photo">
-                <img src={photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120")} alt="" />
+                <img src={photoCommon.getPhotoUrl(photoUrl, "120x120")} alt="" />
               </div>
               <div className="listContent">
                 <div className="nick">{data.tm_mem_nick}</div>

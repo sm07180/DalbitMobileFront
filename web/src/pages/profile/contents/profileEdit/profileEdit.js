@@ -10,8 +10,8 @@ import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import PopSlide from "components/ui/popSlide/PopSlide";
 // components
-import TopSwiper from '../../components/topSwiper'
-import PhotoChange from '../../components/popSlide/PhotoChange'
+import ProfileSwiper from '../../components/ProfileSwiper'
+import PhotoChange from '../../components/popup/PhotoChange'
 // contents
 
 import './profileEdit.scss'
@@ -292,7 +292,7 @@ const ProfileEdit = () => {
             </Header>
             <section className='profileTopSwiper'>
               {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profileDataNoReader}
+                <ProfileSwiper data={profileDataNoReader}
                            disabledBadge={true}
                            openShowSlide={openShowSlide}
                 />

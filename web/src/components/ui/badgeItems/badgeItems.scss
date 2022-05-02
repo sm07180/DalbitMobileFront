@@ -7,6 +7,7 @@
   margin-right:2px;
   padding:0 6px 0 3px;
   border-radius:100px;
+  white-space: nowrap;
   letter-spacing: -.5px;
   @include font(12px,$Medium,white);
   box-sizing: border-box;

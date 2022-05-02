@@ -170,6 +170,7 @@
           border-radius: 100px;
           background: #f6f6f6;
           @include font(13px,400,#acacac);
+          cursor:pointer;
           &.active{
             @include font(13px,500,white);
             background: #202020;

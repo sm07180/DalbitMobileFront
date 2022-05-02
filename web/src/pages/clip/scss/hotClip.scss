@@ -60,17 +60,15 @@
       .type {
         flex-shrink: 0;
         margin-right: 5px;
-        @include font(12px,$Regular,#666);
+        @include font(12px,$Medium,#303030);
       }
       .title {
-        @include font(15px,$Medium,#202020);
+        @include font(15px,$SemiBold,#202020);
         @include fontCut;
       }
       .nickName {
         line-height: 18px;
-        font-size: 13px;
-        font-weight: 400;
-        color: #999;
+        @include font(12px,$Regular,#666666);
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;

@@ -15,7 +15,7 @@ const WeeklyPick = (props) => {
   const [loading, setLoading] = useState(false);
 
   let pagePerCnt = 50;
-
+  
   useEffect(() => {
     getWeeklyList(pageNo);
   }, []);
@@ -58,26 +58,43 @@ const WeeklyPick = (props) => {
     }
   }
 
+  const goWeekly = (idx) => {
+    props.history.push(`/rank/pick?idx=${idx}`)
+  }
+
   return (
     <>
-      <p className='infomation'>이번 주 달둥이들의 마음을 취향저격한 DJ를 소개합니다.</p>
-      <section className="listSection">
+      <div className='weeklyPickTop'>
+        <span>위클리 픽!</span>
+        <p>이번 주,<br/>달라의 마음을<br/>취.향.저.격.한 DJ를 소개합니다.</p>
+      </div>
+      <section className="weeklyPickWrap">
       {listData.list.length > 0 &&
-        <div className={`listWrap weeklyPick`}>
+        <div className={`listWrap`}>
           <>
           {listData.list.map((data, index) => {
             return (
               <React.Fragment key={`weeklyPick-${index}`}>
                 {data.memberList && data.memberList.map((data2, idx) => {
                   return (
-                    <ListRow key={idx} photo={data2.imageInfo.thumb292x292} onClick={() => props.history.push(`/rank/pick?idx=${data.idx}`)}>
+                    <ListRow key={idx} photo={data2.imageInfo.thumb150x150}
+                             onClick={() => {
+                               goWeekly(data.idx);
+                             }}
+                             photoClick={() => {
+                               goWeekly(data.idx);
+                             }}>
                       <div className='listContent'>
-                        <div className={`round ${data.memberList && data.memberList.length > 1 ? "jointAward" : ""}`}>{data.round}회차</div>
+                        <div className={`round ${index === 0 ? "thisweekPick" : ""}`}>Pick #{data.round}</div>
                         <div className='memNick'>{data2.memNick ? data2.memNick : "-"}</div>
                       </div>
                       <div className='back'>
                         <span className='rightArrow'></span>
                       </div>
+                      {
+                        index === 0 &&
+                        <span className='newTag'>new</span>
+                      }
                     </ListRow>
                   )
                 })}

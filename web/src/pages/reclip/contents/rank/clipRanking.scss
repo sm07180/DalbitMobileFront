@@ -17,7 +17,7 @@
         display: inline-block;
         width: 40px;
         height: 40px;
-        @include font(14px,$Regular,#303030);
+        @include font(14px,$Medium,#303030);
       }
     }
   }
@@ -128,13 +128,13 @@
                 width: 100%;
                 margin-bottom:2px;
                 text-align:center;
-                @include font(13px,$Bold,#202020);
+                @include font(13px,$SemiBold,#202020);
                 @include fontCut;
               }
               .nick {
                 width:100%;
                 text-align:center;
-                @include font(12px,$Regular,#666);
+                @include font(12px,$Regular,#666666);
                 @include fontCut;
               }
             }
@@ -161,7 +161,7 @@
         width: 100%;
         margin-bottom: 16px;
         span {
-          @include font(12px,$Medium,#666);
+          @include font(13px,$Medium,#666666);
         }
         button {
           @include flex(center, center);
@@ -226,15 +226,15 @@
               margin-top:4px;
             }
             &.type{
-              @include font(12px, 400, #999);
+              @include font(12px, $Regular, #303030);
               @include fontCut;
             }
             &.title{
-              @include font(14px, 500, #202020);
+              @include font(14px, $Medium, #202020);
               @include fontCut;
             }
             &.nick {
-              @include font(13px,400,#666);
+              @include font(13px,$Regular,#666666);
               @include fontCut;
             }
           }

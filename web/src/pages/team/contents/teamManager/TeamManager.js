@@ -59,7 +59,6 @@ const TeamManager = (props) => {
   }, [agree])
 
   const updateApi=()=>{
-    console.log("???")
     let equData = {
       bgCode:bgCode,
       medalCode:medalCode,
@@ -93,7 +92,7 @@ const TeamManager = (props) => {
   const openPartsChoice = (e) => {
     const {targetName} = e.currentTarget.dataset;
     setPartsName(targetName);
-    dispatch(setSlidePopupOpen({...popup, commonPopup: true}));
+    dispatch(setSlidePopupOpen());
   };
 
   const editCnts=(e)=>{
@@ -156,9 +155,10 @@ const TeamManager = (props) => {
           teamNo: teamNo,
           delSclt: "m",
           tmMemNo: data.tm_mem_no,
+          masterName:memberRdx.data.nickNm,
           masterMemNo: memberRdx.memNo,
           chrgrName: ""
-        }
+        };
         Api.getTeamMemDel(param).then(res=>{
           if(res.code==="00000"){
             props.getPageData();
@@ -256,8 +256,7 @@ const TeamManager = (props) => {
             props.data.teamMemList.length >0 &&
             props.data.teamMemList.map((data,index)=>{
               const photoUrl = data.tm_image_profile;
-              const photoServer = "https://photo.dalbitlive.com";
-              const photo = photoCommon.getPhotoUrl(photoServer, photoUrl, "120x120");
+              const photo = photoCommon.getPhotoUrl(photoUrl, "120x120");
               return(
                 <ListRow photo={photo} key={index}>
                   <div className="listContent">
@@ -298,7 +297,7 @@ const TeamManager = (props) => {
         </section>
       </CntWrapper>
       {
-        popup.commonPopup &&
+        popup.slidePopup &&
         <PopSlide title={`${partsName} 고르기`}>
           <PartsPop partsSelect={partsSelect} imsiData={imsiData}/>
         </PopSlide>
