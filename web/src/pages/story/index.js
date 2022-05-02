@@ -3,6 +3,7 @@ import {useParams, useHistory} from 'react-router-dom'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {useDispatch, useSelector} from "react-redux";
+import {PHOTO_SERVER} from 'context/config.js'
 
 import Api from "context/api";
 import moment from "moment";
@@ -40,6 +41,10 @@ export default () => {
   }, [storyPageInfo.pageNo])
 
   function delList(roomNo, storyIdx) {
+    console.log(roomNo);
+    console.log(storyIdx);
+    console.log(typeof roomNo);
+    console.log(typeof storyIdx);
     Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
       const {result, message} = res
       if (result === 'success') {
@@ -56,7 +61,12 @@ export default () => {
   }
 
   const delAction = (roomNo, storyIdx) => {
-    delList(roomNo, storyIdx);
+    const TypeChangeRoomNo = String(roomNo);
+    const TypeChangeStoryIdx = Number(storyIdx);
+    console.log("roomNo = " + TypeChangeRoomNo  +", storyIdx = " + TypeChangeStoryIdx); // roomNo = 91651122319885, storyIdx = 41646180421665
+    console.log(typeof TypeChangeRoomNo) //string
+    console.log(typeof TypeChangeStoryIdx) //number
+    delList(TypeChangeRoomNo, TypeChangeStoryIdx);
   }
 
   const scrollEvtHdr = () => {
@@ -103,13 +113,13 @@ export default () => {
                     return (
                       <div className='storyList' key={index}>
                         <div className='thumbnail' onClick={() => {goLink(`${writer_mem_id}`)}}>
-                          <img src={writer_mem_profile} alt=""/>
+                          <img src={`${PHOTO_SERVER}${writer_mem_profile}`} alt=""/>
                         </div>
                         <div className='listContent'>
                           <div className='dataInfo'>
                             <div className='infoWrap'>
                               <div className='userNick' onClick={() => {goLink(`${writer_mem_id}`)}}>{writer_mem_nick}</div>
-                              <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD hh:mm')}</div>
+                              <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD HH:mm')}</div>
                             </div>
                             <div className='delBtnWrap'>
                               <span className='delBtn' onClick={() => {delAction(room_no, writer_no)}}>삭제</span>

@@ -11,6 +11,7 @@ const menuList = [
   {name: "방송리포트", path: "report"},
   {name: "클립 관리", path: "myclip"},
   {name: "서비스 설정", path: "setting"},
+  {name: "사연 보관함", path: "story"},
   {name: "공지사항", path: "notice"},
   {name: "고객센터", path: "customer"},
 ]
