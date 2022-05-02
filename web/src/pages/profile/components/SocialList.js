@@ -84,9 +84,9 @@ const SocialList = (props) => {
                        dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents).substr(0, 100)}}
                   />
                   {toggleEllipsis(item.feed_conts ? item.feed_conts : item.contents, limit).isShowMore &&
-                  <button onClick={() => {onClick(index, "false")}}><span>··· 더보기</span></button>}
+                  <div className="socialButton" onClick={() => {onClick(index, "false")}}>··· 더보기</div>}<br/>
                 </>
-                : isClicked[index] && type === "feed" &&
+                :
                 <>
                   <div className="socialText"
                        onClick={() => goProfileDetailPage(detailPageParam)}
@@ -94,7 +94,9 @@ const SocialList = (props) => {
                        data-num={index}
                        dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
                   />
-                  <button onClick={() => {onClick(index, "true")}}><span>간략히</span></button>
+                  {isClicked[index] && type === "feed" &&
+                    <><div className="socialButton" onClick={() => {onClick(index, "true")}}>간략히</div><br/></>
+                  }
                 </>
               }
 
