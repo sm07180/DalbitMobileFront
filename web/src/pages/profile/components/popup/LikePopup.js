@@ -1,15 +1,14 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 
-import Api from 'context/api'
-import moment from 'moment'
+import Api from 'context/api';
+import moment from 'moment';
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
-import NoResult from 'components/ui/noResult/NoResult'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
-import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-// components
-
-import './style.scss'
+import ListRow from '../../../../components/ui/listRow/ListRow';
+import NoResult from '../../../../components/ui/noResult/NoResult';
+import DataCnt from '../../../../components/ui/dataCnt/DataCnt';
+import FanBtn from '../../../../components/ui/fanBtn/FanBtn';
+// scss
+import './style.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {setCommonPopupOpenData} from "redux/actions/common";
@@ -307,10 +306,7 @@ const LikePopup = (props) => {
                       </div>
                     </div>
                     <div className="back">
-                      <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                        const isFan = list.isFan;
-                        fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                      }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                      <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
                     </div>
                   </>
                   :
@@ -321,10 +317,7 @@ const LikePopup = (props) => {
                     </div>
                     {list.memNo !== myMemNo &&
                       <div className="back">
-                        <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                          const isFan = list.isFan;
-                          fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                        }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                        <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
                       </div>
                     }
                   </>

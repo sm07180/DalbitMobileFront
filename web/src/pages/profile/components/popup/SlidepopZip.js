@@ -2,6 +2,7 @@ import React from 'react';
 // global components
 import PopSlide, {closePopup} from "../../../../components/ui/popSlide/PopSlide";
 // components
+import MorePopup from "./MorePopup";
 import FanStarPopup from "./FanStarPopup";
 import LikePopup from "./LikePopup";
 
@@ -21,6 +22,23 @@ const SlidepopZip = (props) => {
   }
 
   switch (slideData.type) {
+    case "header":
+      return (
+        <PopSlide>
+          <MorePopup
+            profileData={slideData.data}
+            myMemNo={slideData.memNo}
+            closePopupAction={closeSlidePop} />
+        </PopSlide>
+      )
+    case "block":
+      return (
+        <PopSlide>
+          <BlockReport
+            blockReportInfo={blockReportInfo}
+            closePopupAction={closeSlidePop} />
+        </PopSlide>
+      )
     case "fanStar":
       return (
         <PopSlide>
@@ -30,7 +48,7 @@ const SlidepopZip = (props) => {
             profileData={slideData.data}
             goProfile={goProfile}
             myMemNo={slideData.memNo}
-            closePopupAction={closeSlidePop}/>
+            closePopupAction={closeSlidePop} />
         </PopSlide>
       )
     case "like":
@@ -42,7 +60,7 @@ const SlidepopZip = (props) => {
             goProfile={goProfile}
             myMemNo={slideData.memNo}
             likePopTabState={slideData.likeType}
-            closePopupAction={closeSlidePop}/>
+            closePopupAction={closeSlidePop} />
         </PopSlide>
       )
     default :

@@ -7,7 +7,7 @@ import LikePopup from "../../../profile/components/popup/LikePopup";
 import LevelPop from "./LevelPop";
 
 import {useDispatch} from "react-redux";
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
 
 const SlidepopZip = (props) => {
   const {slideData} = props;

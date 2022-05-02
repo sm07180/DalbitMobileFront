@@ -247,44 +247,6 @@ const ProfilePage = () => {
     })
   }
 
-  /* 팬 등록 해제 */
-  const fanToggle = (memNo, memNick, isFan, callback) => {
-    isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
-  }
-
-  /* 팬 등록 */
-  const addFan = (memNo, memNick, callback) => {
-    Api.fan_change({data: {memNo}}).then(res => {
-      if (res.result === 'success') {
-        if(typeof callback === 'function') callback();
-        dispatch(setGlobalCtxMessage({type:'toast',
-          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
-        }))
-      } else if (res.result === 'fail') {
-        dispatch(setGlobalCtxMessage({type:'alert',
-          msg: res.message
-        }))
-      }
-    })
-  }
-
-  /* 팬 해제 */
-  const deleteFan = (memNo, memNick, callback) => {
-    dispatch(setGlobalCtxMessage({type:'confirm',
-      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
-      callback: () => {
-        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
-          if (res.result === 'success') {
-            if(typeof callback === 'function') callback();
-            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
-          } else if (res.result === 'fail') {
-            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
-          }
-        });
-      }
-    }))
-  }
-
   /* 방송시작 알림 설정 api */
   const editAlarms = useCallback((title, msg, isReceive) => {
     const editAlarmParams = {
@@ -341,6 +303,9 @@ const ProfilePage = () => {
     e.stopPropagation();
     const {targetType} = e.currentTarget.dataset;
     switch (targetType) {
+      case "header":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "header", fanStarType: ""});
+        break;
       case "fan":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
         break;
@@ -861,7 +826,7 @@ const ProfilePage = () => {
           </div>
           :
           <div className="buttonGroup">
-            <button className="moreBtn" onClick={openMoreList}>더보기</button>
+            <button className="moreBtn" data-target-type="header" onClick={openSlidePop}>더보기</button>
           </div>
         }
       </Header>
@@ -879,12 +844,8 @@ const ProfilePage = () => {
         data={profileData}
         isMyProfile={isMyProfile}
         openShowSlide={openShowSlide}
-        fanToggle={fanToggle}
         setSlidePopNo={setSlidePopNo}
-        openSlidePop={openSlidePop}
-        openPopFanStar={openPopFanStar}
-        openPopLike={openPopLike}
-        popup={popup}/>
+        openSlidePop={openSlidePop}/>
 
       {/* 프로필 서브 정보 */}
       <TotalInfo
@@ -975,10 +936,10 @@ const ProfilePage = () => {
       </section>
 
       {/* 슬라이드 팝업 모음 */}
-      {/* {popup.slidePopup && <SlidepopZip slideData={slidePopInfo} />} */}
+      {popup.slidePopup && <SlidepopZip slideData={slidePopInfo} />}
 
       {/* 슬라이드 팝업 */}
-      {popup.slidePopup &&
+      {popup.commonPopup &&
         <PopSlide>
           {slidePopNo === "header" ?
           <section className='profileMore'>

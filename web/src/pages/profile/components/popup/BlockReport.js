@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
-import Tabmenu from '../Tabmenu'
+import Tabmenu from '../Tabmenu';
 
-import './style.scss'
+import './style.scss';
 import {MypageBlackListAdd, postReportUser} from "common/api";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -23,7 +23,7 @@ const REPORT_MIN_LENGTH = 10; // 신고하기 최소 글자
 const REPORT_MAX_LENGTH = 100; // 신고하기 최대 글자
 
 const BlockReport = (props) => {
-  const {blockReportInfo, closeBlockReportPop} = props;
+  const {blockReportInfo, closePopupAction} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
@@ -147,7 +147,7 @@ const BlockReport = (props) => {
             &gt; 차단회원관리페이지에서 확인할 수 있습니다.
           </div>
           <div className="buttonGroup">
-            <button className='cancel' onClick={closeBlockReportPop}>취소</button>
+            <button className='cancel' onClick={closePopupAction}>취소</button>
             <button className='active' onClick={blockAction}>차단</button>
           </div>
         </>
@@ -179,7 +179,7 @@ const BlockReport = (props) => {
             <div className='count'>{reportReason.length}/{REPORT_MAX_LENGTH}</div>
           </InputItems>
           <div className="buttonGroup">
-            <button className='cancel' onClick={closeBlockReportPop}>취소</button>
+            <button className='cancel' onClick={closePopupAction}>취소</button>
             <button className={reportDisabled ? 'disabled' : 'active'} onClick={reportValidationCheck}>신고</button>
           </div>
         </>
