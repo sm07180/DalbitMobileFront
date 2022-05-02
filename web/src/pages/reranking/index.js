@@ -407,7 +407,7 @@ const RankPage = () => {
           }
         </div>
       </section>
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
       <PopSlide>
         <div className='selectWrap'>
           <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>

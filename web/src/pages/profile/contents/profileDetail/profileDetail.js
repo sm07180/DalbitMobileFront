@@ -11,7 +11,7 @@ import Utility from "components/lib/utility";
 import Swiper from "react-id-swiper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
-import BlockReport from "pages/profile/components/popSlide/BlockReport";
+import BlockReport from "pages/profile/components/popup/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 import FeedLike from "pages/profile/components/FeedLike";

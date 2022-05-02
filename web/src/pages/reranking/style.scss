@@ -54,7 +54,7 @@ $errorMsg : #FF1919;
       @include flex(center);
       height: 40px;
       margin-right: 13px;
-      @include font(14px, 400, #666666);
+      @include font(14px, $Medium, #303030);
       &::after {
         content: "";
         display: inline-block;
@@ -325,6 +325,7 @@ $errorMsg : #FF1919;
       @include tabMenuUnderline(4);
       li {
         @include font(12px,500,#ccc);
+        cursor:pointer;
         &.active {
           @include font(12px,700,#333);
         }
@@ -341,7 +342,7 @@ $errorMsg : #FF1919;
       position: relative;
       @include flex(center, space-between);
       width: 100%;
-      padding: 27px 20px;
+      padding: 18px 20px;
       background-color: #F6F6F6;
       box-sizing: border-box;
       &::after {
@@ -366,7 +367,7 @@ $errorMsg : #FF1919;
           content: none;
         }
         .rankCategory {
-          @include font(12px,600,#999);
+          @include font(13px,$SemiBold,#303030);
         }
         .rankData {
           margin-top: 4px;
@@ -379,7 +380,7 @@ $errorMsg : #FF1919;
           }
         }
         .rankDaily {
-          @include font(12px,$Regular,#AAAAAA);
+          @include font(12px,$Regular,#666666);
         }
       }
       .loginText {
@@ -412,10 +413,11 @@ $errorMsg : #FF1919;
         @include flex(center, center);
         height:48px;
         border-bottom: 2px solid #F2F2F2;
-        @include font(16px,600,#ACACAC);
+        @include font(16px,$SemiBold,#ACACAC);
         box-sizing: border-box;
+        cursor:pointer;
         &.active {
-          @include font(16px,700,#FF6999);
+          @include font(16px,$Bold,#FF6999);
         }
       }
       .underline {

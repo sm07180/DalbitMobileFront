@@ -234,7 +234,7 @@ const MyAccount = (props) => {
       }
 
       {/* 수정, 추가시 팝업*/}
-      {popup.commonPopup &&
+      {popup.slidePopup &&
         <PopSlide setPopSlide={()=>{setExchangeForm(prevState.current)}}>
           <section className="addAcount">
             {modifySlidePop === true ?

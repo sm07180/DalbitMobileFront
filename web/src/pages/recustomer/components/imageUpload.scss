@@ -7,10 +7,10 @@
     @include flex(center);
     margin-bottom: 6px;
     .title {
-      @include font(13px, 400, #666666);
+      @include font(13px, $SemiBold, #303030);
     }
     .subTitle {
-      @include font(12px, 400, #999999);
+      @include font(12px, $Regular, #666666);
       margin-left: 4px;
       letter-spacing: -1px;
     }

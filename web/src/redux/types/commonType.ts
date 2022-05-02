@@ -88,6 +88,5 @@ export interface ICommonPopupState {
 
   /* 애니메이션 액션 팝업 */
   slidePopup: boolean;
-
   slideAction: boolean;
 }

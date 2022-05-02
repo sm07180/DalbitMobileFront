@@ -1,0 +1,30 @@
+@import "components/ui/_mixin.scss";
+
+.mypageBottom {
+  @include flex($fd: column);
+  margin:auto 0 24px;
+  padding-top:16px;
+  .versionInfo {
+    @include flex(center,space-between);
+    width: 100%;
+    height:55px;
+    margin-top: 4px;
+    padding: 0 16px;
+    line-height: 55px;
+    text-align: left;
+    .title {
+      @include font(15px,$Regular,#999999);
+    }
+    .version {
+      @include font(13px,$Regular,#333333);
+    }
+  }
+  .submitBtn {
+    flex:1;
+    margin: 0 16px;
+    border: 1px solid #D5D5D5;
+    background-color:white;
+    border-radius: 100px;
+    @include font(16px,$Regular,#666666);
+  }
+}

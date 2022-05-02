@@ -1,0 +1,45 @@
+@import "components/ui/_mixin.scss";
+
+.myLevelInfo {
+  width:100%;
+  padding: 0 16px 32px;
+  .infoItem {
+    @include flex(center);
+    line-height:25px;
+    margin-bottom:8px;
+    .level {
+      line-height:25px;
+      @include font(16px,$Medium,white);
+    }
+    span {
+      @include font(17px,$SemiBold,#303030);
+    }
+    p {
+      margin-left:auto;
+      @include font(15px,$SemiBold,$MAINCOLOR);
+    }
+  }
+  .levelGauge {
+    position: relative;
+    height:13px;
+    margin-bottom:8px;
+    border-radius:100px;
+    background-color:#E8E8E8;
+    .gaugeBar {
+      @include position-top-left;
+      display:inline-block;
+      width:0;
+      height:100%;
+      border-radius:100px;
+      background-image: linear-gradient(to right,#FF8565,$MAINCOLOR);
+      transition:width 1s ease;
+    }
+  }
+  .exp {
+    @include font(13px,$Medium,#303030);
+  }
+  .submitBtn {
+    width:100%;
+    margin-top:20px;
+  }
+}

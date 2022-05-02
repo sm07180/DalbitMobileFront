@@ -77,7 +77,7 @@ const WeeklyPick = (props) => {
               <React.Fragment key={`weeklyPick-${index}`}>
                 {data.memberList && data.memberList.map((data2, idx) => {
                   return (
-                    <ListRow key={idx} photo={data2.imageInfo.thumb292x292}
+                    <ListRow key={idx} photo={data2.imageInfo.thumb150x150}
                              onClick={() => {
                                goWeekly(data.idx);
                              }}
