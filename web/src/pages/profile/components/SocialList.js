@@ -21,13 +21,13 @@ const SocialList = (props) => {
   const socialRef = useRef([]);
   const params = useParams();
   const [limit, setLimit] = useState(100);
-  const [moreOpen, setMoreOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(Array(socialList.length).fill(false));
 
   const photoClickEvent = (memNo) => {
     if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
   }
 
+  // 100글자 이상일시 더보기
   const toggleEllipsis = (str, limit) => {
     return {
       string: str.slice(0, limit),
@@ -35,6 +35,7 @@ const SocialList = (props) => {
     }
   };
 
+  // 더보기, 간략히 전환
   const onClick = (index, isBoolean) => {
     if(isBoolean === "false") {
       if(index === parseInt(socialRef.current[index].dataset.num)) {
@@ -84,7 +85,7 @@ const SocialList = (props) => {
                        dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents).substr(0, 100)}}
                   />
                   {toggleEllipsis(item.feed_conts ? item.feed_conts : item.contents, limit).isShowMore &&
-                  <div className="socialButton" onClick={() => {onClick(index, "false")}}>··· 더보기</div>}<br/>
+                  <><div className="socialButton" onClick={() => {onClick(index, "false")}}>··· 더보기</div><br/></>}
                 </>
                 :
                 <>
@@ -95,8 +96,7 @@ const SocialList = (props) => {
                        dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
                   />
                   {isClicked[index] && type === "feed" &&
-                    <><div className="socialButton" onClick={() => {onClick(index, "true")}}>간략히</div><br/></>
-                  }
+                  <><div className="socialButton" onClick={() => {onClick(index, "true")}}>간략히</div><br/></>}
                 </>
               }
 
