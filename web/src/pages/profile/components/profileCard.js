@@ -5,6 +5,7 @@ import Api from 'context/api';
 import LevelItems from '../../../components/ui/levelItems/LevelItems';
 import GenderItems from '../../../components/ui/genderItems/GenderItems';
 import FrameItems from '../../../components/ui/frameItems/frameItems';
+import FanBtn from '../../../components/ui/fanBtn/FanBtn';
 // scss
 import './profileCard.scss';
 import {useDispatch} from "react-redux";
@@ -17,7 +18,7 @@ const ProfileCard = (props) => {
   const dispatch = useDispatch();
 
   /* 팬 버튼 토글 */
-  const fanToggle = (memNo, memNick, isFan, callback) => {
+  const fanToggle1 = (memNo, memNick, isFan, callback) => {
     isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
   }
   /* 팬 등록 */
@@ -106,7 +107,7 @@ const ProfileCard = (props) => {
             {!isIos() && <button className="presentBtn" data-target-type="present" onClick={openSlidePop}>선물하기</button>}
             <button className={`${data.isFan ? 'isFan' : ''}`}
                     onClick={() => {
-                      fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
+                      fanToggle1(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
                     }}>
               {data.isFan ? '팬' : '+ 팬등록'}
             </button>
