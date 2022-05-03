@@ -41,9 +41,9 @@ const MorePopup = (props) => {
           ...profileData,
           isReceive
         }))
-        dispatch(setGlobalCtxMessage({type:'alert',title, msg}))
+        dispatch(setGlobalCtxMessage({type:'alert',title, msg, callback:undefined}))
       } else {
-        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}))
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message, callback:undefined}))
       }
     });
   }, [profileData.memNo, profileData.isReceive])
