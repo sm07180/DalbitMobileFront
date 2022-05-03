@@ -5,13 +5,8 @@ import _ from "lodash";
 import {
   SET_CAST_STATE,
   SET_MEDIA_PLAYER_STATUS,
-  SET_NATIVE_PLAYER,
-  SET_NATIVE_PLAYER_STATE,
+  SET_NATIVE_PLAYER, SET_NATIVE_PLAYER_INFO,
   SET_PLAYER,
-  setGlobalCtxCastState,
-  setGlobalCtxMediaPlayerStatus,
-  setGlobalCtxNativePlayer,
-  setGlobalCtxPlayer
 } from "../../actions/globalCtx";
 import {AuthType} from "../../../constant";
 import Utility from "../../../components/lib/utility";
@@ -29,9 +24,7 @@ function* nativePlayerShow(param){
       const _ios = JSON.stringify(payload)
       Utility.setCookie('native-player-info', _ios, 100);
 
-      yield put({type: SET_PLAYER, payload: true});
       yield put({type: SET_MEDIA_PLAYER_STATUS, payload: true});
-      yield put({type: SET_NATIVE_PLAYER, payload: payload});
     }
 
   } catch (e) {
@@ -40,11 +33,7 @@ function* nativePlayerShow(param){
 }
 function* nativeStart(param){
   try{
-    //alert('@@nativeStart')
     const payload:NativePlayerShowParamType = param.payload;
-
-    //App에서 방송종료 알림경우
-    sessionStorage.removeItem('room_active')
 
     //(BJ)일경우 방송하기:방송중
     if (_.hasIn(payload, 'auth') && payload.auth === AuthType.DJ) {
@@ -53,33 +42,37 @@ function* nativeStart(param){
     }
 
     if (payload.mediaType !== InterfaceMediaType.VIDEO) {
-      const _android = JSON.stringify(payload)
-      Utility.setCookie('native-player-info', _android, 100)
       yield put({type: SET_PLAYER, payload: true});
       yield put({type: SET_MEDIA_PLAYER_STATUS, payload: true});
-      yield put({type: SET_NATIVE_PLAYER, payload: payload});
+
+      const _android = JSON.stringify(payload)
+      Utility.setCookie('native-player-info', _android, 100)
+    }else{
+      yield put({type: SET_PLAYER, payload: false});
     }
 
+    yield put({type: SET_NATIVE_PLAYER, payload: payload});
+    yield put({type: SET_NATIVE_PLAYER_INFO, payload: {nativePlayerInfo:{state:'ready', roomNo:payload.roomNo}}});
   }catch(e){
     console.error(`broadcast interface nativeStart saga e=>`, e);
   }
 }
 function* nativeEnd(param){
   try{
-    //alert('@@nativeEnd')
-    //쿠키삭제
-    Utility.setCookie('native-player-info', '', -1)
     yield put({type: SET_PLAYER, payload: false});
     yield put({type: SET_MEDIA_PLAYER_STATUS, payload: false});
     yield put({type: SET_CAST_STATE, payload: null});
 
-    //App에서 방송종료 알림경우
-    sessionStorage.removeItem('room_no')
-    Utility.setCookie('listen_room_no', null, null)
-    sessionStorage.removeItem('room_active')
+    sessionStorage.removeItem('room_no');
     Utility.setCookie('isDj', false, 3);
-    yield call(delay, 4000);
-    yield put({type: SET_NATIVE_PLAYER_STATE, payload: {nativePlayerState:'ready'}});
+    Utility.setCookie('native-player-info', '', -1);
+    Utility.setCookie('listen_room_no', null, null);
+
+    // 닫기버튼 누르고 socket unsubscribe 되기까지 기다려야함
+    // AOS 경우 기존에 native-end 브릿지를 웹에 보내고 unsubscribe 처리하기 때문에 강제 딜레이 줌
+    // fixme 6월말 AOS 메인페이지 네이티브로 오픈하면 제거대상
+    yield delay(4000);
+    yield put({type: SET_NATIVE_PLAYER_INFO, payload: {nativePlayerInfo:{state:'ready'}}});
   }catch(e){
     console.error(`broadcast interface nativeEnd saga e=>`, e);
   }

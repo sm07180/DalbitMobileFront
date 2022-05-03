@@ -2,13 +2,15 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 //context
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isIos} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxNativePlayerState, setGlobalCtxPlayer} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxNativePlayerInfo,
+} from "redux/actions/globalCtx";
 import equalizerLiveAni from "pages/common/newPlayer/ani/equalizer_live.json";
 import CloseBtn from "common/images/ic_player_close_btn.svg";
 
@@ -25,12 +27,12 @@ export default (props) => {
     autoplay: true,
     animationData: equalizerLiveAni,
   };
-  // App Pip - 방장은 PIP 없음
+  // App Audio PIP - 방장은 PIP 없음
   return (
     <>
       {
-        globalState.nativePlayer &&
         globalState.player &&
+        globalState.nativePlayer &&
         globalState.nativePlayer.auth !== AuthType.DJ &&
         <div id="player" >
           <div className="inner-player" onClick={() => {
@@ -64,13 +66,12 @@ export default (props) => {
                 <img src={CloseBtn} className="close-btn" alt={"close"}
                   onClick={(event) => {
                     event.stopPropagation();
-                    // dispatch(nativeEnd());
-                    // sessionStorage.removeItem('room_no')
-                    // Utility.setCookie('listen_room_no', null)
-                    // dispatch(setGlobalCtxPlayer(false));
-                    // alert('@@ExitRoom')
-                    dispatch(setGlobalCtxNativePlayerState({nativePlayerState:'progress'}))
-                    Hybrid('ExitRoom', '')
+                    dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'close', roomNo:globalState.nativePlayer.roomNo}}));
+                    Hybrid('ExitRoom', '');
+
+                    // ios pip는 native-end 브릿지를 안보내서 웹에서 닫기 버튼 누를때 강제로 줌..
+                    // fixme ios 1.8.6 버전부터 제거 대상
+                    dispatch(nativeEnd({}));
                   }}
                 />
               </div>

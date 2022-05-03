@@ -58,7 +58,10 @@ const initWalletData:WalletDataType = {
   popHistoryCnt: 0
 }
 const initialState: GlobalCtxStateType = {
-  nativePlayerState: 'ready',
+  nativePlayerInfo: {
+    state: 'ready',
+    roomNo: ''
+  },
   nativePlayer: null,
   message: {
     title: '',
@@ -210,11 +213,11 @@ const initialState: GlobalCtxStateType = {
 
 
 const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState, {
+  "global/ctx/SET_NATIVE_PLAYER_INFO": (state, {payload}) => {
+    return {...state, nativePlayerInfo: payload.nativePlayerInfo}
+  },
   "global/ctx/SET_NATIVE_PLAYER": (state, {payload}) => {
     return {...state, nativePlayer: payload}
-  },
-  "global/ctx/SET_NATIVE_PLAYER_STATE": (state, {payload}) => {
-    return {...state, nativePlayerState: payload.nativePlayerState}
   },
   "global/ctx/SET_MESSAGE": (state, {payload}) => {
     return {...state, message: {...state.message, visible:true, ...payload}}

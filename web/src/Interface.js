@@ -33,7 +33,7 @@ import {
   setGlobalCtxIsMailboxNew, setGlobalCtxIsMailboxOn,
   setGlobalCtxMediaPlayerStatus,
   setGlobalCtxMessage,
-  setGlobalCtxNativePlayer, setGlobalCtxNativeTid,
+  setGlobalCtxNativeTid,
   setGlobalCtxPlayer,
   setGlobalCtxSelfAuth,
   setGlobalCtxSticker,
@@ -530,15 +530,12 @@ export default () => {
         history.push(url, {...info, type: 'native-navigator'})
         break
       case 'native-player-show': //---------------------Native player-show (IOS)
-        // alert('native-player-show')
         dispatch(nativePlayerShow(event.detail));
         break
       case 'native-start': //---------------------------Native player-show (Android & IOS)
-        // alert('native-start')
         dispatch(nativeStart(event.detail));
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
-        // alert('native-end')
         dispatch(nativeEnd(event.detail));
         break
       case 'native-non-member-end':

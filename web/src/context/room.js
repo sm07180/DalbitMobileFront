@@ -21,7 +21,12 @@ import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config.js'
 import Utility from 'components/lib/utility'
 import {clipExit} from 'pages/common/clipPlayer/clip_func'
-import {setGlobalCtxBroadcastAdminLayer, setGlobalCtxMessage, setGlobalCtxPlayer} from "../redux/actions/globalCtx";
+import {
+  setGlobalCtxBroadcastAdminLayer,
+  setGlobalCtxMessage,
+  setGlobalCtxNativePlayerInfo,
+  setGlobalCtxPlayer
+} from "../redux/actions/globalCtx";
 import {useDispatch, useSelector} from "react-redux";
 
 //
@@ -78,22 +83,26 @@ export const RoomJoin = async (obj) => {
   const {roomNo, callbackFunc, shadow, mode, memNo, nickNm, listener} = obj;
 
   //alert("???"+Room.globalState.nativePlayerState)
-  // if(Room.globalState.nativePlayerState === 'progress'){
-  //   return;
-  // }
+  if(Room.globalState.nativePlayerInfo.state === 'open'){
+    if(Room.globalState.nativePlayerInfo.roomNo === roomNo){
+      Room.dispatch(setGlobalCtxMessage({
+        type:'toast',
+        msg: `방에 입장중입니다. 잠시만 기다려주세요.`,
+      }));
+    }
+    return;
+  }
+  if(Room.globalState.nativePlayerInfo.state === 'close' && Room.globalState.nativePlayer?.roomNo === roomNo){
+    Room.dispatch(setGlobalCtxMessage({
+      type:'toast',
+      msg: `잠시만 기다려주세요.`,
+    }))
+    return;
+  }
 
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
   localStorage.removeItem('prevRoomInfo')
-  const sessionRoomActive = sessionStorage.getItem('room_active')
-  if (sessionRoomActive === 'N') {
-    Room.dispatch(setGlobalCtxMessage({type:'alert',
-      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
-    }))
-    return false
-  } else if (sessionRoomActive === null) {
-    sessionStorage.setItem('room_active', 'N')
-  }
 
   if (customHeader['os'] === OS_TYPE['Desktop']) {
     window.location.href = 'https://inforexseoul.page.link/Ws4t'
@@ -106,18 +115,15 @@ export const RoomJoin = async (obj) => {
       msg: '현재 재생 중인 클립이 있습니다.\n방송에 입장하시겠습니까?',
       callback: () => {
         clipExit(Room.dispatch)
-        sessionStorage.removeItem('room_active')
         return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, callbackFunc: callbackFunc, shadow: shadow, listener: 'clip'})
       },
       cancelCallback: () => {
-        sessionStorage.removeItem('room_active')
       }
     }))
   }
 
   if (shadow === undefined) {
     if (Room.globalState.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
-
       return Room.dispatch(setGlobalCtxBroadcastAdminLayer({
         ...Room.globalState.broadcastAdminLayer,
         status: `broadcast`,
@@ -129,34 +135,30 @@ export const RoomJoin = async (obj) => {
       return Hybrid('EnterRoom', '')
     } else if (Room.globalState.adminChecker === false) {
       if (listener === 'listener' || listener === 'clip') {
-        sessionStorage.removeItem('room_active')
         return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
       } else if (Room.globalState.adminChecker === false && roomNo === Utility.getCookie('listen_room_no')) {
+        // pip상태에서 같은방 입장
         return Hybrid('EnterRoom', '')
       } else {
         if(Utility.getCookie('listen_room_no') !== 'null' && Utility.getCookie('listen_room_no') !== undefined) {
-          sessionStorage.removeItem('room_active')
+          // pip상태에서 다른방 입장
           return Room.dispatch(setGlobalCtxMessage({type:'confirm',
             callback: () => {
-              // sessionStorage.removeItem('room_active')
+              // pip 상태에서 다른방 입장시 다시 이전 방으로 접근하는 케이스 방지용
+              Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'open', roomNo: roomNo}}))
               return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
             },
             cancelCallback: () => {
-              // sessionStorage.removeItem('room_active')
             },
             msg: '현재 청취 중인 방송방이 있습니다.\n방송에 입장하시겠습니까?',
           }))
         }else {
-          // sessionStorage.removeItem('room_active')
           // return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
-          sessionStorage.removeItem('room_active')
           return Room.dispatch(setGlobalCtxMessage({type:'confirm',
             callback: () => {
-              // sessionStorage.removeItem('room_active')
               return RoomJoin({roomNo: roomNo, memNo:memNo, nickNm:nickNm, shadow: 0})
             },
             cancelCallback: () => {
-              // sessionStorage.removeItem('room_active')
             },
             msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
           }))
@@ -185,6 +187,7 @@ export const RoomJoin = async (obj) => {
    * @title Room.roomNo , roomNo 비교
    */
   if (sessionRoomNo === roomNo) {
+    //alert(JSON.stringify(Room.globalState.nativePlayerInfo))
     async function commonJoin() {
       let res = {}
       res = await Api.broad_join_vw({data: {roomNo}})
@@ -195,7 +198,6 @@ export const RoomJoin = async (obj) => {
             msg: '종료된 방송입니다.',
             callback: () => {
               sessionStorage.removeItem('room_no')
-              sessionStorage.removeItem('room_active')
               Utility.setCookie('listen_room_no', null)
               Room.dispatch(setGlobalCtxPlayer(false));
               setTimeout(() => {
@@ -204,7 +206,6 @@ export const RoomJoin = async (obj) => {
             }
           }))
         } else {
-          sessionStorage.removeItem('room_active')
           Hybrid('EnterRoom', '')
         }
       }
@@ -235,22 +236,20 @@ export const RoomJoin = async (obj) => {
       return
     }*/
 
-    //방송강제퇴장
+    // 이전 청취방 퇴장
     if (sessionRoomNo !== undefined && sessionRoomNo !== null) {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
       if (exit.result === 'success') {
-        sessionStorage.removeItem('room_no')
-        sessionStorage.removeItem('room_active')
-        Utility.setCookie('listen_room_no', null)
-        Room.dispatch(setGlobalCtxPlayer(false));
-        Hybrid('ExitRoom', '')
-        //--쿠기
+        // Room.dispatch(setGlobalCtxNativePlayerState({nativePlayerState:'close'}));
+        // Room.dispatch(nativeEnd({}));
+        Hybrid('ExitRoom', '');
       }
-      console.log(exit)
     }
+
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
     //const res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
+    Room.dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'open', roomNo: roomNo}}))
     let res = {}
     res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
@@ -258,7 +257,6 @@ export const RoomJoin = async (obj) => {
     //
     if (res.result === 'fail') {
       if (res.code === '-99') {
-        sessionStorage.removeItem('room_active')
         Room.dispatch(setGlobalCtxMessage({type:'alert',
           buttonMsg: '로그인',
           msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
@@ -275,29 +273,23 @@ export const RoomJoin = async (obj) => {
                 const fetchResetListen = await Api.postResetListen({})
                 if (fetchResetListen.result === 'success') {
                   setTimeout(() => {
-                    sessionStorage.removeItem('room_active')
                     RoomJoin(obj)
                   }, 700)
                 } else {
-                  sessionStorage.removeItem('room_active')
                   Room.dispatch(setGlobalCtxMessage({type:'alert',
                     msg: `${loginInfo.message}`
                   }))
                 }
               }
-              sessionStorage.removeItem('room_active')
               callResetListen('')
             },
             cancelCallback: () => {
-              sessionStorage.removeItem('room_active')
             }
           }))
         } catch (er) {
-          sessionStorage.removeItem('room_active')
           alert(er)
         }
       } else if (res.code === '-6') {
-        sessionStorage.removeItem('room_active')
         //20세 이상방 입장 실패
         //비회원이 20세 이상방 입장 시도 시
         //본인인증을 완료한 20세 이하 회원이 입장 시도시
@@ -307,7 +299,6 @@ export const RoomJoin = async (obj) => {
       } else if (res.code === '-14') {
         //20세 이상방 입장 실패
         //본인인증을 하지 않은 회원이 입장 시도시
-        sessionStorage.removeItem('room_active')
         Room.dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
@@ -318,11 +309,9 @@ export const RoomJoin = async (obj) => {
         Room.dispatch(setGlobalCtxMessage({type:'alert',
           msg: res.message,
           callback: () => {
-            sessionStorage.removeItem('room_active')
             window.location.reload()
           },
           btnCloseCallback: () => {
-            sessionStorage.removeItem('room_active')
           }
         }))
       }
@@ -336,11 +325,12 @@ export const RoomJoin = async (obj) => {
       //--
       //Room.setItv(0)
       Room.dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
-      sessionStorage.setItem('room_active', 'N')
       sessionStorage.setItem('room_no', roomNo)
       Utility.setCookie('listen_room_no', roomNo)
       // console.log(`RoomJoin data =>`, data)
+
       Hybrid('RoomJoin', data)
+
       //alert('@@RoomJoin')
       // RoomJoin 이벤트 (회원 비회원 분리)
       const newRoomJoinCmd = Room.globalState.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
