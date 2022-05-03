@@ -1,8 +1,7 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 // scss
-import './checkList.scss';
 import {IMG_SERVER} from "context/config";
-import {useHistory, useParams} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const FloatingBtn = (props) => {

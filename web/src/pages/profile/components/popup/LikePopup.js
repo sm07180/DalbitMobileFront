@@ -11,7 +11,7 @@ import FanBtn from '../../../../components/ui/fanBtn/FanBtn';
 import './style.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 
 const myProfileTabInfos = {
   titleTab: [
@@ -44,6 +44,7 @@ const LikePopup = (props) => {
   const popup = useSelector(state => state.popup);
 
   const [showList, setShowList] = useState([]); // 리스트
+
 
   // 팝업 제목 (탭 or 텍스트)
   const [titleTabInfoList, setTitleTabInfoList] = useState(
@@ -126,7 +127,7 @@ const LikePopup = (props) => {
 
   /* 프로필 이동 */
   const goProfileAction = (targetMemNo) => {
-    goProfile(targetMemNo)
+    goProfile(targetMemNo);
     closePopupAction();
   }
 
@@ -213,8 +214,10 @@ const LikePopup = (props) => {
     }
   }
 
-  const openNoticePop = () => {
-    dispatch(setCommonPopupOpenData({...popup, questionMarkPopup: true}));
+  const openNoticePop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
   }
 
   useEffect(() => {

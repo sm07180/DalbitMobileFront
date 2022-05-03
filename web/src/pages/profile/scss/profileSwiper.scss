@@ -8,6 +8,10 @@
     .photo {
       width:100%;
       height:100%;
+      &.none {
+        height:100%;
+        background-color:#eee;
+      }
       img {
         width:100%;
         height:100%;
@@ -69,7 +73,7 @@
         margin-right: 4px;
       }
       .liveText {
-        @include font(12px, 900, #FF3C7B);
+        @include font(12px, $Heavy, #FF3C7B);
       }
     }
     .badgeListener {
@@ -84,7 +88,7 @@
         margin-right: 2px;
       }
       .ListenerText {
-        @include font(12px, 900, #9A78FF);
+        @include font(12px, $Heavy, #9A78FF);
       }
     }
   }

@@ -141,11 +141,10 @@ const Remypage = () => {
       {commonPopup.slidePopup && <SlidepopZip slideData={slidePopInfo} goProfile={goProfile} />}
 
       {/* 스페셜DJ 약력 팝업 */}
-      {commonPopup.commonPopup &&
+      {commonPopup.layerPopup &&
         <LayerPopup>
           <SpecialHistoryPop
-            profileData={profileData}
-            closePopupAction={closePopupAction}/>
+            profileData={profileData}/>
         </LayerPopup>
       }
     </div>

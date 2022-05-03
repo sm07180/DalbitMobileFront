@@ -34,15 +34,6 @@ const TotalInfo = (props) => {
     setOpenBadge(!openBadge)
   }
 
-  const openPopAction = (e) => {
-    const tabState = {
-      titleTab: 0,
-      subTab: 0,
-      subTabType: isMyProfile ? 'fanRank' : ''
-    }
-    openPopLike(e, tabState)
-  }
-
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
@@ -131,7 +122,7 @@ const TotalInfo = (props) => {
   return (
     <section className="totalInfo">
       {badgeTotalCnt !== 0 &&
-      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+      <div className={`badgeInfo ${openBadge ? 'isOpen' : ''}`}>
         <div className="title">배지</div>
         <div className="badgeGroup">
           <BadgeItems data={data} type="commonBadgeList" />
@@ -144,8 +135,10 @@ const TotalInfo = (props) => {
       }
       <div className="rankInfo">
         <div className="box">
-          <div className="title" style={{cursor: 'pointer'}}
-               onClick={openPopAction}>
+          <div
+            className="title"
+            data-target-type={isMyProfile ? 'fan' : 'like'}
+            onClick={openSlidePop}>
             <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
@@ -167,7 +160,7 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title" data-target-type="like" style={{cursor: 'pointer'}} onClick={openSlidePop}>
+          <div className="title" data-target-type="cupid" onClick={openSlidePop}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?

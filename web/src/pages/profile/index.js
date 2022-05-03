@@ -5,15 +5,16 @@ import {useHistory, useParams} from 'react-router-dom';
 import './style.scss';
 // global components
 import Header from '../../components/ui/header/Header';
+import LayerPopup, {closeLayerPopup} from '../../components/ui/layerPopup/LayerPopup2';
 // components
 import ProfileSwiper from './components/ProfileSwiper';
 import ProfileCard from './components/profileCard';
 import TotalInfo from './components/totalInfo';
 import Tabmenu from './components/Tabmenu';
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import FloatingBtn from './components/FloatingBtn';
-import SpecialHistoryList from './components/SpecialHistoryPop';
+import FloatBtn from './components/FloatBtn';
 import SlidepopZip from './components/popup/SlidepopZip';
+import SpecialHistoryList from '../remypage/components/popup/SpecialHistoryPop';
 // contents
 import FeedSection from './contents/profileDetail/FeedSection';
 import FanboardSection from './contents/profileDetail/FanboardSection';
@@ -34,7 +35,7 @@ import {
   profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
 } from "redux/types/profileType";
 import {Hybrid, isHybrid} from "context/hybrid";
-import ProfileNoticePop from "pages/profile/components/ProfileNoticePop";
+import ProfileNoticePop from "pages/profile/components/popup/ProfileNoticePop";
 import {setSlidePopupOpen, setIsWebView} from "redux/actions/common";
 import noticeFix from "redux/reducers/profile/noticeFix";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
@@ -249,7 +250,10 @@ const ProfilePage = () => {
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
         break;
       case "like":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: "", likeType: 0});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: "", likeType: {titleTab: 0, subTab: 0, subTabType: isMyProfile ? 'fanRank' : ''}});
+        break;
+      case "cupid":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: "", likeType: {titleTab: 0, subTab: 2, subTabType: ''}});
         break;
       case "present":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "present", fanStarType: ""});
@@ -538,6 +542,10 @@ const ProfilePage = () => {
     }
   }
 
+  const openNoticePop = () => {
+    dispatch(setCommonPopupOpenData());
+  }
+
   /* 하단 현재 탭 데이터 초기화 */
   const profileTabDataCall = () => {
     if(profileTab.tabName === profileTab.tabList[0]) {
@@ -753,15 +761,19 @@ const ProfilePage = () => {
 
         {/* 글쓰기 플로팅 버튼 */}
         {isMyProfile && profileTab.tabName === profileTab.tabList[0] &&
-          <FloatingBtn profileData={profileData} />
+          <FloatBtn profileData={profileData} />
         }
       </section>
 
       {/* 슬라이드 팝업 모음 */}
-      {popup.slidePopup && <SlidepopZip slideData={slidePopInfo} goProfile={goProfile} openSlidePop={openSlidePop} />}
+      {popup.slidePopup && <SlidepopZip slideData={slidePopInfo} goProfile={goProfile} openSlidePop={openSlidePop} isMyProfile={isMyProfile} />}
 
       {/* 좋아요 -> ? 아이콘 */}
-      {popup.questionMarkPopup && <ProfileNoticePop />}
+      {popup.layerPopup && 
+        <LayerPopup title="랭킹 기준">
+          <ProfileNoticePop />
+        </LayerPopup>
+      }
 
       {/* 스페셜DJ 약력 팝업 */}
       {popup.historyPopup && <SpecialHistoryList profileData={profileData} />}
