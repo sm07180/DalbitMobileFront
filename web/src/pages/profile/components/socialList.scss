@@ -78,6 +78,13 @@
         }
       }
     }
+    .socialButton {
+      position:relative;
+      float: right;
+      display:inline-block;
+      cursor:pointer;
+      @include font(14px,$Medium,#999);
+    }
     .swiperPhoto {
       margin-bottom:16px;
       .photo {
