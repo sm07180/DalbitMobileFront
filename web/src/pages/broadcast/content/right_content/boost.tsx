@@ -215,14 +215,14 @@ export default function Profile(props: { roomNo: string; roomOwner: boolean; roo
         <div className="img">
           {boostList.boostCnt > 0 ? (
             <>
-              <img src="https://image.dalbitlive.com/images/api/img_boost_on@2x.png" />
+              <img src="https://image.dallalive.com/images/api/img_boost_on@2x.png" />
               <div className="status status--active">
                 {boostList.boostCnt}개 사용중 | {timer}
               </div>
             </>
           ) : (
             <>
-              <img src="https://image.dalbitlive.com/images/api/img_boost_off@2x.png" />
+              <img src="https://image.dallalive.com/images/api/img_boost_off@2x.png" />
               <div className="status">30:00</div>
             </>
           )}

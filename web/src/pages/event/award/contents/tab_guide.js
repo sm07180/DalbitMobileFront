@@ -24,9 +24,9 @@ export default function awardEventGuide() {
   return (
     <div className="tabGuideWrap">
       <div className="topImage">
-        <img src="https://image.dalbitlive.com/event/award/201214/guide-img-v3.png" alt="guide" />
+        <img src="https://image.dallalive.com/event/award/201214/guide-img-v3.png" alt="guide" />
         <button className="goodsBtn" onClick={() => setVoteNoticePop(true)}>
-          <img src="https://image.dalbitlive.com/event/award/201214/btn-goods.png" alt="goods" />
+          <img src="https://image.dallalive.com/event/award/201214/btn-goods.png" alt="goods" />
         </button>
       </div>
 
@@ -36,7 +36,7 @@ export default function awardEventGuide() {
            ${noticeView === true ? 'active' : ''}`}
           onClick={buttonToogle}>
           이벤트 유의사항 {noticeView === true ? '닫기' : '확인하기'}
-          <img src="https://image.dalbitlive.com/event/award/201214/ic_arrow_down.svg" />
+          <img src="https://image.dallalive.com/event/award/201214/ic_arrow_down.svg" />
         </div>
         <div ref={noticeList} className={`noticeListBox ${noticeView === true ? 'active' : ''}`}>
           <ul>

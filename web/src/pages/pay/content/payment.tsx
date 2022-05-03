@@ -17,8 +17,8 @@ import {
 } from "common/api";
 
 import "./pay.scss";
-const icoPlus = "https://image.dalbitlive.com/svg/ico_add.svg";
-const icoMinus = "https://image.dalbitlive.com/svg/ico_minus.svg";
+const icoPlus = "https://image.dallalive.com/svg/ico_add.svg";
+const icoMinus = "https://image.dallalive.com/svg/ico_minus.svg";
 
 // components
 import Header from "common/ui/header";
@@ -340,7 +340,7 @@ export default function Payment() {
       "simpleCheck" +
       "=" +
       c_value +
-      "; path=/; secure; domain=.dalbitlive.com";
+      "; path=/; secure; domain=.dallalive.com";
   };
 
   const simplePayCheck = () => {
@@ -441,7 +441,7 @@ export default function Payment() {
                 <div className="buyList__label">결제상품</div>
                 <div className="buyList__value">
                   <img
-                    src="https://image.dalbitlive.com/svg/moon_yellow_s.svg"
+                    src="https://image.dallalive.com/svg/moon_yellow_s.svg"
                     alt="달 아이콘"
                     className="dalIcon"
                   />
@@ -454,7 +454,7 @@ export default function Payment() {
                   <div className="buyList__label">추가지급</div>
                   <div className="buyList__value">
                     <img
-                      src="https://image.dalbitlive.com/svg/moon_yellow_s.svg"
+                      src="https://image.dallalive.com/svg/moon_yellow_s.svg"
                       alt="달 아이콘"
                       className="dalIcon"
                     />

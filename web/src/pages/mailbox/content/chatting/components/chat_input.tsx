@@ -124,7 +124,7 @@ export default function chatInput(props) {
     <>
       <div className="chatAddBox">
         <button onClick={openGiftPop}>
-          <img src="https://image.dalbitlive.com/mailbox/ico_gift.svg" alt="선물하기" />
+          <img src="https://image.dallalive.com/mailbox/ico_gift.svg" alt="선물하기" />
         </button>
         <textarea
           placeholder={chatDisable ? "대화를 입력해 주세요" : "대화가 불가능한 상태입니다."}
@@ -142,7 +142,7 @@ export default function chatInput(props) {
           }}
         >
           <label htmlFor="fileUpload">
-            <img src="https://image.dalbitlive.com/mailbox/ico_img.svg" alt="사진올리기" />
+            <img src="https://image.dallalive.com/mailbox/ico_img.svg" alt="사진올리기" />
           </label>
           <input
             type="file"
@@ -156,7 +156,7 @@ export default function chatInput(props) {
           />
         </div>        
         {/* <button>
-          <img src="https://image.dalbitlive.com/mailbox/ico_camera_w.svg" alt="사진찍기" />
+          <img src="https://image.dallalive.com/mailbox/ico_camera_w.svg" alt="사진찍기" />
         </button> */}
       </div>
       {cropOpen && eventObj !== null && (

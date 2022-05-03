@@ -4,7 +4,7 @@ export default function QnaInfo() {
   return (
     <div id="qnaInfoWrap">
       <h3>
-        <img src="https://image.dalbitlive.com/mypage/ico_comment_p.svg" alt="comment" /> 회원님의 소중한 의견을 남겨주세요
+        <img src="https://image.dallalive.com/mypage/ico_comment_p.svg" alt="comment" /> 회원님의 소중한 의견을 남겨주세요
       </h3>
       <div className="InfoInnerBox">
         <p className="introBox">
@@ -26,14 +26,14 @@ export default function QnaInfo() {
 
           <div className="giftBox__content">
             <div className="image">
-              <img src="https://image.dalbitlive.com/mypage/img_giftbox_r@2x.png" alt="gift" />
+              <img src="https://image.dallalive.com/mypage/img_giftbox_r@2x.png" alt="gift" />
             </div>
 
             <dl>
               <dt>- 지급 선물</dt>
               <dd>
-                <img src="https://image.dalbitlive.com/mypage/ico_moon.svg" alt="moon" />달 100 +
-                <img src="https://image.dalbitlive.com/mypage/ico_buster.svg" alt="buster" />
+                <img src="https://image.dallalive.com/mypage/ico_moon.svg" alt="moon" />달 100 +
+                <img src="https://image.dallalive.com/mypage/ico_buster.svg" alt="buster" />
                 부스터 10
               </dd>
               <dt>- 선정자 발표 및 지급일</dt>

@@ -31,14 +31,14 @@ export default () => {
   return (
     <Content id="purchaseBenefit">
       <button className="btnBack" onClick={() => history.goBack()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
       </button>
-      <img src="https://image.dalbitlive.com/event/purchase_benefit/210226/radio_view_open.png" alt="별, 달 추가 이벤트" />
+      <img src="https://image.dallalive.com/event/purchase_benefit/210226/radio_view_open.png" alt="별, 달 추가 이벤트" />
       <button className="buy_btn" onClick={() => linkMove()}>
-        <img src="https://image.dalbitlive.com/event/purchase_benefit/210226/buy_button.png" alt="스토어 가기" />
+        <img src="https://image.dallalive.com/event/purchase_benefit/210226/buy_button.png" alt="스토어 가기" />
       </button>
       <div className="notice">
-        <img src="https://image.dalbitlive.com/event/purchase_benefit/210226/radio_view_notice.png" alt="이벤트 유의사항" />
+        <img src="https://image.dallalive.com/event/purchase_benefit/210226/radio_view_notice.png" alt="이벤트 유의사항" />
         <ul className="text">
           <li>
             본 이벤트는 예고 없이 종료될 수 있으니

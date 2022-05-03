@@ -62,21 +62,21 @@ const packageEventView = () => {
   return (
     <div id="packageEvent">
       <button className="btnBack" onClick={() => history.goBack()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
       </button>
-      <img src="https://image.dalbitlive.com/event/package/20210127/visual.jpg" alt="보이는 라디오 웹캠 지원 이벤트" />
+      <img src="https://image.dallalive.com/event/package/20210127/visual.jpg" alt="보이는 라디오 웹캠 지원 이벤트" />
       <img
-        src="https://image.dalbitlive.com/event/package/20210127/content.jpg"
+        src="https://image.dallalive.com/event/package/20210127/content.jpg"
         alt="진행일정: 1월 27일 ~ 2월 1일 / 결과 발표 : 2월 2일 목요일"
       />
 
       {!globalState.token.isLogin ? (
         <button onClick={() => eventJoin()}>
-          <img src="https://image.dalbitlive.com/event/package/20210127/button_off.jpg" alt="지원신청 비활성화"/>
+          <img src="https://image.dallalive.com/event/package/20210127/button_off.jpg" alt="지원신청 비활성화"/>
         </button>
       ) : (
         <button onClick={() => eventJoin()}>
-          <img src="https://image.dalbitlive.com/event/package/20210127/button_on.jpg" alt="지원신청"/>
+          <img src="https://image.dallalive.com/event/package/20210127/button_on.jpg" alt="지원신청"/>
         </button>
       )}
     </div>

@@ -73,11 +73,11 @@ const InviteRank = () => {
     <>
       <div className='inviteRank'>
         <div className='imageBox'>
-          <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-benefit.png" alt="초대왕에게 드리는 놀라운 혜택!" className='fullImage'/>
+          <img src="https://image.dallalive.com/event/invite/eventPage_rank-benefit.png" alt="초대왕에게 드리는 놀라운 혜택!" className='fullImage'/>
           <button className='noticePopBtn' onClick={popupOpen}>유의사항</button>
         </div>
         <div className='imageBox'>
-            <img src="https://image.dalbitlive.com/event/invite/eventPage_rank-title.png" alt="초대왕 랭킹" className='fullImage'/>
+            <img src="https://image.dallalive.com/event/invite/eventPage_rank-title.png" alt="초대왕 랭킹" className='fullImage'/>
           </div>
         <div className='rankSection'>
           {

@@ -24,7 +24,7 @@ const mobileWeb = () => {
     <div id="mobileWeb">
       <section className='appDownload'>
         <div className='logo'>
-          <img src='https://image.dalbitlive.com/common/header/LOGO.png' alt='dalla'/>
+          <img src='https://image.dallalive.com/common/header/LOGO.png' alt='dalla'/>
         </div>
         <div className='textWrap'>
           <p className='mainText'>요즘 대세 라이브는?<br/>당근 달라지!</p>

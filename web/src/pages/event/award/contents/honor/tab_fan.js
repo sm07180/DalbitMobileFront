@@ -52,7 +52,7 @@ export default function TabFan(props) {
 
           <div className="introduce">
             <span>{fanTitle}</span>
-            <img src="https://image.dalbitlive.com/event/award_rank/fan_bg_box.png" alt="소개 배경" />
+            <img src="https://image.dallalive.com/event/award_rank/fan_bg_box.png" alt="소개 배경" />
           </div>
         </div>
       </div>

@@ -88,7 +88,7 @@ const ToptenSwiper = (props) => {
                   <img src={item.profImg && item.profImg.thumb292x292 ? 
                     item.profImg.thumb292x292
                     :
-                    'https://image.dalbitlive.com/images/listNone-userProfile.png'
+                    'https://image.dallalive.com/images/listNone-userProfile.png'
                   }/>
                   {item.rank && <div className={`rank-${item.rank}`}></div>}
                   {!item.listenRoomNo && item.roomNo &&

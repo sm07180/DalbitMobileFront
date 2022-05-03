@@ -117,8 +117,8 @@ export default function MySetting() {
           <img
             src={
               profileInfo.gender === 'f'
-                ? 'https://image.dalbitlive.com/svg/female.svg'
-                : 'https://image.dalbitlive.com/svg/male.svg'
+                ? 'https://image.dallalive.com/svg/female.svg'
+                : 'https://image.dallalive.com/svg/male.svg'
             }
             alt={profileInfo.gender === 'f' ? '여자' : '남자'}
           />
@@ -132,7 +132,7 @@ export default function MySetting() {
             className={`genderBox__btn genderBox__btn--male ${profileInfo.gender === 'm' ? 'active' : ''}`}
             onClick={() => setProfileInfo({...profileInfo, gender: 'm'})}>
             남자
-            <img src={'https://image.dalbitlive.com/svg/male.svg'} alt="남자" />
+            <img src={'https://image.dallalive.com/svg/male.svg'} alt="남자" />
           </button>
 
           <button
@@ -140,7 +140,7 @@ export default function MySetting() {
             className={`genderBox__btn genderBox__btn--female ${profileInfo.gender === 'f' ? 'active' : ''}`}
             onClick={() => setProfileInfo({...profileInfo, gender: 'f'})}>
             여자
-            <img src={'https://image.dalbitlive.com/svg/female.svg'} alt="여자" />
+            <img src={'https://image.dallalive.com/svg/female.svg'} alt="여자" />
           </button>
         </div>
       )
@@ -201,7 +201,7 @@ export default function MySetting() {
                 maxLength={20}
               />
               <button type="button" className="cancelBtn" data-name="nickNm" onClick={onClearClick}>
-                <img src="https://image.dalbitlive.com/svg/ico_delete_round.svg" alt="취소 버튼" />
+                <img src="https://image.dallalive.com/svg/ico_delete_round.svg" alt="취소 버튼" />
               </button>
             </div>
             <div className="formInputBox disabled">
@@ -235,7 +235,7 @@ export default function MySetting() {
                   id="birth"
                   readOnly
                 />
-                <img src="https://image.dalbitlive.com/svg/ico_calendar.svg" className="calendarIcon" alt="calendar" />
+                <img src="https://image.dallalive.com/svg/ico_calendar.svg" className="calendarIcon" alt="calendar" />
               </div>
               <p className="formInputBoxResult">본인인증 정보로 자동 갱신됩니다.</p>
             </div>
@@ -249,7 +249,7 @@ export default function MySetting() {
                 프로필 메세지
               </label>
               <button type="button" className="cancelBtn" data-name="profMsg" onClick={onClearClick}>
-                <img src="https://image.dalbitlive.com/svg/ico_delete_round.svg" alt="취소 버튼" />
+                <img src="https://image.dallalive.com/svg/ico_delete_round.svg" alt="취소 버튼" />
               </button>
               <textarea
                 className="formInputBox profileText"

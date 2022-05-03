@@ -265,7 +265,7 @@ export default function ChatHeaderWrap(prop: any) {
                         <div
                           className="fan-holder"
                           style={{
-                            backgroundImage: `url("https://image.dalbitlive.com/event/dallagers/frame/dallagers_1st_small-frame_02.webp")`/*`url(${fan.badgeFrame.frameAni})`*/,
+                            backgroundImage: `url("https://image.dallalive.com/event/dallagers/frame/dallagers_1st_small-frame_02.webp")`/*`url(${fan.badgeFrame.frameAni})`*/,
                           }}
                         ></div>
                       </>
@@ -291,7 +291,7 @@ export default function ChatHeaderWrap(prop: any) {
             <span className="info" onClick={tooltipToggle}>
               <img
                 className="icon"
-                src="https://image.dalbitlive.com/broadcast/ico_people_color_s.svg"
+                src="https://image.dallalive.com/broadcast/ico_people_color_s.svg"
                 alt="청취자"
               />
               <span className="text">{broadcastState.userCount.history}</span>
@@ -303,7 +303,7 @@ export default function ChatHeaderWrap(prop: any) {
             <span className="info" onClick={LikeToggle}>
               <img
                 className="icon"
-                src="https://image.dalbitlive.com/broadcast/ico_heart_color_s.svg"
+                src="https://image.dallalive.com/broadcast/ico_heart_color_s.svg"
                 alt="좋아요"
               />
               <span className="text">
@@ -313,7 +313,7 @@ export default function ChatHeaderWrap(prop: any) {
             {
               startDt &&
               <span className="info time">
-                <img className="icon" src="https://image.dalbitlive.com/broadcast/ico_time.svg" alt="시간"/>
+                <img className="icon" src="https://image.dallalive.com/broadcast/ico_time.svg" alt="시간"/>
                 <span className="text">
                   {broadcastTime !== null && secToDateConvertor(broadcastTime)}
                 </span>
@@ -356,7 +356,7 @@ export default function ChatHeaderWrap(prop: any) {
             >
               <img
                 className="icon"
-                src="https://image.dalbitlive.com/broadcast/ico_mail.svg"
+                src="https://image.dallalive.com/broadcast/ico_mail.svg"
                 alt="사연"
               />
             </button>
@@ -370,8 +370,8 @@ export default function ChatHeaderWrap(prop: any) {
                 className="icon"
                 src={
                   broadcastState.noticeState === 1
-                    ? `https://image.dalbitlive.com/broadcast/ico_notice_on_dot.svg`
-                    : `https://image.dalbitlive.com/broadcast/ico_notice_dot.svg`
+                    ? `https://image.dallalive.com/broadcast/ico_notice_on_dot.svg`
+                    : `https://image.dallalive.com/broadcast/ico_notice_dot.svg`
                 }
                 alt="공지"
               />
@@ -601,7 +601,7 @@ export default function ChatHeaderWrap(prop: any) {
                 }
               }}
             >
-              <img src="https://image.dalbitlive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
+              <img src="https://image.dallalive.com/broadcast/dalla/vote/voteFloatingBtn.png" alt="미니게임 투표" />
             </button>
             {roomOwner === true && (
               <div className={`mini_game_slide`}>
@@ -798,17 +798,17 @@ const ChatHeaderWrapStyled = styled.div`
           }
           &:nth-child(1) {
             &::before {
-              background-image: url("https://image.dalbitlive.com/images/api/20200727/ic_gold.png");
+              background-image: url("https://image.dallalive.com/images/api/20200727/ic_gold.png");
             }
           }
           &:nth-child(2) {
             &::before {
-              background-image: url("https://image.dalbitlive.com/images/api/20200727/ic_silver.png");
+              background-image: url("https://image.dallalive.com/images/api/20200727/ic_silver.png");
             }
           }
           &:nth-child(3) {
             &::before {
-              background-image: url("https://image.dalbitlive.com/images/api/20200727/ic_bronze.png");
+              background-image: url("https://image.dallalive.com/images/api/20200727/ic_bronze.png");
             }
           }
         }
@@ -1012,7 +1012,7 @@ const ChatHeaderWrapStyled = styled.div`
     .btnEventGotomoon {
       display: inline-block;
       width: 40px; height:50px;
-      background-image: url(https://image.dalbitlive.com/broadcast/event/gotomoon/btn_popOpen-gotomoon.png);
+      background-image: url(https://image.dallalive.com/broadcast/event/gotomoon/btn_popOpen-gotomoon.png);
       background-position: center;
       background-size: cover;
       background-repeat:no-repeat;

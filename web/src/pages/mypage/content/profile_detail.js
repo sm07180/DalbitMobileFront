@@ -34,10 +34,10 @@ import {
   setGlobalCtxMyPageFanCnt, setGlobalCtxMyPageReport, setGlobalCtxUpdatePopup
 } from "redux/actions/globalCtx";
 
-const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
-const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
-const PostBoxIcon = 'https://image.dalbitlive.com/svg/ico_postbox_p.svg'
-const PostBoxOffIcon = 'https://image.dalbitlive.com/svg/postbox_g_off.svg'
+const LiveIcon = 'https://image.dallalive.com/svg/ic_live.svg'
+const ListenIcon = 'https://image.dallalive.com/svg/ico_listen.svg'
+const PostBoxIcon = 'https://image.dallalive.com/svg/ico_postbox_p.svg'
+const PostBoxOffIcon = 'https://image.dallalive.com/svg/postbox_g_off.svg'
 
 export default (props) => {
   const dispatch = useDispatch();

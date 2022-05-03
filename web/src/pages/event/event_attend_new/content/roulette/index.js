@@ -114,7 +114,7 @@ export default function RouletteTab() {
   return (
     <div className="rouletteTab">
       <div className="topBanner">
-        <img src="https://image.dalbitlive.com/event/attend/210205/event_img_02_1_1@3x.png" alt="룰렛을 돌려보아요!" />
+        <img src="https://image.dallalive.com/event/attend/210205/event_img_02_1_1@3x.png" alt="룰렛을 돌려보아요!" />
 
         <div className="couponBox">
           <div className="couponCount">
@@ -122,7 +122,7 @@ export default function RouletteTab() {
               <span className="number">{eventAttendState.couponCnt}</span>
               <span className="text">개</span>
             </p>
-            <img src="https://image.dalbitlive.com/event/attend/210309/event_img_02_1_2@2x_01.jpg" alt="기본 룰렛 응모권" />
+            <img src="https://image.dallalive.com/event/attend/210309/event_img_02_1_2@2x_01.jpg" alt="기본 룰렛 응모권" />
           </div>
 
           <div className="couponCount">
@@ -130,17 +130,17 @@ export default function RouletteTab() {
               <span className="number">{eventAttendState.eventCouponCnt}</span>
               <span className="text">개</span>
             </p>
-            <img src="https://image.dalbitlive.com/event/attend/210309/event_img_02_1_2@2x_02.jpg" alt="이벤트 응모권" />
+            <img src="https://image.dallalive.com/event/attend/210309/event_img_02_1_2@2x_02.jpg" alt="이벤트 응모권" />
           </div>
         </div>
 
         <div className="buttonBox">
           <button type="button" onClick={() => history.push('/event/my_coupon')}>
-            <img src="https://image.dalbitlive.com/event/attend/201229/btn_coupon_history@2x.png" alt="응모권 지급 내역" />
+            <img src="https://image.dallalive.com/event/attend/201229/btn_coupon_history@2x.png" alt="응모권 지급 내역" />
           </button>
 
           <button type="button" onClick={() => history.push('/event/my_history')}>
-            <img src="https://image.dalbitlive.com/event/attend/201229/btn_roullete_history@2x.png" alt="나의 당첨이력 확인" />
+            <img src="https://image.dallalive.com/event/attend/201229/btn_roullete_history@2x.png" alt="나의 당첨이력 확인" />
           </button>
         </div>
       </div>

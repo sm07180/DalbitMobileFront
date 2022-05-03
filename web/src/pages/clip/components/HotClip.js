@@ -37,7 +37,7 @@ const HotClip = (props) => {
           <img src={`${info.bgImg.thumb292x292}`} alt={`${info.nickName}의 클립`} onError={handleImgError}/>
         </div>
         <div className="info">
-          <img src={`https://image.dalbitlive.com/clip/dalla/number-${info.rank}.png`}/>
+          <img src={`https://image.dallalive.com/clip/dalla/number-${info.rank}.png`}/>
           <div className="textArea">
             <div>
               <span className="type">{info.subjectName}</span>

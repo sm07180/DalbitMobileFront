@@ -44,7 +44,7 @@ export default class Utility {
 
     const encodedValue = encodeURIComponent(value)
     const c_value = encodedValue + (exdays == null ? '' : '; expires=' + exdate.toUTCString())
-    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
+    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dallalive.com'
   }
 
   /**
@@ -274,7 +274,7 @@ export default class Utility {
           const clip_no = link.href.substring(link.href.lastIndexOf('/') + 1)
           clipJoinApi(clip_no, globalState)
         } else if (
-          link.href.indexOf('dalbitlive.com') > -1 ||
+          link.href.indexOf('dallalive.com') > -1 ||
           (!link.href.startsWith('https://') && !link.href.startsWith('http://'))
         ) {
           window.location.href = link.href

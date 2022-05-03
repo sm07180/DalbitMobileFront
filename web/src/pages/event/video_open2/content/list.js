@@ -5,9 +5,9 @@ import NoResult from 'components/ui/new_noResult'
 import {useDispatch, useSelector} from "react-redux";
 
 // static
-const GoldMedal = 'https://image.dalbitlive.com/svg/medal_gold_b.svg'
-const SivelMedal = 'https://image.dalbitlive.com/svg/medal_silver_b.svg'
-const BronzeMedal = 'https://image.dalbitlive.com/svg/medal_bronze_m.svg'
+const GoldMedal = 'https://image.dallalive.com/svg/medal_gold_b.svg'
+const SivelMedal = 'https://image.dallalive.com/svg/medal_silver_b.svg'
+const BronzeMedal = 'https://image.dallalive.com/svg/medal_bronze_m.svg'
 
 export default function VideoEventList({videoRankList}) {
   const history = useHistory()

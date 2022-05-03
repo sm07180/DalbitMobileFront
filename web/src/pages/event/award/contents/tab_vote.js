@@ -193,7 +193,7 @@ export default function awardEventVote() {
                         checkResult(item)
                       }}
                       className={`checkedBtn`}>
-                      <img src="https://image.dalbitlive.com/event/award/201214/ico-check-r.svg" /> 선택되었습니다
+                      <img src="https://image.dallalive.com/event/award/201214/ico-check-r.svg" /> 선택되었습니다
                     </button>
                   ) : (
                     <button

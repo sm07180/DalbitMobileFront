@@ -234,7 +234,7 @@ export default () => {
         <Header title="구슬 주머니" />
         <div className="mypointWrap">
           <div className="title">
-            <img src="https://image.dalbitlive.com/event/gganbu/gganbuPocket_title-myScore.png"/>
+            <img src="https://image.dallalive.com/event/gganbu/gganbuPocket_title-myScore.png"/>
           </div>
           <div className="mypoint">
             <span className="score">{Utility.addComma(myPoint)}</span>점
@@ -256,7 +256,7 @@ export default () => {
                       />
                     </span>
                   :
-                    <img src="https://image.dalbitlive.com/event/gganbu/marblePocket.png"/>
+                    <img src="https://image.dallalive.com/event/gganbu/marblePocket.png"/>
                 }
                 <span className="pocketCount">{pocketCtn}</span>
               </div>
@@ -374,7 +374,7 @@ export default () => {
       {openPocket &&
         <div className="openPocket">
           <div className={`openPocketAni`}
-               style={{backgroundImage: `url(https://image.dalbitlive.com/event/gganbu/ani/special_marble_0${aniLevel === "ani1" ? 1 : aniLevel === "ani2" ? 2 : aniLevel === "ani3" ? 3 : 4}.webp?timestamp=${Math.random()})` }}
+               style={{backgroundImage: `url(https://image.dallalive.com/event/gganbu/ani/special_marble_0${aniLevel === "ani1" ? 1 : aniLevel === "ani2" ? 2 : aniLevel === "ani3" ? 3 : 4}.webp?timestamp=${Math.random()})` }}
           >
             <div className="openPocketNum" style={{animationDelay: `${aniLevel === "ani1" ? "3.5s" : aniLevel === "ani2" ? "3.5s" : aniLevel === "ani3" ? "4.5s" : "5.5s"}`}}>{randomPoint}</div>
           </div>

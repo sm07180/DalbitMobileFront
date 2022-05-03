@@ -177,10 +177,10 @@ const InviteEvent = () => {
   return (
     <div className='inviteEvent'>
       <div className='imageBox'>
-        <img src="https://image.dalbitlive.com/event/invite/eventPage_event-benefit.png" alt="친구가 달라 신규가입 시 혜택" className='fullImage'/>
+        <img src="https://image.dallalive.com/event/invite/eventPage_event-benefit.png" alt="친구가 달라 신규가입 시 혜택" className='fullImage'/>
       </div>
       <div className='imageBox'>
-        <img src="https://image.dalbitlive.com/event/invite/eventPage_event-method.png" alt="참여방법 안내" className='fullImage'/>
+        <img src="https://image.dallalive.com/event/invite/eventPage_event-method.png" alt="참여방법 안내" className='fullImage'/>
         {
           createdCode ?
             <button className={`inviteBtn share`} onClick={()=>doCopy(code)}>
@@ -196,7 +196,7 @@ const InviteEvent = () => {
       {
         !submitCode ?
           <div className='imageBox'>
-            <img src="https://image.dalbitlive.com/event/invite/eventPage_event-code.png" alt="친구 초대 코드 입력하면 10달이 내 지갑에 쏙!" className='fullImage'/>
+            <img src="https://image.dallalive.com/event/invite/eventPage_event-code.png" alt="친구 초대 코드 입력하면 10달이 내 지갑에 쏙!" className='fullImage'/>
             <div className='codeInput'>
               <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
                 <input type="text" name={"code"} ref={friendCode} onChange={onChange} maxLength={6} autoComplete="off"/>
@@ -206,7 +206,7 @@ const InviteEvent = () => {
           </div>
         :
           <div className='imageBox'>
-            <img src="https://image.dalbitlive.com/event/invite/eventPage_event-friend.png" alt="나를 초대한 친구" className='fullImage'/>
+            <img src="https://image.dallalive.com/event/invite/eventPage_event-friend.png" alt="나를 초대한 친구" className='fullImage'/>
             <div className='friendWrap' onClick={goSendProfile}>
               <div className="photo">
                 <img src={myInfo.profImg.thumb292x292} alt="프로필이미지" />
@@ -224,7 +224,7 @@ const InviteEvent = () => {
           </div>
       }
       <div className='imageBox'>
-        <img src="https://image.dalbitlive.com/event/invite/eventPage_event-notice.png" alt="유의사항" className='fullImage'/>
+        <img src="https://image.dallalive.com/event/invite/eventPage_event-notice.png" alt="유의사항" className='fullImage'/>
       </div>
     </div>
   )

@@ -226,7 +226,7 @@ export default (props) => {
                 }
               </div>
               :
-              <img src="https://image.dalbitlive.com/event/gganbu/betting_ani.png" alt="베팅 준비중" />
+              <img src="https://image.dallalive.com/event/gganbu/betting_ani.png" alt="베팅 준비중" />
             }
           </div>
           {!popResult &&
@@ -346,7 +346,7 @@ export default (props) => {
         </div>
         {!popResult &&
         <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기"/>
+          <img src="https://image.dallalive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기"/>
         </button>
         }
       </div>
@@ -535,7 +535,7 @@ const PopupWrap = styled.div`
               display: inline-block;
               width: 17px; height: 17px;
               margin-right: 4px;
-              background-image: url(https://image.dalbitlive.com/event/gganbu/betting_icon-totalParticipant.png);
+              background-image: url(https://image.dallalive.com/event/gganbu/betting_icon-totalParticipant.png);
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain;
@@ -563,7 +563,7 @@ const PopupWrap = styled.div`
               display: inline-block;
               width: 16px; height: 16px;
               margin-right: 4px;
-              background-image: url(https://image.dalbitlive.com/event/gganbu/betting_icon-percentage.png);
+              background-image: url(https://image.dallalive.com/event/gganbu/betting_icon-percentage.png);
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain;              
@@ -614,16 +614,16 @@ const PopupWrap = styled.div`
         background-repeat: no-repeat;
         background-size: contain;
         &.red {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-red.png);
+          background-image: url(https://image.dallalive.com/event/gganbu/marble-red.png);
         }
         &.yellow {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-yellow.png);
+          background-image: url(https://image.dallalive.com/event/gganbu/marble-yellow.png);
         }
         &.blue {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-blue.png);
+          background-image: url(https://image.dallalive.com/event/gganbu/marble-blue.png);
         }
         &.purple {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-purple.png);
+          background-image: url(https://image.dallalive.com/event/gganbu/marble-purple.png);
         }
       }
       .marbleCount {

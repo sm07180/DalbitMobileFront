@@ -45,13 +45,13 @@ export default () => {
                 구슬 {exitMarbleInfo.marbleCnt}개가 지급되었습니다.
               </p>
               <div className="marbleStatus">
-                <img src="https://image.dalbitlive.com/event/gganbu/marble-red.png" />
+                <img src="https://image.dallalive.com/event/gganbu/marble-red.png" />
                 {exitMarbleInfo.rMarbleCnt}
-                <img src="https://image.dalbitlive.com/event/gganbu/marble-yellow.png" />
+                <img src="https://image.dallalive.com/event/gganbu/marble-yellow.png" />
                 {exitMarbleInfo.yMarbleCnt}
-                <img src="https://image.dalbitlive.com/event/gganbu/marble-blue.png" />
+                <img src="https://image.dallalive.com/event/gganbu/marble-blue.png" />
                 {exitMarbleInfo.bMarbleCnt}
-                <img src="https://image.dalbitlive.com/event/gganbu/marble-purple.png" />
+                <img src="https://image.dallalive.com/event/gganbu/marble-purple.png" />
                 {exitMarbleInfo.vMarbleCnt}
               </div>
             </>
@@ -65,7 +65,7 @@ export default () => {
                 구슬 주머니 {exitMarbleInfo.pocketCnt}개가 지급되었습니다.
               </p>
               <div className="pocketStatus">
-                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
+                <img src="https://image.dallalive.com/event/gganbu/iconScore.png" />
                 {exitMarbleInfo.rMarbleCnt}
               </div>
               <button className="contextClose" onClick={closePopup}>

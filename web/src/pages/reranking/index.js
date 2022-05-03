@@ -372,7 +372,7 @@ const RankPage = () => {
         <BannerSlide type={17}/>
       </section>
       {/* <section className='rankingBottom' onClick={() => history.push('/honor')}>
-        <img src="https://image.dalbitlive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
+        <img src="https://image.dallalive.com/banner/dalla/page/ranking_honor.png" alt="명예의전당"/>
       </section> */}
       <section className='dailyRankList'>
         <div className="cntTitle">

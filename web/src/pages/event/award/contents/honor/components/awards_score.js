@@ -51,7 +51,7 @@ export default function AwardsScore(props) {
         </div>
       </div>
 
-      <img src="https://image.dalbitlive.com/event/award_rank/awards_dj_info_bg@2.jpg" alt="유저 토탈 내용 뒷배경" />
+      <img src="https://image.dallalive.com/event/award_rank/awards_dj_info_bg@2.jpg" alt="유저 토탈 내용 뒷배경" />
     </div>
   )
 }

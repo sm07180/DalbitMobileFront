@@ -73,10 +73,10 @@ export default function SpecialLeague() {
   return (
     <div id="special_league_page">
       <button className="btnBack" onClick={() => history.goBack()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
       </button>
       <img
-        src="https://image.dalbitlive.com/event/special_league/210601/common_top_img.jpg"
+        src="https://image.dallalive.com/event/special_league/210601/common_top_img.jpg"
         className="top_image"
         alt="매월 오직 스페셜DJ만의 스페셜 리그가 진행됩니다."
       />
@@ -84,13 +84,13 @@ export default function SpecialLeague() {
       <div className="tab_box">
         <button onClick={() => setTabState('league')}>
           <img
-            src={`https://image.dalbitlive.com/event/special_league/210222/tab_league${tabState === 'league' ? '_on' : ''}.png`}
+            src={`https://image.dallalive.com/event/special_league/210222/tab_league${tabState === 'league' ? '_on' : ''}.png`}
             alt="리그 순위"
           />
         </button>
         <button onClick={() => setTabState('benefit')}>
           <img
-            src={`https://image.dalbitlive.com/event/special_league/210222/tab_benefit${tabState === 'benefit' ? '_on' : ''}.png`}
+            src={`https://image.dallalive.com/event/special_league/210222/tab_benefit${tabState === 'benefit' ? '_on' : ''}.png`}
             alt="안내 및 혜택"
           />
         </button>
@@ -100,9 +100,9 @@ export default function SpecialLeague() {
 
       {tabState === 'benefit' && (
         <div className="tab_content benefit">
-          <img src="https://image.dalbitlive.com/event/special_league/210601/benefit_img_01.png" />
-          <img src="https://image.dalbitlive.com/event/special_league/210222/benefit_img_02.png" />
-          <img src="https://image.dalbitlive.com/event/special_league/210222/benefit_img_03.png" />
+          <img src="https://image.dallalive.com/event/special_league/210601/benefit_img_01.png" />
+          <img src="https://image.dallalive.com/event/special_league/210222/benefit_img_02.png" />
+          <img src="https://image.dallalive.com/event/special_league/210222/benefit_img_03.png" />
         </div>
       )}
     </div>

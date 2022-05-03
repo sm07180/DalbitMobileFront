@@ -261,7 +261,7 @@ export default (props) => {
                     <div className="rankList" key={index}>
                       {index < 3 ? (
                         <div className={`number medal-${index + 1}`}>
-                          <img src={`https://image.dalbitlive.com/event/gganbu/rankMedal-${index + 1}.png`} />
+                          <img src={`https://image.dallalive.com/event/gganbu/rankMedal-${index + 1}.png`} />
                         </div>
                       ) : (
                         <div className="number">
@@ -286,7 +286,7 @@ export default (props) => {
                                 lv {ptr_mem_level}
                               </div>
                               <span className="userNick">
-                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!" />
+                                <img src={`https://image.dallalive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!" />
                               </span>
                             </>
                           )}
@@ -308,7 +308,7 @@ export default (props) => {
                                 lv {mem_level}
                               </div>
                               <span className="userNick">
-                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!" />
+                                <img src={`https://image.dallalive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!" />
                               </span>
                             </>
                           )}
@@ -317,7 +317,7 @@ export default (props) => {
                       {
                          gganbuNumber === "4" ?
                           <div className="score">
-                            <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
+                            <img src="https://image.dallalive.com/event/gganbu/iconScore.png" />
                             <span>{tot_marble_pocket_pt}</span>
                           </div>
                           :

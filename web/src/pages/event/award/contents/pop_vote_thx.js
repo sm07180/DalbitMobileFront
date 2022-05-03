@@ -20,7 +20,7 @@ export default function awardEventVoteThx({setVoteThxPop}) {
       <div className="layerContainer">
         <h3>감사합니다</h3>
         <div className="layerContent awardVoteThxPop">
-          <img src="https://image.dalbitlive.com/event/award/201214/img_dalbit_awards.png" alt="감사합니다" />
+          <img src="https://image.dallalive.com/event/award/201214/img_dalbit_awards.png" alt="감사합니다" />
           <p className="title">2달이 지급되었습니다.</p>
           <p>
             2020년 달라를
@@ -59,7 +59,7 @@ const LayerPopup = styled.div`
     width: 32px;
     height: 32px;
     text-indent: -9999px;
-    background: url('https://image.dalbitlive.com/svg/close_w_l.svg') no-repeat 0 0;
+    background: url('https://image.dallalive.com/svg/close_w_l.svg') no-repeat 0 0;
   }
 
   .layerContainer {

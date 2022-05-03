@@ -48,7 +48,7 @@ export default (props) => {
           <li>자, 그럼 즐거운 게임 되시기 바랍니다.</li>
         </ul>
         <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
+          <img src="https://image.dallalive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
     </PopupWrap>

@@ -11,35 +11,35 @@ i.dataCnt {
   background-position: left center;
   background-repeat: no-repeat;
   background-size: 16px;
-  &.boostCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-booster.png");@include font(12px, 400, #FF7400);}
-  &.listenPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
-  &.broadMin {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
-  &.listenTime {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
-  &.broadcastPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-time.png");}
-  &.listenerPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
-  &.listenerCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
-  &.totalCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-twoman.png");}
-  &.inviteCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-inviteCnt.png");}
-  &.fanCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
-  &.newFanCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
-  &.entryCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-oneman.png");}
-  &.replyCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-reply.png");}
-  &.lastListenTs {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-listenerCnt.png");}
-  &.listenerCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-listenerCnt.png");}
-  &.presentCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-present.png");}
-  &.starCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-star.png");}
-  &.giftedByeol {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-star.png");}
-  &.goodPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.djGoodPoint {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.likeCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-heart.png");}
-  &.rcvLikeCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-likeCnt.png"); 
-                &.active {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-likeCntOn.png");}
+  &.boostCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-booster.png");@include font(12px, 400, #FF7400);}
+  &.listenPoint {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-time.png");}
+  &.broadMin {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-time.png");}
+  &.listenTime {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-time.png");}
+  &.broadcastPoint {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-time.png");}
+  &.listenerPoint {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-twoman.png");}
+  &.listenerCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-twoman.png");}
+  &.totalCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-twoman.png");}
+  &.inviteCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-inviteCnt.png");}
+  &.fanCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-oneman.png");}
+  &.newFanCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-oneman.png");}
+  &.entryCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-oneman.png");}
+  &.replyCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-reply.png");}
+  &.lastListenTs {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-listenerCnt.png");}
+  &.listenerCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-listenerCnt.png");}
+  &.presentCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-present.png");}
+  &.starCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-star.png");}
+  &.giftedByeol {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-star.png");}
+  &.goodPoint {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-heart.png");}
+  &.djGoodPoint {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-heart.png");}
+  &.goodCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-heart.png");}
+  &.likeCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-heart.png");}
+  &.goodCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-heart.png");}
+  &.rcvLikeCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-likeCnt.png");
+                &.active {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-likeCntOn.png");}
               }
-  &.tailCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-tailCnt.png");}
-  &.giftDal {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-giftDal.png");}
-  &.point {background-image: url('https://image.dalbitlive.com/common/dataCnt/dataIcon-teampoint.png');background-size:10px;line-height:16px !important;}
+  &.tailCnt {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-tailCnt.png");}
+  &.giftDal {background-image: url("https://image.dallalive.com/common/dataCnt/dataIcon-giftDal.png");}
+  &.point {background-image: url('https://image.dallalive.com/common/dataCnt/dataIcon-teampoint.png');background-size:10px;line-height:16px !important;}
 }
 
 .cupid {
@@ -54,7 +54,7 @@ i.dataCnt {
   @include fontCut;
   line-height: 14px;
   border-radius: 100px;
-  background: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-yellowCupid.png") #F6F6F6;
+  background: url("https://image.dallalive.com/common/dataCnt/dataIcon-yellowCupid.png") #F6F6F6;
   background-position: left center;
   background-repeat: no-repeat;
   background-size: 16px;

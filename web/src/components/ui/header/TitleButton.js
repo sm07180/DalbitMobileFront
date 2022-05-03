@@ -44,15 +44,15 @@ const TitleButton = (props) => {
   const goAdmin = () => {
     if(isDesktop()) {
       if (NODE_ENV === "dev") {
-        window.open("https://devm.dalbitlive.com/admin/question", "_blank");
+        window.open("https://devm.dallalive.com/admin/question", "_blank");
       } else {
-        window.open("https://m.dalbitlive.com/admin/question", "_blank");
+        window.open("https://m.dallalive.com/admin/question", "_blank");
       }
     }else {
       if (NODE_ENV === "dev") {
-        location.href = "https://devm.dalbitlive.com/admin/question";
+        location.href = "https://devm.dallalive.com/admin/question";
       } else {
-        location.href = "https://m.dalbitlive.com/admin/question";
+        location.href = "https://m.dallalive.com/admin/question";
       }
     }
   };

@@ -70,7 +70,7 @@ const SnsPromotion = () => {
     <div id="snsPromotion">
       <div className='snsContent'>
         <div className='logo'>
-          <img src="https://image.dalbitlive.com/common/logo/logo.png" alt="dalla 로고"/>
+          <img src="https://image.dallalive.com/common/logo/logo.png" alt="dalla 로고"/>
         </div>
         <div className='text'>
           달라에 가입하고 <strong>초대코드</strong>를 사용해 <br/>
@@ -94,7 +94,7 @@ const SnsPromotion = () => {
       </div>
       {!isDesktop &&
       <button className='appDownload' onClick={appDownload}>
-        <img src="https://image.dalbitlive.com/event/invite/appDownload.png" alt="앱 다운로드"/>
+        <img src="https://image.dallalive.com/event/invite/appDownload.png" alt="앱 다운로드"/>
       </button>
       }
     </div>

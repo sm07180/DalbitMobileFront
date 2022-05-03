@@ -102,7 +102,7 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <div id="event-page">
         <div className="event-main">
-          <img src="https://image.dalbitlive.com/event/200608/main_top_v2.png" />
+          <img src="https://image.dallalive.com/event/200608/main_top_v2.png" />
           <Link to="/">
             <button>
               <img src={btnClose} />

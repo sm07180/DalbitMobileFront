@@ -430,7 +430,7 @@ let Profile = () => {
                                     className={`rankingList__item ${idx === 1 ? "silver" : idx === 2 ? "bronze" : "gold"}`}
                                 >
                                   <img
-                                      src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                                      src="https://image.dallalive.com/svg/ico_defalitprofile.svg"
                                       className="rankingList__item--img"
                                       alt={`defalutrankProfileImg` + idx}
                                   />
@@ -458,7 +458,7 @@ let Profile = () => {
                           </button>
                           <div className={`rankingList__item `}>
                             <img
-                                src="https://image.dalbitlive.com/svg/ico_defalitprofile.svg"
+                                src="https://image.dallalive.com/svg/ico_defalitprofile.svg"
                                 className="rankingList__item--img"
                                 alt={`defalutrankProfileImg`}
                             />

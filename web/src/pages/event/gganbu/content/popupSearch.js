@@ -186,7 +186,7 @@ export default (props) => {
               placeholder="깐부를 맺고 싶은 회원을 검색해 보세요."
             />
             <button type="submit" disabled={btnAccess}>
-              <img src="https://image.dalbitlive.com/event/gganbu/icoSearch.png" />
+              <img src="https://image.dallalive.com/event/gganbu/icoSearch.png" />
             </button>
           </form>
         </div>
@@ -301,7 +301,7 @@ export default (props) => {
           </div>
         )}
         <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
+          <img src="https://image.dallalive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
       {alertAccept === true && (

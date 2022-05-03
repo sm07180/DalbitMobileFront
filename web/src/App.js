@@ -365,7 +365,7 @@ const App = () => {
       splited.forEach((bundle) => {
         let [key, value] = bundle.split('=')
         key = key.trim()
-        document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dalbitlive.com'
+        document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dallalive.com'
       })
 
       Api.error_log({

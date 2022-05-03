@@ -21,9 +21,9 @@ const PlayMaker = () =>{
   return(
     <div id="playMaker">
       <Header title={'이벤트'} type={'back'}/>
-      <img src="https://image.dalbitlive.com/event/playMaker/main.png"/>
+      <img src="https://image.dallalive.com/event/playMaker/main.png"/>
       <span  className="applyBtn" onClick={()=>{form()}}>
-        <img src="https://image.dalbitlive.com/event/playMaker/applyBtn.png" alt="플레이메이커 지원하러 가기" />
+        <img src="https://image.dallalive.com/event/playMaker/applyBtn.png" alt="플레이메이커 지원하러 가기" />
       </span>
     </div>
   )

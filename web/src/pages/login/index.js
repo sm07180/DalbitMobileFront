@@ -38,7 +38,7 @@ const LoginPage = () => {
       <div id="loginPage">
         <section className='loginMain'>
           <div className='logo'>
-            <img src='https://image.dalbitlive.com/common/header/LOGO.png' alt='dalla'/>
+            <img src='https://image.dallalive.com/common/header/LOGO.png' alt='dalla'/>
           </div>
           <div className='textWrap'>
             <p className='mainText'>달라에서 매일<br/>재미있는 라이브를 즐겨보아요!</p>
@@ -52,10 +52,10 @@ const LoginPage = () => {
             <p className='subText'>여기서 뭐해요? 빨리 와서 같이 놀아요!</p>
           </div>
           <button className="downloadBtn">
-            <img src="https://image.dalbitlive.com/login/dalla/download-google.png" alt="구글 플레이스토어 다운로드" />
+            <img src="https://image.dallalive.com/login/dalla/download-google.png" alt="구글 플레이스토어 다운로드" />
           </button>
           <button className="downloadBtn">
-            <img src="https://image.dalbitlive.com/login/dalla/download-apple.png" alt="애플 앱스토어 다운로드" />
+            <img src="https://image.dallalive.com/login/dalla/download-apple.png" alt="애플 앱스토어 다운로드" />
           </button> */}
         </section>
       </div>

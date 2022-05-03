@@ -119,7 +119,7 @@ export default () => {
         </div>
         <div className="dot">
           <div className="var">
-            <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
+            <img src="https://image.dallalive.com/event/gganbu/dotGganbu.png" />
             <span className="varLevel">{gganbuInfo.average_level}</span>
             <span className="varTit">평균레벨</span>
           </div>
@@ -190,18 +190,18 @@ export default () => {
       <Header title="이벤트" />
       <div className="top">
         {gganbuNumber && gganbuNumber === '1' ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-1.png" className="topImg" />
+          <img src="https://image.dallalive.com/event/gganbu/gganbuTopImg-1.png" className="topImg" />
         ) : gganbuNumber && gganbuNumber === '2' ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-2.png" className="topImg" />
+          <img src="https://image.dallalive.com/event/gganbu/gganbuTopImg-2.png" className="topImg" />
         ) : gganbuNumber && gganbuNumber === '3' ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-3.png" className="topImg" />
+          <img src="https://image.dallalive.com/event/gganbu/gganbuTopImg-3.png" className="topImg" />
         ) : gganbuNumber && gganbuNumber === '4' ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-4.png" className="topImg" />
+          <img src="https://image.dallalive.com/event/gganbu/gganbuTopImg-4.png" className="topImg" />
         ) : (
           <></>
         )}
         <button className="topBtn" onClick={() => setPopupNotice(true)}>
-          <img src="https://image.dalbitlive.com/event/gganbu/topBtn.png" alt="" />
+          <img src="https://image.dallalive.com/event/gganbu/topBtn.png" alt="" />
         </button>
         <div className="memo">
           <div className="memoInner">
@@ -220,16 +220,16 @@ export default () => {
                       <span className="nick">{globalState.profile.nickNm}</span>
                     </div>
                     <div className="dot">
-                      <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
+                      <img className="normal" src="https://image.dallalive.com/event/gganbu/dotNormal.png" />
                     </div>
                     <div className="userList">
                       <div className="photo" onClick={() => setPopupSearch(true)}>
-                        <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
+                        <img src="https://image.dallalive.com/event/gganbu/gganbuUserNone.png" />
                       </div>
                       <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
-                        <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
+                        <img src="https://image.dallalive.com/event/gganbu/gganbuStatusBtn.png" />
                         {gganbuBadgeCnt && gganbuBadgeCnt.s_reqCnt > 0 && (
-                          <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                          <img className="btnNew" src="https://image.dallalive.com/event/gganbu/gganbuStatusBtnNew.png" />
                         )}
                       </button>
                     </div>
@@ -253,7 +253,7 @@ export default () => {
               dispatch(setGlobalCtxGganbuTab('collect'))
             }}>
             <img
-              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${globalState.gganbuTab === 'collect' ? 'on' : 'off'}.png`}
+              src={`https://image.dallalive.com/event/gganbu/tabTxt-1-${globalState.gganbuTab === 'collect' ? 'on' : 'off'}.png`}
               alt="구슬 모으기"
             />
           </button>
@@ -267,7 +267,7 @@ export default () => {
               }
             }}>
             <img
-              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${globalState.gganbuTab === 'betting' ? 'on' : 'off'}.png`}
+              src={`https://image.dallalive.com/event/gganbu/tabTxt-2-${globalState.gganbuTab === 'betting' ? 'on' : 'off'}.png`}
               alt="구슬 베팅소"
             />
           </button>

@@ -35,7 +35,7 @@ const FavoriteSwiper = (props) => {
           <img src={list['profImg'] ?
             list['profImg'].thumb292x292
             : 
-            'https://image.dalbitlive.com/images/listNone-userProfile.png'}
+            'https://image.dallalive.com/images/listNone-userProfile.png'}
           />
         </div>
         <p>{list.nickNm}</p>

@@ -59,7 +59,7 @@ const Customer = () => {
                 return (
                   <div className='categoryList' key={index} data-idx={list.path} onClick={onClick}>
                     <div className='categoryImg'>
-                      <img src={`https://image.dalbitlive.com/customer/main/${list.file}.png`} alt={list.path} />
+                      <img src={`https://image.dallalive.com/customer/main/${list.file}.png`} alt={list.path} />
                     </div>
                     <div className='categoryName'>{list.name}</div>
                   </div>

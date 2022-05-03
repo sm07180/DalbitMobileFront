@@ -36,7 +36,7 @@ export default function YouthProtect() {
         이름 : 이정호 <br />
         소속 : 미디어사업부 본부장 <br />
         연락처 : 1522-0251<br />
-        E-mail : help@dalbitlive.com
+        E-mail : help@dallalive.com
       </p>
     </div>
   )

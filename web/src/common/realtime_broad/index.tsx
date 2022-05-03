@@ -192,7 +192,7 @@ export default function RealTimeBroadUI() {
       )}
       <RealtimeBroadWrap>
         <div className="wrapper">
-          <img src={"https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg?150x150"} alt="프로필 이미지" className="thumb" />
+          <img src={"https://devphoto2.dallalive.com/profile_3/profile_m_200327.jpg?150x150"} alt="프로필 이미지" className="thumb" />
           <span className="broadMsg">{"item.message"}</span>
           <button  className="close" />
         </div>

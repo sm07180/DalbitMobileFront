@@ -201,16 +201,16 @@ const PopupWrap = styled.div`
                         background-repeat: no-repeat;
                         background-size: contain;
                         &.red {
-                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-red.png);
+                          background-image: url(https://image.dallalive.com/event/gganbu/marble-red.png);
                         }
                         &.yellow {
-                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-yellow.png);
+                          background-image: url(https://image.dallalive.com/event/gganbu/marble-yellow.png);
                         }
                         &.blue {
-                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-blue.png);
+                          background-image: url(https://image.dallalive.com/event/gganbu/marble-blue.png);
                         }
                         &.purple {
-                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-purple.png);
+                          background-image: url(https://image.dallalive.com/event/gganbu/marble-purple.png);
                         }
                     }
                     .pocket {
@@ -221,7 +221,7 @@ const PopupWrap = styled.div`
                         background-position: center;
                         background-repeat: no-repeat;
                         background-size: contain;                        
-                        background-image: url(https://image.dalbitlive.com/event/gganbu/pocketIcon.png);
+                        background-image: url(https://image.dallalive.com/event/gganbu/pocketIcon.png);
                     }
                     .itemCtn {       
                         font-size: 14px;

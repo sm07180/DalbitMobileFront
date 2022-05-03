@@ -1,6 +1,6 @@
 /**
  * @title error페이지
- * @url https://devwww2.dalbitlive.com/ctrl/check/ip
+ * @url https://devwww2.dallalive.com/ctrl/check/ip
  *
  * 변경사항 : 요청 URL API서버로 변경
  */

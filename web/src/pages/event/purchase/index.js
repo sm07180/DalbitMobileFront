@@ -84,7 +84,7 @@ export default () => {
       <div id="purchase">
         <div className="content">
           <button className="btnBack" onClick={() => history.goBack()}>
-            <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+            <img src="https://image.dallalive.com/svg/close_w_l.svg" alt="close" />
           </button>
           <img src={`${IMG_SERVER}/event/purchase/202012/visual.png`} alt="행복하고 따뜻한 연말 보내세요" />
           <div className="middleWrap">
@@ -108,7 +108,7 @@ export default () => {
             </button>
           </div>
           <div className="notice">
-            <img src="https://image.dalbitlive.com/event/purchase/202012/notice_text.png" alt="유의사항" />
+            <img src="https://image.dallalive.com/event/purchase/202012/notice_text.png" alt="유의사항" />
             <ul className="text">
               <li>보너스 달과 룰렛이용권은 이벤트 종료후 12월 30일~ 31일 기간동안 받을 수 있습니다.</li>
               <li>이벤트 기간중 5000달 이상 구매한 경우 즉시 보너스 달을 받을 수 있습니다.</li>
@@ -138,7 +138,7 @@ const Content = styled.div`
         align-items: center;
         height: 52px;
         margin: 0 4%;
-        background: url('https://image.dalbitlive.com/event/purchase/202012/bg_event.png') no-repeat 0 0;
+        background: url('https://image.dallalive.com/event/purchase/202012/bg_event.png') no-repeat 0 0;
 
         .inner {
           position: relative;
@@ -155,7 +155,7 @@ const Content = styled.div`
           width: calc(100% - 35%);
           height: 32px;
           padding-left: 25px;
-          background: url('https://image.dalbitlive.com/event/thxgiving/ic_moon.png') no-repeat left center;
+          background: url('https://image.dallalive.com/event/thxgiving/ic_moon.png') no-repeat left center;
           background-size: 20px;
           font-size: 14px;
           line-height: 32px;

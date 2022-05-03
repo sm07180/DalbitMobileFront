@@ -393,7 +393,7 @@ const Content = styled.div`
         transform:translateY(-50%);
         width:16px;
         height:16px;
-        background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
+        background:url("https://image.dallalive.com/store/dalla/ico_info.png") no-repeat left / contain;
       }
     }
     p {

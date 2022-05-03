@@ -412,7 +412,7 @@ export default (props) => {
               history.push('/event/participant')
             }}>
             <label>
-              <img src="https://image.dalbitlive.com/event/gganbu/bettingLog_title.png" alt="베팅 참여자" />
+              <img src="https://image.dallalive.com/event/gganbu/bettingLog_title.png" alt="베팅 참여자" />
             </label>
             {participantList.length > 0 ? (
               <Swiper {...swiperParams}>
@@ -441,7 +441,7 @@ export default (props) => {
           <form action="" method="get">
             <div className="section">
               <div className="sectionTitle">
-                <img src="https://image.dalbitlive.com/event/gganbu/marble_title-status.png" alt="구슬 현황" />
+                <img src="https://image.dallalive.com/event/gganbu/marble_title-status.png" alt="구슬 현황" />
               </div>
               <div className="sectionMarble">
                 <div className="marbleData">
@@ -465,7 +465,7 @@ export default (props) => {
 
             <div className="section">
               <div className="sectionTitle">
-                <img src="https://image.dalbitlive.com/event/gganbu/marble_title-betting.png" alt="배팅할 구슬 개수" />
+                <img src="https://image.dallalive.com/event/gganbu/marble_title-betting.png" alt="배팅할 구슬 개수" />
               </div>
               <div className="sectionMarble">
                 <div className="marbleData">
@@ -529,7 +529,7 @@ export default (props) => {
 
             <div className="section">
               <div className="sectionTitle">
-                <img src="https://image.dalbitlive.com/event/gganbu/marble_title-result.png" alt="성공시 내 구슬 개수" />
+                <img src="https://image.dallalive.com/event/gganbu/marble_title-result.png" alt="성공시 내 구슬 개수" />
               </div>
               <div className="sectionMarble">
                 <div className="marbleData">
@@ -557,7 +557,7 @@ export default (props) => {
 
       <div className="marbleLog">
         <div className="title">
-          <img src="https://image.dalbitlive.com/event/gganbu/betting_myLog.png" alt="나의 베팅내역" />
+          <img src="https://image.dallalive.com/event/gganbu/betting_myLog.png" alt="나의 베팅내역" />
         </div>
         <div className="logTable">
           <div className="logHead">

@@ -46,9 +46,9 @@ export default () => {
 
   const EventImg = () => {
     if (eventData.rate === 5) {
-      return <img src="https://image.dalbitlive.com/event/happy_time/20201203/happyTime5.png" />
+      return <img src="https://image.dallalive.com/event/happy_time/20201203/happyTime5.png" />
     } else if (eventData.rate === 3) {
-      return <img src="https://image.dalbitlive.com/event/happy_time/20201203/happyTime3.png" />
+      return <img src="https://image.dallalive.com/event/happy_time/20201203/happyTime3.png" />
     }
   }
 

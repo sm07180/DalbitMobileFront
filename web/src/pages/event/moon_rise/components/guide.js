@@ -9,7 +9,7 @@ export default function () {
           return (
             <img
               alt={`가이드이미지${idx}`}
-              src={`https://image.dalbitlive.com/event/moonrise/${guideItem}`}
+              src={`https://image.dallalive.com/event/moonrise/${guideItem}`}
               key={`guideimg${idx}`}
             />
           )

@@ -101,7 +101,7 @@ export default (props) => {
                   것입니다.
                   <br />
                   회사가 만 14세 미만의 아동으로부터 정보를 수집하였다고
-                  생각되는 경우 help@dalbitlive.com으로 연락 주시기 바랍니다.
+                  생각되는 경우 help@dallalive.com으로 연락 주시기 바랍니다.
                 </li>
               </ol>
             </li>
@@ -514,7 +514,7 @@ export default (props) => {
             <li>이름 : 이정호</li>
             <li>소속 : 미디어사업부 본부장</li>
             <li>연락처: 1522-0251</li>
-            <li>E-mail : help@dalbitlive.com</li>
+            <li>E-mail : help@dallalive.com</li>
             <p>
               ※ 기타 개인 정보 침해에 대한 신고나 상담이 필요하신 경우에는 아래
               기관에 문의하시기 바랍니다.

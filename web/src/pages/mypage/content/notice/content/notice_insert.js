@@ -162,7 +162,7 @@ function NoticeInsertCompnent(props) {
           htmlFor="save_fileImg"
           style={{
             background: `url("${
-              thumbNail !== null ? thumbNail.url : 'https://image.dalbitlive.com/svg/gallery_w.svg'
+              thumbNail !== null ? thumbNail.url : 'https://image.dallalive.com/svg/gallery_w.svg'
             }") center 19px no-repeat #bdbdbd`
           }}
           className={`fileBasic ${thumbNail !== null ? 'fileOn' : ''}`}></label>

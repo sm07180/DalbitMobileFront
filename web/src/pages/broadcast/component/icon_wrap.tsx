@@ -756,8 +756,8 @@ export const IconWrap = (props: {
             <img
               src={
                 settingMore
-                  ? "https://image.dalbitlive.com/broadcast/ico_setting_circle_p.svg"
-                  : "https://image.dalbitlive.com/broadcast/ico_setting_circle.svg"
+                  ? "https://image.dallalive.com/broadcast/ico_setting_circle_p.svg"
+                  : "https://image.dallalive.com/broadcast/ico_setting_circle.svg"
               }
               alt="메세지설정"
             />
@@ -783,7 +783,7 @@ export const IconWrap = (props: {
                 dispatch(setBroadcastCtxRightTabType(tabType.VOTE));
               }}
             >
-              <img src='https://image.dalbitlive.com/broadcast/dalla/vote/voteIcon-fix.png' alt="투표" />
+              <img src='https://image.dallalive.com/broadcast/dalla/vote/voteIcon-fix.png' alt="투표" />
             </button>
           )}
 
@@ -815,15 +815,15 @@ export const IconWrap = (props: {
                 <img
                   src={
                     chatFreeze
-                      ? "https://image.dalbitlive.com/broadcast/ico_snowman_b.svg"
-                      : "https://image.dalbitlive.com/broadcast/ico_snowman.svg"
+                      ? "https://image.dallalive.com/broadcast/ico_snowman_b.svg"
+                      : "https://image.dallalive.com/broadcast/ico_snowman.svg"
                   }
                   alt="얼리기"
                 />
               </button>
               <button className="icon" onClick={broadcastEdit}>
                 <img
-                  src="https://image.dalbitlive.com/broadcast/ico_edit.svg"
+                  src="https://image.dallalive.com/broadcast/ico_edit.svg"
                   alt="방송설정"
                 />
               </button>
@@ -831,13 +831,13 @@ export const IconWrap = (props: {
           )}
           <button className="icon" onClick={broadcastShareClick}>
             <img
-              src="https://image.dalbitlive.com/broadcast/ico_share.svg"
+              src="https://image.dallalive.com/broadcast/ico_share.svg"
               alt="링크공유"
             />
           </button>
           <button className="icon" onClick={broadcastOffClick}>
             <img
-              src="https://image.dalbitlive.com/broadcast/ico_out.svg"
+              src="https://image.dallalive.com/broadcast/ico_out.svg"
               alt="나가기"
             />
           </button>

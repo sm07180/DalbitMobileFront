@@ -24,7 +24,7 @@ const ClipListenCore = (props) => {
         </div>
       </div>
       {/*<button className="trash">
-        <img src="https://image.dalbitlive.com/clip/dalla/icoTrash.png" />
+        <img src="https://image.dallalive.com/clip/dalla/icoTrash.png" />
       </button>*/}
     </div>
   );

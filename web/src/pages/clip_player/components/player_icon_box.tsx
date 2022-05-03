@@ -116,7 +116,7 @@ export default function ClipPlayerIconBox() {
       </ul>
       {clipInfo!.eventOpen && (
         <Link to={`/event/clip_gift_event`} className="giftEventButton">
-          <img src="https://image.dalbitlive.com/images/clip/banner_gift.png" alt="선물 시 40% 추가 지급" />
+          <img src="https://image.dallalive.com/images/clip/banner_gift.png" alt="선물 시 40% 추가 지급" />
         </Link>
       )}
     </>

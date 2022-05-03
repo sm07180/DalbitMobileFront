@@ -45,7 +45,7 @@ export default function ClipRegPop(props) {
 
     const encodedValue = encodeURIComponent(value)
     const c_value = encodedValue + '; expires=' + exdate.toUTCString()
-    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dalbitlive.com'
+    document.cookie = c_name + '=' + c_value + '; path=/; secure; domain=.dallalive.com'
   }
 
   const goClipReg = (type) => {
@@ -85,7 +85,7 @@ export default function ClipRegPop(props) {
         </button>
         <div className="layerContent">
           <div className="content_wrap">
-            <img src="https://image.dalbitlive.com/banner/2103/0304/img_gift.jpg" alt="클립 유도 팝업 이미지" />
+            <img src="https://image.dallalive.com/banner/2103/0304/img_gift.jpg" alt="클립 유도 팝업 이미지" />
             <ul className="desc_wrap">
               <li>청취는 1분 이상만 인정합니다.</li>
               <li>

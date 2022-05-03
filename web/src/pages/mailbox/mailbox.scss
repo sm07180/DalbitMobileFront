@@ -282,7 +282,7 @@
       &__btn {
         width: 24px;
         height: 24px;
-        background: url("https://image.dalbitlive.com/svg/ico_arrow_downward_g.svg") no-repeat center center / cover;
+        background: url("https://image.dallalive.com/svg/ico_arrow_downward_g.svg") no-repeat center center / cover;
       }
     }
 
@@ -323,10 +323,10 @@
               width: 48%;
               text-align: right;
               font-size: 14px;
-              background: url(https://image.dalbitlive.com/mailbox/ico_moon_s.svg) no-repeat left 1px;
+              background: url(https://image.dallalive.com/mailbox/ico_moon_s.svg) no-repeat left 1px;
 
               &:last-child {
-                background: url(https://image.dalbitlive.com/mailbox/ico_star_s.svg) no-repeat left 1px;
+                background: url(https://image.dallalive.com/mailbox/ico_star_s.svg) no-repeat left 1px;
               }
 
               button {
@@ -394,7 +394,7 @@
                 &::before {
                   display: inline-block;
                   content: "";
-                  background: url(https://image.dalbitlive.com/mailbox/ico_multiplication_b.svg) no-repeat center center;
+                  background: url(https://image.dallalive.com/mailbox/ico_multiplication_b.svg) no-repeat center center;
                   width: 18px;
                   height: 18px;
                   margin-right: 5px;
@@ -593,7 +593,7 @@
               width: 100px;
               height: 100px;
               border-radius: 10px;
-              background: #bdbdbd url(https://image.dalbitlive.com/svg/ico_deleted_img_m.svg) no-repeat center 36%;
+              background: #bdbdbd url(https://image.dallalive.com/svg/ico_deleted_img_m.svg) no-repeat center 36%;
               &::after {
                 display: block;
                 content: "삭제된 이미지";
@@ -974,20 +974,20 @@
       height: 32px;
       text-indent: -9999px;
       &.declar {
-        background: url("https://image.dalbitlive.com/svg/ic_report_mail.svg");
+        background: url("https://image.dallalive.com/svg/ic_report_mail.svg");
       }
       &.close {
-        background: url("https://image.dalbitlive.com/svg/close_w_l_mail.svg");
+        background: url("https://image.dallalive.com/svg/close_w_l_mail.svg");
         margin-left: auto;
       }
       &.prev {
-        background: url("https://image.dalbitlive.com/svg/arrow_back_s.svg");
+        background: url("https://image.dallalive.com/svg/arrow_back_s.svg");
       }
       &.delet {
-        background: url("https://image.dalbitlive.com/svg/trash.svg");
+        background: url("https://image.dallalive.com/svg/trash.svg");
       }
       &.next {
-        background: url("https://image.dalbitlive.com/svg/arrow_forward_s.svg");
+        background: url("https://image.dallalive.com/svg/arrow_forward_s.svg");
       }
     }
   }

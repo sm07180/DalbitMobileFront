@@ -114,22 +114,22 @@ export default (props) => {
                     </div>
                     <div className="listItem">
                       <span className="marble">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-red.png" />
+                        <img src="https://image.dallalive.com/event/gganbu/marble-red.png" />
                         {chng_slct === 'u' && red_marble != 0 ? '-' : ''}
                         {red_marble}
                       </span>
                       <span className="marble">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-yellow.png" />
+                        <img src="https://image.dallalive.com/event/gganbu/marble-yellow.png" />
                         {chng_slct === 'u' && yellow_marble != 0 ? '-' : ''}
                         {yellow_marble}
                       </span>
                       <span className="marble">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-blue.png" />
+                        <img src="https://image.dallalive.com/event/gganbu/marble-blue.png" />
                         {chng_slct === 'u' && blue_marble != 0 ? '-' : ''}
                         {blue_marble}
                       </span>
                       <span className="marble">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-purple.png" />
+                        <img src="https://image.dallalive.com/event/gganbu/marble-purple.png" />
                         {chng_slct === 'u' && violet_marble != 0 ? '-' : ''}
                         {violet_marble}
                       </span>
@@ -141,7 +141,7 @@ export default (props) => {
           {reportList.length === 0 && <NoResult type="default" text="내역이 없습니다." />}
         </div>
         <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
+          <img src="https://image.dallalive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
     </div>

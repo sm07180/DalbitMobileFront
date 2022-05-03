@@ -92,7 +92,7 @@ const ClipPage = () => {
             <div className="hotClip">
               <div className="hotClipImg"></div>
               <div className="hotClipData">
-                <img className="hotClipRank" src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" alt="" />
+                <img className="hotClipRank" src="https://image.dallalive.com/clip/dalla/hotClipRank1.png" alt="" />
                 <div className="hotClipTitle">
                   <span className="hotClipSubject">커버/노래</span>
                   제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ

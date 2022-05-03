@@ -174,7 +174,7 @@ export default (props) => {
           </div>
         )}
         <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
+          <img src="https://image.dallalive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
       {alertAccept === true && (

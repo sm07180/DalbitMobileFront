@@ -35,7 +35,7 @@ export default function awardEventResultDj({resultList}) {
                     <li className="bestFanItem" onClick={() => history.push(`/profile/${fan1_memNo}`)}>
                       <div className="thumb">
                         <img src={fan1_profileImage.thumb62x62} alt={fan1_nickNm} className="thumb__image" />
-                        <img src="https://image.dalbitlive.com/event/award/201214/ico_medal1.png" className="thumb__medal" />
+                        <img src="https://image.dallalive.com/event/award/201214/ico_medal1.png" className="thumb__medal" />
                       </div>
                       <span>{fan1_nickNm}</span>
                     </li>
@@ -45,7 +45,7 @@ export default function awardEventResultDj({resultList}) {
                     <li className="bestFanItem" onClick={() => history.push(`/profile/${fan2_memNo}`)}>
                       <div className="thumb">
                         <img src={fan2_profileImage.thumb62x62} alt={fan2_nickNm} className="thumb__image" />
-                        <img src="https://image.dalbitlive.com/event/award/201214/ico_medal2.png" className="thumb__medal" />
+                        <img src="https://image.dallalive.com/event/award/201214/ico_medal2.png" className="thumb__medal" />
                       </div>
                       <span>{fan2_nickNm}</span>
                     </li>
@@ -55,7 +55,7 @@ export default function awardEventResultDj({resultList}) {
                     <li className="bestFanItem" onClick={() => history.push(`/profile/${fan3_memNo}`)}>
                       <div className="thumb">
                         <img src={fan3_profileImage.thumb62x62} alt={fan3_nickNm} className="thumb__image" />
-                        <img src="https://image.dalbitlive.com/event/award/201214/ico_medal3.png" className="thumb__medal" />
+                        <img src="https://image.dallalive.com/event/award/201214/ico_medal3.png" className="thumb__medal" />
                       </div>
                       <span>{fan3_nickNm}</span>
                     </li>
