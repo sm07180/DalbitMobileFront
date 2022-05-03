@@ -1,12 +1,7 @@
-/**
- *
- * @code context.action.updateMediaPlayerStatus(true)
- */
 import React, {useEffect, useState} from 'react'
 //context
 import {Hybrid, isIos} from 'context/hybrid'
 // etc
-import Utility from 'components/lib/utility'
 import {useDispatch, useSelector} from "react-redux";
 import {
   setGlobalCtxNativePlayerInfo,
@@ -17,6 +12,7 @@ import CloseBtn from "common/images/ic_player_close_btn.svg";
 import Lottie from 'react-lottie'
 import {AuthType} from "constant";
 import {nativeEnd} from "redux/actions/broadcast/interface";
+import Room, {RoomJoin} from "context/room";
 
 export default (props) => {
   const dispatch = useDispatch();
@@ -36,9 +32,7 @@ export default (props) => {
         globalState.nativePlayer.auth !== AuthType.DJ &&
         <div id="player" >
           <div className="inner-player" onClick={() => {
-            if (Utility.getCookie('listen_room_no')){
-              Hybrid('EnterRoom', '')
-            }
+            RoomJoin({roomNo: globalState.nativePlayer.roomNo})
           }}>
             <div
               className="inner-player-bg"
