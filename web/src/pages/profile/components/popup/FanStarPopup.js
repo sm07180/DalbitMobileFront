@@ -199,7 +199,7 @@ const FanStarPopup = (props) => {
           <div className="listWrap" ref={fanStarContainerRef}>
             {showList.map((list,index) => {
               return (
-                <ListRow photo={list.profImg.thumb120x120} key={index} photoClick={() => {
+                <ListRow photo={list.profImg.thumb120x120} key={list.memNo} photoClick={() => {
                   goProfile(list.memNo)
                   closePopupAction();
                 }}>
@@ -218,7 +218,7 @@ const FanStarPopup = (props) => {
                         </div>
                       </div>
                       <div className="back">
-                        <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
+                        <FanBtn data={list} isMyProfile={isMyProfile} />
                       </div>
                     </>
                     :
@@ -228,7 +228,7 @@ const FanStarPopup = (props) => {
                       </div>
                       {list.memNo !== myMemNo &&
                         <div className="back">
-                          <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
+                          <FanBtn data={list} isMyProfile={isMyProfile} />
                         </div>
                       }
                     </>

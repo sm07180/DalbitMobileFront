@@ -12,10 +12,6 @@ import {useHistory} from 'react-router-dom';
 const SlidepopZip = (props) => {
   const {slideData, goProfile} = props;
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  // 프로필 페이지로 이동
-  // const goProfile = (memNo) => history.push(`/profile/${memNo}`);
 
   const closeSlidePop = () => {
     closePopup(dispatch);

@@ -107,7 +107,9 @@ const ProfileCard = (props) => {
             <button className={`${data.isFan ? 'isFan' : ''}`}
                     onClick={() => {
                       fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
-                    }}>{data.isFan ? '팬' : '+ 팬등록'}</button>
+                    }}>
+              {data.isFan ? '팬' : '+ 팬등록'}
+            </button>
           </div>
         }
       </div>

@@ -49,8 +49,6 @@ const MorePopup = (props) => {
   }, [profileData.memNo, profileData.isReceive])
 
   /* 방송시작 알림 설정 */
-  console.log(profileData.isReceive);
-  
   const editAlarm = useCallback(() => {
     const isReceive = profileData.isReceive;
     closePopupAction();
@@ -78,7 +76,7 @@ const MorePopup = (props) => {
   },[profileData.memNo, profileData.isReceive])
 
   return (
-    <section className='profileMore'>
+    <section className="profileMore">
       <div className="moreList" onClick={goMailAction}>메세지</div>
       {!profileData.isFan && <div className="moreList" onClick={editAlarm}>방송 알림 {profileData.isReceive ? 'OFF' : 'ON'}</div>}
       <div className="moreList" data-target-type="block"

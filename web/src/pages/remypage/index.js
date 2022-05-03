@@ -9,7 +9,7 @@ import MydalDetail from "./components/MydalDetail";
 import MyMenu from "./components/MyMenu";
 import MyBottom from "./components/MyBottom";
 import SlidepopZip from "./components/popup/SlidepopZip";
-import LayerPopup, {closeLayerPopup} from "../../components/ui/layerPopup/LayerPopup2";
+import LayerPopup from "../../components/ui/layerPopup/LayerPopup2";
 import SpecialHistoryPop from "./components/popup/SpecialHistoryPop";
 // scss
 import './style.scss';
@@ -74,10 +74,10 @@ const Remypage = () => {
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
         break;
       case "like":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like"});
         break;
       case "level":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "level", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "level"});
         break;
     }
     dispatch(setSlidePopupOpen());
@@ -87,10 +87,6 @@ const Remypage = () => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
-  }
-
-  const closePopupAction = () => {
-    closeLayerPopup(dispatch)
   }
 
   /* 프로필 이동 */
@@ -120,7 +116,7 @@ const Remypage = () => {
       <Header title="MY" />
       <section className="mypageTop">
         {/* 간략 프로필 */}
-        <MyInfo data={profileData} openSlidePop={openSlidePop} openStarDJHistoryPop={openLayerPop}/>
+        <MyInfo data={profileData} openSlidePop={openSlidePop} openLayerPop={openLayerPop}/>
 
         {/* 달 지갑 정보 */}
         <MydalDetail />
