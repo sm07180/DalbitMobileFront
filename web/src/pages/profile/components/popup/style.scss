@@ -9,7 +9,7 @@
     padding-top:20px;
     > h2 {
       line-height:48px;
-      margin-bottom:12px;
+      margin-bottom:20px;
       text-align:center;
       @include font(16px,bold,#202020);
     }
@@ -27,7 +27,7 @@
       overflow-y:hidden;
       > .tabmenu {
         @include subTabmenuStyle-1;
-        margin-bottom:12px;
+        margin-bottom:16px;
         .swiper-container {
           width:100%;
           .swiper-slide {
@@ -70,6 +70,7 @@
             width:58px;
             height:58px;
             margin:0 8px 0 3px;
+            cursor:pointer;
             &::before {
               content: "";
               @include position-top-left;
