@@ -1,14 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import Api from "context/api";
-import {useDispatch, useSelector} from "react-redux";
-import {isAndroid} from "context/hybrid";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
-  const {profileData,closePopupAction} = props;
+  const {profileData} = props;
   const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const popup = useSelector(state => state.popup);
   
   const [specialHistory, setSpecialHistory] = useState({cnt: 0, list: [], isLoading: false, pageNo: 1}); // 해당유저의 스페셜DJ 데이터
   
@@ -53,46 +50,31 @@ const SpecialHistoryPop = (props) => {
 
   useEffect(() => {
     fetchSpecialHistory(1);
-
-    if(isAndroid()) {
-      dispatch(setGlobalCtxBackState(true))
-      dispatch(setGlobalCtxBackFunction({name: 'commonPop', popupData: {...popup, commonPopup: false}}))
-    }
-
-    return () => {
-      closePopupAction();
-      if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null))
-        }
-        dispatch(setGlobalCtxBackFunction({name: ''}))
-      }
-    }
   },[]);
 
   return (
     <section className="honorPopup">
-      <div className='title'>
+      <div className="title">
         <span><strong>{specialHistory.list[0]?.mem_nick}</strong>님은</span>
         <span>{profileData.isSpecial ? "현재 스타DJ입니다." : "현재 스타DJ가 아닙니다."}</span>
       </div>
       <div className='reference'>
         * 60일 이내에 2시간 이상 방송 시간이 없으면<br/>스타DJ 누적 횟수가 초기화 됩니다.
       </div>
-      <div className='table'>
-        <div className='summary'>
+      <div className="table">
+        <div className="summary">
           <span>스타 DJ 약력</span>
           <span>총 {specialHistory.cnt}회</span>
         </div>
-        <div className='tableInfo'>
-          <div className='thead'>
+        <div className="tableInfo">
+          <div className="thead">
             <span>선정 일자</span>
             <span>선정 기수</span>
           </div>
-          <div className='tbody' id={"starHistoryPop"}>
+          <div className="tbody" id="starHistoryPop">
             {specialHistory.list.map((list,index) => {
               return (
-                <div className='tbodyList' key={index}>
+                <div className="tbodyList" key={index}>
                   <span>{list.select_year}년 {list.select_month}월</span>
                   <span>{list.round_no}</span>
                 </div>

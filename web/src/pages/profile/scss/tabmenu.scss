@@ -1,0 +1,20 @@
+@import "components/ui/_mixin.scss";
+
+.tabmenu {
+  position:-webkit-sticky;
+  position:sticky;
+  top: $HEADER-HEIGHT;
+  z-index: 1;
+  @include flex(center);
+  padding: 0 8px;
+  background-color:white;
+  li {
+    line-height:50px;
+    padding:0 12px;
+    @include font(16px,400,#666);
+    cursor:pointer;
+    &.active {
+      @include font(16px,700,black);
+    }
+  }
+}

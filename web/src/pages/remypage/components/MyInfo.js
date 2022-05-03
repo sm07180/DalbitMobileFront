@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 // global components
 import moment from "moment";
 import UtilityCommon from "common/utility/utilityCommon";
@@ -14,10 +13,10 @@ const greetingComment = [
 ]
 
 const MyInfo = (props) => {
-  const {data, openSlidePop, openStarDJHistoryPop} = props;
+  const {data, openSlidePop, openLayerPop} = props;
   const history = useHistory();
   
-  const [nowComment, setNowComment] = useState('');
+  const [nowComment, setNowComment] = useState("");
 
   /* time: HH:mm:ss */
   const getHourMinSec = (time) => {
@@ -49,16 +48,16 @@ const MyInfo = (props) => {
   return (
     <div className="myInfo" onClick={()=>{history.push('/myProfile')}}>
       <div className="textWrap">
-        <div className='text'>
+        <div className="text">
           <span><strong>{data?.nickNm}</strong>님</span>
           <span>{nowComment}</span>
         </div>
         <div className="info">
           <em className="level" data-target-type="level" onClick={openSlidePop}>Lv{data?.level}</em>
           {data?.specialDjCnt > 0 && UtilityCommon.eventDateCheck("20220501") &&
-            <em className={`starDj ${data.isSpecial ? "active" : ""}`} onClick={openStarDJHistoryPop}></em>
+            <em className={`starDj ${data.isSpecial ? "active" : ""}`} onClick={openLayerPop}></em>
           }
-          <span className='userId'>{data?.memId}</span>
+          <span className="userId">{data?.memId}</span>
         </div>
         <div className="count">
           <div data-target-type="fan" onClick={openSlidePop}>

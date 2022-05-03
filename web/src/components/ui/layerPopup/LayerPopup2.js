@@ -2,40 +2,35 @@ import React, {useEffect} from 'react';
 // scss
 import './layerPopup.scss';
 import {useDispatch, useSelector} from "react-redux";
-import {setCommonPopupClose} from "redux/actions/common";
+import {setLayerPopupClose} from "redux/actions/common";
 
 /* 팝업 닫기 */
 export const closeLayerPopup = (dispatch) => {
-  dispatch(setCommonPopupClose());
-  console.log('1',dispatch(setCommonPopupClose()));
+  dispatch(setLayerPopupClose({layerPopup: false}));
 };
 
 const LayerPopup2 = (props) => {
-  const {setPopup, title, children, cookie, close} = props;
-  const popupState = useSelector(state => state.popup);
+  const {title, children, cookie, close} = props;
   const dispatch = useDispatch();
-  
-  console.log(popupState.commonPopup);
+  const popupState = useSelector(state => state.popup);
 
   const closePopupDim = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
     const target = e.target;
     if (target.id === 'layerPop') {
+      e.preventDefault();
+      e.stopPropagation();
       closeLayerPopup(dispatch);
-      console.log('out');
     }
   }
 
   const dontShowAgain = (cookieName) => {
     setPopupCookie(cookieName, 'y')
-    setPopup(false)
+    dispatch(setLayerPopupClose({...popupState, layerPopup: false}));
   }
 
   /* 팝업 닫기 */
   const popupClose = () => {
-    dispatch(setCommonPopupClose({...popupState, commonPopup: false}));
-    console.log('1');
+    dispatch(setLayerPopupClose({...popupState, layerPopup: false}));
   }
 
   const setPopupCookie = (c_name, value) => {
@@ -51,28 +46,28 @@ const LayerPopup2 = (props) => {
   }
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = "overflowHidden";
     return () => {
-      document.body.style.overflow = ''
+      document.body.style.overflow = "";
     }
   }, [])
 
   return (
-    <div id="layerPop" className={close ? '' : 'defaultAlert'} onClick={closePopupDim}>
+    <div id="layerPop" onClick={closePopupDim}>
       <div className="popLayer">
         <div className="popContainer">
           {title && <h2>{title}</h2>}
           {children}
         </div>
         {close && 
-        <div className='closeWrap'>
+        <div className="closeWrap">
           {cookie && 
-            <label className='dontShowLabel' onClick={dontShowAgain(cookie)}>
-              <input type='checkbox' className='dontShow'/>
-              <span className='dontShowBtn'>다시보지않기</span>
+            <label className="dontShowLabel" onClick={dontShowAgain(cookie)}>
+              <input type="checkbox" className="dontShow"/>
+              <span className="dontShowBtn">다시보지않기</span>
             </label>
           }
-          <button className='close'onClick={popupClose}>닫기</button>
+          <button className="close" onClick={(e) => popupClose(e)}>닫기</button>
         </div>
         }
       </div>

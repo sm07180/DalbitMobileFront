@@ -1,48 +1,73 @@
-import React from 'react';
+import React, {useState} from 'react';
 // global components
 import PopSlide, {closePopup} from "../../../../components/ui/popSlide/PopSlide";
 // components
+import MorePopup from "./MorePopup";
+import BlockReport from "./BlockReport";
 import FanStarPopup from "./FanStarPopup";
 import LikePopup from "./LikePopup";
+import Present from "./Present";
 
 import {useDispatch} from "react-redux";
-import {useHistory} from 'react-router-dom'
 
 const SlidepopZip = (props) => {
-  const {slideData} = props;
+  const {slideData, goProfile, openSlidePop, isMyProfile} = props;
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  // 프로필 페이지로 이동
-  const goProfile = (memNo) => history.push(`/profile/${memNo}`);
-
+  
   const closeSlidePop = () => {
     closePopup(dispatch);
   }
 
   switch (slideData.type) {
+    case "header":
+      return (
+        <PopSlide>
+          <MorePopup
+            profileData={slideData.data}
+            myMemNo={slideData.memNo}
+            openSlidePop={openSlidePop}
+            closePopupAction={closeSlidePop} />
+        </PopSlide>
+      )
+    case "block":
+      return (
+        <PopSlide>
+          <BlockReport
+            profileData={slideData.data}
+            openSlidePop={openSlidePop}
+            closePopupAction={closeSlidePop} />
+        </PopSlide>
+      )
     case "fanStar":
       return (
         <PopSlide>
           <FanStarPopup
             type={slideData.fanStarType}
-            isMyProfile={true}
+            isMyProfile={isMyProfile}
             profileData={slideData.data}
             goProfile={goProfile}
             myMemNo={slideData.memNo}
-            closePopupAction={closeSlidePop}/>
+            closePopupAction={closeSlidePop} />
         </PopSlide>
       )
-    case "like":
+    case "like" || "cupid":
       return (
         <PopSlide>
           <LikePopup 
-            isMyProfile={true}
+            isMyProfile={isMyProfile}
             profileData={slideData.data}
             goProfile={goProfile}
             myMemNo={slideData.memNo}
             likePopTabState={slideData.likeType}
-            closePopupAction={closeSlidePop}/>
+            closePopupAction={closeSlidePop} />
+        </PopSlide>
+      )
+    case "present":
+      return (
+        <PopSlide>
+          <Present
+            profileData={slideData.data}
+            closePopupAction={closeSlidePop} />
         </PopSlide>
       )
     default :
