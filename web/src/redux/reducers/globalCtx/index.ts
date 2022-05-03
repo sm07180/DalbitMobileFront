@@ -5,7 +5,6 @@ import {convertMonday} from "../../../lib/rank_fn";
 import Api from "../../../context/api";
 import Utility from "../../../components/lib/utility";
 import {CHAT_MAX_COUNT} from "../../../pages/broadcast/constant";
-import {setGlobalCtxBackFunctionEnd} from "../../actions/globalCtx";
 
 //baseData, mailChatInfo, mailBlockUser
 const initUserProfile = {
