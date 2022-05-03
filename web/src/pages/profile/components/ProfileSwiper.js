@@ -55,79 +55,73 @@ const ProfileSwiper = (props) => {
   }, [data]);
 
   return (
-    <>
-      <section className='profileSwiper'>
-        {data.profImgList.length > 1 ?
-          <Swiper {...swiperPicture}>
-            {data.profImgList.map((item, index) => {
-              return (
-                <div key={index} onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
-                  <div className="photo" style={{cursor:"pointer"}}>
-                    <img src={item.profImg.thumb500x500} alt="" />
-                  </div>
+    <section className='profileSwiper'>
+      {data.profImgList.length > 1 ?
+        <Swiper {...swiperPicture}>
+          {data.profImgList.map((item, index) => {
+            return (
+              <div key={index} onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
+                <div className="photo" style={{cursor:"pointer"}}>
+                  <img src={item.profImg.thumb500x500} alt="" />
                 </div>
-              )
-            })}
-          </Swiper>
-          : data.profImgList.length === 1 ?
-          <div onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
-            <div className="photo">
-              <img src={data.profImgList[0].profImg.thumb500x500} style={{width:'100%', height:'100%', objectFit:'cover'}} alt="" />
-            </div>
+              </div>
+            )
+          })}
+        </Swiper>
+        : data.profImgList.length === 1 ?
+        <div onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
+          <div className="photo">
+            <img src={data.profImgList[0].profImg.thumb500x500} style={{width:'100%', height:'100%', objectFit:'cover'}} alt="" />
           </div>
-          :
-          <div className="swiper-slide">
-            <div className="photo" style={{backgroundColor:"#eee", height: '480px'}}>
-              <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
-            </div>
+        </div>
+        :
+        <div className="swiper-slide">
+          <div className="photo" style={{backgroundColor:"#eee", height: '480px'}}>
+            <img src={`${IMG_SERVER}/profile/photoNone.png`} alt="" />
           </div>
-        }
-        {!disabledBadge &&
-          <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
-            {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
-              <div className='badgeLive' onClick={()=>{
-                RoomValidateFromProfile({
-                  memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, roomNo:data.roomNo, webview
-                });
-              }}>
-                <span className='equalizer'>
-                  <Lottie
+        </div>
+      }
+      {!disabledBadge &&
+        <div className={`swiperBottom ${data.profImgList.length > 1 ? 'pagenation' : ''}`}>
+          {type === 'profile' && webview === '' && data.roomNo !== "" && !data.listenRoomNo &&
+            <div className='badgeLive' onClick={()=>{
+              RoomValidateFromProfile({
+                memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, roomNo:data.roomNo, webview
+              });
+            }}>
+              <span className='equalizer'>
+                <Lottie
+                  options={{
+                    loop: true,
+                    autoPlay: true,
+                    path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                  }}
+                />
+              </span>
+              <span className='liveText'>LIVE</span>
+            </div>
+          }
+          {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
+            <div className='badgeListener' onClick={()=>{
+              RoomValidateFromListenerFollow({
+                memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
+              });
+            }}>
+              <span className='headset'>
+                <Lottie
                     options={{
                       loop: true,
                       autoPlay: true,
-                      path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
+                      path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                     }}
                   />
-                </span>
-                <span className='liveText'>LIVE</span>
-              </div>
-            }
-            {type === 'profile' && webview === '' && data.listenRoomNo !== "" && listenOpen !== 2 && !data.roomNo &&
-              <div className='badgeListener' onClick={()=>{
-                RoomValidateFromListenerFollow({
-                  memNo:data.memNo, history, globalState, dispatch, nickNm:data.nickNm, listenRoomNo:data.listenRoomNo
-                });
-              }}>
-                <span className='headset'>
-                  <Lottie
-                      options={{
-                        loop: true,
-                        autoPlay: true,
-                        path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
-                      }}
-                    />
-                </span>
-                <span className='ListenerText'>LIVE</span>
-              </div>
-            }
-          </div>
-        }
-      </section>
-      {
-        popup.historyPopup &&
-        <></>
+              </span>
+              <span className='ListenerText'>LIVE</span>
+            </div>
+          }
+        </div>
       }
-    </>
+    </section>
   )
 }
 ProfileSwiper.defaultProps = {
