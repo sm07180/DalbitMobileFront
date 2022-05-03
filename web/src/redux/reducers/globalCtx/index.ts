@@ -5,6 +5,7 @@ import {convertMonday} from "../../../lib/rank_fn";
 import Api from "../../../context/api";
 import Utility from "../../../components/lib/utility";
 import {CHAT_MAX_COUNT} from "../../../pages/broadcast/constant";
+import {setGlobalCtxBackFunctionEnd} from "../../actions/globalCtx";
 
 //baseData, mailChatInfo, mailBlockUser
 const initUserProfile = {
@@ -450,7 +451,29 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, backState: payload}
   },
   "global/ctx/SET_BACK_FUNCTION": (state, {payload}) => {
-    return {...state, backFunction: payload}
+    // backFunction: 백버튼으로 처리될 배열 리스트
+    const prevBackFunctionList = state?.backFunction;
+    let newBackFunctionList: Array<string> = [];
+    if(prevBackFunctionList) {
+      newBackFunctionList = [...prevBackFunctionList, payload.name]
+    }else {
+      newBackFunctionList.push(payload.name);
+    }
+    alert(newBackFunctionList);
+
+    return {...state, backFunction: newBackFunctionList}
+  },
+  "global/ctx/SET_BACK_FUNCTION_END": (state, {payload}) => {
+    let prevBackFunctionList;
+
+    if(payload === 'clear') {
+      prevBackFunctionList = [];
+    }else {
+      prevBackFunctionList = state.backFunction;
+      prevBackFunctionList.pop();
+    }
+
+    return {...state, backFunction: prevBackFunctionList}
   },
   "global/ctx/SET_SELF_AUTH": (state, {payload}) => {
     return {...state, selfAuth: payload}
@@ -566,6 +589,9 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_USER_REPORT_INFO": (state, {payload}) => {
     return {...state, userReportInfo: payload}
+  },
+  "global/ctx/SET_BACK_EVENT_CALLBACK": (state, {payload}) => {
+    return {...state, backEventCallback: payload}
   },
   // reducer
   "global/ctx/LAYER_STATUS_OPEN_RIGHT_SIDE_USER": (state) => {
