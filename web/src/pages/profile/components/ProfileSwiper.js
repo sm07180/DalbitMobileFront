@@ -62,7 +62,7 @@ const ProfileSwiper = (props) => {
         })}
       </Swiper>
       : data.profImgList.length === 1 ?
-      <div onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
+      <div className="swiper-slide" onClick={() => openShowSlide(data.profImgList, 'y', 'profImg', topSwiperRef.current?.activeIndex)}>
         <div className="photo cursor">
           <img src={data.profImgList[0].profImg.thumb500x500} />
         </div>

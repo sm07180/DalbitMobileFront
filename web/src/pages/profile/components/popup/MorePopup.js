@@ -11,7 +11,7 @@ import {goMail} from "common/mailbox/mail_func";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const MorePopup = (props) => {
-  const {profileData, myMemNo, openSlidePop, closePopupAction} = props;
+  const {profileData, openSlidePop, closePopupAction} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
@@ -41,12 +41,9 @@ const MorePopup = (props) => {
           ...profileData,
           isReceive
         }))
-
         dispatch(setGlobalCtxMessage({type:'alert',title, msg}))
       } else {
-        dispatch(setGlobalCtxMessage({type:'alert',
-          msg: res.message
-        }))
+        dispatch(setGlobalCtxMessage({type:'alert',msg: res.message}))
       }
     });
   }, [profileData.memNo, profileData.isReceive])
@@ -54,7 +51,6 @@ const MorePopup = (props) => {
   /* 방송시작 알림 설정 */
   const editAlarm = useCallback(() => {
     const isReceive = profileData.isReceive;
-    // setPopSlide(false);
     closePopupAction();
     if(isReceive) {
       dispatch(setGlobalCtxMessage({type:'confirm',

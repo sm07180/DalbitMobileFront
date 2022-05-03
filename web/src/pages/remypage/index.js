@@ -96,7 +96,7 @@ const Remypage = () => {
   /* 프로필 이동 */
   const goProfile = memNo => {
     if(memNo) {
-      if(params.memNo !== memNo) {
+      if(profile.memNo !== memNo) {
         history.push(`/profile/${memNo}`)
       }
     }
