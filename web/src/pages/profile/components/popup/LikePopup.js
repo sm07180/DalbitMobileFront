@@ -309,7 +309,7 @@ const LikePopup = (props) => {
                       </div>
                     </div>
                     <div className="back">
-                      <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
+                      <FanBtn data={list} isMyProfile={isMyProfile} />
                     </div>
                   </>
                   :
@@ -320,7 +320,7 @@ const LikePopup = (props) => {
                     </div>
                     {list.memNo !== myMemNo &&
                       <div className="back">
-                        <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
+                        <FanBtn data={list} isMyProfile={isMyProfile} />
                       </div>
                     }
                   </>

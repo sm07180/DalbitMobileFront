@@ -39,9 +39,9 @@ const FanBtn = (props) => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             if(typeof callback === 'function') callback();
-            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message, callback:undefined }))
           } else if (res.result === 'fail') {
-            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message, callback:undefined }))
           }
         });
       }
