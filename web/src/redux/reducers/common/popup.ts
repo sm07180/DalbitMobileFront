@@ -19,6 +19,9 @@ const initialState: ICommonPopupState = {
 
   /* 공통 팝업 */
   commonPopup: false,
+  
+  /* 레이어 팝업 */
+  layerPopup: false,
 
   /* 애니메이션 액션 팝업 */
   slidePopup: false,
@@ -27,10 +30,13 @@ const initialState: ICommonPopupState = {
 
 const popup = createReducer<ICommonPopupState, CommonActions>(initialState, {
   "common/SET_COMMON_POPUP_OPEN_DATA": (state, {payload}) => {
-    return {...payload, commonPopup: true}
+    return {...payload, commonPopup: true, layerPopup: true}
   },
   "common/SET_COMMON_POPUP_CLOSE": () => {
     return {...initialState}
+  },
+  "common/SET_LAYER_POPUP_CLOSE": (state) => {
+    return {...state, layerPopup: false}
   },
   "common/SET_SLIDE_POPUP_OPEN": (state, {payload}) => {
     return {...state, ...payload, slidePopup: true, slideAction: true}
