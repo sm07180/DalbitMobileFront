@@ -83,7 +83,7 @@ const initialState:ClipState = {
         name: '재생순',
     },{
         index: 5,
-        name: '스폐셜DJ',
+        name: '스타DJ',
     },{
         index: 6,
         name: '랜덤',
