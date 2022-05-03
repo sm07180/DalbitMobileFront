@@ -66,6 +66,12 @@ const TotalInfo = (props) => {
       badgeLength++
       setBadgeTotalCnt(badgeLength)
     }
+    /* 컨텐츠 Dj 뱃지 */
+    if(data.isConDj) {
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
+    }
+
     if(data.commonBadgeList.length > 0) {
       for(let i = 0; i < data.commonBadgeList.length; i++){
         badgeLength++
@@ -134,8 +140,8 @@ const TotalInfo = (props) => {
       <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
         <div className="title">배지</div>
         <div className="badgeGroup">
+          <BadgeItems data={data} type="isBadgeMultiple" />
           <BadgeItems data={data} type="commonBadgeList" />
-          <BadgeItems data={data} type="isBadge" />
         </div>
         {badgeTotalCnt > 3 &&
         <button onClick={onOpenBdage}>열기/닫기</button>
