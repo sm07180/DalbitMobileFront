@@ -51,7 +51,7 @@ const MyMenu = (props) => {
         {list.path.includes("team") ?
           <div className='icon team'>
           {data.bgCode === "" ?
-            <div className={`empty new ${data.new !== 0 ? 'new' : ''}`} />
+            <div className={`empty ${data.new !== 0 ? 'new' : ''}`} />
           :
             <>
             <img src={`${IMG_SERVER}/team/parts/B/${data.bgCode}.png`} />

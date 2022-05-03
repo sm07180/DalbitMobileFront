@@ -49,6 +49,8 @@ const MorePopup = (props) => {
   }, [profileData.memNo, profileData.isReceive])
 
   /* 방송시작 알림 설정 */
+  console.log(profileData.isReceive);
+  
   const editAlarm = useCallback(() => {
     const isReceive = profileData.isReceive;
     closePopupAction();
