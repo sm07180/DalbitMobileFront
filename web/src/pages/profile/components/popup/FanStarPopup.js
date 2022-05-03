@@ -199,7 +199,7 @@ const FanStarPopup = (props) => {
           <div className="listWrap" ref={fanStarContainerRef}>
             {showList.map((list,index) => {
               return (
-                <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => {
+                <ListRow photo={list.profImg.thumb120x120} key={index} photoClick={() => {
                   goProfile(list.memNo)
                   closePopupAction();
                 }}>

@@ -50,7 +50,7 @@ const RankListPage = (props) => {
   const [ tabType, setTabType ] = useState(params.type || 'DJ');
   const [ rankInfo, setRankInfo ] = useState( { paging: { total: 0 }, list: [] }); // total : 총 리스트 개수, list: 4 ~ 10 위 정보
   const [ topRankInfo, setTopRankInfo ] = useState([]); // 실시간 랭킹 TOP3, 이전 랭킹 TOP3
-  
+
   // 혜택 페이지 이동
   const goRankReward = () => {
     history.push("/rankBenefit");
@@ -110,7 +110,7 @@ const RankListPage = (props) => {
         result = moment().subtract(1, 'd').format('YYYY-MM-DD'); // 어제 날짜
         break;
       case 2:
-        result = moment().subtract(7, 'd').day(1).format('YYYY-MM-DD'); // 지난주 월요일
+        result = moment().startOf('isoWeek').subtract(7, 'd').day(1).format('YYYY-MM-DD'); // 지난주 월요일
         break;
       case 3:
         result = moment().subtract(1, 'months').date(1).format('YYYY-MM-DD'); // 지난달 1일
@@ -125,7 +125,7 @@ const RankListPage = (props) => {
 
     return result;
   }
-  
+
   // 오늘 회차 날짜 데이터 구하기
   const getCurrentDate = (type) => {
     let result = '';
@@ -138,7 +138,7 @@ const RankListPage = (props) => {
         result = moment().format('YYYY-MM-DD'); // 오늘 날짜
         break;
       case 2:
-        result = moment().days(1).format('YYYY-MM-DD'); // 이번주 월요일
+        result = moment().startOf('isoWeek').days(1).format('YYYY-MM-DD'); // 이번주 월요일
         break;
       case 3:
         result = moment().date(1).format('YYYY-MM-DD'); // 이번달 1일
@@ -153,7 +153,7 @@ const RankListPage = (props) => {
 
     return result;
   }
-  
+
   // DJ(타임 제외), FAN, CUPID 랭킹 정보 가져오기
   const getRankList = async () => {
     const today = getCurrentDate();
@@ -203,7 +203,7 @@ const RankListPage = (props) => {
       setRankInfo({list: data.list.slice(3), paging: { total: data.listCnt }});
     }
 
-    if (prevRank.code === '00000' && prevRank.data.list > 0) {
+    if (prevRank.code === '00000' && prevRank.data.list.length > 0) {
       const { data } = prevRank;
       topRankList.push(addEmptyRanker(data.list));
     }
@@ -220,7 +220,7 @@ const RankListPage = (props) => {
     }
     return topList;
   };
-  
+
   const changeTab = (e) => {
     const { targetTab } = e.currentTarget.dataset;
 

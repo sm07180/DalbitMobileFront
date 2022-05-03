@@ -43,7 +43,7 @@ const SlidepopZip = (props) => {
         <PopSlide>
           <FanStarPopup
             type={slideData.fanStarType}
-            isMyProfile={true}
+            isMyProfile={isMyProfile}
             profileData={slideData.data}
             goProfile={goProfile}
             myMemNo={slideData.memNo}

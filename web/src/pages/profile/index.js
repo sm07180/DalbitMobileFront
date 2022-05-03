@@ -238,10 +238,10 @@ const ProfilePage = () => {
     const {targetType} = e.currentTarget.dataset;
     switch (targetType) {
       case "header":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "header", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "header"});
         break;
       case "block":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "block", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "block"});
         break;
       case "fan":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
@@ -249,14 +249,19 @@ const ProfilePage = () => {
       case "star":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
         break;
-      case "like":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: "", likeType: {titleTab: 0, subTab: 0, subTabType: isMyProfile ? 'fanRank' : ''}});
+      // likeType (isMyProfile && titleTab: 0=팬 랭킹, 1=전체 랭킹, subTab: 0={최근, 선물}, 1={누적, 좋아요}, subTabType: "fanRank", "totalRank")
+      // likeType (!isMyProfile && titleTab: 0=랭킹, subTab: 0=최근팬, 1=누적팬, 2=좋아요, subTabType: "")
+      case "like": 
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", likeType: {titleTab: isMyProfile ? 1 : 0, subTab: isMyProfile ? 1 : 2, subTabType: isMyProfile ? 'totalRank' : ''}});
+        break;
+      case "top3":
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", likeType: {titleTab: 0, subTab: 0, subTabType: isMyProfile ? 'fanRank' : ''}});
         break;
       case "cupid":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: "", likeType: {titleTab: 0, subTab: 2, subTabType: ''}});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", likeType: {titleTab: isMyProfile ? 1 : 0, subTab: isMyProfile ? 1 : 2, subTabType: isMyProfile ? 'totalRank' : ''}});
         break;
       case "present":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "present", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "present"});
         break;
     }
     dispatch(setSlidePopupOpen());

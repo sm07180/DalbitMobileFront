@@ -137,6 +137,9 @@
       margin-bottom:20px;
       padding:0 16px;
       @include tabmenuStyle-1;
+      li {
+        cursor:pointer;
+      }
     }
     .cntSection {
       padding:0 16px;

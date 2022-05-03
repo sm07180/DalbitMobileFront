@@ -340,6 +340,8 @@
   }
 
   .starDjInfo {
+    // 디테일 스타일
+    @import './scss/detailView.scss';
     @include flex(center,center,column);
     width: 100%;
     box-sizing: border-box;
