@@ -9,7 +9,7 @@ import MydalDetail from "./components/MydalDetail";
 import MyMenu from "./components/MyMenu";
 import MyBottom from "./components/MyBottom";
 import SlidepopZip from "./components/popup/SlidepopZip";
-import LayerPopup, {closeLayerPopup} from "../../components/ui/layerPopup/LayerPopup2";
+import LayerPopup from "../../components/ui/layerPopup/LayerPopup2";
 import SpecialHistoryPop from "./components/popup/SpecialHistoryPop";
 // scss
 import './style.scss';
@@ -74,10 +74,10 @@ const Remypage = () => {
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
         break;
       case "like":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like"});
         break;
       case "level":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "level", fanStarType: ""});
+        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "level"});
         break;
     }
     dispatch(setSlidePopupOpen());
@@ -89,9 +89,13 @@ const Remypage = () => {
     dispatch(setCommonPopupOpenData({...commonPopup, commonPopup: true}))
   }
 
-  const closePopupAction = () => {
-    closeLayerPopup(dispatch)
-    console.log('3');
+  /* 프로필 이동 */
+  const goProfile = memNo => {
+    if(memNo) {
+      if(profile.memNo !== memNo) {
+        history.push(`/profile/${memNo}`)
+      }
+    }
   }
 
   // 페이지 셋팅
@@ -112,7 +116,7 @@ const Remypage = () => {
       <Header title="MY" />
       <section className="mypageTop">
         {/* 간략 프로필 */}
-        <MyInfo data={profileData} openSlidePop={openSlidePop} openStarDJHistoryPop={openLayerPop}/>
+        <MyInfo data={profileData} openSlidePop={openSlidePop} openLayerPop={openLayerPop}/>
 
         {/* 달 지갑 정보 */}
         <MydalDetail />
@@ -130,14 +134,13 @@ const Remypage = () => {
       <MyBottom />
 
       {/* 슬라이드 팝업 모음 */}
-      {commonPopup.slidePopup && <SlidepopZip slideData={slidePopInfo} />}
+      {commonPopup.slidePopup && <SlidepopZip slideData={slidePopInfo} goProfile={goProfile} />}
 
       {/* 스페셜DJ 약력 팝업 */}
-      {commonPopup.commonPopup &&
+      {commonPopup.layerPopup &&
         <LayerPopup>
           <SpecialHistoryPop
-            profileData={profileData}
-            closePopupAction={closePopupAction}/>
+            profileData={profileData}/>
         </LayerPopup>
       }
     </div>

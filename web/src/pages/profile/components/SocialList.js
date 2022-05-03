@@ -13,7 +13,7 @@ import {useDispatch, useSelector} from "react-redux";
 import FeedLike from "pages/profile/components/FeedLike";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
+  const {socialList, openShowSlide, isMyProfile, type, openSlidePop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -55,26 +55,25 @@ const SocialList = (props) => {
   return (
     <div className="socialListWrap">
       {socialList.map((item, index) => {
-        if (type === 'fanBoard' && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== globalState.profile.memNo)) {
+        if (type === "fanBoard" && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== globalState.profile.memNo)) {
           return <React.Fragment key={item.replyIdx}/>
         }
 
-        const memNo = type === 'feed' ? profileData.memNo : item?.writerMemNo; //글 작성자
+        const memNo = type === "feed" ? profileData.memNo : item?.writerMemNo; //글 작성자
         const detailPageParam = {history, action: 'detail', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo
           , fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
         const modifyParam = {history, action: 'modify', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, };
         return (
-          <div className='socialList' key={item.reg_no ? item.reg_no : item.replyIdx}>
+          <div className="socialList" key={item.reg_no ? item.reg_no : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
-                              openBlockReportPop={openBlockReportPop}
+                              openSlidePop={openSlidePop}
                               modifyEvent={() => {
                                 memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)
                               }}
                               deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, profileData.memNo)}
                               photoClick={() => {
                                 photoClickEvent(item.mem_no)
-                              }}
-            />
+                              }} />
             <div className="socialContent">
               {!isClicked[index] && type === "feed" ?
                 <>

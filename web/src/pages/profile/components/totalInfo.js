@@ -16,7 +16,7 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TotalInfo = (props) => {
   const history = useHistory();
-  const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
+  const {data, goProfile, openSlidePop, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -32,15 +32,6 @@ const TotalInfo = (props) => {
   //
   const onOpenBdage = () => {
     setOpenBadge(!openBadge)
-  }
-
-  const openPopAction = (e) => {
-    const tabState = {
-      titleTab: 0,
-      subTab: 0,
-      subTabType: isMyProfile ? 'fanRank' : ''
-    }
-    openPopLike(e, tabState)
   }
 
   // 스와이퍼
@@ -137,7 +128,7 @@ const TotalInfo = (props) => {
   return (
     <section className="totalInfo">
       {badgeTotalCnt !== 0 &&
-      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+      <div className={`badgeInfo ${openBadge ? 'isOpen' : ''}`}>
         <div className="title">배지</div>
         <div className="badgeGroup">
           <BadgeItems data={data} type="isBadgeMultiple" />
@@ -150,8 +141,10 @@ const TotalInfo = (props) => {
       }
       <div className="rankInfo">
         <div className="box">
-          <div className="title" style={{cursor: 'pointer'}}
-               onClick={openPopAction}>
+          <div
+            className="title"
+            data-target-type="top3"
+            onClick={openSlidePop}>
             <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
@@ -173,7 +166,7 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title" style={{cursor: 'pointer'}} onClick={openPopLike}>
+          <div className="title" data-target-type="cupid" onClick={openSlidePop}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
