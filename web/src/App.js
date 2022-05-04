@@ -7,7 +7,7 @@ import {ErrorBoundary} from 'react-error-boundary'
 import 'styles/errorstyle.scss'
 import './styles/navigation.scss'
 import "./asset/scss/index.scss";
-import {Hybrid, isHybrid} from 'context/hybrid'
+import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 
 //components
 import Utility from 'components/lib/utility'
@@ -39,7 +39,7 @@ import {
   setGlobalCtxAdminChecker,
   setGlobalCtxAlarmMoveUrl,
   setGlobalCtxAlarmStatus,
-  setGlobalCtxAlertStatus, setGlobalCtxAuthRef, setGlobalCtxChatInfoInit,
+  setGlobalCtxAlertStatus, setGlobalCtxAuthRef, setGlobalCtxBackFunctionEnd, setGlobalCtxChatInfoInit,
   setGlobalCtxClipInfoAdd, setGlobalCtxClipPlayerInfo,
   setGlobalCtxClipPlayerInit, setGlobalCtxClipPlayerState, setGlobalCtxClipState,
   setGlobalCtxCustomHeader, setGlobalCtxIntervalId,
@@ -515,6 +515,13 @@ const App = () => {
     }
   }
 
+  /* 백버튼 내용 배열 clear */
+  const backBtnManager = () => {
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunctionEnd('clear'));
+    }
+  }
+
   useEffect(() => {
     if (globalState.splash !== null && globalState.token !== null && globalState.token && globalState.token.memNo && globalState.profile !== null) {
       setReady(true)
@@ -608,6 +615,7 @@ const App = () => {
     let historyListener = () => {
       isFooter();
       nativeFooterManager();
+      backBtnManager();
     };
     historyListener();
     // history.listen(historyListener);

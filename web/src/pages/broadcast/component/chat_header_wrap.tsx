@@ -736,7 +736,7 @@ const ChatHeaderWrapStyled = styled.div`
 
       .broadcast-info {
         width: calc(100% - 68px);
-        margin-left: 8px;
+        margin-left: 12px;
         color: #fff;
         z-index: 1;
 

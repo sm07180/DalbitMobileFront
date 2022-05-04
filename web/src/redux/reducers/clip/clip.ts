@@ -1,5 +1,5 @@
-import { createReducer } from "typesafe-actions";
-import {ClipActions, ClipState} from "../../types/clipType";
+import {createReducer} from "typesafe-actions";
+import {ClipState} from "../../types/clipType";
 
 const initialState:ClipState = {
     // 검색조건 1, 타입(주제)
@@ -12,7 +12,7 @@ const initialState:ClipState = {
         icon: '🎵'
     }, {
         cd: "clip_type",
-        cdNm: "커버",
+        cdNm: "커버노래",
         value: "01",
         sortNo: 1,
         isUse: 1,
