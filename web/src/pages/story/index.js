@@ -43,8 +43,12 @@ export default () => {
     Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
       const {result, message} = res
       if (result === 'success') {
-        const filtered = storyList.filter((story) => story.storyIdx !== storyIdx)
-        setStoryList(filtered)
+        dispatch(setGlobalCtxMessage({type:"alert",
+          msg: "사연을 삭제했습니다.",
+          callback: () => {
+            getList();
+          }
+        }))
       } else {
         
         dispatch(setGlobalCtxMessage({type:"alert",
