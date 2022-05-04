@@ -23,7 +23,6 @@ const ProfileSwiper = (props) => {
 
   const swiperPicture = {
     slidesPerView: 'auto',
-    spaceBetween: 8,
     autoplay: {
       delay: 100000,
       disableOnInteraction: false

@@ -170,11 +170,11 @@ const TotalInfo = (props) => {
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
-            <div className="photo">
+            <div className="photo cursor">
               <img src={data.cupidProfImg.thumb62x62} alt=""/>
             </div>
             :
-            <div className="photo">
+            <div className="photo cursor">
               <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
             </div>
           }
