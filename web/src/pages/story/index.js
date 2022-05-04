@@ -18,6 +18,8 @@ export default () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
+  const nowDay = moment().format("YYYY.MM.DD");
+
   const [storyList, setStoryList] = useState([]);
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
 
@@ -106,27 +108,30 @@ export default () => {
                 {
                   storyList.map((story, index) => {
                     const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story
-                    return (
-                      <div className='storyList' key={index}>
-                        <div className='thumbnail' onClick={() => {goLink(`${writer_no}`)}}>
-                          <img src={`${PHOTO_SERVER}${writer_mem_profile}`} alt=""/>
-                        </div>
-                        <div className='listContent'>
-                          <div className='dataInfo'>
-                            <div className='infoWrap'>
-                              <div className='userNick' onClick={() => {goLink(`${writer_mem_id}`)}}>{writer_mem_nick}</div>
-                              <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD HH:mm')}</div>
+                    const ago3Months =  moment(nowDay).subtract(3, 'months').format("YYYY.MM.DD");
+                    if(moment(write_date).isAfter(ago3Months)) {
+                      return (
+                        <div className='storyList' key={index}>
+                          <div className='thumbnail' onClick={() => {goLink(`${writer_no}`)}}>
+                            <img src={`${PHOTO_SERVER}${writer_mem_profile}`} alt=""/>
+                          </div>
+                          <div className='listContent'>
+                            <div className='dataInfo'>
+                              <div className='infoWrap'>
+                                <div className='userNick' onClick={() => {goLink(`${writer_mem_id}`)}}>{writer_mem_nick}</div>
+                                <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD HH:mm')}</div>
+                              </div>
+                              <div className='delBtnWrap'>
+                                <span className='delBtn' onClick={() => {delAction(room_no, idx)}}>삭제</span>
+                              </div>
                             </div>
-                            <div className='delBtnWrap'>
-                              <span className='delBtn' onClick={() => {delAction(room_no, idx)}}>삭제</span>
+                            <div className='messageWrap'>
+                              {contents}
                             </div>
                           </div>
-                          <div className='messageWrap'>
-                            {contents}
-                          </div>
                         </div>
-                      </div>
-                    )
+                      )
+                    }                    
                   })
                 }
               </div>              
