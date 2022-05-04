@@ -20,7 +20,7 @@
       background-color: #646464;
       cursor:pointer;
       &.active{
-        background-color: #3BC258;
+        background-color: #FFBB00;
       }
       img{
         height: 25px;
@@ -64,7 +64,7 @@
             .rankNum {
               width:36px;
               .num {
-                background-color: #3BC258;
+                background-color: #FFBB00;
                 color: white;
               }
             }
@@ -132,7 +132,7 @@
             @include flex(center);
             margin-top: 5px;
             >.num{
-              @include font(16px, $SemiBold,#3BC258);
+              @include font(16px, $SemiBold,#FF9100);
               margin-right: 4px;
             }
           }
@@ -142,7 +142,7 @@
         @include flex(center, center);
         width: 100%;
         height: 50px;
-        background: #3BC258;
+        background: #FFBB00;
         @include font(14px, $SemiBold, #fff);
         cursor: pointer;
       }
