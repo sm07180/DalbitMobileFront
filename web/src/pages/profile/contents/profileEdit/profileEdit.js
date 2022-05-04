@@ -129,7 +129,7 @@ const ProfileEdit = () => {
       dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
       dispatch(setGlobalCtxMessage({type:'alert',
         msg: `저장되었습니다.`,
-        callback: finished ? () => history.replace('/myProfile') : () => {}
+        callback: finished ? () => history.goBack() : () => {}
       }));
     } else {
       dispatch(setGlobalCtxMessage({type:'alert',title: 'Error', msg: message}));

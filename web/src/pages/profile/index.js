@@ -123,10 +123,6 @@ const ProfilePage = () => {
     })
   }
 
-  useEffect(() => {
-    console.log(slidePopInfo.starCnt);
-  },[profileData])
-
   /* 방송공지(고정) 데이터 호출 */
   const getNoticeFixData = (isInit) => {
     const apiParams = {
@@ -236,16 +232,14 @@ const ProfilePage = () => {
   }
 
   {/* 슬라이드 팝업 오픈 */}
-  const openSlidePop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const openSlidePop = (e, targetData = null) => {
     const {targetType} = e.currentTarget.dataset;
     switch (targetType) {
       case "header":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "header"});
         break;
       case "block":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "block"});
+        setSlidePopInfo({...slidePopInfo, data: targetData, memNo: targetData.memNo, nickNm: targetData.nickNm, type: "block"});
         break;
       case "fan":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
