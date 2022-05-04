@@ -3,7 +3,7 @@ import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
+import {setGlobalCtxBackFunction, setGlobalCtxBackFunctionEnd, setGlobalCtxBackState} from "redux/actions/globalCtx";
 
 const ProfileNoticePop = () => {
   const dispatch = useDispatch();
@@ -22,10 +22,10 @@ const ProfileNoticePop = () => {
     return () => {
       closePop();
       if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+        if(globalState.backFunction?.name?.length === 1) {
           dispatch(setGlobalCtxBackState(null));
         }
-        dispatch(setGlobalCtxBackFunction({name: ''}));
       }
     }
   }, []);

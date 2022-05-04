@@ -15,7 +15,12 @@ import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 import {COLOR_MAIN} from 'context/color'
 import {isAndroid} from "context/hybrid";
 //
@@ -63,12 +68,10 @@ const Alert = (props) => {
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        dispatch(setGlobalCtxBackState(null));
-
-        if(globalState.backFunction.name.length === 1) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+        if(globalState.backFunction?.name?.length === 1) {
           dispatch(setGlobalCtxBackState(null));
         }
-        dispatch(setGlobalCtxBackFunction({name: ''}));
       }
     }
   }, [])

@@ -76,12 +76,11 @@ const ShowSwiper = (props) => {
 
     return () => {
       if (isAndroid()) {
-        if (globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null))
-        }
-        dispatch(setGlobalCtxBackFunction({name: ''}))
         dispatch(setGlobalCtxBackEventCallback(null));
         dispatch(setGlobalCtxBackFunctionEnd(''));
+        if (globalState.backFunction?.name?.length === 1) {
+          dispatch(setGlobalCtxBackState(null))
+        }
       }
     }
   },[]);

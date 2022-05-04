@@ -469,7 +469,11 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
       prevBackFunctionList = [];
     }else {
       prevBackFunctionList = state.backFunction;
-      prevBackFunctionList.pop();
+      if(prevBackFunctionList) {
+        prevBackFunctionList.pop();
+      }else {
+        prevBackFunctionList = [];
+      }
     }
 
     return {...state, backFunction: prevBackFunctionList}

@@ -4,7 +4,12 @@ import LayerPopup from "components/ui/layerPopup/LayerPopup";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 import {isAndroid} from "context/hybrid";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
   const {profileData} = props;
@@ -44,10 +49,10 @@ const SpecialHistoryPop = (props) => {
     return () => {
       closePop();
       if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+        if(globalState.backFunction?.name?.length === 1) {
           dispatch(setGlobalCtxBackState(null));
         }
-        dispatch(setGlobalCtxBackFunction({name: ''}));
       }
     }
   },[])

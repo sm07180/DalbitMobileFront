@@ -3,11 +3,13 @@ import React from 'react'
 import {closePopup} from "components/ui/popSlide/PopSlide";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {
+  setGlobalCtxAlertStatus,
   setGlobalCtxBackFunction, setGlobalCtxBackFunctionEnd,
   setGlobalCtxBackState,
   setGlobalCtxMessage,
   setGlobalCtxMultiViewer
 } from "redux/actions/globalCtx";
+import {closeLayerPopup} from "components/ui/layerPopup/LayerPopup2";
 
 export const backFunc = ({globalState, dispatch}) => {
   const {backFunction} = globalState;
@@ -30,13 +32,16 @@ export const backFunc = ({globalState, dispatch}) => {
       dispatch(setGlobalCtxMessage({type:'alert', visible:false}));
       break;
     case 'commonPop':
-      dispatch(setCommonPopupOpenData({...backFunction.popupData}))
+      closeLayerPopup(dispatch);
       break;
     case 'callback': // 스와이퍼 사진 팝업, 이미지 편집 에서 사용중
       if (typeof globalState?.backEventCallback === 'function') {
         globalState?.backEventCallback();
-        dispatch(setGlobalCtxBackFunctionEnd(''));
       }
+      break;
+    case 'statusAlert': // common/alert/index
+      dispatch(setGlobalCtxAlertStatus({ status: false }));
+      globalState.alertStatus.cancelCallback && globalState.alertStatus.cancelCallback();
       break;
     default:
       break

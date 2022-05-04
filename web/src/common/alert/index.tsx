@@ -2,7 +2,13 @@ import React, { useContext, useCallback, useEffect } from "react";
 // static
 import "./alert.scss";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxAlertStatus} from "../../redux/actions/globalCtx";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState
+} from "../../redux/actions/globalCtx";
+import {isAndroid} from "../../context/hybrid";
 
 export default function Alert() {
   const dispatch = useDispatch();
@@ -24,13 +30,27 @@ export default function Alert() {
     e.stopPropagation();
   }, []);
 
-  // useEffect(() => {
-  //   /* popup떳을시 scroll 막는 코드 */
-  //   document.body.style.overflow = "hidden";
-  //   return () => {
-  //     document.body.style.overflow = "";
-  //   };
-  // }, []);
+  useEffect(() => {
+    if(globalState.alertStatus.status) {
+      document.body.style.overflow = "hidden";
+      if(isAndroid()) {
+        dispatch(setGlobalCtxBackState(true));
+        dispatch(setGlobalCtxBackFunction({name: 'statusAlert'}));
+      }
+    }else {
+      document.body.style.overflow = "";
+      if(isAndroid()) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+        if(globalState.backFunction?.name?.length === 1) {
+          dispatch(setGlobalCtxBackState(null));
+        }
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [globalState.alertStatus.status]);
 
   function renderContent(type: string = "common") {
     const makeTitle = () => {

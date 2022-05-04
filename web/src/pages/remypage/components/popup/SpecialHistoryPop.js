@@ -2,7 +2,12 @@ import React, {useEffect, useState} from 'react';
 import Api from "context/api";
 import {useDispatch, useSelector} from "react-redux";
 import {isAndroid} from "context/hybrid";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
   const {profileData,closePopupAction} = props;
@@ -62,10 +67,10 @@ const SpecialHistoryPop = (props) => {
     return () => {
       closePopupAction();
       if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+        if(globalState.backFunction?.name?.length === 1) {
           dispatch(setGlobalCtxBackState(null))
         }
-        dispatch(setGlobalCtxBackFunction({name: ''}))
       }
     }
   },[]);

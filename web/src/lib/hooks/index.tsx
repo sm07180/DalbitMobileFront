@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import {isAndroid} from "../../context/hybrid";
 import {
   setGlobalCtxBackEventCallback,
-  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunction, setGlobalCtxBackFunctionEnd,
   setGlobalCtxBackState
 } from "../../redux/actions/globalCtx";
 
@@ -25,11 +25,11 @@ export const useAddBackEvent = (dispatch, globalState, name= '', callback = () =
 
     return () => {
       if (isAndroid() && dispatch) {
-        if (globalState.backFunction.name.length === 1) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+        dispatch(setGlobalCtxBackEventCallback(null));
+        if (globalState.backFunction?.name?.length === 1) {
           dispatch(setGlobalCtxBackState(null));
         }
-        dispatch(setGlobalCtxBackFunction({name: ''}));
-        dispatch(setGlobalCtxBackEventCallback(null));
       }
     }
   },[]);
