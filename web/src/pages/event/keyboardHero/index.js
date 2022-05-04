@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState, useRef} from 'react';
 import {useHistory} from 'react-router-dom'
 import Swiper from 'react-id-swiper'
 import {IMG_SERVER} from 'context/config'
@@ -11,7 +11,12 @@ import {Context} from "context";
 const keyboardHero = () => {
   const history = useHistory()
   const context = useContext(Context)
+  const mainTopRef = useRef()
+  const tabRef = useRef()
 
+  const [tabFixed, setTabFixed] = useState(false)
+  const [tabType, setTabType] = useState('keyboardhero');
+  
   const swiperParams = {
     loop: true,
     direction: 'vertical',
@@ -21,7 +26,15 @@ const keyboardHero = () => {
       delay: 2500
     }
   }
+  const windowScrollEvent = () => {
+    let scroll = window.scrollY || window.pageYOffset
 
+    if (scroll >= mainTopRef.current.clientHeight) {
+      setTabFixed(true)
+    } else {
+      setTabFixed(false)
+    }
+  }
   //오늘의 당첨자 List State
   const [list, setList] = useState([]);
 
@@ -35,7 +48,12 @@ const keyboardHero = () => {
       setList(res.data);
     })
   },[]);
-
+  useEffect(() => {
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [])
   const imageNum = (preCode) => {
     switch (preCode){
       case "r01":
@@ -60,47 +78,98 @@ const keyboardHero = () => {
   return (
     <div id="keyboardHero">
       <Header title="키보드 히어로 31" type="back"/>
-      <img src={`${IMG_SERVER}/event/keyboardHero/mainTop.png`} alt="키보드 히어로 31" />
-      <section className="winningWrap">
-        <div className="winningBox">
-          <div className="title">
-            <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningTitle.png`} alt="오늘의 당첨자" />
-          </div>
-          <div className="content">
-            {(list && list.length > 0) ?
-              <>
-                <div className="welcome">축하드립니다!</div>
-                <Swiper {...swiperParams}>
-                  {list.map((data, index)=>{
-                    let giftImg = `https://image.dalbitlive.com/event/keyboardHero/present-${imageNum(data.pre_code)}.png`;
-                    return(
-                      <div key={index}>
-                        <ListRow photo={giftImg} key={index}>
-                          <div className="listContent">
-                            <div className="present">{data.code_name}</div>
-                            <div className="nick">{data.mem_nick}</div>
-                          </div>
-                        </ListRow>
-                      </div>
-                    )
-                  })}
-                </Swiper>
-                <button onClick={() => {history.push('/event/keyboardhero_todaywinning')}}>
-                  <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningButton.png`} alt="당첨자보기 및 선물받기" className="listMore"/>
-                </button>
-              </>
-              :
-              <img src={`${IMG_SERVER}/event/keyboardHero/listNone.png`} alt="아직 당첨자가 없어요!" />
-            }
-          </div>
+      <img src={`${IMG_SERVER}/event/keyboardHero/mainTop.png`} alt="키보드 히어로 31" ref={mainTopRef}/>
+      <section className={`tabWrap ${tabFixed ? 'fixed' : ''}`} ref={tabRef}>
+        <div className="tabBox">
+          <button className={tabType === "keyboardhero" ? 'active' : ''} onClick={() => {
+            setTabType("keyboardhero");
+          }}>
+            <img src={`${IMG_SERVER}/event/keyboardHero/tabKeyboardhero.png`} alt="키보드히어로 31" />
+          </button>
+          <button className={tabType === "bonus" ? 'active' : ''} onClick={() => {
+            setTabType("bonus");
+          }}>
+            <img src={`${IMG_SERVER}/event/keyboardHero/tabBonus.png`} alt="보너스" />
+          </button>
+          <div className="buttonBack"></div>
         </div>
       </section>
-      <section className="contentWrap">
-        <img src={`${IMG_SERVER}/event/keyboardHero/mainContent.png`}  alt="메인콘텐츠"/>
-      </section>
-      <section className="noticeWrap">
-        <img src={`${IMG_SERVER}/event/keyboardHero/notice.png`} alt="주의사항"/>
-      </section>
+      {tabType === "keyboardhero" ?
+      <>
+        <section className="winningWrap">
+          <div className="winningBox">
+            <div className="title">
+              <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningTitle.png`} alt="오늘의 당첨자" />
+            </div>
+            <div className="content">
+              {(list && list.length > 0) ?
+                <>
+                  <div className="welcome">축하드립니다!</div>
+                  <Swiper {...swiperParams}>
+                    {list.map((data, index)=>{
+                      let giftImg = `https://image.dalbitlive.com/event/keyboardHero/present-${imageNum(data.pre_code)}.png`;
+                      return(
+                        <div key={index}>
+                          <ListRow photo={giftImg} key={index}>
+                            <div className="listContent">
+                              <div className="present">{data.code_name}</div>
+                              <div className="nick">{data.mem_nick}</div>
+                            </div>
+                          </ListRow>
+                        </div>
+                      )
+                    })}
+                  </Swiper>
+                  <button onClick={() => {history.push('/event/keyboardhero_todaywinning')}}>
+                    <img src={`${IMG_SERVER}/event/keyboardHero/todayWinningButton.png`} alt="당첨자보기 및 선물받기" className="listMore"/>
+                  </button>
+                </>
+                :
+                <img src={`${IMG_SERVER}/event/keyboardHero/listNone.png`} alt="아직 당첨자가 없어요!" />
+              }
+            </div>
+          </div>
+        </section>
+        <section className="contentWrap">
+          <img src={`${IMG_SERVER}/event/keyboardHero/mainContent.png`}  alt="메인콘텐츠"/>
+        </section>
+        <section className="noticeWrap">
+          <img src={`${IMG_SERVER}/event/keyboardHero/notice-1.png`} alt="주의사항"/>
+        </section>
+      </>
+       :
+      <>
+        <section className="contentWrap">
+          <img src={`${IMG_SERVER}/event/keyboardHero/bonus.png`}  alt="보너스"/>
+          <div className="bonusWrap">
+            <div className="bonusBox">
+              <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-1.png`}>
+                <div className="listContent">
+                  <div className="title">방송 시청 150시간 달성</div>
+                  <div className="time">0시간 00분 00초</div>
+                </div>
+                <button className="listBack">
+                  100달 받기
+                </button>
+              </ListRow>
+              <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-2.png`}>
+                <div className="listContent">
+                  <div className="title">방송 시청 300시간 달성</div>
+                  <div className="time">300시간 59분 59초</div>
+                </div>
+                <button className="listBack active">
+                  300달 받기
+                </button>
+              </ListRow>
+            </div>
+          </div>
+        </section>
+        <section className="noticeWrap">
+          <img src={`${IMG_SERVER}/event/keyboardHero/notice-2.png`} alt="주의사항"/>
+        </section>
+      </>
+      }
+      
     </div>
   );
 };
