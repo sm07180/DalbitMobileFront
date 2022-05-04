@@ -1,19 +1,21 @@
 import React from 'react'
-//context
 // etc
 import {closePopup} from "components/ui/popSlide/PopSlide";
 import {setCommonPopupOpenData} from "redux/actions/common";
 import {
-  setGlobalCtxBackFunction,
+  setGlobalCtxAlertStatus,
+  setGlobalCtxBackFunction, setGlobalCtxBackFunctionEnd,
   setGlobalCtxBackState,
   setGlobalCtxMessage,
   setGlobalCtxMultiViewer
 } from "redux/actions/globalCtx";
+import {closeLayerPopup} from "components/ui/layerPopup/LayerPopup2";
+import {Hybrid} from "context/hybrid";
 
 export const backFunc = ({globalState, dispatch}) => {
   const {backFunction} = globalState;
-  const nameLength = backFunction.name.length;
-  switch (backFunction.name[nameLength-1]) {
+  const nameLength = backFunction.length;
+  switch (backFunction[nameLength-1]) {
     case 'booleanType':
       dispatch(setGlobalCtxBackFunction({name: 'booleanType', value: false}));
       break
@@ -31,14 +33,19 @@ export const backFunc = ({globalState, dispatch}) => {
       dispatch(setGlobalCtxMessage({type:'alert', visible:false}));
       break;
     case 'commonPop':
-      dispatch(setCommonPopupOpenData({...backFunction.popupData}))
+      closeLayerPopup(dispatch);
       break;
     case 'callback': // 스와이퍼 사진 팝업, 이미지 편집 에서 사용중
-      if (typeof context?.backEventCallback?.callback === 'function') {
-        context?.backEventCallback?.callback();
+      if (typeof globalState?.backEventCallback === 'function') {
+        globalState?.backEventCallback();
       }
       break;
+    case 'statusAlert': // common/alert/index
+      dispatch(setGlobalCtxAlertStatus({ status: false }));
+      globalState.alertStatus.cancelCallback && globalState.alertStatus.cancelCallback();
+      break;
     default:
+      Hybrid('goBack');
       break
   }
   setTimeout(() => {
