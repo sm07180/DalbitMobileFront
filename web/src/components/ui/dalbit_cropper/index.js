@@ -6,7 +6,12 @@ import CropImg from './static/ico-crop.png'
 import CropRotation from './static/ico-rotation.png'
 import {isAndroid} from "context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackEventCallback, setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackEventCallback,
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState
+} from "redux/actions/globalCtx";
 
 function DalbitCropper(props) {
   const {imgInfo, onClose, onCrop, className} = props;
@@ -121,10 +126,7 @@ function DalbitCropper(props) {
       document.body.style.overflow = ''
 
       if (isAndroid()) {
-        if (globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null));
-        }
-        dispatch(setGlobalCtxBackFunction({name: ''}));
+        dispatch(setGlobalCtxBackFunctionEnd(''));
         dispatch(setGlobalCtxBackEventCallback(null));
       }
     }
