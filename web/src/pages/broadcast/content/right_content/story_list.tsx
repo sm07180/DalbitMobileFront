@@ -6,11 +6,12 @@ import { TimeFormat } from "lib/common_fn";
 import NoResult from "common/ui/no_result";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../redux/actions/globalCtx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 export default function StoryList(props: any) {
   const dispatch = useDispatch();
-  const { roomOwner, roomNo } = props;
+  const { roomInfo, roomOwner, roomNo } = props;
+
   //state
   const [timer, setTimer] = useState("");
   const [storyMsg, setStoryMsg] = useState<string>("");
