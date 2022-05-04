@@ -1,6 +1,5 @@
 import {createReducer} from "typesafe-actions";
 import {BroadcastStateType, ListenerActions} from "../../types/broadcast/listenerType";
-import {GET_LIST_SUCCESS} from "../../actions/broadcast/listener";
 
 export const initialState: BroadcastStateType = {
   listener: {
@@ -16,7 +15,7 @@ export const initialState: BroadcastStateType = {
   }
 }
 
-const vote = createReducer<BroadcastStateType, ListenerActions>(initialState,{
+const broadcast = createReducer<BroadcastStateType, ListenerActions>(initialState,{
   "broadcast/listener/SET_LIST_PARAM" : (state, {payload})=>{
     return {...state, listener: {...state.listener, list:{...state.listener.list, param: payload}}}
   },
@@ -33,5 +32,5 @@ const vote = createReducer<BroadcastStateType, ListenerActions>(initialState,{
 });
 
 
-export default vote;
+export default broadcast;
 

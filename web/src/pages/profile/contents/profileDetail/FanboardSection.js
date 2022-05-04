@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const FanboardSection = (props) => {
-  const { fanBoardData, isMyProfile, deleteContents, profileData, openBlockReportPop, getFanBoardData, params } = props;
+  const { fanBoardData, isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData, params } = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const [formState, setFormState] = useState({
@@ -84,7 +84,7 @@ const FanboardSection = (props) => {
       </div>
       {fanBoardData.list.length > 0 ?
         <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard"
-                    deleteContents={deleteContents} profileData={profileData} openBlockReportPop={openBlockReportPop} />
+                    deleteContents={deleteContents} profileData={profileData} openSlidePop={openSlidePop} />
         :
         <NoResult />
       }

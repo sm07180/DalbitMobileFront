@@ -86,6 +86,9 @@ export interface ICommonPopupState {
   /* 공통 팝업 */
   commonPopup: boolean;
 
+  /* 레이어 팝업 */
+  layerPopup: boolean;
+
   /* 애니메이션 액션 팝업 */
   slidePopup: boolean;
   slideAction: boolean;

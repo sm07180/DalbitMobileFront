@@ -175,7 +175,6 @@ export function ReportPopup({ popup}) {
                 }))
             }
         };
-        sessionStorage.removeItem('room_active')
         dispatch(setGlobalCtxMessage({type: "confirm", ...message1}))
     };
     return <LayerPopup title="신고조치" setPopup={popup}>
