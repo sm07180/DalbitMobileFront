@@ -3,15 +3,14 @@ import React, {useState, useEffect} from 'react';
 import Api from 'context/api';
 // css
 import './fanBtn.scss';
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const FanBtn = (props) => {
-  const {data, isMyProfile, profileData} = props;
+  const {data, isMyProfile} = props;
   const dispatch = useDispatch();
-
-  const [showList, setShowList] = useState(data);
+  const profileData = useSelector(state => state.profile);
 
   /* 팬 버튼 토글 */
   const fanToggle = (memNo, memNick, isFan, callback) => {
@@ -40,9 +39,9 @@ const FanBtn = (props) => {
         Api.mypage_fan_cancel({data: {memNo}}).then(res => {
           if (res.result === 'success') {
             if(typeof callback === 'function') callback();
-            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message, callback:undefined }))
           } else if (res.result === 'fail') {
-            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message, callback:undefined }))
           }
         });
       }
@@ -50,27 +49,30 @@ const FanBtn = (props) => {
   }
 
   const fanToggleCallback = (isFan) => {
-    showList.isFan = !isFan;
+    data.isFan = !isFan;
 
     // 마이페이지, 마이프로필 페이지에서 카운트 하기위한 것이니 그 외에 곳에서는 안써도 됨
     if (isMyProfile) {
       if(isFan) { // 팬 해제 후
-        dispatch(setProfileData({...profileData, starCnt: profileData.starCnt -1}));
+        dispatch(setProfileData({...profileData, isFan: !profileData.isFan, starCnt: profileData.starCnt -1}));
+        console.log(profileData.starCnt);
       }else { // 팬 등록 후
-        dispatch(setProfileData({...profileData, starCnt: profileData.starCnt +1}));
+        dispatch(setProfileData({...profileData, isFan: !profileData.isFan, starCnt: profileData.starCnt +1}));
+        console.log(profileData.starCnt);
       }
+    }else {
+      dispatch(setProfileData({...profileData, isFan: !profileData.isFan}))
     }
-    setShowList(showList);
   }
 
   return (
     <button 
       id="fanBtn"
-      className={`${showList.isFan ? 'isFan' : ''}`}
+      className={`${data.isFan ? 'isFan' : ''}`}
       onClick={() => {
-        fanToggle(showList.memNo, showList.nickNm, showList.isFan, () => fanToggleCallback(showList.isFan))
+        fanToggle(data.memNo, data.nickNm, data.isFan, () => fanToggleCallback(data.isFan))
     }}>
-      {showList.isFan ? '팬' : '+ 팬등록'}
+      {data.isFan ? '팬' : '+ 팬등록'}
     </button>
   )
 }

@@ -10,6 +10,7 @@ import CloseBtn from "../../../../common/images/ic_player_close_btn.svg";
 import {useDispatch, useSelector} from "react-redux";
 // image
 
+// !Deprecated
 export default (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);

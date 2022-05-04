@@ -80,7 +80,22 @@ const BadgeItems = (props) => {
             :
             <em className="badgeItem specialDj">스페셜DJ</em>
       ))}
-      {type === 'isNew' && isNew.new ? 
+
+      {/* 메인 방송방 리스트 & 프로필 페이지 뱃지리스트 */}
+      {type === 'isBadgeMultiple' &&
+      <>
+        {isBadge.badgeSpecial == 2 ?
+          <em className="badgeItem bestDj">베스트DJ</em>
+          :
+          <>
+            {isBadge.badgeSpecial === 1 && <em className="badgeItem starDj">스타DJ</em>}
+            {isBadge.contents === true && <em className="badgeItem contentsDj">콘텐츠DJ</em>}
+          </>
+        }
+      </>
+      }
+
+      {type === 'isNew' && isNew.new ?
         <em className='badgeItem newDj'>NEW DJ</em>
         : type === 'isNew' && isNew.newListener &&
         <em className='badgeItem new'>NEW</em>

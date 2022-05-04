@@ -1,19 +1,56 @@
 import React from 'react';
+
+import Api from 'context/api';
 // global components
-import LevelItems from 'components/ui/levelItems/LevelItems';
-import GenderItems from 'components/ui/genderItems/GenderItems';
-import FrameItems from 'components/ui/frameItems/frameItems';
+import LevelItems from '../../../components/ui/levelItems/LevelItems';
+import GenderItems from '../../../components/ui/genderItems/GenderItems';
+import FrameItems from '../../../components/ui/frameItems/frameItems';
 // scss
-import './profileCard.scss'
+import './profileCard.scss';
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
-import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openSlidePop, openShowSlide, openPopFanStar, setSlidePopNo, openPopLike, fanToggle, popup} = props
+  const {data, isMyProfile, openSlidePop, openShowSlide} = props;
   const dispatch = useDispatch();
 
+  /* 팬 버튼 토글 */
+  const fanToggle = (memNo, memNick, isFan, callback) => {
+    isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  }
+  /* 팬 등록 */
+  const addFan = (memNo, memNick, callback) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        if(typeof callback === 'function') callback();
+        dispatch(setGlobalCtxMessage({type:'toast',
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        }))
+      } else if (res.result === 'fail') {
+        dispatch(setGlobalCtxMessage({type:'alert',
+          msg: res.message
+        }))
+      }
+    })
+  }
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick, callback) => {
+    dispatch(setGlobalCtxMessage({type:'confirm',
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            if(typeof callback === 'function') callback();
+            dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }))
+          } else if (res.result === 'fail') {
+            dispatch(setGlobalCtxMessage({type:'alert', msg: res.message }))
+          }
+        });
+      }
+    }))
+  }
   /* fan toggle 데이터 변경 */
   const fanToggleCallback = () => {
     if(!isMyProfile) {
@@ -27,11 +64,6 @@ const ProfileCard = (props) => {
       dispatch(setProfileData({...data, isFan: !data.isFan}))
     }
   }
-
-  const openPresentPop = () => {
-    dispatch(setSlidePopupOpen());
-    setSlidePopNo("present");
-  };
 
   return (
     <section className="profileCard">
@@ -56,26 +88,28 @@ const ProfileCard = (props) => {
           </div>
         </div>
         <div className="count">
-          <div data-target-type="fan" onClick={openPopFanStar} className="item">
+          <div data-target-type="fan" onClick={openSlidePop} className="item">
             <span>{data.fanCnt}</span>
             <i>팬</i>
           </div>
-          <div data-target-type="star" onClick={openPopFanStar} className="item">
+          <div data-target-type="star" onClick={openSlidePop} className="item">
             <span>{data.starCnt}</span>
             <i>스타</i>
           </div>
-          <div data-target-type="like" onClick={openPopLike} className="item">
+          <div data-target-type="like" onClick={openSlidePop} className="item">
             <span>{data.likeTotCnt}</span>
             <i>좋아요</i>
           </div>
         </div>
         {!isMyProfile &&
           <div className="buttonWrap">
-            {!isIos() && <button className='presentBtn' onClick={openPresentPop}>선물하기</button>}
+            {!isIos() && <button className="presentBtn" data-target-type="present" onClick={openSlidePop}>선물하기</button>}
             <button className={`${data.isFan ? 'isFan' : ''}`}
                     onClick={() => {
                       fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
-                    }}>{data.isFan ? '팬' : '+ 팬등록'}</button>
+                    }}>
+              {data.isFan ? '팬' : '+ 팬등록'}
+            </button>
           </div>
         }
       </div>
