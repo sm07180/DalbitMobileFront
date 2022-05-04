@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import Api from "context/api";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {isAndroid} from "context/hybrid";
 import {
   setGlobalCtxBackFunction,
@@ -12,6 +12,8 @@ import {
 const SpecialHistoryPop = (props) => {
   const {profileData} = props;
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const popup = useSelector(state => state.popup);
   
   const [specialHistory, setSpecialHistory] = useState({cnt: 0, list: [], isLoading: false, pageNo: 1}); // 해당유저의 스페셜DJ 데이터
   
@@ -63,7 +65,6 @@ const SpecialHistoryPop = (props) => {
     }
 
     return () => {
-      closePopupAction();
       if(isAndroid()) {
         dispatch(setGlobalCtxBackFunctionEnd(''));
         if(globalState.backFunction?.name?.length === 1) {
