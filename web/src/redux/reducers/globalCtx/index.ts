@@ -465,7 +465,6 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     }else {
       newBackFunctionList.push(payload.name);
     }
-    alert(newBackFunctionList);
 
     return {...state, backFunction: newBackFunctionList}
   },
