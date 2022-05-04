@@ -5,7 +5,7 @@ import {useHistory, useParams} from 'react-router-dom';
 import './style.scss';
 // global components
 import Header from '../../components/ui/header/Header';
-import LayerPopup, {closeLayerPopup} from '../../components/ui/layerPopup/LayerPopup2';
+import LayerPopup from '../../components/ui/layerPopup/LayerPopup2';
 // components
 import ProfileSwiper from './components/ProfileSwiper';
 import ProfileCard from './components/profileCard';
