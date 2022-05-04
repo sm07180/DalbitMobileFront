@@ -16,6 +16,7 @@ const MyBottom = () => {
       if (res.result === 'success') {
         if (isHybrid()) {
           Hybrid('GetLogoutToken', res.data)
+          Hybrid('ExitRoom', '');
         }
         dispatch(setGlobalCtxUpdateToken(res.data));
         dispatch(setGlobalCtxUpdateProfile(null));

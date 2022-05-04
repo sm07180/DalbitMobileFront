@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems';
 // components
-import Tabmenu from '../Tabmenu'
+import Tabmenu from '../Tabmenu';
 
-import './style.scss'
+import './style.scss';
 import {MypageBlackListAdd, postReportUser} from "common/api";
 import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -23,7 +23,7 @@ const REPORT_MIN_LENGTH = 10; // 신고하기 최소 글자
 const REPORT_MAX_LENGTH = 100; // 신고하기 최대 글자
 
 const BlockReport = (props) => {
-  const {blockReportInfo, closeBlockReportPop} = props;
+  const {profileData, closePopupAction} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
@@ -40,13 +40,16 @@ const BlockReport = (props) => {
 
   /* 차단 */
   const blockAction = () => {
-    MypageBlackListAdd({memNo: blockReportInfo.memNo}).then(res => {
+    MypageBlackListAdd({memNo: profileData.memNo}).then(res => {
       const { message, result } = res;
-      if (result === "success") {
+      if (res.code === "0") {
         dispatch(setGlobalCtxMessage({
           type: "alert",
           msg: message,
-          callback: () => history.goBack(),
+          callback: () => {
+            history.goBack();
+            closePopupAction();
+          },
         }));
       } else if (res.code === "-3") {
         dispatch(setGlobalCtxMessage({
@@ -67,7 +70,7 @@ const BlockReport = (props) => {
   /* 신고 api */
   const reportApi = () => {
     const reportApiParams = {
-      memNo: blockReportInfo.memNo,
+      memNo: profileData.memNo,
       reason: selectedInfo.value,
       cont: reportReason,
     }
@@ -75,7 +78,10 @@ const BlockReport = (props) => {
       if (res.result === "success") {
         dispatch(setGlobalCtxMessage({
           type: "alert",
-          msg: `${blockReportInfo.memNick}님을 신고하였습니다.`,
+          msg: `${profileData.nickNm}님을 신고하였습니다.`,
+          callback: () => {
+            closePopupAction();
+          },
         }));
       } else {
         dispatch(setGlobalCtxMessage({
@@ -134,7 +140,7 @@ const BlockReport = (props) => {
       {tabType === blockReportTabmenu[0] &&
         <>
           <div className="message">
-            <strong>{blockReportInfo?.memNick}</strong>님을<br/>
+            <strong>{profileData?.nickNm}</strong>님을<br/>
             차단하시겠습니까?
           </div>
           <div className='text'>
@@ -147,7 +153,7 @@ const BlockReport = (props) => {
             &gt; 차단회원관리페이지에서 확인할 수 있습니다.
           </div>
           <div className="buttonGroup">
-            <button className='cancel' onClick={closeBlockReportPop}>취소</button>
+            <button className='cancel' onClick={closePopupAction}>취소</button>
             <button className='active' onClick={blockAction}>차단</button>
           </div>
         </>
@@ -155,7 +161,7 @@ const BlockReport = (props) => {
       {tabType === blockReportTabmenu[1] &&
         <>
           <div className="message">
-            <strong>{blockReportInfo?.memNick}</strong>님을<br/>
+            <strong>{profileData?.nickNm}</strong>님을<br/>
             신고하시겠습니까?
           </div>
           <InputItems title="신고 유형">
@@ -179,7 +185,7 @@ const BlockReport = (props) => {
             <div className='count'>{reportReason.length}/{REPORT_MAX_LENGTH}</div>
           </InputItems>
           <div className="buttonGroup">
-            <button className='cancel' onClick={closeBlockReportPop}>취소</button>
+            <button className='cancel' onClick={closePopupAction}>취소</button>
             <button className={reportDisabled ? 'disabled' : 'active'} onClick={reportValidationCheck}>신고</button>
           </div>
         </>

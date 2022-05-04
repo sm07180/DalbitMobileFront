@@ -64,6 +64,7 @@
         height:33px;
         margin-right:12px;
         @include font(16px);
+        cursor: pointer;
         img {
           height:100%;
         }

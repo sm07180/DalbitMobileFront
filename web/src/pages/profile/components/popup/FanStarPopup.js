@@ -1,17 +1,16 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 
-import Api from 'context/api'
-import Swiper from 'react-id-swiper'
+import Api from 'context/api';
+import Swiper from 'react-id-swiper';
 // global components
-import ListRow from '../../../../components/ui/listRow/ListRow'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
-import NoResult from 'components/ui/noResult/NoResult'
-import FanBtn from '../../../../components/ui/fanBtn/FanBtn'
+import ListRow from '../../../../components/ui/listRow/ListRow';
+import DataCnt from '../../../../components/ui/dataCnt/DataCnt';
+import NoResult from '../../../../components/ui/noResult/NoResult';
+import FanBtn from '../../../../components/ui/fanBtn/FanBtn';
 // components
 
 import './style.scss'
 import {useDispatch} from "react-redux";
-import {useHistory} from 'react-router-dom';
 import {setProfileData} from "redux/actions/profile";
 import Utility from "components/lib/utility";
 
@@ -38,10 +37,10 @@ const starSubTabMenu = [
 const pagePerCnt = 20;
 
 const FanStarPopup = (props) => {
-  const {type, isMyProfile, fanToggle, profileData, goProfile, myMemNo, closePopupAction} = props
+  const {type, isMyProfile, profileData, goProfile, myMemNo, closePopupAction} = props;
   const dispatch = useDispatch();
-  const history = useHistory();
   const fanStarContainerRef = useRef();
+
   const [showList, setShowList] = useState([]);
   const [fanStarLikeState, setFanStarLikeState] = useState({type: '', title: '', subTab: []});
   const [subTypeInfo, setSubTypeInfo] = useState(type === 'fan' ? fanSubTabMenu[0] : starSubTabMenu[0]);
@@ -197,49 +196,49 @@ const FanStarPopup = (props) => {
           </ul>
         }
         {showList.length > 0 ?
-        <div className="listWrap" ref={fanStarContainerRef}>
-          {showList.map((list,index) => {
-            return (
-              <ListRow photo={list.profImg.thumb62x62} key={index} photoClick={() => {
-                goProfile(list.memNo)
-                closePopupAction();
-              }}>
-                {isMyProfile ?
-                  <>
-                    {index < 3 && <div className="rank">{index + 1}</div>}
-                    <div className="listContent">
-                      <div className="nick">{list.nickNm}</div>
-                      {/*{list.listenTime}분*/}
-                      <div className="date">등록일 {Utility.dateFormatterKor(list.regDt, "")}</div>
-                      {/*{Utility.printNumber(list.giftedByeol)}*/}
-                      <div className="listItem">
-                        <DataCnt value={list.listenTime} type={'listenTime'} />
-                        <DataCnt value={list.giftedByeol} type={'giftedByeol'} />
-                        {list.lastListenTs === 0 ? <DataCnt value={'-'} type={'lastListenTs'} /> : <DataCnt value={Utility.settingAlarmTime(list.lastListenTs)} type={'lastListenTs'} />}
+          <div className="listWrap" ref={fanStarContainerRef}>
+            {showList.map((list,index) => {
+              return (
+                <ListRow photo={list.profImg.thumb120x120} key={list.memNo} photoClick={() => {
+                  goProfile(list.memNo)
+                  closePopupAction();
+                }}>
+                  {isMyProfile ?
+                    <>
+                      {index < 3 && <div className="rank">{index + 1}</div>}
+                      <div className="listContent">
+                        <div className="nick">{list.nickNm}</div>
+                        {/*{list.listenTime}분*/}
+                        <div className="date">등록일 {Utility.dateFormatterKor(list.regDt, "")}</div>
+                        {/*{Utility.printNumber(list.giftedByeol)}*/}
+                        <div className="listItem">
+                          <DataCnt value={list.listenTime} type={'listenTime'} />
+                          <DataCnt value={list.giftedByeol} type={'giftedByeol'} />
+                          {list.lastListenTs === 0 ? <DataCnt value={'-'} type={'lastListenTs'} /> : <DataCnt value={Utility.settingAlarmTime(list.lastListenTs)} type={'lastListenTs'} />}
+                        </div>
                       </div>
-                    </div>
-                    <div className="back">
-                      <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
-                    </div>
-                  </>
-                  :
-                  <>
-                    <div className="listContent">
-                      <div className="nick">{list.nickNm}</div>
-                    </div>
-                    {list.memNo !== myMemNo &&
                       <div className="back">
-                        <FanBtn data={list} isMyProfile={isMyProfile} profileData={profileData} />
+                        <FanBtn data={list} isMyProfile={isMyProfile} />
                       </div>
-                    }
-                  </>
-                }
-              </ListRow>
-            )
-          })}
-        </div>
-        :
-        <NoResult />
+                    </>
+                    :
+                    <>
+                      <div className="listContent">
+                        <div className="nick">{list.nickNm}</div>
+                      </div>
+                      {list.memNo !== myMemNo &&
+                        <div className="back">
+                          <FanBtn data={list} isMyProfile={isMyProfile} />
+                        </div>
+                      }
+                    </>
+                  }
+                </ListRow>
+              )
+            })}
+          </div>
+          :
+          <NoResult />
         }
       </div>
       <button className="popClose" onClick={closePopupAction} />
@@ -247,4 +246,4 @@ const FanStarPopup = (props) => {
   )
 }
 
-export default FanStarPopup
+export default FanStarPopup;

@@ -4213,11 +4213,6 @@ export default class API {
     return await ajax({url: `/admin/broadcast/forceExit`, method: 'POST', reqBody: true, data: data})
   }
 
-  //메인 슬라이더
-  static getBannerList = async (data) => {
-    return await ajax({url: `/v2/main/getMainSwiper`})
-  }
-
   //파비 list
   static getPartnerDjList = async (data) => {
     return await ajax({url: `/getPartnerDjList`, method: 'POST', reqBody: true, data: data})
