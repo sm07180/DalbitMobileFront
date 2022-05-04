@@ -9,6 +9,8 @@
       @include font(16px,$SemiBold,#202020);
     }
   }
+  // 프로필 스와이퍼 스타일
+  @import "../../scss/profileSwiper.scss";
   .nonePhoto {
     position: relative;
     @include flex(center,center);

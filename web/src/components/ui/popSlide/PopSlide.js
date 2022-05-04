@@ -5,12 +5,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupClose, setSlideClose} from "redux/actions/common";
 import {isAndroid} from "context/hybrid";
 import {setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
+import {setGlobalCtxBackFunctionEnd} from "../../../redux/actions/globalCtx";
 
 let slidePopTimeout;
 
 /* 팝업 닫기 */
 export const closePopup = (dispatch) => {
   dispatch(setSlideClose());
+  dispatch(setGlobalCtxBackFunctionEnd(''));
   slidePopTimeout = setTimeout(() => {
     dispatch(setSlidePopupClose());
   }, 400);
@@ -48,12 +50,6 @@ const PopSlide = (props) => {
       dispatch(setSlidePopupClose());
       dispatch(setSlideClose());
       clearTimeout(slidePopTimeout);
-      if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null));
-        }
-        dispatch(setGlobalCtxBackFunction({name:''}))
-      }
     }
   }, [])
 

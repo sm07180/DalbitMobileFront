@@ -53,7 +53,7 @@ export default () => {
             </tr>
             <tr className="special">
               <td className="rank">
-                스페셜DJ
+                스타DJ
                 <br />
                 가산점
               </td>
@@ -70,7 +70,7 @@ export default () => {
           </tbody>
         </table>
         <div className='infoWrap'>
-          <p className='mainInfo'>획득한 가산점은 스페셜DJ 선발 점수 (일반 100점 만점)에 추가됩니다.</p>
+          <p className='mainInfo'>획득한 가산점은 스타DJ 선발 점수 (일반 100점 만점)에 추가됩니다.</p>
           <p className='subInfo'>예) 일반 점수 95점 + 가산점 10점 = 총 <span>105</span>점</p>
         </div>
       </div>

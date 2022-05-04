@@ -16,7 +16,12 @@ import useClick from 'components/hooks/useClick'
 import Utility from 'components/lib/utility'
 import {isAndroid} from "context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 //
 export default (props) => {
   const dispatch = useDispatch();
@@ -78,12 +83,7 @@ export default (props) => {
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        if(globalState.backFunction &&
-          globalState.backFunction.name &&
-          globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null))
-        }
-        dispatch(setGlobalCtxBackFunction({name: ''}))
+        dispatch(setGlobalCtxBackFunctionEnd(''));
       }
     }
   }, [])
