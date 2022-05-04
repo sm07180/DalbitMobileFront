@@ -12,7 +12,7 @@ const initialState:ClipState = {
         icon: '🎵'
     }, {
         cd: "clip_type",
-        cdNm: "커버",
+        cdNm: "커버노래",
         value: "01",
         sortNo: 1,
         isUse: 1,
