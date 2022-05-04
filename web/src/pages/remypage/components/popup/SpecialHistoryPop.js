@@ -67,9 +67,6 @@ const SpecialHistoryPop = (props) => {
     return () => {
       if(isAndroid()) {
         dispatch(setGlobalCtxBackFunctionEnd(''));
-        if(globalState.backFunction?.name?.length === 1) {
-          dispatch(setGlobalCtxBackState(null))
-        }
       }
     }
   },[]);

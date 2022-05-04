@@ -61,9 +61,6 @@ const LayerPop = (props) => {
       document.body.style.overflow = ''
       if(isAndroid()) {
         dispatch(setGlobalCtxBackFunctionEnd(''));
-        if(globalState.backFunction?.name?.length === 1) {
-          dispatch(setGlobalCtxBackState(null));
-        }
       }
     }
   }, [])

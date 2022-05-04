@@ -10,6 +10,7 @@ import {
   setGlobalCtxMultiViewer
 } from "redux/actions/globalCtx";
 import {closeLayerPopup} from "components/ui/layerPopup/LayerPopup2";
+import {Hybrid} from "context/hybrid";
 
 export const backFunc = ({globalState, dispatch}) => {
   const {backFunction} = globalState;
@@ -44,6 +45,7 @@ export const backFunc = ({globalState, dispatch}) => {
       globalState.alertStatus.cancelCallback && globalState.alertStatus.cancelCallback();
       break;
     default:
+      Hybrid('goBack');
       break
   }
   setTimeout(() => {

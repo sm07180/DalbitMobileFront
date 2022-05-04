@@ -27,9 +27,6 @@ export const useAddBackEvent = (dispatch, globalState, name= '', callback = () =
       if (isAndroid() && dispatch) {
         dispatch(setGlobalCtxBackFunctionEnd(''));
         dispatch(setGlobalCtxBackEventCallback(null));
-        if (globalState.backFunction?.name?.length === 1) {
-          dispatch(setGlobalCtxBackState(null));
-        }
       }
     }
   },[]);

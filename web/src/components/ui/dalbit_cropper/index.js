@@ -128,9 +128,6 @@ function DalbitCropper(props) {
       if (isAndroid()) {
         dispatch(setGlobalCtxBackFunctionEnd(''));
         dispatch(setGlobalCtxBackEventCallback(null));
-        if (globalState.backFunction?.name?.length === 1) {
-          dispatch(setGlobalCtxBackState(null));
-        }
       }
     }
   }, [])
