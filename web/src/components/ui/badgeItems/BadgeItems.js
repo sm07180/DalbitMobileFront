@@ -27,7 +27,7 @@ const BadgeItems = (props) => {
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
-          text !== "Partner" && text !== "" &&
+          text !== "" &&
             <React.Fragment key={index}>
               <em
                 className={`badgeItem`}
