@@ -108,7 +108,7 @@ export default () => {
                     const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story
                     return (
                       <div className='storyList' key={index}>
-                        <div className='thumbnail' onClick={() => {goLink(`${writer_mem_id}`)}}>
+                        <div className='thumbnail' onClick={() => {goLink(`${writer_no}`)}}>
                           <img src={`${PHOTO_SERVER}${writer_mem_profile}`} alt=""/>
                         </div>
                         <div className='listContent'>
