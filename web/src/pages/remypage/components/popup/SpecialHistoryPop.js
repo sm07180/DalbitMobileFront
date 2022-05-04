@@ -11,7 +11,7 @@ const SpecialHistoryPop = (props) => {
   
   let pagePerCnt = 100;
 
-  /* 스페셜DJ 약력 조회 Api */
+  /* 스타DJ 약력 조회 Api */
   const fetchSpecialHistory = (pageNo) => {
     const param = {
       pageNo: pageNo,

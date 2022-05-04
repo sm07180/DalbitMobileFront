@@ -123,10 +123,6 @@ const ProfilePage = () => {
     })
   }
 
-  useEffect(() => {
-    console.log(slidePopInfo.starCnt);
-  },[profileData])
-
   /* 방송공지(고정) 데이터 호출 */
   const getNoticeFixData = (isInit) => {
     const apiParams = {
