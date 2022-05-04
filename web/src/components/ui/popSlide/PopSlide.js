@@ -50,9 +50,6 @@ const PopSlide = (props) => {
       dispatch(setSlidePopupClose());
       dispatch(setSlideClose());
       clearTimeout(slidePopTimeout);
-      if(isAndroid()) {
-        dispatch(setGlobalCtxBackFunctionEnd(''));
-      }
     }
   }, [])
 
