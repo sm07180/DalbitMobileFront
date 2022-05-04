@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Api from 'context/api';
 // global components
@@ -8,20 +8,17 @@ import FrameItems from '../../../components/ui/frameItems/frameItems';
 import FanBtn from '../../../components/ui/fanBtn/FanBtn';
 // scss
 import './profileCard.scss';
-import {useDispatch, useSelector} from "react-redux";
-import {setProfileData} from "redux/actions/profile";
 import {isIos} from "context/hybrid";
+import {useDispatch} from "react-redux";
+import {setProfileData} from "redux/actions/profile";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileCard = (props) => {
   const {data, isMyProfile, openSlidePop, openShowSlide} = props;
   const dispatch = useDispatch();
-  const profileData = useSelector(state => state.profile);
-
-  console.log(profileData, data);
 
   /* 팬 버튼 토글 */
-  const fanToggle1 = (memNo, memNick, isFan, callback) => {
+  const fanToggle = (memNo, memNick, isFan, callback) => {
     isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
   }
   /* 팬 등록 */
@@ -34,7 +31,7 @@ const ProfileCard = (props) => {
         }))
       } else if (res.result === 'fail') {
         dispatch(setGlobalCtxMessage({type:'alert',
-          msg: res.message
+          msg: res.message, callback: undefined
         }))
       }
     })
@@ -57,15 +54,11 @@ const ProfileCard = (props) => {
   }
   /* fan toggle 데이터 변경 */
   const fanToggleCallback = () => {
-    if(!isMyProfile) {
-      /* api에서 조회하지 않고 스크립트로만 스타수 +- 시킴 (팬,스타 리스트 api 조회시에는 각각 갱신함) */
-      if(data.isFan) { // isFan -> !isFan (팬해제)
-        dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt -1}))
-      }else { // !isFan -> isFan (팬등록)
-        dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt +1}))
-      }
-    }else {
-      dispatch(setProfileData({...data, isFan: !data.isFan}))
+    /* api에서 조회하지 않고 스크립트로만 스타수 +- 시킴 (팬,스타 리스트 api 조회시에는 각각 갱신함) */
+    if(data.isFan) { // isFan -> !isFan (팬해제)
+      dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt -1}))
+    }else { // !isFan -> isFan (팬등록)
+      dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt +1}))
     }
   }
 
@@ -108,9 +101,9 @@ const ProfileCard = (props) => {
         {!isMyProfile &&
           <div className="buttonWrap">
             {!isIos() && <button className="presentBtn" data-target-type="present" onClick={openSlidePop}>선물하기</button>}
-            <button className={`${profileData.memNo === data.memNo && data.isFan ? 'isFan' : ''}`}
+            <button className={`${data.isFan ? 'isFan' : ''}`}
                     onClick={() => {
-                      fanToggle1(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
+                      fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
                     }}>
               {data.isFan ? '팬' : '+ 팬등록'}
             </button>
