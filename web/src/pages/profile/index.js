@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import Api from 'context/api';
 import {useHistory, useParams} from 'react-router-dom';
@@ -25,19 +25,24 @@ import {
   setProfileClipData,
   setProfileData,
   setProfileFanBoardData,
-  setProfileNoticeData, setProfileFeedNewData, setProfileNoticeFixData, setProfileTabData,
+  setProfileFeedNewData,
+  setProfileNoticeData,
+  setProfileNoticeFixData,
+  setProfileTabData,
 } from "redux/actions/profile";
 import {
-  profileClipPagingDefault,
   profileClipDefaultState,
+  profileClipPagingDefault,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
+  profileFeedDefaultState,
+  profileNoticeDefaultState,
+  profileNoticeFixDefaultState,
+  profilePagingDefault
 } from "redux/types/profileType";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/popup/ProfileNoticePop";
-import {setSlidePopupOpen, setIsWebView} from "redux/actions/common";
-import noticeFix from "redux/reducers/profile/noticeFix";
+import {setIsWebView, setSlidePopupOpen} from "redux/actions/common";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfilePage = () => {
@@ -122,10 +127,6 @@ const ProfilePage = () => {
       }
     })
   }
-
-  useEffect(() => {
-    console.log(slidePopInfo.starCnt);
-  },[profileData])
 
   /* 방송공지(고정) 데이터 호출 */
   const getNoticeFixData = (isInit) => {

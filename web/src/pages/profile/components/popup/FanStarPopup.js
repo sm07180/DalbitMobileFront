@@ -186,8 +186,8 @@ const FanStarPopup = (props) => {
                 return (
                   <div key={index}>
                     <li className={subTypeInfo.name === data.name ? 'active' : ''}
-                        onClick={() => subTypeClick(index)}
-                    >{data.name}
+                        onClick={() => subTypeClick(index)}>
+                      {data.name}
                     </li>
                   </div>
                 )
@@ -199,10 +199,13 @@ const FanStarPopup = (props) => {
           <div className="listWrap" ref={fanStarContainerRef}>
             {showList.map((list,index) => {
               return (
-                <ListRow photo={list.profImg.thumb120x120} key={list.memNo} photoClick={() => {
-                  goProfile(list.memNo)
-                  closePopupAction();
-                }}>
+                <ListRow
+                  photo={list.profImg.thumb120x120}
+                  key={list.memNo}
+                  photoClick={() => {
+                    goProfile(list.memNo)
+                    closePopupAction()
+                  }}>
                   {isMyProfile ?
                     <>
                       {index < 3 && <div className="rank">{index + 1}</div>}

@@ -305,7 +305,7 @@ const LikePopup = (props) => {
                       {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
                       <div className="listItem">
                         {list.good && <DataCnt type={"goodCnt"} value={list.good}/>}
-                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}                        
+                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}
                       </div>
                     </div>
                     <div className="back">
