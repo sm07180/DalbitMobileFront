@@ -22,6 +22,7 @@ import noticeFix from "./profile/noticeFix";
 import detail from "./profile/detail";
 import payStore from './payStore';
 import post from "./notice/post";
+import search from "./search";
 
 /* 기존 context */
 import rankCtx from "./rankCtx"
@@ -56,6 +57,7 @@ const rootReducer = combineReducers({
   , detail
   , payStore
   , post
+  , search
 
   , rankCtx
   , broadcastCtx

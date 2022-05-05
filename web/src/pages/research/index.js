@@ -23,18 +23,15 @@ import SearchResult from './components/SearchResult';
 // scss
 import './style.scss';
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setSearchData} from "redux/actions/search";
 
-const SearchPage = (props) => {
+const SearchPage = () => {
   const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const common = useSelector(state => state.common)
-  const mainState = useSelector((state) => state.main);
+  const search = useSelector(state => state.search);
 
-  const [searchVal, setSearchVal] = useState(''); // 검색 value 값
-  const [searchParam, setSearchParam] = useState(''); // child로 넘길 검색 값
+  const { searching, searchVal, searchParam } = search;
 
-  const [searching, setSearching] = useState(false); // 검색 결과창 접근 여부
-  const [ focusYn, setFocusYn ] = useState(false); // 인풋박스 포커스 여부
   const [djListInfo, setDjListInfo] = useState({list: []}); // 믿고 보는 DJ 정보
   const [liveListInfo, setLiveListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 지금 핫한 라이브 정보
   const [hotClipListInfo, setHotClipListInfo] = useState({ checkDate: '', list: [], totalCnt: 0, type: 0}); // 오늘 인기 있는 클립 정보
@@ -87,27 +84,29 @@ const SearchPage = (props) => {
 
   // 검색창 state 관리
   const onChange = (e) => {
-    setSearchVal(e.target.value);
+    dispatch(setSearchData({
+      ...search,
+      searchVal: e.target.value,
+    }))
   };
 
   // 취소 버튼 이벤트
   const removeValue = () => {
-    if (setSearching) {
-      setSearching(false);
-      setSearchVal('');
-      setFocusYn(false);
-    }
+    dispatch(setSearchData({
+      ...search,
+      searching: false,
+      searchVal: ''
+    }))
   }
 
   // 히스토리 클릭 이벤트
   const handleSearch = (value) => {
-    // 최초 검색시에만 state 변경
-    if (!searching) setSearching(true);
-
-    if (value !== searchVal) setSearchVal(value.trim());
-
-    // 검색 파라미터 SET
-    setSearchParam(value.trim());
+    dispatch(setSearchData({
+      ...search,
+      searchVal: value !== searchVal ? searchVal : value.trim(),
+      searching: true,
+      searchParam: value.trim(),
+    }))
   }
 
   // 검색 히스토리 관리
@@ -180,22 +179,15 @@ const SearchPage = (props) => {
     }
   };
 
-  const handleFocus = () => {
-    setFocusYn(true);
-  };
-
-  const handleBlur = () => {
-    if (searchVal.trim().length === 0) {
-      setFocusYn(false);
-    }
-  };
-
   const refreshActions = () => {
     getDjListInfo().then(r => {});
     getLiveListInfo().then(r => {});
     getHopClipListInfo().then(r => {});
-    setSearchVal('');
-    setSearching(false);
+    dispatch(setSearchData({
+      ...search,
+      searching: false,
+      searchVal: ''
+    }))
     getNewBjList();
     window.scrollTo(0, 0);
     dispatch(setIsRefresh(false));
