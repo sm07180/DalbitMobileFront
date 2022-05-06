@@ -12,7 +12,9 @@ let slidePopTimeout;
 /* 팝업 닫기 */
 export const closePopup = (dispatch) => {
   dispatch(setSlideClose());
-  dispatch(setGlobalCtxBackFunctionEnd(''));
+  if(isAndroid()) {
+    dispatch(setGlobalCtxBackFunctionEnd(''));
+  }
   slidePopTimeout = setTimeout(() => {
     dispatch(setSlidePopupClose());
   }, 400);
