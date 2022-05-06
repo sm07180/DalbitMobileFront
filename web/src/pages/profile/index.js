@@ -138,18 +138,6 @@ const ProfilePage = () => {
     dispatch(setSlidePopupOpen());
   };
 
-  const headerBackEvent = () => {
-    if(webview === 'new' && isHybrid()) {
-      if(location.key) {
-        history.goBack();
-      }else {
-        Hybrid('CloseLayerPopup');
-      }
-    }else {
-      history.goBack();
-    }
-  }
-
   /* 페이지 이동 */
   useEffect(() => {
     if(globalState.token.isLogin) {
@@ -174,8 +162,6 @@ const ProfilePage = () => {
       resetProfileData();
     }
   }, []);
-
-  console.log(webview);
 
   // 페이지 시작
   return (

@@ -176,8 +176,6 @@ const SocialContents = (props) => {
     }))
   }
 
-  console.log(webview,location.pathname,location.search,1);
-
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
     let hasTabParam = false;
@@ -200,7 +198,6 @@ const SocialContents = (props) => {
     });
 
     if(hasTabParam) {
-      console.log('webview');
       socialTabChangeAction(profileTab.tabList[tabState]);
       setProfileTabName(profileTab.tabList[tabState]);
     }else {
@@ -269,7 +266,6 @@ const SocialContents = (props) => {
       getFeedData(true);
     }else if(profileTab.tabName === profileTab.tabList[1]) {
       document.addEventListener('scroll', profileScrollEvent);
-      console.log('scrollDataCall');
       getFanBoardData(true);
     }else if(profileTab.tabName === profileTab.tabList[2]) {
       document.addEventListener('scroll', profileScrollEvent);

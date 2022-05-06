@@ -27,11 +27,11 @@ const ProfileInfo = (props) => {
   
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
-  const defaultNotice = [{
+  const defaultNotice = {
     contents: "방송 공지를 등록해주세요.",
     rcv_like_cnt: 0,
     replyCnt: 0
-  }]
+  };
   //
   const onOpenBdage = () => setOpenBadge(!openBadge)
 
@@ -241,7 +241,7 @@ const ProfileInfo = (props) => {
   }
 
   // 방송공지 컴포넌트
-  const BroadcastNotice = (props) => {
+  const BroadcastNotice = () => {
     return (
       <div className="broadcastNotice">
         <div className="title" onClick={onClickNotice}>방송공지</div>
@@ -271,17 +271,19 @@ const ProfileInfo = (props) => {
           )
         })}
         {(noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0) && isMyProfile &&
-          defaultNotice.map((v, idx) => {
-            return (
-              <div key={idx}>
-                <div className="noticeBox cursor">
-                  <div className="badge">Notice</div>
-                  <div className="text">{v.contents}</div>
-                  <FeedLike data={v} type={"notice"} likeType={"nonFix"} />
-                </div>
+          <div onClick={onClickNotice}>
+            <div className="noticeBox cursor">
+              <div className="badge">Notice</div>
+              <div className="text">{defaultNotice.contents}</div>
+              <div className="info">
+                <i className="likeOff">{defaultNotice.rcv_like_cnt}</i>
+                <i className="cmt">{defaultNotice.replyCnt}</i>
               </div>
-            )
-          })
+              <button className="fixIcon">
+                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+              </button>
+            </div>
+          </div>
         }
         </Swiper>
       </div>
@@ -354,11 +356,9 @@ const ProfileInfo = (props) => {
         <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
       </div>
       }
-      {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
+      {(noticeFixData.fixedFeedList.length !== 0 && isMyProfile) || (noticeData.feedList.length !== 0 && isMyProfile) ?
       <BroadcastNotice />
-      : isMyProfile ?
-      <BroadcastNotice />
-      :
+      : 
       <></>
       }
     </section>
