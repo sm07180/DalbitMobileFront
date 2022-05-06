@@ -5,6 +5,7 @@ import {convertMonday} from "../../../lib/rank_fn";
 import Api from "../../../context/api";
 import Utility from "../../../components/lib/utility";
 import {CHAT_MAX_COUNT} from "../../../pages/broadcast/constant";
+import {isAndroid} from "../../../context/hybrid";
 
 //baseData, mailChatInfo, mailBlockUser
 const initUserProfile = {
@@ -459,11 +460,11 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   "global/ctx/SET_BACK_FUNCTION": (state, {payload}) => {
     // backFunction: 백버튼으로 처리될 배열 리스트
     const prevBackFunctionList = state?.backFunction;
-    let newBackFunctionList: Array<string> = [];
+    let newBackFunctionList: Array<{name: string, value?: string, popupData?: {}}> = [];
     if(prevBackFunctionList) {
-      newBackFunctionList = [...prevBackFunctionList, payload.name]
+      newBackFunctionList = [...prevBackFunctionList, payload]
     }else {
-      newBackFunctionList.push(payload.name);
+      newBackFunctionList.push(payload);
     }
 
     return {...state, backFunction: newBackFunctionList}
@@ -503,10 +504,22 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, dateState: payload}
   },
   "global/ctx/UPDATE_MULTI_VIEWER": (state, {payload}) => {
-    if (payload.show) {
-      return {...state, multiViewer: payload, backState: true, backFunction: {name: 'multiViewer'}}
-    } else {
-      return {...state, multiViewer: payload, backState: null}
+    if(isAndroid()) {
+      if (payload.show) {
+        let backFunctionList = state.backFunction;
+
+        if(backFunctionList === undefined) {
+          backFunctionList = [payload];
+        }else {
+          backFunctionList.push(payload)
+        }
+
+        return {...state, multiViewer: payload, backState: true, backFunction: backFunctionList}
+      } else {
+        return {...state, multiViewer: payload}
+      }
+    }else {
+      return {...state, multiViewer: payload}
     }
   },
   "global/ctx/SET_BEST_DJ_DATA": (state, {payload}) => {
