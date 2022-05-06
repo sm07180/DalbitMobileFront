@@ -30,7 +30,7 @@ const Settingblack = () => {
   const [blackList, setBlackList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
   const [userList, setUserList] = useState([]);
-  let userTypeSetting = 0;
+  const [filterTextType, setFilterTextType] = useState(filter[0]);
 
   //차단 회원 리스트 조회
   const getblackList = async () => {
@@ -68,23 +68,18 @@ const Settingblack = () => {
   }
 
   //검색 데이터 출력
-  const fetchListData = async (type) => {
+  const fetchListData = async () => {
     if (!_.hasIn(changes, 'search') || changes.search.length === 0)
-      return dispatch(setGlobalCtxMessage({type: "alert",
-        msg: `검색어를 입력해주세요.`
-      }))
-    userTypeSetting = type === "search" ? Number(_.hasIn(changes, "searchType") ? changes.searchType : 0) : userTypeSetting
+      return dispatch(setGlobalCtxMessage({type: "alert", msg: `검색어를 입력해주세요.`}))
     const params = {
-      userType: userTypeSetting,
+      userType: filterTextType === "전체" ? 0 : filterTextType === "닉네임" ? 1 : 2,
       search: changes.search,
       searchType: "blackList",
       page: 1,
-      records: 999
+      records: 10000
     }
     const res = await Api.mypage_user_search({params})
-    if(res.result === "success") {
-      setUserList(res.data.list);
-    }
+    if(res.result === "success") {setUserList(res.data.list);}
   }
 
   //엔터로 검색
@@ -129,7 +124,7 @@ const Settingblack = () => {
         <>
           <section className="inputWrap">
             <div className="inputBox">
-              <FilterBtn data={filter} />
+              <FilterBtn filterTextType={filterTextType} setFilterTextType={setFilterTextType} data={filter} />
               <input type="text" placeholder='검색어를 입력해 보세요' name="search" onChange={onChange} onKeyUp={onKeyUp}/>
               <span className="icon" onClick={() => fetchListData("search")}/>
             </div>

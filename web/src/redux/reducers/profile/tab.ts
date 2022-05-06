@@ -3,7 +3,7 @@ import {IProfileTabState, ProfileActions} from "../../types/profileType";
 
 const initialState: IProfileTabState = {
   tabList: ['피드','팬보드','클립'],
-  tabName: '피드',
+  tabName: '팬보드',
   isRefresh: true,
   isReset: true,
 }
