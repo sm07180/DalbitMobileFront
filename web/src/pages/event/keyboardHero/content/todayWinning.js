@@ -4,11 +4,13 @@ import ListRow from 'components/ui/listRow/ListRow'
 import './todayWinning.scss'
 import Api from "context/api";
 import {useHistory} from "react-router-dom";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const todayWinning = () => {
-  const history = useHistory();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   //오늘의 당첨자 List State
   const [list, setList] = useState([]);
@@ -54,22 +56,15 @@ const todayWinning = () => {
           console.log(res)
           if(res.code === "C001"){
             if(res.data === 1){
-              context.action.toast({
-                msg: "선물받기완료"
-              })
+              dispatch(setGlobalCtxMessage({type: "alert",msg: '선물받기완료'}));
               setRefresh(!refresh);
             }else if(res.data === -1){
-              context.action.toast({
-                msg: `상품 최대지급수량 초과 <br/> 잠시 후에 다시 시도해주세요.`
-              })
+              dispatch(setGlobalCtxMessage({type: "alert",msg: `상품 최대지급수량 초과 <br/> 잠시 후에 다시 시도해주세요.`}));
             }else if(res.data === -2) {
-              context.action.toast({
-                msg: "이미 선물을 받았습니다."
-              })
+              dispatch(setGlobalCtxMessage({type: "alert",msg: '이미 선물을 받았습니다.'}));
             }else {
-              context.action.toast({
-                msg: "잠시 후에 다시 시도해주세요."
-              })
+              dispatch(setGlobalCtxMessage({type: "alert",msg: '잠시 후에 다시 시도해주세요.'}));
+
             }
           }
         });

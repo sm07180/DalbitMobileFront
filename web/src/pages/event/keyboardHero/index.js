@@ -6,11 +6,13 @@ import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
 import Api from "context/api";
 import './style.scss'
-import {useSelector} from "react-redux";
 import Utility from "common/utility/utility";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
 
 const keyboardHero = () => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
   const history = useHistory()
   const mainTopRef = useRef()
   const tabRef = useRef()
@@ -120,14 +122,14 @@ const keyboardHero = () => {
           method: 'POST'
         }).then((res) => {
           const result = res.data
-          if(result===0 || result === -2){
-            console.log("이미 선물을 받은 계정이 있습니다");
+          if(result === 0 || result === -2){
+            dispatch(setGlobalCtxMessage({type: "alert",msg: '이미 선물을 받은 계정이 있습니다.'}));
           }else if(result === -1){
-            console.log("조건이 충족하지 않습니다");
+            dispatch(setGlobalCtxMessage({type: "alert",msg: '조건이 충족하지 않습니다.'}));
           }else if(result === 1){
-            console.log("선물받기 완료");
+            dispatch(setGlobalCtxMessage({type: "alert",msg: '선물받기 완료'}));
           }else{
-            console.log("잠시 후에 다시 시도해주세요")
+            dispatch(setGlobalCtxMessage({type: "alert",msg: '잠시 후에 다시 시도해주세요.'}));
           }
         });
       }
@@ -207,7 +209,7 @@ const keyboardHero = () => {
                   <div className="title">방송 시청 150시간 달성</div>
                   <div className="time">{Utility.secondToHM(myInfo.play_time)}</div>
                 </div>
-                <button className={`listBack ${(myInfo.one_time_yn === "y" && myInfo.one_step_rcv_yn === "n" ) ? 'active' : ''}`}
+                <button className={`listBack ${(myInfo.one_time_yn === "y" && myInfo.one_step_rcv_yn === "n" ) ? '' : ''}`}
                         onClick={()=>giftItem("1")}>100달 받기</button>
               </ListRow>
               <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-2.png`}>
