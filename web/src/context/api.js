@@ -4138,6 +4138,18 @@ export default class API {
     })
   }
 
+  //키보드히어로 보너스탭
+  static keyboardHeroBonus = async (obj) => {
+    const {reqBody, data, params, method} = obj || {}
+    return await ajax({
+      url: '/event/keyboard/bonus',
+      method: method,
+      reqBody: reqBody,
+      params: params,
+      data: data,
+    })
+  }
+
   // 투표 등록
   static insVote = async (data) => {
     return await ajax({url: '/broad/vote/insVote', method: 'POST', reqBody: true, data: data})

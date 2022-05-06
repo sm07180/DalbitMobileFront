@@ -3,12 +3,12 @@ import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
 import './todayWinning.scss'
 import Api from "context/api";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
+import {useSelector} from "react-redux";
 
 const todayWinning = () => {
-  const context = useContext(Context)
   const history = useHistory();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   //오늘의 당첨자 List State
   const [list, setList] = useState([]);
@@ -18,7 +18,7 @@ const todayWinning = () => {
   useEffect(()=>{
     Api.keyboardHero({
       reqBody: false,
-      params: {memNo: context.profile.memNo ? context.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
+      params: {memNo: globalState.profile.memNo ? globalState.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
       method: 'GET'
     }).then((res)=>{
       console.log(res.data)

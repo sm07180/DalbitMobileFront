@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useHistory} from 'react-router-dom'
 import Swiper from 'react-id-swiper'
 import {IMG_SERVER} from 'context/config'
@@ -6,11 +6,12 @@ import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
 import Api from "context/api";
 import './style.scss'
-import {Context} from "context";
+import {useSelector} from "react-redux";
+import Utility from "common/utility/utility";
 
 const keyboardHero = () => {
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
-  const context = useContext(Context)
   const mainTopRef = useRef()
   const tabRef = useRef()
 
@@ -37,17 +38,39 @@ const keyboardHero = () => {
   }
   //오늘의 당첨자 List State
   const [list, setList] = useState([]);
+  const [myInfo, setMyInfo] = useState({
+    play_time : 0,
+    one_time_yn : "n",
+    two_time_yn : "n",
+    one_step_rcv_yn : "n",
+    two_step_rcv_yn : "n",
+  });
 
-  //오늘의 당첨자 API
-  useEffect(()=>{
-    Api.keyboardHero({
-      reqBody: false,
-      params: {memNo: context.profile.memNo ? context.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
-      method: 'GET'
-    }).then((res)=>{
-      setList(res.data);
-    })
-  },[]);
+  // get data
+  useEffect(() => {
+    if (tabType === "keyboardhero") { //오늘의 당첨자
+      Api.keyboardHero({
+        reqBody: false,
+        params: {memNo: globalState.profile.memNo ? globalState.profile.memNo : "0", pageNo: 1, pagePerCnt: 1000},
+        method: 'GET'
+      }).then((res) => {
+        setList(res.data);
+      })
+    } else {
+      Api.keyboardHeroBonus({ // 보너스 선물탭
+        reqBody: false,
+        params: {memNo: globalState.profile.memNo ? globalState.profile.memNo : "0" },
+        method: 'GET'
+      }).then((res) => {
+        setMyInfo({
+          ...res.data
+        });
+      })
+    }
+
+  }, [tabType]);
+
+
   useEffect(() => {
     window.addEventListener('scroll', windowScrollEvent)
     return () => {
@@ -75,6 +98,42 @@ const keyboardHero = () => {
     }
   }
 
+  //본인인증
+  const selfAuthCheck = async () =>{
+    const {result, data} = await Api.self_auth_check();
+    if(result === 'success'){
+      return {result : result, phoneNo : data.phoneNo};
+    }else{
+      history.push(`/selfauth?event=/event`)
+    }
+  }
+
+  const giftItem = (bonusSlct) => {
+    selfAuthCheck().then((response) => {
+      if (response.result === 'success') {
+        Api.keyboardHeroBonus({
+          reqBody: true,
+          data: {
+            memNo: globalState.profile.memNo ? globalState.profile.memNo : "0",
+            bonusSlct: bonusSlct,
+          },
+          method: 'POST'
+        }).then((res) => {
+          const result = res.data
+          if(result===0 || result === -2){
+            console.log("이미 선물을 받은 계정이 있습니다");
+          }else if(result === -1){
+            console.log("조건이 충족하지 않습니다");
+          }else if(result === 1){
+            console.log("선물받기 완료");
+          }else{
+            console.log("잠시 후에 다시 시도해주세요")
+          }
+        });
+      }
+    });
+  }
+
   return (
     <div id="keyboardHero">
       <Header title="키보드 히어로 31" type="back"/>
@@ -91,7 +150,7 @@ const keyboardHero = () => {
           }}>
             <img src={`${IMG_SERVER}/event/keyboardHero/tabBonus.png`} alt="보너스" />
           </button>
-          <div className="buttonBack"></div>
+          <div className="buttonBack"/>
         </div>
       </section>
       {tabType === "keyboardhero" ?
@@ -146,20 +205,18 @@ const keyboardHero = () => {
               <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-1.png`}>
                 <div className="listContent">
                   <div className="title">방송 시청 150시간 달성</div>
-                  <div className="time">0시간 00분 00초</div>
+                  <div className="time">{Utility.secondToHM(myInfo.play_time)}</div>
                 </div>
-                <button className="listBack">
-                  100달 받기
-                </button>
+                <button className={`listBack ${(myInfo.one_time_yn === "y" && myInfo.one_step_rcv_yn === "n" ) ? 'active' : ''}`}
+                        onClick={()=>giftItem("1")}>100달 받기</button>
               </ListRow>
               <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-2.png`}>
                 <div className="listContent">
                   <div className="title">방송 시청 300시간 달성</div>
-                  <div className="time">300시간 59분 59초</div>
+                  <div className="time">{Utility.secondToHM(myInfo.play_time)}</div>
                 </div>
-                <button className="listBack active">
-                  300달 받기
-                </button>
+                <button className={`listBack ${(myInfo.two_time_yn === "y" && myInfo.two_step_rcv_yn === "n") ?'active' : ''}`}
+                        onClick={()=>giftItem("2")}>300달 받기</button>
               </ListRow>
             </div>
           </div>
@@ -169,7 +226,6 @@ const keyboardHero = () => {
         </section>
       </>
       }
-      
     </div>
   );
 };
