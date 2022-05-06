@@ -112,7 +112,7 @@ const contentStarSchedule = () => {
       },
       {
         bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8031.png",
-        title:"뮤아진 리액션 챌린지",
+        title:"뮤아진의 리액션 챌린지",
         date:"5월 11일 22:00",
         endDay : "2020512 010000",
         memNo:61642511571222,
