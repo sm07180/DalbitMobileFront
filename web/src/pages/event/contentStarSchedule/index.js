@@ -102,6 +102,22 @@ const contentStarSchedule = () => {
         memNo:11631518696100,
         offState:false
       },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8027.png",
+        title:"얀규의 사연 라디오",
+        date:"5월 7일 20:00",
+        endDay : "20220507 230000",
+        memNo:11614503085121,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8031.png",
+        title:"뮤아진 리액션 챌린지",
+        date:"5월 11일 22:00",
+        endDay : "2020512 010000",
+        memNo:61642511571222,
+        offState:false
+      },
     ]
   )
   
@@ -128,7 +144,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-7.png`} alt="4월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5-1.png`} alt="4월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
