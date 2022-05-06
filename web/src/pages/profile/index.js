@@ -5,7 +5,7 @@ import './style.scss';
 // global components
 import Header from '../../components/ui/header/Header';
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import LayerPopup, {closeLayerPopup} from '../../components/ui/layerPopup/LayerPopup2';
+import LayerPopup from '../../components/ui/layerPopup/LayerPopup2';
 // components
 import ProfileSwiper from './components/ProfileSwiper';
 import ProfileCard from './components/profileCard';
@@ -22,7 +22,6 @@ import {setProfileData} from "redux/actions/profile";
 import {profileDefaultState} from "redux/types/profileType";
 import {setSlidePopupOpen} from "redux/actions/common";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
-import noticeFix from "redux/reducers/profile/noticeFix";
 
 const ProfilePage = () => {
   const history = useHistory();
@@ -167,7 +166,6 @@ const ProfilePage = () => {
       return history.replace('/login');
     }
     getProfileData(); // 프로필 상단 데이터
-
     setIsMyProfile(!params.memNo); // 내 프로필인지 체크
     setProfileReady(true);
     
@@ -177,10 +175,12 @@ const ProfilePage = () => {
     }
   }, []);
 
+  console.log(webview);
+
   // 페이지 시작
   return (
     <div id="myprofile">
-      <Header title={`${profileData.nickNm}`} type={'back'} backEvent={headerBackEvent}>
+      <Header title={`${profileData.nickNm}`} type="back">
         {isMyProfile ?
           <div className="buttonGroup">
             <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>

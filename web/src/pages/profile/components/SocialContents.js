@@ -1,9 +1,6 @@
-import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 
 import Api from 'context/api';
-import {useHistory, useParams} from 'react-router-dom';
-// global components
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 // components
 import Tabmenu from './Tabmenu';
 import FloatBtn from './FloatBtn';
@@ -27,6 +24,7 @@ import {
 } from "redux/types/profileType";
 import {setIsWebView} from "redux/actions/common";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useParams} from 'react-router-dom';
 
 const SocialContents = (props) => {
   const {profileData, profileReady, isMyProfile, webview, setWebview} = props;
@@ -42,8 +40,6 @@ const SocialContents = (props) => {
   const member = useSelector(state => state.member);
 
   const [scrollPagingCall, setScrollPagingCall] = useState(1); // 스크롤 이벤트 갱신을 위함
-
-  const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
 
   const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 피드
 
@@ -79,7 +75,7 @@ const SocialContents = (props) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : member.memNo !== "" ? member.memNo : globalState.profile.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
-      records: isInit? 10 : fanBoardData.paging.records
+      records: isInit? 20 : fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
@@ -131,57 +127,7 @@ const SocialContents = (props) => {
     })
   }
 
-  /* 피드 좋아요 */
-  const fetchFeedHandleLike = async (feedNo, mMemNo, like, likeType, index) => {
-    const params = {
-      feedNo: feedNo,
-      mMemNo: mMemNo,
-      vMemNo: globalState.profile.memNo
-    };
-    if(like === "n") {
-      await Api.myPageFeedLike(params).then((res) => {
-        if(res.result === "success") {
-          let tempIndex = feedData.feedList.findIndex(value => value.reg_no === parseInt(index));
-          let temp = feedData.feedList.concat([]);
-          temp[tempIndex].like_yn = "y";
-          temp[tempIndex].rcv_like_cnt++;
-          dispatch(setProfileFeedNewData({...feedData, feedList: temp}))
-        }
-      }).catch((e) => console.log(e));
-    } else if(like === "y") {
-      await Api.myPageFeedLikeCancel(params).then((res) => {
-        if(res.result === "success") {
-          let tempIndex = feedData.feedList.findIndex(value => value.reg_no === parseInt(index));
-          let temp = feedData.feedList.concat([]);
-          temp[tempIndex].like_yn = "n";
-          temp[tempIndex].rcv_like_cnt--;
-          dispatch(setProfileFeedNewData({...feedData, feedList: temp}))
-        }
-      }).catch((e) => console.log(e));
-    }
-  };
-
-  /* 피드 사진(여러장) 확대 */
-  const showImagePopUp = (data = null, type='', initialSlide = 0)=> {
-    if(!data) return;
-    let resultMap = [];
-    if (type === 'feedList') { // 피드 이미지 리스트
-      data.map((v, idx) => {
-        if (v?.imgObj) {
-          resultMap.push({photo_no: v.photo_no, ...v.imgObj});
-        }
-      });
-    }
-    setFeedShowSlide({visible:true, imgList: resultMap, initialSlide });
-  };
-
-  /* 피드 사진 닫기 */
-  const showSlideClear = useCallback(() => {
-    setFeedShowSlide({visible: false, imgList: [], initialSlide: 0});
-  }, []);
-
-
-  /* 스크롤 이벤트 */
+  {/* 스크롤 이벤트 */}
   const scrollEvent = useCallback((scrollTarget, callback) => {
     const popHeight = scrollTarget.scrollHeight;
     const targetHeight = scrollTarget.clientHeight;
@@ -189,15 +135,14 @@ const SocialContents = (props) => {
     if(popHeight - 1 < targetHeight + scrollTop) {
       callback()
     }
-    console.log('scrollEvent',popHeight,targetHeight,scrollTop);
   }, []);
 
   /* 스크롤 이벤트 remove */
   const removeScrollEvent = useCallback(() => {
-    document.removeEventListener('scroll', profileScrollEvent);
+    // document.removeEventListener('scroll', profileScrollEvent);
   }, []);
 
-  /* 피드, 팬보드, 클립 페이징 */
+  {/* 피드, 팬보드, 클립 페이징 */}
   const profileScrollEvent = useCallback(() => {
     const callback = () => {
       setScrollPagingCall(scrollPagingCall => scrollPagingCall + 1);
@@ -205,7 +150,7 @@ const SocialContents = (props) => {
     scrollEvent(document.documentElement, callback);
   }, []);
 
-  // 피드 / 팬보드 / 클립 탭 변경시 액션
+  {/* 피드 / 팬보드 / 클립 탭 변경시 액션 */}
   const socialTabChangeAction = (item) => {
     const scrollEventHandler = () => {
       removeScrollEvent();
@@ -218,14 +163,11 @@ const SocialContents = (props) => {
     }else if(item === profileTab.tabList[1]) {
       getFanBoardData(true);
       scrollEventHandler();
-      console.log('ddd');
     }else if(item === profileTab.tabList[2]) {
       getClipData(true);
       scrollEventHandler();
     }
   }
-
-  console.log(profileTab);
 
   const setProfileTabName = (param) => {
     dispatch(setProfileTabData({
@@ -233,6 +175,8 @@ const SocialContents = (props) => {
       tabName: param
     }))
   }
+
+  console.log(webview,location.pathname,location.search,1);
 
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
@@ -256,6 +200,7 @@ const SocialContents = (props) => {
     });
 
     if(hasTabParam) {
+      console.log('webview');
       socialTabChangeAction(profileTab.tabList[tabState]);
       setProfileTabName(profileTab.tabList[tabState]);
     }else {
@@ -273,7 +218,7 @@ const SocialContents = (props) => {
   const deleteContents = (type, index, memNo) => {
     const callback = async () => {
       if (type === 'notice') {
-        const {result, data, message} = await Api.mypage_notice_delete({
+        const {result, message} = await Api.mypage_notice_delete({
           data: {
             delChrgrName: profileData?.nickNm,
             noticeIdx: index,
@@ -288,7 +233,7 @@ const SocialContents = (props) => {
       } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
         const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
 
-        const {data, result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
+        const {result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
         if (result === 'success') {
           dispatch(setProfileFanBoardData({...fanBoardData, list}));
         } else {
@@ -400,17 +345,13 @@ const SocialContents = (props) => {
     getFeedData(true);
     getFanBoardData(true);
     getClipData(true);
-    socialTabChangeAction(profileDefaultTab);
-
-    console.log(profileDefaultTab);
     /* 프로필 하단 탭 데이터 */
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
     }else {
       tabHandler();
     }
-    // 스크롤 위치를 기억하는 경우가 있어서 0으로 초기화 해준다.
-    window.scrollTo(0, 0);
+    window.scrollTo(0, 0); // 스크롤 위치를 기억하는 경우가 있어서 0으로 초기화 해준다.
     return () => {
       removeScrollEvent();
     }
@@ -431,9 +372,6 @@ const SocialContents = (props) => {
       {profileTab.tabName === profileTab.tabList[0] &&
         <FeedSection
           profileData={profileData}
-          feedData={feedData}
-          fetchHandleLike={fetchFeedHandleLike}
-          showImagePopUp={showImagePopUp}
           isMyProfile={isMyProfile}
           deleteContents={deleteContents}/>
       }
@@ -444,8 +382,8 @@ const SocialContents = (props) => {
           profileData={profileData}
           fanBoardData={fanBoardData}
           isMyProfile={isMyProfile}
-          getFanBoardData={getFanBoardData}
           params={params}
+          getFanBoardData={getFanBoardData}
           deleteContents={deleteContents}/>
       }
 
@@ -456,11 +394,6 @@ const SocialContents = (props) => {
           clipData={clipData}
           isMyProfile={isMyProfile}
           webview={webview} />
-      }
-      
-      {/* 피드 사진 확대 */}
-      {feedShowSlide?.visible &&
-        <ShowSwiper imageList={feedShowSlide?.imgList || []} popClose={showSlideClear} swiperParam={{initialSlide: feedShowSlide?.initialSlide}}/>
       }
       
       {/* 글쓰기 플로팅 버튼 */}
