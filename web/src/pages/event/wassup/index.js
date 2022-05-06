@@ -64,27 +64,34 @@ const Wassup = () => {
   },[])
 
 
+  const pEvtWassupManSel = async ()=>{
+    const now = await Api.pEvtWassupManNoSel();
+    const last = await Api.pEvtWassupManLastNoSel();
+    const seqNo = now.data.seqNo ? now.data.seqNo : last.data.seqNo;
+    const listParams = {...pageInfo, pageNo:1, seqNo: seqNo};
+    const selParams = {seqNo: seqNo};
+
+    if(!seqNo){
+      setTimeout(()=>{
+        history.replace("/")
+      },0)
+    }
+    const listApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
+    const selApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjSel : Api.getWhatsUpNewMemberSel;
+
+    listApi(listParams).then((res) => {
+      setWassupList(res.data.list);
+      setWassupListCnt(res.data.cnt);
+      setPageInfo({...pageInfo, pageNo: 1});
+    });
+
+    selApi(selParams).then((res) => {
+      setWassupSel(res.data);
+    });
+
+  }
   useEffect(()=>{
-    // Api.pEvtWassupManNoSel().then((res)=>{
-    Api.pEvtWassupManLastNoSel().then((res)=>{
-      if(!res.data.seqNo){
-        setTimeout(()=>{
-          history.replace("/")
-        },0)
-      }
-      const listApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
-      const selApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjSel : Api.getWhatsUpNewMemberSel;
-
-      listApi({...pageInfo, pageNo:1, seqNo: res.data.seqNo}).then((res) => {
-        setWassupList(res.data.list);
-        setWassupListCnt(res.data.cnt);
-        setPageInfo({...pageInfo, pageNo: 1});
-      });
-
-      selApi({seqNo: res.data.seqNo}).then((res) => {
-        setWassupSel(res.data);
-      });
-    })
+    pEvtWassupManSel()
   }, [tabmenuType])
 
   // 당겨서 새로 고침
@@ -223,7 +230,7 @@ const Wassup = () => {
       >
         <Header title="이벤트" type="back" backEvent={backEvent}/>
         <section>
-          <img src={`${IMG_SERVER}/event/wassup/main.png`} alt="이벤트 이미지" />
+          <img src={`${IMG_SERVER}/event/wassup/main-2-2.png`} alt="이벤트 이미지" />
         </section>
         <div className={`tabmenuWrap ${tabFixed ? 'fixed' : ''}`} ref={tabMenuRef}>
           <ul className="tabmenu">
@@ -249,8 +256,9 @@ const Wassup = () => {
           </div>
           <ul>
             <li>동일 IP, 동일 디바이스로 부계정을 만들어 어뷰징을 하는 경우, 이벤트 대상에서 제외 및 관련 커뮤니티 가이드라인에 의거하여 관련 디바이스, IP로 등록된 모든 계정이 처벌을 받을 수 있습니다.</li>
-            <li>최종 순위는 이벤트 종료 시점을 기준으로 적용됩니다.</li>
-            <li>보상은 4월 18일 월요일에 일괄 지급됩니다.</li>
+            <li>1차,2차 및 특별상 결과는 5월 23일 일괄 발표합니다.</li>
+            <li>시그니처 아이템 제작권은 대상자에게 우체통을 통해 개별 안내드립니다.</li>
+            <li>FAN 부문 보너스로 드리는 시그니처 아이템 제작권은 DJ 부문 당첨자와 중복될 수 없습니다.</li>
           </ul>
         </section>
       </div>
