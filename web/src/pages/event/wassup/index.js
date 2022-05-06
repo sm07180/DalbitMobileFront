@@ -64,27 +64,34 @@ const Wassup = () => {
   },[])
 
 
+  const pEvtWassupManSel = async ()=>{
+    const now = await Api.pEvtWassupManNoSel();
+    const last = await Api.pEvtWassupManLastNoSel();
+    const seqNo = now.data.seqNo ? now.data.seqNo : last.data.seqNo;
+    const listParams = {...pageInfo, pageNo:1, seqNo: seqNo};
+    const selParams = {seqNo: seqNo};
+
+    if(!seqNo){
+      setTimeout(()=>{
+        history.replace("/")
+      },0)
+    }
+    const listApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
+    const selApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjSel : Api.getWhatsUpNewMemberSel;
+
+    listApi(listParams).then((res) => {
+      setWassupList(res.data.list);
+      setWassupListCnt(res.data.cnt);
+      setPageInfo({...pageInfo, pageNo: 1});
+    });
+
+    selApi(selParams).then((res) => {
+      setWassupSel(res.data);
+    });
+
+  }
   useEffect(()=>{
-    // Api.pEvtWassupManNoSel().then((res)=>{
-    Api.pEvtWassupManLastNoSel().then((res)=>{
-      if(!res.data.seqNo){
-        setTimeout(()=>{
-          history.replace("/")
-        },0)
-      }
-      const listApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjList : Api.getWhatsUpNewMemberList;
-      const selApi = tabmenuType === tabmenu[0] ? Api.getWhatsUpDjSel : Api.getWhatsUpNewMemberSel;
-
-      listApi({...pageInfo, pageNo:1, seqNo: res.data.seqNo}).then((res) => {
-        setWassupList(res.data.list);
-        setWassupListCnt(res.data.cnt);
-        setPageInfo({...pageInfo, pageNo: 1});
-      });
-
-      selApi({seqNo: res.data.seqNo}).then((res) => {
-        setWassupSel(res.data);
-      });
-    })
+    pEvtWassupManSel()
   }, [tabmenuType])
 
   // 당겨서 새로 고침
