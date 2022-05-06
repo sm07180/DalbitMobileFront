@@ -31,6 +31,8 @@ const Settingblack = () => {
   const {changes, setChanges, onChange} = useChange({onChange: -1})
   const [userList, setUserList] = useState([]);
   const [filterTextType, setFilterTextType] = useState(filter[0]);
+  const [blackListSearch, setBlackListSearch] = useState({page: 1, records: 20, searchType: "blackList"});
+  const [blackListPageInfo, setBlackListPageInfo] = useState({list: [], paging: {next: 1, page: 0, prev: 0, records: 20, total: 0, totalPage: 0}});
 
   //차단 회원 리스트 조회
   const getblackList = async () => {

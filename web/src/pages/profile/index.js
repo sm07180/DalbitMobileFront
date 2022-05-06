@@ -73,7 +73,7 @@ const ProfilePage = () => {
   const [profileReady, setProfileReady] = useState(false); // 페이지 mount 후 ready
 
   const [feedShowSlide, setFeedShowSlide] = useState({visible: false, imgList: [], initialSlide: 0});
-  
+
   const [slidePopInfo, setSlidePopInfo] = useState({
     data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "", fanStarType: "", likeType: {titleTab: 0, subTab: 0, subTabType: ''},
   }); // 슬라이드 팝업 정보
@@ -194,30 +194,19 @@ const ProfilePage = () => {
         const data= res.data;
         const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
-
-        if(fanBoardPageInfo.page !== 1) {
-          let temp = []
-          data.list.forEach((value) => {
-            if(fanBoardData.list.findIndex((target) => target.replyIdx === value.replyIdx) === -1) {
-              temp.push(value);
-            }
-          });
-          dispatch(setProfileFanBoardData({
-            ...fanBoardData,
-            list: data.paging?.page > 1 ? fanBoardData.list.concat(temp) : data.list,
-            listCnt: data.length > 0 ? data.paging : 0,
-            paging: data.paging ? data.paging : profileFanBoardPagingDefault,
-            isLastPage
-          }))
-        } else {
-          dispatch(setProfileFanBoardData({
-            ...fanBoardData,
-            list: data.list,
-            listCnt: data.length > 0 ? data.paging : 0,
-            paging: data.paging ? data.paging : profileFanBoardPagingDefault,
-            isLastPage,
-          }));
-        }
+        let temp = []
+        data.list.forEach((value) => {
+          if(fanBoardData.list.findIndex((target) => target.replyIdx === value.replyIdx) === -1) {
+            temp.push(value);
+          }
+        });
+        dispatch(setProfileFanBoardData({
+          ...fanBoardData,
+          list: data.paging?.page > 1 ? fanBoardData.list.concat(temp) : data.list,
+          listCnt: data.length > 0 ? data.paging : 0,
+          paging: data.paging ? data.paging : profileFanBoardPagingDefault,
+          isLastPage
+        }))
         if(isLastPage) {
           removeScrollEvent();
         }
@@ -274,7 +263,7 @@ const ProfilePage = () => {
         break;
       // likeType (isMyProfile && titleTab: 0=팬 랭킹, 1=전체 랭킹, subTab: 0={최근, 선물}, 1={누적, 좋아요}, subTabType: "fanRank", "totalRank")
       // likeType (!isMyProfile && titleTab: 0=랭킹, subTab: 0=최근팬, 1=누적팬, 2=좋아요, subTabType: "")
-      case "like": 
+      case "like":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", likeType: {titleTab: isMyProfile ? 1 : 0, subTab: isMyProfile ? 1 : 2, subTabType: isMyProfile ? 'totalRank' : ''}});
         break;
       case "top3":
@@ -464,8 +453,8 @@ const ProfilePage = () => {
       getFeedData(true);
       scrollEventHandler();
     }else if(item === profileTab.tabList[1]) {
-      getFanBoardData(true);
-      scrollEventHandler();
+      // getFanBoardData(true);
+      // scrollEventHandler();
     }else if(item === profileTab.tabList[2]) {
       getClipData(true);
       scrollEventHandler();
@@ -708,7 +697,9 @@ const ProfilePage = () => {
   }, []);
 
   useEffect(() => {
-    getFanBoardData();
+    if(profileTab.tabName === profileTab.tabList[1]) {
+      getFanBoardData();
+    }
   }, [fanBoardPageInfo]);
 
   useEffect(() => {
@@ -759,7 +750,7 @@ const ProfilePage = () => {
         getNoticeData={getNoticeData}
         getNoticeFixData={getNoticeFixData}
         fetchHandleLike={fetchHandleLike} />
-      
+
       {/* 소셜 영역 */}
       <section className="socialWrap" ref={socialRef}>
         <Tabmenu
@@ -824,7 +815,7 @@ const ProfilePage = () => {
       {popup.slidePopup && <SlidepopZip slideData={slidePopInfo} goProfile={goProfile} openSlidePop={openSlidePop} isMyProfile={isMyProfile} />}
 
       {/* 좋아요 -> ? 아이콘 */}
-      {popup.layerPopup && 
+      {popup.layerPopup &&
         <LayerPopup title="랭킹 기준">
           <ProfileNoticePop />
         </LayerPopup>
