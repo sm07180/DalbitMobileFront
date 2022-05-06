@@ -32,20 +32,25 @@
         .listContent {
           flex: 1;
           @include flex($fd: column);
-          width: 100%;
+          width: calc(100% - 46px);
           padding: 16px 20px;
           border-radius: 5px;
           background-color: #F6F6F6;
           box-sizing: border-box;
           .dataInfo {
-            @include flex(center);
+            @include flex(center, space-between);
+            width: 100%;
             padding-bottom: 8px;
             border-bottom: 1px solid #DFDFDF;
             .infoWrap {
               flex: 1;
+              width: calc(100% - 79px);
+              margin-right: 16px;
+              overflow: hidden;
               .userNick {
                 position: relative;
                 @include font(13px, $Medium, #303030);
+                @include fontCut;
                 margin-bottom: 4px;
                 cursor: pointer;
                 &::before {
