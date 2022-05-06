@@ -6,11 +6,9 @@ import {Hybrid, isAndroid, isHybrid} from "context/hybrid";
 import Api from "context/api";
 import qs from "query-string";
 import {useHistory} from "react-router-dom";
-import {Context} from 'context'
 
 const Start = (props) => {
   const history = useHistory();
-  const context = useContext(Context)
   const {webview} = qs.parse(location.search);
 
   //휴대폰으로 계속하기

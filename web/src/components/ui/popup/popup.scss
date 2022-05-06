@@ -63,6 +63,10 @@
         flex: 1;
         @include flex(center, center, column);
         width: 100%;
+        h1 {
+          line-height: 48px;
+          @include font(18px, 700, #202020);
+        }
         .title {
           line-height: 48px;
           @include font(18px, 700, #202020);
@@ -84,7 +88,7 @@
         .remsg {
           @include font(13px, 400, #666666);
           text-align: center;
-          margin: 11px 0;
+          margin: 11px 0 28px;
           line-height: 20px;
           white-space: pre-line;
           overflow: hidden;

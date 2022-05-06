@@ -1,9 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import API from 'context/api'
-import {Context} from 'context'
-
-import Layout from 'pages/common/layout'
 import Header from 'components/ui/header/Header'
 
 //components
@@ -17,7 +14,6 @@ let currentPage = 1
 let moreState = false
 let timer
 export default () => {
-  const context = useContext(Context)
   const history = useHistory()
   const [winList, setWinList] = useState([])
   const [nextList, setNextList] = useState([])

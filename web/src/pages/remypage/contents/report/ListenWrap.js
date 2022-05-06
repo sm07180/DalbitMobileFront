@@ -6,7 +6,6 @@ import InputItems from 'components/ui/inputItems/InputItems'
 
 import './report.scss'
 import API from "context/api";
-import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import moment from "moment";
 import ReportTabMenu from "../../components/ReportTabMenu";
@@ -15,10 +14,11 @@ import SubmitBtn from "components/ui/submitBtn/SubmitBtn";
 import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
 import {useDispatch, useSelector} from "react-redux";
 import {setSlidePopupOpen} from "redux/actions/common";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ListenWrap = () =>{
   const history = useHistory();
-  const context = useContext(Context);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //조회 기간설정
   const tabmenu = ['오늘', '어제', '주간', '월간']
   const [tabType, setTabType] = useState(tabmenu[3])
@@ -59,7 +59,7 @@ const ListenWrap = () =>{
           setListenTotalInfo({giftDalTotCnt: res.data.giftDalTotCnt, listeningTime: res.data.listeningTime})
         }
       } else {
-        context.action.alert({msg: res.message});
+        dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
       }
     }).catch((e) => {console.log(e)})
   };
@@ -120,7 +120,7 @@ const ListenWrap = () =>{
   }
 
   useEffect(() => {
-    if(!(context.token.isLogin)) {
+    if(!(globalState.token.isLogin)) {
       history.push("/login");
     }
   }, []);
@@ -171,7 +171,7 @@ const ListenWrap = () =>{
         })}
       </section>
 
-      {popup.commonPopup &&
+      {popup.slidePopup &&
       <PopSlide title="기간 설정">
         <ReportTabMenu data={tabmenu} tab={tabType} setTab={setTabType} pickerPrev={pickerPrev} allDate={allDate} changeActive={changeActive}/>
         <InputItems>

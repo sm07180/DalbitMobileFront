@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect, useReducer } from "react";
 import { useHistory } from "react-router-dom";
-
-import { GlobalContext } from "context";
+import UtilityCommon from "common/utility/utilityCommon";
 
 import {
   selfAuthCheck,
@@ -29,6 +28,8 @@ import MakeRepplyWrap from "./subcontent/do_exchange_repply";
 import MakeAddWrap from "./subcontent/do_exchange_add";
 import AddPop from "./subcontent/do_exchange_add_pop";
 import SettingPop from "./subcontent/do_exchange_setting_pop";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../../../redux/actions/globalCtx";
 type FormType = {
   byeolCnt: number;
   name: string;
@@ -184,14 +185,15 @@ const formInit = {
   consent: false,
 };
 
-export default function DoExchange({ state, dispatch }) {
-  const { globalState, globalAction } = useContext(GlobalContext);
+export default function DoExchange({ state, exchangeDispatch }) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const [badgeSpecial, setBadgeSpecial] = useState<number>(0);
   const [currentByeol, setCurrentByeol] = useState<number>(0);
   const [exchangeCalc, setExchangeCalc] = useState({
     basicCash: 0, // 환전예상금액
-    benefitCash: 0, // 스페셜DJ혜택
+    benefitCash: 0, // 스타DJ혜택
     taxCash: 0, // 원천징수세액
     feeCash: 0, // 이체수수료
     realCash: 0, // 환전실수령액
@@ -238,13 +240,12 @@ export default function DoExchange({ state, dispatch }) {
     const res = await exchangeApply({ ...paramData });
 
     if (res.result === "success") {
-      dispatch({ type: "result", value: { ...res.data } });
+      exchangeDispatch({ type: "result", value: { ...res.data } });
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: res.message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: res.message,
+      }));
     }
   };
 
@@ -268,13 +269,12 @@ export default function DoExchange({ state, dispatch }) {
     const res = await exchangeReApply({ ...paramData });
 
     if (res.result === "success") {
-      dispatch({ type: "result", value: { ...res.data } });
+      exchangeDispatch({ type: "result", value: { ...res.data } });
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: res.message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: res.message,
+      }));
     }
   };
 
@@ -289,22 +289,20 @@ export default function DoExchange({ state, dispatch }) {
     } else {
       if (result.skip !== undefined && result.skip === true) {
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: result["content"],
-          });
+        dispatch(setGlobalCtxAlertStatus({
+          status: true,
+          content: result["content"],
+        }));
       }
     }
   };
 
   const fnExchangeCalc = async () => {
     if (formData.byeolCnt < 570) {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: "환전 신청별은\n570개 이상이어야 합니다.",
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: "환전 신청별은\n570개 이상이어야 합니다.",
+      }));
     } else {
       const res = await getExchangeCalc({
         byeol: formData.byeolCnt,
@@ -337,11 +335,10 @@ export default function DoExchange({ state, dispatch }) {
     if (result === "success") {
       setAddList(data.list);
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   async function fetchAddAccount() {
@@ -354,17 +351,15 @@ export default function DoExchange({ state, dispatch }) {
     const { result, data, message } = res;
     setAddBool(false);
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   async function fetchModiAccount() {
@@ -381,17 +376,15 @@ export default function DoExchange({ state, dispatch }) {
     setModiInfo("");
     setModiBool(false);
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   async function fetchDeleteAccount() {
@@ -404,20 +397,18 @@ export default function DoExchange({ state, dispatch }) {
     setModiInfo("");
     setModiBool(false);
     if (result === "success") {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-          callback: () => {
-            setDeleteState("");
-          },
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+        callback: () => {
+          setDeleteState("");
+        },
+      }));
     } else {
-      globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          content: message,
-        });
+      dispatch(setGlobalCtxAlertStatus({
+        status: true,
+        content: message,
+      }));
     }
   }
   useEffect(() => {
@@ -511,7 +502,7 @@ export default function DoExchange({ state, dispatch }) {
             <div
               className="doExchangeWrap__contentsHeader--info"
               onClick={(e) => {
-                dispatch({ type: "status", value: 1 });
+                exchangeDispatch({ type: "status", value: 1 });
               }}
             >
               <span>환전안내</span>
@@ -520,8 +511,8 @@ export default function DoExchange({ state, dispatch }) {
           </div>
           {badgeSpecial > 0 && (
             <div className="doExchangeWrap__special">
-              <p className="doExchangeWrap__special--title">DJ님은 스페셜 DJ 입니다.</p>
-              <p className="doExchangeWrap__special--point">스페셜 DJ의 경우 환전 실수령액이 5% 추가 됩니다.</p>
+              <p className="doExchangeWrap__special--title">DJ님은 {UtilityCommon.eventDateCheck("20220501") ? "스타 DJ" : "스페셜 DJ"} 입니다.</p>
+              <p className="doExchangeWrap__special--point">{UtilityCommon.eventDateCheck("20220501") ? "스타 DJ" : "스페셜 DJ"}의 경우 환전 실수령액이 5% 추가 됩니다.</p>
             </div>
           )}
           <p className="doExchangeWrap__contentsHeader--notice">
@@ -596,7 +587,7 @@ export default function DoExchange({ state, dispatch }) {
             </button>
           )}
         </div>
-        {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} />}
+        {radioCheck === 0 && <MakeFormWrap state={formData} formDispatch={formDispatch} inspection={checkInspection} />}
         {radioCheck === 1 && (
           <MakeRepplyWrap
             state={exchangeHistory.value}

@@ -1,0 +1,51 @@
+@import "components/ui/_mixin.scss";
+
+#floatingEvent {
+  position: fixed;
+  bottom: 15%;
+  width: 100%;
+  z-index: $FLOATING-ZINDEX;
+  .floatingWrap {
+    position: relative;
+    .fixedButton {
+      @include position-top-right(0,10px);
+      .attendStampActive {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        &.basic {
+          background: url("https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png")
+            center no-repeat;
+          background-size: 100%;
+        }
+        &.motion {
+          &::after {
+            content: "";
+            @include position-top-left;
+            width: 100%;
+            height: 100%;
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png") center no-repeat;
+            background-size: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            animation: rotateImage 1s linear infinite;
+            transform-origin: center;
+            @keyframes rotateImage {
+              100% {transform: rotate(360deg);}
+            }
+          }
+          &::before {
+            content: "";
+            @include position-top-left;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+            background: url("https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png") center no-repeat;
+            background-size: 60px;
+          }
+        }
+      }
+    }
+  }  
+}

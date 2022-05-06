@@ -1,5 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {Context} from 'context'
+import React, {useEffect, useState} from 'react'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 import Header from 'components/ui/new_header.js'
@@ -12,10 +11,14 @@ import './checkwrite.scss'
 import qs from 'query-string'
 import plusImg from './static/btn_plus.png'
 import minusImg from './static/btn_minus.png'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let subSelect1 = ''
 let subSelect2 = ''
 export default (props) => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory()
 
   const [deligate, setDeligate] = useState(false)
@@ -27,9 +30,6 @@ export default (props) => {
   const [contents, setContents] = useState('')
   const [already, setalready] = useState('')
   const [toggleCheck, setToggleCheck] = useState({})
-
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
 
   const [select1, setSelect1] = useState('')
   const [selectSub1, setSelectsub1] = useState('')
@@ -66,7 +66,8 @@ export default (props) => {
     const {result, data} = res
     if (result === 'success') {
       setTimeout(() => {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: '작성 완료되었습니다.',
           callback: () => {
             // history.goBack()
@@ -79,14 +80,16 @@ export default (props) => {
             //   }
             // })
           }
-        })
+        }))
       })
     } else {
       setTimeout(() => {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: res.message,
-          callback: () => {}
-        })
+          callback: () => {
+          }
+        }))
       })
     }
   }
@@ -120,7 +123,8 @@ export default (props) => {
   }
 
   function confirm() {
-    context.action.confirm({
+    dispatch(setGlobalCtxMessage({
+      type: "confirm",
       remsg: '신청하시겠습니까?',
       msg: '스페셜DJ 신청서 작성을 완료한 뒤에는 신청 내용 수정이 불가능합니다.',
 
@@ -129,65 +133,72 @@ export default (props) => {
         specialdjUpload()
       },
       //캔슬콜백처리
-      cancelCallback: () => {}
-    })
+      cancelCallback: () => {
+      }
+    }))
   }
 
   function alertDeligate() {
     if (name === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '이름을 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
       return
     }
     if (phone === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '휴대폰 번호를 입력해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
       return
     }
     if (select1 === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '방송시작시간을 선택해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
       return
     }
     if (subSelect1 === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '방송종료시간을 선택해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
       return
     }
 
     if (title === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '방송 소개에 작성된 내용이 없습니다.<br/>자신의 방송에 대한 소개를 작성해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
       return
     }
 
     if (contents === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '내가 스페셜 DJ가 된다면? 내용이 없습니다.<br/>자신의 방송에 대한 소개를 작성해주세요.',
         callback: () => {
-          context.action.alert({visible: false})
+          dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         }
-      })
+      }))
       return
     }
 

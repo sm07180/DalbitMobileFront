@@ -1,9 +1,11 @@
 import React, {useContext, useEffect} from "react"
 import { useHistory, useLocation } from "react-router-dom";
-import {GlobalContext} from "../../context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus, setGlobalCtxMoveToAlert} from "../../redux/actions/globalCtx";
 
 const MoveToAlert = ()=>{
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const location = useLocation();
   useEffect(()=>{
@@ -12,18 +14,18 @@ const MoveToAlert = ()=>{
     }
     if(globalState.moveToAlert.dest === location.pathname){
       // 초기화 처리
-      globalAction.setMoveToAlert({alertStatus:{status:false}, state:"ready", dest:""});
+      dispatch(setGlobalCtxMoveToAlert({alertStatus:{status:false}, state:"ready", dest:""}));
       setTimeout(()=>{
         // 시점문제로 setTimeout...
-        globalAction.setAlertStatus({
+        dispatch(setGlobalCtxAlertStatus({
           status: true,
           content: globalState.moveToAlert.alertStatus.content,
           callback: globalState.moveToAlert.alertStatus.callback,
           cancelCallback: globalState.moveToAlert.alertStatus.cancelCallback,
-        });
+        }))
       }, 300)
     }else{
-      globalAction.setMoveToAlert({...globalState.moveToAlert, state:'moved'})
+      dispatch(setGlobalCtxMoveToAlert({...globalState.moveToAlert, state:'moved'}));
       history.replace(globalState.moveToAlert.dest);
     }
   }, [globalState.moveToAlert])

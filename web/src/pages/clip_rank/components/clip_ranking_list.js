@@ -1,20 +1,21 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
-import {Context} from 'context'
-import {ClipRankContext} from 'context/clip_rank_ctx'
 import {ClipPlay} from 'pages/clip_rank/components/clip_play_fn'
+import {useDispatch, useSelector} from "react-redux";
 
 const liveDateCheckIdx = 3
 
 export default function ClipRankingList() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const {clipRankState} = useContext(ClipRankContext)
+  const clipRankState = useSelector(({clipRankCtx}) => clipRankCtx);
   const {clipRankList} = clipRankState
 
   function loginCheck(memNo) {
-    if (!context.token.isLogin) {
+    if (!globalState.token.isLogin) {
       history.push(`/login?redirect=/mypage/${memNo}`)
     } else {
       history.push(`/mypage/${memNo}`)
@@ -26,7 +27,7 @@ export default function ClipRankingList() {
       <button
         className="allPlay"
         onClick={() => {
-          ClipPlay(clipRankList[0].clipNo, context, history)
+          ClipPlay(clipRankList[0].clipNo, dispatch, globalState, history)
         }}>
         전체듣기
       </button>
@@ -49,12 +50,12 @@ export default function ClipRankingList() {
             </div>
 
             <div className="rankingList__content">
-              <div className="thumbBox" onClick={() => ClipPlay(v.clipNo, context, history)}>
-                <img src={v.bgImg.thumb292x292} className="thumbBox__pic" />
+              <div className="thumbBox" onClick={() => ClipPlay(v.clipNo, dispatch, globalState, history)}>
+                <img src={v.bgImg.thumb292x292} className="thumbBox__pic"/>
               </div>
 
               <div className="textBox">
-                <p className="textBox__subject" onClick={() => ClipPlay(v.clipNo, context, history)}>
+                <p className="textBox__subject" onClick={() => ClipPlay(v.clipNo, dispatch, globalState, history)}>
                   <span className="subject">{v.subjectName}</span>
                   <span className="title">{v.title}</span>
                 </p>
@@ -65,7 +66,7 @@ export default function ClipRankingList() {
                   }}>
                   {v.nickName}
                 </strong>
-                <div className="textBox__detail" onClick={() => ClipPlay(v.clipNo, context, history)}>
+                <div className="textBox__detail" onClick={() => ClipPlay(v.clipNo, dispatch, globalState, history)}>
                   {/*<span className="textBox__detail--item headsetIcon">{Utility.addComma(v.listenPoint)}</span>*/}
                   <span className="textBox__detail--item giftIcon">{Utility.addComma(v.giftPoint)}</span>
                   <span className="textBox__detail--item heartIcon">{Utility.addComma(v.goodPoint)}</span>

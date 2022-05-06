@@ -1,30 +1,64 @@
-import React, {useContext, useEffect, useState} from 'react'
-import API from 'context/api'
-import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
-import Lottie from 'react-lottie'
-import {IMG_SERVER} from 'context/config'
-// static
-import stampActive from '../static/stamp_active.json'
+import React, {useEffect, useState} from 'react';
 
-const AttendEventBtn = (props) => {
-  const history = useHistory()
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
-  const [attendCheck, setAttendCheck] = useState(-1) // 0 - 완료, 1 - 시간부족, 2 -- 시간충족
+import Api from 'context/api';
+import {useHistory} from 'react-router-dom';
+import {IMG_SERVER} from 'context/config';
+import {useDispatch, useSelector} from "react-redux";
+
+import '../scss/floatingBtn.scss';
+
+const FloatEventBtn = () => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState;
+
+  const [attendCheck, setAttendCheck] = useState(-1); // 0 - 완료, 1 - 시간부족, 2 -- 시간충족
 
   //pathname
-  const urlrStr = history.location.pathname
+  const urlrStr = history.location.pathname;
 
-  //출석도장
+  // 출석체크 버튼 컴포넌트
+  const AttendStampActive = (props) => {
+    const {type, pushValue, children} = props;
+    return (
+      <div
+        className={`attendStampActive ${type}`}
+        onClick={() => {
+          try {
+            fbq('track', 'attend_event')
+            firebase.analytics().logEvent('attend_event')
+          } catch (e) {}
+          history.push(`/event/${pushValue}`)}}>
+        {children}
+      </div>
+    )
+  }
+  // 출석체크 버튼 컴포넌트 출력 조건
+  const attendStampState = () => {
+    if (token.isLogin) {
+      if (attendCheck === 0) {
+        return <AttendStampActive type="basic" pushValue="attend_event" />
+      } else if (attendCheck === 1) {
+        return (
+          <AttendStampActive type="" pushValue="attend_event">
+            <img src={`${IMG_SERVER}/webp/attend_stamp.webp`} width={48} height={48} />
+          </AttendStampActive>
+        )
+      } else if (attendCheck === 2) {
+        return <AttendStampActive type="motion" pushValue="attend_event/roulette" />
+      }
+    }
+  }
+
+  //출석도장 API
   async function fetchEventAttendCheck() {
-    const {result, data} = await API.getEventAttendCheck()
+    const {result, data} = await Api.getEventAttendCheck()
     if (result === 'success') {
       const {userEventCheck} = data
       setAttendCheck(userEventCheck)
     } else {
-      //실패
+      console.log(data.message);
     }
   }
 
@@ -32,53 +66,11 @@ const AttendEventBtn = (props) => {
     fetchEventAttendCheck()
   }, [])
 
-  const attendStampState = () => {
-    if (token.isLogin && attendCheck === 0) {
-      return (
-        <div
-          className={`attendStampActive basic ${token.isLogin && attendCheck === 0 && 'on'}`}
-          onClick={() => {
-            try {
-              fbq('track', 'attend_event')
-              firebase.analytics().logEvent('attend_event')
-            } catch (e) {}
-            history.push('/event/attend_event')
-          }}/>
-      )
-    } else if (token.isLogin && attendCheck === 1) {
-      return (
-        <div
-          className="attendStampActive"
-          onClick={() => {
-            try {
-              fbq('track', 'attend_event')
-              firebase.analytics().logEvent('attend_event')
-            } catch (e) {}
-            history.push('/event/attend_event')
-          }}>
-          <img src={`${IMG_SERVER}/webp/attend_stamp.webp`} alt="attend stamp active" width={48} height={48} />
-        </div>
-      )
-    } else if (token.isLogin && attendCheck === 2) {
-      return (
-        <div
-          className="attendStampActive motion"
-          onClick={() => {
-            try {
-              fbq('track', 'attend_event')
-              firebase.analytics().logEvent('attend_event')
-            } catch (e) {}
-            history.push('/event/attend_event/roulette')
-          }}/>
-      )
-    }
-  }
-
   return (
-    <div className='floatingEvent'>
+    <div id='floatingEvent'>
       <div className='floatingWrap'>
-        <div className={`fixedButton`}>
-          {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
+        <div className="fixedButton">
+          {urlrStr !== '/rank' && attendStampState()}
         </div>
       </div>
     </div>
@@ -86,4 +78,4 @@ const AttendEventBtn = (props) => {
 
 };
 
-export default AttendEventBtn;
+export default FloatEventBtn;

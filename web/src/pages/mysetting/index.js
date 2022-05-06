@@ -1,4 +1,4 @@
-import React, {useContext, useCallback, useEffect, useState, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {convertDateFormat} from 'components/lib/dalbit_moment'
@@ -6,14 +6,17 @@ import Layout from 'pages/common/layout'
 import Header from 'pages/mypage/component/header'
 import ProfileAvatar from './component/profile_avatar'
 import ProfileSelfCheck from './component/profile_selfCheck'
-import {Context} from 'context'
 import './mysetting.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
 
 let initProfileInfo = {}
 export default function MySetting() {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
+  const {token, profile} = globalState
   const [profileInfo, setProfileInfo] = useState({})
   const [currentAvatar, setCurrentAvatar] = useState('')
   const [hasGender, setHasGender] = useState(false)
@@ -36,12 +39,12 @@ export default function MySetting() {
     }).then((res) => {
       const {result, message, data} = res
       if (result === 'success') {
-        globalCtx.action.updateProfile({
+        dispatch(setGlobalCtxUpdateProfile({
           ...profile,
           ...data
-        })
+        }))
       } else {
-        globalCtx.action.alert({title: 'Error', msg: message})
+        dispatch(setGlobalCtxMessage({type: "alert", title: 'Error', msg: message}))
       }
     })
   }
@@ -82,22 +85,24 @@ export default function MySetting() {
       Api.profile_edit({data: dataList}).then((res) => {
         const {result, data, message} = res
         if (result === 'success') {
-          globalCtx.action.updateProfile({...profile, ...data})
+          dispatch(setGlobalCtxUpdateProfile({...profile, ...data}))
           if (willGoBack) {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
               msg: `저장되었습니다.`,
               title: '',
               callback: () => {
                 history.goBack()
               }
-            })
+            }))
           } else {
-            globalCtx.action.toast({
+            dispatch(setGlobalCtxMessage({
+              type: "toast",
               msg: '이미지 등록 되었습니다.'
-            })
+            }))
           }
         } else {
-          globalCtx.action.alert({title: 'Error', msg: message})
+          dispatch(setGlobalCtxMessage({type: "alert", title: 'Error', msg: message}))
         }
       })
     },

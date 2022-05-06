@@ -1,8 +1,6 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import API from 'context/api'
-import {Context} from 'context'
-import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 
 //components
@@ -16,7 +14,6 @@ let currentPage = 1
 let moreState = false
 let timer
 export default () => {
-  const context = useContext(Context)
   const history = useHistory()
   const [participantList, setParticipantList] = useState([])
   const [nextList, setNextList] = useState([])
@@ -129,7 +126,7 @@ export default () => {
                       <td className="date">
                         {isNewYn === "y" && <span className="iconNew"> <img src={newIcon} width={14} alt="new" /> </span>}
                         {dateFormatter(ins_date)}
-                      </td>                      
+                      </td>
                     </tr>
                   )
                 })

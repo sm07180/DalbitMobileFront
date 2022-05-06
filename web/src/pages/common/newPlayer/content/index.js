@@ -2,54 +2,27 @@
  *
  * @code context.action.updateMediaPlayerStatus(true)
  */
-import React, {useState, useEffect, useContext} from 'react'
-import _ from 'lodash'
+import React, {useEffect, useState} from 'react'
 import Lottie from 'react-lottie'
-//context
-import {Context} from 'context'
 // etc
 import equalizerLiveAni from "../ani/equalizer_live.json";
 import CloseBtn from "../../../../common/images/ic_player_close_btn.svg";
+import {useDispatch, useSelector} from "react-redux";
 // image
 
+// !Deprecated
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
-  const {broadcastTotalInfo} = context
-  //useState
-  // const [info, setInfo] = useState({
-  //   /**
-  //    * {roomNo,bjNickNm,title,bjProfImg,auth}
-  //    */
-  //   bjNickNm: '',
-  //   roomNo: null,
-  //   bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
-  //   title: '',
-  //   auth: 0
-  // })
-  const [info, setInfo] = useState(context.nativePlayer)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const [info, setInfo] = useState(globalState.nativePlayer)
 
-  //---------------------------------------------------------------------
-  const makeCloseBtn = () => {
-    if (info.auth === 3) return
-    return (
-      <button
-        className="close"
-        onClick={() => {
-          props.update({playerClose: true})
-        }}>
-        닫기
-      </button>
-    )
-  }
   //useEffect Native
   useEffect(() => {
     //@Native
-    if (context.nativePlayer !== null && context.nativePlayer !== undefined) {
-      setInfo(context.nativePlayer)
+    if (globalState.nativePlayer !== null && globalState.nativePlayer !== undefined) {
+      setInfo(globalState.nativePlayer)
     }
-  }, [context.nativePlayer])
+  }, [globalState.nativePlayer])
   //--
   useEffect(() => {
     if (info.auth === 3) {
@@ -95,7 +68,7 @@ export default (props) => {
           <div className="counting"></div>
           <div className="buttonGroup">
             <img
-              src={CloseBtn} className="close-btn" 
+              src={CloseBtn} className="close-btn"
               onClick={() => {props.update({playerClose: true})}}
               alt={"close"}
             />

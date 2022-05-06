@@ -29,10 +29,10 @@ const HistoryList = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (commonPopup.commonPopup){
+    if (commonPopup.slidePopup){
       setBeforeCode(selectedCode);
     }
-  }, [commonPopup.commonPopup]);
+  }, [commonPopup.slidePopup]);
 
   const onClickPopSlide = () => {
     dispatch(setSlidePopupOpen());
@@ -136,7 +136,7 @@ const HistoryList = (props) => {
       </section>
 
       {/* 상세내역 검색조건 팝업 */}
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
         <PopSlide>
           <section className='walletHistoryCheck'>
             <div className='title'>달 사용/획득</div>

@@ -1,14 +1,15 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
-
-import {Context} from 'context'
 import Api from "context/api";
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import '../invite.scss'
 import {useHistory} from "react-router-dom";
 import {Hybrid, isHybrid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-const InviteEvent = () => {  
-  const context = useContext(Context)
+const InviteEvent = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
 
   const [code, setCode] = useState("")                    //나의 초대코드
@@ -37,10 +38,10 @@ const InviteEvent = () => {
 
   useEffect(()=>{
     //초대코드 유무 체크
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       Api.inviteMy({
         reqBody: true,
-        data: {"memNo": context.token.memNo}
+        data: {"memNo": globalState.token.memNo}
       }).then((response) => {
         setMyInfo(response.data);
         //초대코드 생성 유무
@@ -64,7 +65,7 @@ const InviteEvent = () => {
         Api.inviteRegister({
           reqBody: true,
           data:{
-            "memNo": context.token.memNo,
+            "memNo": globalState.token.memNo,
             "invitationCode": code,
             "memPhone": res.phoneNo
           }
@@ -74,7 +75,7 @@ const InviteEvent = () => {
             setCode(code);
             setCreatedCode(true);
           }else{
-            context.action.alert({msg: "초대코드 발급에 실패했습니다. \n 잠시후 다시 시도해주세요."});
+            dispatch(setGlobalCtxMessage({type: "alert",msg: "초대코드 발급에 실패했습니다. \n 잠시후 다시 시도해주세요."}));
           }
         })
       }
@@ -82,7 +83,7 @@ const InviteEvent = () => {
   }
 
   const createCode = () => {
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       const codeLength = 5
       const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456788';
       let codeText= '';
@@ -97,30 +98,30 @@ const InviteEvent = () => {
   }
 
   const registerFriendCode = () => {
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       selfAuthCheck().then((res) => {
         if (res.result === 'success') {
           Api.inviteReward({
             reqBody: true,
             data: {
-              "rcvMemNo": context.token.memNo,
+              "rcvMemNo": globalState.token.memNo,
               "invitationCode": friendCode.current.value,
               "memPhone": res.phoneNo
             }
           }).then((response) => {
             if (response.code === "0000") {
-              context.action.alert({msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "});
+              dispatch(setGlobalCtxMessage({type: "alert",msg: "초대코드 등록이 완료되었습니다.\n 친구를 추가 초대하여 달라 초대왕이 되어보세요 "}));
               setSubmitCode(true);
             } else if (response.code === "C001") {
-              context.action.alert({msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"});
+              dispatch(setGlobalCtxMessage({type: "alert",msg: "유효하지 않는 초대코드 입니다. \n 확인 후 다시 입력해 주세요"}));
             } else if (response.code === "C003") {
-              context.action.alert({msg: "이미 초대코드를 등록 했습니다."});
+              dispatch(setGlobalCtxMessage({type: "alert",msg: "이미 초대코드를 등록 했습니다."}));
             } else if (response.code === "C005") {
-              context.action.alert({msg: "가입 내역이 있습니다."});
+              dispatch(setGlobalCtxMessage({type: "alert",msg: "가입 내역이 있습니다."}));
             } else if (response.code === "C006"){
-              context.action.alert({msg: "이벤트 참여 대상자가 \n아닙니다."});
+              dispatch(setGlobalCtxMessage({type: "alert",msg: "이벤트 참여 대상자가 \n아닙니다."}));
             } else {
-              context.action.alert({msg: response.msg});
+              dispatch(setGlobalCtxMessage({type: "alert",msg: response.msg}));
             }
           })
         }
@@ -160,7 +161,7 @@ const InviteEvent = () => {
       textarea.select();
       document.execCommand("copy");
       document.body.removeChild(textarea);
-      context.action.alert({msg: `초대코드가 복사되었습니다.`});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: `초대코드가 복사되었습니다.`}));
     }
   };
 
@@ -168,7 +169,7 @@ const InviteEvent = () => {
     if(myInfo.sendExitYn === "n"){
       history.push(`/profile/${myInfo.send_mem_no}`)
     }else{
-      context.action.alert({msg: `탈퇴한 회원입니다.`});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: `탈퇴한 회원입니다.`}));
     }
   }
 
@@ -181,7 +182,7 @@ const InviteEvent = () => {
       <div className='imageBox'>
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-method.png" alt="참여방법 안내" className='fullImage'/>
         {
-          createdCode ? 
+          createdCode ?
             <button className={`inviteBtn share`} onClick={()=>doCopy(code)}>
               <span className='codeText'>{code}</span>
               <span className='btnName'>초대코드 공유하기</span>
@@ -190,7 +191,7 @@ const InviteEvent = () => {
             <button className={`inviteBtn create`} onClick={createCode}>
               <span className='btnName'>초대코드 생성하기</span>
             </button>
-        }        
+        }
       </div>
       {
         !submitCode ?
@@ -221,7 +222,7 @@ const InviteEvent = () => {
               </div>
             </div>
           </div>
-      }      
+      }
       <div className='imageBox'>
         <img src="https://image.dalbitlive.com/event/invite/eventPage_event-notice.png" alt="유의사항" className='fullImage'/>
       </div>

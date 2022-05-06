@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 
-import {RankContext} from 'context/rank_ctx'
 
 import {IMG_SERVER} from 'context/config'
 
@@ -11,22 +10,24 @@ import RandomBoxPop from './reward_randombox_pop'
 //static
 import CloseBtn from '../static/ic_close.svg'
 import {DATE_TYPE, RANK_TYPE} from '../constant'
+import {useDispatch, useSelector} from "react-redux";
+import {setRankMyInfo} from "redux/actions/rank";
 
 export default (props) => {
-  const {rankState, rankAction} = useContext(RankContext)
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const {formState, myInfo} = rankState
 
-  const setMyInfo = rankAction.setMyInfo
 
   const {setPopup, rewardPop, setRewardPop} = props
   const [randomPopup, setRandomPopup] = useState(false)
   const closePopup = () => {
     setPopup(false)
-    setMyInfo({
+    dispatch(setRankMyInfo({
       ...myInfo,
       isReward: false
-    })
+    }))
   }
 
   const openRandomPopup = () => {

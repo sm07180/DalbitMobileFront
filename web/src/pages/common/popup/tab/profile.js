@@ -1,19 +1,17 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER, WIDTH_TABLET_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Navi from './navibar'
 import Api from 'context/api'
-import {Context} from 'context'
 import Ranking from './ranking'
 import qs from 'query-string'
+
 export default props => {
   //console.log(props)
 
   const [roomInfo, setRoomInfo] = useState({...props.location.state})
   //----------------------------------------------context
-  const context = useContext(Context)
-  const {broadcastTotalInfo} = context
   const {roomNo} = qs.parse(location.search)
   //0.프로필인포 state정의------------------------------------------
   const [PInfo, setPInfo] = useState(props.Info)

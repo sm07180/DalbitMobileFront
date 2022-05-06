@@ -1,66 +1,68 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
-import Api from 'context/api'
-import Utility from 'components/lib/utility'
-import Lottie from 'react-lottie'
-// global components
-import Header from 'components/ui/header/Header'
-import CntTitle from '../../components/ui/cntTitle/CntTitle'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
-// components
-import Tabmenu from './components/tabmenu'
-import MainSlide from './components/MainSlide'
-import SwiperList from './components/SwiperList'
-import FavoriteSwiper from './components/FavoriteSwiper'
-import LiveView from './components/LiveView'
-
-import AttendEventBtn from './component/AttendEventBtn'
-
-import './style.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {setMainData, setMainLiveList} from "redux/actions/main";
-import {IMG_SERVER} from "context/config";
+import Api from 'context/api';
+import Utility from 'components/lib/utility';
+import Lottie from 'react-lottie';
 import moment from "moment";
+// global components
+import Header from '../../components/ui/header/Header';
+import CntTitle from '../../components/ui/cntTitle/CntTitle';
+import BannerSlide from '../../components/ui/bannerSlide/BannerSlide';
+// components
+import Tabmenu from './components/tabmenu';
+import SubTabmenu from './components/SubTabmenu';
+import MainSlide from './components/MainSlide';
+import FavoriteSwiper from './components/FavoriteSwiper';
+import ToptenSwiper from './components/ToptenSwiper';
+import LiveContents from './components/LiveContents';
+import FloatEventBtn from './popup/FloatEventBtn';
+
+import './style.scss';
 
 // popup
-import UpdatePop from "pages/main/popup/UpdatePop";
-import {setIsRefresh} from "redux/actions/common";
-import {Hybrid, isHybrid, isIos} from "context/hybrid";
+import UpdatePop from "../../pages/main/popup/UpdatePop";
 import LayerPopupWrap from "pages/main/component/layer_popup_wrap";
+
+import {setIsRefresh} from "redux/actions/common";
+import {isHybrid, isIos} from "context/hybrid";
 import {useHistory} from "react-router-dom";
+import {IMG_SERVER} from "context/config";
+import {useDispatch, useSelector} from "react-redux";
+import {setMainData, setMainLiveList} from "redux/actions/main";
+import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
 
 import smoothscroll from 'smoothscroll-polyfill';
-import {convertDateTimeForamt} from "pages/common/rank/rank_fn";
-import qs from 'query-string'
+import qs from 'query-string';
 
-const topTenTabMenu = ['DJ','FAN','CUPID']
-const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
-let totalPage = 1
-const pagePerCnt = 50
+const topTenTabMenu = ['DJ','FAN','TEAM'];
+const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ'];
+let totalPage = 1;
+const pagePerCnt = 50;
 
-let touchStartY = null
-let touchEndY = null
-const refreshDefaultHeight = 48 // pullToRefresh 높이
+let touchStartY = null;
+let touchEndY = null;
+const refreshDefaultHeight = 48; // pullToRefresh 높이
 const SCROLL_TO_DURATION = 500;
-let canHit = true // scroll 안에서는 상태값 갱신 안돼서 추가
+let canHit = true; // scroll 안에서는 상태값 갱신 안돼서 추가
 
 const MainPage = () => {
-  const headerRef = useRef()
-  const overRef = useRef()
-  const overTabRef = useRef()
-  const iconWrapRef = useRef()
-  const MainRef = useRef()
-  const arrowRefreshRef = useRef()
+  const headerRef = useRef();
+  const iconWrapRef = useRef();
+  const MainRef = useRef();
+  const overRef = useRef(null);
+  const arrowRefreshRef = useRef();
   const history = useHistory();
   const {webview} = qs.parse(location.search);
 
-  const [topRankType, setTopRankType] = useState('') // 일간 top10 탭 타입
-  const [liveListType, setLiveListType] = useState(liveTabMenu[0]) // 방송 리스트 타입
-  const [headerFixed, setHeaderFixed] = useState(false) // 헤더 fixed
-  const [currentPage, setCurrentPage] = useState(1) // 메인 데이터 현재 호출 페이지
-  const [reloadInit, setReloadInit] = useState(false) // pullToRefresh 할때
+  const [topRankType, setTopRankType] = useState(''); // 일간 top10 탭 타입
+  const [liveListType, setLiveListType] = useState(liveTabMenu[0]); // 방송 리스트 타입
+  const [rankingListInfo , setRankingListInfo] = useState({list: [], listCnt: 0, type: ''});
 
-  const [scrollOn, setScrollOn] = useState(false) // 스크롤
+  const [headerFixed, setHeaderFixed] = useState(false); // 헤더 fixed
+  const [currentPage, setCurrentPage] = useState(1); // 메인 데이터 현재 호출 페이지
+  const [reloadInit, setReloadInit] = useState(false); // pullToRefresh 할때
+
+  const [scrollOn, setScrollOn] = useState(false); // 스크롤
 
   const [popupData, setPopupData] = useState([]); // 이벤트, 공지 등 메인 팝업
 
@@ -69,7 +71,6 @@ const MainPage = () => {
     storeUrl: '',
   });
 
-  const [rankingList , setRankingList]=useState([]);
   const [pullToRefreshPause, setPullToRefreshPause] = useState(true);  // pullToRefresh 할때 (모바일)
   const [dataRefreshPrevent, setDataRefreshPrevent] = useState(false); // 로고, 헤더, 푸터 등 메인 페이지 리로드할때
 
@@ -80,14 +81,62 @@ const MainPage = () => {
   const common = useSelector(state => state.common);
 
   // page 조회 API
-  const fetchMainInfo = () => dispatch(setMainData());
+  const fetchMainInfo = () => {
+    dispatch(setMainData());
+  }
 
-  /* 라이브 리스트 */
+  /* 메인 랭킹 10위 리스트 API */
+  const fetchRankDataTop10 = async (type) => {
+    if(type !=="" || type!==null){
+      if(type === topTenTabMenu[0]) {
+        Api.getRankTimeList({
+          rankSlct: 1,
+          page: 1,
+          records: 10,
+          rankingDate: convertDateTimeForamt(new Date() , "-")
+        }).then(res => {
+          if (res.result === "success") {
+            const list = res.data.list;
+            const listCnt = res.data.listCnt;
+            setRankingListInfo({ list, listCnt, type });
+          }
+        });
+      } else if (type === topTenTabMenu[2]) {
+        const realRank = await Api.getTeamRankWeekList({ tDate: moment().format('YYYY-MM-DD'), pageNo: 1, pagePerCnt: 10, memNo: 0});
+        if (realRank.code === '00000') {
+          const { data } = realRank;
+          const list = data.list;
+          const listCnt = data.listCnt;
+          setRankingListInfo({ list, listCnt, type });
+        }
+      } else {
+        Api.get_ranking({
+          param: {
+            rankSlct: type === topTenTabMenu[1] ? 2 : 3,
+            rankType: 1,
+            rankingDate: moment().format("YYYY-MM-DD"),
+            page: 1,
+            records: 10,
+          }
+        }).then(res=> {
+          if(res.result === "success"){
+            const list = res.data.list;
+            const listCnt = res.data.listCnt;
+            setRankingListInfo({ list, listCnt, type });
+          }else{
+            setRankingListInfo({ list: [], listCnt: 0, type });
+          }
+        });
+      }
+    }
+  };
+
+  /* 라이브 리스트 API */
   const fetchLiveInfo = useCallback(({pageNo, mediaType, djType}) => {
     const callPageNo = pageNo ? pageNo : currentPage
     if(pageNo !== 1) { // 디폴트 호출이 아닐때
-      mediaType = liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : ''
-      djType = liveListType === '신입DJ' ? 3 : '';
+      mediaType = liveListType === liveTabMenu[1] ? 'v' : liveListType === liveTabMenu[2] ? 'a' : ''
+      djType = liveListType === liveTabMenu[3] ? 3 : '';
     }
     const params = {
       page: callPageNo,
@@ -129,18 +178,20 @@ const MainPage = () => {
     setCurrentPage(1);
   }
 
-  // scroll
+  /* scroll event */
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
-    const overNode = overRef.current
-    const headerNode = headerRef.current
+    const overNode = overRef.current;
+    const headerNode = headerRef.current;
 
+    // 플로팅 버튼
     if (window.scrollY >= 1) {
       setScrollOn(true)
     } else {
       setScrollOn(false)
     }
 
+    // 모바일 헤더
     if (overNode && headerNode) {
       const overTop = overNode.clientHeight - headerNode.clientHeight
       if (window.scrollY >= overTop) {
@@ -154,7 +205,7 @@ const MainPage = () => {
     if (totalPage > currentPage && canHit && Utility.isHitBottom()) {
       setCurrentPage(currentPage => currentPage + 1)
     }
-  })
+  },[])
 
   /* pullToRefresh */
   const mainTouchStart = useCallback(
@@ -165,7 +216,6 @@ const MainPage = () => {
     },
     [reloadInit]
   )
-
   /* pullToRefresh */
   const mainTouchMove = useCallback((e) => {
     if (reloadInit === true || window.scrollY !== 0) return
@@ -185,7 +235,6 @@ const MainPage = () => {
       }
     }
   }, [reloadInit])
-
   /* pullToRefresh */
   const mainTouchEnd = useCallback(async (e) => {
     if (reloadInit === true) return
@@ -209,14 +258,6 @@ const MainPage = () => {
         setReloadInit(true)
         iconWrapNode.style.transitionDuration = `${transitionTime}ms`
         iconWrapNode.style.height = `${refreshDefaultHeight + 80}px`
-
-        // const loadIntervalId = setInterval(() => {
-        //   if (Math.abs(current_angle) === 360) {
-        //     current_angle = 0
-        //   }
-        //   current_angle += 10
-        //   // refreshIconNode.style.transform = `rotate(${current_angle}deg)`
-        // }, 17)
 
         /* reload 아이콘 + 데이터 리프레시 */
         if(pullToRefreshPause) {
@@ -246,22 +287,16 @@ const MainPage = () => {
     touchStartY = null
     touchEndY = null
   }, [reloadInit])
-
-
-  /* 업데이트 확인 */
-  const updatePopFetch = async () => {
-    if (isHybrid()) {
-      if (sessionStorage.getItem('checkUpdateApp') === null) {
-        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
-      }
-
-      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
-        Api.verisionCheck().then(res => {
-          const isUpdate = res.data.isUpdate
-          const storeUrl = res.data.storeUrl
-          setUpdatePopInfo({showPop: isUpdate, storeUrl})
-        })
-      }
+  /* pullToRefresh 아이콘 보기 */
+  const showPullToRefreshIcon = ({duration = 300}) => {
+    const refreshWrap = iconWrapRef.current;
+    if(refreshWrap) {
+      refreshWrap.style.height = `${refreshDefaultHeight + 80}px`;
+      setPullToRefreshPause(false);
+      setTimeout(() => {
+        refreshWrap.style.height = `${refreshDefaultHeight}px`;
+        setPullToRefreshPause(true);
+      }, duration);
     }
   }
 
@@ -288,6 +323,23 @@ const MainPage = () => {
     }
   }
 
+  /* 업데이트 확인 */
+  const updatePopFetch = async () => {
+    if (isHybrid()) {
+      if (sessionStorage.getItem('checkUpdateApp') === null) {
+        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
+      }
+
+      if(sessionStorage.getItem('checkUpdateApp') === 'FirstMainJoin') {
+        Api.verisionCheck().then(res => {
+          const isUpdate = res.data.isUpdate
+          const storeUrl = res.data.storeUrl
+          setUpdatePopInfo({showPop: isUpdate, storeUrl})
+        })
+      }
+    }
+  }
+
   /* 리다이렉트할 페이지 있는지 체크 */
   const redirectPage = useCallback(() => {
     try {
@@ -307,19 +359,6 @@ const MainPage = () => {
     dispatch(setIsRefresh(true));
   }
 
-  /* pullToRefresh 아이콘 보기 */
-  const showPullToRefreshIcon = ({duration = 300}) => {
-    const refreshWrap = iconWrapRef.current;
-    if(refreshWrap) {
-      refreshWrap.style.height = `${refreshDefaultHeight + 80}px`;
-      setPullToRefreshPause(false);
-      setTimeout(() => {
-        refreshWrap.style.height = `${refreshDefaultHeight}px`;
-        setPullToRefreshPause(true);
-      }, duration);
-    }
-  }
-
   /* scrollTo action */
   const scrollToEvent = () => {
     if(window.scrollY === 0) {
@@ -332,6 +371,37 @@ const MainPage = () => {
     }
   }
 
+  /* tabmenu */
+  const tabAction = (value) => {
+    setLiveListType(value)
+  }
+
+  /* subTabmenu */
+  const getRandomIndex = () => {
+    const boundary = 3;
+    return Math.floor(Math.random() * boundary); // 0 ~ boundary
+  }
+
+  /* props로 넘기는 함수 */
+  // 탑 10 랭킹 탭 메뉴 변경
+  const topRankTabChange = (value) => {
+    if (value !== undefined && value !== topRankType) {
+      setTopRankType(value);
+    }
+  }
+  // 스와이퍼 리플레쉬 공용 함수
+  const swiperRefresh = (value) => {
+    const swiper = document.querySelector(`.${value} .swiper-container`)?.swiper;
+    let refreshSlideNum = 0;
+    if(value === 'mainSwiper') { // 메인 탑 스와이퍼
+      swiper?.loopDestroy();
+      swiper?.loopCreate();
+      refreshSlideNum = 1; // 1로 이동해야 첫 슬라이드로 이동됨 why?
+    }
+    swiper?.update();
+    swiper?.slideTo(refreshSlideNum);
+  }
+
   /* 로고, 헤더, 푸터 등 클릭해서 페이지 리프레시할때 액션 */
   const pullToRefreshAction = () => {
     if(window.scrollY !== 0) {
@@ -341,57 +411,6 @@ const MainPage = () => {
       showPullToRefreshIcon({duration: SCROLL_TO_DURATION});
       mainDataReset();
     }
-  }
-
-  /* NOW TOP 10 */
-  const nowTopLink = () => {
-    if(topRankType === 'DJ') {
-      history.push({
-        pathname: '/rank',
-        state: {tabState: 'time'}
-      })
-    }else {
-      history.push('/rank')
-    }
-  }
-
-  //메인 랭킹 10위 목록
-  const fetchRankDataTop10 = async (type) => {
-    if(type !=="" || type!==null){
-      if(type === 'DJ') {
-        Api.getRankTimeList({
-          rankSlct: 1,
-          page: 1,
-          records: 10,
-          rankingDate: convertDateTimeForamt(new Date() , "-")
-        }).then(res => {
-          if (res.result === "success") {;
-            setRankingList(res.data.list)
-          }
-        });
-      }else {
-        Api.get_ranking({
-          param: {
-            rankSlct: type === "FAN" ? 2 : 3,
-            rankType: 1,
-            rankingDate: moment().format("YYYY-MM-DD"),
-            page: 1,
-            records: 10,
-          }
-        }).then(res=> {
-          if(res.result === "success"){
-            setRankingList(res.data.list);
-          }else{
-            setRankingList([]);
-          }
-        });
-      }
-    }
-  };
-
-  const getRandomIndex = () => {
-    const boundary = 3;
-    return Math.floor(Math.random() * boundary); // 0 ~ boundary
   }
 
   /* 로고, 푸터 클릭했을때 */
@@ -420,6 +439,24 @@ const MainPage = () => {
     }
   }, [dataRefreshPrevent]);
 
+  /* 메인 페이지 기본 호출 */
+  useEffect(() => {
+    fetchMainInfo();                   // 메인 page api
+    fetchMainPopupData('6');           // 메인 팝업
+    updatePopFetch();                  // 업데이트 팝업
+    redirectPage();                    // redirect 체크
+
+    setTopRankType(topTenTabMenu[getRandomIndex()]); // now top10 랜덤
+    
+    if(isIos()) smoothscroll?.polyfill(); // ios scrollTo 대응
+
+    return () => {
+      sessionStorage.removeItem('orderId')
+      sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+      window.removeEventListener('scroll', scrollToEvent)
+    }
+  }, []);
+
   /* 라이브 리스트 페이징, 탭 변경 */
   useEffect(() => {
     if(!dataRefreshPrevent) {
@@ -429,42 +466,14 @@ const MainPage = () => {
     return () => {
       document.removeEventListener('scroll', scrollEvent)
     }
-  }, [currentPage, liveListType])
+  }, [currentPage, liveListType]);
 
-  useEffect(()=>{
-    if(topRankType) {
-      fetchRankDataTop10(topRankType)
-    }
-  },[topRankType])
-
+  /* NOW TOP 10 랜덤 탭 변경 */
   useEffect(() => {
-    /* 메인 page api */
-    fetchMainInfo();
-
-    /* 업데이트 팝업 */
-    updatePopFetch();
-
-    /* 메인 팝업 */
-    fetchMainPopupData('6');
-
-    /* redirect 체크 */
-    redirectPage();
-
-    /* ios scrollTo 대응 */
-    if(isIos()) {
-      smoothscroll?.polyfill();
+    if(topRankType) {
+      fetchRankDataTop10(topRankType); // 메인 랭킹 10 api
     }
-
-    /* now top10 랜덤 */
-    setTopRankType(topTenTabMenu[getRandomIndex()]);
-
-    return () => {
-      sessionStorage.removeItem('orderId')
-      sessionStorage.setItem('checkUpdateApp', 'otherJoin')
-      window.removeEventListener('scroll', scrollToEvent)
-    }
-  }, [])
-
+  },[topRankType]);
 
   // 페이지 시작
   let MainLayout = <>
@@ -472,7 +481,6 @@ const MainPage = () => {
          style={{height: `${refreshDefaultHeight}px`}}
          ref={iconWrapRef}>
       <div className="icon-wrap">
-        {/* <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" /> */}
         <div className="arrow-refresh-icon" ref={arrowRefreshRef}>
           <Lottie
             isPaused={pullToRefreshPause}
@@ -489,47 +497,57 @@ const MainPage = () => {
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}>
+
+      {/* 헤더 */}
       <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title="메인" position="relative" alarmCnt={mainState.newAlarmCnt} titleClick={fixedHeaderLogoClick} />
+        <Header title="메인" position="relative" titleClick={fixedHeaderLogoClick} />
       </div>
-      <section className={`topSwiper`} ref={overRef}>
-        <MainSlide data={mainState.topBanner} common={common} pullToRefreshPause={pullToRefreshPause} />
+
+      {/* 메인 탑 스와이퍼 */}
+      <section className="mainSwiper" ref={overRef}>
+        <MainSlide topBannerList={mainState.topBanner} swiperRefresh={swiperRefresh} pullToRefreshPause={pullToRefreshPause}/>
       </section>
-      <section className='favorites'>
-        <FavoriteSwiper data={mainState.myStar} myStarCnt={mainState.myStarCnt} profImgName="profImg" type="favorites" pullToRefreshPause={pullToRefreshPause} />
-      </section>
-      <section className='top10'>
-        <div className="cntTitle">
-          <h2 onClick={nowTopLink}>🏆 NOW TOP 10 &nbsp;&gt;</h2>
-          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} defaultTab={0} />
-        </div>
-        {rankingList.length>0 &&
-          <SwiperList
-            data={rankingList}
-            profImgName="profImg"
-            type="top10"
-          />
-        }
-      </section>
+
+      {/* 마이스타 */}
+      <FavoriteSwiper
+        data={mainState.myStar}
+        swiperRefresh={() => swiperRefresh("favorites")}
+        myStarCnt={mainState.myStarCnt}
+        pullToRefreshPause={pullToRefreshPause} />
+      
+      {/* 탑 10 */}
+      <ToptenSwiper
+        data={rankingListInfo.list}
+        swiperRefresh={() => swiperRefresh("topTen")}
+        topRankType={rankingListInfo.type}>
+        <SubTabmenu data={topTenTabMenu} tab={topRankType} setTab={topRankTabChange} defaultTab={0} />
+      </ToptenSwiper>
+
+      {/* 배너 영역 */}
       <section className='bannerWrap'>
         <BannerSlide/>
       </section>
-      <section className="liveView">
+
+      {/* 라이브 */}
+      <LiveContents data={liveList.list}>
         <CntTitle title={'🚀 지금 라이브 중!'}/>
-        <div className={`tabmenuWrap isFixed`}>
-          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}
-                   defaultTab={1} />
-        </div>
-        <LiveView data={liveList.list}/>
-      </section>
+        <Tabmenu
+          data={liveTabMenu}
+          tabAction={tabAction}
+          setPage={setCurrentPage}
+          defaultTab={1} />
+      </LiveContents>
     </div>
+
+    {/* 업데이트 확인 팝업 */}
     {updatePopInfo.showPop && <UpdatePop updatePopInfo={updatePopInfo} setUpdatePopInfo={setUpdatePopInfo} />}
 
-    <AttendEventBtn scrollOn={scrollOn}/>
-
     {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
-  </>;
+
+    {/* 플로팅 버튼(출석체크) */}
+    <FloatEventBtn scrollOn={scrollOn} />
+  </>
   return MainLayout;
 }
 
-export default MainPage
+export default MainPage;

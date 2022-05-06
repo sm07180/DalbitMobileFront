@@ -8,110 +8,96 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import {getDeviceOSTypeChk} from "common/DeviceCommon";
 import {IMG_SERVER} from 'context/config'
 import {RoomJoin} from "context/room";
-import {Context, GlobalContext} from "context";
-import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
+import {
+  RoomValidateFromClipMemNo, RoomValidateFromListenerFollow,
+} from "common/audio/clip_func";
 import {useHistory, withRouter} from "react-router-dom";
 import DataCnt from "components/ui/dataCnt/DataCnt";
+import {useDispatch, useSelector} from "react-redux";
 // components
 // css
 
 export default withRouter((props) => {
-  const {data, children, tab, topRankList} = props;
-
-  const context = useContext(Context);
-
-  const gtx = useContext(GlobalContext);
+  const {data, tab, topRankList, breakNo} = props;
 
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const goLive = (roomNo, memNo, nickNm, listenRoomNo) => {
-    if (context.token.isLogin === false) {
-      context.action.alert({
-        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-        callback: () => {
-          history.push('/login')
-        }
-      })
-    } else {
-      if (getDeviceOSTypeChk() === 3){
-        if(listenRoomNo){
-          RoomValidateFromClipMemNo(listenRoomNo,memNo, gtx, history, nickNm);
-        } else {
-          RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
-        }
-      } else {
-        if (roomNo !== '') {
-          RoomJoin({roomNo: roomNo,memNo:memNo, nickNm: nickNm})
-        } else {
-          let alertMsg
-          if (isNaN(listenRoomNo)) {
-            alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
-            context.action.alert({
-              type: 'alert',
-              msg: alertMsg
-            })
-          } else {
-            alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
-            context.action.confirm({
-              type: 'confirm',
-              msg: alertMsg,
-              callback: () => {
-                return RoomJoin({roomNo: listenRoomNo,memNo:memNo, listener: 'listener'})
-              }
-            })
-          }
-        }
-      }
+  const goProfile = (value, e) => {
+    e.stopPropagation();
+
+    if (value !== undefined) {
+      props.history.push(`/profile/${value}`);
     }
-  }
+  };
 
   return (
     <>
       {data.map((list, index) => {
+        if (breakNo < index + 1) {
+          return;
+        }
+
         return (
-          <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => history.push(`/profile/${list.memNo}`)} photoClick={() => history.push(`/profile/${list.memNo}`)}>
-            <div className="rank">{typeof topRankList === "undefined" ? index + 1 : index + 4}</div>
+          <ListRow photo={list.profImg.thumb292x292} key={index} onClick={() => props.history.push(`/profile/${list.memNo}`)} photoClick={() => props.history.push(`/profile/${list.memNo}`)}>
+            <div className="rank">{tab !== 'TEAM' ? list.rank : index + 4}</div>
             <div className="listContent">
               <div className="listItem">
                 <GenderItems data={list.gender} />
                 <span className="nick">{list.nickNm}</span>
               </div>
               <div className='listItem'>
-                {tab === "DJ" && <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>}
-                <DataCnt type={tab === "FAN" ? "starCnt" : tab === "DJ" ? "djGoodPoint" : "cupid"} value={tab === "FAN" ? list.starCnt : tab === "DJ" ? list.goodPoint : list.djNickNm} clickEvent={(e) => {
-                  e.stopPropagation();
-                  tab === "CUPID" && props.history.push(`/profile/${list.djMemNo}`);
-                }}/>
-                <DataCnt type={tab === "FAN" ? "listenPoint" : tab === "DJ" ? "listenPoint" : "djGoodPoint"} value={tab === "FAN" ? list.listenPoint : tab === "DJ" ? list.broadcastPoint : list.djGoodPoint}/>
+                {tab === "DJ" &&
+                  <>
+                    <DataCnt type={"listenerPoint"} value={list.listenerPoint}/>
+                    <DataCnt type={'djGoodPoint'} value={list.goodPoint} />
+                    <DataCnt type={"listenPoint"} value={list.broadcastPoint}/>
+                  </>
+                }
+                {tab === 'FAN' &&
+                  <>
+                    <DataCnt type={'starCnt'} value={list.starCnt}/>
+                    <DataCnt type={"listenPoint"} value={list.listenPoint}/>
+                  </>
+                }
+                {tab === 'CUPID' &&
+                  <>
+                    <DataCnt type={'cupid'} value={list.djNickNm} clickEvent={(e) => goProfile(list.djMemNo, e)}/>
+                    <DataCnt type={'djGoodPoint'} value={list.djGoodPoint} />
+                  </>
+                }
+                {tab === 'TEAM' &&
+                  <>
+                    <DataCnt type={'point'} value={list.rank_pt} />
+                  </>
+                }
               </div>
             </div>
-            {list.roomNo &&
+            {
+              !list.listenRoomNo && list.roomNo &&
               <div className="listBack">
                 <div className="badgeLive" onClick={(e) => {
                   e.stopPropagation();
-                  goLive(list.roomNo, list.memNo,list.nickNm, list.listenRoomNo);
+                  RoomValidateFromClipMemNo(list.roomNo, list.memNo, dispatch, globalState, history, list.nickNm);
                 }}>
                   <span className='equalizer'>
-                    <Lottie
-                      options={{
-                        loop: true,
-                        autoPlay: true,
-                        path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json`
-                      }}
-                    />
+                    <Lottie options={{ loop: true, autoPlay: true, path: `${IMG_SERVER}/dalla/ani/equalizer_pink.json` }} />
                   </span>
                   <span className='liveText'>LIVE</span>
                 </div>
               </div>
             }
-            {/* {
-              list.listenRoomNo !== "" &&
+            {
+              !list.roomNo && list.listenRoomNo && list.listenOpen !== 2 &&
                 <div className="listBack">
                   <div className='badgeListener' onClick={(e) => {
                     e.stopPropagation();
-                    goLive(list.roomNo, list.memNo, list.nickNm, list.listenRoomNo);
-                  }}>                     
-                    <span className='headset'>                          
+                    RoomValidateFromListenerFollow({
+                      memNo:list.memNo, history, globalState, dispatch, nickNm:list.nickNm, listenRoomNo:list.listenRoomNo
+                    });
+                  }}>
+                    <span className='headset'>
                       <Lottie
                           options={{
                             loop: true,
@@ -119,14 +105,14 @@ export default withRouter((props) => {
                             path: `${IMG_SERVER}/dalla/ani/ranking_headset_icon.json`
                           }}
                         />
-                    </span>      
+                    </span>
                     <span className='ListenerText'>LIVE</span>
-                  </div>  
-                </div>                                
-            } */}
+                  </div>
+                </div>
+            }
           </ListRow>
         )
       })}
     </>
   )
-})
+});

@@ -1,15 +1,21 @@
-import React, {useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 
 import './index.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 export default () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   return (
     <div id="clipOpenPopup">
       <div className="title">
         <h2>이벤트 유의사항</h2>
-        <button onClick={() => context.action.updatePopupVisible(false)}>확인</button>
+        <button onClick={() => {
+          dispatch(setGlobalCtxVisible(false));
+        }}>확인
+        </button>
       </div>
       <div className="content">
         <h3>보상 지급 안내</h3>

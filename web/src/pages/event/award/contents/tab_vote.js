@@ -1,14 +1,16 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import API from 'context/api'
-import {Context} from 'context'
 
 import VoteThxPop from './pop_vote_thx'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default function awardEventVote() {
   const history = useHistory()
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
 
   const [voteThxePop, setVoteThxPop] = useState(false)
   const [awardList, setAwardList] = useState([])
@@ -50,20 +52,20 @@ export default function awardEventVote() {
       } else if (voteState === 1) {
         setVoteState(3)
       } else {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: message
-        })
+        }))
       }
     } else {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: message
-      })
+      }))
     }
   }
 
   const validation = () => {
     if (!token.isLogin) {
-      globalCtx.action.alert({
+      dispatch(setGlobalCtxMessage({type:"alert",
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
 
         callback: () => {
@@ -74,9 +76,9 @@ export default function awardEventVote() {
             }
           })
         }
-      })
+      }))
     } else {
-      if (globalCtx.selfAuth === false) {
+      if (globalState.selfAuth === false) {
         history.push('/selfauth?event=/event/award/vote')
       } else {
         const items = awardList.filter((v) => {
@@ -88,39 +90,37 @@ export default function awardEventVote() {
 
           if (items1 && items2 && items3) {
             if (voteState === 0) {
-              globalCtx.action.alert({
+              dispatch(setGlobalCtxMessage({type:"confirm",
                 title: '투표하기',
-                type: 'confirm',
                 msg: `선택하신 DJ에게 투표하시겠습니까?<br />인증된 번호는 다시 사용할 수 없습니다.
               `,
                 callback: () => {
                   fetchAwardVote(items)
                 }
-              })
+              }))
             } else if (voteState === 1) {
-              globalCtx.action.alert({
+              dispatch(setGlobalCtxMessage({type:"confirm",
                 title: '투표하기',
-                type: 'confirm',
                 msg: `이전 투표를 취소하고 다시 투표하겠습니까?<br/>투표는 1회에 한해서만 수정되며<br/>수정된 내용은 다시 변경 할 수 없습니다.
               `,
                 callback: () => {
                   fetchAwardVote(items)
 
-                  globalCtx.action.alert({
+                  dispatch(setGlobalCtxMessage({type:"alert",
                     title: '투표하기',
                     msg: `투표가 수정되었습니다.<br />투표에 참여해주셔서 감사합니다.
               `,
                     callback: () => {
                       setVoteState(3)
                     }
-                  })
+                  }))
                 }
-              })
+              }))
             }
           } else {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({type:"alert",
               msg: `3명의 DJ를 선택해주세요.`
-            })
+            }))
           }
         }
       }
@@ -145,9 +145,9 @@ export default function awardEventVote() {
               })
             )
           } else {
-            globalCtx.action.alert({
+            dispatch(setGlobalCtxMessage({type:"alert",
               msg: `투표는 총 3명까지 가능합니다.`
-            })
+            }))
           }
         } else {
           setAwardList(

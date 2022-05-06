@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
-import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -10,18 +9,20 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn';
 import Tabmenu from './components/Tabmenu'
 import './style.scss'
 import _ from "lodash";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {authReq} from "pages/self_auth";
 import {parentCertChk} from "common/api";
 import {OS_TYPE} from "context/config";
 import {IMG_SERVER} from 'context/config'
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const storeTabMenu =['인앱(스토어) 결제', '신용카드 / 기타 결제']
 
 /** @deprecated */
 const StorePage = () => {
   const history = useHistory()
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [select, setSelect] = useState(3);
   const [osCheck, setOsCheck] = useState(-1)
@@ -57,7 +58,7 @@ const StorePage = () => {
   }
 
   const movePayment = async () => {
-    if (context.token.isLogin) {
+    if (globalState.token.isLogin) {
       const {result, data} = await Api.self_auth_check();
       if(result === 'success') {
         const parentCert = await parentCertChk();
@@ -68,30 +69,30 @@ const StorePage = () => {
               search: `?itemNm=${encodeURIComponent(payInfo.itemNm)}&price=${payInfo.price}&itemNo=${payInfo.itemNo}&dal=${payInfo.dal}`
             })
           }else {
-            context.action.confirm({
+            dispatch(setGlobalCtxMessage({type:'confirm',
               title: '보호자의 동의가 필요합니다',
               msg: `달충전을 하시려면 보호자(법정대리인)의 동의가 필요합니다.`,
               callback: () => {
                 history.push(`/legalRepresentative`);
               }
-            })
+            }))
           }
         }else {
-          context.action.alert({
+          dispatch(setGlobalCtxMessage({type:'alert',
             msg: `오류가 발생했습니다.`,
             callback: () => {
               history.push('/')
             }
-          })
+          }))
         }
       }else {
-        context.action.confirm({
+        dispatch(setGlobalCtxMessage({type:'confirm',
           title: '본인인증을 완료해주세요',
           msg: `결제를 하기 위해 본인인증을 완료해주세요.`,
           callback: () => {
-            authReq({code: '12', formTagRef: context.authRef, context, pushLink: '/store'});
+            authReq({code: '12', formTagRef: globalState.authRef, dispatch, pushLink: '/store'});
           }
-        })
+        }))
       }
     } else {
       history.push('/login')

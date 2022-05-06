@@ -1,19 +1,13 @@
 /**
  * @title 채팅 ui 상단 정보들 나타내는 컴포넌트
  */
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
-import {Scrollbars} from 'react-custom-scrollbars'
 //context
-import Api from 'context/api'
-import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 
 export default props => {
   //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
   //console.log('방정보를 알아봅시다..', props)
   //state
   const [room, setRoom] = useState({

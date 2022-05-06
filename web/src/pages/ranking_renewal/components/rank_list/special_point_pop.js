@@ -1,10 +1,10 @@
 import React, {useEffect, useContext} from 'react'
 import styled from 'styled-components'
+import {useSelector} from "react-redux";
 
-import {RankContext} from 'context/rank_ctx'
 
 export default ({setPopState}) => {
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const closePopup = () => {
     setPopState(false)

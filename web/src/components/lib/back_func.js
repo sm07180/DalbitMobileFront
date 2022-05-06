@@ -1,18 +1,26 @@
 import React from 'react'
-//context
 // etc
 import {closePopup} from "components/ui/popSlide/PopSlide";
 import {setCommonPopupOpenData} from "redux/actions/common";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxBackFunction, setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage,
+  setGlobalCtxMultiViewer
+} from "redux/actions/globalCtx";
+import {closeLayerPopup} from "components/ui/layerPopup/LayerPopup2";
+import {Hybrid} from "context/hybrid";
 
-export const backFunc = (context, dispatch) => {
-  const {backFunction} = context;
-  const nameLength = backFunction.name.length;
-  switch (backFunction.name[nameLength-1]) {
+export const backFunc = ({globalState, dispatch}) => {
+  const {backFunction} = globalState;
+  const nameLength = backFunction.length;
+  switch (backFunction[nameLength-1]) {
     case 'booleanType':
-      context.action.updateBackFunction({name: 'booleanType', value: false})
+      dispatch(setGlobalCtxBackFunction({name: 'booleanType', value: false}));
       break
     case 'multiViewer':
-      context.action.updateMultiViewer({show: false})
+      dispatch(setGlobalCtxMultiViewer({show: false}))
       break
     case 'event':
     case 'selfauth':
@@ -22,22 +30,27 @@ export const backFunc = (context, dispatch) => {
       closePopup(dispatch)
       break;
     case 'alertClose': // 알럿, 컨펌
-      context.action.alert({visible: false})
+      dispatch(setGlobalCtxMessage({type:'alert', visible:false}));
       break;
     case 'commonPop':
-      dispatch(setCommonPopupOpenData({...backFunction.popupData}))
+      closeLayerPopup(dispatch);
       break;
     case 'callback': // 스와이퍼 사진 팝업, 이미지 편집 에서 사용중
-      if (typeof context?.backEventCallback?.callback === 'function') {
-        context?.backEventCallback?.callback();
+      if (typeof globalState?.backEventCallback === 'function') {
+        globalState?.backEventCallback();
       }
       break;
+    case 'statusAlert': // common/alert/index
+      dispatch(setGlobalCtxAlertStatus({ status: false }));
+      globalState.alertStatus.cancelCallback && globalState.alertStatus.cancelCallback();
+      break;
     default:
+      Hybrid('goBack');
       break
   }
   setTimeout(() => {
     if(nameLength === 1) {
-      context.action.updateSetBack(null)
+      dispatch(setGlobalCtxBackState(null));
     }
   }, 100)
 }

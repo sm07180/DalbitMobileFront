@@ -2,7 +2,6 @@ import React, {useState, useEffect, useMemo, useCallback, useRef} from 'react';
 import ListRow from "components/ui/listRow/ListRow";
 import Utility from "components/lib/utility";
 import {IMG_SERVER} from "context/config";
-import {Context} from "context";
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileTabData} from "redux/actions/profile";
 
@@ -86,7 +85,7 @@ const ProfileReplyComponent = (props) => {
               <button onClick={() => {blurBlock(); replyEditFormActive(item?.tail_no, item?.tail_conts);}}>수정하기</button>
             }
             {(isMyProfile || isMyContents || adminChecker) && <button onClick={() => replyDelete(item?.replyIdx || item?.tail_no)}>삭제하기</button>}
-            {(!isMyContents) && <button onClick={() => openBlockReportPop({memNo, memNick: item?.nickName})}>차단/신고하기</button>}
+            {(!isMyContents) && <button onClick={() => openBlockReportPop(memNo, item?.nickName)}>차단/신고하기</button>}
           </div>
           }
         </div>

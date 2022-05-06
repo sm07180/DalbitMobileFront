@@ -4,15 +4,18 @@ import qs from 'query-string'
 import Api from 'context/api'
 
 //context
-import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
 
-  const context = useContext(Context)
   if (location.state === undefined) {
     location.state = {
       result: 'fail',
@@ -115,13 +118,13 @@ export default () => {
           firebase.analytics().logEvent('Buy_moon')
         } catch (e) {}
 
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
               Hybrid('CloseLayerPopup')
               Hybrid('ClosePayPopup')
           }
-        })
+        }))
       } else {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -152,19 +155,19 @@ export default () => {
       }
     } else {
       if (returntype === 'room') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: message,
           callback: () => {
             Hybrid('ClosePayPopup')
           }
-        })
+        }))
       } else if (returntype === 'store') {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({type:"alert",
           msg: message,
           callback: () => {
             window.location.href = '/'
           }
-        })
+        }))
       } else {
         Hybrid('ClosePayPopup')
         window.location.href = '/'

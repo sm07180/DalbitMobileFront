@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useReducer, useContext } from "react";
 // import DatePicker from "./datepicker";
 import { postEditProfile } from "common/api";
-import { GlobalContext } from "context";
 
 // Calendar
 import moment from "moment";
@@ -12,6 +11,8 @@ import "../../../asset/scss/module/calendar.scss";
 
 import IcoFemale from "../static/ico_female.svg";
 import IcoMale from "../static/ico_male.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxSetToastStatus, setGlobalCtxUserProfile} from "../../../redux/actions/globalCtx";
 
 const formInit = {
   birth: "20200101",
@@ -39,8 +40,8 @@ export default (props) => {
   const { setInputPopup } = props;
 
   //context
-  const globalCtx = useContext(GlobalContext);
-  const { globalAction, globalState } = globalCtx;
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const [formData, formDispatch] = useReducer(FormDataReducer, formInit);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -68,17 +69,17 @@ export default (props) => {
     const baseYear = new Date().getFullYear() - 11;
 
     if (formData.birth === "20200101" || myBirth > baseYear) {
-      return globalAction.callSetToastStatus!({
+      return dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "생년월일을 정확하게 입력해주세요",
-      });
+      }));
     }
 
     if (formData.gender === "n")
-      return globalAction.callSetToastStatus!({
+      return dispatch(setGlobalCtxSetToastStatus({
         status: true,
         message: "성별을 선택해주세요",
-      });
+      }));
 
     const saveProfile = async () => {
       const res = await postEditProfile({
@@ -89,19 +90,17 @@ export default (props) => {
         profImg: globalState.userProfile && globalState.userProfile.profImg.path,
       });
       if (res.result === "success") {
-        if (globalAction.setUserProfile) {
-          globalAction.setUserProfile(res.data);
-        }
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxUserProfile(res.data));
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "회원정보가 변경되었습니다.",
-        });
+        }));
         closePopup();
       } else {
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: res.message,
-        });
+        }));
       }
     };
     saveProfile();

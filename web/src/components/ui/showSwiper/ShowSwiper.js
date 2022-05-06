@@ -4,13 +4,19 @@ import Swiper from 'react-id-swiper'
 
 import './showSwiper.scss'
 import {isAndroid} from "context/hybrid";
-import {Context} from 'context';
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBackEventCallback,
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState
+} from "redux/actions/globalCtx";
 
 const ShowSwiper = (props) => {
-  const context = useContext(Context);
   const {imageList, popClose, imageKeyName, imageParam, initialSlide,
     showTopOptionSection, readerButtonAction, deleteButtonAction, swiperParam} = props
-
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const [swiper, setSwiper] = useState();
 
   const swiperParams = {
@@ -33,6 +39,19 @@ const ShowSwiper = (props) => {
     if (target.className === 'popClose') {
       popClose(false)
     }
+
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunctionEnd(''));
+    }
+  }
+
+  const setPresentPhoto = () => {
+    readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx)
+    dispatch(setGlobalCtxBackFunctionEnd(''));
+  }
+
+  const deletePhoto = () => {
+    deleteButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx)
   }
 
   useEffect(() => {
@@ -48,20 +67,17 @@ const ShowSwiper = (props) => {
   /* 안드로이드 물리 백버튼시 감지용 */
   useEffect(() => {
     if(isAndroid()) {
-      context.action.updateSetBack(true);
-      context.action.updateBackFunction({name: 'callback'});
-      context.action.updateBackEventCallback(() => {
+      dispatch(setGlobalCtxBackState(true))
+      dispatch(setGlobalCtxBackFunction({name: 'callback'}))
+      dispatch(setGlobalCtxBackEventCallback(() => {
         popClose(false)
-      });
+      }));
     }
 
     return () => {
       if (isAndroid()) {
-        if (context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null);
-        }
-        context.action.updateBackFunction({name: ''});
-        context.action.updateBackEventCallback(null);
+        dispatch(setGlobalCtxBackEventCallback(null));
+        dispatch(setGlobalCtxBackFunctionEnd(''));
       }
     }
   },[]);
@@ -71,8 +87,8 @@ const ShowSwiper = (props) => {
       <div className="showWrapper">
         {showTopOptionSection &&
         <div className="buttonGroup">
-          <button onClick={() => readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>대표 사진</button>
-          <button onClick={() => deleteButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>삭제</button>
+          <button onClick={setPresentPhoto}>대표 사진</button>
+          <button onClick={deletePhoto}>삭제</button>
         </div>
         }
         {imageList.length > 1 ?

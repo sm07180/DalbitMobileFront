@@ -52,6 +52,12 @@
     vertical-align: bottom;
     background-image: url("https://image.dalbitlive.com/main/common/ico_contentsdj_broadcast.png");
   }
+  &.icon_partnerDj {
+    width: 100px;
+    height: 28px;
+    vertical-align: bottom;
+    background-image: url("https://image.dalbitlive.com/badge/dalla/badge_partnerDJ.png");
+  }
   &.icon_shiningdj {
     background-image: url("#{$IMG_SERVER}/main/common/ico_shiningdj.png");
   }
@@ -216,7 +222,7 @@
     background-image: url("#{$IMG_SERVER}/svg/postbox_g_off.svg");
   }
 
-  // 뱃지 아이콘
+  // 배지 아이콘
   &.icon_badge {
     font-size: 11px;
     line-height: 1.1;

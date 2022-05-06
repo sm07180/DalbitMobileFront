@@ -72,10 +72,10 @@ export interface ICommonPopupState {
   headerPopup: boolean;
   fanStarPopup: boolean;
   likePopup: boolean;
-  blockReportPopup: boolean;
   presentPopup: boolean;
   questionMarkPopup: boolean;
   historyPopup: boolean;
+  levelPopup: boolean;
 
   // 달라져스 이벤트
   morePopup: boolean;
@@ -85,6 +85,10 @@ export interface ICommonPopupState {
   /* 공통 팝업 */
   commonPopup: boolean;
 
+  /* 레이어 팝업 */
+  layerPopup: boolean;
+
   /* 애니메이션 액션 팝업 */
   slidePopup: boolean;
+  slideAction: boolean;
 }

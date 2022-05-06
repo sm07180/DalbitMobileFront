@@ -10,18 +10,23 @@
  */
 import React, {useMemo, useRef, useEffect, useContext} from 'react'
 import _ from 'lodash'
-//context
-import {Context} from 'context'
 //hooks
 import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
 import {isAndroid} from "context/hybrid";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 //
 export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //useRef
   const refBtn = useRef(null)
   //--hooks
@@ -29,15 +34,15 @@ export default (props) => {
   const cancel = useClick(update, {callback: 'cancel'})
   //--useMemo
   const cancelText = useMemo(() => {
-    if (_.hasIn(context.message, 'buttonText.left')) {
-      return context.message.buttonText.left
+    if (_.hasIn(globalState.message, 'buttonText.left')) {
+      return globalState.message.buttonText.left
     } else {
       return '취소'
     }
   })
   const confirmText = useMemo(() => {
-    if (_.hasIn(context.message, 'buttonText.right')) {
-      return context.message.buttonText.right
+    if (_.hasIn(globalState.message, 'buttonText.right')) {
+      return globalState.message.buttonText.right
     } else {
       return '확인'
     }
@@ -47,18 +52,17 @@ export default (props) => {
   function update(mode) {
     switch (true) {
       case mode.visible !== undefined: //----------------------팝업닫기
-        sessionStorage.removeItem('room_active')
-        if (mode.visible === false) context.action.alert({visible: false})
+        if (mode.visible === false) dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
         break
       case mode.callback !== undefined: //---------------------콜백처리
         //콜백
-        context.action.alert({visible: false})
-        if (mode.callback === 'confirm' && context.message.callback !== undefined) {
-          context.message.callback()
+        dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
+        if (mode.callback === 'confirm' && globalState.message.callback !== undefined) {
+          globalState.message.callback()
         }
         //캔슬콜백(취소)
-        if (mode.callback === 'cancel' && context.message.cancelCallback !== undefined) {
-          context.message.cancelCallback()
+        if (mode.callback === 'cancel' && globalState.message.cancelCallback !== undefined) {
+          globalState.message.cancelCallback()
         }
 
         break
@@ -66,24 +70,20 @@ export default (props) => {
   }
 
   const btnClose = () => {
-    sessionStorage.removeItem('room_active')
-    context.action.alert({visible: false})
+    dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
   }
   //useEffect
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     refBtn.current.focus()
     if(isAndroid()) {
-      context.action.updateSetBack(true)
-      context.action.updateBackFunction({name: 'alertClose'})
+      dispatch(setGlobalCtxBackState(true))
+      dispatch(setGlobalCtxBackFunction({name: 'alertClose'}))
     }
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        if(context.backFunction.name.length === 1) {
-          context.action.updateSetBack(null)
-        }
-        context.action.updateBackFunction({name: ''})
+        dispatch(setGlobalCtxBackFunctionEnd(''));
       }
     }
   }, [])
@@ -91,14 +91,14 @@ export default (props) => {
   return (
     <div className='popLayer' id="confirmPop">
       <div className="popContent">
-        {context.message.title && <h1 className="title" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
-        <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
-        {context.message.subMsg && (
-          <div className="subMsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.subMsg)}}></div>
+        {globalState.message.title && <h1 className="title" dangerouslySetInnerHTML={{__html: Utility.nl2br(globalState.message.title)}}></h1>}
+        <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(globalState.message.msg)}}></p>
+        {globalState.message.subMsg && (
+          <div className="subMsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(globalState.message.subMsg)}}></div>
         )}
 
-        {context.message.remsg && (
-          <b className="remsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.remsg)}}></b>
+        {globalState.message.remsg && (
+          <b className="remsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(globalState.message.remsg)}}></b>
         )}
       </div>
       <div className="popBtnWrap">

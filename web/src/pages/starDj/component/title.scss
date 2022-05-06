@@ -1,0 +1,14 @@
+@import "components/ui/_mixin.scss";
+
+#starDj {
+  .sectionTitle {
+    @include flex(center, center);
+    padding: 9px 22px 5px;
+    margin-bottom: 14px;
+    border-radius: 100px;
+    background-color: #00AF91;
+    img {
+      height: 21px;
+    }
+  }
+}

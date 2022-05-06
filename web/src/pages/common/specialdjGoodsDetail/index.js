@@ -5,7 +5,6 @@
 import React, {useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
 //context
-import {Context} from 'context'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 ////---------------------------------------------------------------------

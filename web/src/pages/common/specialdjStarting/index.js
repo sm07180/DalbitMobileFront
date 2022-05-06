@@ -2,19 +2,21 @@
  * @file terms/content/event_gift_detail.js
  * @brief 이벤트 경품 상세소개
  */
-import React, {useContext} from 'react'
-import {Link, useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React from 'react'
+import {useHistory} from 'react-router-dom'
 
 import './scss/specialdj-starting.scss'
 import NumberImg01 from './static/specialdj_starting_number01.png'
 import NumberImg02 from './static/specialdj_starting_number02.png'
 import NumberImg03 from './static/specialdj_starting_number03.png'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxVisible} from "redux/actions/globalCtx";
 
 ////---------------------------------------------------------------------
 export default (props) => {
-  //context
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
 
   //---------------------------------------------------------------------
@@ -59,7 +61,7 @@ export default (props) => {
             <button
               className="button"
               onClick={() => {
-                context.action.updatePopupVisible(false)
+                dispatch(setGlobalCtxVisible(false));
                 history.push('/customer/notice/330')
               }}>
               공지사항 보러가기

@@ -1,19 +1,20 @@
-import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
+import React, {useContext, useEffect, useRef, useState} from 'react'
 
 import API from 'context/api'
 import Utility from 'components/lib/utility'
-import {IMG_SERVER} from 'context/config'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
 //ctx
-import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let intervalId = null
 
 export default () => {
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {token} = globalState
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {itemNo, imageUrl, itemWinMsg} = eventAttendState
   const [checks, setChecks] = useState([false, false])
@@ -26,15 +27,17 @@ export default () => {
   const clickSaveButton = () => {
     const rgEx = /(01[0123456789])(\d{3}|\d{4})\d{4}$/g
     if (!phone) {
-      return globalCtx.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `휴대폰 번호는 필수입력 값입니다.`
-      })
+      }))
     }
 
     if (!rgEx.test(phone) || phone.length < 11) {
-      return globalCtx.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: `올바른 휴대폰 번호가 아닙니다.`
-      })
+      }))
     }
 
     async function fetchEventAttendPhone() {
@@ -46,13 +49,15 @@ export default () => {
         eventAttendAction.setPopGifticon(false)
         eventAttendAction.setPopRoulette(false)
 
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: `다시 한 번 축하드립니다.\n기프티콘은 입력된 연락처로\n평일 기준 7일 이내 전송해드립니다.`
-        })
+        }))
       } else {
-        globalCtx.action.alert({
+        dispatch(setGlobalCtxMessage({
+          type: "alert",
           msg: message
-        })
+        }))
       }
     }
     fetchEventAttendPhone()

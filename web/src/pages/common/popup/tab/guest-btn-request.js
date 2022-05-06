@@ -1,17 +1,13 @@
 /**
  * @title 청취자
  */
-import React, {useState, useEffect, useContext} from 'react'
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import React, {useEffect, useState} from 'react'
+import {IMG_SERVER} from 'context/config'
 import styled from 'styled-components'
-import {Context} from 'context'
-import API from 'context/api'
 //components--------------------------------------------------
 import RequestEvent from './guest-request-event'
 
 export default props => {
-  //context---------------------------------------------------------
-  const context = useContext(Context)
   //----------------------------------------------------------------
   //0.매니저정보 info스테이트----------------------------------------
   const [eventCheck, setEventCheck] = useState(false)

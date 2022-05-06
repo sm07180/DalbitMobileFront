@@ -5,12 +5,11 @@ import { useHistory, useLocation } from "react-router-dom";
 import { mailBoxJoin } from "common/mailbox/mail_func";
 import { IMG_SERVER } from "constant/define";
 
-// context
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
 
 // lib
 import { convertDateFormat } from "lib/dalbit_moment";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxRealtimeBroadStatus} from "../../redux/actions/globalCtx";
 
 let msgArray: any[] = [];
 let copyArray: any[] = [];
@@ -19,13 +18,13 @@ let timer;
 
 export default function RealTimeBroadUI() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const location = useLocation();
   const { pathname } = location;
   const checkChatting = pathname.split("/")[2];
   const checkBroad = pathname.split("/")[1];
-
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { mailboxAction, mailboxState } = useContext(MailboxContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const mailboxState = useSelector(({mailBoxCtx}) => mailBoxCtx);
 
   const { type } = globalState.realtimeBroadStatus;
 
@@ -91,8 +90,8 @@ export default function RealTimeBroadUI() {
 
   const msgLocate = (memNo) => {
     // history.push(`/mailbox/chatting/${roomNo}`);
-    mailBoxJoin(memNo, mailboxAction, globalAction, history);
-    globalAction.setRealtimeBroadStatus!({
+    mailBoxJoin(memNo, dispatch, history);
+    dispatch(setGlobalCtxRealtimeBroadStatus({
       message: "",
       roomNo: "",
       time: "",
@@ -100,7 +99,7 @@ export default function RealTimeBroadUI() {
       memNo: "",
       type: "",
       status: false,
-    });
+    }));
   };
   //----------------------------
 
@@ -137,17 +136,15 @@ export default function RealTimeBroadUI() {
   }, [msgData]);
   useEffect(() => {
     if (last === true && msgData.length === 0) {
-      if (globalAction.setRealtimeBroadStatus) {
-        globalAction.setRealtimeBroadStatus!({
-          message: "",
-          roomNo: "",
-          time: "",
-          nickNm: "",
-          memNo: "",
-          type: "",
-          status: false,
-        });
-      }
+      dispatch(setGlobalCtxRealtimeBroadStatus({
+        message: "",
+        roomNo: "",
+        time: "",
+        nickNm: "",
+        memNo: "",
+        type: "",
+        status: false,
+      }));
       setLast(false);
     }
   }, [last, msgData]);

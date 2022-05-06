@@ -2,14 +2,13 @@
  * @file /mypage/context/alert.js
  * @brief 마이페이지 알람
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 
 //context
-import {Context} from 'context'
 import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
+import {IMG_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 import Header from '../component/header.js'
 //room
@@ -19,17 +18,18 @@ import Room, {RoomJoin} from 'context/room'
 import NoResult from 'components/ui/noResult'
 
 //icon
-import userIco from '../component/images/ic_user_normal.svg'
 import moonIco from '../component/images/ico_moon_s.svg'
 import alarmIco from '../component/images/ic_alarm.svg'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 let currentPage = 1
 
 export default (props) => {
-  //-----------------------------------------------------------------------------
-  //contenxt
-  const context = useContext(Context)
-  const myMemNo = context.profile.memNo
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const myMemNo = globalState.profile.memNo
 
   //state
   const [listState, setListState] = useState(-1)
@@ -68,9 +68,10 @@ export default (props) => {
         setListState(1)
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: res.message
-      })
+      }))
     }
   }
 
@@ -100,8 +101,9 @@ export default (props) => {
                     onClick={() => {
                       if (clicked) return
                       clicked = true
-                      if (context.adminChecker === true) {
-                        context.action.confirm_admin({
+                      if (globalState.adminChecker === true) {
+                        dispatch(setGlobalCtxMessage({
+                          type: "confirm_admin",
                           //콜백처리
                           callback: () => {
                             RoomJoin({
@@ -123,7 +125,7 @@ export default (props) => {
                             })
                           },
                           msg: '관리자로 입장하시겠습니까?'
-                        })
+                        }))
                       } else {
                         RoomJoin({
                           roomNo: roomNo,

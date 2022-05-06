@@ -4,10 +4,6 @@ import { useHistory } from "react-router-dom";
 // import {RoomJoin} from 'context/room'
 import { printNumber } from "lib/common_fn";
 
-// context
-// import {Context} from 'context'
-import { GlobalContext } from "context";
-import { RankContext } from "context/rank_ctx";
 import {RoomValidateFromClip, RoomValidateFromClipMemNo} from "common/audio/clip_func";
 import { convertDateToText } from "lib/rank_fn";
 import { RANK_TYPE, DATE_TYPE } from "pages/rank/constant";
@@ -18,16 +14,18 @@ import live from "../../static/live_m.svg";
 import goldMedalIcon from "../../static/medal_gold_b.svg";
 import silverMedalIcon from "../../static/medal_silver_b.svg";
 import bronzeMedalIcon from "../../static/medal_bronze_m.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxAlertStatus} from "../../../../redux/actions/globalCtx";
 
 function RankList() {
   //context
-  const { globalState, globalAction } = useContext(GlobalContext);
-  const { rankState, rankAction } = useContext(RankContext);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const dispatch = useDispatch();
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState, rankList } = rankState;
 
   const history = useHistory();
-  const gtx = useContext(GlobalContext);
 
   const sliceStart = useMemo(() => {
     if (
@@ -153,7 +151,7 @@ function RankList() {
                 >
                   <div className="thumbBox">
                     {formState[formState.pageType].rankType === RANK_TYPE.FAN &&
-                      index < 2 && <div className="thumbBox__frame" />}
+                    index < 2 && <div className="thumbBox__frame" />}
                     <img src={profImg.thumb292x292} className="thumbBox__pic" />
                   </div>
 
@@ -172,11 +170,11 @@ function RankList() {
                         )}
 
                         {formState[formState.pageType].dateType ===
-                          DATE_TYPE.DAY &&
-                          liveBadgeList &&
-                          liveBadgeList.length !== 0 && (
-                            <BadgeList list={liveBadgeList} />
-                          )}
+                        DATE_TYPE.DAY &&
+                        liveBadgeList &&
+                        liveBadgeList.length !== 0 && (
+                          <BadgeList list={liveBadgeList} />
+                        )}
                         {badgeSpecial > 0 && badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj">베스트DJ</em>
                         ) : isConDj === true ? (
@@ -193,7 +191,7 @@ function RankList() {
 
                     <div className="countBox">
                       {formState[formState.pageType].rankType ===
-                        RANK_TYPE.DJ && (
+                      RANK_TYPE.DJ && (
                         <>
                           <span className="countBox__item">
                             <i className="icon icon--people">사람 아이콘</i>
@@ -213,7 +211,7 @@ function RankList() {
                       )}
 
                       {formState[formState.pageType].rankType ===
-                        RANK_TYPE.FAN && (
+                      RANK_TYPE.FAN && (
                         <>
                           <span className="countBox__item">
                             <i className="icon icon--star">S 스타 아이콘</i>
@@ -233,33 +231,26 @@ function RankList() {
                   <button
                     onClick={() => {
                       if (roomNo !== "") {
-                        RoomValidateFromClipMemNo(roomNo,memNo, gtx, history, nickNm);
+                        RoomValidateFromClipMemNo(listenRoomNo, memNo, dispatch, globalState, history, "", "listener");
                       } else {
                         let alertMsg;
                         if (isNaN(listenRoomNo)) {
                           alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`;
-                          globalAction.setAlertStatus!({
+                          dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             type: "alert",
                             content: alertMsg,
-                          });
+                          }));
                         } else {
                           alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`;
-                          globalAction.setAlertStatus!({
+                          dispatch(setGlobalCtxAlertStatus({
                             status: true,
                             type: "confirm",
                             content: alertMsg,
                             callback: () => {
-                              RoomValidateFromClipMemNo(
-                                listenRoomNo,
-                                memNo,
-                                gtx,
-                                history,
-                                "",
-                                "listener"
-                              );
+                              RoomValidateFromClipMemNo(listenRoomNo, memNo, dispatch, globalState, history, "", "listener");
                             },
-                          });
+                          }));
                         }
                       }
                     }}
@@ -288,4 +279,4 @@ function RankList() {
   return creatList();
 }
 
-export default React.memo(RankList);
+export default React.memo(RankList)

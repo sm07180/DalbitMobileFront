@@ -1,18 +1,18 @@
-import React, {useCallback, useEffect, useState, useContext, useMemo, useRef} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {useHistory, useParams} from 'react-router-dom'
 
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
 import Api from 'context/api'
 
 import {PHOTO_SERVER} from 'context/config'
-
-import {Context} from 'context'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 function ModifyNoticeCompnents(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {modifyItem, setPhotoUploading, setNoticeList, noticeList} = props
-
-  const context = useContext(Context)
 
   const {memNo, addpage} = useParams()
   const history = useHistory()
@@ -67,7 +67,7 @@ function ModifyNoticeCompnents(props) {
       }
     })
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
         visible: true,
         type: 'alert',
         msg: message,
@@ -88,18 +88,18 @@ function ModifyNoticeCompnents(props) {
             history.goBack()
           })
         }
-      })
+      }))
     }
   }, [inputs, memNo, thumbNail, isTop])
 
   useEffect(() => {
     if (image !== null) {
       if (image.status === false) {
-        context.action.alert({
+        dispatch(setGlobalCtxMessage({
           visible: true,
           type: 'alert',
           msg: image.content
-        })
+        }))
       } else {
         setPhotoUploading(true)
         const imageUpload = async () => {
@@ -115,14 +115,14 @@ function ModifyNoticeCompnents(props) {
             setThumbNail(data)
             setPhotoUploading(false)
           } else {
-            context.action.alert({
+            dispatch(setGlobalCtxMessage({
               visible: true,
               type: 'alert',
               msg: data.message,
               callback: () => {
                 history.goBack()
               }
-            })
+            }))
           }
         }
         imageUpload()

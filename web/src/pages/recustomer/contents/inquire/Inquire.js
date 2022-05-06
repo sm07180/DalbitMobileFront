@@ -10,18 +10,19 @@ import InquireWrite from "pages/recustomer/contents/inquire/InquireWrite";
 import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
 // css
 import './inquire.scss'
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
 
 
 const Inquire = () => {
   const inquireTabmenu = ['문의하기','나의 문의내역']
   const [inquire, setInquire] = useState(inquireTabmenu[0])
-  const context = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   return (
     <div id="inquire">
       <Header title="1:1 문의" type="back"/>
-      {!context.token.isLogin ?
+      {!globalState.token.isLogin ?
         <div className='subContent'>
           <InquireWrite setInquire={setInquire}/>
         </div>

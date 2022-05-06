@@ -1,24 +1,20 @@
-import React, {useEffect, useState, useContext, useRef, useReducer} from 'react'
-import qs from 'query-string'
+import React, {useState} from 'react'
 //styled
 import styled from 'styled-components'
 //context
-import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
-import Api from 'context/api'
-import {Context} from 'context'
 //scroll
-import {Scrollbars} from 'react-custom-scrollbars'
 import Swiper from 'react-id-swiper'
 //components
-
 import Header from '../component/header'
 import FanManage from './edite_contents/fanmanage'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxFanTab} from "redux/actions/globalCtx";
 //---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
 export default (props) => {
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //state
   const [title, setTitle] = useState(2)
 
@@ -31,7 +27,7 @@ export default (props) => {
   // tabs
   const tabLocation = (id) => {
     setTitle(id)
-    ctx.action.updateFanTab(id)
+    dispatch(setGlobalCtxFanTab(id))
   }
   console.log(title)
   return (

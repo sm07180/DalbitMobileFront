@@ -4,18 +4,19 @@ import styled from 'styled-components'
 //context
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import {PROFILE_REPORT_TAB} from './constant'
 import Caution from '../static/caution.png'
 
 const CloseBtn = 'https://image.dalbitlive.com/images/api/close_w_l.svg'
 import 'styles/layerpopup.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage, setGlobalCtxUserReport} from "redux/actions/globalCtx";
 
 export default (props) => {
-  //context------------------------------------------
-  const context = useContext(Context)
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   //pathname
   const {profile} = props
   let history = useHistory()
@@ -27,63 +28,68 @@ export default (props) => {
   //api
 
   const setUserReport = (obj) => {
-    context.action.updateUserReport({...context.userReport, ...obj})
+    dispatch(setGlobalCtxUserReport({...globalState.userReport, ...obj}));
   }
 
   async function fetchDataBlock() {
     const {message, result, code} = await Api.mypage_black_add({
       data: {
-        memNo: context.userReport.targetMemNo
+        memNo: globalState.userReport.targetMemNo
       }
     })
     if (result === 'success') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {
           setUserReport({state: false})
         },
         msg: message
-      })
+      }))
     } else if (code === '-3') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {
           setUserReport({state: false})
         },
         msg: message
-      })
+      }))
     } else if (code === 'C006') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {
           setUserReport({state: false})
         },
         msg: '이미 블랙리스트로 등록된\n회원입니다.'
-      })
+      }))
     }
   }
 
   const fetchData = async () => {
     const res = await Api.member_declar({
       data: {
-        memNo: context.userReport.targetMemNo,
+        memNo: globalState.userReport.targetMemNo,
         reason: select,
         cont: reportReason
       }
     })
     if (res.result === 'success') {
       //console.log(res)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {
           setUserReport({state: false})
         },
-        msg: context.userReport.targetNickName + '님을 신고 하였습니다.'
-      })
+        msg: globalState.userReport.targetNickName + '님을 신고 하였습니다.'
+      }))
     } else {
       // console.log(res)
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {
           setUserReport({state: false})
         },
         msg: '이미 신고한 회원 입니다.'
-      })
+      }))
     }
 
     return
@@ -171,16 +177,18 @@ export default (props) => {
   }
   const validateReport = () => {
     if (select === '') {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {},
         msg: '신고 사유를 선택해주세요.'
-      })
+      }))
     }
     if (select !== '' && reportReason.length < 10) {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type:"alert",
         callback: () => {},
         msg: '신고 사유를 10자 이상 입력해주세요.'
-      })
+      }))
     }
 
     if (reportReason.length >= 10 && select !== '') {
@@ -247,7 +255,7 @@ export default (props) => {
                     pageType === PROFILE_REPORT_TAB.BLACK && (
                       <div className="blackWrap">
                         <div className="alertText">
-                          <h3>{context.userReport.targetNickName}</h3>
+                          <h3>{globalState.userReport.targetNickName}</h3>
                           <b>차단하시겠습니까?</b>
 
                           <img src={Caution} />

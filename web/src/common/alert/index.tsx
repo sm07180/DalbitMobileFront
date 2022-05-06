@@ -1,35 +1,53 @@
 import React, { useContext, useCallback, useEffect } from "react";
-// context
-import { GlobalContext } from "context";
 // static
 import "./alert.scss";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxAlertStatus,
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState
+} from "../../redux/actions/globalCtx";
+import {isAndroid} from "../../context/hybrid";
 
 export default function Alert() {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const confirmClick = () => {
-    globalAction.setAlertStatus && globalAction.setAlertStatus({ status: false });
+    dispatch(setGlobalCtxAlertStatus({ status: false }));
     globalState.alertStatus.callback && globalState.alertStatus.callback();
   };
   const cancelClick = () => {
-    globalAction.setAlertStatus && globalAction.setAlertStatus({ status: false });
+    dispatch(setGlobalCtxAlertStatus({ status: false }));
     globalState.alertStatus.cancelCallback && globalState.alertStatus.cancelCallback();
   };
   const closeAlert = () => {
-    globalAction.setAlertStatus && globalAction.setAlertStatus({ status: false });
+    dispatch(setGlobalCtxAlertStatus({ status: false }));
   };
 
   const addStopPropagation = useCallback((e: any) => {
     e.stopPropagation();
   }, []);
 
-  // useEffect(() => {
-  //   /* popup떳을시 scroll 막는 코드 */
-  //   document.body.style.overflow = "hidden";
-  //   return () => {
-  //     document.body.style.overflow = "";
-  //   };
-  // }, []);
+  useEffect(() => {
+    if(globalState.alertStatus.status) {
+      document.body.style.overflow = "hidden";
+      if(isAndroid()) {
+        dispatch(setGlobalCtxBackState(true));
+        dispatch(setGlobalCtxBackFunction({name: 'statusAlert'}));
+      }
+    }else {
+      document.body.style.overflow = "";
+      if(isAndroid()) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [globalState.alertStatus.status]);
 
   function renderContent(type: string = "common") {
     const makeTitle = () => {
@@ -60,9 +78,9 @@ export default function Alert() {
         <span
           className="subCont"
           style={{
-            ...globalState.alertStatus.subcontStyle!,
+            ...globalState.alertStatus.subContStyle!,
           }}
-          dangerouslySetInnerHTML={{ __html: globalState.alertStatus!.subcont! }}
+          dangerouslySetInnerHTML={{ __html: globalState.alertStatus!.subCont! }}
         ></span>
       );
     };
@@ -80,7 +98,7 @@ export default function Alert() {
                 {globalState.alertStatus.title! && makeTitle()}
                 <div className="content">
                   {globalState.alertStatus.content && makeContent()}
-                  {globalState.alertStatus.subcont && makeSubCont()}
+                  {globalState.alertStatus.subCont && makeSubCont()}
                 </div>
                 <div className="btnWrap">
                   <button className="btn btn_cancel" onClick={cancelClick}>
@@ -109,7 +127,7 @@ export default function Alert() {
                 {globalState.alertStatus.title! && makeTitle()}
                 <div className="content">
                   {globalState.alertStatus.content && makeContent()}
-                  {globalState.alertStatus.subcont && makeSubCont()}
+                  {globalState.alertStatus.subCont && makeSubCont()}
                 </div>
                 <div className="btnWrap">
                   <button className="btn" onClick={confirmClick}>

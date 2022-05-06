@@ -1,7 +1,7 @@
-import React, {useReducer, useEffect, useCallback, useRef, useContext} from 'react'
-
-import {Context} from 'context'
+import React, {useCallback, useEffect, useReducer, useRef} from 'react'
 import Api from 'context/api'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,20 +27,22 @@ const reducer = (state, action) => {
 }
 
 function BC_SettingQuickMsg() {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
 
-  const [state, dispatch] = useReducer(reducer, [])
+  const [state, dispatchWithoutAction] = useReducer(reducer, [])
 
   const modifyState = useCallback(
     async (idx) => {
       if (state[idx].order === '') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '명령어를 입력해주세요.'
-        })
+        }))
       } else if (state[idx].text === '') {
-        context.action.toast({
+        dispatch(setGlobalCtxMessage({
+          type: "toast",
           msg: '내용을 입력해주세요.'
-        })
+        }))
       } else {
         const res = await Api.member_broadcast_shortcut({
           method: 'POST',
@@ -50,13 +52,15 @@ function BC_SettingQuickMsg() {
         })
 
         if (res.result === 'success') {
-          context.action.toast({
+          dispatch(setGlobalCtxMessage({
+            type: "toast",
             msg: '퀵 메시지가 저장 되었습니다.'
-          })
+          }))
         } else {
-          context.action.toast({
+          dispatch(setGlobalCtxMessage({
+            type: "toast",
             msg: res.message
-          })
+          }))
         }
       }
     },
@@ -70,7 +74,7 @@ function BC_SettingQuickMsg() {
       })
 
       if (res.result === 'success') {
-        dispatch({type: 'init', val: res.data.list})
+        dispatchWithoutAction({type: 'init', val: res.data.list})
       }
     }
 
@@ -84,7 +88,8 @@ function BC_SettingQuickMsg() {
         state.map((v, idx) => {
           return (
             <div key={idx} className="contents">
-              <QuickContent item={v} idx={idx} state={state} dispatch={dispatch} modifyState={modifyState} />
+              <QuickContent item={v} idx={idx} state={state} dispatch={dispatchWithoutAction}
+                            modifyState={modifyState}/>
             </div>
           )
         })}

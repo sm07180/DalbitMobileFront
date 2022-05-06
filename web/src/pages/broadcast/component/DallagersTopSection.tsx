@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Lottie from "lottie-web";
-import {Context} from 'context';
 import moment from "moment";
 import {useHistory} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 
 let intervalId = 0;
 
@@ -26,7 +26,8 @@ const DallagersTopSection = (props) => {
   const {roomNo} = props;
 
   const history = useHistory();
-  const {globalState} = useContext(Context);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {chatInfo} = globalState;
   const lottieRef = useRef(null);
   const feverLottieRef = useRef(null);

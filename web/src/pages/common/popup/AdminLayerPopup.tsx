@@ -1,27 +1,32 @@
 import React, {useContext, useEffect, useState} from "react";
 import {useHistory} from "react-router-dom";
-import {Context, GlobalContext} from "context";
 
 import './adminLayerPopup.scss'
 import {ReportPopup} from "./ReportPopup";
 import API from "../../../context/api";
 import {isDesktop} from "../../../lib/agent";
 import {RoomJoin} from "../../../context/room";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxBroadcastAdminLayer,
+  setGlobalCtxInBroadcast,
+  setGlobalCtxMessage,
+  setGlobalCtxShadowAdmin
+} from "../../../redux/actions/globalCtx";
 
 const AdminLayerPopup = (props: any)=> {
   const [popup, setPopup] = useState(false);
-  const context = useContext(Context);
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const popupClose = () => {
-    sessionStorage.removeItem('room_active')
-    globalAction.setBroadcastAdminLayer!((prevState) => ({
-      ...prevState,
+    dispatch(setGlobalCtxBroadcastAdminLayer({
+      ...globalState.broadcastAdminLayer,
       status: false,
       roomNo: "",
       memNo: "",
       nickNm: "",
-    }));
+    }))
   };
 
   const closePopupDim = (e) => {
@@ -39,23 +44,23 @@ const AdminLayerPopup = (props: any)=> {
   const broadCastLink = (type: string) => {
     if(isDesktop()){
       if (type === "admin") {
-        globalAction.setShadowAdmin!(1);
+        dispatch(setGlobalCtxShadowAdmin(1));
         popupClose();
         if (globalState.inBroadcast) {
           window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
           setTimeout(() => {
-            globalAction.setInBroadcast!(false);
+            dispatch(setGlobalCtxInBroadcast(false));
           }, 10);
         } else {
           history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
         }
       } else {
-        globalAction.setShadowAdmin!(0);
+        dispatch(setGlobalCtxShadowAdmin(0));
         popupClose();
         if (globalState.inBroadcast) {
           window.location.href = `/broadcast/${globalState.broadcastAdminLayer.roomNo}`;
           setTimeout(() => {
-            globalAction.setInBroadcast!(false);
+            dispatch(setGlobalCtxInBroadcast(false));
           }, 10);
         } else {
           history.push(`/broadcast/${globalState.broadcastAdminLayer.roomNo}`);
@@ -64,10 +69,8 @@ const AdminLayerPopup = (props: any)=> {
     }else{
       popupClose();
       if (type === "admin") {
-        sessionStorage.removeItem('room_active')
         RoomJoin({roomNo: globalState.broadcastAdminLayer.roomNo, shadow: 1})
       }else{
-        sessionStorage.removeItem('room_active')
         RoomJoin({roomNo: globalState.broadcastAdminLayer.roomNo, shadow: 0})
       }
     }
@@ -113,7 +116,7 @@ const AdminLayerPopup = (props: any)=> {
                     popupClose();
                   }
                 };
-                  context.action.confirm(message1)
+                  dispatch(setGlobalCtxMessage({type: "alert", ...message1}))
               }}>방송방 삭제하기</button>
             </div>
           </div>
@@ -124,7 +127,7 @@ const AdminLayerPopup = (props: any)=> {
       </div>
       {  popup && <ReportPopup popup={setPopup}/> }
     </>
-         
+
   );
 };
 export default  AdminLayerPopup

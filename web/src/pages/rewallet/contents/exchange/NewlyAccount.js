@@ -1,16 +1,15 @@
 import React, {useMemo, useContext} from 'react'
-import {Context} from 'context'
 
 // global components
 import InputItems from '../../../../components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+import {useSelector} from "react-redux";
 // components
 
 const NewlyAccount = (props) => {
   const {repplySubmit, exchangeForm} = props;
-  //context
-  const context = useContext(Context);
-  const {splash} = context;
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const {splash} = globalState;
 
   const bankName = useMemo(() => {
     if (splash?.exchangeBankCode && exchangeForm?.recent_bankCode) {

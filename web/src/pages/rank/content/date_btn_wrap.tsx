@@ -3,10 +3,13 @@ import React, { useState } from "react";
 import { convertMonday, convertMonth } from "lib/rank_fn";
 
 // constant
-import { DATE_TYPE, RANK_TYPE } from "../constant";
+import {DATE_TYPE, PAGE_TYPE, RANK_TYPE} from "../constant";
 
 import guideIcon from "../static/guide_s.svg";
 import GuidePop from "./rank_guide_pop";
+import {setRankFormDateType} from "../../../redux/actions/rank";
+import {useDispatch} from "react-redux";
+
 
 const btnArray = [
   { val: DATE_TYPE.TIME, text: "타임" },
@@ -16,7 +19,8 @@ const btnArray = [
   { val: DATE_TYPE.YEAR, text: "연간" },
 ];
 
-const DateBtnWrap = function({ formState, formDispatch }) {
+const DateBtnWrap = function({ formState }) {
+  const dispatch = useDispatch();
   const [guidePop, setGuidePop] = useState(false);
   const [guideState, setGuideState] = useState("like");
 
@@ -61,13 +65,10 @@ const DateBtnWrap = function({ formState, formDispatch }) {
             onClick={() => {
               if (formState[formState.pageType].dateType !== v.val) {
                 const someDate = v.val === 2 ? convertMonday() : v.val === 3 ? convertMonth() : new Date();
-                formDispatch({
-                  type: "DATE_TYPE",
-                  val: {
-                    dateType: v.val,
-                    date: someDate,
-                  },
-                });
+                dispatch(setRankFormDateType({
+                  dateType: v.val,
+                  date: someDate,
+                }));
               }
             }}
           >

@@ -1,16 +1,17 @@
 //context
-import {Context} from 'context'
-import React, {useContext} from 'react'
+import React from 'react'
+import {useDispatch} from "react-redux";
+import {setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 export default function RankingType(props) {
-  const globalCtx = useContext(Context)
+  const dispatch = useDispatch();
 
   const {rankingTerm} = props
 
   if (props.rankingType === 'exp') {
     return (
       <div className="content-wrap">
-        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img1.png" />}
+        {rankingTerm.round === 1 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img1.png"/>}
         {rankingTerm.round === 2 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img2.png" />}
         {rankingTerm.round === 3 && <img src="https://image.dalbitlive.com/event/200608/ranking_exp_01_img3.png" />}
 
@@ -27,14 +28,14 @@ export default function RankingType(props) {
             <button
               type="button"
               onClick={() => {
-                globalCtx.action.updatePopup('TERMS', 'event-detail')
+                dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'event-detail']}))
               }}>
               자세히보기
             </button>
             <button
               type="button"
               onClick={() => {
-                globalCtx.action.updatePopup('TERMS', 'event-gift-detail')
+                dispatch(setGlobalCtxUpdatePopup({popup: ['TERMS', 'event-gift-detail']}))
               }}>
               경품 상세소개
             </button>

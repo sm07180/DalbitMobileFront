@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useHistory} from "react-router-dom";
 import {Hybrid, isAndroid, isHybrid} from "context/hybrid";
-import {Context} from "context";
 import {PHOTO_SERVER} from "context/config";
 
 import Api from "context/api";
@@ -16,9 +15,18 @@ import PopupPrivacy from './components/PopupPrivacy'
 import PopupTerms from './components/PopupTerms'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxMessage,
+  setGlobalCtxUpdateLogin,
+  setGlobalCtxUpdateProfile,
+  setGlobalCtxUpdateToken
+} from "redux/actions/globalCtx";
 
 const SocialSignUp = () => {
-  const context = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview, redirect} = qs.parse(location.search);
   const history = useHistory();
 
@@ -105,9 +113,10 @@ const SocialSignUp = () => {
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
-      return context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: 'jpg, png 이미지만 사용 가능합니다.'
-      })
+      }))
     }
     //파일을 배열 버퍼로 읽는 최신 약속 기반 API
     reader.readAsArrayBuffer(file)
@@ -192,9 +201,11 @@ const SocialSignUp = () => {
         profImgUrl: data.path
       })
     } else {
-      context.action.alert({
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.'
-      })
+      }))
+
     }
   }
 
@@ -215,32 +226,33 @@ const SocialSignUp = () => {
 
   //1. 회원가입
   async function signUp() {
-    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
+    const nativeTid = globalState.nativeTid == null || globalState.nativeTid == 'init' ? '' : globalState.nativeTid
     const {result, data, message} = await Api.member_join({
       data: {
         memType: signForm.memType, memId: signForm.memId, memPwd: signForm.password, nickNm: signForm.nickName,
         birth: '', term1: 'y', term2: 'y', term3: 'y', term4: 'y', term5: 'y',
-        profImg: signForm.profImgUrl, profImgRacy: 3, nativeTid: nativeTid, os: context.customHeader.os
+        profImg: signForm.profImgUrl, profImgRacy: 3, nativeTid: nativeTid, os: globalState.customHeader.os
       }
     })
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
       addAdsData();
-      context.action.alert({
-        callback: () => {
-          //애드브릭스 이벤트 전달
+      return dispatch(setGlobalCtxMessage({
+        type: "alert",
+        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달라 즐겁게 사용하세요.',
+        callback:()=>{
           if (data.adbrixData != '' && data.adbrixData != 'init') {
             Hybrid('adbrixEvent', data.adbrixData)
           }
           loginFetch()
-        },
-        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달라 즐겁게 사용하세요.'
-      })
+        }
+      }))
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
-      context.action.updateLogin(false)
+      }))
+      dispatch(setGlobalCtxUpdateLogin(false));
     }
   }
   //3. 로그인
@@ -256,7 +268,7 @@ const SocialSignUp = () => {
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
-      context.action.updateToken(loginInfo.data)
+      dispatch(setGlobalCtxUpdateToken(loginInfo.data));
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
         if (isHybrid()) {
@@ -270,11 +282,11 @@ const SocialSignUp = () => {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)
         }
-        context.action.updateProfile(profileInfo.data)
+        dispatch(setGlobalCtxUpdateProfile(profileInfo.data));
         return history.push('/signup/recommendDj')
       }
     } else if (loginInfo.result === 'fail') {
-      context.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})
+      dispatch(setGlobalCtxMessage({type: "alert", title: '로그인 실패', msg: `${loginInfo.message}`}))
     }
 
   }
@@ -404,7 +416,7 @@ const SocialSignUp = () => {
         </LayerPopup>
       }
     </>
-    
+
   );
 };
 

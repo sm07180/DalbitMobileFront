@@ -1,14 +1,14 @@
 import React, {useEffect, useState, useContext} from 'react'
 
-import {RankContext} from 'context/rank_ctx'
 import {PAGE_TYPE} from '../../constant'
 
 import BenefitDj from './benefit_dj'
 import BenefitFan from './benefit_fan'
 import BenefitLike from './benefit_like'
+import {useSelector} from "react-redux";
 
 export default (props) => {
-  const {rankState, rankAction} = useContext(RankContext)
+  const rankState = useSelector(({rankCtx}) => rankCtx);
   const {formState} = rankState
   const [tab, setTab] = useState(formState[PAGE_TYPE.RANKING].rankType)
 

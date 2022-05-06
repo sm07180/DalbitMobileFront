@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 
 import { tabType } from "../constant";
 
-import { GlobalContext } from "context";
 import { ClipContext } from "context/clip_ctx";
 
 import btnReplay from "../static/replay.svg";
@@ -15,11 +14,18 @@ import btnPause from "../static/pause_purple.svg";
 import btnPrev from "../static/skip-back.svg";
 import btnNext from "../static/skip_forward.svg";
 import btnPlayList from "../static/playlist.svg";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  setGlobalCtxClipPlayListAdd,
+  setGlobalCtxClipPlayMode,
+  setGlobalCtxSetToastStatus
+} from "../../../redux/actions/globalCtx";
 
 export default function ClipPlayerBarButton() {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const { globalState, globalAction } = useContext(GlobalContext);
   const { clipState, clipAction } = useContext(ClipContext);
 
   const { clipPlayer, clipPlayMode, clipInfo, clipPlayListTab } = globalState;
@@ -48,42 +54,43 @@ export default function ClipPlayerBarButton() {
     switch (clipPlayMode) {
       case "normal":
         //normal 상태에서 클릭시 한곡 반복으로
-        globalAction.callSetToastStatus!({
+
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "현재 클립을 반복합니다.",
-        });
-        globalAction.setClipPlayMode!("oneLoop");
+        }));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode: "oneLoop"}));
         clipPlayer!.loopStart();
         break;
 
       case "oneLoop":
         //oneLoop 상태에서 클릭시 전체 반복으로
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "전체 클립을 반복합니다.",
-        });
-        globalAction.setClipPlayMode!("allLoop");
+        }));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode: "allLoop"}));
         clipPlayer!.loopEnd();
         break;
       case "allLoop":
         //allLoop 상태에서 클릭시 셔플 상태로
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "클립을 셔플하여 재생합니다.",
-        });
-        globalAction.setClipPlayMode!("shuffle");
+        }));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode: "shuffle"}));
         const test = globalState.clipPlayList!.sort(() => {
           return Math.round(Math.random()) - 0.5;
         });
-        globalAction.dispatchClipPlayList && globalAction.dispatchClipPlayList({ type: "add", data: test });
+        dispatch(setGlobalCtxClipPlayListAdd(test))
         break;
       case "shuffle":
         //shuffle 상태에서 클릭시 노멀 상태로
-        globalAction.callSetToastStatus!({
+        dispatch(setGlobalCtxSetToastStatus({
           status: true,
           message: "클립을 반복하지 않습니다.",
-        });
-        globalAction.setClipPlayMode!("normal");
+        }));
+        dispatch(setGlobalCtxClipPlayMode({clipPlayMode: "normal"}));
         break;
       default:
         break;

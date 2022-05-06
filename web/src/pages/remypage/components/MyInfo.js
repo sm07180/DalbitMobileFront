@@ -1,9 +1,9 @@
-import React, {useState,useEffect} from 'react'
-
+import React, {useEffect, useState} from 'react';
 // global components
-import BadgeItems from "../../../components/ui/badgeItems/BadgeItems";
 import moment from "moment";
-import Utility from "components/lib/utility";
+import UtilityCommon from "common/utility/utilityCommon";
+
+import {useHistory} from 'react-router-dom';
 
 const greetingComment = [
   {start: '060000', end: '115959', comment: '굿모닝이에요!'},
@@ -13,8 +13,10 @@ const greetingComment = [
 ]
 
 const MyInfo = (props) => {
-  const {data, openLevelPop, openPopFanStar, openPopLike} = props
-  const [nowComment, setNowComment] = useState('');
+  const {data, openSlidePop, openLayerPop} = props;
+  const history = useHistory();
+  
+  const [nowComment, setNowComment] = useState("");
 
   /* time: HH:mm:ss */
   const getHourMinSec = (time) => {
@@ -44,26 +46,29 @@ const MyInfo = (props) => {
   }, []);
   
   return (
-    <>
+    <div className="myInfo" onClick={()=>{history.push('/myProfile')}}>
       <div className="textWrap">
-        <div className='text'>
+        <div className="text">
           <span><strong>{data?.nickNm}</strong>님</span>
           <span>{nowComment}</span>
         </div>
         <div className="info">
-          <em className="level" onClick={openLevelPop}>Lv{data?.level}</em>
-          <span className='userId'>{data?.memId}</span>
+          <em className="level" data-target-type="level" onClick={openSlidePop}>Lv{data?.level}</em>
+          {data?.specialDjCnt > 0 && UtilityCommon.eventDateCheck("20220501") &&
+            <em className={`starDj ${data.isSpecial ? "active" : ""}`} onClick={openLayerPop}></em>
+          }
+          <span className="userId">{data?.memId}</span>
         </div>
         <div className="count">
-          <div data-target-type="fan" onClick={openPopFanStar}>
+          <div data-target-type="fan" onClick={openSlidePop}>
             <i>팬</i>
             <span>{data?.fanCnt}</span>
           </div>
-          <div data-target-type="star" onClick={openPopFanStar}>
+          <div data-target-type="star" onClick={openSlidePop}>
             <i>스타</i>
             <span>{data?.starCnt}</span>
           </div>
-          <div data-target-type="like" onClick={openPopLike}>
+          <div data-target-type="like" onClick={openSlidePop}>
             <i>좋아요</i>
             <span>{data?.likeTotCnt}</span>
           </div>
@@ -75,7 +80,7 @@ const MyInfo = (props) => {
         </div>
         <button>프로필 보기</button>
       </div>
-    </>
+    </div>
   )
 }
 

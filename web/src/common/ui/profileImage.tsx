@@ -1,5 +1,4 @@
 import React, { useContext, useMemo, useState, useCallback } from "react";
-import { GlobalContext } from "context";
 const defaultImg = "https://photo.dalbitlive.com/profile_3/profile_m_200327.jpg";
 export default (props: any) => {
   const { imageData, imageSize } = props;
@@ -26,7 +25,6 @@ export default (props: any) => {
     }
   }, [profImg]);
 
-  const { globalState, globalAction } = useContext(GlobalContext);
   return (
     <div className="profileImage" style={{ width: profileImgSize + `px`, height: profileImgSize + `px` }}>
       {level > 50 ? (

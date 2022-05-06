@@ -1,0 +1,42 @@
+@import "components/ui/_mixin.scss";
+
+#layerPop {
+  .popLayer {
+    .popContainer {
+      @include flex(center,center,column);
+      padding:16px 0;
+      text-align:center;
+      .swiper-container {
+        width:100%;
+        overflow:hidden;
+        .swiper-slide {
+          width:100%;
+          img {
+            width:100%;
+            object-fit: cover;
+          }
+        }
+        .swiper-pagination {
+          position:relative;
+          @include flex(center,center);
+          height:40px;
+          .swiper-pagination-bullet {
+            width:5px;
+            height:5px;
+            margin:0 2.5px;
+            border-radius:100px;
+            background-color:#ACACAC;
+            opacity: 1;
+            &-active {
+              width:8px;
+              background-color:$MAINCOLOR;
+            }
+          }
+        }
+      }
+      .submitBtn {
+        width:calc(100% - 32px);
+      }
+    }
+  }
+}

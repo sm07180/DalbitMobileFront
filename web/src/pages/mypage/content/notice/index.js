@@ -1,11 +1,9 @@
-import React, {useState, useCallback, useEffect, useContext, useMemo} from 'react'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {useParams, useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 import Header from 'components/ui/new_header.js'
 import Api from 'context/api'
-
-import {Context} from 'context'
 
 import qs from 'query-string'
 
@@ -15,16 +13,20 @@ import NoticeListCompnent from './content/notice_list'
 import NoticeDetailCompenet from './content/notice_detail'
 
 import './notice.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const records = 9999
 
 let timer
 
 function NoticeComponent(props) {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const history = useHistory()
   const {memNo, addpage} = useParams()
   const yourMemNo = memNo
-  const context = useContext(Context)
 
   //체크상태
   const [photoUploading, setPhotoUploading] = useState(false)
@@ -68,9 +70,10 @@ function NoticeComponent(props) {
         setTotalPage(1);
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }, [])
 
@@ -99,9 +102,10 @@ function NoticeComponent(props) {
         }
       }
     } else {
-      context.action.alert({
+      dispatch(setGlobalCtxMessage({
+        type: "alert",
         msg: message
-      })
+      }))
     }
   }
 
@@ -231,7 +235,7 @@ function NoticeComponent(props) {
           </div>
         </div>
       )}
-      {(addpage === undefined || addpage === '') && yourMemNo == context.token.memNo && createWriteBtn()}
+      {(addpage === undefined || addpage === '') && yourMemNo == globalState.token.memNo && createWriteBtn()}
     </div>
   )
 }

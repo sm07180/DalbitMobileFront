@@ -1,29 +1,27 @@
-import React, {useRef} from 'react'
-
-// components
-import TabBtn from 'components/ui/tabBtn/TabBtn'
+import React from 'react';
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,setPage, tabChangeAction, subTextList} = props
-  const tabMenuRef = useRef();
+  const {data,tab,setTab,tabChangeAction,count} = props;
 
   return (
-    <ul className="tabmenu" ref={tabMenuRef}>
-      {data.map((data,index) => {
-        const param = {
-          item: data,
-          tab: tab,
-          setTab: setTab,
-          setPage: setPage
+    <ul className="tabmenu">
+      {data.map((list,index) => {
+        const tabClick = (e) => {
+          const {targetTab} = e.currentTarget.dataset;
+          if (targetTab === list) {
+            setTab(targetTab)
+          }
+          if(typeof tabChangeAction === 'function') tabChangeAction(list);
         }
+
         return (
-          <TabBtn param={param} key={index} tabChangeAction={tabChangeAction} subText={subTextList[index]}/>
+          <li className={tab === list ? 'active' : ''} data-target-tab={list} onClick={tabClick} key={index}>{list}{count[index]}</li>
         )
       })}
     </ul>
   )
 }
 Tabmenu.defaultProps = {
-  subTextList: []
+  count: []
 }
-export default Tabmenu
+export default Tabmenu;

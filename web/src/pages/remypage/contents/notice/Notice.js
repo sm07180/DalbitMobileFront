@@ -1,6 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
 
 import Api from 'context/api'
 // global components
@@ -11,23 +10,35 @@ import TabBtn from '../../components/TabBtn'
 import './notice.scss'
 import Allim from "pages/remypage/contents/notice/Allim";
 import Post from "pages/remypage/contents/notice/Post";
+import InquireWrite from "pages/recustomer/contents/inquire/InquireWrite";
+import InquireLog from "pages/recustomer/contents/inquire/InquireLog";
 import {useDispatch, useSelector} from "react-redux";
-import {setNoticeData, setNoticeTab} from "redux/actions/notice";
+import {setNoticeData, setNoticeTab, setPostData, setNoticeTabList} from "redux/actions/notice";
 import API from "context/api";
 import {RoomJoin} from "context/room";
 import {NewClipPlayerJoin} from "common/audio/clip_func";
+import {noticePagingDefault} from "redux/types/noticeType";
 
 let alarmFix = false;
 let postFix = false;
 const NoticePage = () => {
-  const noticeTabmenu = ['알림','공지사항'];
+  const noticeTabmenu = ['알림','공지사항','1:1문의'];
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const {tab} = useSelector((state) => state.notice);
   const dispatch = useDispatch();
   const history = useHistory()
-  const context = useContext(Context)
-  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
+
   const alarmData = useSelector(state => state.newAlarm);
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const postData = useSelector(state => state.post);
+  const noticeTab = useSelector(state => state.noticeTabList);
+  
+  const [alarmList, setAlarmList] = useState({list: [], cnt: 0, newCnt: 0});
+  const [postListInfo, setPostListInfo] = useState({cnt: 0, list: [], totalPage: 0}); //공지사항 리스트
+  const [postPageInfo, setPostPageInfo] = useState({mem_no: globalState.profile.memNo, noticeType: 0, page: postData.paging.page, records: postData.paging.records}); //페이지 스크롤
+
+  const inquireTabmenu = ['문의하기','나의 문의내역']
+  const [inquire, setInquire] = useState(inquireTabmenu[0])
 
   /* 알림 조회 */
   const fetchData = () => {
@@ -43,6 +54,38 @@ const NoticePage = () => {
     }).catch((e) => console.log(e));
   }
 
+  /* 공지사항 조회 */
+  const fetchPostData = () => {
+    Api.noticeList(postPageInfo).then((res) => {
+      if(res.result === "success") {
+        if(postPageInfo.page !== 1) {
+          let temp = []
+          res.data.list.forEach((value) => {
+            if(postData.list.findIndex((target) => target.noticeIdx === value.noticeIdx) === -1) { //list의 인덱스가 현재 noticeIdx-1일경우 그 값을 temp에 담아줌
+              temp.push(value);
+            }
+          })
+          //cnt: noticeIdx, list: 스크롤시 출력되는 list, totalPage: 전체 페이지
+          // setPostListInfo({cnt: res.data.list.noticeIdx, list: postListInfo.list.concat(temp), totalPage: res.data.paging.totalPage});
+          dispatch(setPostData({
+            ...postData,
+            list: postData.list.concat(temp),
+            paging: res.data.paging ? res.data.paging : noticePagingDefault,
+            isLastPage: res.data.list.length > 0 ? res.data.paging.totalPage === res.data.paging?.page : true
+          }))
+        } else {
+          // setPostListInfo({cnt: res.data.list.noticeIdx, list: res.data.list, totalPage: res.data.paging.totalPage});
+          dispatch(setPostData({
+            ...postData,
+            list: res.data.list,
+            paging: res.data.paging ? res.data.paging : noticePagingDefault,
+            isLastPage: res.data.list.length > 0 ? res.data.paging.totalPage === res.data.paging?.page : true
+          }))
+        }
+      }
+    }).catch((e) => console.log(e));
+  };
+
   /* 알림, 공지사항 New 조회 */
   const fetchMypageNewCntData = async (memNo) => {
     const res = await API.getMyPageNew(memNo);
@@ -52,10 +95,26 @@ const NoticePage = () => {
       }}
   }
 
+  /* 공지사항 클릭 시 읽음 처리 */
+  const fetchReadData = async (notiNo) => {
+    const params = {
+      memNo: globalState.profile.memNo,
+      notiNo: notiNo
+    }
+    await Api.noticeRead(params).then((res) => {
+      if(res.result === "success") {
+        let tempIndex = postData.list.findIndex(value => value.noticeIdx === parseInt(notiNo));
+        let temp = postData.list.concat([]);
+        temp[tempIndex].read_yn = "y";
+        dispatch(setPostData({...postData, list: temp}));
+      }
+    }).catch((e) => console.log(e));
+  };
+
   const listenClip = (clipNo) => {
     const clipParam = {
       clipNo: clipNo,
-      gtx: context,
+      globalState, dispatch,
       history
     }
     NewClipPlayerJoin(clipParam);
@@ -80,7 +139,7 @@ const NoticePage = () => {
         catch (e) {console.log(e);}
         break;
       case "31":                                                                           //팬보드 새 글 알림
-        if(context.profile.memNo === roomNo) {
+        if(globalState.profile.memNo === roomNo) {
             history.push(`/myProfile`);
           } else {
             history.push(`/profile/${roomNo}`);
@@ -148,28 +207,80 @@ const NoticePage = () => {
     }
   }
 
+  const inquireTabChange = (index) => {
+    dispatch(setNoticeTabList({...noticeTab, inquireTab: noticeTab.inquireTabList[index]}))
+  };
+  
+  const createContent = () => {
+    switch (tab) {
+      case '알림':
+        return <Allim alarmList={alarmList} handleClick={handleClick}/>
+      case '공지사항':
+        return <Post onClick={onClick} postListInfo={postData}/>
+      case '1:1문의':
+        return (
+          <div className='inquiry'>
+            <ul className='tabmenu'>
+              {noticeTab.inquireTabList.map((item, index) => {
+                return (
+                  <li className={`${noticeTab.inquireTab === item ? 'active' : ""}`} key={index} onClick={() => {inquireTabChange(index)}}>{item}</li>
+                )
+              })}
+            </ul>
+            {noticeTab.inquireTab === "문의하기" ?
+              <InquireWrite setInquire={setInquire}/>
+              :
+              <InquireLog/>
+            }
+          </div>
+        )
+        
+        
+      default:
+        return <></>
+        break
+    }
+  }
+
   //공지사항 세부페이지 이동
   const onClick = (e) => {
-    const {num} = e.currentTarget.dataset
-    history.push({pathname: `/notice/${num}`, state: num});
+    const num = e.currentTarget.dataset.num;
+    const read = e.currentTarget.dataset.read;
+    if(read === "n") {
+      fetchReadData(num);
+      history.push({pathname: `/notice/${num}`, state: num});
+    } else if(read === "y") {
+      history.push({pathname: `/notice/${num}`, state: num});
+    }
     postFix = true;
   };
 
+  //스크롤 이벤트
+  const scrollEvt = () => {
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const body = document.body
+    const html = document.documentElement
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if(postData.paging.totalPage > postPageInfo.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+      setPostPageInfo({...postPageInfo, page: postPageInfo.page+1});
+      window.removeEventListener("scroll", scrollEvt);
+    } else if(postData.list.noticeIdx === postData.list.length) {
+      window.removeEventListener("scroll", scrollEvt);
+    }
+  }
+
   useEffect(() => {
     if(isDesktop) {
-      fetchMypageNewCntData(context.profile.memNo);
+      fetchMypageNewCntData(globalState.profile.memNo);
     }
   }, [alarmData.newCnt]);
 
   // 로그인 토큰값 확인
   useEffect(() => {
-    if(!(context.token.isLogin)) {
-      history.push("/login")
-    }
+    if(!(globalState.token.isLogin)) {history.push("/login")}
     fetchData();
-  }, []);
-
-  useEffect(() => {
     if(alarmFix) {
       dispatch(setNoticeTab("알림"));
       alarmFix = false;
@@ -185,27 +296,38 @@ const NoticePage = () => {
     }
   }, [])
 
+  useEffect(() => {
+    fetchPostData();
+  }, [postPageInfo]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", scrollEvt);
+    return () => {
+      window.removeEventListener("scroll", scrollEvt);
+    }
+  }, [postData]);
+
   return (
     <div id="notice">
-      <Header title="알림/공지사항" type="back"/>
+      <Header title="알림/공지사항/1:1문의" type="back"/>
       <section className="noticeWrap">
         <ul className="tabmenu">
           {noticeTabmenu.map((data,index) => {
             const param = {item: data, tab: tab, setTab: (val) => dispatch(setNoticeTab(val))}
             let newTage = false;
-            if(data === "알림") {alarmData.alarm > 0 ? newTage = true : false}
-            else {alarmData.notice > 0 ? newTage = true : false}
+            if(data === "알림") {
+              alarmData.alarm > 0 ? newTage = true : false
+            } else if(data === "공지사항") {
+              alarmData.notice > 0 ? newTage = true : false
+            } else {
+              newTage = false
+            }
             return (
               <TabBtn param={param} key={index} newTage={newTage}/>
             )
           })}
-          <div className="underline"/>
-        </ul>
-        {tab === noticeTabmenu[0] ?
-          <Allim alarmList={alarmList} setAlarmList={setAlarmList} handleClick={handleClick}/>
-          :
-          <Post onClick={onClick}/>
-        }
+        </ul>        
+        {createContent()}
       </section>
     </div>
   )

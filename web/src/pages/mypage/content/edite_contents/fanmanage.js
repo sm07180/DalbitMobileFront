@@ -1,14 +1,12 @@
-import React, {useEffect, useState, useContext, useRef, useReducer} from 'react'
+import React, {useEffect, useState} from 'react'
 import qs from 'query-string'
 //styled
 import styled from 'styled-components'
 //context
 import Api from 'context/api'
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 //scroll
-import {Scrollbars} from 'react-custom-scrollbars'
-import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 //svg
 import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
@@ -23,31 +21,31 @@ import PstarIconP from '../../static/ic_p_star_p.svg'
 import PtimeIconP from '../../static/ic_p_time_p.svg'
 //
 import NoResult from 'components/ui/noResult'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxFanEditLength, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 //---------------------------------------------------------------------------------
 // concat flag
 let currentPage = 1
 let timer
 let moreState = false
-console.log()
 //---------------------------------------------------------------------------------
 export default (props) => {
   const {sortNum} = props
   const history = useHistory()
-  //context
-  const ctx = useContext(Context)
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const {webview} = qs.parse(location.search)
-  const {profile} = ctx
   var urlrStr = location.pathname.split('/')[2]
-  //state
+
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
   const [memoContent, setMemoContent] = useState('')
   const [defaultMemo, setDefaultMemo] = useState('')
   const [memoMemNo, setMemoMemNo] = useState(-1)
   const [popState, setPopState] = useState(false)
-  // const [deleteList, setDeleteList] = useState('')
-  // const [filterLeng, setFilterLeng] = useState(0)
+
   //스크롤 이벤트
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -90,7 +88,7 @@ export default (props) => {
           moreState = true
           setNextList(res.data.list)
         } else {
-          ctx.action.updateFanEditeLength(res.data.list.length)
+          dispatch(setGlobalCtxFanEditLength(res.data.list.length));
           setList(res.data.list)
           fetchData('next')
         }
@@ -107,20 +105,20 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        ctx.action.toast({
+        dispatch(setGlobalCtxMessage({type: "toast",
           msg: `${nickNm}님의 팬이 되었습니다`
-        })
+        }))
       } else if (res.result === 'fail') {
-        ctx.action.alert({
+        dispatch(setGlobalCtxMessage({type: "alert",
           callback: () => {},
           msg: res.message
-        })
+        }))
       }
     }
     fetchDataFanRegist(memNo)
   }
   const Cancel = (memNo, nickNm) => {
-    ctx.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
       callback: () => {
         async function fetchDataFanCancel(memNo) {
@@ -130,19 +128,19 @@ export default (props) => {
             }
           })
           if (res.result === 'success') {
-            ctx.action.toast({
+            dispatch(setGlobalCtxMessage({type: "toast",
               msg: res.message
-            })
+            }))
           } else if (res.result === 'fail') {
-            ctx.action.alert({
+            dispatch(setGlobalCtxMessage({type: "alert",
               callback: () => {},
               msg: res.message
-            })
+            }))
           }
         }
         fetchDataFanCancel(memNo)
       }
-    })
+    }))
   }
   // 팬등록 버튼 토글
   const registToggle = (isFan, memNo, nickNm) => {
@@ -202,10 +200,10 @@ export default (props) => {
       setDefaultMemo(res.data.fanMemo)
       setMemoContent(res.data.fanMemo)
     } else if (res.result === 'fail') {
-      ctx.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {},
         msg: res.message
-      })
+      }))
     }
   }
   async function fetchDataPostMemo() {
@@ -227,21 +225,21 @@ export default (props) => {
         return item
       })
       setList(test)
-      ctx.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {
           setPopState(false)
           setMemoContent('')
         },
         msg: res.message
-      })
+      }))
     } else if (res.result === 'fail') {
-      ctx.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {
           setPopState(false)
           setMemoContent('')
         },
         msg: res.message
-      })
+      }))
     }
   }
   //삭제하기
@@ -258,20 +256,20 @@ export default (props) => {
       })
       setList(test)
     } else if (res.result === 'fail') {
-      ctx.action.alert({
+      dispatch(setGlobalCtxMessage({type: "alert",
         callback: () => {},
         msg: res.message
-      })
+      }))
     }
   }
   // 삭제하기 클릭
   const DeleteItem = (memNo) => {
-    ctx.action.confirm({
+    dispatch(setGlobalCtxMessage({type: "confirm",
       callback: () => {
         fetchDeleteList(memNo)
       },
       msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
-    })
+    }))
   }
   const Link = (memNo) => {
     if (webview && webview === 'new') {
@@ -282,7 +280,7 @@ export default (props) => {
   }
   return (
     <Wrap>
-      {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
+      {(globalState.fanEditeLength === -1 || globalState.fanEditeLength === 0) && <NoResult />}
       {list &&
         list.map((item, idx) => {
           const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item

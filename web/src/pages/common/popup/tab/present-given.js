@@ -1,21 +1,20 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import Navi from './navibar'
 import {Scrollbars} from 'react-custom-scrollbars'
 import Api from 'context/api'
-import {Context} from 'context'
-import {BroadCastStore} from '../../store'
-import {IMG_SERVER} from 'context/config'
+import {useDispatch, useSelector} from "react-redux";
 
 export default props => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   //--------------------------------------------------- declare start
   const [secretYn, setSecret] = useState(false)
   const [givenData, setGivenData] = useState()
   const scrollbars = useRef(null)
-  const context = useContext(Context)
-  const store = useContext(BroadCastStore)
 
-  const {broadcastTotalInfo} = context
+  const {broadcastTotalInfo} = globalState
+
   //--------------------------------------------------- func start
 
   async function fetchData() {

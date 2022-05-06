@@ -2,11 +2,9 @@
  * @file terms/content/event_detail.js
  * @brief 이벤트 기간 및 상세소개
  */
-import React, {useEffect, useContext, useState} from 'react'
+import React from 'react'
 import styled from 'styled-components'
-//context
-import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {COLOR_MAIN} from 'context/color'
 
 ////---------------------------------------------------------------------
 export default props => {

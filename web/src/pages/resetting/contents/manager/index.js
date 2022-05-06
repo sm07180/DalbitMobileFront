@@ -15,16 +15,19 @@ import '../../style.scss'
 import './manager.scss'
 import useChange from "components/hooks/useChange";
 import _ from "lodash";
-import {Context} from "context";
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const SettingManager = () => {
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
   const tabmenu = ['관리', '등록']
   const filter = ['전체','닉네임','ID']
   const [tabType, setTabType] = useState(tabmenu[0])
   const [managerList, setManagerList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
   const [userList, setUserList] = useState([]);
-  const context = useContext(Context);
   let userTypeSetting = 0;
 
   //매니저 리스트 조회
@@ -44,7 +47,7 @@ const SettingManager = () => {
     if(res.result === "success") {
       getManagerList();
       fetchListData();
-      context.action.alert({msg: res.message});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
     }
   }
 
@@ -54,14 +57,14 @@ const SettingManager = () => {
     const res = await Api.mypage_manager_delete({params})
     if(res.result === "success") {
       getManagerList();
-      context.action.alert({msg: res.message});
+      dispatch(setGlobalCtxMessage({type: "alert",msg: res.message}));
     }
   }
 
   //검색시 회원 리스트 조회
   const fetchListData = async (type) => {
     if (!_.hasIn(changes, 'search') || changes.search.length === 0)
-      return context.action.alert({msg: `검색어를 입력해주세요.`})
+      return dispatch(setGlobalCtxMessage({type: "alert",msg: `검색어를 입력해주세요.`}))
     userTypeSetting = type === "search" ? Number(_.hasIn(changes, "searchType") ? changes.searchType : 0) : userTypeSetting
     const params = {
       userType: userTypeSetting,

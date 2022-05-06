@@ -1,0 +1,355 @@
+@import "components/ui/_mixin.scss";
+
+#popSlide {
+  // 팬 스타 좋아요 보기
+  .fanStarLike {
+    @include flex($fd:column);
+    width:100%;
+    height:540px;
+    padding-top:20px;
+    > h2 {
+      line-height:48px;
+      margin-bottom:20px;
+      text-align:center;
+      @include font(16px,bold,#202020);
+    }
+    > .tabmenu {
+      margin-bottom:20px;
+      padding:0 16px;
+      @include tabmenuStyle-1;
+      li {
+        cursor: pointer;
+      }
+    }
+    .listContainer {
+      flex:1;
+      @include flex($fd:column);
+      overflow-y:hidden;
+      > .tabmenu {
+        @include subTabmenuStyle-1;
+        margin-bottom:16px;
+        .swiper-container {
+          width:100%;
+          .swiper-slide {
+            width:auto;
+            &:first-child {
+              margin-left:16px;
+            }
+            &:last-child {
+              margin-right:12px;
+            }
+            li {
+              cursor:pointer;
+            }
+          }
+        }
+        .likeTab {
+          cursor: pointer;
+          &:first-child {
+            margin-left:16px;
+          }
+        }
+        button {
+          width:20px;line-height:20px;
+          margin-left:auto;
+          margin-right:16px;
+          border-radius:50%;
+          background-color:#666;
+          @include font(11px,500,white);
+        }
+      }
+      .listWrap {
+        flex:1;
+        padding:0 16px;
+        overflow-y:auto;
+        .listRow {
+          position:relative;
+          margin-bottom:12px;
+          .photo {
+            position: relative;
+            width:58px;
+            height:58px;
+            margin:0 8px 0 3px;
+            cursor:pointer;
+            &::before {
+              content: "";
+              @include position-top-left;
+              width: 100%; height: 100%;
+              border: 1px solid rgba($color: #dbdbdb, $alpha: 0.2);
+              border-radius:50%;
+              box-sizing: border-box;
+            }    
+            img {
+              width:100%;
+              border-radius: 50%;
+            }
+          }
+          .rank {
+            @include position-top-left;
+            @include flex(center,center);
+            width:18px;
+            height:18px;
+            border-radius:50%;
+            background-image:linear-gradient(to bottom,#FF3C7B,#FF8565);
+            @include font(11px,$SemiBold,white);
+          }
+          .listContent {
+            min-width:0;
+            .listItem {
+              @include flex(center);
+            }
+            .nick {
+              @include font(13px,500,#303030);
+              @include fontCut;
+              margin-bottom: 6px;
+            }
+            .date {
+              @include font(11px,400,#999);
+            }
+          }
+          .back {
+            margin-left:auto;
+            button {
+              width:62px;
+              line-height: 30px;
+              background-color: $BLACKBTNCOLOR;
+              @include border($BLACKBTNCOLOR,100px);
+              @include font(12px,500,white);
+              &.isFan {
+                background-color: white;
+                @include border(#E3E3E3,100px);
+                @include font(12px,500,#303030);
+              }
+            }
+          }
+        }
+      }
+    }
+    .popClose {
+      @include position-top-right(-40px, 10px);
+      @include flex;
+      width:30px;height:30px;
+      @include BGIMG("common/popClose-w.png");
+    }
+  }
+  // 차단/신고하기
+  .blockReport {
+    @include flex($fd:column);
+    width:100%;
+    padding:20px 0 32px;
+    .tabmenu {
+      margin-bottom:20px;
+      padding:0 16px;
+      @include tabmenuStyle-1;
+      li {
+        cursor:pointer;
+      }
+    }
+    .cntSection {
+      padding:0 16px;
+      .message {
+        margin-bottom:12px;
+        text-align:center;
+        @include font(16px,400,#202020);
+        strong {
+          color:$MAINCOLOR;
+        }
+      }
+      .text {
+        margin-bottom:16px;
+        text-align:center;
+        @include font(16px,400,#202020);
+        i.icoWarning {
+          display:block;
+          width:70px;
+          height:62px;
+          margin:0 auto 12px;
+          @include BGIMG("mypage/dalla/caution.png");
+        }
+      }
+      .subText {
+        text-align:center;
+        @include font(13px,400,#999);
+      }
+      .inputItems {
+        .title {
+          @include flex(flex-start);
+          &:after {
+            content:"";
+            display:inline-block;
+            width:4px;height:4px;
+            margin-top:4px;
+            border-radius:50%;
+            background-color:$MAINCOLOR;
+          }
+        }
+        .inputBox {
+          margin-bottom:15px;
+          button {
+            flex:1;
+            @include flex(center);
+            margin:0 15px;
+            text-align:left;
+            @include font(15px,400,#999);
+            &::after {
+              content:"";
+              display: inline-block;
+              width:20px;height:20px;
+              margin-left:auto;
+              @include BGIMG("common/icoArrow-b.png");
+            }
+          }
+          .selectWrap {
+            @include selectWrapStyle-1;
+          }
+        }
+        .textareaBox {
+          border-color:#F6F6F6;
+          background-color:#F6F6F6;
+          &.focus {
+            border-color:$MAINCOLOR;
+            background-color:white;
+          }
+          .count {
+            text-align:right;
+            @include font(14px,400,#666);
+          }
+        }
+      }
+      .buttonGroup {
+        @include flex(center);
+        margin: 32px 0 0;
+        button {
+          flex:1;
+          line-height:46px;
+          background-color:$DOWNCOLOR;
+          @include border($DOWNCOLOR,16px);
+          @include font(16px,500,white);
+          &.cancel {
+            margin-right:8px;
+            background-color:white;
+            @include border(#D5D5D5,16px);
+            @include font(16px,500,#666);
+          }
+          &.disabled {
+            opacity: .3;
+          }
+          &.active {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+  // 선물하기
+  .present {
+    @include flex($fd:column);
+    width:100%;
+    padding:20px 16px 32px;
+    h2 {
+      line-height:48px;
+      text-align:center;
+      @include font(16px,bold,#202020);
+    }
+    .message {
+      margin-bottom:12px;
+      text-align:center;
+      @include font(16px,400,#202020);
+      strong {
+        color:$MAINCOLOR;
+      }
+    }
+    .payBox {
+      @include flex(center);
+      margin-bottom:16px;
+      padding-top:20px;
+      border-top:1px solid #F2F2F2;
+      .possess {
+        flex:1;
+        @include flex(center);
+        line-height:36px;
+        margin-right:8px;
+        padding:0 20px;
+        background-color:#F6F6F6;
+        border-radius:100px;
+        span {
+          @include font(15px,500,#666);
+        }
+        .count {
+          margin-left:auto;
+          @include font(20px,bold,#202020);
+        }
+      }
+      button {
+        width:76px;
+        @include btnMainStyle(34px,100px,14px);
+      }
+    }
+    .payCount {
+      display:grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 8px;
+      margin-bottom:12px;
+      button {
+        line-height:34px;
+        @include border(#D5D5D5,100px);
+        @include font(14px,500,#666);
+        &.active {
+          border-color:$MAINCOLOR;
+          color:$MAINCOLOR;
+        }
+      }
+    }
+    .log {
+      margin-top:6px;
+      @include font(13px,400,#666);
+    }
+    .buttonGroup {
+      @include flex(center);
+      margin: 32px 0 0;
+      button {
+        flex:1;
+        line-height:46px;
+        background-color:$DOWNCOLOR;
+        @include border($DOWNCOLOR,16px);
+        @include font(16px,500,white);
+        &.cancel {
+          margin-right:8px;
+          background-color:white;
+          @include border(#D5D5D5,16px);
+          @include font(16px,500,#666);
+        }
+        &.disabled {
+          opacity: .3;
+        }
+        &.active {
+          opacity: 1;
+        }
+      }
+    }
+  }
+  // 사진 순서 변경
+  .photoChangeOrder {
+    position:relative;
+    width:100%;
+    padding:18px 16px 56px;
+    .gridSection {
+      display:grid;
+      grid-template-columns: repeat(3,1fr);
+      grid-template-rows: 1fr;
+      gap:8px;
+      margin-bottom: 16px;
+      .item {
+        width:100%;height:100%;
+        text-align:center;
+        img {
+          width:100%;
+          border-radius:8px;
+        }
+      }
+    }
+    .submitBtn {
+      width:100%;
+    }
+  }
+}

@@ -1,26 +1,31 @@
-import React, {useRef} from 'react'
-
-// components
-import TabBtn from 'components/ui/tabBtn/TabBtn'
+import React, {useState} from 'react';
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,setPage, defaultTab} = props
+  const {data,setPage,tabAction,defaultTab} = props;
+  const [tab, setTab] = useState(data[0]);
   
   return (
-    <ul className="tabmenu">
-      {data.map((data,index) => {
-        const param = {
-          item: data,
-          tab: tab,
-          setTab: setTab,
-          setPage: setPage
-        }
-        return (
-          <TabBtn param={param} key={index} defaultTab={defaultTab} />
-        )
-      })}
-    </ul>
+    <div className="tabmenuWrap">
+      <ul className="tabmenu">
+        {data.map((list,index) => {
+          const tabClick = (e) => {
+            const {targetTab} = e.currentTarget.dataset;
+            if (targetTab === list) {
+              setTab(targetTab)
+              tabAction(targetTab)
+              if (setPage) {
+                setPage(defaultTab ? defaultTab : 0)
+              }
+            }
+          }
+          return (
+            <li className={tab === list ? 'active' : ''} data-target-tab={list} onClick={tabClick} key={index}>{list}</li>
+          )
+        })}
+        <div className="underline"></div>
+      </ul>
+    </div>
   )
 }
 
-export default Tabmenu
+export default Tabmenu;

@@ -2,16 +2,15 @@ import React, {useContext} from 'react'
 
 import './navigation.scss'
 import {useHistory} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
-import {GlobalContext} from "context";
 import {isHybrid} from "context/hybrid";
+import {setGlobalCtxBroadClipDim, setGlobalCtxUpdatePopup} from "redux/actions/globalCtx";
 
 const Navigation = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const context = useContext(GlobalContext);
-  const { globalState, globalAction } = context;
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const { baseData} = globalState;
   return (
     <>
@@ -29,9 +28,9 @@ const Navigation = (props) => {
           if (baseData.isLogin === true) {
             if(isHybrid()) {
               window.scrollTo(0, 0);
-              return globalAction.setBroadClipDim(true);
+              return dispatch(setGlobalCtxBroadClipDim(true));
             }else {
-              context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+              dispatch(setGlobalCtxUpdatePopup({popup:['APPDOWN', 'appDownAlrt', 1]}))
             }
           } else {
             return history.push("/login");

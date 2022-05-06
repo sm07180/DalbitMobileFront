@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // css
 import './bannerSlide.scss'
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setHonorTab} from "redux/actions/honor";
+import UtilityCommon from "common/utility/utilityCommon";
 
 const BannerSlide = (props) => {
   const { type } = props;
   const history = useHistory()
   const [bannerList, setBannerList] = useState([])
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
 
   const fetchBannerInfo = (arg) => {
     Api.getBanner({
@@ -44,9 +46,13 @@ const BannerSlide = (props) => {
       click: (evt) => {
         const {targetUrl} = evt.target.dataset
         if (targetUrl.indexOf("/honor") > -1){
-          dispatch(setHonorTab("스페셜DJ"));
+          dispatch(setHonorTab(UtilityCommon.eventDateCheck("20220501") ? "스타DJ" : "스페셜DJ"));
+          openBannerUrl(targetUrl)
+        } else if (targetUrl.indexOf("/starDj") > -1 && globalState.token.isLogin === false) {
+            history.push("/login");
+        } else {
+          openBannerUrl(targetUrl)
         }
-        openBannerUrl(targetUrl)
       }
     }
   }

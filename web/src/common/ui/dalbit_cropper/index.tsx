@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Cropper from "react-cropper";
-import { GlobalContext } from "context";
 import Header from "common/ui/header";
 
 import CropImg from "./static/ico-crop.png";
 import CropRotation from "./static/ico-rotation.png";
 
 import "./index.scss";
+import {useSelector} from "react-redux";
 
 /** PropsType */
 type PropsType = {
@@ -29,7 +29,7 @@ type PropsType = {
 function DalbitCropper(props: PropsType) {
   const { imgInfo, onClose, onCrop, className, type } = props;
   const { pathname } = useLocation();
-  const { globalState } = useContext(GlobalContext);
+  const globalState = useSelector(({globalCtx})=> globalCtx);
   const mailboxChattingUrl = pathname.startsWith("/mailbox");
   const [state, setState] = useState<any>({
     status: true,

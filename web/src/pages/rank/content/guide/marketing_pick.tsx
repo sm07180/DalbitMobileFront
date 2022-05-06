@@ -9,17 +9,16 @@ import '../../../customer/content/notice/detail'
 
 export default function WeekPickDetail() {
   const history = useHistory()
-  
+
   const weeklyIdx = history.location.search.split('idx=')[1];
   const [detail, setDetail] = useState<any>([]);
 
   async function getDetailData() {
     const {result, data, message} = await getMarketingDetail({idx: weeklyIdx})
     if(result === 'success') {
-      console.log(data)
       setDetail(data.detail)
     } else {
-      
+
     }
   }
 

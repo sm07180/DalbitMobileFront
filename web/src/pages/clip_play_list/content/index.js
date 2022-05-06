@@ -1,18 +1,20 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 import Header from 'components/ui/header/Header';
 import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 
 import {Hybrid, isHybrid} from 'context/hybrid'
-import {Context} from 'context'
 import {PlayListStore} from '../store'
 import PlayList from './list'
-import PlayListEdit from './edit'
+import {useDispatch, useSelector} from "react-redux";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 export default () => {
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+
+  const {token} = globalState
   const playListCtx = useContext(PlayListStore)
   const history = useHistory()
 
@@ -28,7 +30,7 @@ export default () => {
   const goBack = () => {
     if (isEdit) {
       //에딧중이라면
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({type: "confirm",
         msg: '편집 중인 내용을 \n 취소하시겠습니까? \n 변경된 내용은 저장되지 않습니다.',
         callback: () => {
           Hybrid('CloseLayerPopup')
@@ -50,19 +52,19 @@ export default () => {
     })
     if (result === 'success') {
     } else {
-      globalCtx.action.alert({msg: message})
+      dispatch(setGlobalCtxMessage({type: "alert",msg: message}))
     }
   }
 
   const handleBtnClick = () => {
     if (isEdit) {
-      globalCtx.action.confirm({
+      dispatch(setGlobalCtxMessage({type: "confirm",
         msg: '변경된 내용을 저장하시겠습니까?',
         callback: () => {
           playListCtx.action.updateIsEdit(false)
           fetchEdit()
         }
-      })
+      }))
     } else {
       playListCtx.action.updateIsEdit(true)
     }

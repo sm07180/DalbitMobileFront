@@ -1,6 +1,5 @@
 import React, { useMemo, useContext } from "react";
 
-import { RankContext } from "context/rank_ctx";
 import { convertDateToText } from "lib/rank_fn";
 
 import NoResult from "common/ui/no_result";
@@ -8,9 +7,10 @@ import NoResult from "common/ui/no_result";
 import RankListTop from "./rank_list_top";
 import RankList from "./rank_list";
 import MyProfile from "../myProfile";
+import {useSelector} from "react-redux";
 
 export default function RankListWrap({ empty }) {
-  const { rankState, rankAction } = useContext(RankContext);
+  const rankState = useSelector(({rankCtx}) => rankCtx);
 
   const { formState } = rankState;
 
