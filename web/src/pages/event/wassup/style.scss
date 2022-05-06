@@ -91,6 +91,9 @@
           margin-right:8px;
           border-radius:50%;
           background-color:#eee;
+          &.size0{
+            display: none;
+          }
         }
         .listContent {
           flex:1;
