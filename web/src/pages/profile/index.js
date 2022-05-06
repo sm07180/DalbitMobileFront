@@ -743,6 +743,7 @@ const ProfilePage = () => {
           <FanboardSection
             profileData={profileData}
             fanBoardData={fanBoardData}
+            profileScrollEvent={profileScrollEvent}
             isMyProfile={isMyProfile}
             getFanBoardData={getFanBoardData}
             params={params}
