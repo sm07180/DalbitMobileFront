@@ -230,7 +230,7 @@ const Wassup = () => {
       >
         <Header title="이벤트" type="back" backEvent={backEvent}/>
         <section>
-          <img src={`${IMG_SERVER}/event/wassup/main-2.png`} alt="이벤트 이미지" />
+          <img src={`${IMG_SERVER}/event/wassup/main-2-2.png`} alt="이벤트 이미지" />
         </section>
         <div className={`tabmenuWrap ${tabFixed ? 'fixed' : ''}`} ref={tabMenuRef}>
           <ul className="tabmenu">
