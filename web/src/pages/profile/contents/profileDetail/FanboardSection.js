@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 
 // global components
 import NoResult from 'components/ui/noResult/NoResult';
@@ -10,7 +10,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const FanboardSection = (props) => {
-  const { fanBoardData, isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData, params } = props;
+  const { fanBoardData, isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData, params, profileScrollEvent } = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const [formState, setFormState] = useState({
@@ -50,8 +50,9 @@ const FanboardSection = (props) => {
     });
     dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     if(result === "success") {
-      getFanBoardData(1);
+      getFanBoardData(true);
       setFormState({...formState, contents: ""});
+      document.addEventListener("scroll", profileScrollEvent);
     }
   };
 
