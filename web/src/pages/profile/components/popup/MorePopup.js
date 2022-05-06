@@ -75,12 +75,16 @@ const MorePopup = (props) => {
     }
   },[profileData.memNo, profileData.isReceive])
 
+  const blockReportAction = (e) => {
+    openSlidePop(e, {memNo: profileData.memNo, nickNm: profileData.nickNm});
+  };
+
   return (
     <section className="profileMore">
       <div className="moreList" onClick={goMailAction}>메세지</div>
       {!profileData.isFan && <div className="moreList" onClick={editAlarm}>방송 알림 {profileData.isReceive ? 'OFF' : 'ON'}</div>}
       <div className="moreList" data-target-type="block"
-           onClick={openSlidePop}>차단/신고</div>
+           onClick={blockReportAction}>차단/신고</div>
     </section>
   )
 }

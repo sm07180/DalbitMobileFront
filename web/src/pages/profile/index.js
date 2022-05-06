@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import Api from 'context/api';
 import {useHistory, useParams} from 'react-router-dom';
@@ -25,19 +25,24 @@ import {
   setProfileClipData,
   setProfileData,
   setProfileFanBoardData,
-  setProfileNoticeData, setProfileFeedNewData, setProfileNoticeFixData, setProfileTabData,
+  setProfileFeedNewData,
+  setProfileNoticeData,
+  setProfileNoticeFixData,
+  setProfileTabData,
 } from "redux/actions/profile";
 import {
-  profileClipPagingDefault,
   profileClipDefaultState,
+  profileClipPagingDefault,
   profileDefaultState,
   profileFanBoardDefaultState,
-  profileNoticeDefaultState, profilePagingDefault, profileFeedDefaultState, profileNoticeFixDefaultState
+  profileFeedDefaultState,
+  profileNoticeDefaultState,
+  profileNoticeFixDefaultState,
+  profilePagingDefault
 } from "redux/types/profileType";
 import {Hybrid, isHybrid} from "context/hybrid";
 import ProfileNoticePop from "pages/profile/components/popup/ProfileNoticePop";
-import {setSlidePopupOpen, setIsWebView} from "redux/actions/common";
-import noticeFix from "redux/reducers/profile/noticeFix";
+import {setIsWebView, setSlidePopupOpen} from "redux/actions/common";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfilePage = () => {
@@ -122,10 +127,6 @@ const ProfilePage = () => {
       }
     })
   }
-
-  useEffect(() => {
-    console.log(slidePopInfo.starCnt);
-  },[profileData])
 
   /* 방송공지(고정) 데이터 호출 */
   const getNoticeFixData = (isInit) => {
@@ -236,16 +237,14 @@ const ProfilePage = () => {
   }
 
   {/* 슬라이드 팝업 오픈 */}
-  const openSlidePop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const openSlidePop = (e, targetData = null) => {
     const {targetType} = e.currentTarget.dataset;
     switch (targetType) {
       case "header":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "header"});
         break;
       case "block":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "block"});
+        setSlidePopInfo({...slidePopInfo, data: targetData, memNo: targetData.memNo, nickNm: targetData.nickNm, type: "block"});
         break;
       case "fan":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
