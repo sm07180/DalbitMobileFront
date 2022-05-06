@@ -196,7 +196,7 @@
           width: 90px;
           height: 30px;
           @include font(14px, $Bold, #fff);
-          background: #C4C4C4;
+          background: linear-gradient(to bottom, #B2B2FF, #8080FD);
           border-radius: 17px;
           transform-style: preserve-3d;
           &::after{
@@ -204,14 +204,15 @@
             @include position-top-left(4px, 0);
             width: 90px;
             height: 30px;
-            background-color: #B1B1B1;
+            background: #6262EF;
             border-radius: 17px;
             transform: translateZ(-1px);
           }
-          &.active{
-            background: linear-gradient(to bottom, #B2B2FF, #8080FD);
+          &.disabled{
+            background: #C4C4C4;
+            pointer-events: none;
             &::after{
-              background: #6262EF;
+              background-color: #B1B1B1;
             }
           }
         }
