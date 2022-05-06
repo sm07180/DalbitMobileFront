@@ -13,15 +13,6 @@ export const profilePagingDefault = {
   totalPage: 0
 }
 
-export const profileFanBoardPagingDefault = {
-  next: 2,
-  page: 1,
-  prev: 0,
-  records: 20,
-  total: 0,
-  totalPage: 0
-}
-
 export const profileClipPagingDefault = {
   next: 1,
   page: 0,
@@ -107,7 +98,7 @@ export const profileNoticeFixDefaultState = {
 export const profileFanBoardDefaultState = {
   list: [],
   listCnt: 0,
-  paging: profileFanBoardPagingDefault,
+  paging: profilePagingDefault,
   isLastPage: false,
 }
 

@@ -173,7 +173,7 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : profilePagingDefault,
           isLastPage
         }));
-        if(isLastPage) {
+        if(profileTab.tabName === profileTab.tabList[0] && isLastPage) {
           removeScrollEvent();
         }
       } else {
@@ -186,28 +186,22 @@ const ProfilePage = () => {
   const getFanBoardData = (isInit) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : member.memNo !== "" ? member.memNo : globalState.profile.memNo,
-      page: isInit ? 1 : fanBoardPageInfo.page,
-      records: isInit? 20: fanBoardPageInfo.records
+      page: isInit ? 1 : fanBoardData.paging.next,
+      records: isInit? 20: fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
         const data= res.data;
         const callPageNo = data.paging?.page;
         const isLastPage = data.list.length > 0 ? data.paging.totalPage === callPageNo : true;
-        let temp = []
-        data.list.forEach((value) => {
-          if(fanBoardData.list.findIndex((target) => target.replyIdx === value.replyIdx) === -1) {
-            temp.push(value);
-          }
-        });
         dispatch(setProfileFanBoardData({
           ...fanBoardData,
-          list: data.paging?.page > 1 ? fanBoardData.list.concat(temp) : data.list,
+          list: data.paging?.page > 1 ? fanBoardData.list.concat(data.list) : data.list,
           listCnt: data.length > 0 ? data.paging : 0,
-          paging: data.paging ? data.paging : profileFanBoardPagingDefault,
-          isLastPage
-        }))
-        if(isLastPage) {
+          paging: data.paging ? data.paging : profilePagingDefault,
+          isLastPage,
+        }));
+        if(profileTab.tabName === profileTab.tabList[1] && isLastPage) {
           removeScrollEvent();
         }
       } else {
@@ -236,7 +230,7 @@ const ProfilePage = () => {
           paging: data.paging ? data.paging : profileClipPagingDefault,
           isLastPage,
         }));
-        if(isLastPage) {
+        if(profileTab.tabName === profileTab.tabList[2] && isLastPage) {
           removeScrollEvent();
         }
       } else {
@@ -426,22 +420,6 @@ const ProfilePage = () => {
     scrollEvent(document.documentElement, callback);
   }, []);
 
-  /* 팬보드 스크롤 이벤트 */
-  const scrollEvt = () => {
-    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-    const body = document.body
-    const html = document.documentElement
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-    const windowBottom = windowHeight + window.pageYOffset;
-
-    if(fanBoardData.paging.totalPage > fanBoardPageInfo.page && windowBottom >= docHeight - 300) {
-      setFanBoardPageInfo({...fanBoardPageInfo, page: fanBoardPageInfo.page+1});
-      window.removeEventListener("scroll", scrollEvt);
-    } else if(fanBoardData.paging.page === fanBoardPageInfo.total) {
-      window.removeEventListener("scroll", scrollEvt);
-    }
-  }
-
   // 피드 / 팬보드 / 클립 탭 변경시 액션
   const socialTabChangeAction = (item) => {
     const scrollEventHandler = () => {
@@ -453,8 +431,8 @@ const ProfilePage = () => {
       getFeedData(true);
       scrollEventHandler();
     }else if(item === profileTab.tabList[1]) {
-      // getFanBoardData(true);
-      // scrollEventHandler();
+      getFanBoardData(true);
+      scrollEventHandler();
     }else if(item === profileTab.tabList[2]) {
       getClipData(true);
       scrollEventHandler();
@@ -676,7 +654,7 @@ const ProfilePage = () => {
     getNoticeData(true);
     getNoticeFixData(true);
     getFeedData(true);
-    // getFanBoardData(true);
+    getFanBoardData(true);
     getClipData(true);
     /* 프로필 하단 탭 데이터 */
     if(location.search) {
@@ -695,19 +673,6 @@ const ProfilePage = () => {
       removeScrollEvent();
     }
   }, []);
-
-  useEffect(() => {
-    if(profileTab.tabName === profileTab.tabList[1]) {
-      getFanBoardData();
-    }
-  }, [fanBoardPageInfo]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", scrollEvt);
-    return () => {
-      window.removeEventListener("scroll", scrollEvt);
-    }
-  }, [fanBoardData]);
 
   // 페이지 시작
   return (

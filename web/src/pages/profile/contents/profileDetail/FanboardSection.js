@@ -50,7 +50,7 @@ const FanboardSection = (props) => {
     });
     dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     if(result === "success") {
-      getFanBoardData();
+      getFanBoardData(true);
       setFormState({...formState, contents: ""});
     }
   };
