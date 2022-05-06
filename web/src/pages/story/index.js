@@ -119,7 +119,7 @@ export default () => {
                           <div className='listContent'>
                             <div className='dataInfo'>
                               <div className='infoWrap'>
-                                <div className='userNick' onClick={() => {goLink(`${writer_mem_id}`)}}>{writer_mem_nick}</div>
+                                <div className='userNick' onClick={() => {goLink(`${writer_no}`)}}>{writer_mem_nick}</div>
                                 <div className='writeTime'>{moment(write_date).format('YYYY.MM.DD HH:mm')}</div>
                               </div>
                               <div className='delBtnWrap'>
