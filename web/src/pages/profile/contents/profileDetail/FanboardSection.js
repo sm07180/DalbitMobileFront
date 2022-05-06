@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
 // global components
 import NoResult from 'components/ui/noResult/NoResult';

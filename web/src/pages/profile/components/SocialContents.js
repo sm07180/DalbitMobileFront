@@ -79,7 +79,7 @@ const SocialContents = (props) => {
     const apiParams = {
       memNo: params.memNo ? params.memNo : member.memNo !== "" ? member.memNo : globalState.profile.memNo,
       page: isInit ? 1 : fanBoardData.paging.next,
-      records: isInit? 10: fanBoardData.paging.records
+      records: isInit? 10 : fanBoardData.paging.records
     }
     Api.mypage_fanboard_list({params: apiParams}).then(res => {
       if (res.result === 'success') {
@@ -189,7 +189,7 @@ const SocialContents = (props) => {
     if(popHeight - 1 < targetHeight + scrollTop) {
       callback()
     }
-    console.log('scrollEvent');
+    console.log('scrollEvent',popHeight,targetHeight,scrollTop);
   }, []);
 
   /* 스크롤 이벤트 remove */
@@ -203,14 +203,11 @@ const SocialContents = (props) => {
       setScrollPagingCall(scrollPagingCall => scrollPagingCall + 1);
     }
     scrollEvent(document.documentElement, callback);
-    console.log('scroll-profileScroll');
   }, []);
 
   // 피드 / 팬보드 / 클립 탭 변경시 액션
   const socialTabChangeAction = (item) => {
-    console.log('scrollTest');
     const scrollEventHandler = () => {
-      console.log('scrollTest');
       removeScrollEvent();
       document.addEventListener('scroll', profileScrollEvent);
     }
@@ -221,11 +218,14 @@ const SocialContents = (props) => {
     }else if(item === profileTab.tabList[1]) {
       getFanBoardData(true);
       scrollEventHandler();
+      console.log('ddd');
     }else if(item === profileTab.tabList[2]) {
       getClipData(true);
       scrollEventHandler();
     }
   }
+
+  console.log(profileTab);
 
   const setProfileTabName = (param) => {
     dispatch(setProfileTabData({
@@ -367,7 +367,6 @@ const SocialContents = (props) => {
       }else if(profileTab.tabName === profileTab.tabList[2] && !clipData.isLastPage) {
         document.addEventListener('scroll', profileScrollEvent);
       }
-
       dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
     }
   }
@@ -377,7 +376,6 @@ const SocialContents = (props) => {
     if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCall > 1 && !feedData.isLastPage) {
       getFeedData();
     }else if(profileTab.tabName === profileTab.tabList[1] && scrollPagingCall > 1 && !fanBoardData.isLastPage) {
-      console.log('scroll=222');
       getFanBoardData();
     }else if(profileTab.tabName === profileTab.tabList[2] && scrollPagingCall > 1 && !clipData.isLastPage) {
       getClipData();
@@ -388,11 +386,9 @@ const SocialContents = (props) => {
   useEffect(() => {
     if(profileReady) {
       profileTabInit();
-      console.log('666');
       if(location.search) {
         parameterManager(); // 주소 뒤에 파라미터 체크
       }
-
       // 주소가 바뀐 경우 데이터 불러오기
       getFeedData(true);
       getFanBoardData(true);
@@ -404,13 +400,15 @@ const SocialContents = (props) => {
     getFeedData(true);
     getFanBoardData(true);
     getClipData(true);
+    socialTabChangeAction(profileDefaultTab);
+
+    console.log(profileDefaultTab);
     /* 프로필 하단 탭 데이터 */
     if(location.search) {
       parameterManager(); // 주소 뒤에 파라미터 체크
     }else {
       tabHandler();
     }
-
     // 스크롤 위치를 기억하는 경우가 있어서 0으로 초기화 해준다.
     window.scrollTo(0, 0);
     return () => {

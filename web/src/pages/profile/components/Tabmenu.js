@@ -8,10 +8,7 @@ const Tabmenu = (props) => {
       {data.map((list,index) => {
         const tabClick = (e) => {
           const {targetTab} = e.currentTarget.dataset;
-          if (targetTab === list) {
-            setTab(targetTab)
-          }
-          if(typeof tabChangeAction === 'function') tabChangeAction(list);
+          if(typeof tabChangeAction === 'function') tabChangeAction(targetTab);
         }
 
         return (
@@ -22,6 +19,7 @@ const Tabmenu = (props) => {
   )
 }
 Tabmenu.defaultProps = {
+  setTab: '팬보드',
   count: []
 }
 export default Tabmenu;
