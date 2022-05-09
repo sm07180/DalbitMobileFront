@@ -519,6 +519,36 @@
               text-align: center;
               margin-bottom: 20px;
             }
+            //이벤트 당첨 안내
+            .event-win{
+              @include flex(center);
+              width: fit-content;
+              color: $white;
+              background-color: rgba($black, 0.4);
+              border-radius: 12px;
+              .content{
+                padding: 10px 12px;
+                width: 100%;
+                .title{@include font(14px, $Bold, #FFEE9A);}
+                .text{
+                  display: flex;
+                  @include font(14px, $Regular, #fff); 
+                  margin-top: 2px;
+                  span{
+                    max-width: 85px;
+                    font-weight: $Bold;
+                    @include fontCut;
+                  }
+                }
+              }
+              .button{
+                @include flex(center,center);
+                flex: none;
+                width: 90px;
+                height: 52px;
+                @include font(14px, $SemiBold, #ffee9a);
+              }
+            }
           }
         }
 
