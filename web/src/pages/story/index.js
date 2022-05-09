@@ -1,7 +1,8 @@
-import React, {useState, useContext, useEffect, useCallback, useLayoutEffect} from 'react'
+import React, {useState, useContext, useEffect, useCallback, useLayoutEffect, useRef} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {setInit, setList, setPageInfo}  from "redux/actions/story";
 import {useDispatch, useSelector} from "react-redux";
 import {PHOTO_SERVER} from 'context/config.js'
 
@@ -10,18 +11,21 @@ import moment from "moment";
 
 import Header from 'components/ui/header/Header'
 
-
 import './style.scss'
+import {initialState} from "redux/reducers/story";
 
 export default () => {
   const history = useHistory()
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const story = useSelector(({story}) => story);
+  const reduxClearFlagRef = useRef(false);
 
   const nowDay = moment();
 
-  const [storyList, setStoryList] = useState([]);
-  const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
+  const storyPageInfo = story.pageInfo;
+  // const [storyList, setStoryList] = useState([]);
+  // const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
 
   let totalPage = 1
   const getList = useCallback(async () => {
@@ -33,9 +37,11 @@ export default () => {
     if (result  === 'success') {
       totalPage = Math.ceil(data.paing.total / storyPageInfo.pagePerCnt)
       if (storyPageInfo.pageNo > 1) {
-        setStoryList(storyList.concat(data.list))
+        //setStoryList(storyList.concat(data.list))
+        dispatch(setList( story.list.concat(data.list)  ));
       } else {
-        setStoryList(data.list)
+        //setStoryList(data.list)
+        dispatch(setList( data.list ));
       }
     } else {
     }
@@ -48,7 +54,8 @@ export default () => {
         dispatch(setGlobalCtxMessage({type:"alert",
           msg: "사연을 삭제했습니다.",
           callback: () => {
-            getList();
+            // getList();
+            dispatch(setList(story.list.concat([]).filter((v)=> v.idx !== storyIdx)));
           }
         }))
       } else {
@@ -69,7 +76,8 @@ export default () => {
 
   const scrollEvtHdr = () => {
     if (totalPage > storyPageInfo.pageNo && Utility.isHitBottom()) {
-      setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1} )
+      //setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1} )
+      dispatch(setPageInfo({...story.pageInfo, pageNo: storyPageInfo.pageNo + 1}));
     }
   }
 
@@ -84,7 +92,8 @@ export default () => {
     if (storyPageInfo.pageNo > 1) getList()
   }, [storyPageInfo.pageNo])
 
-  const goLink = (memNo) => {    
+  const goLink = (memNo) => {
+    reduxClearFlagRef.current = true;
     history.push(`/profile/${memNo}`)
   }
 
@@ -94,6 +103,13 @@ export default () => {
     } else {
       getList();
     }
+
+    return () => {
+      if(!reduxClearFlagRef.current){
+        // 리덕스 데이터를 초기화 하는 경우 (프로필 이동만 초기화 제외)
+        dispatch(setInit());
+      }
+    };
   }, [])
 
   return (
@@ -101,12 +117,13 @@ export default () => {
       <Header position={'sticky'} title="사연 보관함" type={'back'}/>
       <div className='content'>
         {
-          storyList.length > 0 ?
+          // storyList.length > 0 ?
+          story.list.length > 0 ?
             <>
               <p className='reference'>※ 최근 3개월 내역만 볼 수 있습니다.</p>
               <div className='storyWrap'>
                 {
-                  storyList.map((story, index) => {
+                  story.list.map((story, index) => {
                     const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story;
                     const ago3Months =  moment(nowDay).subtract(3, 'months');
                     const writeDate =  moment(write_date);
