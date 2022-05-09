@@ -69,7 +69,10 @@ const ProfileSwiper = (props) => {
       :
       <div className="swiper-slide">
         <div className="photo none">
-          <img src={`${IMG_SERVER}/profile/photoNone.png`} />
+          <div>
+            <p>배경사진을 등록해보세요</p>
+          </div>
+          {/* <img src={`${IMG_SERVER}/profile/photoNone.png`} /> */}
         </div>
       </div>
     }
