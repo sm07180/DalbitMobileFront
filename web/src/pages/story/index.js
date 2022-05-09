@@ -28,7 +28,7 @@ export default () => {
   // const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
 
   let totalPage = 1
-  const getList = useCallback(async () => {
+  const getList = async () => {
     const param = {
       pageNo: storyPageInfo.pageNo,
       pagePerCnt: storyPageInfo.pagePerCnt
@@ -45,7 +45,7 @@ export default () => {
       }
     } else {
     }
-  }, [storyPageInfo.pageNo])
+  };
 
   function delList(roomNo, storyIdx) {
     Api.getStoryBoxDel({roomNo, storyIdx}).then((res) => {
