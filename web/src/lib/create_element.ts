@@ -8,6 +8,7 @@ type Element = {
 };
 
 export function createElement(data: Element) {
+  console.log("createElement", data)
   const { type, text, className, style, children, event } = data;
 
   const elem = document.createElement(type);
