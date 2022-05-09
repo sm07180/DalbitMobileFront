@@ -18,7 +18,7 @@ export default () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
 
-  const nowDay = moment().format("YYYY.MM.DD");
+  const nowDay = moment();
 
   const [storyList, setStoryList] = useState([]);
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
@@ -107,9 +107,9 @@ export default () => {
               <div className='storyWrap'>
                 {
                   storyList.map((story, index) => {
-                    const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story
-                    const ago3Months =  moment(nowDay).subtract(3, 'months').format("YYYY.MM.DD");
-                    const writeDate =  moment(write_date).format("YYYY.MM.DD");
+                    const {writer_mem_id, writer_mem_profile, writer_mem_nick, write_date, room_no, writer_no, contents, idx} = story;
+                    const ago3Months =  moment(nowDay).subtract(3, 'months');
+                    const writeDate =  moment(write_date);
                     if(moment(writeDate).isAfter(ago3Months)) {
                       return (
                         <div className='storyList' key={index}>
