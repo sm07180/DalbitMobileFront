@@ -15,7 +15,6 @@ import SlidepopZip from './components/popup/SlidepopZip';
 import ProfileNoticePop from "pages/profile/components/popup/ProfileNoticePop";
 
 import {useHistory, useParams} from 'react-router-dom';
-import {Hybrid, isHybrid} from "context/hybrid";
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
@@ -30,8 +29,6 @@ const ProfilePage = () => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const profileData = useSelector(state => state.profile);
-  const noticeData = useSelector(state => state.brdcst);
-  const noticeFixData = useSelector(state => state.noticeFix);
   const popup = useSelector(state => state.popup);
   const member = useSelector(state => state.member);
 
@@ -198,9 +195,7 @@ const ProfilePage = () => {
         data={profileData}
         goProfile={goProfile}
         openSlidePop={openSlidePop}
-        isMyProfile={isMyProfile}
-        noticeData={noticeData}
-        noticeFixData={noticeFixData} />
+        isMyProfile={isMyProfile} />
       
       {/* 소셜 컨텐츠 */}
       <SocialContents

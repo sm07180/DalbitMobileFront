@@ -2,10 +2,11 @@ import React, {useState, useCallback} from 'react';
 
 import Api from 'context/api';
 // global components
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import NoResult from 'components/ui/noResult/NoResult';
+import ShowSwiper from "../../../../components/ui/showSwiper/ShowSwiper";
+import NoResult from '../../../../components/ui/noResult/NoResult';
 // components
 import SocialList from '../../components/SocialList';
+import FloatBtn from '../../components/FloatBtn';
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileFeedNewData} from "redux/actions/profile";
@@ -80,16 +81,23 @@ const FeedSection = (props) => {
           fetchHandleLike={fetchFeedHandleLike}
           showImagePopUp={showImagePopUp}
           deleteContents={deleteContents}
-          type="feed"
-        />
+          type="feed" />
         :
         <NoResult />
       }
     </div>
-      
+
     {/* 피드 사진 확대 */}
     {feedShowSlide?.visible &&
-      <ShowSwiper imageList={feedShowSlide?.imgList || []} popClose={showSlideClear} swiperParam={{initialSlide: feedShowSlide?.initialSlide}}/>
+      <ShowSwiper
+      swiperParam={{initialSlide: feedShowSlide?.initialSlide}}
+        imageList={feedShowSlide?.imgList || []}
+        popClose={showSlideClear} />
+    }
+    
+    {/* 글쓰기 플로팅 버튼 */}
+    {isMyProfile &&
+      <FloatBtn profileData={profileData} />
     }
     </>
   )

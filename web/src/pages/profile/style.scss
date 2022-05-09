@@ -32,11 +32,15 @@
   .socialWrap {
     position:relative;
     @include flex($fd:column);
+    min-height:460px;
     padding-bottom:40px;
     // 탭 메뉴 스타일
     @import "./scss/tabmenu.scss";
     
-    .feedSection {}
+    .feedSection {
+      flex:1;
+      height:100%;
+    }
     .fanboardSection {
       .writeWrap {
         padding: 12px 16px 20px;

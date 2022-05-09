@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useMemo, useRef} from 'react';
-import {IMG_SERVER} from "context/config";
-import ListRow from "components/ui/listRow/ListRow";
 import Utility from "components/lib/utility";
+import ListRow from "../../../components/ui/listRow/ListRow";
+import {IMG_SERVER} from "context/config";
 import {useDispatch, useSelector} from "react-redux";
 
 const ListRowComponent = (props) => {

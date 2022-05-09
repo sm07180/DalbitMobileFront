@@ -41,9 +41,9 @@ const FloatingBtn = (props) => {
   // 플로팅 버튼 오픈시 스크롤 막기
   useEffect(() => {
     if (floatBtnHidden === true) {
-      document.body.classList.add('overflowHidden')
+      document.body.classList.add('overflowHidden');
     } else {
-      document.body.classList.remove('overflowHidden')
+      document.body.classList.remove('overflowHidden');
     }
   }, [floatBtnHidden])
 
@@ -74,5 +74,3 @@ const FloatingBtn = (props) => {
 }
 
 export default FloatingBtn;
-
-FloatingBtn.defaultProps = {}

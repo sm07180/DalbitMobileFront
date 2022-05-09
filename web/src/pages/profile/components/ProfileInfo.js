@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 
 import Api from "context/api";
 import Utility from 'components/lib/utility';
@@ -10,7 +10,7 @@ import TeamSymbol from '../../../components/ui/teamSymbol/TeamSymbol';
 import FeedLike from "pages/profile/components/FeedLike";
 // css
 import {IMG_SERVER} from 'context/config';
-import {useHistory} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileNoticeData,setProfileNoticeFixData} from "redux/actions/profile";
 import {profilePagingDefault} from "redux/types/profileType";
@@ -18,11 +18,14 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
 
 const ProfileInfo = (props) => {
-  const {data, goProfile, isMyProfile, openSlidePop, noticeData, noticeFixData} = props;
+  const {data, goProfile, isMyProfile, openSlidePop} = props;
   const history = useHistory();
+  const params = useParams();
   const swiperRef = useRef();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const noticeFixData = useSelector(state => state.noticeFix);
+  const noticeData = useSelector(state => state.brdcst);
   const memberRdx = useSelector((state)=> state.member);
   
   const [openBadge,setOpenBadge] = useState(false);
@@ -32,8 +35,8 @@ const ProfileInfo = (props) => {
     rcv_like_cnt: 0,
     replyCnt: 0
   };
-  //
-  const onOpenBdage = () => setOpenBadge(!openBadge)
+  // 뱃지 영역 열기/닫기
+  const onOpenBdage = () => setOpenBadge(!openBadge);
 
   // 스와이퍼
   const swiperParams = {slidesPerView: 'auto'}
@@ -43,9 +46,9 @@ const ProfileInfo = (props) => {
   }
 
   {/* 방송공지 데이터 호출 */}
-  const getNoticeData = (isInit) => {
+  const getNoticeData = useCallback((isInit) => {
     const apiParams = {
-      memNo: data.memNo ? data.memNo : memberRdx.memNo !== "" ? memberRdx.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : memberRdx.memNo !== "" ? memberRdx.memNo : globalState.profile.memNo,
       pageNo: isInit ? 1 : noticeData.paging.next,
       pageCnt: isInit? 20: noticeData.paging.records,
       topFix: 0,
@@ -67,12 +70,12 @@ const ProfileInfo = (props) => {
         }))
       }
     })
-  };
+  },[]);
 
   {/* 방송공지(고정) 데이터 호출 */}
   const getNoticeFixData = (isInit) => {
     const apiParams = {
-      memNo: data.memNo ? data.memNo : memberRdx.memNo !== "" ? memberRdx.memNo : globalState.profile.memNo,
+      memNo: params.memNo ? params.memNo : memberRdx.memNo !== "" ? memberRdx.memNo : globalState.profile.memNo,
       pageNo: isInit ? 1 : noticeFixData.paging.next,
       pageCnt: isInit? 20: noticeFixData.paging.records,
     }
@@ -270,22 +273,30 @@ const ProfileInfo = (props) => {
             </div>
           )
         })}
-        {(noticeFixData.fixedFeedList.length === 0 && noticeData.feedList.length === 0) && isMyProfile &&
-          <div onClick={onClickNotice}>
-            <div className="noticeBox cursor">
-              <div className="badge">Notice</div>
-              <div className="text">{defaultNotice.contents}</div>
-              <div className="info">
-                <i className="likeOff">{defaultNotice.rcv_like_cnt}</i>
-                <i className="cmt">{defaultNotice.replyCnt}</i>
+        </Swiper>
+      </div>
+    )
+  }
+
+  const BroadcastNoticeNone = () => {
+    return (
+      <div className="broadcastNotice">
+        <div className="title" onClick={onClickNotice}>방송공지</div>
+          <div className="swiper-wrapper">
+            <div className="swiper-slide" onClick={onClickNotice}>
+              <div className="noticeBox cursor">
+                <div className="badge">Notice</div>
+                <div className="text">{defaultNotice.contents}</div>
+                <div className="info">
+                  <i className="likeOff">{defaultNotice.rcv_like_cnt}</i>
+                  <i className="cmt">{defaultNotice.replyCnt}</i>
+                </div>
+                <button className="fixIcon">
+                  <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
+                </button>
               </div>
-              <button className="fixIcon">
-                <img src={`${IMG_SERVER}/profile/fixmark-off.png`} />
-              </button>
             </div>
           </div>
-        }
-        </Swiper>
       </div>
     )
   }
@@ -356,9 +367,11 @@ const ProfileInfo = (props) => {
         <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(data.profMsg)}} />
       </div>
       }
-      {(noticeFixData.fixedFeedList.length !== 0 && isMyProfile) || (noticeData.feedList.length !== 0 && isMyProfile) ?
+      {noticeFixData.fixedFeedList.length !== 0 || noticeData.feedList.length !== 0 ?
       <BroadcastNotice />
-      : 
+      : isMyProfile ?
+      <BroadcastNoticeNone />
+      :
       <></>
       }
     </section>

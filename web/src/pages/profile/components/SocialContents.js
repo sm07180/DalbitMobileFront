@@ -3,7 +3,6 @@ import React, {useEffect, useState, useRef, useCallback} from 'react';
 import Api from 'context/api';
 // components
 import Tabmenu from './Tabmenu';
-import FloatBtn from './FloatBtn';
 // contents
 import FeedSection from '../contents/profileDetail/FeedSection';
 import FanboardSection from '../contents/profileDetail/FanboardSection';
@@ -376,9 +375,7 @@ const SocialContents = (props) => {
       {profileTab.tabName === profileTab.tabList[1] &&
         <FanboardSection
           profileData={profileData}
-          fanBoardData={fanBoardData}
           isMyProfile={isMyProfile}
-          params={params}
           getFanBoardData={getFanBoardData}
           deleteContents={deleteContents}/>
       }
@@ -387,14 +384,8 @@ const SocialContents = (props) => {
       {profileTab.tabName === profileTab.tabList[2] &&
         <ClipSection
           profileData={profileData}
-          clipData={clipData}
           isMyProfile={isMyProfile}
           webview={webview} />
-      }
-      
-      {/* 글쓰기 플로팅 버튼 */}
-      {isMyProfile && profileTab.tabName === profileTab.tabList[0] &&
-        <FloatBtn profileData={profileData} />
       }
     </section>
   )
