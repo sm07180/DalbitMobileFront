@@ -9,6 +9,8 @@ const TabBtn = (props) => {
     const {tabTarget} = e.currentTarget.dataset
     if (tabTarget === param.item) {
       param.setTab(tabTarget)
+      param.setIsTab(!param.isTab);
+      param.setSearchPaging({...param.searchPaging, page: 1});
       if (param.setPage) {
         param.setPage(defaultTab ? defaultTab : 0)
       }

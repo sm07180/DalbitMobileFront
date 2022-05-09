@@ -21,7 +21,7 @@ const FloatingBtn = (props) => {
     const floatNode = floatingRef.current;
     const scrollBottom = floatNode?.offsetTop;
 
-    if (scrollBottom > 150) {
+    if (scrollBottom >= 48) {
       setFloatScrollAction(true);
     } else {
       setFloatScrollAction(false);

@@ -28,14 +28,15 @@ const SettingManager = () => {
   const [managerList, setManagerList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
   const [filterTextType, setFilterTextType] = useState(filter[0]);
-  const [searchPageInfo, setSearchPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 20, total: 0, totalPage: 0}});
+  const [searchPageInfo, setSearchPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
+  const [searchPaging, setSearchPaging] = useState({page: 1, records: 40});
+  const [isTab, setIsTab] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
-  const [searchPaging, setSearchPaging] = useState({page: 1, records: 20});
 
   //매니저 리스트 조회
   const getManagerList = async () => {
     const res = await Api.mypage_manager_list({
-      params: {page: 1, records: 999}
+      params: {page: 1, records: 20}
     })
     if(res.result === "success") {
       setManagerList(res.data.list);
@@ -97,7 +98,7 @@ const SettingManager = () => {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset;
 
-    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight - 300) { //totalPage가 현재 page보다 클경우
       setSearchPaging({...searchPaging, page: searchPaging.page + 1});
       window.removeEventListener("scroll", scrollEvt);
     } else if(searchPageInfo.paging?.totalPage === searchPaging.page) {
@@ -114,13 +115,13 @@ const SettingManager = () => {
 
   useEffect(() => {
     getManagerList()
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if(isSearch && searchPaging.page > 1) {
+    if(isTab && isSearch && searchPaging.page >= 1) {
       fetchListData();
     }
-  }, [searchPaging.page]);
+  }, [searchPaging, isTab]);
 
   useEffect(() => {
     window.addEventListener("scroll", scrollEvt);
@@ -130,14 +131,14 @@ const SettingManager = () => {
   }, [searchPageInfo]);
 
   useEffect(() => {
-    setSearchPaging({page: 1, records: 20});
+    setSearchPaging({page: 1, records: 40});
   }, [changes.search])
 
   return (
     <div id="manager">
       <Header position={'sticky'} title={'매니저 관리'} type={'back'}/>
       <div className='subContent'>
-        <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
+        <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} isTab={isTab} setIsTab={setIsTab} searchPaging={searchPaging} setSearchPaging={setSearchPaging}/>
         {tabType === tabmenu[0] ? (
           <>
             <section className="counterWrap">

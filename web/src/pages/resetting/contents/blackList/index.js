@@ -29,11 +29,11 @@ const Settingblack = () => {
   const [tabType, setTabType] = useState(tabmenu[0])
   const [blackList, setBlackList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
-  const [userList, setUserList] = useState([]);
   const [filterTextType, setFilterTextType] = useState(filter[0]);
-  const [searchPageInfo, setSearchPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 20, total: 0, totalPage: 0}});
+  const [searchPageInfo, setSearchPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
   const [isSearch, setIsSearch] = useState(false);
-  const [searchPaging, setSearchPaging] = useState({page: 1, records: 20});
+  const [searchPaging, setSearchPaging] = useState({page: 1, records: 40});
+  const [isTab, setIsTab] = useState(false);
 
   //차단 회원 리스트 조회
   const getblackList = async () => {
@@ -123,10 +123,10 @@ const Settingblack = () => {
   }, [])
 
   useEffect(() => {
-    if(isSearch && searchPaging.page > 1) {
+    if(isTab && isSearch && searchPaging.page >= 1) {
       fetchListData();
     }
-  }, [searchPaging.page]);
+  }, [searchPaging, isTab]);
 
   useEffect(() => {
     window.addEventListener("scroll", scrollEvt);
@@ -136,13 +136,13 @@ const Settingblack = () => {
   }, [searchPageInfo]);
 
   useEffect(() => {
-    setSearchPaging({page: 1, records: 20});
+    setSearchPaging({page: 1, records: 40});
   }, [changes.search])
 
   return (
     <div id="black">
       <Header position={'sticky'} title={'차단회원 관리'} type={'back'}/>
-      <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
+      <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} isTab={isTab} setIsTab={setIsTab} searchPaging={searchPaging} setSearchPaging={setSearchPaging}/>
       {tabType === tabmenu[0] ? (
         <>
           <section className="counterWrap">
