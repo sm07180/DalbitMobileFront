@@ -1,5 +1,17 @@
 @import "components/ui/_mixin.scss";
 
+.container {
+  .totalWrap {
+    #setting {
+      #black {
+        .tabmenu {
+          top: $PC-TABTOP;
+        }
+      }
+    }
+  }
+}
+
 #setting #black {
   section {
     position: relative;
@@ -74,13 +86,19 @@
     }
   }
   .tabmenu {
+    position: sticky;
+    top: $MOBILE-TABTOP;
     @include flex(center);
     margin-bottom: 16px;
     padding:0 16px;
+    background-color: #FFF;
+    z-index: $TAB-ZINDEX;
     li {
       flex:1;
       @include flex(center, center);
       height: 48px;
+      text-align: center;
+      background-color: #ffffff;
       border-bottom:2px solid #f2f2f2;
       @include font(16px,600,#acacac);
       box-sizing: border-box;

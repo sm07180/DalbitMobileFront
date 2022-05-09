@@ -5,7 +5,7 @@ import './filterBtn.scss'
 // global components
 
 const FilterBtn = (props) => {
-  const {data, filterTextType, setFilterTextType} = props
+  const {data, filterTextType, setFilterTextType, setSearchPaging, searchPaging} = props
   const [filterOpen, setFilterOpen] = useState(false)
 
   // 필터 열고닫기
@@ -16,6 +16,7 @@ const FilterBtn = (props) => {
     const {filterIndex} = e.currentTarget.dataset
 
     setFilterTextType(data[filterIndex])
+    setSearchPaging({...searchPaging, page: 1});
   }
 
   return (
