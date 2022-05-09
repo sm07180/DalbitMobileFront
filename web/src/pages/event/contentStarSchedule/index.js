@@ -118,6 +118,14 @@ const contentStarSchedule = () => {
         memNo:61642511571222,
         offState:false
       },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_userpic.jpg",
+        title:"달빛 헌의 최고 목소리를 찾아라",
+        date:"5월 13일 22:30",
+        endDay : "2020512 010000",
+        memNo:61642511571222,
+        offState:false
+      },
     ]
   )
   
@@ -178,7 +186,7 @@ const contentStarSchedule = () => {
           <>
             {(endEvent && endEvent.length > 0) ?
               <>
-                {endEvent.map((list, index)=>{
+                {endEvent.reverse().map((list, index)=>{
                   return(
                     <div className={`contentBox off`} key={index}>
                       <div className="thumbNail">
