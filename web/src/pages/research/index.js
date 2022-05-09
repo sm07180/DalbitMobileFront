@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useRef, useContext} from 'react'
+import React, { useCallback, useEffect, } from 'react'
 import {broadcastList, deleteFan, postAddFan} from "common/api";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
@@ -23,19 +23,34 @@ import SearchResult from './components/SearchResult';
 // scss
 import './style.scss';
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
-import {setSearchData} from "redux/actions/search";
+import {
+  setSearchData,
+  setSearchDjList,
+  setSearchHotClipList,
+  setSearchLiveList,
+  setSearchNewDjList
+} from "redux/actions/search";
+import UseInput from "common/useInput/useInput";
+
+const LIVE_SECTION = 'liveSection';
+const NEW_LIVE_SECTION = 'newLiveSection'
+const CLIP_SECTION = 'clipSection';
+const DJ_SECTION = 'djSection';
+
+/* search redux 검색값 초기화 */
+export const searchDataReset = ({searchData, dispatch}) => {
+  dispatch(setSearchData({
+    ...searchData,
+    searching: false,
+    searchVal: ''
+  }))
+}
 
 const SearchPage = () => {
   const dispatch = useDispatch();
   const common = useSelector(state => state.common)
   const search = useSelector(state => state.search);
-
-  const { searching, searchVal, searchParam } = search;
-
-  const [djListInfo, setDjListInfo] = useState({list: []}); // 믿고 보는 DJ 정보
-  const [liveListInfo, setLiveListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 지금 핫한 라이브 정보
-  const [hotClipListInfo, setHotClipListInfo] = useState({ checkDate: '', list: [], totalCnt: 0, type: 0}); // 오늘 인기 있는 클립 정보
-  const [newBjListInfo, setNewBjListInfo] = useState({list: [], paging: {}, totalCnt: 0}); // 방금 뭐시기 리스트
+  const { searching, searchVal, searchParam, djListInfo, liveListInfo, hotClipListInfo, newDjListInfo } = search;
 
   // 믿고 보는 DJ 정보 리스트 가져오기
   const getDjListInfo = useCallback(async () => {
@@ -44,7 +59,7 @@ const SearchPage = () => {
 
     const {result, data} = await API.getRecommendedDJ({ageList, gender})
     if (result === 'success') {
-      setDjListInfo({...data});
+      dispatch(setSearchDjList({...data}))
     }
   }, []);
 
@@ -52,7 +67,7 @@ const SearchPage = () => {
   const getLiveListInfo = useCallback(async() => {
     const {result, data} = await API.getSearchRecomend({ page: 1, listCnt: 10 });
     if (result === 'success') {
-      setLiveListInfo({...data});
+      dispatch(setSearchLiveList({...data}))
     }
   }, []);
 
@@ -60,7 +75,7 @@ const SearchPage = () => {
   const getHopClipListInfo = useCallback(async() => {
     const {result, data} = await API.getPopularList({ page: 1, listCnt: 10 });
     if (result === 'success') {
-      setHotClipListInfo({...data});
+      dispatch(setSearchHotClipList({...data}))
     }
   }, []);
 
@@ -77,18 +92,18 @@ const SearchPage = () => {
     }
     broadcastList(param).then(res => {
       if (res.code === 'C001') {
-        setNewBjListInfo({...res.data, totalCnt: res.data.paging.total });
+        dispatch(setSearchNewDjList({...res.data, totalCnt: res.data.paging.total }));
       }
     });
   }
 
   // 검색창 state 관리
-  const onChange = (e) => {
+  const setSearchVal = (value) => {
     dispatch(setSearchData({
       ...search,
-      searchVal: e.target.value,
+      searchVal: value,
     }))
-  };
+  }
 
   // 취소 버튼 이벤트
   const removeValue = () => {
@@ -103,7 +118,7 @@ const SearchPage = () => {
   const handleSearch = (value) => {
     dispatch(setSearchData({
       ...search,
-      searchVal: value !== searchVal ? searchVal : value.trim(),
+      searchVal: value !== searchVal ? value.trim() : searchVal,
       searching: true,
       searchParam: value.trim(),
     }))
@@ -156,7 +171,7 @@ const SearchPage = () => {
       const targetInd = temp.findIndex(value => value.memNo === memNo);
       temp[targetInd].isFan = true;
 
-      setDjListInfo({...djListInfo, list: temp});
+      dispatch(setSearchDjList({...djListInfo, list: temp}))
       dispatch(setGlobalCtxMessage({type: "alert", msg: '팬 등록되었습니다.'}));
     }
   };
@@ -174,7 +189,7 @@ const SearchPage = () => {
       const targetInd = temp.findIndex(value => value.memNo === memNo);
       temp[targetInd].isFan = false;
 
-      setDjListInfo({...djListInfo, list: temp});
+      dispatch(setSearchDjList({...djListInfo, list: temp}))
       dispatch(setGlobalCtxMessage({type: "alert", msg: '팬 해제되었습니다.'}));
     }
   };
@@ -183,21 +198,30 @@ const SearchPage = () => {
     getDjListInfo().then(r => {});
     getLiveListInfo().then(r => {});
     getHopClipListInfo().then(r => {});
-    dispatch(setSearchData({
-      ...search,
-      searching: false,
-      searchVal: ''
-    }))
+    searchDataReset({searchData: search, dispatch})
     getNewBjList();
     window.scrollTo(0, 0);
     dispatch(setIsRefresh(false));
   };
 
+  // 검색 글자수 제한
+  const searchInputValidator = (value) => {
+    return value.length <= 50;
+  }
+
+  const swiperRefresh = (value) => {
+    const swiper = document.querySelector(`#${value} .swiper-container`)?.swiper;
+    swiper?.update();
+    swiper?.slideTo(0);
+  }
+
   useEffect(() => {
-    getDjListInfo().then(r => {});
-    getLiveListInfo().then(r => {});
-    getHopClipListInfo().then(r => {});
-    getNewBjList();
+    if(!searching) {
+      getDjListInfo().then(r => {});
+      getLiveListInfo().then(r => {});
+      getHopClipListInfo().then(r => {});
+      getNewBjList();
+    }
   }, []);
 
   useEffect(() => {
@@ -211,7 +235,12 @@ const SearchPage = () => {
       <Header title="검색">
         <div className='searchForm'>
           <InputItems>
-            <input type="text" placeholder="닉네임, 방송, 클립을 입력해주세요." value={searchVal} onChange={onChange} onKeyDown={handleSubmit}/>
+            <UseInput placeholder="닉네임, 방송, 클립을 입력해주세요."
+                      value={searchVal}
+                      setValue={setSearchVal}
+                      validator={searchInputValidator}
+                      onKeyDown={handleSubmit}
+            />
           </InputItems>
           {(searchVal.length > 0 || searching) && <button className='searchCancel' onClick={removeValue}>취소</button>}
         </div>
@@ -220,27 +249,27 @@ const SearchPage = () => {
         {!searching && (searchVal.length === 0 ?
           <>
             {liveListInfo.list.length > 0 &&
-            <section className='liveSection'>
+            <section id={LIVE_SECTION} className={LIVE_SECTION}>
               <CntTitle title="🔥 지금 핫한 라이브"/>
-              <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"}/>
+              <HotLiveList data={liveListInfo.list} nickNmKey={"nickNm"} swiperRefresh={swiperRefresh} section={LIVE_SECTION} />
             </section>
             }
-            {newBjListInfo.list.length > 0 &&
-            <section className='liveSection'>
+            {newDjListInfo.list.length > 0 &&
+            <section id={NEW_LIVE_SECTION} className={LIVE_SECTION}>
               <CntTitle title={'방금 착륙한 NEW 달린이'} />
-              <HotLiveList data={newBjListInfo.list} nickNmKey={"bjNickNm"}/>
+              <HotLiveList data={newDjListInfo.list} nickNmKey={"bjNickNm"} swiperRefresh={swiperRefresh} section={NEW_LIVE_SECTION} />
             </section>
             }
             {hotClipListInfo.list.length > 0 &&
-            <section className='clipSection'>
+            <section id={CLIP_SECTION} className={CLIP_SECTION}>
               <CntTitle title="오늘 인기 있는 클립"/>
-              <ClipList data={hotClipListInfo.list}/>
+              <ClipList data={hotClipListInfo.list} swiperRefresh={swiperRefresh} section={CLIP_SECTION} />
             </section>
             }
             {djListInfo.list.length > 0 &&
-            <section className='djSection'>
+            <section id={DJ_SECTION} className={DJ_SECTION}>
               <CntTitle title="믿고 보는 DJ" />
-              <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan}/>
+              <DjList data={djListInfo.list} addAction={registFan} delAction={cancelFan} swiperRefresh={swiperRefresh} section={DJ_SECTION} />
             </section>
             }
           </>
@@ -250,7 +279,7 @@ const SearchPage = () => {
       </div>
 
 
-      {searching && <SearchResult searchVal={searchParam}/>}
+      {searching && <SearchResult searchData={search} />}
     </div>
   );
 };

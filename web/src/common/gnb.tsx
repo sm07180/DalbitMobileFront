@@ -28,6 +28,7 @@ import {
   setGlobalCtxRtcInfoEmpty,
   setGlobalCtxRtcInfoInit
 } from "../redux/actions/globalCtx";
+import {searchDataReset} from "../pages/research";
 
 const gnbTypes = [
   {url: '/', isUpdate: true},
@@ -52,6 +53,7 @@ export default function GNB() {
   const history = useHistory();
   const member = useSelector((state)=> state.member)
   const isDesktop = useSelector((state)=> state.common.isDesktop)
+  const search = useSelector(state => state.search)
   const dispatch = useDispatch();
 
   const [showLayer, setShowLayer] = useState(false);
@@ -358,6 +360,19 @@ export default function GNB() {
       }}
   }
 
+  // 헤더 gnb 영역 클릭
+  const gnbTypeClick = (item) => {
+    if(item.url.includes('/search')) {
+      searchDataReset({searchData: search, dispatch})
+    }
+
+    if(item.isUpdate && activeType === item.url) {
+      dispatch(setIsRefresh(true))
+    }else {
+      history.push(item.url);
+    }
+  }
+
   useEffect(() => {
     if(isDesktop && globalState.token.isLogin) {
       fetchMypageNewCntData(globalState.profile.memNo);
@@ -439,14 +454,11 @@ export default function GNB() {
               {gnbTypes.map((item, index) => {
                 return (
                   <li key={index} data-url={item.url}
-                      className={`${activeType === item.url ? 'active' : (activeType.indexOf("/rankDetail") > -1 || activeType.indexOf('/rankBenefit') > -1) && item.url === "/rank" ? "active" : ''} ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`}
-                      onClick={() => {
-                        if(item.isUpdate && activeType === item.url) {
-                          dispatch(setIsRefresh(true))
-                        }else {
-                          history.push(item.url);
-                        }
-                      }}
+                      className={
+                        `${activeType === item.url ? 'active' : (activeType.indexOf("/rankDetail") > -1 || activeType.indexOf('/rankBenefit') > -1) && item.url === "/rank" ? "active" : ''}
+                         ${(activeType !== item.url || item.isUpdate) ? 'cursorPointer' : ''}`
+                      }
+                      onClick={() => {gnbTypeClick(item)}}
                   >
                     {item.url === '/notice' && globalState.alarmStatus && <span className="newDot"/>}
                   </li>
