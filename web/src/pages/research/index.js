@@ -1,10 +1,7 @@
-import React, { useCallback, useEffect, } from 'react'
-import {broadcastList, deleteFan, postAddFan} from "common/api";
+import React, { useEffect, } from 'react'
+import {deleteFan, postAddFan} from "common/api";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsRefresh} from "redux/actions/common";
-
-//context
-import API from 'context/api';
 
 // global component
 import Header from 'components/ui/header/Header.js';
@@ -24,13 +21,14 @@ import SearchResult from './components/SearchResult';
 import './style.scss';
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {
+  callSearchDjList, callSearchHotClipList,
+  callSearchLiveList, callSearchNewDjList,
   setSearchData,
   setSearchDjList,
-  setSearchHotClipList,
-  setSearchLiveList,
   setSearchNewDjList
 } from "redux/actions/search";
 import UseInput from "common/useInput/useInput";
+import {searchPagingDefault} from "redux/types/searchType";
 
 const LIVE_SECTION = 'liveSection';
 const NEW_LIVE_SECTION = 'newLiveSection'
@@ -42,46 +40,41 @@ export const searchDataReset = ({searchData, dispatch}) => {
   dispatch(setSearchData({
     ...searchData,
     searching: false,
-    searchVal: ''
+    searchVal: '',
+    searchResultInfo: {tabType: 0, page: 1, records: 5}, // 검색 결과 정보 (탭 타입, 페이징 정보)
+    searchResultDjInfo: {list: [], paging: searchPagingDefault},  // DJ 리스트
+    searchResultLiveInfo: {list: [], paging: searchPagingDefault}, // 라이브 리스트
+    searchResultClipInfo: {list: [], paging: searchPagingDefault}, // 클립 리스트
   }))
 }
 
 const SearchPage = () => {
   const dispatch = useDispatch();
   const common = useSelector(state => state.common)
+  const globalState = useSelector(({globalCtx}) => globalCtx);
   const search = useSelector(state => state.search);
-  const { searching, searchVal, searchParam, djListInfo, liveListInfo, hotClipListInfo, newDjListInfo } = search;
+  const { searching, searchVal, djListInfo, liveListInfo, hotClipListInfo, newDjListInfo } = search;
 
-  // 믿고 보는 DJ 정보 리스트 가져오기
-  const getDjListInfo = useCallback(async () => {
-    const ageList = [1, 2, 3, 4].join('|');
-    const gender = ['m', 'f'].join('|');
+  // 지금 핫한 라이브
+  const getLiveListInfo = () => {
+    dispatch(callSearchLiveList());
+  }
 
-    const {result, data} = await API.getRecommendedDJ({ageList, gender})
-    if (result === 'success') {
-      dispatch(setSearchDjList({...data}))
+  // 믿고 보는 DJ
+  const getDjListInfoSaga = () => {
+    if(globalState.token.isLogin) {
+      dispatch(callSearchDjList());
     }
-  }, []);
-
-  // 지금 핫한 라이브 정보 리스트 가져오기
-  const getLiveListInfo = useCallback(async() => {
-    const {result, data} = await API.getSearchRecomend({ page: 1, listCnt: 10 });
-    if (result === 'success') {
-      dispatch(setSearchLiveList({...data}))
-    }
-  }, []);
+  }
 
   // 오늘 인기 있는 클립 정보 리스트 가져오기
-  const getHopClipListInfo = useCallback(async() => {
-    const {result, data} = await API.getPopularList({ page: 1, listCnt: 10 });
-    if (result === 'success') {
-      dispatch(setSearchHotClipList({...data}))
-    }
-  }, []);
+  const getHotClipListInfo = () => {
+    dispatch(callSearchHotClipList());
+  }
 
   // 방금 뭐시기 리스트 가져오기
   const getNewBjList = () => {
-    const param = {
+    const params = {
       page: 1,
       mediaType: '',
       records: 10,
@@ -90,12 +83,9 @@ const SearchPage = () => {
       djType: 3,
       gender: ''
     }
-    broadcastList(param).then(res => {
-      if (res.code === 'C001') {
-        dispatch(setSearchNewDjList({...res.data, totalCnt: res.data.paging.total }));
-      }
-    });
-  }
+
+    dispatch(callSearchNewDjList(params));
+  };
 
   // 검색창 state 관리
   const setSearchVal = (value) => {
@@ -116,6 +106,7 @@ const SearchPage = () => {
 
   // 히스토리 클릭 이벤트
   const handleSearch = (value) => {
+    window.scrollTo(0, 0);
     dispatch(setSearchData({
       ...search,
       searchVal: value !== searchVal ? value.trim() : searchVal,
@@ -195,9 +186,9 @@ const SearchPage = () => {
   };
 
   const refreshActions = () => {
-    getDjListInfo().then(r => {});
-    getLiveListInfo().then(r => {});
-    getHopClipListInfo().then(r => {});
+    getLiveListInfo() // 지금 핫한 라이브
+    getHotClipListInfo(); // 오늘 인기 있는 클립
+    getDjListInfoSaga(); // 믿고 보는 DJ
     searchDataReset({searchData: search, dispatch})
     getNewBjList();
     window.scrollTo(0, 0);
@@ -217,9 +208,9 @@ const SearchPage = () => {
 
   useEffect(() => {
     if(!searching) {
-      getDjListInfo().then(r => {});
-      getLiveListInfo().then(r => {});
-      getHopClipListInfo().then(r => {});
+      getLiveListInfo() // 지금 핫한 라이브
+      getHotClipListInfo(); // 오늘 인기 있는 클립
+      getDjListInfoSaga(); // 믿고 보는 DJ
       getNewBjList();
     }
   }, []);

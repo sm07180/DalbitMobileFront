@@ -1,19 +1,16 @@
 import React, {useState, useEffect} from 'react'
 
-import Api from 'context/api'
-// global components
-import CntTitle from '../../../components/ui/cntTitle/CntTitle';
 // components
+import CntTitle from '../../../components/ui/cntTitle/CntTitle';
 import Tabmenu from './Tabmenu'
 import SearchDjList from "pages/research/components/SearchDjList";
 import SearchLiveList from "pages/research/components/SearchLiveList";
 import SearchClipList from "pages/research/components/SearchClipList";
 // redux
 import {
-  setSearchResultClipList,
-  setSearchResultDjList,
+  callSearchResultClipList,
+  callSearchResultDjList, callSearchResultLiveList,
   setSearchResultInfo,
-  setSearchResultLiveList
 } from "redux/actions/search";
 import {useDispatch} from "react-redux";
 // css
@@ -23,89 +20,22 @@ const SearchResult = (props) => {
   const dispatch = useDispatch();
   const [componentDidMount, setComponentDidMount] = useState(true);
 
-  const changeSubject = (value) => {
-    switch (value) {
-      case '01': return '커버';
-      case '02': return '작사/작곡';
-      case '03': return '더빙';
-      case '04': return '수다/대화';
-      case '05': return '고민/사연';
-      case '06': return '힐링';
-      case '07': return '성우';
-      case '08': return 'ASMR';
-      default: break;
-    }
-  };
-
   // DJ 정보 가져오기
   async function getSearchDjInfo() {
-    const res = await Api.member_search({ params: { search: searchParam, ...searchResultInfo } });
-    if (res.result === 'success' && res.code === 'C001') {
-      if (searchResultInfo.page !== 1) {
-        let temp =  [];
-        res.data.list.forEach(value => {
-          if (searchResultDjInfo.list.findIndex(target => target.memNo === value.memNo) === -1) {
-            temp.push(value);
-          }
-        });
-        setSearchDjInfoFunc({...res.data, list: searchResultDjInfo.list.concat(temp)});
-      } else {
-        setSearchDjInfoFunc({...res.data });
-      }
-    } else {
-      if (searchResultInfo.page === 1) {
-        setSearchDjInfoFunc({list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }});
-      }
-    }
+    const params = { search: searchParam, ...searchResultInfo };
+    dispatch(callSearchResultDjList(params));
   }
 
   // 방송 정보 가져오기
   async function getSearchLiveInfo() {
-    const res = await Api.broad_list({ params: { search: searchParam, ...searchResultInfo, } });
-    if (res.result === 'success' && res.code === 'C001') {
-      if (searchResultInfo.page !== 1) {
-        let temp =  [];
-        res.data.list.forEach(value => {
-          if (searchResultLiveInfo.list.findIndex(target => target.memNo === value.memNo) === -1) {
-            temp.push(value);
-          }
-        })
-        setSearchLiveInfoFunc({...res.data, list: searchResultLiveInfo.list.concat(temp)});
-      } else {
-        setSearchLiveInfoFunc({...res.data});
-      }
-    } else {
-      if (searchResultInfo.page === 1) {
-        setSearchLiveInfoFunc({list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }});
-      }
-    }
+    const params = { search: searchParam, ...searchResultInfo };
+    dispatch(callSearchResultLiveList(params));
   }
 
   // 클립 정보 가져오기
   async function getSearchClipInfo() {
-    const res = await Api.getClipList({ search: searchParam, ...searchResultInfo, slctType: 0, dateType: 0, });
-    if (res.result === 'success' && res.code === 'C001') {
-      let tempList = res.data.list;
-      tempList.map((value, index) => {
-        tempList[index].subjectType = changeSubject(value.subjectType);
-      });
-
-      if (searchResultInfo.page !== 1) {
-        let temp =  [];
-        tempList.forEach(value => {
-          if (searchResultClipInfo.list.findIndex(target => target.memNo === value.memNo) === -1) {
-            temp.push(value);
-          }
-        })
-        setSearchClipInfoFunc({...res.data, list: searchResultClipInfo.list.concat(temp)});
-      } else {
-        setSearchClipInfoFunc({...res.data, list: tempList });
-      }
-    } else {
-      if (searchResultInfo.page === 1) {
-        setSearchClipInfoFunc({list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }});
-      }
-    }
+    const params = { search: searchParam, ...searchResultInfo, slctType: 0, dateType: 0 };
+    dispatch(callSearchResultClipList(params));
   }
 
   // 탭 변경 이벤트
@@ -132,7 +62,6 @@ const SearchResult = (props) => {
 
   // 여기서부터 비효율의 끝판 소스 시작
   const scrollDjList = () => {
-    console.log('scrollDjList')
     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
     const body = document.body;
     const html = document.documentElement;
@@ -148,7 +77,6 @@ const SearchResult = (props) => {
   }
 
   const scrollLiveList = () => {
-    console.log('scrollLiveList')
     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
     const body = document.body;
     const html = document.documentElement;
@@ -164,7 +92,6 @@ const SearchResult = (props) => {
   }
 
   const scrollClipList = () => {
-    console.log('scrollClipList')
     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight;
     const body = document.body;
     const html = document.documentElement;
@@ -182,21 +109,6 @@ const SearchResult = (props) => {
   // 검색 결과 데이터
   const setSearchDataFunc = (data) => {
     dispatch(setSearchResultInfo({...data}));
-  }
-
-  // DJ 리스트
-  const setSearchDjInfoFunc = (data) => {
-    dispatch(setSearchResultDjList({ ...data }));
-  }
-
-  // 라이브 리스트
-  const setSearchLiveInfoFunc = (data) => {
-    dispatch(setSearchResultLiveList({ ...data }));
-  }
-
-  // 클립 리스트
-  const setSearchClipInfoFunc = (data) => {
-    dispatch(setSearchResultClipList({ ...data }));
   }
 
   useEffect(() => {

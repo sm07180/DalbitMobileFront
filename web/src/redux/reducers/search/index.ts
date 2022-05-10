@@ -1,5 +1,5 @@
 import {createReducer} from "typesafe-actions";
-import {ISearchStateType, SearchActions} from "../../types/searchType";
+import {ISearchStateType, SearchActions, searchPagingDefault} from "../../types/searchType";
 
 const initialState: ISearchStateType = {
   searchVal: '', // 검색 value 값
@@ -7,17 +7,17 @@ const initialState: ISearchStateType = {
   searching: false, // 검색 결과창 접근 여부
 
   // 검색 전
-  liveListInfo: {list: [], paging: {}, totalCnt: 0}, // 지금 핫한 라이브 정보
-  newDjListInfo: {list: [], paging: {}, totalCnt: 0}, // 방금 착륙한 NEW 달린이
-  hotClipListInfo: { checkDate: '', list: [], totalCnt: 0, type: 0}, // 오늘 인기 있는 클립 정보
+  liveListInfo: {list: [], paging: searchPagingDefault}, // 지금 핫한 라이브 정보
+  newDjListInfo: {list: [], paging: searchPagingDefault}, // 방금 착륙한 NEW 달린이
+  hotClipListInfo: { list: [] }, // 오늘 인기 있는 클립 정보
   djListInfo: {list: []}, // 믿고 보는 DJ 정보
 
   // 검색 결과
   searchResultTabMenuList: ['전체','DJ','라이브', '클립'], // 검색 결과 탭 메뉴
   searchResultInfo: {tabType: 0, page: 1, records: 5}, // 검색 결과 정보 (탭 타입, 페이징 정보)
-  searchResultDjInfo: {list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }},  // DJ 리스트
-  searchResultLiveInfo: {list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }}, // 라이브 리스트
-  searchResultClipInfo: {list: [], paging: { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 }}, // 클립 리스트
+  searchResultDjInfo: {list: [], paging: searchPagingDefault},  // DJ 리스트
+  searchResultLiveInfo: {list: [], paging: searchPagingDefault}, // 라이브 리스트
+  searchResultClipInfo: {list: [], paging: searchPagingDefault}, // 클립 리스트
 }
 
 const search = createReducer<ISearchStateType, SearchActions>(initialState, {

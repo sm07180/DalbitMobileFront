@@ -4,6 +4,20 @@ import {Gender, IImageVo, ILiveBadgeList, IPaging, MediaType, OsType} from "./co
 
 export type SearchActions = ActionType<typeof actions>;
 
+export const changeSubject = (value) => {
+  switch (value) {
+    case '01': return '커버';
+    case '02': return '작사/작곡';
+    case '03': return '더빙';
+    case '04': return '수다/대화';
+    case '05': return '고민/사연';
+    case '06': return '힐링';
+    case '07': return '성우';
+    case '08': return 'ASMR';
+    default: break;
+  }
+};
+
 // 지금 핫한 라이브
 type searchLiveListType = {
   badgeSpecial: number;
@@ -24,7 +38,6 @@ type searchLiveListType = {
 export interface ILiveListInfoType {
   list: Array<searchLiveListType>;
   paging: IPaging | {};
-  totalCnt: number;
 }
 
 // 방금 착륙한 NEW 달린이
@@ -106,7 +119,16 @@ type newBjListType = {
 export interface INewDjListInfoType {
   list: Array<newBjListType>;
   paging: IPaging | {};
-  totalCnt: number;
+}
+
+export interface INewDjListParamType {
+  page: number;
+  mediaType: MediaType;
+  records: number;
+  roomType: string;
+  searchType: number;
+  djType: number;
+  gender: Gender;
 }
 
 // 오늘 인기있는 클립
@@ -129,10 +151,7 @@ type hotClipListType = {
 }
 
 export interface IHotClipListInfoType {
-  checkDate: string;
   list: Array<hotClipListType>;
-  totalCnt: number;
-  type: number;
 }
 
 // 믿고 보는 DJ
@@ -169,7 +188,7 @@ export interface ISearchResultInfoType {
 }
 
 // 검색 결과 DJ 리스트
-interface ISearchResultDjListType {
+export interface ISearchResultDjListType {
   badgeSpecial: number;
   fanCnt: number;
   gender: Gender;
@@ -187,8 +206,17 @@ export interface ISearchResultDjInfoType {
   paging: IPaging;
 }
 
+export type searchResultInfoReqType = {
+  search: string;
+  page?: number;
+  records?: number;
+  tabType?: number;
+  slctType?: number;
+  dateType?: number;
+}
+
 // 검색 결과 라이브 리스트
-interface ISearchResultLiveInfoListType {
+export interface ISearchResultLiveInfoListType {
   badgePartner: number;
   badgeSpecial: number;
   badge_partner: number;
@@ -269,7 +297,7 @@ export interface ISearchResultLiveInfoType {
 }
 
 // 검색 결과 클립 리스트
-interface ISearchResultClipInfoListType {
+export interface ISearchResultClipInfoListType {
   badgeSpecial: number;
   bgImg: IImageVo;
   birthYear: number;
@@ -297,6 +325,8 @@ export interface ISearchResultClipInfoType {
   list: Array<ISearchResultClipInfoListType>
   paging: IPaging;
 }
+
+export const searchPagingDefault = { next: 0, page: 0, prev: 0, records: 0, total: 0, totalPage: 0 };
 
 export interface ISearchStateType {
   // 검색 정보

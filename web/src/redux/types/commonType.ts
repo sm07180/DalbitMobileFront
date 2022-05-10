@@ -11,7 +11,7 @@ export interface CommonState {
 }
 
 export type Gender = "n" | "m" | "f" | "";
-export type MediaType = "a" | "v"; // a: 라디오 | v: 비디오
+export type MediaType = "a" | "v" | ''; // a: 라디오 | v: 비디오 | '': 전체
 export type OsType = 1 | 2 | 3; // 1: AOS | 2: IOS | 3: DESKTOP
 
 export interface IImageVo {
