@@ -57,7 +57,7 @@ $errorMsg : #FF1919;
         .textLog {
           display:none;
           width: 100%;
-          @include font(12px, 400, #333333);
+          @include font(12px, 500, #333333);
           margin-top:6px;
           white-space: nowrap;
           text-indent:8px;
