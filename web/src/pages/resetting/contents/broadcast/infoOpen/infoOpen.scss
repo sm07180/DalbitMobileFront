@@ -19,7 +19,7 @@
       }
       .title {
         flex: 1;
-        @include font(15px, 400, #D2D2D4);
+        @include font(15px, 500, #666);
       }
       .radioWrap {
         @include flex(center);
@@ -53,7 +53,7 @@
             box-sizing: border-box;
           }
           .radioCategoty {
-            @include font(13px, 400, #D2D2D4);
+            @include font(13px, 500, #666);
           }
         }  
       }

@@ -25,14 +25,22 @@
   }
   // 프로필 스와이퍼 스타일
   @import "./scss/profileSwiper.scss";
+  // 프로필 메인 정보 스타일
+  @import "./scss/profileCard.scss";
+  // 프로필 서브 정보 스타일
+  @import "./scss/profileInfo.scss";
   .socialWrap {
     position:relative;
     @include flex($fd:column);
+    min-height:460px;
     padding-bottom:40px;
     // 탭 메뉴 스타일
     @import "./scss/tabmenu.scss";
     
-    .feedSection {}
+    .feedSection {
+      flex:1;
+      height:100%;
+    }
     .fanboardSection {
       .writeWrap {
         padding: 12px 16px 20px;

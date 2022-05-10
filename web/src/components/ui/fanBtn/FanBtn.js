@@ -54,14 +54,10 @@ const FanBtn = (props) => {
     // 마이페이지, 마이프로필 페이지에서 카운트 하기위한 것이니 그 외에 곳에서는 안써도 됨
     if (isMyProfile) {
       if(isFan) { // 팬 해제 후
-        dispatch(setProfileData({...profileData, isFan: !profileData.isFan, starCnt: profileData.starCnt -1}));
-        console.log(profileData.starCnt);
+        dispatch(setProfileData({...profileData, isFan: !data.isFan, starCnt: profileData.starCnt -1}));
       }else { // 팬 등록 후
-        dispatch(setProfileData({...profileData, isFan: !profileData.isFan, starCnt: profileData.starCnt +1}));
-        console.log(profileData.starCnt);
+        dispatch(setProfileData({...profileData, isFan: !data.isFan, starCnt: profileData.starCnt +1}));
       }
-    }else {
-      dispatch(setProfileData({...profileData, isFan: !profileData.isFan}))
     }
   }
 

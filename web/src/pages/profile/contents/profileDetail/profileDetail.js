@@ -33,6 +33,7 @@ const ProfileDetail = (props) => {
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
   const replyIsMoreRef = useRef(null);
   const infoRef = useRef(null);
+  const member = useSelector(state => state.member);
 
   //팝업 사진 스와이퍼
   const [tooltipEvent, setTooltipEvent] = useState(false);
@@ -55,7 +56,7 @@ const ProfileDetail = (props) => {
   const [text, setText] = useState('');
 
   //차단 / 신고하기
-  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
+  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', nickNm: ''});
   const popup = useSelector(state => state.popup);
   const detailData = useSelector(state => state.detail);
 
@@ -144,7 +145,7 @@ const ProfileDetail = (props) => {
       Api.myPageFeedDetailSel({
         feedNo: index,
         memNo: memNo,
-        viewMemNo: globalState.profile.memNo
+        viewMemNo: member.memNo ? member.memNo : globalState.profile.memNo
       }).then((res) => {
         const {data, result, message} = res;
         if(result === "success") {
@@ -167,7 +168,6 @@ const ProfileDetail = (props) => {
         }
       }).catch((e) => console.log(e));
     }
-
   }
 
   //댓글 조회
@@ -548,10 +548,9 @@ const ProfileDetail = (props) => {
   }
 
   /* 차단/신고 팝업 열기 */
-  const openBlockReportPop = (blockReportInfo) => {
-    console.log('report info',blockReportInfo);
-    dispatch(setSlidePopupOpen({...popup, blockReportPopup: true}))
-    setBlockReportInfo(blockReportInfo);
+  const openBlockReportPop = (memNo, nickNm) => {
+    dispatch(setSlidePopupOpen());
+    setBlockReportInfo({memNo, nickNm});
   }
 
   /* 차단/신고 팝업 닫기 */
@@ -585,7 +584,7 @@ const ProfileDetail = (props) => {
               {(isMyContents || adminChecker) &&
               <button onClick={deleteContents}>삭제하기</button>}
               {!isMyContents &&
-              <button onClick={() => openBlockReportPop({memNo:item?.mem_no || item?.writer_mem_no, memNick: item?.nickName})}>
+              <button onClick={() => openBlockReportPop(item?.mem_no || item?.writer_mem_no, item?.nickName)}>
                 차단/신고하기</button>}
             </div>
             }
@@ -657,9 +656,9 @@ const ProfileDetail = (props) => {
       {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
 
       {/* 차단 / 신고하기 */}
-      {popup.blockReportPopup &&
+      {popup.slidePopup &&
       <PopSlide>
-        <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
+        <BlockReport profileData={blockReportInfo} closePopupAction={closeBlockReportPop} />
       </PopSlide>
       }
     </div>

@@ -5,7 +5,12 @@ import Swiper from 'react-id-swiper'
 import './showSwiper.scss'
 import {isAndroid} from "context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackEventCallback, setGlobalCtxBackFunction, setGlobalCtxBackState} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackEventCallback,
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState
+} from "redux/actions/globalCtx";
 
 const ShowSwiper = (props) => {
   const {imageList, popClose, imageKeyName, imageParam, initialSlide,
@@ -34,6 +39,21 @@ const ShowSwiper = (props) => {
     if (target.className === 'popClose') {
       popClose(false)
     }
+
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunctionEnd(''));
+    }
+  }
+
+  const setPresentPhoto = () => {
+    readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx)
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunctionEnd(''));
+    }
+  }
+
+  const deletePhoto = () => {
+    deleteButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx)
   }
 
   useEffect(() => {
@@ -58,11 +78,8 @@ const ShowSwiper = (props) => {
 
     return () => {
       if (isAndroid()) {
-        if (globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null))
-        }
-        dispatch(setGlobalCtxBackFunction({name: ''}))
         dispatch(setGlobalCtxBackEventCallback(null));
+        dispatch(setGlobalCtxBackFunctionEnd(''));
       }
     }
   },[]);
@@ -72,8 +89,8 @@ const ShowSwiper = (props) => {
       <div className="showWrapper">
         {showTopOptionSection &&
         <div className="buttonGroup">
-          <button onClick={() => readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>대표 사진</button>
-          <button onClick={() => deleteButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx) }>삭제</button>
+          <button onClick={setPresentPhoto}>대표 사진</button>
+          <button onClick={deletePhoto}>삭제</button>
         </div>
         }
         {imageList.length > 1 ?

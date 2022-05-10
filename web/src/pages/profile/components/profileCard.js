@@ -1,15 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Api from 'context/api';
 // global components
 import LevelItems from '../../../components/ui/levelItems/LevelItems';
 import GenderItems from '../../../components/ui/genderItems/GenderItems';
 import FrameItems from '../../../components/ui/frameItems/frameItems';
-// scss
-import './profileCard.scss';
+
+import {isIos} from "context/hybrid";
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
-import {isIos} from "context/hybrid";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ProfileCard = (props) => {
@@ -30,7 +29,7 @@ const ProfileCard = (props) => {
         }))
       } else if (res.result === 'fail') {
         dispatch(setGlobalCtxMessage({type:'alert',
-          msg: res.message
+          msg: res.message, callback: undefined
         }))
       }
     })
@@ -53,15 +52,11 @@ const ProfileCard = (props) => {
   }
   /* fan toggle 데이터 변경 */
   const fanToggleCallback = () => {
-    if(!isMyProfile) {
-      /* api에서 조회하지 않고 스크립트로만 스타수 +- 시킴 (팬,스타 리스트 api 조회시에는 각각 갱신함) */
-      if(data.isFan) { // isFan -> !isFan (팬해제)
-        dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt -1}))
-      }else { // !isFan -> isFan (팬등록)
-        dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt +1}))
-      }
-    }else {
-      dispatch(setProfileData({...data, isFan: !data.isFan}))
+    /* api에서 조회하지 않고 스크립트로만 스타수 +- 시킴 (팬,스타 리스트 api 조회시에는 각각 갱신함) */
+    if(data.isFan) { // isFan -> !isFan (팬해제)
+      dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt -1}))
+    }else { // !isFan -> isFan (팬등록)
+      dispatch(setProfileData({...data, isFan: !data.isFan, fanCnt: data.fanCnt +1}))
     }
   }
 

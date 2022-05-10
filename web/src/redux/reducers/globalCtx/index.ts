@@ -5,6 +5,7 @@ import {convertMonday} from "../../../lib/rank_fn";
 import Api from "../../../context/api";
 import Utility from "../../../components/lib/utility";
 import {CHAT_MAX_COUNT} from "../../../pages/broadcast/constant";
+import {isAndroid} from "../../../context/hybrid";
 
 //baseData, mailChatInfo, mailBlockUser
 const initUserProfile = {
@@ -457,7 +458,32 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, backState: payload}
   },
   "global/ctx/SET_BACK_FUNCTION": (state, {payload}) => {
-    return {...state, backFunction: payload}
+    // backFunction: 백버튼으로 처리될 배열 리스트
+    const prevBackFunctionList = state?.backFunction;
+    let newBackFunctionList: Array<{name: string, value?: string, popupData?: {}}> = [];
+    if(prevBackFunctionList) {
+      newBackFunctionList = [...prevBackFunctionList, payload]
+    }else {
+      newBackFunctionList.push(payload);
+    }
+
+    return {...state, backFunction: newBackFunctionList}
+  },
+  "global/ctx/SET_BACK_FUNCTION_END": (state, {payload}) => {
+    let prevBackFunctionList;
+
+    if(payload === 'clear') {
+      prevBackFunctionList = [];
+    }else {
+      prevBackFunctionList = state.backFunction;
+      if(prevBackFunctionList) {
+        prevBackFunctionList.pop();
+      }else {
+        prevBackFunctionList = [];
+      }
+    }
+
+    return {...state, backFunction: prevBackFunctionList}
   },
   "global/ctx/SET_SELF_AUTH": (state, {payload}) => {
     return {...state, selfAuth: payload}
@@ -478,10 +504,22 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
     return {...state, dateState: payload}
   },
   "global/ctx/UPDATE_MULTI_VIEWER": (state, {payload}) => {
-    if (payload.show) {
-      return {...state, multiViewer: payload, backState: true, backFunction: {name: 'multiViewer'}}
-    } else {
-      return {...state, multiViewer: payload, backState: null}
+    if(isAndroid()) {
+      if (payload.show) {
+        let backFunctionList = state.backFunction;
+
+        if(backFunctionList === undefined) {
+          backFunctionList = [payload];
+        }else {
+          backFunctionList.push(payload)
+        }
+
+        return {...state, multiViewer: payload, backState: true, backFunction: backFunctionList}
+      } else {
+        return {...state, multiViewer: payload}
+      }
+    }else {
+      return {...state, multiViewer: payload}
     }
   },
   "global/ctx/SET_BEST_DJ_DATA": (state, {payload}) => {
@@ -573,6 +611,9 @@ const global = createReducer<GlobalCtxStateType, GlobalCtxActions>(initialState,
   },
   "global/ctx/SET_USER_REPORT_INFO": (state, {payload}) => {
     return {...state, userReportInfo: payload}
+  },
+  "global/ctx/SET_BACK_EVENT_CALLBACK": (state, {payload}) => {
+    return {...state, backEventCallback: payload}
   },
   // reducer
   "global/ctx/LAYER_STATUS_OPEN_RIGHT_SIDE_USER": (state) => {

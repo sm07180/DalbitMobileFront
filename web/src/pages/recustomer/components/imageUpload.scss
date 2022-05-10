@@ -12,7 +12,6 @@
     .subTitle {
       @include font(12px, $Regular, #666666);
       margin-left: 4px;
-      letter-spacing: -1px;
     }
   }
   .uploadWrap {

@@ -4,7 +4,7 @@
   flex: none;
   position:relative;
   @include flex(center, space-between);
-  @include font(13px,400,#202020);
+  @include font(12px,500,#303030);
   width: 59px;
   margin-right: 8px;
   .arrowDown{

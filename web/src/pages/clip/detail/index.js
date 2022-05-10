@@ -31,7 +31,7 @@ const ClipDetailPage = (props) => {
   const chagneSubject = (value) => {
     switch (value) {
       case '01':
-        return '커버';
+        return '커버노래';
       case '02':
         return '작사/작곡';
       case '03':

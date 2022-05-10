@@ -129,7 +129,7 @@ const ProfileEdit = () => {
       dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
       dispatch(setGlobalCtxMessage({type:'alert',
         msg: `저장되었습니다.`,
-        callback: finished ? () => history.replace('/myProfile') : () => {}
+        callback: finished ? () => history.goBack() : () => {}
       }));
     } else {
       dispatch(setGlobalCtxMessage({type:'alert',title: 'Error', msg: message}));
@@ -285,27 +285,27 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} >
-              <button className='saveBtn'
+            <Header title="프로필 수정" type="back">
+              <button className="saveBtn"
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='profileTopSwiper'>
-              {profileInfo?.profImgList?.length > 0 ?
-                <ProfileSwiper data={profileDataNoReader}
-                           disabledBadge={true}
-                           openShowSlide={openShowSlide}
-                />
-                :
+            {profileInfo?.profImgList?.length > 0 ?
+              <ProfileSwiper data={profileDataNoReader}
+                          disabledBadge={true}
+                          openShowSlide={openShowSlide}
+              />
+              :
+              <section className='profileSwiper'>
                 <div className="nonePhoto"
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       inputRef.current.click();
-                     }}>
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      inputRef.current.click();
+                    }}>
                   <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
                 </div>
-              }
-            </section>
+              </section>
+            }
             <section className="insertPhoto">
               <div className="insertBtn">
                 <div className="photo"

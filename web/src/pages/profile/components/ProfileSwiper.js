@@ -9,7 +9,6 @@ import {
 } from "common/audio/clip_func";
 import {IMG_SERVER} from 'context/config';
 import {useHistory} from "react-router-dom";
-import {setCommonPopupOpenData} from "redux/actions/common";
 import {useDispatch, useSelector} from "react-redux";
 
 const ProfileSwiper = (props) => {
@@ -23,7 +22,6 @@ const ProfileSwiper = (props) => {
 
   const swiperPicture = {
     slidesPerView: 'auto',
-    spaceBetween: 8,
     autoplay: {
       delay: 100000,
       disableOnInteraction: false

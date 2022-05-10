@@ -12,6 +12,8 @@ import './style.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
+import {setGlobalCtxBackFunction} from "redux/actions/globalCtx";
 
 const myProfileTabInfos = {
   titleTab: [
@@ -218,6 +220,9 @@ const LikePopup = (props) => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop'}));
+    }
   }
 
   useEffect(() => {
@@ -305,7 +310,7 @@ const LikePopup = (props) => {
                       {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
                       <div className="listItem">
                         {list.good && <DataCnt type={"goodCnt"} value={list.good}/>}
-                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}                        
+                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}
                       </div>
                     </div>
                     <div className="back">
