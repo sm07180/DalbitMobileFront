@@ -178,9 +178,9 @@ const ProfilePage = () => {
       {/* 프로필 슬라이더 */}
       <ProfileSwiper
         data={profileDataNoReader}
-        openShowSlide={openShowSlide}
         listenOpen={profileData.listenOpen}
         webview={webview}
+        openShowSlide={openShowSlide}
         type="profile"/>
 
       {/* 프로필 메인 정보 */}

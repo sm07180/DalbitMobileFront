@@ -62,28 +62,33 @@
   }
   .socialContent {
     padding: 2px 16px 16px;
-    .socialText {
+    .socialTextWrap {
       position:relative;
+      max-height:64px;
       margin-bottom:16px;
-      word-break: break-all;
-      cursor:pointer;
-      @include font(13px,400,#202020);
-      &.lineCut-4 {
-        @include fontLineCut(4);
-        &:after {
-          position:absolute;bottom:0;right:0;
-          content:"더보기";
-          display:inline-block;
-          @include font(14px,$Medium,#999);
+      overflow: hidden;
+      &.isMore {
+        max-height:initial !important;
+        .socialButton {
+          position: relative;
+          width:100%;
+          text-align: right;
         }
       }
-    }
-    .socialButton {
-      position:relative;
-      float: right;
-      display:inline-block;
-      cursor:pointer;
-      @include font(14px,$Medium,#999);
+      .socialText {
+        word-break: break-all;
+        cursor:pointer;
+        @include font(13px,400,#202020);
+      }
+      .socialButton {
+        @include position-bottom-right;
+        display:inline-block;
+        padding:0 8px;
+        text-align:right;
+        background-color: white;
+        @include font(13px,$Medium,#999);
+        cursor:pointer;
+      }
     }
     .swiperPhoto {
       margin-bottom:16px;
