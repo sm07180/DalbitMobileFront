@@ -11,6 +11,7 @@ import {useDispatch} from "react-redux";
 export default function StoryList(props: any) {
   const dispatch = useDispatch();
   const { roomOwner, roomNo } = props;
+
   //state
   const [timer, setTimer] = useState("");
   const [storyMsg, setStoryMsg] = useState<string>("");

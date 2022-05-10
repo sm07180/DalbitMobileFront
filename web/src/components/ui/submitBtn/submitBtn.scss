@@ -4,9 +4,9 @@ button.submitBtn {
   line-height: 48px;
   border-radius: 16px;
   background: $DOWNCOLOR;
-  @include font(16px,bold,white);
+  @include font(16px,$Bold,white);
   &.disabled {
-    opacity: .2;
+    background: #BBB;
     cursor:not-allowed;
     pointer-events: none;
   }

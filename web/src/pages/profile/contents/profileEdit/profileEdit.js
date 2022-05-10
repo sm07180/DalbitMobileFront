@@ -129,7 +129,7 @@ const ProfileEdit = () => {
       dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
       dispatch(setGlobalCtxMessage({type:'alert',
         msg: `저장되었습니다.`,
-        callback: finished ? () => history.replace('/myProfile') : () => {}
+        callback: finished ? () => history.goBack() : () => {}
       }));
     } else {
       dispatch(setGlobalCtxMessage({type:'alert',title: 'Error', msg: message}));
@@ -285,8 +285,8 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} >
-              <button className='saveBtn'
+            <Header title="프로필 수정" type="back">
+              <button className="saveBtn"
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>

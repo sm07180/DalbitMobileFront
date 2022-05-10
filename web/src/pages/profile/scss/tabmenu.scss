@@ -11,10 +11,10 @@
   li {
     line-height:50px;
     padding:0 12px;
-    @include font(16px,400,#666);
+    @include font(16px,$SemiBold,#666);
     cursor:pointer;
     &.active {
-      @include font(16px,700,black);
+      @include font(16px,$Bold,black);
     }
   }
 }

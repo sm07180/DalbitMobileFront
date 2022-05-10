@@ -51,6 +51,7 @@ $SEARCH-HEADER: 112px;
           }
           input {
             margin:0;
+            &::placeholder{@include font(15px, $Regular, #666);}
           }
           .inputDel {
             width:14px;height:14px;

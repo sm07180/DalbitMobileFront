@@ -73,7 +73,6 @@ export interface ICommonPopupState {
   headerPopup: boolean;
   fanStarPopup: boolean;
   likePopup: boolean;
-  blockReportPopup: boolean;
   presentPopup: boolean;
   questionMarkPopup: boolean;
   historyPopup: boolean;
