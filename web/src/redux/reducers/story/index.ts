@@ -10,7 +10,7 @@ export interface IStoryState {
 
 export const initialState = {
   list: [],
-  pageInfo: {pageNo: 1, pagePerCnt: 2},
+  pageInfo: {pageNo: 1, pagePerCnt: 20},
   backFlag: false
 };
 
