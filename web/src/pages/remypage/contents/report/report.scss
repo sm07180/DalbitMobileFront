@@ -127,11 +127,11 @@
       text-align: center;
       background-color: #ffffff;
       border-bottom:2px solid #f2f2f2;
-      @include font(16px,600,#acacac);
+      @include font(16px,500,#666);
       box-sizing: border-box;
       cursor:pointer;
       &.active {
-        @include font(16px,bold,#202020);
+        @include font(16px,$Bold,#202020);
         border-bottom: solid 2px #202020;
       }
     }

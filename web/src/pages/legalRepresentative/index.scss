@@ -42,7 +42,7 @@
           @include flex(center);
           .title {
             position: relative;
-            @include font(13px, 500, #666666);
+            @include font(13px, $SemiBold, #303030);
             &.necessary::after {
               content: "";
               @include position-top-right(0px, -5px);
@@ -83,10 +83,10 @@
               flex:1;
               width:100%;
               line-height: 50px;
-              @include font(15px,$Medium,#202020);
+              @include font(15px,$Medium,#303030);
               &::placeholder {
                 font-weight:$Regular;
-                color:#999;
+                color:#666;
               }
             }
             &.focus {
@@ -95,7 +95,7 @@
             }
           }
           .explanation {
-            @include font(12px, 400, #999999);
+            @include font(12px, 400, #666);
             letter-spacing: -1px;
           }
         }      
@@ -127,10 +127,10 @@
             width: 100%;
             height: 48px;
             border-radius: 12px;
-            @include font(18px, 700, #fff);
+            @include font(16px, 700, #fff);
             background-color: $DOWNCOLOR;
             &.disable {
-              background-color: $DISABLEDCOLOR;    
+              background-color: #bbb;
             }
             &.active {
               background-color: $DOWNCOLOR;              

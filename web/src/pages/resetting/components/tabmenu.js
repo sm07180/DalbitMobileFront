@@ -4,7 +4,7 @@ import React from 'react'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,setPage} = props
+  const {data, tab, setTab, setPage, isTab, setIsTab, searchPaging, setSearchPaging} = props
 
   return (
     <ul className="tabmenu">
@@ -13,7 +13,11 @@ const Tabmenu = (props) => {
           item: data,
           tab: tab,
           setTab: setTab,
-          setPage: setPage
+          setPage: setPage,
+          isTab: isTab,
+          setIsTab: setIsTab,
+          searchPaging: searchPaging,
+          setSearchPaging: setSearchPaging
         }
         return (
           <TabBtn param={param} key={index} />

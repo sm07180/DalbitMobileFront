@@ -15,7 +15,7 @@
       .menuName {
         flex: 1;
         @include flex(center);
-        @include font(15px, 500, #303030);
+        @include font(15px, 600, #303030);
       }      
       .arrow {
         flex: none;
@@ -28,7 +28,7 @@
       }
       small {
         margin-left: 8px;
-        @include font(13px, 400, #999999);
+        @include font(13px, $Medium, #666);
       }
       .inputLabel {
         flex: none;

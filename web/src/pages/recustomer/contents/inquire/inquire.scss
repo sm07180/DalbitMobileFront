@@ -25,10 +25,10 @@
           height:48px;
           border-bottom:2px solid #F2F2F2;
           letter-spacing: -1px;
-          @include font(16px,600,#ACACAC);
+          @include font(16px,$Medium,#575757);
           cursor:pointer;
           &.active {              
-            @include font(16px,700,#202020);
+            @include font(16px,$Bold,#202020);
             border-bottom:2px solid #202020;
           }
         }

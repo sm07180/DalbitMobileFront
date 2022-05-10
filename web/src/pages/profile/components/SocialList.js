@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 
 // global components
 import DataCnt from 'components/ui/dataCnt/DataCnt'
@@ -13,25 +13,22 @@ import {useDispatch, useSelector} from "react-redux";
 import FeedLike from "pages/profile/components/FeedLike";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type, openSlidePop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
+  const {socialList, isMyProfile, type, openSlidePop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
   const history = useHistory();
-  const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
-  const profileTab = useSelector(state => state.profileTab);
-  const socialRef = useRef([]);
   const params = useParams();
-  const [limit, setLimit] = useState(100);
+  const socialRef = useRef([]);
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const limitHeight = 64;
+
   const [isClicked, setIsClicked] = useState(Array(socialList.length).fill(false));
 
   const photoClickEvent = (memNo) => {
     if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
   }
 
-  // 100글자 이상일시 더보기
-  const toggleEllipsis = (str, limit) => {
+  const toggleEllipsis = (idx, limit) => {
     return {
-      string: str.slice(0, limit),
-      isShowMore: str.length > limit
+      isShowMore: (socialRef.current[idx] !== undefined ? socialRef.current[idx].clientHeight : 0) > limit
     }
   };
 
@@ -52,6 +49,42 @@ const SocialList = (props) => {
     }
   }
 
+  /* 내부 컴포넌트 */
+  const FeedPhoto = (props) => {
+    const {photoInfoList, length} = props;
+    const photoLength = photoInfoList.length;
+
+    if (photoLength < 5) {
+      return (
+        <div className={`photo ${length === 2 ? 'grid-2' : length === 3 && 'grid-3'}`}>
+          {photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)} />)})}
+        </div>
+      )
+    } else {
+      return (
+        <>
+          <div className="photo grid-2">
+            {photoInfoList.map((v, idx) => {return (<>{idx <= 1 && <div key={idx}><img src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)}/></div>}</>)})}
+          </div>
+          <div className="photo grid-3">
+            {photoInfoList.map((v, idx) => {return (<>{idx > 1 && idx < 5 && <div key={idx}><img src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)}/></div>}</>)})}
+            {photoLength >= 5 &&
+            <div className="photoMore">
+              <div className="none" onClick={() => showImagePopUp(photoInfoList, 'feedList', 2)}/>
+              <div className="none" onClick={() => showImagePopUp(photoInfoList, 'feedList', 3)}/>
+              {photoLength - 5 > 0 ?
+                <div className="count" onClick={() => showImagePopUp(photoInfoList, 'feedList', 4)}>+{photoLength - 5}</div>
+                : 
+                <div className="none" onClick={() => showImagePopUp(photoInfoList, 'feedList', 4)}/>
+              }
+            </div>
+            }
+          </div>
+        </>
+      )
+    }
+  };
+
   return (
     <div className="socialListWrap">
       {socialList.map((item, index) => {
@@ -60,83 +93,52 @@ const SocialList = (props) => {
         }
 
         const memNo = type === "feed" ? profileData.memNo : item?.writerMemNo; //글 작성자
-        const detailPageParam = {history, action: 'detail', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo
-          , fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
-        const modifyParam = {history, action: 'modify', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, };
+        const detailPageParam = {history, action: 'detail', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
+        const modifyParam = {history, action: 'modify', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo};
         return (
           <div className="socialList" key={item.reg_no ? item.reg_no : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
-                              openSlidePop={openSlidePop}
-                              modifyEvent={() => {
-                                memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)
-                              }}
-                              deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, profileData.memNo)}
-                              photoClick={() => {
-                                photoClickEvent(item.mem_no)
-                              }} />
-            <div className="socialContent">
-              {!isClicked[index] && type === "feed" ?
-                <>
-                  <div className="socialText"
-                       onClick={() => goProfileDetailPage(detailPageParam)}
-                       ref={el => socialRef.current[index] = el}
-                       data-num={index}
-                       dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents).substr(0, 100)}}
-                  />
-                  {toggleEllipsis(item.feed_conts ? item.feed_conts : item.contents, limit).isShowMore &&
-                  <><div className="socialButton" onClick={() => {onClick(index, "false")}}>··· 더보기</div><br/></>}
-                </>
-                :
-                <>
-                  <div className="socialText"
-                       onClick={() => goProfileDetailPage(detailPageParam)}
-                       ref={el => socialRef.current[index] = el}
-                       data-num={index}
-                       dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}}
-                  />
-                  {isClicked[index] && type === "feed" &&
-                  <><div className="socialButton" onClick={() => {onClick(index, "true")}}>간략히</div><br/></>}
-                </>
-              }
+            <ListRowComponent
+              item={item} index={index} type={type}
+              isMyProfile={isMyProfile}
+              openSlidePop={openSlidePop}
+              modifyEvent={() => {memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)}}
+              deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, profileData.memNo)}
+              photoClick={() => photoClickEvent(item.mem_no)} />
 
-              {type === 'feed' && item.photoInfoList.length > 0 &&
-              <div className="swiperPhoto">
-                {item.photoInfoList.length <= 2 ?
-                  <div className="photo grid-2">
-                    {item.photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)} />)})}
-                  </div>
-                  : item.photoInfoList.length === 3 ?
-                    <div className="photo grid-3">
-                      {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)} /></div>)})}
-                    </div>
-                    : item.photoInfoList.length === 4 ?
-                      <div className="photo grid-2">
-                        {item.photoInfoList.map((v, idx) => {return (<div key={idx}><img src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)}/></div>)})}
-                      </div>
-                      : item.photoInfoList.length >= 5 &&
-                      <>
-                        <div className="photo grid-2">
-                          {item.photoInfoList.map((v, idx) => {return (<div key={idx}>{idx <= 1 && <img src={v.imgObj.thumb500x500} alt="" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', idx)}/>}</div>)})}
-                        </div>
-                        <div className="photo grid-3">
-                          <img src={item?.photoInfoList[2]?.imgObj?.thumb500x500} alt=""/>
-                          <img src={item?.photoInfoList[3]?.imgObj?.thumb500x500} alt=""/>
-                          <img src={item?.photoInfoList[4]?.imgObj?.thumb500x500} alt=""/>
-                          <div className="photoMore">
-                            <div className="none" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 2)}/>
-                            <div className="none" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 3)}/>
-                            {item.photoInfoList.length - 5 > 0 ?
-                              <div className="count" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 4)}>+{item.photoInfoList.length - 5}</div>
-                              : <div className="none" onClick={() => showImagePopUp(item?.photoInfoList, 'feedList', 4)}/>
-                            }
-                          </div>
-                        </div>
-                      </>
+            <div className="socialContent">
+              <div className={`socialTextWrap ${isClicked[index] || type !== "feed" ? 'isMore' : ''}`}>
+                <div className="socialText"
+                     onClick={() => goProfileDetailPage(detailPageParam)}
+                     ref={el => socialRef.current[index] = el}
+                     data-num={index}
+                     dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}} />
+                {type === "feed" &&
+                  <>
+                  {!isClicked[index] && toggleEllipsis(index, limitHeight).isShowMore &&
+                    <div className="socialButton" onClick={() => onClick(index, "false")}>··· 더보기</div>
+                  }
+                  {isClicked[index] &&
+                    <div className="socialButton" onClick={() => onClick(index, "true")}>간략히</div>
+                  }
+                  </>
                 }
               </div>
+
+              {type === 'feed' && item.photoInfoList.length > 0 && 
+                <div className="swiperPhoto">
+                  {item.photoInfoList.length <= 2 ?
+                  <FeedPhoto photoInfoList={item.photoInfoList} length={2} />
+                  : item.photoInfoList.length === 3 ?
+                  <FeedPhoto photoInfoList={item.photoInfoList} length={3} />
+                  : item.photoInfoList.length === 4 ?
+                  <FeedPhoto photoInfoList={item.photoInfoList} length={2} />
+                  : item.photoInfoList.length >= 5 &&
+                  <FeedPhoto photoInfoList={item.photoInfoList} />
+                  }
+                </div>
               }
 
-              <FeedLike data={item} fetchHandleLike={fetchHandleLike} type={"feed"} detailPageParam={detailPageParam} />
+              <FeedLike data={item} fetchHandleLike={fetchHandleLike} type="feed" detailPageParam={detailPageParam} />
             </div>
           </div>
         )

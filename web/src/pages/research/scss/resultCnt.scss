@@ -32,7 +32,7 @@
         }           
         .nickNm {
           margin-left:4px;
-          @include font(13px, $Regular, #666666);
+          @include font(13px, $Medium, #303030);
         }
         .userId {
           @include font(12px, 400, #A4A4A4);

@@ -16,7 +16,7 @@
     flex: 1;
     @include flex(center);
     .title {
-      @include font(15px, 400, #303030);
+      @include font(15px, $SemiBold, #303030);
     }
   }  
   .radioBox {
