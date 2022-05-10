@@ -32,9 +32,6 @@ const ProfilePage = () => {
   const popup = useSelector(state => state.popup);
   const member = useSelector(state => state.member);
 
-  //팬보드 스크롤 이벤트
-  const [fanBoardPageInfo, setFanBoardPageInfo] = useState({next: 2, page: 1, prev: 0, records: 20, total: 0, totalPage: 0});
-
   const [webview, setWebview] = useState('');
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
   const [profileReady, setProfileReady] = useState(false); // 페이지 mount 후 ready

@@ -60,7 +60,7 @@ const SocialContents = (props) => {
           paging: data.paging ? data.paging : profilePagingDefault,
           isLastPage
         }));
-        if(isLastPage) {
+        if(profileTab.tabName === profileTab.tabList[0] && isLastPage) {
           removeScrollEvent();
         }
       } else {
@@ -88,7 +88,7 @@ const SocialContents = (props) => {
           paging: data.paging ? data.paging : profilePagingDefault,
           isLastPage,
         }));
-        if(isLastPage) {
+        if(profileTab.tabName === profileTab.tabList[1] && isLastPage) {
           removeScrollEvent();
         }
       } else {
@@ -117,7 +117,7 @@ const SocialContents = (props) => {
           paging: data.paging ? data.paging : profileClipPagingDefault,
           isLastPage,
         }));
-        if(isLastPage) {
+        if(profileTab.tabName === profileTab.tabList[2] && isLastPage) {
           removeScrollEvent();
         }
       } else {
@@ -138,7 +138,7 @@ const SocialContents = (props) => {
 
   /* 스크롤 이벤트 remove */
   const removeScrollEvent = useCallback(() => {
-    // document.removeEventListener('scroll', profileScrollEvent);
+    document.removeEventListener('scroll', profileScrollEvent);
   }, []);
 
   {/* 피드, 팬보드, 클립 페이징 */}
