@@ -24,7 +24,7 @@
     .counterWrap{
       margin-bottom: 10px;
       div{
-        @include font(20px, 500);
+        @include font(20px, $SemiBold,#202020);
         span{
           color: #FF3C7B;
           margin-left: 8px;
@@ -48,8 +48,8 @@
           margin-right: 8px;
           .listItem{
             @include fontCut;
-            .nickNm{@include font(12px, 400);}
-            .memId{@include font(12px, 400, #a4a4a4);}
+            .nickNm{@include font(12px, 600, #303030);}
+            .memId{@include font(12px, 500, #666);}
           }
         }
         button{
@@ -58,12 +58,12 @@
           line-height: 36px;
           border-radius: 18px;
           &.delete{
-            @include font(14px,500,#666);
+            @include font(14px,600,#666);
             border: 1px solid #d8d8d8;
           }
           &.add{
             @include font(14px,500,white);
-            background: black;
+            background: #202020;
           }
         }
       }
@@ -79,7 +79,7 @@
         border-radius: 16px;
         padding: 0 16px;
         input[type="text"]{
-          @include font(15px,400);
+          @include font(15px,500,#303030);
         }
         .icon{
           @include BGIMG('setting/ico_search.png');
@@ -94,7 +94,6 @@
       top: $MOBILE-TABTOP;
       @include flex(center);
       margin-bottom: 16px;
-      padding: 0 16px;
       background-color: #FFF;
       z-index: $TAB-ZINDEX;
       li {
@@ -104,17 +103,17 @@
         text-align: center;
         background-color: #ffffff;
         border-bottom:2px solid #f2f2f2;
-        @include font(16px,600,#acacac);
+        @include font(16px,500,#666);
         box-sizing: border-box;
         cursor:pointer;
         &.active {
-          @include font(16px,bold,#202020);
+          @include font(16px,$Bold,#202020);
           border-bottom: solid 2px #202020;
         }
       }
     }
     .noResult{
-      @include font(14px,400,#999);
+      @include font(14px,400,#666);
     }
   }
 }
