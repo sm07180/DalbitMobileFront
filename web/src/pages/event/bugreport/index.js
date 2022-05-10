@@ -12,11 +12,11 @@ import './style.scss'
 const bugReport = () => {
   const isDesktop = useSelector((state)=> state.common.isDesktop)
   const form = () =>{
-    // if(isDesktop){
-    //   window.open('https://docs.google.com/forms/d/e/1FAIpQLSeStgFZwGDjf9NEV373bGK65s5teMEmM3j6UZvBtpQVPS3YxA/viewform')
-    // }else{
-    //   Hybrid('openUrl', `https://docs.google.com/forms/d/e/1FAIpQLSeStgFZwGDjf9NEV373bGK65s5teMEmM3j6UZvBtpQVPS3YxA/viewform`)
-    // }
+    if(isDesktop){
+      window.open('https://docs.google.com/forms/d/e/1FAIpQLSeAxKCaVqsj3aZC1h2CizPbnCV_grGyZ_z-e22vx5I8GUUz5A/viewform?usp=sf_link')
+    }else{
+      Hybrid('openUrl', `https://docs.google.com/forms/d/e/1FAIpQLSeAxKCaVqsj3aZC1h2CizPbnCV_grGyZ_z-e22vx5I8GUUz5A/viewform?usp=sf_link`)
+    }
   }
 
   return (
