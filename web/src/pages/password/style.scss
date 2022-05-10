@@ -20,7 +20,7 @@
           margin-bottom: 0px;
         }
         .title {
-          @include font(13px, 400, #666666);
+          @include font(13px, $SemiBold, #303030);
           margin-bottom: 6px;
         }
         .inputItems {
@@ -74,7 +74,7 @@
               @include font(15px,$Medium,#202020);
               &::placeholder {
                 font-weight:$Regular;
-                color:#999;
+                color:#666;
               }
             }
             button {
@@ -100,7 +100,7 @@
             letter-spacing: -1px;
             @include font(14px,500,white);
             &.disable {
-              background-color: #E3E3E3;
+              background-color: #bbb;
             }
           }
           .textareaBox {

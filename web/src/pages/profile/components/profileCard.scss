@@ -55,7 +55,7 @@
             @include fontCut;
           }
           .userid {
-            @include font(12px,$Regular,#A4A4A4);
+            @include font(12px,$Regular,#666);
           }
         }
       }

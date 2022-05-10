@@ -15,7 +15,7 @@
       .menuName {
         flex: 1;
         @include flex(center);
-        @include font(15px, 500, #303030);
+        @include font(15px, 600, #303030);
       }      
       .arrow {
         flex: none;

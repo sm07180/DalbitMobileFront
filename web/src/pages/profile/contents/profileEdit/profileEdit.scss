@@ -61,7 +61,6 @@
         line-height:20px;
         margin-bottom:8px;
         padding:0 16px;
-        letter-spacing: -1px;
         @include font(14px,$SemiBold,#303030);
         small {
           @include font(12px,$Regular,#666);

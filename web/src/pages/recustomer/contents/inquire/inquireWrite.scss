@@ -76,6 +76,7 @@
     }
     .checkInfo {
       @include flex(center);
+      color: #303030;
       &::after {
         content:"[필수]";
         display:inline-block;
