@@ -6,7 +6,7 @@ button.submitBtn {
   background: $DOWNCOLOR;
   @include font(16px,bold,white);
   &.disabled {
-    opacity: .2;
+    background: #BBB;
     cursor:not-allowed;
     pointer-events: none;
   }

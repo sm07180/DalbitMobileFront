@@ -28,7 +28,7 @@
       }
       small {
         margin-left: 8px;
-        @include font(13px, 400, #999999);
+        @include font(13px, $Medium, #666);
       }
       .inputLabel {
         flex: none;

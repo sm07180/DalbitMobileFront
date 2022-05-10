@@ -25,7 +25,7 @@
         @include flex(center);
         margin:0 15px;
         text-align:left;
-        @include font(15px,400,#999);
+        @include font(15px,400,#666);
         &::after {
           content:"";
           display: inline-block;

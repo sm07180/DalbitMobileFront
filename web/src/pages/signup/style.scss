@@ -45,9 +45,9 @@ $errorMsg : #FF1919;
             flex:1;
             width:100%;
             margin:0 16px;
-            @include font(15px,400,#202020);
+            @include font(16px,$Bold,#303030);
             &::placeholder {
-              color:#999;
+              color:#666;
             }
           }
         }

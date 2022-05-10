@@ -8,7 +8,7 @@
     box-sizing: border-box;    
     .topText {
       width: 100%;
-      @include font(13px, 400, #666666);
+      @include font(13px, 500, #303030);
       margin-bottom: 6px;
     }
     .listWrap {
@@ -37,12 +37,12 @@
               width: 20px; height: 20px;
               line-height: 18px;
               text-align: center;
-              border: 1px solid #202020;
+              border: 1px solid #000;
               border-radius: 50%;
-              @include font(16px, 500, #202020);
+              @include font(16px, 600, #000);
             }
             .listTitle {
-              @include font(20px, 500, #202020);
+              @include font(18px, 600, #202020);
               margin-left: 4px;
             }
           }
@@ -51,8 +51,8 @@
             display: inline-block;
             height: 32px;
             padding: 0 20px;
-            background-color: rgba($color: #FF3C7B, $alpha: 0.2);
-            @include font(13px, 500, #FFFFFF);
+            background-color: #bbb;
+            @include font(13px, 600, #FFFFFF);
             border-radius: 100px;
             box-sizing: border-box;
             &.active {
@@ -84,9 +84,9 @@
               padding: 0 15px;
               border-radius: 16px;
               background-color: #F6F6F6;
-              @include font(15px, 400, #303030);
+              @include font(15px, 600, #303030);
               &::placeholder {
-                @include font(15px, 400, #999999);
+                @include font(15px, 400, #666);
               }
               &:focus {
                 background-color: #FFFFFF;

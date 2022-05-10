@@ -21,10 +21,7 @@
     }
     .subText {
       margin-top: 8px;
-      @include font(13px, 400, #999999);
-      span {
-        @include font(13px, 400, #666666);
-      }
+      @include font(13px, $Medium, #666);
     }
     .categoryWrap {
       @include flex(center,space-between);
@@ -53,7 +50,7 @@
         @include flex(center);
         width: 100%; height: 20px;
         padding-left: 22px;
-        @include font(12px, 500, #FF3C7B);
+        @include font(12px, $SemiBold, #FF3C7B);
         background-image: url("https://image.dalbitlive.com/customer/icon/iconWait.png");
         background-position: left center;
         background-repeat: no-repeat;
@@ -64,7 +61,7 @@
         width: 100%;
         margin-top: 3px;
         span:nth-child(1) {
-          @include font(12px, 400, #666666);
+          @include font(12px, $Medium, #666666);
           margin-right: 8px;
           letter-spacing: -1px;
         }
@@ -101,7 +98,7 @@
         width: 100%;
         margin-top: 8px;
         text-align: center;
-        @include font(12px, 400, #999999);
+        @include font(12px, $Medium, #666);
       }
     }
   }
