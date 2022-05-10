@@ -1,10 +1,13 @@
 import {ActionType} from "typesafe-actions"
 import * as actions from "../actions/globalCtx"
+import {InterfaceMediaType, NativePlayerShowParamType} from "./broadcast/interfaceType";
+import {AuthType} from "../../constant";
 
 export type GlobalCtxActions = ActionType<typeof actions>
 
 export type GlobalCtxStateType = {
-  nativePlayer?: any
+  nativePlayerInfo: NativePlayerInfoType
+  nativePlayer: null | NativePlayerType
   roomInfo?: any
   customHeader?: any
   token?: any
@@ -127,7 +130,10 @@ export type GlobalCtxStateType = {
   walletData: WalletDataType
   backEventCallback: any
 }
-
+export type NativePlayerInfoType={
+  state:'open' | 'close' | 'ready',
+  roomNo: string
+}
 export type WalletDataType = {
   walletType: '달 내역' | '별 내역' | '환전'
   dalTotCnt: number,             //보유 달
@@ -191,6 +197,7 @@ export type MessageType = {
   content?: string
   callback?: any
   cancelCallback?: any
+  btnCloseCallback?: any
   visible?: boolean
   status?: boolean
 }
@@ -286,5 +293,14 @@ export type BaseDataType = {
   authToken: string | null
   isLogin: boolean
   memNo: string
+}
+
+export type NativePlayerType = {
+  auth: AuthType
+  bjNickNm: string
+  bjProfImg: string
+  mediaType: InterfaceMediaType
+  roomNo: string
+  title: string
 }
 export const DAY_COOKIE_PERIOD = 100

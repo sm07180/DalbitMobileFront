@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo} from 'react';
 
 import Swiper from 'react-id-swiper';
 
@@ -14,8 +14,7 @@ const FavoriteSwiper = (props) => {
   const common = useSelector(state => state.common);
 
   // 스와이퍼 포토 내부 컴포넌트
-  const SwiperPhotoComponent = (props) => {
-    const {list} = props;
+  const SwiperPhotoComponent = useCallback(({list}) => {
     // myStar 가 방송중일 때
     const goLive = (item) => {
       RoomValidateFromClipMemNo(item.roomNo, item.memNo, dispatch, globalState, history, item.nickNm);
@@ -34,14 +33,14 @@ const FavoriteSwiper = (props) => {
           }}>
           <img src={list['profImg'] ?
             list['profImg'].thumb292x292
-            : 
+            :
             'https://image.dalbitlive.com/images/listNone-userProfile.png'}
           />
         </div>
         <p>{list.nickNm}</p>
       </div>
     )
-  };
+  }, []);
   
   // 스와이퍼 리플레쉬 액션
   const swiperParams = useMemo(() => {

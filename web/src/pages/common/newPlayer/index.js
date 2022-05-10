@@ -1,74 +1,78 @@
-/**
- *
- * @code context.action.updateMediaPlayerStatus(true)
- */
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 //context
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isIos} from 'context/hybrid'
 // etc
-import Content from './content'
-import Utility from 'components/lib/utility'
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxPlayer} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxNativePlayerInfo,
+} from "redux/actions/globalCtx";
+import equalizerLiveAni from "pages/common/newPlayer/ani/equalizer_live.json";
+import CloseBtn from "common/images/ic_player_close_btn.svg";
+
+import Lottie from 'react-lottie'
+import {AuthType} from "constant";
+import {nativeEnd} from "redux/actions/broadcast/interface";
+import Room, {RoomJoin} from "context/room";
 
 export default (props) => {
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  //useState
-  const [visible, setVisible] = useState(true)
 
-  //---------------------------------------------------------------------
-  function update(mode) {
-    switch (true) {
-      case mode.playerClose !== undefined: //--------------------------Player 종료
-        sessionStorage.removeItem('room_no')
-        Utility.setCookie('listen_room_no', null)
-        Hybrid('ExitRoom', '')
-        dispatch(setGlobalCtxPlayer(false));
-        break
-      case mode.playerNavigator !== undefined: //----------------------방송방으로 이동
-        // let roomNo = sessionStorage.getItem('room_no')
-        // async function commonJoin() {
-        //   const res = await Api.broad_join_vw({data: {roomNo}})
-        //   const {code, result, data} = res
-
-        //   if (code === '-3') {
-        //     context.action.alert({
-        //       msg: '종료된 방송입니다.',
-        //       callback: () => {
-        //         sessionStorage.removeItem('room_no')
-        //         Utility.setCookie('listen_room_no', null)
-        //         context.action.updatePlayer(false)
-        //         setTimeout(() => {
-        //           window.location.href = '/'
-        //         }, 100)
-        //       }
-        //     })
-        //   } else {
-        //     Hybrid('EnterRoom', '')
-        //   }
-        // }
-        // commonJoin()
-        if (Utility.getCookie('listen_room_no')) Hybrid('EnterRoom', '')
-        break
-      case mode.playerRemove !== undefined: //-------------------------방송방 제거
-        setVisible(mode.playerRemove)
-        break
-      default:
-        break
-    }
-  }
-  //
-  /**
-   * @brief 로그인,이벤트처리핸들러
-   */
-
-  //---------------------------------------------------------------------
+  const lottieOption = {
+    loop: true,
+    autoplay: true,
+    animationData: equalizerLiveAni,
+  };
+  // App Audio PIP - 방장은 PIP 없음
   return (
-    <React.Fragment>
-      {/* 미디어 플레이어 */}
-      {globalState.nativePlayer && globalState.player && visible && <Content {...props} update={update}/>}
-      {/* <Content {...props} update={update} /> */}
-    </React.Fragment>
+    <>
+      {
+        globalState.player &&
+        globalState.nativePlayer &&
+        globalState.nativePlayer.auth !== AuthType.DJ &&
+        <div id="player" >
+          <div className="inner-player" onClick={() => {
+            RoomJoin({roomNo: globalState.nativePlayer.roomNo})
+          }}>
+            <div
+              className="inner-player-bg"
+              style={{background:`url(${globalState.nativePlayer.bjProfImg}) center/contain no-repeat`}}
+            />
+            <div className="info-wrap">
+              <div className="equalizer">
+                <Lottie
+                  options={lottieOption}
+                  isClickToPauseDisabled={true}
+                  width={24}
+                  height={27}
+                />
+              </div>
+              <div
+                className="thumb"
+                style={{backgroundImage:`url(${globalState.nativePlayer.bjProfImg})`}}
+              />
+              <div className="room-info">
+                <p className="title">{globalState.nativePlayer.title}</p>
+                <p>{globalState.nativePlayer.bjNickNm}</p>
+              </div>
+              <div className="counting"></div>
+              <div className="buttonGroup">
+                <img src={CloseBtn} className="close-btn" alt={"close"}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    dispatch(setGlobalCtxNativePlayerInfo({nativePlayerInfo:{state:'close', roomNo:globalState.nativePlayer.roomNo}}));
+                    Hybrid('ExitRoom', '');
+
+                    // ios pip는 native-end 브릿지를 안보내서 웹에서 닫기 버튼 누를때 강제로 줌..
+                    // fixme ios 1.8.6 버전부터 제거 대상
+                    dispatch(nativeEnd({}));
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </>
   )
 }

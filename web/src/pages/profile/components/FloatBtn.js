@@ -10,7 +10,7 @@ const FloatingBtn = (props) => {
   const floatingRef = useRef();
 
   const [floatBtnHidden, setFloatBtnHidden] = useState(false); // 플로팅 버튼 온 오프
-  const [floatScrollAction, setFloatScrollAction] = useState(false); // 플로팅 버튼 스크롤 이벤트
+  const [floatScrollAction, setFloatScrollAction] = useState(true); // 플로팅 버튼 스크롤 이벤트
 
   const floatingOpen = () => {
     setFloatBtnHidden(!floatBtnHidden)
@@ -21,7 +21,7 @@ const FloatingBtn = (props) => {
     const floatNode = floatingRef.current;
     const scrollBottom = floatNode?.offsetTop;
 
-    if (scrollBottom > 150) {
+    if (scrollBottom >= 48) {
       setFloatScrollAction(true);
     } else {
       setFloatScrollAction(false);

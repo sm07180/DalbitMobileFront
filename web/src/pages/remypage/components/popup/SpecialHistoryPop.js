@@ -1,11 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import Api from "context/api";
-import {useDispatch} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useDispatch, useSelector} from "react-redux";
+import {isAndroid} from "context/hybrid";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 
 const SpecialHistoryPop = (props) => {
   const {profileData} = props;
   const dispatch = useDispatch();
+  const globalState = useSelector(({globalCtx}) => globalCtx);
+  const popup = useSelector(state => state.popup);
   
   const [specialHistory, setSpecialHistory] = useState({cnt: 0, list: [], isLoading: false, pageNo: 1}); // 해당유저의 스페셜DJ 데이터
   
@@ -50,6 +58,17 @@ const SpecialHistoryPop = (props) => {
 
   useEffect(() => {
     fetchSpecialHistory(1);
+
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackState(true))
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop', popupData: {...popup, commonPopup: false}}))
+    }
+
+    return () => {
+      if(isAndroid()) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+      }
+    }
   },[]);
 
   return (

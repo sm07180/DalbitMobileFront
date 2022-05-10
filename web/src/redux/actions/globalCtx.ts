@@ -1,11 +1,8 @@
 import {createAction} from "typesafe-actions";
-import {tabType} from "../../pages/broadcast/constant";
-import {AnyDataType, BooleanDataType, RouletteHistoryType, VideoEffectType} from "../types/broadcastCtxType";
-import {userBroadcastSettingType} from "../../common/realtime/chat_socket";
-import {GlobalCtxStateType, MessageType, MultiViewerType} from "../types/globalCtxType";
-  // dispatch(setGlobalCtxMessage({type:"alert",
+import {GlobalCtxStateType, MessageType, MultiViewerType, NativePlayerType} from "../types/globalCtxType";
 // ctx_state
 export const SET_NATIVE_PLAYER 					= 'global/ctx/SET_NATIVE_PLAYER';
+export const SET_NATIVE_PLAYER_INFO 		= 'global/ctx/SET_NATIVE_PLAYER_INFO';
 export const SET_MESSAGE 					      = 'global/ctx/SET_MESSAGE';
 export const SET_ROOM_INFO 				    	= 'global/ctx/SET_ROOM_INFO';
 export const UPDATE_PROFILE 					  = 'global/ctx/UPDATE_PROFILE';
@@ -75,6 +72,7 @@ export const SET_CLIP_PLAYER_INFO 			= 'global/ctx/SET_CLIP_PLAYER_INFO';
 export const SET_ROOM_TYPE 					    = 'global/ctx/SET_ROOM_TYPE';
 export const SET_BACK_STATE 					  = 'global/ctx/SET_BACK_STATE';
 export const SET_BACK_FUNCTION 					= 'global/ctx/SET_BACK_FUNCTION';
+export const SET_BACK_FUNCTION_END 			= 'global/ctx/SET_BACK_FUNCTION_END';
 export const SET_SELF_AUTH 					    = 'global/ctx/SET_SELF_AUTH';
 export const SET_SPLASH 					      = 'global/ctx/SET_SPLASH';
 export const SET_IS_MAILBOX_NEW 				= 'global/ctx/SET_IS_MAILBOX_NEW';
@@ -149,7 +147,8 @@ export const WALLET_ADD_DATA 				                = 'global/ctx/WALLET_ADD_DATA';
 export const WALLET_ADD_HISTORY 				            = 'global/ctx/WALLET_ADD_HISTORY';
 
 
-export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<any>();
+export const setGlobalCtxNativePlayer = createAction(SET_NATIVE_PLAYER)<NativePlayerType>();
+export const setGlobalCtxNativePlayerInfo = createAction(SET_NATIVE_PLAYER_INFO)<Pick<GlobalCtxStateType, 'nativePlayerInfo'>>();
 export const setGlobalCtxMessage = createAction(SET_MESSAGE)<MessageType>();
 export const setGlobalCtxRoomInfo = createAction(SET_ROOM_INFO)<any>();
 export const setGlobalCtxUpdateProfile = createAction(UPDATE_PROFILE)<any>();
@@ -219,6 +218,7 @@ export const setGlobalCtxClipPlayerInfo = createAction(SET_CLIP_PLAYER_INFO)<any
 export const setGlobalCtxRoomType = createAction(SET_ROOM_TYPE)<any>();
 export const setGlobalCtxBackState = createAction(SET_BACK_STATE)<any>();
 export const setGlobalCtxBackFunction = createAction(SET_BACK_FUNCTION)<any>();
+export const setGlobalCtxBackFunctionEnd = createAction(SET_BACK_FUNCTION_END)<any>();
 export const setGlobalCtxSelfAuth = createAction(SET_SELF_AUTH)<any>();
 export const setGlobalCtxSplash = createAction(SET_SPLASH)<any>();
 export const setGlobalCtxIsMailboxNew = createAction(SET_IS_MAILBOX_NEW)<any>();

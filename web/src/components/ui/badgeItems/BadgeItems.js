@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 
 import './badgeItems.scss'
 import UtilityCommon from "common/utility/utilityCommon";
@@ -27,7 +27,7 @@ const BadgeItems = (props) => {
       {type === 'commonBadgeList' && commonBadgeList.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
-          text !== "Partner" &&
+          text !== "" &&
             <React.Fragment key={index}>
               <em
                 className={`badgeItem`}

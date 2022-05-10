@@ -32,11 +32,15 @@ const ProfilePage = () => {
   const popup = useSelector(state => state.popup);
   const member = useSelector(state => state.member);
 
+  //팬보드 스크롤 이벤트
+  const [fanBoardPageInfo, setFanBoardPageInfo] = useState({next: 2, page: 1, prev: 0, records: 20, total: 0, totalPage: 0});
+
   const [webview, setWebview] = useState('');
   const [isMyProfile, setIsMyProfile] = useState(false); // 내프로필인지
   const [profileReady, setProfileReady] = useState(false); // 페이지 mount 후 ready
   
   const [showSlide, setShowSlide] = useState({visible: false, imgList: [], initialSlide: 0}); // 프사 확대 슬라이드
+
   const [slidePopInfo, setSlidePopInfo] = useState({
     data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "", fanStarType: "", likeType: {titleTab: 0, subTab: 0, subTabType: ''},
   }); // 슬라이드 팝업 정보
@@ -100,16 +104,14 @@ const ProfilePage = () => {
   }
 
   {/* 슬라이드 팝업 오픈 */}
-  const openSlidePop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const openSlidePop = (e, targetData = null) => {
     const {targetType} = e.currentTarget.dataset;
     switch (targetType) {
       case "header":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "header"});
         break;
       case "block":
-        setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, nickNm: profileData.nickNm, type: "block"});
+        setSlidePopInfo({...slidePopInfo, data: targetData, memNo: targetData.memNo, nickNm: targetData.nickNm, type: "block"});
         break;
       case "fan":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "fanStar", fanStarType: targetType});
@@ -119,7 +121,7 @@ const ProfilePage = () => {
         break;
       // likeType (isMyProfile && titleTab: 0=팬 랭킹, 1=전체 랭킹, subTab: 0={최근, 선물}, 1={누적, 좋아요}, subTabType: "fanRank", "totalRank")
       // likeType (!isMyProfile && titleTab: 0=랭킹, subTab: 0=최근팬, 1=누적팬, 2=좋아요, subTabType: "")
-      case "like": 
+      case "like":
         setSlidePopInfo({...slidePopInfo, data: profileData, memNo: profileData.memNo, type: "like", likeType: {titleTab: isMyProfile ? 1 : 0, subTab: isMyProfile ? 1 : 2, subTabType: isMyProfile ? 'totalRank' : ''}});
         break;
       case "top3":
@@ -223,7 +225,7 @@ const ProfilePage = () => {
       }
 
       {/* 좋아요 -> ? 아이콘 */}
-      {popup.layerPopup && 
+      {popup.layerPopup &&
         <LayerPopup title="랭킹 기준">
           <ProfileNoticePop />
         </LayerPopup>

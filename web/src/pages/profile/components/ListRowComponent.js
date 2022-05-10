@@ -51,6 +51,12 @@ const ListRowComponent = (props) => {
     }
   }
 
+  /* 차단/신고하기 */
+  const openBlockReport = (e) => {
+    const nickNm = type === 'feed' ? item.mem_nick : item.nickName;
+    openSlidePop(e, {memNo: item.mem_no, nickNm });
+  }
+
   useEffect(() => {
     document.addEventListener('click', moreBoxClose);
     return () => document.removeEventListener('click', moreBoxClose);
@@ -71,7 +77,7 @@ const ListRowComponent = (props) => {
           <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
             {type !=='fanBoard' && (globalState.profile.memNo === item.mem_no.toString()) && <button onClick={modifyEvent}>수정하기</button>}
             {(isMyProfile || globalState.profile.memNo === item.mem_no || (type==='feed' && globalState.adminChecker)) && <button onClick={deleteEvent}>삭제하기</button>}
-            {globalState.profile.memNo !== item.mem_no.toString() && <button data-target-type="block" onClick={openSlidePop}>차단/신고하기</button>}
+            {globalState.profile.memNo !== item.mem_no.toString() && <button data-target-type="block" onClick={openBlockReport}>차단/신고하기</button>}
           </div>
         </div>}
       </div>

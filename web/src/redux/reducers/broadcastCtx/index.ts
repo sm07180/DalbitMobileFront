@@ -96,7 +96,8 @@ const initialState: BroadcastCtxStateType = {
     // State
     isVideo: false,
     isMic: false,
-    isListenerUpdate: false
+    isListenerUpdate: false,
+    signatureItem: null,
   },
 //state start
   rightTabType: tabType.LISTENER,

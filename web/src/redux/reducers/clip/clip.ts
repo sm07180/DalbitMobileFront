@@ -1,5 +1,5 @@
-import { createReducer } from "typesafe-actions";
-import {ClipActions, ClipState} from "../../types/clipType";
+import {createReducer} from "typesafe-actions";
+import {ClipState} from "../../types/clipType";
 
 const initialState:ClipState = {
     // 검색조건 1, 타입(주제)

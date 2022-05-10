@@ -150,15 +150,16 @@
       .message {
         margin-bottom:12px;
         text-align:center;
-        @include font(16px,400,#202020);
+        @include font(16px,500,#202020);
         strong {
           color:$MAINCOLOR;
+          font-weight: 600;
         }
       }
       .text {
         margin-bottom:16px;
         text-align:center;
-        @include font(16px,400,#202020);
+        @include font(16px,500,#202020);
         i.icoWarning {
           display:block;
           width:70px;
@@ -169,7 +170,7 @@
       }
       .subText {
         text-align:center;
-        @include font(13px,400,#999);
+        @include font(13px,400,#666);
       }
       .inputItems {
         .title {
@@ -190,7 +191,7 @@
             @include flex(center);
             margin:0 15px;
             text-align:left;
-            @include font(15px,400,#999);
+            @include font(15px,400,#666);
             &::after {
               content:"";
               display: inline-block;

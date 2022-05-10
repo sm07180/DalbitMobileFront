@@ -14,7 +14,13 @@ import useClick from 'components/hooks/useClick'
 //components
 import Utility from 'components/lib/utility'
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
+import {isAndroid} from "context/hybrid";
 //
 const LayerPop = (props) => {
   const dispatch = useDispatch();
@@ -47,8 +53,15 @@ const LayerPop = (props) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     refBtn.current.focus()
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackState(true));
+      dispatch(setGlobalCtxBackFunction({name: 'alertClose'}));
+    }
     return () => {
       document.body.style.overflow = ''
+      if(isAndroid()) {
+        dispatch(setGlobalCtxBackFunctionEnd(''));
+      }
     }
   }, [])
   //---------------------------------------------------------------------

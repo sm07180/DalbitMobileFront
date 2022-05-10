@@ -6,7 +6,6 @@ const initialState: ICommonPopupState = {
   headerPopup: false, // 헤더 더보기
   fanStarPopup: false, // 팬/스타
   likePopup: false, // 좋아요
-  blockReportPopup: false, // 차단/신고
   presentPopup: false, // 선물하기
   questionMarkPopup: false, // 물음표 버튼
   historyPopup: false, //

@@ -13,7 +13,6 @@ import {useParams} from 'react-router-dom';
 const FanboardSection = (props) => {
   const { isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData } = props;
   const params = useParams();
-
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const fanBoardData = useSelector(state => state.fanBoard);
@@ -55,8 +54,9 @@ const FanboardSection = (props) => {
     });
     dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
     if(result === "success") {
-      getFanBoardData(1);
+      getFanBoardData(true);
       setFormState({...formState, contents: ""});
+      document.addEventListener("scroll", profileScrollEvent);
     }
   };
 
