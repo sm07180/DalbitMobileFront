@@ -49,6 +49,10 @@ $errorMsg : #FF1919;
             &::placeholder {
               color:#666;
             }
+            &:disabled{
+              color: #666;
+              opacity: 1;
+            }
           }
         }
         .inputBtn {
