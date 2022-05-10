@@ -3,10 +3,15 @@ import React, {useEffect} from 'react';
 import './layerPopup.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setLayerPopupClose} from "redux/actions/common";
+import {setGlobalCtxBackFunctionEnd} from "redux/actions/globalCtx";
+import {isAndroid} from "context/hybrid";
 
 /* 팝업 닫기 */
 export const closeLayerPopup = (dispatch) => {
   dispatch(setLayerPopupClose({layerPopup: false}));
+  if(isAndroid()) {
+    dispatch(setGlobalCtxBackFunctionEnd(''));
+  }
 };
 
 const LayerPopup2 = (props) => {
@@ -31,6 +36,9 @@ const LayerPopup2 = (props) => {
   /* 팝업 닫기 */
   const popupClose = () => {
     dispatch(setLayerPopupClose({...popupState, layerPopup: false}));
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunctionEnd(''));
+    }
   }
 
   const setPopupCookie = (c_name, value) => {

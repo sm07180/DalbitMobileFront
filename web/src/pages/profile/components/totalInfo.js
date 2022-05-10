@@ -43,6 +43,12 @@ const TotalInfo = (props) => {
     history.push({pathname: "/brdcst", state: {data: data, isMyProfile: isMyProfile}});
   }
 
+  /* 큐피드 영역 클릭 이벤트 */
+  const cupidClickEvent = (e) => {
+    e.stopPropagation();
+    openSlidePop(e);
+  };
+
   useEffect(() => {
     let badgeLength = 0;
     if(data.badgeSpecial > 0) {
@@ -166,7 +172,7 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title" data-target-type="cupid" onClick={openSlidePop}>
+          <div className="title" data-target-type="cupid" onClick={cupidClickEvent}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
