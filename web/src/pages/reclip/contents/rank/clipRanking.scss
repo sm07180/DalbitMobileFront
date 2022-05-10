@@ -161,7 +161,7 @@
         width: 100%;
         margin-bottom: 16px;
         span {
-          @include font(13px,$Medium,#666666);
+          @include font(13px,$Medium,#303030);
         }
         button {
           @include flex(center, center);
