@@ -140,7 +140,7 @@ const PartnerDj = (props) => {
               return (
                 <div className='partnerDjList' key={index} onClick={() => golink(`/profile/${list.mem_no}`)}>
                   <div className='thumbnail'>
-                    <img src={photoCommon.getPhotoUrl(PHOTO_SERVER, list.image_profile, "700X700")} alt=''/>
+                    <img src={photoCommon.getPhotoUrl(list.image_profile, "700X700")} alt=''/>
                   </div>
                   <div className='userInfo'>
                     <div className='userData'>

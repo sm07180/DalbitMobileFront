@@ -136,7 +136,7 @@ const HistoryList = (props) => {
       </section>
 
       {/* 상세내역 검색조건 팝업 */}
-      {commonPopup.commonPopup &&
+      {commonPopup.slidePopup &&
         <PopSlide>
           <section className='walletHistoryCheck'>
             <div className='title'>달 사용/획득</div>

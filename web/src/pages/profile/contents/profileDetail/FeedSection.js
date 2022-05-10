@@ -5,7 +5,7 @@ import NoResult from 'components/ui/noResult/NoResult'
 import SocialList from '../../components/SocialList';
 
 const FeedSection = (props) => {
-  const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop, deleteContents, fetchHandleLike, showImagePopUp} = props;
+  const { profileData, feedData, openShowSlide, isMyProfile, openSlidePop, deleteContents, fetchHandleLike, showImagePopUp} = props;
   //context
   const { feedList } = feedData;
 
@@ -13,7 +13,7 @@ const FeedSection = (props) => {
     <div className="feedSection">
       {feedList.length > 0 ?
         <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed" fetchHandleLike={fetchHandleLike}
-                    openBlockReportPop={openBlockReportPop} deleteContents={deleteContents} profileData={profileData} showImagePopUp={showImagePopUp}
+        openSlidePop={openSlidePop} deleteContents={deleteContents} profileData={profileData} showImagePopUp={showImagePopUp}
         />
         :
         <NoResult />

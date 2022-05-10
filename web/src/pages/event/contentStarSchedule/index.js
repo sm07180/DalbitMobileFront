@@ -102,6 +102,30 @@ const contentStarSchedule = () => {
         memNo:11631518696100,
         offState:false
       },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8027.png",
+        title:"얀규의 사연 라디오",
+        date:"5월 7일 20:00",
+        endDay : "20220507 230000",
+        memNo:11614503085121,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_8031.png",
+        title:"뮤아진의 리액션 챌린지",
+        date:"5월 11일 22:00",
+        endDay : "2020512 010000",
+        memNo:61642511571222,
+        offState:false
+      },
+      {
+        bannerImg:"https://image.dalbitlive.com/event/contentStarSchedule/contentStar_userpic.jpg",
+        title:"헌이의 최고 목소리를 찾아라",
+        date:"5월 13일 22:30",
+        endDay : "2020512 010000",
+        memNo:61630125869781,
+        offState:false
+      },
     ]
   )
   
@@ -128,7 +152,7 @@ const contentStarSchedule = () => {
         <img src={`${IMG_SERVER}/event/contentStarSchedule/mainTop.png`} alt="콘텐츠 스타 편성표" />
       </section>
       <section className="scheduleWrap">
-        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-7.png`} alt="4월 편성표" />
+        <img src={`${IMG_SERVER}/event/contentStarSchedule/schedule-5-2.png`} alt="5월 편성표" />
       </section>
       <Tabmenu data={submenu} tab={tabType} setTab={setTabType} />
       <section className="contentWrap">
@@ -162,7 +186,7 @@ const contentStarSchedule = () => {
           <>
             {(endEvent && endEvent.length > 0) ?
               <>
-                {endEvent.map((list, index)=>{
+                {endEvent.reverse().map((list, index)=>{
                   return(
                     <div className={`contentBox off`} key={index}>
                       <div className="thumbNail">

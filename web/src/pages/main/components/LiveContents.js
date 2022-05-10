@@ -82,7 +82,7 @@ const LiveContents = (props) => {
                 <div className='listContent'>
                   <div className="listItem">
                     <BadgeItems data={list} type={'isNew'} />
-                    <BadgeItems data={list} type={'isBadge'} />
+                    <BadgeItems data={list} type={'isBadgeMultiple'} />
                     {cupidData.map((cupid, index) => {
                       return (
                         <span className={`cupidRanker cupidRanker-${cupid}`} key={index}></span>

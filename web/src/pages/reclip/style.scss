@@ -121,12 +121,12 @@
       .title{
         width:100%;
         margin-top: 6px;
-        @include font(14px,500,#202020);
+        @include font(14px,$SemiBold,#202020);
         @include fontCut;
       }
       .nick{
         width:100%;
-        @include font(12px,400,#666);
+        @include font(12px,$Regular,#303030);
         @include fontCut;
       }
     }

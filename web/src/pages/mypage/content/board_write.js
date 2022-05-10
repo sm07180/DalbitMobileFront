@@ -11,7 +11,7 @@ import {Hybrid} from 'context/hybrid'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {useDispatch, useSelector} from "react-redux";
 import {
-  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunction, setGlobalCtxBackFunctionEnd,
   setGlobalCtxBackState,
   setGlobalCtxBoardIdx,
   setGlobalCtxBoardModifyInfo,
@@ -226,9 +226,11 @@ export default (props) => {
   }, [])
   //팬보드 안드로이드 접기 로직
   useEffect(() => {
-    if (globalState.backFunction.name === 'booleanType' && !globalState.backFunction.value) {
+    const backFunctionList = globalState.backFunction;
+    const lastItem = backFunctionList?.length > 0 && backFunctionList[globalState.backFunction.length-1];
+    if (lastItem.name === 'booleanType' && !lastItem.value) {
       //글쓰기
-      setWriteState(globalState.backFunction.value)
+      setWriteState(lastItem.value)
       //댓글닫기
       dispatch(setGlobalCtxFanBoardReplyNum(-1))
       //수정하기 취소
@@ -236,9 +238,7 @@ export default (props) => {
         props.setCancelModify()
       }
       //초기화
-      dispatch(setGlobalCtxBackFunction({
-        name: ''
-      }))
+      dispatch(setGlobalCtxBackFunctionEnd(''));
       dispatch(setGlobalCtxBackState(null))
     }
   }, [globalState.backFunction])

@@ -16,11 +16,11 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const TotalInfo = (props) => {
   const history = useHistory();
-  const {data, goProfile, openPopLike, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
+  const {data, goProfile, openSlidePop, isMyProfile, noticeData, fetchHandleLike, noticeFixData} = props
   const [openBadge,setOpenBadge] = useState(false);
   const [badgeTotalCnt,setBadgeTotalCnt] = useState(0);
   const globalState = useSelector(({globalCtx}) => globalCtx);
-
+  const memberRdx = useSelector((state)=> state.member);
   const profileData = useSelector(state => state.profile);
   const dispatch = useDispatch();
   const swiperRef = useRef();
@@ -34,15 +34,6 @@ const TotalInfo = (props) => {
     setOpenBadge(!openBadge)
   }
 
-  const openPopAction = (e) => {
-    const tabState = {
-      titleTab: 0,
-      subTab: 0,
-      subTabType: isMyProfile ? 'fanRank' : ''
-    }
-    openPopLike(e, tabState)
-  }
-
   // 스와이퍼
   const swiperParams = {
     slidesPerView: 'auto',
@@ -51,6 +42,12 @@ const TotalInfo = (props) => {
   const onClick = () => {
     history.push({pathname: "/brdcst", state: {data: data, isMyProfile: isMyProfile}});
   }
+
+  /* 큐피드 영역 클릭 이벤트 */
+  const cupidClickEvent = (e) => {
+    e.stopPropagation();
+    openSlidePop(e);
+  };
 
   useEffect(() => {
     let badgeLength = 0;
@@ -66,6 +63,12 @@ const TotalInfo = (props) => {
       badgeLength++
       setBadgeTotalCnt(badgeLength)
     }
+    /* 컨텐츠 Dj 뱃지 */
+    if(data.isConDj) {
+      badgeLength++
+      setBadgeTotalCnt(badgeLength)
+    }
+
     if(data.commonBadgeList.length > 0) {
       for(let i = 0; i < data.commonBadgeList.length; i++){
         badgeLength++
@@ -94,6 +97,7 @@ const TotalInfo = (props) => {
 
     const param ={
       teamNo: teamNo,
+      memName:memberRdx.data.nickNm,
       memNo: globalState.token.memNo,
       reqSlct: 'r' //신청구분 [r:가입신청, i:초대]
     };
@@ -101,7 +105,7 @@ const TotalInfo = (props) => {
     Api.getTeamMemReqIns(param).then((res)=>{
       if(res.code === "00000"){
         dispatch(setGlobalCtxMessage({type:'toast',
-          msg: '팁 가입신청이 완료 되었습니다.'
+          msg: '팀 가입신청이 완료 되었습니다.'
         }));
       } else {
         dispatch(setGlobalCtxMessage({type:'toast', msg: res.message }));
@@ -128,13 +132,13 @@ const TotalInfo = (props) => {
   }, [noticeData, noticeFixData]);
 
   return (
-    <>
+    <section className="totalInfo">
       {badgeTotalCnt !== 0 &&
-      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+      <div className={`badgeInfo ${openBadge ? 'isOpen' : ''}`}>
         <div className="title">배지</div>
         <div className="badgeGroup">
+          <BadgeItems data={data} type="isBadgeMultiple" />
           <BadgeItems data={data} type="commonBadgeList" />
-          <BadgeItems data={data} type="isBadge" />
         </div>
         {badgeTotalCnt > 3 &&
         <button onClick={onOpenBdage}>열기/닫기</button>
@@ -143,8 +147,10 @@ const TotalInfo = (props) => {
       }
       <div className="rankInfo">
         <div className="box">
-          <div className="title" style={{cursor: 'pointer'}}
-               onClick={openPopAction}>
+          <div
+            className="title"
+            data-target-type="top3"
+            onClick={openSlidePop}>
             <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
@@ -166,15 +172,15 @@ const TotalInfo = (props) => {
           </div>
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-          <div className="title" style={{cursor: 'pointer'}} onClick={openPopLike}>
+          <div className="title" data-target-type="cupid" onClick={cupidClickEvent}>
             <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
-            <div className="photo">
+            <div className="photo cursor">
               <img src={data.cupidProfImg.thumb62x62} alt=""/>
             </div>
             :
-            <div className="photo">
+            <div className="photo cursor">
               <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
             </div>
           }
@@ -278,7 +284,7 @@ const TotalInfo = (props) => {
         <>
         </>
       }
-    </>
+    </section>
   )
 }
 

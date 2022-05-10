@@ -36,7 +36,7 @@ const initialState: MailBoxStateType = {
 
 const mailBox = createReducer<MailBoxStateType, MailBoxActions>(initialState, {
   "mailBox/SET_MAILBOX_GIFT_ITEM_INFO": (state, {payload}) => {
-    return {...state, mailboxInfo:payload}
+    return {...state, giftItemInfo:payload}
   },
   "mailBox/SET_MAILBOX_CHAT_TARGET_DATA": (state, {payload}) => {
     return {...state, chatTargetData:payload}

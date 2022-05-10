@@ -1,7 +1,8 @@
 import listenerSaga from "./listener";
+import interfaceSaga from "./interface";
 
 const broadcast = [
-  listenerSaga(),
+  listenerSaga(), interfaceSaga()
 ]
 
 export default broadcast

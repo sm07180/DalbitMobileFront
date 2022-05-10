@@ -16,7 +16,12 @@ import useClick from 'components/hooks/useClick'
 import Utility from 'components/lib/utility'
 import {isAndroid} from "context/hybrid";
 import {useDispatch, useSelector} from "react-redux";
-import {setGlobalCtxBackFunction, setGlobalCtxBackState, setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {
+  setGlobalCtxBackFunction,
+  setGlobalCtxBackFunctionEnd,
+  setGlobalCtxBackState,
+  setGlobalCtxMessage
+} from "redux/actions/globalCtx";
 //
 export default (props) => {
   const dispatch = useDispatch();
@@ -47,7 +52,6 @@ export default (props) => {
   function update(mode) {
     switch (true) {
       case mode.visible !== undefined: //----------------------팝업닫기
-        sessionStorage.removeItem('room_active')
         if (mode.visible === false) dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
         break
       case mode.callback !== undefined: //---------------------콜백처리
@@ -66,7 +70,6 @@ export default (props) => {
   }
 
   const btnClose = () => {
-    sessionStorage.removeItem('room_active')
     dispatch(setGlobalCtxMessage({type:'alert',visible: false}))
   }
   //useEffect
@@ -80,10 +83,7 @@ export default (props) => {
     return () => {
       document.body.style.overflow = ''
       if(isAndroid()) {
-        if(globalState.backFunction.name.length === 1) {
-          dispatch(setGlobalCtxBackState(null))
-        }
-        dispatch(setGlobalCtxBackFunction({name: ''}))
+        dispatch(setGlobalCtxBackFunctionEnd(''));
       }
     }
   }, [])

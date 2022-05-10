@@ -20,7 +20,6 @@ const AdminLayerPopup = (props: any)=> {
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
   const popupClose = () => {
-    sessionStorage.removeItem('room_active')
     dispatch(setGlobalCtxBroadcastAdminLayer({
       ...globalState.broadcastAdminLayer,
       status: false,
@@ -70,10 +69,8 @@ const AdminLayerPopup = (props: any)=> {
     }else{
       popupClose();
       if (type === "admin") {
-        sessionStorage.removeItem('room_active')
         RoomJoin({roomNo: globalState.broadcastAdminLayer.roomNo, shadow: 1})
       }else{
-        sessionStorage.removeItem('room_active')
         RoomJoin({roomNo: globalState.broadcastAdminLayer.roomNo, shadow: 0})
       }
     }

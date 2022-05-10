@@ -87,7 +87,7 @@ const TeamPage = () => {
       <Header title="팀" type="back"/>
       <CntWrapper>
         <InfoSlide />
-        <InviteList list={list} listCnt={listCnt} memNo={memberRdx.memNo} setInvitationChk={setInvitationChk}/>
+        {memberRdx.data && <InviteList list={list} listCnt={listCnt} memNo={memberRdx.memNo} setInvitationChk={setInvitationChk} memName={memberRdx.data.nickNm}/>}
         <ButtonWrap memNo={memberRdx.memNo}/>
       </CntWrapper>
     </div>

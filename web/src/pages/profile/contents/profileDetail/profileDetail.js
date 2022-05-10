@@ -11,7 +11,7 @@ import Utility from "components/lib/utility";
 import Swiper from "react-id-swiper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
-import BlockReport from "pages/profile/components/popSlide/BlockReport";
+import BlockReport from "pages/profile/components/popup/BlockReport";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 import FeedLike from "pages/profile/components/FeedLike";
@@ -55,7 +55,7 @@ const ProfileDetail = (props) => {
   const [text, setText] = useState('');
 
   //차단 / 신고하기
-  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
+  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', nickNm: ''});
   const popup = useSelector(state => state.popup);
   const detailData = useSelector(state => state.detail);
 
@@ -548,10 +548,9 @@ const ProfileDetail = (props) => {
   }
 
   /* 차단/신고 팝업 열기 */
-  const openBlockReportPop = (blockReportInfo) => {
-    console.log('report info',blockReportInfo);
-    dispatch(setSlidePopupOpen({...popup, blockReportPopup: true}))
-    setBlockReportInfo(blockReportInfo);
+  const openBlockReportPop = (memNo, nickNm) => {
+    dispatch(setSlidePopupOpen());
+    setBlockReportInfo({memNo, nickNm});
   }
 
   /* 차단/신고 팝업 닫기 */
@@ -585,7 +584,7 @@ const ProfileDetail = (props) => {
               {(isMyContents || adminChecker) &&
               <button onClick={deleteContents}>삭제하기</button>}
               {!isMyContents &&
-              <button onClick={() => openBlockReportPop({memNo:item?.mem_no || item?.writer_mem_no, memNick: item?.nickName})}>
+              <button onClick={() => openBlockReportPop(item?.mem_no || item?.writer_mem_no, item?.nickName)}>
                 차단/신고하기</button>}
             </div>
             }
@@ -657,9 +656,9 @@ const ProfileDetail = (props) => {
       {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
 
       {/* 차단 / 신고하기 */}
-      {popup.blockReportPopup &&
+      {popup.slidePopup &&
       <PopSlide>
-        <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
+        <BlockReport profileData={blockReportInfo} closePopupAction={closeBlockReportPop} />
       </PopSlide>
       }
     </div>

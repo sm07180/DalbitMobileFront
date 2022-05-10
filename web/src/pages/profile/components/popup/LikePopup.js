@@ -1,18 +1,19 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react'
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 
-import Api from 'context/api'
-import moment from 'moment'
+import Api from 'context/api';
+import moment from 'moment';
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
-import NoResult from 'components/ui/noResult/NoResult'
-import DataCnt from 'components/ui/dataCnt/DataCnt'
-import LayerPopup from 'components/ui/layerPopup/LayerPopup'
-// components
-
-import './style.scss'
+import ListRow from '../../../../components/ui/listRow/ListRow';
+import NoResult from '../../../../components/ui/noResult/NoResult';
+import DataCnt from '../../../../components/ui/dataCnt/DataCnt';
+import FanBtn from '../../../../components/ui/fanBtn/FanBtn';
+// scss
+import './style.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
-import {setCommonPopupOpenData} from "redux/actions/common";
+import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
+import {setGlobalCtxBackFunction} from "redux/actions/globalCtx";
 
 const myProfileTabInfos = {
   titleTab: [
@@ -39,12 +40,13 @@ const notMyProfileTabInfos = {
 const pagePerCnt = 20;
 
 const LikePopup = (props) => {
-  const {isMyProfile, fanToggle, profileData, goProfile, myMemNo, likePopTabState, closePopupAction} = props
+  const {isMyProfile, profileData, goProfile, myMemNo, likePopTabState, closePopupAction} = props
   const dispatch = useDispatch();
   const likeContainerRef = useRef();
   const popup = useSelector(state => state.popup);
 
   const [showList, setShowList] = useState([]); // 리스트
+
 
   // 팝업 제목 (탭 or 텍스트)
   const [titleTabInfoList, setTitleTabInfoList] = useState(
@@ -127,7 +129,7 @@ const LikePopup = (props) => {
 
   /* 프로필 이동 */
   const goProfileAction = (targetMemNo) => {
-    goProfile(targetMemNo)
+    goProfile(targetMemNo);
     closePopupAction();
   }
 
@@ -214,8 +216,13 @@ const LikePopup = (props) => {
     }
   }
 
-  const openNoticePop = () => {
-    dispatch(setCommonPopupOpenData({...popup, questionMarkPopup: true}));
+  const openNoticePop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop'}));
+    }
   }
 
   useEffect(() => {
@@ -303,14 +310,11 @@ const LikePopup = (props) => {
                       {list.regDt && <div className="date">등록일{moment(list.regDt).format('YYMMDD')}</div>}
                       <div className="listItem">
                         {list.good && <DataCnt type={"goodCnt"} value={list.good}/>}
-                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}                        
+                        {list.giftDal && <DataCnt type={"giftDal"} value={list.giftDal}/>}
                       </div>
                     </div>
                     <div className="back">
-                      <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                        const isFan = list.isFan;
-                        fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                      }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                      <FanBtn data={list} isMyProfile={isMyProfile} />
                     </div>
                   </>
                   :
@@ -321,10 +325,7 @@ const LikePopup = (props) => {
                     </div>
                     {list.memNo !== myMemNo &&
                       <div className="back">
-                        <button className={`${list.isFan ? 'isFan' : ''}`} onClick={() => {
-                          const isFan = list.isFan;
-                          fanToggle(list.memNo, list.nickNm, list.isFan, () => fanToggleCallback(index, isFan))
-                        }}>{list.isFan ? '팬' : '+ 팬등록'}</button>
+                        <FanBtn data={list} isMyProfile={isMyProfile} />
                       </div>
                     }
                   </>

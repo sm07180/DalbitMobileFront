@@ -22,8 +22,8 @@ const Header = (props) => {
     <header className={`${type ? type : ''} ${position ? position : ''}`}>
       {type === 'back' && <button className="back" onClick={goBack} />}
       {title && <h1 className="title" onClick={titleClick}>{title}</h1>}
-      {children}
       <TitleButton title={title} />
+      {children}
     </header>
   )
 }

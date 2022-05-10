@@ -10,8 +10,8 @@ import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
 import PopSlide from "components/ui/popSlide/PopSlide";
 // components
-import TopSwiper from '../../components/topSwiper'
-import PhotoChange from '../../components/popSlide/PhotoChange'
+import ProfileSwiper from '../../components/ProfileSwiper'
+import PhotoChange from '../../components/popup/PhotoChange'
 // contents
 
 import './profileEdit.scss'
@@ -129,7 +129,7 @@ const ProfileEdit = () => {
       dispatch(setGlobalCtxUpdateProfile({...profile, ...data}));
       dispatch(setGlobalCtxMessage({type:'alert',
         msg: `저장되었습니다.`,
-        callback: finished ? () => history.replace('/myProfile') : () => {}
+        callback: finished ? () => history.goBack() : () => {}
       }));
     } else {
       dispatch(setGlobalCtxMessage({type:'alert',title: 'Error', msg: message}));
@@ -290,22 +290,22 @@ const ProfileEdit = () => {
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
-            <section className='profileTopSwiper'>
-              {profileInfo?.profImgList?.length > 0 ?
-                <TopSwiper data={profileDataNoReader}
-                           disabledBadge={true}
-                           openShowSlide={openShowSlide}
-                />
-                :
+            {profileInfo?.profImgList?.length > 0 ?
+              <ProfileSwiper data={profileDataNoReader}
+                          disabledBadge={true}
+                          openShowSlide={openShowSlide}
+              />
+              :
+              <section className='profileSwiper'>
                 <div className="nonePhoto"
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       inputRef.current.click();
-                     }}>
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      inputRef.current.click();
+                    }}>
                   <i><img src={"https://image.dalbitlive.com/mypage/dalla/coverNone.png"} alt=""/></i>
                 </div>
-              }
-            </section>
+              </section>
+            }
             <section className="insertPhoto">
               <div className="insertBtn">
                 <div className="photo"

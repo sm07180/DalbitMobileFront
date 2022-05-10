@@ -50,7 +50,6 @@ export default (props) => {
   function update(mode) {
     switch (true) {
       case mode.visible !== undefined: //----------------------팝업닫기
-        sessionStorage.removeItem('room_active')
         if (mode.visible === false) dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
         break
       case mode.callback !== undefined: //---------------------콜백처리
@@ -68,7 +67,6 @@ export default (props) => {
   }
 
   const btnClose = () => {
-    sessionStorage.removeItem('room_active')
     dispatch(setGlobalCtxMessage({type: "alert", visible: false}))
   }
   //useEffect

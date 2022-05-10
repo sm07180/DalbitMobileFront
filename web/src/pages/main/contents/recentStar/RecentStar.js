@@ -91,7 +91,7 @@ const RecentStar = (props) => {
         {listParam.list && listParam.list.length > 0 &&
           listParam.list.map((val, i) => {
             return(
-              <ListRow photo={photoCommon.getPhotoUrl(listParam.photoServerUrl, val.profImgUrl, "120x120")} key={"myStar" + i} onClick={() => {
+              <ListRow photo={photoCommon.getPhotoUrl(val.profImgUrl, "120x120")} key={"myStar" + i} onClick={() => {
                 if (val.memNo !== undefined && val.memNo > 0) {
                   props.history.push(`/profile/${val.memNo}`);
                 }
