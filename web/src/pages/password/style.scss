@@ -76,6 +76,9 @@
                 font-weight:$Regular;
                 color:#666;
               }
+              &:disabled{
+                color: #666;
+              }
             }
             button {
               flex-shrink: 0;
