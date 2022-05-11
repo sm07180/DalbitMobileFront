@@ -11,7 +11,7 @@ const TabBtn = (props) => {
       param.setTab(tabTarget)
       if(param.setIsTab) {
         param.setIsTab(!param.isTab);
-        param.setSearchPaging({...param.searchPaging, page: 1});
+        // param.setSearchPaging({...param.searchPaging, page: 1});
         window.scrollTo(0, 0);
       }
       if (param.setPage) {

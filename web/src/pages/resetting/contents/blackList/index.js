@@ -27,13 +27,12 @@ const Settingblack = () => {
   const tabmenu = ['관리', '등록']
   const filter = ['전체','닉네임','ID']
   const [tabType, setTabType] = useState(tabmenu[0])
-  const [blackList, setBlackList] = useState([])
   const {changes, setChanges, onChange} = useChange({onChange: -1})
   const [filterTextType, setFilterTextType] = useState(filter[0]);
   const [searchPageInfo, setSearchPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
   const [isSearch, setIsSearch] = useState(false);
   const [searchPaging, setSearchPaging] = useState({page: 1, records: 40});
-  const [isTab, setIsTab] = useState(false);
+  const [isTab, setIsTab] = useState(false); //false: 관리, true: 등록
   const [blackListPageInfo, setBlackListPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
   const [blackListPaging, setBlackListPaging] = useState({page: 1, records: 40});
 
@@ -43,7 +42,6 @@ const Settingblack = () => {
       params: {page: blackListPaging.page, records: blackListPaging.records}
     })
     if(res.result === "success") {
-      setBlackList(res.data.list);
       if(blackListPaging.page !== 1) {
         let temp = [];
         res.data.list.forEach((value) => {
@@ -57,11 +55,6 @@ const Settingblack = () => {
       }
     }
   }
-
-  useEffect(() => {
-    console.log(blackListPageInfo);
-    console.log(isTab);
-  }, [blackListPageInfo, isTab]);
 
   //차단회원 등록
   const fetchAddData = async (memNo) => {
@@ -115,6 +108,7 @@ const Settingblack = () => {
     }
   }
 
+  //차단회원 검색 시 스크롤 이벤트
   const scrollEvt = () => {
     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
     const body = document.body
@@ -122,14 +116,15 @@ const Settingblack = () => {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset;
 
-    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight - 300) { //totalPage가 현재 page보다 클경우
-      setSearchPaging({...searchPaging, page: searchPaging.page + 1});
+    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+      setSearchPaging({...searchPaging, page: searchPaging.page +1});
       window.removeEventListener("scroll", scrollEvt);
     } else if(searchPageInfo.paging?.totalPage === searchPaging.page) {
       window.removeEventListener("scroll", scrollEvt);
     }
   }
 
+  //차단 회원 목록 스크롤 이벤트
   const scrollEvent = () => {
     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
     const body = document.body
@@ -137,17 +132,17 @@ const Settingblack = () => {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset;
 
-    if(blackListPageInfo.paging?.totalPage > blackListPaging.page && windowBottom >= docHeight - 300) {
-      setBlackListPaging({...blackListPaging, page: blackListPaging.page + 1});
-      window.removeEventListener("scroll", scrollEvt);
+    if(blackListPageInfo.paging?.totalPage > blackListPaging.page && windowBottom >= docHeight -300) {
+      setBlackListPaging({...blackListPaging, page: blackListPaging.page +1});
+      window.removeEventListener("scroll", scrollEvent);
     } else if(blackListPaging.page === blackListPageInfo.paging?.totalPage) {
-      window.removeEventListener("scroll", scrollEvt);
+      window.removeEventListener("scroll", scrollEvent);
     }
   }
 
   //엔터로 검색
   const onKeyUp = (e) => {
-    if(e.keyCode=== 13) {
+    if(e.keyCode === 13) {
       fetchListData("search");
     }
   }
@@ -159,24 +154,28 @@ const Settingblack = () => {
   }, [blackListPaging]);
 
   useEffect(() => {
-    if(isTab && isSearch && changes.search !== "" && searchPaging.page >= 1) {
+    if(isTab && isSearch && changes.search.length > 1 && searchPaging.page >= 1) {
       fetchListData();
     }
-  }, [searchPaging, isTab]);
+  }, [searchPaging]);
 
   useEffect(() => {
-    window.addEventListener("scroll", scrollEvt);
-    return () => {
-      window.removeEventListener("scroll", scrollEvt);
+    if(isTab) {
+      window.addEventListener("scroll", scrollEvt);
+      return () => {
+        window.removeEventListener("scroll", scrollEvt);
+      }
     }
-  }, [searchPageInfo]);
+  }, [searchPageInfo, isTab]);
 
   useEffect(() => {
-    window.addEventListener("scroll", scrollEvent);
-    return () => {
-      window.removeEventListener("scroll", scrollEvent);
+    if(!isTab) {
+      window.addEventListener("scroll", scrollEvent);
+      return () => {
+        window.removeEventListener("scroll", scrollEvent);
+      }
     }
-  }, [blackListPageInfo]);
+  }, [blackListPageInfo, isTab]);
 
   useEffect(() => {
     setSearchPaging({page: 1, records: 40});
