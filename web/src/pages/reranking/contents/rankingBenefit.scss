@@ -24,7 +24,7 @@
       @include flex(center, center);
       height: 48px;
       border-bottom: 2px solid #F2F2F2;
-      @include font(16px,600,#ACACAC);
+      @include font(16px,600,#666);
       box-sizing: border-box;
       cursor:pointer;
       &.tabActive {

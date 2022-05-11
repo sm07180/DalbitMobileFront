@@ -35,7 +35,7 @@
     flex:none;
     width:100%;
     margin-bottom:6px;
-    @include font(13px,$Regular,#666);
+    @include font(13px,$SemiBold,#303030);
   }
   .inputBox {
     position:relative;
@@ -51,7 +51,7 @@
       @include font(15px,$Medium,#202020);
       &::placeholder {
         font-weight:$Regular;
-        color:#999;
+        color:#666;
       }
     }
     button {
@@ -95,7 +95,7 @@
       background-color:transparent;
       @include font(15px,400,#202020);
       &::placeholder {
-        color:#999;
+        color:#666;
       }
     }
     .textCount {

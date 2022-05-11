@@ -12,6 +12,8 @@ import './style.scss';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
+import {isAndroid} from "context/hybrid";
+import {setGlobalCtxBackFunction} from "redux/actions/globalCtx";
 
 const myProfileTabInfos = {
   titleTab: [
@@ -218,6 +220,9 @@ const LikePopup = (props) => {
     e.preventDefault();
     e.stopPropagation();
     dispatch(setCommonPopupOpenData({...popup, commonPopup: true}));
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunction({name: 'commonPop'}));
+    }
   }
 
   useEffect(() => {

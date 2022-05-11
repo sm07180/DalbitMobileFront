@@ -58,7 +58,7 @@ const Message = () => {
     <div id="message">
       <Header position={'sticky'} title={'퀵 메시지'} type={'back'}/>
       <div className='subContent'>
-        <p className='topText'>명령어는 2자, 내용은 최대 200자까지 입력 가능</p>
+        <p className='topText'>명령어는 2글자, 내용은 최대 200글자까지 입력 가능</p>
         <div className='listWrap'>
           {messageList.map((item, index) => {
             return (

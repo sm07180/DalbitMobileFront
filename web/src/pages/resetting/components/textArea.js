@@ -111,9 +111,9 @@ const TextArea = (props) => {
         </div>
         <div className='rightBtn'>
           {type === "방송 공지" && list.length > 0 ?
-            <button className='cancelBtn' onClick={resetList}>취소</button>
+            <button className='deleteBtn' onClick={resetList}>취소</button>
             : select.state &&
-            <button className='cancelBtn' onClick={resetList}>취소</button>
+            <button className='deleteBtn' onClick={resetList}>취소</button>
           }
           {type === "방송 공지" && list.length > 0 ?
             <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submitEdit}>수정</button>

@@ -33,6 +33,7 @@ const ProfileDetail = (props) => {
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
   const replyIsMoreRef = useRef(null);
   const infoRef = useRef(null);
+  const member = useSelector(state => state.member);
 
   //팝업 사진 스와이퍼
   const [tooltipEvent, setTooltipEvent] = useState(false);
@@ -144,7 +145,7 @@ const ProfileDetail = (props) => {
       Api.myPageFeedDetailSel({
         feedNo: index,
         memNo: memNo,
-        viewMemNo: globalState.profile.memNo
+        viewMemNo: member.memNo ? member.memNo : globalState.profile.memNo
       }).then((res) => {
         const {data, result, message} = res;
         if(result === "success") {
@@ -167,7 +168,6 @@ const ProfileDetail = (props) => {
         }
       }).catch((e) => console.log(e));
     }
-
   }
 
   //댓글 조회

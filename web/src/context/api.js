@@ -4408,6 +4408,16 @@ export default class API {
   static roomOwnerSel = async (roomNo, memNo) => {
     return ajax({url: '/broad/owner/sel', method: 'POST', reqBody: true, params: {roomNo:roomNo, memNo:memNo}})
   }
+
+  // 사연 보관함 조회
+  static getStoryBoxList = async ({pageNo, pagePerCnt}) => {
+    return ajax({url: '/mypage/story/history', method: 'GET', reqBody: true, params: {pageNo:pageNo, pagePerCnt:pagePerCnt}})
+  }
+
+  // 사연 보관함 삭제
+  static getStoryBoxDel = async ({roomNo, storyIdx}) => {
+    return ajax({url: '/broad/story', method: 'DELETE', params: {roomNo:roomNo, storyIdx:storyIdx}})
+  }
 }
 
 API.customHeader = null

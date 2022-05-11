@@ -18,7 +18,7 @@ import {useHistory} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 import {setSlidePopupOpen, setCommonPopupOpenData} from "redux/actions/common";
-import {setGlobalCtxMessage, setGlobalCtxUpdateProfile} from "redux/actions/globalCtx";
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const Remypage = () => {
   const dispatch = useDispatch();

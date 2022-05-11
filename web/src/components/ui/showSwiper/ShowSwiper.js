@@ -47,7 +47,9 @@ const ShowSwiper = (props) => {
 
   const setPresentPhoto = () => {
     readerButtonAction(imageList[imageList.length>1 ? swiper?.activeIndex: 0]?.idx)
-    dispatch(setGlobalCtxBackFunctionEnd(''));
+    if(isAndroid()) {
+      dispatch(setGlobalCtxBackFunctionEnd(''));
+    }
   }
 
   const deletePhoto = () => {

@@ -12,8 +12,6 @@ const FanBtn = (props) => {
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
 
-  console.log(data, profileData);
-
   /* 팬 버튼 토글 */
   const fanToggle = (memNo, memNick, isFan, callback) => {
     isFan ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);

@@ -63,9 +63,9 @@
           width:72%;
           line-height:30px;
           margin-bottom:6px;
-          word-break: keep-all;
           @include font(24px,$SemiBold,#202020);
           @include fontLineCut;
+          word-break: keep-all;
         }
         .nick {
           width:72%;

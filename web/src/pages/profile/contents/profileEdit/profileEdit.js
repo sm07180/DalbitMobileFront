@@ -285,8 +285,8 @@ const ProfileEdit = () => {
       <>{
           !passwordPageView ?
           <div id="profileEdit">
-            <Header title={'프로필 수정'} type={'back'} >
-              <button className='saveBtn'
+            <Header title="프로필 수정" type="back">
+              <button className="saveBtn"
                       onClick={() => profileEditConfirm(null, true)}>저장
               </button>
             </Header>
