@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 // Api
 import { postStory, getStory, deleteStory } from "common/api";
-import { TimeFormat } from "lib/common_fn";
+import { dateTimeFormat } from "lib/common_fn";
+// import moment from 'moment'
 // component
 import NoResult from "common/ui/no_result";
 import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../../redux/actions/globalCtx";
@@ -9,7 +10,7 @@ import {useDispatch} from "react-redux";
 
 export default function StoryList(props: any) {
   const dispatch = useDispatch();
-  const { roomOwner, roomNo } = props;
+  const { roomNo } = props;
 
   //state
   const [timer, setTimer] = useState("");
@@ -21,7 +22,7 @@ export default function StoryList(props: any) {
       writeDt: "",
       storyIdx: -1,
       profImg: {
-        thumb62x62: "",
+        url: "",
       },
     },
   ]);
@@ -55,10 +56,6 @@ export default function StoryList(props: any) {
     deleteStoryFunc();
   };
 
-  useEffect(() => {
-    SearchStory(roomNo);
-  }, []);
-
   const clocker = () => {
     var date = new Date();
     var hours = date.getHours();
@@ -69,6 +66,7 @@ export default function StoryList(props: any) {
     );
   };
   useEffect(() => {
+    SearchStory(roomNo);
     let interval = setInterval(clocker, 1000);
 
     return () => {
@@ -78,24 +76,30 @@ export default function StoryList(props: any) {
 
   return (
     <>
-      <div className="storyWrap__list">
+      <div className="storyListWrap">
         {storyArr.length === 0 ?
          <NoResult text="등록된 사연이 없습니다." type="default" />
          :
           storyArr.map((item, idx) => {
             return (
-              <div key={idx} className="storyWrap__innerList">
-                <div className="storyWrap__header">
-                  <img src={item.profImg.thumb62x62} className="storyWrap__profImg" />
-                  <span className="storyWrap__title">{item.nickNm}</span>
-                  <div className="storyWrap__deleteWrap">
-                    <span className="storyWrap__deleteWrap__dater">{TimeFormat(item.writeDt)}</span>
-                    <button className="storyWrap__deleteWrap__cancel" onClick={() => DeleteStory(roomNo, item.storyIdx)}>
+              <div className="storyList" key={idx}>
+                <div className="listHeader">
+                  <div className="photo">
+                    <img src={item.profImg.url} className="storyWrap__profImg" />
+                  </div>
+                  <div className="infoWrap">
+                    <span className="userNick">{item.nickNm}</span>
+                    <span className="writeDate">{dateTimeFormat(item.writeDt)}</span>
+                  </div>
+                  <div className="deleteWrap">
+                    <button className="deleteBtn" onClick={() => DeleteStory(roomNo, item.storyIdx)}>
                       삭제
                     </button>
                   </div>
                 </div>
-                <pre className="storyWrap__contentsBox">{item.contents}</pre>
+                <div className="listContent">
+                  <pre className="storyContent">{item.contents}</pre>
+                </div>
               </div>
             );
           })        
