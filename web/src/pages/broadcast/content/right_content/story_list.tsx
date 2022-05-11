@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 // Api
-import { postStory, getStory, deleteStory } from "common/api";
+import {postStory, getStory, deleteStory, postStoryNew} from "common/api";
 import { TimeFormat } from "lib/common_fn";
 // component
 import NoResult from "common/ui/no_result";
@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 
 export default function StoryList(props: any) {
   const dispatch = useDispatch();
-  const { roomOwner, roomNo } = props;
+  const { roomOwner, roomNo, roomInfo } = props;
 
   //state
   const [timer, setTimer] = useState("");
@@ -31,9 +31,11 @@ export default function StoryList(props: any) {
   //사연 작성
   const fetchStory = (roomNo: string, storyMsg: string) => {
     async function fetchStoryFunc() {
-      const { result, data, message } = await postStory({
+      const { result, data, message } = await postStoryNew({
         roomNo: roomNo,
         contents: storyMsg,
+        djMemNo: roomInfo.bjMemNo,
+        plusYn: "y"
       });
       if (result === "success") {
         setStoryMsg("");
