@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const getUseInput = (value, setValue, validator) => {
   const onChange = event => {
@@ -24,7 +24,7 @@ const getUseInput = (value, setValue, validator) => {
 * @설명  : validator: onChange 시킬지 검증 함수
 **********************************************************************************************/
 export const UseInput = (props) => {
-  const { value, setValue, validator, className, forwardedRef, placeholder, name, onFocus, onBlur, autoComplete, type } = props;
+  const { value, setValue, validator, className, forwardedRef, placeholder, name, onFocus, onBlur, autoComplete, type, onKeyDown } = props;
   const useInput = getUseInput(value, setValue, validator);
   return (
     <input {...useInput}
@@ -36,6 +36,7 @@ export const UseInput = (props) => {
            onFocus={onFocus}
            onBlur={onBlur}
            autoComplete={autoComplete}
+           onKeyDown={onKeyDown}
     />
   )
 }
@@ -44,5 +45,6 @@ UseInput.defaultProps = {
   onBlur: () => {},
   autoComplete: 'off',
   type: 'text',
+  onKeyDown: () => {},
 };
 export default UseInput;

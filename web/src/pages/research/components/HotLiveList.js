@@ -1,8 +1,7 @@
-import React, {useContext} from 'react'
+import React, {useEffect} from 'react'
 
 // global components
 import Swiper from 'react-id-swiper'
-import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
 // css
 import '../scss/swiperList.scss'
@@ -11,7 +10,7 @@ import {useHistory} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 
 const HotLiveList = (props) => {
-  const {data, type, nickNmKey} = props;
+  const {data, nickNmKey, swiperRefresh, section} = props;
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const history = useHistory();
@@ -30,6 +29,12 @@ const HotLiveList = (props) => {
     }
   };
 
+  useEffect(() => {
+    if(typeof swiperRefresh === 'function') {
+      swiperRefresh(section)
+    }
+  }, [data]);
+
   return (
     <>
       {data.length > 0 &&
@@ -37,7 +42,7 @@ const HotLiveList = (props) => {
         {data.map((list,index) => {
           const targetNickName = list.hasOwnProperty(nickNmKey) === undefined ? '' : list[nickNmKey];
           return (
-            <div key={index} data-room-no={list.roomNo}  data-bj-mem-no={list.bjMemNo} data-bj-nick-nm={targetNickName} onClick={RoomEnter}>
+            <div key={list.roomNo} data-room-no={list.roomNo}  data-bj-mem-no={list.bjMemNo} data-bj-nick-nm={targetNickName} onClick={RoomEnter}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.bgImg.thumb292x292} />

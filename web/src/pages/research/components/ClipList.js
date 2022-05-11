@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useEffect} from 'react'
 
 // global components
 import Swiper from 'react-id-swiper'
@@ -11,7 +11,7 @@ import {playClip} from "pages/clip/components/clip_play_fn";
 import {useDispatch, useSelector} from "react-redux";
 
 const ClipList = (props) => {
-  const { data } = props;
+  const { data, swiperRefresh, section } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
@@ -34,13 +34,19 @@ const ClipList = (props) => {
     playClip(clipParam);
   };
 
+  useEffect(() => {
+    if(typeof swiperRefresh === 'function') {
+      swiperRefresh(section);
+    }
+  }, [data]);
+
   return (
     <>
     {data.length > 0 &&
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
-            <div key={index} data-clip-no={list.clipNo} onClick={(e) => clipPlayHandler(e, list.memNo)}>
+            <div key={list.clipNo} data-clip-no={list.clipNo} onClick={(e) => clipPlayHandler(e, list.memNo)}>
               <div className="listColumn">
                 <div className="photo">
                   <img src={list.bgImg.thumb292x292} />

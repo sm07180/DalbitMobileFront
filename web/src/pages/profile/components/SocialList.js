@@ -28,7 +28,7 @@ const SocialList = (props) => {
 
   const toggleEllipsis = (idx, limit) => {
     return {
-      isShowMore: (socialRef.current[idx] !== undefined ? socialRef.current[idx].clientHeight : 0) > limit
+      isShowMore: (socialRef.current[idx] !== undefined ? socialRef.current[idx]?.clientHeight : 0) > limit
     }
   };
 
