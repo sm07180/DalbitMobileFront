@@ -1,18 +1,22 @@
-import React, {useCallback, useContext, useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
+import Api from "context/api";
 // global components
 import NoResult from 'components/ui/noResult/NoResult';
 // components
 import CheckList from '../../components/CheckList';
 import SocialList from '../../components/SocialList';
-import API from "context/api";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {useParams} from 'react-router-dom';
 
 const FanboardSection = (props) => {
-  const { fanBoardData, isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData, params, profileScrollEvent } = props;
+  const { isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData } = props;
+  const params = useParams();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const fanBoardData = useSelector(state => state.fanBoard);
+
   const [formState, setFormState] = useState({
     contents: "",
     others: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
@@ -40,7 +44,7 @@ const FanboardSection = (props) => {
   const contentsAdd = async () => {
     if(!validChecker()) return;
     const {contents, others} = formState;
-    const {data, result, message} = await API.member_fanboard_add({
+    const {result, message} = await Api.member_fanboard_add({
       data: {
         memNo: params.memNo ? params.memNo : globalState.profile.memNo,
         depth: 1,
@@ -84,8 +88,13 @@ const FanboardSection = (props) => {
         </div>
       </div>
       {fanBoardData.list.length > 0 ?
-        <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard"
-                    deleteContents={deleteContents} profileData={profileData} openSlidePop={openSlidePop} />
+        <SocialList
+          socialList={fanBoardData.list}
+          isMyProfile={isMyProfile}
+          deleteContents={deleteContents}
+          profileData={profileData}
+          openSlidePop={openSlidePop}
+          type="fanBoard" />
         :
         <NoResult />
       }

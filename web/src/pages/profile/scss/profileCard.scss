@@ -55,7 +55,7 @@
             @include fontCut;
           }
           .userid {
-            @include font(12px,$Regular,#A4A4A4);
+            @include font(12px,$Regular,#666);
           }
         }
       }
@@ -76,7 +76,7 @@
           height:20px;
           line-height:20px;
           font-style:normal;
-          @include font(13px,$Regular,#878787);
+          @include font(14px,$Regular,#666);
         }
       }
     }

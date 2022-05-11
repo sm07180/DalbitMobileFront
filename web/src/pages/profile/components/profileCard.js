@@ -5,9 +5,7 @@ import Api from 'context/api';
 import LevelItems from '../../../components/ui/levelItems/LevelItems';
 import GenderItems from '../../../components/ui/genderItems/GenderItems';
 import FrameItems from '../../../components/ui/frameItems/frameItems';
-import FanBtn from '../../../components/ui/fanBtn/FanBtn';
-// scss
-import './profileCard.scss';
+
 import {isIos} from "context/hybrid";
 import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";

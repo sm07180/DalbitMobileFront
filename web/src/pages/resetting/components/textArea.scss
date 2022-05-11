@@ -13,7 +13,7 @@
       width: 100%;
       @include font(15px, 400, #333333);
       &::placeholder {
-        @include font(15px, 400, #999999);
+        @include font(15px, 400, #666);
       }
     }    
     .textCount {
@@ -75,7 +75,7 @@
     }
     .submitBtn {
       @include btn;
-      background-color: rgba($color: #FE3C7B, $alpha: 0.2);
+      background-color: #bbb;
       pointer-events: none;
       &.active {
         background-color: #FE3C7B;
@@ -90,7 +90,7 @@
     .deleteBtn {
       @include btn;
       border: 1px solid #D5D5D5;
-      @include font(13px, 500, #666666);
+      @include font(13px, $SemiBold, #666666);
       cursor: pointer;
     }
   }

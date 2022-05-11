@@ -11,10 +11,13 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const ClipSection = (props) => {
-  const { profileData, clipData, isMyProfile, webview } = props;
+  const { profileData, isMyProfile, webview } = props;
   const history = useHistory();
+
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const clipData = useSelector(state => state.profileClip);
+
   const listenClip = (clipNo,) => {
     const clipParams = {
       memNo: profileData.memNo,
