@@ -19,7 +19,6 @@ const story = createReducer<IStoryState, StoryActions>(initialState,{
     return initialState;
   },
   "story/SET_DATA": (state, {payload}) => {
-    console.log('setData', {...state, ...payload});
     return {...state, ...payload};
   }
 
