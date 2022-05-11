@@ -100,10 +100,10 @@ const ClipDetailPage = (props) => {
   };
 
   const scrollEvent = () => {
-    if (clipLastInfo.cnt > searchInfo.page && Utility.isHitBottom()) {
+    if (clipLastInfo.paging?.totalPage > searchInfo.page && Utility.isHitBottom()) {
       setSearchInfo({...searchInfo, page: searchInfo.page + 1});
       window.removeEventListener('scroll', scrollEvent);
-    } else if (clipLastInfo.cnt === searchInfo.page) {
+    } else if (clipLastInfo.paging?.totalPage === searchInfo.page) {
       window.removeEventListener('scroll', scrollEvent);
     }
   }
