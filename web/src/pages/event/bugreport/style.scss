@@ -1,0 +1,14 @@
+@import 'components/ui/_mixin.scss';
+
+#bugReport{
+  position: relative;
+  img{width: 100%;}
+  .mainWrap{
+    position: relative;
+    button{
+      @include position-bottom-left(9.86%, 50%);
+      transform: translateX(-50%);
+      width: 85%;
+    }
+  }
+}

@@ -21,6 +21,7 @@ import {setProfileData} from "redux/actions/profile";
 import {profileDefaultState} from "redux/types/profileType";
 import {setSlidePopupOpen} from "redux/actions/common";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
+import {Hybrid, isHybrid} from "context/hybrid";
 
 const ProfilePage = () => {
   const history = useHistory();
@@ -134,6 +135,19 @@ const ProfilePage = () => {
     dispatch(setSlidePopupOpen());
   };
 
+  // 웹뷰일때 헤더 뒤로가기 처리
+  const headerBackEvent = () => {
+    if(webview === 'new' && isHybrid()) {
+      if(location.key) {
+        history.goBack();
+      }else {
+        Hybrid('CloseLayerPopup');
+      }
+    }else {
+      history.goBack();
+    }
+  }
+
   /* 페이지 이동 */
   useEffect(() => {
     if(globalState.token.isLogin) {
@@ -162,7 +176,7 @@ const ProfilePage = () => {
   // 페이지 시작
   return (
     <div id="myprofile">
-      <Header title={`${profileData.nickNm}`} type="back">
+      <Header title={`${profileData.nickNm}`} type="back" backEvent={headerBackEvent}>
         {isMyProfile ?
           <div className="buttonGroup">
             <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>
