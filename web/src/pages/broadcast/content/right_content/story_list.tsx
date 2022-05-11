@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 // Api
-import {postStory, getStory, deleteStory, postStoryNew} from "common/api";
+import {postStory, getStory, deleteStory} from "common/api";
 import { TimeFormat } from "lib/common_fn";
 // component
 import NoResult from "common/ui/no_result";
@@ -31,7 +31,7 @@ export default function StoryList(props: any) {
   //사연 작성
   const fetchStory = (roomNo: string, storyMsg: string) => {
     async function fetchStoryFunc() {
-      const { result, data, message } = await postStoryNew({
+      const { result, data, message } = await postStory({
         roomNo: roomNo,
         contents: storyMsg,
         djMemNo: roomInfo.bjMemNo,

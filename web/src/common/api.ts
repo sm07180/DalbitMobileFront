@@ -449,13 +449,7 @@ export async function deleteNoticeWrite(data: {
 export async function postStory(data: {
   roomNo: string;
   contents: string;
-}): Promise<responseType> {
-  return await ajax(Method.POST, "/broad/story", data);
-}
-export async function postStoryNew(data: {
-  roomNo: string;
-  contents: string;
-  djMemNo?: string | null;
+  djMemNo?: string;
   plusYn?: string;
 }): Promise<responseType> {
   return await ajax(Method.POST, "/broad/story", data);
