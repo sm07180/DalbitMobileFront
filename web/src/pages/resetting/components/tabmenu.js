@@ -1,7 +1,7 @@
 import React from 'react'
+import TabBtn from "pages/resetting/components/TabBtn";
 
 // components
-import TabBtn from 'components/ui/tabBtn/TabBtn'
 
 const Tabmenu = (props) => {
   const {data, tab, setTab, setPage, isTab, setIsTab, searchPaging, setSearchPaging} = props
