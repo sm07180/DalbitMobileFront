@@ -179,6 +179,7 @@ const StarDj = (props) => {
                       </div>
                     </div>
                   </div>
+                  <span className='countTag'>{list.specialCnt}회</span>
                 </div>
               )
             })
