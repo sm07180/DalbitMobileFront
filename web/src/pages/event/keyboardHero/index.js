@@ -209,7 +209,7 @@ const keyboardHero = () => {
                   <div className="title">방송 시청 150시간 달성</div>
                   <div className="time">{Utility.secondToHM(myInfo.play_time)}</div>
                 </div>
-                <button className={`listBack ${(myInfo.one_time_yn === "y" && myInfo.one_step_rcv_yn === "n" ) ? '' : ''}`}
+                <button className={`listBack ${(myInfo.one_time_yn === "y" && myInfo.one_step_rcv_yn === "n" ) ? '' : 'disabled'}`}
                         onClick={()=>giftItem("1")}>100달 받기</button>
               </ListRow>
               <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-2.png`}>

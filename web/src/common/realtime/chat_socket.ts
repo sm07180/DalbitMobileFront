@@ -5,7 +5,13 @@ import {MediaType, MiniGameType, tabType} from "pages/broadcast/constant";
 import {AuthType} from "constant";
 
 import {getItems, postErrorSave, splash} from "common/api";
-import {GiftActionFormat, NormalMsgFormat, ReqGood, SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
+import {
+  GiftActionFormat,
+  NormalMsgFormat,
+  ReqGood,
+  SystemEventMsg,
+  SystemStartMsg
+} from "pages/broadcast/lib/chat_msg_format";
 
 // static
 import MicAlarmClose from "common/static/image/mic_alarm_close.png";
@@ -1143,7 +1149,13 @@ export class ChatSocketHandler {
                   case "reqEventMsg": {
                     const {recvMsg} = data;
                     const message = JSON.parse(recvMsg.msg);
-                    return SystemStartMsg({
+                    const msg = {
+                      title:message.title,
+                      content:message.content.replace("{nickName}", `<span>${message.nickName}</span>`),
+                      linkTitle:message.linkTitle,
+                      linkUrl:message.linkUrl
+                    }
+                    return SystemEventMsg({
                       type: "div",
                       className: "common-event-msg",
                       children: [
@@ -1154,24 +1166,24 @@ export class ChatSocketHandler {
                             {
                               type: "div",
                               className: "title",
-                              text: message.title,
+                              text: msg.title,
                             },
                             {
                               type: "div",
                               className:"text",
-                              text: message.content,
+                              text:msg.content,
                             }
                           ]
                         },
                         {
                           type: "button",
                           className: "button",
-                          text: message.linkTitle,
+                          text: msg.linkTitle,
                           event: [
                             {
                               type: "click",
                               callback: () => {
-                                this.history.push(message.linkUrl)
+                                this.history.push(msg.linkUrl)
                               },
                             }
                             ]

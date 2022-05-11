@@ -5,11 +5,11 @@ type Element = {
   style?: object;
   children?: Array<Element>;
   event?: Array<{ type: string; callback: () => void }>;
+  innerHTML?: boolean;
 };
 
 export function createElement(data: Element) {
-  console.log("createElement", data)
-  const { type, text, className, style, children, event } = data;
+  const { type, text, className, style, children, event, innerHTML} = data;
 
   const elem = document.createElement(type);
 
@@ -34,6 +34,9 @@ export function createElement(data: Element) {
     const fragment = document.createDocumentFragment();
     children.forEach((child) => {
       const childElem = createElement(child);
+      if(child.text !== undefined) {
+        childElem.innerHTML = child.text;
+      }
       fragment.appendChild(childElem);
     });
 

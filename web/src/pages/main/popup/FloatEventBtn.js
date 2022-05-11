@@ -6,6 +6,7 @@ import {IMG_SERVER} from 'context/config';
 import {useDispatch, useSelector} from "react-redux";
 
 import '../scss/floatingBtn.scss';
+import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 
 const FloatEventBtn = (props) => {
   const history = useHistory();
@@ -28,8 +29,21 @@ const FloatEventBtn = (props) => {
           try {
             fbq('track', 'attend_event')
             firebase.analytics().logEvent('attend_event')
-          } catch (e) {}
-          history.push(`/event/${pushValue}`)}}>
+          } catch (e) {
+          }
+
+          if(attendCheck===2) {
+            dispatch(setGlobalCtxMessage({
+              type: "alert",
+              msg: ` 키보드 히어로 31 이벤트가 진행 되는 동안에는 룰렛이벤트가 키보드히어로 31로 대체된다.`,
+              callback: () => {
+                history.push(`/event/keyboardhero`)
+              }
+            }))
+          }else{
+            history.push(`/event/${pushValue}`)
+          }
+        }}>
         {children}
       </div>
     )
