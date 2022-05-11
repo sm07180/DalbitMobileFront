@@ -10,20 +10,16 @@ export interface IStoryState {
 
 export const initialState = {
   list: [],
-  pageInfo: {pageNo: 1, pagePerCnt: 20}
+  pageInfo: {pageNo: 1, pagePerCnt: 20},
+  backFlag: false
 };
 
 const story = createReducer<IStoryState, StoryActions>(initialState,{
   "story/SET_INIT": () => {
     return initialState;
   },
-  "story/SET_LIST": (state, {payload}) => {
-    console.log("setList", {...state, list: payload });
-    return {...state, list: payload };
-  },
-  "story/SET_PAGE_INFO": (state, {payload}) => {
-    console.log("setPageInfo", {...state, pageInfo: payload });
-    return {...state, pageInfo: payload};
+  "story/SET_DATA": (state, {payload}) => {
+    return {...state, ...payload};
   }
 
 });

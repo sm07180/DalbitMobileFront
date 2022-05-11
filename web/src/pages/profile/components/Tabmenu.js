@@ -1,14 +1,13 @@
 import React from 'react';
 
 const Tabmenu = (props) => {
-  const {data,tab,setTab,tabChangeAction,count} = props;
+  const {data,tab,setTab,count} = props;
 
   return (
     <ul className="tabmenu">
       {data.map((list,index) => {
         const tabClick = (e) => {
           const {targetTab} = e.currentTarget.dataset;
-          tabChangeAction(targetTab);
           setTab(targetTab);
         }
 

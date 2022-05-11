@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect, useCallback, useLayoutEffect, us
 import {useParams, useHistory} from 'react-router-dom'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
-import {setInit, setList, setPageInfo}  from "redux/actions/story";
+import {setInit, setData}  from "redux/actions/story";
 import {useDispatch, useSelector} from "react-redux";
 import {PHOTO_SERVER} from 'context/config.js'
 
@@ -13,6 +13,8 @@ import Header from 'components/ui/header/Header'
 
 import './style.scss'
 import {initialState} from "redux/reducers/story";
+let totalPage = 1;
+let fetching = false;
 
 export default () => {
   const history = useHistory()
@@ -23,27 +25,43 @@ export default () => {
 
   const nowDay = moment();
 
-  const storyPageInfo = story.pageInfo;
-  // const [storyList, setStoryList] = useState([]);
-  // const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 20})
-
-  let totalPage = 1
-  const getList = async () => {
-    const param = {
-      pageNo: storyPageInfo.pageNo,
-      pagePerCnt: storyPageInfo.pagePerCnt
+  const getList = async (pageNo) => {
+    if(story.backFlag){
+      dispatch(setData({backFlag: false}));
+      return;
     }
+    if(fetching){
+      return;
+    }
+
+    const param = {
+      pageNo: pageNo,
+      pagePerCnt: story.pageInfo.pagePerCnt
+    }
+    fetching = true;
+
     const {data, result} = await Api.getStoryBoxList(param)
-    if (result  === 'success') {
-      totalPage = Math.ceil(data.paing.total / storyPageInfo.pagePerCnt)
-      if (storyPageInfo.pageNo > 1) {
-        //setStoryList(storyList.concat(data.list))
-        dispatch(setList( story.list.concat(data.list)  ));
+    if (result === 'success') {
+      totalPage = Math.ceil(data.paing.total / story.pageInfo.pagePerCnt)
+      if (pageNo > 1) {
+        dispatch(setData({
+          list: story.list.concat(data.list),
+          pageInfo:{
+            pageNo,
+            pagePerCnt: story.pageInfo.pagePerCnt
+          }
+        }));
       } else {
-        //setStoryList(data.list)
-        dispatch(setList( data.list ));
+        dispatch(setData({
+          list: data.list,
+          pageInfo:{
+            pageNo,
+            pagePerCnt: story.pageInfo.pagePerCnt
+          }
+        }));
       }
     } else {
+      fetching = false;
     }
   };
 
@@ -75,10 +93,16 @@ export default () => {
   }
 
   const scrollEvtHdr = () => {
-    if (totalPage > storyPageInfo.pageNo && Utility.isHitBottom()) {
-      //setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1} )
-      dispatch(setPageInfo({...story.pageInfo, pageNo: storyPageInfo.pageNo + 1}));
+    if (!fetching && totalPage > story.pageInfo.pageNo && Utility.isHitBottom()) {
+      getList(story.pageInfo.pageNo + 1);
     }
+  }
+
+  // 프로필 이동
+  const goLink = (memNo) => {
+    reduxClearFlagRef.current = true;
+    dispatch(setData({backFlag : true}));
+    history.push(`/profile/${memNo}`)
   }
 
   useLayoutEffect(() => {
@@ -86,22 +110,20 @@ export default () => {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [storyPageInfo.pageNo])
+  }, [story])
 
   useEffect(() => {
-    if (storyPageInfo.pageNo > 1) getList()
-  }, [storyPageInfo.pageNo])
+    if(fetching){
+      fetching = false;
+    }
+  },[story.list])
 
-  const goLink = (memNo) => {
-    reduxClearFlagRef.current = true;
-    history.push(`/profile/${memNo}`)
-  }
 
   useEffect(() => {
     if (!globalState.token.isLogin) {
       history.push('/login');
     } else {
-      getList();
+      getList(1);
     }
 
     return () => {
@@ -149,10 +171,10 @@ export default () => {
                           </div>
                         </div>
                       )
-                    }                    
+                    }
                   })
                 }
-              </div>              
+              </div>
             </>
            :
             <div className='listNone'>
