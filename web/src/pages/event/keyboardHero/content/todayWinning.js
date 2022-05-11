@@ -52,9 +52,7 @@ const todayWinning = () => {
           },
           method: 'POST'
         }).then((res)=>{
-          //fixme
-          console.log(res)
-          if(res.code === "C001"){
+          if(res.result === "success"){
             if(res.data === 1){
               dispatch(setGlobalCtxMessage({type: "alert",msg: '선물받기완료'}));
               setRefresh(!refresh);

@@ -35,7 +35,7 @@ const FloatEventBtn = (props) => {
           if(attendCheck===2) {
             dispatch(setGlobalCtxMessage({
               type: "alert",
-              msg: ` 키보드 히어로 31 이벤트가 진행 되는 동안에는 룰렛이벤트가 키보드히어로 31로 대체된다.`,
+              msg: ` 키보드 히어로 31 이벤트가 진행 되는 동안에는 룰렛이벤트가 키보드히어로 31로 대체됩니다.`,
               callback: () => {
                 history.push(`/event/keyboardhero`)
               }
@@ -48,7 +48,7 @@ const FloatEventBtn = (props) => {
       </div>
     )
   }
-  // 출석체크 버튼 컴포넌트 출력 조건
+  // 출석체크 버튼 컴포넌트 출력 조건1
   const attendStampState = () => {
     if (token.isLogin) {
       if (attendCheck === 0) {
