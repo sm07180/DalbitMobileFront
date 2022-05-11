@@ -85,7 +85,8 @@ const BroadCastWrap = () => {
 
   //초 -> 분
   const decodeMin = (seconds) => {
-    return parseInt((seconds % 3600) / 60) < 10 ? "0" + parseInt((seconds % 3600) / 60) : parseInt((seconds % 3600) / 60);
+    const min = Math.floor(seconds/60);
+    return min < 10 ? `0${min}`: `${min}`;
   }
 
   //요일 데이터 가공
