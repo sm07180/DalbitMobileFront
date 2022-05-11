@@ -118,7 +118,7 @@ const SettingManager = () => {
   }, []);
 
   useEffect(() => {
-    if(isTab && isSearch && searchPaging.page >= 1) {
+    if(isTab && isSearch && changes.search !== "" && searchPaging.page >= 1) {
       fetchListData();
     }
   }, [searchPaging, isTab]);

@@ -34,16 +34,35 @@ const Settingblack = () => {
   const [isSearch, setIsSearch] = useState(false);
   const [searchPaging, setSearchPaging] = useState({page: 1, records: 40});
   const [isTab, setIsTab] = useState(false);
+  const [blackListPageInfo, setBlackListPageInfo] = useState({list: [], paging: {next: 2, page: 1, prev: 0, records: 40, total: 0, totalPage: 0}});
+  const [blackListPaging, setBlackListPaging] = useState({page: 1, records: 40});
 
   //차단 회원 리스트 조회
   const getblackList = async () => {
     const res = await Api.mypage_black_list({
-      params: {page: 1, records: 999}
+      params: {page: blackListPaging.page, records: blackListPaging.records}
     })
     if(res.result === "success") {
       setBlackList(res.data.list);
+      if(blackListPaging.page !== 1) {
+        let temp = [];
+        res.data.list.forEach((value) => {
+          if(blackListPageInfo.list.findIndex((target) => target.memNo === value.memNo) === -1) {
+            temp.push(value);
+          }
+        });
+        setBlackListPageInfo({...res.data, list: blackListPageInfo.list.concat(temp)});
+      } else {
+        setBlackListPageInfo({...res.data});
+      }
     }
   }
+
+  useEffect(() => {
+    console.log(blackListPageInfo);
+    console.log(isTab);
+  }, [blackListPageInfo, isTab]);
+
   //차단회원 등록
   const fetchAddData = async (memNo) => {
     let params = {
@@ -103,10 +122,25 @@ const Settingblack = () => {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset;
 
-    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight -300) { //totalPage가 현재 page보다 클경우
+    if(searchPageInfo.paging?.totalPage > searchPaging.page && windowBottom >= docHeight - 300) { //totalPage가 현재 page보다 클경우
       setSearchPaging({...searchPaging, page: searchPaging.page + 1});
       window.removeEventListener("scroll", scrollEvt);
     } else if(searchPageInfo.paging?.totalPage === searchPaging.page) {
+      window.removeEventListener("scroll", scrollEvt);
+    }
+  }
+
+  const scrollEvent = () => {
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const body = document.body
+    const html = document.documentElement
+    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if(blackListPageInfo.paging?.totalPage > blackListPaging.page && windowBottom >= docHeight - 300) {
+      setBlackListPaging({...blackListPaging, page: blackListPaging.page + 1});
+      window.removeEventListener("scroll", scrollEvt);
+    } else if(blackListPaging.page === blackListPageInfo.paging?.totalPage) {
       window.removeEventListener("scroll", scrollEvt);
     }
   }
@@ -119,11 +153,13 @@ const Settingblack = () => {
   }
 
   useEffect(() => {
-    getblackList()
-  }, [])
+    if(!isTab) {
+      getblackList()
+    }
+  }, [blackListPaging]);
 
   useEffect(() => {
-    if(isTab && isSearch && searchPaging.page >= 1) {
+    if(isTab && isSearch && changes.search !== "" && searchPaging.page >= 1) {
       fetchListData();
     }
   }, [searchPaging, isTab]);
@@ -136,6 +172,13 @@ const Settingblack = () => {
   }, [searchPageInfo]);
 
   useEffect(() => {
+    window.addEventListener("scroll", scrollEvent);
+    return () => {
+      window.removeEventListener("scroll", scrollEvent);
+    }
+  }, [blackListPageInfo]);
+
+  useEffect(() => {
     setSearchPaging({page: 1, records: 40});
   }, [changes.search])
 
@@ -146,12 +189,12 @@ const Settingblack = () => {
       {tabType === tabmenu[0] ? (
         <>
           <section className="counterWrap">
-            <div>차단 회원<span>{blackList.length}</span></div>
+            <div>차단 회원<span>{blackListPageInfo.list.length}</span></div>
           </section>
           <section className="listWrap">
-            {blackList.length > 0 ? (
+            {blackListPageInfo.list.length > 0 ? (
               <>
-                {blackList.map((item, index)=>{
+                {blackListPageInfo.list.map((item, index)=>{
                   return(
                     <SettingList data={item} key={index}>
                       <button className="delete" onClick={() => fetchDeleteData(item.memNo)}>해제</button>
