@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Api from "context/api";
 import {useDispatch, useSelector} from "react-redux";
 import {isAndroid} from "context/hybrid";
@@ -12,8 +12,8 @@ import {
 const SpecialHistoryPop = (props) => {
   const {profileData} = props;
   const dispatch = useDispatch();
-  const globalState = useSelector(({globalCtx}) => globalCtx);
   const popup = useSelector(state => state.popup);
+  const starHistoryPopRef = useRef();
   
   const [specialHistory, setSpecialHistory] = useState({cnt: 0, list: [], isLoading: false, pageNo: 1}); // 해당유저의 스페셜DJ 데이터
   
@@ -38,16 +38,19 @@ const SpecialHistoryPop = (props) => {
   }
 
   useEffect(() => {
-    if (typeof document !== "undefined"){
-      document.getElementById("starHistoryPop").addEventListener("scroll", scrollEvent);
+    const target = starHistoryPopRef.current;
+    if (target){
+      target.addEventListener("scroll", scrollEvent);
     }
-    return () => document.getElementById("starHistoryPop").removeEventListener("scroll", scrollEvent);
+    return () => {
+      target.removeEventListener("scroll", scrollEvent);
+    }
   }, [specialHistory]);
 
   const scrollEvent = () => {
-    let scrollHeight = document.getElementById("starHistoryPop").scrollHeight;
-    let offsetHeight = document.getElementById("starHistoryPop").offsetHeight;
-    let scrollTop = document.getElementById("starHistoryPop").scrollTop;
+    let scrollHeight = starHistoryPopRef.current?.scrollHeight;
+    let offsetHeight = starHistoryPopRef.current?.offsetHeight;
+    let scrollTop = starHistoryPopRef.current?.scrollTop;
     let pageNo = specialHistory.pageNo;
 
     if (scrollHeight - 5 < scrollTop + offsetHeight && pageNo < Math.ceil(specialHistory.cnt / pagePerCnt) && !specialHistory.isLoading){
@@ -90,7 +93,7 @@ const SpecialHistoryPop = (props) => {
             <span>선정 일자</span>
             <span>선정 기수</span>
           </div>
-          <div className="tbody" id="starHistoryPop">
+          <div ref={starHistoryPopRef} className="tbody" id="starHistoryPop">
             {specialHistory.list.map((list,index) => {
               return (
                 <div className="tbodyList" key={index}>
