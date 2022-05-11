@@ -113,8 +113,7 @@ const todayWinning = () => {
                   <div className="item">{user.code_name}</div>
                   <div className="item">{user.mem_nick}</div>
                 </div>
-                {(context.token.isLogin && context.token.memNo === user.mem_no) &&
-                // { true &&
+                {(globalState.token.isLogin && globalState.token.memNo === user.mem_no) &&
                 <div className="listBack"><button className={user.rcv_yn === "y" ? "disabled" : ""} onClick={() => receiveGift(user)}>선물받기</button></div>
                 }
               </ListRow>
