@@ -60,7 +60,8 @@ const FloatEventBtn = (props) => {
           </AttendStampActive>
         )
       } else if (attendCheck === 2) {
-        return <AttendStampActive type="motion" pushValue="attend_event/roulette" />
+        // todo:6월 12일
+        // return <AttendStampActive type="motion" pushValue="attend_event/roulette" />
       }
     }
   }
