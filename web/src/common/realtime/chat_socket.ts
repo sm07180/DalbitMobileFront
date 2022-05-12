@@ -916,7 +916,7 @@ export class ChatSocketHandler {
                           width,
                           height,
                           duration: duration * 1000 * repeatCnt,
-                          location : storyText? 'storyItem': location,
+                          location : storyText? 'center': location,
                           soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
                           count,
                           isCombo,
