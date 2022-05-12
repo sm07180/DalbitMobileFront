@@ -22,6 +22,7 @@ const ProfileWrite = () => {
   const profileTab = useSelector((state) => state.profileTab);
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const fetching = useRef(false);
 
   const {profile} = globalState;
   // type : feed, fanBoard / action : create, update / index 글번호
@@ -77,13 +78,19 @@ const ProfileWrite = () => {
     return confirm;
   };
 
+  const fetchingInit = () => {
+    fetching.current = false;
+  };
+
   //등록 (상단 고정 : 방송방에서 사용중, 추후 작업 ! topFix:0 )
   const contentsAdd = async () => {
-    if(!validChecker()) return;
+    if(fetching.current || !validChecker()) return;
     const {title, contents, others, photoInfoList} = formState;
 
+    // 중복 호출 방지
+    fetching.current = true;
     if (type === 'notice') {
-      Api.mypage_notice_upload({
+      const res = await Api.mypage_notice_upload({
         reqBody: true,
         data: {
           title,
@@ -92,38 +99,56 @@ const ProfileWrite = () => {
           topFix: others,
           photoInfoList,// [{img_name: '/room_0/21374121600/20220207163549744349.png'}]
         }
-      }).then((res) => {
-        const {data, message, result } = res;
-        dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
-
-        if (result === 'success') {
-          history.goBack();
-        }
       });
+
+      if (!res) {
+        fetchingInit();
+        return;
+      }
+      const {data, message, result} = res;
+      dispatch(setGlobalCtxMessage({type: 'toast', msg: message}));
+
+      if (result === 'success') {
+        history.goBack();
+      } else {
+        fetchingInit();
+      }
+
     } else if (type === "feed") {
-      Api.myPageFeedIns({
+      const res = await Api.myPageFeedIns({
         reqBody: true,
         data: {
           memNo: memNo,
           feedContents: contents,
           photoInfoList
         }
-      }).then((res) => {
-        dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
-        if(res.result === "success") {
-          history.goBack();
-        }
-      }).catch((e) => console.log(e));
+      });
+
+      if(!res){
+        fetchingInit();
+        return;
+      }
+      dispatch(setGlobalCtxMessage({type: 'toast', msg: res.message}));
+      if (res.result === "success") {
+        history.goBack();
+      } else {
+        fetchingInit();
+      }
+
+    } else {
+      fetchingInit();
     }
   };
 
   //수정
   const contentsEdit = async () => {
-    if(!validChecker()) return;
+    if(fetching.current || !validChecker()) return;
     const {title, contents, others, photoInfoList} = formState;
 
+    // 중복 호출 방지
+    fetching.current = true;
     if (type === 'notice') {
-      const {data, result, message} = await Api.mypage_notice_edit({
+      const res = await Api.mypage_notice_edit({
         reqBody: true,
         data: {
           noticeNo: index,
@@ -135,14 +160,20 @@ const ProfileWrite = () => {
           chrgrName: profile?.nickName,
         }
       });
+      if(!res){
+        fetchingInit();
+        return;
+      }
+      const {data, result, message} = res;
       dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
       if (result === 'success') {
         history.goBack();
+      } else {
+        fetchingInit();
       }
-
     } else if (type === 'fanBoard') {
       //팬보드 수정에서는 비밀글 여부를 수정할 수 없음!
-      const {data, result, message} = await Api.mypage_board_edit({
+      const res = await Api.mypage_board_edit({
         data: {
           memNo,
           replyIdx: index,
@@ -150,15 +181,20 @@ const ProfileWrite = () => {
           delChrgrname: profile?.nickName
         }
       });
-
+      if(!res) {
+        fetchingInit();
+        return;
+      }
+      const {data, result, message} = res;
       if (result === 'success') {
         dispatch(setGlobalCtxMessage({type:'toast',msg: '팬보드를 수정했습니다.'}));
         history.goBack();
       } else {
         dispatch(setGlobalCtxMessage({type:'alert',msg: '팬보드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요.'}));
+        fetchingInit();
       }
     } else if (type === 'feed') {
-      const {data, result, message} = await Api.myPageFeedUpd({
+      const res = await Api.myPageFeedUpd({
         reqBody: true,
         data: {
           feedNo: index,
@@ -168,12 +204,21 @@ const ProfileWrite = () => {
           delChrgrName: profile?.nickName
         }
       });
+      if(!res) {
+        fetchingInit();
+        return;
+      }
+      const {data, result, message} = res;
+
       if(result === 'success') {
         dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
         history.goBack();
       } else {
         dispatch(setGlobalCtxMessage({type:'alert',msg: "피드 수정에 실패했습니다.\\\\n잠시 후 다시 시도해주세요."}));
+        fetchingInit();
       }
+    } else {
+      fetchingInit();
     }
   }
 
@@ -277,6 +322,7 @@ const ProfileWrite = () => {
   };
 
   useEffect(() => {
+    // 프로필 탭 유지 관련
     tabResetBlock();
     action === 'modify' && getDetailData();
   }, []);
