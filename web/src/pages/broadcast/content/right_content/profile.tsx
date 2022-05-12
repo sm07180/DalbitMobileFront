@@ -545,7 +545,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
                   <span className="subIconWrap">
                     {/* {<span className="nationIcon"></span>} */}
                     {profileData.gender !== "" && (
-                      <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
+                      <em className={`icon_wrap ${profileData.gender === "n" ? "" : profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
                         <span className="blind">성별</span>
                       </em>
                     )}

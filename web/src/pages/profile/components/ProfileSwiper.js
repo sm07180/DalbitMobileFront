@@ -68,7 +68,7 @@ const ProfileSwiper = (props) => {
       </div>
       :
       <div className="swiper-slide">
-        <div className="photo none">
+        <div className="photo none" onClick={() => history.push('/myProfile/edit')}>
           <div>
             <p>배경사진을 등록해보세요</p>
           </div>

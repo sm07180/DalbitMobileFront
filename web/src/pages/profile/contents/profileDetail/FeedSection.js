@@ -16,7 +16,7 @@ const FeedSection = (props) => {
         openSlidePop={openSlidePop} deleteContents={deleteContents} profileData={profileData} showImagePopUp={showImagePopUp}
         />
         :
-        <NoResult />
+        <NoResult img={'common/listNone/listNone-profile.png'} ment={'팬들과 나누고싶은 이야기를\n적어보세요!'}/>
       }
     </div>
   )

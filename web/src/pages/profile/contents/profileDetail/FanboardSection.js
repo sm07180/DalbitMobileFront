@@ -87,7 +87,7 @@ const FanboardSection = (props) => {
         <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard"
                     deleteContents={deleteContents} profileData={profileData} openSlidePop={openSlidePop} />
         :
-        <NoResult />
+        <NoResult img={'common/listNone/listNone-profile.png'} ment={'작성된 팬보드가 없습니다.'} />
       }
     </div>
   )

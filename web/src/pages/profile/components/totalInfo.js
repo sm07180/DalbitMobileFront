@@ -165,7 +165,7 @@ const TotalInfo = (props) => {
             {[...Array(3 - data.fanRank.length)].map((item, index) => {
               return (
                 <div className="photo" key={index}>
-                  <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
+                  <img src={`${IMG_SERVER}/common/photoNone-bgGray.png`} alt="기본 이미지" />
                 </div>
               )
             })}
@@ -180,8 +180,8 @@ const TotalInfo = (props) => {
               <img src={data.cupidProfImg.thumb62x62} alt=""/>
             </div>
             :
-            <div className="photo cursor">
-              <img src={`${IMG_SERVER}/common/photoNone-2.png`} alt="기본 이미지" />
+            <div className="photo">
+              <img src={`${IMG_SERVER}/common/photoNone-bgGray.png`} alt="기본 이미지" />
             </div>
           }
         </div>

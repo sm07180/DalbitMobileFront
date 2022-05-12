@@ -351,11 +351,11 @@ let Profile = () => {
                         </span>
 
                         <span className="subIconWrap">
-                      {profileData.gender !== "" && (
-                          <em className={`icon_wrap ${profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
-                            <span className="blind">성별</span>
+                        {profileData.gender !== "" && (
+                          <em className={`icon_wrap ${profileData.gender === "n" ? "" : profileData.gender === "m" ? "icon_male" : "icon_female"}`}>
+                          <span className="blind">성별</span>
                           </em>
-                      )}
+                        )}
                     </span>
                       </strong>
                     </div>

@@ -75,7 +75,7 @@ const ClipSection = (props) => {
           })}
         </div>
       : clipData.list.length === 0 &&
-        <NoResult />
+        <NoResult img={'common/listNone/listNone-profile.png'} ment={'내 클립을 등록해보세요!'}/>
       }
     </div>
   )
