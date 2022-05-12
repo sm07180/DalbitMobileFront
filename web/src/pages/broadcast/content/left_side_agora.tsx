@@ -869,7 +869,6 @@ export default function LeftSideAgora(props: {
             }
           } else {
             if (webpUrl) {
-              console.log("@@@@@");
               const webpImg = document.createElement("img");
               webpImg.setAttribute("src", webpUrl);
               // webpImg.setAttribute("style", "position: absolute; object-fit: contain; width: inherit; height: inherit;");
