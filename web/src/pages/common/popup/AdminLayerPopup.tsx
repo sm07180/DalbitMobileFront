@@ -116,7 +116,7 @@ const AdminLayerPopup = (props: any)=> {
                     popupClose();
                   }
                 };
-                  dispatch(setGlobalCtxMessage({type: "alert", ...message1}))
+                  dispatch(setGlobalCtxMessage({type: "confirm", ...message1}))
               }}>방송방 삭제하기</button>
             </div>
           </div>

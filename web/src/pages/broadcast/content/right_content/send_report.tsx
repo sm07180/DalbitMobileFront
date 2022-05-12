@@ -4,7 +4,7 @@ import { useHistory, useParams } from "react-router-dom";
 // constant
 import { tabType } from "../../constant";
 // Api
-import { postReportUser, MypageBlackListAdd } from "common/api";
+import {postReportUser, MypageBlackListAdd, BroadBlackListAddKickOut} from "common/api";
 import Caution from "../../static/caution.png";
 import { DECLARATION_TAB } from "./constant";
 import {useDispatch, useSelector} from "react-redux";
@@ -15,7 +15,7 @@ export default function Report(props: { roomNo: string; profile: any }) {
   // ctx
   const dispatch = useDispatch();
   const broadcastState = useSelector(({broadcastCtx})=> broadcastCtx);
-  const { userMemNo, userNickNm } = broadcastState;
+  const { userMemNo, userNickNm, roomInfo } = broadcastState;
   // state
   const [pageType, setPageType] = useState(1);
   const [select, setSelect] = useState<number>(0);
@@ -47,8 +47,9 @@ export default function Report(props: { roomNo: string; profile: any }) {
   ];
 
   async function fetchDataBlock() {
-    const { message, result, code } = await MypageBlackListAdd({
-      memNo: userMemNo,
+    const { message, result, code } = await BroadBlackListAddKickOut({
+      blockNo: userMemNo,
+      roomNo: roomInfo?.roomNo || ''
     });
     if (result === "success") {
       dispatch(setGlobalCtxAlertStatus({

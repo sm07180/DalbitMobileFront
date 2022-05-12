@@ -726,6 +726,13 @@ export async function MypageDeleteList(data: {
   return await ajax(Method.DELETE, "/mypage/manager", data);
 }
 
+export async function BroadBlackListAddKickOut(data: {
+  blockNo: string;
+  roomNo: string;
+}): Promise<responseType> {
+  return await ajax(Method.POST, "/broad/black/add", data);
+}
+
 export async function MypageBlackList(data: {
   page: number;
   records: number;
