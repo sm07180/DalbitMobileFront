@@ -50,18 +50,20 @@ export default function SendingReceive(props: any) {
   return (
     <div>
       <div className="storyForm">
-        <p className="storyForm__explain">
+        <p className="infoText">
           * 사연을 등록하면 DJ에게 사연이 전달 됩니다.<br />
           채팅창에 쓰기 어려운 내용을 등록해보세요.
         </p>
-        <textarea
-          className="storyForm__textArea"
-          placeholder="10자 이상 500자 이내로 작성해주세요."
-          onChange={StoryChange}
-          value={storyMsg}
-        />
-        <span className="storyForm__msgCount"> {storyMsg.length} / 500</span>
-        <button className="storyForm__registBtn" onClick={() => fetchStory(roomNo, storyMsg)}>
+        <div className="textAreaWrap">
+          <textarea
+            className="textArea"
+            placeholder="10자 이상 500자 이내로 작성해주세요."
+            onChange={StoryChange}
+            value={storyMsg}
+          />
+          <span className="msgCount"> {storyMsg.length} / 500</span>
+        </div>
+        <button className="registBtn" onClick={() => fetchStory(roomNo, storyMsg)}>
           등록하기
         </button>
       </div>

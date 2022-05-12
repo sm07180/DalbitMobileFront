@@ -48,23 +48,23 @@ export default function SendingPlus(props: any) {
   }, []);
 
   return (
-    <div>
-      <div className="storyForm">
-        <p className="storyForm__explain">
-          * 100달을 사용하여 방송방에 있는 모두와<br />
-          공유되는 사연을 보낼 수 있습니다.
-        </p>
+    <div className="storyForm">
+      <p className="infoText">
+        * 100달을 사용하여 방송방에 있는 모두와<br />
+        공유되는 사연을 보낼 수 있습니다.
+      </p>
+      <div className="textAreaWrap">
         <textarea
-          className="storyForm__textArea"
+          className="textArea"
           placeholder="10자 이상 50자 이내로 작성해주세요."
           onChange={StoryChange}
           value={storyMsg}
         />
-        <span className="storyForm__msgCount"> {storyMsg.length} / 50</span>
-        <button className="storyForm__registBtn" onClick={() => fetchStory(roomNo, storyMsg)}>
-          등록하기
-        </button>
+        <span className="msgCount"> {storyMsg.length} / 50</span>
       </div>
+      <button className="registBtn" onClick={() => fetchStory(roomNo, storyMsg)}>
+        등록하기 (<span className="iconDal"></span> 100)
+      </button>
     </div>
   );
 }
