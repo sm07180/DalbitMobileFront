@@ -224,7 +224,7 @@ const keyboardHero = () => {
                   <div className="time">{Utility.secondToHM(myInfo.play_time)}</div>
                 </div>
                 <button className={`listBack ${(myInfo.one_time_yn === "y" && myInfo.one_step_rcv_yn === "n" ) ? '' : 'disabled'}`}
-                        onClick={()=>giftItem("1")}>100달 받기</button>
+                        onClick={()=>giftItem("o")}>100달 받기</button>
               </ListRow>
               <ListRow photo={`${IMG_SERVER}/event/keyboardHero/bonus-2.png`}>
                 <div className="listContent">
@@ -232,7 +232,7 @@ const keyboardHero = () => {
                   <div className="time">{Utility.secondToHM(myInfo.play_time)}</div>
                 </div>
                 <button className={`listBack ${(myInfo.two_time_yn === "y" && myInfo.two_step_rcv_yn === "n") ?'' : 'disabled'}`}
-                        onClick={()=>giftItem("2")}>300달 받기</button>
+                        onClick={()=>giftItem("t")}>300달 받기</button>
               </ListRow>
             </div>
           </div>
