@@ -19,7 +19,7 @@ export default function SendingReceive(props: any) {
         roomNo: roomNo,
         contents: storyMsg,
         djMemNo: roomInfo?.bjMemNo,
-        plusYn: 'y'
+        plusYn: 'n'
       });
       if (result === "success") {
         setStoryMsg("");
