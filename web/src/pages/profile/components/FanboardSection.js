@@ -21,8 +21,6 @@ const FanboardSection = (props) => {
     others: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
   });
 
-  console.log(fanBoardData);
-
   //예외조건 확인
   const validChecker = () => {
     let confirm = true;

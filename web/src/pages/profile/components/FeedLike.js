@@ -85,6 +85,8 @@ const FeedLike = (props) => {
 
   {/* 좋아요 클릭 이벤트 */}
   const onClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     const index = e.currentTarget.dataset.index;
     fetchHandleLike((data.noticeIdx ? data.noticeIdx : data.reg_no), data.mem_no, data.like_yn, likeType, index);
   };

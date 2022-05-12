@@ -17,9 +17,7 @@ const SocialList = (props) => {
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const profileData = useSelector(state => state.profile);
   const limitHeight = 64;
-
-  console.log(socialList);
-
+  
   const [isClicked, setIsClicked] = useState(Array(socialList.length).fill(false));
 
   const photoClickEvent = (memNo) => {
@@ -103,10 +101,11 @@ const SocialList = (props) => {
               deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, globalState.profile.memNo)}
               photoClick={() => photoClickEvent(item.mem_no)} />
 
-            <div className="socialContent" onClick={() => goProfileDetailPage(detailPageParam)}>
+            <div className="socialContent">
               <div className={`socialTextWrap ${isClicked[index] || type !== "feed" ? 'isMore' : ''}`}>
                 <div className="socialText" data-num={index}
-                     ref={el => socialRef.current[index] = el}
+                     ref={el => socialRef.current[index] = el} 
+                     onClick={() => goProfileDetailPage(detailPageParam)}
                      dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}} />
                 {type === "feed" &&
                   <>

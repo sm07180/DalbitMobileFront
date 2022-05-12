@@ -20,10 +20,11 @@ import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
 import {setProfileDetailData, setProfileTabData} from "redux/actions/profile";
 import {setGlobalCtxAlertStatus, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-const ProfileDetail = (props) => {
+const ProfileDetail = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const member = useSelector(state => state.member);
   //context
   const {token, profile} = globalState;
   const {memNo, type, index} = useParams();
@@ -33,7 +34,6 @@ const ProfileDetail = (props) => {
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
-  const member = useSelector(state => state.member);
 
   //팝업 사진 스와이퍼
   const [showSlide, setShowSlide] = useState(false);
@@ -56,8 +56,8 @@ const ProfileDetail = (props) => {
   //차단 / 신고하기
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', nickNm: ''});
   const detailData = useSelector(state => state.detail);
-  const profileTab = useSelector((state) => state.profileTab);
   const popup = useSelector(state => state.popup);
+  const profileTab = useSelector((state) => state.profileTab);
 
   //내 프로필 여부 (나의 프로필에서 작성한 피드, 팬보드 여부 체크)
   const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
@@ -81,36 +81,29 @@ const ProfileDetail = (props) => {
     setShowSlide(true);
   }
 
-  //상세조회
+  {/* 상세조회 */}
   const getDetailData = () => {
     if(type==='notice') {
-      Api.mypage_notice_detail_sel({noticeNo: index, memNo})
-        .then((res) => {
-          const {data, result, message} = res;
-          if(result === 'success'){
-            dispatch(setProfileDetailData({
-              ...detailData,
-              list: data
-            }))
-            setItem(data);
-          } else {
-            dispatch(setGlobalCtxAlertStatus({
-              status: true,
-              content: '해당 게시글이 존재하지 않습니다.',
-              callback: () => {
-                history.goBack()
-              },
-              cancelCallback: () => {
-                history.goBack()
-              },
-            }));
-
-          }
-        });
+      Api.mypage_notice_detail_sel({noticeNo: index, memNo}).then((res) => {
+        const {data, result, message} = res;
+        if(result === 'success'){
+          dispatch(setProfileDetailData({...detailData,list: data}))
+          setItem(data);
+        } else {
+          dispatch(setGlobalCtxAlertStatus({
+            status: true,
+            content: '해당 게시글이 존재하지 않습니다.',
+            callback: () => {
+              history.goBack()
+            },
+            cancelCallback: () => {
+              history.goBack()
+            },
+          }));
+        }
+      });
     } else if (type === 'fanBoard') {
-      Api.mypage_fanboard_detail({
-        memNo, fanBoardNo: index
-      }).then((res) => {
+      Api.mypage_fanboard_detail({memNo, fanBoardNo: index}).then((res) => {
         const {data, result, message} = res;
         if (result === 'success') {
           setItem(data);
@@ -125,21 +118,13 @@ const ProfileDetail = (props) => {
               history.goBack()
             },
           }));
-
         }
       })
     } else if(type === "feed") {
-      Api.myPageFeedDetailSel({
-        feedNo: index,
-        memNo: memNo,
-        viewMemNo: member.memNo ? member.memNo : globalState.profile.memNo
-      }).then((res) => {
+      Api.myPageFeedDetailSel({feedNo: index,memNo: memNo,viewMemNo: member.memNo ? member.memNo : globalState.profile.memNo}).then((res) => {
         const {data, result, message} = res;
         if(result === "success") {
-          dispatch(setProfileDetailData({
-            ...detailData,
-            list: data
-          }))
+          dispatch(setProfileDetailData({...detailData,list: data}))
           setItem(data);
         } else {
           dispatch(setGlobalCtxAlertStatus({
@@ -483,8 +468,6 @@ const ProfileDetail = (props) => {
     history.push(`/profile/${memNo}`)
   }
 
-  console.log(item);
-
   return (
     <div id="profileDetail">
       <Header title="" type="back">
@@ -515,7 +498,7 @@ const ProfileDetail = (props) => {
             {item.photoInfoList.map((photo,index) => {
               return (
                 <div className="photo" key={index}>
-                  <img src={photo?.imgObj?.thumb500x500} alt="이미지" />
+                  <img src={photo?.imgObj?.thumb500x500} />
                 </div>
               )
             })}
@@ -523,19 +506,13 @@ const ProfileDetail = (props) => {
           : item?.photoInfoList?.length === 1 ?
             <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
               <div className="photo">
-                <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+                <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} />
               </div>
             </div>
           :
             <></>
           )}
-          {type === "fanBoard" ?
-            <div className="info">
-              <i className="cmt">{(replyList?.length) ? Utility.printNumber(replyList?.length) : 0}</i>
-            </div>
-            :
-            <FeedLike data={detailData.list}  type={type} detail="detail"/>
-          }
+          <FeedLike data={detailData.list}  type={type} detail="detail"/>
         </div>
 
         {/* 댓글 리스트 영역 */}
