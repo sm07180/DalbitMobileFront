@@ -2112,7 +2112,7 @@
         }
       }
     }
-    .storyListWrap {
+    .receiveListWrap {
       width: 100%;
       margin-top: 20px;
       .storyList {
@@ -2170,7 +2170,76 @@
           }
         }
       }
-    }    
+    }
+    .plusListWrap {
+      width: 100%;
+      margin-top: 20px;
+      .storyList {
+        @include flex($fd: column);
+        width: 100%;
+        margin-bottom: 16px;
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .listHeader {
+          @include flex(center);
+          .photo {
+            flex: none;
+            display: hidden;
+            @include photoStyle(40px, 40px, 50%);
+            margin-right: 10px;
+            overflow: hidden;
+            img {
+              width: 100%;
+            }
+          }
+          .infoWrap {
+            flex: 1;
+            @include flex($fd: column);
+            .userNick {
+              @include font(14px, $Medium, #202020);
+              margin-bottom: 4px;
+            }
+            .writeDate {
+              @include flex(center);
+              @include font(12px, $Regular, #757575);
+              &::before {
+                content: "Plus";
+                @include flex(center, center);
+                width: 26px; height: 15px;
+                margin-right: 4px;
+                border-radius: 4px;
+                @include font(10px, $SemiBold, #FFFFFF);
+                background-color: #ACACAC;
+              }
+            }
+          }
+          .deleteWrap {
+            flex: none;
+            .deleteBtn {
+              @include flex(center, center);
+              width: 46px; height: 26px;
+              border: 1px solid #E3E3E3;
+              border-radius: 100px;
+              @include font(12px, $Medium, #303030);
+            }
+          }
+        }
+        .listContent {
+          width: 100%;
+          padding: 15px 20px;
+          margin-top: 12px;
+          border-radius: 10px;
+          background-color: #F2FBFF;
+          box-sizing: border-box;
+          .storyContent {
+            @include font(14px, $Regular, #000000);
+            word-break: break-all;
+            white-space: pre-line;
+          }
+        }
+      }
+    }
   }
   // no result
   .noResult {

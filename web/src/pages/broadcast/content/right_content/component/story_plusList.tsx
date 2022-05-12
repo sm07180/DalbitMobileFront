@@ -8,7 +8,7 @@ import NoResult from "common/ui/no_result";
 import {setGlobalCtxAlertStatus, setGlobalCtxSetToastStatus} from "../../../../../redux/actions/globalCtx";
 import {useDispatch} from "react-redux";
 
-export default function ReceiveList(props: any) {
+export default function PlusList(props: any) {
   const dispatch = useDispatch();
   const { roomNo } = props;
 
@@ -60,7 +60,7 @@ export default function ReceiveList(props: any) {
 
   return (
     <>
-      <div className="receiveListWrap">
+      <div className="plusListWrap">
         {storyArr.length === 0 ?
          <NoResult text="등록된 사연이 없습니다." type="default" />
          :
