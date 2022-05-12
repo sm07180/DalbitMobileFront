@@ -25,7 +25,7 @@ import {initReceipt, setReceipt} from "redux/actions/payStore";
 import {setGlobalCtxMultiViewer} from "redux/actions/globalCtx";
 //
 const Layout = (props) => {
-  const {children, webview} = props
+  const {children, webview : webviewProps} = props
 
   const location = useLocation();
   const dispatch = useDispatch();
@@ -47,7 +47,7 @@ const Layout = (props) => {
   const storePage = history.location.pathname.startsWith("/store")
   const payPage = history.location.pathname.startsWith("/pay")
 
-  const {qsWebview} = qs.parse(location.search)
+  const {webview} = qs.parse(location.search)
 
   useEffect(() => {
     if (noAppCheck) {
@@ -70,20 +70,16 @@ const Layout = (props) => {
       {/* 탑버튼 */}
       <Article
         className={`content-article mobileType ${
-          webview ? `webview ${playerCls} ${isMainPage ? 'main-page' : ''}` : `${playerCls} ${isMainPage ? 'main-page' : ''}`
+          webviewProps ? `webview ${playerCls} ${isMainPage ? 'main-page' : ''}` : `${playerCls} ${isMainPage ? 'main-page' : ''}`
         }
         ${playerCls ? "player" : ""}
         `}>
         {children}
         {payStoreRdx.receipt.visible && <ReceiptPop payOrderId={payStoreRdx.receipt.orderId} clearReceipt={()=>{
-          if (payStoreRdx.receipt.returnType === 'room' && isHybrid()) {
-            Hybrid('CloseLayerPopup')
-            Hybrid('ClosePayPopup')
-          }else{
-            dispatch(initReceipt());
-            history.replace("/");
-          }
-
+          dispatch(initReceipt());
+          Hybrid('CloseLayerPopup')
+          Hybrid('ClosePayPopup')
+          history.replace("/");
         }} />}
       </Article>
       {/* (방송방)Player */}
