@@ -821,7 +821,7 @@ export class ChatSocketHandler {
                     // }
                   }
                   case "reqGiftImg": {
-                    let { items, levelUp, boost } = this.splashData;
+                    let { items, levelUp, boost, story } = this.splashData;
                     // items : 시그니처 아이템 추가
                     items = items.concat(this.roomInfo?.signatureItem?.items || []);
 
@@ -851,7 +851,10 @@ export class ChatSocketHandler {
                         return levelUp.find((item: any) => item.itemNo === itemNo);
                       } else if (itemType === "boost") {
                         return boost.find((item: any) => item.itemNo === itemNo);
+                      } else if(itemType === 'story'){
+                        return story.find((item: any)=> item.itemNo === itemNo);
                       }
+
                     })();
                     let isTTSItem = typeof reqGiftImg.ttsText !== 'undefined' && reqGiftImg.ttsText !== "";
                     let isSoundItem = true;
