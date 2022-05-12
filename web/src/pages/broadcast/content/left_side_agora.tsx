@@ -869,6 +869,7 @@ export default function LeftSideAgora(props: {
             }
           } else {
             if (webpUrl) {
+              console.log("@@@@@");
               const webpImg = document.createElement("img");
               webpImg.setAttribute("src", webpUrl);
               // webpImg.setAttribute("style", "position: absolute; object-fit: contain; width: inherit; height: inherit;");
@@ -902,6 +903,14 @@ export default function LeftSideAgora(props: {
                     `position: absolute; object-fit: contain; width: 360px; height: 540px; top: 20px; left:50%`
                   );
                 }
+              } else if(location === 'storyItem') {
+
+                console.log("ddddd");
+                webpImg.setAttribute(
+                  "style",
+                  "position: absolute; object-fit: contain; width: 100%; height: inherit;"
+                );
+                // webpImg.setAttribute("text", "asdfasdfasdfasdfsdfssfasfsf");
               } else {
                 webpImg.setAttribute(
                   "style",

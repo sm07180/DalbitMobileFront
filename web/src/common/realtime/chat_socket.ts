@@ -838,6 +838,7 @@ export class ChatSocketHandler {
                       dalCnt,
                       isSecret,
                       repeatCnt,
+                      storyText
                     } = reqGiftImg;
                     const count = itemCnt;
                     const userNickname = nk;
@@ -909,12 +910,13 @@ export class ChatSocketHandler {
                           userNickname,
                         }))
                       } else {
+                        // 사연 플러스 아이템 추가
                         this.dispatch(setBroadcastCtxChatAnimationStart({
                           url: lottieUrl,
                           width,
                           height,
                           duration: duration * 1000 * repeatCnt,
-                          location,
+                          location : storyText? 'storyItem': location,
                           soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
                           count,
                           isCombo,
