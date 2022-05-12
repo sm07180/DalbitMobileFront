@@ -1,38 +1,35 @@
-import React, {useState, useRef, useEffect} from 'react'
-
+import React, {useState, useRef} from 'react';
 // global components
-import DataCnt from 'components/ui/dataCnt/DataCnt'
-// css
-import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
-import Swiper from "react-id-swiper";
+// components
+import FeedLike from "./FeedLike";
+
+import Utility from "components/lib/utility";
+import {useSelector} from "react-redux";
 import {useHistory, useParams} from "react-router-dom";
 import {goProfileDetailPage} from "pages/profile/contents/profileDetail/profileDetail";
-import Utility from "components/lib/utility";
-import {useDispatch, useSelector} from "react-redux";
-import FeedLike from "pages/profile/components/FeedLike";
 
 const SocialList = (props) => {
-  const {socialList, isMyProfile, type, openSlidePop, deleteContents, profileData, fetchHandleLike, showImagePopUp} = props
+  const {socialList, isMyProfile, openSlidePop, showImagePopUp, deleteContents, type} = props;
   const history = useHistory();
   const params = useParams();
   const socialRef = useRef([]);
   const globalState = useSelector(({globalCtx}) => globalCtx);
   const limitHeight = 64;
 
+  console.log(socialList);
+
   const [isClicked, setIsClicked] = useState(Array(socialList.length).fill(false));
 
   const photoClickEvent = (memNo) => {
-    if (type === 'fanBoard') {history.push(`/profile/${memNo}`)}
-  }
-
-  const toggleEllipsis = (idx, limit) => {
-    return {
-      isShowMore: (socialRef.current[idx] !== undefined ? socialRef.current[idx].clientHeight : 0) > limit
-    }
+    if (type === "fanBoard" && globalState.profile.memNo !== memNo) {history.push(`/profile/${memNo}`)}
   };
 
-  // 더보기, 간략히 전환
+  const toggleEllipsis = (idx, limit) => {
+    return {isShowMore: (socialRef.current[idx]?.clientHeight ? socialRef.current[idx].clientHeight : 0) > limit}
+  };
+
+  {/* 더보기, 간략히 전환 */}
   const onClick = (index, isBoolean) => {
     if(isBoolean === "false") {
       if(index === parseInt(socialRef.current[index].dataset.num)) {
@@ -47,14 +44,15 @@ const SocialList = (props) => {
         setIsClicked(temp);
       }
     }
-  }
+  };
 
-  /* 내부 컴포넌트 */
+  {/* 내부 컴포넌트 */}
   const FeedPhoto = (props) => {
     const {photoInfoList, length} = props;
     const photoLength = photoInfoList.length;
+    const photoShowMax = 5; // 보여줄 사진 최대 값
 
-    if (photoLength < 5) {
+    if (photoLength < photoShowMax) {
       return (
         <div className={`photo ${length === 2 ? 'grid-2' : length === 3 && 'grid-3'}`}>
           {photoInfoList.map((v, idx) => {return (<img key={idx} src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)} />)})}
@@ -64,18 +62,18 @@ const SocialList = (props) => {
       return (
         <>
           <div className="photo grid-2">
-            {photoInfoList.map((v, idx) => {return (<>{idx <= 1 && <div key={idx}><img src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)}/></div>}</>)})}
+            {photoInfoList.map((v, index) => {return (<React.Fragment key={index}>{index <= 1 && <div><img src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', index)}/></div>}</React.Fragment>)})}
           </div>
           <div className="photo grid-3">
-            {photoInfoList.map((v, idx) => {return (<>{idx > 1 && idx < 5 && <div key={idx}><img src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)}/></div>}</>)})}
-            {photoLength >= 5 &&
+            {photoInfoList.map((v, idx) => {return (<React.Fragment key={idx}>{idx > 1 && idx < 5 && <div><img src={v.imgObj.thumb500x500} onClick={() => showImagePopUp(photoInfoList, 'feedList', idx)}/></div>}</React.Fragment>)})}
+            {photoLength >= photoShowMax &&
             <div className="photoMore">
-              <div className="none" onClick={() => showImagePopUp(photoInfoList, 'feedList', 2)}/>
-              <div className="none" onClick={() => showImagePopUp(photoInfoList, 'feedList', 3)}/>
-              {photoLength - 5 > 0 ?
-                <div className="count" onClick={() => showImagePopUp(photoInfoList, 'feedList', 4)}>+{photoLength - 5}</div>
+              <div onClick={() => showImagePopUp(photoInfoList, 'feedList', 2)}/>
+              <div onClick={() => showImagePopUp(photoInfoList, 'feedList', 3)}/>
+              {photoLength - photoShowMax > 0 ?
+                <div className="count" onClick={() => showImagePopUp(photoInfoList, 'feedList', 4)}>+{photoLength - photoShowMax}</div>
                 : 
-                <div className="none" onClick={() => showImagePopUp(photoInfoList, 'feedList', 4)}/>
+                <div onClick={() => showImagePopUp(photoInfoList, 'feedList', 4)}/>
               }
             </div>
             }
@@ -91,10 +89,9 @@ const SocialList = (props) => {
         if (type === "fanBoard" && (item?.viewOn === 0 && !isMyProfile && item.mem_no !== globalState.profile.memNo)) {
           return <React.Fragment key={item.replyIdx}/>
         }
-
-        const memNo = type === "feed" ? profileData.memNo : item?.writerMemNo; //글 작성자
-        const detailPageParam = {history, action: 'detail', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo, fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
-        const modifyParam = {history, action: 'modify', type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: profileData.memNo};
+        const memNo = type === "feed" ? globalState.profile.memNo : item?.writerMemNo; //글 작성자
+        const detailPageParam = {history, action: "detail", type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: globalState.profile.memNo, fromMemNo: params?.memNo ? params.memNo : globalState.profile.memNo};
+        const modifyParam = {history, action: "modify", type, index: item.reg_no ? item.reg_no : item.replyIdx, memNo: globalState.profile.memNo};
         return (
           <div className="socialList" key={item.reg_no ? item.reg_no : item.replyIdx}>
             <ListRowComponent
@@ -102,22 +99,20 @@ const SocialList = (props) => {
               isMyProfile={isMyProfile}
               openSlidePop={openSlidePop}
               modifyEvent={() => {memNo === globalState.profile.memNo && goProfileDetailPage(modifyParam)}}
-              deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, profileData.memNo)}
+              deleteEvent={() => deleteContents(type, item.reg_no ? item.reg_no : item.replyIdx, globalState.profile.memNo)}
               photoClick={() => photoClickEvent(item.mem_no)} />
 
             <div className="socialContent">
               <div className={`socialTextWrap ${isClicked[index] || type !== "feed" ? 'isMore' : ''}`}>
-                <div className="socialText"
-                     onClick={() => goProfileDetailPage(detailPageParam)}
+                <div className="socialText" data-num={index}
                      ref={el => socialRef.current[index] = el}
-                     data-num={index}
+                     onClick={() => goProfileDetailPage(detailPageParam)}
                      dangerouslySetInnerHTML={{__html: Utility.nl2br(item.feed_conts ? item.feed_conts : item.contents)}} />
                 {type === "feed" &&
                   <>
-                  {!isClicked[index] && toggleEllipsis(index, limitHeight).isShowMore &&
+                  {!isClicked[index] && toggleEllipsis(index, limitHeight).isShowMore ?
                     <div className="socialButton" onClick={() => onClick(index, "false")}>··· 더보기</div>
-                  }
-                  {isClicked[index] &&
+                  : isClicked[index] &&
                     <div className="socialButton" onClick={() => onClick(index, "true")}>간략히</div>
                   }
                   </>
@@ -138,7 +133,7 @@ const SocialList = (props) => {
                 </div>
               }
 
-              <FeedLike data={item} fetchHandleLike={fetchHandleLike} type="feed" detailPageParam={detailPageParam} />
+              <FeedLike data={item} type={type} detailPageParam={detailPageParam} />
             </div>
           </div>
         )

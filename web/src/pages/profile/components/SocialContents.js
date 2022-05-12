@@ -4,9 +4,9 @@ import Api from 'context/api';
 // components
 import Tabmenu from './Tabmenu';
 // contents
-import FeedSection from '../contents/profileDetail/FeedSection';
-import FanboardSection from '../contents/profileDetail/FanboardSection';
-import ClipSection from '../contents/profileDetail/ClipSection';
+import FeedSection from './FeedSection';
+import FanboardSection from './FanboardSection';
+import ClipSection from './ClipSection';
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {
@@ -26,7 +26,7 @@ import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {useParams} from 'react-router-dom';
 
 const SocialContents = (props) => {
-  const {profileData, profileReady, isMyProfile, webview, setWebview} = props;
+  const {profileReady, isMyProfile, webview, setWebview, openSlidePop} = props;
   const params = useParams();
   const socialRef = useRef();
 
@@ -41,7 +41,7 @@ const SocialContents = (props) => {
   const [scrollPagingCall, setScrollPagingCall] = useState(1); // 스크롤 이벤트 갱신을 위함
 
   const profileDefaultTab = profileTab.tabList[1]; // 프로필 디폴트 탭 - 피드
-
+  
   {/* 피드 데이터 Api */}
   const getFeedData = (isInit) => {
     const apiParams = {
@@ -136,10 +136,15 @@ const SocialContents = (props) => {
     }
   }, []);
 
-  /* 스크롤 이벤트 remove */
+  {/* 스크롤 이벤트 remove */}
   const removeScrollEvent = useCallback(() => {
     document.removeEventListener('scroll', profileScrollEvent);
   }, []);
+
+  {/* 탭 메뉴 저장 */}
+  const setProfileTabName = (param) => {
+    dispatch(setProfileTabData({...profileTab, tabName: param}))
+  };
 
   {/* 피드, 팬보드, 클립 페이징 */}
   const profileScrollEvent = useCallback(() => {
@@ -166,14 +171,54 @@ const SocialContents = (props) => {
       getClipData(true);
       scrollEventHandler();
     }
-  }
+  };
 
-  const setProfileTabName = (param) => {
-    dispatch(setProfileTabData({
-      ...profileTab,
-      tabName: param
-    }))
-  }
+  {/* 피드글, 팬보드 삭제후 데이터 비우기 */}
+  const deleteContents = (type, index, memNo) => {
+    const callback = async () => {
+      if (type === 'notice') {
+        const {result, message} = await Api.mypage_notice_delete({
+          data: {
+            delChrgrName: globalState.profile?.nickNm,
+            noticeIdx: index,
+          }
+        })
+        if (result === 'success') {
+          const noticeList = noticeData.feedList.concat([]).filter((notice, _index) => notice.noticeIdx !== index);
+          dispatch(setProfileNoticeData({...noticeData, noticeList}));
+        } else {
+          dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
+        }
+      } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
+        const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
+
+        const {result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
+        if (result === 'success') {
+          dispatch(setProfileFanBoardData({...fanBoardData, list, paging: {...fanBoardData.paging, total: fanBoardData.paging.total - 1}}));
+        } else {
+          dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
+        }
+      } else if (type === "feed") {
+        const feedList = feedData.feedList.concat([]).filter((feedNew, _index) => feedNew.reg_no !== index);
+        await Api.myPageFeedDel({
+          data: {
+            feedNo: index,
+            delChrgrName: globalState.profile?.nickNm
+          }
+        }).then((res) => {
+          if(res.result === "success") {
+            dispatch(setProfileFeedNewData({...feedData, feedList, paging: {...feedData.paging, total: feedData.paging.total - 1}}));
+          } else {
+            dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
+          }
+        }).catch((e) => console.log(e));
+      }
+    }
+    dispatch(setGlobalCtxMessage({type:'confirm',
+      msg: '정말 삭제 하시겠습니까?',
+      callback
+    }));
+  };
 
   /* 주소 뒤에 파라미터 처리 (webview? = new / tab? = 0 | 1 | 2 (범위밖: 0)) */
   const parameterManager = () => {
@@ -194,7 +239,7 @@ const SocialContents = (props) => {
         }
         hasTabParam = true;
       }
-    });
+    })
 
     if(hasTabParam) {
       socialTabChangeAction(profileTab.tabList[tabState]);
@@ -208,57 +253,9 @@ const SocialContents = (props) => {
     }else {
       window.history.replaceState('', null, !params.memNo ? '/myProfile' : `/profile/${params.memNo}`) // url 변경
     }
-  }
+  };
 
-  /* 피드글, 팬보드 삭제후 데이터 비우기 */
-  const deleteContents = (type, index, memNo) => {
-    const callback = async () => {
-      if (type === 'notice') {
-        const {result, message} = await Api.mypage_notice_delete({
-          data: {
-            delChrgrName: profileData?.nickNm,
-            noticeIdx: index,
-          }
-        })
-        if (result === 'success') {
-          const noticeList = noticeData.feedList.concat([]).filter((notice, _index) => notice.noticeIdx !== index);
-          dispatch(setProfileNoticeData({...noticeData, noticeList}));
-        } else {
-          dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
-        }
-      } else if (type === 'fanBoard') { //팬보드 글 삭제 (댓글과 같은 프로시져)
-        const list = fanBoardData.list.concat([]).filter((board, _index) => board.replyIdx !== index);
-
-        const {result, message} = await Api.mypage_fanboard_delete({data: {memNo, replyIdx: index}});
-        if (result === 'success') {
-          dispatch(setProfileFanBoardData({...fanBoardData, list}));
-        } else {
-          dispatch(setGlobalCtxMessage({type:'toast',msg: message}));
-        }
-      } else if (type === "feed") {
-        const feedList = feedData.feedList.concat([]).filter((feedNew, _index) => feedNew.reg_no !== index);
-        await Api.myPageFeedDel({
-          data: {
-            feedNo: index,
-            delChrgrName: profileData?.nickNm
-          }
-        }).then((res) => {
-          if(res.result === "success") {
-            dispatch(setProfileFeedNewData({...feedData, feedList}));
-            getFeedData(true);
-          } else {
-            dispatch(setGlobalCtxMessage({type:'toast',msg: res.message}));
-          }
-        }).catch((e) => console.log(e));
-      }
-    }
-    dispatch(setGlobalCtxMessage({type:'confirm',
-      msg: '정말 삭제 하시겠습니까?',
-      callback
-    }));
-  }
-
-  /* 하단 현재 탭 데이터 초기화 */
+  {/* 하단 현재 탭 데이터 초기화 */}
   const profileTabDataCall = () => {
     if(profileTab.tabName === profileTab.tabList[0]) {
       document.addEventListener('scroll', profileScrollEvent);
@@ -275,9 +272,9 @@ const SocialContents = (props) => {
     getClipData(true);
 
     dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
-  }
+  };
 
-  /* 하단 탭 기본값으로 초기화 */
+  {/* 하단 탭 기본값으로 초기화 */}
   const profileTabInit = () => {
     dispatch(setProfileTabData({
       ...profileTab,
@@ -291,9 +288,9 @@ const SocialContents = (props) => {
     dispatch(setProfileClipData(profileClipDefaultState)); // 클립
     document.addEventListener('scroll', profileScrollEvent);
     setScrollPagingCall(1);
-  }
+  };
 
-  /* 하단 탭 핸들러(componentDidMount 시점) */
+  {/* 하단 탭 핸들러(componentDidMount 시점) */}
   const tabHandler = () => {
     if(profileTab.isReset) { // 탭, 데이터 초기화
       profileTabInit();
@@ -309,9 +306,9 @@ const SocialContents = (props) => {
       }
       dispatch(setProfileTabData({...profileTab, isRefresh: true, isReset: true})); // 하단 탭
     }
-  }
+  };
 
-  /* 스크롤 페이징 이펙트 */
+  {/* 스크롤 페이징 이펙트 */}
   useEffect(() => {
     if(profileTab.tabName === profileTab.tabList[0] && scrollPagingCall > 1 && !feedData.isLastPage) {
       getFeedData();
@@ -357,16 +354,16 @@ const SocialContents = (props) => {
     <section className="socialWrap" ref={socialRef}>
       {/* 탭 메뉴 */}
       <Tabmenu
-          data={profileTab.tabList}
-          tab={profileTab.tabName}
-          setTab={setProfileTabName}
-          tabChangeAction={socialTabChangeAction}
-          count={[`(${feedData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
+        data={profileTab.tabList}
+        tab={profileTab.tabName}
+        setTab={setProfileTabName}
+        tabChangeAction={socialTabChangeAction}
+        count={[`(${feedData?.paging?.total || 0})`,`(${fanBoardData?.paging?.total || 0})`,`(${clipData?.paging?.total || 0})`]}/>
 
       {/* 피드 */}
       {profileTab.tabName === profileTab.tabList[0] &&
         <FeedSection
-          profileData={profileData}
+          feedData={feedData}
           isMyProfile={isMyProfile}
           deleteContents={deleteContents}/>
       }
@@ -374,8 +371,10 @@ const SocialContents = (props) => {
       {/* 팬보드 */}
       {profileTab.tabName === profileTab.tabList[1] &&
         <FanboardSection
-          profileData={profileData}
+          fanBoardData={fanBoardData}
           isMyProfile={isMyProfile}
+          openSlidePop={openSlidePop}
+          profileScrollEvent={profileScrollEvent}
           getFanBoardData={getFanBoardData}
           deleteContents={deleteContents}/>
       }
@@ -383,8 +382,8 @@ const SocialContents = (props) => {
       {/* 클립 */}
       {profileTab.tabName === profileTab.tabList[2] &&
         <ClipSection
-          profileData={profileData}
-          isMyProfile={isMyProfile}
+          clipData={clipData}
+          // isMyProfile={isMyProfile}
           webview={webview} />
       }
     </section>

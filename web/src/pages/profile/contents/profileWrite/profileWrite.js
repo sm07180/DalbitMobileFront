@@ -9,10 +9,10 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 import CheckList from '../../components/CheckList'
 // contents
-// css
-import './profileWrite.scss'
 import DalbitCropper from "components/ui/dalbit_cropper";
 import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
+// scss
+import "./profileWrite.scss";
 import {setProfileTabData} from "redux/actions/profile";
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";

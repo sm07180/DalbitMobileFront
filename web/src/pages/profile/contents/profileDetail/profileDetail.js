@@ -1,29 +1,32 @@
-import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-import {IMG_SERVER} from 'context/config'
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 
-import Api from 'context/api'
-import Header from 'components/ui/header/Header'
-import './profileDetail.scss'
-import ListRowComponent from "pages/profile/components/ListRowComponent";
-import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponent";
+import Api from 'context/api';
 import Utility from "components/lib/utility";
-import Swiper from "react-id-swiper";
-import ShowSwiper from "components/ui/showSwiper/ShowSwiper";
-import PopSlide, {closePopup} from "components/ui/popSlide/PopSlide";
-import BlockReport from "pages/profile/components/popup/BlockReport";
+// global components
+import Header from '../../../../components/ui/header/Header';
+import MoreBtn from "../../../../components/ui/moreBtn/MoreBtn";
+import ShowSwiper from "../../../../components/ui/showSwiper/ShowSwiper";
+import PopSlide, {closePopup} from "../../../../components/ui/popSlide/PopSlide";
+// components
+import FeedLike from "../../components/FeedLike";
+import ListRowComponent from "../../components/ListRowComponent";
+import ProfileReplyComponent from "../../components/ProfileReplyComponent";
+import BlockReport from "../../components/popup/BlockReport";
+// scss
+import "./profileDetail.scss";
+import {useHistory, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setCommonPopupOpenData, setSlidePopupOpen} from "redux/actions/common";
-import FeedLike from "pages/profile/components/FeedLike";
 import {setProfileDetailData, setProfileTabData} from "redux/actions/profile";
 import {setGlobalCtxAlertStatus, setGlobalCtxMessage} from "redux/actions/globalCtx";
 
-const ProfileDetail = (props) => {
-  const history = useHistory()
+const ProfileDetail = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
+  const member = useSelector(state => state.member);
   //context
-  const {token, profile} = globalState
+  const {token, profile} = globalState;
   const {memNo, type, index} = useParams();
   const tmemNo = profile.memNo;
   //memNo :글이 작성되있는 프로필 주인의 memNo
@@ -31,12 +34,8 @@ const ProfileDetail = (props) => {
   const replyRef = useRef(null);
   const replyButtonRef = useRef(null);  //button Ref
   const blurBlockStatus = useRef(false); // click 이벤트 막기용
-  const replyIsMoreRef = useRef(null);
-  const infoRef = useRef(null);
-  const member = useSelector(state => state.member);
 
   //팝업 사진 스와이퍼
-  const [tooltipEvent, setTooltipEvent] = useState(false);
   const [showSlide, setShowSlide] = useState(false);
   const [imgList, setImgList] = useState([]);
 
@@ -52,25 +51,13 @@ const ProfileDetail = (props) => {
 
   const [item, setItem] = useState(null);
   const [replyList, setReplyList] = useState([]);
-  const [isMore, setIsMore] = useState(false);
   const [text, setText] = useState('');
 
   //차단 / 신고하기
   const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', nickNm: ''});
-  const popup = useSelector(state => state.popup);
   const detailData = useSelector(state => state.detail);
-
-  // 프로필 탭
   const profileTab = useSelector((state) => state.profileTab);
-
-  const swiperFeeds = {
-    slidesPerView: 'auto',
-    spaceBetween: 8,
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'fraction'
-    }
-  };
+  const popup = useSelector(state => state.popup);
 
   //내 프로필 여부 (나의 프로필에서 작성한 피드, 팬보드 여부 체크)
   const isMyProfile = (token?.isLogin) && profile?.memNo === memNo;
@@ -226,7 +213,6 @@ const ProfileDetail = (props) => {
 
   //댓글입력 폼, 댓글등록 버튼 이외에 요소를 누르면 blur로 판단하여 입력폼 초기화 및 댓글 입력폼을 등록상태로 변경
   const inputFormFocusEvent = (e) => {
-    if(isMore) setIsMore(false);
     if(!blurBlockStatus.current) {
       if (replyRef.current !== e.target && replyButtonRef.current !== e.target) {
         //blur로 판단
@@ -237,17 +223,6 @@ const ProfileDetail = (props) => {
     }
     blurBlockStatus.current = false;
   };
-
-  // 좋아요 툴팁 이벤트
-  const tooltipScrollEvent = useCallback(() => {
-    const infoNode = infoRef.current;
-    const infoPosition = infoNode?.offsetTop;
-    const scrollBottom = window.scrollY + document.documentElement.clientHeight - 100;
-
-    if (scrollBottom > infoPosition) {
-      setTooltipEvent(true);
-    }
-  }, []);
 
   useEffect(() => {
     const fromMemNo = history?.location?.state?.fromMemNo || 0;
@@ -260,7 +235,7 @@ const ProfileDetail = (props) => {
     return () => {
       document.body.removeEventListener('click', inputFormFocusEvent);
     }
-  },[inputMode, text, isMore]);
+  },[inputMode, text]);
 
   //글 삭제
   const deleteContents = () => {
@@ -492,69 +467,14 @@ const ProfileDetail = (props) => {
     }));
   };
 
-  /* 좋아요 */
-  const fetchHandleLike = async (regNo, mMemNo, like) => {
-    if(type === 'notice') {
-      const params = {
-        regNo: regNo,
-        mMemNo: mMemNo,
-        vMemNo: globalState.profile.memNo
-      };
-      if(like === "n") {
-        await Api.profileFeedLike(params).then((res) => {
-          if(res.result === "success") {
-            let temp = detailData.list;
-            temp.like_yn = "y";
-            temp.rcv_like_cnt++;
-            dispatch(setProfileDetailData({...detailData, list: temp}));
-          }
-        }).catch((e) => console.log(e));
-      } else if(like === "y") {
-        await Api.profileFeedLikeCancel(params).then((res) => {
-          if(res.result === "success") {
-            let temp = detailData.list;
-            temp.like_yn = "n";
-            temp.rcv_like_cnt--;
-            dispatch(setProfileDetailData({...detailData, list: temp}));
-          }
-        }).catch((e) => console.log(e));
-      }
-    } else if(type === "feed") {
-      const params = {
-        feedNo: regNo,
-        mMemNo: mMemNo,
-        vMemNo: globalState.profile.memNo
-      };
-      if(like === "n") {
-        await Api.myPageFeedLike(params).then((res) => {
-          if(res.result === "success") {
-            let temp = detailData.list;
-            temp.like_yn = "y";
-            temp.rcv_like_cnt++;
-            dispatch(setProfileDetailData({...detailData, list: temp}));
-          }
-        }).catch((e) => console.log(e));
-      } else if(like === "y") {
-        await Api.myPageFeedLikeCancel(params).then((res) => {
-          if(res.result === "success") {
-            let temp = detailData.list;
-            temp.like_yn = "n";
-            temp.rcv_like_cnt--;
-            dispatch(setProfileDetailData({...detailData, list: temp}));
-          }
-        }).catch((e) => console.log(e));
-      }
-    }
-  }
-
   /* 차단/신고 팝업 열기 */
-  const openBlockReportPop = (memNo, nickNm) => {
+  const openBlockReport = (memNo, nickNm) => {
     dispatch(setSlidePopupOpen());
     setBlockReportInfo({memNo, nickNm});
   }
 
   /* 차단/신고 팝업 닫기 */
-  const closeBlockReportPop = () => {
+  const closeBlockReport = () => {
     closePopup(dispatch);
     setBlockReportInfo({memNo: '', memNick: ''});
   }
@@ -563,92 +483,86 @@ const ProfileDetail = (props) => {
     history.push(`/profile/${memNo}`)
   }
 
-  useEffect(() => {
-    document.addEventListener('scroll', tooltipScrollEvent);
-    return () => {
-      document.removeEventListener('scroll', tooltipScrollEvent);
-    }
-  },[])
+  console.log(item);
 
   return (
     <div id="profileDetail">
       <Header title="" type="back">
-        <div className="buttonGroup" onClick={(e) => setIsMore(!isMore)}>
-          <div className='moreBtn'>
-            <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
-            {isMore &&
-            <div className="isMore">
-              {type !== 'fanBoard' && isMyContents &&
-              <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>
-                수정하기</button>}
-              {(isMyContents || adminChecker) &&
-              <button onClick={deleteContents}>삭제하기</button>}
-              {!isMyContents &&
-              <button onClick={() => openBlockReportPop(item?.mem_no || item?.writer_mem_no, item?.nickName)}>
-                차단/신고하기</button>}
-            </div>
-            }
-          </div>
+        <div className="buttonGroup">
+          <MoreBtn index={0}>
+            {type !== 'fanBoard' && isMyContents &&
+            <button onClick={() => goProfileDetailPage({history, memNo , action:'modify',type, index })}>수정하기</button>}
+            {(isMyContents || adminChecker) && <button onClick={deleteContents}>삭제하기</button>}
+            {!isMyContents && <button onClick={() => openBlockReport(item?.mem_no || item?.writer_mem_no, item?.nickName)}>차단/신고하기</button>}
+          </MoreBtn>
         </div>
       </Header>
-      <section className='detailWrap'>
+      <section className="detailWrap">
         {/* 피드, 팬보드 게시글 영역 */}
         <div className="detail">
-          {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}
-                                     photoClick={() => {photoClickEvent(item?.mem_no ? item.mem_no : item?.writer_mem_no)}}
-                                     disableMoreButton={false}/>}
+          {item &&
+            <ListRowComponent
+              item={item} index={index} type={type}
+              isMyProfile={isMyProfile}
+              photoClick={() => {photoClickEvent(item?.mem_no ? item.mem_no : item?.writer_mem_no)}}
+              disableMoreButton={false}/>
+          }
+          {/* 공지사항, 피드 글 영역 */}
           <pre className="text">{item?.feed_conts ? item.feed_conts : item?.contents}</pre>
-          {(type === 'notice' || type === 'feed') && (item?.photoInfoList?.length > 1 ?
-              <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
-                {item.photoInfoList.map((photo,index) => {
-                  return (
-                    <div className="photo" key={index}>
-                      <img src={photo?.imgObj?.thumb500x500} alt="이미지" />
-                    </div>
-                  )
-                })}
-              </div>
-              : item?.photoInfoList?.length === 1 ?
-                <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
-                  <div className="photo">
-                    <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
-                  </div>
+          {/* 공지사항, 피드 일때 */}
+          {(type === "notice" || type === "feed") && (item?.photoInfoList?.length > 1 ?
+            <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
+            {item.photoInfoList.map((photo,index) => {
+              return (
+                <div className="photo" key={index}>
+                  <img src={photo?.imgObj?.thumb500x500} alt="이미지" />
                 </div>
-                : <></>
+              )
+            })}
+            </div>
+          : item?.photoInfoList?.length === 1 ?
+            <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
+              <div className="photo">
+                <img src={item?.photoInfoList[0]?.imgObj?.thumb500x500} alt="" />
+              </div>
+            </div>
+          :
+            <></>
           )}
-          {type === 'fanBoard' ?
+          {type === "fanBoard" ?
             <div className="info">
               <i className="cmt">{(replyList?.length) ? Utility.printNumber(replyList?.length) : 0}</i>
             </div>
             :
-            <FeedLike data={detailData.list} fetchHandleLike={fetchHandleLike} type={type} detail={"detail"}/>
+            <FeedLike data={detailData.list}  type={type} detail="detail"/>
           }
         </div>
 
         {/* 댓글 리스트 영역 */}
-        <div className='listWrap'>
+        <div className="listWrap">
           {replyList.map((item, index) => {
             const goProfile = () =>{ history.push(`/profile/${item?.tail_mem_no || item?.writerMemNo}`) };
-            return <ProfileReplyComponent key={item?.replyIdx || item?.tail_no} item={item} profile={profile} isMyProfile={isMyProfile} type={type} dateKey={'writeDt'}
-                                          replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
-                                          blurBlock={blurBlock} goProfile={goProfile} adminChecker={adminChecker}
-                                          openBlockReportPop={openBlockReportPop}
-            />
+            return (
+              <ProfileReplyComponent
+                key={item?.replyIdx || item?.tail_no}
+                item={item} type={type} dateKey="writeDt"
+                profile={profile} isMyProfile={isMyProfile}
+                replyDelete={replyDelete} replyEditFormActive={replyEditFormActive}
+                blurBlock={blurBlock} goProfile={goProfile}
+                adminChecker={adminChecker} closeBlockReport={openBlockReport}/>
+            )
           })}
         </div>
-        <div className='bottomWrite'>
-          <div ref={replyRef} className={`trickTextarea ${text.length > 0 && 'isText'}`} contentEditable="true"
-               style={text.length === 0 ? {height:'20px'}: {}}
-               onKeyUp={(e) => setText(e.target?.innerText)}
-          />
-
+        <div className="bottomWrite">
+          <div ref={replyRef} contentEditable="true"
+            className={`trickTextarea ${text.length > 0 && "isText"}`} 
+            onKeyUp={(e) => setText(e.target?.innerText)} 
+            style={text.length === 0 ? {height:'20px'}: {}} />
           {/*댓글에서 수정 버튼을 눌렀을 때,  inputMode : false => true*/}
           <button ref={replyButtonRef} onClick={(e) => {
-            inputMode.action === 'edit' ? replyEdit(inputMode.replyIdx, text) : replyWrite();
-          }}>
+            inputMode.action === 'edit' ? replyEdit(inputMode.replyIdx, text) : replyWrite();}}>
             {inputMode.action === 'add' ? '등록' : '수정'}
           </button>
-
         </div>
       </section>
 
@@ -658,7 +572,7 @@ const ProfileDetail = (props) => {
       {/* 차단 / 신고하기 */}
       {popup.slidePopup &&
       <PopSlide>
-        <BlockReport profileData={blockReportInfo} closePopupAction={closeBlockReportPop} />
+        <BlockReport profileData={blockReportInfo} closePopupAction={closeBlockReport} />
       </PopSlide>
       }
     </div>
@@ -697,4 +611,4 @@ export const goProfileDetailPage = ({history, action = 'detail', type = 'feed',
   }
 };
 
-export default ProfileDetail
+export default ProfileDetail;

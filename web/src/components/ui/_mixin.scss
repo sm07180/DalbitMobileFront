@@ -449,6 +449,33 @@ $Heavy: 900;
   }
 }
 
+@mixin likeStyle {
+  @include flex(center);
+  height:25px;
+  margin-top:auto;
+  i {
+    display:inline-block;
+    min-width:37px;
+    padding-left:28px;
+    line-height:25px;
+    background-position:left center;
+    background-size:25px;
+    background-repeat:no-repeat;
+    @include font(14px,$Medium,#666);
+    font-style:normal;
+    cursor:pointer;
+    + i {margin-left:10px;}
+    &.likeOff {background-image: url("#{$IMGSERVER}/profile/heart_icon-off.png");}
+    &.likeOn {background-image: url("#{$IMGSERVER}/profile/heart_icon-on.png");}
+    &.cmt {background-image: url("#{$IMGSERVER}/profile/comment_icon-notice.png");}
+  }
+  .time {
+    margin-left:auto;
+    letter-spacing: -1px;
+    @include font(12px,$Medium,black);
+  }
+}
+
 @mixin badgeLive {
   @include flex(center, center);
   width:62px;height:28px;

@@ -163,15 +163,13 @@ const ProfilePage = () => {
   return (
     <div id="myprofile">
       <Header title={`${profileData.nickNm}`} type="back">
+        <div className="buttonGroup">
         {isMyProfile ?
-          <div className="buttonGroup">
-            <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>
-          </div>
+          <button className="editBtn" onClick={() => history.push('/myProfile/edit')}>편집</button>
           :
-          <div className="buttonGroup">
-            <button className="moreBtn" data-target-type="header" onClick={openSlidePop}>더보기</button>
-          </div>
+          <button className="moreBtn" data-target-type="header" onClick={openSlidePop}>더보기</button>
         }
+        </div>
       </Header>
 
       {/* 프로필 슬라이더 */}
@@ -198,9 +196,9 @@ const ProfilePage = () => {
       
       {/* 소셜 컨텐츠 */}
       <SocialContents
-        profileData={profileData}
         webview={webview}
         setWebview={setWebview}
+        openSlidePop={openSlidePop}
         profileReady={profileReady}
         isMyProfile={isMyProfile} />
 

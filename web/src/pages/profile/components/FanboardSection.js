@@ -2,25 +2,26 @@ import React, {useState} from 'react'
 
 import Api from "context/api";
 // global components
-import NoResult from 'components/ui/noResult/NoResult';
+import NoResult from '../../../components/ui/noResult/NoResult';
 // components
-import CheckList from '../../components/CheckList';
-import SocialList from '../../components/SocialList';
+import CheckList from './CheckList';
+import SocialList from './SocialList';
 import {useDispatch, useSelector} from "react-redux";
 import {setGlobalCtxMessage} from "redux/actions/globalCtx";
 import {useParams} from 'react-router-dom';
 
 const FanboardSection = (props) => {
-  const { isMyProfile, deleteContents, profileData, openSlidePop, getFanBoardData } = props;
+  const {fanBoardData, isMyProfile, openSlidePop, profileScrollEvent, getFanBoardData, deleteContents} = props;
   const params = useParams();
   const dispatch = useDispatch();
   const globalState = useSelector(({globalCtx}) => globalCtx);
-  const fanBoardData = useSelector(state => state.fanBoard);
 
   const [formState, setFormState] = useState({
     contents: "",
     others: 1,  //topFix 고정여부 [0:고정x, 1: 고정o] / viewOn 비밀글 여부 (등록만 가능, 수정불가 ) [0: 비밀글o, 1: 비밀글x]
   });
+
+  console.log(fanBoardData);
 
   //예외조건 확인
   const validChecker = () => {
@@ -40,7 +41,7 @@ const FanboardSection = (props) => {
     return confirm;
   };
 
-  //팬보드 등록
+  {/* 팬보드 등록 */}
   const contentsAdd = async () => {
     if(!validChecker()) return;
     const {contents, others} = formState;
@@ -62,19 +63,13 @@ const FanboardSection = (props) => {
 
   //팬보드 내용 가져오기
   const onChange = (e) => {
-    setFormState({
-      ...formState,
-      contents: e.target.value
-    })
-  }
+    setFormState({...formState, contents: e.target.value});
+  };
 
   //팬보드 공개, 비공개
   const onClick = () => {
-    setFormState({
-      ...formState,
-      others: formState.others === 1 ? 0 : 1
-    })
-  }
+    setFormState({...formState, others: formState.others === 1 ? 0 : 1});
+  };
 
   return (
     <div className="fanboardSection">
@@ -91,9 +86,8 @@ const FanboardSection = (props) => {
         <SocialList
           socialList={fanBoardData.list}
           isMyProfile={isMyProfile}
-          deleteContents={deleteContents}
-          profileData={profileData}
           openSlidePop={openSlidePop}
+          deleteContents={deleteContents}
           type="fanBoard" />
         :
         <NoResult />

@@ -113,14 +113,13 @@
     flex:1;
     @include flex(center);
     height:58px;
-    margin-right:5px;
     padding: 12px 10px 12px 8px;
     border-radius:8px;
     background-color: #F8F8F8;
     &:nth-child(2) {
       flex-grow: 0;
       flex-basis: 38.8%;
-      margin-right:0;
+      margin-left:5px;
     }
     .title {
       flex:none;
@@ -205,40 +204,7 @@
             @include fontLineCut;
           }
           .info {
-            @include flex(center);
-            height:25px;
-            margin-top:auto;
-            i {
-              display:inline-block;
-              padding-left:30px;
-              line-height:25px;
-              font-style:normal;
-              cursor:pointer;
-              + i {
-                margin-left:10px;
-              }
-              @include font(14px,$Medium,#666);
-              &.likeOff {
-                @include BGIMG("profile/heart_icon-off.png");
-                background-position:left center;
-                background-size:25px;
-              }
-              &.likeOn {
-                @include BGIMG("profile/heart_icon-on.png");
-                background-position:left center;
-                background-size:25px;
-              }
-              &.cmt {
-                @include BGIMG("profile/comment_icon-notice.png");
-                background-position:left center;
-                background-size:25px;
-              }
-            }
-            .time {
-              margin-left:auto;
-              letter-spacing: -1px;
-              @include font(12px,$Medium,black);
-            }
+            @include likeStyle;
           }
           .fixIcon {
             @include position-top-right(14px,10px);
